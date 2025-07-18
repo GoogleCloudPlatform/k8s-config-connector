@@ -1,6 +1,6 @@
-POST https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}/memberships/?alt=json
+POST https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}/memberships?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "preferredMemberKey": {
@@ -44,9 +44,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}/memberships/${membershipID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+GET https://cloudidentity.googleapis.com/v1beta1/groups/${groupID}/memberships/${membershipID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
