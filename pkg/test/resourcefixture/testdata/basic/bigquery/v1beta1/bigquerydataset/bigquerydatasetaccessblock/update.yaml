@@ -27,6 +27,6 @@ spec:
     - role: OWNER
       specialGroup: projectOwners
     - role: READER
-      iamMember: allUsers
+      iamMember: serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com
     - role: READER
       domain: google.com
