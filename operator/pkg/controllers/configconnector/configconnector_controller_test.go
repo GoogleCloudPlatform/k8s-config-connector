@@ -255,6 +255,33 @@ func TestHandleConfigConnectorCreate(t *testing.T) {
 				return testcontroller.ManuallyReplaceGSA(testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
 			},
 		},
+		{
+			name: "1 CC and 1 CCContext, per namespace mode",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc-1",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode: "namespaced",
+				},
+			},
+			cccs: []corev1beta1.ConfigConnectorContext{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      corev1beta1.ConfigConnectorContextAllowedName,
+						Namespace: "foo-ns",
+					},
+					Spec: corev1beta1.ConfigConnectorContextSpec{
+						GoogleServiceAccount: "foo-ns@bar.iam.gserviceaccount.com",
+						ManagerNamespace:     "t1234-tenant0-supervisor",
+					},
+				},
+			},
+			loadedManifest: testcontroller.GetSharedComponentsManifest(),
+			resultsFunc: func(t *testing.T, c client.Client) []string {
+				return []string{testcontroller.FooCRD, testcontroller.SystemNs}
+			},
+		},
 	}
 	for _, tc := range tests {
 		tc := tc
@@ -407,6 +434,42 @@ func TestHandleConfigConnectorDelete(t *testing.T) {
 				return nil
 			},
 		},
+		{
+			name: "per namespace mode CC, 1 CCContext, delete CC",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:       "test-kcc",
+					Finalizers: []string{k8s.OperatorFinalizer},
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode: "namespaced",
+				},
+			},
+			cccs: []corev1beta1.ConfigConnectorContext{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:       corev1beta1.ConfigConnectorContextAllowedName,
+						Namespace:  "t1234-tenant0-provider",
+						Finalizers: []string{k8s.OperatorFinalizer},
+					},
+					Spec: corev1beta1.ConfigConnectorContextSpec{
+						ManagerNamespace:     "t1234-tenant0-supervisor",
+						GoogleServiceAccount: "foo-ns@bar.iam.gserviceaccount.com",
+					},
+				},
+			},
+			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
+				res := make([]string, 0)
+				res = append(res, testcontroller.GetSharedComponentsManifest()...)
+				namespacedManifest := testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.NamespacedComponentsTemplate, "t1234-tenant0-provider", "foo-ns@bar.iam.gserviceaccount.com", false, "", c)
+				res = append(res, namespacedManifest...)
+				res = append(res, testcontroller.PerNamespaceControllerManagerPod)
+				return res
+			},
+			resultsFunc: func(t *testing.T, c client.Client) []string {
+				return nil
+			},
+		},
 	}
 	for _, tc := range tests {
 		tc := tc
@@ -431,6 +494,9 @@ func TestHandleConfigConnectorDelete(t *testing.T) {
 			}
 			for _, ccc := range tc.cccs {
 				testcontroller.EnsureNamespaceExists(c, ccc.Namespace)
+				if ccc.Spec.ManagerNamespace != "" {
+					testcontroller.EnsureNamespaceExists(c, ccc.Spec.ManagerNamespace)
+				}
 				if err := c.Create(ctx, &ccc); err != nil {
 					t.Fatalf("error creating %v %v/%v: %v", ccc.Kind, ccc.Namespace, ccc.Name, err)
 				}
@@ -738,6 +804,187 @@ func TestConfigConnectorUpdate(t *testing.T) {
 				return testcontroller.ManuallyReplaceGSA(testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
 			},
 		},
+
+		{
+			name: "workload identity cluster mode to per namespace mode",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+					Mode:                 "cluster",
+				},
+			},
+			updatedCc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode: "namespaced",
+				},
+			},
+			cccs: []*corev1beta1.ConfigConnectorContext{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:       corev1beta1.ConfigConnectorContextAllowedName,
+						Namespace:  "foo-ns",
+						Finalizers: []string{k8s.OperatorFinalizer},
+					},
+					Spec: corev1beta1.ConfigConnectorContextSpec{
+						GoogleServiceAccount: "foo-ns@bar.iam.gserviceaccount.com",
+						ManagerNamespace:     "t1234-tenant0-supervisor",
+					},
+				},
+			},
+			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
+				return testcontroller.ManuallyReplaceGSA(testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
+			},
+			toDeleteObjectsFunc: func(t *testing.T, c client.Client) []string {
+				return testcontroller.ManuallyReplaceGSA(testcontroller.ClusterModeOnlyWorkloadIdentityComponents, "foo@bar.iam.gserviceaccount.com")
+			},
+			manifest: testcontroller.GetSharedComponentsManifest(),
+			resultsFunc: func(t *testing.T, c client.Client) []string {
+				res := []string{testcontroller.FooCRD, testcontroller.SystemNs}
+				return res
+			},
+		},
+		{
+			name: "gcp identity cluster mode to per namespace mode",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					CredentialSecretName: "my-key",
+					Mode:                 "cluster",
+				},
+			},
+			updatedCc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode: "namespaced",
+				},
+			},
+			cccs: []*corev1beta1.ConfigConnectorContext{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:       corev1beta1.ConfigConnectorContextAllowedName,
+						Namespace:  "foo-ns",
+						Finalizers: []string{k8s.OperatorFinalizer},
+					},
+					Spec: corev1beta1.ConfigConnectorContextSpec{
+						GoogleServiceAccount: "foo-ns@bar.iam.gserviceaccount.com",
+						ManagerNamespace:     "t1234-tenant0-supervisor",
+					},
+				},
+			},
+			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
+				return testcontroller.ManuallyReplaceSecretVolume(testcontroller.GetClusterModeGCPManifest(), "my-key")
+			},
+			toDeleteObjectsFunc: func(t *testing.T, c client.Client) []string {
+				return testcontroller.ManuallyReplaceSecretVolume(testcontroller.ClusterModeOnlyGCPComponents, "my-key")
+			},
+			manifest: testcontroller.GetSharedComponentsManifest(),
+			resultsFunc: func(t *testing.T, c client.Client) []string {
+				res := []string{testcontroller.FooCRD, testcontroller.SystemNs}
+				return res
+			},
+		},
+		{
+			name: "per namespace mode to workload identity cluster mode",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode: "namespaced",
+				},
+			},
+			updatedCc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+					Mode:                 "cluster",
+				},
+			},
+			cccs: []*corev1beta1.ConfigConnectorContext{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:       corev1beta1.ConfigConnectorContextAllowedName,
+						Namespace:  "t1234-tenant0-provider",
+						Finalizers: []string{k8s.OperatorFinalizer},
+					},
+					Spec: corev1beta1.ConfigConnectorContextSpec{
+						GoogleServiceAccount: "foo-ns@bar.iam.gserviceaccount.com",
+						ManagerNamespace:     "t1234-tenant0-supervisor",
+					},
+				},
+			},
+			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
+				res := []string{testcontroller.FooCRD, testcontroller.SystemNs}
+				res = append(res, testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.NamespacedComponentsTemplate, "t1234-tenant0-provider", "foo-ns@bar.iam.gserviceaccount.com", false, "", c)...)
+				res = append(res, testcontroller.NamespacedControllerManagerPod)
+				return res
+			},
+			toDeleteObjectsFunc: func(t *testing.T, c client.Client) []string {
+				return []string{}
+			},
+			manifest: testcontroller.GetClusterModeWorkloadIdentityManifest(),
+			resultsFunc: func(t *testing.T, c client.Client) []string {
+				return testcontroller.ManuallyReplaceGSA(testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
+			},
+		},
+		{
+			name: "per namespace mode to gcp identity cluster mode",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode: "namespaced",
+				},
+			},
+			updatedCc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					CredentialSecretName: "my-key",
+					Mode:                 "cluster",
+				},
+			},
+			cccs: []*corev1beta1.ConfigConnectorContext{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:       corev1beta1.ConfigConnectorContextAllowedName,
+						Namespace:  "t1234-tenant0-provider",
+						Finalizers: []string{k8s.OperatorFinalizer},
+					},
+					Spec: corev1beta1.ConfigConnectorContextSpec{
+						GoogleServiceAccount: "foo-ns@bar.iam.gserviceaccount.com",
+						ManagerNamespace:     "t1234-tenant0-supervisor",
+					},
+				},
+			},
+			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
+				res := []string{testcontroller.FooCRD, testcontroller.SystemNs}
+				res = append(res, testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.NamespacedComponentsTemplate, "t1234-tenant0-provider", "foo-ns@bar.iam.gserviceaccount.com", false, "", c)...)
+				res = append(res, testcontroller.NamespacedControllerManagerPod)
+				return res
+			},
+			toDeleteObjectsFunc: func(t *testing.T, c client.Client) []string {
+				return []string{}
+			},
+			manifest: testcontroller.GetClusterModeGCPManifest(),
+			resultsFunc: func(t *testing.T, c client.Client) []string {
+				return testcontroller.ManuallyReplaceSecretVolume(testcontroller.GetClusterModeGCPManifest(), "my-key ")
+			},
+		},
 	}
 
 	for _, tc := range tests {
@@ -756,6 +1003,9 @@ func TestConfigConnectorUpdate(t *testing.T) {
 			}
 			for _, ccc := range tc.cccs {
 				testcontroller.EnsureNamespaceExists(c, ccc.Namespace)
+				if ccc.Spec.ManagerNamespace != "" {
+					testcontroller.EnsureNamespaceExists(c, ccc.Spec.ManagerNamespace)
+				}
 				if err := c.Create(ctx, ccc); err != nil {
 					t.Fatalf("error creating %v %v/%v: %v", ccc.Kind, ccc.Namespace, ccc.Name, err)
 				}

@@ -412,9 +412,10 @@ func (r *Reconciler) verifyPerNamespaceControllerManagerPodsAreDeleted(ctx conte
 	if err != nil {
 		return fmt.Errorf("error parsing '%v' as a label selector: %w", k8s.KCCControllerPodLabelSelectorRaw, err)
 	}
+	// Controller managers may run in separate namespace
+	// so need to list pods across all namespaces.
 	podList := &corev1.PodList{}
 	podOpts := &client.ListOptions{
-		Namespace:     k8s.CNRMSystemNamespace,
 		LabelSelector: podLabelSelector,
 		Limit:         100,
 	}
@@ -457,9 +458,10 @@ func (r *Reconciler) finalizeSystemComponentsDeletion(ctx context.Context, c cli
 	if err != nil {
 		return fmt.Errorf("error parsing '%v' as a label selector: %w", k8s.KCCControllerPodLabelSelectorRaw, err)
 	}
+	// Controller managers may run in separate namespace
+	// so need to list pods across all namespaces.
 	podList := &corev1.PodList{}
 	podOpts := &client.ListOptions{
-		Namespace:     k8s.CNRMSystemNamespace,
 		LabelSelector: podLabelSelector,
 	}
 	if err := wait.ExponentialBackoff(b, func() (done bool, err error) {

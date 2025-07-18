@@ -19,8 +19,10 @@ import (
 	"fmt"
 	"strings"
 
+	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	v1 "k8s.io/api/apps/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -28,6 +30,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
@@ -138,9 +141,26 @@ func controllerExistsForNamespace(ctx context.Context, namespace string, c clien
 	if err != nil {
 		return false, fmt.Errorf("error parsing '%v' as a label selector: %w", stsLabelSelectorRaw, err)
 	}
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(corev1beta1.ConfigConnectorContextGroupVersionKind)
+	err = c.Get(ctx, types.NamespacedName{
+		Namespace: namespace,
+		Name:      corev1beta1.ConfigConnectorContextAllowedName,
+	}, u)
+	if err != nil {
+		if apierrors.IsNotFound(err) {
+			return false, nil
+		}
+		return false, err
+	}
+	podNamespace := k8s.SystemNamespace
+	managerNamespace, found, err := unstructured.NestedString(u.Object, "spec", "managerNamespace")
+	if err == nil && found && managerNamespace != "" {
+		podNamespace = managerNamespace
+	}
 	stsList := &v1.StatefulSetList{}
 	stsOpts := &client.ListOptions{
-		Namespace:     k8s.SystemNamespace,
+		Namespace:     podNamespace,
 		LabelSelector: stsLabelSelector,
 		Limit:         1,
 	}

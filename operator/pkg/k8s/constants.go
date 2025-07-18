@@ -28,6 +28,7 @@ const (
 	KCCFinalizer                       = "cnrm.cloud.google.com/finalizer"
 	KCCSystemLabelSelectorRaw          = "cnrm.cloud.google.com/system"
 	KCCSystemComponentLabel            = "cnrm.cloud.google.com/component"
+	ManagedByKCCLabel                  = "cnrm.cloud.google.com/managed-by-kcc"
 	KCCControllerManagerComponent      = "cnrm-controller-manager"
 	KCCUnmanagedDetectorComponent      = "cnrm-unmanaged-detector"
 	CNRMDomain                         = "cnrm.cloud.google.com"
