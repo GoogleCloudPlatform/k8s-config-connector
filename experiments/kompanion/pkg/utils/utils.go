@@ -15,12 +15,15 @@
 package utils
 
 import (
+	"context"
 	"fmt"
 	"sort"
 	"strings"
 
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	discovery "k8s.io/client-go/discovery"
+	"k8s.io/client-go/discovery"
+	"k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/klog/v2"
 )
 
@@ -86,4 +89,17 @@ func contains(slice []string, str string) bool {
 		}
 	}
 	return false
+}
+
+func GetRESTConfig(ctx context.Context, Kubeconfig string) (*rest.Config, error) {
+	var loadingRules clientcmd.ClientConfigLoader
+	if Kubeconfig != "" {
+		loadingRules = &clientcmd.ClientConfigLoadingRules{ExplicitPath: Kubeconfig}
+	} else {
+		loadingRules = clientcmd.NewDefaultClientConfigLoadingRules()
+	}
+
+	return clientcmd.NewNonInteractiveDeferredLoadingClientConfig(
+		loadingRules,
+		&clientcmd.ConfigOverrides{}).ClientConfig()
 }
