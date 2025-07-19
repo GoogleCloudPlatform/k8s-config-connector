@@ -593,6 +593,7 @@ func setStringAtPath(m map[string]any, atPath string, newValue string) error {
 type objectWalker struct {
 	removePaths              sets.Set[string]
 	sortSlices               sets.Set[string]
+	sortSlicesBy             []sortSliceBy
 	sortAndDeduplicateSlices sets.Set[string]
 	replacePaths             map[string]any
 	stringTransforms         []func(path string, value string) string
@@ -600,6 +601,23 @@ type objectWalker struct {
 	sliceTransforms          []func(path string, value []any) []any
 
 	stringReplacements []stringReplacement
+}
+
+type sortSliceBy struct {
+	path   string
+	sortBy string
+}
+
+func (o *sortSliceBy) sortSlice(s []any) ([]any, error) {
+	sort.Slice(s, func(i, j int) bool {
+		v1 := s[i].(map[string]any)[o.sortBy]
+		v2 := s[j].(map[string]any)[o.sortBy]
+
+		s1 := fmt.Sprintf("%v", v1)
+		s2 := fmt.Sprintf("%v", v2)
+		return s1 < s2
+	})
+	return s, nil
 }
 
 type stringReplacement struct {
@@ -651,6 +669,10 @@ func (o *objectWalker) RemovePath(path string) {
 
 func (o *objectWalker) SortSlice(path string) {
 	o.sortSlices.Insert(path)
+}
+
+func (o *objectWalker) SortSliceBy(path string, sortBy string) {
+	o.sortSlicesBy = append(o.sortSlicesBy, sortSliceBy{path: path, sortBy: sortBy})
 }
 
 func (o *objectWalker) visitAny(v any, path string) (any, error) {
@@ -754,6 +776,16 @@ func (o *objectWalker) visitSlice(s []any, path string) (any, error) {
 			return s, err
 		}
 		s = sorted
+	}
+
+	for _, sortSlice := range o.sortSlicesBy {
+		if sortSlice.path == path {
+			sorted, err := sortSlice.sortSlice(s)
+			if err != nil {
+				return s, err
+			}
+			s = sorted
+		}
 	}
 
 	if o.sortAndDeduplicateSlices.Has(path) {
