@@ -1,0 +1,9 @@
+apiVersion: customize.core.cnrm.cloud.google.com/v1alpha1
+kind: APIGroupInstallation
+metadata:
+  name: iam.cnrm.cloud.google.com
+---
+apiVersion: customize.core.cnrm.cloud.google.com/v1alpha1
+kind: APIGroupInstallation
+metadata:
+  name: compute.cnrm.cloud.google.com

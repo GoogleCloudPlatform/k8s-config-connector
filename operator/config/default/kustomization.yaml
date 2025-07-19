@@ -25,6 +25,6 @@ commonAnnotations:
   cnrm.cloud.google.com/operator-version: "1.132.1"
 
 bases:
-- ../crd
+- ../crd/overlays/full
 - ../rbac
 - ../manager

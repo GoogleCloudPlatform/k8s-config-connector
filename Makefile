@@ -108,7 +108,9 @@ fmt:
 	-ignore "config/installbundle/components/clusterroles/cnrm_viewer.yaml" \
 	-ignore "operator/channels/**" \
 	-ignore "operator/autopilot-channels/**" \
-	-ignore "operator/config/crd/bases/**" \
+	-ignore "operator/config/crd/base/bases/**" \
+	-ignore "operator/config/crd/overlays/full/bases/**" \
+	-ignore "operator/config/crd/overlays/stable/bases/**" \
 	-ignore "operator/config/gke-addon/image_configmap.yaml" \
 	-ignore "operator/config/rbac/cnrm_viewer_role.yaml" \
 	-ignore "operator/vendor/**" \
@@ -333,7 +335,7 @@ config-connector-manifests-autopilot: build-operator-manifests
 
 .PHONY: build-operator-manifests
 build-operator-manifests:
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases	
+	make -C operator manifests
 	make -C operator docker-build
 
 .PHONY: push-operator-manifest
