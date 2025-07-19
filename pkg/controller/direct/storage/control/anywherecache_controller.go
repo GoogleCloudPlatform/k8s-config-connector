@@ -21,7 +21,6 @@ import (
 
 	gcp "cloud.google.com/go/storage/control/apiv2"
 	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -369,7 +368,7 @@ func (a *AnywhereCacheAdapter) Export(ctx context.Context) (*unstructured.Unstru
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.BucketRef = &refs.StorageBucketRef{External: a.id.Parent().String()}
+	obj.Spec.BucketRef = &krm.StorageBucketRef{External: a.id.Parent().String()}
 	obj.Spec.ResourceID = direct.LazyPtr(a.id.ID())
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
