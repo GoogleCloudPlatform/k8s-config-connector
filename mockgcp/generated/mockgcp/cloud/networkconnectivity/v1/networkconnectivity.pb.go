@@ -1799,7 +1799,7 @@ type LinkedInterconnectAttachments struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Optional. IP ranges allowed to be included during import from hub (does not control transit connectivity). The only allowed value for now is "ALL_IPV4_RANGES".
+	// Optional. Hub routes fully encompassed by include import ranges are included during import from hub.
 	IncludeImportRanges []string `protobuf:"bytes,1,rep,name=include_import_ranges,json=includeImportRanges,proto3" json:"include_import_ranges,omitempty"`
 	// A value that controls whether site-to-site data transfer is enabled for these resources. Data transfer is available only in [supported locations](https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations).
 	SiteToSiteDataTransfer bool `protobuf:"varint,2,opt,name=site_to_site_data_transfer,json=siteToSiteDataTransfer,proto3" json:"site_to_site_data_transfer,omitempty"`
@@ -1986,7 +1986,7 @@ type LinkedRouterApplianceInstances struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Optional. IP ranges allowed to be included during import from hub (does not control transit connectivity). The only allowed value for now is "ALL_IPV4_RANGES".
+	// Optional. Hub routes fully encompassed by include import ranges are included during import from hub.
 	IncludeImportRanges []string `protobuf:"bytes,1,rep,name=include_import_ranges,json=includeImportRanges,proto3" json:"include_import_ranges,omitempty"`
 	// The list of router appliance instances.
 	Instances []*RouterApplianceInstance `protobuf:"bytes,2,rep,name=instances,proto3" json:"instances,omitempty"`
@@ -2156,7 +2156,7 @@ type LinkedVpnTunnels struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Optional. IP ranges allowed to be included during import from hub (does not control transit connectivity). The only allowed value for now is "ALL_IPV4_RANGES".
+	// Optional. Hub routes fully encompassed by include import ranges are included during import from hub.
 	IncludeImportRanges []string `protobuf:"bytes,1,rep,name=include_import_ranges,json=includeImportRanges,proto3" json:"include_import_ranges,omitempty"`
 	// A value that controls whether site-to-site data transfer is enabled for these resources. Data transfer is available only in [supported locations](https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations).
 	SiteToSiteDataTransfer bool `protobuf:"varint,2,opt,name=site_to_site_data_transfer,json=siteToSiteDataTransfer,proto3" json:"site_to_site_data_transfer,omitempty"`
