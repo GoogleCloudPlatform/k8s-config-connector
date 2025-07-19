@@ -1,0 +1,43 @@
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringAlertPolicy
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: monitoringalertpolicy-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  combiner: OR
+  conditions:
+  - conditionPrometheusQueryLanguage:
+      duration: 3600s
+      evaluationInterval: 300s
+      query: sum(rate(logging_googleapis_com:billing_bytes_ingested{monitored_resource="global"}[60s]))>300
+    displayName: Condition 1
+  displayName: Test Alert Policy 2
+  documentation:
+    content: Updated content
+  enabled: true
+  notificationChannels:
+  - name: monitoringnotificationchannel2-${uniqueId}
+  resourceID: ${alertPolicyId}
+  severity: WARNING
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  creationRecord:
+  - mutateTime: "1970-01-01T00:00:00Z"
+    mutatedBy: user@google.com
+  name: projects/${projectId}/alertPolicies/${alertPolicyId}
+  observedGeneration: 3
