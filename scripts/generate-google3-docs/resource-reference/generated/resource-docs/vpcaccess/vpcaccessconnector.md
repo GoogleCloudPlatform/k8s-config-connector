@@ -76,6 +76,7 @@ networkRef:
   namespace: string
 projectRef:
   external: string
+  kind: string
   name: string
   namespace: string
 resourceID: string
@@ -86,6 +87,7 @@ subnet:
     namespace: string
   projectRef:
     external: string
+    kind: string
     name: string
     namespace: string
 ```
@@ -104,7 +106,7 @@ subnet:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The range of internal addresses that follows RFC 4632 notation. Example: '10.132.0.0/28'.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The range of internal addresses that follows RFC 4632 notation. Example: `10.132.0.0/28`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -114,7 +116,7 @@ subnet:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Location represents the geographical location of the VPCAccessConnector. Specify a region name. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
+            <p>{% verbatim %}Location represents the geographical location of the VPCAccessConnector. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/){% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -144,7 +146,7 @@ subnet:
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. Maximum throughput of the connector in Mbps, must be greater than 'min_throughput'. Default is 300.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Maximum throughput of the connector in Mbps. Default is 300, max is 1000.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -170,11 +172,11 @@ subnet:
     <tr>
         <td>
             <p><code>networkRef</code></p>
-            <p><i>Optional</i></p>
+            <p><i>Required</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Name or self_link of the VPC network. Required if 'ip_cidr_range' is set.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Name of a VPC network.  Required if ipCidrRange is set{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -184,7 +186,7 @@ subnet:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed Compute Network resource. Should be in the format `projects/<projectID>/global/networks/<network>`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -194,7 +196,7 @@ subnet:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -204,17 +206,17 @@ subnet:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>projectRef</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The project that this resource belongs to.{% endverbatim %}</p>
+            <p>{% verbatim %}The project that this resource belongs to.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -224,7 +226,17 @@ subnet:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `Project` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The kind of the Project resource; optional but must be `Project` if provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -234,7 +246,7 @@ subnet:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -244,7 +256,7 @@ subnet:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -254,7 +266,7 @@ subnet:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The VPCAccessConnector name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -264,7 +276,7 @@ subnet:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The subnet in which to house the connector.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable.  The subnet in which to house the VPC Access Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -274,8 +286,7 @@ subnet:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Subnet name (relative, not fully qualified). E.g. if the full subnet selfLink is
-https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetName} the correct input for this field would be {subnetName}"{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The subnet in which to house the connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -285,7 +296,7 @@ https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/su
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -295,7 +306,7 @@ https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/su
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -305,7 +316,7 @@ https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/su
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -325,7 +336,17 @@ https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/su
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `Project` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>subnet.projectRef.kind</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The kind of the Project resource; optional but must be `Project` if provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -335,7 +356,7 @@ https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/su
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -345,7 +366,7 @@ https://compute.googleapis.com/compute/v1/projects/{project}/regions/{region}/su
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -380,7 +401,7 @@ state: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -429,7 +450,7 @@ state: string
         <td><code>connectedProjects</code></td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}List of projects using the connector.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. List of projects using the connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
