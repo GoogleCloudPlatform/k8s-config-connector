@@ -1,0 +1,9 @@
+apiVersion: run.cnrm.cloud.google.com/v1beta1
+kind: RunService
+metadata:
+  name: runservice-${uniqueId}
+spec:
+  template:
+    template:
+      containers:
+      - image: gcr.io/cloudrun/hello

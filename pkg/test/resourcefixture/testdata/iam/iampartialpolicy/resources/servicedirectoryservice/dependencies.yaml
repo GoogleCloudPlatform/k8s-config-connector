@@ -1,0 +1,14 @@
+apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+kind: ServiceDirectoryNamespace
+metadata:
+  name: servicedirectorynamespace-${uniqueId}
+spec:
+  location: us-central1
+---
+apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+kind: ServiceDirectoryService
+metadata:
+  name: servicedirectoryservice-${uniqueId}
+spec:
+  namespaceRef:
+    name: servicedirectorynamespace-${uniqueId}

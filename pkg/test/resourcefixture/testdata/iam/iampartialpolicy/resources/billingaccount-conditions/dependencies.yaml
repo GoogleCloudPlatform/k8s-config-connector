@@ -1,0 +1,6 @@
+apiVersion: billing.cnrm.cloud.google.com/v1beta1
+kind: BillingAccount
+metadata:
+  name: billingaccount-${uniqueId}
+spec:
+  displayName: Test Billing Account

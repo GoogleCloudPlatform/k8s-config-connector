@@ -1,0 +1,6 @@
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: storagebucket-${uniqueId}
+spec:
+  location: US

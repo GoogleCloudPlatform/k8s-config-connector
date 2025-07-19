@@ -1,0 +1,514 @@
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource not found (resource=pubsubtopic-${uniqueId}).",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource not found (resource=pubsubsubscription-${uniqueId}).",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+PUT https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "deadLetterPolicy": null,
+  "expirationPolicy": null,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "messageRetentionDuration": "604800s",
+  "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "ackDeadlineSeconds": 10,
+  "expirationPolicy": {
+    "ttl": "2678400s"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "messageRetentionDuration": "604800s",
+  "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+  "pushConfig": {},
+  "state": "ACTIVE",
+  "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource not found (resource=pubsubsubscription-${uniqueId}).",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "ackDeadlineSeconds": 10,
+  "expirationPolicy": {
+    "ttl": "2678400s"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "messageRetentionDuration": "604800s",
+  "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+  "pushConfig": {},
+  "state": "ACTIVE",
+  "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}:getIamPolicy?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "user:test@example.com",
+          "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
+        ],
+        "role": "roles/pubsub.subscriber"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "user:test@example.com",
+        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.subscriber"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}:getIamPolicy?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "user:test@example.com",
+        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.subscriber"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "group:test-group@example.com",
+          "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
+          "user:editor@example.com",
+          "user:test@example.com"
+        ],
+        "role": "roles/pubsub.subscriber"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "group:test-group@example.com",
+        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
+        "user:editor@example.com",
+        "user:test@example.com"
+      ],
+      "role": "roles/pubsub.subscriber"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}:getIamPolicy?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "group:test-group@example.com",
+        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
+        "user:editor@example.com",
+        "user:test@example.com"
+      ],
+      "role": "roles/pubsub.subscriber"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}:getIamPolicy?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "ackDeadlineSeconds": 10,
+  "expirationPolicy": {
+    "ttl": "2678400s"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "messageRetentionDuration": "604800s",
+  "name": "projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}",
+  "pushConfig": {},
+  "state": "ACTIVE",
+  "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+---
+
+DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+}
+
+---
+
+DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

@@ -1,0 +1,53 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  annotations:
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: iampartialpolicy-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  bindings:
+  - members:
+    - member: user:test@example.com
+    - member: serviceAccount:test-sa@test-project.iam.gserviceaccount.com
+    - member: group:test-group@example.com
+    role: roles/servicedirectory.admin
+  - members:
+    - member: user:editor@example.com
+    role: roles/servicedirectory.editor
+  resourceRef:
+    apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+    kind: ServiceDirectoryNamespace
+    name: servicedirectorynamespace-${uniqueId}
+status:
+  allBindings:
+  - members:
+    - group:test-group@example.com
+    - serviceAccount:test-sa@test-project.iam.gserviceaccount.com
+    - user:test@example.com
+    role: roles/servicedirectory.admin
+  - members:
+    - user:editor@example.com
+    role: roles/servicedirectory.editor
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  lastAppliedBindings:
+  - members:
+    - user:test@example.com
+    - serviceAccount:test-sa@test-project.iam.gserviceaccount.com
+    - group:test-group@example.com
+    role: roles/servicedirectory.admin
+  - members:
+    - user:editor@example.com
+    role: roles/servicedirectory.editor
+  observedGeneration: 2

@@ -1,0 +1,8 @@
+apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
+kind: CloudFunctionsFunction
+metadata:
+  name: cloudfunctionsfunction-${uniqueId}
+spec:
+  runtime: nodejs16
+  entryPoint: helloWorld
+  sourceArchiveUrl: gs://test-bucket/function.zip

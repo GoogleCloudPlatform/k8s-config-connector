@@ -1,0 +1,11 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeInstance
+metadata:
+  name: computeinstance-${uniqueId}
+spec:
+  machineType: n1-standard-1
+  zone: us-central1-a
+  bootDisk:
+    initializeParams:
+      sourceImageRef:
+        name: computeimage-${uniqueId}
