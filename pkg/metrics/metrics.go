@@ -30,9 +30,9 @@ var (
 var (
 	MReconcileOccupiedWorkers = stats.Int64("ReconcileOccupiedWorkers", "The number of occupied reconcile workers", stats.UnitDimensionless)
 	MReconcileTotalWorkers    = stats.Int64("ReconcileTotalWorkers", "The number of total reconcile workers", stats.UnitDimensionless)
-	MReconcileRequests        = stats.Int64("ReconcileRequests", "The number of reconcile requests", stats.UnitDimensionless)
-	MInternalErrors           = stats.Int64("InternalErrorsTotal", "The number of internal errors", stats.UnitDimensionless)
-	MReconcileDuration        = stats.Float64("ReconcileDuration", "The duration of reconcile requests", "seconds")
+	MReconcileRequests        = stats.Int64("ReconcileRequests", "WARNING: do not import into GKE; unbound cardinality; The number of reconcile requests", stats.UnitDimensionless)
+	MInternalErrors           = stats.Int64("InternalErrorsTotal", "WARNING: do not import into GKE; unbound cardinality; The number of internal errors", stats.UnitDimensionless)
+	MReconcileDuration        = stats.Float64("ReconcileDuration", "WARNING: do not import into GKE; unbound cardinality; The duration of reconcile requests", "seconds")
 	MProcessStartTime         = stats.Float64("ProcessStartTimeSeconds", "Start time of the process since unix epoch in seconds", "seconds")
 )
 
