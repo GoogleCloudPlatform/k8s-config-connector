@@ -1,0 +1,14 @@
+- exec: gcloud access-context-manager policies create --organization ${ORG_ID} --title "kcc-${uniqueId}"
+
+- env:
+    name: POLICY_ID
+    exec: gcloud access-context-manager policies list --organization=${ORG_ID} --filter title=kcc-${uniqueId} --format 'value(name)'
+
+- exec: gcloud access-context-manager perimeters create test_perimeter_${uniqueId} --policy=${POLICY_ID} --title "My perimeter"
+- exec: gcloud access-context-manager perimeters describe test_perimeter_${uniqueId} --policy=${POLICY_ID}
+#- exec: gcloud access-context-manager perimeters update test_perimeter_${uniqueId} --policy=policy1 --add-resources="projects/67890"
+- exec: gcloud access-context-manager perimeters list --policy=${POLICY_ID}
+- exec: gcloud access-context-manager perimeters delete test_perimeter_${uniqueId} --policy=${POLICY_ID} --quiet
+
+
+- exec: gcloud access-context-manager policies delete --quiet ${POLICY_ID}

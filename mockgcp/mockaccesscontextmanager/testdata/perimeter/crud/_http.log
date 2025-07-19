@@ -1,0 +1,180 @@
+POST https://accesscontextmanager.googleapis.com/v1/accessPolicies?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "parent": "organizations/${organizationID}",
+  "title": "kcc-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/${accessPolicyID}/create/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessPolicy",
+    "etag": "abcdef0123A=",
+    "name": "accessPolicies/${accessPolicyID}",
+    "parent": "organizations/${organizationID}",
+    "title": "kcc-${uniqueId}"
+  }
+}
+
+---
+
+POST https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/servicePerimeters?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "name": "accessPolicies/${accessPolicyID}/servicePerimeters/test_perimeter_${uniqueId}",
+  "perimeterType": "PERIMETER_TYPE_REGULAR",
+  "status": {},
+  "title": "My perimeter"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/${accessPolicyID}/servicePerimeters/test_perimeter_${uniqueId}/create/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.ServicePerimeter",
+    "name": "accessPolicies/${accessPolicyID}/servicePerimeters/test_perimeter_${uniqueId}",
+    "status": {},
+    "title": "My perimeter"
+  }
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/servicePerimeters/test_perimeter_${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "accessPolicies/${accessPolicyID}/servicePerimeters/test_perimeter_${uniqueId}",
+  "status": {},
+  "title": "My perimeter"
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/servicePerimeters?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "servicePerimeters": [
+    {
+      "name": "accessPolicies/${accessPolicyID}/servicePerimeters/test_perimeter_${uniqueId}",
+      "status": {},
+      "title": "My perimeter"
+    }
+  ]
+}
+
+---
+
+DELETE https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/servicePerimeters/test_perimeter_${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/${accessPolicyID}/servicePerimeters/test_perimeter_${uniqueId}/create/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+DELETE https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/${accessPolicyID}/delete/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
