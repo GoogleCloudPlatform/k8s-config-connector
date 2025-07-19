@@ -351,7 +351,7 @@ func TestE2EScript(t *testing.T) {
 							t.Logf("ignoring failure to export resource of gvk %v", exportResource.GroupVersionKind())
 							// t.Errorf("failed to export resource of gvk %v", exportResource.GroupVersionKind())
 						} else {
-							if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
+							if err := normalizeKRMObject(t, u, h.RegisteredServices(), project, folderID, uniqueID); err != nil {
 								t.Fatalf("error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(u)
@@ -374,7 +374,7 @@ func TestE2EScript(t *testing.T) {
 						if err := h.GetClient().Get(ctx, id, u); err != nil {
 							t.Errorf("failed to get kube object: %v", err)
 						} else {
-							if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
+							if err := normalizeKRMObject(t, u, h.RegisteredServices(), project, folderID, uniqueID); err != nil {
 								t.Fatalf("error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(u)
