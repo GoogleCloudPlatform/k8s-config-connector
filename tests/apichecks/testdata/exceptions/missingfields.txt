@@ -96,16 +96,6 @@
 [missing_field] crd=bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudSpanner.useServerlessAnalytics" is not set in unstructured objects
 [missing_field] crd=bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com version=v1beta1: field ".spec.spark.metastoreService.metastoreServiceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com version=v1beta1: field ".spec.spark.sparkHistoryServer.dataprocClusterRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=bigquerydatasets.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.access[].dataset.dataset.datasetId" is not set in unstructured objects
-[missing_field] crd=bigquerydatasets.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.access[].dataset.dataset.projectId" is not set in unstructured objects
-[missing_field] crd=bigquerydatasets.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.access[].dataset.targetTypes[]" is not set in unstructured objects
-[missing_field] crd=bigquerydatasets.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.access[].groupByEmail" is not set in unstructured objects
-[missing_field] crd=bigquerydatasets.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.access[].routine.datasetId" is not set in unstructured objects
-[missing_field] crd=bigquerydatasets.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.access[].routine.projectId" is not set in unstructured objects
-[missing_field] crd=bigquerydatasets.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.access[].routine.routineId" is not set in unstructured objects
-[missing_field] crd=bigquerydatasets.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.access[].view.datasetId" is not set in unstructured objects
-[missing_field] crd=bigquerydatasets.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.access[].view.projectId" is not set in unstructured objects
-[missing_field] crd=bigquerydatasets.bigquery.cnrm.cloud.google.com version=v1beta1: field ".spec.access[].view.tableId" is not set in unstructured objects
 [missing_field] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.emailPreferences.enableFailureEmail" is not set in unstructured objects
 [missing_field] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfiguration.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.pubSubTopicRef" is not set; neither 'external' nor 'name' are set
