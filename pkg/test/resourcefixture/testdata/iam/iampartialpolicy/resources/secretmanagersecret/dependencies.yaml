@@ -1,0 +1,7 @@
+apiVersion: secretmanager.cnrm.cloud.google.com/v1beta1
+kind: SecretManagerSecret
+metadata:
+  name: secretmanagersecret-${uniqueId}
+spec:
+  replication:
+    automatic: true
