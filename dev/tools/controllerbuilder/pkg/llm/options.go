@@ -17,10 +17,13 @@ package llm
 import (
 	"context"
 	"flag"
+	"fmt"
 	"os"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/kubectl-ai/gollm"
 	"github.com/spf13/pflag"
+	"k8s.io/klog/v2"
 )
 
 // Options are the configuration options for using LLMs
@@ -31,7 +34,7 @@ type Options struct {
 	Model string
 }
 
-const DefaultModel = "gemini-2.5-pro-preview-05-06"
+const DefaultModel = "gemini-2.5-pro"
 
 func (o *Options) InitDefaults() {
 	model := os.Getenv("LLM_MODEL")
@@ -39,6 +42,30 @@ func (o *Options) InitDefaults() {
 		model = DefaultModel
 	}
 	o.Model = model
+}
+
+func (o *Options) InitDefaultsWithLatestModelIfUnset(ctx context.Context, llmClient gollm.Client) error {
+	model := os.Getenv("LLM_MODEL")
+	if model == "" {
+
+		models, err := llmClient.ListModels(ctx)
+		if err != nil {
+			return fmt.Errorf("listing models: %w", err)
+		}
+
+		for _, m := range models {
+			// There are many old or experimental models in the list.
+			// Let's use the first `gemini-2.5-pro` model for now.
+			if strings.Contains(m, "gemini-2.5-pro") {
+				model = m
+				break
+			}
+		}
+	}
+
+	klog.Infof("Using model %v", model)
+	o.Model = model
+	return nil
 }
 
 func (o *Options) AddFlags(flagset *flag.FlagSet) {
