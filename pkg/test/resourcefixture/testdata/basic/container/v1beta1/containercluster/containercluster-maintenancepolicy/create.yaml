@@ -17,7 +17,7 @@ kind: ContainerCluster
 metadata:
   name: containercluster-${uniqueId}
 spec:
-  location: us-central1
+  location: us-east1
   initialNodeCount: 1
   maintenancePolicy:
     dailyMaintenanceWindow:
@@ -27,8 +27,8 @@ spec:
       endTime: "2025-01-02T00:00:00Z"
       recurrence: "FREQ=WEEKLY;BYDAY=SA,SU"
     maintenanceExclusion:
-    - exclusionName: "no-maintenance-for-holidays"
-      startTime: "2025-12-24T00:00:00Z"
-      endTime: "2026-01-02T00:00:00Z"
-      exclusionOptions:
-        scope: "NO_UPGRADES"
+      - exclusionName: "no-maintenance-for-holidays"
+        startTime: "2025-12-24T00:00:00Z"
+        endTime: "2026-01-02T00:00:00Z"
+        exclusionOptions:
+          scope: "NO_UPGRADES"

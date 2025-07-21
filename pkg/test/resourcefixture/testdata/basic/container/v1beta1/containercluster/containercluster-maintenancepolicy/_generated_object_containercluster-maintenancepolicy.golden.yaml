@@ -1,0 +1,53 @@
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: containercluster-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  initialNodeCount: 1
+  location: us-east1
+  maintenancePolicy:
+    dailyMaintenanceWindow:
+      startTime: "04:00"
+    maintenanceExclusion:
+    - endTime: "2026-01-05T00:00:00Z"
+      exclusionName: new-no-maintenance-for-holidays
+      exclusionOptions:
+        scope: NO_MINOR_UPGRADES
+      startTime: "2025-12-23T00:00:00Z"
+    recurringWindow:
+      endTime: "2026-01-02T00:00:00Z"
+      recurrence: FREQ=WEEKLY;BYDAY=MO,TU
+      startTime: "2026-01-01T00:00:00Z"
+  resourceID: containercluster-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  endpoint: 35.237.203.39
+  labelFingerprint: abcdef0123A=
+  masterVersion: 1.32.4-gke.1415000
+  observedGeneration: 3
+  observedState:
+    masterAuth:
+      clusterCaCertificate: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMRENDQXBTZ0F3SUJBZ0lRVHR1Y282dUVmWUVYaFVwRFJQaWVVakFOQmdrcWhraUc5dzBCQVFzRkFEQXYKTVMwd0t3WURWUVFERXlRNE5HWmtZbVZsTkMwM01XSTFMVFEwWlRVdE9UaGtPUzB3WXpCbVlUUm1aVE5pTUdVdwpJQmNOTWpVd056SXhNakl5TkRRd1doZ1BNakExTlRBM01UUXlNekkwTkRCYU1DOHhMVEFyQmdOVkJBTVRKRGcwClptUmlaV1UwTFRjeFlqVXRORFJsTlMwNU9HUTVMVEJqTUdaaE5HWmxNMkl3WlRDQ0FhSXdEUVlKS29aSWh2Y04KQVFFQkJRQURnZ0dQQURDQ0FZb0NnZ0dCQU96b3pmZmZ6Y1lWUHIzTEhaWVlKNmR5WG9EWlF0VzVwaFlhbUo2UwpyaUFHK3ZYTFAvS1BsVTZJQXNtcWZrTU5keU9ROUNyUEt2OHFHbEllVDJ3cEpmbTFRMG0vcjBaUmNWMDU2b2ZuCkNwaWE0SDdUZUJUZ1Zub2FhMVZmaEpFYXg0OUFqOElSd1dIT3VIWXJJWmdobG8rUHlBVUl6WXRVRzdyQmUzSWwKaXcrNC9Wb1cvZWFqMXE1eVltS21yQkdDaGJUaDVzRGxPbytOelc3bUJFNmNJb1JWVDNYOHR3c2JxUm93L01IRQo1dFZjVEVEQjlhRGV5SlJ1Mlc5WjN3b0gwYzd3WmgrN29YSDhPWHRZVFRxZ2plNmtQdVVqNnFaN3U0ankrcEhvCjFqUlJWOE0yRFppVXdDampLdkNrZnBmek9WM0EvejdZZTNHV0thUktJZFdSRU1RSGYwTnpSS1BvZGFQRG9kVGUKZmJCL3VpVXZFWHRrczdOL2NkbHAvRXNtVllpcEJqcXZFRGhlTFh0Q0taOEF0eU5jdXRpbjJTQ2t3bjZjMVdGcAphVWgwV1dSbVZtRDBFU2dSaVVQdzdRQ0dyOGdoZlNUazN3RXJNOTQxd2pnRE5sUEdPRVVTVS9sZ0owUXN2M0h3CmFXSmcvNERtcG1LNjkvZ3lTQ2JiemR0bmp3SURBUUFCbzBJd1FEQU9CZ05WSFE4QkFmOEVCQU1DQWdRd0R3WUQKVlIwVEFRSC9CQVV3QXdFQi96QWRCZ05WSFE0RUZnUVU1dDh4a2drcjRIbVozdnNSa3VORW45VTdFUzB3RFFZSgpLb1pJaHZjTkFRRUxCUUFEZ2dHQkFGODdRSmFPRm9jeEpKQkNBWVlldFdIbEFMeUh1Z3JYbU5hSkNlc2V3REdGCnNiRFlLTmVaVlBZYko5YmpSbStjaXQxZVJTcTkwYmtXOWk0Wk9DWDRNZ0RHWWVIWTBPRnV2OUFwQzRiVUR4QWsKcGt1Qi9icnFRUnltRjFwdm45NGFPWEc5WTRUcWNIa3dHRXpOMENnbUF3WFkrcEkvYmRxMFdKcnIzNmFVRm5odAp6RDNzN3NEVWVsZmdLK2hoZDhUclk2OGE3Y1g3UFRabTY2aDV1MHZMQzQzbFRaS2ZlblVRaTRqTmNucTZqWXdNCkpBOFpPSEFCWTVNL3Zza0FXWjRlZWhMbDRub3FSaytjRzhBZ0phZ0RISE5ORkt6RDE5Ny9CUVFmU1dtQkI0QkYKc0VWOWN1UFJrQ0s3VXhYbGdKeWFoTUpnL3gyRDRwNklkakVua2ZoZEdwNllDSEd6eXc4dk9VQ3Q3Tk4wNjVGZgp0ZG9HaGtSVEhzU1RmRU5ETXJ2Ty93WFArYXU5OW4ydldnNElzbWxVeXN2eDF2OEVBUEtnK0ZoVzRLbW9jSTdaCno2ZHVIbU8vNUNiWGhnOWEreTNOMzhGYjNJd0t1WUZ4V2ZWMytYVUtPZFZrbUdkT1FvVEVhdTFORWRuUVVtNHUKdVA4eEt2MW1ROVo0b01YTEpVK1I2UT09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+    privateClusterConfig:
+      privateEndpoint: 10.142.0.39
+      publicEndpoint: 35.237.203.39
+  selfLink: https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-east1/clusters/containercluster-${uniqueId}
+  servicesIpv4Cidr: 34.118.224.0/20
