@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,27 +17,21 @@ kind: ContainerCluster
 metadata:
   name: containercluster-${uniqueId}
 spec:
-  location: us-central1
-  initialNodeCount: 2
-  networkRef:
-    name: containercluster-${uniqueId}
-  subnetworkRef:
-    name: containercluster-${uniqueId}
+  location: us-east1
+  initialNodeCount: 1
   maintenancePolicy:
     dailyMaintenanceWindow:
-      startTime: "05:00"
+      startTime: "04:00"
     recurringWindow:
       startTime: "2026-01-01T00:00:00Z"
       endTime: "2026-01-02T00:00:00Z"
       recurrence: "FREQ=WEEKLY;BYDAY=MO,TU"
     maintenanceExclusion:
-    - exclusionName: "no-maintenance"
-      startTime: "2026-02-01T00:00:00Z"
-      endTime: "2026-02-02T00:00:00Z"
-      exclusionOptions:
-        scope: "NO_MINOR_OR_NODE_UPGRADES"
-    - exclusionName: "no-minor-upgrades"
-      startTime: "2026-03-01T00:00:00Z"
-      endTime: "2026-03-02T00:00:00Z"
-      exclusionOptions:
-        scope: "NO_UPGRADES"
+      - exclusionName: "new-no-maintenance-for-holidays"
+        startTime: "2025-12-23T00:00:00Z"
+        # MaintenancePolicy.maintenanceExclusions[\"new-no-maintenance-for-holidays\"].endTime
+        # needs to be before minor version 1.32 end of life: (2026-4-11). See release schedule
+        # at https://cloud.google.com/kubernetes-engine/docs/release-schedule.
+        endTime: "2026-01-05T00:00:00Z"
+        exclusionOptions:
+          scope: "NO_MINOR_UPGRADES"
