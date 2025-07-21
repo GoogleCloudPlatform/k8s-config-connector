@@ -120,6 +120,7 @@ func LoadWithPathFilter(t *testing.T, pathFilter func(path string) bool, lightFi
 			if heavyFilterFunc != nil && !heavyFilterFunc(rf) {
 				return nil
 			}
+			allCases = append(allCases, rf)
 		}
 
 		return nil
