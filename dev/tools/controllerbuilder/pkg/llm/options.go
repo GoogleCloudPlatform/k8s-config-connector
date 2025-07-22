@@ -46,8 +46,9 @@ func (o *Options) InitDefaults() {
 
 func (o *Options) InitDefaultsWithLatestModelIfUnset(ctx context.Context, llmClient gollm.Client) error {
 	model := os.Getenv("LLM_MODEL")
-	if model == "" {
 
+	modelNameSubString := "gemini-2.5-pro"
+	if model == "" {
 		models, err := llmClient.ListModels(ctx)
 		if err != nil {
 			return fmt.Errorf("listing models: %w", err)
@@ -56,11 +57,15 @@ func (o *Options) InitDefaultsWithLatestModelIfUnset(ctx context.Context, llmCli
 		for _, m := range models {
 			// There are many old or experimental models in the list.
 			// Let's use the first `gemini-2.5-pro` model for now.
-			if strings.Contains(m, "gemini-2.5-pro") {
+			if strings.Contains(m, modelNameSubString) {
 				model = m
 				break
 			}
 		}
+	}
+	if model == "" {
+		klog.Errorf("No model containing %q in name found", modelNameSubString)
+		return fmt.Errorf("cannot find model containing %q in name", modelNameSubString)
 	}
 
 	klog.Infof("Using model %v", model)
