@@ -12,14 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	"context"
 	"fmt"
 	"strings"
-
-	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -63,7 +61,7 @@ func NewLinkIdentity(ctx context.Context, reader client.Reader, obj *LoggingLink
 		return nil, err
 	}
 
-	bucketIdentity, err := loggingv1beta1.ParseLogBucketExternal(external)
+	bucketIdentity, err := ParseLogBucketExternal(external)
 	if err != nil {
 		return nil, err
 	}

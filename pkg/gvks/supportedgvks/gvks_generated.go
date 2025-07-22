@@ -3792,7 +3792,7 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{
 	},
 	{
 		Group:   "logging.cnrm.cloud.google.com",
-		Version: "v1alpha1",
+		Version: "v1beta1",
 		Kind:    "LoggingLink",
 	}: {
 		Labels: map[string]string{

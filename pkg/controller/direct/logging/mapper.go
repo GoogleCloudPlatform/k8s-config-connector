@@ -17,23 +17,21 @@ package logging
 import (
 	"strings"
 
-	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
-
 	pb "cloud.google.com/go/logging/apiv2/loggingpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func LoggingLinkSpec_LoggingLogBucketRef_FromProto(mapCtx *direct.MapContext, in string) *loggingv1beta1.LoggingLogBucketRef {
+func LoggingLinkSpec_LoggingLogBucketRef_FromProto(mapCtx *direct.MapContext, in string) *krm.LoggingLogBucketRef {
 	if in == "" {
 		return nil
 	}
-	return &loggingv1beta1.LoggingLogBucketRef{
+	return &krm.LoggingLogBucketRef{
 		External: in,
 	}
 }
 
-func LoggingLinkSpec_LoggingLogBucketRef_ToProto(mapCtx *direct.MapContext, in *loggingv1beta1.LoggingLogBucketRef) *string {
+func LoggingLinkSpec_LoggingLogBucketRef_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogBucketRef) *string {
 	if in == nil {
 		return nil
 	}

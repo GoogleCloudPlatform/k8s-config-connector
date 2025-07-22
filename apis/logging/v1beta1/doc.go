@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +kcc:proto=google.logging.v2
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register
 //+groupName=logging.cnrm.cloud.google.com

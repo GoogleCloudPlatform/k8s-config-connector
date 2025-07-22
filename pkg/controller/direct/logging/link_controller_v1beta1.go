@@ -20,7 +20,7 @@ import (
 
 	//"reflect"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -44,20 +44,20 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.LoggingLinkGVK, NewLoggingLinkModel)
+	registry.RegisterModel(krm.LoggingLinkGVK, NewLoggingLinkModelV1Beta1)
 }
 
-func NewLoggingLinkModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &modelLoggingLink{config: *config}, nil
+func NewLoggingLinkModelV1Beta1(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &modelLoggingLinkV1Beta1{config: *config}, nil
 }
 
-var _ directbase.Model = &modelLoggingLink{}
+var _ directbase.Model = &modelLoggingLinkV1Beta1{}
 
-type modelLoggingLink struct {
+type modelLoggingLinkV1Beta1 struct {
 	config config.ControllerConfig
 }
 
-func (m *modelLoggingLink) client(ctx context.Context) (*gcp.ConfigClient, error) {
+func (m *modelLoggingLinkV1Beta1) client(ctx context.Context) (*gcp.ConfigClient, error) {
 
 	gcpClient, err := gcp.NewConfigRESTClient(ctx)
 	if err != nil {
@@ -66,7 +66,7 @@ func (m *modelLoggingLink) client(ctx context.Context) (*gcp.ConfigClient, error
 	return gcpClient, err
 }
 
-func (m *modelLoggingLink) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *modelLoggingLinkV1Beta1) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.LoggingLink{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -81,7 +81,7 @@ func (m *modelLoggingLink) AdapterForObject(ctx context.Context, reader client.R
 	if err != nil {
 		return nil, err
 	}
-	return &LoggingLinkAdapter{
+	return &LoggingLinkAdapterV1Beta1{
 		id:        linkIdentity,
 		gcpClient: gcpClient,
 		desired:   obj,
@@ -94,21 +94,21 @@ func () ResolveExternalRef(externalRef string) {
 }
 */
 
-func (m *modelLoggingLink) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+func (m *modelLoggingLinkV1Beta1) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	// TODO: Support URLs
 	return nil, nil
 }
 
-type LoggingLinkAdapter struct {
+type LoggingLinkAdapterV1Beta1 struct {
 	id        *krm.LinkIdentity
 	gcpClient *gcp.ConfigClient
 	desired   *krm.LoggingLink
 	actual    *loggingpb.Link
 }
 
-var _ directbase.Adapter = &LoggingLinkAdapter{}
+var _ directbase.Adapter = &LoggingLinkAdapterV1Beta1{}
 
-func (a *LoggingLinkAdapter) Find(ctx context.Context) (bool, error) {
+func (a *LoggingLinkAdapterV1Beta1) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting LoggingLink", "name", a.id)
 
@@ -125,7 +125,7 @@ func (a *LoggingLinkAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+func (a *LoggingLinkAdapterV1Beta1) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("creating LoggingLink", "u", u)
@@ -175,7 +175,7 @@ func (a *LoggingLinkAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
-func (a *LoggingLinkAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+func (a *LoggingLinkAdapterV1Beta1) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Logging Link", "name", a.id)
@@ -204,7 +204,7 @@ func (a *LoggingLinkAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 }
 
-func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+func (a *LoggingLinkAdapterV1Beta1) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
@@ -240,7 +240,7 @@ func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 }
 
 // Delete implements the Adapter interface.
-func (a *LoggingLinkAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+func (a *LoggingLinkAdapterV1Beta1) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Link", "name", a.id)
 

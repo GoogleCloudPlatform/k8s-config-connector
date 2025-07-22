@@ -12,10 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
-	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -34,7 +33,7 @@ type LoggingLinkSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	// The LoggingLogBucket that this Link is associated with
-	LoggingLogBucketRef *loggingv1beta1.LoggingLogBucketRef `json:"loggingLogBucketRef,omitempty"`
+	LoggingLogBucketRef *LoggingLogBucketRef `json:"loggingLogBucketRef,omitempty"`
 }
 
 // LoggingLinkStatus defines the config connector machine state of LoggingLink
@@ -75,10 +74,18 @@ type LoggingLinkObservedState struct {
 	BigQueryDataset *BigQueryDatasetObservedState `json:"bigQueryDataset,omitempty"`
 }
 
+// BigQueryDatasetObservedState is the state of the BigQueryDataset resource as most recently observed in GCP.
+type BigQueryDatasetObservedState struct {
+	// Output only. The full resource name of the BigQuery dataset.
+	// The format is: "projects/[PROJECT_ID]/datasets/[DATASET_ID]".
+	DatasetId *string `json:"datasetId,omitempty"`
+}
+
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcplogginglink;gcplogginglinks
 // +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"

@@ -39,7 +39,7 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1alpha1
+    name: v1beta1
     schema:
       openAPIV3Schema:
         description: LoggingLink is the Schema for the LoggingLink API
@@ -148,15 +148,9 @@ spec:
                       will also have BigQuery Views corresponding to the LogViews
                       in the bucket.
                     properties:
-                      datasetID:
-                        description: |-
-                          Output only. The full resource name of the BigQuery dataset. The DATASET_ID
-                           will match the ID of the link, so the link must match the naming
-                           restrictions of BigQuery datasets (alphanumeric characters and underscores
-                           only).
-
-                           The dataset will have a resource path of
-                             "bigquery.googleapis.com/projects/[PROJECT_ID]/datasets/[DATASET_ID]"
+                      datasetId:
+                        description: 'Output only. The full resource name of the BigQuery
+                          dataset. The format is: "projects/[PROJECT_ID]/datasets/[DATASET_ID]".'
                         type: string
                     type: object
                   createTime:
