@@ -63,6 +63,7 @@ class MCPEvaluator:
         """
         print(f"\n--- Running Test: {name} ---")
 
+        effective_cwd = task_dir
         # Run setup script
         if setup_script:
             success, stdout, stderr = self._run_script(setup_script, task_dir)
@@ -84,10 +85,11 @@ class MCPEvaluator:
                 }
                 self.test_results.append(result)
                 return
+            effective_cwd = stdout.strip()
             
         print(f"--- Running LLM: {prompt} ---")
         start_time = time.time()
-        stdout, stderr, returncode, llm_requests = self._run_gemini_command_internal(None, prompt)
+        stdout, stderr, returncode, llm_requests = self._run_gemini_command_internal(None, prompt, cwd=effective_cwd)
         end_time = time.time()
         latency = (end_time - start_time) * 1000 # in ms
         print(f"--- LLM response: {stdout} ---")
@@ -96,7 +98,7 @@ class MCPEvaluator:
         notes = []
 
         if verifier_script:
-            success, verifier_stdout, verifier_stderr = self._run_script(verifier_script, task_dir)
+            success, verifier_stdout, verifier_stderr = self._run_script(verifier_script, effective_cwd)
             if success:
                 test_passed = True
             else:
@@ -116,7 +118,7 @@ class MCPEvaluator:
         
         # Cleanup
         if cleanup_script:
-            cleanup_success, cleanup_stdout, cleanup_stderr = self._run_script(cleanup_script, task_dir)
+            cleanup_success, cleanup_stdout, cleanup_stderr = self._run_script(cleanup_script, effective_cwd)
             if not cleanup_success:
                 notes.append(f"Cleanup script failed: {cleanup_script}")
                 notes.append(f"Cleanup stdout: {cleanup_stdout}")
@@ -195,7 +197,7 @@ class MCPEvaluator:
         )
         return summary
         
-    def _run_gemini_command_internal(self, command, prompt):
+    def _run_gemini_command_internal(self, command, prompt, cwd=None):
         """
         Runs a Gemini CLI command and captures its output and error, printing it in real-time.
         The command is terminated when 'User notified.' is detected in the output.     
@@ -203,6 +205,7 @@ class MCPEvaluator:
         Args:
             command (str): The Gemini CLI command (e.g., "/mcp", "ask").
             prompt (str): The prompt to send to Gemini CLI.
+            cwd (str): The working directory to run the command in.
 
         Returns:
             tuple: A tuple containing (stdout, stderr, returncode, llm_requests_count).
@@ -218,6 +221,7 @@ class MCPEvaluator:
         # mcp is under a different python virtual env.
         env.pop('VIRTUAL_ENV', None)
         
+        effective_cwd = cwd if cwd else self.git_root
         try:
             process = subprocess.Popen(
                 args,
@@ -225,7 +229,7 @@ class MCPEvaluator:
                 stderr=subprocess.PIPE,
                 text=True,
                 env=env,
-                cwd=self.git_root,
+                cwd=effective_cwd,
                 bufsize=1,
                 universal_newlines=True
             )
@@ -285,4 +289,3 @@ class MCPEvaluator:
         except Exception as e:
             print(f"An error occurred: {e}")
             return "", str(e), 1, 0
-
