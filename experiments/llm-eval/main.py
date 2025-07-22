@@ -21,43 +21,64 @@ import argparse
 import yaml
 from evaluator import MCPEvaluator
 
+def setup_mcp_config(config_data, config_file_path="~/.gemini/settings.json"):
+    """
+    Writes MCP server configuration to the Gemini CLI settings.json.
+    """
+    expanded_path = os.path.expanduser(config_file_path)
+    os.makedirs(os.path.dirname(expanded_path), exist_ok=True)
+    with open(expanded_path, 'w') as f:
+        json.dump(config_data, f, indent=4)
+    print(f"MCP configuration written to: {expanded_path}")
+
 def discover_tasks(tasks_dir="tasks", specific_task=None):
     """
-    Discovers test cases from subdirectories in the tasks directory.
+    Discovers test cases from immediate subdirectories in the tasks directory.
     """
     test_cases = []
-    for root, dirs, files in os.walk(tasks_dir):
-        if "task.yaml" in files:
-            task_name = os.path.basename(root)
-            if specific_task and task_name != specific_task:
-                continue
-            task_path = os.path.join(root, "task.yaml")
-            with open(task_path, 'r') as f:
-                try:
-                    task_data = yaml.safe_load(f)
-                    
-                    # Ensure script is a list
-                    script = task_data.get("script", [])
-                    if not isinstance(script, list):
-                        script = [script]
+    try:
+        with os.scandir(tasks_dir) as entries:
+            for entry in entries:
+                if not entry.is_dir():
+                    continue
 
-                    # The prompt is the first item in the script list
-                    prompt = script[0].get("prompt") if script and "prompt" in script[0] else None
+                task_dir = entry.path
+                task_name = entry.name
 
-                    if not prompt:
-                        print(f"Warning: No prompt found for task {task_name}, skipping.")
-                        continue
-                    
-                    test_cases.append({
-                        "name": task_name,
-                        "prompt": prompt,
-                        "verifier_script": task_data.get("verifier"),
-                        "cleanup_script": task_data.get("cleanup"),
-                        "setup_script": "setup.sh" if "setup.sh" in files else None,
-                        "task_dir": root,
-                    })
-                except yaml.YAMLError as e:
-                    print(f"Error parsing YAML in {task_path}: {e}")
+                if specific_task and task_name != specific_task:
+                    continue
+
+                task_yaml_path = os.path.join(task_dir, "task.yaml")
+                setup_script_path = os.path.join(task_dir, "setup.sh")
+
+                if os.path.isfile(task_yaml_path):
+                    with open(task_yaml_path, 'r') as f:
+                        try:
+                            task_data = yaml.safe_load(f)
+                            
+                            script = task_data.get("script", [])
+                            if not isinstance(script, list):
+                                script = [script]
+
+                            prompt = script[0].get("prompt") if script and "prompt" in script[0] else None
+
+                            if not prompt:
+                                print(f"Warning: No prompt found for task {task_name}, skipping.")
+                                continue
+                            
+                            test_cases.append({
+                                "name": task_name,
+                                "prompt": prompt,
+                                "verifier_script": task_data.get("verifier"),
+                                "cleanup_script": task_data.get("cleanup"),
+                                "setup_script": "setup.sh" if os.path.isfile(setup_script_path) else None,
+                                "task_dir": task_dir,
+                            })
+                        except yaml.YAMLError as e:
+                            print(f"Error parsing YAML in {task_yaml_path}: {e}")
+    except FileNotFoundError:
+        print(f"Warning: Tasks directory not found at '{tasks_dir}'")
+
     return test_cases
 
 
@@ -104,6 +125,11 @@ if __name__ == "__main__":
     # Create the parser
     parser = argparse.ArgumentParser(prog="eval")
     parser.add_argument(
+        '--config-path', '-c',
+        type=str,
+        help='Path to the .gemini/settings.json configuration file, if not configured, will look at the curent .gemini/settings.json'
+    )
+    parser.add_argument(
         '--tasks-dir', '-t',
         type=str,
         default="tasks",
@@ -114,9 +140,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Discover test cases from the tasks directory
-    test_cases = discover_tasks(args.tasks_dir, args.task)
+    tasks_dir = os.path.expanduser(args.tasks_dir)
+    test_cases = discover_tasks(tasks_dir, args.task)
     if not test_cases:
-        print(f"No test cases found in the '{args.tasks_dir}' directory. Exiting.")
+        print(f"No test cases found in the '{tasks_dir}' directory. Exiting.")
         sys.exit(0)
 
     # Create or clear the report file
@@ -138,6 +165,12 @@ if __name__ == "__main__":
     else:
         # --- Run with MCP Enabled ---
         print("--- Starting Evaluation with MCP Enabled ---")
+        if args.config_path:
+            config_path = os.path.expanduser(args.config_path)
+            with open(config_path, 'r') as f:
+                mcp_config = json.load(f)
+            setup_mcp_config(mcp_config)
+        
         mcp_evaluator = MCPEvaluator(use_mcp=True)
         for test in test_cases:
             mcp_evaluator.run_test_case(**test)
@@ -149,6 +182,7 @@ if __name__ == "__main__":
         # --- Run with MCP Disabled and Compare ---
         if not args.task:
             print("\n--- Starting Evaluation with MCP Disabled ---")
+            setup_mcp_config({}) # Empty config disables MCP
             no_mcp_evaluator = MCPEvaluator(use_mcp=False)
             for test in test_cases:
                 no_mcp_evaluator.run_test_case(**test)

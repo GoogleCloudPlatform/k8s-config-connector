@@ -39,14 +39,17 @@ class MCPEvaluator:
             print("Warning: Not a git repository. Running gemini command from the current directory.")
             return "."
 
-    def _run_script(self, script_path, cwd):
+    def _run_script(self, script_path, cwd, args=None):
         if not script_path or not os.path.exists(os.path.join(cwd, script_path)):
             return True, f"Script {script_path} not found, skipping.", ""
         
         print(f"--- Running script: {script_path} in {cwd} ---")
         try:
+            command = ["bash", script_path]
+            if args:
+                command.extend(args)
             process = subprocess.run(
-                ["bash", script_path],
+                command,
                 capture_output=True,
                 text=True,
                 check=False,
@@ -100,7 +103,7 @@ class MCPEvaluator:
         notes = []
 
         if verifier_script:
-            success, verifier_stdout, verifier_stderr = self._run_script(verifier_script, effective_cwd)
+            success, verifier_stdout, verifier_stderr = self._run_script(verifier_script, task_dir)
             if success:
                 test_passed = True
             else:
@@ -120,7 +123,14 @@ class MCPEvaluator:
         
         # Cleanup
         if cleanup_script:
-            cleanup_success, cleanup_stdout, cleanup_stderr = self._run_script(cleanup_script, effective_cwd)
+            timestamp = int(time.time())
+            mcp_mode = "mcp" if self.use_mcp else "no-mcp"
+            dest_dir_name = f"{name}-{mcp_mode}-{timestamp}"
+            dest_path = os.path.join(self.git_root, ".build", dest_dir_name)
+            
+            repo_dir_name = os.path.basename(effective_cwd)
+            
+            cleanup_success, cleanup_stdout, cleanup_stderr = self._run_script(cleanup_script, task_dir, args=[repo_dir_name, dest_path])
             if not cleanup_success:
                 notes.append(f"Cleanup script failed: {cleanup_script}")
                 notes.append(f"Cleanup stdout: {cleanup_stdout}")
