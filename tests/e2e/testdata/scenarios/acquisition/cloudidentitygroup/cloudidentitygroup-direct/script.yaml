@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Create a CloudIdentityGroup resource.
+# Note that according to the documentation, leave `spec.resourceID` field unset in the YAML to create a new resource.
 apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
 kind: CloudIdentityGroup
 metadata:
@@ -28,7 +30,8 @@ spec:
     cloudidentity.googleapis.com/groups.discussion_forum: ""
 
 ---
-
+# Abandon and acquire the resource by adding `spec.resourceID` in the YAML.
+# With direct reconciliation we no longer write the server generated ID to spec.resourceID, so the value ${TEST_GENERATED_ID} is retrieved from `status.externalRef` in _object00.yaml.
 TEST: ABANDON-AND-REACQUIRE-WITH-GENERATED-ID
 apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
 kind: CloudIdentityGroup
