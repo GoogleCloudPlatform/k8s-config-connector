@@ -35,5 +35,5 @@ E2E_KUBE_TARGET=envtest \
 E2E_GCP_TARGET=mock \
 KCC_USE_DIRECT_RECONCILERS="ComputeForwardingRule,SpannerInstance" \
 KCC_ENG_GROUP_EMAIL="${MOCK_GROUP_EMAIL}" \
-SKIP_TEST_APIGROUP="alloydb.cnrm.cloud.google.com,apigee.cnrm.cloud.google.com,bigquery.cnrm.cloud.google.com,compute.cnrm.cloud.google.com,storage.cnrm.cloud.google.com,iam.cnrm.cloud.google.com" \
+SKIP_TEST_APIGROUP="alloydb.cnrm.cloud.google.com,apigee.cnrm.cloud.google.com,bigquery.cnrm.cloud.google.com,compute.cnrm.cloud.google.com,storage.cnrm.cloud.google.com,iam.cnrm.cloud.google.com,apigateway.cnrm.cloud.google.com,cloudbuild.cnrm.cloud.google.com,dataflow.cnrm.cloud.google.com,dataproc.cnrm.cloud.google.com" \
   go test -test.count=1 -timeout 1h30m -v ./tests/e2e -run TestAllInSeries/samples
