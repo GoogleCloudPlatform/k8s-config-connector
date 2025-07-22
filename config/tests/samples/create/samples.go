@@ -392,7 +392,34 @@ func ListMatchingSamples(t *testing.T, regex *regexp.Regexp) []SampleKey {
 				sampleKey := samples[filepath.Dir(path)]
 				sampleKey.Name = sampleName
 				sampleKey.SourceDir = filepath.Dir(path)
-				sampleKey.files = append(sampleKey.files, path)
+
+				// Heuristic to find the "main" resource for the sample, which we define as the resource
+				// whose group matches the service name in the path.
+				// We will prepend this to the list of files so that it is created first.
+				shouldPrepend := false
+				b := test.MustReadFile(t, path)
+				yamls := testyaml.SplitYAML(t, b)
+				if len(yamls) > 0 {
+					u := &unstructured.Unstructured{}
+					if err := yaml.Unmarshal(yamls[0], u); err == nil {
+						gvk := u.GroupVersionKind()
+						apiGroup := gvk.Group
+
+						if strings.HasSuffix(apiGroup, ".cnrm.cloud.google.com") {
+							service := strings.TrimSuffix(apiGroup, ".cnrm.cloud.google.com")
+							if strings.Contains(path, "/"+service+"/") {
+								shouldPrepend = true
+							}
+						}
+					}
+				}
+
+				if shouldPrepend {
+					sampleKey.files = append([]string{path}, sampleKey.files...)
+				} else {
+					sampleKey.files = append(sampleKey.files, path)
+				}
+
 				samples[filepath.Dir(path)] = sampleKey
 			}
 		}
