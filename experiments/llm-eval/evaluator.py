@@ -21,8 +21,6 @@ import time
 from collections import defaultdict
 import pandas as pd
 import re
-import argparse
-import yaml
 
 STOP_TOKEN="soapoirejwpgoijrepoiqjt"
 class MCPEvaluator:
@@ -293,50 +291,3 @@ class MCPEvaluator:
         except Exception as e:
             print(f"An error occurred: {e}")
             return "", str(e), 1, 0
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="MCP Evaluator")
-    parser.add_argument("--no-mcp", action="store_true", help="Disable MCP for the evaluation")
-    parser.add_argument("--task", help="Run a specific task by name (e.g., APIQuotaAdjusterSettings-promote)")
-    args = parser.parse_args()
-
-    evaluator = MCPEvaluator(use_mcp=not args.no_mcp)
-    tasks_root = os.path.join(evaluator.git_root, 'experiments/llm-eval/tasks')
-
-    task_list = []
-    if args.task:
-        # Find the task
-        for task_type in os.listdir(tasks_root):
-            task_type_dir = os.path.join(tasks_root, task_type)
-            if os.path.isdir(task_type_dir):
-                if args.task in os.listdir(task_type_dir):
-                    task_list.append(os.path.join(task_type_dir, args.task))
-    else:
-        # Run all tasks
-        for task_type in os.listdir(tasks_root):
-            task_type_dir = os.path.join(tasks_root, task_type)
-            if os.path.isdir(task_type_dir):
-                for task_name in os.listdir(task_type_dir):
-                    task_dir = os.path.join(task_type_dir, task_name)
-                    if os.path.isdir(task_dir):
-                        task_list.append(task_dir)
-
-    for task_dir in task_list:
-        task_yaml_path = os.path.join(task_dir, "task.yaml")
-        if os.path.exists(task_yaml_path):
-            with open(task_yaml_path) as f:
-                task_data = yaml.safe_load(f)
-                if task_data and isinstance(task_data.get('script'), list):
-                    for script_item in task_data['script']:
-                        prompt = script_item.get('prompt')
-                        if prompt:
-                            evaluator.run_test_case(
-                                name=os.path.basename(task_dir),
-                                prompt=prompt,
-                                verifier_script=task_data.get('verifier'),
-                                cleanup_script=task_data.get('cleanup'),
-                                setup_script=task_data.get('setup'),
-                                task_dir=task_dir
-                            )
-
-    evaluator.generate_report()
