@@ -21,12 +21,15 @@ import time
 from collections import defaultdict
 import pandas as pd
 import re
+import argparse
+import yaml
 
 STOP_TOKEN="soapoirejwpgoijrepoiqjt"
 class MCPEvaluator:
-    def __init__(self, gemini_cli_path="gemini", mcp_config_path="~/.gemini/settings.json"):
+    def __init__(self, gemini_cli_path="gemini", mcp_config_path="~/.gemini/settings.json", use_mcp=True):
         self.gemini_cli_path = gemini_cli_path
         self.mcp_config_path = mcp_config_path
+        self.use_mcp = use_mcp
         self.test_results = [] # To store detailed results
         self.metrics = defaultdict(float) # For aggregated metrics
         self.git_root = self._get_git_root()
@@ -85,11 +88,12 @@ class MCPEvaluator:
                 }
                 self.test_results.append(result)
                 return
-            effective_cwd = stdout.strip()
+            effective_cwd = os.path.join(task_dir, stdout.strip())
             
         print(f"--- Running LLM: {prompt} ---")
+        command = "/mcp" if self.use_mcp else None
         start_time = time.time()
-        stdout, stderr, returncode, llm_requests = self._run_gemini_command_internal(None, prompt, cwd=effective_cwd)
+        stdout, stderr, returncode, llm_requests = self._run_gemini_command_internal(command, prompt, cwd=effective_cwd)
         end_time = time.time()
         latency = (end_time - start_time) * 1000 # in ms
         print(f"--- LLM response: {stdout} ---")
@@ -289,3 +293,50 @@ class MCPEvaluator:
         except Exception as e:
             print(f"An error occurred: {e}")
             return "", str(e), 1, 0
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="MCP Evaluator")
+    parser.add_argument("--no-mcp", action="store_true", help="Disable MCP for the evaluation")
+    parser.add_argument("--task", help="Run a specific task by name (e.g., APIQuotaAdjusterSettings-promote)")
+    args = parser.parse_args()
+
+    evaluator = MCPEvaluator(use_mcp=not args.no_mcp)
+    tasks_root = os.path.join(evaluator.git_root, 'experiments/llm-eval/tasks')
+
+    task_list = []
+    if args.task:
+        # Find the task
+        for task_type in os.listdir(tasks_root):
+            task_type_dir = os.path.join(tasks_root, task_type)
+            if os.path.isdir(task_type_dir):
+                if args.task in os.listdir(task_type_dir):
+                    task_list.append(os.path.join(task_type_dir, args.task))
+    else:
+        # Run all tasks
+        for task_type in os.listdir(tasks_root):
+            task_type_dir = os.path.join(tasks_root, task_type)
+            if os.path.isdir(task_type_dir):
+                for task_name in os.listdir(task_type_dir):
+                    task_dir = os.path.join(task_type_dir, task_name)
+                    if os.path.isdir(task_dir):
+                        task_list.append(task_dir)
+
+    for task_dir in task_list:
+        task_yaml_path = os.path.join(task_dir, "task.yaml")
+        if os.path.exists(task_yaml_path):
+            with open(task_yaml_path) as f:
+                task_data = yaml.safe_load(f)
+                if task_data and isinstance(task_data.get('script'), list):
+                    for script_item in task_data['script']:
+                        prompt = script_item.get('prompt')
+                        if prompt:
+                            evaluator.run_test_case(
+                                name=os.path.basename(task_dir),
+                                prompt=prompt,
+                                verifier_script=task_data.get('verifier'),
+                                cleanup_script=task_data.get('cleanup'),
+                                setup_script=task_data.get('setup'),
+                                task_dir=task_dir
+                            )
+
+    evaluator.generate_report()
