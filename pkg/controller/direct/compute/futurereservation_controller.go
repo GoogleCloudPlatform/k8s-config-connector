@@ -42,16 +42,16 @@ func init() {
 }
 
 func NewFutureReservationModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &modelFutureReservation{config: *config}, nil
+	return &futureReservationModel{config: *config}, nil
 }
 
-var _ directbase.Model = &modelFutureReservation{}
+var _ directbase.Model = &futureReservationModel{}
 
-type modelFutureReservation struct {
+type futureReservationModel struct {
 	config config.ControllerConfig
 }
 
-func (m *modelFutureReservation) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *futureReservationModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.FutureReservation{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -79,7 +79,7 @@ func (m *modelFutureReservation) AdapterForObject(ctx context.Context, reader cl
 	}, nil
 }
 
-func (m *modelFutureReservation) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+func (m *futureReservationModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	// TODO: Support URLs
 	return nil, nil
 }
