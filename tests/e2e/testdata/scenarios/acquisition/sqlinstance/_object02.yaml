@@ -1,0 +1,25 @@
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
+    cnrm.cloud.google.com/project-id: ${projectId}
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  name: acquisition-sqlinstance-${uniqueId}
+  namespace: ${projectId}
+spec:
+  databaseVersion: POSTGRES_15
+  region: us-central1
+  settings:
+    tier: db-f1-micro
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 1
