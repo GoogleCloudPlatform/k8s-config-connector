@@ -571,6 +571,23 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 					return
 				}
 
+				// Skip non-terminal fields. A field is considered non-terminal if it's a struct-like object
+				// (i.e., an object with properties) or an array. Other fields, including primitives and
+				// map-like objects (objects without properties), are considered terminal and will be checked for presence.
+				if field.props != nil {
+					switch field.props.Type {
+					case "object":
+						// Struct-like objects with properties are non-terminal.
+						// Map-like objects without properties are considered terminal.
+						if len(field.props.Properties) > 0 {
+							return
+						}
+					case "array":
+						// Arrays are always non-terminal containers.
+						return
+					}
+				}
+
 				// Any reference field was already handled and handling the children will just double count
 				// Check for `Ref.` or `Refs[].` to ensure it's a reference field,
 				// and avoid field names that include `Ref` (e.g., allowedReferrers in APIKeysKey).
@@ -604,33 +621,6 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 	}
 
 	sort.Strings(errs)
-	// Filter out errors for fields that are also reported for their array equivalent.
-	// For example, if we have an error for "spec.foo" and "spec.foo[]", we only keep the latter.
-	if len(errs) > 0 {
-		filteredErrs := make([]string, 0, len(errs))
-		i := 0
-		for i < len(errs) {
-			addCurrent := true
-			if i+1 < len(errs) {
-				currentErr := errs[i]
-				nextErr := errs[i+1]
-				const suffix = "\" is not set in unstructured objects"
-				prefix := strings.TrimSuffix(currentErr, suffix)
-				if strings.HasPrefix(nextErr, prefix) {
-					diff := strings.TrimPrefix(nextErr, prefix)
-					if strings.Contains(diff, "[]") || strings.Contains(diff, ".") {
-						addCurrent = false
-					}
-				}
-			}
-			if addCurrent {
-				filteredErrs = append(filteredErrs, errs[i])
-			}
-			i++
-		}
-		errs = filteredErrs
-	}
-
 	return errs
 }
 
