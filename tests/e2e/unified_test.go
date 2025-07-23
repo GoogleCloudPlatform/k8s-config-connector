@@ -88,8 +88,34 @@ func TestAllInSeries(t *testing.T) {
 				{
 					dummySample := create.LoadSample(t, sampleKey, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
 					create.MaybeSkip(t, sampleKey.Name, dummySample.Resources)
-					if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
-						t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_APIGROUPS=%s", s)
+
+					var group string
+					if len(dummySample.Resources) > 0 {
+						group = dummySample.Resources[0].GroupVersionKind().Group
+					}
+
+					skipTestReason := ""
+					if group != "" {
+						if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
+							skippedGroups := strings.Split(s, ",")
+							if slice.StringSliceContains(skippedGroups, group) {
+								skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", sampleKey.Name, group, s)
+							}
+						}
+						if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+							onlyGroups := strings.Split(s, ",")
+							if !slice.StringSliceContains(onlyGroups, group) {
+								skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", sampleKey.Name, group, s)
+							}
+						}
+					} else {
+						if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+							t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_APIGROUPS=%s", s)
+						}
+					}
+
+					if skipTestReason != "" {
+						t.Skip(skipTestReason)
 					}
 
 					// Record the CRDs we will use, for faster testing

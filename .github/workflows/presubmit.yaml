@@ -70,7 +70,7 @@ jobs:
           name: unittest_result
           path: unittest_result.json
           retention-days: 5
-  tests-e2e-samples:
+  tests-e2e-samples-unclassified:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -80,13 +80,193 @@ jobs:
           go-version-file: 'go.mod'
       - name: "Run mock samples tests"
         run: |
-          ./scripts/github-actions/tests-e2e-samples
+          ./scripts/github-actions/tests-e2e-samples-unclassified
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
         with:
           name: artifacts-tests-e2e-samples
+          path: /tmp/artifacts/
+  tests-e2e-samples-alloydb:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-samples-alloydb"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-samples-alloydb
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-samples-alloydb
+          path: /tmp/artifacts/
+  tests-e2e-samples-apigee:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-samples-apigee"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-samples-apigee
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-samples-apigee
+          path: /tmp/artifacts/
+  tests-e2e-samples-bigquery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-samples-bigquery"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-samples-bigquery
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-samples-bigquery
+          path: /tmp/artifacts/
+  tests-e2e-samples-compute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-samples-compute"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-samples-compute
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-samples-compute
+          path: /tmp/artifacts/
+  tests-e2e-samples-storage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-samples-storage"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-samples-storage
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-samples-storage
+          path: /tmp/artifacts/
+  tests-e2e-samples-iam:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-samples-iam"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-samples-iam
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-samples-iam
+          path: /tmp/artifacts/
+  tests-e2e-samples-apigateway:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-samples-apigateway"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-samples-apigateway
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-samples-apigateway
+          path: /tmp/artifacts/
+  tests-e2e-samples-cloudbuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-samples-cloudbuild"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-samples-cloudbuild
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-samples-cloudbuild
+          path: /tmp/artifacts/
+  tests-e2e-samples-dataflow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-samples-dataflow"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-samples-dataflow
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-samples-dataflow
+          path: /tmp/artifacts/
+  tests-e2e-samples-dataproc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-samples-dataproc"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-samples-dataproc
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-samples-dataproc
           path: /tmp/artifacts/
   pause-tests:
     runs-on: ubuntu-22.04
