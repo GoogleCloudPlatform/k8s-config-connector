@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeInstance
 metadata:
@@ -23,12 +22,44 @@ spec:
     initializeParams:
       sourceImageRef:
         external: debian-cloud/debian-11
+  networkInterface:
+  - networkRef:
+      external: backupdrbackupplanassociation-dep
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeDisk
+metadata:
+  name: computedisk-dep
+spec:
+  location: us-west1-a
+  imageRef:
+    external: debian-cloud/debian-11
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeImage
+metadata:
+  name: computeimage-dep
+spec:
+  diskRef:
+    name: computedisk-dep
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: "none"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: backupdrbackupplanassociation-dep
+spec:
+  description: network for the project
 ---
 apiVersion: backupdr.cnrm.cloud.google.com/v1alpha1
 kind: BackupDRBackupVault
 metadata:
   name: backupdrbackupplanassociation-dep
 spec:
+  projectRef:
+    external: "projects/${PROJECT_ID?}"
   location: us-central1
   backupMinimumEnforcedRetentionDuration: "86400s"
 ---
@@ -37,6 +68,8 @@ kind: BackupDRBackupPlan
 metadata:
   name: backupdrbackupplanassociation-dep
 spec:
+  projectRef:
+    external: "projects/${PROJECT_ID?}"
   location: us-central1
   resourceType: "compute.googleapis.com/Instance"
   backupVaultRef:
