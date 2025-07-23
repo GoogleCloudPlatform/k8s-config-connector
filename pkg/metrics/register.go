@@ -46,8 +46,8 @@ func RegisterPrometheusExporter(addr string) error {
 	// Run the Prometheus exporter as a scrape endpoint.
 	go func() {
 		mux := http.NewServeMux()
-		mux.Handle("/metrics", pe)                              // OpenCensus
-		mux.Handle("/experimental-metrics", promhttp.Handler()) // Prometheus Go client
+		mux.Handle("/metrics", pe)                      // OpenCensus
+		mux.Handle("/prom-metrics", promhttp.Handler()) // Prometheus Go client
 		if err := http.ListenAndServe(addr, mux); err != nil {
 			logging.Fatal(err, "failed to run Prometheus scrape endpoint")
 		}

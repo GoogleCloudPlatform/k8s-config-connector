@@ -22,7 +22,7 @@ import (
 	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"golang.org/x/oauth2"
 	"google.golang.org/api/option"
-	htransport "google.golang.org/api/transport/http"
+	ghttptransport "google.golang.org/api/transport/http"
 	"google.golang.org/grpc"
 )
 
@@ -151,19 +151,17 @@ func (c *ControllerConfig) NewAuthenticatedHTTPClient(ctx context.Context) (*htt
 		return nil, fmt.Errorf("error creating REST client options: %w", err)
 	}
 	if c.HTTPClient != nil {
-		c, _, err := htransport.NewClient(ctx, opts...)
+		c, _, err := ghttptransport.NewClient(ctx, opts...)
 		return c, err
 	}
 
-	// Create an authenticated transport using htransport
 	baseTransport := http.DefaultTransport
 	if c.EnableMetricsTransport {
-		// Wrap the base transport with metrics transport
 		baseTransport = metricstransport.NewMetricsTransport(baseTransport)
 	}
 
 	// Create an authenticated transport
-	authTransport, err := htransport.NewTransport(ctx, baseTransport, opts...)
+	authTransport, err := ghttptransport.NewTransport(ctx, baseTransport, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("error creating authenticated transport: %w", err)
 	}

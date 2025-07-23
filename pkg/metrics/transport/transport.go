@@ -18,24 +18,20 @@ import (
 	"context"
 	"net/http"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
-
-	"k8s.io/klog/v2"
 )
 
 var (
 	/*
 		Proof that all labels are bound:
-		- method: known set of HTTP methods: GET, PUT, etc.
-		- service: restricted by extractService
-		- status_code: known set of HTTP status codes: 2xx, 3xx, etc.
+		- method: known set of HTTP methods: GET, PUT, POST, DELETE, LIST or OTHER_METHOD.
+		- status_code: known set of HTTP status codes: 2xx, 3xx, 4xx, 5xx or OTHER_STATUS.
 		- controller_name: known set of controller names, manually configured.
 	*/
-	APILabels = []string{"method", "service", "status_code", "controller_name"}
+	APILabels = []string{"method", "status_code", "controller_name"}
 
 	gcpRequestsTotal = promauto.NewCounterVec(
 		prometheus.CounterOpts{
@@ -88,16 +84,15 @@ func NewMetricsTransport(inner http.RoundTripper) *MetricsTransport {
 }
 
 func (t *MetricsTransport) RoundTrip(req *http.Request) (*http.Response, error) {
-	service := extractService(req.URL.String())
-
 	start := time.Now()
 	resp, reqErr := t.inner.RoundTrip(req)
 	duration := time.Since(start).Seconds()
 
-	statusCode := "0" // good to have a default value here
+	code := 0
 	if resp != nil {
-		statusCode = strconv.Itoa(resp.StatusCode)
+		code = resp.StatusCode
 	}
+	statusCode := toStatusCodeFamily(code)
 	controllerName := "unknownControllerName"
 	if v := req.Context().Value(controllerNameContextKey); v != nil {
 		if s, ok := v.(string); ok {
@@ -105,13 +100,14 @@ func (t *MetricsTransport) RoundTrip(req *http.Request) (*http.Response, error) 
 		}
 	}
 
+	httpMethod := toHttpMethodFamily(req.Method)
 	// record api request metrics
-	gcpRequestsTotal.WithLabelValues(req.Method, service, statusCode, controllerName).Inc()
-	gcpRequestDuration.WithLabelValues(req.Method, service, statusCode, controllerName).Observe(duration)
+	gcpRequestsTotal.WithLabelValues(httpMethod, statusCode, controllerName).Inc()
+	gcpRequestDuration.WithLabelValues(req.Method, statusCode, controllerName).Observe(duration)
 
 	// Record errors
 	if reqErr != nil {
-		gcpErrorsTotal.WithLabelValues(req.Method, service, statusCode).Inc()
+		gcpErrorsTotal.WithLabelValues(req.Method, statusCode, controllerName).Inc()
 
 		// no need to log this error as callers will deal with it
 	}
@@ -119,45 +115,27 @@ func (t *MetricsTransport) RoundTrip(req *http.Request) (*http.Response, error) 
 	return resp, reqErr
 }
 
-// extractService extracts the GCP service from a URL into a well known, bounded set of values.
-func extractService(url string) string {
-	/*
-		It is trivial to split by the "." separtor and grab the first part of the URL and call it a day.
-
-		However, we want to protect against XYZ.googleapis.com as an attack vector to blow up the cardinality
-		of prometheus metrics. So we "hardcode" the values here as a way to bound the set of allowable values.
-	*/
-	switch {
-	case strings.Contains(url, "compute.googleapis.com"):
-		return "compute"
-	case strings.Contains(url, "storage.googleapis.com"):
-		return "storage"
-	case strings.Contains(url, "bigquery.googleapis.com"):
-		return "bigquery"
-	case strings.Contains(url, "datacatalog.googleapis.com"):
-		return "datacatalog"
-	case strings.Contains(url, "logging.googleapis.com"):
-		return "logging"
-	case strings.Contains(url, "monitoring.googleapis.com"):
-		return "monitoring"
-	case strings.Contains(url, "iam.googleapis.com"):
-		return "iam"
-	case strings.Contains(url, "kms.googleapis.com"):
-		return "kms"
-	case strings.Contains(url, "pubsub.googleapis.com"):
-		return "pubsub"
-	case strings.Contains(url, "sqladmin.googleapis.com"):
-		return "sqladmin"
-	case strings.Contains(url, "container.googleapis.com"):
-		return "container"
-	case strings.Contains(url, "cloudresourcemanager.googleapis.com"):
-		return "cloudresourcemanager"
-	case strings.Contains(url, "dns.googleapis.com"):
-		return "dns"
-	case strings.Contains(url, "dataproc.googleapis.com"):
-		return "dataproc"
+// toStatusCodeFamily converts an HTTP status code to a string like "2xx", "3xx", "4xx", "5xx", or "OTHER_STATUS".
+func toStatusCodeFamily(statusCode int) string {
+	if statusCode >= 100 && statusCode < 600 {
+		return strconv.Itoa(statusCode/100) + "xx"
 	}
+	return "OTHER_STATUS"
+}
 
-	klog.Warningf("Unknown GCP service in URL: %s", url)
-	return "unknown"
+func toHttpMethodFamily(method string) string {
+	switch method {
+	case "GET":
+		return "GET"
+	case "PUT":
+		return "PUT"
+	case "POST":
+		return "POST"
+	case "DELETE":
+		return "DELETE"
+	case "LIST":
+		return "LIST"
+	default:
+		return "OTHER_METHOD"
+	}
 }
