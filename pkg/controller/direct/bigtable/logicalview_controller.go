@@ -204,9 +204,9 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if !reflect.DeepEqual(a.desired.Spec.Query, a.actual.Query) {
 		updateMask.Paths = append(updateMask.Paths, "query")
 	}
-	// if !reflect.DeepEqual(a.desired.Spec.DeletionProtection, a.actual.DeletionProtection) {
-	// 	updateMask.Paths = append(updateMask.Paths, "deletion_protection")
-	// }
+	if !reflect.DeepEqual(a.desired.Spec.DeletionProtection, a.actual.DeletionProtection) {
+		updateMask.Paths = append(updateMask.Paths, "deletion_protection")
+	}
 
 	if len(updateMask.Paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)

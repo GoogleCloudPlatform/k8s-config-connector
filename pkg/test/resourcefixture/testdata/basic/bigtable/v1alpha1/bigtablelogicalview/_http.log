@@ -301,7 +301,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateLogicalView
     "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
     "query": "SELECT 1 AS value"
   },
-  "updateMask": "query"
+  "updateMask": "query,deletionProtection"
 }
 
 OK
@@ -343,7 +343,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateLogicalView
     "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
     "query": "SELECT 2 AS new_value"
   },
-  "updateMask": "query"
+  "updateMask": "query,deletionProtection"
 }
 
 OK
