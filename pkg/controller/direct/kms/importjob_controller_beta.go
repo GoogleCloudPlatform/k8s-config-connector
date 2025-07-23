@@ -16,7 +16,7 @@
 // proto.service: google.cloud.kms.v1.KeyManagementService
 // proto.message: google.cloud.kms.v1.ImportJob
 // crd.type: KMSImportJob
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package kms
 
@@ -33,7 +33,7 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -42,19 +42,21 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
 
-
-
-func NewImportJobModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &importJobModel{config: *config}, nil
+func init() {
+	registry.RegisterModel(krm.KMSImportJobGVK, NewImportJobModelV1Beta1)
 }
 
-var _ directbase.Model = &importJobModel{}
+func NewImportJobModelV1Beta1(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &importJobModelV1Beta1V1Beta1{config: *config}, nil
+}
 
-type importJobModel struct {
+var _ directbase.Model = &importJobModelV1Beta1{}
+
+type importJobModelV1Beta1 struct {
 	config config.ControllerConfig
 }
 
-func (m *importJobModel) client(ctx context.Context, projectID string) (*kms.KeyManagementClient, error) {
+func (m *importJobModelV1Beta1) client(ctx context.Context, projectID string) (*kms.KeyManagementClient, error) {
 	var opts []option.ClientOption
 
 	config := m.config
@@ -72,7 +74,7 @@ func (m *importJobModel) client(ctx context.Context, projectID string) (*kms.Key
 	return gcpClient, err
 }
 
-func (m *importJobModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *importJobModelV1Beta1) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.KMSImportJob{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -88,7 +90,7 @@ func (m *importJobModel) AdapterForObject(ctx context.Context, reader client.Rea
 		return nil, err
 	}
 
-	return &importJobAdapter{
+	return &importJobAdapterV1Beta1{
 		gcpClient: gcpClient,
 		id:        id,
 		desired:   obj,
@@ -96,11 +98,11 @@ func (m *importJobModel) AdapterForObject(ctx context.Context, reader client.Rea
 	}, nil
 }
 
-func (m *importJobModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+func (m *importJobModelV1Beta1) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	return nil, nil
 }
 
-type importJobAdapter struct {
+type importJobAdapterV1Beta1 struct {
 	gcpClient *kms.KeyManagementClient
 	id        *krm.ImportJobIdentity
 	desired   *krm.KMSImportJob
@@ -108,13 +110,13 @@ type importJobAdapter struct {
 	reader    client.Reader
 }
 
-var _ directbase.Adapter = &importJobAdapter{}
+var _ directbase.Adapter = &importJobAdapterV1Beta1{}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
 // Return false means the object is not found. This triggers Adapter `Create` call.
 // Return a non-nil error requeues the requests.
-func (a *importJobAdapter) Find(ctx context.Context) (bool, error) {
+func (a *importJobAdapterV1Beta1) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting kms importjob", "name", a.id)
 
@@ -131,7 +133,7 @@ func (a *importJobAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func (a *importJobAdapter) normalizeReferences(ctx context.Context) error {
+func (a *importJobAdapterV1Beta1) normalizeReferences(ctx context.Context) error {
 	if a.desired.Spec.KMSKeyRingRef != nil {
 		if _, err := refs.ResolveKMSKeyRingRef(ctx, a.reader, a.desired, a.desired.Spec.KMSKeyRingRef); err != nil {
 			return err
@@ -141,7 +143,7 @@ func (a *importJobAdapter) normalizeReferences(ctx context.Context) error {
 }
 
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
-func (a *importJobAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+func (a *importJobAdapterV1Beta1) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating kms importjob", "name", a.id)
 	mapCtx := &direct.MapContext{}
@@ -177,7 +179,7 @@ func (a *importJobAdapter) Create(ctx context.Context, createOp *directbase.Crea
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
-func (a *importJobAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+func (a *importJobAdapterV1Beta1) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating KMSImportJob", "name", a.id)
 	mapCtx := &direct.MapContext{}
@@ -213,7 +215,7 @@ func (a *importJobAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 }
 
 // Export implements the Adapter interface.
-func (a *importJobAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+func (a *importJobAdapterV1Beta1) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	log := klog.FromContext(ctx)
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
@@ -240,7 +242,7 @@ func (a *importJobAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 }
 
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
-func (a *importJobAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+func (a *importJobAdapterV1Beta1) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.Info("No-op Delete for import job", "name", a.id.String())
 	// KMS API does not support deleting an import job. An import job expires after three days.
