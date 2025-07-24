@@ -157,7 +157,7 @@ type InstanceIpConfiguration struct {
 	// +optional
 	EnablePrivatePathForGoogleCloudServices *bool `json:"enablePrivatePathForGoogleCloudServices,omitempty"`
 
-	/* Whether this Cloud SQL instance should be assigned a public IPV4 address. At least ipv4_enabled must be enabled or a private_network must be configured. */
+	/* Whether this Cloud SQL instance should be assigned a public IPV4 address. Defaults to true. */
 	// +optional
 	Ipv4Enabled *bool `json:"ipv4Enabled,omitempty"`
 
@@ -171,7 +171,10 @@ type InstanceIpConfiguration struct {
 	// +optional
 	RequireSsl *bool `json:"requireSsl,omitempty"`
 
-	/* Specify how SSL connection should be enforced in DB connections. This field provides more SSL enforcment options compared to requireSsl. To change this field, also set the correspoding value in requireSsl if it has been set. */
+	/* Specify how SSL connection should be enforced in DB connections.
+	Defaults to TRUSTED_CLIENT_CERTIFICATE_REQUIRED (MySQL/Postgres + RequireSsl=true),
+	ENCRYPTED_ONLY (SQL Server + RequireSsl=true),
+	or ALLOW_UNENCRYPTED_AND_ENCRYPTED otherwise. */
 	// +optional
 	SslMode *string `json:"sslMode,omitempty"`
 }
@@ -286,7 +289,7 @@ type InstanceReplicaConfiguration struct {
 }
 
 type InstanceSettings struct {
-	/* This specifies when the instance should be active. Can be either ALWAYS, NEVER or ON_DEMAND. */
+	/* This specifies when the instance should be active. Can be either ALWAYS, NEVER or ON_DEMAND. Defaults to ALWAYS. */
 	// +optional
 	ActivationPolicy *string `json:"activationPolicy,omitempty"`
 
@@ -297,7 +300,7 @@ type InstanceSettings struct {
 	AdvancedMachineFeatures *InstanceAdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
 
 	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
-	Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
+	Specifying this field has no-ops; it's recommended to remove this field from your configuration. If unspecified, defaults to an empty list. */
 	// +optional
 	AuthorizedGaeApplications []string `json:"authorizedGaeApplications,omitempty"`
 
@@ -317,7 +320,7 @@ type InstanceSettings struct {
 	// +optional
 	Collation *string `json:"collation,omitempty"`
 
-	/* Specifies if connections must use Cloud SQL connectors. */
+	/* Specifies if connections must use Cloud SQL connectors. Defaults to NOT_REQUIRED. */
 	// +optional
 	ConnectorEnforcement *string `json:"connectorEnforcement,omitempty"`
 
@@ -356,7 +359,7 @@ type InstanceSettings struct {
 	// +optional
 	DiskType *string `json:"diskType,omitempty"`
 
-	/* The edition of the instance, can be ENTERPRISE or ENTERPRISE_PLUS. */
+	/* The edition of the instance, can be ENTERPRISE or ENTERPRISE_PLUS. Defaults to ENTERPRISE. */
 	// +optional
 	Edition *string `json:"edition,omitempty"`
 
@@ -377,12 +380,12 @@ type InstanceSettings struct {
 	// +optional
 	PasswordValidationPolicy *InstancePasswordValidationPolicy `json:"passwordValidationPolicy,omitempty"`
 
-	/* Pricing plan for this instance, can only be PER_USE. */
+	/* Pricing plan for this instance, can only be PER_USE. Defaults to PER_USE. */
 	// +optional
 	PricingPlan *string `json:"pricingPlan,omitempty"`
 
 	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
-	Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
+	Specifying this field has no-ops; it's recommended to remove this field from your configuration. Defaults to SYNCHRONOUS. */
 	// +optional
 	ReplicationType *string `json:"replicationType,omitempty"`
 
@@ -453,7 +456,7 @@ type SQLInstanceSpec struct {
 	// +optional
 	InstanceType *string `json:"instanceType,omitempty"`
 
-	/* Maintenance version. */
+	/* Maintenance version. If unspecified, defaults to the current value from the actual GCP instance. */
 	// +optional
 	MaintenanceVersion *string `json:"maintenanceVersion,omitempty"`
 

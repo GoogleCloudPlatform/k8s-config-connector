@@ -156,7 +156,8 @@ spec:
                   'CLOUD_SQL_INSTANCE', 'ON_PREMISES_INSTANCE' and 'READ_REPLICA_INSTANCE'.
                 type: string
               maintenanceVersion:
-                description: Maintenance version.
+                description: Maintenance version. If unspecified, defaults to the
+                  current value from the actual GCP instance.
                 type: string
               masterInstanceRef:
                 oneOf:
@@ -306,7 +307,7 @@ spec:
                 properties:
                   activationPolicy:
                     description: This specifies when the instance should be active.
-                      Can be either ALWAYS, NEVER or ON_DEMAND.
+                      Can be either ALWAYS, NEVER or ON_DEMAND. Defaults to ALWAYS.
                     type: string
                   activeDirectoryConfig:
                     properties:
@@ -331,7 +332,8 @@ spec:
                       deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice
                       for information on how to upgrade to Second Generation instances.
                       Specifying this field has no-ops; it's recommended to remove
-                      this field from your configuration.
+                      this field from your configuration. If unspecified, defaults
+                      to an empty list.
                     items:
                       type: string
                     type: array
@@ -387,6 +389,7 @@ spec:
                     type: string
                   connectorEnforcement:
                     description: Specifies if connections must use Cloud SQL connectors.
+                      Defaults to NOT_REQUIRED.
                     type: string
                   crashSafeReplication:
                     description: DEPRECATED. This property is only applicable to First
@@ -465,7 +468,7 @@ spec:
                     type: string
                   edition:
                     description: The edition of the instance, can be ENTERPRISE or
-                      ENTERPRISE_PLUS.
+                      ENTERPRISE_PLUS. Defaults to ENTERPRISE.
                     type: string
                   insightsConfig:
                     description: Configuration of Query Insights.
@@ -524,8 +527,7 @@ spec:
                         type: boolean
                       ipv4Enabled:
                         description: Whether this Cloud SQL instance should be assigned
-                          a public IPV4 address. At least ipv4_enabled must be enabled
-                          or a private_network must be configured.
+                          a public IPV4 address. Defaults to true.
                         type: boolean
                       privateNetworkRef:
                         oneOf:
@@ -579,10 +581,10 @@ spec:
                         type: boolean
                       sslMode:
                         description: Specify how SSL connection should be enforced
-                          in DB connections. This field provides more SSL enforcment
-                          options compared to requireSsl. To change this field, also
-                          set the correspoding value in requireSsl if it has been
-                          set.
+                          in DB connections. Defaults to TRUSTED_CLIENT_CERTIFICATE_REQUIRED
+                          (MySQL/Postgres + RequireSsl=true), ENCRYPTED_ONLY (SQL
+                          Server + RequireSsl=true), or ALLOW_UNENCRYPTED_AND_ENCRYPTED
+                          otherwise.
                         type: string
                     type: object
                   locationPreference:
@@ -643,6 +645,7 @@ spec:
                     type: object
                   pricingPlan:
                     description: Pricing plan for this instance, can only be PER_USE.
+                      Defaults to PER_USE.
                     type: string
                   replicationType:
                     description: DEPRECATED. This property is only applicable to First
@@ -650,7 +653,7 @@ spec:
                       deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice
                       for information on how to upgrade to Second Generation instances.
                       Specifying this field has no-ops; it's recommended to remove
-                      this field from your configuration.
+                      this field from your configuration. Defaults to SYNCHRONOUS.
                     type: string
                   sqlServerAuditConfig:
                     properties:
