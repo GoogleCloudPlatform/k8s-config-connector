@@ -24,13 +24,18 @@ import re
 
 STOP_TOKEN="soapoirejwpgoijrepoiqjt"
 class MCPEvaluator:
-    def __init__(self, gemini_cli_path="gemini", mcp_config_path="~/.gemini/settings.json", use_mcp=True):
+    def __init__(self, gemini_cli_path="gemini", mcp_config_path="~/.gemini/settings.json", use_mcp=True, log_path=None):
         self.gemini_cli_path = gemini_cli_path
         self.mcp_config_path = os.path.expanduser(mcp_config_path)
         self.use_mcp = use_mcp
+        self.log_path = log_path
         self.test_results = [] # To store detailed results
         self.metrics = defaultdict(float) # For aggregated metrics
         self.git_root = self._get_git_root()
+        if self.log_path:
+            # Clear the log file at the beginning of the run
+            with open(self.log_path, 'w') as f:
+                f.write("--- Evaluation Log ---\n\n")
 
     def setup_mcp_config(self, config_data=None):
         """
@@ -114,6 +119,15 @@ class MCPEvaluator:
         end_time = time.time()
         latency = (end_time - start_time) * 1000 # in ms
         print(f"--- LLM response: {stdout} ---")
+
+        if self.log_path:
+            with open(self.log_path, 'a') as f:
+                f.write(f"--- Test: {name} ---\n")
+                f.write("--- STDOUT ---\n")
+                f.write(stdout)
+                f.write("\n--- STDERR ---\n")
+                f.write(stderr)
+                f.write("\n--- END TEST ---\n\n")
 
         test_passed = False
         notes = []

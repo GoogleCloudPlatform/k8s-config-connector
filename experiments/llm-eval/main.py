@@ -131,6 +131,7 @@ if __name__ == "__main__":
     parser.add_argument("--no-mcp", action="store_true", help="Disable MCP for the evaluation")
     parser.add_argument("--task", help="Run a specific task by name (e.g., APIQuotaAdjusterSettings-promote)")
     parser.add_argument("--gemini-cli-path", default="gemini", help="Path to the Gemini CLI executable")
+    parser.add_argument("--log", help="Path to the log file to store stdout and stderr.")
     args = parser.parse_args()
 
     git_root = get_git_root()
@@ -154,7 +155,7 @@ if __name__ == "__main__":
     if args.no_mcp:
         # --- Run with MCP Disabled ---
         print("\n--- Starting Evaluation with MCP Disabled ---")
-        no_mcp_evaluator = MCPEvaluator(gemini_cli_path=args.gemini_cli_path, use_mcp=False)
+        no_mcp_evaluator = MCPEvaluator(gemini_cli_path=args.gemini_cli_path, use_mcp=False, log_path=args.log)
         no_mcp_evaluator.setup_mcp_config()
         for test in test_cases:
             no_mcp_evaluator.run_test_case(**test)
@@ -180,7 +181,7 @@ if __name__ == "__main__":
                     if "directory" in server and not os.path.isabs(server["directory"]):
                         server["directory"] = os.path.join(git_root, server["directory"])
         
-        mcp_evaluator = MCPEvaluator(gemini_cli_path=args.gemini_cli_path, use_mcp=True)
+        mcp_evaluator = MCPEvaluator(gemini_cli_path=args.gemini_cli_path, use_mcp=True, log_path=args.log)
         mcp_evaluator.setup_mcp_config(mcp_config)
         for test in test_cases:
             mcp_evaluator.run_test_case(**test)
@@ -192,7 +193,7 @@ if __name__ == "__main__":
         # --- Run with MCP Disabled and Compare ---
         if not args.task:
             print("\n--- Starting Evaluation with MCP Disabled ---")
-            no_mcp_evaluator = MCPEvaluator(gemini_cli_path=args.gemini_cli_path, use_mcp=False)
+            no_mcp_evaluator = MCPEvaluator(gemini_cli_path=args.gemini_cli_path, use_mcp=False, log_path=args.log)
             no_mcp_evaluator.setup_mcp_config()
             for test in test_cases:
                 no_mcp_evaluator.run_test_case(**test)
