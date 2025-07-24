@@ -137,6 +137,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("--no-mcp", action="store_true", help="Disable MCP for the evaluation")
     parser.add_argument("--task", help="Run a specific task by name (e.g., APIQuotaAdjusterSettings-promote)")
+    parser.add_argument("--gemini-cli-path", default="gemini", help="Path to the Gemini CLI executable")
     args = parser.parse_args()
 
     # Discover test cases from the tasks directory
@@ -155,7 +156,7 @@ if __name__ == "__main__":
     if args.no_mcp:
         # --- Run with MCP Disabled ---
         print("\n--- Starting Evaluation with MCP Disabled ---")
-        no_mcp_evaluator = MCPEvaluator(use_mcp=False)
+        no_mcp_evaluator = MCPEvaluator(gemini_cli_path=args.gemini_cli_path, use_mcp=False)
         for test in test_cases:
             no_mcp_evaluator.run_test_case(**test)
         no_mcp_results_df = no_mcp_evaluator.generate_report()
@@ -171,7 +172,7 @@ if __name__ == "__main__":
                 mcp_config = json.load(f)
             setup_mcp_config(mcp_config)
         
-        mcp_evaluator = MCPEvaluator(use_mcp=True)
+        mcp_evaluator = MCPEvaluator(gemini_cli_path=args.gemini_cli_path, use_mcp=True)
         for test in test_cases:
             mcp_evaluator.run_test_case(**test)
         mcp_results_df = mcp_evaluator.generate_report()
@@ -183,7 +184,7 @@ if __name__ == "__main__":
         if not args.task:
             print("\n--- Starting Evaluation with MCP Disabled ---")
             setup_mcp_config({}) # Empty config disables MCP
-            no_mcp_evaluator = MCPEvaluator(use_mcp=False)
+            no_mcp_evaluator = MCPEvaluator(gemini_cli_path=args.gemini_cli_path, use_mcp=False)
             for test in test_cases:
                 no_mcp_evaluator.run_test_case(**test)
             no_mcp_results_df = no_mcp_evaluator.generate_report()

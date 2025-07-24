@@ -26,7 +26,7 @@ STOP_TOKEN="soapoirejwpgoijrepoiqjt"
 class MCPEvaluator:
     def __init__(self, gemini_cli_path="gemini", mcp_config_path="~/.gemini/settings.json", use_mcp=True):
         self.gemini_cli_path = gemini_cli_path
-        self.mcp_config_path = mcp_config_path
+        self.mcp_config_path = os.path.expanduser(mcp_config_path)
         self.use_mcp = use_mcp
         self.test_results = [] # To store detailed results
         self.metrics = defaultdict(float) # For aggregated metrics
@@ -222,7 +222,7 @@ class MCPEvaluator:
         Returns:
             tuple: A tuple containing (stdout, stderr, returncode, llm_requests_count).
         """
-        gemini_cli_path = "gemini"  # Assuming 'gemini' is in your PATH
+        gemini_cli_path = self.gemini_cli_path
         prompt=prompt +f"\nOnce you are done. return {STOP_TOKEN}"
         args = [gemini_cli_path, "-d", "-p", prompt, "-y"]  # Use -p for non-interactive mode
 
