@@ -133,7 +133,7 @@ This tool is not good for the case if there are other v1alpha1 resources in the 
 
         self.add_tool(
             name="scenario_promote",
-            description="Gives a prompt to help Gemini promote a KCC resource to a target version. The prompt explains that the promotion happens in 3 steps, promote_api, promote_controller and promote_tests. the gemini should use the corresponding mcp tools, and if the step fails, gemini should fix it based on the response error and the expected output. If the step succeeds, move on to the next step. If the promote_api step fails with compilation errors, use the `promote_api_prompt` to get instructions on how to fix the dependencies.",
+            description="Gives a prompt to help Gemini promote a KCC resource to a target version. This tool reads from `experiments/promoter/results/candidates.json` to find the promotion candidate. The candidate's `apiCoverage` must be true. The prompt explains that the promotion happens in 3 steps, promote_api, promote_controller and promote_tests. the gemini should use the corresponding mcp tools, and if the step fails, gemini should fix it based on the response error and the expected output. If the step succeeds, move on to the next step. If the promote_api step fails with compilation errors, use the `promote_api_prompt` to get instructions on how to fix the dependencies.",
             fn=self.scenario_promote,
             annotations=ToolAnnotations(readOnlyHint=True),
         )
@@ -238,21 +238,38 @@ This tool is not good for the case if there are other v1alpha1 resources in the 
         """
         return instruction
 
-    async def scenario_promote(self, kind: str, targetVersion: str, service: str, apiPath: str, controllerPath: str, testFixturePath: str) -> str:
+    async def scenario_promote(self, kind: str, targetVersion: str) -> str:
         """Constructs a detailed prompt that guides the LLM to promote a KCC resource to a new version.
 
-        This function translates a user's high-level request into a precise, multi-step plan for the LLM.
+        This function finds the promotion candidate from the JSON content in `experiments/promoter/results/candidates.json`.
+        If the candidate's `apiCoverage` is true, it constructs a multi-step plan for the LLM.
         The generated prompt instructs the LLM to use the `promote_api`, `promote_controller`, and `promote_tests` tools sequentially.
         If the `promote_api` step fails with compilation errors, it instructs the LLM to use `promote_api_prompt` to get instructions on how to fix the dependencies.
         
         Args:
             kind: The kind of the resource to promote. For example: `APIQuotaAdjusterSettings`.
             targetVersion: The target version to promote to. For example: `v1beta1`.
-            service: The service name for the resource. For example: `cloudquota`.
-            apiPath: The path to the API definition file. For example: `apis/cloudquota/v1alpha1/quotaadjustersettings_types.go`.
-            controllerPath: The path to the controller file. For example: `pkg/controller/direct/cloudquota/quotaadjustersettings_controller.go`.
-            testFixturePath: The path to the test fixture. For example: `pkg/test/resourcefixture/testdata/basic/cloudquota/v1alpha1/apiquotaadjustersettings`.
         """
+        candidates_json_path = 'experiments/promoter/results/candidates.json'
+        with open(candidates_json_path, 'r') as f:
+            candidates = json.load(f)
+        
+        candidate = next((c for c in candidates if c.get('kind') == kind), None)
+        
+        if not candidate:
+            return f"Error: Could not find a promotion candidate for kind '{kind}'."
+        
+        if not candidate.get('apiCoverage'):
+            return f"Error: The promotion candidate for kind '{kind}' is not ready to be promoted because 'apiCoverage' is not true."
+
+        service = candidate.get('service')
+        apiPath = candidate.get('apiPath')
+        controllerPath = candidate.get('controllerPath')
+        testFixturePath = candidate.get('testFixturePath')
+
+        if not all([service, apiPath, controllerPath, testFixturePath]):
+            return f"Error: The promotion candidate for kind '{kind}' is missing one or more required fields (service, apiPath, controllerPath, testFixturePath)."
+
         # Prepare the instruction for Gemini
         instruction = f"""Promote the KCC resource of kind '{kind}' to version '{targetVersion}'. This is a three-step process.
 
@@ -626,7 +643,7 @@ By following these steps, you can handle complex API promotions with cross-versi
         if "error" in result:
             return result
 
-        return self.promote_controller_validate(controllerPath)
+        return await self.promote_controller_validate(controllerPath)
 
     async def promote_controller_validate(self, controllerPath: str) -> dict:
         """Validates the promotion of a KCC controller to a new version.
