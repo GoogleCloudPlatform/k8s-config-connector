@@ -118,6 +118,13 @@ This tool is not good for the case if there are other v1alpha1 resources in the 
         )
 
         self.add_tool(
+            name="promote_controller_prompt",
+            description="Generates a detailed prompt to guide the user or LLM in promoting a KCC controller, especially when dealing with dependencies between different API versions.",
+            fn=self.promote_controller_prompt,
+            annotations=ToolAnnotations(readOnlyHint=True),
+        )
+
+        self.add_tool(
             name="promote_tests",
             description="Promotes KCC test fixtures to a new version. This involves updating the test fixtures and running validation.",
             fn=self.promote_tests,
@@ -251,7 +258,7 @@ This tool is not good for the case if there are other v1alpha1 resources in the 
 
 1.  **Promote the API**: Use the `promote_api` tool. For example: `promote_api(apiPath='{apiPath}', targetVersion='{targetVersion}')`. If the tool returns an error, analyze the error message. If the error is a compilation error, use the `promote_api_prompt` tool to get instructions on how to fix the dependencies. For example: `promote_api_prompt(apiPath='{apiPath}', targetVersion='{targetVersion}')`. After fixing the dependencies, retry the `promote_api` tool. Once successful, proceed to the next step.
 
-2.  **Promote the Controller**: Use the `promote_controller` tool. For example: `promote_controller(controllerPath='{controllerPath}', apiPath='{apiPath}', targetVersion='{targetVersion}')`. If the tool returns an error, analyze the error message and the expected output to fix the problem and retry. You can use `promote_controller_validate` to validate the controller promotion. Once successful, proceed to the next step.
+2.  **Promote the Controller**: Use the `promote_controller` tool. For example: `promote_controller(controllerPath='{controllerPath}', apiPath='{apiPath}', targetVersion='{targetVersion}')`. If the tool returns an error, analyze the error message. If the error is a compilation error, use the `promote_controller_prompt` tool to get instructions on how to fix the dependencies. For example: `promote_controller_prompt(controllerPath='{controllerPath}', apiPath='{apiPath}', targetVersion='{targetVersion}')`. After fixing the dependencies, use `promote_controller_validate` to validate the controller promotion. Once successful, proceed to the next step.
 
 3.  **Promote the Tests**: Use the `promote_tests` tool. For example: `promote_tests(testFixturePath='{testFixturePath}', kind='{kind}', targetVersion='{targetVersion}')`. If the tool returns an error, analyze the error message and the expected output to fix the problem and retry.
 
@@ -632,6 +639,59 @@ By following these steps, you can handle complex API promotions with cross-versi
             return validation_result
 
         return {"message": "Controller promotion validation successful", "controllerPath": controllerPath}
+
+    async def promote_controller_prompt(self, controllerPath: str, apiPath: str, targetVersion: str) -> str:
+        """
+        Generates a detailed prompt to guide the user or LLM in promoting a KCC controller,
+        especially when dealing with dependencies between different API versions.
+
+        Args:
+            controllerPath: The path to the controller file. For example: `pkg/controller/direct/cloudquota/quotaadjustersettings_controller.go`.
+            apiPath: The path to the API definition file. For example: `apis/cloudquota/v1alpha1/quotaadjustersettings_types.go`.
+            targetVersion: The target version to promote to. For example: `v1beta1`.
+        """
+        source_version = apiPath.split('/')[-2]
+        instruction = f"""
+You are about to promote the controller at `{controllerPath}` to support the API version `{targetVersion}`.
+
+Promoting a controller is complex when the controller's directory contains files that need to reference types from both the new API version (`{targetVersion}`) and the old API version (`{source_version}`).
+
+**Instructions:**
+
+1.  **Initial Promotion Attempt:**
+    Start by running the `promote_controller` tool:
+    `promote_controller(controllerPath='{controllerPath}', apiPath='{apiPath}', targetVersion='{targetVersion}')`
+
+2.  **Analyze Compilation Errors:**
+    If the `promote_controller` tool fails, it's likely due to compilation errors. The compiler will complain about undefined types because the import aliases and type usages are incorrect.
+
+3.  **Fix Import Aliases and Type Usages:**
+    You need to manually edit the Go files in the controller directory (`{os.path.dirname(controllerPath)}`) to resolve these errors. The goal is to have two imports for the service's API:
+    
+    *   The **new version** (`{targetVersion}`) should be aliased to `krm`.
+    *   The **old version** (`{source_version}`) should be aliased to a version-specific name, like `krm{source_version}`.
+
+    **Example:**
+    If you are promoting `ApigeeOrganization`, the imports in a controller file might need to look like this:
+
+    ```go
+    import (
+        krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
+        krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1alpha1"
+    )
+    ```
+
+    Then, you must update all type usages in that file to use the correct alias:
+    *   For types that were promoted (e.g., `ApigeeOrganization`), use the `krm` alias: `krm.ApigeeOrganization`.
+    *   For types that remain in the old version (e.g., `ApigeeEnvironment`), use the version-specific alias: `krmv1alpha1.ApigeeEnvironment`.
+
+4.  **Re-run Validation:**
+    After you have manually corrected the import aliases and type usages in all necessary `.go` files in the directory, run the validation tool repeatedly until all compilation errors are resolved:
+    `promote_controller_validate(controllerPath='{controllerPath}')`
+
+By following these steps, you can correctly refactor the controller to handle mixed API versions.
+"""
+        return instruction
 
     async def promote_tests(self, testFixturePath: str, kind: str, targetVersion: str) -> dict:
         """Promotes KCC test fixtures to a new version.
