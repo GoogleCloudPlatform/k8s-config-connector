@@ -24,9 +24,10 @@ import re
 
 STOP_TOKEN="soapoirejwpgoijrepoiqjt"
 class MCPEvaluator:
-    def __init__(self, gemini_cli_path="gemini", mcp_config_path="~/.gemini/settings.json"):
+    def __init__(self, gemini_cli_path="gemini", mcp_config_path="~/.gemini/settings.json", use_mcp=True):
         self.gemini_cli_path = gemini_cli_path
-        self.mcp_config_path = mcp_config_path
+        self.mcp_config_path = os.path.expanduser(mcp_config_path)
+        self.use_mcp = use_mcp
         self.test_results = [] # To store detailed results
         self.metrics = defaultdict(float) # For aggregated metrics
         self.git_root = self._get_git_root()
@@ -38,14 +39,17 @@ class MCPEvaluator:
             print("Warning: Not a git repository. Running gemini command from the current directory.")
             return "."
 
-    def _run_script(self, script_path, cwd):
+    def _run_script(self, script_path, cwd, args=None):
         if not script_path or not os.path.exists(os.path.join(cwd, script_path)):
             return True, f"Script {script_path} not found, skipping.", ""
         
         print(f"--- Running script: {script_path} in {cwd} ---")
         try:
+            command = ["bash", script_path]
+            if args:
+                command.extend(args)
             process = subprocess.run(
-                ["bash", script_path],
+                command,
                 capture_output=True,
                 text=True,
                 check=False,
@@ -63,6 +67,7 @@ class MCPEvaluator:
         """
         print(f"\n--- Running Test: {name} ---")
 
+        effective_cwd = task_dir
         # Run setup script
         if setup_script:
             success, stdout, stderr = self._run_script(setup_script, task_dir)
@@ -84,10 +89,12 @@ class MCPEvaluator:
                 }
                 self.test_results.append(result)
                 return
+            effective_cwd = os.path.join(task_dir, stdout.strip())
             
         print(f"--- Running LLM: {prompt} ---")
+        command = "/mcp" if self.use_mcp else None
         start_time = time.time()
-        stdout, stderr, returncode, llm_requests = self._run_gemini_command_internal(None, prompt)
+        stdout, stderr, returncode, llm_requests = self._run_gemini_command_internal(command, prompt, cwd=effective_cwd)
         end_time = time.time()
         latency = (end_time - start_time) * 1000 # in ms
         print(f"--- LLM response: {stdout} ---")
@@ -116,7 +123,14 @@ class MCPEvaluator:
         
         # Cleanup
         if cleanup_script:
-            cleanup_success, cleanup_stdout, cleanup_stderr = self._run_script(cleanup_script, task_dir)
+            timestamp = int(time.time())
+            mcp_mode = "mcp" if self.use_mcp else "no-mcp"
+            dest_dir_name = f"{name}-{mcp_mode}-{timestamp}"
+            dest_path = os.path.join(self.git_root, ".build", dest_dir_name)
+            
+            repo_dir_name = os.path.basename(effective_cwd)
+            
+            cleanup_success, cleanup_stdout, cleanup_stderr = self._run_script(cleanup_script, task_dir, args=[repo_dir_name, dest_path])
             if not cleanup_success:
                 notes.append(f"Cleanup script failed: {cleanup_script}")
                 notes.append(f"Cleanup stdout: {cleanup_stdout}")
@@ -195,7 +209,7 @@ class MCPEvaluator:
         )
         return summary
         
-    def _run_gemini_command_internal(self, command, prompt):
+    def _run_gemini_command_internal(self, command, prompt, cwd=None):
         """
         Runs a Gemini CLI command and captures its output and error, printing it in real-time.
         The command is terminated when 'User notified.' is detected in the output.     
@@ -203,11 +217,12 @@ class MCPEvaluator:
         Args:
             command (str): The Gemini CLI command (e.g., "/mcp", "ask").
             prompt (str): The prompt to send to Gemini CLI.
+            cwd (str): The working directory to run the command in.
 
         Returns:
             tuple: A tuple containing (stdout, stderr, returncode, llm_requests_count).
         """
-        gemini_cli_path = "gemini"  # Assuming 'gemini' is in your PATH
+        gemini_cli_path = self.gemini_cli_path
         prompt=prompt +f"\nOnce you are done. return {STOP_TOKEN}"
         args = [gemini_cli_path, "-d", "-p", prompt, "-y"]  # Use -p for non-interactive mode
 
@@ -218,6 +233,7 @@ class MCPEvaluator:
         # mcp is under a different python virtual env.
         env.pop('VIRTUAL_ENV', None)
         
+        effective_cwd = cwd if cwd else self.git_root
         try:
             process = subprocess.Popen(
                 args,
@@ -225,7 +241,7 @@ class MCPEvaluator:
                 stderr=subprocess.PIPE,
                 text=True,
                 env=env,
-                cwd=self.git_root,
+                cwd=effective_cwd,
                 bufsize=1,
                 universal_newlines=True
             )
@@ -285,4 +301,3 @@ class MCPEvaluator:
         except Exception as e:
             print(f"An error occurred: {e}")
             return "", str(e), 1, 0
-
