@@ -626,7 +626,7 @@ By following these steps, you can handle complex API promotions with cross-versi
         if "error" in result:
             return result
 
-        return self.promote_controller_validate(controllerPath)
+        return await self.promote_controller_validate(controllerPath)
 
     async def promote_controller_validate(self, controllerPath: str) -> dict:
         """Validates the promotion of a KCC controller to a new version.

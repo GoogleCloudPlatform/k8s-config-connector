@@ -32,6 +32,22 @@ class MCPEvaluator:
         self.metrics = defaultdict(float) # For aggregated metrics
         self.git_root = self._get_git_root()
 
+    def setup_mcp_config(self, config_data=None):
+        """
+        Writes MCP server configuration to the Gemini CLI settings.json.
+        If use_mcp is False, an empty config is written.
+        """
+        expanded_path = os.path.expanduser(self.mcp_config_path)
+        os.makedirs(os.path.dirname(expanded_path), exist_ok=True)
+        
+        config_to_write = {}
+        if self.use_mcp and config_data:
+            config_to_write = config_data
+
+        with open(expanded_path, 'w') as f:
+            json.dump(config_to_write, f, indent=4)
+        print(f"MCP configuration written to: {expanded_path}")
+
     def _get_git_root(self):
         try:
             return subprocess.check_output(["git", "rev-parse", "--show-toplevel"], text=True).strip()
@@ -223,7 +239,7 @@ class MCPEvaluator:
             tuple: A tuple containing (stdout, stderr, returncode, llm_requests_count).
         """
         gemini_cli_path = self.gemini_cli_path
-        prompt=prompt +f"\nOnce you are done. return {STOP_TOKEN}"
+        prompt=f"cd {cwd}\n" + prompt +f"\nOnce you are done. return {STOP_TOKEN}"
         args = [gemini_cli_path, "-d", "-p", prompt, "-y"]  # Use -p for non-interactive mode
 
         if command:
@@ -233,7 +249,7 @@ class MCPEvaluator:
         # mcp is under a different python virtual env.
         env.pop('VIRTUAL_ENV', None)
         
-        effective_cwd = cwd if cwd else self.git_root
+        effective_cwd = self.git_root
         try:
             process = subprocess.Popen(
                 args,
@@ -274,7 +290,7 @@ class MCPEvaluator:
                         stderr_output.append(line)
 
                     if STOP_TOKEN in line:
-                        print("\nDetected stop token: {STOP_TOKEN}, terminating process.")                    
+                        print(f"\nDetected stop token: {STOP_TOKEN}, terminating process.")                    
                         process.terminate()
                         terminated = True
                         streams = []  # Exit the while loop
