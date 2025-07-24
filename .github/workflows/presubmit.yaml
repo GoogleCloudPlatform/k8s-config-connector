@@ -59,7 +59,10 @@ jobs:
         with:
           go-version-file: 'go.mod'
       - name: "Set up Cloud SDK"
-        uses: "google-github-actions/setup-gcloud@v1"
+      - uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          version: '531.0.0'
+          install_components: 'alpha,beta'
       - name: "Run unit tests"
         run: |
           ./scripts/github-actions/ga-unit-test.sh
