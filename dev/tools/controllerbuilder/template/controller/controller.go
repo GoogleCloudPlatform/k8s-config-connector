@@ -255,7 +255,11 @@ func (a *{{.ProtoResource}}Adapter) Update(ctx context.Context, updateOp *direct
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
+    if a.desired.Status.ExternalRef == nil {
+		// If it is the first reconciliation after switching to direct controller,
+		// or is an acquisition with updates, then fill out the ExternalRef.
+	    status.ExternalRef = direct.LazyPtr(a.id.String())
+    }
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
