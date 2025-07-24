@@ -55,9 +55,6 @@ type NormalizingVisitor interface {
 
 	// SortSlice will sort the slice at the given path
 	SortSlice(path string)
-
-	// SortSliceBy will sort the slice at the given path, ordering by the given field
-	SortSliceBy(path string, sortBy string)
 }
 
 type Normalizer interface {

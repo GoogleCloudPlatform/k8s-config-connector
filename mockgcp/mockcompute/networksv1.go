@@ -75,10 +75,6 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 		}
 	}
 
-	if obj.AutoCreateSubnetworks == nil {
-		obj.AutoCreateSubnetworks = PtrTo(true)
-	}
-
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -95,9 +91,6 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 			if err := s.Workflows.CreateComputeNetworkSubnetworks(ctx, name.Project.ID, name.Name); err != nil {
 				return nil, err
 			}
-		}
-		if err := s.Workflows.CreateComputeNetworkRoutes(ctx, name.Project.ID, name.Name, ValueOf(obj.SelfLink)); err != nil {
-			return nil, err
 		}
 		return obj, nil
 	})

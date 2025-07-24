@@ -43,20 +43,14 @@ func (e *Engine) CreateComputeNetworkSubnetworks(ctx context.Context, projectID 
 	}
 
 	for _, region := range regions.GetAllRegions(ctx) {
-		if region.DefaultCIDR == "" {
-			continue
-		}
-
 		subnet := &computepb.Subnetwork{
-			Name:        PtrTo(networkID),
-			Region:      PtrTo(region.Name),
-			Network:     PtrTo(fmt.Sprintf("projects/%s/global/networks/%s", projectID, networkID)),
-			IpCidrRange: PtrTo(region.DefaultCIDR),
+			Name:    PtrTo(networkID),
+			Region:  PtrTo(region),
+			Network: PtrTo(fmt.Sprintf("projects/%s/global/networks/%s", projectID, networkID)),
 		}
-
 		req := &computepb.InsertSubnetworkRequest{
 			Project:            projectID,
-			Region:             region.Name,
+			Region:             region,
 			SubnetworkResource: subnet,
 		}
 		op, err := subnetsClient.Insert(ctx, req)
