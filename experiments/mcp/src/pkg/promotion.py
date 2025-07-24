@@ -52,6 +52,23 @@ def get_kind_from_path(path: str) -> str:
     # Convert snake_case to CamelCase
     return ''.join(word.title() for word in kind_name.split('_'))
 
+def get_types_from_api_dir(api_dir_path: str) -> set:
+    """Parses all .go files in a directory and returns a set of defined type names."""
+    types = set()
+    abs_path = to_abs_path(api_dir_path)
+    if not os.path.isdir(abs_path):
+        return types
+    for filename in os.listdir(abs_path):
+        if filename.endswith('.go'):
+            filepath = os.path.join(abs_path, filename)
+            with open(filepath, 'r') as f:
+                content = f.read()
+            # Regex to find 'type MyType struct'
+            found_types = re.findall(r'type\s+([A-Z][a-zA-Z0-9_]+)\s+struct', content)
+            types.update(found_types)
+    return types
+
+
 def get_controller_info(controller_path: str) -> (str, str):
     with open(controller_path, 'r') as f:
         content = f.read()
@@ -65,52 +82,85 @@ def get_controller_info(controller_path: str) -> (str, str):
 def split_controller_imports(controller_dir: str, promoted_kind: str, target_version: str, service: str, go_module: str):
     abs_controller_dir = to_abs_path(controller_dir)
     
-    # First, update the promoted controller's version comment
-    for filename in os.listdir(abs_controller_dir):
-        if filename.endswith('_controller.go'):
-            filepath = os.path.join(abs_controller_dir, filename)
-            version, kind = get_controller_info(filepath)
-            if kind == promoted_kind:
-                with open(filepath, 'r') as f:
-                    content = f.read()
-                new_content = content.replace(f'// crd.version: {version}', f'// crd.version: {target_version}')
-                with open(filepath, 'w') as f:
-                    f.write(new_content)
-                break
-
-    # Now, refactor all controllers
-    for filename in os.listdir(abs_controller_dir):
-        if filename.endswith('_controller.go'):
-            filepath = os.path.join(abs_controller_dir, filename)
-            version, _ = get_controller_info(filepath) # this will be the new version for the promoted one
-            
+    # Find the source version from the promoted kind's controller file
+    source_version = ""
+    controller_files = [f for f in os.listdir(abs_controller_dir) if f.endswith('_controller.go')]
+    for filename in controller_files:
+        filepath = os.path.join(abs_controller_dir, filename)
+        version, kind = get_controller_info(filepath)
+        if kind == promoted_kind:
+            source_version = version
+            # Update the crd.version comment in the promoted controller's file
             with open(filepath, 'r') as f:
                 content = f.read()
-
-            # Find the import path, which might have the old version
-            import_path_pattern = re.compile(r'"('+go_module+r'/apis/'+service+r'/(v[a-z0-9]+))"')
-            match = import_path_pattern.search(content)
-            if not match:
-                continue
-            
-            original_import_path = match.group(1)
-            
-            # The alias is based on the version from the crd.version comment
-            alias = f"{service}{version}"
-            
-            # The import path to use in the refactored file
-            new_import_path = f'"{go_module}/apis/{service}/{version}"'
-            
-            # Replace the whole import line
-            # from: krm "..."
-            # to: alias "..."
-            new_content = content.replace(f'krm "{original_import_path}"', f'{alias} {new_import_path}')
-            
-            # Replace krm.
-            new_content = new_content.replace('krm.', f'{alias}.')
-            
+            new_content = content.replace(f'// crd.version: {source_version}', f'// crd.version: {target_version}')
             with open(filepath, 'w') as f:
                 f.write(new_content)
+            break
+    
+    if not source_version:
+        # Should not happen if the kind is correct
+        return
+
+    # Get all types from the source API directory
+    source_api_dir = f'apis/{service}/{source_version}'
+    all_source_types = get_types_from_api_dir(source_api_dir)
+
+    # All types related to the promoted kind are considered promoted
+    promoted_types = {t for t in all_source_types if t.startswith(promoted_kind)}
+    remaining_source_types = all_source_types - promoted_types
+
+    # Refactor each controller file in the directory
+    all_go_files = [f for f in os.listdir(abs_controller_dir) if f.endswith('.go')]
+    for filename in all_go_files:
+        filepath = os.path.join(abs_controller_dir, filename)
+        with open(filepath, 'r') as f:
+            content = f.read()
+
+        original_import_path = f'"{go_module}/apis/{service}/{source_version}"'
+        original_aliased_import = f'krm {original_import_path}'
+
+        if original_aliased_import not in content:
+            continue
+
+        # Find all types used with the `krm` alias in this specific file
+        used_krm_types = set(re.findall(r'\bkrm\.([A-Z][a-zA-Z0-9_]+)\b', content))
+
+        # Check which categories of types are used
+        uses_promoted = bool(used_krm_types.intersection(promoted_types))
+        uses_remaining = bool(used_krm_types.intersection(remaining_source_types))
+
+        new_content = content
+        
+        # 1. Replace usages of remaining types with a new alias
+        if uses_remaining:
+            new_alias_for_source = f'krm{source_version}'
+            for type_name in remaining_source_types:
+                # Important: only replace if it was actually a krm. type
+                if type_name in used_krm_types:
+                    new_content = re.sub(r'\bkrm\.%s\b' % type_name, f'{new_alias_for_source}.{type_name}', new_content)
+
+        # 2. Construct the new import block
+        new_import_block = []
+        if uses_remaining:
+            new_alias_for_source = f'krm{source_version}'
+            new_import_block.append(f'\t{new_alias_for_source} {original_import_path}')
+        
+        if uses_promoted:
+            target_import_path = f'"{go_module}/apis/{service}/{target_version}"'
+            new_import_block.append(f'\tkrm {target_import_path}')
+
+        # 3. Replace the original import line with the new block
+        if new_import_block:
+            # To handle cases where the import is in an import() block
+            # We replace the line, preserving surrounding whitespace if possible
+            new_content = new_content.replace(original_aliased_import, '\n'.join(new_import_block).strip())
+        else:
+            # If no types are used, remove the import line
+            new_content = new_content.replace(original_aliased_import, '')
+
+        with open(filepath, 'w') as f:
+            f.write(new_content)
 
 
 def promote_api_file(api_path: str, target_version: str) -> dict:
