@@ -1,0 +1,12 @@
+apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+kind: BigtableInstance
+metadata:
+  name: bigtableinstance-${uniqueId}
+spec:
+  displayName: Test Bigtable Instance
+  instanceType: DEVELOPMENT
+  cluster:
+  - clusterId: cluster-${uniqueId}
+    zone: us-central1-b
+    numNodes: 1
+    storageType: SSD
