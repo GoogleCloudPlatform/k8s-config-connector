@@ -181,13 +181,17 @@ def promote_controller_file(controller_path: str, api_path: str, target_version:
         source_version = get_version_from_path(abs_api_path)
         
         controller_dir = os.path.dirname(abs_controller_path)
+        
+        old_import_path = f'{go_module}/{os.path.dirname(api_path)}'
+        new_import_path = old_import_path.replace(source_version, target_version)
+        
         for filename in os.listdir(controller_dir):
             if filename.endswith('.go'):
                 filepath = os.path.join(controller_dir, filename)
                 with open(filepath, 'r') as f:
                     content = f.read()
                 
-                new_content = content.replace(f'/{source_version}', f'/{target_version}')
+                new_content = content.replace(old_import_path, new_import_path)
                 
                 with open(filepath, 'w') as f:
                     f.write(new_content)

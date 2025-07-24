@@ -81,9 +81,26 @@ class MCPForGKEServer(FastMCP):
 3. For the main `_types.go` file in the new target directory, it ensures two specific annotations are present on the primary Kind's struct definition:
     - It adds `// +kubebuilder:storageversion` to mark the new version as the storage version for the CRD.
     - It adds or appends to `// +kubebuilder:metadata:labels` the label `"internal.cloud.google.com/additional-versions={source_version}"` (e.g., `"internal.cloud.google.com/additional-versions=v1alpha1"`) to maintain a link to the previous version.
-4. Finally, it runs a validation step to ensure the promotion was successful, which is equivalent to running `make generate-crds`.""",
+4. Finally, it runs a validation step to ensure the promotion was successful, which is equivalent to running `make generate-crds`.
+
+This tool is not good for the case if there are other v1alpha1 resources in the APIs that depends on the target resource, or vice versa. In that case, you should use the `promote_api_prompt` tool to get a prompt to help Gemini promote the API in a more flexible way.
+""",
             fn=self.promote_api,
             annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True),
+        )
+        
+        self.add_tool(
+            name="promote_api_prompt",
+            description="Generates a detailed prompt to guide the user or LLM in promoting a KCC API, especially when dealing with dependencies between different API versions. Use this when `promote_api` fails due to compilation errors related to cross-version dependencies.",
+            fn=self.promote_api_prompt,
+            annotations=ToolAnnotations(readOnlyHint=True),
+        )
+        
+        self.add_tool(
+            name="promote_api_validate",
+            description="Validates the promotion of a KCC API to a new version. This tool can be run repeatedly without running promote_api. It runs the promote_validate_promotion and gives Gemini some instructions to run additional validation check itself.",
+            fn=self.promote_api_validate,
+            annotations=ToolAnnotations(readOnlyHint=True),
         )
         
         self.add_tool(
@@ -91,6 +108,13 @@ class MCPForGKEServer(FastMCP):
             description="Promotes a KCC controller to a new version. This involves updating the controller's API imports and running validation. If the validation fails due to compilation errors related to package versions, you may need to manually adjust the imports. For example, if a type is still in `v1alpha1`, you may need to add `krmalpha 'github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1'` and change references from `krm.MyType` to `krmalpha.MyType`.",
             fn=self.promote_controller,
             annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True),
+        )
+
+        self.add_tool(
+            name="promote_controller_validate",
+            description="Validates the promotion of a KCC controller to a new version. This tool can be run repeatedly without running promote_controller.",
+            fn=self.promote_controller_validate,
+            annotations=ToolAnnotations(readOnlyHint=True),
         )
 
         self.add_tool(
@@ -102,7 +126,7 @@ class MCPForGKEServer(FastMCP):
 
         self.add_tool(
             name="scenario_promote",
-            description="Gives a prompt to help Gemini promote a KCC resource to a target version. The prompt explains that the promotion happens in 3 steps, promote_api, promote_controller and promote_tests. the gemini should use the corresponding mcp tools, and if the step fails, gemini should fix it based on the response error and the expected output. If the step succeeds, move on to the next step.",
+            description="Gives a prompt to help Gemini promote a KCC resource to a target version. The prompt explains that the promotion happens in 3 steps, promote_api, promote_controller and promote_tests. the gemini should use the corresponding mcp tools, and if the step fails, gemini should fix it based on the response error and the expected output. If the step succeeds, move on to the next step. If the promote_api step fails with compilation errors, use the `promote_api_prompt` to get instructions on how to fix the dependencies.",
             fn=self.scenario_promote,
             annotations=ToolAnnotations(readOnlyHint=True),
         )
@@ -212,6 +236,7 @@ class MCPForGKEServer(FastMCP):
 
         This function translates a user's high-level request into a precise, multi-step plan for the LLM.
         The generated prompt instructs the LLM to use the `promote_api`, `promote_controller`, and `promote_tests` tools sequentially.
+        If the `promote_api` step fails with compilation errors, it instructs the LLM to use `promote_api_prompt` to get instructions on how to fix the dependencies.
         
         Args:
             kind: The kind of the resource to promote. For example: `APIQuotaAdjusterSettings`.
@@ -224,9 +249,9 @@ class MCPForGKEServer(FastMCP):
         # Prepare the instruction for Gemini
         instruction = f"""Promote the KCC resource of kind '{kind}' to version '{targetVersion}'. This is a three-step process.
 
-1.  **Promote the API**: Use the `promote_api` tool. For example: `promote_api(apiPath='{apiPath}', targetVersion='{targetVersion}')`. If the tool returns an error, analyze the error message and the expected output to fix the problem and retry. Once successful, proceed to the next step.
+1.  **Promote the API**: Use the `promote_api` tool. For example: `promote_api(apiPath='{apiPath}', targetVersion='{targetVersion}')`. If the tool returns an error, analyze the error message. If the error is a compilation error, use the `promote_api_prompt` tool to get instructions on how to fix the dependencies. For example: `promote_api_prompt(apiPath='{apiPath}', targetVersion='{targetVersion}')`. After fixing the dependencies, retry the `promote_api` tool. Once successful, proceed to the next step.
 
-2.  **Promote the Controller**: Use the `promote_controller` tool. For example: `promote_controller(controllerPath='{controllerPath}', apiPath='{apiPath}', targetVersion='{targetVersion}')`. If the tool returns an error, analyze the error message and the expected output to fix the problem and retry. Once successful, proceed to the next step.
+2.  **Promote the Controller**: Use the `promote_controller` tool. For example: `promote_controller(controllerPath='{controllerPath}', apiPath='{apiPath}', targetVersion='{targetVersion}')`. If the tool returns an error, analyze the error message and the expected output to fix the problem and retry. You can use `promote_controller_validate` to validate the controller promotion. Once successful, proceed to the next step.
 
 3.  **Promote the Tests**: Use the `promote_tests` tool. For example: `promote_tests(testFixturePath='{testFixturePath}', kind='{kind}', targetVersion='{targetVersion}')`. If the tool returns an error, analyze the error message and the expected output to fix the problem and retry.
 
@@ -473,6 +498,96 @@ Return only YAML: Your final output should be only the generated YAML content, w
             
         return result
 
+    async def promote_api_prompt(self, apiPath: str, targetVersion: str) -> str:
+        """
+        Generates a detailed prompt to guide the user or LLM in promoting a KCC API,
+        especially when dealing with dependencies between different API versions.
+
+        Args:
+            apiPath: The path to the API definition file. For example: `apis/cloudquota/v1alpha1/quotaadjustersettings_types.go`.
+            targetVersion: The target version to promote to. For example: `v1beta1`.
+        """
+        source_version = apiPath.split('/')[-2]
+        instruction = f"""
+You are about to promote the API at `{apiPath}` from `{source_version}` to `{targetVersion}`.
+
+Promoting an API can be complex if the resource has dependencies on other resources, or if other resources depend on it. This is common in Kubernetes environments where resources reference each other.
+
+**Instructions:**
+
+1.  **Initial Promotion Attempt:**
+    Start by running the `promote_api` tool:
+    `promote_api(apiPath='{apiPath}', targetVersion='{targetVersion}')`
+
+2.  **Analyze Compilation Errors:**
+    If the `promote_api` tool fails during the validation step, it's likely due to compilation errors caused by version dependencies. Carefully examine the error messages. They will point to the files and types that need to be updated.
+
+3.  **Fix Dependencies:**
+    You will need to manually edit the Go files to resolve these dependencies. There are two common scenarios:
+
+    **Scenario A: The promoted resource depends on an older version of another resource.**
+    *   **Example:** Promoting `BackupDRBackupPlanAssociation` to `v1beta1`, which depends on `BackupPlanRef` from `v1alpha1`.
+    *   **Symptom:** The compiler will complain that it cannot find the type for a field in the new `v1beta1` `_types.go` file.
+    *   **Solution:**
+        1.  Add a new import with an alias to the `v1alpha1` package in the `v1beta1` `_types.go` file.
+            ```go
+            import (
+                backupdrv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+            )
+            ```
+        2.  Update the field to use the type from the aliased import.
+            ```go
+            // from:
+            BackupPlanRef *BackupPlanRef `json:"backupPlanRef,omitempty"`
+            // to:
+            BackupPlanRef *backupdrv1alpha1.BackupPlanRef `json:"backupPlanRef,omitempty"`
+            ```
+
+    **Scenario B: An older version of a resource depends on the newly promoted resource.**
+    *   **Example:** `ApigeeEnvironmentGroup` (`v1alpha1`) depends on `ApigeeOrganization`, which is being promoted to `v1beta1`.
+    *   **Symptom:** The compiler will complain about a missing type in a `v1alpha1` file that references the type you are promoting.
+    *   **Solution:**
+        1.  Go to the `v1alpha1` `_types.go` file for the dependent resource (e.g., `environmentgroup_types.go`).
+        2.  Add a new import with an alias to the new `v1beta1` package.
+            ```go
+            import (
+                apigeev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigee/v1beta1"
+            )
+            ```
+        3.  Update the field in the `v1alpha1` file to use the type from the new `v1beta1` aliased import.
+            ```go
+            // from:
+            OrganizationRef *ApigeeOrganizationRef `json:"organizationRef"`
+            // to:
+            OrganizationRef *apigeev1beta1.ApigeeOrganizationRef `json:"organizationRef"`
+            ```
+
+4.  **Re-run Validation:**
+    After you have applied the necessary code changes, you need to validate them. The easiest way is to re-run the original `promote_api` command. Since the files are already copied, it will likely just run the validation. If you want to only run validation, you might need a dedicated validation function if available.
+
+By following these steps, you can handle complex API promotions with cross-version dependencies.
+"""
+        return instruction
+        
+    # async def promote_api_validate(self, apiPath: str, targetVersion: str) -> dict:
+    async def promote_api_validate(self, apiPath: str, targetVersion: str) -> dict:
+        """ Validates the promotion of a KCC API to a new version.
+
+        Args:
+            apiPath: The path to the API definition file. For example: `apis/cloudquota/v1alpha1/quotaadjustersettings_types.go`.
+            targetVersion: The target version to promote to. For example: `v1beta1`.
+        """
+        validation_result = promotion.validate_promotion(apiPath, targetVersion)
+        if "error" in validation_result:
+            return validation_result
+        
+        # TODO: Add more validation checks here.
+        # For example, check if the new API version is correctly referenced in other parts of the codebase.
+        # For example, check if the new API version is correctly referenced in the CRD.
+        
+        return {"message": "API promotion validation successful", "apiPath": apiPath, "targetVersion": targetVersion}
+
+
     async def promote_controller(self, controllerPath: str, apiPath: str, targetVersion: str) -> dict:
         """Promotes a KCC controller to a new version.
 
@@ -504,11 +619,19 @@ Return only YAML: Your final output should be only the generated YAML content, w
         if "error" in result:
             return result
 
+        return self.promote_controller_validate(controllerPath)
+
+    async def promote_controller_validate(self, controllerPath: str) -> dict:
+        """Validates the promotion of a KCC controller to a new version.
+
+        Args:
+            controllerPath: The path to the controller file. For example: `pkg/controller/direct/cloudquota/quotaadjustersettings_controller.go`.
+        """
         validation_result = promotion.validate_controller_compilation(controllerPath)
         if "error" in validation_result:
             return validation_result
 
-        return result
+        return {"message": "Controller promotion validation successful", "controllerPath": controllerPath}
 
     async def promote_tests(self, testFixturePath: str, kind: str, targetVersion: str) -> dict:
         """Promotes KCC test fixtures to a new version.
