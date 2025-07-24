@@ -328,12 +328,13 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 
 	response := &http.Response{
 		StatusCode: 403,
-		Status:     "mockRoundTripper injecting fake response for unknown service " + req.Host,
+		Status:     "403 mockRoundTripper injecting fake response for unknown service " + req.Host,
 	}
 
 	if request == "GET https://openidconnect.googleapis.com/v1/userinfo?alt=json" {
 		body["email"] = "test@example.com"
 		response.StatusCode = 200
+		response.Status = "200 OK"
 	} else {
 		klog.Errorf("host name %q not known.  "+
 			"Please verify the ExpectedHost in service.go and retry.", req.Host)
