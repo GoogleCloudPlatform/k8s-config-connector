@@ -13,7 +13,7 @@
 # limitations under the License.
 
 script:
-- prompt: "Your task is to promote the KCC resource VMwareEngineExternalAddress from v1alpha1 to v1beta1. The resource is in the service vmwareengine. Use the information from the initial context to find the resource definition. Hint: This is a multi-step process that involves promoting the API, controller, and tests."
+- prompt: "Your task is to promote the KCC resource VMwareEngineExternalAddress from v1alpha1 to v1beta1."
 setup: "setup.sh"
 verifier: "verify.sh"
 cleanup: "cleanup.sh"
