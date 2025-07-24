@@ -1,6 +1,0 @@
-# Test for `gcloud compute networks`
-- exec: gcloud compute networks create test-nw-${uniqueId} --project=${projectId} --subnet-mode=custom
-- exec: gcloud compute networks describe test-nw-${uniqueId} --project=${projectId}
-- exec: gcloud compute networks subnets list --project=${projectId} --network=test-nw-${uniqueId}
-- exec: gcloud compute routes list --project=${projectId} --filter network=test-nw-${uniqueId}
-- exec: gcloud compute networks delete test-nw-${uniqueId} --project=${projectId} --quiet

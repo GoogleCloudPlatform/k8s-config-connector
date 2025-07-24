@@ -240,7 +240,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "autoCreateSubnetworks": true,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "Default network for the project",
   "id": "000000000000000000000",
@@ -248,50 +247,7 @@ X-Xss-Protection: 0
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/global/networks/${networkID}",
-  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/global/networks/${networkID}",
-  "subnetworks": [
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/africa-south1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/asia-east1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/asia-east2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/asia-northeast1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/asia-northeast2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/asia-northeast3/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/asia-south1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/asia-south2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/asia-southeast1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/asia-southeast2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/australia-southeast1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/australia-southeast2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/europe-central2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/europe-north1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/europe-north2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/europe-southwest1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/europe-west1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/europe-west10/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/europe-west12/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/europe-west2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/europe-west3/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/europe-west4/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/europe-west6/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/europe-west8/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/europe-west9/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/me-central1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/me-west1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/northamerica-northeast1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/northamerica-northeast2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/northamerica-south1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/southamerica-east1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/southamerica-west1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/us-central1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/us-east1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/us-east4/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/us-east5/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/us-south1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/us-west1/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/us-west2/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/us-west3/subnetworks/${networkID}",
-    "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/regions/us-west4/subnetworks/${networkID}"
-  ]
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/iampartialpolicy-dep-project/global/networks/${networkID}"
 }
 
 ---

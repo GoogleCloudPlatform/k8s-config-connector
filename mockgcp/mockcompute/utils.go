@@ -77,9 +77,3 @@ func buildComputeSelfLink(ctx context.Context, fqn string) string {
 	version := getAPIVersion(ctx)
 	return "https://www.googleapis.com/compute/" + version + "/" + fqn
 }
-
-// lastComponent returns the last component of a /-separated string.
-func lastComponent(s string) string {
-	i := strings.LastIndex(s, "/")
-	return s[i+1:]
-}
