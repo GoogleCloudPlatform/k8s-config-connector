@@ -23,15 +23,13 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 go run . generate-types \
     --service google.cloud.backupdr.v1 \
-    --api-version backupdr.cnrm.cloud.google.com/v1alpha1 \
-    --resource BackupDRManagementServer:ManagementServer \
-    --resource BackupDRBackupVault:BackupVault \
-    --resource BackupDRBackupPlan:BackupPlan
+    --api-version backupdr.cnrm.cloud.google.com/v1beta1 \
+    --resource BackupDRBackupPlanAssociation:BackupPlanAssociation
 
 go run . generate-mapper \
     --multiversion \
     --service google.cloud.backupdr.v1 \
-    --api-version backupdr.cnrm.cloud.google.com/v1alpha1
+    --api-version backupdr.cnrm.cloud.google.com/v1beta1
 
 
 cd ${REPO_ROOT}
