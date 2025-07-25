@@ -2202,7 +2202,6 @@
 [missing_field] crd=serviceusageconsumerquotaoverrides.serviceusage.cnrm.cloud.google.com version=v1alpha1: field ".spec.overrideValue" is not set in unstructured objects
 [missing_field] crd=serviceusageconsumerquotaoverrides.serviceusage.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=serviceusageconsumerquotaoverrides.serviceusage.cnrm.cloud.google.com version=v1alpha1: field ".spec.service" is not set in unstructured objects
-[missing_field] crd=spannerbackupschedules.spanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.incrementalBackupSpec" is not set in unstructured objects
 [missing_field] crd=spannerinstanceconfigs.spanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
 [missing_field] crd=spannerinstanceconfigs.spanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=spannerinstanceconfigs.spanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.leaderOptions[]" is not set in unstructured objects
