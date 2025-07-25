@@ -13,8 +13,8 @@ metadata:
   name: sqlinstance-maintenanceversion-direct-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  databaseVersion: POSTGRES_15
-  maintenanceVersion: POSTGRES_15_13.R20250302.00_31
+  databaseVersion: POSTGRES_16
+  maintenanceVersion: POSTGRES_16_9.R20250302.00_31
   region: us-central1
   settings:
     locationPreference:

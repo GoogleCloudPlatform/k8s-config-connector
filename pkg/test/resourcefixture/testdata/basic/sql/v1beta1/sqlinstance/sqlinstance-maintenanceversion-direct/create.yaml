@@ -19,10 +19,9 @@ metadata:
   annotations:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
-  databaseVersion: POSTGRES_15
+  databaseVersion: POSTGRES_16
+  maintenanceVersion: POSTGRES_16_9.R20250302.00_19
   region: us-central1
-  # cannot set maintenanceVersion on INSERT/ CREATE
-  #maintenanceVersion: POSTGRES_15_13.R20250302.00_31
   settings:
     locationPreference:
       zone: us-central1-a
