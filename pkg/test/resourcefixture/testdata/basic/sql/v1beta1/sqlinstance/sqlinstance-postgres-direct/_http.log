@@ -689,6 +689,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_9_6_24.R20250302.00_31",
   "name": "sqlinstance-postgres-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -843,6 +844,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_9_6_24.R20250302.00_31",
   "name": "sqlinstance-postgres-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -937,6 +939,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "databaseVersion": "POSTGRES_9_6",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_9_6_24.R20250302.00_19",
   "name": "sqlinstance-postgres-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -1093,6 +1096,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_9_6_24.R20250302.00_19",
   "name": "sqlinstance-postgres-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
