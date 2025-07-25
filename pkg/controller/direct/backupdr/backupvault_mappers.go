@@ -17,7 +17,7 @@ package backupdr
 import (
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 

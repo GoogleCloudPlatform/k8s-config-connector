@@ -21,6 +21,7 @@ package backupdr
 import (
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
@@ -63,7 +64,7 @@ func BackupDRBackupPlanSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb
 	out.ResourceType = direct.LazyPtr(in.GetResourceType())
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	if in.GetBackupVault() != "" {
-		out.BackupVaultRef = &krm.BackupVaultRef{
+		out.BackupVaultRef = &krmv1beta1.BackupVaultRef{
 			External: in.GetBackupVault(),
 		}
 	}

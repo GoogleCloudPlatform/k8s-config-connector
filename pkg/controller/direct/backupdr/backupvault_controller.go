@@ -16,7 +16,7 @@
 // proto.service: google.cloud.backupdr.v1.BackupDR
 // proto.message: google.cloud.backupdr.v1.BackupVault
 // crd.type: BackupDRBackupVault
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package backupdr
 
@@ -25,7 +25,7 @@ import (
 	"fmt"
 	"reflect"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -126,7 +126,7 @@ func (a *BackupVaultAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := BackupDRBackupVaultSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
+	resource := BackupDRBackupVaultSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -229,7 +229,7 @@ func (a *BackupVaultAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 	obj := &krm.BackupDRBackupVault{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(BackupDRBackupVaultSpec_v1alpha1_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(BackupDRBackupVaultSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
