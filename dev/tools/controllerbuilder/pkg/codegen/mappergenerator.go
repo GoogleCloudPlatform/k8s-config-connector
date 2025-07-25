@@ -174,6 +174,9 @@ func lastGoComponent(goPackage string) string {
 
 func (v *MapperGenerator) GenerateMappers() error {
 	sort.Slice(v.typePairs, func(i, j int) bool {
+		if v.typePairs[i].KRMType.Name == v.typePairs[j].KRMType.Name {
+			return v.typePairs[i].KRMType.GoPackage < v.typePairs[j].KRMType.GoPackage
+		}
 		return v.typePairs[i].KRMType.Name < v.typePairs[j].KRMType.Name
 	})
 
