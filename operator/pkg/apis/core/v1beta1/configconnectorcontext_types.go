@@ -76,8 +76,9 @@ type ConfigConnectorContextSpec struct {
 	// The specified manager namespace may exist before the corresponding
 	// ConfigConnectorContext is created.
 	// If the specified namespace does not exist then it will be created
-	// by Config Connector.
+	// by Config Connector. The field is immutable.
 	//+kubebuilder:validation:Optional
+	//+kubebuilder:validation:XValidation:rule="self == oldSelf",message="ManagerNamespace field is immutable"
 	ManagerNamespace string `json:"managerNamespace,omitempty"`
 }
 

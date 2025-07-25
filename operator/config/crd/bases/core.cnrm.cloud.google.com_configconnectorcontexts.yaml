@@ -76,8 +76,11 @@ spec:
                   The specified manager namespace may exist before the corresponding
                   ConfigConnectorContext is created.
                   If the specified namespace does not exist then it will be created
-                  by Config Connector.
+                  by Config Connector. The field is immutable.
                 type: string
+                x-kubernetes-validations:
+                - message: ManagerNamespace field is immutable
+                  rule: self == oldSelf
               requestProjectPolicy:
                 description: |-
                   Specifies which project to use for preconditions, quota, and billing for
