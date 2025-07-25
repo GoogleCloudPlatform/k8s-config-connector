@@ -12,19 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:mapper
+// krm.group: backupdr.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.backupdr.v1
+
 package backupdr
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
 )
-
-func BackupDRBackupPlanAssociationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanAssociation) *krm.BackupDRBackupPlanAssociationObservedState {
+func BackupDRBackupPlanAssociationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanAssociation) *krmv1alpha1.BackupDRBackupPlanAssociationObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupDRBackupPlanAssociationObservedState{}
+	out := &krmv1alpha1.BackupDRBackupPlanAssociationObservedState{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -33,7 +39,7 @@ func BackupDRBackupPlanAssociationObservedState_FromProto(mapCtx *direct.MapCont
 	out.DataSource = direct.LazyPtr(in.GetDataSource())
 	return out
 }
-func BackupDRBackupPlanAssociationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupPlanAssociationObservedState) *pb.BackupPlanAssociation {
+func BackupDRBackupPlanAssociationObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BackupDRBackupPlanAssociationObservedState) *pb.BackupPlanAssociation {
 	if in == nil {
 		return nil
 	}
@@ -46,11 +52,11 @@ func BackupDRBackupPlanAssociationObservedState_ToProto(mapCtx *direct.MapContex
 	out.DataSource = direct.ValueOf(in.DataSource)
 	return out
 }
-func BackupDRBackupPlanObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krm.BackupDRBackupPlanObservedState {
+func BackupDRBackupPlanObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krmv1beta1.BackupDRBackupPlanObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupDRBackupPlanObservedState{}
+	out := &krmv1beta1.BackupDRBackupPlanObservedState{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -58,7 +64,7 @@ func BackupDRBackupPlanObservedState_FromProto(mapCtx *direct.MapContext, in *pb
 	out.BackupVaultServiceAccount = direct.LazyPtr(in.GetBackupVaultServiceAccount())
 	return out
 }
-func BackupDRBackupPlanObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupPlanObservedState) *pb.BackupPlan {
+func BackupDRBackupPlanObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BackupDRBackupPlanObservedState) *pb.BackupPlan {
 	if in == nil {
 		return nil
 	}
@@ -70,11 +76,11 @@ func BackupDRBackupPlanObservedState_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.BackupVaultServiceAccount = direct.ValueOf(in.BackupVaultServiceAccount)
 	return out
 }
-func BackupDRBackupVaultSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupDRBackupVaultSpec {
+func BackupDRBackupVaultSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krmv1alpha1.BackupDRBackupVaultSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupDRBackupVaultSpec{}
+	out := &krmv1alpha1.BackupDRBackupVaultSpec{}
 	// MISSING: Name
 	out.Description = in.Description
 	out.Labels = in.Labels
@@ -86,11 +92,11 @@ func BackupDRBackupVaultSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupV
 	out.AccessRestriction = direct.Enum_FromProto(mapCtx, in.GetAccessRestriction())
 	return out
 }
-func BackupDRManagementServerSpec_FromProto(mapCtx *direct.MapContext, in *pb.ManagementServer) *krm.BackupDRManagementServerSpec {
+func BackupDRManagementServerSpec_FromProto(mapCtx *direct.MapContext, in *pb.ManagementServer) *krmv1alpha1.BackupDRManagementServerSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupDRManagementServerSpec{}
+	out := &krmv1alpha1.BackupDRManagementServerSpec{}
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Labels = in.Labels
@@ -104,7 +110,7 @@ func BackupDRManagementServerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Ma
 	// MISSING: SatisfiesPzi
 	return out
 }
-func BackupDRManagementServerSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRManagementServerSpec) *pb.ManagementServer {
+func BackupDRManagementServerSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BackupDRManagementServerSpec) *pb.ManagementServer {
 	if in == nil {
 		return nil
 	}
@@ -122,17 +128,17 @@ func BackupDRManagementServerSpec_ToProto(mapCtx *direct.MapContext, in *krm.Bac
 	// MISSING: SatisfiesPzi
 	return out
 }
-func BackupRule_FromProto(mapCtx *direct.MapContext, in *pb.BackupRule) *krm.BackupRule {
+func BackupRule_FromProto(mapCtx *direct.MapContext, in *pb.BackupRule) *krmv1beta1.BackupRule {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupRule{}
+	out := &krmv1beta1.BackupRule{}
 	out.RuleID = direct.LazyPtr(in.GetRuleId())
 	out.BackupRetentionDays = direct.LazyPtr(in.GetBackupRetentionDays())
 	out.StandardSchedule = StandardSchedule_FromProto(mapCtx, in.GetStandardSchedule())
 	return out
 }
-func BackupRule_ToProto(mapCtx *direct.MapContext, in *krm.BackupRule) *pb.BackupRule {
+func BackupRule_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BackupRule) *pb.BackupRule {
 	if in == nil {
 		return nil
 	}
@@ -144,16 +150,16 @@ func BackupRule_ToProto(mapCtx *direct.MapContext, in *krm.BackupRule) *pb.Backu
 	}
 	return out
 }
-func BackupWindow_FromProto(mapCtx *direct.MapContext, in *pb.BackupWindow) *krm.BackupWindow {
+func BackupWindow_FromProto(mapCtx *direct.MapContext, in *pb.BackupWindow) *krmv1beta1.BackupWindow {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupWindow{}
+	out := &krmv1beta1.BackupWindow{}
 	out.StartHourOfDay = direct.LazyPtr(in.GetStartHourOfDay())
 	out.EndHourOfDay = direct.LazyPtr(in.GetEndHourOfDay())
 	return out
 }
-func BackupWindow_ToProto(mapCtx *direct.MapContext, in *krm.BackupWindow) *pb.BackupWindow {
+func BackupWindow_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BackupWindow) *pb.BackupWindow {
 	if in == nil {
 		return nil
 	}
@@ -162,7 +168,7 @@ func BackupWindow_ToProto(mapCtx *direct.MapContext, in *krm.BackupWindow) *pb.B
 	out.EndHourOfDay = direct.ValueOf(in.EndHourOfDay)
 	return out
 }
-func NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig) *pb.NetworkConfig {
+func NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.NetworkConfig) *pb.NetworkConfig {
 	if in == nil {
 		return nil
 	}
@@ -173,18 +179,18 @@ func NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig) *pb
 	out.PeeringMode = direct.Enum_ToProto[pb.NetworkConfig_PeeringMode](mapCtx, in.PeeringMode)
 	return out
 }
-func RuleConfigInfo_FromProto(mapCtx *direct.MapContext, in *pb.RuleConfigInfo) *krm.RuleConfigInfo {
+func RuleConfigInfo_FromProto(mapCtx *direct.MapContext, in *pb.RuleConfigInfo) *krmv1alpha1.RuleConfigInfo {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RuleConfigInfo{}
+	out := &krmv1alpha1.RuleConfigInfo{}
 	// MISSING: RuleID
 	// MISSING: LastBackupState
 	// MISSING: LastBackupError
 	// MISSING: LastSuccessfulBackupConsistencyTime
 	return out
 }
-func RuleConfigInfo_ToProto(mapCtx *direct.MapContext, in *krm.RuleConfigInfo) *pb.RuleConfigInfo {
+func RuleConfigInfo_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.RuleConfigInfo) *pb.RuleConfigInfo {
 	if in == nil {
 		return nil
 	}
@@ -195,18 +201,18 @@ func RuleConfigInfo_ToProto(mapCtx *direct.MapContext, in *krm.RuleConfigInfo) *
 	// MISSING: LastSuccessfulBackupConsistencyTime
 	return out
 }
-func RuleConfigInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RuleConfigInfo) *krm.RuleConfigInfoObservedState {
+func RuleConfigInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RuleConfigInfo) *krmv1alpha1.RuleConfigInfoObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RuleConfigInfoObservedState{}
+	out := &krmv1alpha1.RuleConfigInfoObservedState{}
 	out.RuleID = direct.LazyPtr(in.GetRuleId())
 	out.LastBackupState = direct.Enum_FromProto(mapCtx, in.GetLastBackupState())
 	out.LastBackupError = Status_FromProto(mapCtx, in.GetLastBackupError())
 	out.LastSuccessfulBackupConsistencyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastSuccessfulBackupConsistencyTime())
 	return out
 }
-func RuleConfigInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RuleConfigInfoObservedState) *pb.RuleConfigInfo {
+func RuleConfigInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.RuleConfigInfoObservedState) *pb.RuleConfigInfo {
 	if in == nil {
 		return nil
 	}
@@ -217,11 +223,11 @@ func RuleConfigInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Rule
 	out.LastSuccessfulBackupConsistencyTime = direct.StringTimestamp_ToProto(mapCtx, in.LastSuccessfulBackupConsistencyTime)
 	return out
 }
-func StandardSchedule_FromProto(mapCtx *direct.MapContext, in *pb.StandardSchedule) *krm.StandardSchedule {
+func StandardSchedule_FromProto(mapCtx *direct.MapContext, in *pb.StandardSchedule) *krmv1beta1.StandardSchedule {
 	if in == nil {
 		return nil
 	}
-	out := &krm.StandardSchedule{}
+	out := &krmv1beta1.StandardSchedule{}
 	out.RecurrenceType = direct.Enum_FromProto(mapCtx, in.GetRecurrenceType())
 	out.HourlyFrequency = direct.LazyPtr(in.GetHourlyFrequency())
 	out.DaysOfWeek = direct.EnumSlice_FromProto(mapCtx, in.DaysOfWeek)
@@ -232,25 +238,25 @@ func StandardSchedule_FromProto(mapCtx *direct.MapContext, in *pb.StandardSchedu
 	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
 	return out
 }
-func WeekDayOfMonth_FromProto(mapCtx *direct.MapContext, in *pb.WeekDayOfMonth) *krm.WeekDayOfMonth {
+func WeekDayOfMonth_FromProto(mapCtx *direct.MapContext, in *pb.WeekDayOfMonth) *krmv1beta1.WeekDayOfMonth {
 	if in == nil {
 		return nil
 	}
-	out := &krm.WeekDayOfMonth{}
+	out := &krmv1beta1.WeekDayOfMonth{}
 	out.WeekOfMonth = direct.Enum_FromProto(mapCtx, in.GetWeekOfMonth())
 	out.DayOfWeek = direct.Enum_FromProto(mapCtx, in.GetDayOfWeek())
 	return out
 }
-func WorkforceIdentityBasedManagementURI_FromProto(mapCtx *direct.MapContext, in *pb.WorkforceIdentityBasedManagementURI) *krm.WorkforceIdentityBasedManagementURI {
+func WorkforceIdentityBasedManagementURI_FromProto(mapCtx *direct.MapContext, in *pb.WorkforceIdentityBasedManagementURI) *krmv1alpha1.WorkforceIdentityBasedManagementURI {
 	if in == nil {
 		return nil
 	}
-	out := &krm.WorkforceIdentityBasedManagementURI{}
+	out := &krmv1alpha1.WorkforceIdentityBasedManagementURI{}
 	// MISSING: FirstPartyManagementURI
 	// MISSING: ThirdPartyManagementURI
 	return out
 }
-func WorkforceIdentityBasedManagementURI_ToProto(mapCtx *direct.MapContext, in *krm.WorkforceIdentityBasedManagementURI) *pb.WorkforceIdentityBasedManagementURI {
+func WorkforceIdentityBasedManagementURI_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.WorkforceIdentityBasedManagementURI) *pb.WorkforceIdentityBasedManagementURI {
 	if in == nil {
 		return nil
 	}
@@ -259,16 +265,16 @@ func WorkforceIdentityBasedManagementURI_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: ThirdPartyManagementURI
 	return out
 }
-func WorkforceIdentityBasedManagementURIObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkforceIdentityBasedManagementURI) *krm.WorkforceIdentityBasedManagementURIObservedState {
+func WorkforceIdentityBasedManagementURIObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkforceIdentityBasedManagementURI) *krmv1alpha1.WorkforceIdentityBasedManagementURIObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.WorkforceIdentityBasedManagementURIObservedState{}
+	out := &krmv1alpha1.WorkforceIdentityBasedManagementURIObservedState{}
 	out.FirstPartyManagementURI = direct.LazyPtr(in.GetFirstPartyManagementUri())
 	out.ThirdPartyManagementURI = direct.LazyPtr(in.GetThirdPartyManagementUri())
 	return out
 }
-func WorkforceIdentityBasedManagementURIObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkforceIdentityBasedManagementURIObservedState) *pb.WorkforceIdentityBasedManagementURI {
+func WorkforceIdentityBasedManagementURIObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.WorkforceIdentityBasedManagementURIObservedState) *pb.WorkforceIdentityBasedManagementURI {
 	if in == nil {
 		return nil
 	}
