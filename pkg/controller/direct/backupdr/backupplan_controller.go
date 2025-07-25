@@ -16,7 +16,7 @@
 // proto.service: google.cloud.backupdr.v1.BackupDR
 // proto.message: google.cloud.backupdr.v1.BackupPlan
 // crd.type: BackupDRBackupPlan
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package backupdr
 
@@ -25,7 +25,7 @@ import (
 	"fmt"
 	"reflect"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
