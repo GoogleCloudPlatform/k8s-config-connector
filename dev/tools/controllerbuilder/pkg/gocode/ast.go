@@ -22,6 +22,7 @@ import (
 	"go/token"
 	"io/fs"
 	"path/filepath"
+	"strconv"
 	"strings"
 )
 
@@ -32,6 +33,8 @@ type Package struct {
 	Structs []*GoStruct
 
 	Comments []string
+
+	Imports []*GoImport
 }
 
 func (p *Package) GetAnnotation(key string) string {
@@ -56,9 +59,15 @@ type GoStruct struct {
 	Comments []string
 }
 
+type GoImport struct {
+	GoPackage string
+	Alias     string
+}
+
 type StructField struct {
-	Name string
-	Type string
+	Name      string
+	Type      string
+	GoPackage string
 }
 
 func LoadPackage(goPackage string, path string) (*Package, error) {
@@ -136,6 +145,26 @@ func (p *Package) inspect(packageName string, pkg *ast.Package) error {
 			return true
 		}
 		switch n := n.(type) {
+		case *ast.ImportSpec:
+			goPackage := n.Path.Value
+			goPackage, err := strconv.Unquote(goPackage)
+			if err != nil {
+				errs = append(errs, fmt.Errorf("unquoting import path %q: %w", n.Path.Value, err))
+			}
+
+			alias := ""
+			if n.Name != nil {
+				alias = n.Name.String()
+			} else {
+				alias = lastComponent(goPackage)
+			}
+			alias = strings.TrimSuffix(alias, "\"")
+
+			p.Imports = append(p.Imports, &GoImport{
+				GoPackage: goPackage,
+				Alias:     alias,
+			})
+
 		case *ast.TypeSpec:
 			switch def := n.Type.(type) {
 			case *ast.StructType:
@@ -183,6 +212,23 @@ func (p *Package) addStruct(name *ast.Ident, def *ast.StructType, comments []ast
 			return err
 		}
 		structField.Type = goType
+
+		tokens := strings.Split(strings.TrimLeft(goType, "*[]"), ".")
+		if len(tokens) > 1 {
+			packageName := tokens[0]
+			for _, imp := range p.Imports {
+				if imp.Alias == packageName {
+					structField.GoPackage = imp.GoPackage
+					break
+				}
+			}
+			if structField.GoPackage == "" {
+				for _, imp := range p.Imports {
+					fmt.Printf("imp: %+v\n", imp)
+				}
+				panic(fmt.Sprintf("could not find import for %q (package %q)", goType, packageName))
+			}
+		}
 
 		goStruct.Fields = append(goStruct.Fields, structField)
 	}
@@ -269,4 +315,9 @@ func (s *GoStruct) GetAnnotation(key string) string {
 		}
 	}
 	return ""
+}
+
+func lastComponent(s string) string {
+	ix := strings.LastIndex(s, "/")
+	return s[ix+1:]
 }
