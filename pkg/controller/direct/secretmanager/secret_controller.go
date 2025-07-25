@@ -204,7 +204,7 @@ func MergeMap(a, b map[string]string) map[string]string {
 
 func ComputeAnnotations(secret *krm.SecretManagerSecret) map[string]string {
 	annotations := MergeMap(secret.GetAnnotations(), secret.Spec.Annotations)
-	common.RemoveByPrefixes(annotations, "cnrm.cloud.google.com", "alpha.cnrm.cloud.google.com")
+	common.RemoveByPrefixes(annotations, "cnrm.cloud.google.com", "alpha.cnrm.cloud.google.com", "kubectl.kubernetes.io")
 	return annotations
 }
 
