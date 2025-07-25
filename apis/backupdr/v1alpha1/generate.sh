@@ -30,6 +30,7 @@ go run . generate-types \
     --resource BackupDRBackupPlanAssociation:BackupPlanAssociation
 
 go run . generate-mapper \
+    --multiversion \
     --service google.cloud.backupdr.v1 \
     --api-version backupdr.cnrm.cloud.google.com/v1alpha1
 

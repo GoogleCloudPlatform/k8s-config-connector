@@ -237,8 +237,10 @@ spec:
                     items:
                       properties:
                         lastBackupError:
-                          description: Output only. google.rpc.Status object to store
-                            the last backup error.
+                          description: |-
+                            Output only. Output Only.
+
+                             google.rpc.Status object to store the last backup error.
                           properties:
                             code:
                               description: The status code, which should be an enum
@@ -276,7 +278,8 @@ spec:
 
                                        Note: this functionality is not currently available in the official
                                        protobuf release, and it is not used for type URLs beginning with
-                                       type.googleapis.com.
+                                       type.googleapis.com. As of May 2023, there are no widely used type server
+                                       implementations and no plans to implement one.
 
                                        Schemes other than `http`, `https` (or the empty scheme) might be
                                        used with implementation specific semantics.
@@ -303,8 +306,10 @@ spec:
                             successful backup was captured from the source.
                           type: string
                         ruleID:
-                          description: Output only. Backup Rule id fetched from backup
-                            plan.
+                          description: |-
+                            Output only. Output Only.
+
+                             Backup Rule id fetched from backup plan.
                           type: string
                       type: object
                     type: array

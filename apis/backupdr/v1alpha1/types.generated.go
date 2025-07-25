@@ -12,6 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: backupdr.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.backupdr.v1
+// resource: BackupDRManagementServer:ManagementServer
+// resource: BackupDRBackupVault:BackupVault
+// resource: BackupDRBackupPlan:BackupPlan
+// resource: BackupDRBackupPlanAssociation:BackupPlanAssociation
+
 package v1alpha1
 
 // +kcc:proto=google.cloud.backupdr.v1.BackupRule
@@ -26,12 +35,6 @@ type BackupRule struct {
 	// Required. Configures the duration for which backup data will be kept. It is
 	//  defined in “days”. The value should be greater than or equal to minimum
 	//  enforced retention of the backup vault.
-	//
-	//  Minimum value is 1 and maximum value is 90 for hourly backups.
-	//  Minimum value is 1 and maximum value is 90 for daily backups.
-	//  Minimum value is 7 and maximum value is 186 for weekly backups.
-	//  Minimum value is 30 and maximum value is 732 for monthly backups.
-	//  Minimum value is 365 and maximum value is 36159 for yearly backups.
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupRule.backup_retention_days
 	BackupRetentionDays *int32 `json:"backupRetentionDays,omitempty"`
 
@@ -177,7 +180,8 @@ type Any struct {
 	//
 	//  Note: this functionality is not currently available in the official
 	//  protobuf release, and it is not used for type URLs beginning with
-	//  type.googleapis.com.
+	//  type.googleapis.com. As of May 2023, there are no widely used type server
+	//  implementations and no plans to implement one.
 	//
 	//  Schemes other than `http`, `https` (or the empty scheme) might be
 	//  used with implementation specific semantics.
@@ -209,9 +213,11 @@ type Status struct {
 	Details []Any `json:"details,omitempty"`
 }
 
-// +kcc:proto=google.cloud.backupdr.v1.RuleConfigInfo
+// +kcc:observedstate:proto=google.cloud.backupdr.v1.RuleConfigInfo
 type RuleConfigInfoObservedState struct {
-	// Output only. Backup Rule id fetched from backup plan.
+	// Output only. Output Only.
+	//
+	//  Backup Rule id fetched from backup plan.
 	// +kcc:proto:field=google.cloud.backupdr.v1.RuleConfigInfo.rule_id
 	RuleID *string `json:"ruleID,omitempty"`
 
@@ -219,7 +225,9 @@ type RuleConfigInfoObservedState struct {
 	// +kcc:proto:field=google.cloud.backupdr.v1.RuleConfigInfo.last_backup_state
 	LastBackupState *string `json:"lastBackupState,omitempty"`
 
-	// Output only. google.rpc.Status object to store the last backup error.
+	// Output only. Output Only.
+	//
+	//  google.rpc.Status object to store the last backup error.
 	// +kcc:proto:field=google.cloud.backupdr.v1.RuleConfigInfo.last_backup_error
 	LastBackupError *Status `json:"lastBackupError,omitempty"`
 
@@ -229,7 +237,7 @@ type RuleConfigInfoObservedState struct {
 	LastSuccessfulBackupConsistencyTime *string `json:"lastSuccessfulBackupConsistencyTime,omitempty"`
 }
 
-// +kcc:proto=google.cloud.backupdr.v1.WorkforceIdentityBasedManagementURI
+// +kcc:observedstate:proto=google.cloud.backupdr.v1.WorkforceIdentityBasedManagementURI
 type WorkforceIdentityBasedManagementURIObservedState struct {
 	// Output only. First party Management URI for Google Identities.
 	// +kcc:proto:field=google.cloud.backupdr.v1.WorkforceIdentityBasedManagementURI.first_party_management_uri

@@ -24,7 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BackupDRBackupPlanAssociationSpec_Resource_FromProto(mapCtx *direct.MapContext, resource string, resourceType string) *krm.Resource {
+func BackupDRBackupPlanAssociationSpec_Resource_v1alpha1_FromProto(mapCtx *direct.MapContext, resource string, resourceType string) *krm.Resource {
 	if resource == "" {
 		return nil
 	}
@@ -34,7 +34,7 @@ func BackupDRBackupPlanAssociationSpec_Resource_FromProto(mapCtx *direct.MapCont
 	}
 	return out
 }
-func BackupDRBackupPlanAssociationSpec_Resource_ToProto(mapCtx *direct.MapContext, in *krm.Resource) string {
+func BackupDRBackupPlanAssociationSpec_Resource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Resource) string {
 	if in == nil {
 		return ""
 	}
@@ -43,53 +43,53 @@ func BackupDRBackupPlanAssociationSpec_Resource_ToProto(mapCtx *direct.MapContex
 	}
 	return ""
 }
-func BackupDRBackupPlanAssociationSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanAssociation) *krm.BackupDRBackupPlanAssociationSpec {
+func BackupDRBackupPlanAssociationSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlanAssociation) *krm.BackupDRBackupPlanAssociationSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.BackupDRBackupPlanAssociationSpec{}
 	// MISSING: Name
 	out.ResourceType = direct.LazyPtr(in.GetResourceType())
-	out.Resource = BackupDRBackupPlanAssociationSpec_Resource_FromProto(mapCtx, in.GetResource(), in.GetResourceType())
+	out.Resource = BackupDRBackupPlanAssociationSpec_Resource_v1alpha1_FromProto(mapCtx, in.GetResource(), in.GetResourceType())
 	if in.GetBackupPlan() != "" {
 		out.BackupPlanRef = &krm.BackupPlanRef{External: in.GetBackupPlan()}
 	}
 	return out
 }
-func BackupDRBackupPlanAssociationSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupPlanAssociationSpec) *pb.BackupPlanAssociation {
+func BackupDRBackupPlanAssociationSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupPlanAssociationSpec) *pb.BackupPlanAssociation {
 	if in == nil {
 		return nil
 	}
 	out := &pb.BackupPlanAssociation{}
 	// MISSING: Name
 	out.ResourceType = direct.ValueOf(in.ResourceType)
-	out.Resource = BackupDRBackupPlanAssociationSpec_Resource_ToProto(mapCtx, in.Resource)
+	out.Resource = BackupDRBackupPlanAssociationSpec_Resource_v1alpha1_ToProto(mapCtx, in.Resource)
 	if in.BackupPlanRef != nil {
 		out.BackupPlan = in.BackupPlanRef.External
 	}
 	return out
 }
-func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *statuspb.Status {
+func Status_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Status) *statuspb.Status {
 	if in == nil {
 		return nil
 	}
 	out := &statuspb.Status{}
 	out.Code = direct.ValueOf(in.Code)
 	out.Message = direct.ValueOf(in.Message)
-	out.Details = direct.Slice_ToProto(mapCtx, in.Details, Detail_ToProto)
+	out.Details = direct.Slice_ToProto(mapCtx, in.Details, Detail_v1alpha1_ToProto)
 	return out
 }
-func Status_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krm.Status {
+func Status_v1alpha1_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krm.Status {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Status{}
 	out.Code = direct.LazyPtr(in.GetCode())
 	out.Message = direct.LazyPtr(in.GetMessage())
-	out.Details = direct.Slice_FromProto(mapCtx, in.GetDetails(), Detail_FromProto)
+	out.Details = direct.Slice_FromProto(mapCtx, in.GetDetails(), Detail_v1alpha1_FromProto)
 	return out
 }
-func Detail_ToProto(mapCtx *direct.MapContext, in *krm.Any) *anypb.Any {
+func Detail_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Any) *anypb.Any {
 	if in == nil {
 		return nil
 	}
@@ -98,7 +98,7 @@ func Detail_ToProto(mapCtx *direct.MapContext, in *krm.Any) *anypb.Any {
 	out.Value = in.Value
 	return out
 }
-func Detail_FromProto(mapCtx *direct.MapContext, in *anypb.Any) *krm.Any {
+func Detail_v1alpha1_FromProto(mapCtx *direct.MapContext, in *anypb.Any) *krm.Any {
 	if in == nil {
 		return nil
 	}
