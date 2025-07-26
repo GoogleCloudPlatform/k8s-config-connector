@@ -451,6 +451,49 @@ func TestCRDShortNames(t *testing.T) {
 
 // Run this test with WRITE_GOLDEN_OUTPUT set to update the exceptions list.
 func TestCRDFieldPresenceInTests(t *testing.T) {
+	t.Parallel()
+
+	shouldVisitCRD := func(crd *apiextensions.CustomResourceDefinition, version string) bool {
+		kind := crd.Spec.Names.Kind
+
+		// beta/v1 requires full API coverage so it should pass this test.
+		if !strings.Contains(version, "alpha") {
+			return true
+		}
+
+		// This env allows us to run the API coverage test for a certain alpha resource.
+		if os.Getenv("TARGET_KIND") != "" && os.Getenv("TARGET_KIND") == kind {
+			return true
+		}
+
+		return false
+	}
+
+	missing := findFieldsNotCoveredByTests(t, shouldVisitCRD)
+
+	want := strings.Join(missing, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/missingfields.txt", want)
+}
+
+// Run this test with WRITE_GOLDEN_OUTPUT set to update the exceptions list.
+func TestCRDFieldPresenceInTestsForAlpha(t *testing.T) {
+	t.Parallel()
+
+	shouldVisitCRD := func(crd *apiextensions.CustomResourceDefinition, version string) bool {
+		// Only visit alpha CRDs, we don't want to duplicate the beta
+		if !strings.Contains(version, "alpha") {
+			return false
+		}
+		return true
+	}
+
+	missing := findFieldsNotCoveredByTests(t, shouldVisitCRD)
+
+	want := strings.Join(missing, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/alpha-missingfields.txt", want)
+}
+
+func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiextensions.CustomResourceDefinition, version string) bool) []string {
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
 		t.Fatalf("error loading CRDs: %v", err)
@@ -464,16 +507,31 @@ func TestCRDFieldPresenceInTests(t *testing.T) {
 
 	var errs []string
 	for _, crd := range crds {
+		// Only visit the latest version of the CRD.
+		versions := make(map[string]bool)
 		for _, version := range crd.Spec.Versions {
+			versions[version.Name] = true
+		}
+		latest := ""
+		for _, version := range []string{"v1", "v1beta1", "v1alpha1"} {
+			if versions[version] {
+				latest = version
+				break
+			}
+		}
+		if latest == "" {
+			t.Fatalf("no latest version found for crd %s", crd.Name)
+		}
+
+		for _, version := range crd.Spec.Versions {
+			if version.Name != latest {
+				continue
+			}
 
 			kind := crd.Spec.Names.Kind
 
-			// Beta requires full API coverage so it should pass this test.
-			if version.Name == "v1alpha1" {
-				// This env allows us to run the API coverage test for a certain alpha resource.
-				if os.Getenv("TARGET_KIND") == "" || os.Getenv("TARGET_KIND") != kind {
-					continue
-				}
+			if !shouldVisitCRD(&crd, version.Name) {
+				continue
 			}
 
 			visitCRDVersion(version, func(field *CRDField) {
@@ -571,8 +629,7 @@ func TestCRDFieldPresenceInTests(t *testing.T) {
 		errs = filteredErrs
 	}
 
-	want := strings.Join(errs, "\n")
-	test.CompareGoldenFile(t, "testdata/exceptions/missingfields.txt", want)
+	return errs
 }
 
 func loadOutputOnlySpecFields() (map[string]bool, error) {
