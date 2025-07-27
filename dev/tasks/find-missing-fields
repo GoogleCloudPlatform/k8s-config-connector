@@ -50,6 +50,9 @@ go test -v ./pkg/controller/direct/discoveryengine/ -fuzz=FuzzDiscoveryEngineCha
 go test -v ./pkg/controller/direct/networkconnectivity/ -fuzz=FuzzServiceConnectionPolicySpec -fuzztime 60s
 go test -v ./pkg/controller/direct/networkconnectivity/ -fuzz=FuzzServiceConnectionPolicyObservedState -fuzztime 60s
 
+go test -v ./pkg/controller/direct/networksecurity/ -fuzz=FuzzNetworkSecurityAddressGroupSpec -fuzztime 60s
+go test -v ./pkg/controller/direct/networksecurity/ -fuzz=FuzzNetworkSecurityAddressGroupObservedState -fuzztime 60s
+
 go test -v ./pkg/controller/direct/dataflow/ -fuzz=FuzzDataflowFlexTemplateJobSpec -fuzztime 60s
 
 go test -v ./pkg/controller/direct/redis/cluster/ -fuzz=FuzzRedisClusterSpec -fuzztime 60s

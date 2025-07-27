@@ -1,0 +1,274 @@
+POST https://networksecurity.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/addressGroups?alt=json&addressGroupId=org-address-group-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "capacity": 100,
+  "description": "optional description",
+  "type": "IPV4"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://networksecurity.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.AddressGroup",
+    "capacity": 100,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "optional description",
+    "name": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+    "purpose": [
+      "DEFAULT"
+    ],
+    "type": "IPV4",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networksecurity.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "capacity": 100,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "optional description",
+  "name": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+  "purpose": [
+    "DEFAULT"
+  ],
+  "type": "IPV4",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://networksecurity.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}?alt=json&updateMask=description
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "description": "New description"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://networksecurity.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.AddressGroup",
+    "capacity": 100,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "New description",
+    "name": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+    "purpose": [
+      "DEFAULT"
+    ],
+    "type": "IPV4",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networksecurity.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "capacity": 100,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "New description",
+  "name": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+  "purpose": [
+    "DEFAULT"
+  ],
+  "type": "IPV4",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://networksecurity.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://networksecurity.googleapis.com/v1/organizations/${organizationID}/locations/us-central1/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "organizations/${organizationID}/locations/us-central1/addressGroups/org-address-group-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

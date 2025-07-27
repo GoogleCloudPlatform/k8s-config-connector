@@ -50,6 +50,7 @@ gen-proto-no-fixup:
 		./apis/mockgcp/cloud/bigquery/v2/*.proto \
 		./apis/mockgcp/cloud/ids/v1/*.proto \
 		./apis/mockgcp/cloud/networkconnectivity/v1/*.proto \
+		./apis/mockgcp/cloud/networksecurity/v1/*.proto \
 		./apis/mockgcp/cloud/servicenetworking/v1/*.proto \
 		./apis/mockgcp/cloud/resourcemanager/v1/*.proto \
 		./apis/mockgcp/storage/v1/*.proto \
@@ -255,5 +256,9 @@ generate-protos-from-openapi:
 	wget -O temp/cloudidentity-api.json https://raw.githubusercontent.com/googleapis/google-api-go-client/refs/heads/main/cloudidentity/v1beta1/cloudidentity-api.json
 	mkdir -p apis/google/apps/cloudidentity/v1beta1/
 	cd tools/gapic; go run . --proto-version=2 --proto-package google.apps.cloudidentity.v1beta1 ../../temp/cloudidentity-api.json > ../../apis/google/apps/cloudidentity/v1beta1//service.proto
+
+	wget -O temp/networksecurity-api.json https://raw.githubusercontent.com/googleapis/google-api-go-client/refs/heads/main/networksecurity/v1/networksecurity-api.json
+	mkdir -p apis/mockgcp/cloud/networksecurity/v1/
+	cd tools/gapic; go run . --proto-version=2 --proto-package google.cloud.networksecurity.v1 ../../temp/networksecurity-api.json > ../../apis/mockgcp/cloud/networksecurity/v1//service.proto
 
 	rm -r temp
