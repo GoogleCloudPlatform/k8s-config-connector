@@ -117,6 +117,9 @@ func TestAllInSeries(t *testing.T) {
 					if skipTestReason != "" {
 						t.Skip(skipTestReason)
 					}
+					if s := os.Getenv("ONLY_TEST_KINDS"); s != "" {
+						t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_KINDS=%s", s)
+					}
 
 					// Record the CRDs we will use, for faster testing
 					keepCRDs := map[schema.GroupKind]bool{}
@@ -213,6 +216,12 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 				groups := strings.Split(s, ",")
 				if !slice.StringSliceContains(groups, group) {
 					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.Name, group, s)
+				}
+			}
+			if s := os.Getenv("ONLY_TEST_KINDS"); s != "" {
+				kinds := strings.Split(s, ",")
+				if !slice.StringSliceContains(kinds, fixture.GVK.Kind) {
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_KINDS=%s", fixture.Name, fixture.GVK.Kind, s)
 				}
 			}
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
