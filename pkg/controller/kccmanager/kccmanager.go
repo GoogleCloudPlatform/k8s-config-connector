@@ -166,6 +166,10 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		controllerConfig.GCPTokenSource = oauth2.StaticTokenSource(&oauth2.Token{AccessToken: cfg.GCPAccessToken})
 	}
 
+	if err := controllerConfig.Init(ctx); err != nil {
+		return nil, err
+	}
+
 	// Initialize direct controllers
 	if err := registry.Init(ctx, controllerConfig); err != nil {
 		return nil, err
