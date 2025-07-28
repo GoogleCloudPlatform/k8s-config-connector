@@ -23,9 +23,5 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
-  metricDescriptor:
-    description: A simple log metric with no metric descriptor.
-    name: projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}
-    type: logging.googleapis.com/user/logginglogmetric-${uniqueId}
   observedGeneration: 2
   updateTime: "1970-01-01T00:00:00Z"

@@ -45,16 +45,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A simple log metric with no metric descriptor.",
   "filter": "resource.type=global AND severity=INFO",
-  "metricDescriptor": {
-    "description": "A simple log metric with no metric descriptor.",
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "1",
-    "valueType": "INT64"
-  },
   "name": "logginglogmetric-${uniqueId}",
-  "resourceName": "projects/${projectId}/metrics/logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -77,16 +68,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A simple log metric with no metric descriptor.",
   "filter": "resource.type=global AND severity=INFO",
-  "metricDescriptor": {
-    "description": "A simple log metric with no metric descriptor.",
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "1",
-    "valueType": "INT64"
-  },
   "name": "logginglogmetric-${uniqueId}",
-  "resourceName": "projects/${projectId}/metrics/logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -100,16 +82,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A simple log metric with no metric descriptor.",
   "filter": "resource.type=global AND severity=INFO",
-  "metricDescriptor": {
-    "description": "A simple log metric with no metric descriptor.",
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "1",
-    "valueType": "INT64"
-  },
   "name": "logginglogmetric-${uniqueId}",
-  "resourceName": "projects/${projectId}/metrics/logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -127,16 +100,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A simple log metric with no metric descriptor.",
   "filter": "resource.type=global AND severity=INFO",
-  "metricDescriptor": {
-    "description": "A simple log metric with no metric descriptor.",
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "1",
-    "valueType": "INT64"
-  },
   "name": "logginglogmetric-${uniqueId}",
-  "resourceName": "projects/${projectId}/metrics/logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -159,16 +123,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A simple log metric with no metric descriptor.",
   "filter": "resource.type=global AND severity=INFO",
-  "metricDescriptor": {
-    "description": "A simple log metric with no metric descriptor.",
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "unit": "1",
-    "valueType": "INT64"
-  },
   "name": "logginglogmetric-${uniqueId}",
-  "resourceName": "projects/${projectId}/metrics/logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
