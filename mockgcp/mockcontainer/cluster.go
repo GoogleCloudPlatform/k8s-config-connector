@@ -65,6 +65,12 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 
 	obj := proto.Clone(req.Cluster).(*pb.Cluster)
 
+	fmt.Printf("maintenancePolicy %+v\n", obj.MaintenancePolicy)
+	if obj.MaintenancePolicy != nil {
+
+		fmt.Printf("maintenancePolicy.window %+v\n", obj.MaintenancePolicy.Window)
+	}
+
 	obj.Status = pb.Cluster_RUNNING
 
 	now := time.Now().UTC()
@@ -99,11 +105,19 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 		}
 	}
 	if obj.NetworkConfig.Subnetwork == "" {
-		obj.NetworkConfig.Subnetwork = obj.Subnetwork
 		if obj.NetworkConfig.Subnetwork == "" {
 			obj.NetworkConfig.Subnetwork = fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", name.Project.ID, region, obj.Subnetwork)
 		}
 	}
+
+	if obj.NetworkConfig.DefaultSnatStatus == nil {
+		obj.NetworkConfig.DefaultSnatStatus = &pb.DefaultSnatStatus{}
+	}
+
+	if obj.NetworkConfig.ServiceExternalIpsConfig == nil {
+		obj.NetworkConfig.ServiceExternalIpsConfig = &pb.ServiceExternalIPsConfig{}
+	}
+
 	// On output, Network and Subnetwork show the ID instead of the ful name
 	obj.Network = lastComponent(obj.Network)
 	obj.Subnetwork = lastComponent(obj.Subnetwork)
@@ -318,6 +332,39 @@ func (s *ClusterManagerV1) SetLabels(ctx context.Context, req *pb.SetLabelsReque
 	})
 }
 
+func (s *ClusterManagerV1) SetMaintenancePolicy(ctx context.Context, req *pb.SetMaintenancePolicyRequest) (*pb.Operation, error) {
+	name, err := s.parseClusterName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Cluster{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.MaintenancePolicy = req.MaintenancePolicy
+	if obj.MaintenancePolicy != nil && obj.MaintenancePolicy.GetWindow() != nil &&
+		obj.MaintenancePolicy.GetWindow().GetDailyMaintenanceWindow() != nil {
+
+		obj.MaintenancePolicy.Window.GetDailyMaintenanceWindow().Duration = "PT4H0M0S"
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		Zone:          name.Location,
+		OperationType: pb.Operation_UPDATE_CLUSTER,
+		TargetLink:    buildTargetLink(name),
+	}
+	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
 func (s *ClusterManagerV1) DeleteCluster(ctx context.Context, req *pb.DeleteClusterRequest) (*pb.Operation, error) {
 	name, err := s.parseClusterName(req.Name)
 	if err != nil {
@@ -356,8 +403,10 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 	if obj.AddonsConfig == nil {
 		obj.AddonsConfig = &pb.AddonsConfig{}
 	}
-	if obj.AddonsConfig.CloudRunConfig != nil && obj.AddonsConfig.CloudRunConfig.LoadBalancerType == pb.CloudRunConfig_LOAD_BALANCER_TYPE_UNSPECIFIED {
-		obj.AddonsConfig.CloudRunConfig.LoadBalancerType = pb.CloudRunConfig_LOAD_BALANCER_TYPE_EXTERNAL
+	if obj.AddonsConfig.CloudRunConfig != nil {
+		if obj.AddonsConfig.CloudRunConfig.LoadBalancerType == pb.CloudRunConfig_LOAD_BALANCER_TYPE_UNSPECIFIED {
+			obj.AddonsConfig.CloudRunConfig.LoadBalancerType = pb.CloudRunConfig_LOAD_BALANCER_TYPE_EXTERNAL
+		}
 	}
 	if obj.AddonsConfig.GcePersistentDiskCsiDriverConfig == nil {
 		obj.AddonsConfig.GcePersistentDiskCsiDriverConfig = &pb.GcePersistentDiskCsiDriverConfig{}
@@ -380,17 +429,58 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 	if obj.Autoscaling == nil {
 		obj.Autoscaling = &pb.ClusterAutoscaling{}
 	}
-
 	if obj.Autoscaling.AutoscalingProfile == pb.ClusterAutoscaling_PROFILE_UNSPECIFIED {
 		obj.Autoscaling.AutoscalingProfile = pb.ClusterAutoscaling_BALANCED
 	}
+	if obj.Autoscaling.EnableNodeAutoprovisioning == true {
+		if obj.Autoscaling.AutoprovisioningNodePoolDefaults == nil {
+			obj.Autoscaling.AutoprovisioningNodePoolDefaults = &pb.AutoprovisioningNodePoolDefaults{}
+		}
 
-	if obj.Autoscaling.AutoprovisioningNodePoolDefaults == nil {
-		obj.Autoscaling.AutoprovisioningNodePoolDefaults = &pb.AutoprovisioningNodePoolDefaults{}
+		if err := s.populateAutoprovisioningNodePoolDefaults(obj.Autoscaling.AutoprovisioningNodePoolDefaults); err != nil {
+			return err
+		}
 	}
 
-	if err := s.populateAutoprovisioningNodePoolDefaults(obj.Autoscaling.AutoprovisioningNodePoolDefaults); err != nil {
-		return err
+	// This field is not supported in the CRD. This is a basic defaulting based
+	// on real http logs.
+	if obj.ControlPlaneEndpointsConfig == nil {
+		obj.ControlPlaneEndpointsConfig = &pb.ControlPlaneEndpointsConfig{
+			DnsEndpointConfig: &pb.ControlPlaneEndpointsConfig_DNSEndpointConfig{
+				AllowExternalTraffic: PtrTo(false),
+				Endpoint:             fmt.Sprintf("gke-123456-${projectNumber}.%s.gke.goog", obj.Location),
+			},
+			IpEndpointsConfig: &pb.ControlPlaneEndpointsConfig_IPEndpointsConfig{
+				AuthorizedNetworksConfig: &pb.MasterAuthorizedNetworksConfig{
+					GcpPublicCidrsAccessEnabled: PtrTo(true),
+				},
+				EnablePublicEndpoint: PtrTo(true),
+				Enabled:              PtrTo(true),
+				PrivateEndpoint:      "1.2.3.4",
+				PublicEndpoint:       "32.32.32.32",
+			},
+		}
+	}
+
+	if obj.MaintenancePolicy != nil {
+		if obj.MaintenancePolicy.ResourceVersion == "" {
+			obj.MaintenancePolicy.ResourceVersion = "1234abcd"
+		}
+		if obj.MaintenancePolicy.GetWindow() != nil {
+			window := obj.MaintenancePolicy.GetWindow()
+			if len(window.MaintenanceExclusions) == 0 && window.Policy == nil {
+				obj.MaintenancePolicy.Window = nil
+			} else {
+				if obj.MaintenancePolicy.Window.GetDailyMaintenanceWindow() != nil {
+					obj.MaintenancePolicy.Window.GetDailyMaintenanceWindow().Duration = "PT4H0M0S"
+				}
+				for _, exclusion := range obj.MaintenancePolicy.Window.GetMaintenanceExclusions() {
+					if exclusion.GetOptions() == nil {
+						exclusion.Options = &pb.TimeWindow_MaintenanceExclusionOptions{}
+					}
+				}
+			}
+		}
 	}
 
 	if obj.BinaryAuthorization == nil {
