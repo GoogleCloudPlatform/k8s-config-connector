@@ -33,6 +33,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	"golang.org/x/sync/semaphore"
@@ -213,6 +214,8 @@ func (r *DirectReconciler) mapSecretToResources(ctx context.Context, obj client.
 
 // Reconcile checks k8s for the current state of the resource.
 func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Request) (result reconcile.Result, err error) {
+	ctx = metricstransport.WithControllerName(ctx, r.controllerName)
+
 	logger := log.FromContext(ctx)
 
 	logger.Info("Running reconcile", "resource", request.NamespacedName)
