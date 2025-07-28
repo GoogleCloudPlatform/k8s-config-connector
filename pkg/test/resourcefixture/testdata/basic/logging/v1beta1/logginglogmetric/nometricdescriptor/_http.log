@@ -1,0 +1,190 @@
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Metric logginglogmetric-${uniqueId} does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://logging.googleapis.com/v2/projects/${projectId}/metrics?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "A simple log metric with no metric descriptor.",
+  "filter": "resource.type=global AND severity=INFO",
+  "name": "logginglogmetric-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A simple log metric with no metric descriptor.",
+  "filter": "resource.type=global AND severity=INFO",
+  "metricDescriptor": {
+    "description": "A simple log metric with no metric descriptor.",
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
+  "name": "logginglogmetric-${uniqueId}",
+  "resourceName": "projects/${projectId}/metrics/logginglogmetric-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A simple log metric with no metric descriptor.",
+  "filter": "resource.type=global AND severity=INFO",
+  "metricDescriptor": {
+    "description": "A simple log metric with no metric descriptor.",
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
+  "name": "logginglogmetric-${uniqueId}",
+  "resourceName": "projects/${projectId}/metrics/logginglogmetric-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PUT https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A simple log metric with no metric descriptor.",
+  "filter": "resource.type=global AND severity=INFO",
+  "metricDescriptor": {
+    "description": "A simple log metric with no metric descriptor.",
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
+  "name": "logginglogmetric-${uniqueId}",
+  "resourceName": "projects/${projectId}/metrics/logginglogmetric-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A simple log metric with no metric descriptor.",
+  "filter": "resource.type=global AND severity=INFO",
+  "metricDescriptor": {
+    "description": "A simple log metric with no metric descriptor.",
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
+  "name": "logginglogmetric-${uniqueId}",
+  "resourceName": "projects/${projectId}/metrics/logginglogmetric-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A simple log metric with no metric descriptor.",
+  "filter": "resource.type=global AND severity=INFO",
+  "metricDescriptor": {
+    "description": "A simple log metric with no metric descriptor.",
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
+  "name": "logginglogmetric-${uniqueId}",
+  "resourceName": "projects/${projectId}/metrics/logginglogmetric-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
