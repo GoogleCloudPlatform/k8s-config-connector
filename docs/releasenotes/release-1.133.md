@@ -4,7 +4,7 @@
 
 # Delete the entire header if no updates.
 
-# Run [mdformat](go/mdformat) before publishing this release notes.  
+# Run [mdformat](go/mdformat) before publishing this release notes.
 
 ** This version is not yet released; this document is gathering release notes
 for the future release **
@@ -37,7 +37,6 @@ for the future release **
     *   Manage
         [connections](https://cloud.google.com/bigquery/docs/working-with-connections)
         to connect to Google services and external data sources
-
 
 ## New Alpha Resources (Direct Reconciler):
 
@@ -79,7 +78,7 @@ support (and we list some of the issues that this fixes):
 
 ## Bug Fixes:
 
-*   [SAMPLE_Issue 3007](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/3007)
-    ComputeBackendService cannot refer clientTLSPolicy due to invalid format
-    (This is a sample, your actual release note should not contain `SAMPLE_`,
-    otherwise it will be deleted)
+*   [PR#4808](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4808)
+    filtered out Kubernetes labels that are invalid for GCP in the
+    ComputeForwardingRule direct controller, ensuring backward compatibility
+    after migrating to the direct controller.
