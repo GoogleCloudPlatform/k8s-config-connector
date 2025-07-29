@@ -12,14 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var BackupDRBackupVaultGVK = GroupVersion.WithKind("BackupDRBackupVault")
+
+type BackupDRBackupVaultParent struct {
+	// +required
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
+
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
+	// Immutable.
+	// +required
+	Location string `json:"location"`
+}
 
 // BackupDRBackupVaultSpec defines the desired state of BackupDRBackupVault
 // +kcc:spec:proto=google.cloud.backupdr.v1.BackupVault
@@ -27,7 +38,7 @@ type BackupDRBackupVaultSpec struct {
 	// The BackupDRBackupVault name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	Parent `json:",inline"`
+	BackupDRBackupVaultParent `json:",inline"`
 
 	// Optional. The description of the BackupVault instance (2048 characters or
 	//  less).
@@ -149,6 +160,8 @@ type BackupDRBackupVaultObservedState struct {
 
 // BackupDRBackupVault is the Schema for the BackupDRBackupVault API
 // +k8s:openapi-gen=true
+// +kubebuilder:storageversion
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 type BackupDRBackupVault struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

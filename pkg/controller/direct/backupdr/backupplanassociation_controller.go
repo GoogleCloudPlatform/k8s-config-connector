@@ -129,7 +129,7 @@ func (a *BackupPlanAssociationAdapter) Create(ctx context.Context, createOp *dir
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	resource := BackupDRBackupPlanAssociationSpec_ToProto(mapCtx, &desired.Spec)
+	resource := BackupDRBackupPlanAssociationSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -150,7 +150,7 @@ func (a *BackupPlanAssociationAdapter) Create(ctx context.Context, createOp *dir
 	log.V(2).Info("successfully created BackupPlanAssociation", "name", a.id)
 
 	status := &krm.BackupDRBackupPlanAssociationStatus{}
-	status.ObservedState = BackupDRBackupPlanAssociationObservedState_FromProto(mapCtx, created)
+	status.ObservedState = BackupDRBackupPlanAssociationObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -169,7 +169,7 @@ func (a *BackupPlanAssociationAdapter) Update(ctx context.Context, updateOp *dir
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	resource := BackupDRBackupPlanAssociationSpec_ToProto(mapCtx, &desired.Spec)
+	resource := BackupDRBackupPlanAssociationSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -191,7 +191,7 @@ func (a *BackupPlanAssociationAdapter) Update(ctx context.Context, updateOp *dir
 
 	// still need to update status (in the event of acquiring an existing resource)
 	status := &krm.BackupDRBackupPlanAssociationStatus{}
-	status.ObservedState = BackupDRBackupPlanAssociationObservedState_FromProto(mapCtx, a.actual)
+	status.ObservedState = BackupDRBackupPlanAssociationObservedState_v1alpha1_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -208,7 +208,7 @@ func (a *BackupPlanAssociationAdapter) Export(ctx context.Context) (*unstructure
 
 	obj := &krm.BackupDRBackupPlanAssociation{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(BackupDRBackupPlanAssociationSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(BackupDRBackupPlanAssociationSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

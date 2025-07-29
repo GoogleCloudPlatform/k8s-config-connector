@@ -21,13 +21,14 @@ package backupdr
 import (
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 	monthpb "google.golang.org/genproto/googleapis/type/month"
 )
 
-func StandardSchedule_ToProto(mapCtx *direct.MapContext, in *krm.StandardSchedule) *pb.StandardSchedule {
+func StandardSchedule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.StandardSchedule) *pb.StandardSchedule {
 	if in == nil {
 		return nil
 	}
@@ -36,13 +37,13 @@ func StandardSchedule_ToProto(mapCtx *direct.MapContext, in *krm.StandardSchedul
 	out.HourlyFrequency = direct.ValueOf(in.HourlyFrequency)
 	out.DaysOfWeek = direct.EnumSlice_ToProto[dayofweekpb.DayOfWeek](mapCtx, in.DaysOfWeek)
 	out.DaysOfMonth = in.DaysOfMonth
-	out.WeekDayOfMonth = WeekDayOfMonth_ToProto(mapCtx, in.WeekDayOfMonth)
+	out.WeekDayOfMonth = WeekDayOfMonth_v1alpha1_ToProto(mapCtx, in.WeekDayOfMonth)
 	out.Months = direct.EnumSlice_ToProto[monthpb.Month](mapCtx, in.Months)
-	out.BackupWindow = BackupWindow_ToProto(mapCtx, in.BackupWindow)
+	out.BackupWindow = BackupWindow_v1alpha1_ToProto(mapCtx, in.BackupWindow)
 	out.TimeZone = direct.ValueOf(in.TimeZone)
 	return out
 }
-func WeekDayOfMonth_ToProto(mapCtx *direct.MapContext, in *krm.WeekDayOfMonth) *pb.WeekDayOfMonth {
+func WeekDayOfMonth_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.WeekDayOfMonth) *pb.WeekDayOfMonth {
 	if in == nil {
 		return nil
 	}
@@ -51,7 +52,7 @@ func WeekDayOfMonth_ToProto(mapCtx *direct.MapContext, in *krm.WeekDayOfMonth) *
 	out.DayOfWeek = direct.Enum_ToProto[dayofweekpb.DayOfWeek](mapCtx, in.DayOfWeek)
 	return out
 }
-func BackupDRBackupPlanSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krm.BackupDRBackupPlanSpec {
+func BackupDRBackupPlanSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackupPlan) *krm.BackupDRBackupPlanSpec {
 	if in == nil {
 		return nil
 	}
@@ -59,17 +60,17 @@ func BackupDRBackupPlanSpec_FromProto(mapCtx *direct.MapContext, in *pb.BackupPl
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Labels = in.Labels
-	out.BackupRules = direct.Slice_FromProto(mapCtx, in.BackupRules, BackupRule_FromProto)
+	out.BackupRules = direct.Slice_FromProto(mapCtx, in.BackupRules, BackupRule_v1alpha1_FromProto)
 	out.ResourceType = direct.LazyPtr(in.GetResourceType())
 	out.Etag = direct.LazyPtr(in.GetEtag())
 	if in.GetBackupVault() != "" {
-		out.BackupVaultRef = &krm.BackupVaultRef{
+		out.BackupVaultRef = &krmv1beta1.BackupVaultRef{
 			External: in.GetBackupVault(),
 		}
 	}
 	return out
 }
-func BackupDRBackupPlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupPlanSpec) *pb.BackupPlan {
+func BackupDRBackupPlanSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupPlanSpec) *pb.BackupPlan {
 	if in == nil {
 		return nil
 	}
@@ -77,7 +78,7 @@ func BackupDRBackupPlanSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRB
 	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
 	out.Labels = in.Labels
-	out.BackupRules = direct.Slice_ToProto(mapCtx, in.BackupRules, BackupRule_ToProto)
+	out.BackupRules = direct.Slice_ToProto(mapCtx, in.BackupRules, BackupRule_v1alpha1_ToProto)
 	out.ResourceType = direct.ValueOf(in.ResourceType)
 	out.Etag = direct.ValueOf(in.Etag)
 	if in.BackupVaultRef != nil {

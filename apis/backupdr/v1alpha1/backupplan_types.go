@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -64,7 +65,7 @@ type BackupDRBackupPlanSpec struct {
 	//  location for backups.
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.backup_vault
 	// +required
-	BackupVaultRef *BackupVaultRef `json:"backupVaultRef,omitempty"`
+	BackupVaultRef *v1beta1.BackupVaultRef `json:"backupVaultRef,omitempty"`
 }
 
 // BackupDRBackupPlanStatus defines the config connector machine state of BackupDRBackupPlan
