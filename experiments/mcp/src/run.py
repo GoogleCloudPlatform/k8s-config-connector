@@ -15,13 +15,16 @@
 import argparse
 import asyncio
 import os
+import subprocess
 from server import MCPForGKEServer
 
 
 def main():
     KUBE_CONFIG_DEFAULT_LOCATION = os.environ.get('KUBECONFIG', '~/.kube/config')
+    MCPWorkDir = os.environ.get('MCPWorkDir', subprocess.check_output(['git', 'rev-parse', '--show-toplevel'], text=True).strip())
 
-    server = MCPForGKEServer(kubeconfig=KUBE_CONFIG_DEFAULT_LOCATION)
+    print(f"Using MCPWorkDir: {MCPWorkDir}")
+    server = MCPForGKEServer(kubeconfig=KUBE_CONFIG_DEFAULT_LOCATION, absDir=MCPWorkDir)
     server.run(transport='stdio')
 
 

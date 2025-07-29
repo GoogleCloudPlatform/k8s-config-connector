@@ -29,8 +29,10 @@ from pkg import openapi2jsonschema
 from pkg import promotion
 
 class MCPForGKEServer(FastMCP):
-    def __init__(self, kubeconfig: str):
+    def __init__(self, kubeconfig: str, absDir: str):
         super().__init__()
+        
+        self.absDir = absDir
         
         self.criteria = self.load_criteria()
         api_criteria = self.criteria.get("api", {})
@@ -165,13 +167,13 @@ This tool is not good for the case if there are other v1alpha1 resources in the 
 
     def load_criteria(self):
         criteria = {}
-        criteria_dir = "criteria"
-        if not os.path.exists(criteria_dir):
-            # Fallback to an absolute path
-            # This is useful when the script is not run from the root of the project
-            # TODO: make this more robust
-            criteria_dir = os.path.join(os.getcwd(), "criteria")
-        
+        try:
+            criteria_dir = os.path.join(self.absDir, 'experiments/mcp/criteria')
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            # Fallback if git is not available or not in a git repo
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            criteria_dir = os.path.join(script_dir, "..", "criteria")
+
         if os.path.exists(criteria_dir):
             for filename in os.listdir(criteria_dir):
                 if filename.endswith(".json"):
@@ -250,7 +252,7 @@ This tool is not good for the case if there are other v1alpha1 resources in the 
             kind: The kind of the resource to promote. For example: `APIQuotaAdjusterSettings`.
             targetVersion: The target version to promote to. For example: `v1beta1`.
         """
-        candidates_json_path = 'experiments/promoter/results/candidates.json'
+        candidates_json_path = os.path.join(self.absDir, 'experiments/promoter/results/candidates.json')
         with open(candidates_json_path, 'r') as f:
             candidates = json.load(f)
         
@@ -449,7 +451,7 @@ Return only YAML: Your final output should be only the generated YAML content, w
             # read CRD from path
             files = openapi2jsonschema.run(crd_path)
             for file in files:
-                abspath = os.path.join(os.getcwd(), file)
+                abspath = os.path.join(self.absDir, file)
                 if not os.path.exists(abspath):
                     raise ValueError(f"Error: Generated schema file not found at '{abspath}'")
                 
@@ -512,11 +514,11 @@ Return only YAML: Your final output should be only the generated YAML content, w
             apiPath: The path to the API definition file. For example: `apis/cloudquota/v1alpha1/quotaadjustersettings_types.go`.
             targetVersion: The target version to promote to. For example: `v1beta1`.
         """
-        result = promotion.promote_api_file(apiPath, targetVersion)
+        result = promotion.promote_api_file(apiPath, targetVersion, self.absDir)
         if "error" in result:
             return result
         
-        validation_result = promotion.validate_promotion(apiPath, targetVersion)
+        validation_result = promotion.validate_promotion(apiPath, targetVersion, self.absDir)
         if "error" in validation_result:
             return validation_result
             
@@ -601,7 +603,7 @@ By following these steps, you can handle complex API promotions with cross-versi
             apiPath: The path to the API definition file. For example: `apis/cloudquota/v1alpha1/quotaadjustersettings_types.go`.
             targetVersion: The target version to promote to. For example: `v1beta1`.
         """
-        validation_result = promotion.validate_promotion(apiPath, targetVersion)
+        validation_result = promotion.validate_promotion(apiPath, targetVersion, self.absDir)
         if "error" in validation_result:
             return validation_result
         
@@ -629,16 +631,16 @@ By following these steps, you can handle complex API promotions with cross-versi
         kind = promotion.get_kind_from_path(apiPath)
         controller_dir = os.path.dirname(controllerPath)
         
-        abs_controller_dir = promotion.to_abs_path(controller_dir)
+        abs_controller_dir = promotion.to_abs_path(controller_dir, self.absDir)
         controller_files = [f for f in os.listdir(abs_controller_dir) if f.endswith('_controller.go')]
 
         if len(controller_files) > 1:
             # Mixed versions case
-            promotion.split_controller_imports(controller_dir, kind, targetVersion, service, go_module)
+            promotion.split_controller_imports(controller_dir, kind, targetVersion, service, go_module, self.absDir)
             result = {"new_controller_path": controllerPath}
         else:
             # Simple case
-            result = promotion.promote_controller_file(controllerPath, apiPath, targetVersion, go_module)
+            result = promotion.promote_controller_file(controllerPath, apiPath, targetVersion, go_module, self.absDir)
 
         if "error" in result:
             return result
@@ -651,7 +653,7 @@ By following these steps, you can handle complex API promotions with cross-versi
         Args:
             controllerPath: The path to the controller file. For example: `pkg/controller/direct/cloudquota/quotaadjustersettings_controller.go`.
         """
-        validation_result = promotion.validate_controller_compilation(controllerPath)
+        validation_result = promotion.validate_controller_compilation(controllerPath, self.absDir)
         if "error" in validation_result:
             return validation_result
 
@@ -722,11 +724,11 @@ By following these steps, you can correctly refactor the controller to handle mi
             kind: The kind of the resource. For example: `APIQuotaAdjusterSettings`.
             targetVersion: The target version to promote to. For example: `v1beta1`.
         """
-        result = promotion.promote_test_fixture(testFixturePath, targetVersion)
+        result = promotion.promote_test_fixture(testFixturePath, targetVersion, self.absDir)
         if "error" in result:
             return result
 
-        validation_result = promotion.validate_test_fixture(kind)
+        validation_result = promotion.validate_test_fixture(kind, self.absDir)
         if "error" in validation_result:
             return validation_result
 
