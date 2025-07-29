@@ -65,12 +65,6 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 
 	obj := proto.Clone(req.Cluster).(*pb.Cluster)
 
-	fmt.Printf("maintenancePolicy %+v\n", obj.MaintenancePolicy)
-	if obj.MaintenancePolicy != nil {
-
-		fmt.Printf("maintenancePolicy.window %+v\n", obj.MaintenancePolicy.Window)
-	}
-
 	obj.Status = pb.Cluster_RUNNING
 
 	now := time.Now().UTC()
@@ -397,10 +391,9 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 	if obj.AddonsConfig == nil {
 		obj.AddonsConfig = &pb.AddonsConfig{}
 	}
-	if obj.AddonsConfig.CloudRunConfig != nil {
-		if obj.AddonsConfig.CloudRunConfig.LoadBalancerType == pb.CloudRunConfig_LOAD_BALANCER_TYPE_UNSPECIFIED {
-			obj.AddonsConfig.CloudRunConfig.LoadBalancerType = pb.CloudRunConfig_LOAD_BALANCER_TYPE_EXTERNAL
-		}
+	if obj.AddonsConfig.CloudRunConfig != nil &&
+		obj.AddonsConfig.CloudRunConfig.LoadBalancerType == pb.CloudRunConfig_LOAD_BALANCER_TYPE_UNSPECIFIED {
+		obj.AddonsConfig.CloudRunConfig.LoadBalancerType = pb.CloudRunConfig_LOAD_BALANCER_TYPE_EXTERNAL
 	}
 	if obj.AddonsConfig.GcePersistentDiskCsiDriverConfig == nil {
 		obj.AddonsConfig.GcePersistentDiskCsiDriverConfig = &pb.GcePersistentDiskCsiDriverConfig{}
