@@ -407,7 +407,7 @@ func ListMatchingSamples(t *testing.T, regex *regexp.Regexp) []SampleKey {
 
 						if strings.HasSuffix(apiGroup, ".cnrm.cloud.google.com") {
 							service := strings.TrimSuffix(apiGroup, ".cnrm.cloud.google.com")
-							if strings.Contains(path, "/"+service+"/") {
+							if strings.Contains(path, service) {
 								shouldPrepend = true
 							}
 						}
