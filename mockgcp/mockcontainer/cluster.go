@@ -88,26 +88,20 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 	obj.SelfLink = fmt.Sprintf("https://container.googleapis.com/v1beta1/projects/%s/locations/%s/clusters/%s", name.Project.ID, name.Location, name.Cluster)
 	obj.SelfLink = AsZonalLink(obj.SelfLink)
 
-	if obj.Network == "" {
-		obj.Network = "default"
-	}
-	if obj.Subnetwork == "" {
-		obj.Subnetwork = "default"
-	}
-
 	if obj.NetworkConfig == nil {
 		obj.NetworkConfig = &pb.NetworkConfig{}
 	}
-	if obj.NetworkConfig.Network == "" {
+	if obj.Network == "" && obj.NetworkConfig.Network == "" {
+		obj.Network = "default"
+		obj.NetworkConfig.Network = "default"
+	} else if obj.Network != "" && obj.NetworkConfig.Network == "" {
 		obj.NetworkConfig.Network = obj.Network
-		if obj.NetworkConfig.Network == "" {
-			obj.NetworkConfig.Network = "default"
-		}
 	}
-	if obj.NetworkConfig.Subnetwork == "" {
-		if obj.NetworkConfig.Subnetwork == "" {
-			obj.NetworkConfig.Subnetwork = fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", name.Project.ID, region, obj.Subnetwork)
-		}
+	if obj.Subnetwork == "" && obj.NetworkConfig.Subnetwork == "" {
+		obj.Subnetwork = "default"
+		obj.NetworkConfig.Subnetwork = fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", name.Project.ID, region, obj.Subnetwork)
+	} else if obj.Subnetwork != "" && obj.NetworkConfig.Subnetwork == "" {
+		obj.NetworkConfig.Subnetwork = obj.Subnetwork
 	}
 
 	if obj.NetworkConfig.DefaultSnatStatus == nil {
@@ -118,7 +112,7 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 		obj.NetworkConfig.ServiceExternalIpsConfig = &pb.ServiceExternalIPsConfig{}
 	}
 
-	// On output, Network and Subnetwork show the ID instead of the ful name
+	// On output, Network and Subnetwork show the ID instead of the full name
 	obj.Network = lastComponent(obj.Network)
 	obj.Subnetwork = lastComponent(obj.Subnetwork)
 
