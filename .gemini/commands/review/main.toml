@@ -1,10 +1,10 @@
 # In: ~/.gemini/commands/review/main.toml
-# Invoked via: /review:main "Pull/4860"
+# Invoked via: /review:main "4860"
 # Gemini custom command docs can be found at https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/commands.md#toml-file-format-v1
 
 description = "Flag any review concerns that Gemini can discern."
 prompt = """
-Please analyze the git pull request which can be found here: https://github.com/GoogleCloudPlatform/k8s-config-connector/{{args}}.
+Please analyze the git pull request which can be found here: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/{{args}}
 
 ## AI Pull Request Review Assistant
 
@@ -22,6 +22,8 @@ analysis and a list of specific concerns.
 **DO NOT** attempt to post any comments to the PR on my behalf.
 
 ### 2. Information Gathering
+
+Please call the URL specified above to get the details of the pull request. Please print the URL you are accessing before you call it.
 
 Gather the full context of the PR linked above. You must analyze the PR description,
 comments from all contributors, and the code changes (`diff`). Cross-reference the changes with
