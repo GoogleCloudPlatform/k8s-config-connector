@@ -61,6 +61,10 @@ toc:
   section:
   - title: "ArtifactRegistryRepository"
     path: /config-connector/docs/reference/resource-docs/artifactregistry/artifactregistryrepository.md
+- title: "Backup and DR"
+  section:
+  - title: "BackupDRBackupPlanAssociation"
+    path: /config-connector/docs/reference/resource-docs/backupdr/backupdrbackupplanassociation.md
 - title: "BigQueryAnalyticsHub"
   section:
   - title: "BigQueryAnalyticsHubDataExchange"

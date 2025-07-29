@@ -16,7 +16,7 @@
 // proto.service: google.cloud.backupdr.v1.BackupDR
 // proto.message: google.cloud.backupdr.v1.BackupPlanAssociation
 // crd.type: BackupDRBackupPlanAssociation
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package backupdr
 
@@ -25,7 +25,7 @@ import (
 	"fmt"
 	"reflect"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -252,7 +252,6 @@ func (a *BackupPlanAssociationAdapter) Delete(ctx context.Context, deleteOp *dir
 
 func (a *BackupPlanAssociationAdapter) normalizeReferenceFields(ctx context.Context) error {
 	obj := a.desired
-
 	if obj.Spec.BackupPlanRef != nil {
 		if _, err := obj.Spec.BackupPlanRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
 			return err

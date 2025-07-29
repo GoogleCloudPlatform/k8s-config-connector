@@ -123,6 +123,10 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"VertexAIMetadataStore",
 		"AppHubApplication",
 		"SpannerBackupSchedule",
+		"BackupDRBackupPlan",
+		"BackupDRBackupPlanAssociation",
+		"BackupDRBackupVault",
+		"BackupDRManagementServer",
 	}
 	return slices.Contains(pureDirectResources, gk.Kind)
 }

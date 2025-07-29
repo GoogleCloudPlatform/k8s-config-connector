@@ -19,7 +19,8 @@ import (
 	statuspb "google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/protobuf/types/known/anypb"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
 	compute "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -52,7 +53,7 @@ func BackupDRBackupPlanAssociationSpec_FromProto(mapCtx *direct.MapContext, in *
 	out.ResourceType = direct.LazyPtr(in.GetResourceType())
 	out.Resource = BackupDRBackupPlanAssociationSpec_Resource_FromProto(mapCtx, in.GetResource(), in.GetResourceType())
 	if in.GetBackupPlan() != "" {
-		out.BackupPlanRef = &krm.BackupPlanRef{External: in.GetBackupPlan()}
+		out.BackupPlanRef = &krmv1alpha1.BackupPlanRef{External: in.GetBackupPlan()}
 	}
 	return out
 }
@@ -69,7 +70,7 @@ func BackupDRBackupPlanAssociationSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	}
 	return out
 }
-func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *statuspb.Status {
+func Status_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Status) *statuspb.Status {
 	if in == nil {
 		return nil
 	}
@@ -79,17 +80,17 @@ func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *statuspb.Status 
 	out.Details = direct.Slice_ToProto(mapCtx, in.Details, Detail_ToProto)
 	return out
 }
-func Status_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krm.Status {
+func Status_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krmv1alpha1.Status {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Status{}
+	out := &krmv1alpha1.Status{}
 	out.Code = direct.LazyPtr(in.GetCode())
 	out.Message = direct.LazyPtr(in.GetMessage())
 	out.Details = direct.Slice_FromProto(mapCtx, in.GetDetails(), Detail_FromProto)
 	return out
 }
-func Detail_ToProto(mapCtx *direct.MapContext, in *krm.Any) *anypb.Any {
+func Detail_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Any) *anypb.Any {
 	if in == nil {
 		return nil
 	}
@@ -98,11 +99,11 @@ func Detail_ToProto(mapCtx *direct.MapContext, in *krm.Any) *anypb.Any {
 	out.Value = in.Value
 	return out
 }
-func Detail_FromProto(mapCtx *direct.MapContext, in *anypb.Any) *krm.Any {
+func Detail_FromProto(mapCtx *direct.MapContext, in *anypb.Any) *krmv1alpha1.Any {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Any{}
+	out := &krmv1alpha1.Any{}
 	out.TypeURL = direct.LazyPtr(in.GetTypeUrl())
 	out.Value = in.GetValue()
 	return out
