@@ -79,3 +79,8 @@ write the `_http.log` (env var `WRITE_GOLDEN_OUTPUT=1`), and then commit this.
 We then run the tests again against our mockgcp emulation/testing layer for GCP (env var `E2E_GCP_TARGET=mock`),
 and often we have to improve our mockgcp layer or the normalization to get the results to be the same.
 We have two scripts `hack/record-gcp` and `hack/compare-mock` to help streamline this process.
+
+
+# Task-specific instructions
+
+`docs/ai/promote-resource.md` describes how to promote a resource from alpha to beta.
