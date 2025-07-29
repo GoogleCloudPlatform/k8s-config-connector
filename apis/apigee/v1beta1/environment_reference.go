@@ -18,7 +18,8 @@ import (
 	"context"
 	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -27,7 +28,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &ApigeeEnvironmentRef{}
+var _ reference.Reference = &ApigeeEnvironmentRef{}
 
 // ApigeeEnvironmentRef is a reference to a ApigeeEnvironment resource.
 type ApigeeEnvironmentRef struct {
@@ -61,7 +62,7 @@ func (r *ApigeeEnvironmentRef) SetExternal(ref string) {
 	r.External = ref
 }
 
-func (r *ApigeeEnvironmentRef) ValidateExternal(ref string) error {
+func (r *ApigeeEnvironmentRef) ValidateExternal() error {
 	id := &ApigeeEnvironmentIdentity{}
 	if err := id.FromExternal(r.GetExternal()); err != nil {
 		return err

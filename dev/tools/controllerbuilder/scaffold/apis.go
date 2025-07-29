@@ -119,7 +119,7 @@ func (a *APIScaffolder) AddIdentityFile(resource options.Resource) error {
 }
 
 func scaffoldRefsFile(path string, cArgs *apis.APIArgs) error {
-	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(apis.RefsHeaderTemplate)
+	tmpl, err := template.New(cArgs.Kind).Funcs(funcMap).Parse(apis.ReferenceTemplate)
 	if err != nil {
 		return fmt.Errorf("parse %s_reference.go template: %w", strings.ToLower(cArgs.ProtoResource), err)
 	}

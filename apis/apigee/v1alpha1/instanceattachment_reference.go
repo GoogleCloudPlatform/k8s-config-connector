@@ -17,14 +17,14 @@ package v1alpha1
 import (
 	"context"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &ApigeeInstanceAttachmentRef{}
+var _ reference.Reference = &ApigeeInstanceAttachmentRef{}
 
 // ApigeeInstanceAttachmentRef is a reference to a ApigeeInstanceAttachment resource.
 type ApigeeInstanceAttachmentRef struct {
@@ -58,7 +58,7 @@ func (r *ApigeeInstanceAttachmentRef) SetExternal(ref string) {
 	r.External = ref
 }
 
-func (r *ApigeeInstanceAttachmentRef) ValidateExternal(ref string) error {
+func (r *ApigeeInstanceAttachmentRef) ValidateExternal() error {
 	id := &ApigeeInstanceAttachmentIdentity{}
 	if err := id.FromExternal(r.GetExternal()); err != nil {
 		return err
@@ -67,5 +67,5 @@ func (r *ApigeeInstanceAttachmentRef) ValidateExternal(ref string) error {
 }
 
 func (r *ApigeeInstanceAttachmentRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+	return reference.Normalize(ctx, reader, r, defaultNamespace)
 }
