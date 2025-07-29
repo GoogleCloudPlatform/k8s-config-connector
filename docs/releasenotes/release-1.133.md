@@ -67,6 +67,14 @@ support (and we list some of the issues that this fixes):
         ENTERPRISE_PLUS.
     *   Supports "creating from clone" via `spec.cloneSource`
 
+## Modified Beta Reconciliation
+
+We migrated the following resources from the Terraform-based or DCL-based controller to the new Direct Controller. The resource CRD is unchanged.
+
+*  `BigQueryTable`
+  * You can use the `alpha.cnrm.cloud.google.com/reconciler: direct` annotation on the `BigQueryTable` CR object to opt-in the direct controller.
+  * The direct controller also supports adding BigQueryDataPolicies directly to BigQueryTable columns within `spec.schema`.
+
 ## New features:
 
 *   SAMPLE_Add cluster mode ... (This is a sample, your actual release note
