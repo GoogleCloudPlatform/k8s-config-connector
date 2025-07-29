@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
+	backupdrv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
 	compute "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
@@ -38,7 +39,7 @@ type BackupDRBackupPlanAssociationSpec struct {
 	// The BackupDRBackupPlanAssociation name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	Parent `json:",inline"`
+	backupdrv1alpha1.Parent `json:",inline"`
 
 	// Required. Immutable. Resource type of workload on which backupplan is
 	//  applied
@@ -56,7 +57,7 @@ type BackupDRBackupPlanAssociationSpec struct {
 	//  workload.
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.backup_plan
 	// +required
-	BackupPlanRef *BackupPlanRef `json:"backupPlanRef,omitempty"`
+	BackupPlanRef *backupdrv1alpha1.BackupPlanRef `json:"backupPlanRef,omitempty"`
 }
 
 // BackupDRBackupPlanAssociationStatus defines the config connector machine state of BackupDRBackupPlanAssociation
@@ -110,9 +111,10 @@ type BackupDRBackupPlanAssociationObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:storageversion
 // +kubebuilder:resource:categories=gcp,shortName=gcpbackupdrbackupplanassociation;gcpbackupdrbackupplanassociations
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

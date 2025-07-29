@@ -19,7 +19,8 @@ import (
 	statuspb "google.golang.org/genproto/googleapis/rpc/status"
 	"google.golang.org/protobuf/types/known/anypb"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
 	compute "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -52,7 +53,7 @@ func BackupDRBackupPlanAssociationSpec_FromProto(mapCtx *direct.MapContext, in *
 	out.ResourceType = direct.LazyPtr(in.GetResourceType())
 	out.Resource = BackupDRBackupPlanAssociationSpec_Resource_FromProto(mapCtx, in.GetResource(), in.GetResourceType())
 	if in.GetBackupPlan() != "" {
-		out.BackupPlanRef = &krm.BackupPlanRef{External: in.GetBackupPlan()}
+		out.BackupPlanRef = &krmv1alpha1.BackupPlanRef{External: in.GetBackupPlan()}
 	}
 	return out
 }
