@@ -684,7 +684,7 @@ X-Goog-Request-Params: backup_schedule.name=projects%2F${projectId}%2Finstances%
   "encryptionConfig": {
     "encryptionType": 2
   },
-  "fullBackupSpec": {},
+  "incrementalBackupSpec": {},
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}",
   "retentionDuration": "1000000s",
   "spec": {

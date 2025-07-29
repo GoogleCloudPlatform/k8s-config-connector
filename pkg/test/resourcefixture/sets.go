@@ -122,6 +122,7 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"SpeechRecognizer",
 		"VertexAIMetadataStore",
 		"AppHubApplication",
+		"SpannerBackupSchedule",
 	}
 	return slices.Contains(pureDirectResources, gk.Kind)
 }
