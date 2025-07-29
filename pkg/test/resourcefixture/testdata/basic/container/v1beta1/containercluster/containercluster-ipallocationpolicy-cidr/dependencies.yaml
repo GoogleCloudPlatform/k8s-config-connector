@@ -24,18 +24,20 @@ kind: ComputeSubnetwork
 metadata:
   name: computesubnetwork-${uniqueId}
 spec:
-  ipCidrRange: 10.0.0.0/16
   networkRef:
     name: computenetwork-${uniqueId}
-  location: us-central1
-  privateIpGoogleAccess: true
+  ipCidrRange: "10.0.0.0/16"
+  region: us-west4
   secondaryIpRange:
-    - rangeName: computesubnetwork-${uniqueId}-secondary-0
-      ipCidrRange: 192.168.0.0/16
-    - rangeName: computesubnetwork-${uniqueId}-secondary-1
-      ipCidrRange: 192.168.1.0/16
-    - rangeName: computesubnetwork-${uniqueId}-secondary-2
-      ipCidrRange: 192.168.2.0/16
-    - rangeName: computesubnetwork-${uniqueId}-secondary-3
-      ipCidrRange: 192.168.3.0/16
-  stackType: IPV4_IPV6
+#    - rangeName: "pods"
+#      ipCidrRange: "10.1.0.0/16"
+#    - rangeName: "services"
+#      ipCidrRange: "10.2.0.0/20"
+    - rangeName: "pod-range-1"
+      ipCidrRange: "10.4.0.0/22"
+    - rangeName: "pod-range-2"
+      ipCidrRange: "10.5.0.0/22"
+    - rangeName: "pod-range-3"
+      ipCidrRange: "10.6.0.0/22"
+    - rangeName: "pod-range-4"
+      ipCidrRange: "10.7.0.0/22"

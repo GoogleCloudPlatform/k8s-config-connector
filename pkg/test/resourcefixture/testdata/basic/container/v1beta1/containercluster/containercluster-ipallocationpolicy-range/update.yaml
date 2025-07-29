@@ -24,14 +24,10 @@ spec:
   subnetworkRef:
     name: computesubnetwork-${uniqueId}
   ipAllocationPolicy:
-    clusterIpv4CidrBlock: "10.1.0.0/16"
-    servicesIpv4CidrBlock: "10.2.0.0/20"
     clusterSecondaryRangeName: "pods"
     servicesSecondaryRangeName: "services"
     additionalPodRangesConfig:
       podRangeNames:
-      - "pod-range-1"
-      - "pod-range-2"
-    podCidrOverprovisionConfig:
-      disabled: false
+        - "pod-range-3"
+        - "pod-range-4"
     stackType: "IPV4"

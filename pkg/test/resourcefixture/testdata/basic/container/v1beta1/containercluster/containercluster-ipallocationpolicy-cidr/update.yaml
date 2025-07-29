@@ -17,21 +17,17 @@ kind: ContainerCluster
 metadata:
   name: containercluster-${uniqueId}
 spec:
-  projectRef:
-    external: ${projectId}
-  location: us-central1
+  location: us-west4
   initialNodeCount: 1
   networkRef:
     name: computenetwork-${uniqueId}
   subnetworkRef:
     name: computesubnetwork-${uniqueId}
   ipAllocationPolicy:
-    clusterSecondaryRangeName: "computesubnetwork-${uniqueId}-secondary-0"
-    servicesSecondaryRangeName: "computesubnetwork-${uniqueId}-secondary-1"
-    stackType: IPV4_IPV6
-    podCidrOverprovisionConfig:
-      disabled: false
+    clusterIpv4CidrBlock: "10.1.0.0/16"
+    servicesIpv4CidrBlock: "10.2.0.0/20"
     additionalPodRangesConfig:
       podRangeNames:
-        - "computesubnetwork-${uniqueId}-secondary-2"
-        - "computesubnetwork-${uniqueId}-secondary-3"
+        - "pod-range-3"
+        - "pod-range-4"
+    stackType: "IPV4"

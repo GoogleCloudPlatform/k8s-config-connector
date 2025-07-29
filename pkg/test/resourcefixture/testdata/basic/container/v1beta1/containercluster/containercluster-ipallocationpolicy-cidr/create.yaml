@@ -17,20 +17,25 @@ kind: ContainerCluster
 metadata:
   name: containercluster-${uniqueId}
 spec:
-  location: us-central1
+  location: us-west4
   initialNodeCount: 1
   networkRef:
     name: computenetwork-${uniqueId}
   subnetworkRef:
     name: computesubnetwork-${uniqueId}
   ipAllocationPolicy:
-    clusterIpv4CidrBlock: /14
-    clusterSecondaryRangeName: computesubnetwork-${uniqueId}-2
-    servicesIpv4CidrBlock: /20
-    servicesSecondaryRangeName: computesubnetwork-${uniqueId}-1
-    stackType: IPV4_IPV6
-    podCidrOverprovisionConfig:
-      disabled: false
+    clusterIpv4CidrBlock: "10.1.0.0/16"
+    servicesIpv4CidrBlock: "10.2.0.0/20"
+# cluster_ipv4_cidr=10.1.0.0/16 and cluster_secondary_range_name=pods cannot be specified at the same time
+#    clusterSecondaryRangeName: "pods"
+# services_ipv4_cidr=10.2.0.0/20 and services_secondary_range_name=services cannot be specified at the same time
+#    servicesSecondaryRangeName: "services"
     additionalPodRangesConfig:
       podRangeNames:
-        - computesubnetwork-${uniqueId}-3
+        - "pod-range-1"
+        - "pod-range-2"
+# Error 400: Disabling pod cidr overprovision is not allowed for this project.
+# Project needs to be allowlisted to enable this feature.
+#    podCidrOverprovisionConfig:
+#      disabled: true
+    stackType: "IPV4"
