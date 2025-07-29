@@ -16,6 +16,8 @@ apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
 kind: CloudIdentityGroup
 metadata:
   name: cloudidentitygroup-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   displayName: Cloud Identity Group Name
   description: This is a test CloudIdentityGroup.
@@ -25,10 +27,13 @@ spec:
   labels:
     cloudidentity.googleapis.com/groups.discussion_forum: ""
 ---
+# Create a CloudIdentityMembership resource.
 apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
 kind: CloudIdentityMembership
 metadata:
   name: cloudidentitymembership-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   groupRef:
     name: cloudidentitygroup-${uniqueId}
@@ -37,11 +42,15 @@ spec:
   roles:
     - name: MEMBER
 ---
+# Abandon and acquire the resource by adding `spec.resourceID` in the YAML.
+# # With direct reconciliation we no longer write the server generated ID to spec.resourceID, so the value ${TEST_GENERATED_ID} is retrieved from `status.externalRef` in _object01.yaml.
 TEST: ABANDON-AND-REACQUIRE-WITH-GENERATED-ID
 apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
 kind: CloudIdentityMembership
 metadata:
   name: cloudidentitymembership-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   resourceID: ${TEST_GENERATED_ID}
   groupRef:
