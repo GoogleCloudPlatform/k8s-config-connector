@@ -70,7 +70,7 @@ func BackupDRBackupPlanAssociationSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	}
 	return out
 }
-func Status_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Status) *statuspb.Status {
+func Status_ToProto(mapCtx *direct.MapContext, in *krm.Status) *statuspb.Status {
 	if in == nil {
 		return nil
 	}
@@ -80,17 +80,17 @@ func Status_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Status) *statuspb
 	out.Details = direct.Slice_ToProto(mapCtx, in.Details, Detail_ToProto)
 	return out
 }
-func Status_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krmv1alpha1.Status {
+func Status_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krm.Status {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.Status{}
+	out := &krm.Status{}
 	out.Code = direct.LazyPtr(in.GetCode())
 	out.Message = direct.LazyPtr(in.GetMessage())
 	out.Details = direct.Slice_FromProto(mapCtx, in.GetDetails(), Detail_FromProto)
 	return out
 }
-func Detail_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Any) *anypb.Any {
+func Detail_ToProto(mapCtx *direct.MapContext, in *krm.Any) *anypb.Any {
 	if in == nil {
 		return nil
 	}
@@ -99,11 +99,11 @@ func Detail_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Any) *anypb.Any {
 	out.Value = in.Value
 	return out
 }
-func Detail_FromProto(mapCtx *direct.MapContext, in *anypb.Any) *krmv1alpha1.Any {
+func Detail_FromProto(mapCtx *direct.MapContext, in *anypb.Any) *krm.Any {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.Any{}
+	out := &krm.Any{}
 	out.TypeURL = direct.LazyPtr(in.GetTypeUrl())
 	out.Value = in.GetValue()
 	return out

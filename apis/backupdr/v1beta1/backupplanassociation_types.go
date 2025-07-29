@@ -100,7 +100,7 @@ type BackupDRBackupPlanAssociationObservedState struct {
 
 	// Output only. The config info related to backup rules.
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.rules_config_info
-	RulesConfigInfo []backupdrv1alpha1.RuleConfigInfoObservedState `json:"rulesConfigInfo,omitempty"`
+	RulesConfigInfo []RuleConfigInfoObservedState `json:"rulesConfigInfo,omitempty"`
 
 	// Output only. Resource name of data source which will be used as storage
 	//  location for backups taken. Format :

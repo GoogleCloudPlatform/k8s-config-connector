@@ -196,18 +196,18 @@ func RuleConfigInfo_ToProto(mapCtx *direct.MapContext, in *krmalpha.RuleConfigIn
 	// MISSING: LastSuccessfulBackupConsistencyTime
 	return out
 }
-func RuleConfigInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RuleConfigInfo) *krmalpha.RuleConfigInfoObservedState {
+func RuleConfigInfoObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RuleConfigInfo) *krm.RuleConfigInfoObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmalpha.RuleConfigInfoObservedState{}
+	out := &krm.RuleConfigInfoObservedState{}
 	out.RuleID = direct.LazyPtr(in.GetRuleId())
 	out.LastBackupState = direct.Enum_FromProto(mapCtx, in.GetLastBackupState())
 	out.LastBackupError = Status_FromProto(mapCtx, in.GetLastBackupError())
 	out.LastSuccessfulBackupConsistencyTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastSuccessfulBackupConsistencyTime())
 	return out
 }
-func RuleConfigInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krmalpha.RuleConfigInfoObservedState) *pb.RuleConfigInfo {
+func RuleConfigInfoObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RuleConfigInfoObservedState) *pb.RuleConfigInfo {
 	if in == nil {
 		return nil
 	}
