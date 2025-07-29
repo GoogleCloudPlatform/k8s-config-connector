@@ -15,8 +15,6 @@
 apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerCluster
 metadata:
-  labels:
-    label-one: "value-one"
   name: containercluster-${uniqueId}
 spec:
   location: us-west2
