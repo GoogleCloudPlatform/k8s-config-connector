@@ -16,17 +16,15 @@ package v1alpha1
 
 import (
 	"context"
-	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &SnapshotRef{}
+var _ reference.Reference = &SnapshotRef{}
 
 // SnapshotRef defines the resource reference to PubSubSnapshot, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -42,42 +40,32 @@ type SnapshotRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on PubSubSnapshot.
-// If the "External" is given in the other resource's spec.PubSubSnapshotRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual PubSubSnapshot object from the cluster.
-func (r *SnapshotRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", PubSubSnapshotGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParseSnapshotExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
+func (r *SnapshotRef) GetGVK() schema.GroupVersionKind {
+	return PubSubSnapshotGVK
+}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+func (r *SnapshotRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(PubSubSnapshotGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", PubSubSnapshotGVK, key, err)
+}
+
+func (r *SnapshotRef) GetExternal() string {
+	return r.External
+}
+
+func (r *SnapshotRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *SnapshotRef) ValidateExternal() error {
+	if _, _, err := ParseSnapshotExternal(r.GetExternal()); err != nil {
+		return err
 	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return nil
+}
+
+func (r *SnapshotRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return reference.Normalize(ctx, reader, r, defaultNamespace)
 }
