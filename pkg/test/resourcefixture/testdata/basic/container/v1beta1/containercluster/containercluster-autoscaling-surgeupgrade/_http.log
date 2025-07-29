@@ -603,6 +603,21 @@ X-Xss-Protection: 0
   "clusterTelemetry": {
     "type": "ENABLED"
   },
+  "controlPlaneEndpointsConfig": {
+    "dnsEndpointConfig": {
+      "allowExternalTraffic": false,
+      "endpoint": "gke-123456-${projectNumber}.us-west1-b.gke.goog"
+    },
+    "ipEndpointsConfig": {
+      "authorizedNetworksConfig": {
+        "gcpPublicCidrsAccessEnabled": true
+      },
+      "enablePublicEndpoint": true,
+      "enabled": true,
+      "privateEndpoint": "1.2.3.4",
+      "publicEndpoint": "32.32.32.32"
+    }
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "currentMasterVersion": "1.30.5-gke.1014001",
   "currentNodeCount": 1,
@@ -644,7 +659,7 @@ X-Xss-Protection: 0
   },
   "loggingService": "logging.googleapis.com/kubernetes",
   "maintenancePolicy": {
-    "window": {}
+    "resourceVersion": "1234abcd"
   },
   "master": {},
   "masterAuth": {
@@ -669,8 +684,10 @@ X-Xss-Protection: 0
   "name": "containercluster-${uniqueId}",
   "network": "default",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "projects/${projectId}/global/networks/default",
-    "subnetwork": "default"
+    "serviceExternalIpsConfig": {},
+    "subnetwork": "projects/${projectId}/regions/us-west1-b/subnetworks/default"
   },
   "nodeConfig": {
     "diskSizeGb": 100,
@@ -1052,6 +1069,21 @@ X-Xss-Protection: 0
   "clusterTelemetry": {
     "type": "ENABLED"
   },
+  "controlPlaneEndpointsConfig": {
+    "dnsEndpointConfig": {
+      "allowExternalTraffic": false,
+      "endpoint": "gke-123456-${projectNumber}.us-west1-a.gke.goog"
+    },
+    "ipEndpointsConfig": {
+      "authorizedNetworksConfig": {
+        "gcpPublicCidrsAccessEnabled": true
+      },
+      "enablePublicEndpoint": true,
+      "enabled": true,
+      "privateEndpoint": "1.2.3.4",
+      "publicEndpoint": "32.32.32.32"
+    }
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "currentMasterVersion": "1.30.5-gke.1014001",
   "currentNodeCount": 1,
@@ -1093,7 +1125,7 @@ X-Xss-Protection: 0
   },
   "loggingService": "logging.googleapis.com/kubernetes",
   "maintenancePolicy": {
-    "window": {}
+    "resourceVersion": "1234abcd"
   },
   "master": {},
   "masterAuth": {
@@ -1118,8 +1150,10 @@ X-Xss-Protection: 0
   "name": "containercluster-${uniqueId}",
   "network": "default",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "projects/${projectId}/global/networks/default",
-    "subnetwork": "default"
+    "serviceExternalIpsConfig": {},
+    "subnetwork": "projects/${projectId}/regions/us-west1-a/subnetworks/default"
   },
   "nodeConfig": {
     "diskSizeGb": 100,
