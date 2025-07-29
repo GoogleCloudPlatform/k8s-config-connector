@@ -74,7 +74,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     },
     "resourceLabels": {
       "cnrm-test": "true",
-      "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
     "shieldedNodes": {
@@ -371,7 +370,6 @@ X-Xss-Protection: 0
   },
   "resourceLabels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "securityPostureConfig": {
