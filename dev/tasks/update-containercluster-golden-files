@@ -37,4 +37,9 @@ go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixture
 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/gkebackup 2>&1
 
 go test -test.count=1 -timeout 600s -v ./tests/e2e -run TestE2EScript/scenarios/gkehubfeaturemembership 2>&1
+# Last step of test case "scenarios/fields/management/gkehub/featuremembership/set_unset" may trigger
+# the following error when running locally:
+#   script_test.go:464: error applying resource: GKEHubFeatureMembership.gkehub.cnrm.cloud.google.com
+#   "gkehubfeaturemembership-ea3e6ezynlulriq" is invalid: spec.configmanagement.configSync.git.gcpServiceAccountRef:
+#   Invalid value: "null": spec.configmanagement.configSync.git.gcpServiceAccountRef in body must be of type object: "null"
 go test -test.count=1 -timeout 600s -v ./tests/e2e -run TestE2EScript/scenarios/fields/management/gkehub/featuremembership/set_unset 2>&1
