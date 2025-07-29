@@ -470,8 +470,8 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			t.Fatalf("error creating project: %v", err)
 		}
 
-		// Wait for the project to be created, up to 5 seconds.
-		for i := 0; i < 50; i++ {
+		// Wait for the project to be created, up to 10 seconds.
+		for i := 0; i < 100; i++ {
 			if op.Done {
 				break
 			}
