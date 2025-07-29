@@ -86,6 +86,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetapp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkconnectivity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkmanagement"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworksecurity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknotebooks"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockorgpolicy"
