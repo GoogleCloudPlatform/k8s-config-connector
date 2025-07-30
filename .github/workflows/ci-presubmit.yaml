@@ -34,6 +34,26 @@ on:
 
 jobs:
 
+  fuzz-roundtrippers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/fuzz-roundtrippers"
+        run: |
+          ./dev/ci/presubmits/fuzz-roundtrippers
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-fuzz-roundtrippers
+          path: /tmp/artifacts/
+
+
   test-mockgcp:
     runs-on: ubuntu-latest
     timeout-minutes: 60
