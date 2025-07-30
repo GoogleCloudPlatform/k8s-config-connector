@@ -48,7 +48,7 @@ func TestWatchResourceTimeout(t *testing.T) {
 	}
 	ctx, cancel := context.WithTimeout(context.TODO(), time.Second*10)
 	defer cancel()
-	if err := resourcewatcher.WaitForResourceToBeReadyViaWatch(ctx, watch, logger); !errors.Is(err, context.DeadlineExceeded) {
+	if err := resourcewatcher.WaitForResourceToBeReadyOrDeletedViaWatch(ctx, watch, logger); !errors.Is(err, context.DeadlineExceeded) {
 		t.Fatalf("got error '%v', expected '%v'", err, context.DeadlineExceeded)
 	}
 }
@@ -72,7 +72,7 @@ func TestWatchResourceSuccess(t *testing.T) {
 	}
 	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute)
 	defer cancel()
-	if err := resourcewatcher.WaitForResourceToBeReadyViaWatch(ctx, watch, logger); err != nil {
+	if err := resourcewatcher.WaitForResourceToBeReadyOrDeletedViaWatch(ctx, watch, logger); err != nil {
 		t.Fatalf("got unexpected error: %v", err)
 	}
 }

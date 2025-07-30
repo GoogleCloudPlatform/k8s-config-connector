@@ -550,7 +550,7 @@ func (r *reconcileContext) handleUnresolvableDeps(ctx context.Context, policy *u
 		ctx, cancel := context.WithTimeout(context.TODO(), timeoutPeriod)
 		defer cancel()
 		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
-		if err := watcher.WaitForResourceToBeReady(ctx, refNN, refGVK); err != nil {
+		if err := watcher.WaitForResourceToBeReadyOrDeleted(ctx, refNN, refGVK); err != nil {
 			logger.Error(err, "error while waiting for resource's reference to be ready")
 			return
 		}
