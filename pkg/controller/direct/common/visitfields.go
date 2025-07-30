@@ -76,7 +76,8 @@ func (w *visitorWalker) visitAny(path string, v reflect.Value) {
 		switch elemType.Kind() {
 		case reflect.Struct, reflect.String:
 			for i := 0; i < v.Len(); i++ {
-				w.visitAny(path+"[]", v.Index(i))
+				// We pass the address, so that the visitor can mutate the value in place
+				w.visitAny(path+"[]", v.Index(i).Addr())
 			}
 		case reflect.Uint8:
 			// Do not visit []byte as individual values, treat as a leaf
