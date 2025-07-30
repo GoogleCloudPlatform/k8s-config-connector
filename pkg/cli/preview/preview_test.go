@@ -102,7 +102,7 @@ spec:
 	}
 
 	// Now we can run our test ... let's run the preview mode, we expect a read of the GCP object but no write
-	upstreamRESTConfig := harness.GetRESTConfig()
+	upstreamRESTConfig := harness.GetUserRESTConfig()
 
 	recorder := NewRecorder()
 
