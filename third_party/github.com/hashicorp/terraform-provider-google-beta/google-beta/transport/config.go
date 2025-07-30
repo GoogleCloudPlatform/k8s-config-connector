@@ -322,6 +322,30 @@ type Config struct {
 	RequestBatcherIam          *RequestBatcher
 }
 
+func (c *Config) Clone() *Config {
+	clone := *c
+
+	// To prevent subtle bugs, create new copies of any slice fields.
+	// This ensures that appending to a slice in the clone doesn't
+	// accidentally modify the original config's slice.
+	if c.ImpersonateServiceAccountDelegates != nil {
+		clone.ImpersonateServiceAccountDelegates = make([]string, len(c.ImpersonateServiceAccountDelegates))
+		copy(clone.ImpersonateServiceAccountDelegates, c.ImpersonateServiceAccountDelegates)
+	}
+
+	if c.Scopes != nil {
+		clone.Scopes = make([]string, len(c.Scopes))
+		copy(clone.Scopes, c.Scopes)
+	}
+
+	if c.gRPCLoggingOptions != nil {
+		clone.gRPCLoggingOptions = make([]option.ClientOption, len(c.gRPCLoggingOptions))
+		copy(clone.gRPCLoggingOptions, c.gRPCLoggingOptions)
+	}
+
+	return &clone
+}
+
 const AccessApprovalBasePathKey = "AccessApproval"
 const AccessContextManagerBasePathKey = "AccessContextManager"
 const ActiveDirectoryBasePathKey = "ActiveDirectory"
