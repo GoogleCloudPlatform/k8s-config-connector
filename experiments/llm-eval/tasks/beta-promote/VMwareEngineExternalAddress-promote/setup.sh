@@ -16,4 +16,7 @@
 set -e
 SUBDIR="VMwareEngineExternalAddress-promote-vmwareengine"
 git clone git@github.com:GoogleCloudPlatform/k8s-config-connector.git $SUBDIR
-echo $SUBDIR
+rm -rf $SUBDIR/.gemini # Avoid using git cloned .gemini.
+
+export MCPWorkDir=${SUBDIR} # placeholder. evaluator runs setup.sh as a temp shell. This env var won't take effect when the shell finishes.
+echo ${MCPWorkDir}

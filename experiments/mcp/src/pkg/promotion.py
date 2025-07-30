@@ -17,20 +17,11 @@ import shutil
 import re
 import subprocess
 
-def get_git_root():
-    """Returns the root directory of the git repository."""
-    try:
-        return subprocess.check_output(['git', 'rev-parse', '--show-toplevel'], text=True).strip()
-    except subprocess.CalledProcessError as e:
-        raise RuntimeError("Could not find git repository root.") from e
-
-GIT_ROOT = get_git_root()
-
-def to_abs_path(path: str) -> str:
-    """Converts a relative path to an absolute path based on the git root."""
+def to_abs_path(path: str, base_dir: str) -> str:
+    """Converts a relative path to an absolute path based on the provided base directory."""
     if os.path.isabs(path):
         return path
-    return os.path.join(GIT_ROOT, path)
+    return os.path.join(base_dir, path)
 
 def get_version_from_path(path: str) -> str:
     """
@@ -52,10 +43,10 @@ def get_kind_from_path(path: str) -> str:
     # Convert snake_case to CamelCase
     return ''.join(word.title() for word in kind_name.split('_'))
 
-def get_types_from_api_dir(api_dir_path: str) -> set:
+def get_types_from_api_dir(api_dir_path: str, base_dir: str) -> set:
     """Parses all .go files in a directory and returns a set of defined type names."""
     types = set()
-    abs_path = to_abs_path(api_dir_path)
+    abs_path = to_abs_path(api_dir_path, base_dir)
     if not os.path.isdir(abs_path):
         return types
     for filename in os.listdir(abs_path):
@@ -79,8 +70,8 @@ def get_controller_info(controller_path: str) -> (str, str):
     kind = kind_match.group(1).strip() if kind_match else ""
     return version, kind
 
-def split_controller_imports(controller_dir: str, promoted_kind: str, target_version: str, service: str, go_module: str):
-    abs_controller_dir = to_abs_path(controller_dir)
+def split_controller_imports(controller_dir: str, promoted_kind: str, target_version: str, service: str, go_module: str, base_dir: str):
+    abs_controller_dir = to_abs_path(controller_dir, base_dir)
     
     # Find the source version from the promoted kind's controller file
     source_version = ""
@@ -104,7 +95,7 @@ def split_controller_imports(controller_dir: str, promoted_kind: str, target_ver
 
     # Get all types from the source API directory
     source_api_dir = f'apis/{service}/{source_version}'
-    all_source_types = get_types_from_api_dir(source_api_dir)
+    all_source_types = get_types_from_api_dir(source_api_dir, base_dir)
 
     # All types related to the promoted kind are considered promoted
     promoted_types = {t for t in all_source_types if t.startswith(promoted_kind)}
@@ -163,12 +154,12 @@ def split_controller_imports(controller_dir: str, promoted_kind: str, target_ver
             f.write(new_content)
 
 
-def promote_api_file(api_path: str, target_version: str) -> dict:
+def promote_api_file(api_path: str, target_version: str, base_dir: str) -> dict:
     """
     Promotes an entire API package directory to a target version.
     """
     try:
-        abs_api_path = to_abs_path(api_path)
+        abs_api_path = to_abs_path(api_path, base_dir)
         source_version = get_version_from_path(abs_api_path)
         source_dir = os.path.dirname(abs_api_path)
 
@@ -221,13 +212,13 @@ def promote_api_file(api_path: str, target_version: str) -> dict:
     except Exception as e:
         return {"error": "ApiPromotionError", "message": str(e)}
 
-def promote_controller_file(controller_path: str, api_path: str, target_version: str, go_module: str) -> dict:
+def promote_controller_file(controller_path: str, api_path: str, target_version: str, go_module: str, base_dir: str) -> dict:
     """
     Updates the API import paths in all Go files within the controller's directory.
     """
     try:
-        abs_api_path = to_abs_path(api_path)
-        abs_controller_path = to_abs_path(controller_path)
+        abs_api_path = to_abs_path(api_path, base_dir)
+        abs_controller_path = to_abs_path(controller_path, base_dir)
         source_version = get_version_from_path(abs_api_path)
         
         controller_dir = os.path.dirname(abs_controller_path)
@@ -250,15 +241,15 @@ def promote_controller_file(controller_path: str, api_path: str, target_version:
     except Exception as e:
         return {"error": "ControllerPromotionError", "message": str(e)}
 
-def promote_test_fixture(test_fixture_path: str, target_version: str) -> dict:
+def promote_test_fixture(test_fixture_path: str, target_version: str, base_dir: str) -> dict:
     """
     Promotes a test fixture to a target version.
     """
     try:
-        abs_test_fixture_path = to_abs_path(test_fixture_path)
+        abs_test_fixture_path = to_abs_path(test_fixture_path, base_dir)
         source_version = get_version_from_path(abs_test_fixture_path)
         new_test_fixture_path_rel = test_fixture_path.replace(source_version, target_version)
-        new_test_fixture_path_abs = to_abs_path(new_test_fixture_path_rel)
+        new_test_fixture_path_abs = to_abs_path(new_test_fixture_path_rel, base_dir)
         shutil.copytree(abs_test_fixture_path, new_test_fixture_path_abs)
 
         for root, _, files in os.walk(new_test_fixture_path_abs):
@@ -276,12 +267,12 @@ def promote_test_fixture(test_fixture_path: str, target_version: str) -> dict:
     except Exception as e:
         return {"error": "TestFixturePromotionError", "message": str(e)}
 
-def validate_promotion(api_path: str, target_version: str) -> dict:
+def validate_promotion(api_path: str, target_version: str, base_dir: str) -> dict:
     """
     Validates the promotion by running the CRD generation script.
     """
     try:
-        abs_api_path = to_abs_path(api_path)
+        abs_api_path = to_abs_path(api_path, base_dir)
         # Determine source and target directories.
         source_version = get_version_from_path(abs_api_path)
         source_dir = os.path.dirname(abs_api_path)
@@ -298,8 +289,8 @@ def validate_promotion(api_path: str, target_version: str) -> dict:
             os.remove(target_generated_file)
 
         # Run the generation script and check for errors.
-        script_path = to_abs_path('dev/tasks/generate-crds')
-        result = subprocess.run([script_path], capture_output=True, text=True, cwd=GIT_ROOT)
+        script_path = to_abs_path('dev/tasks/generate-crds', base_dir)
+        result = subprocess.run([script_path], capture_output=True, text=True, cwd=base_dir)
         if result.returncode != 0:
             return {"error": "ValidationFailed", "message": result.stderr}
 
@@ -307,12 +298,12 @@ def validate_promotion(api_path: str, target_version: str) -> dict:
     except Exception as e:
         return {"error": "ValidationException", "message": str(e)}
 
-def validate_controller_compilation(controller_path: str) -> dict:
+def validate_controller_compilation(controller_path: str, base_dir: str) -> dict:
     """
     Validates the controller by attempting to compile it.
     """
     try:
-        abs_controller_path = to_abs_path(controller_path)
+        abs_controller_path = to_abs_path(controller_path, base_dir)
         controller_dir = os.path.dirname(abs_controller_path)
         result = subprocess.run(['go', 'build', './...'], cwd=controller_dir, capture_output=True, text=True)
         if result.returncode != 0:
@@ -321,14 +312,14 @@ def validate_controller_compilation(controller_path: str) -> dict:
     except Exception as e:
         return {"error": "CompilationException", "message": str(e)}
 
-def validate_test_fixture(kind: str) -> dict:
+def validate_test_fixture(kind: str, base_dir: str) -> dict:
     """
     Validates the test fixture by running the hack/compare-mock script.
     """
     try:
-        script_path = to_abs_path('hack/compare-mock')
+        script_path = to_abs_path('hack/compare-mock', base_dir)
         arg = f'fixtures/{kind}'
-        result = subprocess.run([script_path, arg], capture_output=True, text=True, cwd=GIT_ROOT)
+        result = subprocess.run([script_path, arg], capture_output=True, text=True, cwd=base_dir)
         if result.returncode != 0:
             return {"error": "TestFixtureValidationFailed", "message": result.stderr}
         return {"success": True, "output": result.stdout}

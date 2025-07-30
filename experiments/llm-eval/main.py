@@ -156,7 +156,6 @@ if __name__ == "__main__":
         # --- Run with MCP Disabled ---
         print("\n--- Starting Evaluation with MCP Disabled ---")
         no_mcp_evaluator = MCPEvaluator(gemini_cli_path=args.gemini_cli_path, use_mcp=False, log_path=args.log)
-        no_mcp_evaluator.setup_mcp_config()
         for test in test_cases:
             no_mcp_evaluator.run_test_case(**test)
         no_mcp_results_df = no_mcp_evaluator.generate_report()
@@ -166,23 +165,7 @@ if __name__ == "__main__":
     else:
         # --- Run with MCP Enabled ---
         print("--- Starting Evaluation with MCP Enabled ---")
-        mcp_config = {}
-        if args.config_path:
-            config_path = os.path.expanduser(args.config_path)
-            if not os.path.isabs(config_path):
-                config_path = os.path.join(git_root, config_path)
-            
-            with open(config_path, 'r') as f:
-                mcp_config = json.load(f)
-
-            # Make server directories absolute
-            if "mcp_servers" in mcp_config:
-                for server in mcp_config["mcp_servers"]:
-                    if "directory" in server and not os.path.isabs(server["directory"]):
-                        server["directory"] = os.path.join(git_root, server["directory"])
-        
-        mcp_evaluator = MCPEvaluator(gemini_cli_path=args.gemini_cli_path, use_mcp=True, log_path=args.log)
-        mcp_evaluator.setup_mcp_config(mcp_config)
+        mcp_evaluator = MCPEvaluator(gemini_cli_path=args.gemini_cli_path, use_mcp=True, src_mcp_config_path=args.config_path, log_path=args.log)
         for test in test_cases:
             mcp_evaluator.run_test_case(**test)
         mcp_results_df = mcp_evaluator.generate_report()
@@ -194,7 +177,6 @@ if __name__ == "__main__":
         if not args.task:
             print("\n--- Starting Evaluation with MCP Disabled ---")
             no_mcp_evaluator = MCPEvaluator(gemini_cli_path=args.gemini_cli_path, use_mcp=False, log_path=args.log)
-            no_mcp_evaluator.setup_mcp_config()
             for test in test_cases:
                 no_mcp_evaluator.run_test_case(**test)
             no_mcp_results_df = no_mcp_evaluator.generate_report()
