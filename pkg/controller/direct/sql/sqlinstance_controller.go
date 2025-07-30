@@ -302,6 +302,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return err
 	}
 
+	instanceForStatus := a.actual
 	instanceDiff := &structuredreporting.Diff{}
 	if !InstancesMatch(desiredGCP, a.actual, instanceDiff) {
 		updateOp.RecordUpdatingEvent()
@@ -324,15 +325,14 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		}
 
 		log.V(2).Info("instance updated", "op", op, "instance", updated)
-
-		status, err := SQLInstanceStatusGCPToKRM(updated)
-		if err != nil {
-			return fmt.Errorf("updating SQLInstance status failed: %w", err)
-		}
-		return setStatus(u, status)
+		instanceForStatus = updated
 	}
 
-	return nil
+	status, err := SQLInstanceStatusGCPToKRM(instanceForStatus)
+	if err != nil {
+		return fmt.Errorf("updating SQLInstance status failed: %w", err)
+	}
+	return setStatus(u, status)
 }
 
 // Delete implements the Adapter interface.
