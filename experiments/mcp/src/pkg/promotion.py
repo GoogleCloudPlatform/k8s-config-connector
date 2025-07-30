@@ -59,7 +59,6 @@ def get_version_from_path(path: str) -> str:
     Extracts the version from a file path.
     Assumes the version is in the format v[a-z0-9]+ (e.g., v1alpha1, v1beta1).
     """
-    path = validate_api_path(path)
     match = re.search(r'v[0-9]+((alpha|beta)[0-9]+)?', path)
     if match:
         return match.group(0)
@@ -271,12 +270,12 @@ def promote_test_fixture(test_fixture_path: str, target_version: str, base_dir: 
         source_version = get_version_from_path(abs_test_fixture_path)
         new_test_fixture_path_rel = test_fixture_path.replace(source_version, target_version)
         new_test_fixture_path_abs = to_abs_path(new_test_fixture_path_rel, base_dir)
-        shutil.copytree(abs_test_fixture_path, new_test_fixture_path_abs)
+        shutil.copytree(abs_test_fixture_path, new_test_fixture_path_abs, dirs_exist_ok=True)
 
         for root, _, files in os.walk(new_test_fixture_path_abs):
             for file in files:
                 file_path = os.path.join(root, file)
-                if not file_path.endswith('create.yaml') or not file_path.endswith('update.yaml'):
+                if not (file_path.endswith('create.yaml') or file_path.endswith('update.yaml')):
                     continue
                 with open(file_path, 'r') as f:
                     content = f.read()
