@@ -533,7 +533,8 @@ Return only YAML: Your final output should be only the generated YAML content, w
             apiPath: The path to the API definition file. For example: `apis/cloudquota/v1alpha1/quotaadjustersettings_types.go`.
             targetVersion: The target version to promote to. For example: `v1beta1`.
         """
-        source_version = apiPath.split('/')[-2]
+        abs_api_path = promotion.validate_api_path(apiPath, self.absDir)
+        source_version = abs_api_path.split('/')[-2]
         instruction = f"""
 You are about to promote the API at `{apiPath}` from `{source_version}` to `{targetVersion}`.
 
@@ -626,34 +627,23 @@ By following these steps, you can handle complex API promotions with cross-versi
             apiPath: The path to the API definition file. For example: `apis/cloudquota/v1alpha1/quotaadjustersettings_types.go`.
             targetVersion: The target version to promote to. For example: `v1beta1`.
         """
-        go_module = "github.com/GoogleCloudPlatform/k8s-config-connector"
-        service = apiPath.split('/')[1]
-        kind = promotion.get_kind_from_path(apiPath)
-        controller_dir = os.path.dirname(controllerPath)
-        
-        abs_controller_dir = promotion.to_abs_path(controller_dir, self.absDir)
-        controller_files = [f for f in os.listdir(abs_controller_dir) if f.endswith('_controller.go')]
-
-        if len(controller_files) > 1:
-            # Mixed versions case
-            promotion.split_controller_imports(controller_dir, kind, targetVersion, service, go_module, self.absDir)
-            result = {"new_controller_path": controllerPath}
-        else:
-            # Simple case
-            result = promotion.promote_controller_file(controllerPath, apiPath, targetVersion, go_module, self.absDir)
-
+        abs_api_path = promotion.validate_api_path(apiPath, self.absDir)
+        # Mixed versions case
+        promotion.split_controller_imports(abs_api_path, controllerPath, targetVersion, self.absDir)
+        result = {"new_controller_path": controllerPath}
         if "error" in result:
             return result
 
-        return await self.promote_controller_validate(controllerPath)
+        return await self.promote_controller_validate(controllerPath, targetVersion)
 
-    async def promote_controller_validate(self, controllerPath: str) -> dict:
+    async def promote_controller_validate(self, controllerPath: str, targetVersion: str) -> dict:
         """Validates the promotion of a KCC controller to a new version.
 
         Args:
             controllerPath: The path to the controller file. For example: `pkg/controller/direct/cloudquota/quotaadjustersettings_controller.go`.
+            targetVersion: The target version to promote to. For example: `v1beta1`.
         """
-        validation_result = promotion.validate_controller_compilation(controllerPath, self.absDir)
+        validation_result = promotion.validate_controller_compilation(controllerPath, self.absDir, targetVersion)
         if "error" in validation_result:
             return validation_result
 
@@ -669,7 +659,8 @@ By following these steps, you can handle complex API promotions with cross-versi
             apiPath: The path to the API definition file. For example: `apis/cloudquota/v1alpha1/quotaadjustersettings_types.go`.
             targetVersion: The target version to promote to. For example: `v1beta1`.
         """
-        source_version = apiPath.split('/')[-2]
+        abs_api_path = promotion.validate_api_path(apiPath, self.absDir)
+        source_version = promotion.get_version_from_path(abs_api_path)
         instruction = f"""
 You are about to promote the controller at `{controllerPath}` to support the API version `{targetVersion}`.
 
@@ -733,4 +724,3 @@ By following these steps, you can correctly refactor the controller to handle mi
             return validation_result
 
         return result
-       
