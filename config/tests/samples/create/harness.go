@@ -71,7 +71,6 @@ import (
 	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/teststatus"
-	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
 	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
 )
 
@@ -227,7 +226,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		h.KubeTarget = os.Getenv("E2E_KUBE_TARGET")
 	}
 	if h.KubeTarget == "envtest" {
-		whCfgs, err := testwebhook.GetTestCommonWebhookConfigs()
+		whCfgs, err := cnrmwebhook.GetCommonWebhookConfigs()
 		if err != nil {
 			h.Fatalf("error getting common wehbook configs: %v", err)
 		}
