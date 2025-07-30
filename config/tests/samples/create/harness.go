@@ -89,8 +89,12 @@ type Harness struct {
 	VCRRecorderTF    *recorder.Recorder
 	VCRRecorderOauth *recorder.Recorder
 
-	client     client.Client
-	restConfig *rest.Config
+	// userClient is a client for kube-apiserver, authenticating as a normal user.
+	// The webhooks will not special case this user.
+	userClient client.Client
+
+	// userRestConfig is the rest.Config that backs userClient
+	userRestConfig *rest.Config
 
 	// gcpAccessToken is set to the oauth2 token to use for GCP, primarily when GCP is mocked.
 	gcpAccessToken string
@@ -124,9 +128,9 @@ var httpRoundTripperKey httpRoundTripperKeyType
 // deprecated: Prefer NewHarness, which can construct a manager and mock gcp etc.
 func NewHarnessWithManager(ctx context.Context, t *testing.T, mgr manager.Manager) *Harness {
 	h := &Harness{
-		T:      t,
-		Ctx:    ctx,
-		client: mgr.GetClient(),
+		T:          t,
+		Ctx:        ctx,
+		userClient: mgr.GetClient(),
 	}
 	return h
 }
@@ -225,6 +229,15 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	if h.KubeTarget == "" {
 		h.KubeTarget = os.Getenv("E2E_KUBE_TARGET")
 	}
+
+	// userRestConfig is the restConfig for authenticating as a normal user.
+	// The webhooks will not special-case this user.
+	var userRestConfig *rest.Config
+
+	// controllerRestConfig is the restConfig for authenticating as the KCC controllers.
+	// The webhooks special-case this user (e.g. immutable fields)
+	var controllerRestConfig *rest.Config
+
 	if h.KubeTarget == "envtest" {
 		whCfgs, err := cnrmwebhook.GetCommonWebhookConfigs()
 		if err != nil {
@@ -240,7 +253,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		testenvironment.ConfigureWebhookInstallOptions(env, whCfgs)
 
 		h.Logf("starting envtest apiserver")
-		restConfig, err := env.Start()
+		adminRestConfig, err := env.Start()
 		if err != nil {
 			h.Fatalf("error starting test environment: %v", err)
 		}
@@ -251,7 +264,16 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			}
 		})
 
-		h.restConfig = restConfig
+		// The admin user is not really a "normal" user, but we do want full permissions
+		userRestConfig = adminRestConfig
+
+		controllerUser, err := env.ControlPlane.AddUser(envtest.User{
+			Name: "system:serviceaccount:cnrm-system:cnrm-controller-manager",
+		}, adminRestConfig)
+		if err != nil {
+			t.Fatalf("creating cnrm-controller-manager user: %v", err)
+		}
+		controllerRestConfig = controllerUser.Config()
 
 		webhookOptions := webhook.Options{
 			Port:    env.WebhookInstallOptions.LocalServingPort,
@@ -272,7 +294,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 				url := env.ControlPlane.GetAPIServer().SecureServing.URL("https", "debug/pprof/profile")
 				url.RawQuery = "seconds=30"
 				t.Logf("profiling with url %v", url)
-				httpClient, err := rest.HTTPClientFor(restConfig)
+				httpClient, err := rest.HTTPClientFor(adminRestConfig)
 				if err != nil {
 					return fmt.Errorf("building http client: %w", err)
 				}
@@ -325,7 +347,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			}
 		})
 
-		h.restConfig = &rest.Config{
+		userRestConfig = &rest.Config{
 			Host: addr.String(),
 			ContentConfig: rest.ContentConfig{
 				ContentType: "application/json",
@@ -362,7 +384,8 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			t := test.NewHTTPRecorder(rt, kubeEventSinks...)
 			return t
 		}
-		h.restConfig.Wrap(wrapTransport)
+		userRestConfig.Wrap(wrapTransport)
+		controllerRestConfig.Wrap(wrapTransport)
 	}
 
 	// Set up capture of GCP requests
@@ -381,12 +404,14 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		h.Ctx = ctx
 	}
 
-	if h.client == nil {
-		client, err := client.New(h.restConfig, client.Options{})
+	if h.userClient == nil {
+		h.userRestConfig = userRestConfig
+
+		client, err := client.New(userRestConfig, client.Options{})
 		if err != nil {
 			h.Fatalf("error building client: %v", err)
 		}
-		h.client = client
+		h.userClient = client
 	}
 
 	logging.SetupLogger()
@@ -414,7 +439,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 
 				go func() {
 					defer wg.Done()
-					if err := h.client.Create(ctx, crd.DeepCopy()); err != nil {
+					if err := h.userClient.Create(ctx, crd.DeepCopy()); err != nil {
 						errsMutex.Lock()
 						defer errsMutex.Unlock()
 						errs = append(errs, fmt.Errorf("error creating crd %v: %w", crd.GroupVersionKind(), err))
@@ -427,6 +452,8 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 				h.Fatalf("error creating crds: %v", errors.Join(errs...))
 			}
 		}
+
+		configureRBAC(h)
 	}
 
 	var mockCloudGRPCClientConnection *grpc.ClientConn
@@ -436,7 +463,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	if h.GCPTarget == GCPTargetModeMock {
 		t.Logf("creating mock gcp")
 
-		mockCloud := mockgcp.NewMockRoundTripperForTest(t, h.client, storage.NewInMemoryStorage())
+		mockCloud := mockgcp.NewMockRoundTripperForTest(t, h.userClient, storage.NewInMemoryStorage())
 
 		mockCloudGRPCClientConnection = mockCloud.NewGRPCConnection(ctx)
 		h.MockGCP = mockCloud
@@ -718,7 +745,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 
 	krmtotf.SetUserAgentForTerraformProvider()
 
-	mgr, err := kccmanager.New(mgrContext, h.restConfig, kccConfig)
+	mgr, err := kccmanager.New(mgrContext, controllerRestConfig, kccConfig)
 	if err != nil {
 		t.Fatalf("error creating new manager: %v", err)
 	}
@@ -789,12 +816,15 @@ func (h *Harness) getCloudResourceManagerClient(httpClient *http.Client) *cloudr
 	return s
 }
 
+// GetClient returns a client for the kube-apiserver, authenticating as a normal user (not the controller)
+// The webhooks will not special-case this user.
 func (h *Harness) GetClient() client.Client {
-	return h.client
+	return h.userClient
 }
 
-func (h *Harness) GetRESTConfig() *rest.Config {
-	return h.restConfig
+// GetUserRestConfig returns the rest.Config that is the equivalent of GetClient()
+func (h *Harness) GetUserRESTConfig() *rest.Config {
+	return h.userRestConfig
 }
 
 func (h *Harness) GCPAuthorization() oauth2.TokenSource {
@@ -1300,4 +1330,34 @@ func (s *filterSink) WithName(name string) logr.LogSink {
 // Error implements logr.LogSink
 func (s *filterSink) Error(err error, msg string, args ...any) {
 	s.sink.Error(err, msg, args...)
+}
+
+// configureRBAC will set up RBAC for the controller serviceAccount
+func configureRBAC(h *Harness) {
+	roleBinding := &unstructured.Unstructured{}
+	roleBinding.SetAPIVersion("rbac.authorization.k8s.io/v1")
+	roleBinding.SetKind("ClusterRoleBinding")
+	roleBinding.SetName("manager-binding")
+	// TODO: should use cnrm-manager-cluster-role, but it's not readily available
+	// roleBinding.Object["roleRef"] = map[string]interface{}{
+	// 	"apiGroup": "rbac.authorization.k8s.io",
+	// 	"kind":     "ClusterRole",
+	// 	"name":     "cnrm-anager-cluster-role",
+	// }
+
+	roleBinding.Object["roleRef"] = map[string]interface{}{
+		"apiGroup": "rbac.authorization.k8s.io",
+		"kind":     "ClusterRole",
+		"name":     "cluster-admin",
+	}
+	roleBinding.Object["subjects"] = []map[string]interface{}{
+		{
+			"kind":      "ServiceAccount",
+			"name":      "cnrm-controller-manager",
+			"namespace": "cnrm-system",
+		},
+	}
+	if err := h.GetClient().Create(h.Ctx, roleBinding); err != nil {
+		h.T.Fatalf("creating cluster role binding: %v", err)
+	}
 }
