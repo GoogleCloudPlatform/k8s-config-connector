@@ -38,12 +38,14 @@ import (
 	"google.golang.org/protobuf/proto"
 	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/rest"
 	"k8s.io/utils/ptr"
+	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -191,6 +193,32 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	kccConfig.ManagerOptions.HealthProbeBindAddress = "0"
 	// configure caching
 	nocache.OnlyCacheCCAndCCC(&kccConfig.ManagerOptions)
+
+	// We also only cache CRDs that have our label; this is what the webhook does
+	{
+		innerNewCache := kccConfig.ManagerOptions.NewCache
+		if innerNewCache == nil {
+			innerNewCache = cache.New
+		}
+
+		crdKind := &unstructured.Unstructured{}
+		crdKind.SetGroupVersionKind(schema.GroupVersionKind{
+			Group:   "apiextensions.k8s.io",
+			Version: "v1",
+			Kind:    "CustomResourceDefinition",
+		})
+
+		kccConfig.ManagerOptions.NewCache = func(config *rest.Config, opts cache.Options) (cache.Cache, error) {
+			opts.ByObject = map[client.Object]cache.ByObject{
+				crdKind: {
+					Label: labels.Set{
+						k8s.KCCSystemLabel: "true",
+					}.AsSelector(),
+				},
+			}
+			return innerNewCache(config, opts)
+		}
+	}
 
 	var webhooks []cnrmwebhook.Config
 
