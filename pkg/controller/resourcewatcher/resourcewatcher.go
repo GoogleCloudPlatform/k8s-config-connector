@@ -65,7 +65,7 @@ func (r *ResourceWatcher) WaitForResourceToBeReadyOrDeleted(ctx context.Context,
 	}
 	defer watch.Stop()
 	logger.Info("successfully created watch on resource")
-	return WaitForResourceToBeReadyOrDeletedViaWatch(ctx, watch, logger)
+	return waitForResourceToBeReadyOrDeletedViaWatch(ctx, watch, logger)
 }
 
 // WatchResource creates a watch on a resource identified by the given GVK and NamespacedName.
@@ -79,11 +79,11 @@ func (r *ResourceWatcher) WatchResource(ctx context.Context, nn types.Namespaced
 	return watch, nil
 }
 
-// WaitForResourceToBeReadyOrDeletedViaWatch monitors a given 'Watch' for any
+// waitForResourceToBeReadyOrDeletedViaWatch monitors a given 'Watch' for any
 // updates to the resource that the given 'Watch' is targeting. Note that
 // an error is returned to signify a failure during the 'Watch' process,
 // while nil is returned to signify the watched resource is ready or deleted.
-func WaitForResourceToBeReadyOrDeletedViaWatch(ctx context.Context, w watch.Interface, logger logr.Logger) error {
+func waitForResourceToBeReadyOrDeletedViaWatch(ctx context.Context, w watch.Interface, logger logr.Logger) error {
 	for {
 		select {
 		case <-ctx.Done():

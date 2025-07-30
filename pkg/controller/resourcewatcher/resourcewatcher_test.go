@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package resourcewatcher_test
+package resourcewatcher
 
 import (
 	"context"
@@ -23,7 +23,6 @@ import (
 
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -42,13 +41,13 @@ func TestWatchResourceTimeout(t *testing.T) {
 	}
 	fake := dynamicfake.NewSimpleDynamicClient(runtime.NewScheme())
 	logger := log.Log.WithName("resourcewatcher-test-timeout")
-	watch, err := resourcewatcher.NewWithClient(fake, logger).WatchResource(context.TODO(), nn, gvk)
+	watch, err := NewWithClient(fake, logger).WatchResource(context.TODO(), nn, gvk)
 	if err != nil {
 		t.Fatalf("got unexpected error: %v", err)
 	}
 	ctx, cancel := context.WithTimeout(context.TODO(), time.Second*10)
 	defer cancel()
-	if err := resourcewatcher.WaitForResourceToBeReadyOrDeletedViaWatch(ctx, watch, logger); !errors.Is(err, context.DeadlineExceeded) {
+	if err := waitForResourceToBeReadyOrDeletedViaWatch(ctx, watch, logger); !errors.Is(err, context.DeadlineExceeded) {
 		t.Fatalf("got error '%v', expected '%v'", err, context.DeadlineExceeded)
 	}
 }
@@ -61,7 +60,7 @@ func TestWatchResourceSuccess(t *testing.T) {
 	}
 	fake := dynamicfake.NewSimpleDynamicClient(runtime.NewScheme())
 	logger := log.Log.WithName("resourcewatcher-test-success")
-	watch, err := resourcewatcher.NewWithClient(fake, logger).WatchResource(context.TODO(), nn, gvk)
+	watch, err := NewWithClient(fake, logger).WatchResource(context.TODO(), nn, gvk)
 	if err != nil {
 		t.Fatalf("got unexpected error: %v", err)
 	}
@@ -72,7 +71,7 @@ func TestWatchResourceSuccess(t *testing.T) {
 	}
 	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute)
 	defer cancel()
-	if err := resourcewatcher.WaitForResourceToBeReadyOrDeletedViaWatch(ctx, watch, logger); err != nil {
+	if err := waitForResourceToBeReadyOrDeletedViaWatch(ctx, watch, logger); err != nil {
 		t.Fatalf("got unexpected error: %v", err)
 	}
 }
