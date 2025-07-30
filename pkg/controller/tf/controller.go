@@ -36,6 +36,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leaser"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/managementconflict"
+	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -44,6 +45,7 @@ import (
 	"github.com/go-logr/logr"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
 	"golang.org/x/sync/semaphore"
 	corev1 "k8s.io/api/core/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -60,6 +62,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
+
+	tpgconfig "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
 var logger = log.Log
@@ -76,6 +80,7 @@ type Reconciler struct {
 	smLoader        *servicemappingloader.ServiceMappingLoader
 	logger          logr.Logger
 	jitterGenerator jitter.Generator
+	controllerName  string
 	// Fields used for triggering reconciliations when dependencies are ready
 	immediateReconcileRequests chan event.GenericEvent
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
@@ -160,10 +165,12 @@ func NewReconciler(mgr manager.Manager,
 		immediateReconcileRequests: immediateReconcileRequests,
 		resourceWatcherRoutines:    resourceWatcherRoutines,
 		jitterGenerator:            jitterGenerator,
+		controllerName:             controllerName,
 	}, nil
 }
 
 func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res reconcile.Result, err error) {
+
 	r.schemaRefMu.RLock()
 	defer r.schemaRefMu.RUnlock()
 	r.logger.Info("starting reconcile", "resource", req.NamespacedName)
@@ -248,7 +255,15 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if err := resourceoverrides.Handler.PreActuationTransform(&resource.Resource); err != nil {
 		return reconcile.Result{}, r.HandlePreActuationTransformFailed(ctx, &resource.Resource, fmt.Errorf("error applying pre-actuation transformation to resource '%v': %w", req.NamespacedName.String(), err))
 	}
-	requeue, err := r.sync(ctx, resource)
+
+	meta := r.provider.Meta()
+	if baseConfig, ok := meta.(*tpgconfig.Config); ok {
+		metaC := baseConfig.Clone()
+		metaC.Context = metricstransport.WithControllerName(ctx, r.controllerName) // for metrics transport
+		meta = metaC
+	}
+
+	requeue, err := r.sync(ctx, resource, meta)
 	if err != nil {
 		return reconcile.Result{}, err
 	}
@@ -263,7 +278,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }
 
-func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (requeue bool, err error) {
+func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource, tfProviderMeta interface{}) (requeue bool, err error) {
 	// isolate any panics to only this function
 	defer execution.RecoverWithInternalError(&err)
 	if !krmResource.GetDeletionTimestamp().IsZero() {
@@ -318,7 +333,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 			return false, err
 		}
 		r.logger.Info("deleting underlying resource", "resource", k8s.GetNamespacedName(krmResource))
-		if _, err := krmResource.TFResource.Apply(ctx, liveState, &terraform.InstanceDiff{Destroy: true}, r.provider.Meta()); err != nil {
+		if _, err := krmResource.TFResource.Apply(ctx, liveState, &terraform.InstanceDiff{Destroy: true}, tfProviderMeta); err != nil {
 			return false, r.HandleDeleteFailed(ctx, &krmResource.Resource, fmt.Errorf("error deleting resource: %v", err))
 		}
 		return false, r.handleDeleted(ctx, krmResource)
@@ -360,7 +375,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 	if err := resourceoverrides.Handler.PreTerraformApply(ctx, krmResource.GroupVersionKind(), &operations.PreTerraformApply{KRMResource: krmResource, TerraformConfig: config, LiveState: liveState}); err != nil {
 		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error applying pre-apply transformation to resource: %w", err))
 	}
-	diff, err := krmResource.TFResource.Diff(ctx, liveState, config, r.provider.Meta())
+	diff, err := krmResource.TFResource.Diff(ctx, liveState, config, tfProviderMeta)
 	if err != nil {
 		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error calculating diff: %w", err))
 	}
@@ -410,7 +425,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 			d.RequiresNew = false
 		}
 	}
-	newState, diagnostics := krmResource.TFResource.Apply(ctx, liveState, diff, r.provider.Meta())
+	newState, diagnostics := krmResource.TFResource.Apply(ctx, liveState, diff, tfProviderMeta)
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
 		r.logger.Error(err, "error applying desired state", "resource", krmResource.GetNamespacedName())
 		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error applying desired state: %w", err))
