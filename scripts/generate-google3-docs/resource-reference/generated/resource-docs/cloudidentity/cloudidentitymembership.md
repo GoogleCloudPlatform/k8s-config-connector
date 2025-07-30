@@ -138,7 +138,7 @@ roles:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned. This field is considered output only and should not be set as PreferredMemberKey is required.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
