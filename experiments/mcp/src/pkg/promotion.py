@@ -28,7 +28,7 @@ def get_version_from_path(path: str) -> str:
     Extracts the version from a file path.
     Assumes the version is in the format v[a-z0-9]+ (e.g., v1alpha1, v1beta1).
     """
-    match = re.search(r'v[a-z0-9]+', path)
+    match = re.search(r'v[0-9]+((alpha|beta)[0-9]+)?', path)
     if match:
         return match.group(0)
     raise ValueError(f"Could not find version in path: {path}")
@@ -158,8 +158,10 @@ def promote_api_file(api_path: str, target_version: str, base_dir: str) -> dict:
     """
     Promotes an entire API package directory to a target version.
     """
+    abs_api_path = to_abs_path(api_path, base_dir)
+    if not os.path.isfile(abs_api_path) or not abs_api_path.endswith('_types.go'):
+        return {"error": "ApiPromotionError", "message": "api_path is not a file. Expecting a _types.go file."}
     try:
-        abs_api_path = to_abs_path(api_path, base_dir)
         source_version = get_version_from_path(abs_api_path)
         source_dir = os.path.dirname(abs_api_path)
 
@@ -171,6 +173,7 @@ def promote_api_file(api_path: str, target_version: str, base_dir: str) -> dict:
         relevant_files = [
             'doc.go',
             'groupversion_info.go',
+            'types.generated.go',
             f'{resource_basename}_types.go',
             f'{resource_basename}_identity.go',
             f'{resource_basename}_reference.go',
@@ -216,6 +219,9 @@ def promote_controller_file(controller_path: str, api_path: str, target_version:
     """
     Updates the API import paths in all Go files within the controller's directory.
     """
+    abs_api_path = to_abs_path(api_path, base_dir)
+    if not os.path.isfile(abs_api_path) or not abs_api_path.endswith('_types.go'):
+        return {"error": "ControllerPromotionError", "message": "controller_path is not a file. Expecting a _controller.go file."}
     try:
         abs_api_path = to_abs_path(api_path, base_dir)
         abs_controller_path = to_abs_path(controller_path, base_dir)
