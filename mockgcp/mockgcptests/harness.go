@@ -186,7 +186,7 @@ func (t *Harness) Init() {
 			t.Fatalf("error creating project: %v", err)
 		}
 
-		for i := 0; i < 50; i++ {
+		for i := 0; i < 100; i++ {
 			if op.Done {
 				break
 			}
