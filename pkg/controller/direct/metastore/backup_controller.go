@@ -16,7 +16,7 @@
 // proto.service: google.cloud.metastore.v1.DataprocMetastore
 // proto.message: google.cloud.metastore.v1.Backup
 // crd.type: MetastoreBackup
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package metastore
 
@@ -24,7 +24,8 @@ import (
 	"context"
 	"fmt"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
+	krmv1alplpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -196,7 +197,7 @@ func (a *MetastoreBackupAdapter) Export(ctx context.Context) (*unstructured.Unst
 	}
 
 	// Populate required references from the ID
-	obj.Spec.ServiceRef = krm.ServiceRef{
+	obj.Spec.ServiceRef = krmv1alplpha1.ServiceRef{
 		External: a.id.Parent().String(), // Set external reference to the service name
 	}
 
