@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"regexp"
 
 	gcp "cloud.google.com/go/secretmanager/apiv1"
 	secretmanagerpb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
@@ -202,9 +203,24 @@ func MergeMap(a, b map[string]string) map[string]string {
 	return copy
 }
 
+// Annotation keys must be between 1 and 63 characters long
+// have a UTF-8 encoding of maximum 128 bytes
+// begin and end with an alphanumeric character ([a-z0-9A-Z]),
+// may have dashes (-), underscores (_), dots (.), and alphanumerics in between these symbols.
+func IsValidAnnotation(s string) bool {
+	var validPattern = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9\.\-_]*[a-zA-Z0-9]$`)
+
+	// A string is valid if it matches the pattern AND its length is between 1 and 63.
+	return validPattern.MatchString(s) && len(s) >= 1 && len(s) <= 63
+}
+
 func ComputeAnnotations(secret *krm.SecretManagerSecret) map[string]string {
 	annotations := MergeMap(secret.GetAnnotations(), secret.Spec.Annotations)
-	common.RemoveByPrefixes(annotations, "cnrm.cloud.google.com", "alpha.cnrm.cloud.google.com", "kubectl.kubernetes.io")
+	for key := range annotations {
+		if !IsValidAnnotation(key) {
+			delete(annotations, key)
+		}
+	}
 	return annotations
 }
 
