@@ -18,7 +18,8 @@ import (
 	"context"
 	"fmt"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -38,7 +39,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.BigQueryReservationAssignmentGVK, NewAssignmentModel)
+	registry.RegisterModel(krmv1alpha1.BigQueryReservationAssignmentGVK, NewAssignmentModel)
 }
 
 func NewAssignmentModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -65,12 +66,12 @@ func (m *modelAssignment) client(ctx context.Context) (*gcp.Client, error) {
 }
 
 func (m *modelAssignment) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	obj := &krm.BigQueryReservationAssignment{}
+	obj := &krmv1alpha1.BigQueryReservationAssignment{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewAssignmentIdentity(ctx, reader, obj)
+	id, err := krmv1alpha1.NewAssignmentIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -118,9 +119,9 @@ func (m *modelAssignment) AdapterForURL(ctx context.Context, url string) (direct
 }
 
 type AssignmentAdapter struct {
-	id        *krm.AssignmentIdentity
+	id        *krmv1alpha1.AssignmentIdentity
 	gcpClient *gcp.Client
-	desired   *krm.BigQueryReservationAssignment
+	desired   *krmv1alpha1.BigQueryReservationAssignment
 	actual    *pb.Assignment
 	// The reservation to move the assignment to
 	destinationId string
@@ -179,19 +180,19 @@ func (a *AssignmentAdapter) Create(ctx context.Context, createOp *directbase.Cre
 
 	log.V(2).Info("successfully created Assignment", "name", a.id.String())
 
-	status := &krm.BigQueryReservationAssignmentStatus{}
+	status := &krmv1alpha1.BigQueryReservationAssignmentStatus{}
 	status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
-	// update the externalRef in the KRM resoruce
+	// update the externalRef in the krmv1alpha1 resoruce
 	status.ExternalRef = direct.LazyPtr(created.GetName())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
 // Parent is changed. Move the assignment to another reservation
-func (a *AssignmentAdapter) moveAssignment(ctx context.Context, updateOp *directbase.UpdateOperation, desiredSpec *krm.BigQueryReservationAssignmentSpec) error {
+func (a *AssignmentAdapter) moveAssignment(ctx context.Context, updateOp *directbase.UpdateOperation, desiredSpec *krmv1alpha1.BigQueryReservationAssignmentSpec) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("moving assignment to another reservation", "name", a.id.String())
 
@@ -208,7 +209,7 @@ func (a *AssignmentAdapter) moveAssignment(ctx context.Context, updateOp *direct
 
 	log.V(2).Info("successfully moved assignment", "name", a.id.String())
 
-	status := &krm.BigQueryReservationAssignmentStatus{}
+	status := &krmv1alpha1.BigQueryReservationAssignmentStatus{}
 	// Rebuild the externalRef
 	status.ExternalRef = direct.LazyPtr(updated.GetName())
 	mapCtx := &direct.MapContext{}
@@ -221,7 +222,7 @@ func (a *AssignmentAdapter) moveAssignment(ctx context.Context, updateOp *direct
 }
 
 // Otherwise, handle fields update
-func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *directbase.UpdateOperation, desiredSpec *krm.BigQueryReservationAssignmentSpec) error {
+func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *directbase.UpdateOperation, desiredSpec *krmv1alpha1.BigQueryReservationAssignmentSpec) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating assignment", "name", a.id.String())
 
@@ -237,7 +238,7 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())
-		status := &krm.BigQueryReservationAssignmentStatus{}
+		status := &krmv1alpha1.BigQueryReservationAssignmentStatus{}
 		status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
@@ -259,7 +260,7 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 
 	log.V(2).Info("successfully updated assignment", "name", a.id.String())
 
-	status := &krm.BigQueryReservationAssignmentStatus{}
+	status := &krmv1alpha1.BigQueryReservationAssignmentStatus{}
 	status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -276,7 +277,7 @@ func (a *AssignmentAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	desiredSpec := &a.desired.DeepCopy().Spec
 
 	// Get the reservation to move the assignment from
-	currentReservation, _, err := krm.ParseAssignmentExternal(a.actual.GetName())
+	currentReservation, _, err := krmv1alpha1.ParseAssignmentExternal(a.actual.GetName())
 	if err != nil {
 		return err
 	}
@@ -296,7 +297,7 @@ func (a *AssignmentAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.BigQueryReservationAssignment{}
+	obj := &krmv1alpha1.BigQueryReservationAssignment{}
 	mapCtx := &direct.MapContext{}
 	obj.Spec = direct.ValueOf(BigqueryReservationAssignmentSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
@@ -309,7 +310,7 @@ func (a *AssignmentAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 	}
 
 	u.SetName(a.actual.Name)
-	u.SetGroupVersionKind(krm.BigQueryReservationAssignmentGVK)
+	u.SetGroupVersionKind(krmv1alpha1.BigQueryReservationAssignmentGVK)
 
 	u.Object = uObj
 	return u, nil

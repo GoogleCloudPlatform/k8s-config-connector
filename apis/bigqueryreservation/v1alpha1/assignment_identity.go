@@ -138,3 +138,17 @@ func ParseAssignmentExternal(external string) (parent *BQReservation, resourceID
 	resourceID = tokens[7]
 	return parent, resourceID, nil
 }
+
+func ParseReservationExternal(external string) (parent *BQReservation, resourceID string, err error) {
+	tokens := strings.Split(external, "/")
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "reservations" {
+		return nil, "", fmt.Errorf("format of BigqueryReservation external=%q was not known (use projects/{{projectID}}/locations/{{location}}/reservations/{{reservationID}})", external)
+	}
+	parent = &BQReservation{
+		ProjectID:       tokens[1],
+		Location:        tokens[3],
+		ReservationName: tokens[5],
+	}
+	resourceID = tokens[5]
+	return parent, resourceID, nil
+}
