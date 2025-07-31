@@ -139,6 +139,13 @@ This tool is not good for the case if there are other v1alpha1 resources in the 
             fn=self.scenario_promote,
             annotations=ToolAnnotations(readOnlyHint=True),
         )
+
+        self.add_tool(
+            name="add_reference_doc",
+            description="This function provides instructions to add reference documentation for a KCC resource. It accepts a KCC Kind name and the service it belongs to.",
+            fn=self.add_reference_doc,
+            annotations=ToolAnnotations(readOnlyHint=True),
+        )
         
         self.add_prompt(Prompt(
             name="scenario_create_resource",
@@ -724,3 +731,22 @@ By following these steps, you can correctly refactor the controller to handle mi
             return validation_result
 
         return result
+
+    async def add_reference_doc(self, kind: str, service: str) -> str:
+        """Provides instructions to add reference documentation for a KCC resource.
+
+        Args:
+            kind: The KCC Kind name (e.g., "StorageBucket").
+            service: The service the kind belongs to (e.g., "storage").
+        """
+        if not kind or not service:
+            return "Error: Both 'kind' and 'service' parameters are required."
+
+        return f"""To add reference documentation for the kind '{kind}' under the service '{service}', follow these steps:
+
+Step 1: Add samples for '{kind}' under '{service}' by following the instructions in '5.4 Add samples' from the document at 'docs/develop-resources/deep-dives/5-releases.md'.
+
+Step 2: Once step 1 is complete, follow the instructions in sections 5.2, 5.3, and 5.5 of the same document ('docs/develop-resources/deep-dives/5-releases.md') to add the Google Docs for '{kind}'.
+
+Step 3: After completing the previous steps, run 'make resource-docs' to generate the required code.
+"""
