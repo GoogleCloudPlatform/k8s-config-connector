@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	"context"
@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 
 	// TODO: Add import for the parent service reference if needed, e.g.,
 	// metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
@@ -67,7 +68,7 @@ func NewBackupIdentity(ctx context.Context, reader client.Reader, obj *Metastore
 	if err != nil {
 		return nil, err
 	}
-	serviceParent, serviceID, err := ParseServiceExternal(serviceExternalRef)
+	serviceParent, serviceID, err := v1alpha1.ParseServiceExternal(serviceExternalRef)
 	if err != nil {
 		return nil, err
 	}
