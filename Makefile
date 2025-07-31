@@ -258,7 +258,11 @@ ensure:
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
-ready-pr: lint manifests resource-docs ensure fmt
+ready-pr: lint manifests ensure fmt
+
+# Should run all needed commands to prepare a release.
+.PHONY: release-check
+release-check: resource-docs
 
 # Upgrades dcl dependencies
 .PHONY: upgrade-dcl
