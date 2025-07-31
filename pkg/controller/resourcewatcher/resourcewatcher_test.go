@@ -68,12 +68,64 @@ func TestWatchResourceSuccess(t *testing.T) {
 	if _, err := fake.Resource(k8s.ToGVR(gvk)).
 		Namespace(nn.Namespace).
 		Create(context.TODO(), readyResourceUnstructured, metav1.CreateOptions{}); err != nil {
-		t.Fatal(err)
+		t.Fatalf("creating resource: %v", err)
 	}
 	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute)
 	defer cancel()
 	if err := resourcewatcher.WaitForResourceToBeReadyOrDeletedViaWatch(ctx, watch, logger); err != nil {
 		t.Fatalf("got unexpected error: %v", err)
+	}
+}
+
+func TestWatchResourceDeleted(t *testing.T) {
+	ctx := context.TODO()
+
+	notReadyResourceUnstructured := newResourceUnstructured(newStatus(corev1.ConditionFalse))
+	gvk, nn, err := getResourceInformation(notReadyResourceUnstructured)
+	if err != nil {
+		t.Fatalf("got unexpected error from getResourceInformation: %v", err)
+	}
+	fake := dynamicfake.NewSimpleDynamicClient(runtime.NewScheme())
+	logger := log.Log.WithName("resourcewatcher-test-success")
+	watch, err := resourcewatcher.NewWithClient(fake, logger).WatchResource(ctx, nn, gvk)
+	if err != nil {
+		t.Fatalf("got unexpected error from WatchResource: %v", err)
+	}
+	if _, err := fake.Resource(k8s.ToGVR(gvk)).
+		Namespace(nn.Namespace).
+		Create(ctx, notReadyResourceUnstructured, metav1.CreateOptions{}); err != nil {
+		t.Fatalf("creating resource: %v", err)
+	}
+
+	// We want to ensure that the watch waits for the resource to be deleted.
+	deleted := false
+
+	errChan := make(chan error, 1)
+	go func() {
+		ctx, cancel := context.WithTimeout(ctx, time.Minute)
+		defer cancel()
+		if err := resourcewatcher.WaitForResourceToBeReadyOrDeletedViaWatch(ctx, watch, logger); err != nil {
+			errChan <- fmt.Errorf("got unexpected error: %w", err)
+			return
+		}
+
+		if !deleted {
+			errChan <- errors.New("wait finished before resource was deleted")
+			return
+		}
+
+		errChan <- nil
+	}()
+
+	if err := fake.Resource(k8s.ToGVR(gvk)).
+		Namespace(nn.Namespace).
+		Delete(ctx, nn.Name, metav1.DeleteOptions{}); err != nil {
+		t.Fatalf("deleting resource: %v", err)
+	}
+	deleted = true
+
+	if err := <-errChan; err != nil {
+		t.Fatalf("error from watch: %v", err)
 	}
 }
 

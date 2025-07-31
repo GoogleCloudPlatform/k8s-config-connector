@@ -96,7 +96,8 @@ func WaitForResourceToBeReadyOrDeletedViaWatch(ctx context.Context, w watch.Inte
 				continue // ignore
 			}
 			if event.Type == watch.Deleted {
-				return nil // Resource has been deleted
+				logger.Info("resource has been deleted; triggering watch completion")
+				return nil
 			}
 			if event.Type != watch.Modified && event.Type != watch.Added {
 				return fmt.Errorf("unexpected watch event type %v", event.Type)
