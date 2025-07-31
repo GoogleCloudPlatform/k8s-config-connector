@@ -55,7 +55,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudquota"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudtasks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcomposer"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcontainer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcontaineranalysis"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdatacatalog"
@@ -224,7 +224,6 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockrecaptchaenterprise.New(env, storage))
 	services = append(services, mocknetworkservices.New(env, storage))
 	services = append(services, mockspeech.New(env, storage))
-	services = append(services, mockcompute.New(env, storage))
 
 	for _, service := range services {
 		service.Register(server)
