@@ -136,7 +136,31 @@ class MCPEvaluator:
         notes = []
 
         if verifier_script:
-            success, verifier_stdout, verifier_stderr = self._run_script(verifier_script, task_dir)
+            # The verifier script is located in `task_dir`, but it must be executed
+            # from the root of the temporary directory (`gemini_working_dir`) where the
+            # LLM's changes were made. This is because the script checks for file paths
+            # relative to the project root.
+            verifier_run_dir = os.path.join(self.git_root, gemini_working_dir)
+            verifier_script_path = os.path.join(self.git_root, task_dir, verifier_script)
+
+            print(f"--- Running verifier script: {verifier_script_path} in {verifier_run_dir} ---")
+            try:
+                command = ["bash", verifier_script_path]
+                process = subprocess.run(
+                    command,
+                    capture_output=True,
+                    text=True,
+                    check=False,
+                    cwd=verifier_run_dir,
+                )
+                success = process.returncode == 0
+                verifier_stdout = process.stdout
+                verifier_stderr = process.stderr
+            except Exception as e:
+                success = False
+                verifier_stdout = ""
+                verifier_stderr = str(e)
+
             if success:
                 test_passed = True
             else:

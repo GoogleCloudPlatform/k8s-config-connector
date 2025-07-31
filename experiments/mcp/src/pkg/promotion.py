@@ -30,7 +30,7 @@ def validate_api_path(api_path: str, base_dir: str = None) -> str:
         api_path = to_abs_path(api_path, base_dir)
     if not api_path:
         raise ValueError(f"The API path '{api_path}' does not exist in the repository.")
-    if not os.path.isfile(api_path) or not api_path.endswith('_types.go'):
+    if not api_path.endswith('_types.go'):
         raise ValueError(f"The API path '{api_path}' must point to a Go file ending with '_types.go'.")
  
     return api_path
@@ -40,7 +40,7 @@ def validate_controller_path(controller_path: str, base_dir: str = None) -> str:
         controller_path = to_abs_path(controller_path, base_dir)
     if not controller_path:
         raise ValueError(f"The API path '{controller_path}' does not exist in the repository.")
-    if not os.path.isfile(controller_path) or not controller_path.endswith('_controller.go'):
+    if not controller_path.endswith('_controller.go'):
         raise ValueError(f"The API path '{controller_path}' must point to a Go file ending with '_controller.go'.")
     return controller_path
 
@@ -270,11 +270,19 @@ def promote_test_fixture(test_fixture_path: str, target_version: str, base_dir: 
         source_version = get_version_from_path(abs_test_fixture_path)
         new_test_fixture_path_rel = test_fixture_path.replace(source_version, target_version)
         new_test_fixture_path_abs = to_abs_path(new_test_fixture_path_rel, base_dir)
+        # Move the dir instead of copying to avoid issues with existing directories
+        if os.path.exists(new_test_fixture_path_abs):
+            shutil.rmtree(new_test_fixture_path_abs)
+        os.makedirs(os.path.dirname(new_test_fixture_path_abs), exist_ok=True)
+        # Copy the test fixture directory to the new location
         shutil.copytree(abs_test_fixture_path, new_test_fixture_path_abs, dirs_exist_ok=True)
 
         for root, _, files in os.walk(new_test_fixture_path_abs):
             for file in files:
                 file_path = os.path.join(root, file)
+                if file_path.endswith('.golden.yaml'):
+                    os.remove(file_path)
+                    continue
                 if not (file_path.endswith('create.yaml') or file_path.endswith('update.yaml')):
                     continue
                 with open(file_path, 'r') as f:
@@ -359,3 +367,30 @@ def validate_test_fixture(kind: str, base_dir: str) -> dict:
         return {"success": True, "output": result.stdout}
     except Exception as e:
         return {"error": "TestFixtureValidationException", "message": str(e)}
+
+def remove_stale_files(api_path: str, base_dir: str) -> dict:
+    """
+    Deletes the original _types.go, _identity.go, and _reference.go files
+    from the source version directory.
+    """
+    try:
+        abs_api_path = validate_api_path(api_path, base_dir)
+        source_dir = os.path.dirname(abs_api_path)
+        resource_basename = os.path.basename(api_path).replace('_types.go', '')
+
+        files_to_delete = [
+            f'{resource_basename}_types.go',
+            f'{resource_basename}_identity.go',
+            f'{resource_basename}_reference.go',
+        ]
+
+        deleted_files = []
+        for filename in files_to_delete:
+            filepath = os.path.join(source_dir, filename)
+            if os.path.isfile(filepath):
+                os.remove(filepath)
+                deleted_files.append(filepath)
+
+        return {"success": True, "deleted_files": deleted_files}
+    except Exception as e:
+        return {"error": "FileDeletionError", "message": str(e)}
