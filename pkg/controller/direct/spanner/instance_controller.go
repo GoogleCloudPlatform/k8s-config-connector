@@ -166,7 +166,6 @@ func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbas
 	if resource.Labels == nil {
 		resource.Labels = make(map[string]string)
 	}
-	resource.Labels["managed-by-cnrm"] = "true"
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -208,7 +207,6 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 	if resource.Labels == nil {
 		resource.Labels = make(map[string]string)
 	}
-	resource.Labels["managed-by-cnrm"] = "true"
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

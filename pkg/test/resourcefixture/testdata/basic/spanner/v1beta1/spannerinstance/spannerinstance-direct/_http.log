@@ -32,6 +32,8 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "displayName": "Spanner Instance Sample",
     "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -60,6 +62,8 @@ X-Xss-Protection: 0
       "edition": 1,
       "instanceType": 1,
       "labels": {
+        "cnrm-test": "true",
+        "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -110,6 +114,8 @@ X-Xss-Protection: 0
       "edition": "STANDARD",
       "instanceType": "PROVISIONED",
       "labels": {
+        "cnrm-test": "true",
+        "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -138,6 +144,8 @@ X-Xss-Protection: 0
     "edition": "STANDARD",
     "instanceType": "PROVISIONED",
     "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -180,6 +188,8 @@ X-Xss-Protection: 0
   "edition": 1,
   "instanceType": 1,
   "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -210,6 +220,8 @@ X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspann
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "displayName": "New Spanner Instance Sample",
     "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -236,6 +248,8 @@ X-Xss-Protection: 0
       "edition": 1,
       "instanceType": 1,
       "labels": {
+        "cnrm-test": "true",
+        "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -286,6 +300,8 @@ X-Xss-Protection: 0
       "edition": "STANDARD",
       "instanceType": "PROVISIONED",
       "labels": {
+        "cnrm-test": "true",
+        "label-one": "value-one",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -313,6 +329,8 @@ X-Xss-Protection: 0
     "edition": "STANDARD",
     "instanceType": "PROVISIONED",
     "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
@@ -354,6 +372,8 @@ X-Xss-Protection: 0
   "edition": 1,
   "instanceType": 1,
   "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
