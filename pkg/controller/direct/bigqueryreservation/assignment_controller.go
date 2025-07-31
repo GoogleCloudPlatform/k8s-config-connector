@@ -186,7 +186,7 @@ func (a *AssignmentAdapter) Create(ctx context.Context, createOp *directbase.Cre
 		return mapCtx.Err()
 	}
 
-	// update the externalRef in the krmv1alpha1 resoruce
+	// update the externalRef in the KRM resoruce
 	status.ExternalRef = direct.LazyPtr(created.GetName())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
