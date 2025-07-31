@@ -18,6 +18,9 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
     alpha.cnrm.cloud.google.com/reconciler: "direct"
+    cnrm.cloud.google.com/remove-this-annotation: "true"
+    alpha.cnrm.cloud.google.com/remove-this-annotation-2: "true"
+    kubectl.kubernetes.io/last-applied-configuration: "{}"
   labels:
     label-one: value-one
   name: secretmanagersecret-${uniqueId}
