@@ -282,11 +282,18 @@ This tool is not good for the case if there are other v1alpha1 resources in the 
         # Prepare the instruction for Gemini
         instruction = f"""Promote the KCC resource of kind '{kind}' to version '{targetVersion}'. This is a three-step process.
 
-1.  **Promote the API**: Use the `promote_api` tool. For example: `promote_api(apiPath='{apiPath}', targetVersion='{targetVersion}')`. If the tool returns an error, analyze the error message. If the error is a compilation error, use the `promote_api_prompt` tool to get instructions on how to fix the dependencies. For example: `promote_api_prompt(apiPath='{apiPath}', targetVersion='{targetVersion}')`. After fixing the dependencies, retry the `promote_api` tool. Once successful, proceed to the next step.
+1.  **Promote the API**: Use the `promote_api` tool. For example: `promote_api(apiPath='{apiPath}', targetVersion='{targetVersion}')`.
+If the tool returns an error, analyze the error message. If the error is a compilation error, use the `promote_api_prompt` tool to get instructions on how to fix the dependencies.
+For example: `promote_api_prompt(apiPath='{apiPath}', targetVersion='{targetVersion}')`. 
+After fixing the dependencies, retry the `promote_api` tool. Once successful, proceed to the next step.
 
-2.  **Promote the Controller**: Use the `promote_controller` tool. For example: `promote_controller(controllerPath='{controllerPath}', apiPath='{apiPath}', targetVersion='{targetVersion}')`. If the tool returns an error, analyze the error message. If the error is a compilation error, use the `promote_controller_prompt` tool to get instructions on how to fix the dependencies. For example: `promote_controller_prompt(controllerPath='{controllerPath}', apiPath='{apiPath}', targetVersion='{targetVersion}')`. After fixing the dependencies, use `promote_controller_validate` to validate the controller promotion. Once successful, proceed to the next step.
+2.  **Promote the Controller**: Use the `promote_controller` tool. 
+For example: `promote_controller(controllerPath='{controllerPath}', apiPath='{apiPath}', targetVersion='{targetVersion}')`. If the tool returns an error, analyze the error message. If the error is a compilation error, use the `promote_controller_prompt` tool to get instructions on how to fix the dependencies. For example: `promote_controller_prompt(controllerPath='{controllerPath}', apiPath='{apiPath}', targetVersion='{targetVersion}')`. After fixing the dependencies, use `promote_controller_validate` to validate the controller promotion. 
+Once successful, proceed to the next step.
 
-3.  **Promote the Tests**: Use the `promote_tests` tool. For example: `promote_tests(testFixturePath='{testFixturePath}', kind='{kind}', targetVersion='{targetVersion}')`. If the tool returns an error, analyze the error message and the expected output to fix the problem and retry.
+3.  **Promote the Tests**: Use the `promote_tests` tool. 
+For example: `promote_tests(testFixturePath='{testFixturePath}', kind='{kind}', targetVersion='{targetVersion}')`. 
+If the tool returns an error, analyze the error message and the expected output to fix the problem and retry.
 
 If all three steps are successful, the promotion is complete.
 """
@@ -528,7 +535,9 @@ Return only YAML: Your final output should be only the generated YAML content, w
         validation_result = promotion.validate_promotion(apiPath, targetVersion, self.absDir)
         if "error" in validation_result:
             return validation_result
-            
+        else:
+            # Remove the stale files from the source version directory
+            promotion.remove_stale_files(apiPath, self.absDir)
         return result
 
     async def promote_api_prompt(self, apiPath: str, targetVersion: str) -> str:
@@ -596,8 +605,17 @@ Promoting an API can be complex if the resource has dependencies on other resour
             OrganizationRef *apigeev1beta1.ApigeeOrganizationRef `json:"organizationRef"`
             ```
 
-4.  **Re-run Validation:**
-    After you have applied the necessary code changes, you need to validate them. The easiest way is to re-run the original `promote_api` command. Since the files are already copied, it will likely just run the validation. If you want to only run validation, you might need a dedicated validation function if available.
+4.  **Clean Up and Finalize:**
+    Before validating, you need to perform some cleanup and finalization steps:
+    1.  **Add Version Annotation:** In the new `{targetVersion}` `_types.go` file, add the `internal.cloud.google.com/additional-versions={source_version}` kubebuilder label marker to the main `struct` definition. This links the new version to the old one.
+        *   **Example:** For `BackupDRBackupPlanAssociation`, you would add `// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"`
+    2.  **Remove Stale Files:** Delete the original `<resource>_types.go`, `<resource>_identity.go`, and `<resource>_reference.go` files from the source version directory (`{source_version}`) to prevent compilation conflicts.
+
+5.  **Re-run Validation:**
+    After you have applied the code changes and performed the cleanup, validate everything by running:
+    `make generate-crds`
+    
+    If the command succeeds, the API promotion is complete. If it fails, you may need to revisit the previous steps to fix any remaining dependency issues. Repeating the `promote_api_prompt` can help you re-evaluate the dependencies.
 
 By following these steps, you can handle complex API promotions with cross-version dependencies.
 """
