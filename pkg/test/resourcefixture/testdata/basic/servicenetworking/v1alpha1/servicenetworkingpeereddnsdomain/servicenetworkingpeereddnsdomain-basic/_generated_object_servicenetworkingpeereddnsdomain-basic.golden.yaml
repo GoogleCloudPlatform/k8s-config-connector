@@ -10,7 +10,7 @@ metadata:
   name: peerdomain-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  dnsSuffix: example.com
+  dnsSuffix: example.com.
   networkRef:
     name: computenetwork-${uniqueId}
 status:
