@@ -6,7 +6,7 @@ The main CI presubmit workflow file, `.github/workflows/ci-presubmit.yaml`, is a
 
 The generation process is handled by the `dev/tasks/generate-github-actions` script. This script scans the `dev/ci/presubmits/` directory for executable files. For each file it finds, it creates a corresponding job in the `.github/workflows/ci-presubmit.yaml` file.
 
-Most services are tested as part of a general "unclassified" test suite, which is defined in `scripts/github-actions/tests-e2e-samples-unclassified`.
+Most services are tested as part of a general "unclassified" test suite, which is defined in `dev/ci/presubmits/tests-e2e-samples-unclassified`.
 
 To improve test isolation and speed up CI, we are moving towards having dedicated, per-service test workflows. This involves creating a new script for the service in `dev/ci/presubmits/` and excluding it from the "unclassified" suite.
 
@@ -67,7 +67,7 @@ RUN_TEST_APIGROUP="storage.cnrm.cloud.google.com" \
 
 ### 2. Exclude the service from the unclassified test suite
 
-Modify the `scripts/github-actions/tests-e2e-samples-unclassified` script to add the service's API group to the `SKIP_TEST_APIGROUP` environment variable. This prevents the tests from running twice.
+Modify the `dev/ci/presubmits/tests-e2e-samples-unclassified` script to add the service's API group to the `SKIP_TEST_APIGROUP` environment variable. This prevents the tests from running twice.
 
 For the `storage` service, you would add `storage.cnrm.cloud.google.com` to the comma-separated list in `SKIP_TEST_APIGROUP`.
 
