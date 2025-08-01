@@ -57,6 +57,17 @@ func (c *ComputeNetworkID) String() string {
 	return fmt.Sprintf("projects/%s/global/networks/%s", c.Project, c.Network)
 }
 
+func (p *ComputeNetworkID) FromExternal(ref string) error {
+	id, err := ParseComputeNetworkID(ref)
+	if err != nil {
+		return fmt.Errorf("error parsing ComputeNetworkID from %q: %w", ref, err)
+	}
+	p.Project = id.Project
+	p.Network = id.Network
+	return nil
+}
+
+// Deprecated: use ComputeNetworkID.FromExternal instead.
 func ParseComputeNetworkID(external string) (*ComputeNetworkID, error) {
 	if external == "" {
 		return nil, fmt.Errorf("empty ComputeNetwork external value")
