@@ -33,7 +33,6 @@ type Parent struct {
 // FutureReservationSpec defines the desired state of FutureReservation
 // +kcc:spec:proto=google.cloud.compute.v1beta.FutureReservation
 type FutureReservationSpec struct {
-	// +required
 	Parent `json:",inline"`
 
 	// The FutureReservation name. If not given, the metadata.name will be used.

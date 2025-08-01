@@ -383,7 +383,6 @@ spec:
                     type: string
                 type: object
             required:
-            - ""
             - location
             - projectRef
             type: object
