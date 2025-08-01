@@ -60,7 +60,7 @@ func NewDatasetIdentity(ctx context.Context, reader client.Reader, obj *BigQuery
 		return nil, err
 	}
 	if projectRef == nil {
-		return nil, fmt.Errorf("cannot resolve projectRef %s", obj.Spec.ProjectRef)
+		return nil, fmt.Errorf("cannot resolve projectRef: obj.Spec.ProjectRef not defined")
 	}
 	projectID := projectRef.ProjectID
 	if projectID == "" {
