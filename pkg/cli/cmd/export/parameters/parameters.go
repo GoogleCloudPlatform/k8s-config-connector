@@ -15,6 +15,7 @@
 package parameters
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/commonparams"
@@ -39,7 +40,7 @@ type Parameters struct {
 	HTTPClient *http.Client
 }
 
-func (p *Parameters) ControllerConfig() *config.ControllerConfig {
+func (p *Parameters) NewControllerConfig(ctx context.Context) (*config.ControllerConfig, error) {
 	c := &config.ControllerConfig{
 		HTTPClient: p.HTTPClient,
 		UserAgent:  gcp.KCCUserAgent(),
@@ -49,7 +50,11 @@ func (p *Parameters) ControllerConfig() *config.ControllerConfig {
 			&oauth2.Token{AccessToken: p.GCPAccessToken},
 		)
 	}
-	return c
+
+	if err := c.Init(ctx); err != nil {
+		return nil, err
+	}
+	return c, nil
 }
 
 func Validate(p *Parameters) error {
