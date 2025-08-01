@@ -97,6 +97,8 @@ func IsPureDirectResource(gk schema.GroupKind) bool {
 		"APIGatewayAPI",
 		"BigQueryConnectionConnection",
 		"BigQueryDataTransferConfig",
+		"BigQueryReservationReservation",
+		"BigQueryReservationAssignment",
 		"CloudBuildWorkerPool",
 		"DataformRepository",
 		"FirestoreDatabase",
