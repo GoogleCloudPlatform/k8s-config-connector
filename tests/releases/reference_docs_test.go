@@ -21,38 +21,44 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 func TestReferenceDoc(t *testing.T) {
-	smLoader, err := servicemappingloader.New()
+	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
-		t.Fatalf("error creating service mapping loader: %v", err)
-	}
-	serviceMetadataLoader := metadata.New()
-	allGVKs, err := supportedgvks.All(smLoader, serviceMetadataLoader)
-	if err != nil {
-		t.Fatalf("error getting all GVKs: %v", err)
+		t.Fatalf("error loading crds: %v", err)
 	}
 
 	var missing []string
-	for _, gvk := range allGVKs {
-		if strings.HasPrefix(gvk.Version, "v1alpha1") {
-			continue
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			gvk := schema.GroupVersionKind{
+				Group:   crd.Spec.Group,
+				Version: version.Name,
+				Kind:    crd.Spec.Names.Kind,
+			}
+			if gvk.Group == "core.cnrm.cloud.google.com" {
+				continue
+			}
+			if gvk.Group == "customize.core.cnrm.cloud.google.com" {
+				continue
+			}
+			if strings.HasPrefix(gvk.Version, "v1alpha1") {
+				continue
+			}
+			// IAMServiceAccount is a special case.
+			if gvk.Kind == "IAMServiceAccount" {
+				continue
+			}
+			if hasReferenceDoc(t, gvk) {
+				continue
+			}
+			missing = append(missing, gvk.String())
 		}
-		// IAMServiceAccount is a special case.
-		if gvk.Kind == "IAMServiceAccount" {
-			continue
-		}
-		if hasReferenceDoc(t, gvk) {
-			continue
-		}
-		missing = append(missing, gvk.String())
 	}
 
 	sort.Strings(missing)
