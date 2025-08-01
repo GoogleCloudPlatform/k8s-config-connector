@@ -397,8 +397,6 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 				t.Fatalf("unexpected error: %v", err)
 			}
 			if !reflect.DeepEqual(resJSON, expectedJSON) {
-				fmt.Printf("resJSON: %v\n", resJSON)
-				fmt.Printf("expectedJSON: %v\n", expectedJSON)
 				t.Fatalf("unexpected diff: %v", cmp.Diff(resJSON, expectedJSON))
 			}
 
