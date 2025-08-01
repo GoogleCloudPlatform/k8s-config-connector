@@ -36,6 +36,7 @@ SKIP_TEST_APIGROUPS=(
     "container.cnrm.cloud.google.com"
     "dataflow.cnrm.cloud.google.com"
     "gkehub.cnrm.cloud.google.com"
+    "gkebackup.cnrm.cloud.google.com"
     "monitoring.cnrm.cloud.google.com"
     "resourcemanager.cnrm.cloud.google.com"
     "secretmanager.cnrm.cloud.google.com"
