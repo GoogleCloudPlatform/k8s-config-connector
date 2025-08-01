@@ -89,11 +89,7 @@ func TestAllInSeries(t *testing.T) {
 					dummySample := create.LoadSample(t, sampleKey, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
 					create.MaybeSkip(t, sampleKey.Name, dummySample.Resources)
 
-					var group string
-					if len(dummySample.Resources) > 0 {
-						group = dummySample.Resources[0].GroupVersionKind().Group
-					}
-
+					group := dummySample.APIGroup
 					skipTestReason := ""
 					if group != "" {
 						if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
