@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"net/http"
 
+	cloudresourcemanager "cloud.google.com/go/resourcemanager/apiv3"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"golang.org/x/oauth2"
 	"google.golang.org/api/option"
@@ -52,6 +54,25 @@ type ControllerConfig struct {
 
 	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
 	EnableMetricsTransport bool
+
+	// ProjectMapper maps between project ids and numbers
+	ProjectMapper *projects.ProjectMapper
+}
+
+func (c *ControllerConfig) Init(ctx context.Context) error {
+	if c.ProjectMapper == nil {
+		opts, err := c.RESTClientOptions()
+		if err != nil {
+			return err
+		}
+
+		projectsClient, err := cloudresourcemanager.NewProjectsRESTClient(ctx, opts...)
+		if err != nil {
+			return fmt.Errorf("building cloudresourcemanager client: %w", err)
+		}
+		c.ProjectMapper = projects.NewProjectMapper(projectsClient)
+	}
+	return nil
 }
 
 func (c *ControllerConfig) RESTClientOptions() ([]option.ClientOption, error) {
