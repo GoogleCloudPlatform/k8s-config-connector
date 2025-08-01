@@ -41,10 +41,10 @@ func TestReferenceDoc(t *testing.T) {
 				Version: version.Name,
 				Kind:    crd.Spec.Names.Kind,
 			}
-			if gvk.Group == "core.cnrm.cloud.google.com" {
+			if strings.HasSuffix(gvk.Group, "core.cnrm.cloud.google.com") {
 				continue
 			}
-			if gvk.Group == "customize.core.cnrm.cloud.google.com" {
+			if strings.HasSuffix(gvk.Group, "customize.core.cnrm.cloud.google.com") {
 				continue
 			}
 			if strings.HasPrefix(gvk.Version, "v1alpha1") {

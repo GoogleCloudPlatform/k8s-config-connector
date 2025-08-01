@@ -359,7 +359,7 @@ func LoadSample(t *testing.T, sampleKey SampleKey, project testgcp.GCPProject) S
 type SampleKey struct {
 	Name      string
 	SourceDir string
-	APIGroup  string
+	APIGroup  string // the API group of the sample, used for ONLY_TEST_APIGROUPS and SKIP_TEST_APIGROUPS e.g. "compute.cnrm.cloud.google.com"
 	files     []string
 }
 
