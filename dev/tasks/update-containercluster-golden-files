@@ -33,12 +33,24 @@ export $MOCK_TEST_ENV_VARS
 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/containercluster 2>&1
 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/containernodepool 2>&1
 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/removedefaultnodepool 2>&1
+# Update of test case "fullpocogkehubfeaturemembership" may trigger the following
+# error when running locally possibly due to SSA:
+#     samples.go:155: error updating resource: GKEHubFeatureMembership.gkehub.cnrm.cloud.google.com
+#     "gkehubfeaturemembership-full-poco-dj4fppxo3fn3idq" is invalid: [spec.policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.requests:
+#     Invalid value: "null": spec.policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.requests
+#     in body must be of type object: "null", spec.policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.limits:
+#     Invalid value: "null": spec.policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.limits
+#     in body must be of type object: "null", spec.policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.limits:
+#     Invalid value: "null": spec.policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.limits
+#     in body must be of type object: "null", spec.policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.requests:
+#     Invalid value: "null": spec.policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.requests
+#     in body must be of type object: "null"]
 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/gkehub 2>&1
 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/gkebackup 2>&1
 
 go test -test.count=1 -timeout 600s -v ./tests/e2e -run TestE2EScript/scenarios/gkehubfeaturemembership 2>&1
 # Last step of test case "scenarios/fields/management/gkehub/featuremembership/set_unset" may trigger
-# the following error when running locally:
+# the following error when running locally possibly due to SSA:
 #   script_test.go:464: error applying resource: GKEHubFeatureMembership.gkehub.cnrm.cloud.google.com
 #   "gkehubfeaturemembership-ea3e6ezynlulriq" is invalid: spec.configmanagement.configSync.git.gcpServiceAccountRef:
 #   Invalid value: "null": spec.configmanagement.configSync.git.gcpServiceAccountRef in body must be of type object: "null"
