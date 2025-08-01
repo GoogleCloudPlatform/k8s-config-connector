@@ -73,13 +73,25 @@ func (m *peeredDnsDomainModel) client(ctx context.Context) (*gcp.APIService, err
 	return gcpClient, err
 }
 
-func (m *peeredDnsDomainModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+func (m *peeredDnsDomainModel) AdapterForObject(ctx context.Context, kube client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.ServiceNetworkingPeeredDNSDomain{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := obj.GetIdentity(ctx, reader)
+	// TODO: Use common.NormalizeReferences to normalize the NetworkRef
+
+	if err := obj.Spec.NetworkRef.Normalize(ctx, kube, u); err != nil {
+		return nil, err
+	}
+
+	// Make sure we use project number, not project ID
+	// We have to do this early to avoid triggering a difference vs status.externalRef
+	if err := obj.Spec.NetworkRef.ConvertToProjectNumber(ctx, m.config.ProjectMapper); err != nil {
+		return nil, err
+	}
+
+	id, err := obj.GetIdentity(ctx, kube)
 	if err != nil {
 		return nil, err
 	}
@@ -111,16 +123,20 @@ func (m *peeredDnsDomainModel) AdapterForURL(ctx context.Context, url string) (d
 		err := id.FromExternal(s)
 		if err != nil {
 			log.V(2).Error(err, "url did not match ServiceNetworkingPeeredDnsDomain format", "url", url)
-		} else {
-			gcpClient, err := m.client(ctx)
-			if err != nil {
-				return nil, err
-			}
-			return &peeredDNSDomainAdapter{
-				gcpClient: gcpClient,
-				id:        &id,
-			}, nil
+			return nil, nil
 		}
+
+		if err := id.Network.ConvertToProjectNumber(ctx, m.config.ProjectMapper); err != nil {
+			return nil, err
+		}
+		gcpClient, err := m.client(ctx)
+		if err != nil {
+			return nil, err
+		}
+		return &peeredDNSDomainAdapter{
+			gcpClient: gcpClient,
+			id:        &id,
+		}, nil
 	}
 	return nil, nil
 }

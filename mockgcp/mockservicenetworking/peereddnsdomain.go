@@ -109,7 +109,8 @@ func (s *MockService) parsePeeredDnsDomainName(name string) (*peeredDnsDomainNam
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 9 && tokens[0] == "services" && tokens[2] == "projects" && tokens[4] == "global" && tokens[5] == "networks" && tokens[7] == "peeredDnsDomains" {
-		project, err := s.Projects.GetProjectByIDOrNumber(tokens[3])
+		// Note: servicenetworking requires this to be a number, not a project ID
+		project, err := s.Projects.GetProjectByNumber(tokens[3])
 		if err != nil {
 			return nil, err
 		}
