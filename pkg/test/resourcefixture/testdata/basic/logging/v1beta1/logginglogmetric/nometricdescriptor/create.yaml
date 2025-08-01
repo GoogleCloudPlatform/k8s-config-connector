@@ -1,0 +1,9 @@
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogMetric
+metadata:
+  name: logginglogmetric-${uniqueId}
+spec:
+  description: "A simple log metric with no metric descriptor."
+  filter: "resource.type=global AND severity=INFO"
+  projectRef:
+    external: "projects/${projectId}"
