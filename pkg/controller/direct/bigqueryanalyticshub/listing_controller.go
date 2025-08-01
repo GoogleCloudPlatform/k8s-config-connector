@@ -104,11 +104,10 @@ func resolveOptionalReferences(ctx context.Context, reader client.Reader, obj *k
 
 			for _, selectedResource := range obj.Spec.Source.BigQueryDatasetSource.SelectedResources {
 				if ref := selectedResource.TableRef; ref != nil {
-					tableID, err := refs.ResolveBigQueryTable(ctx, reader, obj, ref)
+					_, err := ref.NormalizedExternal(ctx, reader, obj.GetNamespace())
 					if err != nil {
 						return err
 					}
-					selectedResource.TableRef.External = tableID.String()
 				}
 			}
 		}
