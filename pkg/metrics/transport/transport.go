@@ -62,14 +62,11 @@ var (
 	)
 )
 
-type contextKey string
+const (
+	ControllerNameContextKey ContextKey = "controllerNameForMetrics"
+)
 
-const controllerNameContextKey contextKey = "controllerNameForMetrics"
-
-// WithControllerName returns a new context with the controller name set
-func WithControllerName(ctx context.Context, name string) context.Context {
-	return context.WithValue(ctx, controllerNameContextKey, name)
-}
+type ContextKey string
 
 // wrap an http.RoundTripper to records metrics for all http requests
 type MetricsTransport struct {
@@ -83,6 +80,11 @@ func NewMetricsTransport(inner http.RoundTripper) *MetricsTransport {
 	return &MetricsTransport{inner: inner}
 }
 
+// WithControllerName returns a new context with the controller name set
+func WithControllerName(ctx context.Context, name string) context.Context {
+	return context.WithValue(ctx, ControllerNameContextKey, name)
+}
+
 func (t *MetricsTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	start := time.Now()
 	resp, reqErr := t.inner.RoundTrip(req)
@@ -94,7 +96,7 @@ func (t *MetricsTransport) RoundTrip(req *http.Request) (*http.Response, error) 
 	}
 	statusCode := toStatusCodeFamily(code)
 	controllerName := "unknownControllerName"
-	if v := req.Context().Value(controllerNameContextKey); v != nil {
+	if v := req.Context().Value(ControllerNameContextKey); v != nil {
 		if s, ok := v.(string); ok {
 			controllerName = s
 		}
