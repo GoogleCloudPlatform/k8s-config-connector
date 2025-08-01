@@ -97,7 +97,7 @@ manifests: generate
 # Format code
 .PHONY: fmt
 fmt:
-	mockgcp/dev/fix-gofmt
+	mockgcp/dev/tasks/fix-gofmt
 	make -C operator fmt
 	dev/tasks/fix-gofmt
 	# 04bfe4ee9ca5764577b029acc6a1957fd1997153 includes fix to not log "Skipped" for each skipped file
