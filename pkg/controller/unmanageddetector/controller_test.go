@@ -82,16 +82,20 @@ func runManager(t *testing.T, restConfig *rest.Config) manager.Manager {
 
 func TestReconcile_UnmanagedResource(t *testing.T) {
 	tests := []struct {
-		name      string
-		namespace string
+		name             string
+		namespace        string
+		managerNamespace string
+		ccc              *unstructured.Unstructured
 	}{
 		{
 			name:      "namespaced CCC",
 			namespace: testvariable.NewUniqueID(),
 		},
 		{
-			name:      "per namespace CCC",
-			namespace: "t1234-tenant0-provider",
+			name:             "per namespace CCC",
+			namespace:        "t1234-tenant0-provider",
+			managerNamespace: "t1234-tenant0-supervisor",
+			ccc:              newConfigConnectorContextUnstructured("t1234-tenant0-provider", "t1234-tenant0-supervisor"),
 		},
 	}
 	for _, tc := range tests {
@@ -109,6 +113,9 @@ func TestReconcile_UnmanagedResource(t *testing.T) {
 			testID := testvariable.NewUniqueID()
 			testcontroller.EnsureNamespaceExistsT(t, client, k8s.SystemNamespace)
 			testcontroller.EnsureNamespaceExistsT(t, client, tc.namespace)
+			if tc.managerNamespace != "" {
+				testcontroller.EnsureNamespaceExistsT(t, client, tc.managerNamespace)
+			}
 
 			resourceNN := types.NamespacedName{
 				Namespace: tc.namespace,
@@ -125,6 +132,15 @@ func TestReconcile_UnmanagedResource(t *testing.T) {
 					t.Fatalf("cannot delete ConfigConnector: %v", err)
 				}
 			}()
+			if tc.ccc != nil {
+				test.EnsureObjectExists(t, tc.ccc, client)
+				defer func() {
+					err := client.Delete(context.Background(), tc.ccc)
+					if err != nil {
+						t.Fatalf("cannot delete ConfigConnectorContext: %v", err)
+					}
+				}()
+			}
 
 			reconciler, err := unmanageddetector.NewReconciler(mgr, fakeCRDGVK)
 			if err != nil {
@@ -235,22 +251,6 @@ func TestReconcile_ManagedResource(t *testing.T) {
 		})
 	}
 }
-
-// func newConfigConnectorCRD() *apiextensions.CustomResourceDefinition {
-// 	crd := test.CRDForGVK(schema.GroupVersionKind{
-// 		Group:   "core.cnrm.cloud.google.com",
-// 		Version: "v1beta1",
-// 		Kind:    "ConfigConnector",
-// 	})
-// 	// Enable the status subresource for this CRD. This is needed to allow
-// 	// UpdateStatus() calls to work on custom resources belonging to this CRD
-// 	// on the API server.
-// 	crd.Spec.Versions[0].Subresources = &apiextensions.CustomResourceSubresources{
-// 		Status: &apiextensions.CustomResourceSubresourceStatus{},
-// 	}
-// 	crd.Spec.Scope = apiextensions.ClusterScoped
-// 	return crd
-// }
 
 func newTestKindUnstructured(nn types.NamespacedName) *unstructured.Unstructured {
 	return &unstructured.Unstructured{
