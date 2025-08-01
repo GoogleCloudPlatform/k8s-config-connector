@@ -86,11 +86,11 @@ func TestReconcile_UnmanagedResource(t *testing.T) {
 		namespace string
 	}{
 		{
-			name:      "namespaced CC",
+			name:      "namespaced CCC",
 			namespace: testvariable.NewUniqueID(),
 		},
 		{
-			name:      "per namespace CC",
+			name:      "per namespace CCC",
 			namespace: "t1234-tenant0-provider",
 		},
 	}
@@ -163,12 +163,12 @@ func TestReconcile_ManagedResource(t *testing.T) {
 		managerNamespace string
 	}{
 		{
-			name:             "namespaced CC",
+			name:             "namespaced CCC",
 			namespace:        testvariable.NewUniqueID(),
 			managerNamespace: k8s.SystemNamespace,
 		},
 		{
-			name:             "per namespace CC",
+			name:             "per namespace CCC",
 			namespace:        "t1234-tenant0-provider",
 			managerNamespace: "t1234-tenant0-supervisor",
 		},

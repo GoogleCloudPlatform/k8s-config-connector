@@ -435,7 +435,7 @@ func TestHandleConfigConnectorDelete(t *testing.T) {
 			},
 		},
 		{
-			name: "per namespace mode CC, 1 CCContext, delete CC",
+			name: "namespaced mode CC, 1 CCContext per namespace, delete CC",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:       "test-kcc",
