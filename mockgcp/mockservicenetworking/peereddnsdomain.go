@@ -43,6 +43,10 @@ func (s *peeredDnsDomainsServer) CreateServicesProjectsGlobalNetworksPeeredDnsDo
 	}
 	fqn := name.String()
 
+	if domain := req.GetServicesProjectsGlobalNetworksPeeredDnsDomain().GetDnsSuffix(); !strings.HasSuffix(domain, ".") {
+		return nil, status.Errorf(codes.InvalidArgument, "The peered DNS domain suffix '%s' must end with a trailing dot (.)", domain)
+	}
+
 	obj := proto.Clone(req.GetServicesProjectsGlobalNetworksPeeredDnsDomain()).(*pb.PeeredDnsDomain)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
