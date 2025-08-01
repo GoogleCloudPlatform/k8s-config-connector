@@ -49,6 +49,9 @@
 </tbody>
 </table>
 
+{{ .Kind}} can manage both global and regional target TCP proxies. To manage a global {{ .Kind}}, no need to specify `spec.location`
+ or use a value of `global` in the `spec.location` field. To manage a regional {{ .Kind}}, use a region name in the `spec.location` field.
+
 {{template "resource.tmpl" .}}
 {{template "endnote.tmpl" .}}
 {% endblock %}
