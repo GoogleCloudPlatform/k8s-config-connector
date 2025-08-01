@@ -37,15 +37,18 @@ type URLToUnstructuredResourceStream struct {
 	smLoader   *servicemappingloader.ServiceMappingLoader
 	tfProvider *schema.Provider
 	httpClient *http.Client
+
+	controllerConfig *config.ControllerConfig
 }
 
-func NewUnstructuredResourceStreamFromURL(url string, provider *schema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, gcpClient gcpclient.Client, httpClient *http.Client) *URLToUnstructuredResourceStream {
+func NewUnstructuredResourceStreamFromURL(url string, provider *schema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, gcpClient gcpclient.Client, httpClient *http.Client, controllerConfig *config.ControllerConfig) *URLToUnstructuredResourceStream {
 	stream := URLToUnstructuredResourceStream{
-		url:        url,
-		smLoader:   smLoader,
-		tfProvider: provider,
-		gcpClient:  gcpClient,
-		httpClient: httpClient,
+		url:              url,
+		smLoader:         smLoader,
+		tfProvider:       provider,
+		gcpClient:        gcpClient,
+		httpClient:       httpClient,
+		controllerConfig: controllerConfig,
 	}
 	return &stream
 }
@@ -56,9 +59,7 @@ func (s *URLToUnstructuredResourceStream) Next(ctx context.Context) (*unstructur
 	}
 
 	// First check if this resource uses our direct-reconciliation model
-	exported, err := direct.Export(ctx, s.url, &config.ControllerConfig{
-		HTTPClient: s.httpClient,
-	})
+	exported, err := direct.Export(ctx, s.url, s.controllerConfig)
 	if err != nil {
 		return nil, err
 	}
