@@ -12,10 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package references
+package releases
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"sort"
@@ -25,8 +24,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
-	"github.com/google/go-cmp/cmp"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
@@ -46,7 +45,7 @@ func TestReferenceDoc(t *testing.T) {
 		if strings.HasPrefix(gvk.Version, "v1alpha1") {
 			continue
 		}
-		// IAMServiceAccount is a special case, it is not a real resource.
+		// IAMServiceAccount is a special case.
 		if gvk.Kind == "IAMServiceAccount" {
 			continue
 		}
@@ -56,35 +55,9 @@ func TestReferenceDoc(t *testing.T) {
 		missing = append(missing, gvk.String())
 	}
 
-	if len(missing) == 0 {
-		// Create an empty file if it does not exist
-		goldenFile := "testdata/missing_reference.txt"
-		if _, err := os.Stat(goldenFile); os.IsNotExist(err) {
-			if err := ioutil.WriteFile(goldenFile, []byte{}, 0644); err != nil {
-				t.Fatalf("error creating empty golden file: %v", err)
-			}
-		}
-		return
-	}
-
 	sort.Strings(missing)
-	missingRefs := strings.Join(missing, "\n") + "\n"
-
-	goldenFile := "testdata/missing_reference.txt"
-	if os.Getenv("UPDATE_GOLDEN") != "" {
-		if err := ioutil.WriteFile(goldenFile, []byte(missingRefs), 0644); err != nil {
-			t.Fatalf("error writing golden file: %v", err)
-		}
-		return
-	}
-
-	bytes, err := ioutil.ReadFile(goldenFile)
-	if err != nil {
-		t.Fatalf("error reading golden file: %v", err)
-	}
-	if diff := cmp.Diff(string(bytes), missingRefs); diff != "" {
-		t.Errorf("unexpected diff in missing references (-want +got):\n%s", diff)
-	}
+	want := strings.Join(missing, "\n")
+	test.CompareGoldenFile(t, "testdata/missing_reference.txt", want)
 }
 
 func hasReferenceDoc(t *testing.T, gvk schema.GroupVersionKind) bool {
