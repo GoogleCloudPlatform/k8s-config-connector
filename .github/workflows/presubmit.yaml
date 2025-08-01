@@ -73,24 +73,6 @@ jobs:
           name: unittest_result
           path: unittest_result.json
           retention-days: 5
-  tests-e2e-samples-unclassified:
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: 'go.mod'
-      - name: "Run mock samples tests"
-        run: |
-          ./scripts/github-actions/tests-e2e-samples-unclassified
-        env:
-          ARTIFACTS: /tmp/artifacts
-      - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifacts-tests-e2e-samples
-          path: /tmp/artifacts/
   pause-tests:
     runs-on: ubuntu-22.04
     timeout-minutes: 90
