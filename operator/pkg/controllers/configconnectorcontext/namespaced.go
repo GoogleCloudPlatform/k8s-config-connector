@@ -77,6 +77,44 @@ func transformNamespacedComponentTemplates(ctx context.Context, c client.Client,
 	return transformedObjs, nil
 }
 
+func transformPerNamespaceComponentTemplates(ccc *corev1beta1.ConfigConnectorContext, namespacedTemplates []*manifest.Object) ([]*manifest.Object, error) {
+	transformedObjs := make([]*manifest.Object, 0, len(namespacedTemplates))
+	for _, obj := range namespacedTemplates {
+		processed := obj
+		if obj.Kind == "Service" && strings.HasPrefix(obj.GetName(), k8s.NamespacedManagerServicePrefix) {
+			var err error
+			processed, err = handleControllerManagerServicePerNamespace(ccc, processed)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if controllers.IsControllerManagerStatefulSet(processed) {
+			var err error
+			processed, err = handleControllerManagerStatefulSetPerNamespace(ccc, processed)
+			if err != nil {
+				return nil, err
+			}
+		}
+
+		if processed.Kind == rbacv1.ServiceAccountKind && strings.HasPrefix(processed.GetName(), k8s.ServiceAccountNamePrefix) {
+			var err error
+			processed, err = handleControllerManagerServiceAccountNamespace(processed, ccc)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if processed.Kind == "RoleBinding" || processed.Kind == "ClusterRoleBinding" {
+			var err error
+			processed, err = handleControllerManagerRoleBindingNamespace(processed, ccc)
+			if err != nil {
+				return nil, err
+			}
+		}
+		transformedObjs = append(transformedObjs, processed)
+	}
+	return transformedObjs, nil
+}
+
 func handleControllerManagerService(ctx context.Context, c client.Client, ccc *corev1beta1.ConfigConnectorContext, obj *manifest.Object) (*manifest.Object, error) {
 	u := obj.UnstructuredObject().DeepCopy()
 	nsID, err := cluster.GetNamespaceID(ctx, k8s.OperatorNamespaceIDConfigMapNN, c, ccc.Namespace)
@@ -87,6 +125,49 @@ func handleControllerManagerService(ctx context.Context, c client.Client, ccc *c
 	if err := removeStaleControllerManagerService(ctx, c, ccc.Namespace, u.GetName()); err != nil {
 		return nil, fmt.Errorf("error deleting stale Services for watched namespace %v: %w", ccc.Namespace, err)
 	}
+
+	return manifest.NewObject(u)
+}
+
+func handleControllerManagerServicePerNamespace(ccc *corev1beta1.ConfigConnectorContext, obj *manifest.Object) (*manifest.Object, error) {
+	u := obj.UnstructuredObject().DeepCopy()
+	u.SetNamespace(ccc.Spec.ManagerNamespace)
+	updatePerNamespaceLabels(u, ccc)
+	return manifest.NewObject(u)
+}
+
+func handleControllerManagerServiceAccountNamespace(obj *manifest.Object, ccc *corev1beta1.ConfigConnectorContext) (*manifest.Object, error) {
+	u := obj.UnstructuredObject().DeepCopy()
+	u.SetNamespace(ccc.Spec.ManagerNamespace)
+	updatePerNamespaceLabels(u, ccc)
+	return manifest.NewObject(u)
+}
+
+func handleControllerManagerRoleBindingNamespace(obj *manifest.Object, ccc *corev1beta1.ConfigConnectorContext) (*manifest.Object, error) {
+	u := obj.UnstructuredObject().DeepCopy()
+	subjects, found, err := unstructured.NestedSlice(u.Object, "subjects")
+	if err != nil {
+		return nil, err
+	}
+	if found {
+		for _, subjectIntf := range subjects {
+			if subject, ok := subjectIntf.(map[string]interface{}); ok {
+				var kind, name string
+				if kind, ok = subject["kind"].(string); !ok || kind != rbacv1.ServiceAccountKind {
+					continue
+				}
+				if name, ok = subject["name"].(string); !ok || !strings.HasPrefix(name, k8s.ServiceAccountNamePrefix) {
+					continue
+				}
+				subject["namespace"] = ccc.Spec.ManagerNamespace
+			}
+		}
+		err = unstructured.SetNestedSlice(u.Object, subjects, "subjects")
+		if err != nil {
+			return nil, err
+		}
+	}
+	updatePerNamespaceLabels(u, ccc)
 	return manifest.NewObject(u)
 }
 
@@ -94,7 +175,7 @@ func removeStaleControllerManagerService(ctx context.Context, c client.Client, n
 	// List existing controller-manager services for the given namespace, delete stale ones if any
 	// stale services could come from legacy naming or namespaceId changes.
 	svcList := &corev1.ServiceList{}
-	if err := c.List(ctx, svcList, client.InNamespace(k8s.CNRMSystemNamespace),
+	if err := c.List(ctx, svcList,
 		client.MatchingLabels{k8s.NamespacedComponentLabel: ns}); err != nil {
 		return fmt.Errorf("error listing existing %v Services for watched namespace %v: %w", k8s.KCCControllerManagerComponent, ns, err)
 	}
@@ -145,6 +226,13 @@ func handleControllerManagerStatefulSet(ctx context.Context, c client.Client, cc
 		return nil, fmt.Errorf("error deleting stale StatefulSet for watched namespace %v: %w", ccc.Namespace, err)
 	}
 
+	return manifest.NewObject(u)
+}
+
+func handleControllerManagerStatefulSetPerNamespace(ccc *corev1beta1.ConfigConnectorContext, obj *manifest.Object) (*manifest.Object, error) {
+	u := obj.UnstructuredObject().DeepCopy()
+	u.SetNamespace(ccc.Spec.ManagerNamespace)
+	updatePerNamespaceLabels(u, ccc)
 	return manifest.NewObject(u)
 }
 
@@ -219,7 +307,7 @@ func removeStaleControllerManagerStatefulSet(ctx context.Context, c client.Clien
 	// List existing controller-manager statefulsets for the given namespace, delete stale ones if any
 	// stale statefulsets could come from legacy naming or namespaceId changes.
 	stsList := &appsv1.StatefulSetList{}
-	if err := c.List(ctx, stsList, client.InNamespace(k8s.CNRMSystemNamespace),
+	if err := c.List(ctx, stsList,
 		client.MatchingLabels{k8s.KCCSystemComponentLabel: k8s.KCCControllerManagerComponent, k8s.NamespacedComponentLabel: ns}); err != nil {
 		return fmt.Errorf("error listing existing %v StatefulSets for watched namespace %v: %w", k8s.KCCControllerManagerComponent, ns, err)
 	}
@@ -242,7 +330,7 @@ func removeStaleControllerManagerStatefulSet(ctx context.Context, c client.Clien
 		}
 		podList := &corev1.PodList{}
 		if err := wait.ExponentialBackoff(b, func() (done bool, err error) {
-			if err := c.List(ctx, podList, client.InNamespace(k8s.CNRMSystemNamespace),
+			if err := c.List(ctx, podList,
 				client.MatchingLabels{k8s.KCCSystemComponentLabel: k8s.KCCControllerManagerComponent, k8s.NamespacedComponentLabel: ns}); err != nil {
 				return false, errors.Wrap(err, "error listing controller pods")
 			}
@@ -277,4 +365,23 @@ func replaceNamespacePattern(obj *manifest.Object, ns string) (*manifest.Object,
 		return nil, errors.Wrap(err, fmt.Sprintf("error unmarshalling object %v", obj.UnstructuredObject()))
 	}
 	return newObj, nil
+}
+
+const perNamespaceLabelPrefix = "tenancy.gke.io/"
+
+var perNamespaceFixedLabels = map[string]string{
+	"tenancy.gke.io/access-level": "supervisor",
+}
+
+func updatePerNamespaceLabels(u *unstructured.Unstructured, ccc *corev1beta1.ConfigConnectorContext) {
+	labels := u.GetLabels()
+	for label, value := range ccc.Labels {
+		if strings.HasPrefix(label, perNamespaceLabelPrefix) {
+			labels[label] = value
+		}
+	}
+	for label, value := range perNamespaceFixedLabels {
+		labels[label] = value
+	}
+	u.SetLabels(labels)
 }
