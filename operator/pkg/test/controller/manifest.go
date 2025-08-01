@@ -117,8 +117,6 @@ kind: ServiceAccount
 metadata:
   annotations:
     iam.gke.io/gcp-service-account: ${SERVICE_ACCOUNT?}
-  finalizers:
-    - configconnector.cnrm.cloud.google.com/finalizer
   labels:
     cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
     cnrm.cloud.google.com/system: "true"
@@ -131,8 +129,6 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  finalizers:
-    - configconnector.cnrm.cloud.google.com/finalizer
   labels:
     cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
     cnrm.cloud.google.com/system: "true"
@@ -176,8 +172,6 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  finalizers:
-    - configconnector.cnrm.cloud.google.com/finalizer
   labels:
     cnrm.cloud.google.com/component: cnrm-controller-manager
     cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
@@ -196,8 +190,6 @@ spec:
   serviceName: cnrm-manager-${NAMESPACE?}
   template:
     metadata:
-      finalizers:
-        - configconnector.cnrm.cloud.google.com/finalizer
       labels:
         cnrm.cloud.google.com/component: cnrm-controller-manager
         cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}

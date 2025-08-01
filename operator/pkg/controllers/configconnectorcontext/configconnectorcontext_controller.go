@@ -127,6 +127,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 		declarative.WithPreserveNamespace(),
 		declarative.WithManifestController(manifestLoader),
 		declarative.WithObjectTransform(r.transformNamespacedComponents()),
+		declarative.WithObjectTransform(r.transformPerNamespaceComponents()),
 		declarative.WithObjectTransform(r.addLabels()),
 		declarative.WithObjectTransform(r.handleCCContextLifecycle()),
 		declarative.WithObjectTransform(r.applyNamespacedCustomizations()),
@@ -234,6 +235,24 @@ func (r *Reconciler) transformNamespacedComponents() declarative.ObjectTransform
 		transformedObjects, err := transformNamespacedComponentTemplates(ctx, r.client, ccc, m.Items)
 		if err != nil {
 			return fmt.Errorf("error transforming namespaced components: %w", err)
+		}
+		m.Items = transformedObjects
+		return nil
+	}
+}
+
+func (r *Reconciler) transformPerNamespaceComponents() declarative.ObjectTransform {
+	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
+		ccc, ok := o.(*corev1beta1.ConfigConnectorContext)
+		if !ok {
+			return fmt.Errorf("expected the resource to be a ConfigConnectorContext, but it was not. Object: %v", o)
+		}
+		if ccc.Spec.ManagerNamespace == "" {
+			return nil
+		}
+		transformedObjects, err := transformPerNamespaceComponentTemplates(ccc, m.Items)
+		if err != nil {
+			return fmt.Errorf("error transforming per namespace components: %w", err)
 		}
 		m.Items = transformedObjects
 		return nil

@@ -72,18 +72,42 @@ func transformNamespacedComponentTemplates(ctx context.Context, c client.Client,
 				return nil, errors.Wrap(err, fmt.Sprintf("error annotating ServiceAccount %v/%v", obj.UnstructuredObject().GetNamespace(), obj.UnstructuredObject().GetName()))
 			}
 		}
-		if ccc.Spec.ManagerNamespace != "" {
-			if processed.Kind == rbacv1.ServiceAccountKind && strings.HasPrefix(processed.GetName(), k8s.ServiceAccountNamePrefix) {
-				processed, err = handleControllerManagerServiceAccountNamespace(processed, ccc)
-				if err != nil {
-					return nil, err
-				}
+		transformedObjs = append(transformedObjs, processed)
+	}
+	return transformedObjs, nil
+}
+
+func transformPerNamespaceComponentTemplates(ccc *corev1beta1.ConfigConnectorContext, namespacedTemplates []*manifest.Object) ([]*manifest.Object, error) {
+	transformedObjs := make([]*manifest.Object, 0, len(namespacedTemplates))
+	for _, obj := range namespacedTemplates {
+		processed := obj
+		if obj.Kind == "Service" && strings.HasPrefix(obj.GetName(), k8s.NamespacedManagerServicePrefix) {
+			var err error
+			processed, err = handleControllerManagerServicePerNamespace(ccc, processed)
+			if err != nil {
+				return nil, err
 			}
-			if processed.Kind == "RoleBinding" || processed.Kind == "ClusterRoleBinding" {
-				processed, err = handleControllerManagerRoleBindingNamespace(processed, ccc)
-				if err != nil {
-					return nil, err
-				}
+		}
+		if controllers.IsControllerManagerStatefulSet(processed) {
+			var err error
+			processed, err = handleControllerManagerStatefulSetPerNamespace(ccc, processed)
+			if err != nil {
+				return nil, err
+			}
+		}
+
+		if processed.Kind == rbacv1.ServiceAccountKind && strings.HasPrefix(processed.GetName(), k8s.ServiceAccountNamePrefix) {
+			var err error
+			processed, err = handleControllerManagerServiceAccountNamespace(processed, ccc)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if processed.Kind == "RoleBinding" || processed.Kind == "ClusterRoleBinding" {
+			var err error
+			processed, err = handleControllerManagerRoleBindingNamespace(processed, ccc)
+			if err != nil {
+				return nil, err
 			}
 		}
 		transformedObjs = append(transformedObjs, processed)
@@ -98,10 +122,6 @@ func handleControllerManagerService(ctx context.Context, c client.Client, ccc *c
 		return nil, fmt.Errorf("error getting namespace id for namespace %v: %w", ccc.Namespace, err)
 	}
 	u.SetName(strings.ReplaceAll(u.GetName(), "${NAMESPACE?}", nsID))
-	if ccc.Spec.ManagerNamespace != "" {
-		u.SetNamespace(ccc.Spec.ManagerNamespace)
-		updatePerNamespaceLabels(u, ccc)
-	}
 	if err := removeStaleControllerManagerService(ctx, c, ccc.Namespace, u.GetName()); err != nil {
 		return nil, fmt.Errorf("error deleting stale Services for watched namespace %v: %w", ccc.Namespace, err)
 	}
@@ -109,11 +129,17 @@ func handleControllerManagerService(ctx context.Context, c client.Client, ccc *c
 	return manifest.NewObject(u)
 }
 
+func handleControllerManagerServicePerNamespace(ccc *corev1beta1.ConfigConnectorContext, obj *manifest.Object) (*manifest.Object, error) {
+	u := obj.UnstructuredObject().DeepCopy()
+	u.SetNamespace(ccc.Spec.ManagerNamespace)
+	updatePerNamespaceLabels(u, ccc)
+	return manifest.NewObject(u)
+}
+
 func handleControllerManagerServiceAccountNamespace(obj *manifest.Object, ccc *corev1beta1.ConfigConnectorContext) (*manifest.Object, error) {
 	u := obj.UnstructuredObject().DeepCopy()
 	u.SetNamespace(ccc.Spec.ManagerNamespace)
 	updatePerNamespaceLabels(u, ccc)
-	controllers.EnsureOperatorFinalizer(u)
 	return manifest.NewObject(u)
 }
 
@@ -141,7 +167,6 @@ func handleControllerManagerRoleBindingNamespace(obj *manifest.Object, ccc *core
 			return nil, err
 		}
 	}
-	controllers.EnsureOperatorFinalizer(u)
 	updatePerNamespaceLabels(u, ccc)
 	return manifest.NewObject(u)
 }
@@ -197,14 +222,17 @@ func handleControllerManagerStatefulSet(ctx context.Context, c client.Client, cc
 		}
 	}
 
-	if ccc.Spec.ManagerNamespace != "" {
-		u.SetNamespace(ccc.Spec.ManagerNamespace)
-		updatePerNamespaceLabels(u, ccc)
-	}
 	if err := removeStaleControllerManagerStatefulSet(ctx, c, ccc.Namespace, u.GetName()); err != nil {
 		return nil, fmt.Errorf("error deleting stale StatefulSet for watched namespace %v: %w", ccc.Namespace, err)
 	}
 
+	return manifest.NewObject(u)
+}
+
+func handleControllerManagerStatefulSetPerNamespace(ccc *corev1beta1.ConfigConnectorContext, obj *manifest.Object) (*manifest.Object, error) {
+	u := obj.UnstructuredObject().DeepCopy()
+	u.SetNamespace(ccc.Spec.ManagerNamespace)
+	updatePerNamespaceLabels(u, ccc)
 	return manifest.NewObject(u)
 }
 

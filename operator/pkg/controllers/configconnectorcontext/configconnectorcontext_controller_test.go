@@ -113,6 +113,11 @@ spec:
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "t1234-tenant0-provider",
+					Labels: map[string]string{
+						"tenancy.gke.io/access-level": "tenant",
+						"tenancy.gke.io/project":      "t1234",
+						"tenancy.gke.io/tenant":       "t1234-tenant0",
+					},
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
 					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
@@ -333,13 +338,18 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "t1234-tenant0-provider",
+					Labels: map[string]string{
+						"tenancy.gke.io/access-level": "tenant",
+						"tenancy.gke.io/project":      "t1234",
+						"tenancy.gke.io/tenant":       "t1234-tenant0",
+					},
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
 					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
 					ManagerNamespace:     "t1234-tenant0-supervisor",
 				},
 			},
-			loadedManifest: testcontroller.GetPerManagerNamespaceManifest(),
+			loadedManifest: testcontroller.GetPerNamespaceManifest(),
 			resultsFunc: func(t *testing.T, c client.Client) []string {
 				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerManagerNamespaceManifest(), "t1234-tenant0-provider", "foo@bar.iam.gserviceaccount.com", false, "", c)
 			},
@@ -387,6 +397,8 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 				t.Fatalf("unexpected error: %v", err)
 			}
 			if !reflect.DeepEqual(resJSON, expectedJSON) {
+				fmt.Printf("resJSON: %v\n", resJSON)
+				fmt.Printf("expectedJSON: %v\n", expectedJSON)
 				t.Fatalf("unexpected diff: %v", cmp.Diff(resJSON, expectedJSON))
 			}
 
@@ -469,13 +481,18 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 					Name:       corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace:  "t1234-tenant0-provider",
 					Finalizers: []string{k8s.OperatorFinalizer},
+					Labels: map[string]string{
+						"tenancy.gke.io/access-level": "tenant",
+						"tenancy.gke.io/project":      "t1234",
+						"tenancy.gke.io/tenant":       "t1234-tenant0",
+					},
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
 					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
 					ManagerNamespace:     "t1234-tenant0-supervisor",
 				},
 			},
-			loadedManifest: testcontroller.GetPerManagerNamespaceManifest(),
+			loadedManifest: testcontroller.GetPerNamespaceManifest(),
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
 				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerManagerNamespaceManifest(), "t1234-tenant0-provider", "foo@bar.iam.gserviceaccount.com", false, "", c)
 			},
@@ -530,13 +547,18 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 					Name:       corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace:  "t1234-tenant0-provider",
 					Finalizers: []string{k8s.OperatorFinalizer},
+					Labels: map[string]string{
+						"tenancy.gke.io/access-level": "tenant",
+						"tenancy.gke.io/project":      "t1234",
+						"tenancy.gke.io/tenant":       "t1234-tenant0",
+					},
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
 					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
 					ManagerNamespace:     "t1234-tenant0-supervisor",
 				},
 			},
-			loadedManifest: testcontroller.GetPerManagerNamespaceManifest(),
+			loadedManifest: testcontroller.GetPerNamespaceManifest(),
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
 				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerManagerNamespaceManifest(), "t1234-tenant0-provider", "foo@bar.iam.gserviceaccount.com", false, "", c)
 			},
@@ -592,13 +614,18 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 					Name:       corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace:  "t1234-tenant0-provider",
 					Finalizers: []string{k8s.OperatorFinalizer},
+					Labels: map[string]string{
+						"tenancy.gke.io/access-level": "tenant",
+						"tenancy.gke.io/project":      "t1234",
+						"tenancy.gke.io/tenant":       "t1234-tenant0",
+					},
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
 					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
 					ManagerNamespace:     "t1234-tenant0-supervisor",
 				},
 			},
-			loadedManifest: testcontroller.GetPerManagerNamespaceManifest(),
+			loadedManifest: testcontroller.GetPerNamespaceManifest(),
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
 				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerManagerNamespaceManifest(), "t1234-tenant0-provider", "foo@bar.iam.gserviceaccount.com", false, "", c)
 			},
@@ -638,13 +665,18 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 					Name:       corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace:  "t1234-tenant0-provider",
 					Finalizers: []string{k8s.OperatorFinalizer},
+					Labels: map[string]string{
+						"tenancy.gke.io/access-level": "tenant",
+						"tenancy.gke.io/project":      "t1234",
+						"tenancy.gke.io/tenant":       "t1234-tenant0",
+					},
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
 					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
 					ManagerNamespace:     "t1234-tenant0-supervisor",
 				},
 			},
-			loadedManifest: testcontroller.GetPerManagerNamespaceManifest(),
+			loadedManifest: testcontroller.GetPerNamespaceManifest(),
 			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
 				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerManagerNamespaceManifest(), "t1234-tenant0-provider", "foo@bar.iam.gserviceaccount.com", false, "", c)
 			},
@@ -1222,6 +1254,10 @@ func handleLifecycles(ctx context.Context, t *testing.T,
 	r *Reconciler, ccc *corev1beta1.ConfigConnectorContext, m *manifest.Objects) error {
 	t.Helper()
 	fn := r.transformNamespacedComponents()
+	if err := fn(ctx, ccc, m); err != nil {
+		return err
+	}
+	fn = r.transformPerNamespaceComponents()
 	if err := fn(ctx, ccc, m); err != nil {
 		return err
 	}
