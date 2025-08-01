@@ -25,12 +25,17 @@ var ServiceNetworkingPeeredDnsDomainGVK = GroupVersion.WithKind("ServiceNetworki
 // ServiceNetworkingPeeredDnsDomainSpec defines the desired state of ServiceNetworkingPeeredDnsDomain
 // +kcc:spec:proto=mockgcp.cloud.servicenetworking.v1.PeeredDnsDomain
 type ServiceNetworkingPeeredDnsDomainSpec struct {
-	// The project that this resource belongs to.
-	// +required
-	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
 
 	// The ServiceNetworkingPeeredDnsDomain name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	// // The project that this resource belongs to.
+	// // +required
+	// ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// The network that this resource belongs to.
+	// +required
+	NetworkRef *v1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// The DNS domain name suffix e.g. `example.com.`. Cloud DNS requires that a DNS suffix ends with a trailing dot.
 	// +kcc:proto:field=mockgcp.cloud.servicenetworking.v1.PeeredDnsDomain.dns_suffix
