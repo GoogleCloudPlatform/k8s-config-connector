@@ -107,7 +107,7 @@
 [missing_field] crd=apigeesyncauthorizations.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.identities[]" is not set in unstructured objects
 [missing_field] crd=apikeyskeys.apikeys.cnrm.cloud.google.com version=v1alpha1: field ".spec.restrictions.androidKeyRestrictions.allowedApplications[].packageName" is not set in unstructured objects
 [missing_field] crd=apikeyskeys.apikeys.cnrm.cloud.google.com version=v1alpha1: field ".spec.restrictions.androidKeyRestrictions.allowedApplications[].sha1Fingerprint" is not set in unstructured objects
-[missing_field] crd=apikeyskeys.apikeys.cnrm.cloud.google.com version=v1alpha1: field ".spec.restrictions.browserKeyRestrictions" is not set in unstructured objects
+[missing_field] crd=apikeyskeys.apikeys.cnrm.cloud.google.com version=v1alpha1: field ".spec.restrictions.browserKeyRestrictions.allowedReferrers[]" is not set in unstructured objects
 [missing_field] crd=apikeyskeys.apikeys.cnrm.cloud.google.com version=v1alpha1: field ".spec.restrictions.iosKeyRestrictions.allowedBundleIds[]" is not set in unstructured objects
 [missing_field] crd=apikeyskeys.apikeys.cnrm.cloud.google.com version=v1alpha1: field ".spec.restrictions.serverKeyRestrictions.allowedIps[]" is not set in unstructured objects
 [missing_field] crd=apiquotapreferences.cloudquota.cnrm.cloud.google.com version=v1alpha1: field ".spec.contactEmail" is not set in unstructured objects
@@ -1665,6 +1665,7 @@
 [missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.chatEngineConfig.dialogflowAgentToLink" is not set in unstructured objects
 [missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.collection" is not set in unstructured objects
 [missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.commonConfig.companyName" is not set in unstructured objects
+[missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.disableAnalytics" is not set in unstructured objects
 [missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=discoveryengineengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.industryVertical" is not set in unstructured objects
@@ -1796,8 +1797,10 @@
 [missing_field] crd=healthcaredicomstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" is not set in unstructured objects
 [missing_field] crd=healthcaredicomstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.notificationConfig.pubsubTopic" is not set in unstructured objects
 [missing_field] crd=healthcaredicomstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.streamConfigs[].bigqueryDestination.tableUri" is not set in unstructured objects
+[missing_field] crd=healthcarefhirstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.complexDataTypeReferenceParsing" is not set in unstructured objects
 [missing_field] crd=healthcarefhirstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataset" is not set in unstructured objects
 [missing_field] crd=healthcarefhirstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultSearchHandlingStrict" is not set in unstructured objects
+[missing_field] crd=healthcarefhirstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.disableReferentialIntegrity" is not set in unstructured objects
 [missing_field] crd=healthcarefhirstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.disableResourceVersioning" is not set in unstructured objects
 [missing_field] crd=healthcarefhirstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.enableHistoryImport" is not set in unstructured objects
 [missing_field] crd=healthcarefhirstores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.enableUpdateCreate" is not set in unstructured objects

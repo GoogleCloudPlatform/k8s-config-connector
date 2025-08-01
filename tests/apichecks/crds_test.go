@@ -547,7 +547,7 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 				}
 
 				// Check for "Ref" fields
-				if strings.HasSuffix(fieldPath, "Ref") {
+				if strings.HasSuffix(fieldPath, "Ref") || strings.HasSuffix(fieldPath, "Refs[]") {
 					hasExternal := false
 					hasName := false
 
@@ -571,8 +571,10 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 					return
 				}
 
-				// Any XYZRef field was already handled and handling the children will just double count
-				if strings.Contains(fieldPath, "Ref") {
+				// Any reference field was already handled and handling the children will just double count
+				// Check for `Ref.` or `Refs[].` to ensure it's a reference field,
+				// and avoid field names that include `Ref` (e.g., allowedReferrers in APIKeysKey).
+				if strings.Contains(fieldPath, "Ref.") || strings.Contains(fieldPath, "Refs[].") {
 					return
 				}
 
