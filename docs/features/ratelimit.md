@@ -20,7 +20,7 @@ Here is an example of a `NamespacedControllerReconciler` resource that sets the 
 apiVersion: customize.core.cnrm.cloud.google.com/v1beta1
 kind: NamespacedControllerReconciler
 metadata:
-  name: controller-reconciler
+  name: cnrm-controller-manager
   namespace: YOUR_NAMESPACE # Replace with your namespace
 spec:
   rateLimit:
@@ -38,7 +38,7 @@ Here is an example of a `ControllerReconciler` resource that sets the `qps` and 
 apiVersion: customize.core.cnrm.cloud.google.com/v1beta1
 kind: ControllerReconciler
 metadata:
-  name: controller-reconciler
+  name: cnrm-controller-manager
 spec:
   rateLimit:
     qps: 80
