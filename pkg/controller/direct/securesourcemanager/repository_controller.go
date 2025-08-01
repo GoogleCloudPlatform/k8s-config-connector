@@ -19,10 +19,10 @@ import (
 	"fmt"
 	"strings"
 
-	cloudresourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	gcp "cloud.google.com/go/securesourcemanager/apiv1"
 	securesourcemanagerpb "cloud.google.com/go/securesourcemanager/apiv1/securesourcemanagerpb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securesourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -76,12 +76,6 @@ func (m *modelSecureSourceManagerRepository) AdapterForObject(ctx context.Contex
 		return nil, err
 	}
 
-	// Get Project GCP client
-	projectClient, err := m.projectsClient(ctx)
-	if err != nil {
-		return nil, err
-	}
-
 	// Get securesourcemanager GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -89,24 +83,11 @@ func (m *modelSecureSourceManagerRepository) AdapterForObject(ctx context.Contex
 	}
 	return &SecureSourceManagerRepositoryAdapter{
 		id:            id,
-		projectClient: projectClient,
+		projectMapper: m.config.ProjectMapper,
 		gcpClient:     gcpClient,
 		reader:        reader,
 		desired:       obj,
 	}, nil
-}
-
-func (m *modelSecureSourceManagerRepository) projectsClient(ctx context.Context) (*cloudresourcemanager.ProjectsClient, error) {
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-
-	crmClient, err := cloudresourcemanager.NewProjectsRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building cloudresourcemanager client: %w", err)
-	}
-	return crmClient, err
 }
 
 func (m *modelSecureSourceManagerRepository) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
@@ -116,7 +97,7 @@ func (m *modelSecureSourceManagerRepository) AdapterForURL(ctx context.Context, 
 
 type SecureSourceManagerRepositoryAdapter struct {
 	id            *krm.RepositoryIdentity
-	projectClient *cloudresourcemanager.ProjectsClient
+	projectMapper *projects.ProjectMapper
 	gcpClient     *gcp.Client
 	reader        client.Reader
 	desired       *krm.SecureSourceManagerRepository
@@ -156,7 +137,7 @@ func (a *SecureSourceManagerRepositoryAdapter) Create(ctx context.Context, creat
 		return err
 	}
 	desired.Spec.InstanceRef.External = normalizedExternal
-	if err := desired.Spec.InstanceRef.ConvertToProjectNumber(ctx, a.projectClient); err != nil {
+	if err := desired.Spec.InstanceRef.ConvertToProjectNumber(ctx, a.projectMapper); err != nil {
 		return err
 	}
 
