@@ -162,7 +162,7 @@ func (a *dataStoreAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	log.V(2).Info("creating servicenetworking peeredDnsDomain", "name", a.id)
 
 	desired := ReflectClone(a.desired)
-	desired.Name = a.id.String()
+	desired.Name = a.id.Name
 
 	parent := "services/servicenetworking.googleapis.com/" + a.id.Network.String()
 
@@ -193,7 +193,7 @@ func (a *dataStoreAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	log.V(2).Info("updating servicenetworking peeredDnsDomain", "name", a.id)
 
 	desired := ReflectClone(a.desired)
-	desired.Name = a.id.String()
+	desired.Name = a.id.Name
 
 	updateMask := &fieldmaskpb.FieldMask{}
 	if !reflect.DeepEqual(a.desired.DnsSuffix, a.actual.DnsSuffix) {

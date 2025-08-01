@@ -115,7 +115,7 @@ func (obj *ServiceNetworkingPeeredDNSDomain) GetParentIdentity(ctx context.Conte
 	}
 	// Get parent identity
 	networkID := &refs.ComputeNetworkID{}
-	if err := networkID.FromExternal(obj.Spec.NetworkRef.External); err != nil {
+	if err := networkID.FromExternal(networkRef.External); err != nil {
 		return nil, err
 	}
 	return networkID, nil
