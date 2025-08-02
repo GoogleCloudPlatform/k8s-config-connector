@@ -77,5 +77,8 @@ done
 cd ${REPO_ROOT}
 rm -rf apis/config/crd
 
+# Generated the supported GVKs file
+go run ./scripts/generate-gvks/main.go -output-dir=pkg/gvks/supportedgvks
+
 # controller-gen sometimes leaves empty imports in the api files.
 go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w apis

@@ -20,60 +20,28 @@ import (
 	"flag"
 	"fmt"
 	"go/format"
-	"io/fs"
 	"os"
 	"path/filepath"
-	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	"github.com/ghodss/yaml" //nolint:depguard
-	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-var (
-	inputDir   = ""
-	outputFile = ""
-)
-
 func main() {
-	flag.StringVar(&inputDir, "input-dir", "", "Input directory to read CRD listing.")
-	flag.StringVar(&outputFile, "output-file", "", "Output file to write GVK -> reconciler type mapping.")
+	outputDir := ""
+	flag.StringVar(&outputDir, "output-dir", outputDir, "Output directory to write GVK -> reconciler type mapping.")
 	flag.Parse()
 
-	if inputDir == "" {
-		fmt.Fprintf(os.Stderr, "error: invalid value for input directory: '%s'\n", "empty string")
+	if outputDir == "" {
+		fmt.Fprintf(os.Stderr, "error: --output-dir must be specified\n")
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
 
-	if outputFile == "" {
-		fmt.Fprintf(os.Stderr, "error: invalid value for output file: '%s'\n", "empty string")
-		flag.PrintDefaults()
-		os.Exit(1)
-	}
-
-	crds := make([]apiextensions.CustomResourceDefinition, 0)
-	err := filepath.WalkDir(inputDir, func(path string, info fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-		if info.IsDir() || !strings.HasSuffix(path, ".yaml") {
-			return nil
-		}
-		y, err := os.ReadFile(path)
-		if err != nil {
-			return fmt.Errorf("failed to read CRD file %s: %w", path, err)
-		}
-		var crd apiextensions.CustomResourceDefinition
-		if err := yaml.Unmarshal(y, &crd); err != nil {
-			return fmt.Errorf("error unmarshalling bytes into CRD: %w", err)
-		}
-		crds = append(crds, crd)
-		return nil
-	})
+	crds, err := crdloader.LoadCRDs()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to read CRDs: %v\n", err)
+		fmt.Fprintf(os.Stderr, "error loading CRDs: %v\n", err)
 		os.Exit(1)
 	}
 
@@ -140,16 +108,10 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{`
 		os.Exit(1)
 	}
 
-	file, err := os.OpenFile(outputFile, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error opening output file: %s\n", err)
-		os.Exit(1)
-	}
-	defer file.Close()
-
-	_, err = file.Write(outFormatted)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error writing to output file: %s\n", err)
+	outputFile := filepath.Join(outputDir, "gvks_generated.go")
+	fmt.Fprintf(os.Stderr, "Writing output to %s\n", outputFile)
+	if err := os.WriteFile(outputFile, outFormatted, 0644); err != nil {
+		fmt.Fprintf(os.Stderr, "Error writing output file: %s\n", err)
 		os.Exit(1)
 	}
 }
