@@ -29,8 +29,8 @@ func init() {
 
 func backupDRBackupPlanAssociationFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.BackupPlanAssociation{},
-		BackupDRBackupPlanAssociationSpec_FromProto, BackupDRBackupPlanAssociationSpec_ToProto,
-		BackupDRBackupPlanAssociationObservedState_FromProto, BackupDRBackupPlanAssociationObservedState_ToProto,
+		BackupDRBackupPlanAssociationSpec_v1beta1_FromProto, BackupDRBackupPlanAssociationSpec_v1beta1_ToProto,
+		BackupDRBackupPlanAssociationObservedState_v1beta1_FromProto, BackupDRBackupPlanAssociationObservedState_v1beta1_ToProto,
 	)
 
 	f.SpecFields.Insert(".resource_type")

@@ -131,7 +131,7 @@ func (a *BackupPlanAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := BackupDRBackupPlanSpec_ToProto(mapCtx, &desired.Spec)
+	resource := BackupDRBackupPlanSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -152,7 +152,7 @@ func (a *BackupPlanAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	log.V(2).Info("successfully created BackupPlan", "name", a.id)
 
 	status := &krm.BackupDRBackupPlanStatus{}
-	status.ObservedState = BackupDRBackupPlanObservedState_FromProto(mapCtx, created)
+	status.ObservedState = BackupDRBackupPlanObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -167,7 +167,7 @@ func (a *BackupPlanAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := BackupDRBackupPlanSpec_ToProto(mapCtx, &desired.Spec)
+	resource := BackupDRBackupPlanSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -192,7 +192,7 @@ func (a *BackupPlanAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 
 	// still need to update status (in the event of acquiring an existing resource)
 	status := &krm.BackupDRBackupPlanStatus{}
-	status.ObservedState = BackupDRBackupPlanObservedState_FromProto(mapCtx, a.actual)
+	status.ObservedState = BackupDRBackupPlanObservedState_v1alpha1_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -209,7 +209,7 @@ func (a *BackupPlanAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 
 	obj := &krm.BackupDRBackupPlan{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(BackupDRBackupPlanSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(BackupDRBackupPlanSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
