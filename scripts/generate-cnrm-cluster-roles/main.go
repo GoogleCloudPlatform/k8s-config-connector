@@ -17,26 +17,18 @@
 package main
 
 import (
-	"io/ioutil"
 	"log"
 	"os"
 	"path"
 
-	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/slice"
 
-	"github.com/ghodss/yaml" //nolint:depguard
 	rbacv1 "k8s.io/api/rbac/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
-	// Register the direct controllers.
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
+	"k8s.io/apimachinery/pkg/util/sets"
+	"sigs.k8s.io/yaml"
 )
-
-const outputFileMode = 0600
 
 func main() {
 	clusterRolesPath := repo.GetClusterRolesPath()
@@ -46,23 +38,20 @@ func main() {
 		}
 		log.Fatal(err)
 	}
-	smLoader, err := servicemappingloader.New()
+
+	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
-		log.Fatalf("error getting new service mapping loader: %v", err)
+		log.Fatalf("error loading all CRDs: %v", err)
 	}
-	serviceMetadataLoader := dclmetadata.New()
-	gvks, err := supportedgvks.All(smLoader, serviceMetadataLoader)
-	if err != nil {
-		log.Fatalf("error loading all supported GVKs: %v", err)
+	apiGroups := sets.New[string]()
+	for _, crd := range crds {
+		if crd.Spec.Group == "core.cnrm.cloud.google.com" || crd.Spec.Group == "customize.core.cnrm.cloud.google.com" {
+			continue // skip core and customize CRDs
+		}
+		apiGroups.Insert(crd.Spec.Group)
 	}
-	apis := make(map[string]bool)
-	for _, gvk := range gvks {
-		apis[gvk.Group] = true
-	}
-	apiGroupList := make([]string, 0)
-	for api := range apis {
-		apiGroupList = slice.IncludeString(apiGroupList, api)
-	}
+
+	apiGroupList := sets.List(apiGroups)
 
 	viewerRoleFileName := "cnrm_viewer.yaml"
 	if err := outputClusterRoleToFile(clusterRolesPath, viewerRoleFileName, viewerRole(apiGroupList)); err != nil {
@@ -81,8 +70,7 @@ func outputClusterRoleToFile(outputDirPath, outputFileName string, r *rbacv1.Clu
 	if err != nil {
 		return err
 	}
-	err = ioutil.WriteFile(outputPath, b, outputFileMode)
-	if err != nil {
+	if err := os.WriteFile(outputPath, b, 0600); err != nil {
 		return err
 	}
 	return nil
