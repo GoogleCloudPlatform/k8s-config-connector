@@ -40,7 +40,7 @@ def main():
     os.chdir(repo_root)
 
     run_and_verify_no_changes(["dev/tasks/generate-github-actions"])
-
+    run_and_verify_no_changes(["dev/tasks/generate-crds"])
 
 if __name__ == "__main__":
     main()

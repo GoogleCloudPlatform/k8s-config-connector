@@ -26,6 +26,9 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+
+	// Ensure built-in types are registered.
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 func TestDefaultAPIVersionForIAMResourceRef(t *testing.T) {

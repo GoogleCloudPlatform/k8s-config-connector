@@ -2571,7 +2571,7 @@ func TestUpdateGKEHubFeatureMembership(t *testing.T) {
 
 func TestDirectResourcesAlwaysAllowed(t *testing.T) {
 	directGVKs := supportedgvks.DirectResources()
-	for gvk, _ := range directGVKs {
+	for gvk := range directGVKs {
 		v := immutableFieldsValidatorHandler{}
 		unstruct := &unstructured.Unstructured{
 			Object: map[string]interface{}{

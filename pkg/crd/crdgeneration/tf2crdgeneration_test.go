@@ -24,6 +24,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	k8sschema "k8s.io/apimachinery/pkg/runtime/schema"
+
+	// Register all direct controllers.
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 var sensitiveSchemaBoilerplate = crdboilerplate.GetSensitiveFieldSchemaBoilerplate()
