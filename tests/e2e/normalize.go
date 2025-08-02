@@ -178,6 +178,13 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.id"] = 1111111111111111
 	visitor.replacePaths[".status.generatedId"] = 1111111111111111
 
+	// Specific to Container
+	visitor.replacePaths[".status.endpoint"] = "1.23.456.78"
+	visitor.replacePaths[".status.masterVersion"] = "1.30.5-gke.1014001"
+	visitor.replacePaths[".status.observedState.masterAuth.clusterCaCertificate"] = "1234567890abcdefghijklmn"
+	visitor.replacePaths[".status.observedState.privateClusterConfig.privateEndpoint"] = "10.128.0.2"
+	visitor.replacePaths[".status.observedState.privateClusterConfig.publicEndpoint"] = "8.8.8.8"
+
 	// Specific to Certificate Manager
 	visitor.replacePaths[".status.dnsResourceRecord[].data"] = "${uniqueId}"
 
