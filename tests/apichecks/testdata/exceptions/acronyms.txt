@@ -489,6 +489,7 @@
 [acronyms] crd=edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.natGatewayIp" should be ".spec.natGatewayIP"
 [acronyms] crd=edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".spec.vpcProject.projectId" should be ".spec.vpcProject.projectID"
 [acronyms] crd=edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com version=v1beta1: field ".status.details[].cloudVpns" should be ".status.details[].cloudVPNs"
+[acronyms] crd=edgecontainervpnconnections.edgecontainer.cnrm.cloud.google.com: kind "EdgeContainerVpnConnection" should be "EdgeContainerVPNConnection"
 [acronyms] crd=edgenetworksubnets.edgenetwork.cnrm.cloud.google.com version=v1beta1: field ".spec.ipv4Cidr" should be ".spec.ipv4CIDR"
 [acronyms] crd=edgenetworksubnets.edgenetwork.cnrm.cloud.google.com version=v1beta1: field ".spec.ipv6Cidr" should be ".spec.ipv6CIDR"
 [acronyms] crd=edgenetworksubnets.edgenetwork.cnrm.cloud.google.com version=v1beta1: field ".spec.vlanId" should be ".spec.vlanID"

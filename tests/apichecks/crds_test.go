@@ -215,56 +215,71 @@ func TestCRDsAcronyms(t *testing.T) {
 		t.Fatalf("error loading crds: %v", err)
 	}
 
-	var errs []string
-	for _, crd := range crds {
-		for _, version := range crd.Spec.Versions {
-			visitCRDVersion(version, func(field *CRDField) {
-				fieldPath := field.FieldPath
-				tokens := splitCamelCase(fieldPath)
+	correctAcronyms := func(s string) string {
+		tokens := splitCamelCase(s)
 
-				for i, token := range tokens {
-					var singular, pluralSuffix string
+		for i, token := range tokens {
+			var singular, pluralSuffix string
 
-					if strings.HasSuffix(token, "ies") {
-						singular = token[:len(token)-3] + "y"
-						pluralSuffix = "ies"
-					} else if strings.HasSuffix(token, "es") {
-						singular = token[:len(token)-2]
-						pluralSuffix = "es"
-					} else if strings.HasSuffix(token, "s") {
-						singular = token   // or token[:len(token)-1]
-						pluralSuffix = "s" // maybe
-					} else {
-						singular = token
+			if strings.HasSuffix(token, "ies") {
+				singular = token[:len(token)-3] + "y"
+				pluralSuffix = "ies"
+			} else if strings.HasSuffix(token, "es") {
+				singular = token[:len(token)-2]
+				pluralSuffix = "es"
+			} else if strings.HasSuffix(token, "s") {
+				singular = token   // or token[:len(token)-1]
+				pluralSuffix = "s" // maybe
+			} else {
+				singular = token
+				pluralSuffix = ""
+			}
+
+			for _, acronym := range codegen.Acronyms {
+				if pluralSuffix == "s" {
+					if strings.EqualFold(acronym, singular) {
 						pluralSuffix = ""
+					} else if !strings.EqualFold(acronym, singular[:len(singular)-1]) {
+						continue
 					}
-
-					for _, acronym := range codegen.Acronyms {
-						if pluralSuffix == "s" {
-							if strings.EqualFold(acronym, singular) {
-								pluralSuffix = ""
-							} else if !strings.EqualFold(acronym, singular[:len(singular)-1]) {
-								continue
-							}
-						} else {
-							if !strings.EqualFold(acronym, singular) {
-								continue
-							}
-						}
-
-						switch pluralSuffix {
-						case "ies": // y
-							tokens[i] = acronym[:len(acronym)-1] + "ies"
-						case "es":
-							tokens[i] = acronym + "es"
-						case "s":
-							tokens[i] = acronym + "s"
-						case "":
-							tokens[i] = acronym
-						}
+				} else {
+					if !strings.EqualFold(acronym, singular) {
+						continue
 					}
 				}
-				corrected := strings.Join(tokens, "")
+
+				switch pluralSuffix {
+				case "ies": // y
+					tokens[i] = acronym[:len(acronym)-1] + "ies"
+				case "es":
+					tokens[i] = acronym + "es"
+				case "s":
+					tokens[i] = acronym + "s"
+				case "":
+					tokens[i] = acronym
+				}
+			}
+		}
+		corrected := strings.Join(tokens, "")
+		return corrected
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		// Check the CRD Kind
+		{
+			kind := crd.Spec.Names.Kind
+			corrected := correctAcronyms(kind)
+			if corrected != kind {
+				errs = append(errs, fmt.Sprintf("[acronyms] crd=%s: kind %q should be %q", crd.Name, kind, corrected))
+			}
+		}
+
+		for _, version := range crd.Spec.Versions {
+			// Check each field in the CRD
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+				corrected := correctAcronyms(fieldPath)
 
 				if corrected != fieldPath {
 					errs = append(errs, fmt.Sprintf("[acronyms] crd=%s version=%v: field %q should be %q", crd.Name, version.Name, fieldPath, corrected))
