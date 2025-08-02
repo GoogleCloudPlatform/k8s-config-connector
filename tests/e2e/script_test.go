@@ -203,9 +203,53 @@ func TestE2EScript(t *testing.T) {
 					var targetStepForReadAndCompare int
 					switch testCommand {
 					case "APPLY":
+						// Capture event counts before applying to only check recent events
+						kubeEventsBefore := len(h.KubeEvents.HTTPEvents)
+						expectedControllerType, checkControllerType := obj.Object["EXPECTED_CONTROLLER_TYPE"]
+
 						applyObject(h, obj)
 						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
 						appliedObjects[k] = obj
+
+						// Check controller type if EXPECTED_CONTROLLER_TYPE is specified
+						if checkControllerType {
+							fmt.Println("todo acpana remove me -- we got it")
+							expectedType := expectedControllerType.(string)
+
+							t.Logf("checking controller type: expected %s", expectedType)
+
+							var foundDirectController bool
+							// Check Kubernetes events for controller-specific patterns
+							if h.KubeEvents != nil {
+								t.Logf("checking %d KubeEvents (only recent ones)", len(h.KubeEvents.HTTPEvents))
+								for i := len(eventsBefore); i < len(h.KubeEvents.HTTPEvents); i++ {
+									event := h.KubeEvents.HTTPEvents[i]
+									if i >= kubeEventsBefore {
+										if strings.Contains(event.Request.Body, "controllerType") &&
+											strings.Contains(event.Request.Body, "direct") {
+											foundDirectController = true
+											t.Logf("found direct controller pattern in recent KubeEvents[%d]: %s", i, event.Request.Body)
+										}
+									}
+								}
+							}
+
+							var actualType string
+							if foundDirectController {
+								actualType = "direct"
+								t.Logf("log analysis confirms direct controller is being used")
+							} else {
+								actualType = "not-direct"
+								t.Logf("log analysis found no direct controller patterns")
+							}
+
+							if actualType != expectedType {
+								t.Errorf("expected controller type %s, but got %s (direct patterns found: %v)",
+									expectedType, actualType, foundDirectController)
+							} else {
+								t.Logf("controller type assertion passed: expected %s, got %s", expectedType, actualType)
+							}
+						}
 
 					case "APPLY-10-SEC":
 						applyObject(h, obj)
@@ -472,6 +516,7 @@ func removeTestFields(obj *unstructured.Unstructured) *unstructured.Unstructured
 	delete(o.Object, "VALUE_PRESENT")
 	delete(o.Object, "WRITE-KUBE-OBJECT")
 	delete(o.Object, "TARGET_STEP_FOR_READ_AND_COMPARE")
+	delete(o.Object, "EXPECTED_CONTROLLER_TYPE")
 
 	return o
 }
