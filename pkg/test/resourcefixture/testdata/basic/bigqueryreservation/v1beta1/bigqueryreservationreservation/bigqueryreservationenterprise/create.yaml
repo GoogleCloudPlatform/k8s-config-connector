@@ -12,18 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1alpha1
+apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1beta1
 kind: BigQueryReservationReservation
 metadata:
   name: bigqueryreservationreservation-${uniqueId}
 spec:
   autoscale:
-    maxSlots: 100
+    maxSlots: 50
   concurrency: 0
-  edition: STANDARD
-  ignoreIdleSlots: true
+  edition: ENTERPRISE
+  ignoreIdleSlots: false
   location: us-west2
   projectRef:
     external: ${projectId}
   resourceID: bigqueryreservationreservation${uniqueId}
-  slotCapacity: 0
+

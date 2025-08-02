@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	reservationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -74,7 +75,7 @@ func NewAssignmentIdentity(ctx context.Context, reader client.Reader, obj *BigQu
 		}
 	}
 
-	reservationParent, reservationID, err := ParseReservationExternal(name)
+	reservationParent, reservationID, err := reservationv1beta1.ParseReservationExternal(name)
 	if err != nil {
 		return nil, err
 	}

@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -28,7 +29,7 @@ type BigQueryReservationAssignmentSpec struct {
 	// The name of reservation to create a new assignment in,
 	//  or to move the assignment to.
 	// +required
-	ReservationRef *ReservationRef `json:"reservationRef,omitempty"`
+	ReservationRef *v1beta1.ReservationRef `json:"reservationRef,omitempty"`
 
 	// +kubebuilder:validation:XValidation:rule="self != null && has(self.projectRef) != has(self.folderRef) != has(self.organizationRef)",message="Exactly one of orojectRef or folderRef or organizationRef must be specified."
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="assignee field is immutable"

@@ -16,7 +16,7 @@ package bigqueryreservation
 
 import (
 	pb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
