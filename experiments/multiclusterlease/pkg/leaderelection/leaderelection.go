@@ -74,62 +74,59 @@ func (le *LeaderElector) AcquireOrRenew(ctx context.Context) (*LeaseInfo, error)
 		return &LeaseInfo{Acquired: false}, err
 	}
 
-	// Determine lease duration
-	leaseDuration := int32(15) // Default lease duration in seconds
-	if le.lease.Spec.LeaseDurationSeconds != nil {
-		leaseDuration = *le.lease.Spec.LeaseDurationSeconds
+	// Check if the lease is expired
+	leaseDuration := le.lease.Spec.GetLeaseDuration()
+	gracePeriod := le.lease.Spec.GetGracePeriod()
+	totalLeaseTime := leaseDuration + gracePeriod
+	leaseExpired := data.HolderIdentity == "" || time.Since(data.RenewTime) > totalLeaseTime
+
+	// We're not the leader
+	if data.HolderIdentity != le.identity && !leaseExpired {
+		return &LeaseInfo{
+			Acquired:         false,
+			HolderIdentity:   &data.HolderIdentity,
+			RenewTime:        &data.RenewTime,
+			LeaseTransitions: &data.LeaseTransitions,
+		}, nil
 	}
 
-	// Check if the lease is expired
-	leaseExpired := data.HolderIdentity == "" ||
-		time.Since(data.RenewTime) > time.Duration(leaseDuration)*time.Second
-
 	// If we're the current holder or the lease is expired, try to acquire/renew
-	if data.HolderIdentity == le.identity || leaseExpired {
+
+	if data.HolderIdentity != le.identity && data.HolderIdentity != "" {
 		// If this is a new leader, increment transitions
-		if data.HolderIdentity != le.identity && data.HolderIdentity != "" {
-			data.LeaseTransitions++
-		}
+		data.LeaseTransitions++
+	}
 
-		// Update the lease
-		now := time.Now()
-		updatedLeaseData := &data
-		updatedLeaseData.HolderIdentity = le.identity
-		updatedLeaseData.RenewTime = now
+	// Update the lease
+	now := time.Now()
+	updatedLeaseData := &data
+	updatedLeaseData.HolderIdentity = le.identity
+	updatedLeaseData.RenewTime = now
 
-		if err := le.updateLease(ctx, updatedLeaseData, data.Generation); err != nil {
-			if isGCSPreconditionError(err) {
-				// Someone else modified the object since we read it
-				return &LeaseInfo{
-					Acquired:         false,
-					HolderIdentity:   &data.HolderIdentity,
-					RenewTime:        &data.RenewTime,
-					LeaseTransitions: &data.LeaseTransitions,
-				}, nil
-			}
+	if err := le.updateLease(ctx, updatedLeaseData, data.Generation); err != nil {
+		if isGCSPreconditionError(err) {
+			// Someone else modified the object since we read it
 			return &LeaseInfo{
 				Acquired:         false,
 				HolderIdentity:   &data.HolderIdentity,
 				RenewTime:        &data.RenewTime,
 				LeaseTransitions: &data.LeaseTransitions,
-			}, fmt.Errorf("failed to update lease: %w", err)
+			}, nil
 		}
-
-		// Successfully acquired/renewed the lease
 		return &LeaseInfo{
-			Acquired:         true,
-			HolderIdentity:   &le.identity,
-			RenewTime:        &now,
-			LeaseTransitions: &updatedLeaseData.LeaseTransitions,
-		}, nil
+			Acquired:         false,
+			HolderIdentity:   &data.HolderIdentity,
+			RenewTime:        &data.RenewTime,
+			LeaseTransitions: &data.LeaseTransitions,
+		}, fmt.Errorf("failed to update lease: %w", err)
 	}
 
-	// We're not the leader
+	// Successfully acquired/renewed the lease
 	return &LeaseInfo{
-		Acquired:         false,
-		HolderIdentity:   &data.HolderIdentity,
-		RenewTime:        &data.RenewTime,
-		LeaseTransitions: &data.LeaseTransitions,
+		Acquired:         true,
+		HolderIdentity:   &le.identity,
+		RenewTime:        &now,
+		LeaseTransitions: &updatedLeaseData.LeaseTransitions,
 	}, nil
 }
 

@@ -117,7 +117,7 @@ func (r *MultiClusterLeaseReconciler) Reconcile(ctx context.Context, req ctrl.Re
 			return ctrl.Result{}, updateErr
 		}
 
-		requeueAfter := r.calculateRequeueAfter(&mcl)
+		requeueAfter := mcl.Spec.GetRenewInterval()
 		return ctrl.Result{RequeueAfter: requeueAfter}, nil
 	}
 
@@ -146,7 +146,7 @@ func (r *MultiClusterLeaseReconciler) Reconcile(ctx context.Context, req ctrl.Re
 	}
 
 	// Calculate next reconcile time based on lease parameters
-	requeueAfter := r.calculateRequeueAfter(&mcl)
+	requeueAfter := mcl.Spec.GetRenewInterval()
 	log.Info("completed reconciliation", "nextReconcileIn", requeueAfter)
 
 	return ctrl.Result{RequeueAfter: requeueAfter}, nil
@@ -201,9 +201,8 @@ func (r *MultiClusterLeaseReconciler) setMCLStatus(mcl *v1alpha1.MultiClusterLea
 	}
 
 	// Update lease duration
-	if mcl.Spec.LeaseDurationSeconds != nil {
-		mcl.Status.GlobalLeaseDurationSeconds = mcl.Spec.LeaseDurationSeconds
-	}
+	leaseDurationSeconds := int32(mcl.Spec.GetLeaseDuration().Seconds())
+	mcl.Status.GlobalLeaseDurationSeconds = &leaseDurationSeconds
 
 	// Update lease transitions
 	if leaseInfo.LeaseTransitions != nil {
@@ -253,20 +252,6 @@ func (r *MultiClusterLeaseReconciler) setLockAcquiredCondition(mcl *v1alpha1.Mul
 	}
 
 	meta.SetStatusCondition(&mcl.Status.Conditions, condition)
-}
-
-// calculateRequeueAfter determines how long to wait before the next reconciliation
-func (r *MultiClusterLeaseReconciler) calculateRequeueAfter(mcl *v1alpha1.MultiClusterLease) time.Duration {
-	// Default to 10 seconds if not specified
-	retryPeriod := 10 * time.Second
-
-	if mcl.Spec.RetryPeriodSeconds != nil {
-		retryPeriod = time.Duration(*mcl.Spec.RetryPeriodSeconds) * time.Second
-	}
-
-	// TODO: add jitter
-
-	return retryPeriod
 }
 
 // getOrCreateLeaderElector gets an existing LeaderElector for the given lease or creates a new one
