@@ -129,10 +129,15 @@ func (a *LogicalViewAdapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting BigtableLogicalView %q: %w", a.id, err)
 	}
 
+	deletionProtection := false
+	if logicalViewInfo.DeletionProtection != 0 {
+		deletionProtection = true
+	}
+
 	a.actual = &bigtablepb.LogicalView{
-		Name:  a.id.String(),
-		Query: logicalViewInfo.Query,
-		// TODO: Add DeletionProtection once that proto is published.
+		Name:               a.id.String(),
+		Query:              logicalViewInfo.Query,
+		DeletionProtection: deletionProtection,
 	}
 	return true, nil
 }
@@ -149,11 +154,15 @@ func (a *LogicalViewAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		return mapCtx.Err()
 	}
 
+	deletionProtection := gcp.Unprotected
+	if resource.DeletionProtection {
+		deletionProtection = gcp.Protected
+	}
+
 	logicalViewInfo := &gcp.LogicalViewInfo{
-		LogicalViewID: a.id.ID(),
-		Query:         resource.Query,
-		// TODO: Add this once the feature is enabled.
-		// DeletionProtection: resource.DeletionProtection,
+		LogicalViewID:      a.id.ID(),
+		Query:              resource.Query,
+		DeletionProtection: deletionProtection,
 	}
 	err := a.gcpClient.CreateLogicalView(ctx, a.id.ParentInstanceIdString(), logicalViewInfo)
 	if err != nil {
@@ -195,16 +204,24 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if !reflect.DeepEqual(a.desired.Spec.Query, a.actual.Query) {
 		updateMask.Paths = append(updateMask.Paths, "query")
 	}
-	// TODO: Add deletion protection field.
+	if !reflect.DeepEqual(a.desired.Spec.DeletionProtection, a.actual.DeletionProtection) {
+		updateMask.Paths = append(updateMask.Paths, "deletion_protection")
+	}
 
 	if len(updateMask.Paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 	} else {
 		log.V(2).Info("fields need update", "name", a.id, "paths", updateMask.Paths)
 
+		deletionProtection := gcp.Unprotected
+		if desiredPb.DeletionProtection {
+			deletionProtection = gcp.Protected
+		}
+
 		desiredlogicalview := gcp.LogicalViewInfo{
-			LogicalViewID: a.id.ID(),
-			Query:         desiredPb.Query,
+			LogicalViewID:      a.id.ID(),
+			Query:              desiredPb.Query,
+			DeletionProtection: deletionProtection,
 		}
 		err := a.gcpClient.UpdateLogicalView(ctx, a.id.ParentInstanceIdString(), desiredlogicalview)
 		if err != nil {
