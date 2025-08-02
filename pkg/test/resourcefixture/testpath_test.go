@@ -87,7 +87,7 @@ func TestValidBasicTestPath(t *testing.T) {
 		},
 	}
 
-	lowercaseGVKs := loadGVKWithLowercaseKind()
+	lowercaseGVKs := loadGVKWithLowercaseKind(t)
 	testPaths, err := loadTestPaths()
 	if err != nil {
 		t.Fatalf("error loading test paths: %v", err)

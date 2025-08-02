@@ -23,9 +23,9 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
-	"sort"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/ghodss/yaml" //nolint:depguard
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -77,7 +77,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	out := `// Copyright 2024 Google LLC
+	out := `// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -97,11 +97,12 @@ package supportedgvks
 
 import "k8s.io/apimachinery/pkg/runtime/schema"
 
-type GVKMetadata struct {
-	Labels map[string]string
+type legacyGVKData struct {
+	Terraform bool
+	DCL       bool
 }
 
-var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{`
+var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{`
 
 	for _, crd := range crds {
 		for _, version := range crd.Spec.Versions {
@@ -111,28 +112,23 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{`
 				Version: version.Name,
 			}
 
+			terraform := crd.Labels[k8s.TF2CRDLabel] == "true"
+			dcl := crd.Labels[k8s.DCL2CRDLabel] == "true"
+
+			if !terraform && !dcl {
+				continue // Skip direct GVKs
+			}
+
 			gvkEntry := `
 	{
 		Group:   "%s",
 		Version: "%s",
 		Kind:    "%s",
 	}: {
-		Labels: map[string]string{`
-			// Iterate over the labels in sorted order to produce deterministic output.
-			keys := make([]string, 0)
-			for k, _ := range crd.Labels {
-				keys = append(keys, k)
-			}
-			sort.Strings(keys)
-			for _, k := range keys {
-				labelEntry := `
-			"%s": "%s",`
-				gvkEntry += fmt.Sprintf(labelEntry, k, crd.Labels[k])
-			}
-			gvkEntry += `
-		},
+		Terraform: %v,
+		DCL:       %v,
 	},`
-			out += fmt.Sprintf(gvkEntry, gvk.Group, gvk.Version, gvk.Kind)
+			out += fmt.Sprintf(gvkEntry, gvk.Group, gvk.Version, gvk.Kind, terraform, dcl)
 		}
 	}
 

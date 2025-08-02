@@ -31,6 +31,9 @@ import (
 	"github.com/ghodss/yaml" //nolint:depguard
 	rbacv1 "k8s.io/api/rbac/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+	// Register the direct controllers.
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 const outputFileMode = 0600

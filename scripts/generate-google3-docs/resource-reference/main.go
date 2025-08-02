@@ -160,7 +160,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("error getting manual resources: %v", err)
 	}
+
 	directGVKs := supportedgvks.DirectResources()
+
 	docGenerator := &DocGenerator{
 		smLoader:              smLoader,
 		serviceMetadataLoader: serviceMetadataLoader,
