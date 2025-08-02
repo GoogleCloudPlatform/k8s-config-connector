@@ -96,6 +96,7 @@
 [missing_field] crd=bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudSpanner.useServerlessAnalytics" is not set in unstructured objects
 [missing_field] crd=bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com version=v1beta1: field ".spec.spark.metastoreService.metastoreServiceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com version=v1beta1: field ".spec.spark.sparkHistoryServer.dataprocClusterRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.dataRefreshWindowDays" is not set in unstructured objects
 [missing_field] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.emailPreferences.enableFailureEmail" is not set in unstructured objects
 [missing_field] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfiguration.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.pubSubTopicRef" is not set; neither 'external' nor 'name' are set
@@ -799,6 +800,7 @@
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.minPortsPerVm" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.natIps[].external" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.natIps[].namespace" is not set in unstructured objects
+[missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rules[].action.sourceNatDrainIpsRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.subnetwork[].secondaryIpRangeNames[]" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.tcpEstablishedIdleTimeoutSec" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.tcpTimeWaitTimeoutSec" is not set in unstructured objects
@@ -2414,11 +2416,13 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].alertChart.alertPolicyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].blank" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].collapsibleGroup.collapsed" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].errorReportingPanel.projectRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].errorReportingPanel.services[]" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].errorReportingPanel.versions[]" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].id" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].incidentList.monitoredResources[].labels" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].incidentList.monitoredResources[].type" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].incidentList.policyRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].logsPanel.filter" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].logsPanel.resourceNames[].external" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].logsPanel.resourceNames[].kind" is not set in unstructured objects
@@ -2608,10 +2612,12 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].xyChart.yAxis.scale" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.alertChart.alertPolicyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.blank" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.errorReportingPanel.projectRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.errorReportingPanel.services[]" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.errorReportingPanel.versions[]" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.incidentList.monitoredResources[].labels" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.incidentList.monitoredResources[].type" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.incidentList.policyRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.logsPanel.filter" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.logsPanel.resourceNames[].external" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.logsPanel.resourceNames[].kind" is not set in unstructured objects
@@ -2798,11 +2804,13 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].alertChart.alertPolicyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].blank" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].collapsibleGroup.collapsed" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].errorReportingPanel.projectRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].errorReportingPanel.services[]" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].errorReportingPanel.versions[]" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].id" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].incidentList.monitoredResources[].labels" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].incidentList.monitoredResources[].type" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].incidentList.policyRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].logsPanel.filter" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].logsPanel.resourceNames[].external" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].logsPanel.resourceNames[].kind" is not set in unstructured objects
@@ -3298,6 +3306,7 @@
 [missing_field] crd=securesourcemanagerinstances.securesourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=servicenetworkingconnections.servicenetworking.cnrm.cloud.google.com version=v1beta1: field ".spec.reservedPeeringRanges[].external" is not set in unstructured objects
 [missing_field] crd=servicenetworkingconnections.servicenetworking.cnrm.cloud.google.com version=v1beta1: field ".spec.reservedPeeringRanges[].namespace" is not set in unstructured objects
+[missing_field] crd=spannerbackupschedules.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfig.kmsKeyRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=spannerdatabases.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.databaseDialect" is not set in unstructured objects
 [missing_field] crd=spannerdatabases.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.enableDropProtection" is not set in unstructured objects
 [missing_field] crd=spannerdatabases.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfig.kmsKeyRef" is not set; neither 'external' nor 'name' are set
