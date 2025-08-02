@@ -1,0 +1,186 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  name: namespacedcontrollerreconcilers.customize.core.cnrm.cloud.google.com
+spec:
+  group: customize.core.cnrm.cloud.google.com
+  names:
+    kind: NamespacedControllerReconciler
+    listKind: NamespacedControllerReconcilerList
+    plural: namespacedcontrollerreconcilers
+    singular: namespacedcontrollerreconciler
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: |-
+          NamespacedControllerReconciler is the Schema for reconciliation related customization for
+          config connector controllers in namespaced mode.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: NamespacedControllerReconciler is the specification of NamespacedControllerReconciler.
+            properties:
+              pprof:
+                description: Configures the debug endpoint on the service.
+                properties:
+                  port:
+                    description: The port that the pprof server binds to if enabled
+                    type: integer
+                  support:
+                    description: Control if pprof should be turned on and which types
+                      should be enabled.
+                    enum:
+                    - none
+                    - all
+                    type: string
+                type: object
+              rateLimit:
+                description: |-
+                  RateLimit configures the token bucket rate limit to the kubernetes client used
+                  by the manager container of the config connector namespaced controller manager.
+                  Please note this rate limit is shared among all the Config Connector resources' requests.
+                  If not specified, the default will be Token Bucket with qps 20, burst 30.
+                properties:
+                  burst:
+                    description: The burst of the token bucket rate limit for all
+                      the requests to the kubernetes client.
+                    type: integer
+                  qps:
+                    description: The QPS of the token bucket rate limit for all the
+                      requests to the kubernetes client.
+                    type: integer
+                type: object
+            type: object
+          status:
+            description: NamespacedControllerReconcilerStatus defines the observed
+              state of NamespacedControllerReconciler.
+            properties:
+              errors:
+                items:
+                  type: string
+                type: array
+              healthy:
+                type: boolean
+              observedGeneration:
+                default: 0
+                format: int64
+                type: integer
+              phase:
+                type: string
+            required:
+            - healthy
+            - observedGeneration
+            type: object
+        required:
+        - spec
+        type: object
+    served: false
+    storage: false
+    subresources:
+      status: {}
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: |-
+          NamespacedControllerReconciler is the Schema for reconciliation related customization for
+          config connector controllers in namespaced mode.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: NamespacedControllerReconciler is the specification of NamespacedControllerReconciler.
+            properties:
+              pprof:
+                description: Configures the debug endpoint on the service.
+                properties:
+                  port:
+                    description: The port that the pprof server binds to if enabled
+                    type: integer
+                  support:
+                    description: Control if pprof should be turned on and which types
+                      should be enabled.
+                    enum:
+                    - none
+                    - all
+                    type: string
+                type: object
+              rateLimit:
+                description: |-
+                  RateLimit configures the token bucket rate limit to the kubernetes client used
+                  by the manager container of the config connector namespaced controller manager.
+                  Please note this rate limit is shared among all the Config Connector resources' requests.
+                  If not specified, the default will be Token Bucket with qps 20, burst 30.
+                properties:
+                  burst:
+                    description: The burst of the token bucket rate limit for all
+                      the requests to the kubernetes client.
+                    type: integer
+                  qps:
+                    description: The QPS of the token bucket rate limit for all the
+                      requests to the kubernetes client.
+                    type: integer
+                type: object
+            type: object
+          status:
+            description: NamespacedControllerReconcilerStatus defines the observed
+              state of NamespacedControllerReconciler.
+            properties:
+              errors:
+                items:
+                  type: string
+                type: array
+              healthy:
+                type: boolean
+              observedGeneration:
+                default: 0
+                format: int64
+                type: integer
+              phase:
+                type: string
+            required:
+            - healthy
+            - observedGeneration
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
