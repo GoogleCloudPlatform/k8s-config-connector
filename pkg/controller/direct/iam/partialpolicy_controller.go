@@ -36,6 +36,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 )
 
@@ -44,7 +45,42 @@ const (
 )
 
 func init() {
-	registry.RegisterModel(krm.IAMPartialPolicyGVK, NewIAMPartialPolicyModel)
+	rg := &IAMPartialPolicyReconcileGate{}
+	registry.RegisterModelWithReconcileGate(krm.IAMPartialPolicyGVK, NewIAMPartialPolicyModel, rg)
+}
+
+// IAMPartialPolicyReconcileGate implements a reconcile gate for IAMPartialPolicy
+// that defaults to the direct controller for better performance, but allows
+// fallback to the handwritten controller when needed.
+//
+// By default, IAMPartialPolicy resources use the direct controller.
+// To opt out and use the handwritten controller:
+//   - alpha.cnrm.cloud.google.com/reconciler: "legacy"
+//
+// To explicitly opt in to the direct controller:
+//   - alpha.cnrm.cloud.google.com/reconciler: "direct"
+type IAMPartialPolicyReconcileGate struct {
+	optIn predicate.OptInToDirectReconciliation
+}
+
+var _ predicate.ReconcileGate = &IAMPartialPolicyReconcileGate{}
+
+func (r *IAMPartialPolicyReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
+	// Check for alpha reconciler annotation to opt out
+	if v := o.GetAnnotations()["alpha.cnrm.cloud.google.com/reconciler"]; v == "legacy" {
+		return false
+	}
+
+	// todo acpana integrate with experiments controls for CCC/ CC
+
+	// Always allow opt-in via annotation
+	if r.optIn.ShouldReconcile(o) {
+		return true
+	}
+
+	// Default to direct controller for better performance
+	// Only fall back to handwritten controller if explicitly requested
+	return true
 }
 
 func NewIAMPartialPolicyModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
