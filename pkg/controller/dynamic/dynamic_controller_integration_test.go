@@ -278,14 +278,14 @@ func validateCreate(ctx context.Context, t *testing.T, testContext testrunner.Te
 		t.Fatalf("[validateCreate] unexpected error when GET-ing '%v': %v", initialUnstruct.GetName(), err)
 	}
 	t.Logf("created resource is %v\r", gcpUnstruct)
-	if resourceContext.SupportsLabels(systemContext.SMLoader, initialUnstruct) {
+	if resourceContext.SupportsLabels(t, systemContext.SMLoader, initialUnstruct) {
 		testcontroller.AssertLabelsMatchAndHaveManagedLabel(t, gcpUnstruct.GetLabels(), reconciledUnstruct.GetLabels())
 	}
 
 	// Check that an "Updating" event was recorded, indicating that the
 	// controller tried to update the resource at all.
 	// TODO(acpana): figure out if we want to expose Updating event for direct resources
-	rt, err := testreconciler.ReconcilerTypeForObject(initialUnstruct)
+	rt, err := testreconciler.ReconcilerTypeForObject(t, initialUnstruct)
 	if err != nil {
 		t.Fatalf("error getting reconciler type: %v", err)
 	}
@@ -461,7 +461,7 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 	if err != nil {
 		t.Fatalf("[testUpdate] unexpected error when GET-ing '%v': %v", updateUnstruct.GetName(), err)
 	}
-	if resourceContext.SupportsLabels(systemContext.SMLoader, updateUnstruct) {
+	if resourceContext.SupportsLabels(t, systemContext.SMLoader, updateUnstruct) {
 		testcontroller.AssertLabelsMatchAndHaveManagedLabel(t, gcpUnstruct.GetLabels(), testContext.UpdateUnstruct.GetLabels())
 	}
 
@@ -479,7 +479,7 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 	// Check that an "Updating" event was recorded, indicating that the
 	// controller tried to update the resource at all.
 	// TODO(acpana): figure out if we want to expose Updating event for direct resources
-	rt, err := testreconciler.ReconcilerTypeForObject(updateUnstruct)
+	rt, err := testreconciler.ReconcilerTypeForObject(t, updateUnstruct)
 	if err != nil {
 		t.Fatalf("error getting reconciler type: %v", err)
 	}
@@ -540,7 +540,7 @@ func shouldSkipDriftDetection(t *testing.T, resourceContext contexts.ResourceCon
 		return true
 	}
 
-	rt, err := testreconciler.ReconcilerTypeForObject(u)
+	rt, err := testreconciler.ReconcilerTypeForObject(t, u)
 	if err != nil {
 		t.Fatalf("error getting reconciler type: %v", err)
 	}
@@ -586,7 +586,7 @@ func testDelete(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 	// Test that the deletion defender finalizer causes the resource to requeue
 	// and still exist on the underlying API
 	reconciledUnstruct := testContext.CreateUnstruct.DeepCopy()
-	rt, err := testreconciler.ReconcilerTypeForObject(reconciledUnstruct)
+	rt, err := testreconciler.ReconcilerTypeForObject(t, reconciledUnstruct)
 	if err != nil {
 		t.Fatalf("error getting reconciler type: %v", err)
 	}
@@ -745,7 +745,7 @@ func testReconcileAcquire(ctx context.Context, t *testing.T, testContext testrun
 	systemContext.Reconciler.Reconcile(ctx, initialUnstruct, testreconciler.ExpectedSuccessfulReconcileResultFor(systemContext.Reconciler, initialUnstruct), nil)
 
 	// Check labels match
-	if resourceContext.SupportsLabels(systemContext.SMLoader, initialUnstruct) {
+	if resourceContext.SupportsLabels(t, systemContext.SMLoader, initialUnstruct) {
 		gcpUnstruct, err := resourceContext.Get(ctx, t, initialUnstruct, systemContext.TFProvider, kubeClient, systemContext.SMLoader, systemContext.DCLConfig, systemContext.DCLConverter, nil)
 		if err != nil {
 			t.Fatalf("[testReconcileAcquire 2] unexpected error when GET-ing '%v': %v", initialUnstruct.GetName(), err)
@@ -775,7 +775,7 @@ func testReconcileAcquire(ctx context.Context, t *testing.T, testContext testrun
 
 // TODO(b/174100391): Compare the resourceID of the retrieved GCP resource and the appliedUnstruct.
 func verifyResourceIDIfSupported(t *testing.T, systemContext testrunner.SystemContext, resourceContext contexts.ResourceContext, reconciledUnstruct, appliedUnstruct *unstructured.Unstructured) {
-	rt, err := testreconciler.ReconcilerTypeForObject(appliedUnstruct)
+	rt, err := testreconciler.ReconcilerTypeForObject(t, appliedUnstruct)
 	if err != nil {
 		t.Fatalf("error getting reconciler type: %v", err)
 	}

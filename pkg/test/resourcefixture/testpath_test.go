@@ -24,7 +24,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 )
 
@@ -195,15 +195,22 @@ func loadTestPaths() ([]string, error) {
 	return result, nil
 }
 
-func loadGVKWithLowercaseKind() map[schema.GroupVersionKind]bool {
+func loadGVKWithLowercaseKind(t *testing.T) map[schema.GroupVersionKind]bool {
 	result := make(map[schema.GroupVersionKind]bool)
-	for gvk, _ := range supportedgvks.SupportedGVKs {
-		lowercaseGVK := schema.GroupVersionKind{
-			Group:   gvk.Group,
-			Version: gvk.Version,
-			Kind:    strings.ToLower(gvk.Kind),
+	crds, err := crdloader.LoadCRDs()
+	if err != nil {
+		t.Fatalf("error loading CRDs: %v", err)
+	}
+	// Load all supported GVKs and convert the Kind to lowercase.
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			lowercaseGVK := schema.GroupVersionKind{
+				Group:   crd.Spec.Group,
+				Version: version.Name,
+				Kind:    strings.ToLower(crd.Spec.Names.Kind),
+			}
+			result[lowercaseGVK] = true
 		}
-		result[lowercaseGVK] = true
 	}
 	return result
 }
