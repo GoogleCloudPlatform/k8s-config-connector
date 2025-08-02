@@ -371,6 +371,12 @@ func visitProps(props *apiextensions.JSONSchemaProps, fieldPath string, callback
 			child := props.Properties[k]
 			visitProps(&child, fieldPath+"."+k, callback)
 		}
+		if props.AdditionalProperties != nil {
+			for k := range props.AdditionalProperties.Schema.Properties {
+				child := props.AdditionalProperties.Schema.Properties[k]
+				visitProps(&child, fieldPath+"."+k, callback)
+			}
+		}
 
 	case "array":
 		if props.Items != nil {
@@ -571,6 +577,33 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 					return
 				}
 
+				// Skip non-terminal fields. A field is considered non-terminal if it's a struct-like object
+				// (i.e., an object with properties) or an array. Other fields, including primitives and
+				// map-like objects (objects without properties), are considered terminal and will be checked for presence.
+				if field.props != nil {
+					switch field.props.Type {
+					case "array":
+						// Arrays are always non-terminal.
+						return
+					case "object":
+						// Struct-like objects with properties are non-terminal.
+						if len(field.props.Properties) > 0 {
+							return
+						}
+						// Check if it's a map of non-terminal types.
+						if ap := field.props.AdditionalProperties; ap != nil {
+							switch ap.Schema.Type {
+							case "array":
+								return
+							case "object":
+								if len(ap.Schema.Properties) > 0 {
+									return
+								}
+							}
+						}
+					}
+				}
+
 				// Any XYZRef field was already handled and handling the children will just double count
 				if strings.Contains(fieldPath, "Ref") {
 					return
@@ -582,7 +615,7 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 					if obj.GetKind() != kind {
 						continue
 					}
-					if hasField(obj.Object, fieldPath) {
+					if hasField(obj.Object, fieldPath) || hasFieldInMap(obj.Object, fieldPath) {
 						missing = false
 						break
 					}
@@ -602,33 +635,6 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 	}
 
 	sort.Strings(errs)
-	// Filter out errors for fields that are also reported for their array equivalent.
-	// For example, if we have an error for "spec.foo" and "spec.foo[]", we only keep the latter.
-	if len(errs) > 0 {
-		filteredErrs := make([]string, 0, len(errs))
-		i := 0
-		for i < len(errs) {
-			addCurrent := true
-			if i+1 < len(errs) {
-				currentErr := errs[i]
-				nextErr := errs[i+1]
-				const suffix = "\" is not set in unstructured objects"
-				prefix := strings.TrimSuffix(currentErr, suffix)
-				if strings.HasPrefix(nextErr, prefix) {
-					diff := strings.TrimPrefix(nextErr, prefix)
-					if strings.Contains(diff, "[]") || strings.Contains(diff, ".") {
-						addCurrent = false
-					}
-				}
-			}
-			if addCurrent {
-				filteredErrs = append(filteredErrs, errs[i])
-			}
-			i++
-		}
-		errs = filteredErrs
-	}
-
 	return errs
 }
 
@@ -724,6 +730,49 @@ func hasField(obj map[string]interface{}, fieldPath string) bool {
 		}
 	}
 	return true
+}
+
+// hasFieldInMap checks if an unstructured object contains the given field path,
+// where an intermediate part of the path is a wildcard for a map key.
+// For example, for an object with spec: { labels: { "label-one": { value: "value-one" } } },
+// and a fieldPath ".spec.labels.value", this function will check if any entry in the "labels" map
+// has a "value" field.
+func hasFieldInMap(obj map[string]interface{}, fieldPath string) bool {
+	parts := strings.Split(strings.TrimPrefix(fieldPath, "."), ".")
+
+	// A map path needs at least a map and a field within it, so at least 2 parts.
+	if len(parts) < 2 {
+		return false
+	}
+
+	ends := len(parts) - 1
+	pathToMapParts := parts[:ends]
+	pathInValueParts := strings.Join(parts[ends:], ".")
+
+	// Get the map object at the current path prefix.
+	mapVal, found, err := unstructured.NestedFieldNoCopy(obj, pathToMapParts...)
+	if err != nil || !found {
+		return false
+	}
+
+	mapObj, ok := mapVal.(map[string]interface{})
+	if !ok {
+		return false
+	}
+
+	for _, value := range mapObj {
+		valueMap, ok := value.(map[string]interface{})
+		if !ok {
+			continue
+		}
+
+		// Check if the rest of the path exists in this value.
+		if hasField(valueMap, pathInValueParts) {
+			return true
+		}
+	}
+
+	return false
 }
 
 func ToUnstruct(t *testing.T, bytes []byte) *unstructured.Unstructured {
