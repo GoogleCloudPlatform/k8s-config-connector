@@ -954,7 +954,7 @@ jobs:
           path: /tmp/artifacts/
 
 
-  tracker-tests:
+  tests-gcptracker:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -962,15 +962,95 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run dev/ci/presubmits/tracker-tests"
+      - name: "Run dev/ci/presubmits/tests-gcptracker"
         run: |
-          ./dev/ci/presubmits/tracker-tests
+          ./dev/ci/presubmits/tests-gcptracker
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
         with:
-          name: artifacts-tracker-tests
+          name: artifacts-tests-gcptracker
+          path: /tmp/artifacts/
+
+
+  tests-scenarios:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-scenarios"
+        run: |
+          ./dev/ci/presubmits/tests-scenarios
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-scenarios
+          path: /tmp/artifacts/
+
+
+  tests-scenarios-acquisition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-scenarios-acquisition"
+        run: |
+          ./dev/ci/presubmits/tests-scenarios-acquisition
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-scenarios-acquisition
+          path: /tmp/artifacts/
+
+
+  tests-scenarios-gkehubfeaturemembership:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-scenarios-gkehubfeaturemembership"
+        run: |
+          ./dev/ci/presubmits/tests-scenarios-gkehubfeaturemembership
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-scenarios-gkehubfeaturemembership
+          path: /tmp/artifacts/
+
+
+  tests-scenarios-powertool:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-scenarios-powertool"
+        run: |
+          ./dev/ci/presubmits/tests-scenarios-powertool
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-scenarios-powertool
           path: /tmp/artifacts/
 
 
