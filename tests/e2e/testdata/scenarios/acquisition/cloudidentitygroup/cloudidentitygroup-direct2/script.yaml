@@ -18,8 +18,6 @@ apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
 kind: CloudIdentityGroup
 metadata:
   name: cloudidentitygroup-${uniqueId}
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   displayName: Cloud Identity Group Name
   description: This is a test CloudIdentityGroup.
@@ -38,8 +36,6 @@ apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
 kind: CloudIdentityGroup
 metadata:
   name: cloudidentitygroup-${uniqueId}
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   resourceID: groups/${TEST_GENERATED_ID}
   displayName: Cloud Identity Group Name

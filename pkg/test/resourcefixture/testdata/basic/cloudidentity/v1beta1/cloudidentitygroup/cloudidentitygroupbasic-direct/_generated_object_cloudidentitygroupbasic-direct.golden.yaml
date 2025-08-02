@@ -1,9 +1,6 @@
 apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
 kind: CloudIdentityGroup
 metadata:
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: direct
-    cnrm.cloud.google.com/management-conflict-prevention-policy: none
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
