@@ -1,0 +1,49 @@
+# Create the KMS key ring that the IAM policy will reference
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyRing
+metadata:
+  name: test-keyring-${uniqueId}
+  namespace: ${projectId}
+spec:
+  location: us-central1
+TEST: APPLY
+---
+# Now create the IAM policy with direct controller (default)
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: test-partial-policy
+  namespace: ${projectId}
+  # Note: no annotation means use direct controller (default)
+spec:
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSKeyRing
+    name: test-keyring-${uniqueId}
+  bindings:
+    - role: roles/cloudkms.admin
+      members:
+        - member: user:test@example.com
+        - member: user:another@example.com
+EXPECTED_CONTROLLER_TYPE: "direct"
+TEST: APPLY
+---
+# Switch to legacy controller by adding the legacy annotation
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: test-partial-policy
+  namespace: ${projectId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "legacy"
+spec:
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSKeyRing
+    name: test-keyring-${uniqueId}
+  bindings:
+    - role: roles/cloudkms.admin
+      members:
+        - member: user:test@example.com
+EXPECTED_CONTROLLER_TYPE: "direct"
+TEST: APPLY 
