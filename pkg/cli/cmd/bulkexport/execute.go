@@ -45,7 +45,10 @@ func Execute(ctx context.Context, params *parameters.Parameters) error {
 	}
 
 	// Initialize direct controllers/exporters
-	controllerConfig := params.ControllerConfig()
+	controllerConfig, err := params.NewControllerConfig(ctx)
+	if err != nil {
+		return err
+	}
 	if err := registry.Init(ctx, controllerConfig); err != nil {
 		return err
 	}
@@ -82,8 +85,10 @@ func Execute(ctx context.Context, params *parameters.Parameters) error {
 }
 
 func newFilteredAssetStream(ctx context.Context, params *parameters.Parameters, tfProvider *schema.Provider) (stream.AssetStream, error) {
-	config := params.ControllerConfig()
-
+	config, err := params.NewControllerConfig(ctx)
+	if err != nil {
+		return nil, err
+	}
 	assetStream, err := inputstream.NewAssetStream(params, os.Stdin)
 	if err != nil {
 		return nil, err
