@@ -14,7 +14,7 @@
 
 // +generated:mapper
 // krm.group: servicenetworking.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: mockgcp.cloud.servicenetworking.v1
 
 package servicenetworking
