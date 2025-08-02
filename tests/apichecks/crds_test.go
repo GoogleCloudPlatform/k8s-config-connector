@@ -204,6 +204,46 @@ func TestCRDsDoNotHaveFooUrlRef(t *testing.T) {
 	}
 }
 
+// Verify that CRDs with multiple versions have the same fields
+func TestCRDVersionsRoundTrip(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		var firstVersion *apiextensions.CustomResourceDefinitionVersion
+
+		for _, version := range crd.Spec.Versions {
+			// Because we don't have conversion webhooks, our round-trip test is to verify that the versions are the same
+			// (other than the version name and whether or not it is stored/served)
+
+			// Ignore a few fields
+			version.Name = ""
+			version.Storage = false
+			version.Served = true
+
+			if firstVersion == nil {
+				firstVersion = &version
+				continue
+			}
+
+			if diff := cmp.Diff(firstVersion, &version); diff != "" {
+				// diff is multiline, but this actually looks fine
+				errs = append(errs, fmt.Sprintf("[round_trip] crd=%s version=%v: %s", crd.Name, version.Name, diff))
+			}
+		}
+	}
+
+	sort.Strings(errs)
+
+	// errors are multiline, so add a separator
+	want := strings.Join(errs, "\n---\n")
+
+	test.CompareGoldenFile(t, "testdata/exceptions/roundtrip.txt", want)
+}
+
 // Enforces acronym capitalization on CRDs
 // https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#naming-conventions
 // All letters in the acronym should have the same case, using the appropriate case for the situation.
