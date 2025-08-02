@@ -32,6 +32,7 @@ type CloudIdentityMembershipSpec struct {
 	GroupRef GroupRef `json:"groupRef"`
 
 	// Immutable. The `EntityKey` of the member. Either `member_key` or `preferred_member_key` must be set when calling MembershipsService.CreateMembership but not both; both shall be set when returned.
+	// This field is considered output only and should not be set as PreferredMemberKey is required.
 	// +kcc:proto:field=google.apps.cloudidentity.groups.v1beta1.Membership.member_key
 	MemberKey *EntityKey `json:"memberKey,omitempty"`
 
