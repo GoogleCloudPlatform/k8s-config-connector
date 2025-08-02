@@ -42,7 +42,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/kccfeatureflags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -180,16 +179,17 @@ func ExpectedSuccessfulReconcileResultFor(r *TestReconciler, u *unstructured.Uns
 	return reconcile.Result{RequeueAfter: reconciliationinterval.MeanReconcileReenqueuePeriod(u.GroupVersionKind(), r.smLoader, r.dclConverter.MetadataLoader)}
 }
 
-func ReconcilerTypeForObject(u *unstructured.Unstructured) (k8s.ReconcilerType, error) {
+func ReconcilerTypeForObject(t *testing.T, u *unstructured.Unstructured) (k8s.ReconcilerType, error) {
 	if !k8s.IsManagedByKCC(u.GroupVersionKind()) {
 		// It is only valid to call this function for KCC-managed objects.
 		return "", fmt.Errorf("%v %v/%v is not managed by KCC; cannot determine reconciler type", u.GetKind(), u.GetNamespace(), u.GetName())
 	}
 
 	objectGVK := u.GroupVersionKind()
-	gvkMetadata, ok := supportedgvks.SupportedGVKs[objectGVK]
-	if !ok {
-		return "", fmt.Errorf("%v is not recognized as a supported GVK; cannot determine reconciler type", objectGVK)
+
+	crd, err := crdloader.GetCRDForGVK(objectGVK)
+	if err != nil {
+		return "", fmt.Errorf("error getting CRD for GVK %v: %w", objectGVK, err)
 	}
 
 	switch objectGVK.Kind {
@@ -203,8 +203,8 @@ func ReconcilerTypeForObject(u *unstructured.Unstructured) (k8s.ReconcilerType, 
 		return k8s.ReconcilerTypeIAMAuditConfig, nil
 	default:
 		hasDirectController := registry.IsDirectByGK(objectGVK.GroupKind())
-		hasTerraformController := gvkMetadata.Labels[k8s.TF2CRDLabel] == "true"
-		hasDCLController := gvkMetadata.Labels[k8s.DCL2CRDLabel] == "true"
+		hasTerraformController := crd.Labels[k8s.TF2CRDLabel] == "true"
+		hasDCLController := crd.Labels[k8s.DCL2CRDLabel] == "true"
 
 		useDirectReconciler := false
 
