@@ -22,7 +22,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var KMSAutokeyConfigGVK = SchemeGroupVersion.WithKind("KMSAutokeyConfig")
+var KMSAutokeyConfigGVK = GroupVersion.WithKind("KMSAutokeyConfig")
 
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
