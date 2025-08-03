@@ -97,7 +97,6 @@ func (s *FutureReservationsV1beta) Update(ctx context.Context, req *pbv1beta.Upd
 		return nil, err
 	}
 
-	// TODO: Remove tis comment if tested
 	proto.Merge(obj, req.GetFutureReservationResource())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
@@ -164,7 +163,7 @@ func (s *MockService) parseFutureReservationName(name string) (*futureReservatio
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 }
 
-// newZonalLRO creates a zonal LRO operation for v1beta API (similar to s.newLRO but for zonal v1beta)
+// newZonalLRO creates a zonal LRO for v1beta operation
 func (s *FutureReservationsV1beta) newZonalLRO(ctx context.Context, projectID string, zone string, op *pbv1beta.Operation) (*pbv1beta.Operation, error) {
 	log := klog.FromContext(ctx)
 
@@ -185,7 +184,7 @@ func (s *FutureReservationsV1beta) newZonalLRO(ctx context.Context, projectID st
 	op.Zone = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s", projectID, zone)))
 	op.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
 
-	log.Info("storing operation", "fqn", fqn)
+	log.Info("storing v1beta operation", "fqn", fqn)
 	if err := s.storage.Create(ctx, fqn, op); err != nil {
 		return nil, err
 	}

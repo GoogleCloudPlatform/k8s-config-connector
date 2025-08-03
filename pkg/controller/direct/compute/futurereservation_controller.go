@@ -171,6 +171,14 @@ func (a *FutureReservationAdapter) Update(ctx context.Context, updateOp *directb
 	}
 	resource.Name = direct.LazyPtr(a.id.ID())
 
+	// Preserve API output-only fields
+	resource.CreationTimestamp = a.actual.CreationTimestamp
+	resource.Id = a.actual.Id
+	resource.SelfLink = a.actual.SelfLink
+	resource.SelfLinkWithId = a.actual.SelfLinkWithId
+	resource.Kind = a.actual.Kind
+	resource.Zone = a.actual.Zone
+
 	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
