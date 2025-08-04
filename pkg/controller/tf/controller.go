@@ -256,11 +256,10 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 		return reconcile.Result{}, r.HandlePreActuationTransformFailed(ctx, &resource.Resource, fmt.Errorf("error applying pre-actuation transformation to resource '%v': %w", req.NamespacedName.String(), err))
 	}
 
-	meta := r.provider.Meta()
-	if baseConfig, ok := meta.(*tpgconfig.Config); ok {
-		metaC := baseConfig.Clone()
-		metaC.Context = metricstransport.WithControllerName(ctx, r.controllerName) // for metrics transport
-		meta = metaC
+	meta, err := cloneAndChangeContext(ctx, r.provider.Meta(), r.controllerName)
+	if err != nil {
+		log.FromContext(ctx).Error(err, "error cloning and changing context; metrics may not show up")
+		meta = r.provider.Meta()
 	}
 
 	requeue, err := r.sync(ctx, resource, meta)
@@ -651,4 +650,29 @@ func updateMutableButUnreadableFieldsAnnotationFor(resource *krmtotf.Resource) e
 func updateObservedSecretVersionsAnnotationFor(resource *krmtotf.Resource, secretVersions map[string]string) error {
 	hasSensitiveFields := tfresource.TFResourceHasSensitiveFields(resource.TFResource)
 	return k8s.UpdateOrRemoveObservedSecretVersionsAnnotation(&resource.Resource, secretVersions, hasSensitiveFields)
+}
+
+// This is needed because the terraform provider framework does not provide a way to pass context to the provider functions.
+// The context is instead stored in the meta object.
+// We need to pass a context with the controller name to the metrics transport, so that the metrics can be labeled with the controller name.
+func cloneAndChangeContext(ctx context.Context, meta interface{}, controllerName string) (interface{}, error) {
+	baseConfig, ok := meta.(*tpgconfig.Config)
+	if !ok {
+		return nil, fmt.Errorf("meta is not of type *tpgconfig.Config")
+	}
+	metaC := *baseConfig
+
+	if baseConfig.ImpersonateServiceAccountDelegates != nil {
+		metaC.ImpersonateServiceAccountDelegates = make([]string, len(baseConfig.ImpersonateServiceAccountDelegates))
+		copy(metaC.ImpersonateServiceAccountDelegates, baseConfig.ImpersonateServiceAccountDelegates)
+	}
+
+	if baseConfig.Scopes != nil {
+		metaC.Scopes = make([]string, len(baseConfig.Scopes))
+		copy(metaC.Scopes, baseConfig.Scopes)
+	}
+
+	// This is the one field we are intentionally changing.
+	metaC.Context = metricstransport.WithControllerName(ctx, controllerName) // for metrics transport
+	return &metaC, nil
 }
