@@ -95,6 +95,8 @@ spec:
         required:
         - spec
         type: object
+        x-kubernetes-validations:
+        - rule: self.metadata.name == 'cnrm-controller-manager'
     served: false
     storage: false
     subresources:
@@ -180,6 +182,8 @@ spec:
         required:
         - spec
         type: object
+        x-kubernetes-validations:
+        - rule: self.metadata.name == 'cnrm-controller-manager'
     served: true
     storage: true
     subresources:
