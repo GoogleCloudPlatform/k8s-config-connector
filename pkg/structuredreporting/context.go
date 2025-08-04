@@ -18,6 +18,7 @@ import (
 	"context"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
 type contextKey string
@@ -53,4 +54,6 @@ type Listener interface {
 	OnDiff(ctx context.Context, diffs *Diff)
 	// OnReconcileStart is called when a controller calls ReportReconcileStart
 	OnReconcileStart(ctx context.Context, u *unstructured.Unstructured)
+	// OnReconcileEnd is called when a controller calls ReportReconcileEnd
+	OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error)
 }
