@@ -3147,6 +3147,12 @@
 [missing_field] crd=pubsubtopics.pubsub.cnrm.cloud.google.com version=v1beta1: field ".spec.messageStoragePolicy.allowedPersistenceRegions[]" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisekeys.recaptchaenterprise.cnrm.cloud.google.com version=v1beta1: field ".spec.wafSettings.wafFeature" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisekeys.recaptchaenterprise.cnrm.cloud.google.com version=v1beta1: field ".spec.wafSettings.wafService" is not set in unstructured objects
+[missing_field] crd=redisclusters.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.automatedBackupConfig.fixedFrequencySchedule.startTime.minutes" is not set in unstructured objects
+[missing_field] crd=redisclusters.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.automatedBackupConfig.fixedFrequencySchedule.startTime.nanos" is not set in unstructured objects
+[missing_field] crd=redisclusters.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.automatedBackupConfig.fixedFrequencySchedule.startTime.seconds" is not set in unstructured objects
+[missing_field] crd=redisclusters.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.automatedBackupConfig.retention" is not set in unstructured objects
+[missing_field] crd=redisclusters.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.weeklyMaintenanceWindow[].startTime.nanos" is not set in unstructured objects
+[missing_field] crd=redisclusters.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.weeklyMaintenanceWindow[].startTime.seconds" is not set in unstructured objects
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.alternativeLocationId" is not set in unstructured objects
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.authEnabled" is not set in unstructured objects
 [missing_field] crd=redisinstances.redis.cnrm.cloud.google.com version=v1beta1: field ".spec.authString" is not set in unstructured objects
