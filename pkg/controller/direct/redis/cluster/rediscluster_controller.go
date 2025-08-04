@@ -279,6 +279,17 @@ func (a *redisClusterAdapter) Update(ctx context.Context, updateOp *directbase.U
 		updateMask.Paths = append(updateMask.Paths, "redis_configs")
 	}
 
+	// NodeType is immutable and cannot be updated.
+	// AuthorizationMode is immutable and cannot be updated.
+	// TransitEncryptionMode is immutable and cannot be updated.
+	if !proto.Equal(a.desired.MaintenancePolicy, a.actual.MaintenancePolicy) {
+		updateMask.Paths = append(updateMask.Paths, "maintenance_policy")
+	}
+
+	if !proto.Equal(a.desired.GetAutomatedBackupConfig(), a.actual.GetAutomatedBackupConfig()) {
+		updateMask.Paths = append(updateMask.Paths, "automated_backup_config")
+	}
+
 	var latest *pb.Cluster
 	if len(updateMask.Paths) != 0 {
 

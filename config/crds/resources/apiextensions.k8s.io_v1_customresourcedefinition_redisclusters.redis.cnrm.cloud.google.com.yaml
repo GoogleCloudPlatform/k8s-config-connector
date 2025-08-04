@@ -403,6 +403,53 @@ spec:
                 description: Optional. The authorization mode of the Redis cluster.
                   If not provided, auth feature is disabled for the cluster.
                 type: string
+              automatedBackupConfig:
+                description: Optional. The automated backup configuration for the
+                  Redis cluster. If not provided, automated backups are disabled.
+                properties:
+                  automatedBackupMode:
+                    description: Optional. The automated backup mode. If the mode
+                      is disabled, the other fields will be ignored.
+                    type: string
+                  fixedFrequencySchedule:
+                    description: Optional. Trigger automated backups at a fixed frequency.
+                    properties:
+                      startTime:
+                        description: Required. The start time of every automated backup
+                          in UTC. It must be set to the start of an hour. This field
+                          is required.
+                        properties:
+                          hours:
+                            description: Optional. Hours of day in 24 hour format.
+                              Should be from 0 to 23. An API may choose to allow the
+                              value "24:00:00" for scenarios like business closing
+                              time.
+                            format: int32
+                            type: integer
+                          minutes:
+                            description: Optional. Minutes of hour of day. Must be
+                              from 0 to 59.
+                            format: int32
+                            type: integer
+                          nanos:
+                            description: Optional. Fractions of a second in nanoseconds.
+                              Must be from 0 to 999,999,999.
+                            format: int32
+                            type: integer
+                          seconds:
+                            description: Optional. Seconds of minute of day. Must
+                              be from 0 to 59. An API may choose to allow the value
+                              60 if it allows leap-seconds.
+                            format: int32
+                            type: integer
+                        type: object
+                    type: object
+                  retention:
+                    description: Optional. How long to keep automated backups before
+                      the backups are deleted. The value should be between 1 day and
+                      365 days. If not specified, the default value is 35 days.
+                    type: string
+                type: object
               deletionProtectionEnabled:
                 description: Optional. The delete operation will fail when the value
                   is set to true.
@@ -410,6 +457,60 @@ spec:
               location:
                 description: Immutable. Location of the resource.
                 type: string
+              maintenancePolicy:
+                description: Optional. The maintenance policy for the Redis cluster.
+                  If not provided, maintenance events can occur at any time.
+                properties:
+                  weeklyMaintenanceWindow:
+                    description: Optional. Weekly maintenance window. Required if
+                      `maintenance_policy` is specified.
+                    items:
+                      properties:
+                        day:
+                          description: |-
+                            Required. The day of week that maintenance updates occur.
+
+                              - MONDAY: Monday
+                              - TUESDAY: Tuesday
+                              - WEDNESDAY: Wednesday
+                              - THURSDAY: Thursday
+                              - FRIDAY: Friday
+                              - SATURDAY: Saturday
+                              - SUNDAY: Sunday Possible values: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]
+                          type: string
+                        startTime:
+                          description: Required. Start time of the window in UTC time.
+                          properties:
+                            hours:
+                              description: Optional. Hours of day in 24 hour format.
+                                Should be from 0 to 23. An API may choose to allow
+                                the value "24:00:00" for scenarios like business closing
+                                time.
+                              format: int32
+                              type: integer
+                            minutes:
+                              description: Optional. Minutes of hour of day. Must
+                                be from 0 to 59.
+                              format: int32
+                              type: integer
+                            nanos:
+                              description: Optional. Fractions of a second in nanoseconds.
+                                Must be from 0 to 999,999,999.
+                              format: int32
+                              type: integer
+                            seconds:
+                              description: Optional. Seconds of minute of day. Must
+                                be from 0 to 59. An API may choose to allow the value
+                                60 if it allows leap-seconds.
+                              format: int32
+                              type: integer
+                          type: object
+                      required:
+                      - day
+                      - startTime
+                      type: object
+                    type: array
+                type: object
               nodeType:
                 description: Optional. The type of a redis node in the cluster. NodeType
                   determines the underlying machine-type of a redis node.

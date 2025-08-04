@@ -221,8 +221,13 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 	// this field. The elements of the repeated paths field may only include these
 	// fields from [Cluster][mockgcp.cloud.redis.cluster.v1.Cluster]:
 	//
-	//   - `size_gb`
 	//   - `replica_count`
+	//   - `shard_count`
+	//   - `deletion_protection_enabled`
+	//   - `persistence_config`
+	//   - `redis_configs`
+	//   - `maintenance_policy`
+	//   - `automated_backup_config`
 	paths := req.GetUpdateMask().GetPaths()
 
 	if req.Cluster == nil {
@@ -239,8 +244,6 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 
 	for _, path := range paths {
 		switch path {
-		case "sizeGb":
-			obj.SizeGb = req.Cluster.SizeGb
 		case "replicaCount":
 			obj.ReplicaCount = req.Cluster.ReplicaCount
 		case "shardCount":
@@ -251,6 +254,15 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 			obj.PersistenceConfig = req.Cluster.PersistenceConfig
 		case "redisConfigs":
 			obj.RedisConfigs = req.Cluster.RedisConfigs
+		case "maintenancePolicy":
+			obj.MaintenancePolicy = req.Cluster.MaintenancePolicy
+		case "automatedBackupConfig":
+			obj.AutomatedBackupConfig = req.Cluster.AutomatedBackupConfig
+
+		case "sizeGb":
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q is computed and cannot be set", path)
+		case "nodeType", "authorizationMode", "transitEncryptionMode":
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q is immutable", path)
 
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
