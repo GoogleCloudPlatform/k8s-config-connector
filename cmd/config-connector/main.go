@@ -16,6 +16,9 @@ package main
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd"
+
+	// Ensure built-in types are registered.
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 func main() {
