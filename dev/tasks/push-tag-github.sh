@@ -49,10 +49,9 @@ SOURCE_CHECKOUT_PATH="${REPO_PATH}"
 
 # --- Script ---
 
-BRANCH_NAME="push_tag_${VERSION}"
-REMOTE="sso://cnrm/cnrm"
+VERSION_MAJOR_MINOR=$(echo "${VERSION}" | cut -d. -f1,2)
+BRANCH_NAME="release_${VERSION_MAJOR_MINOR}"
 VERSION_FILE="version/VERSION"
-PUSH_OPTIONS="push-justification=b/${BUGANIZER_ID}"
 
 echo "--- Preparing local repository ---"
 echo "Using GIT_COMMIT=${GIT_COMMIT}"
@@ -67,9 +66,10 @@ git checkout -b "${BRANCH_NAME}"
 # The command to be run, constructed from the main.go flags and the release document.
 GO_COMMAND=(go run .
   --remote upstream
-  --branch upstream/master
+  --branch "${BRANCH_NAME}"
   --version-file "${VERSION_FILE}"
   --source "${SOURCE_CHECKOUT_PATH}"
+  --add-v-prefix=true
   -v=2
 )
 

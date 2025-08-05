@@ -1,0 +1,96 @@
+{
+  "name": "push_release_tag_github",
+  "description": "Find the correct release commit on an existing branch and execute the push-tag-github.sh script.",
+  "steps": [
+    {
+      "step": "Gather Information and Prepare the Repository",
+      "actions": [
+        {
+          "action": "ask",
+          "prompt": "What is the major.minor version of the release (e.g., 1.133)?",
+          "variable": "VERSION_MAJOR_MINOR"
+        },
+        {
+          "action": "run_shell_command",
+          "command": "git checkout upstream/release-{{VERSION_MAJOR_MINOR}}",
+          "description": "Check out the release branch."
+        }
+      ]
+    },
+    {
+      "step": "Find the Release Commit",
+      "actions": [
+        {
+          "action": "run_shell_command",
+          "command": "git log --no-merges --grep='^Release {{VERSION_MAJOR_MINOR}}.' --pretty=format:'%H %s' -n 1",
+          "description": "Find the release commit.",
+          "variable": "COMMIT_INFO"
+        },
+        {
+          "action": "run_shell_command",
+          "command": "echo '{{COMMIT_INFO}}' | awk '{print $3}'",
+          "description": "Extract the version.",
+          "variable": "VERSION"
+        },
+        {
+          "action": "run_shell_command",
+          "command": "echo '{{COMMIT_INFO}}' | awk '{print $1}'",
+          "description": "Extract the commit hash.",
+          "variable": "GIT_COMMIT"
+        },
+        {
+          "action": "run_shell_command",
+          "command": "git checkout master",
+          "description": "Check out the master branch."
+        }
+      ]
+    },
+    {
+      "step": "Get the Repository Path",
+      "actions": [
+        {
+          "action": "run_shell_command",
+          "command": "pwd",
+          "description": "Get the repository path.",
+          "variable": "REPO_PATH"
+        }
+      ]
+    },
+    {
+      "step": "Verify Variables and Execute the Script",
+      "actions": [
+        {
+          "action": "echo",
+          "message": "VERSION: {{VERSION}}\nGIT_COMMIT: {{GIT_COMMIT}}\nREPO_PATH: {{REPO_PATH}}"
+        },
+        {
+          "action": "run_shell_command",
+          "command": "cd dev/tasks && VERSION={{VERSION}} GIT_COMMIT={{GIT_COMMIT}} REPO_PATH={{REPO_PATH}} ./push-tag-github.sh",
+          "description": "Execute the push-tag-github.sh script for a dry run."
+        }
+      ]
+    },
+    {
+      "step": "Analyze Dry Run Output",
+      "actions": [
+        {
+          "action": "run_shell_command",
+          "command": "echo '{{PREVIOUS_STEP_OUTPUT}}' | grep -E 'ERROR|failed|Aborted'",
+          "description": "Check for errors in the dry run output.",
+          "on_success": "continue",
+          "on_failure": "abort"
+        }
+      ]
+    },
+    {
+      "step": "Execute the Final Push",
+      "actions": [
+        {
+          "action": "run_shell_command",
+          "command": "cd dev/tasks && {{PREVIOUS_STEP_OUTPUT}} | grep 'go run' | sed 's/$/ --yes=true/'",
+          "description": "Execute the final push."
+        }
+      ]
+    }
+  ]
+}
