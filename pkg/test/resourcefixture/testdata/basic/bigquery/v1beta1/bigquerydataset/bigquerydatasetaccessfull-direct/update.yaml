@@ -16,11 +16,9 @@ apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
 metadata:
   name: bigquerydatasetaccessfull${uniqueId}
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   defaultTableExpirationMs: 3600000
-  description: "BigQuery Dataset With Full Access Block"
+  description: "BigQuery Dataset With Full Access Block Updated"
   friendlyName: bigquerydataset-fullaccessblock
   location: us-central1
   projectRef:
@@ -30,6 +28,8 @@ spec:
       specialGroup: projectOwners
     - role: READER
       domain: google.com
+    - role: READER
+      groupByEmail: "kcc-eng@google.com"
     - view:
         datasetId: bigquerydatasetsample${uniqueId}
         projectId: ${projectId}

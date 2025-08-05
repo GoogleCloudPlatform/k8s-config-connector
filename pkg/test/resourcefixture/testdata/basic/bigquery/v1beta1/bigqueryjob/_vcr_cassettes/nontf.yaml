@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,4 +14,542 @@
 
 ---
 version: 2
-interactions: []
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.24.6 gccl/1.67.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 307.512764ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.24.6 gccl/1.67.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 317.657251ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 147
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"datasetReference":{"datasetId":"bigquerydataset22yq2ldf3wcoir"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"location":"us-central1"}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            X-Goog-Api-Client:
+                - gl-go/1.24.6 gccl/1.67.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets?alt=json&prettyPrint=false
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"bigquery#dataset","etag":"IYiuEs8fPuRCcMpWA+/C7Q==","id":"example-project:bigquerydataset22yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir","datasetReference":{"datasetId":"bigquerydataset22yq2ldf3wcoir","projectId":"example-project"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"access":[{"role":"WRITER","specialGroup":"projectWriters"},{"role":"OWNER","specialGroup":"projectOwners"},{"role":"OWNER","userByEmail":"xiaoweim@google.com"},{"role":"READER","specialGroup":"projectReaders"}],"creationTime":"1755030465233","lastModifiedTime":"1755030465233","location":"us-central1","type":"DEFAULT"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 538.480894ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 147
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"datasetReference":{"datasetId":"bigquerydataset12yq2ldf3wcoir"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"location":"us-central1"}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            X-Goog-Api-Client:
+                - gl-go/1.24.6 gccl/1.67.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets?alt=json&prettyPrint=false
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"bigquery#dataset","etag":"TulRjh9nZlwKSv65tGmPrg==","id":"example-project:bigquerydataset12yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir","datasetReference":{"datasetId":"bigquerydataset12yq2ldf3wcoir","projectId":"example-project"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"access":[{"role":"WRITER","specialGroup":"projectWriters"},{"role":"OWNER","specialGroup":"projectOwners"},{"role":"OWNER","userByEmail":"xiaoweim@google.com"},{"role":"READER","specialGroup":"projectReaders"}],"creationTime":"1755030465237","lastModifiedTime":"1755030465237","location":"us-central1","type":"DEFAULT"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 572.943229ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.24.6 gccl/1.67.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"bigquery#dataset","etag":"IYiuEs8fPuRCcMpWA+/C7Q==","id":"example-project:bigquerydataset22yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir","datasetReference":{"datasetId":"bigquerydataset22yq2ldf3wcoir","projectId":"example-project"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"access":[{"role":"WRITER","specialGroup":"projectWriters"},{"role":"OWNER","specialGroup":"projectOwners"},{"role":"OWNER","userByEmail":"xiaoweim@google.com"},{"role":"READER","specialGroup":"projectReaders"}],"creationTime":"1755030465233","lastModifiedTime":"1755030465233","location":"us-central1","type":"DEFAULT","maxTimeTravelHours":"168"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 753.876825ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.24.6 gccl/1.67.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"bigquery#dataset","etag":"TulRjh9nZlwKSv65tGmPrg==","id":"example-project:bigquerydataset12yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir","datasetReference":{"datasetId":"bigquerydataset12yq2ldf3wcoir","projectId":"example-project"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"access":[{"role":"WRITER","specialGroup":"projectWriters"},{"role":"OWNER","specialGroup":"projectOwners"},{"role":"OWNER","userByEmail":"xiaoweim@google.com"},{"role":"READER","specialGroup":"projectReaders"}],"creationTime":"1755030465237","lastModifiedTime":"1755030465237","location":"us-central1","type":"DEFAULT","maxTimeTravelHours":"168"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 768.483743ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.24.6 gccl/1.67.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"bigquery#dataset","etag":"IYiuEs8fPuRCcMpWA+/C7Q==","id":"example-project:bigquerydataset22yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir","datasetReference":{"datasetId":"bigquerydataset22yq2ldf3wcoir","projectId":"example-project"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"access":[{"role":"WRITER","specialGroup":"projectWriters"},{"role":"OWNER","specialGroup":"projectOwners"},{"role":"OWNER","userByEmail":"xiaoweim@google.com"},{"role":"READER","specialGroup":"projectReaders"}],"creationTime":"1755030465233","lastModifiedTime":"1755030465233","location":"us-central1","type":"DEFAULT","maxTimeTravelHours":"168"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 259.924778ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.24.6 gccl/1.67.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"bigquery#dataset","etag":"TulRjh9nZlwKSv65tGmPrg==","id":"example-project:bigquerydataset12yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir","datasetReference":{"datasetId":"bigquerydataset12yq2ldf3wcoir","projectId":"example-project"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"access":[{"role":"WRITER","specialGroup":"projectWriters"},{"role":"OWNER","specialGroup":"projectOwners"},{"role":"OWNER","userByEmail":"xiaoweim@google.com"},{"role":"READER","specialGroup":"projectReaders"}],"creationTime":"1755030465237","lastModifiedTime":"1755030465237","location":"us-central1","type":"DEFAULT","maxTimeTravelHours":"168"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 220.99822ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.24.6 gccl/1.67.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"bigquery#dataset","etag":"IYiuEs8fPuRCcMpWA+/C7Q==","id":"example-project:bigquerydataset22yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir","datasetReference":{"datasetId":"bigquerydataset22yq2ldf3wcoir","projectId":"example-project"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"access":[{"role":"WRITER","specialGroup":"projectWriters"},{"role":"OWNER","specialGroup":"projectOwners"},{"role":"OWNER","userByEmail":"xiaoweim@google.com"},{"role":"READER","specialGroup":"projectReaders"}],"creationTime":"1755030465233","lastModifiedTime":"1755030465233","location":"us-central1","type":"DEFAULT","maxTimeTravelHours":"168"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 144.80406ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.24.6 gccl/1.67.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"bigquery#dataset","etag":"TulRjh9nZlwKSv65tGmPrg==","id":"example-project:bigquerydataset12yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir","datasetReference":{"datasetId":"bigquerydataset12yq2ldf3wcoir","projectId":"example-project"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"access":[{"role":"WRITER","specialGroup":"projectWriters"},{"role":"OWNER","specialGroup":"projectOwners"},{"role":"OWNER","userByEmail":"xiaoweim@google.com"},{"role":"READER","specialGroup":"projectReaders"}],"creationTime":"1755030465237","lastModifiedTime":"1755030465237","location":"us-central1","type":"DEFAULT","maxTimeTravelHours":"168"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 336.006709ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.24.6 gccl/1.67.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"bigquery#dataset","etag":"IYiuEs8fPuRCcMpWA+/C7Q==","id":"example-project:bigquerydataset22yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir","datasetReference":{"datasetId":"bigquerydataset22yq2ldf3wcoir","projectId":"example-project"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"access":[{"role":"WRITER","specialGroup":"projectWriters"},{"role":"OWNER","specialGroup":"projectOwners"},{"role":"OWNER","userByEmail":"xiaoweim@google.com"},{"role":"READER","specialGroup":"projectReaders"}],"creationTime":"1755030465233","lastModifiedTime":"1755030465233","location":"us-central1","type":"DEFAULT","maxTimeTravelHours":"168"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 147.469671ms
+    - id: 11
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.24.6 gccl/1.67.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"bigquery#dataset","etag":"TulRjh9nZlwKSv65tGmPrg==","id":"example-project:bigquerydataset12yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir","datasetReference":{"datasetId":"bigquerydataset12yq2ldf3wcoir","projectId":"example-project"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"access":[{"role":"WRITER","specialGroup":"projectWriters"},{"role":"OWNER","specialGroup":"projectOwners"},{"role":"OWNER","userByEmail":"xiaoweim@google.com"},{"role":"READER","specialGroup":"projectReaders"}],"creationTime":"1755030465237","lastModifiedTime":"1755030465237","location":"us-central1","type":"DEFAULT","maxTimeTravelHours":"168"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 167.563553ms
+    - id: 12
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.24.6 gccl/1.67.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json&deleteContents=false&prettyPrint=false
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 400 Bad Request
+        code: 400
+        duration: 372.106437ms
+    - id: 13
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.24.6 gccl/1.67.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset12yq2ldf3wcoir?alt=json&deleteContents=false&prettyPrint=false
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: ""
+        headers:
+            Content-Length:
+                - "0"
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 204 No Content
+        code: 204
+        duration: 672.877313ms
+    - id: 14
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.24.6 gccl/1.67.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"bigquery#dataset","etag":"IYiuEs8fPuRCcMpWA+/C7Q==","id":"example-project:bigquerydataset22yq2ldf3wcoir","selfLink":"https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir","datasetReference":{"datasetId":"bigquerydataset22yq2ldf3wcoir","projectId":"example-project"},"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"access":[{"role":"WRITER","specialGroup":"projectWriters"},{"role":"OWNER","specialGroup":"projectOwners"},{"role":"OWNER","userByEmail":"xiaoweim@google.com"},{"role":"READER","specialGroup":"projectReaders"}],"creationTime":"1755030465233","lastModifiedTime":"1755030465233","location":"us-central1","type":"DEFAULT","maxTimeTravelHours":"168"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 95.795344ms
+    - id: 15
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigquery.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.24.6 gccl/1.67.0
+        url: https://bigquery.googleapis.com/bigquery/v2/projects/example-project/datasets/bigquerydataset22yq2ldf3wcoir?alt=json&deleteContents=false&prettyPrint=false
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: false
+        body: ""
+        headers:
+            Content-Length:
+                - "0"
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 204 No Content
+        code: 204
+        duration: 614.226379ms
