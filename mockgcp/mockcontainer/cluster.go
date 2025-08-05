@@ -259,13 +259,13 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredNodePoolAutoConfigNetworkTags = nil
 	}
 
-	if update.DesiredAdditionalPodRangesConfig != nil {
-		if obj.IpAllocationPolicy == nil {
-			obj.IpAllocationPolicy = &pb.IPAllocationPolicy{}
-		}
-		obj.IpAllocationPolicy.AdditionalPodRangesConfig = update.DesiredAdditionalPodRangesConfig
-		update.DesiredAdditionalPodRangesConfig = nil
-	}
+	//if update.DesiredAdditionalPodRangesConfig != nil {
+	//	if obj.IpAllocationPolicy == nil {
+	//		obj.IpAllocationPolicy = &pb.IPAllocationPolicy{}
+	//	}
+	//	obj.IpAllocationPolicy.AdditionalPodRangesConfig = update.DesiredAdditionalPodRangesConfig
+	//	update.DesiredAdditionalPodRangesConfig = nil
+	//}
 
 	// TODO: Support more updates!
 
