@@ -123,6 +123,9 @@ func run(ctx context.Context) error {
 
 	message := "Release " + currentVersion
 	tagName := currentVersion
+	if addVPrefix {
+		tagName = "v" + tagName
+	}
 	log.Info("creating tag", "tag", tagName, "sha", currentSHA)
 	if !yes {
 		fmt.Fprintf(os.Stdout, "Would create tag %v pointing to %v\n", tagName, currentSHA)
