@@ -380,7 +380,7 @@ type GKEHubFeatureMembershipSpec struct {
 	Policycontroller *FeaturemembershipPolicycontroller `json:"policycontroller,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef FeatureProjectRef `json:"projectRef"`
+	ProjectRef refs.ProjectRef `json:"projectRef"`
 }
 
 // +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig

@@ -333,14 +333,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'The name of the feature. Allowed value: The Google
-                      Cloud resource name of a `GKEHubFeature` resource (format: `projects/{{project}}/locations/{{location}}/features/{{name}}`).'
+                    description: A reference to an externally managed GKEHubFeature
+                      resource. Should be in the format "projects/{{project}}/locations/{{location}}/features/{{featureID}}".
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a GKEHubFeature resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a GKEHubFeature resource.
                     type: string
                 type: object
               location:
@@ -367,15 +367,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'The name of the membership. Allowed value: The Google
-                      Cloud resource name of a `GKEHubMembership` resource (format:
-                      `projects/{{project}}/locations/{{location}}/memberships/{{name}}`).'
+                    description: A reference to an externally managed GKEHubMembership
+                      resource. Should be in the format "projects/{{project}}/locations/{{location}}/memberships/{{membershipID}}".
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a GKEHubMembership resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a GKEHubMembership resource.
                     type: string
                 type: object
               mesh:
@@ -675,14 +674,18 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'The project of the feature. Allowed value: The Google
-                      Cloud resource name of a `Project` resource (format: `projects/{{name}}`).'
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
             required:
