@@ -16,12 +16,18 @@ package structuredreporting
 
 import (
 	"context"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
 type LogListener struct {
+}
+
+func (l *LogListener) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error) {
+	//TODO implement me
+	panic("implement me")
 }
 
 var _ Listener = &LogListener{}
