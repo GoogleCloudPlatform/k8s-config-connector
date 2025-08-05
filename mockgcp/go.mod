@@ -2,7 +2,7 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp
 
 go 1.24
 
-toolchain go1.24.2
+toolchain go1.24.5
 
 require (
 	cloud.google.com/go/accesscontextmanager v1.9.3
