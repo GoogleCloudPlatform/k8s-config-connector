@@ -16,8 +16,6 @@ apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
 metadata:
   name: bigquerydatasetaccessfull${uniqueId}
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   defaultTableExpirationMs: 3600000
   description: "BigQuery Dataset With Full Access Block"
