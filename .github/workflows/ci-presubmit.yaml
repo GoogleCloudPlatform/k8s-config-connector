@@ -310,7 +310,7 @@ jobs:
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
         with:
-          name: artifacts-tests-e2e-fixtures-gkcbackup
+          name: artifacts-tests-e2e-fixtures-gkebackup
           path: /tmp/artifacts/
 
 
