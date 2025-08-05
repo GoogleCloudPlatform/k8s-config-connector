@@ -275,14 +275,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
 		Group:   "bigquery.cnrm.cloud.google.com",
 		Version: "v1beta1",
-		Kind:    "BigQueryDataset",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "bigquery.cnrm.cloud.google.com",
-		Version: "v1beta1",
 		Kind:    "BigQueryJob",
 	}: {
 		Terraform: true,
