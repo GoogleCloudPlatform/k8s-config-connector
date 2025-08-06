@@ -18,6 +18,7 @@ import (
 	"reflect"
 	"sort"
 
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	api "google.golang.org/api/sqladmin/v1beta4"
 )
@@ -709,5 +710,48 @@ func PointersMatch[T any](desired *T, actual *T) bool {
 		return false
 	}
 	// Otherwise, they match. Either both are nil, or both are not nil.
+	return true
+}
+
+// StatusNeedsUpdate checks if the current K8s status differs from the GCP-derived status.
+// Excludes conditions and observedGeneration as they are managed by the controller framework.
+// For now, only compares AvailableMaintenanceVersions to avoid false alarms on other fields.
+func StatusNeedsUpdate(currentStatus *krm.SQLInstanceStatus, newStatus *krm.SQLInstanceStatus) bool {
+	if currentStatus == nil {
+		return true // If no current status, update is needed
+	}
+
+	// Compare AvailableMaintenanceVersions with order-independent comparison
+	return !availableMaintenanceVersionsEqual(currentStatus.AvailableMaintenanceVersions, newStatus.AvailableMaintenanceVersions)
+}
+
+// availableMaintenanceVersionsEqual compares two slices of maintenance versions
+// in an order-independent way to avoid false alarms due to ordering differences.
+func availableMaintenanceVersionsEqual(current, new []string) bool {
+	if len(current) != len(new) {
+		return false
+	}
+
+	// If both are empty or nil, they're equal
+	if len(current) == 0 {
+		return true
+	}
+
+	// Create sorted copies to compare
+	currentSorted := make([]string, len(current))
+	newSorted := make([]string, len(new))
+	copy(currentSorted, current)
+	copy(newSorted, new)
+
+	sort.Strings(currentSorted)
+	sort.Strings(newSorted)
+
+	// Compare sorted slices
+	for i := range currentSorted {
+		if currentSorted[i] != newSorted[i] {
+			return false
+		}
+	}
+
 	return true
 }
