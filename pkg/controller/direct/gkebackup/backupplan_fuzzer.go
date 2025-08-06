@@ -55,7 +55,8 @@ func GKEBackupBackupPlanFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".name") // special field
 
 	// New fields that could potentially be added
-	f.UnimplementedFields.Insert(".last_successful_backup_time")
+	f.UnimplementedFields.Insert(".last_successful_backup_time") // todo:add_support
+	f.UnimplementedFields.Insert(".backup_channel")              // todo:add_support
 
 	return f
 }

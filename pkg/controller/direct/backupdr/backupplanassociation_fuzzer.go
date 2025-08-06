@@ -33,20 +33,30 @@ func backupDRBackupPlanAssociationFuzzer() fuzztesting.KRMFuzzer {
 		BackupDRBackupPlanAssociationObservedState_v1beta1_FromProto, BackupDRBackupPlanAssociationObservedState_v1beta1_ToProto,
 	)
 
+	// Spec fields
 	f.SpecFields.Insert(".resource_type")
 	f.SpecFields.Insert(".resource")
 	f.SpecFields.Insert(".backup_plan")
 
+	// Status fields
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
 	f.StatusFields.Insert(".state")
 	f.StatusFields.Insert(".rules_config_info")
 	f.StatusFields.Insert(".data_source")
 
+	// Identity fields
 	f.UnimplementedFields.Insert(".name")
+
+	// Fields that could potentially be added
 
 	// the conversion of `spec.resource` relies on correctly setting `.spec.resourceType` to a magic string "compute.googleapis.com/Instance"
 	f.UnimplementedFields.Insert(".resource")
+
+	f.UnimplementedFields.Insert(".backup_plan_revision_name")                             // todo:add_support
+	f.UnimplementedFields.Insert(".backup_plan_revision_id")                               // todo:add_support
+	f.UnimplementedFields.Insert(".cloud_sql_instance_backup_plan_association_properties") // todo:add_support
+	f.UnimplementedFields.Insert(".cloud_sql_instance_backup_plan_association_properties") // todo:add_support
 
 	return f
 }

@@ -33,6 +33,7 @@ func backupDRBackupVaultFuzzer() fuzztesting.KRMFuzzer {
 		BackupDRBackupVaultObservedState_v1alpha1_FromProto, BackupDRBackupVaultObservedState_v1alpha1_ToProto,
 	)
 
+	// Spec fields
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".backup_minimum_enforced_retention_duration")
@@ -41,6 +42,7 @@ func backupDRBackupVaultFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".annotations")
 	f.SpecFields.Insert(".access_restriction")
 
+	// Status fields
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
 	f.StatusFields.Insert(".deletable")
@@ -50,6 +52,7 @@ func backupDRBackupVaultFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".total_stored_bytes")
 	f.StatusFields.Insert(".uid")
 
+	// Identity fields
 	f.UnimplementedFields.Insert(".name")
 
 	return f

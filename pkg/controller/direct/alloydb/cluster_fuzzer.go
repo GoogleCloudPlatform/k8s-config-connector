@@ -54,6 +54,7 @@ func alloyDBClusterFuzzer() fuzztesting.KRMFuzzer {
 	// .initial_user.password is unreadable.
 	f.UnimplementedFields.Insert(".initial_user.password")
 
+	// Spec fields
 	f.SpecFields.Insert(".deletion_policy")
 	f.SpecFields.Insert(".display_name")
 	f.SpecFields.Insert(".cluster_type")
@@ -68,6 +69,7 @@ func alloyDBClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".secondary_config")
 	f.SpecFields.Insert(".continuous_backup_config")
 
+	// Status fields
 	f.StatusFields.Insert(".name")
 	f.StatusFields.Insert(".database_version")
 	f.StatusFields.Insert(".uid")
@@ -76,6 +78,10 @@ func alloyDBClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".continuous_backup_info")
 	f.StatusFields.Insert(".migration_source")
 	f.StatusFields.Insert(".backup_source")
+
+	// New fields that could potentially be added
+	f.UnimplementedFields.Insert(".service_account_email")                              // todo:add_support
+	f.UnimplementedFields.Insert(".maintenance_update_policy.deny_maintenance_periods") // todo:add_support
 
 	return f
 }

@@ -32,12 +32,15 @@ func GKEBackupRestorePlanFuzzer() fuzztesting.KRMFuzzer {
 		GKEBackupRestorePlanSpec_FromProto, GKEBackupRestorePlanSpec_ToProto,
 		GKEBackupRestorePlanObservedState_FromProto, GKEBackupRestorePlanObservedState_ToProto,
 	)
+
+	// Spec fields
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".backup_plan")
 	f.SpecFields.Insert(".cluster")
 	f.SpecFields.Insert(".restore_config")
 	f.SpecFields.Insert(".labels")
 
+	// Status fields
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
@@ -45,11 +48,16 @@ func GKEBackupRestorePlanFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".state")
 	f.StatusFields.Insert(".state_reason")
 
+	// Identity fields
 	f.UnimplementedFields.Insert(".name")
+
+	// Fields that could potentially be added
 
 	// The default value of `.restore_config.volume_data_restore_policy_bindings.volume_type` is
 	// VolumeTypeEnum_VOLUME_TYPE_UNSPECIFIED, which does not roundtrip due to our Enum_FromProto implementation.
 	f.UnimplementedFields.Insert(".restore_config.volume_data_restore_policy_bindings")
+
+	f.UnimplementedFields.Insert(".restore_channel") // todo:add_support
 
 	return f
 }

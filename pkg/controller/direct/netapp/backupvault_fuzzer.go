@@ -41,5 +41,12 @@ func netAppBackupVaultFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".name")
 	f.UnimplementedFields.Insert(".labels")
 
+	f.UnimplementedFields.Insert(".backup_region")            // todo:add_support
+	f.UnimplementedFields.Insert(".backup_retention_policy")  // todo:add_support
+	f.UnimplementedFields.Insert(".backup_vault_type")        // todo:add_support
+	f.UnimplementedFields.Insert(".destination_backup_vault") // todo:add_support
+	f.UnimplementedFields.Insert(".source_region")            // todo:add_support
+	f.UnimplementedFields.Insert(".source_backup_vault")      // todo:add_support
+
 	return f
 }

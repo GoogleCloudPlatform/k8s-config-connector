@@ -32,19 +32,30 @@ func fuzzDataStore() fuzztesting.KRMFuzzer {
 		DiscoveryEngineDataStoreObservedState_FromProto, DiscoveryEngineDataStoreObservedState_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name")                       // special field
-	f.UnimplementedFields.Insert(".document_processing_config") // complex map[string]object, so not implementing yet
-	f.UnimplementedFields.Insert(".starting_schema")            // Tricky field, only on create
+	// Identity fields
+	f.UnimplementedFields.Insert(".name")
 
+	// Spec fields
 	f.SpecFields.Insert(".display_name")
 	f.SpecFields.Insert(".industry_vertical")
 	f.SpecFields.Insert(".solution_types")
 	f.SpecFields.Insert(".content_config")
 	f.SpecFields.Insert(".workspace_config")
 
+	// Status fields
 	f.StatusFields.Insert(".default_schema_id")
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".billing_estimation")
+
+	// New fields that could potentially be added
+	f.UnimplementedFields.Insert(".acl_enabled")                 // todo:add_support
+	f.UnimplementedFields.Insert(".healthcare_fhir_config")      // todo:add_support
+	f.UnimplementedFields.Insert(".identity_mapping_store")      // todo:add_support
+	f.UnimplementedFields.Insert(".advanced_site_search_config") // todo:add_support
+	f.UnimplementedFields.Insert(".cmek_config")                 // todo:add_support
+	f.UnimplementedFields.Insert(".kms_key_name")                // todo:add_support
+	f.UnimplementedFields.Insert(".document_processing_config")  // complex map[string]object, so not implementing yet
+	f.UnimplementedFields.Insert(".starting_schema")             // Tricky field, only on create
 
 	return f
 }
