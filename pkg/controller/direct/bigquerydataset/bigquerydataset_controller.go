@@ -151,14 +151,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		desiredDataset.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
 	}
 	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
-	// var infor string
-	// for _, v := range desiredDataset.Access {
-	// 	if v.View != nil {
-	// 		infor = fmt.Sprintf("View dataset %s, project %s, table %s", v.View.DatasetID, v.View.ProjectID, v.View.TableID)
-	// 	}
-	// }
 
-	// return fmt.Errorf("desiredDataset: %v", infor)
 	if err := dsHandler.Create(ctx, desiredDataset); err != nil {
 		return fmt.Errorf("Error creating Dataset %s: %w", a.id.ID(), err)
 	}
@@ -178,13 +171,10 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-
-	external := a.id.String()
-	status.ExternalRef = &external
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	if err := createOp.UpdateStatus(ctx, status, nil); err != nil {
 		return err
 	}
-
 	// Write resourceID into spec.
 	tokens := strings.Split(createdMetadata.FullID, ":")
 	if len(tokens) == 2 {
@@ -195,6 +185,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	} else {
 		return fmt.Errorf("Error getting resourceID: %s. The full ID of the created BigQueryDataset is expected to be in the format of projectID:datasetID", createdMetadata.FullID)
 	}
+
 	return nil
 }
 

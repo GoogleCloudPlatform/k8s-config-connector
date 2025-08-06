@@ -42,6 +42,7 @@ import (
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/teststatus"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -203,7 +204,7 @@ func testPolicyMemberCreateDelete(ctx context.Context, t *testing.T, mgr manager
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sPolicyMember), k8sPolicyMember); err != nil {
 		t.Fatalf("unexpected error getting resource: %v", err)
 	}
-	testcontroller.AssertReadyCondition(t, k8sPolicyMember, preReconcileGeneration)
+	teststatus.AssertReadyCondition(t, k8sPolicyMember, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, v1beta1.IAMPolicyMemberGVK.Kind, &k8sPolicyMember.ObjectMeta, k8s.UpToDate)
 	if err := kubeClient.Delete(ctx, k8sPolicyMember); err != nil {
 		t.Fatalf("error deleting policy member: %v", err)
@@ -290,7 +291,7 @@ func testReconcileResourceLevelAcquire(ctx context.Context, t *testing.T, mgr ma
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sPolicyMember), k8sPolicyMember); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	testcontroller.AssertReadyCondition(t, k8sPolicyMember, preReconcileGeneration)
+	teststatus.AssertReadyCondition(t, k8sPolicyMember, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, v1beta1.IAMPolicyMemberGVK.Kind, &k8sPolicyMember.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, k8sPolicyMember, preReconcileGeneration)
 }

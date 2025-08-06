@@ -45,6 +45,7 @@ import (
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/teststatus"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 
 	"github.com/google/go-cmp/cmp"
@@ -376,7 +377,7 @@ func testReconcileResourceLevelCreate(ctx context.Context, t *testing.T, kubeCli
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
 	assertPolicy(ctx, t, k8sPartialPolicy, existingPolicy, gcpPolicy, iamClient)
-	testcontroller.AssertReadyCondition(t, k8sPartialPolicy, preReconcileGeneration)
+	teststatus.AssertReadyCondition(t, k8sPartialPolicy, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMPartialPolicyGVK.Kind, &k8sPartialPolicy.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, k8sPartialPolicy, preReconcileGeneration)
 }
@@ -400,7 +401,7 @@ func testReconcileResourceLevelUpdate(ctx context.Context, t *testing.T, kubeCli
 		t.Fatalf("error retrieving GCP policy: %v", err)
 	}
 	assertPolicy(ctx, t, newK8sPartialPolicy, existingPolicy, gcpPolicy, iamClient)
-	testcontroller.AssertReadyCondition(t, newK8sPartialPolicy, preReconcileGeneration)
+	teststatus.AssertReadyCondition(t, newK8sPartialPolicy, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMPartialPolicyGVK.Kind, &newK8sPartialPolicy.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, newK8sPartialPolicy, preReconcileGeneration)
 }
@@ -612,7 +613,7 @@ func testReconcileResourceLevelAcquire(ctx context.Context, t *testing.T, mgr ma
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sPartialPolicy), k8sPartialPolicy); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	testcontroller.AssertReadyCondition(t, k8sPartialPolicy, preReconcileGeneration)
+	teststatus.AssertReadyCondition(t, k8sPartialPolicy, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMPartialPolicyGVK.Kind, &k8sPartialPolicy.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, k8sPartialPolicy, preReconcileGeneration)
 }

@@ -652,25 +652,27 @@ X-Xss-Protection: 0
   },
   "autopilot": {},
   "autoscaling": {
-    "autoprovisioningNodePoolDefaults": {
-      "management": {
-        "autoRepair": true,
-        "autoUpgrade": true
-      },
-      "oauthScopes": [
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/cloud-platform"
-      ],
-      "upgradeSettings": {
-        "strategy": "SURGE"
-      }
-    },
     "autoscalingProfile": "BALANCED"
   },
   "binaryAuthorization": {},
   "clusterIpv4Cidr": "10.92.0.0/14",
   "clusterTelemetry": {
     "type": "ENABLED"
+  },
+  "controlPlaneEndpointsConfig": {
+    "dnsEndpointConfig": {
+      "allowExternalTraffic": false,
+      "endpoint": "gke-123456-${projectNumber}.us-central1-a.gke.goog"
+    },
+    "ipEndpointsConfig": {
+      "authorizedNetworksConfig": {
+        "gcpPublicCidrsAccessEnabled": true
+      },
+      "enablePublicEndpoint": true,
+      "enabled": true,
+      "privateEndpoint": "1.2.3.4",
+      "publicEndpoint": "32.32.32.32"
+    }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "currentMasterVersion": "1.30.5-gke.1014001",
@@ -713,7 +715,7 @@ X-Xss-Protection: 0
   },
   "loggingService": "logging.googleapis.com/kubernetes",
   "maintenancePolicy": {
-    "window": {}
+    "resourceVersion": "1234abcd"
   },
   "master": {},
   "masterAuth": {
@@ -738,8 +740,10 @@ X-Xss-Protection: 0
   "name": "containercluster1-${uniqueId}",
   "network": "default",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "projects/mci-${uniqueId}/global/networks/default",
-    "subnetwork": "default"
+    "serviceExternalIpsConfig": {},
+    "subnetwork": "projects/mci-${uniqueId}/regions/us-central1-a/subnetworks/default"
   },
   "nodeConfig": {
     "diskSizeGb": 100,
@@ -1038,25 +1042,27 @@ X-Xss-Protection: 0
   },
   "autopilot": {},
   "autoscaling": {
-    "autoprovisioningNodePoolDefaults": {
-      "management": {
-        "autoRepair": true,
-        "autoUpgrade": true
-      },
-      "oauthScopes": [
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/cloud-platform"
-      ],
-      "upgradeSettings": {
-        "strategy": "SURGE"
-      }
-    },
     "autoscalingProfile": "BALANCED"
   },
   "binaryAuthorization": {},
   "clusterIpv4Cidr": "10.92.0.0/14",
   "clusterTelemetry": {
     "type": "ENABLED"
+  },
+  "controlPlaneEndpointsConfig": {
+    "dnsEndpointConfig": {
+      "allowExternalTraffic": false,
+      "endpoint": "gke-123456-${projectNumber}.us-central1-a.gke.goog"
+    },
+    "ipEndpointsConfig": {
+      "authorizedNetworksConfig": {
+        "gcpPublicCidrsAccessEnabled": true
+      },
+      "enablePublicEndpoint": true,
+      "enabled": true,
+      "privateEndpoint": "1.2.3.4",
+      "publicEndpoint": "32.32.32.32"
+    }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "currentMasterVersion": "1.30.5-gke.1014001",
@@ -1099,7 +1105,7 @@ X-Xss-Protection: 0
   },
   "loggingService": "logging.googleapis.com/kubernetes",
   "maintenancePolicy": {
-    "window": {}
+    "resourceVersion": "1234abcd"
   },
   "master": {},
   "masterAuth": {
@@ -1124,8 +1130,10 @@ X-Xss-Protection: 0
   "name": "containercluster2-${uniqueId}",
   "network": "default",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "projects/mci-${uniqueId}/global/networks/default",
-    "subnetwork": "default"
+    "serviceExternalIpsConfig": {},
+    "subnetwork": "projects/mci-${uniqueId}/regions/us-central1-a/subnetworks/default"
   },
   "nodeConfig": {
     "diskSizeGb": 100,
@@ -2475,25 +2483,27 @@ X-Xss-Protection: 0
   },
   "autopilot": {},
   "autoscaling": {
-    "autoprovisioningNodePoolDefaults": {
-      "management": {
-        "autoRepair": true,
-        "autoUpgrade": true
-      },
-      "oauthScopes": [
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/cloud-platform"
-      ],
-      "upgradeSettings": {
-        "strategy": "SURGE"
-      }
-    },
     "autoscalingProfile": "BALANCED"
   },
   "binaryAuthorization": {},
   "clusterIpv4Cidr": "10.92.0.0/14",
   "clusterTelemetry": {
     "type": "ENABLED"
+  },
+  "controlPlaneEndpointsConfig": {
+    "dnsEndpointConfig": {
+      "allowExternalTraffic": false,
+      "endpoint": "gke-123456-${projectNumber}.us-central1-a.gke.goog"
+    },
+    "ipEndpointsConfig": {
+      "authorizedNetworksConfig": {
+        "gcpPublicCidrsAccessEnabled": true
+      },
+      "enablePublicEndpoint": true,
+      "enabled": true,
+      "privateEndpoint": "1.2.3.4",
+      "publicEndpoint": "32.32.32.32"
+    }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "currentMasterVersion": "1.30.5-gke.1014001",
@@ -2536,7 +2546,7 @@ X-Xss-Protection: 0
   },
   "loggingService": "logging.googleapis.com/kubernetes",
   "maintenancePolicy": {
-    "window": {}
+    "resourceVersion": "1234abcd"
   },
   "master": {},
   "masterAuth": {
@@ -2561,8 +2571,10 @@ X-Xss-Protection: 0
   "name": "containercluster2-${uniqueId}",
   "network": "default",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "projects/mci-${uniqueId}/global/networks/default",
-    "subnetwork": "default"
+    "serviceExternalIpsConfig": {},
+    "subnetwork": "projects/mci-${uniqueId}/regions/us-central1-a/subnetworks/default"
   },
   "nodeConfig": {
     "diskSizeGb": 100,
@@ -2752,25 +2764,27 @@ X-Xss-Protection: 0
   },
   "autopilot": {},
   "autoscaling": {
-    "autoprovisioningNodePoolDefaults": {
-      "management": {
-        "autoRepair": true,
-        "autoUpgrade": true
-      },
-      "oauthScopes": [
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/cloud-platform"
-      ],
-      "upgradeSettings": {
-        "strategy": "SURGE"
-      }
-    },
     "autoscalingProfile": "BALANCED"
   },
   "binaryAuthorization": {},
   "clusterIpv4Cidr": "10.92.0.0/14",
   "clusterTelemetry": {
     "type": "ENABLED"
+  },
+  "controlPlaneEndpointsConfig": {
+    "dnsEndpointConfig": {
+      "allowExternalTraffic": false,
+      "endpoint": "gke-123456-${projectNumber}.us-central1-a.gke.goog"
+    },
+    "ipEndpointsConfig": {
+      "authorizedNetworksConfig": {
+        "gcpPublicCidrsAccessEnabled": true
+      },
+      "enablePublicEndpoint": true,
+      "enabled": true,
+      "privateEndpoint": "1.2.3.4",
+      "publicEndpoint": "32.32.32.32"
+    }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "currentMasterVersion": "1.30.5-gke.1014001",
@@ -2813,7 +2827,7 @@ X-Xss-Protection: 0
   },
   "loggingService": "logging.googleapis.com/kubernetes",
   "maintenancePolicy": {
-    "window": {}
+    "resourceVersion": "1234abcd"
   },
   "master": {},
   "masterAuth": {
@@ -2838,8 +2852,10 @@ X-Xss-Protection: 0
   "name": "containercluster1-${uniqueId}",
   "network": "default",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "projects/mci-${uniqueId}/global/networks/default",
-    "subnetwork": "default"
+    "serviceExternalIpsConfig": {},
+    "subnetwork": "projects/mci-${uniqueId}/regions/us-central1-a/subnetworks/default"
   },
   "nodeConfig": {
     "diskSizeGb": 100,
