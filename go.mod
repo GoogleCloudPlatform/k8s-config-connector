@@ -87,7 +87,7 @@ require (
 	github.com/hashicorp/hcl v1.0.0
 	github.com/hashicorp/hcl/v2 v2.23.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.24.0
-	github.com/hashicorp/terraform-provider-google-beta v0.0.0-00010101000000-000000000000
+	github.com/hashicorp/terraform-provider-google-beta v3.73.0+incompatible
 	github.com/nasa9084/go-openapi v0.0.0-20200604141640-2875b7376353
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/onsi/gomega v1.36.1
@@ -136,9 +136,9 @@ require (
 	github.com/envoyproxy/go-control-plane/envoy v1.32.4 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
 	github.com/go-jose/go-jose/v4 v4.0.5 // indirect
-	github.com/google/flatbuffers v23.5.26+incompatible // indirect
+	github.com/google/flatbuffers v24.3.25+incompatible // indirect
 	github.com/google/gnostic-models v0.6.8 // indirect
-	github.com/gorilla/websocket v1.5.0 // indirect
+	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f // indirect
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
@@ -146,6 +146,7 @@ require (
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	github.com/zeebo/errs v1.4.0 // indirect
+	gonum.org/v1/gonum v0.15.0 // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.12.0 // indirect
 	sigs.k8s.io/kubebuilder-declarative-pattern/ktest v0.0.0-20250514194322-871029137730 // indirect
 )
@@ -234,7 +235,7 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/klauspost/compress v1.17.9 // indirect
-	github.com/klauspost/cpuid/v2 v2.2.5 // indirect
+	github.com/klauspost/cpuid/v2 v2.2.7 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/liggitt/tabwriter v0.0.0-20181228230101-89fcab3d43de // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
@@ -279,7 +280,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.36.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.39.0 // indirect
-	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 // indirect
+	golang.org/x/exp v0.0.0-20250218142911-aa4b98e5adaa // indirect
 	golang.org/x/mod v0.25.0 // indirect
 	golang.org/x/net v0.41.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
