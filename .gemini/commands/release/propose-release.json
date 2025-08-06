@@ -1,0 +1,114 @@
+{
+  "name": "propose-release",
+  "description": "Proposes a new release for KCC by generating manifests, updating CRDs, running tests, and creating a release summary.",
+  "steps": [
+    {
+      "name": "Determine Release Versions",
+      "actions": [
+        {
+          "run": "git tag | sort -V | tail -n 1",
+          "id": "get_stale_version"
+        },
+        {
+          "prompt": {
+            "message": "Enter the new version (e.g., if stale is ${get_stale_version.stdout}, the new version is 1.133.0):",
+            "id": "get_version"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Release Branch",
+      "actions": [
+        {
+          "run": "git checkout -b release-${get_version.input}"
+        }
+      ]
+    },
+    {
+      "name": "Propose Tag and Update Manifests",
+      "actions": [
+        {
+          "run": "VERSION=${get_version.input} STALE_VERSION=${get_stale_version.stdout} ./dev/tasks/propose-tag"
+        },
+        {
+          "run": "git add ."
+        },
+        {
+          "run": "git commit -m \"Release ${get_version.input}\""
+        }
+      ]
+    },
+    {
+      "name": "Synchronize CRDs",
+      "actions": [
+        {
+          "run": "VERSION=${get_version.input} ./dev/tasks/sync-crds-folder.sh"
+        },
+        {
+          "run": "git add ."
+        },
+        {
+          "run": "git commit -m \"Update alpha CRDs for Release ${get_version.input}\""
+        }
+      ]
+    },
+    {
+      "name": "Run Unit Tests",
+      "actions": [
+        {
+          "run": "cd operator && go test ./pkg/controllers/...",
+          "id": "unit_tests",
+          "on_failure": "continue"
+        },
+        {
+          "if": "${unit_tests.exit_code} != 0",
+          "steps": [
+            {
+              "name": "Update Golden Files",
+              "actions": [
+                {
+                  "run": "cd operator && WRITE_GOLDEN_OUTPUT=\"true\" go test ./pkg/controllers/..."
+                },
+                {
+                  "run": "git add ."
+                },
+                {
+                  "run": "git commit -m \"Update golden files for operator controllers\""
+                },
+                {
+                  "run": "cd operator && go test ./pkg/controllers/..."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Generate Release Summary",
+      "actions": [
+        {
+          "run": "git log -n 3 --pretty=\"format:%H %s\" > commits.log"
+        },
+        {
+          "prompt": {
+            "message": "Please review commits.log and then create a release-summary.md file with a summary of the changes. Once you are done, type 'ok' to continue.",
+            "id": "create_summary"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Push and Finalize",
+      "actions": [
+        {
+          "run": "git push origin release-${get_version.input}"
+        },
+        {
+          "echo": "Pull request URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/new/release-${get_version.input}"
+        }
+      ]
+    }
+  ]
+}
