@@ -55,6 +55,8 @@ func run(ctx context.Context) error {
 	flag.StringVar(&pushOptions, "push-options", pushOptions, "when pushing tags to git, include these options")
 	yes := false
 	flag.BoolVar(&yes, "yes", yes, "actually do it")
+	addVPrefix := false
+	flag.BoolVar(&addVPrefix, "add-v-prefix", addVPrefix, "prefix tag with 'v'")
 	klog.InitFlags(nil)
 	flag.Parse()
 
