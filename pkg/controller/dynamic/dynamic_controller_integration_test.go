@@ -192,7 +192,8 @@ func TestAcquire(t *testing.T) {
 			"Folder": true,
 			// used as an integration test verifying that falsey values are not
 			// incorrectly defaulted. (b/178744782)
-			"ComputeNetwork": true,
+			"ComputeNetwork":  true,
+			"BigQueryDataset": true,
 		}
 		return kinds[fixture.GVK.Kind]
 	}
