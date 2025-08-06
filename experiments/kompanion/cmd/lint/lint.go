@@ -52,15 +52,21 @@ const (
 )
 
 var abandonOnDeleteCheckKind = map[string]bool{
-	"AlloyDBInstance":  true,
-	"BigQueryDataset":  true,
-	"BigQueryTable":    true,
-	"SQLInstance":      true,
-	"StorageBucket":    true,
+	"AlloyDBCluster":    true,
+	"AlloyDBInstance":   true,
+	"BigQueryDataset":   true,
+	"BigQueryTable":     true,
+	"BigtableInstance":  true,
+	"ContainerCluster":  true,
 	"ContainerNodePool": true,
-	"ContainerCluster": true,
-	"RedisCluster":     true,
-	"SpannerInstance":  true,
+	"KMKeyRing":         true,
+	"KMSCryptoKey":      true,
+	"RedisCluster":      true,
+	"SpannerDatabase":   true,
+	"SpannerInstance":   true,
+	"SQLDatabase":       true,
+	"SQLInstance":       true,
+	"StorageBucket":     true,
 }
 
 const (
