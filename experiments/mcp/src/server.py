@@ -147,6 +147,13 @@ This tool is not good for the case if there are other v1alpha1 resources in the 
             annotations=ToolAnnotations(readOnlyHint=True),
         )
         
+        self.add_tool(
+            name="add_full_test_suite",
+            description="This function provides a prompt to give LLM instructions to add a full test suite for a specific resource.",
+            fn=self.add_full_test_suite,
+            annotations=ToolAnnotations(readOnlyHint=True),
+        )
+
         self.add_prompt(Prompt(
             name="scenario_create_resource",
             description="Guides the LLM to generate a complete and valid YAML manifest for a new Kubernetes Custom Resource. Use this when a user wants to create a resource and has provided a high-level description of their needs. The prompt will instruct the LLM to use the `create_resource` tool to get detailed instructions on how to generate the YAML, and the `validate_resource` tool to validate the generated YAML.",
@@ -768,3 +775,107 @@ Step 2: Once step 1 is complete, follow the instructions in sections 5.2, 5.3, a
 
 Step 3: After completing the previous steps, run 'make resource-docs' to generate the required code.
 """
+
+    async def add_full_test_suite(self, kind: str, service: str) -> str:
+        """Provides instructions to add a full test suite for a KCC resource.
+
+        Args:
+            kind: The KCC Kind name (e.g., "StorageBucket").
+            service: The service the kind belongs to (e.g., "storage").
+        """
+        if not kind or not service:
+            return "Error: Both 'kind' and 'service' parameters are required."
+
+        warning = ""
+        service_path = os.path.join(self.absDir, "apis", service)
+        if not os.path.isdir(service_path):
+            warning = f"**Warning:** Service '{service}' not found at '{service_path}'. Please ensure you have the correct service name.\n\n"
+        
+        instructions = """**Goal:** Add a comprehensive test suite for the KCC resource `<KIND>` in the `<SERVICE>` service.
+
+This process involves creating `create.yaml` and `update.yaml` test fixtures and ensuring they cover all possible fields in the Custom Resource Definition (CRD).
+
+**Step 1: Create the `create.yaml` file**
+
+1.  **Create the test directory:**
+    If it doesn't already exist, create the following directory:
+    `pkg/test/resourcefixture/testdata/basic/<SERVICE>/v1beta1/<KIND_LOWERCASE>/<KIND_LOWERCASE>-full/`
+    (Replace `<SERVICE>` with the service name and `<KIND_LOWERCASE>` with the lowercase version of the Kind.)
+
+2.  **Create `create.yaml`:**
+    Inside the new directory, create a file named `create.yaml`. This file will define the initial state of the resource for testing.
+
+3.  **Populate `create.yaml`:**
+    -   The `create.yaml` file is a Kubernetes Custom Resource (CR) based on the resource's Custom Resource Definition (CRD).
+    -   You can find the CRD for your resource at: `config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<PLURAL_KIND_LOWERCASE>.<SERVICE>.cnrm.cloud.google.com.yaml`. Note that `<PLURAL_KIND_LOWERCASE>` might be different from just adding an 's' to the lowercase kind.
+    -   In the `create.yaml` file:
+        -   Set `.metadata.name` to `<KIND_LOWERCASE>-${uniqueId}`.
+        -   If `.spec.projectRef` exists, set it to `spec.projectRef.external: ${projectId}`.
+        -   Fill in valid values for as many fields in the `.spec` as possible. Try to understand the purpose of each field to provide a meaningful value.
+
+**Step 2: Verify Field Coverage**
+
+To ensure your `create.yaml` covers all possible fields, run the following test:
+
+```bash
+TARGET_KIND=<KIND> go test ./tests/apichecks/... -run TestCRDFieldPresenceInTests
+```
+
+-   Replace `<KIND>` with the resource Kind (e.g., `StorageBucket`).
+-   If this test fails, the output will tell you exactly which fields from the CRD are missing in your `create.yaml`. Add the missing fields to your `create.yaml` and re-run the test until it passes.
+
+**Step 3: Record the GCP Traffic for `create.yaml`**
+
+Once the field coverage test passes, record the live GCP API calls for your `create.yaml`:
+
+```bash
+hack/record-gcp fixtures/<KIND_LOWERCASE>-full
+```
+
+-   This command will create a `_http.log` file in your test directory.
+-   If the command fails or takes more than 1 minutes, terminate the call and examine the stdout for errors. Return and print out any suspicious error message.
+-   You may need to adjust the values in your `create.yaml` or fix issues in the resource's controller located in `pkg/controller/direct/<SERVICE>/`. You may also need to create a new test suite if the missing fields conflict with each other ("OneOf" relationship). You can retry this command up to 10 times.
+
+**Step 4: Create the `update.yaml` file**
+
+1.  **Create `update.yaml`:**
+    In the same directory, create a file named `update.yaml`.
+
+2.  **Populate `update.yaml`:**
+    -   Copy the content from `create.yaml`.
+    -   Modify the values of all the **mutable** fields in the `.spec`. Choose new, valid values for these fields. Try to modify as many mutable fields as possible.
+
+**Step 5: Record the GCP Traffic for `update.yaml`**
+
+Now, record the live GCP API calls for your `update.yaml`:
+
+```bash
+hack/record-gcp fixtures/<KIND_LOWERCASE>-full
+```
+
+-   This will update the `_http.log` with the API calls for the update operation.
+-   If the command fails, you might have an issue with the values in `update.yaml` or with the `Update` method in the controller (`pkg/controller/direct/<SERVICE>/*_controller.go`).
+
+**Step 6: Verify the Mock GCP Implementation**
+
+Finally, verify that the mock GCP implementation behaves the same as the real GCP API.
+
+1.  **Stage the recorded traffic:**
+    ```bash
+    git add pkg/test/resourcefixture/testdata/basic/<SERVICE>/v1beta1/<KIND_LOWERCASE>/<KIND_LOWERCASE>-full/
+    ```
+
+2.  **Compare with the mock:**
+    ```bash
+    hack/compare-mock fixtures/<KIND_LOWERCASE>-full
+    ```
+    -   If this command takes a very long time or fails, it could indicate a bug in the MockGCP implementation under `mockgcp/mock<SERVICE>/`.
+    -   As a faster alternative to debug, you can run `hack/record-gcp fixtures/<KIND_LOWERCASE>-full` again. If you see more than 10 "update failed" messages in the output, it's a strong indicator of a problem in the mock.
+    -   To fix this, examine the diff between the real and mock HTTP logs:
+        ```bash
+        git diff pkg/test/resourcefixture/testdata/basic/<SERVICE>/v1beta1/<KIND_LOWERCASE>/<KIND_LOWERCASE>-full/_http.log
+        ```
+    -   Modify the functions in `mockgcp/mock<SERVICE>/` to match the real behavior. For example, the `Insert`, `Update`, and `Delete` functions in `mockgcp/mocksql/sqlinstance.go` should mirror the behavior of the `a.sqlInstancesClient.Insert`, `sqlInstancesClient.Update`, and `sqlInstancesClient.Delete` calls in `pkg/controller/direct/sql/sqlinstance_controller.go`.
+"""
+        
+        return warning + instructions.replace("<KIND>", kind).replace("<SERVICE>", service).replace("<KIND_LOWERCASE>", kind.lower())
