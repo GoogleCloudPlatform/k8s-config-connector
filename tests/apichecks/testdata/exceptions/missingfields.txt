@@ -2135,6 +2135,7 @@
 [missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.configmanagement.policyController.referentialRulesEnabled" is not set in unstructured objects
 [missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.configmanagement.policyController.templateLibraryInstalled" is not set in unstructured objects
 [missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.mesh.controlPlane" is not set in unstructured objects
+[missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.policycontroller.policyControllerHubConfig.deploymentConfigs.audit.replicaCount" is not set in unstructured objects
 [missing_field] crd=gkehubfeatures.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.fleetobservability.loggingConfig.defaultConfig.mode" is not set in unstructured objects
 [missing_field] crd=gkehubfeatures.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.fleetobservability.loggingConfig.fleetScopeLogsConfig.mode" is not set in unstructured objects
 [missing_field] crd=gkehubmemberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.endpoint.kubernetesResource.membershipCrManifest" is not set in unstructured objects
