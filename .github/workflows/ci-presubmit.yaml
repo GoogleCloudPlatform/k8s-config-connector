@@ -294,6 +294,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-gkebackup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-gkebackup"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-gkebackup
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-gkebackup
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-gkehub:
     runs-on: ubuntu-latest
     timeout-minutes: 60
