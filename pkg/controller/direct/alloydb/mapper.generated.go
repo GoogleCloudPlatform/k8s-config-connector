@@ -22,7 +22,7 @@ package alloydb
 import (
 	pb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -112,7 +112,7 @@ func AlloyDBClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *kr
 	// MISSING: DatabaseVersion
 	out.NetworkConfig = Cluster_NetworkConfig_FromProto(mapCtx, in.GetNetworkConfig())
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &refs.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	// MISSING: Etag
 	// MISSING: Annotations
@@ -255,7 +255,7 @@ func BackupSource_FromProto(mapCtx *direct.MapContext, in *pb.BackupSource) *krm
 	out := &krmv1beta1.BackupSource{}
 	// MISSING: BackupUid
 	if in.GetBackupName() != "" {
-		out.BackupNameRef = &refs.AlloyDBBackupRef{External: in.GetBackupName()}
+		out.BackupNameRef = &refsv1beta1.AlloyDBBackupRef{External: in.GetBackupName()}
 	}
 	return out
 }
@@ -314,7 +314,7 @@ func Cluster_NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_N
 	}
 	out := &krmv1beta1.Cluster_NetworkConfig{}
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &refs.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.AllocatedIPRange = direct.LazyPtr(in.GetAllocatedIpRange())
 	return out
@@ -424,7 +424,7 @@ func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConf
 	}
 	out := &krmv1beta1.EncryptionConfig{}
 	if in.GetKmsKeyName() != "" {
-		out.KMSKeyNameRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+		out.KMSKeyNameRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
 	return out
 }
@@ -806,8 +806,8 @@ func Instance_PSCInstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.Inst
 	// MISSING: ServiceAttachmentLink
 	out.AllowedConsumerProjects = in.AllowedConsumerProjects
 	// MISSING: PSCDNSName
-	//out.PSCInterfaceConfigs = direct.Slice_FromProto(mapCtx, in.PSCInterfaceConfigs, Instance_PSCInterfaceConfig_FromProto)
-	//out.PSCAutoConnections = direct.Slice_FromProto(mapCtx, in.PSCAutoConnections, Instance_PSCAutoConnectionConfig_FromProto)
+	out.PSCInterfaceConfigs = direct.Slice_FromProto(mapCtx, in.PSCInterfaceConfigs, Instance_PSCInterfaceConfig_FromProto)
+	out.PSCAutoConnections = direct.Slice_FromProto(mapCtx, in.PSCAutoConnections, Instance_PSCAutoConnectionConfig_FromProto)
 	return out
 }
 func Instance_PSCInstanceConfig_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_PSCInstanceConfig) *pb.Instance_PscInstanceConfig {
@@ -831,7 +831,7 @@ func Instance_PSCInstanceConfigObservedState_FromProto(mapCtx *direct.MapContext
 	// MISSING: AllowedConsumerProjects
 	out.PSCDNSName = direct.LazyPtr(in.GetPscDnsName())
 	// MISSING: PSCInterfaceConfigs
-	//out.PSCAutoConnections = direct.Slice_FromProto(mapCtx, in.PSCAutoConnections, Instance_PSCAutoConnectionConfigObservedState_FromProto)
+	out.PSCAutoConnections = direct.Slice_FromProto(mapCtx, in.PSCAutoConnections, Instance_PSCAutoConnectionConfigObservedState_FromProto)
 	return out
 }
 func Instance_PSCInstanceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_PSCInstanceConfigObservedState) *pb.Instance_PscInstanceConfig {
