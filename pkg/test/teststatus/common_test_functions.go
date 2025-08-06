@@ -12,47 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package dynamic
+package teststatus
 
 import (
-	"io/ioutil"
-	"log"
 	"testing"
 
 	condition "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
-	"github.com/ghodss/yaml" //nolint:depguard
-	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 )
-
-func UnmarshalFileToCRD(t *testing.T, fileName string) *apiextensions.CustomResourceDefinition {
-	t.Helper()
-	bytes, err := ioutil.ReadFile(fileName)
-	if err != nil {
-		t.Fatalf("error reading file '%v': %v", fileName, err)
-	}
-	o := &apiextensions.CustomResourceDefinition{}
-	err = yaml.Unmarshal(bytes, o)
-	if err != nil {
-		t.Fatalf("error unmarshalling bytes to CRD: %v", err)
-	}
-	return o
-}
-
-func UnmarshalToCRD(fileName string) *apiextensions.CustomResourceDefinition {
-	bytes, err := ioutil.ReadFile(fileName)
-	if err != nil {
-		log.Fatalf("error reading file '%v': %v", fileName, err)
-	}
-	o := &apiextensions.CustomResourceDefinition{}
-	err = yaml.Unmarshal(bytes, o)
-	if err != nil {
-		log.Fatalf("error unmarshalling bytes to CRD: %v", err)
-	}
-	return o
-}
 
 // GetStatus holds the required fields for computing if an object should be considered ready (fully reconciled).
 type ObjectStatus struct {

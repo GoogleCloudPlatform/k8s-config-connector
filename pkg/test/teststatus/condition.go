@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package testcontroller
+package teststatus
 
 import (
 	"testing"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
 	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/runtime"
 )
@@ -35,7 +34,7 @@ func AssertReadyCondition(t *testing.T, object runtime.Object, minObservedGenera
 	}
 	objectID := gvk.Kind + ":" + accessor.GetName()
 
-	objectStatus := dynamic.GetObjectStatus(t, object)
+	objectStatus := GetObjectStatus(t, object)
 	if objectStatus.ObservedGeneration == nil {
 		t.Fatalf("resource %v does not yet have status.observedGeneration", objectID)
 	}
