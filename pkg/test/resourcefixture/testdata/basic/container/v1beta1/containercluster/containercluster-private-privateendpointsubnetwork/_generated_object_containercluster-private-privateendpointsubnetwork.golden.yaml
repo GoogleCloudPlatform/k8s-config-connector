@@ -48,6 +48,5 @@ status:
       clusterCaCertificate: 1234567890abcdefghijklmn
     privateClusterConfig:
       privateEndpoint: 10.128.0.2
-      publicEndpoint: 8.8.8.8
   selfLink: https://container.googleapis.com/v1beta1/projects/${projectId}/zones/northamerica-northeast2-a/clusters/containercluster-${uniqueId}
   servicesIpv4Cidr: 34.118.224.0/20
