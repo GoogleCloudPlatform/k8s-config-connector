@@ -20,9 +20,7 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 if [[ -z "${VERSION:-}" ]]; then
-  echo "VERSION must be set"
-  exit 1
-
+  VERSION=$(ls operator/channels/packages/configconnector/ | sort -V | tail -n 1)
 fi
 
 TARGET_CRD_DIR=${REPO_ROOT}/crds

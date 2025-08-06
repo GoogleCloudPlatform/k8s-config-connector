@@ -35,6 +35,4 @@ jobs:
           go-version-file: 'go.mod'
       - name: "Verify CRDs folder is up-to-date"
         run: |
-          LATEST_VERSION=$(ls operator/channels/packages/configconnector/ | sort -V | tail -n 1)
-          echo "Latest version found: ${LATEST_VERSION}"
-          VERSION=${LATEST_VERSION} dev/tasks/verify-crds-folder.sh
+          dev/tasks/verify-crds-folder.sh
