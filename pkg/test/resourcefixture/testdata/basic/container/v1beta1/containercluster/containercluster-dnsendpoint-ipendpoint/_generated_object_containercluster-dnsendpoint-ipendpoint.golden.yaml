@@ -45,7 +45,7 @@ status:
   observedState:
     controlPlaneEndpointsConfig:
       dnsEndpointConfig:
-        endpoint: gke-ac4a2f15d55f45b6a0632532bc0a17c83610-${projectNumber}.northamerica-south1-b.gke.goog
+        endpoint: gke-12345trewq-${projectNumber}.northamerica-south1-b.gke.goog
     masterAuth:
       clusterCaCertificate: 1234567890abcdefghijklmn
     privateClusterConfig:
