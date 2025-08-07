@@ -374,6 +374,16 @@ spec:
                       type: object
                     type: array
                 type: object
+              updateMask:
+                description: Field mask is used to specify the fields to be overwritten
+                  in the policy by the set policy request. All fields not specified
+                  in the update mask are ignored. When a policy is created, an update
+                  mask is not required.
+                enum:
+                - '*'
+                - policy.spec
+                - policy.dry_run_spec
+                type: string
             type: object
           status:
             description: OrgPolicyPolicyStatus defines the config connector machine

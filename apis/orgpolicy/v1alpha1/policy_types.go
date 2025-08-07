@@ -17,9 +17,9 @@ package v1alpha1
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
 )
 
 var OrgPolicyPolicyGVK = GroupVersion.WithKind("OrgPolicyPolicy")

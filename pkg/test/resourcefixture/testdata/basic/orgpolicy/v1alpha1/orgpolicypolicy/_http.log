@@ -167,7 +167,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://orgpolicy.googleapis.com/v2/projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+PATCH https://orgpolicy.googleapis.com/v2/projects/1070934155037/policies/custom.orgpolicypolicy${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=policy.spec
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: policy.name=projects%2F1070934155037%2Fpolicies%2Fcustom.orgpolicypolicy${uniqueId}

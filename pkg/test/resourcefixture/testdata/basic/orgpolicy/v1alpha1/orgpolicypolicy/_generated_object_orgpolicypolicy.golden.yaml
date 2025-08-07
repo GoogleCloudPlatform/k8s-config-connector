@@ -15,6 +15,7 @@ spec:
   spec:
     rules:
     - enforce: true
+  updateMask: policy.spec
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
