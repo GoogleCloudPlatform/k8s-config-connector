@@ -30,6 +30,8 @@ WRITE_GOLDEN_OUTPUT=1"
 
 export $MOCK_TEST_ENV_VARS
 
+go test ./mockgcptests -run TestScripts/mockpubsub/testdata/topic/crud 2>&1
+
 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/containercluster 2>&1
 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/containernodepool 2>&1
 go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/removedefaultnodepool 2>&1

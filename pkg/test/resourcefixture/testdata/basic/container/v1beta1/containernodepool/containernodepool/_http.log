@@ -109,34 +109,6 @@ X-Xss-Protection: 0
 {
   "name": "${operationID}",
   "operationType": "CREATE_CLUSTER",
-  "progress": {
-    "metrics": [
-      {
-        "intValue": "10",
-        "name": "CLUSTER_CONFIGURING"
-      },
-      {
-        "intValue": "10",
-        "name": "CLUSTER_CONFIGURING_TOTAL"
-      },
-      {
-        "intValue": "12",
-        "name": "CLUSTER_DEPLOYING"
-      },
-      {
-        "intValue": "12",
-        "name": "CLUSTER_DEPLOYING_TOTAL"
-      },
-      {
-        "intValue": "1",
-        "name": "CLUSTER_HEALTHCHECKING"
-      },
-      {
-        "intValue": "2",
-        "name": "CLUSTER_HEALTHCHECKING_TOTAL"
-      }
-    ]
-  },
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
