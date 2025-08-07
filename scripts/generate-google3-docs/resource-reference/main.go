@@ -172,11 +172,15 @@ func main() {
 		directGVKs:            directGVKs,
 	}
 	for _, gvk := range manualResources {
-		if strings.HasPrefix(gvk.Version, "v1alpha") {
+		// TODO: Identify highest supported version for direct resource.
+		if strings.HasPrefix(gvk.Version, "v1alpha") &&
+			!(gvk.Kind == "BigQueryAnalyticsHubDataExchange" ||
+				gvk.Kind == "BigQueryAnalyticsHubListing" ||
+				gvk.Kind == "RedisCluster") {
 			klog.Infof("skipping alpha resource %v", gvk)
 			continue
 		}
-		// TODO: Add resource docs!
+		// TODO: Add resource docs for all the v1beta1 resources and remove exceptions.
 		if gvk.Kind == "KMSImportJob" || gvk.Kind == "MetastoreBackup" {
 			klog.Errorf("doc template missing for GVK %v", gvk)
 			continue
