@@ -19,6 +19,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 )
 
 var OrgPolicyPolicyGVK = GroupVersion.WithKind("OrgPolicyPolicy")
@@ -63,6 +64,9 @@ type OrgPolicyPolicySpec struct {
 	//  ensure the client has an up-to-date value before proceeding.
 	// +kcc:proto:field=google.cloud.orgpolicy.v2.Policy.etag
 	Etag *string `json:"etag,omitempty"`
+
+	// Field-mask for updating the policy.
+	UpdateMask *fieldmaskpb.FieldMask `json:"updateMask,omitempty"`
 }
 
 // OrgPolicyPolicyStatus defines the config connector machine state of OrgPolicyPolicy

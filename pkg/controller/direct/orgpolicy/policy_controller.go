@@ -169,6 +169,14 @@ func (a *PolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	req := &orgpolicypb.UpdatePolicyRequest{
 		Policy: desiredPb,
 	}
+
+	// Let the backend handle validation
+	if a.desired.Spec.UpdateMask != nil {
+		req.UpdateMask = &fieldmaskpb.FieldMask{
+			Paths: a.desired.Spec.UpdateMask.Paths,
+		}
+	}
+
 	updated, err := a.gcpClient.UpdatePolicy(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating Policy %s: %w", a.id, err)
