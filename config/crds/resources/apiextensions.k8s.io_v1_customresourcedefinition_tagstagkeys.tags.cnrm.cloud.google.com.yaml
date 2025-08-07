@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: TagsTagKey
+    listKind: TagsTagKeyList
     plural: tagstagkeys
     shortNames:
     - gcptagstagkey
@@ -43,63 +44,70 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: TagsTagKey is the Schema for the TagsTagKey API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: TagsTagKeySpec defines the desired state of TagsTagKey
             properties:
               description:
-                description: User-assigned description of the TagKey. Must not exceed
-                  256 characters.
+                description: Optional. A textual description of the resource.
                 type: string
               parent:
-                description: Immutable. Input only. The resource name of the new TagKey's
-                  parent. Must be of the form organizations/{org_id} or projects/{project_id_or_number}.
+                description: 'The resource name of the parent organization or project.
+                  It will be in one of the following forms: - "projects/{project_number}"
+                  - "organizations/{org_id}"'
                 type: string
               purpose:
-                description: |-
-                  Immutable. Optional. A purpose cannot be changed once set.
-
-                  A purpose denotes that this Tag is intended for use in policies of a specific policy engine, and will involve that policy engine in management operations involving this Tag. Possible values: ["GCE_FIREWALL"].
+                description: 'Optional. A purpose denotes that this Tag is part of
+                  a grouping of KCC-managed TagKeys, to which the following restrictions
+                  apply: -  Only KCC can create, update, or delete a TagKey with a
+                  purpose. - Only one KCC-managed TagKey may exist for a given project,
+                  with a given purpose and ancestor.'
                 type: string
               purposeData:
                 additionalProperties:
                   type: string
-                description: |-
-                  Immutable. Optional. Purpose data cannot be changed once set.
-
-                  Purpose data corresponds to the policy system that the tag is intended for. For example, the GCE_FIREWALL purpose expects data in the following format: 'network = "<project-name>/<vpc-name>"'.
+                description: Optional. Purpose data corresponds to the policy system
+                  that the tag is for. For example, a value of "data-governance-eng@acmeco.com"
+                  suggests that the tag is a data governance tag managed by a central
+                  team. This field may only be set by setIamPolicy.
                 type: object
               resourceID:
-                description: Immutable. Optional. The service-generated name of the
-                  resource. Used for acquisition only. Leave unset to create a new
-                  resource.
+                description: The TagsTagKey name. If not given, the metadata.name
+                  will be used.
                 type: string
               shortName:
                 description: |-
-                  Immutable. Input only. The user friendly name for a TagKey. The short name should be unique for TagKeys within the same tag namespace.
+                  Required. Immutable. The user friendly name for a TagKey. The short name
+                  should be unique for TagKeys within the same tag namespace.
 
-                  The short name must be 1-63 characters, beginning and ending with an alphanumeric character ([a-z0-9A-Z]) with dashes (-), underscores (_), dots (.), and alphanumerics between.
+                  The short name must be 1-63 characters, beginning and ending with
+                  an alphanumeric character ([a-z0-9A-Z]) with dashes (-), underscores (_),
+                  dots (.), and alphanumerics between.
                 type: string
             required:
             - parent
             - shortName
             type: object
           status:
+            description: TagsTagKeyStatus defines the config connector machine state
+              of TagsTagKey
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -124,16 +132,14 @@ spec:
                   type: object
                 type: array
               createTime:
-                description: |-
-                  Output only. Creation time.
-
-                  A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".
+                description: Output only. Creation time.
                 type: string
               name:
-                description: The generated numeric id for the TagKey.
+                description: 'Output only. Unique id attribute for a TagKey resource_id:
+                  e.g. "tagKeys/123456789012"'
                 type: string
               namespacedName:
-                description: Output only. Namespaced name of the TagKey.
+                description: Output only. Immutable. Namespaced name of the TagKey.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -141,12 +147,10 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
               updateTime:
-                description: |-
-                  Output only. Update time.
-
-                  A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".
+                description: Output only. Update time.
                 type: string
             type: object
         required:
@@ -156,9 +160,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
