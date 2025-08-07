@@ -47,6 +47,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/fileutil"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
+	// Ensure built-in types are registered.
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
+
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -171,6 +174,11 @@ func main() {
 	for _, gvk := range manualResources {
 		if strings.HasPrefix(gvk.Version, "v1alpha") {
 			klog.Infof("skipping alpha resource %v", gvk)
+			continue
+		}
+		// TODO: Add resource docs!
+		if gvk.Kind == "KMSImportJob" || gvk.Kind == "MetastoreBackup" {
+			klog.Errorf("doc template missing for GVK %v", gvk)
 			continue
 		}
 		if err := docGenerator.generateDocForGVK(gvk); err != nil {
