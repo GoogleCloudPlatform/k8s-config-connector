@@ -2,6 +2,8 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multiclus
 
 go 1.24.0
 
+toolchain go1.24.5
+
 replace github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multiclusterlease => ./
 
 require (
