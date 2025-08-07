@@ -26,21 +26,26 @@ import (
 type IAMPolicyMemberSpec struct {
 	// Immutable. Required. The GCP resource to set the IAM policy on (e.g.
 	// organization, project...)
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="resourceRef is immutable"
 	ResourceReference ResourceReference `json:"resourceRef"`
 
 	// Immutable. The IAM identity to be bound to the role. Exactly one of
 	// 'member' or 'memberFrom' must be used.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="member is immutable"
 	Member Member `json:"member,omitempty"`
 
 	// Immutable. The IAM identity to be bound to the role. Exactly one of
 	// 'member' or 'memberFrom' must be used, and only one subfield within
 	// 'memberFrom' can be used.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="memberFrom is immutable"
 	MemberFrom *MemberSource `json:"memberFrom,omitempty"`
 
 	// Immutable. Required. The role for which the Member will be bound.
 	// +kubebuilder:validation:Pattern=^((projects|organizations)/[^/]+/)?roles/[\w_\.]+$
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="role is immutable"
 	Role string `json:"role"`
 	// Immutable. Optional. The condition under which the binding applies.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="condition is immutable"
 	Condition *IAMCondition `json:"condition,omitempty"`
 }
 
