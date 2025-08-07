@@ -22,4 +22,3 @@ spec:
   spec:
     rules:
       - enforce: true
-  updateMask: policy.spec
