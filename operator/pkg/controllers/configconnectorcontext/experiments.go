@@ -25,6 +25,7 @@ import (
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/experiments"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
@@ -56,8 +57,8 @@ func (r *Reconciler) applyExperiments(ctx context.Context, cc *corev1beta1.Confi
 	for _, experiment := range cc.Spec.Experiments {
 		key := strings.ToLower(experiment)
 		switch key {
-		case "legacy-iam-reconciler":
-			if err := r.applyExperimentLegacyIAMReconciler(ctx, cc, ccc, m); err != nil {
+		case experiments.LegacyIAMReconciler:
+			if err := r.applyExperimentLegacyIAMReconciler(ctx, m); err != nil {
 				return err
 			}
 
@@ -70,7 +71,7 @@ func (r *Reconciler) applyExperiments(ctx context.Context, cc *corev1beta1.Confi
 	return nil
 }
 
-func (r *Reconciler) applyExperimentLegacyIAMReconciler(ctx context.Context, cc *corev1beta1.ConfigConnector, ccc *corev1beta1.ConfigConnectorContext, m *manifest.Objects) error {
+func (r *Reconciler) applyExperimentLegacyIAMReconciler(ctx context.Context, m *manifest.Objects) error {
 	log := log.FromContext(ctx)
 	for _, obj := range m.Items {
 		if obj.Kind != "StatefulSet" || !strings.HasPrefix(obj.GetName(), "cnrm-controller-manager") {
