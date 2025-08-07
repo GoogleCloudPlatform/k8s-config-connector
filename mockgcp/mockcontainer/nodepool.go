@@ -16,7 +16,6 @@ package mockcontainer
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
 	"google.golang.org/grpc/codes"
@@ -62,7 +61,7 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 
 	obj := proto.Clone(req.NodePool).(*pb.NodePool)
 
-	obj.SelfLink = fmt.Sprintf("https://container.googlerapis.com/v1beta1/%s", fqn)
+	obj.SelfLink = buildSelfLink(ctx, fqn)
 
 	if err := s.populateNodePoolDefaults(cluster, obj); err != nil {
 		return nil, err
