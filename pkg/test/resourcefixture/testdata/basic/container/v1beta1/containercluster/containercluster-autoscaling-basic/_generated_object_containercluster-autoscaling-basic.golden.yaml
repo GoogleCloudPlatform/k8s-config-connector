@@ -49,6 +49,9 @@ status:
   masterVersion: 1.30.5-gke.1014001
   observedGeneration: 3
   observedState:
+    controlPlaneEndpointsConfig:
+      dnsEndpointConfig:
+        endpoint: gke-12345trewq-${projectNumber}.us-central1-a.gke.goog
     masterAuth:
       clusterCaCertificate: 1234567890abcdefghijklmn
     privateClusterConfig:
