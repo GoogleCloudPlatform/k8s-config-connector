@@ -64,9 +64,6 @@ type OrgPolicyPolicySpec struct {
 	//  ensure the client has an up-to-date value before proceeding.
 	// +kcc:proto:field=google.cloud.orgpolicy.v2.Policy.etag
 	Etag *string `json:"etag,omitempty"`
-
-	// Field-mask for updating the policy.
-	UpdateMask *fieldmaskpb.FieldMask `json:"updateMask,omitempty"`
 }
 
 // OrgPolicyPolicyStatus defines the config connector machine state of OrgPolicyPolicy
