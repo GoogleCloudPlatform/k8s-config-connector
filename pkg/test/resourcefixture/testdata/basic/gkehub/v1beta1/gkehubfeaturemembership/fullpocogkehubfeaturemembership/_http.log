@@ -1340,10 +1340,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
               "podAffinity": "ANTI_AFFINITY",
               "podTolerations": [
                 {
-                  "effect": "something",
+                  "effect": "NoSchedule",
                   "key": "foo",
-                  "operator": "eq",
-                  "value": "bar"
+                  "operator": "Equal",
+                  "value": "admission"
                 }
               ],
               "replicaCount": "1"
@@ -1362,13 +1362,12 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
               "podAffinity": "NO_AFFINITY",
               "podTolerations": [
                 {
-                  "effect": "something",
+                  "effect": "NoSchedule",
                   "key": "foo",
-                  "operator": "eq",
+                  "operator": "Equal",
                   "value": "audit"
                 }
-              ],
-              "replicaCount": "2"
+              ]
             }
           },
           "exemptableNamespaces": [
@@ -1386,7 +1385,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
             }
           }
         },
-        "version": "1.18.0"
+        "version": "1.21.0"
       }
     }
   },
@@ -1464,10 +1463,10 @@ X-Xss-Protection: 0
                 "podAffinity": "ANTI_AFFINITY",
                 "podTolerations": [
                   {
-                    "effect": "something",
+                    "effect": "NoSchedule",
                     "key": "foo",
-                    "operator": "eq",
-                    "value": "bar"
+                    "operator": "Equal",
+                    "value": "admission"
                   }
                 ],
                 "replicaCount": "1"
@@ -1486,13 +1485,12 @@ X-Xss-Protection: 0
                 "podAffinity": "NO_AFFINITY",
                 "podTolerations": [
                   {
-                    "effect": "something",
+                    "effect": "NoSchedule",
                     "key": "foo",
-                    "operator": "eq",
+                    "operator": "Equal",
                     "value": "audit"
                   }
-                ],
-                "replicaCount": "2"
+                ]
               }
             },
             "exemptableNamespaces": [
@@ -1510,7 +1508,7 @@ X-Xss-Protection: 0
               }
             }
           },
-          "version": "1.18.0"
+          "version": "1.21.0"
         }
       }
     },
@@ -1563,10 +1561,10 @@ X-Xss-Protection: 0
               "podAffinity": "ANTI_AFFINITY",
               "podTolerations": [
                 {
-                  "effect": "something",
+                  "effect": "NoSchedule",
                   "key": "foo",
-                  "operator": "eq",
-                  "value": "bar"
+                  "operator": "Equal",
+                  "value": "admission"
                 }
               ],
               "replicaCount": "1"
@@ -1585,13 +1583,12 @@ X-Xss-Protection: 0
               "podAffinity": "NO_AFFINITY",
               "podTolerations": [
                 {
-                  "effect": "something",
+                  "effect": "NoSchedule",
                   "key": "foo",
-                  "operator": "eq",
+                  "operator": "Equal",
                   "value": "audit"
                 }
-              ],
-              "replicaCount": "2"
+              ]
             }
           },
           "exemptableNamespaces": [
@@ -1609,7 +1606,7 @@ X-Xss-Protection: 0
             }
           }
         },
-        "version": "1.18.0"
+        "version": "1.21.0"
       }
     }
   },
@@ -1649,10 +1646,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
               "podAffinity": "ANTI_AFFINITY",
               "podTolerations": [
                 {
-                  "effect": "something",
+                  "effect": "NoSchedule",
                   "key": "foo",
-                  "operator": "eq",
-                  "value": "bar"
+                  "operator": "Equal",
+                  "value": "admission"
                 }
               ],
               "replicaCount": "1"
@@ -1676,7 +1673,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
           },
           "referentialRulesEnabled": true
         },
-        "version": "1.18.0"
+        "version": "1.21.0"
       }
     }
   },
@@ -1755,10 +1752,10 @@ X-Xss-Protection: 0
                 "podAffinity": "ANTI_AFFINITY",
                 "podTolerations": [
                   {
-                    "effect": "something",
+                    "effect": "NoSchedule",
                     "key": "foo",
-                    "operator": "eq",
-                    "value": "bar"
+                    "operator": "Equal",
+                    "value": "admission"
                   }
                 ],
                 "replicaCount": "1"
@@ -1782,7 +1779,7 @@ X-Xss-Protection: 0
             },
             "referentialRulesEnabled": true
           },
-          "version": "1.18.0"
+          "version": "1.21.0"
         }
       }
     },
@@ -1835,10 +1832,10 @@ X-Xss-Protection: 0
               "podAffinity": "ANTI_AFFINITY",
               "podTolerations": [
                 {
-                  "effect": "something",
+                  "effect": "NoSchedule",
                   "key": "foo",
-                  "operator": "eq",
-                  "value": "bar"
+                  "operator": "Equal",
+                  "value": "admission"
                 }
               ],
               "replicaCount": "1"
@@ -1862,7 +1859,7 @@ X-Xss-Protection: 0
           },
           "referentialRulesEnabled": true
         },
-        "version": "1.18.0"
+        "version": "1.21.0"
       }
     }
   },
