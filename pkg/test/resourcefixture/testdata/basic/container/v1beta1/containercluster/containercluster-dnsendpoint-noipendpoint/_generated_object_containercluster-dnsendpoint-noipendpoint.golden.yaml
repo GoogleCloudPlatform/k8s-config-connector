@@ -47,7 +47,7 @@ status:
   observedState:
     controlPlaneEndpointsConfig:
       dnsEndpointConfig:
-        endpoint: gke-d4dd85de51f6403d9332ed1704699b5c817d-${projectNumber}.northamerica-south1-a.gke.goog
+        endpoint: gke-12345trewq-${projectNumber}.northamerica-south1-a.gke.goog
     masterAuth:
       clusterCaCertificate: 1234567890abcdefghijklmn
   selfLink: https://container.googleapis.com/v1beta1/projects/${projectId}/zones/northamerica-south1-a/clusters/containercluster-${uniqueId}
