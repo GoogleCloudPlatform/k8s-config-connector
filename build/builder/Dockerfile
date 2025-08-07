@@ -14,7 +14,7 @@
 
 # This Dockerfile builds an image containing builds of all the binaries built
 # from source (manager, webhook, etc.)
-FROM golang:1.24.5 AS builder
+FROM golang:1.24.6 AS builder
 
 # Copy in the Go source code
 WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
