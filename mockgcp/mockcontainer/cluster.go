@@ -349,7 +349,7 @@ func (s *ClusterManagerV1) SetMaintenancePolicy(ctx context.Context, req *pb.Set
 	op := &pb.Operation{
 		Zone:          name.Location,
 		OperationType: pb.Operation_UPDATE_CLUSTER,
-		TargetLink:    buildTargetLink(name),
+		TargetLink:    buildTargetLink(ctx, name),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil

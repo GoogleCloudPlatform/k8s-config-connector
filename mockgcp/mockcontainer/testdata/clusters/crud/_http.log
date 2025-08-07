@@ -1,3 +1,25 @@
+GET https://serviceusage.googleapis.com/v1/projects/${projectId}/services/container.googleapis.com?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectNumber}/services/container.googleapis.com",
+  "state": "DISABLED"
+}
+
+---
+
 POST https://container.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/clusters?alt=json
 Accept: application/json
 Authorization: (removed)
@@ -140,25 +162,27 @@ X-Xss-Protection: 0
     }
   },
   "autoscaling": {
-    "autoprovisioningNodePoolDefaults": {
-      "management": {
-        "autoRepair": true,
-        "autoUpgrade": true
-      },
-      "oauthScopes": [
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/cloud-platform"
-      ],
-      "upgradeSettings": {
-        "strategy": "SURGE"
-      }
-    },
     "autoscalingProfile": "BALANCED"
   },
   "binaryAuthorization": {},
   "clusterIpv4Cidr": "10.92.0.0/14",
   "clusterTelemetry": {
     "type": "ENABLED"
+  },
+  "controlPlaneEndpointsConfig": {
+    "dnsEndpointConfig": {
+      "allowExternalTraffic": false,
+      "endpoint": "gke-123456-${projectNumber}.us-central1-a.gke.goog"
+    },
+    "ipEndpointsConfig": {
+      "authorizedNetworksConfig": {
+        "gcpPublicCidrsAccessEnabled": true
+      },
+      "enablePublicEndpoint": true,
+      "enabled": true,
+      "privateEndpoint": "1.2.3.4",
+      "publicEndpoint": "32.32.32.32"
+    }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "currentMasterVersion": "1.30.5-gke.1014001",
@@ -218,8 +242,10 @@ X-Xss-Protection: 0
   "name": "test-${uniqueId}",
   "network": "default",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "default",
-    "subnetwork": "default"
+    "serviceExternalIpsConfig": {},
+    "subnetwork": "projects/${projectId}/regions/us-central1-a/subnetworks/default"
   },
   "nodeConfig": {
     "diskSizeGb": 100,
@@ -412,19 +438,6 @@ X-Xss-Protection: 0
     }
   },
   "autoscaling": {
-    "autoprovisioningNodePoolDefaults": {
-      "management": {
-        "autoRepair": true,
-        "autoUpgrade": true
-      },
-      "oauthScopes": [
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/cloud-platform"
-      ],
-      "upgradeSettings": {
-        "strategy": "SURGE"
-      }
-    },
     "autoscalingProfile": "BALANCED"
   },
   "binaryAuthorization": {},
@@ -495,8 +508,10 @@ X-Xss-Protection: 0
   "name": "test-${uniqueId}",
   "network": "default",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "default",
-    "subnetwork": "default"
+    "serviceExternalIpsConfig": {},
+    "subnetwork": "projects/${projectId}/regions/us-central1-a/subnetworks/default"
   },
   "nodeConfig": {
     "diskSizeGb": 100,
