@@ -23,7 +23,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -32,6 +31,7 @@ import (
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testrunner "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/runner"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/teststatus"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -206,7 +206,7 @@ func waitForReconcile(t *testing.T, kubeClient client.Client, resource *unstruct
 			klog.Infof("Waiting for 'status' on %v '%v'", u.GetKind(), u.GetName())
 			return false, nil
 		}
-		objectStatus := dynamic.GetObjectStatus(t, &u)
+		objectStatus := teststatus.GetObjectStatus(t, &u)
 		if objectStatus.ObservedGeneration == nil {
 			klog.InfoS("resource does not yet have status.observedGeneration", "kind", u.GetKind(), "name", u.GetName())
 			return false, nil

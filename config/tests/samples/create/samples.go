@@ -27,12 +27,12 @@ import (
 	"time"
 
 	opv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/teststatus"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
@@ -224,7 +224,7 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeou
 			logger.Info("resource does not yet have conditions", "kind", u.GetKind(), "name", u.GetName())
 			return false, nil
 		}
-		objectStatus := dynamic.GetObjectStatus(t.T, u)
+		objectStatus := teststatus.GetObjectStatus(t.T, u)
 		if objectStatus.ObservedGeneration == nil {
 			logger.Info("resource does not yet have status.observedGeneration", "kind", u.GetKind(), "name", u.GetName())
 			return false, nil
@@ -258,7 +258,7 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeou
 		t.Error(fmt.Errorf("%v, error retrieving final status.conditions: %w", baseMsg, err))
 		return
 	}
-	objectStatus := dynamic.GetObjectStatus(t.T, u)
+	objectStatus := teststatus.GetObjectStatus(t.T, u)
 	t.Errorf("%v, final status: %+v", baseMsg, objectStatus)
 }
 

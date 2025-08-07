@@ -16,7 +16,6 @@ package mockcontainer
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
 	"google.golang.org/grpc/codes"
@@ -62,7 +61,7 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 
 	obj := proto.Clone(req.NodePool).(*pb.NodePool)
 
-	obj.SelfLink = fmt.Sprintf("https://container.googlerapis.com/v1beta1/%s", fqn)
+	obj.SelfLink = buildSelfLink(ctx, fqn)
 
 	if err := s.populateNodePoolDefaults(cluster, obj); err != nil {
 		return nil, err
@@ -112,6 +111,20 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(cluster *pb.Cluster, obj *pb
 		}
 	}
 
+	// TODO: Fix NetworkConfig behavior.
+	// Real log:
+	//      "networkConfig": {
+	//        "podIpv4CidrBlock": "10.108.0.0/14",
+	//        "podRange": "gke-containercluster-${uniqueId}-pods-4e499d58",
+	//        "subnetwork": "projects/${projectId}/regions/us-east1/subnetworks/default"
+	//      },
+	// Mock log:
+	//     "networkConfig": {
+	//        "enablePrivateNodes": false,
+	//        "podIpv4CidrBlock": "10.92.0.0/14",
+	//        "podIpv4RangeUtilization": 0.001,
+	//        "podRange": "default-pool-pods-12345678"
+	//      },
 	if obj.NetworkConfig == nil {
 		obj.NetworkConfig = &pb.NodeNetworkConfig{}
 	}
