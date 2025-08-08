@@ -1,0 +1,88 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# 00 Dependency
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: mock-project
+  name: containercluster-${uniqueId}
+spec:
+  location: us-central1-a
+  workloadIdentityConfig:
+    workloadPool:  mock-project.svc.id.goog
+---
+# 01 Create the GKEHubFeature to be managed by GKEHubFeatureMembership later
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubFeature
+metadata:
+  name: gkehubfeature-${uniqueId}
+spec:
+  projectRef:
+    external: projects/mock-project
+  location: global
+  resourceID: configmanagement
+---
+# 02 Create the GKEHubMembership to be managed by GKEHubFeatureMembership later
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubMembership
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: mock-project
+  name: gkehubmembership-${uniqueId}
+spec:
+  location: us-central1
+  authority:
+    issuer: https://container.googleapis.com/v1/projects/mock-project/locations/us-central1-a/clusters/containercluster-${uniqueId}
+  description: A sample GKE Hub membership
+  endpoint:
+    gkeCluster:
+      resourceRef:
+        name: containercluster-${uniqueId}
+---
+# 03 Create the GKEHubFeatureMembership to manage GKEHubFeature and its membershipSpecs
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubFeatureMembership
+metadata:
+  name: gkehubfeaturemembership-${uniqueId}
+spec:
+  projectRef:
+    external: projects/mock-project
+  location: global
+  membershipRef:
+    name: gkehubmembership-${uniqueId}
+  featureRef:
+    name: gkehubfeature-${uniqueId}
+  configmanagement:
+    configSync:
+      git:
+        syncBranch: "master"
+        syncRepo: "https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit"
+      sourceFormat: hierarchy
+---
+# 04 Delete GKEHubFeature before GKEHubFeatureMembership
+TEST: DELETE
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubFeature
+metadata:
+  name: gkehubfeature-${uniqueId}
+---
+# 05 Delete GKEHubFeatureMembership
+# No-op, as the managed GKEHubFeature(as well as its membershipSpecs field) is gone,
+TEST: DELETE
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubFeatureMembership
+metadata:
+  name: gkehubfeaturemembership-${uniqueId}
