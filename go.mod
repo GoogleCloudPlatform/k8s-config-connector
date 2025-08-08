@@ -153,10 +153,10 @@ require (
 require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect
 	cel.dev/expr v0.23.0 // indirect
-	cloud.google.com/go v0.121.1 // indirect
+	cloud.google.com/go v0.121.2 // indirect
 	cloud.google.com/go/auth v0.16.2 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
-	cloud.google.com/go/bigtable v1.37.0
+	cloud.google.com/go/bigtable v1.38.0
 	cloud.google.com/go/compute/metadata v0.7.0 // indirect
 	cloud.google.com/go/longrunning v0.6.7
 	dario.cat/mergo v1.0.0 // indirect
