@@ -467,14 +467,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
 		Group:   "cloudidentity.cnrm.cloud.google.com",
 		Version: "v1beta1",
-		Kind:    "CloudIdentityGroup",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "cloudidentity.cnrm.cloud.google.com",
-		Version: "v1beta1",
 		Kind:    "CloudIdentityMembership",
 	}: {
 		Terraform: false,
