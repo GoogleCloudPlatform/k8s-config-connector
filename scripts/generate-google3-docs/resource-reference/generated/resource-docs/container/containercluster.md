@@ -171,6 +171,11 @@ clusterTelemetry:
   type: string
 confidentialNodes:
   enabled: boolean
+controlPlaneEndpointsConfig:
+  dnsEndpointConfig:
+    allowExternalTraffic: boolean
+  ipEndpointsConfig:
+    enabled: boolean
 costManagementConfig:
   enabled: boolean
 databaseEncryption:
@@ -1238,6 +1243,56 @@ boot disk attached to each node in the node pool.{% endverbatim %}</p>
         <td>
             <p><code class="apitype">boolean</code></p>
             <p>{% verbatim %}Immutable. Whether Confidential Nodes feature is enabled for all nodes in this cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>controlPlaneEndpointsConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Configuration for all of the cluster's control plane endpoints. Currently supports only DNS endpoint configuration and disable IP endpoint. Other IP endpoint configurations are available in private_cluster_config.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>controlPlaneEndpointsConfig.dnsEndpointConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}DNS endpoint configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>controlPlaneEndpointsConfig.dnsEndpointConfig.allowExternalTraffic</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Controls whether user traffic is allowed over this endpoint. Note that GCP-managed services may still use the endpoint even if this is false.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>controlPlaneEndpointsConfig.ipEndpointsConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}IP endpoint configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>controlPlaneEndpointsConfig.ipEndpointsConfig.enabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Controls whether to allow direct IP access. When false, configuration of masterAuthorizedNetworksConfig, privateClusterConfig.enablePrivateEndpoint, privateClusterConfig.privateEndpointSubnetwork and privateClusterConfig.masterGlobalAccessConfig fields won't be used, and privateClusterConfig.privateEndpoint and privateClusterConfig.publicEndpoint fields won't be populated.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3439,7 +3494,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Enables the private cluster feature, creating a private endpoint on the cluster. In a private cluster, nodes only have RFC 1918 private addresses and communicate with the master's private endpoint via private networking.{% endverbatim %}</p>
+            <p>{% verbatim %}Enables the private cluster feature, creating a private endpoint on the cluster. In a private cluster, nodes only have RFC 1918 private addresses and communicate with the master's private endpoint via private networking.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -3839,6 +3894,9 @@ labelFingerprint: string
 masterVersion: string
 observedGeneration: integer
 observedState:
+  controlPlaneEndpointsConfig:
+    dnsEndpointConfig:
+      endpoint: string
   masterAuth:
     clientCertificate: string
     clusterCaCertificate: string
@@ -3940,6 +3998,27 @@ tpuIpv4CidrBlock: string
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.controlPlaneEndpointsConfig</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Configuration for all of the cluster's control plane endpoints. Currently supports only DNS endpoint configuration and disable IP endpoint. Other IP endpoint configurations are available in private_cluster_config.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.controlPlaneEndpointsConfig.dnsEndpointConfig</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}DNS endpoint configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.controlPlaneEndpointsConfig.dnsEndpointConfig.endpoint</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The cluster's DNS endpoint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
