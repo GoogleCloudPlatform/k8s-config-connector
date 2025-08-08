@@ -40,7 +40,7 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1alpha1
+    name: v1beta1
     schema:
       openAPIV3Schema:
         description: AlloyDBInstance is the Schema for the AlloyDBInstance API
@@ -181,6 +181,11 @@ spec:
                     description: The number of CPU's in the VM instance.
                     format: int32
                     type: integer
+                  machineType:
+                    description: Machine type of the VM instance. E.g. "n2-highmem-4",
+                      "n2-highmem-8", "c4a-highmem-4-lssd". cpu_count must match the
+                      number of vCPUs in the machine type.
+                    type: string
                 type: object
               networkConfig:
                 description: Instance level network configuration.
@@ -327,7 +332,7 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1beta1
+    name: v1alpha1
     schema:
       openAPIV3Schema:
         description: AlloyDBInstance is the Schema for the AlloyDBInstance API
@@ -468,6 +473,11 @@ spec:
                     description: The number of CPU's in the VM instance.
                     format: int32
                     type: integer
+                  machineType:
+                    description: Machine type of the VM instance. E.g. "n2-highmem-4",
+                      "n2-highmem-8", "c4a-highmem-4-lssd". cpu_count must match the
+                      number of vCPUs in the machine type.
+                    type: string
                 type: object
               networkConfig:
                 description: Instance level network configuration.
