@@ -2,7 +2,7 @@ module github.com/GoogleCloudPlatform/k8s-config-connector/experiments/composite
 
 go 1.24
 
-toolchain go1.24.5
+toolchain go1.24.6
 
 require (
 	k8s.io/apimachinery v0.32.1
