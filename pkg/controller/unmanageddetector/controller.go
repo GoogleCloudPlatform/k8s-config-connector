@@ -39,6 +39,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
+var (
+	EnableManagerNamespace bool
+)
+
 type Reconciler struct {
 	lifecyclehandler.LifecycleHandler
 	mgr manager.Manager
@@ -141,28 +145,29 @@ func controllerExistsForNamespace(ctx context.Context, namespace string, c clien
 	if err != nil {
 		return false, fmt.Errorf("error parsing '%v' as a label selector: %w", stsLabelSelectorRaw, err)
 	}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(corev1beta1.ConfigConnectorContextGroupVersionKind)
-	err = c.Get(ctx, types.NamespacedName{
-		Namespace: namespace,
-		Name:      corev1beta1.ConfigConnectorContextAllowedName,
-	}, u)
-	if err != nil {
-		if apierrors.IsNotFound(err) {
-			return false, nil
-		}
-		return false, err
-	}
-	podNamespace := k8s.SystemNamespace
-	managerNamespace, found, err := unstructured.NestedString(u.Object, "spec", "managerNamespace")
-	if err == nil && found && managerNamespace != "" {
-		podNamespace = managerNamespace
-	}
 	stsList := &v1.StatefulSetList{}
 	stsOpts := &client.ListOptions{
-		Namespace:     podNamespace,
+		Namespace:     k8s.SystemNamespace,
 		LabelSelector: stsLabelSelector,
 		Limit:         1,
+	}
+	if EnableManagerNamespace {
+		u := &unstructured.Unstructured{}
+		u.SetGroupVersionKind(corev1beta1.ConfigConnectorContextGroupVersionKind)
+		err = c.Get(ctx, types.NamespacedName{
+			Namespace: namespace,
+			Name:      corev1beta1.ConfigConnectorContextAllowedName,
+		}, u)
+		if err != nil {
+			if apierrors.IsNotFound(err) {
+				return false, nil
+			}
+			return false, err
+		}
+		managerNamespace, found, err := unstructured.NestedString(u.Object, "spec", "managerNamespace")
+		if err == nil && found && managerNamespace != "" {
+			stsOpts.Namespace = managerNamespace
+		}
 	}
 	if err := c.List(ctx, stsList, stsOpts); err != nil {
 		return false, fmt.Errorf("error listing controller manager StatefulSets: %w", err)

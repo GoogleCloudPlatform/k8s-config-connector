@@ -53,6 +53,8 @@ const (
 	UserProjectOverrideFlag            = "--user-project-override"
 	BillingProjectFlag                 = "--billing-project"
 	CNRMManagerContainerName           = "manager"
+	KCCUnmanagedDetectorContainerName  = "unmanageddetector"
+	EnableManagerNamespaceFlag         = "--enable-manager-namespace"
 )
 
 var (
