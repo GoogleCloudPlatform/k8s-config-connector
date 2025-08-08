@@ -12,6 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: alloydb.cnrm.cloud.google.com
+// krm.version: v1beta1
+// proto.service: google.cloud.alloydb.v1beta
+// resource: AlloyDBCluster:Cluster
+// resource: AlloyDBInstance:Instance
+
 package v1alpha1
 
 // +kcc:proto=google.cloud.alloydb.v1beta.AutomatedBackupPolicy
@@ -44,8 +51,7 @@ type AutomatedBackupPolicy struct {
 
 	// Optional. The encryption config can be specified to encrypt the
 	//  backups with a customer-managed encryption key (CMEK). When this field is
-	//  not specified, the backup will then use default encryption scheme to
-	//  protect the user data.
+	//  not specified, the backup will use the cluster's encryption config.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.AutomatedBackupPolicy.encryption_config
 	EncryptionConfig *EncryptionConfig `json:"encryptionConfig,omitempty"`
 
@@ -136,14 +142,17 @@ type ContinuousBackupConfig struct {
 
 	// The encryption config can be specified to encrypt the
 	//  backups with a customer-managed encryption key (CMEK). When this field is
-	//  not specified, the backup will then use default encryption scheme to
-	//  protect the user data.
+	//  not specified, the backup will use the cluster's encryption config.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.ContinuousBackupConfig.encryption_config
 	EncryptionConfig *EncryptionConfig `json:"encryptionConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.EncryptionInfo
 type EncryptionInfo struct {
+}
+
+// +kcc:proto=google.cloud.alloydb.v1beta.GCAInstanceConfig
+type GcaInstanceConfig struct {
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.GeminiClusterConfig
@@ -178,28 +187,16 @@ type Instance_MachineConfig struct {
 	// The number of CPU's in the VM instance.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.MachineConfig.cpu_count
 	CPUCount *int32 `json:"cpuCount,omitempty"`
+
+	// Machine type of the VM instance. E.g. "n2-highmem-4",
+	//  "n2-highmem-8", "c4a-highmem-4-lssd".
+	//  cpu_count must match the number of vCPUs in the machine type.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.MachineConfig.machine_type
+	MachineType *string `json:"machineType,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.Node
 type Instance_Node struct {
-	// The Compute Engine zone of the VM e.g. "us-central1-b".
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.Node.zone_id
-	ZoneID *string `json:"zoneID,omitempty"`
-
-	// The identifier of the VM e.g. "test-read-0601-407e52be-ms3l".
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.Node.id
-	ID *string `json:"id,omitempty"`
-
-	// The private IP address of the VM e.g. "10.57.0.34".
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.Node.ip
-	IP *string `json:"ip,omitempty"`
-
-	// Determined by state of the compute VM and postgres-service health.
-	//  Compute VM state can have values listed in
-	//  https://cloud.google.com/compute/docs/instances/instance-life-cycle and
-	//  postgres-service health can have values: HEALTHY and UNHEALTHY.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.Node.state
-	State *string `json:"state,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig
@@ -246,6 +243,21 @@ type Instance_ObservabilityInstanceConfig struct {
 	TrackClientAddress *bool `json:"trackClientAddress,omitempty"`
 }
 
+// +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig
+type Instance_PSCAutoConnectionConfig struct {
+	// The consumer project to which the PSC service automation endpoint will
+	//  be created.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.consumer_project
+	ConsumerProject *string `json:"consumerProject,omitempty"`
+
+	// The consumer network for the PSC service automation, example:
+	//  "projects/vpc-host-project/global/networks/default".
+	//  The consumer network might be hosted a different project than the
+	//  consumer project.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.consumer_network
+	ConsumerNetwork *string `json:"consumerNetwork,omitempty"`
+}
+
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig
 type Instance_PSCInstanceConfig struct {
 
@@ -253,6 +265,27 @@ type Instance_PSCInstanceConfig struct {
 	//  PSC endpoints to service-attachments to this instance.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.allowed_consumer_projects
 	AllowedConsumerProjects []string `json:"allowedConsumerProjects,omitempty"`
+
+	// Optional. Configurations for setting up PSC interfaces attached to the
+	//  instance which are used for outbound connectivity. Only primary instances
+	//  can have PSC interface attached. Currently we only support 0 or 1 PSC
+	//  interface.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_interface_configs
+	PSCInterfaceConfigs []Instance_PSCInterfaceConfig `json:"pscInterfaceConfigs,omitempty"`
+
+	// Optional. Configurations for setting up PSC service automation.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_auto_connections
+	PSCAutoConnections []Instance_PSCAutoConnectionConfig `json:"pscAutoConnections,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscInterfaceConfig
+type Instance_PSCInterfaceConfig struct {
+	// The network attachment resource created in the consumer network to which
+	//  the PSC interface will be linked. This is of the format:
+	//  "projects/${CONSUMER_PROJECT}/regions/${REGION}/networkAttachments/${NETWORK_ATTACHMENT_NAME}".
+	//  The network attachment must be in the same region as the instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInterfaceConfig.network_attachment_resource
+	NetworkAttachmentResource *string `json:"networkAttachmentResource,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.QueryInsightsInstanceConfig
@@ -316,7 +349,7 @@ type SSLConfig struct {
 	CASource *string `json:"caSource,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig
 type Cluster_PrimaryConfigObservedState struct {
 	// Output only. Names of the clusters that are replicating from this
 	//  cluster.
@@ -324,7 +357,15 @@ type Cluster_PrimaryConfigObservedState struct {
 	SecondaryClusterNames []string `json:"secondaryClusterNames,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.EncryptionInfo
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Cluster.PscConfig
+type Cluster_PSCConfigObservedState struct {
+	// Output only. The project number that needs to be allowlisted on the
+	//  network attachment to enable outbound connectivity.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.PscConfig.service_owned_project_number
+	ServiceOwnedProjectNumber *int64 `json:"serviceOwnedProjectNumber,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.EncryptionInfo
 type EncryptionInfoObservedState struct {
 	// Output only. Type of encryption.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.EncryptionInfo.encryption_type
@@ -336,7 +377,14 @@ type EncryptionInfoObservedState struct {
 	KMSKeyVersions []string `json:"kmsKeyVersions,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.GeminiClusterConfig
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.GCAInstanceConfig
+type GcaInstanceConfigObservedState struct {
+	// Output only. Represents the GCA entitlement state of the instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.GCAInstanceConfig.gca_entitlement
+	GcaEntitlement *string `json:"gcaEntitlement,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.GeminiClusterConfig
 type GeminiClusterConfigObservedState struct {
 	// Output only. Whether the Gemini in Databases add-on is enabled for the
 	//  cluster. It will be true only if the add-on has been enabled for the
@@ -346,7 +394,7 @@ type GeminiClusterConfigObservedState struct {
 	Entitled *bool `json:"entitled,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.GeminiInstanceConfig
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.GeminiInstanceConfig
 type GeminiInstanceConfigObservedState struct {
 	// Output only. Whether the Gemini in Databases add-on is enabled for the
 	//  instance. It will be true only if the add-on has been enabled for the
@@ -356,17 +404,55 @@ type GeminiInstanceConfigObservedState struct {
 	Entitled *bool `json:"entitled,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.Node
+type Instance_NodeObservedState struct {
+	// Output only. The Compute Engine zone of the VM e.g. "us-central1-b".
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.Node.zone_id
+	ZoneID *string `json:"zoneID,omitempty"`
+
+	// Output only. The identifier of the VM e.g.
+	//  "test-read-0601-407e52be-ms3l".
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.Node.id
+	ID *string `json:"id,omitempty"`
+
+	// Output only. The private IP address of the VM e.g. "10.57.0.34".
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.Node.ip
+	IP *string `json:"ip,omitempty"`
+
+	// Output only. Determined by state of the compute VM and postgres-service
+	//  health. Compute VM state can have values listed in
+	//  https://cloud.google.com/compute/docs/instances/instance-life-cycle and
+	//  postgres-service health can have values: HEALTHY and UNHEALTHY.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.Node.state
+	State *string `json:"state,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig
 type Instance_ObservabilityInstanceConfigObservedState struct {
 	// Output only. Track wait event types during query execution for an
 	//  instance. This flag is turned "on" by default but tracking is enabled
 	//  only after observability enabled flag is also turned on. This is
-	//  read-only flag and only modifiable by producer API.
+	//  read-only flag and only modifiable by internal API.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.track_wait_event_types
 	TrackWaitEventTypes *bool `json:"trackWaitEventTypes,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig
+type Instance_PSCAutoConnectionConfigObservedState struct {
+	// Output only. The IP address of the PSC service automation endpoint.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.ip_address
+	IPAddress *string `json:"ipAddress,omitempty"`
+
+	// Output only. The status of the PSC service automation connection.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.status
+	Status *string `json:"status,omitempty"`
+
+	// Output only. The status of the service connection policy.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.consumer_network_status
+	ConsumerNetworkStatus *string `json:"consumerNetworkStatus,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig
 type Instance_PSCInstanceConfigObservedState struct {
 	// Output only. The service attachment created when Private
 	//  Service Connect (PSC) is enabled for the instance.
@@ -379,9 +465,13 @@ type Instance_PSCInstanceConfigObservedState struct {
 	//  Name convention: <uid>.<uid>.<region>.alloydb-psc.goog
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_dns_name
 	PSCDNSName *string `json:"pscDNSName,omitempty"`
+
+	// Optional. Configurations for setting up PSC service automation.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscInstanceConfig.psc_auto_connections
+	PSCAutoConnections []Instance_PSCAutoConnectionConfigObservedState `json:"pscAutoConnections,omitempty"`
 }
 
-// +kcc:proto=google.cloud.alloydb.v1beta.MaintenanceSchedule
+// +kcc:observedstate:proto=google.cloud.alloydb.v1beta.MaintenanceSchedule
 type MaintenanceScheduleObservedState struct {
 	// Output only. The scheduled start time for the maintenance.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.MaintenanceSchedule.start_time

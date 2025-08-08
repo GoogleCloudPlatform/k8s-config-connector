@@ -87,8 +87,8 @@ spec:
                   encryptionConfig:
                     description: Optional. The encryption config can be specified
                       to encrypt the backups with a customer-managed encryption key
-                      (CMEK). When this field is not specified, the backup will then
-                      use default encryption scheme to protect the user data.
+                      (CMEK). When this field is not specified, the backup will use
+                      the cluster's encryption config.
                     properties:
                       kmsKeyNameRef:
                         description: 'The fully-qualified resource name of the KMS
@@ -211,8 +211,8 @@ spec:
                   encryptionConfig:
                     description: The encryption config can be specified to encrypt
                       the backups with a customer-managed encryption key (CMEK). When
-                      this field is not specified, the backup will then use default
-                      encryption scheme to protect the user data.
+                      this field is not specified, the backup will use the cluster's
+                      encryption config.
                     properties:
                       kmsKeyNameRef:
                         description: 'The fully-qualified resource name of the KMS
@@ -845,8 +845,8 @@ spec:
                   encryptionConfig:
                     description: Optional. The encryption config can be specified
                       to encrypt the backups with a customer-managed encryption key
-                      (CMEK). When this field is not specified, the backup will then
-                      use default encryption scheme to protect the user data.
+                      (CMEK). When this field is not specified, the backup will use
+                      the cluster's encryption config.
                     properties:
                       kmsKeyNameRef:
                         description: 'The fully-qualified resource name of the KMS
@@ -969,8 +969,8 @@ spec:
                   encryptionConfig:
                     description: The encryption config can be specified to encrypt
                       the backups with a customer-managed encryption key (CMEK). When
-                      this field is not specified, the backup will then use default
-                      encryption scheme to protect the user data.
+                      this field is not specified, the backup will use the cluster's
+                      encryption config.
                     properties:
                       kmsKeyNameRef:
                         description: 'The fully-qualified resource name of the KMS
