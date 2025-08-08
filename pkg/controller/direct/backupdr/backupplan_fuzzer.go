@@ -33,6 +33,7 @@ func backupDRBackupPlanFuzzer() fuzztesting.KRMFuzzer {
 		BackupDRBackupPlanObservedState_v1alpha1_FromProto, BackupDRBackupPlanObservedState_v1alpha1_ToProto,
 	)
 
+	// Spec fields
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".backup_rules")
@@ -40,12 +41,20 @@ func backupDRBackupPlanFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".etag")
 	f.SpecFields.Insert(".backup_vault")
 
+	// Status fields
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
 	f.StatusFields.Insert(".state")
 	f.StatusFields.Insert(".backup_vault_service_account")
 
-	f.UnimplementedFields.Insert(".name") // special field
+	// Identity fields
+	f.UnimplementedFields.Insert(".name")
+
+	// Fields that could potentially be added
+	f.UnimplementedFields.Insert(".supported_resource_types") // todo:add_support
+	f.UnimplementedFields.Insert(".log_retention_days")       // todo:add_support
+	f.UnimplementedFields.Insert(".revision_id")              // todo:add_support
+	f.UnimplementedFields.Insert(".revision_name")            // todo:add_support
 
 	return f
 }

@@ -153,6 +153,7 @@ func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 	clearFields := &fuzz.ClearFields{
 		Paths: ignoreFields,
 	}
+	t.Logf("ignoring fields %v", sets.List(ignoreFields))
 	fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
 
 	ctx := &direct.MapContext{}

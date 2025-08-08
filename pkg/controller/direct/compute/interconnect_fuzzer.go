@@ -33,6 +33,7 @@ func computeInterconnectFuzzer() fuzztesting.KRMFuzzer {
 		ComputeInterconnectObservedState_FromProto, ComputeInterconnectObservedState_ToProto,
 	)
 
+	// Spec fields
 	f.SpecFields.Insert(".customer_name")
 	f.SpecFields.Insert(".label_fingerprint")
 	f.SpecFields.Insert(".macsec_enabled")
@@ -48,6 +49,7 @@ func computeInterconnectFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".interconnect_type")
 	f.SpecFields.Insert(".link_type")
 
+	// Status fields
 	f.StatusFields.Insert(".available_features")
 	f.StatusFields.Insert(".expected_outages")
 	f.StatusFields.Insert(".operational_status")
@@ -64,6 +66,11 @@ func computeInterconnectFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".creation_timestamp")
 	f.StatusFields.Insert(".peer_ip_address")
 
+	// Identity fields
 	f.UnimplementedFields.Insert(".name") // special field
+
+	// New fields that could potentially be added
+	f.UnimplementedFields.Insert(".interconnect_groups") // todo:add_support
+
 	return f
 }

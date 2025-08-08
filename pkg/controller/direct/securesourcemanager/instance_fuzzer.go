@@ -33,19 +33,28 @@ func secureSourceManagerInstanceFuzzer() fuzztesting.KRMFuzzer {
 		SecureSourceManagerInstanceObservedState_FromProto, SecureSourceManagerInstanceObservedState_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name")        // Identifier
+	// Spec fields
+	f.SpecFields.Insert(".private_config")
+	f.SpecFields.Insert(".kms_key")
+
+	// Status fields
+	f.StatusFields.Insert(".state")
+	f.StatusFields.Insert(".state_note")
+	f.StatusFields.Insert(".host_config")
+
+	// Identity fields
+	f.UnimplementedFields.Insert(".name")
+
+	// New fields that could potentially be added
+	f.UnimplementedFields.Insert(".private_config.psc_allowed_projects")  // todo:add_support
+	f.UnimplementedFields.Insert(".workforce_identity_federation_config") // todo:add_support
+
+	// Uncategorized
 	f.UnimplementedFields.Insert(".create_time") // Output only
 	f.UnimplementedFields.Insert(".update_time") // Output only
 	f.UnimplementedFields.Insert(".labels")      // NOTYET
 	f.UnimplementedFields.Insert(".private_config.ssh_service_attachment")
 	f.UnimplementedFields.Insert(".private_config.http_service_attachment")
-
-	f.SpecFields.Insert(".private_config")
-	f.SpecFields.Insert(".kms_key")
-
-	f.StatusFields.Insert(".state")
-	f.StatusFields.Insert(".state_note")
-	f.StatusFields.Insert(".host_config")
 
 	return f
 }

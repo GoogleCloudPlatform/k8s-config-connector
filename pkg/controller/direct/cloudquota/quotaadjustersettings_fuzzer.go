@@ -33,12 +33,20 @@ func aPIQuotaAdjusterSettingsFuzzer() fuzztesting.KRMFuzzer {
 		APIQuotaAdjusterSettingsSpec_FromProto, APIQuotaAdjusterSettingsSpec_ToProto,
 		APIQuotaAdjusterSettingsObservedState_FromProto, APIQuotaAdjusterSettingsObservedState_ToProto,
 	)
+
+	// Spec fields
 	f.SpecFields.Insert(".enablement")
 
+	// Status fields
 	f.StatusFields.Insert(".update_time")
 	f.StatusFields.Insert(".etag")
 
-	f.UnimplementedFields.Insert(".name") // special field
+	// Identity fields
+	f.UnimplementedFields.Insert(".name")
+
+	// New fields that could potentially be added
+	f.UnimplementedFields.Insert(".inherited_from") // todo:add_support
+	f.UnimplementedFields.Insert(".inherited")      // todo:add_support
 
 	return f
 }

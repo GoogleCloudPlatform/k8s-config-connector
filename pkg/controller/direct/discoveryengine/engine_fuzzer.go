@@ -32,12 +32,10 @@ func engineFuzzer() fuzztesting.KRMFuzzer {
 		DiscoveryEngineEngineObservedState_FromProto, DiscoveryEngineEngineObservedState_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".chat_engine_metadata") // Could be status
-	f.UnimplementedFields.Insert(".create_time")          // Could be status
-	f.UnimplementedFields.Insert(".update_time")          // Could be status
+	// Identity fields
+	f.UnimplementedFields.Insert(".name")
 
-	f.UnimplementedFields.Insert(".name") // special field
-
+	// Spec fields
 	f.SpecFields.Insert(".display_name")
 	f.SpecFields.Insert(".common_config")
 	f.SpecFields.Insert(".chat_engine_config")
@@ -47,8 +45,17 @@ func engineFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".industry_vertical")
 	f.SpecFields.Insert(".disable_analytics")
 
+	// Status fields
 	// f.StatusFields.Insert(".create_time")
 	// f.StatusFields.Insert(".update_time")
+
+	// New fields that could potentially be added
+	f.UnimplementedFields.Insert(".media_recommendation_engine_config")    // todo:add_support
+	f.UnimplementedFields.Insert(".chat_engine_config.allow_cross_region") // todo:add_support
+
+	f.UnimplementedFields.Insert(".chat_engine_metadata") // Could be status
+	f.UnimplementedFields.Insert(".create_time")          // Could be status
+	f.UnimplementedFields.Insert(".update_time")          // Could be status
 
 	return f
 }
