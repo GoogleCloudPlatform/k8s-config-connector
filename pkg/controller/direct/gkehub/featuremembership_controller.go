@@ -20,6 +20,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+
 	featureapi "google.golang.org/api/gkehub/v1beta"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -65,6 +67,7 @@ type gkeHubAdapter struct {
 	actual  *featureapi.Feature
 
 	hubClient *gkeHubClient
+	reader    client.Reader
 }
 
 var _ directbase.Adapter = &gkeHubAdapter{}
@@ -96,24 +99,15 @@ func (m *gkeHubModel) AdapterForObject(ctx context.Context, reader client.Reader
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	membership, err := resolveMembershipRef(ctx, reader, obj, projectID)
-	if err != nil {
-		return nil, err
-	}
-	feature, err := resolveFeatureRef(ctx, reader, obj, projectID)
-	if err != nil {
-		return nil, err
-	}
 	if err := resolveIAMReferences(ctx, reader, obj); err != nil {
 		return nil, err
 	}
 	return &gkeHubAdapter{
-		membershipID: membership.id,
-		featureID:    feature.id,
-		projectID:    projectID,
-		location:     obj.Spec.Location,
-		desired:      obj,
-		hubClient:    hubClient,
+		projectID: projectID,
+		location:  obj.Spec.Location,
+		desired:   obj,
+		hubClient: hubClient,
+		reader:    reader,
 	}, nil
 }
 
@@ -142,9 +136,15 @@ func resolveIAMReferences(ctx context.Context, reader client.Reader, obj *krm.GK
 }
 
 func (a *gkeHubAdapter) Find(ctx context.Context) (bool, error) {
-	if a.membershipID == "" || a.featureID == "" {
+	if &a.desired.Spec.FeatureRef == nil || &a.desired.Spec.MembershipRef == nil {
 		return false, nil
 	}
+	// Resolve featureRef
+	featureExternal, err := resolveFeatureRef(ctx, a.reader, a.desired, a.projectID)
+	if err != nil {
+		return false, err
+	}
+	a.featureID = featureExternal.id
 	feature, err := a.hubClient.featureClient.Get(a.featureID).Context(ctx).ReturnPartialSuccess(true).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -153,6 +153,25 @@ func (a *gkeHubAdapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting feature %q: %w", a.featureID, err)
 	}
 	a.actual = feature
+
+	// Build the membershipID(in format projects/*/locations/*/memberships/*) of the target membership.
+	// We don't need to resolve the GKEHubMembership resource. Instead, we'll build a membershipID that matches the
+	// membershipIDs in the GKEHubFeature's MembershipSpecs list. This allows us to manage the target membership
+	// using the GKEHubFeatureMembership configuration, without needing to resolve the resource.
+	membershipRef := a.desired.Spec.MembershipRef
+	if membershipRef.External != "" {
+		// use the provided external value
+		a.membershipID = membershipRef.External
+	} else {
+		// build membershipID by its project, location and name
+		if membershipLocation := a.desired.Spec.MembershipLocation; membershipLocation != nil {
+			a.membershipID = fmt.Sprintf("projects/%s/locations/%s/memberships/%s", a.projectID, common.ValueOf(membershipLocation), membershipRef.Name)
+		} else {
+			a.membershipID = fmt.Sprintf("projects/%s/locations/global/memberships/%s", a.projectID, membershipRef.Name)
+		}
+	}
+
+	// Find target membershipID from feature's MembershipSpecs
 	canonicalizedMID, found, err := matchWithCanonicalMemebrshipID(a.membershipID, feature)
 	if err != nil {
 		return false, nil
@@ -165,14 +184,6 @@ func (a *gkeHubAdapter) Find(ctx context.Context) (bool, error) {
 
 // Delete implements the Adapter interface.
 func (a *gkeHubAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
-	exist, err := a.Find(ctx)
-	if err != nil {
-		return false, fmt.Errorf("finding feature for %s:%w", a.featureID, err)
-	}
-	if !exist {
-		// return (false, nil) if the object was not found but should be presumed deleted.
-		return false, nil
-	}
 	// emptying the membershipspec is sufficient
 	a.desired = &krm.GKEHubFeatureMembership{}
 	if _, err := a.patchMembershipSpec(ctx); err != nil {
@@ -239,6 +250,9 @@ func (a *gkeHubAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("creating gkehubfeaturemembership", "obj", u)
 
+	// todo: shall we resolve GKEHubMembership here to ensure its existence?
+	// Can we add membershipSpec to GKEHubFeature, if the membership does not exist?
+
 	_, err := a.patchMembershipSpec(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to patch the MembershipSpec; %w", err)
@@ -253,6 +267,10 @@ func (a *gkeHubAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("updating object", "u", u)
+
+	// todo: shall we resolve GKEHubMembership here to ensure its existence?
+	// Can we update membershipSpec in GKEHubFeature's membershipSpecs field, if the membership does not exist?
+
 	actual := a.actual.MembershipSpecs[a.membershipID]
 	//  There are no output fields in the api Object, so we can compare the desired and the actaul directly.
 	if len(diffFeatureMembership(&a.desired.Spec, &actual)) != 0 {
