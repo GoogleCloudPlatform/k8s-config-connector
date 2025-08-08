@@ -57,11 +57,12 @@ type gkeHubFeatureMembershipModel struct {
 var _ directbase.Model = &gkeHubFeatureMembershipModel{}
 
 type gkeHubFeatureMembershipAdapter struct {
-	id        *krm.FeatureMembershipIdentity
-	reader    client.Reader
-	desired   *krm.GKEHubFeatureMembership
-	actual    *featureapi.Feature
-	hubClient *gkeHubClient
+	membershipID string
+	id           *krm.FeatureMembershipIdentity
+	reader       client.Reader
+	desired      *krm.GKEHubFeatureMembership
+	actual       *featureapi.Feature
+	hubClient    *gkeHubClient
 }
 
 var _ directbase.Adapter = &gkeHubFeatureMembershipAdapter{}
@@ -98,6 +99,15 @@ func (m *gkeHubFeatureMembershipModel) AdapterForURL(ctx context.Context, url st
 	return nil, nil
 }
 
+func resolveMembership(ctx context.Context, reader client.Reader, obj *krm.GKEHubFeatureMembership) error {
+	if obj.Spec.MembershipRef != nil {
+		if _, err := obj.Spec.MembershipRef.NormalizedExternal(ctx, reader, obj.Namespace); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func resolveIAMReferences(ctx context.Context, reader client.Reader, obj *krm.GKEHubFeatureMembership) error {
 	spec := obj.Spec
 	if spec.Configmanagement != nil && spec.Configmanagement.ConfigSync != nil {
@@ -119,9 +129,6 @@ func resolveIAMReferences(ctx context.Context, reader client.Reader, obj *krm.GK
 }
 
 func (a *gkeHubFeatureMembershipAdapter) Find(ctx context.Context) (bool, error) {
-	if a.id.MembershipID().String() == "" || a.id.FeatureID().String() == "" {
-		return false, nil
-	}
 	feature, err := a.hubClient.featureClient.Get(a.id.FeatureID().String()).Context(ctx).ReturnPartialSuccess(true).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -130,24 +137,38 @@ func (a *gkeHubFeatureMembershipAdapter) Find(ctx context.Context) (bool, error)
 		return false, fmt.Errorf("getting feature %q: %w", a.id.FeatureID(), err)
 	}
 	a.actual = feature
-	canonicalizedMID, found, err := matchWithCanonicalMemebrshipID(a.id.MembershipID().String(), feature)
+
+	err = resolveMembership(ctx, a.reader, a.desired)
+	if err != nil {
+		return false, err
+	}
+	a.membershipID = a.desired.Spec.MembershipRef.External
+
+	canonicalizedMID, found, err := matchWithCanonicalMemebrshipID(a.membershipID, feature)
 	if err != nil {
 		return false, nil
 	}
 	if canonicalizedMID != "" {
-		tokens := strings.Split(canonicalizedMID, "/")
 		// Update membershipID's project info with canonicalizedMID(projectID to projectNumber)
-		a.id.MembershipID().Parent().ProjectID = tokens[1]
+		a.membershipID = canonicalizedMID
 	}
 	return found, nil
 }
 
 // Delete implements the Adapter interface.
 func (a *gkeHubFeatureMembershipAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+	//exist, err := a.Find(ctx)
+	//if err != nil {
+	//	return false, fmt.Errorf("finding feature for %s:%w", a.id.FeatureID(), err)
+	//}
+	//if !exist {
+	//	// return (false, nil) if the object was not found but should be presumed deleted.
+	//	return false, nil
+	//}
 	// emptying the membershipspec is sufficient
 	a.desired = &krm.GKEHubFeatureMembership{}
 	if _, err := a.patchMembershipSpec(ctx); err != nil {
-		return false, fmt.Errorf("deleting membershipspec %s in feature %s: %w", a.id.MembershipID(), a.id.FeatureID(), err)
+		return false, fmt.Errorf("deleting membershipspec %s in feature %s: %w", a.membershipID, a.id.FeatureID(), err)
 	}
 	return true, nil
 }
@@ -168,7 +189,7 @@ func (a *gkeHubFeatureMembershipAdapter) patchMembershipSpec(ctx context.Context
 	if err != nil {
 		return nil, err
 	}
-	mSpecs[a.id.MembershipID().String()] = *desiredApiObj
+	mSpecs[a.membershipID] = *desiredApiObj
 	// MembershipSpecs is a map of membership spec. Here we only patch one membership.
 	// GKE Hub server doesn't patch other memberships if they are not present in the membershipSpecs map.
 	feature.MembershipSpecs = mSpecs
@@ -215,6 +236,12 @@ func (a *gkeHubFeatureMembershipAdapter) Create(ctx context.Context, createOp *d
 		return err
 	}
 
+	//err = resolveMembership(ctx, a.reader, a.desired)
+	//if err != nil {
+	//	return err
+	//}
+	//a.membershipID = a.desired.Spec.MembershipRef.External
+
 	_, err = a.patchMembershipSpec(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to patch the MembershipSpec; %w", err)
@@ -235,7 +262,13 @@ func (a *gkeHubFeatureMembershipAdapter) Update(ctx context.Context, updateOp *d
 		return err
 	}
 
-	actual := a.actual.MembershipSpecs[a.id.MembershipID().String()]
+	//err = resolveMembership(ctx, a.reader, a.desired)
+	//if err != nil {
+	//	return err
+	//}
+	//a.membershipID = a.desired.Spec.MembershipRef.External
+
+	actual := a.actual.MembershipSpecs[a.membershipID]
 	//  There are no output fields in the api Object, so we can compare the desired and the actaul directly.
 	if len(diffFeatureMembership(&a.desired.Spec, &actual)) != 0 {
 		log.V(2).Info("diff detected, patching gkehubfeaturemembership")
@@ -258,7 +291,7 @@ func (a *gkeHubFeatureMembershipAdapter) Export(context.Context) (*unstructured.
 
 	obj := &krm.GKEHubFeatureMembership{}
 	mapCtx := &direct.MapContext{}
-	m := a.actual.MembershipSpecs[a.id.MembershipID().String()]
+	m := a.actual.MembershipSpecs[a.membershipID]
 	obj.Spec = direct.ValueOf(GKEHubFeatureMembershipSpec_FromProto(mapCtx, &m))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()

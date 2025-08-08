@@ -27,18 +27,18 @@ import (
 // ClusterIdentity defines the resource reference to AlloyDBCluster, which "External" field
 // holds the GCP identifier for the KRM object.
 type FeatureMembershipIdentity struct {
-	parent       *parent.ProjectAndLocationParent
-	membershipID *MembershipIdentity
-	featureID    *FeatureIdentity
+	parent *parent.ProjectAndLocationParent
+	//membershipID *MembershipIdentity
+	featureID *FeatureIdentity
 }
 
-func (i *FeatureMembershipIdentity) String() string {
-	return i.parent.String() + "/memberships/" + i.membershipID.id + "/features/" + i.featureID.id
-}
+//func (i *FeatureMembershipIdentity) String() string {
+//	return i.parent.String() + "/memberships/" + i.membershipID.id + "/features/" + i.featureID.id
+//}
 
-func (i *FeatureMembershipIdentity) MembershipID() *MembershipIdentity {
-	return i.membershipID
-}
+//func (i *FeatureMembershipIdentity) MembershipID() *MembershipIdentity {
+//	return i.membershipID
+//}
 
 func (i *FeatureMembershipIdentity) FeatureID() *FeatureIdentity {
 	return i.featureID
@@ -59,14 +59,14 @@ func NewFeatureMembershipIdentity(ctx context.Context, reader client.Reader, obj
 	}
 	location := obj.Spec.Location
 
-	membershipExternal, err := obj.Spec.MembershipRef.NormalizedExternal(ctx, reader, obj.Namespace)
-	if err != nil {
-		return nil, err
-	}
-	membershipIdentity, err := ParseMembershipExternal(membershipExternal)
-	if err != nil {
-		return nil, err
-	}
+	//membershipExternal, err := obj.Spec.MembershipRef.NormalizedExternal(ctx, reader, obj.Namespace)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//membershipIdentity, err := ParseMembershipExternal(membershipExternal)
+	//if err != nil {
+	//	return nil, err
+	//}
 
 	featureExternal, err := obj.Spec.FeatureRef.NormalizedExternal(ctx, reader, obj.Namespace)
 	if err != nil {
@@ -84,7 +84,7 @@ func NewFeatureMembershipIdentity(ctx context.Context, reader client.Reader, obj
 			ProjectID: projectID,
 			Location:  location,
 		},
-		membershipID: membershipIdentity,
-		featureID:    featureIdentity,
+		//membershipID: membershipIdentity,
+		featureID: featureIdentity,
 	}, nil
 }

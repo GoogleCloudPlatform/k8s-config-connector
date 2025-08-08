@@ -138,11 +138,6 @@ func (in *FeatureMembershipIdentity) DeepCopyInto(out *FeatureMembershipIdentity
 		*out = new(parent.ProjectAndLocationParent)
 		**out = **in
 	}
-	if in.membershipID != nil {
-		in, out := &in.membershipID, &out.membershipID
-		*out = new(MembershipIdentity)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.featureID != nil {
 		in, out := &in.featureID, &out.featureID
 		*out = new(FeatureIdentity)
@@ -657,13 +652,21 @@ func (in *GKEHubFeatureMembershipSpec) DeepCopyInto(out *GKEHubFeatureMembership
 		*out = new(FeaturemembershipConfigmanagement)
 		(*in).DeepCopyInto(*out)
 	}
-	out.FeatureRef = in.FeatureRef
+	if in.FeatureRef != nil {
+		in, out := &in.FeatureRef, &out.FeatureRef
+		*out = new(FeatureRef)
+		**out = **in
+	}
 	if in.MembershipLocation != nil {
 		in, out := &in.MembershipLocation, &out.MembershipLocation
 		*out = new(string)
 		**out = **in
 	}
-	out.MembershipRef = in.MembershipRef
+	if in.MembershipRef != nil {
+		in, out := &in.MembershipRef, &out.MembershipRef
+		*out = new(MembershipRef)
+		**out = **in
+	}
 	if in.Mesh != nil {
 		in, out := &in.Mesh, &out.Mesh
 		*out = new(FeaturemembershipMesh)
