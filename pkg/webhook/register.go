@@ -95,7 +95,7 @@ func GetCommonWebhookConfigs() ([]Config, error) {
 			HandlerFunc:   NewRequestLoggingHandler(NewImmutableFieldsValidatorHandler(smLoader, dclSchemaLoader, serviceMetadataLoader), "immutable fields validation"),
 			FailurePolicy: admissionregistration.Fail,
 			Rules: getRulesForOperationTypes(
-				allResourcesRules,
+				getRulesFromResources(getNonIAMResources(allGVKs)),
 				admissionregistration.Update,
 			),
 			SideEffects: admissionregistration.SideEffectClassNone,
@@ -198,6 +198,16 @@ func GetCommonWebhookConfigs() ([]Config, error) {
 		},
 	}
 	return whCfgs, nil
+}
+
+func getNonIAMResources(allGVKs []schema.GroupVersionKind) []schema.GroupVersionKind {
+	var nonIAMGVKs []schema.GroupVersionKind
+	for _, gvk := range allGVKs {
+		if gvk.Group != "iam.cnrm.cloud.google.com" {
+			nonIAMGVKs = append(nonIAMGVKs, gvk)
+		}
+	}
+	return nonIAMGVKs
 }
 
 func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client.Client) error {
