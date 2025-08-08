@@ -30,7 +30,7 @@ TEMP_DIR=$(mktemp -td sync-crds-folder.XXXXXXXX)
 CRDS_FILE=${REPO_ROOT}/operator/channels/packages/configconnector/${VERSION}/crds.yaml
 
 LICENSE_HEADER=$(cat << 'EOF'
-# Copyright 2020 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
