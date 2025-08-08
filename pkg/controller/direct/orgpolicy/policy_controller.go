@@ -173,7 +173,7 @@ func (a *PolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 
 	// Let the backend handle validation
 	req.UpdateMask = &fieldmaskpb.FieldMask{
-		Paths: []string{"*"},
+		Paths: []string{"policy.spec", "policy.dry_run_spec"},
 	}
 
 	updated, err := a.gcpClient.UpdatePolicy(ctx, req)
