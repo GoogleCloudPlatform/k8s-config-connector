@@ -359,7 +359,7 @@ type GKEHubFeatureMembershipSpec struct {
 	Configmanagement *FeaturemembershipConfigmanagement `json:"configmanagement,omitempty"`
 
 	/* Immutable. */
-	FeatureRef FeatureRef `json:"featureRef"`
+	FeatureRef *FeatureRef `json:"featureRef"`
 
 	/* Immutable. The location of the feature */
 	Location string `json:"location"`
@@ -369,7 +369,7 @@ type GKEHubFeatureMembershipSpec struct {
 	MembershipLocation *string `json:"membershipLocation,omitempty"`
 
 	/* Immutable. */
-	MembershipRef MembershipRef `json:"membershipRef"`
+	MembershipRef *MembershipRef `json:"membershipRef"`
 
 	/* Manage Mesh Features */
 	// +optional
@@ -380,7 +380,7 @@ type GKEHubFeatureMembershipSpec struct {
 	Policycontroller *FeaturemembershipPolicycontroller `json:"policycontroller,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef FeatureProjectRef `json:"projectRef"`
+	ProjectRef refs.ProjectRef `json:"projectRef"`
 }
 
 // +kcc:proto=google.cloud.gkehub.policycontroller.v1beta.PolicyControllerDeploymentConfig
