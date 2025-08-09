@@ -3018,7 +3018,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -3034,7 +3034,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -3045,7 +3045,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -3056,7 +3056,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -3067,7 +3067,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -3078,7 +3078,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/system: "true"
@@ -4520,7 +4520,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -4571,7 +4571,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -4630,7 +4630,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -4656,7 +4656,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -4687,7 +4687,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -4719,7 +4719,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/system: "true"
@@ -5684,7 +5684,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -5748,7 +5748,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -5772,7 +5772,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -5790,7 +5790,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -5808,7 +5808,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -5826,7 +5826,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -5844,7 +5844,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/component: cnrm-resource-stats-recorder
     cnrm.cloud.google.com/system: "true"
@@ -5863,7 +5863,7 @@ spec:
   template:
     metadata:
       annotations:
-        cnrm.cloud.google.com/version: 1.132.1
+        cnrm.cloud.google.com/version: '{{stable.latest}}'
       labels:
         cnrm.cloud.google.com/component: cnrm-resource-stats-recorder
         cnrm.cloud.google.com/system: "true"
@@ -5876,8 +5876,8 @@ spec:
         - /configconnector/recorder
         env:
         - name: CONFIG_CONNECTOR_VERSION
-          value: 1.132.1
-        image: foobar.local/recorder:1.132.1
+          value: '{{stable.latest}}'
+        image: foobar.local/recorder:{{stable.latest}}
         imagePullPolicy: Always
         name: recorder
         ports:
@@ -5929,7 +5929,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/component: cnrm-webhook-manager
     cnrm.cloud.google.com/system: "true"
@@ -5945,7 +5945,7 @@ spec:
   template:
     metadata:
       annotations:
-        cnrm.cloud.google.com/version: 1.132.1
+        cnrm.cloud.google.com/version: '{{stable.latest}}'
       labels:
         cnrm.cloud.google.com/component: cnrm-webhook-manager
         cnrm.cloud.google.com/system: "true"
@@ -5960,7 +5960,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: foobar.local/webhook:1.132.1
+        image: foobar.local/webhook:{{stable.latest}}
         imagePullPolicy: Always
         name: webhook
         ports:
@@ -5990,7 +5990,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/component: cnrm-deletiondefender
     cnrm.cloud.google.com/system: "true"
@@ -6006,7 +6006,7 @@ spec:
   template:
     metadata:
       annotations:
-        cnrm.cloud.google.com/version: 1.132.1
+        cnrm.cloud.google.com/version: '{{stable.latest}}'
       labels:
         cnrm.cloud.google.com/component: cnrm-deletiondefender
         cnrm.cloud.google.com/system: "true"
@@ -6014,7 +6014,7 @@ spec:
       containers:
       - command:
         - /configconnector/deletiondefender
-        image: foobar.local/deletiondefender:1.132.1
+        image: foobar.local/deletiondefender:{{stable.latest}}
         imagePullPolicy: Always
         name: deletiondefender
         ports:
@@ -6044,7 +6044,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/component: cnrm-unmanaged-detector
     cnrm.cloud.google.com/system: "true"
@@ -6060,7 +6060,7 @@ spec:
   template:
     metadata:
       annotations:
-        cnrm.cloud.google.com/version: 1.132.1
+        cnrm.cloud.google.com/version: '{{stable.latest}}'
       labels:
         cnrm.cloud.google.com/component: cnrm-unmanaged-detector
         cnrm.cloud.google.com/system: "true"
@@ -6068,7 +6068,7 @@ spec:
       containers:
       - command:
         - /configconnector/unmanageddetector
-        image: foobar.local/unmanageddetector:1.132.1
+        image: foobar.local/unmanageddetector:{{stable.latest}}
         imagePullPolicy: Always
         name: unmanageddetector
         ports:
@@ -6098,7 +6098,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -6120,7 +6120,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -6142,7 +6142,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -6161,7 +6161,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -6181,7 +6181,7 @@ kind: HorizontalPodAutoscaler
 metadata:
   annotations:
     autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":70}}]'
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -6200,7 +6200,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -6218,7 +6218,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
     prometheus.io/port: "48797"
     prometheus.io/scrape: "true"
   labels:
