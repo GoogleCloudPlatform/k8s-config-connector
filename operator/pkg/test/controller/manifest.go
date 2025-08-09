@@ -111,6 +111,100 @@ spec:
         name: prom-to-sd
 `}
 
+var PerNamespaceComponentsTemplate = []string{`
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    iam.gke.io/gcp-service-account: ${SERVICE_ACCOUNT?}
+  labels:
+    cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+    cnrm.cloud.google.com/system: "true"
+    tenancy.gke.io/access-level: supervisor
+    tenancy.gke.io/project: t1234
+    tenancy.gke.io/tenant: t1234-tenant0
+  name: cnrm-controller-manager-${NAMESPACE?}
+  namespace: t1234-tenant0-supervisor
+`, `
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+    cnrm.cloud.google.com/system: "true"
+    tenancy.gke.io/access-level: supervisor
+    tenancy.gke.io/project: t1234
+    tenancy.gke.io/tenant: t1234-tenant0
+  name: cnrm-admin-binding-${NAMESPACE?}
+  namespace: ${NAMESPACE?}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cnrm-admin
+subjects:
+- kind: ServiceAccount
+  name: cnrm-controller-manager-${NAMESPACE?}
+  namespace: t1234-tenant0-supervisor
+`, `
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    cnrm.cloud.google.com/monitored: "true"
+    cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+    cnrm.cloud.google.com/system: "true"
+    tenancy.gke.io/access-level: supervisor
+    tenancy.gke.io/project: t1234
+    tenancy.gke.io/tenant: t1234-tenant0
+  name: cnrm-manager-${NAMESPACE?}
+  namespace: t1234-tenant0-supervisor
+spec:
+  ports:
+  - name: controller-manager
+    port: 443
+  - name: metrics
+    port: 8888
+  selector:
+    cnrm.cloud.google.com/component: cnrm-controller-manager
+    cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+    cnrm.cloud.google.com/system: "true"
+`, `
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    cnrm.cloud.google.com/component: cnrm-controller-manager
+    cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+    cnrm.cloud.google.com/system: "true"
+    tenancy.gke.io/access-level: supervisor
+    tenancy.gke.io/project: t1234
+    tenancy.gke.io/tenant: t1234-tenant0
+  name: cnrm-controller-manager-${NAMESPACE?}
+  namespace: t1234-tenant0-supervisor
+spec:
+  selector:
+    matchLabels:
+      cnrm.cloud.google.com/component: cnrm-controller-manager
+      cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+      cnrm.cloud.google.com/system: "true"
+  serviceName: cnrm-manager-${NAMESPACE?}
+  template:
+    metadata:
+      labels:
+        cnrm.cloud.google.com/component: cnrm-controller-manager
+        cnrm.cloud.google.com/scoped-namespace: ${NAMESPACE?}
+        cnrm.cloud.google.com/system: "true"
+    spec:
+      containers:
+      - args: ["--scoped-namespace=${NAMESPACE?}", "--stderrthreshold=INFO", "--prometheus-scrape-endpoint=:8888"]
+        command: ["/configconnector/manager"]
+        image: gcr.io/gke-release/cnrm/controller:4af93f1
+        name: manager
+      - command: ["/monitor", "--source=configconnector:http://localhost:8888?whitelisted=reconcile_requests_total,reconcile_request_duration_seconds,reconcile_workers_total,reconcile_occupied_workers_total,internal_errors_total&customResourceType=k8s_container&customLabels[container_name]&customLabels[project_id]&customLabels[location]&customLabels[cluster_name]&customLabels[namespace_name]&customLabels[pod_name]", "--stackdriver-prefix=kubernetes.io/internal/addons"]
+        image: gke.gcr.io/prometheus-to-sd:v0.11.12-gke.11
+        name: prom-to-sd
+`}
+
 var FooCRD = `
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -310,6 +404,20 @@ spec:
     image: test-image
 `
 
+var NamespacedControllerManagerPod = `apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    cnrm.cloud.google.com/component: cnrm-controller-manager
+    cnrm.cloud.google.com/system: "true"
+  name: cnrm-controller-manager-12345-0
+  namespace: t1234-tenant0-supervisor
+spec:
+  containers:
+  - name: manager
+    image: test-image
+`
+
 func GetSharedComponentsManifest() []string {
 	res := make([]string, 0)
 	res = append(res, FooCRD, SystemNs)
@@ -369,6 +477,12 @@ func GetClusterModeWorkloadIdentityManifest() []string {
 func GetPerNamespaceManifest() []string {
 	res := make([]string, 0)
 	res = append(res, NamespacedComponentsTemplate...)
+	return res
+}
+
+func GetPerManagerNamespaceManifest() []string {
+	res := make([]string, 0)
+	res = append(res, PerNamespaceComponentsTemplate...)
 	return res
 }
 

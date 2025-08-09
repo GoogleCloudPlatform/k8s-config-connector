@@ -69,6 +69,17 @@ type ConfigConnectorContextSpec struct {
 	//+kubebuilder:validation:Enum=Reconciling;Paused
 	//+kubebuilder:validation:Optional
 	Actuation ActuationMode `json:"actuationMode,omitempty"`
+
+	// ManagerNamespace instructs Config Connector to deploy
+	// controller managers and related resources in the namespace
+	// specified as 'ManagerNamespace' instead of standard 'cnrm-system'
+	// The specified manager namespace may exist before the corresponding
+	// ConfigConnectorContext is created.
+	// If the specified namespace does not exist then it will be created
+	// by Config Connector. The field is immutable.
+	//+kubebuilder:validation:Optional
+	//+kubebuilder:validation:XValidation:rule="self == oldSelf",message="ManagerNamespace field is immutable"
+	ManagerNamespace string `json:"managerNamespace,omitempty"`
 }
 
 type StateIntoSpecValue string

@@ -46,6 +46,7 @@ func main() {
 	var repoPath string
 	var enablePprof bool
 	var pprofPort int
+	var enableManagerNamespace bool
 
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	profiler.AddFlag(flag.CommandLine)
@@ -58,6 +59,7 @@ func main() {
 
 	imagePrefix := os.Getenv("IMAGE_PREFIX")
 	flag.StringVar(&imagePrefix, "image-prefix", imagePrefix, "Remap container images to pull from the specified registry or mirror.")
+	flag.BoolVar(&enableManagerNamespace, "enable-manager-namespace", false, "Enable running controller managers in separate namespaces.")
 
 	flag.Parse()
 
@@ -108,8 +110,9 @@ func main() {
 	}
 
 	ccOptions := &configconnector.ReconcilerOptions{
-		RepoPath:       repoPath,
-		ImageTransform: imageTransform,
+		RepoPath:               repoPath,
+		ImageTransform:         imageTransform,
+		EnableManagerNamespace: enableManagerNamespace,
 	}
 	if _, err := configconnector.Add(mgr, ccOptions); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "ConfigConnector")
@@ -117,8 +120,9 @@ func main() {
 	}
 
 	cccOptions := &configconnectorcontext.ReconcilerOptions{
-		RepoPath:       repoPath,
-		ImageTransform: imageTransform,
+		RepoPath:               repoPath,
+		ImageTransform:         imageTransform,
+		EnableManagerNamespace: enableManagerNamespace,
 	}
 	if err = configconnectorcontext.Add(mgr, cccOptions); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "ConfigConnectorContext")
