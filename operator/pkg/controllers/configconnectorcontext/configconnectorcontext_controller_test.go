@@ -45,9 +45,10 @@ import (
 func TestRemovingStaleComponents(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
-		name            string
-		ccc             *corev1beta1.ConfigConnectorContext
-		staleComponents []string
+		name                   string
+		ccc                    *corev1beta1.ConfigConnectorContext
+		transformationFunction func(ctx context.Context, c client.Client, ccc *corev1beta1.ConfigConnectorContext, namespacedTemplates []*manifest.Object) ([]*manifest.Object, error)
+		staleComponents        []string
 	}{
 		{
 			name: "namespaced mode",
@@ -61,6 +62,7 @@ func TestRemovingStaleComponents(t *testing.T) {
 					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
 				},
 			},
+			transformationFunction: transformNamespacedComponentTemplates,
 			staleComponents: []string{`
 apiVersion: v1
 kind: Service
@@ -124,6 +126,7 @@ spec:
 					ManagerNamespace:     "t1234-tenant0-supervisor",
 				},
 			},
+			transformationFunction: transformPerNamespaceComponentTemplates,
 			staleComponents: []string{`
 apiVersion: v1
 kind: Service
@@ -192,7 +195,7 @@ spec:
 			}
 
 			m := testcontroller.ParseObjects(ctx, t, testcontroller.GetPerNamespaceManifest())
-			_, err := transformNamespacedComponentTemplates(ctx, mgr.GetClient(), tc.ccc, m.Items)
+			_, err := tc.transformationFunction(ctx, mgr.GetClient(), tc.ccc, m.Items)
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}

@@ -256,7 +256,7 @@ func (r *Reconciler) transformPerNamespaceComponents() declarative.ObjectTransfo
 		if ccc.Spec.ManagerNamespace == "" {
 			return nil
 		}
-		transformedObjects, err := transformPerNamespaceComponentTemplates(ccc, m.Items)
+		transformedObjects, err := transformPerNamespaceComponentTemplates(ctx, r.client, ccc, m.Items)
 		if err != nil {
 			return fmt.Errorf("error transforming per namespace components: %w", err)
 		}
