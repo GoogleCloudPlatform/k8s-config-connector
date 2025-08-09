@@ -267,11 +267,13 @@ func (a *logMetricAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 			}
 		}
 
-		if !compareMetricDescriptors(a.desired.Spec.MetricDescriptor, a.actual.MetricDescriptor) {
-			if err := validateImmutableFieldsUpdated(a.desired.Spec.MetricDescriptor, a.actual.MetricDescriptor); err != nil {
-				return fmt.Errorf("logMetric update failed: %w", err)
+		if a.desired.Spec.MetricDescriptor != nil {
+			if !compareMetricDescriptors(a.desired.Spec.MetricDescriptor, a.actual.MetricDescriptor) {
+				if err := validateImmutableFieldsUpdated(a.desired.Spec.MetricDescriptor, a.actual.MetricDescriptor); err != nil {
+					return fmt.Errorf("logMetric update failed: %w", err)
+				}
+				update.MetricDescriptor = convertKCCtoAPIForMetricDescriptor(a.desired.Spec.MetricDescriptor)
 			}
-			update.MetricDescriptor = convertKCCtoAPIForMetricDescriptor(a.desired.Spec.MetricDescriptor)
 		}
 
 		if !reflect.DeepEqual(a.desired.Spec.LabelExtractors, a.actual.LabelExtractors) {
