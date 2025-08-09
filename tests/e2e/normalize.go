@@ -469,35 +469,41 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		if externalRef != "" {
 			tokens := strings.Split(externalRef, "/")
 			n := len(tokens)
-			typeName := tokens[len(tokens)-2]
-
-			switch typeName {
-			case "contacts":
-				// "projects/${projectNumber}/contacts/${contactId}"
-				needle := "contacts/" + tokens[len(tokens)-1]
-				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-					return strings.ReplaceAll(s, needle, "contacts/${contactId}")
-				})
-			case "rules":
-				// Get firewall policy id from firewall policy rule's externalRef and replace it
-				// e.g. "locations/global/firewallPolicies/${firewallPolicyID}/rules/9000"
-				if n >= 3 {
-					firewallPolicyId := tokens[len(tokens)-3]
+			if n >= 2 {
+				typeName := tokens[len(tokens)-2]
+				switch typeName {
+				case "contacts":
+					// "projects/${projectNumber}/contacts/${contactId}"
+					needle := "contacts/" + tokens[len(tokens)-1]
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-						return strings.ReplaceAll(s, firewallPolicyId, "${firewallPolicyID}")
+						return strings.ReplaceAll(s, needle, "contacts/${contactId}")
 					})
-				}
-			case "processorVersions":
-				// Get processor id and version id from processor version's externalRef and replace it
-				// e.g. "projects/${projectId}/locations/us/processors/7f8f177e3b9cc6d9/processorVersions/1954ace3de6"
-				if n >= 3 {
-					processorId := tokens[len(tokens)-3]
-					processorVersionId := tokens[len(tokens)-1]
+				case "rules":
+					// Get firewall policy id from firewall policy rule's externalRef and replace it
+					// e.g. "locations/global/firewallPolicies/${firewallPolicyID}/rules/9000"
+					if n >= 3 {
+						firewallPolicyId := tokens[len(tokens)-3]
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, firewallPolicyId, "${firewallPolicyID}")
+						})
+					}
+				case "processorVersions":
+					// Get processor id and version id from processor version's externalRef and replace it
+					// e.g. "projects/${projectId}/locations/us/processors/7f8f177e3b9cc6d9/processorVersions/1954ace3de6"
+					if n >= 3 {
+						processorId := tokens[len(tokens)-3]
+						processorVersionId := tokens[len(tokens)-1]
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, processorId, "${processorID}")
+						})
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, processorVersionId, "${processorVersionID}")
+						})
+					}
+				case "keyHandles":
+					uuid := tokens[len(tokens)-1]
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-						return strings.ReplaceAll(s, processorId, "${processorID}")
-					})
-					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-						return strings.ReplaceAll(s, processorVersionId, "${processorVersionID}")
+						return strings.ReplaceAll(s, uuid, "1a1a1a-222b-3cc3-d444-e555ee555555")
 					})
 				}
 			// Replace the server generated group id
