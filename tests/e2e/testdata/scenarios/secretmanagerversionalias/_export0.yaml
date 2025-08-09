@@ -3,6 +3,8 @@ kind: SecretManagerSecret
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    managed-by-cnrm: "true"
   name: secret-${uniqueId}
 spec:
   replication:
