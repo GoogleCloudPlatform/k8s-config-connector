@@ -1,0 +1,13 @@
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogMetric
+metadata:
+  name: logginglogmetric-metricdescriptor-${uniqueId}
+spec:
+  description: "Test when metricDescriptor is not specified"
+  filter: |-
+    severity="ERROR"
+    resource.type="k8s_container"
+    resource.labels.cluster_name="testcluster"
+    resource.labels.namespace_name="testnamespace"
+  projectRef:
+    external: "projects/${projectId}"

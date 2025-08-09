@@ -24,14 +24,15 @@ import (
 	"strings"
 	"time"
 
+	pb "cloud.google.com/go/logging/apiv2/loggingpb"
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/genproto/googleapis/api"
+	metricpb "google.golang.org/genproto/googleapis/api/metric"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "cloud.google.com/go/logging/apiv2/loggingpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
@@ -80,6 +81,9 @@ func (s *metricsServiceV2) CreateLogMetric(ctx context.Context, req *pb.CreateLo
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 
+	if obj.MetricDescriptor == nil {
+		obj.MetricDescriptor = &metricpb.MetricDescriptor{}
+	}
 	if obj.MetricDescriptor != nil {
 		obj.MetricDescriptor.Description = obj.Description
 	}
@@ -98,6 +102,16 @@ func (s *metricsServiceV2) populateDefaultsForLogMetric(name *logMetricName, obj
 	if obj.MetricDescriptor != nil {
 		obj.MetricDescriptor.Name = fmt.Sprintf("projects/%s/metricDescriptors/logging.googleapis.com/user/%s", name.Project.ID, name.MetricName)
 		obj.MetricDescriptor.Type = fmt.Sprintf("logging.googleapis.com/user/%s", name.MetricName)
+
+		if obj.MetricDescriptor.ValueType == metricpb.MetricDescriptor_VALUE_TYPE_UNSPECIFIED {
+			obj.MetricDescriptor.ValueType = metricpb.MetricDescriptor_INT64
+		}
+		if obj.MetricDescriptor.Unit == "" {
+			obj.MetricDescriptor.Unit = "1"
+		}
+		if obj.MetricDescriptor.MetricKind == metricpb.MetricDescriptor_METRIC_KIND_UNSPECIFIED {
+			obj.MetricDescriptor.MetricKind = metricpb.MetricDescriptor_DELTA
+		}
 	}
 }
 
