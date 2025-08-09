@@ -983,7 +983,7 @@ func (in *SparkHistoryServerConfigSpec) DeepCopyInto(out *SparkHistoryServerConf
 	*out = *in
 	if in.DataprocClusterRef != nil {
 		in, out := &in.DataprocClusterRef, &out.DataprocClusterRef
-		*out = new(dataprocv1beta1.DataprocClusterRef)
+		*out = new(dataprocv1beta1.ClusterRef)
 		**out = **in
 	}
 }
