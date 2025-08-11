@@ -20,11 +20,12 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-central1-a
+  autoDeleteAutoCreatedReservations: true
   specificSkuProperties:
     totalCount: 2
     instanceProperties:
       machineType: n1-standard-1
       minCPUPlatform: "Intel Sandy Bridge"
   timeWindow:
-    startTime: 2025-11-31T00:00:00-07:00
-    endTime: 2025-12-31T00:00:00-07:00
+    startTime: 2025-12-01T07:00:00Z
+    endTime: 2025-12-31T07:00:00Z

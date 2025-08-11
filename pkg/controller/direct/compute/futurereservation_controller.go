@@ -178,23 +178,33 @@ func (a *FutureReservationAdapter) Update(ctx context.Context, updateOp *directb
 	resource.SelfLinkWithId = a.actual.SelfLinkWithId
 	resource.Kind = a.actual.Kind
 	resource.Zone = a.actual.Zone
+	resource.Status = a.actual.Status
 
-	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
+	diffs, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
+
+	// fields that cause drift or GCP API errors
+	fieldsToExclude := sets.New(
+		"auto_created_reservations_delete_time", // GCP computes this based on other fields
+		"auto_delete_auto_created_reservations", // GCP resets to false in DRAFTING state
+		"planning_status",                       // GCP manages lifecycle state transitions
+	)
+
+	// exclude fields from diff
+	paths := sets.List(diffs.Difference(fieldsToExclude))
 
 	updated := a.actual
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 	} else {
 		log.V(2).Info("fields need update", "name", a.id, "paths", paths)
-		updateMask := strings.Join(sets.List(paths), ",")
 
 		req := &computepb.UpdateFutureReservationRequest{
 			Project:                   a.id.Parent().ProjectID,
 			Zone:                      a.id.Parent().Location,
-			UpdateMask:                direct.LazyPtr(updateMask),
+			UpdateMask:                direct.LazyPtr(strings.Join(paths, ",")),
 			FutureReservation:         a.id.ID(),
 			FutureReservationResource: resource,
 		}

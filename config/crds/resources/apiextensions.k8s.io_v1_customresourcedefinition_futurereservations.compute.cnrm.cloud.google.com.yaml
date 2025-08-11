@@ -246,8 +246,8 @@ spec:
                   Either provide the reservation_name or a name_prefix.
                 type: string
               resourceID:
-                description: The FutureReservation name. If not given, the metadata.name
-                  will be used.
+                description: Immutable. Optional. The FutureReservation name. If not
+                  given, the metadata.name will be used.
                 type: string
               schedulingType:
                 description: Maintenance information for this reservation Check the
@@ -383,6 +383,7 @@ spec:
                     type: string
                 type: object
             required:
+            - autoDeleteAutoCreatedReservations
             - location
             - projectRef
             type: object

@@ -35,7 +35,8 @@ type Parent struct {
 type FutureReservationSpec struct {
 	Parent `json:",inline"`
 
-	// The FutureReservation name. If not given, the metadata.name will be used.
+	// Immutable. Optional. The FutureReservation name. If not given, the metadata.name will be used.
+	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Aggregate reservation details for the future reservation.
@@ -52,7 +53,7 @@ type FutureReservationSpec struct {
 
 	// Setting for enabling or disabling automatic deletion for auto-created reservation. If set to true, auto-created reservations will be deleted at Future Reservation's end time (default) or at user's defined timestamp if any of the [auto_created_reservations_delete_time, auto_created_reservations_duration] values is specified. For keeping auto-created reservation indefinitely, this value should be set to false.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.auto_delete_auto_created_reservations
-	AutoDeleteAutoCreatedReservations *bool `json:"autoDeleteAutoCreatedReservations,omitempty"`
+	AutoDeleteAutoCreatedReservations *bool `json:"autoDeleteAutoCreatedReservations"`
 
 	// If not present, then FR will not deliver a new commitment or update an existing commitment.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.commitment_info
