@@ -30,8 +30,7 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	newiamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
-	oldiamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -45,7 +44,7 @@ const (
 )
 
 func init() {
-	registry.RegisterModel(newiamv1beta1.IAMPartialPolicyGVK, NewIAMPartialPolicyModel)
+	registry.RegisterModel(krm.IAMPartialPolicyGVK, NewIAMPartialPolicyModel)
 }
 
 func NewIAMPartialPolicyModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -83,7 +82,7 @@ func validateDeps(deps *directbase.IAMAdapterDeps) error {
 	return nil
 }
 func (m *modelIAMPartialPolicy) IAMAdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured, deps *directbase.IAMAdapterDeps) (directbase.Adapter, error) {
-	obj := &newiamv1beta1.IAMPartialPolicy{}
+	obj := &krm.IAMPartialPolicy{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
@@ -112,7 +111,7 @@ func (m *modelIAMPartialPolicy) AdapterForURL(ctx context.Context, url string) (
 
 type IAMPartialPolicyAdapter struct {
 	iamClient                      *kcciamclient.IAMClient
-	desired                        *newiamv1beta1.IAMPartialPolicy
+	desired                        *krm.IAMPartialPolicy
 	actualReferencedResourcePolicy *iampb.Policy
 }
 
@@ -147,34 +146,34 @@ type IAMMemberIdentityResolver struct {
 	Ctx       context.Context
 }
 
-func (t IAMMemberIdentityResolver) Resolve(member newiamv1beta1.Member, memberFrom *newiamv1beta1.MemberSource, defaultNamespace string) (string, error) {
-	oldMember := oldiamv1beta1.Member(member)
-	var oldMemberFrom *oldiamv1beta1.MemberSource
+func (t IAMMemberIdentityResolver) Resolve(member krm.Member, memberFrom *krm.MemberSource, defaultNamespace string) (string, error) {
+	oldMember := krm.Member(member)
+	var oldMemberFrom *krm.MemberSource
 	if memberFrom != nil {
-		oldMemberFrom = &oldiamv1beta1.MemberSource{}
+		oldMemberFrom = &krm.MemberSource{}
 		if memberFrom.BigQueryConnectionConnectionRef != nil {
 			oldMemberFrom.BigQueryConnectionConnectionRef = memberFrom.BigQueryConnectionConnectionRef
 		}
 		if memberFrom.ServiceAccountRef != nil {
-			oldMemberFrom.ServiceAccountRef = &oldiamv1beta1.MemberReference{
+			oldMemberFrom.ServiceAccountRef = &krm.MemberReference{
 				Name:      memberFrom.ServiceAccountRef.Name,
 				Namespace: memberFrom.ServiceAccountRef.Namespace,
 			}
 		}
 		if memberFrom.LogSinkRef != nil {
-			oldMemberFrom.LogSinkRef = &oldiamv1beta1.MemberReference{
+			oldMemberFrom.LogSinkRef = &krm.MemberReference{
 				Name:      memberFrom.LogSinkRef.Name,
 				Namespace: memberFrom.LogSinkRef.Namespace,
 			}
 		}
 		if memberFrom.SQLInstanceRef != nil {
-			oldMemberFrom.SQLInstanceRef = &oldiamv1beta1.MemberReference{
+			oldMemberFrom.SQLInstanceRef = &krm.MemberReference{
 				Name:      memberFrom.SQLInstanceRef.Name,
 				Namespace: memberFrom.SQLInstanceRef.Namespace,
 			}
 		}
 		if memberFrom.ServiceIdentityRef != nil {
-			oldMemberFrom.ServiceIdentityRef = &oldiamv1beta1.MemberReference{
+			oldMemberFrom.ServiceIdentityRef = &krm.MemberReference{
 				Name:      memberFrom.ServiceIdentityRef.Name,
 				Namespace: memberFrom.ServiceIdentityRef.Namespace,
 			}
@@ -189,12 +188,12 @@ func (a *IAMPartialPolicyAdapter) Create(ctx context.Context, createOp *directba
 	log := getLogger(ctx)
 	log.V(2).Info("creating/applying IAMPartialPolicy", "name", k8s.GetNamespacedName(a.desired))
 
-	var livePolicyForMerge *newiamv1beta1.IAMPolicy
+	var livePolicyForMerge *krm.IAMPolicy
 
 	// If the policy truly doesn't exist, livePolicyForMerge should be an empty IAMPolicy struct
 	// for ComputePartialPolicyWithMergedBindings to work correctly.
 	if a.actualReferencedResourcePolicy == nil {
-		livePolicyForMerge = &newiamv1beta1.IAMPolicy{}
+		livePolicyForMerge = &krm.IAMPolicy{}
 	} else {
 		// todo acpana round trip ?
 		livePolicyForMerge = ToNewIAMPolicySkeleton(a.desired)
@@ -216,7 +215,7 @@ func (a *IAMPartialPolicyAdapter) Create(ctx context.Context, createOp *directba
 	log.V(2).Info("successfully applied IAMPartialPolicy for create", "name", k8s.GetNamespacedName(a.desired))
 
 	// Update KRM status
-	newKRMStatus := newiamv1beta1.IAMPartialPolicyStatus{
+	newKRMStatus := krm.IAMPartialPolicyStatus{
 		ObservedGeneration:  a.desired.GetGeneration(),
 		LastAppliedBindings: desiredPartialPolicyWithStatus.Status.LastAppliedBindings,
 		AllBindings:         desiredPartialPolicyWithStatus.Status.AllBindings,
@@ -237,7 +236,7 @@ func (a *IAMPartialPolicyAdapter) Update(ctx context.Context, updateOp *directba
 		return fmt.Errorf("no IAM policy found for referenced resource %s during update for IAMPartialPolicy %v; requeueing for Find", a.desired.Spec.ResourceReference.GetNamespacedName(), k8s.GetNamespacedName(a.desired))
 	}
 
-	livePolicyForMerge := &newiamv1beta1.IAMPolicy{}
+	livePolicyForMerge := &krm.IAMPolicy{}
 	livePolicyForMerge.Spec = *IAMPolicySpec_FromProto(mapCtx, a.actualReferencedResourcePolicy)
 
 	resolver := IAMMemberIdentityResolver{IAMClient: a.iamClient, Ctx: ctx}
@@ -266,7 +265,7 @@ func (a *IAMPartialPolicyAdapter) Update(ctx context.Context, updateOp *directba
 
 	// Always update KRM status to reflect observed generation and latest computed bindings,
 	// even if GCP didn't change, as spec or other KRM details might have.
-	newKRMStatus := newiamv1beta1.IAMPartialPolicyStatus{
+	newKRMStatus := krm.IAMPartialPolicyStatus{
 		ObservedGeneration:  a.desired.GetGeneration(),
 		LastAppliedBindings: desiredPartialPolicyWithStatus.Status.LastAppliedBindings,
 		AllBindings:         desiredPartialPolicyWithStatus.Status.AllBindings,
@@ -288,7 +287,7 @@ func (a *IAMPartialPolicyAdapter) Delete(ctx context.Context, deleteOp *directba
 		log.V(2).Info("actual policy not found during delete, assuming already gone or no-op needed for GCP", "name", k8s.GetNamespacedName(a.desired))
 		return true, nil
 	}
-	livePolicyForPruning := &newiamv1beta1.IAMPolicy{}
+	livePolicyForPruning := &krm.IAMPolicy{}
 	livePolicyForPruning.Spec = direct.ValueOf(IAMPolicySpec_FromProto(mapCtx, a.actualReferencedResourcePolicy))
 
 	desiredPartialPolicyWithRemainingStatus := ComputePartialPolicyWithRemainingBindings(a.desired, livePolicyForPruning)
@@ -314,11 +313,11 @@ func (a *IAMPartialPolicyAdapter) Export(ctx context.Context) (*unstructured.Uns
 // ToNewIAMPolicySkeleton creates an IAMPolicy struct with ObjectMeta and resource reference
 // copied from the partial policy. The skeleton struct can be passed to IAMClient.GetPolicy()
 // to fetch the live IAM policy.
-func ToNewIAMPolicySkeleton(p *newiamv1beta1.IAMPartialPolicy) *newiamv1beta1.IAMPolicy {
-	res := &newiamv1beta1.IAMPolicy{
+func ToNewIAMPolicySkeleton(p *krm.IAMPartialPolicy) *krm.IAMPolicy {
+	res := &krm.IAMPolicy{
 		TypeMeta: metav1.TypeMeta{
-			Kind:       newiamv1beta1.IAMPolicyGVK.Kind,
-			APIVersion: newiamv1beta1.IAMAPIVersion,
+			Kind:       krm.IAMPolicyGVK.Kind,
+			APIVersion: krm.IAMAPIVersion,
 		},
 	}
 
@@ -333,11 +332,11 @@ func ToNewIAMPolicySkeleton(p *newiamv1beta1.IAMPartialPolicy) *newiamv1beta1.IA
 }
 
 // old style v1beta1 Policy representation for the IAM Client
-func ToOldIAMPolicySkeleton(p *newiamv1beta1.IAMPartialPolicy) *oldiamv1beta1.IAMPolicy {
-	res := &oldiamv1beta1.IAMPolicy{
+func ToOldIAMPolicySkeleton(p *krm.IAMPartialPolicy) *krm.IAMPolicy {
+	res := &krm.IAMPolicy{
 		TypeMeta: metav1.TypeMeta{
-			Kind:       newiamv1beta1.IAMPolicyGVK.Kind,
-			APIVersion: newiamv1beta1.IAMAPIVersion,
+			Kind:       krm.IAMPolicyGVK.Kind,
+			APIVersion: krm.IAMAPIVersion,
 		},
 	}
 
@@ -351,21 +350,22 @@ func ToOldIAMPolicySkeleton(p *newiamv1beta1.IAMPartialPolicy) *oldiamv1beta1.IA
 	return res
 }
 
-func toDesiredPolicy(desiredPartialPolicy *newiamv1beta1.IAMPartialPolicy, livePolicy *newiamv1beta1.IAMPolicy) *oldiamv1beta1.IAMPolicy {
+// todo acpana -- get rid of the "oldiamv1beta1" translations throughout here and mappings
+func toDesiredPolicy(desiredPartialPolicy *krm.IAMPartialPolicy, livePolicy *krm.IAMPolicy) *krm.IAMPolicy {
 	desiredPolicy := ToOldIAMPolicySkeleton(desiredPartialPolicy)
 
 	if len(desiredPartialPolicy.Status.AllBindings) > 0 {
-		desiredPolicy.Spec.Bindings = make([]oldiamv1beta1.IAMPolicyBinding, len(desiredPartialPolicy.Status.AllBindings))
+		desiredPolicy.Spec.Bindings = make([]krm.IAMPolicyBinding, len(desiredPartialPolicy.Status.AllBindings))
 		for i, binding := range desiredPartialPolicy.Status.AllBindings {
-			desiredPolicy.Spec.Bindings[i] = oldiamv1beta1.IAMPolicyBinding{
+			desiredPolicy.Spec.Bindings[i] = krm.IAMPolicyBinding{
 				Role: binding.Role,
 			}
-			desiredPolicy.Spec.Bindings[i].Members = make([]oldiamv1beta1.Member, len(binding.Members))
+			desiredPolicy.Spec.Bindings[i].Members = make([]krm.Member, len(binding.Members))
 			for j, member := range binding.Members {
-				desiredPolicy.Spec.Bindings[i].Members[j] = oldiamv1beta1.Member(member)
+				desiredPolicy.Spec.Bindings[i].Members[j] = krm.Member(member)
 			}
 			if binding.Condition != nil {
-				desiredPolicy.Spec.Bindings[i].Condition = &oldiamv1beta1.IAMCondition{
+				desiredPolicy.Spec.Bindings[i].Condition = &krm.IAMCondition{
 					Description: binding.Condition.Description,
 					Expression:  binding.Condition.Expression,
 					Title:       binding.Condition.Title,
@@ -378,21 +378,21 @@ func toDesiredPolicy(desiredPartialPolicy *newiamv1beta1.IAMPartialPolicy, liveP
 	desiredPolicy.Spec.Etag = livePolicy.Spec.Etag
 	// Preserve the audit configs if any.
 	if len(livePolicy.Spec.AuditConfigs) > 0 {
-		desiredPolicy.Spec.AuditConfigs = make([]oldiamv1beta1.IAMPolicyAuditConfig, len(livePolicy.Spec.AuditConfigs))
+		desiredPolicy.Spec.AuditConfigs = make([]krm.IAMPolicyAuditConfig, len(livePolicy.Spec.AuditConfigs))
 		for i, auditConfig := range livePolicy.Spec.AuditConfigs {
-			desiredPolicy.Spec.AuditConfigs[i] = oldiamv1beta1.IAMPolicyAuditConfig{
+			desiredPolicy.Spec.AuditConfigs[i] = krm.IAMPolicyAuditConfig{
 				Service: auditConfig.Service,
 			}
 			if len(auditConfig.AuditLogConfigs) > 0 {
-				desiredPolicy.Spec.AuditConfigs[i].AuditLogConfigs = make([]oldiamv1beta1.AuditLogConfig, len(auditConfig.AuditLogConfigs))
+				desiredPolicy.Spec.AuditConfigs[i].AuditLogConfigs = make([]krm.AuditLogConfig, len(auditConfig.AuditLogConfigs))
 				for j, auditLogConfig := range auditConfig.AuditLogConfigs {
-					desiredPolicy.Spec.AuditConfigs[i].AuditLogConfigs[j] = oldiamv1beta1.AuditLogConfig{
+					desiredPolicy.Spec.AuditConfigs[i].AuditLogConfigs[j] = krm.AuditLogConfig{
 						LogType: auditLogConfig.LogType,
 					}
 					if len(auditLogConfig.ExemptedMembers) > 0 {
-						desiredPolicy.Spec.AuditConfigs[i].AuditLogConfigs[j].ExemptedMembers = make([]oldiamv1beta1.Member, len(auditLogConfig.ExemptedMembers))
+						desiredPolicy.Spec.AuditConfigs[i].AuditLogConfigs[j].ExemptedMembers = make([]krm.Member, len(auditLogConfig.ExemptedMembers))
 						for k, member := range auditLogConfig.ExemptedMembers {
-							desiredPolicy.Spec.AuditConfigs[i].AuditLogConfigs[j].ExemptedMembers[k] = oldiamv1beta1.Member(member)
+							desiredPolicy.Spec.AuditConfigs[i].AuditLogConfigs[j].ExemptedMembers[k] = krm.Member(member)
 						}
 					}
 				}

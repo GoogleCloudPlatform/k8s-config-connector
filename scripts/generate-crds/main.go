@@ -195,7 +195,7 @@ func generateCRDsForTypesFiles() []*apiextensions.CustomResourceDefinition {
 	crdGen := genall.Generator(crdgen.Generator{})
 	gens = append(gens, &crdGen)
 	rootPath := repo.GetRootOrLogFatal()
-	apisPath := path.Join(rootPath, "pkg", "apis", "iam", "v1beta1")
+	apisPath := path.Join(rootPath, "apis", "iam", "v1beta1")
 	roots, err := gens.ForRoots(apisPath)
 	if err != nil {
 		log.Fatalf("error producing a Runtime to run the generators: %v", err)
