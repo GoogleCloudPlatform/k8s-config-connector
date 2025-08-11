@@ -18,7 +18,7 @@ interactions:
             Content-Type:
                 - application/json
             x-goog-api-client:
-                - gl-go/1.25.0-20250216-RC00 gapic/1.14.5 gax/2.14.1 rest/UNKNOWN
+                - gl-go/1.24.2 gapic/1.14.7 gax/2.14.2 rest/UNKNOWN
             x-goog-request-params:
                 - name=projects%2Fcnrm-anhdle%2Fsecrets%2Fsecretmanagersecretversion-dep-2v5hqlif3igof
         url: https://secretmanager.googleapis.com/v1/projects/example-project/secrets/secretmanagersecretversion-dep-2v5hqlif3igof?%24alt=json%3Benum-encoding%3Dint
@@ -37,25 +37,25 @@ interactions:
                 - application/json; charset=UTF-8
         status: 404 Not Found
         code: 404
-        duration: 410.677727ms
+        duration: 150.395157ms
     - id: 1
       request:
         proto: HTTP/1.1
         proto_major: 1
         proto_minor: 1
-        content_length: 32
+        content_length: 89
         transfer_encoding: []
         trailer: {}
         host: secretmanager.googleapis.com
         remote_addr: ""
         request_uri: ""
-        body: '{"replication":{"automatic":{}}}'
+        body: '{"replication":{"automatic":{}}, "labels":{"cnrm-test":"true", "managed-by-cnrm":"true"}}'
         form: {}
         headers:
             Content-Type:
                 - application/json
             x-goog-api-client:
-                - gl-go/1.25.0-20250216-RC00 gapic/1.14.5 gax/2.14.1 rest/UNKNOWN
+                - gl-go/1.24.2 gapic/1.14.7 gax/2.14.2 rest/UNKNOWN
             x-goog-request-params:
                 - parent=projects%2Fcnrm-anhdle
         url: https://secretmanager.googleapis.com/v1/projects/example-project/secrets?%24alt=json%3Benum-encoding%3Dint&secretId=secretmanagersecretversion-dep-2v5hqlif3igof
@@ -74,33 +74,37 @@ interactions:
               "replication": {
                 "automatic": {}
               },
-              "createTime": "2025-03-31T23:30:56.640217Z",
-              "etag": "\"1631abcfda90d9\""
+              "createTime": "2025-08-11T23:07:29.456167Z",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true"
+              },
+              "etag": "\"163c1efce157c3\""
             }
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 401.249286ms
+        duration: 202.514166ms
     - id: 2
       request:
         proto: HTTP/1.1
         proto_major: 1
         proto_minor: 1
-        content_length: 248
+        content_length: 249
         transfer_encoding: []
         trailer: {}
         host: secretmanager.googleapis.com
         remote_addr: ""
         request_uri: ""
-        body: '{"parent":"projects/example-project/secrets/secretmanagersecretversion-dep-2v5hqlif3igof","payload":{"data":"SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE="}}'
+        body: '{"parent":"projects/example-project/secrets/secretmanagersecretversion-dep-2v5hqlif3igof", "payload":{"data":"SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE="}}'
         form: {}
         headers:
             Content-Type:
                 - application/json
             x-goog-api-client:
-                - gl-go/1.25.0-20250216-RC00 gapic/1.14.5 gax/2.14.1 rest/UNKNOWN
+                - gl-go/1.24.2 gapic/1.14.7 gax/2.14.2 rest/UNKNOWN
             x-goog-request-params:
                 - parent=projects%2Fcnrm-anhdle%2Fsecrets%2Fsecretmanagersecretversion-dep-2v5hqlif3igof
         url: https://secretmanager.googleapis.com/v1/projects/example-project/secrets/secretmanagersecretversion-dep-2v5hqlif3igof:addVersion?%24alt=json%3Benum-encoding%3Dint
@@ -116,19 +120,19 @@ interactions:
         body: |
             {
               "name": "projects/123456789/secrets/secretmanagersecretversion-dep-2v5hqlif3igof/versions/1",
-              "createTime": "2025-03-31T23:30:57.822766Z",
+              "createTime": "2025-08-11T23:07:30.814956Z",
               "state": 1,
               "replicationStatus": {
                 "automatic": {}
               },
-              "etag": "\"1631abcfec9c2e\""
+              "etag": "\"163c1efcf43fec\""
             }
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 762.900455ms
+        duration: 1.017662728s
     - id: 3
       request:
         proto: HTTP/1.1
@@ -146,7 +150,7 @@ interactions:
             Content-Type:
                 - application/json
             x-goog-api-client:
-                - gl-go/1.25.0-20250216-RC00 gapic/1.14.5 gax/2.14.1 rest/UNKNOWN
+                - gl-go/1.24.2 gapic/1.14.7 gax/2.14.2 rest/UNKNOWN
             x-goog-request-params:
                 - name=projects%2Fcnrm-anhdle%2Fsecrets%2Fsecretmanagersecretversion-dep-2v5hqlif3igof%2Fversions%2F1
         url: https://secretmanager.googleapis.com/v1/projects/example-project/secrets/secretmanagersecretversion-dep-2v5hqlif3igof/versions/1?%24alt=json%3Benum-encoding%3Dint
@@ -162,37 +166,37 @@ interactions:
         body: |
             {
               "name": "projects/123456789/secrets/secretmanagersecretversion-dep-2v5hqlif3igof/versions/1",
-              "createTime": "2025-03-31T23:30:57.822766Z",
+              "createTime": "2025-08-11T23:07:30.814956Z",
               "state": 1,
               "replicationStatus": {
                 "automatic": {}
               },
-              "etag": "\"1631abcfec9c2e\""
+              "etag": "\"163c1efcf43fec\""
             }
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 94.535305ms
+        duration: 83.256248ms
     - id: 4
       request:
         proto: HTTP/1.1
         proto_major: 1
         proto_minor: 1
-        content_length: 123
+        content_length: 124
         transfer_encoding: []
         trailer: {}
         host: secretmanager.googleapis.com
         remote_addr: ""
         request_uri: ""
-        body: '{"name":"projects/example-project/secrets/secretmanagersecretversion-dep-2v5hqlif3igof/versions/1","etag":"\"1631abcfec9c2e\""}'
+        body: '{"name":"projects/example-project/secrets/secretmanagersecretversion-dep-2v5hqlif3igof/versions/1", "etag":"\"163c1efcf43fec\""}'
         form: {}
         headers:
             Content-Type:
                 - application/json
             x-goog-api-client:
-                - gl-go/1.25.0-20250216-RC00 gapic/1.14.5 gax/2.14.1 rest/UNKNOWN
+                - gl-go/1.24.2 gapic/1.14.7 gax/2.14.2 rest/UNKNOWN
             x-goog-request-params:
                 - name=projects%2Fcnrm-anhdle%2Fsecrets%2Fsecretmanagersecretversion-dep-2v5hqlif3igof%2Fversions%2F1
         url: https://secretmanager.googleapis.com/v1/projects/example-project/secrets/secretmanagersecretversion-dep-2v5hqlif3igof/versions/1:disable?%24alt=json%3Benum-encoding%3Dint
@@ -208,19 +212,19 @@ interactions:
         body: |
             {
               "name": "projects/123456789/secrets/secretmanagersecretversion-dep-2v5hqlif3igof/versions/1",
-              "createTime": "2025-03-31T23:30:57.822766Z",
+              "createTime": "2025-08-11T23:07:30.814956Z",
               "state": 2,
               "replicationStatus": {
                 "automatic": {}
               },
-              "etag": "\"1631abd008b1df\""
+              "etag": "\"163c1efd0cfce3\""
             }
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 185.309399ms
+        duration: 334.558832ms
     - id: 5
       request:
         proto: HTTP/1.1
@@ -238,7 +242,7 @@ interactions:
             Content-Type:
                 - application/json
             x-goog-api-client:
-                - gl-go/1.25.0-20250216-RC00 gapic/1.14.5 gax/2.14.1 rest/UNKNOWN
+                - gl-go/1.24.2 gapic/1.14.7 gax/2.14.2 rest/UNKNOWN
             x-goog-request-params:
                 - name=projects%2Fcnrm-anhdle%2Fsecrets%2Fsecretmanagersecretversion-dep-2v5hqlif3igof%2Fversions%2F1
         url: https://secretmanager.googleapis.com/v1/projects/example-project/secrets/secretmanagersecretversion-dep-2v5hqlif3igof/versions/1?%24alt=json%3Benum-encoding%3Dint
@@ -254,19 +258,19 @@ interactions:
         body: |
             {
               "name": "projects/123456789/secrets/secretmanagersecretversion-dep-2v5hqlif3igof/versions/1",
-              "createTime": "2025-03-31T23:30:57.822766Z",
+              "createTime": "2025-08-11T23:07:30.814956Z",
               "state": 2,
               "replicationStatus": {
                 "automatic": {}
               },
-              "etag": "\"1631abd008b1df\""
+              "etag": "\"163c1efd0cfce3\""
             }
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 96.475614ms
+        duration: 56.232939ms
     - id: 6
       request:
         proto: HTTP/1.1
@@ -284,7 +288,7 @@ interactions:
             Content-Type:
                 - application/json
             x-goog-api-client:
-                - gl-go/1.25.0-20250216-RC00 gapic/1.14.5 gax/2.14.1 rest/UNKNOWN
+                - gl-go/1.24.2 gapic/1.14.7 gax/2.14.2 rest/UNKNOWN
             x-goog-request-params:
                 - name=projects%2Fcnrm-anhdle%2Fsecrets%2Fsecretmanagersecretversion-dep-2v5hqlif3igof
         url: https://secretmanager.googleapis.com/v1/projects/example-project/secrets/secretmanagersecretversion-dep-2v5hqlif3igof?%24alt=json%3Benum-encoding%3Dint
@@ -303,15 +307,19 @@ interactions:
               "replication": {
                 "automatic": {}
               },
-              "createTime": "2025-03-31T23:30:56.640217Z",
-              "etag": "\"1631abcfda90d9\""
+              "createTime": "2025-08-11T23:07:29.456167Z",
+              "labels": {
+                "cnrm-test": "true",
+                "managed-by-cnrm": "true"
+              },
+              "etag": "\"163c1efce157c3\""
             }
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 93.986904ms
+        duration: 79.035638ms
     - id: 7
       request:
         proto: HTTP/1.1
@@ -329,7 +337,53 @@ interactions:
             Content-Type:
                 - application/json
             x-goog-api-client:
-                - gl-go/1.25.0-20250216-RC00 gapic/1.14.5 gax/2.14.1 rest/UNKNOWN
+                - gl-go/1.24.2 gapic/1.14.7 gax/2.14.2 rest/UNKNOWN
+            x-goog-request-params:
+                - name=projects%2Fcnrm-anhdle%2Fsecrets%2Fsecretmanagersecretversion-dep-2v5hqlif3igof%2Fversions%2F1
+        url: https://secretmanager.googleapis.com/v1/projects/example-project/secrets/secretmanagersecretversion-dep-2v5hqlif3igof/versions/1?%24alt=json%3Benum-encoding%3Dint
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/123456789/secrets/secretmanagersecretversion-dep-2v5hqlif3igof/versions/1",
+              "createTime": "2025-08-11T23:07:30.814956Z",
+              "state": 2,
+              "replicationStatus": {
+                "automatic": {}
+              },
+              "etag": "\"163c1efd0cfce3\""
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 54.929689ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: secretmanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            x-goog-api-client:
+                - gl-go/1.24.2 gapic/1.14.7 gax/2.14.2 rest/UNKNOWN
             x-goog-request-params:
                 - name=projects%2Fcnrm-anhdle%2Fsecrets%2Fsecretmanagersecretversion-dep-2v5hqlif3igof
         url: https://secretmanager.googleapis.com/v1/projects/example-project/secrets/secretmanagersecretversion-dep-2v5hqlif3igof?%24alt=json%3Benum-encoding%3Dint
@@ -348,79 +402,37 @@ interactions:
               "replication": {
                 "automatic": {}
               },
-              "createTime": "2025-03-31T23:30:56.640217Z",
-              "etag": "\"1631abcfda90d9\""
-            }
-        headers:
-            Content-Type:
-                - application/json; charset=UTF-8
-        status: 200 OK
-        code: 200
-        duration: 93.672765ms
-    - id: 8
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        transfer_encoding: []
-        trailer: {}
-        host: secretmanager.googleapis.com
-        remote_addr: ""
-        request_uri: ""
-        body: ""
-        form: {}
-        headers:
-            Content-Type:
-                - application/json
-            x-goog-api-client:
-                - gl-go/1.25.0-20250216-RC00 gapic/1.14.5 gax/2.14.1 rest/UNKNOWN
-            x-goog-request-params:
-                - name=projects%2Fcnrm-anhdle%2Fsecrets%2Fsecretmanagersecretversion-dep-2v5hqlif3igof%2Fversions%2F1
-        url: https://secretmanager.googleapis.com/v1/projects/example-project/secrets/secretmanagersecretversion-dep-2v5hqlif3igof/versions/1?%24alt=json%3Benum-encoding%3Dint
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        transfer_encoding: []
-        trailer: {}
-        content_length: -1
-        uncompressed: true
-        body: |
-            {
-              "name": "projects/123456789/secrets/secretmanagersecretversion-dep-2v5hqlif3igof/versions/1",
-              "createTime": "2025-03-31T23:30:57.822766Z",
-              "state": 2,
-              "replicationStatus": {
-                "automatic": {}
+              "createTime": "2025-08-11T23:07:29.456167Z",
+              "labels": {
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true"
               },
-              "etag": "\"1631abd008b1df\""
+              "etag": "\"163c1efce157c3\""
             }
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 90.089505ms
+        duration: 68.103269ms
     - id: 9
       request:
         proto: HTTP/1.1
         proto_major: 1
         proto_minor: 1
-        content_length: 123
+        content_length: 124
         transfer_encoding: []
         trailer: {}
         host: secretmanager.googleapis.com
         remote_addr: ""
         request_uri: ""
-        body: '{"name":"projects/example-project/secrets/secretmanagersecretversion-dep-2v5hqlif3igof/versions/1","etag":"\"1631abd008b1df\""}'
+        body: '{"name":"projects/example-project/secrets/secretmanagersecretversion-dep-2v5hqlif3igof/versions/1", "etag":"\"163c1efd0cfce3\""}'
         form: {}
         headers:
             Content-Type:
                 - application/json
             x-goog-api-client:
-                - gl-go/1.25.0-20250216-RC00 gapic/1.14.5 gax/2.14.1 rest/UNKNOWN
+                - gl-go/1.24.2 gapic/1.14.7 gax/2.14.2 rest/UNKNOWN
             x-goog-request-params:
                 - name=projects%2Fcnrm-anhdle%2Fsecrets%2Fsecretmanagersecretversion-dep-2v5hqlif3igof%2Fversions%2F1
         url: https://secretmanager.googleapis.com/v1/projects/example-project/secrets/secretmanagersecretversion-dep-2v5hqlif3igof/versions/1:destroy?%24alt=json%3Benum-encoding%3Dint
@@ -436,20 +448,20 @@ interactions:
         body: |
             {
               "name": "projects/123456789/secrets/secretmanagersecretversion-dep-2v5hqlif3igof/versions/1",
-              "createTime": "2025-03-31T23:30:57.822766Z",
-              "destroyTime": "2025-03-31T23:31:00.844596082Z",
+              "createTime": "2025-08-11T23:07:30.814956Z",
+              "destroyTime": "2025-08-11T23:07:33.315334876Z",
               "state": 3,
               "replicationStatus": {
                 "automatic": {}
               },
-              "etag": "\"1631abd01b178f\""
+              "etag": "\"163c1efd1af88f\""
             }
         headers:
             Content-Type:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 198.197009ms
+        duration: 184.144586ms
     - id: 10
       request:
         proto: HTTP/1.1
@@ -467,7 +479,7 @@ interactions:
             Content-Type:
                 - application/json
             x-goog-api-client:
-                - gl-go/1.25.0-20250216-RC00 gapic/1.14.5 gax/2.14.1 rest/UNKNOWN
+                - gl-go/1.24.2 gapic/1.14.7 gax/2.14.2 rest/UNKNOWN
             x-goog-request-params:
                 - name=projects%2Fcnrm-anhdle%2Fsecrets%2Fsecretmanagersecretversion-dep-2v5hqlif3igof
         url: https://secretmanager.googleapis.com/v1/projects/example-project/secrets/secretmanagersecretversion-dep-2v5hqlif3igof?%24alt=json%3Benum-encoding%3Dint
@@ -487,4 +499,4 @@ interactions:
                 - application/json; charset=UTF-8
         status: 200 OK
         code: 200
-        duration: 670.97887ms
+        duration: 724.080725ms
