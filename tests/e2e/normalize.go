@@ -827,6 +827,14 @@ func (o *objectWalker) VisitUnstructured(v *unstructured.Unstructured) error {
 	return nil
 }
 
+func (o *objectWalker) RewriteURL(url string) (string, error) {
+	v2, err := o.visitString(url, "{url}")
+	if err != nil {
+		return "", err
+	}
+	return v2, nil
+}
+
 // findLinksInEvent looks for link paths and feeds the values into replacement.ExtractIDsFromLinks
 func findLinksInEvent(t *testing.T, replacement *Replacements, event *test.LogEntry) {
 	linkPaths := sets.New(
@@ -1223,6 +1231,15 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 		for _, entry := range events {
 			normalizer.Previsit(entry, replacements)
+		}
+
+		// Replace URLs
+		for _, event := range events {
+			s, err := replacements.RewriteURL(event.Request.URL)
+			if err != nil {
+				t.Fatalf("error normalizing url %q: %v", event.Request.URL, err)
+			}
+			event.Request.URL = s
 		}
 
 		events.PrettifyJSON(func(requestURL string, obj map[string]any) {
