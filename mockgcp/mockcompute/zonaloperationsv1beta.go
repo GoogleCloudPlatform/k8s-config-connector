@@ -35,6 +35,18 @@ func (s *ZoneOperationsV1Beta) Get(ctx context.Context, req *pbv1beta.GetZoneOpe
 		return nil, err
 	}
 
+	// If operation is still RUNNING, complete it when polled
+	if v1betaOp.Status != nil && *v1betaOp.Status == pbv1beta.Operation_RUNNING {
+		v1betaOp.Status = PtrTo(pbv1beta.Operation_DONE)
+		v1betaOp.Progress = PtrTo(int32(100))
+		v1betaOp.EndTime = PtrTo(s.nowString())
+
+		// Update the operation in storage
+		if err := s.storage.Update(ctx, fqn, v1betaOp); err != nil {
+			return nil, err
+		}
+	}
+
 	return v1betaOp, nil
 }
 

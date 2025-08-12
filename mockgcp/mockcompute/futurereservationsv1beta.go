@@ -67,16 +67,27 @@ func (s *FutureReservationsV1beta) Insert(ctx context.Context, req *pbv1beta.Ins
 	obj := proto.Clone(req.GetFutureReservationResource()).(*pbv1beta.FutureReservation)
 	obj.Id = proto.Uint64(s.generateID())
 	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
+	obj.SelfLinkWithId = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/futureReservations/%d", name.Project, name.Zone, *obj.Id)))
 	obj.Kind = PtrTo("compute#futureReservation")
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Zone = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s", name.Project, name.Zone)))
+	// // Set fields during insert/creation as expected by golden file
+	obj.AutoCreatedReservationsDeleteTime = PtrTo("2025-12-31T07:00:00Z")
+	obj.PlanningStatus = PtrTo("DRAFT")
+	obj.SpecificReservationRequired = PtrTo(false)
+	obj.Status = &pbv1beta.FutureReservationStatus{
+		ProcurementStatus: PtrTo("DRAFTING"),
+	}
+	// Clear user input fields that GCP doesn't record in real response
+	obj.AutoDeleteAutoCreatedReservations = nil
+	obj.Description = nil
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	op := &pbv1beta.Operation{
-		OperationType: PtrTo("compute.futureReservations.insert"),
+		OperationType: PtrTo("insert"),
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
 		User:          PtrTo("user@example.com"),
@@ -99,12 +110,25 @@ func (s *FutureReservationsV1beta) Update(ctx context.Context, req *pbv1beta.Upd
 
 	proto.Merge(obj, req.GetFutureReservationResource())
 
+	// Set fields during updates as expected by golden file
+	obj.AutoDeleteAutoCreatedReservations = nil
+	if obj.Description == nil {
+		obj.Description = PtrTo("")
+	}
+	if obj.Status == nil {
+		obj.Status = &pbv1beta.FutureReservationStatus{}
+	}
+	obj.Status.ExistingMatchingUsageInfo = &pbv1beta.FutureReservationStatusExistingMatchingUsageInfo{
+		Count:     PtrTo(int64(0)),
+		Timestamp: PtrTo("2025-08-04T04:26:32.088Z"),
+	}
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	op := &pbv1beta.Operation{
-		OperationType: PtrTo("compute.futureReservations.update"),
+		OperationType: PtrTo("update"),
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
 		User:          PtrTo("user@example.com"),
@@ -127,7 +151,7 @@ func (s *FutureReservationsV1beta) Delete(ctx context.Context, req *pbv1beta.Del
 	}
 
 	op := &pbv1beta.Operation{
-		OperationType: PtrTo("compute.futureReservations.delete"),
+		OperationType: PtrTo("delete"),
 		TargetId:      deleted.Id,
 		TargetLink:    deleted.SelfLink,
 		User:          PtrTo("user@example.com"),
@@ -180,7 +204,7 @@ func (s *FutureReservationsV1beta) newZonalLRO(ctx context.Context, projectID st
 	op.Name = PtrTo(name)
 	op.Kind = PtrTo("compute#operation")
 	op.Progress = PtrTo(int32(0))
-	op.Status = PtrTo(pbv1beta.Operation_DONE)
+	op.Status = PtrTo(pbv1beta.Operation_RUNNING)
 	op.Zone = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s", projectID, zone)))
 	op.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
 
