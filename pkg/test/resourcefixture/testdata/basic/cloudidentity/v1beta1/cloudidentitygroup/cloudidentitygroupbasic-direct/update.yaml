@@ -16,8 +16,6 @@ apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
 kind: CloudIdentityGroup
 metadata:
   name: cloudidentitygroup-${uniqueId}
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   displayName: Updated Cloud Identity Group Name
   description: Nope, this is still a test, just updated.
