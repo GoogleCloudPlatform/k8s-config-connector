@@ -70,7 +70,10 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 	now := time.Now().UTC()
 	obj.CreateTime = now.Format(time.RFC3339Nano)
 
-	region := name.Location
+	region, err := locationToRegion(name.Location)
+	if err != nil {
+		return nil, err
+	}
 
 	obj.Location = name.Location
 
@@ -95,7 +98,11 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 		obj.Subnetwork = "default"
 		obj.NetworkConfig.Subnetwork = fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", name.Project.ID, region, obj.Subnetwork)
 	} else if obj.Subnetwork != "" && obj.NetworkConfig.Subnetwork == "" {
-		obj.NetworkConfig.Subnetwork = obj.Subnetwork
+		if strings.Contains(obj.Subnetwork, "projects/") {
+			obj.NetworkConfig.Subnetwork = obj.Subnetwork
+		} else {
+			obj.NetworkConfig.Subnetwork = fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", name.Project.ID, region, obj.Subnetwork)
+		}
 	}
 
 	if obj.NetworkConfig.DefaultSnatStatus == nil {
@@ -179,6 +186,28 @@ func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClus
 	})
 }
 
+func locationToRegion(location string) (string, error) {
+	tokens := strings.Split(location, "-")
+	if len(tokens) == 2 {
+		return location, nil
+	}
+	if len(tokens) == 3 {
+		return fmt.Sprintf("%s-%s", tokens[0], tokens[1]), nil
+	}
+	return "", fmt.Errorf("incorrect location: %v", location)
+}
+
+func locationToZone(location string) (string, error) {
+	tokens := strings.Split(location, "-")
+	if len(tokens) == 3 {
+		return location, nil
+	}
+	if len(tokens) == 2 {
+		return fmt.Sprintf("%s-a", location), nil
+	}
+	return "", fmt.Errorf("incorrect location: %v", location)
+}
+
 func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClusterRequest) (*pb.Operation, error) {
 	reqName := req.GetName()
 
@@ -257,9 +286,43 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredNodePoolAutoConfigNetworkTags = nil
 	}
 
+	if update.DesiredMasterAuthorizedNetworksConfig != nil {
+		obj.MasterAuthorizedNetworksConfig = update.DesiredMasterAuthorizedNetworksConfig
+		update.DesiredMasterAuthorizedNetworksConfig = nil
+	}
+
+	if update.DesiredPrivateClusterConfig != nil {
+		obj.PrivateClusterConfig = update.DesiredPrivateClusterConfig
+		update.DesiredPrivateClusterConfig = nil
+	}
+
+	if update.DesiredEnablePrivateEndpoint != nil {
+		if obj.PrivateClusterConfig == nil {
+			obj.PrivateClusterConfig = &pb.PrivateClusterConfig{}
+		}
+		obj.PrivateClusterConfig.EnablePrivateEndpoint = *update.DesiredEnablePrivateEndpoint
+		update.DesiredEnablePrivateEndpoint = nil
+	}
+
 	if update.DesiredControlPlaneEndpointsConfig != nil {
 		obj.ControlPlaneEndpointsConfig = update.DesiredControlPlaneEndpointsConfig
+
+		if update.DesiredControlPlaneEndpointsConfig.IpEndpointsConfig != nil {
+			if update.DesiredControlPlaneEndpointsConfig.IpEndpointsConfig.EnablePublicEndpoint != nil {
+				obj.PrivateClusterConfig.EnablePrivateEndpoint = !*update.DesiredControlPlaneEndpointsConfig.IpEndpointsConfig.EnablePublicEndpoint
+			}
+			if update.DesiredControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig != nil {
+				obj.MasterAuthorizedNetworksConfig = update.DesiredControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig
+			}
+		}
+
 		update.DesiredControlPlaneEndpointsConfig = nil
+
+	}
+
+	if update.DesiredDefaultEnablePrivateNodes != nil {
+		obj.NetworkConfig.DefaultEnablePrivateNodes = update.DesiredDefaultEnablePrivateNodes
+		update.DesiredDefaultEnablePrivateNodes = nil
 	}
 
 	// TODO: Support more updates!
@@ -432,26 +495,6 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 		}
 	}
 
-	// This field is not supported in the CRD. This is a basic defaulting based
-	// on real http logs.
-	if obj.ControlPlaneEndpointsConfig == nil {
-		obj.ControlPlaneEndpointsConfig = &pb.ControlPlaneEndpointsConfig{
-			DnsEndpointConfig: &pb.ControlPlaneEndpointsConfig_DNSEndpointConfig{
-				AllowExternalTraffic: PtrTo(false),
-				Endpoint:             fmt.Sprintf("gke-123456-${projectNumber}.%s.gke.goog", obj.Location),
-			},
-			IpEndpointsConfig: &pb.ControlPlaneEndpointsConfig_IPEndpointsConfig{
-				AuthorizedNetworksConfig: &pb.MasterAuthorizedNetworksConfig{
-					GcpPublicCidrsAccessEnabled: PtrTo(true),
-				},
-				EnablePublicEndpoint: PtrTo(true),
-				Enabled:              PtrTo(true),
-				PrivateEndpoint:      "1.2.3.4",
-				PublicEndpoint:       "32.32.32.32",
-			},
-		}
-	}
-
 	if obj.MaintenancePolicy != nil {
 		if obj.MaintenancePolicy.ResourceVersion == "" {
 			obj.MaintenancePolicy.ResourceVersion = "1234abcd"
@@ -538,9 +581,14 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 		obj.Id = "000000000000000000000"
 	}
 
+	zone, err := locationToZone(obj.Location)
+	if err != nil {
+		return err
+	}
+
 	if obj.InstanceGroupUrls == nil {
 		obj.InstanceGroupUrls = []string{
-			"https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef",
+			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/${projectId}/zones/%s/instanceGroupManagers/gke-containercluster-abcdef", zone),
 		}
 	}
 
@@ -578,13 +626,6 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 		}
 	}
 
-	if obj.MasterAuthorizedNetworksConfig == nil {
-		obj.MasterAuthorizedNetworksConfig = &pb.MasterAuthorizedNetworksConfig{}
-	}
-	if obj.MasterAuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled == nil {
-		obj.MasterAuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled = PtrTo(true)
-	}
-
 	if obj.MonitoringConfig == nil {
 		obj.MonitoringConfig = &pb.MonitoringConfig{}
 	}
@@ -620,12 +661,59 @@ func (s *ClusterManagerV1) populateClusterDefaults(obj *pb.Cluster) error {
 	if obj.PrivateClusterConfig == nil {
 		obj.PrivateClusterConfig = &pb.PrivateClusterConfig{}
 	}
-	if obj.PrivateClusterConfig.PrivateEndpoint == "" {
-		obj.PrivateClusterConfig.PrivateEndpoint = "10.128.0.2"
-	}
 	if obj.PrivateClusterConfig.PublicEndpoint == "" {
 		obj.PrivateClusterConfig.PublicEndpoint = "8.8.8.8"
 	}
+	if obj.NetworkConfig != nil && obj.NetworkConfig.DefaultEnablePrivateNodes != nil {
+		obj.PrivateClusterConfig.EnablePrivateNodes = *obj.NetworkConfig.DefaultEnablePrivateNodes
+	}
+
+	if obj.ControlPlaneEndpointsConfig == nil {
+		obj.ControlPlaneEndpointsConfig = &pb.ControlPlaneEndpointsConfig{}
+	}
+	if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig != nil {
+
+		if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.Enabled != nil &&
+			*obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.Enabled {
+
+			// The deprecated PrivateClusterConfig.PrivateEndpoint field seems to
+			// be populated only when IP endpoints config is enabled.
+			if obj.PrivateClusterConfig.PrivateEndpoint == "" {
+				obj.PrivateClusterConfig.PrivateEndpoint = "10.128.0.2"
+			}
+
+			if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PrivateEndpoint == "" {
+				obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PrivateEndpoint = "10.128.0.2"
+			}
+			if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.EnablePublicEndpoint != nil &&
+				*obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.EnablePublicEndpoint {
+
+				if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PublicEndpoint == "" {
+					obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PublicEndpoint = "8.8.8.8"
+				}
+				if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig == nil {
+					obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig = &pb.MasterAuthorizedNetworksConfig{}
+				}
+				obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled = PtrTo(true)
+
+				if obj.MasterAuthorizedNetworksConfig == nil {
+					obj.MasterAuthorizedNetworksConfig = &pb.MasterAuthorizedNetworksConfig{}
+				}
+				obj.MasterAuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled = PtrTo(true)
+			} else {
+				if !obj.MasterAuthorizedNetworksConfig.Enabled {
+					return fmt.Errorf("'masterAuthorizedNetworksConfig' must be enabled when private endpoint is enabled")
+				} else if obj.MasterAuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled != nil &&
+					*obj.MasterAuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled {
+					return fmt.Errorf("'masterAuthorizedNetworksConfig.gcpPublicCidrsAccessEnabled' cannot be true if private endpoint is enabled")
+				}
+			}
+		}
+	}
+	if obj.ControlPlaneEndpointsConfig.DnsEndpointConfig == nil {
+		obj.ControlPlaneEndpointsConfig.DnsEndpointConfig = &pb.ControlPlaneEndpointsConfig_DNSEndpointConfig{}
+	}
+	obj.ControlPlaneEndpointsConfig.DnsEndpointConfig.Endpoint = fmt.Sprintf("gke-12345trewq-${projectNumber}.%s.gke.goog", obj.Location)
 
 	if obj.ProtectConfig == nil {
 		obj.ProtectConfig = &pb.ProtectConfig{}
