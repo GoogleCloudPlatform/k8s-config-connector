@@ -29,7 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
+	legacypartialpolicy "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policymember"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
@@ -292,7 +292,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 	case "IAMPartialPolicy":
 		var useDirectReconcilerPredicate predicate.Predicate
 
-		if registry.IsDirectByGK(gvk.GroupKind()) {
+		if registry.IsDirectByGK(gvk.GroupKind()) && config.UseLegacyIAM == false {
 			reconcileGate := registry.GetReconcileGate(gvk.GroupKind())
 			if reconcileGate != nil {
 				useDirectReconcilerPredicate = kccpredicate.NewReconcilePredicate(r.mgr.GetClient(), gvk, reconcileGate)
@@ -321,8 +321,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 				return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
 		} else {
-			// todo acpana here now!
-			if err := partialpolicy.Add(r.mgr, &cds); err != nil {
+			if err := legacypartialpolicy.Add(r.mgr, &cds); err != nil {
 				return nil, err
 			}
 		}
