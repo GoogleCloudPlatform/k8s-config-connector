@@ -2,7 +2,8 @@ apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
 metadata:
   annotations:
-    alpha.cnrm.cloud.google.com/reconciler: direct
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -21,6 +22,8 @@ spec:
       - VIEWS
   - domain: google.com
     role: READER
+  - groupByEmail: kcc-eng@google.com
+    role: READER
   - role: OWNER
     specialGroup: projectOwners
   - routine:
@@ -32,7 +35,7 @@ spec:
       projectId: ${projectId}
       tableId: bigquerytablesample${uniqueId}
   defaultTableExpirationMs: 3600000
-  description: BigQuery Dataset With Full Access Block
+  description: BigQuery Dataset With Full Access Block Updated
   friendlyName: bigquerydataset-fullaccessblock
   location: us-central1
   projectRef:
@@ -47,9 +50,6 @@ status:
     type: Ready
   creationTime: "1970-01-01T00:00:00Z"
   etag: abcdef123456
-  externalRef: projects/${projectId}/datasets/bigquerydatasetaccessfull${uniqueId}
   lastModifiedTime: "1970-01-01T00:00:00Z"
   observedGeneration: 3
-  observedState:
-    location: us-central1
   selfLink: https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetaccessfull${uniqueId}

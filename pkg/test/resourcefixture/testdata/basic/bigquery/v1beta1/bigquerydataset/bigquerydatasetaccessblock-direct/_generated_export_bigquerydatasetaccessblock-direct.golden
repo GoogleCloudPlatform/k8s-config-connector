@@ -11,12 +11,10 @@ spec:
   access:
   - domain: google.com
     role: READER
-  - iamMember: allUsers
-    role: READER
   - role: OWNER
     specialGroup: projectOwners
   defaultTableExpirationMs: 7200000
-  description: BigQuery Dataset With Access Block v2
+  description: BigQuery Dataset With Access Block v2 Updated
   friendlyName: bigquerydataset-accessblock
   location: US
   maxTimeTravelHours: "168"

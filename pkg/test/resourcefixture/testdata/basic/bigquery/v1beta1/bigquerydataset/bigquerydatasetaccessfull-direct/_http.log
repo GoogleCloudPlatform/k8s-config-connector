@@ -1,4 +1,5 @@
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -28,7 +29,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -92,7 +93,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -262,21 +264,18 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -340,21 +339,18 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -575,6 +571,7 @@ X-Xss-Protection: 0
   },
   "type": "VIEW",
   "view": {
+    "privacyPolicy": {},
     "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "useLegacySql": false
   }
@@ -683,7 +680,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -713,7 +711,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -760,7 +758,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "datasetReference": {
     "datasetId": "bigquerydatasetaccessfull${uniqueId}"
   },
-  "defaultTableExpirationMs": "3600000",
+  "defaultTableExpirationMs": 3600000,
   "description": "BigQuery Dataset With Full Access Block",
   "friendlyName": "bigquerydataset-fullaccessblock",
   "labels": {
@@ -837,83 +835,6 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetaccessfull${uniqueId}",
-  "type": "DEFAULT"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "access": [
-    {
-      "dataset": {
-        "dataset": {
-          "datasetId": "bigquerydatasetsample${uniqueId}",
-          "projectId": "${projectId}"
-        },
-        "targetTypes": [
-          "VIEWS"
-        ]
-      }
-    },
-    {
-      "domain": "google.com",
-      "role": "READER"
-    },
-    {
-      "groupByEmail": "kcc-eng@google.com",
-      "role": "READER"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "routine": {
-        "datasetId": "bigquerydatasetsample${uniqueId}",
-        "projectId": "${projectId}",
-        "routineId": "bigqueryroutine${uniqueId}"
-      }
-    },
-    {
-      "view": {
-        "datasetId": "bigquerydatasetsample${uniqueId}",
-        "projectId": "${projectId}",
-        "tableId": "bigquerytablesample${uniqueId}"
-      }
-    }
-  ],
-  "creationTime": "123456789",
-  "datasetReference": {
-    "datasetId": "bigquerydatasetaccessfull${uniqueId}",
-    "projectId": "${projectId}"
-  },
-  "defaultTableExpirationMs": "3600000",
-  "description": "BigQuery Dataset With Full Access Block",
-  "etag": "abcdef0123A=",
-  "friendlyName": "bigquerydataset-fullaccessblock",
-  "id": "000000000000000000000",
-  "kind": "bigquery#dataset",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetaccessfull${uniqueId}",
   "type": "DEFAULT"
 }
@@ -998,7 +919,140 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "access": [
+    {
+      "dataset": {
+        "dataset": {
+          "datasetId": "bigquerydatasetsample${uniqueId}",
+          "projectId": "${projectId}"
+        },
+        "targetTypes": [
+          "VIEWS"
+        ]
+      }
+    },
+    {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "groupByEmail": "kcc-eng@google.com",
+      "role": "READER"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "routine": {
+        "datasetId": "bigquerydatasetsample${uniqueId}",
+        "projectId": "${projectId}",
+        "routineId": "bigqueryroutine${uniqueId}"
+      }
+    },
+    {
+      "view": {
+        "datasetId": "bigquerydatasetsample${uniqueId}",
+        "projectId": "${projectId}",
+        "tableId": "bigquerytablesample${uniqueId}"
+      }
+    }
+  ],
+  "datasetReference": {
+    "datasetId": "bigquerydatasetaccessfull${uniqueId}"
+  },
+  "defaultTableExpirationMs": 3600000,
+  "description": "BigQuery Dataset With Full Access Block Updated",
+  "friendlyName": "bigquerydataset-fullaccessblock",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "us-central1",
+  "maxTimeTravelHours": "168"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "dataset": {
+        "dataset": {
+          "datasetId": "bigquerydatasetsample${uniqueId}",
+          "projectId": "${projectId}"
+        },
+        "targetTypes": [
+          "VIEWS"
+        ]
+      }
+    },
+    {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "groupByEmail": "kcc-eng@google.com",
+      "role": "READER"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "routine": {
+        "datasetId": "bigquerydatasetsample${uniqueId}",
+        "projectId": "${projectId}",
+        "routineId": "bigqueryroutine${uniqueId}"
+      }
+    },
+    {
+      "view": {
+        "datasetId": "bigquerydatasetsample${uniqueId}",
+        "projectId": "${projectId}",
+        "tableId": "bigquerytablesample${uniqueId}"
+      }
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydatasetaccessfull${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "defaultTableExpirationMs": "3600000",
+  "description": "BigQuery Dataset With Full Access Block Updated",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerydataset-fullaccessblock",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "maxTimeTravelHours": "168",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetaccessfull${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1057,7 +1111,7 @@ X-Xss-Protection: 0
     "projectId": "${projectId}"
   },
   "defaultTableExpirationMs": "3600000",
-  "description": "BigQuery Dataset With Full Access Block",
+  "description": "BigQuery Dataset With Full Access Block Updated",
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-fullaccessblock",
   "id": "000000000000000000000",
@@ -1075,7 +1129,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false&prettyPrint=false
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
@@ -1194,6 +1249,7 @@ X-Xss-Protection: 0
   },
   "type": "VIEW",
   "view": {
+    "privacyPolicy": {},
     "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "useLegacySql": false
   }
@@ -1261,21 +1317,18 @@ X-Xss-Protection: 0
         "description": "Date",
         "mode": "REQUIRED",
         "name": "dt",
-        "policyTags": {},
         "type": "DATE"
       },
       {
         "description": "User ID",
         "mode": "REQUIRED",
         "name": "user_id",
-        "policyTags": {},
         "type": "STRING"
       },
       {
         "description": "Unique identifier of the entity",
         "mode": "REQUIRED",
         "name": "guid",
-        "policyTags": {},
         "type": "STRING"
       }
     ]
@@ -1311,7 +1364,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1364,7 +1418,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false&prettyPrint=false
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
