@@ -52,14 +52,14 @@ func main() {
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	flag.BoolVar(&enablePprof, "enable-pprof", false, "Enable the pprof server.")
 	flag.IntVar(&pprofPort, "pprof-port", 6060, "The port that the pprof server binds to if enabled.")
-	flag.StringVar(&managerNamespaceIsolation, k8s.ManagerNamespaceIsolationFlag, k8s.ManagerNamespaceIsolationShared, "'shared' if all controller managers run in shared 'cnrm-system' namespace, 'dedicated' if controller managers run in dedicated namespace. Default is 'shared'")
+	flag.StringVar(&managerNamespaceIsolation, k8s.ManagerNamespaceIsolationFlag, k8s.ManagerNamespaceIsolationShared, fmt.Sprintf("'%s' if all controller managers run in shared 'cnrm-system' namespace, '%s' if controller managers run in dedicated namespace. Default is '%s'", k8s.ManagerNamespaceIsolationShared, k8s.ManagerNamespaceIsolationDedicated, k8s.ManagerNamespaceIsolationShared))
 	flag.Parse()
 
 	switch managerNamespaceIsolation {
 	case k8s.ManagerNamespaceIsolationShared, k8s.ManagerNamespaceIsolationDedicated:
 		unmanageddetector.ManagerNamespaceIsolation = managerNamespaceIsolation
 	default:
-		logging.Fatal(fmt.Errorf("unknown value for --manager-namespace-isolation: %s, expected '%s' or '%s'", managerNamespaceIsolation, k8s.ManagerNamespaceIsolationShared, k8s.ManagerNamespaceIsolationDedicated), "error starting unmanaged detector")
+		logging.Fatal(fmt.Errorf("unknown value for --%s: %s, expected '%s' or '%s'", k8s.ManagerNamespaceIsolationFlag, managerNamespaceIsolation, k8s.ManagerNamespaceIsolationShared, k8s.ManagerNamespaceIsolationDedicated), "error starting unmanaged detector")
 	}
 
 	// Enable packages using the Kubernetes controller-runtime logging package to log

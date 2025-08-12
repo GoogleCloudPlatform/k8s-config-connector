@@ -60,7 +60,7 @@ func main() {
 
 	imagePrefix := os.Getenv("IMAGE_PREFIX")
 	flag.StringVar(&imagePrefix, "image-prefix", imagePrefix, "Remap container images to pull from the specified registry or mirror.")
-	flag.StringVar(&managerNamespaceIsolation, k8s.ManagerNamespaceIsolationFlag, k8s.ManagerNamespaceIsolationShared, "'shared' if all controller managers run in shared 'cnrm-system' namespace, 'dedicated' if controller managers run in dedicated namespace. Default is 'shared'")
+	flag.StringVar(&managerNamespaceIsolation, k8s.ManagerNamespaceIsolationFlag, k8s.ManagerNamespaceIsolationShared, fmt.Sprintf("'%s' if all controller managers run in shared 'cnrm-system' namespace, '%s' if controller managers run in dedicated namespace. Default is '%s'", k8s.ManagerNamespaceIsolationShared, k8s.ManagerNamespaceIsolationDedicated, k8s.ManagerNamespaceIsolationShared))
 
 	flag.Parse()
 
@@ -70,7 +70,7 @@ func main() {
 	case k8s.ManagerNamespaceIsolationShared, k8s.ManagerNamespaceIsolationDedicated:
 		break
 	default:
-		logging.Fatal(fmt.Errorf("unknown value for --manager-namespace-isolation: %s, expected '%s' or '%s'", managerNamespaceIsolation, k8s.ManagerNamespaceIsolationShared, k8s.ManagerNamespaceIsolationDedicated), "error starting unmanaged detector")
+		logging.Fatal(fmt.Errorf("unknown value for --%s: %s, expected '%s' or '%s'", k8s.ManagerNamespaceIsolationFlag, managerNamespaceIsolation, k8s.ManagerNamespaceIsolationShared, k8s.ManagerNamespaceIsolationDedicated), "error starting unmanaged detector")
 	}
 
 	// Start pprof server if enabled

@@ -122,7 +122,7 @@ func handleControllerManagerService(ctx context.Context, c client.Client, ccc *c
 		return nil, fmt.Errorf("error getting namespace id for namespace %v: %w", ccc.Namespace, err)
 	}
 	u.SetName(strings.ReplaceAll(u.GetName(), "${NAMESPACE?}", nsID))
-	if err := removeStaleControllerManagerService(ctx, c, ccc.Namespace, u.GetName(), false); err != nil {
+	if err := removeStaleControllerManagerService(ctx, c, ccc.Namespace, u.GetName(), k8s.ManagerNamespaceIsolationShared); err != nil {
 		return nil, fmt.Errorf("error deleting stale Services for watched namespace %v: %w", ccc.Namespace, err)
 	}
 
@@ -133,7 +133,7 @@ func handleControllerManagerServicePerNamespace(ctx context.Context, c client.Cl
 	u := obj.UnstructuredObject().DeepCopy()
 	u.SetNamespace(ccc.Spec.ManagerNamespace)
 	updatePerNamespaceLabels(u, ccc)
-	if err := removeStaleControllerManagerService(ctx, c, ccc.Namespace, u.GetName(), true); err != nil {
+	if err := removeStaleControllerManagerService(ctx, c, ccc.Namespace, u.GetName(), k8s.ManagerNamespaceIsolationDedicated); err != nil {
 		return nil, fmt.Errorf("error deleting stale Services for watched namespace %v: %w", ccc.Namespace, err)
 	}
 	return manifest.NewObject(u)
@@ -174,11 +174,11 @@ func handleControllerManagerRoleBindingNamespace(obj *manifest.Object, ccc *core
 	return manifest.NewObject(u)
 }
 
-func removeStaleControllerManagerService(ctx context.Context, c client.Client, ns string, validSts string, enableManagerNamespace bool) error {
+func removeStaleControllerManagerService(ctx context.Context, c client.Client, ns string, validSts string, managerNamespaceIsolation string) error {
 	// List existing controller-manager services for the given namespace, delete stale ones if any
 	// stale services could come from legacy naming or namespaceId changes.
 	svcList := &corev1.ServiceList{}
-	if enableManagerNamespace {
+	if managerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
 		if err := c.List(ctx, svcList,
 			client.MatchingLabels{k8s.NamespacedComponentLabel: ns}); err != nil {
 			return fmt.Errorf("error listing existing %v Services for watched namespace %v: %w", k8s.KCCControllerManagerComponent, ns, err)
