@@ -295,6 +295,32 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform: true,
 		DCL:       false,
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc":  "true",
+			"cnrm.cloud.google.com/stability-level": "alpha",
+			"cnrm.cloud.google.com/system":          "true",
+			"cnrm.cloud.google.com/tf2crd":          "true",
+		},
+	},
+	{
+		Group:   "bigqueryreservation.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "BigQueryReservationReservation",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
+	},
+	{
+		Group:   "bigqueryreservation.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "BigQueryReservationReservation",
+	}: {
+		Labels: map[string]string{
+			"cnrm.cloud.google.com/managed-by-kcc": "true",
+			"cnrm.cloud.google.com/system":         "true",
+		},
 	},
 	{
 		Group:   "bigquery.cnrm.cloud.google.com",
