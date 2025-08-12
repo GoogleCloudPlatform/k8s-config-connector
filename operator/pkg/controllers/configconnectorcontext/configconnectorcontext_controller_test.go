@@ -221,12 +221,13 @@ spec:
 func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
-		name           string
-		cc             *corev1beta1.ConfigConnector
-		ccc            *corev1beta1.ConfigConnectorContext
-		loadedManifest []string
-		resultsFunc    func(t *testing.T, c client.Client) []string
-		hasError       bool
+		name                      string
+		cc                        *corev1beta1.ConfigConnector
+		ccc                       *corev1beta1.ConfigConnectorContext
+		loadedManifest            []string
+		resultsFunc               func(t *testing.T, c client.Client) []string
+		hasError                  bool
+		managerNamespaceIsolation string
 	}{
 		{
 			name: "CC is in cluster mode, CCC surfaces errors",
@@ -328,7 +329,64 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 		},
 
 		{
-			name: "CC is in namespaced mode, CCC has spec.managerNamespace",
+			name: "CC is in per namespaced mode, CCC has error spec.managerNamespace omitted",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: corev1beta1.ConfigConnectorAllowedName,
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode: "namespaced",
+				},
+			},
+			ccc: &corev1beta1.ConfigConnectorContext{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
+					Namespace: "t1234-tenant0-provider",
+					Labels: map[string]string{
+						"tenancy.gke.io/access-level": "tenant",
+						"tenancy.gke.io/project":      "t1234",
+						"tenancy.gke.io/tenant":       "t1234-tenant0",
+					},
+				},
+				Spec: corev1beta1.ConfigConnectorContextSpec{
+					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+				},
+			},
+			loadedManifest:            testcontroller.GetPerNamespaceManifest(),
+			hasError:                  true,
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
+		},
+		{
+			name: "CC is in namespaced mode, CCC has error spec.managerNamespace specified",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: corev1beta1.ConfigConnectorAllowedName,
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode: "namespaced",
+				},
+			},
+			ccc: &corev1beta1.ConfigConnectorContext{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
+					Namespace: "t1234-tenant0-provider",
+					Labels: map[string]string{
+						"tenancy.gke.io/access-level": "tenant",
+						"tenancy.gke.io/project":      "t1234",
+						"tenancy.gke.io/tenant":       "t1234-tenant0",
+					},
+				},
+				Spec: corev1beta1.ConfigConnectorContextSpec{
+					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+					ManagerNamespace:     "t1234-tenant0-supervisor",
+				},
+			},
+			loadedManifest:            testcontroller.GetPerNamespaceManifest(),
+			hasError:                  true,
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationShared,
+		},
+		{
+			name: "CC is in per namespaced mode, CCC has spec.managerNamespace",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: corev1beta1.ConfigConnectorAllowedName,
@@ -356,6 +414,7 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			resultsFunc: func(t *testing.T, c client.Client) []string {
 				return testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.GetPerManagerNamespaceManifest(), "t1234-tenant0-provider", "foo@bar.iam.gserviceaccount.com", false, "", c)
 			},
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
 		},
 	}
 
@@ -371,6 +430,11 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 			testcontroller.EnsureNamespaceExists(c, k8s.CNRMSystemNamespace)
 			m := testcontroller.ParseObjects(ctx, t, tc.loadedManifest)
 			r := newConfigConnectorReconciler(c)
+			if tc.managerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
+				r.managerNamespaceIsolation = k8s.ManagerNamespaceIsolationDedicated
+			} else {
+				r.managerNamespaceIsolation = k8s.ManagerNamespaceIsolationShared
+			}
 
 			if err := c.Create(ctx, tc.cc); err != nil {
 				t.Fatalf("error creating %v %v: %v", tc.cc.Kind, tc.cc.Name, err)
@@ -428,15 +492,16 @@ func TestHandlePerNamespaceComponentsCreate(t *testing.T) {
 func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
-		name                 string
-		cc                   *corev1beta1.ConfigConnector
-		ccc                  *corev1beta1.ConfigConnectorContext
-		loadedManifest       []string
-		installedObjectsFunc func(t *testing.T, c client.Client) []string
-		resultsFunc          func(t *testing.T, c client.Client) []string
-		issueCCCDeletion     bool
-		issueCCDeletion      bool
-		hasError             bool
+		name                      string
+		cc                        *corev1beta1.ConfigConnector
+		ccc                       *corev1beta1.ConfigConnectorContext
+		loadedManifest            []string
+		installedObjectsFunc      func(t *testing.T, c client.Client) []string
+		resultsFunc               func(t *testing.T, c client.Client) []string
+		issueCCCDeletion          bool
+		issueCCDeletion           bool
+		hasError                  bool
+		managerNamespaceIsolation string
 	}{
 		{
 			name: "Delete the CCC object",
@@ -500,7 +565,8 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			resultsFunc: func(t *testing.T, c client.Client) []string {
 				return nil
 			},
-			issueCCCDeletion: true,
+			issueCCCDeletion:          true,
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
 		},
 		{
 			name: "CC is switched to cluster mode",
@@ -566,7 +632,8 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			resultsFunc: func(t *testing.T, c client.Client) []string {
 				return nil
 			},
-			hasError: true,
+			hasError:                  true,
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
 		},
 		{
 			name: "CC is pending deletion",
@@ -633,8 +700,9 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			resultsFunc: func(t *testing.T, c client.Client) []string {
 				return nil
 			},
-			issueCCDeletion: true,
-			hasError:        true,
+			issueCCDeletion:           true,
+			hasError:                  true,
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
 		},
 		{
 			name: "CC is not found",
@@ -684,7 +752,8 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			resultsFunc: func(t *testing.T, c client.Client) []string {
 				return nil
 			},
-			hasError: true,
+			hasError:                  true,
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
 		},
 	}
 
@@ -704,6 +773,11 @@ func TestHandlePerNamespaceComponentsDelete(t *testing.T) {
 			}
 			m := testcontroller.ParseObjects(ctx, t, tc.loadedManifest)
 			r := newConfigConnectorReconciler(c)
+			if tc.managerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
+				r.managerNamespaceIsolation = k8s.ManagerNamespaceIsolationDedicated
+			} else {
+				r.managerNamespaceIsolation = k8s.ManagerNamespaceIsolationShared
+			}
 			if tc.cc != nil {
 				if err := c.Create(ctx, tc.cc); err != nil {
 					t.Fatalf("error creating %v %v: %v", tc.cc.Kind, tc.cc.Name, err)
@@ -1258,9 +1332,11 @@ func handleLifecycles(ctx context.Context, t *testing.T,
 	if err := fn(ctx, ccc, m); err != nil {
 		return err
 	}
-	fn = r.transformPerNamespaceComponents()
-	if err := fn(ctx, ccc, m); err != nil {
-		return err
+	if r.managerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
+		fn = r.transformPerNamespaceComponents()
+		if err := fn(ctx, ccc, m); err != nil {
+			return err
+		}
 	}
 	fn = r.addLabels()
 	if err := fn(ctx, ccc, m); err != nil {

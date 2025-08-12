@@ -54,7 +54,9 @@ const (
 	BillingProjectFlag                 = "--billing-project"
 	CNRMManagerContainerName           = "manager"
 	KCCUnmanagedDetectorContainerName  = "unmanageddetector"
-	EnableManagerNamespaceFlag         = "--enable-manager-namespace"
+	ManagerNamespaceIsolationFlag      = "manager-namespace-isolation"
+	ManagerNamespaceIsolationShared    = "shared"
+	ManagerNamespaceIsolationDedicated = "dedicated"
 )
 
 var (

@@ -82,20 +82,23 @@ func runManager(t *testing.T, restConfig *rest.Config) manager.Manager {
 
 func TestReconcile_UnmanagedResource(t *testing.T) {
 	tests := []struct {
-		name             string
-		namespace        string
-		managerNamespace string
-		ccc              *unstructured.Unstructured
+		name                      string
+		namespace                 string
+		managerNamespace          string
+		managerNamespaceIsolation string
+		ccc                       *unstructured.Unstructured
 	}{
 		{
-			name:      "namespaced CCC",
-			namespace: testvariable.NewUniqueID(),
+			name:                      "namespaced CCC",
+			namespace:                 testvariable.NewUniqueID(),
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationShared,
 		},
 		{
-			name:             "per namespace CCC",
-			namespace:        "t1234-tenant0-provider",
-			managerNamespace: "t1234-tenant0-supervisor",
-			ccc:              newConfigConnectorContextUnstructured("t1234-tenant0-provider", "t1234-tenant0-supervisor"),
+			name:                      "per namespace CCC",
+			namespace:                 "t1234-tenant0-provider",
+			managerNamespace:          "t1234-tenant0-supervisor",
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
+			ccc:                       newConfigConnectorContextUnstructured("t1234-tenant0-provider", "t1234-tenant0-supervisor"),
 		},
 	}
 	for _, tc := range tests {
@@ -142,6 +145,7 @@ func TestReconcile_UnmanagedResource(t *testing.T) {
 				}()
 			}
 
+			unmanageddetector.ManagerNamespaceIsolation = tc.managerNamespaceIsolation
 			reconciler, err := unmanageddetector.NewReconciler(mgr, fakeCRDGVK)
 			if err != nil {
 				t.Fatalf("error creating reconciler: %v", err)
@@ -174,19 +178,22 @@ func TestReconcile_UnmanagedResource(t *testing.T) {
 
 func TestReconcile_ManagedResource(t *testing.T) {
 	tests := []struct {
-		name             string
-		namespace        string
-		managerNamespace string
+		name                      string
+		namespace                 string
+		managerNamespace          string
+		managerNamespaceIsolation string
 	}{
 		{
-			name:             "namespaced CCC",
-			namespace:        testvariable.NewUniqueID(),
-			managerNamespace: k8s.SystemNamespace,
+			name:                      "namespaced CCC",
+			namespace:                 testvariable.NewUniqueID(),
+			managerNamespace:          k8s.SystemNamespace,
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationShared,
 		},
 		{
-			name:             "per namespace CCC",
-			namespace:        "t1234-tenant0-provider",
-			managerNamespace: "t1234-tenant0-supervisor",
+			name:                      "per namespace CCC",
+			namespace:                 "t1234-tenant0-provider",
+			managerNamespace:          "t1234-tenant0-supervisor",
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
 		},
 	}
 	for _, tc := range tests {
@@ -228,6 +235,7 @@ func TestReconcile_ManagedResource(t *testing.T) {
 			ccc := newConfigConnectorContextUnstructured(resourceNN.Namespace, tc.managerNamespace)
 			test.EnsureObjectExists(t, ccc, client)
 
+			unmanageddetector.ManagerNamespaceIsolation = tc.managerNamespaceIsolation
 			reconciler, err := unmanageddetector.NewReconciler(mgr, fakeCRDGVK)
 			if err != nil {
 				t.Fatalf("error creating reconciler: %v", err)

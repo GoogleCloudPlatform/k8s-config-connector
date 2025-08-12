@@ -40,7 +40,7 @@ import (
 )
 
 var (
-	EnableManagerNamespace bool
+	ManagerNamespaceIsolation string
 )
 
 type Reconciler struct {
@@ -151,7 +151,7 @@ func controllerExistsForNamespace(ctx context.Context, namespace string, c clien
 		LabelSelector: stsLabelSelector,
 		Limit:         1,
 	}
-	if EnableManagerNamespace {
+	if ManagerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
 		u := &unstructured.Unstructured{}
 		u.SetGroupVersionKind(corev1beta1.ConfigConnectorContextGroupVersionKind)
 		err = c.Get(ctx, types.NamespacedName{

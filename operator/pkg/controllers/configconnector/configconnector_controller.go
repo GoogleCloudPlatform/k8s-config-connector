@@ -59,9 +59,9 @@ const controllerName = "configconnector-controller"
 
 // ReconcilerOptions holds configuration options for the reconciler
 type ReconcilerOptions struct {
-	RepoPath               string
-	ImageTransform         *controllers.ImageTransform
-	EnableManagerNamespace bool
+	RepoPath                  string
+	ImageTransform            *controllers.ImageTransform
+	ManagerNamespaceIsolation string
 }
 
 // Reconciler reconciles a ConfigConnector object.
@@ -72,13 +72,13 @@ type ReconcilerOptions struct {
 // Reconciler also watches "ControllerResource" kind and apply customizations
 // specified in "ControllerResource" CRs to KCC components.
 type Reconciler struct {
-	reconciler             *declarative.Reconciler
-	client                 client.Client
-	recorder               record.EventRecorder
-	labelMaker             declarative.LabelMaker
-	log                    logr.Logger
-	customizationWatcher   *controllers.CustomizationWatcher
-	enableManagerNamespace bool
+	reconciler                *declarative.Reconciler
+	client                    client.Client
+	recorder                  record.EventRecorder
+	labelMaker                declarative.LabelMaker
+	log                       logr.Logger
+	customizationWatcher      *controllers.CustomizationWatcher
+	managerNamespaceIsolation string
 }
 
 func Add(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error) {
@@ -112,12 +112,12 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 	})
 
 	r := &Reconciler{
-		reconciler:             &declarative.Reconciler{},
-		client:                 mgr.GetClient(),
-		recorder:               mgr.GetEventRecorderFor(controllerName),
-		labelMaker:             declarative.SourceLabel(mgr.GetScheme()),
-		log:                    ctrl.Log.WithName(controllerName),
-		enableManagerNamespace: opt.EnableManagerNamespace,
+		reconciler:                &declarative.Reconciler{},
+		client:                    mgr.GetClient(),
+		recorder:                  mgr.GetEventRecorderFor(controllerName),
+		labelMaker:                declarative.SourceLabel(mgr.GetScheme()),
+		log:                       ctrl.Log.WithName(controllerName),
+		managerNamespaceIsolation: opt.ManagerNamespaceIsolation,
 	}
 
 	r.customizationWatcher = controllers.NewWithDynamicClient(
@@ -145,7 +145,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 		options = append(options, declarative.WithObjectTransform(opt.ImageTransform.RemapImages))
 	}
 
-	if opt.EnableManagerNamespace {
+	if opt.ManagerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
 		options = append(options, declarative.WithObjectTransform(r.transformPerNamespaceComponents()))
 	}
 
@@ -425,7 +425,7 @@ func (r *Reconciler) verifyPerNamespaceControllerManagerPodsAreDeleted(ctx conte
 		LabelSelector: podLabelSelector,
 		Limit:         100,
 	}
-	if r.enableManagerNamespace {
+	if r.managerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
 		// Controller managers may run in separate namespace
 		// so need to list pods across all namespaces.
 		podOpts.Namespace = ""
@@ -474,7 +474,7 @@ func (r *Reconciler) finalizeSystemComponentsDeletion(ctx context.Context, c cli
 		Namespace:     k8s.CNRMSystemNamespace,
 		LabelSelector: podLabelSelector,
 	}
-	if r.enableManagerNamespace {
+	if r.managerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
 		// Controller managers may run in separate namespace
 		// so need to list pods across all namespaces.
 		podOpts.Namespace = ""
@@ -1024,11 +1024,11 @@ func handleUnmanagedDetectorArgs(obj *manifest.Object) (*manifest.Object, error)
 		args = make([]string, 0)
 	}
 	for _, arg := range args {
-		if arg == k8s.EnableManagerNamespaceFlag {
+		if len(arg) > 2 && strings.HasPrefix(arg[2:], k8s.ManagerNamespaceIsolationFlag) {
 			return obj, nil
 		}
 	}
-	args = append(args, k8s.EnableManagerNamespaceFlag)
+	args = append(args, fmt.Sprintf("--%v=%v", k8s.ManagerNamespaceIsolationFlag, k8s.ManagerNamespaceIsolationDedicated))
 	if err := unstructured.SetNestedStringSlice(unmanagedDetectorContainer, args, "args"); err != nil {
 		return nil, fmt.Errorf("error setting args in unmanaged detector container: %w", err)
 	}
