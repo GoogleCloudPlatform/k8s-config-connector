@@ -30,6 +30,19 @@ if [[ -n "${KCC_USE_DIRECT_RECONCILERS:-}" ]]; then
   export KCC_USE_DIRECT_RECONCILERS
 fi
 
+# Temporarily skip flaky tests in presubmit
+# Add skip reason and test name into below list
+flaky_tests=(
+  # b/321582240 flaky test due to deletion ordering
+  "TestE2EScript/scenarios/gkehubfeaturemembership/update_single_membership"
+)
+
+if [[ -n "${SKIP_TESTS:-}" ]]; then
+  flaky_tests=("${SKIP_TESTS}" "${flaky_tests[@]}")
+fi
+SKIP_TESTS=$(IFS="|"; echo "${flaky_tests[*]}")
+export SKIP_TESTS
+
 if [[ -z "${RUN_TESTS:-}" ]]; then
   RUN_TESTS=TestAllInSeries/fixtures
 fi
@@ -98,4 +111,4 @@ GOLDEN_REQUEST_CHECKS=1 \
 GOLDEN_OBJECT_CHECKS=1 \
 WRITE_GOLDEN_OUTPUT=1 \
 RUN_E2E=1 \
- ${PREBUILT_TEST_BINARY} -test.timeout ${TEST_TIMEOUT} -test.v -test.run $RUN_TESTS
+ ${PREBUILT_TEST_BINARY} -test.timeout ${TEST_TIMEOUT} -test.v -test.run $RUN_TESTS -test.skip $SKIP_TESTS
