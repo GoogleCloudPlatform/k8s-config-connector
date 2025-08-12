@@ -16,22 +16,22 @@ package bigqueryreservation
 
 import (
 	pb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func Assignment_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krmv1alpha1.Assignment {
+func Assignment_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.Assignment {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.Assignment{}
+	out := &krm.Assignment{}
 	// MISSING: Name
 	out.Assignee = direct.LazyPtr(in.GetAssignee())
 	out.JobType = direct.Enum_FromProto(mapCtx, in.GetJobType())
 	// MISSING: State
 	return out
 }
-func Assignment_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Assignment) *pb.Assignment {
+func Assignment_ToProto(mapCtx *direct.MapContext, in *krm.Assignment) *pb.Assignment {
 	if in == nil {
 		return nil
 	}
@@ -42,18 +42,18 @@ func Assignment_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Assignment) *
 	// MISSING: State
 	return out
 }
-func AssignmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krmv1alpha1.AssignmentObservedState {
+func AssignmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.AssignmentObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.AssignmentObservedState{}
+	out := &krm.AssignmentObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: Assignee
 	// MISSING: JobType
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	return out
 }
-func AssignmentObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.AssignmentObservedState) *pb.Assignment {
+func AssignmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AssignmentObservedState) *pb.Assignment {
 	if in == nil {
 		return nil
 	}
@@ -64,11 +64,11 @@ func AssignmentObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.
 	out.State = direct.Enum_ToProto[pb.Assignment_State](mapCtx, in.State)
 	return out
 }
-func Reservation_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krmv1alpha1.Reservation {
+func Reservation_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.Reservation {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.Reservation{}
+	out := &krm.Reservation{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.SlotCapacity = direct.LazyPtr(in.GetSlotCapacity())
 	out.IgnoreIdleSlots = direct.LazyPtr(in.GetIgnoreIdleSlots())
@@ -83,7 +83,7 @@ func Reservation_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krmv1
 	out.OriginalPrimaryLocation = direct.LazyPtr(in.GetOriginalPrimaryLocation())
 	return out
 }
-func Reservation_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Reservation) *pb.Reservation {
+func Reservation_ToProto(mapCtx *direct.MapContext, in *krm.Reservation) *pb.Reservation {
 	if in == nil {
 		return nil
 	}
@@ -102,11 +102,11 @@ func Reservation_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Reservation)
 	out.OriginalPrimaryLocation = direct.ValueOf(in.OriginalPrimaryLocation)
 	return out
 }
-func ReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krmv1alpha1.ReservationObservedState {
+func ReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.ReservationObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.ReservationObservedState{}
+	out := &krm.ReservationObservedState{}
 	// MISSING: Name
 	// MISSING: SlotCapacity
 	// MISSING: IgnoreIdleSlots
@@ -121,7 +121,7 @@ func ReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reserv
 	// MISSING: OriginalPrimaryLocation
 	return out
 }
-func ReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.ReservationObservedState) *pb.Reservation {
+func ReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ReservationObservedState) *pb.Reservation {
 	if in == nil {
 		return nil
 	}
@@ -140,16 +140,16 @@ func ReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1
 	// MISSING: OriginalPrimaryLocation
 	return out
 }
-func Reservation_Autoscale_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_Autoscale) *krmv1alpha1.Reservation_Autoscale {
+func Reservation_Autoscale_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_Autoscale) *krm.Reservation_Autoscale {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.Reservation_Autoscale{}
+	out := &krm.Reservation_Autoscale{}
 	// MISSING: CurrentSlots
 	out.MaxSlots = direct.LazyPtr(in.GetMaxSlots())
 	return out
 }
-func Reservation_Autoscale_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Reservation_Autoscale) *pb.Reservation_Autoscale {
+func Reservation_Autoscale_ToProto(mapCtx *direct.MapContext, in *krm.Reservation_Autoscale) *pb.Reservation_Autoscale {
 	if in == nil {
 		return nil
 	}
@@ -158,16 +158,16 @@ func Reservation_Autoscale_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Re
 	out.MaxSlots = direct.ValueOf(in.MaxSlots)
 	return out
 }
-func Reservation_AutoscaleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_Autoscale) *krmv1alpha1.Reservation_AutoscaleObservedState {
+func Reservation_AutoscaleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_Autoscale) *krm.Reservation_AutoscaleObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.Reservation_AutoscaleObservedState{}
+	out := &krm.Reservation_AutoscaleObservedState{}
 	out.CurrentSlots = direct.LazyPtr(in.GetCurrentSlots())
 	// MISSING: MaxSlots
 	return out
 }
-func Reservation_AutoscaleObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Reservation_AutoscaleObservedState) *pb.Reservation_Autoscale {
+func Reservation_AutoscaleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Reservation_AutoscaleObservedState) *pb.Reservation_Autoscale {
 	if in == nil {
 		return nil
 	}
