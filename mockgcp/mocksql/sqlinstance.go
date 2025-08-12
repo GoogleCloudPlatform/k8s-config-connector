@@ -757,6 +757,15 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 		return nil, err
 	}
 
+	if req.GetBody().GetMaintenanceVersion() != "" && req.GetBody().GetMaintenanceVersion() != existing.GetMaintenanceVersion() {
+		// Maintenance version is changing.
+		// Check if any other fields are changing.
+		// A simple check for the test case is to see if settings are changing.
+		if !proto.Equal(req.GetBody().GetSettings(), existing.GetSettings()) {
+			return nil, status.Errorf(codes.InvalidArgument, "Invalid request: Upgrading maintenance version and changing other fields at the same time is not allowed.")
+		}
+	}
+
 	obj := proto.Clone(req.GetBody()).(*pb.DatabaseInstance)
 	obj.Name = existing.Name
 	obj.Region = existing.Region
