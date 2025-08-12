@@ -354,36 +354,6 @@ X-Xss-Protection: 0
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Service account projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Service account projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -405,8 +375,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
-Content-Type: application/json
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -436,7 +405,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -454,8 +423,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "defaultEncryptionConfiguration": {
     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
-  "defaultPartitionExpirationMs": 3600000,
-  "defaultTableExpirationMs": 3600000,
+  "defaultPartitionExpirationMs": "3600000",
+  "defaultTableExpirationMs": "3600000",
   "description": "Fully Configured BigQuery Dataset",
   "friendlyName": "bigquerydataset-fullyconfigured",
   "isCaseInsensitive": true,
@@ -516,8 +485,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
-Content-Type: application/json
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -568,7 +536,7 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -587,22 +555,19 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "userByEmail": "user@google.com"
     }
   ],
-  "datasetReference": {
-    "datasetId": "bigquerydataset${uniqueId}"
-  },
   "defaultCollation": "und:ci",
   "defaultEncryptionConfiguration": {
     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
-  "defaultPartitionExpirationMs": 3800000,
-  "defaultTableExpirationMs": 3800000,
+  "defaultPartitionExpirationMs": "3800000",
+  "defaultTableExpirationMs": "3800000",
   "description": "Fully Configured BigQuery Dataset updated",
   "friendlyName": "bigquerydataset-fullyconfigured-updated",
+  "isCaseInsensitive": false,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "location": "US",
   "maxTimeTravelHours": "96",
   "storageBillingModel": "LOGICAL"
 }
@@ -647,7 +612,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-fullyconfigured-updated",
   "id": "000000000000000000000",
-  "isCaseInsensitive": true,
+  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -707,7 +672,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-fullyconfigured-updated",
   "id": "000000000000000000000",
-  "isCaseInsensitive": true,
+  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -723,8 +688,66 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
-Content-Type: application/json
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "defaultCollation": "und:ci",
+  "defaultEncryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
+  "defaultPartitionExpirationMs": "3800000",
+  "defaultTableExpirationMs": "3800000",
+  "description": "Fully Configured BigQuery Dataset updated",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerydataset-fullyconfigured-updated",
+  "id": "000000000000000000000",
+  "isCaseInsensitive": false,
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "US",
+  "maxTimeTravelHours": "96",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "storageBillingModel": "LOGICAL",
+  "type": "DEFAULT"
+}
+
+---
+
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
