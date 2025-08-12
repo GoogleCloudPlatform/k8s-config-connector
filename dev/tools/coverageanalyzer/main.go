@@ -15,6 +15,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -28,6 +29,10 @@ func main() {
 			os.Args[0])
 	}
 	coverageFile := os.Args[1]
+
+	if _, err := os.Stat(coverageFile); errors.Is(err, os.ErrNotExist) {
+		log.Fatalf("Coverage file %s doesn't exist", coverageFile)
+	}
 
 	uncoveredBlocks, err := findUncoveredBlocks(coverageFile)
 	if err != nil {
