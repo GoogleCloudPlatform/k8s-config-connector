@@ -44,9 +44,6 @@ func TestReferenceDoc(t *testing.T) {
 			if strings.HasSuffix(gvk.Group, "core.cnrm.cloud.google.com") {
 				continue
 			}
-			if strings.HasSuffix(gvk.Group, "customize.core.cnrm.cloud.google.com") {
-				continue
-			}
 			if strings.HasPrefix(gvk.Version, "v1alpha1") {
 				continue
 			}
