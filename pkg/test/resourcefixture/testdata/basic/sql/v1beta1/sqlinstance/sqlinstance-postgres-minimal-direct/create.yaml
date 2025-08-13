@@ -19,7 +19,7 @@ metadata:
   annotations:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
-  databaseVersion: POSTGRES_15
+  databaseVersion: POSTGRES_16
   region: us-central1
   settings:
     # Location preference is not actually a required field. However, setting it for tests

@@ -717,8 +717,13 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 		if body.MaintenanceVersion != "" {
 			obj.MaintenanceVersion = body.MaintenanceVersion
 		}
+		// todo kcc team: refactor this all so we can pass in specific values for database settings
+		specifiedMaintenanceVersion := body.MaintenanceVersion
 		if err := setDatabaseVersionDefaults(obj); err != nil {
 			return nil, err
+		}
+		if specifiedMaintenanceVersion != "" {
+			obj.MaintenanceVersion = specifiedMaintenanceVersion
 		}
 	}
 
@@ -755,6 +760,15 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 	existing := &pb.DatabaseInstance{}
 	if err := s.storage.Get(ctx, fqn, existing); err != nil {
 		return nil, err
+	}
+
+	if req.GetBody().GetMaintenanceVersion() != "" && req.GetBody().GetMaintenanceVersion() != existing.GetMaintenanceVersion() {
+		// Maintenance version is changing.
+		// Check if any other fields are changing.
+		// A simple check for the test case is to see if settings are changing.
+		if !proto.Equal(req.GetBody().GetSettings(), existing.GetSettings()) {
+			return nil, status.Errorf(codes.InvalidArgument, "Invalid request: Upgrading maintenance version and changing other fields at the same time is not allowed.")
+		}
 	}
 
 	obj := proto.Clone(req.GetBody()).(*pb.DatabaseInstance)
