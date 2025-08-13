@@ -469,15 +469,9 @@ func TestCRDFieldPresenceInTests(t *testing.T) {
 	t.Parallel()
 
 	shouldVisitCRD := func(crd *apiextensions.CustomResourceDefinition, version string) bool {
-		kind := crd.Spec.Names.Kind
 
 		// beta/v1 requires full API coverage so it should pass this test.
 		if !strings.Contains(version, "alpha") {
-			return true
-		}
-
-		// This env allows us to run the API coverage test for a certain alpha resource.
-		if os.Getenv("TARGET_KIND") != "" && os.Getenv("TARGET_KIND") == kind {
 			return true
 		}
 
