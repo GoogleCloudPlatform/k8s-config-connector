@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -129,8 +130,8 @@ type AssignmentAdapter struct {
 var _ directbase.Adapter = &AssignmentAdapter{}
 
 // Find retrieves the GCP resource.
-// Return true means the object is found. This triggers Adapter `Update` call.
-// Return false means the object is not found. This triggers Adapter `Create` call.
+// Return true means the object is found. This triggersAdapter `Update` call.
+// Return false means the object is not found. This triggersAdapter `Create` call.
 // Return a non-nil error requeues the requests.
 func (a *AssignmentAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
@@ -155,7 +156,7 @@ func (a *AssignmentAdapter) Find(ctx context.Context) (bool, error) {
 	return false, nil
 }
 
-// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on theGCP response.
 func (a *AssignmentAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Assignment", "name", a.id.String())
@@ -268,7 +269,7 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
-// Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+// Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on theGCP response.
 func (a *AssignmentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating or moving the assignment", "name", a.id.String())
@@ -302,7 +303,7 @@ func (a *AssignmentAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ReservationRef = &krm.ReservationRef{External: a.destinationId}
+	obj.Spec.ReservationRef = &krmv1beta1.ReservationRef{External: a.destinationId}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

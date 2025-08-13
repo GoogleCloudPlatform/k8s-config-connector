@@ -84,3 +84,7 @@ We have two scripts `hack/record-gcp` and `hack/compare-mock` to help streamline
 # GitHub Actions Workflow Generation
 
 `docs/ai/github-workflow.md` describes how to generate github workflows.
+
+# Import Alias Convention
+
+When promoting a resource from `v1alpha1` to `v1beta1`, we should keep `krm` as the import alias for `v1alpha1` and use `krmv1beta1` for `v1beta1`. This is to minimize the code changes.
