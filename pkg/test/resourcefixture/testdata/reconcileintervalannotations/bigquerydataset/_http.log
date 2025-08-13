@@ -174,24 +174,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "access": [
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    }
-  ],
   "creationTime": "123456789",
   "datasetReference": {
     "datasetId": "bigquerydatasetsample${uniqueId}",
@@ -200,6 +182,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-sample",
   "id": "000000000000000000000",
+  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -228,24 +211,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "access": [
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    }
-  ],
   "creationTime": "123456789",
   "datasetReference": {
     "datasetId": "bigquerydatasetsample${uniqueId}",
@@ -254,6 +219,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-sample",
   "id": "000000000000000000000",
+  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -294,24 +260,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "access": [
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    }
-  ],
   "creationTime": "123456789",
   "datasetReference": {
     "datasetId": "bigquerydatasetsample${uniqueId}",
@@ -320,6 +268,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-sample-updated",
   "id": "000000000000000000000",
+  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -349,24 +298,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "access": [
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    }
-  ],
   "creationTime": "123456789",
   "datasetReference": {
     "datasetId": "bigquerydatasetsample${uniqueId}",
@@ -375,6 +306,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-sample-updated",
   "id": "000000000000000000000",
+  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -403,24 +335,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "access": [
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    }
-  ],
   "creationTime": "123456789",
   "datasetReference": {
     "datasetId": "bigquerydatasetsample${uniqueId}",
@@ -429,6 +343,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-sample-updated",
   "id": "000000000000000000000",
+  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
