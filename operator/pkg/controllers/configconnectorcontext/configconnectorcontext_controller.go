@@ -140,6 +140,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 		declarative.WithObjectTransform(r.addLabels()),
 		declarative.WithObjectTransform(r.handleCCContextLifecycle()),
 		declarative.WithObjectTransform(r.applyNamespacedCustomizations()),
+		declarative.WithObjectTransform(r.transformForExperiments(r.client)),
 		declarative.WithStatus(&declarative.StatusBuilder{
 			PreflightImpl: preflight,
 		}))
