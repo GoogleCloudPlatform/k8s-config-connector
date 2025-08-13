@@ -1,13 +1,5 @@
 [
   {
-    "kind": "APIQuotaAdjusterSettings",
-    "service": "cloudquota",
-    "apiPath": "apis/cloudquota/v1alpha1/quotaadjustersettings_types.go",
-    "controllerPath": "pkg/controller/direct/cloudquota/quotaadjustersettings_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/cloudquota/v1alpha1/apiquotaadjustersettings",
-    "apiCoverage": true
-  },
-  {
     "kind": "APIQuotaPreference",
     "service": "cloudquota",
     "apiPath": "apis/cloudquota/v1alpha1/quotapreference_types.go",
@@ -30,14 +22,6 @@
     "controllerPath": "pkg/controller/direct/asset/savedquery_controller.go",
     "testFixturePath": "pkg/test/resourcefixture/testdata/basic/asset/v1alpha1/assetsavedquery",
     "apiCoverage": false
-  },
-  {
-    "kind": "BackupDRBackupPlanAssociation",
-    "service": "backupdr",
-    "apiPath": "apis/backupdr/v1alpha1/backupplanassociation_types.go",
-    "controllerPath": "pkg/controller/direct/backupdr/backupplanassociation_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/backupdr/v1alpha1/backupdrbackupplanassociation",
-    "apiCoverage": true
   },
   {
     "kind": "BackupDRBackupPlan",
@@ -86,14 +70,6 @@
     "controllerPath": "pkg/controller/direct/bigqueryreservation/assignment_controller.go",
     "testFixturePath": "pkg/test/resourcefixture/testdata/basic/bigqueryreservation/v1alpha1/bigqueryreservationassignment",
     "apiCoverage": false
-  },
-  {
-    "kind": "BigQueryReservationReservation",
-    "service": "bigqueryreservation",
-    "apiPath": "apis/bigqueryreservation/v1alpha1/reservation_types.go",
-    "controllerPath": "pkg/controller/direct/bigqueryreservation/reservation_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/bigqueryreservation/v1alpha1/bigqueryreservationreservation",
-    "apiCoverage": true
   },
   {
     "kind": "BigtableLogicalView",
@@ -342,30 +318,6 @@
     "controllerPath": "pkg/controller/direct/gkebackup/restoreplan_controller.go",
     "testFixturePath": "pkg/test/resourcefixture/testdata/basic/gkebackup/v1alpha1/gkebackuprestoreplan",
     "apiCoverage": false
-  },
-  {
-    "kind": "KMSImportJob",
-    "service": "kms",
-    "apiPath": "apis/kms/v1alpha1/importjob_types.go",
-    "controllerPath": "pkg/controller/direct/kms/importjob_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/kms/v1alpha1/kmsimportjob",
-    "apiCoverage": true
-  },
-  {
-    "kind": "LoggingLink",
-    "service": "logging",
-    "apiPath": "apis/logging/v1alpha1/link_types.go",
-    "controllerPath": "pkg/controller/direct/logging/link_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/logging/v1alpha1/logginglink",
-    "apiCoverage": true
-  },
-  {
-    "kind": "MetastoreBackup",
-    "service": "metastore",
-    "apiPath": "apis/metastore/v1alpha1/backup_types.go",
-    "controllerPath": "pkg/controller/direct/metastore/backup_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/metastore/v1alpha1/metastorebackup",
-    "apiCoverage": true
   },
   {
     "kind": "MetastoreFederation",
