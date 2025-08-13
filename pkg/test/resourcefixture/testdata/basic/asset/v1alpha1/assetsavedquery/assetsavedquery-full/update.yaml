@@ -15,13 +15,15 @@
 apiVersion: asset.cnrm.cloud.google.com/v1alpha1
 kind: AssetSavedQuery
 metadata:
-  name: assetsavedquery-minimal-${uniqueId}
+  name: assetsavedquery-full-${uniqueId}
   labels:
-    key1: "value1"
+    key1: "value1_updated"
+    key3: "value3"
 spec:
   projectRef:
     external: "${projectNumber}"
-  description: A minimal saved query for testing.
+  description: "A saved query with all fields for testing - updated."
+  resourceID: "assetsavedquery-full-${uniqueId}"
   content:
     iamPolicyAnalysisQuery:
       scope: projects/${projectNumber}
@@ -41,5 +43,3 @@ spec:
         outputGroupEdges: true
         outputResourceEdges: true
         analyzeServiceAccountImpersonation: true
-      conditionContext:
-        accessTime: "2025-08-13T10:00:00Z"
