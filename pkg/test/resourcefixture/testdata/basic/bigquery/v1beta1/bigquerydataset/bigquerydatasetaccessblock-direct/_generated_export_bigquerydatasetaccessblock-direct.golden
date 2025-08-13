@@ -11,6 +11,8 @@ spec:
   access:
   - domain: google.com
     role: READER
+  - iamMember: allUsers
+    role: READER
   - role: OWNER
     specialGroup: projectOwners
   defaultTableExpirationMs: 7200000
