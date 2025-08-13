@@ -13,7 +13,7 @@
     "apiPath": "apis/asset/v1alpha1/feed_types.go",
     "controllerPath": "pkg/controller/direct/asset/feed_controller.go",
     "testFixturePath": "pkg/test/resourcefixture/testdata/basic/asset/v1alpha1/assetfeed",
-    "apiCoverage": false
+    "apiCoverage": true
   },
   {
     "kind": "AssetSavedQuery",
