@@ -88,3 +88,7 @@ We have two scripts `hack/record-gcp` and `hack/compare-mock` to help streamline
 # Import Alias Convention
 
 When promoting a resource from `v1alpha1` to `v1beta1`, we should keep `krm` as the import alias for `v1alpha1` and use `krmv1beta1` for `v1beta1`. This is to minimize the code changes.
+
+# Promoting resources from alpha to beta
+
+`docs/ai/promote-alpha-to-beta.md` shares tips on how to promote alpha resources to beta.

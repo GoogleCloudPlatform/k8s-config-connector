@@ -36,7 +36,7 @@ TARGET_KIND=<KIND> go test ./tests/apichecks/... -run TestCRDFieldPresenceInTest
 Once the field coverage test passes, record the live GCP API calls for your `create.yaml`:
 
 ```bash
-hack/record-gcp fixtures/<KIND_LOWERCASE>-full
+E2E_TEST_TIMEOUT=20s hack/record-gcp fixtures/<KIND_LOWERCASE>-full 
 ```
 
 -   This command will create a `_http.log` file in your test directory.
@@ -56,7 +56,7 @@ hack/record-gcp fixtures/<KIND_LOWERCASE>-full
 Now, record the live GCP API calls for your `update.yaml`:
 
 ```bash
-hack/record-gcp fixtures/<KIND_LOWERCASE>-full
+E2E_TEST_TIMEOUT=20s hack/record-gcp fixtures/<KIND_LOWERCASE>-full
 ```
 
 -   This will update the `_http.log` with the API calls for the update operation.
@@ -73,7 +73,7 @@ Finally, verify that the mock GCP implementation behaves the same as the real GC
 
 2.  **Compare with the mock:**
     ```bash
-    hack/compare-mock fixtures/<KIND_LOWERCASE>-full
+    E2E_TEST_TIMEOUT=10s hack/compare-mock fixtures/<KIND_LOWERCASE>-full
     ```
     -   If this command fails, it means there's a difference between the real and mock GCP interactions.
     -   Examine the diff to see the differences:
