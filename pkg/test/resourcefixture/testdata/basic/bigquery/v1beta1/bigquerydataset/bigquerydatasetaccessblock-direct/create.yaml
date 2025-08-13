@@ -28,3 +28,5 @@ spec:
       specialGroup: projectOwners
     - role: READER
       domain: google.com
+    - role: READER
+      iamMember: allUsers

@@ -39,6 +39,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "role": "READER"
     },
     {
+      "iamMember": "allUsers",
+      "role": "READER"
+    },
+    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     }
@@ -70,6 +74,10 @@ X-Xss-Protection: 0
   "access": [
     {
       "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "iamMember": "allUsers",
       "role": "READER"
     },
     {
@@ -120,6 +128,10 @@ X-Xss-Protection: 0
       "role": "READER"
     },
     {
+      "iamMember": "allUsers",
+      "role": "READER"
+    },
+    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     }
@@ -159,6 +171,143 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "role": "READER"
     },
     {
+      "iamMember": "allUsers",
+      "role": "READER"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    }
+  ],
+  "defaultTableExpirationMs": "3600000",
+  "description": "BigQuery Dataset With Access Block",
+  "friendlyName": "bigquerydataset-accessblock",
+  "isCaseInsensitive": false,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "maxTimeTravelHours": "168"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "iamMember": "allUsers",
+      "role": "READER"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "defaultTableExpirationMs": "3600000",
+  "description": "BigQuery Dataset With Access Block",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerydataset-accessblock",
+  "id": "000000000000000000000",
+  "isCaseInsensitive": false,
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "US",
+  "maxTimeTravelHours": "168",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "iamMember": "allUsers",
+      "role": "READER"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "defaultTableExpirationMs": "3600000",
+  "description": "BigQuery Dataset With Access Block",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerydataset-accessblock",
+  "id": "000000000000000000000",
+  "isCaseInsensitive": false,
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "US",
+  "maxTimeTravelHours": "168",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "access": [
+    {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "iamMember": "allUsers",
+      "role": "READER"
+    },
+    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     }
@@ -188,6 +337,10 @@ X-Xss-Protection: 0
   "access": [
     {
       "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "iamMember": "allUsers",
       "role": "READER"
     },
     {
@@ -241,6 +394,10 @@ X-Xss-Protection: 0
       "role": "READER"
     },
     {
+      "iamMember": "allUsers",
+      "role": "READER"
+    },
+    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     }
@@ -287,6 +444,10 @@ X-Xss-Protection: 0
   "access": [
     {
       "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "iamMember": "allUsers",
       "role": "READER"
     },
     {
