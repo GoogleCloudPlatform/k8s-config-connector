@@ -258,10 +258,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		resource.MaxTimeTravel = desired.MaxTimeTravel
 		updateMask.Paths = append(updateMask.Paths, "max_time_travel")
 	}
-	if desired.Access != nil && resource.Access != nil && len(desired.Access) > 0 && !reflect.DeepEqual(desired.Access, resource.Access) {
-		for _, access := range desired.Access {
-			resource.Access = append(resource.Access, access)
-		}
+	if desired.Access != nil && !reflect.DeepEqual(desired.Access, resource.Access) {
+		resource.Access = desired.Access
+		updateMask.Paths = append(updateMask.Paths, "access")
 	}
 	if len(updateMask.Paths) == 0 {
 		return nil

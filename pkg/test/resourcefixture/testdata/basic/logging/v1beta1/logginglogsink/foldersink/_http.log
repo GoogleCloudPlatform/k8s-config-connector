@@ -282,6 +282,59 @@ X-Xss-Protection: 0
 
 ---
 
+PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "access": null,
+  "defaultTableExpirationMs": "3600000",
+  "description": "BigQuery Dataset Sample",
+  "friendlyName": "foldersink${uniqueId}",
+  "isCaseInsensitive": false,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "maxTimeTravelHours": "168"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "foldersink${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "defaultTableExpirationMs": "3600000",
+  "description": "BigQuery Dataset Sample",
+  "etag": "abcdef0123A=",
+  "friendlyName": "foldersink${uniqueId}",
+  "id": "000000000000000000000",
+  "isCaseInsensitive": false,
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "US",
+  "maxTimeTravelHours": "168",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/foldersink${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
 GET https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -452,24 +505,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "access": [
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    }
-  ],
   "creationTime": "123456789",
   "datasetReference": {
     "datasetId": "foldersink${uniqueId}",
@@ -480,6 +515,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "foldersink${uniqueId}",
   "id": "000000000000000000000",
+  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",

@@ -8,15 +8,6 @@ metadata:
     managed-by-cnrm: "true"
   name: bigquerydataset-${uniqueId}
 spec:
-  access:
-  - role: OWNER
-    specialGroup: projectOwners
-  - role: OWNER
-    userByEmail: user@google.com
-  - role: READER
-    specialGroup: projectReaders
-  - role: WRITER
-    specialGroup: projectWriters
   friendlyName: bigquerydataset-sample-updated
   location: us-central1
   maxTimeTravelHours: "168"
