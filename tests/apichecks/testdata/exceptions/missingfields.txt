@@ -2175,8 +2175,7 @@
 [missing_field] crd=identityplatformtenants.identityplatform.cnrm.cloud.google.com version=v1beta1: field ".spec.disableAuth" is not set in unstructured objects
 [missing_field] crd=identityplatformtenants.identityplatform.cnrm.cloud.google.com version=v1beta1: field ".spec.enableAnonymousUser" is not set in unstructured objects
 [missing_field] crd=identityplatformtenants.identityplatform.cnrm.cloud.google.com version=v1beta1: field ".spec.enableEmailLinkSignin" is not set in unstructured objects
-[missing_field] crd=kmsautokeyconfigs.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.keyProject.kind" is not set in unstructured objects
-[missing_field] crd=kmsautokeyconfigs.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.keyProject.name" is not set in unstructured objects
+[missing_field] crd=kmsautokeyconfigs.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.keyProject.external" is not set in unstructured objects
 [missing_field] crd=kmsautokeyconfigs.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.keyProject.namespace" is not set in unstructured objects
 [missing_field] crd=kmscryptokeys.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.destroyScheduledDuration" is not set in unstructured objects
 [missing_field] crd=kmscryptokeys.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.rotationPeriod" is not set in unstructured objects
