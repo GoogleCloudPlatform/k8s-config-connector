@@ -90,8 +90,6 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to FutureReservation
 	visitor.replacePaths[".spec.timeWindow.startTime"] = "2025-12-01T07:00:00Z"
 	visitor.replacePaths[".spec.timeWindow.endTime"] = "2025-12-31T07:00:00Z"
-	visitor.replacePaths[".status.observedState.timeWindow.startTime"] = "2025-12-01T07:00:00Z"
-	visitor.replacePaths[".status.observedState.timeWindow.endTime"] = "2025-12-31T07:00:00Z"
 	visitor.replacePaths[".status.existingMatchingUsageInfo.timestamp"] = "2025-08-04T04:26:32.088Z"
 
 	// Apigee
