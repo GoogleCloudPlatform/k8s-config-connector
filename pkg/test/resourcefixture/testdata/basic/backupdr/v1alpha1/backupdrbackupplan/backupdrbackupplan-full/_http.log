@@ -43,12 +43,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
     "verb": "create"
   },
@@ -79,7 +77,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
     "verb": "create"
   },
@@ -90,10 +87,9 @@ X-Xss-Protection: 0
     "backupMinimumEnforcedRetentionDuration": "86400s",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletable": true,
-    "description": "",
     "etag": "abcdef0123A=",
     "name": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
-    "serviceAccount": "vault-${projectNumber}-83707@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
+    "serviceAccount": "vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
     "state": "ACTIVE",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -213,12 +209,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}",
     "verb": "create"
   },
@@ -249,7 +243,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}",
     "verb": "create"
   },
@@ -321,18 +314,13 @@ X-Xss-Protection: 0
       }
     ],
     "backupVault": "projects/${projectNumber}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
-    "backupVaultServiceAccount": "vault-${projectNumber}-83707@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
+    "backupVaultServiceAccount": "vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "A full backup plan for testing.",
     "etag": "abcdef0123A=",
     "name": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}",
     "resourceType": "compute.googleapis.com/Instance",
-    "revisionId": "revision-id-placeholder",
-    "revisionName": "projects/${projectNumber}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}/revisions/28b66d69",
     "state": "ACTIVE",
-    "supportedResourceTypes": [
-      "compute.googleapis.com/Instance"
-    ],
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -420,18 +408,13 @@ X-Xss-Protection: 0
     }
   ],
   "backupVault": "projects/${projectNumber}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
-  "backupVaultServiceAccount": "vault-${projectNumber}-83707@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
+  "backupVaultServiceAccount": "vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A full backup plan for testing.",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}",
   "resourceType": "compute.googleapis.com/Instance",
-  "revisionId": "revision-id-placeholder",
-  "revisionName": "projects/${projectNumber}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}/revisions/28b66d69",
   "state": 2,
-  "supportedResourceTypes": [
-    "compute.googleapis.com/Instance"
-  ],
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -453,12 +436,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}",
     "verb": "delete"
   },
@@ -489,7 +470,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}",
     "verb": "delete"
   },
@@ -521,10 +501,9 @@ X-Xss-Protection: 0
   "backupMinimumEnforcedRetentionDuration": "86400s",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletable": true,
-  "description": "",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
-  "serviceAccount": "vault-${projectNumber}-83707@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
+  "serviceAccount": "vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
   "state": 2,
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -548,12 +527,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
     "verb": "delete"
   },
@@ -584,7 +561,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
     "verb": "delete"
   },
