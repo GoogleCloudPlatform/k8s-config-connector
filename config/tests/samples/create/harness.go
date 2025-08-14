@@ -38,12 +38,14 @@ import (
 	"google.golang.org/protobuf/proto"
 	"gopkg.in/dnaeon/go-vcr.v3/recorder"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/rest"
 	"k8s.io/utils/ptr"
+	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -56,7 +58,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	exportparameters "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export/parameters"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
@@ -69,6 +70,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testenvironment "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/environment"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/teststatus"
 	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
 	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
 )
@@ -191,6 +193,32 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	kccConfig.ManagerOptions.HealthProbeBindAddress = "0"
 	// configure caching
 	nocache.OnlyCacheCCAndCCC(&kccConfig.ManagerOptions)
+
+	// We also only cache CRDs that have our label; this is what the webhook does
+	{
+		innerNewCache := kccConfig.ManagerOptions.NewCache
+		if innerNewCache == nil {
+			innerNewCache = cache.New
+		}
+
+		crdKind := &unstructured.Unstructured{}
+		crdKind.SetGroupVersionKind(schema.GroupVersionKind{
+			Group:   "apiextensions.k8s.io",
+			Version: "v1",
+			Kind:    "CustomResourceDefinition",
+		})
+
+		kccConfig.ManagerOptions.NewCache = func(config *rest.Config, opts cache.Options) (cache.Cache, error) {
+			opts.ByObject = map[client.Object]cache.ByObject{
+				crdKind: {
+					Label: labels.Set{
+						k8s.KCCSystemLabel: "true",
+					}.AsSelector(),
+				},
+			}
+			return innerNewCache(config, opts)
+		}
+	}
 
 	var webhooks []cnrmwebhook.Config
 
@@ -470,7 +498,8 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			t.Fatalf("error creating project: %v", err)
 		}
 
-		for i := 0; i < 10; i++ {
+		// Wait for the project to be created, up to 10 seconds.
+		for i := 0; i < 100; i++ {
 			if op.Done {
 				break
 			}
@@ -482,11 +511,11 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 			op = latest
 		}
 		if !op.Done {
-			t.Fatalf("expected mock create project operation to be done")
+			t.Fatalf("FAIL: expected mock create project operation to be done (timed out after 5 seconds); operation state was %+v", op)
 		}
 		found, err := crm.Projects.Get(req.ProjectId).Context(ctx).Do()
 		if err != nil {
-			t.Fatalf("error reading created project: %v", err)
+			t.Fatalf("FAIL: error reading created project: %v", err)
 		}
 		project := testgcp.GCPProject{
 			ProjectID:     found.ProjectId,
@@ -813,6 +842,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 
 			case schema.GroupKind{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBCluster"}:
 			case schema.GroupKind{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBInstance"}:
+			case schema.GroupKind{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBUser"}:
 
 			case schema.GroupKind{Group: "apigateway.cnrm.cloud.google.com", Kind: "APIGatewayAPI"}:
 
@@ -872,6 +902,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableAppProfile"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableInstance"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableTable"}:
+			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableLogicalView"}:
 
 			case schema.GroupKind{Group: "cloudfunctions.cnrm.cloud.google.com", Kind: "CloudFunctionsFunction"}:
 			case schema.GroupKind{Group: "cloudids.cnrm.cloud.google.com", Kind: "CloudIDSEndpoint"}:
@@ -1164,7 +1195,7 @@ func (h *Harness) waitForCRDReady(obj client.Object) {
 			logger.Info("Error getting resource", "kind", kind, "id", id, "error", err)
 			return false, err
 		}
-		objectStatus := dynamic.GetObjectStatus(h.T, u)
+		objectStatus := teststatus.GetObjectStatus(h.T, u)
 		// CRDs do not have observedGeneration
 		for _, condition := range objectStatus.Conditions {
 			if condition.Type == "Established" && condition.Status == "True" {

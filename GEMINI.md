@@ -79,3 +79,16 @@ write the `_http.log` (env var `WRITE_GOLDEN_OUTPUT=1`), and then commit this.
 We then run the tests again against our mockgcp emulation/testing layer for GCP (env var `E2E_GCP_TARGET=mock`),
 and often we have to improve our mockgcp layer or the normalization to get the results to be the same.
 We have two scripts `hack/record-gcp` and `hack/compare-mock` to help streamline this process.
+
+
+# GitHub Actions Workflow Generation
+
+`docs/ai/github-workflow.md` describes how to generate github workflows.
+
+# Import Alias Convention
+
+When promoting a resource from `v1alpha1` to `v1beta1`, we should keep `krm` as the import alias for `v1alpha1` and use `krmv1beta1` for `v1beta1`. This is to minimize the code changes.
+
+# Promoting resources from alpha to beta
+
+`docs/ai/promote-alpha-to-beta.md` shares tips on how to promote alpha resources to beta.

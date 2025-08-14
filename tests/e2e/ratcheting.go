@@ -14,6 +14,7 @@
 package e2e
 
 import (
+	"strings"
 	"testing"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -232,7 +233,7 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "container.cnrm.cloud.google.com", Kind: "ContainerCluster"}:
 		// Enable re-reconciliation for new test cases; keep old test cases
 		// untouched until we verify they work.
-		if testName == "containercluster-autoscaling" {
+		if strings.HasPrefix(testName, "containercluster-autoscaling") {
 			return true
 		} else {
 			return false
@@ -329,7 +330,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMAccessBoundaryPolicy"}:
 	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMAuditConfig"}:
 	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMCustomRole"}:
-	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMPartialPolicy"}:
 	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMPolicy"}:
 	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMPolicyMember"}:
 	case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMServiceAccountKey"}:
@@ -361,7 +361,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLink"}:
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogBucket"}:
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogExclusion"}:
-	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogSink"}:
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogView"}:
 	case schema.GroupKind{Group: "managedkafka.cnrm.cloud.google.com", Kind: "ManagedKafkaCluster"}:

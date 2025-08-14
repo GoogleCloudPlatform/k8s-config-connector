@@ -18,8 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1alpha1"
-	spannerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -175,7 +174,12 @@ func (a *BackupScheduleAdapter) Update(ctx context.Context, updateOp *directbase
 	}
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+		status := &krm.SpannerBackupScheduleStatus{}
+		status.ObservedState = SpannerBackupScheduleObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 	// Remove output only fields from paths
 	paths = paths.Delete(outputOnlyFields...)
@@ -221,7 +225,7 @@ func (a *BackupScheduleAdapter) Export(ctx context.Context) (*unstructured.Unstr
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.DatabaseRef = &spannerv1beta1.SpannerDatabaseRef{External: a.id.Parent().ProjectID}
+	obj.Spec.DatabaseRef = &krm.SpannerDatabaseRef{External: a.id.Parent().ProjectID}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

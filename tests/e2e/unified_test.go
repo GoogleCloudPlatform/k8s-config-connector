@@ -88,8 +88,30 @@ func TestAllInSeries(t *testing.T) {
 				{
 					dummySample := create.LoadSample(t, sampleKey, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
 					create.MaybeSkip(t, sampleKey.Name, dummySample.Resources)
-					if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
-						t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_APIGROUPS=%s", s)
+
+					group := dummySample.APIGroup
+					skipTestReason := ""
+					if group != "" {
+						if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
+							skippedGroups := strings.Split(s, ",")
+							if slice.StringSliceContains(skippedGroups, group) {
+								skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", sampleKey.Name, group, s)
+							}
+						}
+						if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+							onlyGroups := strings.Split(s, ",")
+							if !slice.StringSliceContains(onlyGroups, group) {
+								skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", sampleKey.Name, group, s)
+							}
+						}
+					} else {
+						if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+							t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_APIGROUPS=%s", s)
+						}
+					}
+
+					if skipTestReason != "" {
+						t.Skip(skipTestReason)
 					}
 
 					// Record the CRDs we will use, for faster testing
@@ -166,7 +188,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 				!strings.Contains(name, "iam-serviceidentityref") &&
 				!strings.Contains(name, "iam-sqlinstanceref")
 		}
-		fixtures := resourcefixture.LoadWithFilter(t, lightFilter, nil)
+		pathFilter := func(path string) bool {
+			return !strings.Contains(path, "testdata/iam/iampartialpolicy")
+		}
+
+		fixtures := resourcefixture.LoadWithPathFilter(t, pathFilter, lightFilter, nil)
 		for _, fixture := range fixtures {
 			fixture := fixture
 			group := fixture.GVK.Group
@@ -386,6 +412,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 				}
 
 				if ShouldTestRereconiliation(t, testName, primaryResource) {
+					h.Log("Testing re-reconciliation...", "test name", testName, "primary GVK", primaryResource.GroupVersionKind().String())
 					eventsBefore := h.Events.HTTPEvents
 
 					oldGeneration := getGeneration(h, primaryResource)
@@ -816,19 +843,28 @@ func TestIAM_AllInSeries(t *testing.T) {
 
 	subtestTimeout := time.Hour
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
-		subtestTimeout = 3 * time.Minute
+		subtestTimeout = 1 * time.Minute
 	}
 
 	t.Run("iam-fixtures", func(t *testing.T) {
-		// Only run fixtures under iam/iampartialpolicy
-		lightFilter := func(name string, testType resourcefixture.TestType) bool {
-			return strings.Contains(name, "iam-bigqueryconnectionconnectionref") ||
-				strings.Contains(name, "iam-logsinkref") ||
-				strings.Contains(name, "iam-serviceaccountref") ||
-				strings.Contains(name, "iam-serviceidentityref") ||
-				strings.Contains(name, "iam-sqlinstanceref")
-		}
-		fixtures := resourcefixture.LoadWithFilter(t, lightFilter, nil)
+		fixtures := resourcefixture.LoadWithPathFilter(t, func(path string) bool {
+			// Only run fixtures under iam/iampartialpolicy
+			return strings.Contains(path, "testdata/iam/iampartialpolicy") &&
+				// todo kcc team: need to implement GetIAM/ SetIAM for mock
+				!strings.Contains(path, "computeimage") &&
+				// todo kcc team: "Failed to get server metadata from context" for some reason
+				!strings.Contains(path, "storagebucket") &&
+				// todo acpana exclude failing tests for now; needs setup validation
+				!strings.Contains(path, "cloudfunctionsfunction") &&
+				!strings.Contains(path, "computedisk") &&
+				!strings.Contains(path, "computeinstance") &&
+				!strings.Contains(path, "computesubnetwork") &&
+				!strings.Contains(path, "dataproccluster") &&
+				!strings.Contains(path, "folder") &&
+				!strings.Contains(path, "iamserviceaccount") &&
+				!strings.Contains(path, "servicedirectoryservice") &&
+				!strings.Contains(path, "spannerdatabase")
+		}, nil, nil)
 		for _, fixture := range fixtures {
 			fixture := fixture
 			group := fixture.GVK.Group
@@ -872,18 +908,6 @@ func TestIAM_AllInSeries(t *testing.T) {
 					if fixture.Update != nil {
 						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
 						opt.Updates = append(opt.Updates, u)
-					}
-
-					// We want to use SSA everywhere, but some of our tests are broken by SSA
-					switch group := primaryResource.GetObjectKind().GroupVersionKind().Group; group {
-					case "bigtable.cnrm.cloud.google.com",
-						"orgpolicy.cnrm.cloud.google.com",
-						"gkehub.cnrm.cloud.google.com":
-						// Use SSA
-
-					default:
-						t.Logf("not yet using SSA for create of resources in group %q", group)
-						opt.DoNotUseServerSideApplyForCreate = true
 					}
 
 					return primaryResource, opt

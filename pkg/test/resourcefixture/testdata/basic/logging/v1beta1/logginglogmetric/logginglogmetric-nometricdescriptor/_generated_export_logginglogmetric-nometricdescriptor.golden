@@ -1,0 +1,21 @@
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogMetric
+metadata:
+  name: logginglogmetric-metricdescriptor-${uniqueId}
+spec:
+  description: Test when metricDescriptor is not specified
+  disabled: false
+  filter: |-
+    severity="ERROR"
+    resource.type="k8s_container"
+    resource.labels.cluster_name="testcluster"
+    resource.labels.namespace_name="testnamespace"
+  metricDescriptor:
+    displayName: ""
+    launchStage: ""
+    metricKind: DELTA
+    unit: "1"
+    valueType: INT64
+  projectRef:
+    external: ${projectId}
+  valueExtractor: ""

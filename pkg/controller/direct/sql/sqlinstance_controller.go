@@ -296,12 +296,41 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		a.actual = updated
 	}
 
+	// we also need to handle maintenanceVersion updates separately ...
+	if a.desired.Spec.MaintenanceVersion != nil && *a.desired.Spec.MaintenanceVersion != a.actual.MaintenanceVersion {
+		newMaintDb := &api.DatabaseInstance{
+			MaintenanceVersion: direct.ValueOf(a.desired.Spec.MaintenanceVersion),
+		}
+
+		{
+			report := &structuredreporting.Diff{}
+			report.AddField(".maintenanceVersion", a.actual.MaintenanceVersion, a.desired.Spec.MaintenanceVersion)
+			structuredreporting.ReportDiff(ctx, report)
+		}
+
+		op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newMaintDb).Context(ctx).Do()
+		if err != nil {
+			return fmt.Errorf("patching SQLInstance %s maintenanceVersion failed: %w", a.resourceID, err)
+		}
+		if err := a.pollForLROCompletion(ctx, op, "maintenanceVersion patch"); err != nil {
+			return err
+		}
+
+		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
+		if err != nil {
+			return fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
+		}
+
+		log.V(2).Info("instance maintenanceVersion updated", "op", op, "instance", updated)
+	}
+
 	// Finally, update rest of the fields
 	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual)
 	if err != nil {
 		return err
 	}
 
+	instanceForStatus := a.actual
 	instanceDiff := &structuredreporting.Diff{}
 	if !InstancesMatch(desiredGCP, a.actual, instanceDiff) {
 		updateOp.RecordUpdatingEvent()
@@ -324,15 +353,14 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		}
 
 		log.V(2).Info("instance updated", "op", op, "instance", updated)
-
-		status, err := SQLInstanceStatusGCPToKRM(updated)
-		if err != nil {
-			return fmt.Errorf("updating SQLInstance status failed: %w", err)
-		}
-		return setStatus(u, status)
+		instanceForStatus = updated
 	}
 
-	return nil
+	status, err := SQLInstanceStatusGCPToKRM(instanceForStatus)
+	if err != nil {
+		return fmt.Errorf("updating SQLInstance status failed: %w", err)
+	}
+	return setStatus(u, status)
 }
 
 // Delete implements the Adapter interface.

@@ -20,9 +20,9 @@ import (
 	"fmt"
 	"time"
 
+	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
-	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	condition "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	kontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
@@ -371,7 +371,7 @@ func (r *reconcileContext) handleUnresolvableDeps(policy *iamv1beta1.IAMPolicy, 
 		ctx, cancel := context.WithTimeout(context.TODO(), timeoutPeriod)
 		defer cancel()
 		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
-		if err := watcher.WaitForResourceToBeReady(ctx, refNN, refGVK); err != nil {
+		if err := watcher.WaitForResourceToBeReadyOrDeleted(ctx, refNN, refGVK); err != nil {
 			logger.Error(err, "error while waiting for resource's reference to be ready")
 			return
 		}

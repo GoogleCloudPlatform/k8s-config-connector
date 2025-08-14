@@ -1,0 +1,32 @@
+apiVersion: apigateway.cnrm.cloud.google.com/v1beta1
+kind: APIGatewayAPI
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 4
+  labels:
+    gcp-v1: stg
+    gke.io/non-gke: test
+  name: apigatewayapi-minimal-${uniqueId}
+  namespace: ${projectId}
+spec:
+  displayName: Initial displayName
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/apis/apigatewayapi-minimal-${uniqueId}
+  observedGeneration: 4
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    name: projects/${projectId}/locations/global/apis/apigatewayapi-minimal-${uniqueId}
+    state: ACTIVE
+    updateTime: "1970-01-01T00:00:00Z"

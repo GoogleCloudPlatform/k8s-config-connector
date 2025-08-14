@@ -33,6 +33,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	"golang.org/x/sync/semaphore"
@@ -213,6 +214,8 @@ func (r *DirectReconciler) mapSecretToResources(ctx context.Context, obj client.
 
 // Reconcile checks k8s for the current state of the resource.
 func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Request) (result reconcile.Result, err error) {
+	ctx = metricstransport.WithControllerName(ctx, r.controllerName)
+
 	logger := log.FromContext(ctx)
 
 	logger.Info("Running reconcile", "resource", request.NamespacedName)
@@ -547,7 +550,7 @@ func (r *reconcileContext) handleUnresolvableDeps(ctx context.Context, policy *u
 		ctx, cancel := context.WithTimeout(context.TODO(), timeoutPeriod)
 		defer cancel()
 		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
-		if err := watcher.WaitForResourceToBeReady(ctx, refNN, refGVK); err != nil {
+		if err := watcher.WaitForResourceToBeReadyOrDeleted(ctx, refNN, refGVK); err != nil {
 			logger.Error(err, "error while waiting for resource's reference to be ready")
 			return
 		}

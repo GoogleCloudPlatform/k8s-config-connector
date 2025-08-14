@@ -1,0 +1,8 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeImage
+metadata:
+  name: computeimage-${uniqueId}
+spec:
+  rawDisk:
+    source: https://storage.googleapis.com/test-bucket/test-image.tar.gz
+    containerType: TAR

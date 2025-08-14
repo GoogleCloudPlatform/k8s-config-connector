@@ -183,6 +183,25 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.id"] = 1111111111111111
 	visitor.replacePaths[".status.generatedId"] = 1111111111111111
 
+	// Specific to Container
+	visitor.replacePaths[".status.endpoint"] = "1.23.456.78"
+	visitor.replacePaths[".status.masterVersion"] = "1.30.5-gke.1014001"
+	visitor.replacePaths[".status.observedState.masterAuth.clusterCaCertificate"] = "1234567890abcdefghijklmn"
+	visitor.replacePaths[".status.observedState.privateClusterConfig.privateEndpoint"] = "10.128.0.2"
+	visitor.replacePaths[".status.observedState.privateClusterConfig.publicEndpoint"] = "8.8.8.8"
+
+	endpoint, _, _ := unstructured.NestedString(u.Object, "status", "observedState", "controlPlaneEndpointsConfig", "dnsEndpointConfig", "endpoint")
+	if endpoint != "" {
+		tokens := strings.Split(endpoint, "-")
+		if len(tokens) > 2 {
+			endpoint = strings.Replace(endpoint, tokens[1], "12345trewq", 1)
+			endpoint = strings.Replace(endpoint, fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}", -1)
+		}
+	} else {
+		endpoint = "gke-12345trewq-${projectNumber}.us-central1.gke.goog"
+	}
+	visitor.replacePaths[".status.observedState.controlPlaneEndpointsConfig.dnsEndpointConfig.endpoint"] = endpoint
+
 	// Specific to Certificate Manager
 	visitor.replacePaths[".status.dnsResourceRecord[].data"] = "${uniqueId}"
 
@@ -603,6 +622,7 @@ func setStringAtPath(m map[string]any, atPath string, newValue string) error {
 type objectWalker struct {
 	removePaths              sets.Set[string]
 	sortSlices               sets.Set[string]
+	sortSlicesBy             []sortSliceBy
 	sortAndDeduplicateSlices sets.Set[string]
 	replacePaths             map[string]any
 	stringTransforms         []func(path string, value string) string
@@ -610,6 +630,23 @@ type objectWalker struct {
 	sliceTransforms          []func(path string, value []any) []any
 
 	stringReplacements []stringReplacement
+}
+
+type sortSliceBy struct {
+	path   string
+	sortBy string
+}
+
+func (o *sortSliceBy) sortSlice(s []any) ([]any, error) {
+	sort.Slice(s, func(i, j int) bool {
+		v1 := s[i].(map[string]any)[o.sortBy]
+		v2 := s[j].(map[string]any)[o.sortBy]
+
+		s1 := fmt.Sprintf("%v", v1)
+		s2 := fmt.Sprintf("%v", v2)
+		return s1 < s2
+	})
+	return s, nil
 }
 
 type stringReplacement struct {
@@ -661,6 +698,10 @@ func (o *objectWalker) RemovePath(path string) {
 
 func (o *objectWalker) SortSlice(path string) {
 	o.sortSlices.Insert(path)
+}
+
+func (o *objectWalker) SortSliceBy(path string, sortBy string) {
+	o.sortSlicesBy = append(o.sortSlicesBy, sortSliceBy{path: path, sortBy: sortBy})
 }
 
 func (o *objectWalker) visitAny(v any, path string) (any, error) {
@@ -766,6 +807,16 @@ func (o *objectWalker) visitSlice(s []any, path string) (any, error) {
 		s = sorted
 	}
 
+	for _, sortSlice := range o.sortSlicesBy {
+		if sortSlice.path == path {
+			sorted, err := sortSlice.sortSlice(s)
+			if err != nil {
+				return s, err
+			}
+			s = sorted
+		}
+	}
+
 	if o.sortAndDeduplicateSlices.Has(path) {
 		sorted, err := sortSlice(s, true)
 		if err != nil {
@@ -796,6 +847,14 @@ func (o *objectWalker) VisitUnstructured(v *unstructured.Unstructured) error {
 		return err
 	}
 	return nil
+}
+
+func (o *objectWalker) RewriteURL(url string) (string, error) {
+	v2, err := o.visitString(url, "{url}")
+	if err != nil {
+		return "", err
+	}
+	return v2, nil
 }
 
 // findLinksInEvent looks for link paths and feeds the values into replacement.ExtractIDsFromLinks
@@ -1194,6 +1253,15 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 		for _, entry := range events {
 			normalizer.Previsit(entry, replacements)
+		}
+
+		// Replace URLs
+		for _, event := range events {
+			s, err := replacements.RewriteURL(event.Request.URL)
+			if err != nil {
+				t.Fatalf("error normalizing url %q: %v", event.Request.URL, err)
+			}
+			event.Request.URL = s
 		}
 
 		events.PrettifyJSON(func(requestURL string, obj map[string]any) {

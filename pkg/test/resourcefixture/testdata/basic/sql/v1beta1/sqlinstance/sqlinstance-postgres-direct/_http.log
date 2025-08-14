@@ -689,6 +689,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_9_6_24.R20250302.00_31",
   "name": "sqlinstance-postgres-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -843,6 +844,193 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_9_6_24.R20250302.00_31",
+  "name": "sqlinstance-postgres-direct-${uniqueId}",
+  "project": "${projectId}",
+  "region": "us-central1",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-direct-${uniqueId}",
+  "serverCaCert": {
+    "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
+    "certSerialNumber": "0",
+    "commonName": "common-name",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "expirationTime": "2024-04-01T12:34:56.123456Z",
+    "instance": "sqlinstance-postgres-direct-${uniqueId}",
+    "kind": "sql#sslCert",
+    "sha1Fingerprint": "12345678"
+  },
+  "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
+  "settings": {
+    "activationPolicy": "ALWAYS",
+    "authorizedGaeApplications": [],
+    "availabilityType": "REGIONAL",
+    "backupConfiguration": {
+      "backupRetentionSettings": {
+        "retainedBackups": 7,
+        "retentionUnit": "COUNT"
+      },
+      "enabled": true,
+      "kind": "sql#backupConfiguration",
+      "pointInTimeRecoveryEnabled": true,
+      "replicationLogArchivingEnabled": false,
+      "startTime": "12:00",
+      "transactionLogRetentionDays": 3,
+      "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
+    "connectorEnforcement": "NOT_REQUIRED",
+    "dataDiskSizeGb": "100",
+    "dataDiskType": "PD_SSD",
+    "databaseFlags": [
+      {
+        "name": "cloudsql.iam_authentication",
+        "value": "on"
+      },
+      {
+        "name": "max_connections",
+        "value": "1000"
+      },
+      {
+        "name": "max_worker_processes",
+        "value": "8"
+      }
+    ],
+    "deletionProtectionEnabled": false,
+    "edition": "ENTERPRISE",
+    "insightsConfig": {
+      "queryInsightsEnabled": true,
+      "queryStringLength": 1024,
+      "recordApplicationTags": true,
+      "recordClientAddress": true
+    },
+    "ipConfiguration": {
+      "authorizedNetworks": [],
+      "ipv4Enabled": false,
+      "privateNetwork": "projects/${projectId}/global/networks/${networkID}",
+      "requireSsl": false,
+      "sslMode": "ENCRYPTED_ONLY"
+    },
+    "kind": "sql#settings",
+    "locationPreference": {
+      "kind": "sql#locationPreference",
+      "zone": "us-central1-b"
+    },
+    "pricingPlan": "PER_USE",
+    "replicationType": "SYNCHRONOUS",
+    "settingsVersion": "123",
+    "storageAutoResize": false,
+    "storageAutoResizeLimit": "0",
+    "tier": "db-custom-1-3840",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "sqlNetworkArchitecture": "NEW_NETWORK_ARCHITECTURE",
+  "state": "RUNNABLE"
+}
+
+---
+
+PATCH https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-direct-${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "maintenanceVersion": "POSTGRES_9_6_24.R20250302.00_19"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "UPDATE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "status": "PENDING",
+  "targetId": "sqlinstance-postgres-direct-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-direct-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "sql#operation",
+  "name": "${operationID}",
+  "operationType": "UPDATE",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "sqlinstance-postgres-direct-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-direct-${uniqueId}",
+  "targetProject": "${projectId}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-postgres-direct-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backendType": "SECOND_GEN",
+  "connectionName": "${projectId}:us-central1:sqlinstance-postgres-direct-${uniqueId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseInstalledVersion": "POSTGRES_9_6",
+  "databaseVersion": "POSTGRES_9_6",
+  "etag": "abcdef0123A=",
+  "gceZone": "us-central1-a",
+  "geminiConfig": {
+    "activeQueryEnabled": false,
+    "entitled": false,
+    "googleVacuumMgmtEnabled": false,
+    "indexAdvisorEnabled": false,
+    "oomSessionCancelEnabled": false
+  },
+  "instanceType": "CLOUD_SQL_INSTANCE",
+  "ipAddresses": [
+    {
+      "ipAddress": "10.1.2.3",
+      "type": "PRIVATE"
+    }
+  ],
+  "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_9_6_24.R20250302.00_19",
   "name": "sqlinstance-postgres-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -937,6 +1125,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "databaseVersion": "POSTGRES_9_6",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_9_6_24.R20250302.00_19",
   "name": "sqlinstance-postgres-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -1093,6 +1282,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_9_6_24.R20250302.00_19",
   "name": "sqlinstance-postgres-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",

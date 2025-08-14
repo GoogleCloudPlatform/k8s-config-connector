@@ -133,8 +133,11 @@ func (s *routinesServer) DeleteRoutine(ctx context.Context, req *pb.DeleteRoutin
 
 	fqn := name.String()
 
-	deleted := &pb.Dataset{}
+	deleted := &pb.Routine{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "routine %q not found", fqn)
+		}
 		return nil, err
 	}
 

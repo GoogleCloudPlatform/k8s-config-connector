@@ -45,9 +45,9 @@ spec:
         mutation:
           podTolerations:
           - key: foo
-            operator: eq
-            value: bar
-            effect: something
+            operator: "Equal"
+            value: "admission"
+            effect: "NoSchedule"
           podAffinity: ANTI_AFFINITY
           replicaCount: 1
           containerResources:
@@ -57,4 +57,4 @@ spec:
             requests:
               cpu: "100m"
               memory: 20Mi
-    version: "1.18.0"
+    version: "1.21.0"

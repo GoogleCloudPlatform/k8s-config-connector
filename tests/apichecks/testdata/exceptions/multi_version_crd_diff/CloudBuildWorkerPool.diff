@@ -1,0 +1,288 @@
+--- a/v1alpha1
++++ b/v1beta1
+  &v1.JSONSchemaProps{
+  	... // 26 identical fields
+  	AnyOf: nil,
+  	Not:   nil,
+  	Properties: map[string]v1.JSONSchemaProps{
+  		"apiVersion": {Description: "APIVersion defines the versioned schema of this representation o"..., Type: "string"},
+  		"kind":       {Description: "Kind is a string value representing the REST resource this objec"..., Type: "string"},
+  		"metadata":   {Type: "object"},
+  		"spec": {
+  			... // 26 identical fields
+  			AnyOf: nil,
+  			Not:   nil,
+  			Properties: map[string]v1.JSONSchemaProps{
+  				"displayName": {
+  					ID:          "",
+  					Schema:      "",
+  					Ref:         nil,
+- 					Description: "",
++ 					Description: "A user-specified, human-readable name for the `WorkerPool`. If provided, this value must be 1-63 characters.",
+  					Type:        "string",
+  					Format:      "",
+  					... // 38 identical fields
+  				},
+  				"location": {Type: "string"},
+- 				"name":     {Type: "string"},
+  				"privatePoolV1Config": {
+  					ID:          "",
+  					Schema:      "",
+  					Ref:         nil,
+- 					Description: "",
++ 					Description: "Legacy Private Pool configuration.",
+  					Type:        "object",
+  					Format:      "",
+  					... // 20 identical fields
+  					AnyOf: nil,
+  					Not:   nil,
+  					Properties: map[string]v1.JSONSchemaProps{
+  						"networkConfig": {
+  							ID:          "",
+  							Schema:      "",
+  							Ref:         nil,
+- 							Description: "",
++ 							Description: "Network configuration for the pool.",
+  							Type:        "object",
+  							Format:      "",
+  							... // 14 identical fields
+  							MaxProperties: nil,
+  							MinProperties: nil,
+- 							Required:      []string{"peeredNetworkRef"},
++ 							Required:      nil,
+  							Items:         nil,
+  							AllOf:         nil,
+  							OneOf:         nil,
+  							AnyOf:         nil,
+  							Not:           nil,
+  							Properties: map[string]v1.JSONSchemaProps{
+  								"egressOption": {
+  									ID:          "",
+  									Schema:      "",
+  									Ref:         nil,
+- 									Description: "",
++ 									Description: "Option to configure network egress for the workers.",
+  									Type:        "string",
+  									Format:      "",
+  									... // 38 identical fields
+  								},
+  								"peeredNetworkIPRange": {
+  									ID:          "",
+  									Schema:      "",
+  									Ref:         nil,
+- 									Description: "",
++ 									Description: "Immutable. Subnet IP range within the peered network. This is specified in CIDR notation with a slash and the subnet prefix size. You can optionally specify an IP address before the subnet prefix value. e.g. `192.168.0.0/29` would specify an IP range start"...,
+  									Type:        "string",
+  									Format:      "",
+  									... // 35 identical fields
+  									XListType:    nil,
+  									XMapType:     nil,
+- 									XValidations: nil,
++ 									XValidations: v1.ValidationRules{{Rule: "self == oldSelf", Message: "the field is immutable"}},
+  								},
+  								"peeredNetworkRef": {
+  									ID:          "",
+  									Schema:      "",
+  									Ref:         nil,
+- 									Description: "",
++ 									Description: "Immutable. The network definition that the workers are peered to. If this section is left empty, the workers will be peered to `WorkerPool.project_id` on the service producer network.",
+  									Type:        "object",
+  									Format:      "",
+  									... // 35 identical fields
+  									XListType:    nil,
+  									XMapType:     nil,
+- 									XValidations: nil,
++ 									XValidations: v1.ValidationRules{{Rule: "self == oldSelf", Message: "the field is immutable"}},
+  								},
+  							},
+  							AdditionalProperties: nil,
+  							PatternProperties:    nil,
+  							... // 13 identical fields
+  						},
+  						"workerConfig": {
+  							ID:          "",
+  							Schema:      "",
+  							Ref:         nil,
+- 							Description: "",
++ 							Description: "Machine configuration for the workers in the pool.",
+  							Type:        "object",
+  							Format:      "",
+  							... // 20 identical fields
+  							AnyOf: nil,
+  							Not:   nil,
+  							Properties: map[string]v1.JSONSchemaProps{
+  								"diskSizeGb": {
+  									ID:          "",
+  									Schema:      "",
+  									Ref:         nil,
+- 									Description: "",
++ 									Description: "Size of the disk attached to the worker, in GB. See [Worker pool config file](https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema). Specify a value of up to 2000. If `0` is specified, Cloud Build will use a standard disk size.",
+  									Type:        "integer",
+  									Format:      "int64",
+  									... // 38 identical fields
+  								},
+  								"machineType": {
+  									ID:          "",
+  									Schema:      "",
+  									Ref:         nil,
+- 									Description: "",
++ 									Description: "Machine type of a worker, such as `e2-medium`. See [Worker pool config file](https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema). If left blank, Cloud Build will use a sensible default.",
+  									Type:        "string",
+  									Format:      "",
+  									... // 38 identical fields
+  								},
+  							},
+  							AdditionalProperties: nil,
+  							PatternProperties:    nil,
+  							... // 13 identical fields
+  						},
+  					},
+  					AdditionalProperties: nil,
+  					PatternProperties:    nil,
+  					... // 13 identical fields
+  				},
+  				"projectRef": {Description: "The Project that this resource belongs to.", Type: "object", OneOf: {{Required: {"name"}, Not: &{Required: {"external"}}}, {Required: {"external"}, Not: &{AnyOf: {{Required: {"name"}}, {Required: {"namespace"}}}}}}, Properties: {"external": {Description: "The `projectID` field of a project, when not managed by Config C"..., Type: "string"}, "kind": {Description: "The kind of the Project resource; optional but must be `Project`"..., Type: "string"}, "name": {Description: "The `name` field of a `Project` resource.", Type: "string"}, "namespace": {Description: "The `namespace` field of a `Project` resource.", Type: "string"}}, ...},
+  				"resourceID": {
+  					ID:          "",
+  					Schema:      "",
+  					Ref:         nil,
+- 					Description: "",
++ 					Description: "The GCP resource identifier. If not given, the metadata.name will be used.",
+  					Type:        "string",
+  					Format:      "",
+  					... // 38 identical fields
+  				},
+  			},
+  			AdditionalProperties: nil,
+  			PatternProperties:    nil,
+  			... // 13 identical fields
+  		},
+  		"status": {
+  			... // 26 identical fields
+  			AnyOf: nil,
+  			Not:   nil,
+  			Properties: map[string]v1.JSONSchemaProps{
+  				"conditions": {Description: "Conditions represent the latest available observations of the ob"..., Type: "array", Items: &{Schema: &{Type: "object", Properties: {"lastTransitionTime": {Description: "Last time the condition transitioned from one status to another.", Type: "string"}, "message": {Description: "Human-readable message indicating details about last transition.", Type: "string"}, "reason": {Description: "Unique, one-word, CamelCase reason for the condition's last tran"..., Type: "string"}, "status": {Description: "Status is the status of the condition. Can be True, False, Unknown.", Type: "string"}, ...}}}},
++ 				"externalRef": {
++ 					Description: "A unique Config Connector specifier for the resource in GCP.",
++ 					Type:        "string",
++ 				},
+  				"observedGeneration": {Description: "ObservedGeneration is the generation of the resource that was mo"..., Type: "integer", Format: "int64"},
+  				"observedState": {
+  					... // 20 identical fields
+  					MaxProperties: nil,
+  					MinProperties: nil,
+- 					Required:      nil,
++ 					Required:      []string{"workerConfig"},
+  					Items:         nil,
+  					AllOf:         nil,
+  					OneOf:         nil,
+  					AnyOf:         nil,
+  					Not:           nil,
+  					Properties: map[string]v1.JSONSchemaProps{
+  						"createTime": {Description: "The creation timestamp of the workerpool.", Type: "string", Format: "date-time"},
++ 						"etag": {
++ 							Description: "The Checksum computed by the server, using weak indicator.",
++ 							Type:        "string",
++ 						},
+  						"networkConfig": {
+  							ID:          "",
+  							Schema:      "",
+  							Ref:         nil,
+- 							Description: "",
++ 							Description: "Network configuration for the pool.",
+  							Type:        "object",
+  							Format:      "",
+  							... // 20 identical fields
+  							AnyOf: nil,
+  							Not:   nil,
+  							Properties: map[string]v1.JSONSchemaProps{
+  								"egressOption": {
+  									ID:          "",
+  									Schema:      "",
+  									Ref:         nil,
+- 									Description: "",
++ 									Description: "Option to configure network egress for the workers.",
+  									Type:        "string",
+  									Format:      "",
+  									... // 38 identical fields
+  								},
+  								"peeredNetwork": {
+  									ID:          "",
+  									Schema:      "",
+  									Ref:         nil,
+- 									Description: "",
++ 									Description: "Immutable. The network definition that the workers are peered to. If this section is left empty, the workers will be peered to `WorkerPool.project_id` on the service producer network.",
+  									Type:        "string",
+  									Format:      "",
+  									... // 38 identical fields
+  								},
+  								"peeredNetworkIPRange": {
+  									ID:          "",
+  									Schema:      "",
+  									Ref:         nil,
+- 									Description: "",
++ 									Description: "Immutable. Subnet IP range within the peered network. This is specified in CIDR notation with a slash and the subnet prefix size. You can optionally specify an IP address before the subnet prefix value. e.g. `192.168.0.0/29` would specify an IP range start"...,
+  									Type:        "string",
+  									Format:      "",
+  									... // 38 identical fields
+  								},
+  							},
+  							AdditionalProperties: nil,
+  							PatternProperties:    nil,
+  							... // 13 identical fields
+  						},
+  						"updateTime": {Description: "The last update timestamp of the workerpool.", Type: "string", Format: "date-time"},
+  						"workerConfig": {
+  							ID:          "",
+  							Schema:      "",
+  							Ref:         nil,
+- 							Description: "",
++ 							Description: "Machine configuration for the workers in the pool.",
+  							Type:        "object",
+  							Format:      "",
+  							... // 20 identical fields
+  							AnyOf: nil,
+  							Not:   nil,
+  							Properties: map[string]v1.JSONSchemaProps{
+  								"diskSizeGb": {
+  									ID:          "",
+  									Schema:      "",
+  									Ref:         nil,
+- 									Description: "",
++ 									Description: "Size of the disk attached to the worker, in GB. See [Worker pool config file](https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema). Specify a value of up to 2000. If `0` is specified, Cloud Build will use a standard disk size.",
+  									Type:        "integer",
+  									Format:      "int64",
+  									... // 38 identical fields
+  								},
+  								"machineType": {
+  									ID:          "",
+  									Schema:      "",
+  									Ref:         nil,
+- 									Description: "",
++ 									Description: "Machine type of a worker, such as `e2-medium`. See [Worker pool config file](https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema). If left blank, Cloud Build will use a sensible default.",
+  									Type:        "string",
+  									Format:      "",
+  									... // 38 identical fields
+  								},
+  							},
+  							AdditionalProperties: nil,
+  							PatternProperties:    nil,
+  							... // 13 identical fields
+  						},
+  					},
+  					AdditionalProperties: nil,
+  					PatternProperties:    nil,
+  					... // 13 identical fields
+  				},
+  			},
+  			AdditionalProperties: nil,
+  			PatternProperties:    nil,
+  			... // 13 identical fields
+  		},
+  	},
+  	AdditionalProperties: nil,
+  	PatternProperties:    nil,
+  	... // 13 identical fields
+  }
+

@@ -2,14 +2,14 @@ module github.com/GoogleCloudPlatform/k8s-config-connector
 
 go 1.24.0
 
-toolchain go1.24.2
+toolchain go1.24.6
 
 replace github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp => ./mockgcp
 
 require (
 	cloud.google.com/go/accesscontextmanager v1.9.6
 	cloud.google.com/go/aiplatform v1.86.0
-	cloud.google.com/go/alloydb v1.14.0
+	cloud.google.com/go/alloydb v1.16.1
 	cloud.google.com/go/apigateway v1.7.6
 	cloud.google.com/go/apikeys v1.1.12
 	cloud.google.com/go/apphub v0.2.4
@@ -285,7 +285,7 @@ require (
 	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/term v0.32.0 // indirect
 	golang.org/x/text v0.26.0 // indirect
-	golang.org/x/tools v0.33.0 // indirect
+	golang.org/x/tools v0.33.0
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	gomodules.xyz/jsonpatch/v2 v2.4.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect

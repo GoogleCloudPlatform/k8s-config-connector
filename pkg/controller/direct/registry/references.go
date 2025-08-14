@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"

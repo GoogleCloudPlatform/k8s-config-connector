@@ -29,6 +29,7 @@ import (
 
 	orgpolicypb "cloud.google.com/go/orgpolicy/apiv2/orgpolicypb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -169,6 +170,12 @@ func (a *PolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	req := &orgpolicypb.UpdatePolicyRequest{
 		Policy: desiredPb,
 	}
+
+	// Let the backend handle validation
+	req.UpdateMask = &fieldmaskpb.FieldMask{
+		Paths: []string{"policy.spec", "policy.dry_run_spec"},
+	}
+
 	updated, err := a.gcpClient.UpdatePolicy(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating Policy %s: %w", a.id, err)

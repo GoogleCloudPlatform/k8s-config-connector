@@ -45,9 +45,9 @@ spec:
         admission:
           podTolerations:
           - key: foo
-            operator: eq
-            value: bar
-            effect: something
+            operator: "Equal"
+            value: "admission"
+            effect: "NoSchedule"
           podAffinity: ANTI_AFFINITY
           replicaCount: 1
           containerResources:
@@ -60,11 +60,10 @@ spec:
         audit:
           podTolerations:
           - key: foo
-            operator: eq
-            value: audit
-            effect: something
+            operator: "Equal"
+            value: "audit"
+            effect: "NoSchedule"
           podAffinity: NO_AFFINITY
-          replicaCount: 2
           containerResources:
             limits:
               cpu: "1.5"
@@ -72,5 +71,5 @@ spec:
             requests:
               cpu: "0.5"
               memory: 500Mi
-    version: "1.18.0"
+    version: "1.21.0"
 

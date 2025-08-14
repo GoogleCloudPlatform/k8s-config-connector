@@ -19,6 +19,7 @@
 // resource: BigtableAuthorizedView:AuthorizedView
 // resource: BigtableBackup:Backup
 // resource: BigtableCluster:Cluster
+// resource: BigtableLogicalView:LogicalView
 
 package v1alpha1
 

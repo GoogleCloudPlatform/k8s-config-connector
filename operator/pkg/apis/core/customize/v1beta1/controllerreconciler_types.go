@@ -23,6 +23,7 @@ import (
 // +kubebuilder:storageversion
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=namespacedcontrollerreconcilers
+// +kubebuilder:validation:XValidation:rule="self.metadata.name == 'cnrm-controller-manager'"
 
 // NamespacedControllerReconciler is the Schema for reconciliation related customization for
 // config connector controllers in namespaced mode.
@@ -88,6 +89,7 @@ func (c *NamespacedControllerReconciler) SetCommonStatus(s addonv1alpha1.CommonS
 // +kubebuilder:storageversion
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:path=controllerreconcilers,scope=Cluster
+// +kubebuilder:validation:XValidation:rule="self.metadata.name == 'cnrm-controller-manager'"
 
 // ControllerReconciler is the Schema for reconciliation related customization for
 // config connector controllers in cluster mode.

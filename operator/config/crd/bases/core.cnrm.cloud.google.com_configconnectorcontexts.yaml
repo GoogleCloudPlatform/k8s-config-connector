@@ -68,6 +68,19 @@ spec:
                   The Google Service Account to be used by Config Connector to
                   authenticate with Google Cloud APIs in the associated namespace.
                 type: string
+              managerNamespace:
+                description: |-
+                  ManagerNamespace instructs Config Connector to deploy
+                  controller managers and related resources in the namespace
+                  specified as 'ManagerNamespace' instead of standard 'cnrm-system'
+                  The specified manager namespace may exist before the corresponding
+                  ConfigConnectorContext is created.
+                  If the specified namespace does not exist then it will be created
+                  by Config Connector. The field is immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: ManagerNamespace field is immutable
+                  rule: self == oldSelf
               requestProjectPolicy:
                 description: |-
                   Specifies which project to use for preconditions, quota, and billing for

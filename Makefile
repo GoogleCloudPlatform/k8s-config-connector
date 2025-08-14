@@ -92,12 +92,12 @@ manifests: generate
 
 	# Generating list of all supported GVKs is dependent on the existence of directory
 	# config/crds/resources with all the freshly generated CRDs.
-	go run ./scripts/generate-gvks/main.go -input-dir=config/crds/resources -output-file=pkg/gvks/supportedgvks/gvks_generated.go
+	go run ./scripts/generate-gvks/main.go -output-dir=pkg/gvks/supportedgvks
 
 # Format code
 .PHONY: fmt
 fmt:
-	mockgcp/dev/fix-gofmt
+	mockgcp/dev/tasks/fix-gofmt
 	make -C operator fmt
 	dev/tasks/fix-gofmt
 	# 04bfe4ee9ca5764577b029acc6a1957fd1997153 includes fix to not log "Skipped" for each skipped file
@@ -258,7 +258,11 @@ ensure:
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
-ready-pr: lint manifests resource-docs ensure fmt
+ready-pr: lint manifests ensure fmt
+
+# Should run all needed commands to prepare a release.
+.PHONY: release-check
+release-check: resource-docs
 
 # Upgrades dcl dependencies
 .PHONY: upgrade-dcl

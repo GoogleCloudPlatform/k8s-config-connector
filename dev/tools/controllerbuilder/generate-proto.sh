@@ -70,6 +70,7 @@ protoc --include_imports --include_source_info \
     ${REPO_ROOT}/mockgcp/apis/google/apps/cloudidentity/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto \
+    ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/servicenetworking/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/api/*.proto \
     ${THIRD_PARTY}/googleapis/google/api/*.proto \
@@ -90,4 +91,5 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/spanner/admin/database/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/storage/control/v2/*.proto \
     ${THIRD_PARTY}/googleapis/google/pubsub/v1/*.proto \
+    ${THIRD_PARTY}/googleapis/google/cloud/memorystore/v1beta/*.proto \
     -o ${OUTPUT_PATH} 2> >(grep -v "Import .* is unused" >&2)

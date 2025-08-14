@@ -17,6 +17,7 @@ package mockcontainer
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
@@ -55,5 +56,19 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err != nil {
 		return nil, err
 	}
-	return mux, nil
+
+	// Terraform uses the /v1beta1/ endpoints, but gcloud uses v1.
+	// Rewrite for now (hoping they are compatible enough)
+	rewriteV1ToBeta := func(w http.ResponseWriter, r *http.Request) {
+		u := r.URL
+		if strings.HasPrefix(u.Path, "/v1/") {
+			u2 := *u
+			u2.Path = "/v1beta1/" + strings.TrimPrefix(u.Path, "/v1/")
+			r = httpmux.RewriteRequest(r, &u2)
+		}
+
+		mux.ServeHTTP(w, r)
+	}
+
+	return http.HandlerFunc(rewriteV1ToBeta), nil
 }

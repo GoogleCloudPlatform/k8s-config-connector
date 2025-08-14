@@ -15,7 +15,8 @@
 package supportedgvks
 
 import (
-	iamapi "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	iamapi "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	tfmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf/metadata"
@@ -67,13 +68,11 @@ func DirectResources() map[schema.GroupVersionKind]bool {
 	for _, gvk := range BasedOnHandwrittenIAMTypes() {
 		handWrittenIAMTypes[gvk] = true
 	}
-	for gvk, metadata := range SupportedGVKs {
-		if metadata.Labels[k8s.TF2CRDLabel] == "true" {
+	for gvk := range registry.AllDirectGVKs() {
+		if IsDCLBasedByGVK(gvk) || IsTFBasedByGVK(gvk) {
 			continue
 		}
-		if metadata.Labels[k8s.DCL2CRDLabel] == "true" {
-			continue
-		}
+
 		if _, ok := handWrittenIAMTypes[gvk]; ok {
 			continue
 		}
@@ -141,29 +140,27 @@ func BasedOnDCL(serviceMetaLoader metadata.ServiceMetadataLoader) []schema.Group
 }
 
 func IsDirectByGVK(gvk schema.GroupVersionKind) bool {
-	metadata, ok := SupportedGVKs[gvk]
+	metadata, ok := legacyGVKs[gvk]
 	if !ok {
-		return false
+		// It's not TF or DCL, so it doesn't have an entry in legacyGVKs.
+		// But it might not be a direct controller either, so we need to check.
+		return registry.IsDirectByGK(gvk.GroupKind())
 	}
-	if metadata.Labels[k8s.TF2CRDLabel] == "true" {
-		return false
-	}
-	if metadata.Labels[k8s.DCL2CRDLabel] == "true" {
-		return false
-	}
-	return true
+	return !metadata.DCL && !metadata.Terraform
 }
 
 func IsTFBasedByGVK(gvk schema.GroupVersionKind) bool {
-	metadata, ok := SupportedGVKs[gvk]
+	metadata, ok := legacyGVKs[gvk]
 	if !ok {
 		return false
 	}
-	if metadata.Labels[k8s.TF2CRDLabel] == "true" {
-		return true
-	}
-	if metadata.Labels[k8s.DCL2CRDLabel] == "true" {
+	return metadata.Terraform
+}
+
+func IsDCLBasedByGVK(gvk schema.GroupVersionKind) bool {
+	metadata, ok := legacyGVKs[gvk]
+	if !ok {
 		return false
 	}
-	return false
+	return metadata.DCL
 }

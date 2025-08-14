@@ -1,0 +1,7 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMWorkforcePool
+metadata:
+  name: iamworkforcepool-${uniqueId}
+spec:
+  displayName: Test Workforce Pool
+  description: Test workforce pool for IAM tests

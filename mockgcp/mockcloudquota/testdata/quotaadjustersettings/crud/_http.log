@@ -30,6 +30,7 @@ Content-Type: application/json
 
 {
   "enablement": "ENABLED",
+  "inherited": false,
   "name": "projects/${projectId}/locations/global/quotaAdjusterSettings"
 }
 
@@ -84,6 +85,7 @@ Content-Type: application/json
 
 {
   "enablement": "DISABLED",
+  "inherited": false,
   "name": "projects/${projectId}/locations/global/quotaAdjusterSettings"
 }
 

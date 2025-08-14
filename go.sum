@@ -13,8 +13,8 @@ cloud.google.com/go/accesscontextmanager v1.9.6 h1:2LnncRqfYB8NEdh9+FeYxAt9POTW/
 cloud.google.com/go/accesscontextmanager v1.9.6/go.mod h1:884XHwy1AQpCX5Cj2VqYse77gfLaq9f8emE2bYriilk=
 cloud.google.com/go/aiplatform v1.86.0 h1:b8FVN8Jv4R0c1qMzqzURiJYXLp9R6Wx7d0q4MPGlTeM=
 cloud.google.com/go/aiplatform v1.86.0/go.mod h1:xp3wFix8imliXkVpgMRkjnreJYTaNzLF44GOrnIENto=
-cloud.google.com/go/alloydb v1.14.0 h1:aEmmIHmiHDs46wTr/YqXuumuUGNc5QKYA7317nEFj2Y=
-cloud.google.com/go/alloydb v1.14.0/go.mod h1:OTBY1HoL0Z8PsHoMMVhkaUPKyY8oP7hzIAe/Dna6UHk=
+cloud.google.com/go/alloydb v1.16.1 h1:pW4D0O2jAfAjoOEI1bgChPwMHWE8X8BjwSO0tfWkWvk=
+cloud.google.com/go/alloydb v1.16.1/go.mod h1:zeZuGJ5mEaQE70FMXEvZIp5hQLR9yrGnHo1YUOncWRY=
 cloud.google.com/go/apigateway v1.7.6 h1:do+u3rjDYuTxD2ypRfv4uwTMoy/VHFLclvaYcb5Mv6I=
 cloud.google.com/go/apigateway v1.7.6/go.mod h1:SiBx36VPjShaOCk8Emf63M2t2c1yF+I7mYZaId7OHiA=
 cloud.google.com/go/apikeys v1.1.12 h1:ZTFWJ1ibGjiIrIhhtdWOm7AGJd+y9R17dVujlgU//6E=

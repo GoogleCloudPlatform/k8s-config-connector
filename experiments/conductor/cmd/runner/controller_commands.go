@@ -573,14 +573,14 @@ func createFullCoverageTest(ctx context.Context, opts *RunnerOptions, branch Bra
 		log.Printf("Attempt %d to ensure full coverage", attempt+1)
 		// 1. Identify missing fields for target resource.
 		//
-		// Run TestCRDFieldPresenceInUnstructured for two times:
+		// Run TestCRDFieldPresenceInTests for two times:
 		// First run: Optionally, update tests/apichecks/testdata/exceptions/missingfields.txt
 		// Second run: Verify there is no true errors.
 		cfg := CommandConfig{
-			Name: "API Checks: TestCRDFieldPresenceInUnstructured",
+			Name: "API Checks: TestCRDFieldPresenceInTests",
 			Cmd:  "go",
 			Args: []string{
-				"test", "-v", "-run", "TestCRDFieldPresenceInUnstructured",
+				"test", "-v", "-run", "TestCRDFieldPresenceInTests",
 				filepath.Join("tests", "apichecks", "crds_test.go"),
 			},
 			WorkDir:     opts.branchRepoDir,
@@ -590,7 +590,7 @@ func createFullCoverageTest(ctx context.Context, opts *RunnerOptions, branch Bra
 
 		_, err := executeCommand(opts, cfg)
 		if err != nil {
-			return nil, nil, fmt.Errorf("failed to run TestCRDFieldPresenceInUnstructured: %w", err)
+			return nil, nil, fmt.Errorf("failed to run TestCRDFieldPresenceInTests: %w", err)
 		}
 
 		missingFieldsFilePath := filepath.Join(

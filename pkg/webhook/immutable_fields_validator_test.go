@@ -21,8 +21,8 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -2571,7 +2571,7 @@ func TestUpdateGKEHubFeatureMembership(t *testing.T) {
 
 func TestDirectResourcesAlwaysAllowed(t *testing.T) {
 	directGVKs := supportedgvks.DirectResources()
-	for gvk, _ := range directGVKs {
+	for gvk := range directGVKs {
 		v := immutableFieldsValidatorHandler{}
 		unstruct := &unstructured.Unstructured{
 			Object: map[string]interface{}{

@@ -21,7 +21,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BackupDRBackupVaultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupDRBackupVaultObservedState {
+func BackupDRBackupVaultObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupDRBackupVaultObservedState {
 	if in == nil {
 		return nil
 	}
@@ -37,7 +37,7 @@ func BackupDRBackupVaultObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.UID = direct.LazyPtr(in.GetUid())
 	return out
 }
-func BackupDRBackupVaultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupVaultObservedState) *pb.BackupVault {
+func BackupDRBackupVaultObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupVaultObservedState) *pb.BackupVault {
 	if in == nil {
 		return nil
 	}
@@ -53,7 +53,7 @@ func BackupDRBackupVaultObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Uid = direct.ValueOf(in.UID)
 	return out
 }
-func BackupDRBackupVaultSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupVaultSpec) *pb.BackupVault {
+func BackupDRBackupVaultSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupVaultSpec) *pb.BackupVault {
 	if in == nil {
 		return nil
 	}

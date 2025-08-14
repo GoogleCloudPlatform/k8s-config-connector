@@ -1,16 +1,77 @@
-1. Make sure the file `pkg/test/resourcefixture/testdata/basic/<SERVICE>/v1beta1/<KIND in lower>/<KIND in lower>-full/create.yaml` exists. If not, create one
-2. The created create.yaml is a Kubernetes YAML CustomResource of the CustomResourceDefinition (CRD) config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<KIND>s.<SERVICE>.cnrm.cloud.google.com.yaml. If you cannot find the CRD, it may because the KIND uses a different plural form. Please fill in the content of create.yaml. Remember that (described in JSON path), 
-  - the `.metadata.name` should be <KIND>-${uniqueId} with all lower case.
-  - the `.spec.projectRef` (If exist) should be `spec.projectRef.external: ${projectId}` 
-  - try to understand the meaning of each field and give it a valid value, you can run `hack/record-gcp fixtures/<KIND in lower>-full to see if the value is correct. If not, try to fix it based on the result, and try 10 times or until the test passes. You can not only change this directory but the pkg/controller/direct/<service>/ directory as well. 
-  - try to configure as many CR fields as possible. 
+**Goal:** Add a comprehensive test suite for the KCC resource `<KIND>` in the `<SERVICE>` service.
 
-3. If the create.yaml succeeds, add a update.yaml file under the same directory. The content of the update.yaml should be the same as create.yaml, except the mutable field in `.spec` is assigned to another valid value. You should try to modify as many fields as possible. You can run `hack/record-gcp fixtures/<KIND in lower>-full` to see if the value is correct. If not, try to fix it based on the result. You should only change either the update.yaml (if it is a bad value) or the `Update` method in golang file pkg/controller/direct/<service>/*_controller.go.
+This process involves creating `create.yaml` and `update.yaml` test fixtures and ensuring they cover all possible fields in the Custom Resource Definition (CRD).
 
-<!--  
-TODO: Two problems. 
-    1.) If Create/Update fails, the fixture test cannot always give meaningful error or the LLM consider the timeout the root cause. We need to process the error to let LLM triage (the controller and mock). 
-    2.) The fixture test log is very long. If use LLM to analyze it, it would exceed the token limit easily. 
-4. If the update.yaml succeeds, we want to verify the mockgcp/mock<service>.
-  - Store the real GCP GOOD log by running `git add pkg/test/resourcefixture/testdata/basic/<SERVICE>/v1beta1/<KIND in lowercase>/<KIND in lowercase>-full/`. 
-  - Compare with the Mock GCP log by running `hack/compare-mock fixtures/<KIND in lower>-full` to verify the mockgcp/mock<service>. If the test fail, you can see the diff between real GCP (hack/record-gcp) and mock GCP (hack/compare-mock) from `git diff pkg/test/resourcefixture/testdata/basic/<SERVICE>/v1beta1/<KIND in lowercase>/<KIND in lowercase>-full/_http.log`. Try to modify the functions in mockgcp/mock<service> to make minimum diff. For example, the mockgcp/mocksql/sqlinstance.go `Insert` `Update` `Delete` maps to the `a.sqlInstancesClient.Insert`, `sqlInstancesClient.Update` and `sqlInstancesClient.Delete` in pkg/controller/direct/sql/sqlinstance_controller.go -->
+**Step 1: Create the `create.yaml` file**
+
+1.  **Create the test directory:**
+    If it doesn't already exist, create the following directory:
+    `pkg/test/resourcefixture/testdata/basic/<SERVICE>/v1beta1/<KIND_LOWERCASE>/<KIND_LOWERCASE>-full/`
+    (Replace `<SERVICE>` with the service name and `<KIND_LOWERCASE>` with the lowercase version of the Kind.)
+
+2.  **Create `create.yaml`:**
+    Inside the new directory, create a file named `create.yaml`. This file will define the initial state of the resource for testing.
+
+3.  **Populate `create.yaml`:**
+    -   The `create.yaml` file is a Kubernetes Custom Resource (CR) based on the resource's Custom Resource Definition (CRD).
+    -   You can find the CRD for your resource at: `config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<PLURAL_KIND_LOWERCASE>.<SERVICE>.cnrm.cloud.google.com.yaml`. Note that `<PLURAL_KIND_LOWERCASE>` might be different from just adding an 's' to the lowercase kind.
+    -   In the `create.yaml` file:
+        -   Set `.metadata.name` to `<KIND_LOWERCASE>-${uniqueId}`.
+        -   If `.spec.projectRef` exists, use its subfield `.external` and set the value to be `${projectId}`.
+        -   Fill in valid values for as many fields in the `.spec` as possible. Try to understand the purpose of each field to provide a meaningful value.
+
+**Step 2: Verify Field Coverage**
+
+If this is an alpha resource, we want to look at "testdata/exceptions/alpha-missingfields.txt" to see if this CRD has any missing_fields. If this is a Beta resource, we want to look at "testdata/exceptions/missingfields.txt". The API coverage should only focus on the missing fields. Once you improve the API coverage in test suite, you can run tests to verify: For alpha, run `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha`; for v1beta1, run `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTests`.
+
+**Step 3: Record the GCP Traffic for `create.yaml`**
+
+Once the field coverage test passes, record the live GCP API calls for your `create.yaml`:
+
+```bash
+E2E_TEST_TIMEOUT=20s hack/record-gcp fixtures/<KIND_LOWERCASE>-full 
+```
+
+-   This command will create a `_http.log` file in your test directory.
+-   If the command fails, examine the error messages. You may need to adjust the values in your `create.yaml` or fix issues in the resource's controller located in `pkg/controller/direct/<SERVICE>/`. You can retry this command up to 10 times.
+-   **Note:** The test may time out, but this is expected. You should not focus on the test result, but instead look at the log to see if there are any reconciler errors or update errors.
+
+**Step 4: Create the `update.yaml` file**
+
+1.  **Create `update.yaml`:**
+    In the same directory, create a file named `update.yaml`.
+
+2.  **Populate `update.yaml`:**
+    -   Copy the content from `create.yaml`.
+    -   Modify the values of all the **mutable** fields in the `.spec`. Choose new, valid values for these fields. Try to modify as many mutable fields as possible.
+
+**Step 5: Record the GCP Traffic for `update.yaml`**
+
+Now, record the live GCP API calls for your `update.yaml`:
+
+```bash
+E2E_TEST_TIMEOUT=20s hack/record-gcp fixtures/<KIND_LOWERCASE>-full
+```
+
+-   This will update the `_http.log` with the API calls for the update operation.
+-   If the command fails, you might have an issue with the values in `update.yaml` or with the `Update` method in the controller (`pkg/controller/direct/<SERVICE>/*_controller.go`).
+
+**Step 6: Verify the Mock GCP Implementation**
+
+Finally, verify that the mock GCP implementation behaves the same as the real GCP API.
+
+1.  **Stage the recorded traffic:**
+    ```bash
+    git add pkg/test/resourcefixture/testdata/basic/<SERVICE>/v1beta1/<KIND_LOWERCASE>/<KIND_LOWERCASE>-full/
+    ```
+
+2.  **Compare with the mock:**
+    ```bash
+    E2E_TEST_TIMEOUT=10s hack/compare-mock fixtures/<KIND_LOWERCASE>-full
+    ```
+    -   If this command fails, it means there's a difference between the real and mock GCP interactions.
+    -   Examine the diff to see the differences:
+        ```bash
+        git diff pkg/test/resourcefixture/testdata/basic/<SERVICE>/v1beta1/<KIND_LOWERCASE>/<KIND_LOWERCASE>-full/_http.log
+        ```
+    -   Modify the mock implementation in `mockgcp/mock<SERVICE>/` to match the real behavior. For example, the `Insert`, `Update`, and `Delete` functions in `mockgcp/mocksql/sqlinstance.go` should mirror the behavior of the `a.sqlInstancesClient.Insert`, `sqlInstancesClient.Update`, and `sqlInstancesClient.Delete` calls in `pkg/controller/direct/sql/sqlinstance_controller.go`.

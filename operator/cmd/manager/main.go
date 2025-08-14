@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers/configconnector"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers/configconnectorcontext"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
@@ -46,6 +47,7 @@ func main() {
 	var repoPath string
 	var enablePprof bool
 	var pprofPort int
+	var managerNamespaceIsolation string
 
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	profiler.AddFlag(flag.CommandLine)
@@ -58,10 +60,18 @@ func main() {
 
 	imagePrefix := os.Getenv("IMAGE_PREFIX")
 	flag.StringVar(&imagePrefix, "image-prefix", imagePrefix, "Remap container images to pull from the specified registry or mirror.")
+	flag.StringVar(&managerNamespaceIsolation, k8s.ManagerNamespaceIsolationFlag, k8s.ManagerNamespaceIsolationShared, fmt.Sprintf("'%s' if all controller managers run in shared 'cnrm-system' namespace, '%s' if controller managers run in dedicated namespace. Default is '%s'", k8s.ManagerNamespaceIsolationShared, k8s.ManagerNamespaceIsolationDedicated, k8s.ManagerNamespaceIsolationShared))
 
 	flag.Parse()
 
 	ctrl.SetLogger(logging.BuildLogger(os.Stderr))
+
+	switch managerNamespaceIsolation {
+	case k8s.ManagerNamespaceIsolationShared, k8s.ManagerNamespaceIsolationDedicated:
+		break
+	default:
+		logging.Fatal(fmt.Errorf("unknown value for --%s: %s, expected '%s' or '%s'", k8s.ManagerNamespaceIsolationFlag, managerNamespaceIsolation, k8s.ManagerNamespaceIsolationShared, k8s.ManagerNamespaceIsolationDedicated), "error starting unmanaged detector")
+	}
 
 	// Start pprof server if enabled
 	if enablePprof {
@@ -108,8 +118,9 @@ func main() {
 	}
 
 	ccOptions := &configconnector.ReconcilerOptions{
-		RepoPath:       repoPath,
-		ImageTransform: imageTransform,
+		RepoPath:                  repoPath,
+		ImageTransform:            imageTransform,
+		ManagerNamespaceIsolation: managerNamespaceIsolation,
 	}
 	if _, err := configconnector.Add(mgr, ccOptions); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "ConfigConnector")
@@ -117,8 +128,9 @@ func main() {
 	}
 
 	cccOptions := &configconnectorcontext.ReconcilerOptions{
-		RepoPath:       repoPath,
-		ImageTransform: imageTransform,
+		RepoPath:                  repoPath,
+		ImageTransform:            imageTransform,
+		ManagerNamespaceIsolation: managerNamespaceIsolation,
 	}
 	if err = configconnectorcontext.Add(mgr, cccOptions); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "ConfigConnectorContext")

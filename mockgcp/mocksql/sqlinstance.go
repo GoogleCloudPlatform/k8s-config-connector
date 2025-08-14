@@ -283,12 +283,44 @@ func setDefaultBool(pp **wrapperspb.BoolValue, defaultValue bool) {
 	}
 }
 
+func currentMaintenanceVersion(databaseVersion pb.SqlDatabaseVersion) (string, error) {
+	switch databaseVersion {
+	case pb.SqlDatabaseVersion_MYSQL_5_7:
+		return "MYSQL_5_7_44.R20231105.01_03", nil
+
+	case pb.SqlDatabaseVersion_MYSQL_8_0:
+		return "MYSQL_8_0_40.R20250304.00_03", nil
+
+	case pb.SqlDatabaseVersion_MYSQL_8_4:
+		return "MYSQL_8_4_4.R20250304.00_03", nil
+
+	case pb.SqlDatabaseVersion_SQLSERVER_2017_EXPRESS:
+		return "SQLSERVER_2017_EXPRESS_CU31_GDR.R20231029.00_02", nil
+
+	case pb.SqlDatabaseVersion_SQLSERVER_2019_EXPRESS:
+		return "SQLSERVER_2019_EXPRESS_CU26.R20240501.00_05", nil
+
+	case pb.SqlDatabaseVersion_SQLSERVER_2022_EXPRESS:
+		return "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05", nil
+
+	case pb.SqlDatabaseVersion_POSTGRES_9_6:
+		return "POSTGRES_9_6_24.R20250302.00_31", nil
+
+	case pb.SqlDatabaseVersion_POSTGRES_15:
+		return "POSTGRES_15_7.R20240514.00_12", nil
+
+	case pb.SqlDatabaseVersion_POSTGRES_16:
+		return "POSTGRES_16_3.R20240527.01_10", nil
+	default:
+		return "", fmt.Errorf("database version %s not yet supported by mock", databaseVersion)
+	}
+}
+
 // TODO: Match the data with the latest default values.
 func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 	switch obj.DatabaseVersion {
 	case pb.SqlDatabaseVersion_MYSQL_5_7:
 		obj.DatabaseInstalledVersion = "MYSQL_5_7_44"
-		obj.MaintenanceVersion = "MYSQL_5_7_44.R20231105.01_03"
 		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
 			{
 				DisplayName:  asRef("MySQL 8.0"),
@@ -364,7 +396,6 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 
 	case pb.SqlDatabaseVersion_MYSQL_8_0:
 		obj.DatabaseInstalledVersion = "MYSQL_8_0_40"
-		obj.MaintenanceVersion = "MYSQL_8_0_40.R20250304.00_03"
 		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
 			{
 				DisplayName:  asRef("MySQL 8.0.35"),
@@ -405,16 +436,13 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 
 	case pb.SqlDatabaseVersion_MYSQL_8_4:
 		obj.DatabaseInstalledVersion = "MYSQL_8_4_4"
-		obj.MaintenanceVersion = "MYSQL_8_4_4.R20250304.00_03"
 		obj.UpgradableDatabaseVersions = nil
 
 	case pb.SqlDatabaseVersion_SQLSERVER_2017_EXPRESS:
 		obj.DatabaseInstalledVersion = "SQLSERVER_2017_EXPRESS_CU31_GDR"
-		obj.MaintenanceVersion = "SQLSERVER_2017_EXPRESS_CU31_GDR.R20231029.00_02"
 
 	case pb.SqlDatabaseVersion_SQLSERVER_2019_EXPRESS:
 		obj.DatabaseInstalledVersion = "SQLSERVER_2019_EXPRESS_CU26"
-		obj.MaintenanceVersion = "SQLSERVER_2019_EXPRESS_CU26.R20240501.00_05"
 		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
 			{
 				MajorVersion: asRef("SQLSERVER_2019_STANDARD"),
@@ -452,9 +480,9 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 				DisplayName:  asRef("SQL Server 2022 Web"),
 			},
 		}
+
 	case pb.SqlDatabaseVersion_SQLSERVER_2022_EXPRESS:
 		obj.DatabaseInstalledVersion = "SQLSERVER_2022_EXPRESS_CU12_GDR"
-		obj.MaintenanceVersion = "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05"
 		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
 			{
 				MajorVersion: asRef("SQLSERVER_2022_STANDARD"),
@@ -472,11 +500,12 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 				DisplayName:  asRef("SQL Server 2022 Web"),
 			},
 		}
+
 	case pb.SqlDatabaseVersion_POSTGRES_9_6:
 		obj.DatabaseInstalledVersion = "POSTGRES_9_6"
+
 	case pb.SqlDatabaseVersion_POSTGRES_15:
 		obj.DatabaseInstalledVersion = "POSTGRES_15_7"
-		obj.MaintenanceVersion = "POSTGRES_15_7.R20240514.00_12"
 		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
 			{
 				MajorVersion: asRef("POSTGRES_16"),
@@ -484,12 +513,21 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 				DisplayName:  asRef("PostgreSQL 16"),
 			},
 		}
+
 	case pb.SqlDatabaseVersion_POSTGRES_16:
 		obj.DatabaseInstalledVersion = "POSTGRES_16_3"
-		obj.MaintenanceVersion = "POSTGRES_16_3.R20240527.01_10"
 		obj.UpgradableDatabaseVersions = nil
+
 	default:
 		return fmt.Errorf("database version %s not yet supported by mock", obj.DatabaseVersion)
+	}
+
+	if obj.MaintenanceVersion == "" {
+		maintenanceVersion, err := currentMaintenanceVersion(obj.DatabaseVersion)
+		if err != nil {
+			return err
+		}
+		obj.MaintenanceVersion = maintenanceVersion
 	}
 	return nil
 }
@@ -671,10 +709,21 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 	}
 	if body := req.GetBody(); body != nil {
 		if body.DatabaseVersion != pb.SqlDatabaseVersion_SQL_DATABASE_VERSION_UNSPECIFIED {
-			obj.DatabaseVersion = body.DatabaseVersion
+			if obj.DatabaseVersion != body.DatabaseVersion {
+				obj.DatabaseVersion = body.DatabaseVersion
+				obj.MaintenanceVersion = "" // use default for new version
+			}
 		}
+		if body.MaintenanceVersion != "" {
+			obj.MaintenanceVersion = body.MaintenanceVersion
+		}
+		// todo kcc team: refactor this all so we can pass in specific values for database settings
+		specifiedMaintenanceVersion := body.MaintenanceVersion
 		if err := setDatabaseVersionDefaults(obj); err != nil {
 			return nil, err
+		}
+		if specifiedMaintenanceVersion != "" {
+			obj.MaintenanceVersion = specifiedMaintenanceVersion
 		}
 	}
 
@@ -713,6 +762,15 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 		return nil, err
 	}
 
+	if req.GetBody().GetMaintenanceVersion() != "" && req.GetBody().GetMaintenanceVersion() != existing.GetMaintenanceVersion() {
+		// Maintenance version is changing.
+		// Check if any other fields are changing.
+		// A simple check for the test case is to see if settings are changing.
+		if !proto.Equal(req.GetBody().GetSettings(), existing.GetSettings()) {
+			return nil, status.Errorf(codes.InvalidArgument, "Invalid request: Upgrading maintenance version and changing other fields at the same time is not allowed.")
+		}
+	}
+
 	obj := proto.Clone(req.GetBody()).(*pb.DatabaseInstance)
 	obj.Name = existing.Name
 	obj.Region = existing.Region
@@ -729,7 +787,6 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 	obj.IpAddresses = existing.IpAddresses
 	obj.ServerCaCert = existing.ServerCaCert
 	obj.ServiceAccountEmailAddress = existing.ServiceAccountEmailAddress
-	obj.MaintenanceVersion = existing.MaintenanceVersion
 	obj.ServiceAccountEmailAddress = existing.ServiceAccountEmailAddress
 	obj.SqlNetworkArchitecture = existing.SqlNetworkArchitecture
 	obj.State = existing.State

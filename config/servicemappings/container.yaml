@@ -40,7 +40,10 @@ spec:
         - remove_default_node_pool
       mutableButUnreadableFields:
         - min_master_version
+      ignoredOutputOnlySpecFields:
+        - control_plane_endpoints_config.dns_endpoint_config.endpoint
       observedFields:
+        - control_plane_endpoints_config.dns_endpoint_config.endpoint
         - master_auth.client_certificate
         - master_auth.cluster_ca_certificate
         - private_cluster_config.private_endpoint

@@ -54,30 +54,8 @@ func getObservedGeneration(u *unstructured.Unstructured) int64 {
 
 // todo acpana: house these somewhere else
 
-func compareMetricDescriptors(kccObj *krm.LogmetricMetricDescriptor, apiObj *api.MetricDescriptor) bool {
-	return reflect.DeepEqual(kccObj, convertAPItoKRM_MetricDescriptor(apiObj))
-}
-
-func validateImmutableFieldsUpdated(kccObj *krm.LogmetricMetricDescriptor, apiObj *api.MetricDescriptor) error {
-	actualMetricDescriptor := convertAPItoKRM_MetricDescriptor(apiObj)
-
-	modified := []string{}
-	if kccObj == nil && apiObj == nil {
-		return nil
-	}
-	if kccObj == nil || apiObj == nil {
-		return fmt.Errorf("cannot make changes to immutable field: metricDescriptor")
-	}
-	if !reflect.DeepEqual(kccObj.MetricKind, actualMetricDescriptor.MetricKind) {
-		modified = append(modified, "metricDescriptor.MetricKind")
-	}
-	if !reflect.DeepEqual(kccObj.ValueType, actualMetricDescriptor.ValueType) {
-		modified = append(modified, "metricDescriptor.ValueType")
-	}
-	if len(modified) != 0 {
-		return fmt.Errorf("cannot make changes to immutable field(s): %v", modified)
-	}
-	return nil
+func compareMetricDescriptors(kccObj *api.MetricDescriptor, actual *api.MetricDescriptor) bool {
+	return reflect.DeepEqual(kccObj, actual)
 }
 
 func convertAPItoKRM_LoggingLogMetric(projectID string, in *api.LogMetric) (*unstructured.Unstructured, error) {

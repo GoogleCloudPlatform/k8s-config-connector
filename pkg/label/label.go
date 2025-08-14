@@ -15,8 +15,29 @@
 package label
 
 import (
+	"fmt"
 	"strings"
+
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
+
+// This function should be called if the typed object has `spec.labels` field.
+func ComputeLabels(u *unstructured.Unstructured) error {
+	var newLabels map[string]string
+	specLabels, found, err := unstructured.NestedStringMap(u.Object, "spec", "labels")
+	if err != nil {
+		return fmt.Errorf("retrieve %s: %s `spec.labels` field: %w", u.GroupVersionKind().Kind, u.GetName(), err)
+	}
+	if specLabels != nil {
+		newLabels = specLabels
+	} else if found {
+		newLabels = map[string]string{}
+	} else {
+		newLabels = removeLabelsWithKRMPrefix(u.GetLabels())
+	}
+	newLabels[CnrmManagedKey] = "true"
+	return unstructured.SetNestedStringMap(u.Object, newLabels, "spec", "labels")
+}
 
 func NewGCPLabelsFromK8sLabels(labels map[string]string) map[string]string {
 	res := removeLabelsWithKRMPrefix(labels)

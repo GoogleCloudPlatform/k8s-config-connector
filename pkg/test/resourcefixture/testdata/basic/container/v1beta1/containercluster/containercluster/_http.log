@@ -250,7 +250,6 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
   "id": "000000000000000000000",
@@ -599,6 +598,18 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "binaryAuthorization": {
       "enabled": false
     },
+    "controlPlaneEndpointsConfig": {
+      "dnsEndpointConfig": {
+        "allowExternalTraffic": false
+      },
+      "ipEndpointsConfig": {
+        "authorizedNetworksConfig": {},
+        "enablePublicEndpoint": true,
+        "enabled": true,
+        "globalAccess": false,
+        "privateEndpointSubnetwork": ""
+      }
+    },
     "initialNodeCount": 1,
     "ipAllocationPolicy": {
       "clusterIpv4CidrBlock": "/20",
@@ -620,7 +631,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "maintenancePolicy": {
       "window": {}
     },
-    "masterAuthorizedNetworksConfig": {},
     "monitoringConfig": {
       "componentConfig": {
         "enableComponents": [
@@ -806,6 +816,22 @@ X-Xss-Protection: 0
   "clusterTelemetry": {
     "type": "ENABLED"
   },
+  "controlPlaneEndpointsConfig": {
+    "dnsEndpointConfig": {
+      "allowExternalTraffic": false,
+      "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
+    },
+    "ipEndpointsConfig": {
+      "authorizedNetworksConfig": {
+        "gcpPublicCidrsAccessEnabled": true
+      },
+      "enablePublicEndpoint": true,
+      "enabled": true,
+      "globalAccess": false,
+      "privateEndpoint": "10.128.0.2",
+      "publicEndpoint": "8.8.8.8"
+    }
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "currentMasterVersion": "1.30.5-gke.1014001",
   "currentNodeCount": 1,
@@ -850,7 +876,7 @@ X-Xss-Protection: 0
   },
   "loggingService": "logging.googleapis.com/kubernetes",
   "maintenancePolicy": {
-    "window": {}
+    "resourceVersion": "1234abcd"
   },
   "master": {},
   "masterAuth": {
@@ -876,7 +902,9 @@ X-Xss-Protection: 0
   "name": "cluster-sample-${uniqueId}",
   "network": "${networkID}",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "projects/${projectId}/global/networks/${networkID}",
+    "serviceExternalIpsConfig": {},
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
   },
   "nodeConfig": {
@@ -1160,8 +1188,7 @@ X-Xss-Protection: 0
       },
       "oauthScopes": [
         "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/cloud-platform",
-        "https://www.googleapis.com/auth/monitoring"
+        "https://www.googleapis.com/auth/cloud-platform"
       ],
       "serviceAccount": "default",
       "upgradeSettings": {
@@ -1187,6 +1214,22 @@ X-Xss-Protection: 0
   "clusterIpv4Cidr": "10.92.0.0/14",
   "clusterTelemetry": {
     "type": "ENABLED"
+  },
+  "controlPlaneEndpointsConfig": {
+    "dnsEndpointConfig": {
+      "allowExternalTraffic": false,
+      "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
+    },
+    "ipEndpointsConfig": {
+      "authorizedNetworksConfig": {
+        "gcpPublicCidrsAccessEnabled": true
+      },
+      "enablePublicEndpoint": true,
+      "enabled": true,
+      "globalAccess": false,
+      "privateEndpoint": "10.128.0.2",
+      "publicEndpoint": "8.8.8.8"
+    }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "currentMasterVersion": "1.30.5-gke.1014001",
@@ -1232,7 +1275,7 @@ X-Xss-Protection: 0
   },
   "loggingService": "none",
   "maintenancePolicy": {
-    "window": {}
+    "resourceVersion": "1234abcd"
   },
   "master": {},
   "masterAuth": {
@@ -1258,7 +1301,9 @@ X-Xss-Protection: 0
   "name": "cluster-sample-${uniqueId}",
   "network": "${networkID}",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "projects/${projectId}/global/networks/${networkID}",
+    "serviceExternalIpsConfig": {},
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
   },
   "nodeConfig": {
@@ -1612,7 +1657,6 @@ X-Xss-Protection: 0
 
 {
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
   "id": "000000000000000000000",
