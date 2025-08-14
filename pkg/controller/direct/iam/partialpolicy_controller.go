@@ -36,6 +36,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 )
 
@@ -44,7 +45,42 @@ const (
 )
 
 func init() {
-	registry.RegisterModel(krm.IAMPartialPolicyGVK, NewIAMPartialPolicyModel)
+	rg := &IAMPartialPolicyReconcileGate{}
+	registry.RegisterModelWithReconcileGate(krm.IAMPartialPolicyGVK, NewIAMPartialPolicyModel, rg)
+}
+
+// IAMPartialPolicyReconcileGate implements a reconcile gate for IAMPartialPolicy
+// that defaults to the direct controller for better performance, but allows
+// fallback to the handwritten controller when needed.
+//
+// By default, IAMPartialPolicy resources use the direct controller.
+// To opt out and use the handwritten controller:
+//   - alpha.cnrm.cloud.google.com/reconciler: "legacy"
+//
+// To explicitly opt in to the direct controller:
+//   - alpha.cnrm.cloud.google.com/reconciler: "direct"
+type IAMPartialPolicyReconcileGate struct {
+	optIn predicate.OptInToDirectReconciliation
+}
+
+var _ predicate.ReconcileGate = &IAMPartialPolicyReconcileGate{}
+
+func (r *IAMPartialPolicyReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
+	// Check for alpha reconciler annotation to opt out
+	if v := o.GetAnnotations()["alpha.cnrm.cloud.google.com/reconciler"]; v == "legacy" {
+		return false
+	}
+
+	// todo acpana integrate with experiments controls for CCC/ CC
+
+	// Always allow opt-in via annotation
+	if r.optIn.ShouldReconcile(o) {
+		return true
+	}
+
+	// Default to direct controller for better performance
+	// Only fall back to handwritten controller if explicitly requested
+	return true
 }
 
 func NewIAMPartialPolicyModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -126,7 +162,7 @@ func (a *IAMPartialPolicyAdapter) Find(ctx context.Context) (bool, error) {
 	log.V(2).Info("getting IAM policy for resource", "kind", a.desired.Spec.ResourceReference.Kind, "name", a.desired.Spec.ResourceReference.Name, "namespace", a.desired.Spec.ResourceReference.Namespace, "external", a.desired.Spec.ResourceReference.External)
 	mapCtx := &direct.MapContext{}
 
-	iamPolicySkeleton := ToOldIAMPolicySkeleton(a.desired)
+	iamPolicySkeleton := ToIAMPolicySkeleton(a.desired)
 	oldKRMPolicy, err := a.iamClient.GetPolicy(ctx, iamPolicySkeleton)
 	if err != nil {
 		if apierrors.IsNotFound(err) || k8s.IsReferenceNotFoundError(err) {
@@ -195,8 +231,10 @@ func (a *IAMPartialPolicyAdapter) Create(ctx context.Context, createOp *directba
 	if a.actualReferencedResourcePolicy == nil {
 		livePolicyForMerge = &krm.IAMPolicy{}
 	} else {
-		// todo acpana round trip ?
-		livePolicyForMerge = ToNewIAMPolicySkeleton(a.desired)
+		livePolicyForMerge = ToIAMPolicySkeleton(a.desired)
+
+		// this is not the PartialPolicy etag on GCP but the etag on the IAMPolicy on GCP
+		livePolicyForMerge.Spec.Etag = string(a.actualReferencedResourcePolicy.Etag)
 	}
 
 	resolver := IAMMemberIdentityResolver{IAMClient: a.iamClient, Ctx: ctx}
@@ -310,10 +348,10 @@ func (a *IAMPartialPolicyAdapter) Export(ctx context.Context) (*unstructured.Uns
 	return nil, nil
 }
 
-// ToNewIAMPolicySkeleton creates an IAMPolicy struct with ObjectMeta and resource reference
+// ToIAMPolicySkeleton creates an IAMPolicy struct with ObjectMeta and resource reference
 // copied from the partial policy. The skeleton struct can be passed to IAMClient.GetPolicy()
 // to fetch the live IAM policy.
-func ToNewIAMPolicySkeleton(p *krm.IAMPartialPolicy) *krm.IAMPolicy {
+func ToIAMPolicySkeleton(p *krm.IAMPartialPolicy) *krm.IAMPolicy {
 	res := &krm.IAMPolicy{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       krm.IAMPolicyGVK.Kind,
@@ -331,28 +369,8 @@ func ToNewIAMPolicySkeleton(p *krm.IAMPartialPolicy) *krm.IAMPolicy {
 	return res
 }
 
-// old style v1beta1 Policy representation for the IAM Client
-func ToOldIAMPolicySkeleton(p *krm.IAMPartialPolicy) *krm.IAMPolicy {
-	res := &krm.IAMPolicy{
-		TypeMeta: metav1.TypeMeta{
-			Kind:       krm.IAMPolicyGVK.Kind,
-			APIVersion: krm.IAMAPIVersion,
-		},
-	}
-
-	res.ObjectMeta = *p.ObjectMeta.DeepCopy()
-	res.Spec.ResourceReference.APIVersion = p.Spec.ResourceReference.APIVersion
-	res.Spec.ResourceReference.Kind = p.Spec.ResourceReference.Kind
-	res.Spec.ResourceReference.Name = p.Spec.ResourceReference.Name
-	res.Spec.ResourceReference.Namespace = p.Spec.ResourceReference.Namespace
-	res.Spec.ResourceReference.External = p.Spec.ResourceReference.External
-
-	return res
-}
-
-// todo acpana -- get rid of the "oldiamv1beta1" translations throughout here and mappings
 func toDesiredPolicy(desiredPartialPolicy *krm.IAMPartialPolicy, livePolicy *krm.IAMPolicy) *krm.IAMPolicy {
-	desiredPolicy := ToOldIAMPolicySkeleton(desiredPartialPolicy)
+	desiredPolicy := ToIAMPolicySkeleton(desiredPartialPolicy)
 
 	if len(desiredPartialPolicy.Status.AllBindings) > 0 {
 		desiredPolicy.Spec.Bindings = make([]krm.IAMPolicyBinding, len(desiredPartialPolicy.Status.AllBindings))
@@ -375,6 +393,7 @@ func toDesiredPolicy(desiredPartialPolicy *krm.IAMPartialPolicy, livePolicy *krm
 	}
 	// Carry the current etag from read to support concurrent read-modify-write operations from multiple systems.
 	// SetPolicy will fail if the policy has been modified by other actors since the controller retrieved it.
+	fmt.Println("todo acpana what is happening here ?/???", livePolicy.Spec.Etag)
 	desiredPolicy.Spec.Etag = livePolicy.Spec.Etag
 	// Preserve the audit configs if any.
 	if len(livePolicy.Spec.AuditConfigs) > 0 {
