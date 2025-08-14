@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+//	http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,7 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
-	pb "google.golang.org/genproto/googleapis/cloud/networksecurity/v1beta1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networksecurity/v1beta1"
 )
 
 // MockService represents a mocked networksecurity service.
@@ -31,6 +31,8 @@ type MockService struct {
 	*common.MockEnvironment
 	storage    storage.Storage
 	operations *operations.Operations
+
+	v1 *NetworkSecurityServer
 }
 
 // New creates a MockService.
@@ -38,22 +40,23 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
-		operations:      operations.New(storage),
+		operations:      operations.NewOperationsService(storage),
 	}
+	s.v1 = &NetworkSecurityServer{MockService: s}
 	return s
 }
 
-func (s *MockService) ExpectedHost() string {
-	return "networksecurity.googleapis.com"
+func (s *MockService) ExpectedHosts() []string {
+	return []string{"networksecurity.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterNetworkSecurityServer(grpcServer, s)
+	pb.RegisterNetworkSecurityServer(grpcServer, s.v1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterNetworkSecurityHandlerFromEndpoint,
+		pb.RegisterNetworkSecurityHandler,
 		s.operations.RegisterOperationsPath("/v1beta1/{name=projects/*/locations/*/operations/*}"),
 	)
 	if err != nil {
