@@ -108,7 +108,7 @@ def main():
             continue
 
         # Run the specific test
-        command = f"TARGET_KIND={kind} go test ./tests/apichecks/... -run TestCRDFieldPresenceInTests"
+        command = f"go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha"
         result = subprocess.run(command, shell=True, capture_output=True, text=True, cwd=project_root)
 
         if result.returncode == 0:

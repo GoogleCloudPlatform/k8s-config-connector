@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 )
 
 type MemberIdentityResolver interface {

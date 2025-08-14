@@ -15,6 +15,8 @@
 package mockiam
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
@@ -22,7 +24,23 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	replacements.ReplacePath(".policy.etag", "abcdef0123A=")
+
+	// ServiceAccountKeys
+	replacements.ReplacePath(".validAfterTime", "2024-04-01T12:34:56Z")
+	replacements.ReplacePath(".keys[].validAfterTime", "2024-04-01T12:34:56Z")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	// TODO: If all normalizers should filter by host, we could auto-filter (i.e. only call normalizers with matching hosts)
+	if strings.Contains(event.URL(), "https://iam.googleapis.com") {
+		event.VisitResponseStringValues(func(path string, value string) {
+			switch path {
+			case ".name":
+				tokens := strings.Split(value, "/")
+				if len(tokens) == 6 && tokens[4] == "keys" {
+					replacements.ReplaceStringValue(tokens[5], "${serviceAccountKeyID}")
+				}
+			}
+		})
+	}
 }

@@ -818,7 +818,7 @@ This process involves creating `create.yaml` and `update.yaml` test fixtures and
 To ensure your `create.yaml` covers all possible fields, run the following test:
 
 ```bash
-TARGET_KIND=<KIND> go test ./tests/apichecks/... -run TestCRDFieldPresenceInTests
+go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha
 ```
 
 -   Replace `<KIND>` with the resource Kind (e.g., `StorageBucket`).

@@ -28,8 +28,8 @@ import (
 	// as such its not a yaml injection vulnerability.
 	"text/template" // NOLINT
 
+	iamapi "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
-	iamapi "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/reconciliationinterval"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
@@ -46,6 +46,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/fileutil"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
+
+	// Ensure built-in types are registered.
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -169,8 +172,17 @@ func main() {
 		directGVKs:            directGVKs,
 	}
 	for _, gvk := range manualResources {
-		if strings.HasPrefix(gvk.Version, "v1alpha") {
+		// TODO: Identify highest supported version for direct resource.
+		if strings.HasPrefix(gvk.Version, "v1alpha") &&
+			!(gvk.Kind == "BigQueryAnalyticsHubDataExchange" ||
+				gvk.Kind == "BigQueryAnalyticsHubListing" ||
+				gvk.Kind == "RedisCluster") {
 			klog.Infof("skipping alpha resource %v", gvk)
+			continue
+		}
+		// TODO: Add resource docs for all the v1beta1 resources and remove exceptions.
+		if gvk.Kind == "KMSImportJob" || gvk.Kind == "MetastoreBackup" {
+			klog.Errorf("doc template missing for GVK %v", gvk)
 			continue
 		}
 		if err := docGenerator.generateDocForGVK(gvk); err != nil {

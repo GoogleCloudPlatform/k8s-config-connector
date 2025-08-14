@@ -171,17 +171,7 @@ X-Xss-Protection: 0
   },
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
-      "allowExternalTraffic": false,
-      "endpoint": "gke-123456-${projectNumber}.us-central1-a.gke.goog"
-    },
-    "ipEndpointsConfig": {
-      "authorizedNetworksConfig": {
-        "gcpPublicCidrsAccessEnabled": true
-      },
-      "enablePublicEndpoint": true,
-      "enabled": true,
-      "privateEndpoint": "1.2.3.4",
-      "publicEndpoint": "32.32.32.32"
+      "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -224,9 +214,6 @@ X-Xss-Protection: 0
     "clientCertificateConfig": {},
     "clusterCaCertificate": "1234567890abcdefghijklmn"
   },
-  "masterAuthorizedNetworksConfig": {
-    "gcpPublicCidrsAccessEnabled": true
-  },
   "monitoringConfig": {
     "advancedDatapathObservabilityConfig": {},
     "componentConfig": {
@@ -245,7 +232,7 @@ X-Xss-Protection: 0
     "defaultSnatStatus": {},
     "network": "default",
     "serviceExternalIpsConfig": {},
-    "subnetwork": "projects/${projectId}/regions/us-central1-a/subnetworks/default"
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
   },
   "nodeConfig": {
     "diskSizeGb": 100,
@@ -318,7 +305,6 @@ X-Xss-Protection: 0
   ],
   "privateCluster": true,
   "privateClusterConfig": {
-    "privateEndpoint": "10.128.0.2",
     "publicEndpoint": "8.8.8.8"
   },
   "protectConfig": {
@@ -447,7 +433,8 @@ X-Xss-Protection: 0
   },
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
-      "allowExternalTraffic": true
+      "allowExternalTraffic": true,
+      "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -490,9 +477,6 @@ X-Xss-Protection: 0
     "clientCertificateConfig": {},
     "clusterCaCertificate": "1234567890abcdefghijklmn"
   },
-  "masterAuthorizedNetworksConfig": {
-    "gcpPublicCidrsAccessEnabled": true
-  },
   "monitoringConfig": {
     "advancedDatapathObservabilityConfig": {},
     "componentConfig": {
@@ -511,7 +495,7 @@ X-Xss-Protection: 0
     "defaultSnatStatus": {},
     "network": "default",
     "serviceExternalIpsConfig": {},
-    "subnetwork": "projects/${projectId}/regions/us-central1-a/subnetworks/default"
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
   },
   "nodeConfig": {
     "diskSizeGb": 100,
@@ -584,7 +568,6 @@ X-Xss-Protection: 0
   ],
   "privateCluster": true,
   "privateClusterConfig": {
-    "privateEndpoint": "10.128.0.2",
     "publicEndpoint": "8.8.8.8"
   },
   "protectConfig": {

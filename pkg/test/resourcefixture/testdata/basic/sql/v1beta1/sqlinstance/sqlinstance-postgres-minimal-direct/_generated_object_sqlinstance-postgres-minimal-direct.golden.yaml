@@ -14,6 +14,7 @@ metadata:
   namespace: ${uniqueId}
 spec:
   databaseVersion: POSTGRES_16
+  maintenanceVersion: POSTGRES_16_9.R20250302.00_19
   region: us-central1
   settings:
     locationPreference:

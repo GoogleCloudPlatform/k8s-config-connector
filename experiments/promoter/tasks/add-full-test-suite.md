@@ -17,30 +17,24 @@ This process involves creating `create.yaml` and `update.yaml` test fixtures and
     -   You can find the CRD for your resource at: `config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_<PLURAL_KIND_LOWERCASE>.<SERVICE>.cnrm.cloud.google.com.yaml`. Note that `<PLURAL_KIND_LOWERCASE>` might be different from just adding an 's' to the lowercase kind.
     -   In the `create.yaml` file:
         -   Set `.metadata.name` to `<KIND_LOWERCASE>-${uniqueId}`.
-        -   If `.spec.projectRef` exists, set it to `spec.projectRef.external: ${projectId}`.
+        -   If `.spec.projectRef` exists, use its subfield `.external` and set the value to be `${projectId}`.
         -   Fill in valid values for as many fields in the `.spec` as possible. Try to understand the purpose of each field to provide a meaningful value.
 
 **Step 2: Verify Field Coverage**
 
-To ensure your `create.yaml` covers all possible fields, run the following test:
-
-```bash
-TARGET_KIND=<KIND> go test ./tests/apichecks/... -run TestCRDFieldPresenceInTests
-```
-
--   Replace `<KIND>` with the resource Kind (e.g., `StorageBucket`).
--   If this test fails, the output will tell you exactly which fields from the CRD are missing in your `create.yaml`. Add the missing fields to your `create.yaml` and re-run the test until it passes.
+If this is an alpha resource, we want to look at "testdata/exceptions/alpha-missingfields.txt" to see if this CRD has any missing_fields. If this is a Beta resource, we want to look at "testdata/exceptions/missingfields.txt". The API coverage should only focus on the missing fields. Once you improve the API coverage in test suite, you can run tests to verify: For alpha, run `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha`; for v1beta1, run `WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTests`.
 
 **Step 3: Record the GCP Traffic for `create.yaml`**
 
 Once the field coverage test passes, record the live GCP API calls for your `create.yaml`:
 
 ```bash
-hack/record-gcp fixtures/<KIND_LOWERCASE>-full
+E2E_TEST_TIMEOUT=20s hack/record-gcp fixtures/<KIND_LOWERCASE>-full 
 ```
 
 -   This command will create a `_http.log` file in your test directory.
 -   If the command fails, examine the error messages. You may need to adjust the values in your `create.yaml` or fix issues in the resource's controller located in `pkg/controller/direct/<SERVICE>/`. You can retry this command up to 10 times.
+-   **Note:** The test may time out, but this is expected. You should not focus on the test result, but instead look at the log to see if there are any reconciler errors or update errors.
 
 **Step 4: Create the `update.yaml` file**
 
@@ -56,7 +50,7 @@ hack/record-gcp fixtures/<KIND_LOWERCASE>-full
 Now, record the live GCP API calls for your `update.yaml`:
 
 ```bash
-hack/record-gcp fixtures/<KIND_LOWERCASE>-full
+E2E_TEST_TIMEOUT=20s hack/record-gcp fixtures/<KIND_LOWERCASE>-full
 ```
 
 -   This will update the `_http.log` with the API calls for the update operation.
@@ -73,7 +67,7 @@ Finally, verify that the mock GCP implementation behaves the same as the real GC
 
 2.  **Compare with the mock:**
     ```bash
-    hack/compare-mock fixtures/<KIND_LOWERCASE>-full
+    E2E_TEST_TIMEOUT=10s hack/compare-mock fixtures/<KIND_LOWERCASE>-full
     ```
     -   If this command fails, it means there's a difference between the real and mock GCP interactions.
     -   Examine the diff to see the differences:

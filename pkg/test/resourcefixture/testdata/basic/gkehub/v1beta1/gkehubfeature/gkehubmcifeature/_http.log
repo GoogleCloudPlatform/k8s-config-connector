@@ -510,6 +510,18 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "binaryAuthorization": {
       "enabled": false
     },
+    "controlPlaneEndpointsConfig": {
+      "dnsEndpointConfig": {
+        "allowExternalTraffic": false
+      },
+      "ipEndpointsConfig": {
+        "authorizedNetworksConfig": {},
+        "enablePublicEndpoint": true,
+        "enabled": true,
+        "globalAccess": false,
+        "privateEndpointSubnetwork": ""
+      }
+    },
     "initialNodeCount": 1,
     "ipAllocationPolicy": {
       "stackType": "IPV4",
@@ -521,7 +533,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "maintenancePolicy": {
       "window": {}
     },
-    "masterAuthorizedNetworksConfig": {},
     "name": "containercluster1-${uniqueId}",
     "network": "projects/mci-${uniqueId}/global/networks/default",
     "networkConfig": {},
@@ -662,7 +673,7 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
-      "endpoint": "gke-123456-${projectNumber}.us-central1-a.gke.goog"
+      "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
     },
     "ipEndpointsConfig": {
       "authorizedNetworksConfig": {
@@ -670,8 +681,9 @@ X-Xss-Protection: 0
       },
       "enablePublicEndpoint": true,
       "enabled": true,
-      "privateEndpoint": "1.2.3.4",
-      "publicEndpoint": "32.32.32.32"
+      "globalAccess": false,
+      "privateEndpoint": "10.128.0.2",
+      "publicEndpoint": "8.8.8.8"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -743,7 +755,7 @@ X-Xss-Protection: 0
     "defaultSnatStatus": {},
     "network": "projects/mci-${uniqueId}/global/networks/default",
     "serviceExternalIpsConfig": {},
-    "subnetwork": "projects/mci-${uniqueId}/regions/us-central1-a/subnetworks/default"
+    "subnetwork": "projects/mci-${uniqueId}/regions/us-central1/subnetworks/default"
   },
   "nodeConfig": {
     "diskSizeGb": 100,
@@ -900,6 +912,18 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "binaryAuthorization": {
       "enabled": false
     },
+    "controlPlaneEndpointsConfig": {
+      "dnsEndpointConfig": {
+        "allowExternalTraffic": false
+      },
+      "ipEndpointsConfig": {
+        "authorizedNetworksConfig": {},
+        "enablePublicEndpoint": true,
+        "enabled": true,
+        "globalAccess": false,
+        "privateEndpointSubnetwork": ""
+      }
+    },
     "initialNodeCount": 1,
     "ipAllocationPolicy": {
       "stackType": "IPV4",
@@ -911,7 +935,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "maintenancePolicy": {
       "window": {}
     },
-    "masterAuthorizedNetworksConfig": {},
     "name": "containercluster2-${uniqueId}",
     "network": "projects/mci-${uniqueId}/global/networks/default",
     "networkConfig": {},
@@ -1052,7 +1075,7 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
-      "endpoint": "gke-123456-${projectNumber}.us-central1-a.gke.goog"
+      "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
     },
     "ipEndpointsConfig": {
       "authorizedNetworksConfig": {
@@ -1060,8 +1083,9 @@ X-Xss-Protection: 0
       },
       "enablePublicEndpoint": true,
       "enabled": true,
-      "privateEndpoint": "1.2.3.4",
-      "publicEndpoint": "32.32.32.32"
+      "globalAccess": false,
+      "privateEndpoint": "10.128.0.2",
+      "publicEndpoint": "8.8.8.8"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -1133,7 +1157,7 @@ X-Xss-Protection: 0
     "defaultSnatStatus": {},
     "network": "projects/mci-${uniqueId}/global/networks/default",
     "serviceExternalIpsConfig": {},
-    "subnetwork": "projects/mci-${uniqueId}/regions/us-central1-a/subnetworks/default"
+    "subnetwork": "projects/mci-${uniqueId}/regions/us-central1/subnetworks/default"
   },
   "nodeConfig": {
     "diskSizeGb": 100,
@@ -2493,7 +2517,7 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
-      "endpoint": "gke-123456-${projectNumber}.us-central1-a.gke.goog"
+      "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
     },
     "ipEndpointsConfig": {
       "authorizedNetworksConfig": {
@@ -2501,8 +2525,9 @@ X-Xss-Protection: 0
       },
       "enablePublicEndpoint": true,
       "enabled": true,
-      "privateEndpoint": "1.2.3.4",
-      "publicEndpoint": "32.32.32.32"
+      "globalAccess": false,
+      "privateEndpoint": "10.128.0.2",
+      "publicEndpoint": "8.8.8.8"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -2574,7 +2599,7 @@ X-Xss-Protection: 0
     "defaultSnatStatus": {},
     "network": "projects/mci-${uniqueId}/global/networks/default",
     "serviceExternalIpsConfig": {},
-    "subnetwork": "projects/mci-${uniqueId}/regions/us-central1-a/subnetworks/default"
+    "subnetwork": "projects/mci-${uniqueId}/regions/us-central1/subnetworks/default"
   },
   "nodeConfig": {
     "diskSizeGb": 100,
@@ -2774,7 +2799,7 @@ X-Xss-Protection: 0
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
-      "endpoint": "gke-123456-${projectNumber}.us-central1-a.gke.goog"
+      "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
     },
     "ipEndpointsConfig": {
       "authorizedNetworksConfig": {
@@ -2782,8 +2807,9 @@ X-Xss-Protection: 0
       },
       "enablePublicEndpoint": true,
       "enabled": true,
-      "privateEndpoint": "1.2.3.4",
-      "publicEndpoint": "32.32.32.32"
+      "globalAccess": false,
+      "privateEndpoint": "10.128.0.2",
+      "publicEndpoint": "8.8.8.8"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -2855,7 +2881,7 @@ X-Xss-Protection: 0
     "defaultSnatStatus": {},
     "network": "projects/mci-${uniqueId}/global/networks/default",
     "serviceExternalIpsConfig": {},
-    "subnetwork": "projects/mci-${uniqueId}/regions/us-central1-a/subnetworks/default"
+    "subnetwork": "projects/mci-${uniqueId}/regions/us-central1/subnetworks/default"
   },
   "nodeConfig": {
     "diskSizeGb": 100,
