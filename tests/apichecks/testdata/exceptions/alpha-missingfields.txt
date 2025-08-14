@@ -288,11 +288,6 @@
 [missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=backupdrbackupplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupRules[].standardSchedule.daysOfMonth[]" is not set in unstructured objects
-[missing_field] crd=backupdrbackupplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupRules[].standardSchedule.daysOfWeek[]" is not set in unstructured objects
-[missing_field] crd=backupdrbackupplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupRules[].standardSchedule.months[]" is not set in unstructured objects
-[missing_field] crd=backupdrbackupplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupRules[].standardSchedule.weekDayOfMonth.dayOfWeek" is not set in unstructured objects
-[missing_field] crd=backupdrbackupplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupRules[].standardSchedule.weekDayOfMonth.weekOfMonth" is not set in unstructured objects
 [missing_field] crd=backupdrbackupplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
 [missing_field] crd=backupdrbackupplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=backupdrbackupvaults.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessRestriction" is not set in unstructured objects
