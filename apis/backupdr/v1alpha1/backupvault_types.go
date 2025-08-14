@@ -45,11 +45,6 @@ type BackupDRBackupVaultSpec struct {
 	// +required
 	BackupMinimumEnforcedRetentionDuration *string `json:"backupMinimumEnforcedRetentionDuration,omitempty"`
 
-	// Optional. Server specified ETag for the backup vault resource to
-	//  prevent simultaneous updates from overwiting each other.
-	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.etag
-	Etag *string `json:"etag,omitempty"`
-
 	// Optional. Time after which the BackupVault resource is locked.
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.effective_time
 	EffectiveTime *string `json:"effectiveTime,omitempty"`

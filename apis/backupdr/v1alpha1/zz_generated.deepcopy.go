@@ -348,11 +348,6 @@ func (in *BackupDRBackupVaultSpec) DeepCopyInto(out *BackupDRBackupVaultSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.Etag != nil {
-		in, out := &in.Etag, &out.Etag
-		*out = new(string)
-		**out = **in
-	}
 	if in.EffectiveTime != nil {
 		in, out := &in.EffectiveTime, &out.EffectiveTime
 		*out = new(string)

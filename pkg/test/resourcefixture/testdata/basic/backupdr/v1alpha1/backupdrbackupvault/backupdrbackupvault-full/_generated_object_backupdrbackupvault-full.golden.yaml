@@ -6,19 +6,19 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
+    another-label: another-value
     cnrm-test: "true"
     label-key: label-value
   name: backupdrbackupvault-full-${uniqueId}
   namespace: ${uniqueId}
 spec:
   accessRestriction: WITHIN_ORGANIZATION
-  backupMinimumEnforcedRetentionDuration: 86400s
-  description: This is a full backup vault
+  backupMinimumEnforcedRetentionDuration: 86500s
+  description: This is an updated full backup vault
   effectiveTime: "2025-08-17T10:00:00Z"
-  etag: some-etag
-  ignoreInactiveDatasources: true
+  ignoreInactiveDatasources: false
   location: us-central1
   projectRef:
     external: ${projectId}
@@ -30,11 +30,11 @@ status:
     status: "True"
     type: Ready
   externalRef: projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}
-  observedGeneration: 1
+  observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
     deletable: true
-    serviceAccount: vault-${projectNumber}-29405@gcp-sa-backupdr-pr.iam.gserviceaccount.com
+    serviceAccount: vault-${projectNumber}-53008@gcp-sa-backupdr-pr.iam.gserviceaccount.com
     state: ACTIVE
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"

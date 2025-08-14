@@ -6,12 +6,13 @@ metadata:
     key1: value1
   labels:
     label-key: label-value
+    another-label: another-value
 spec:
-  description: "This is a full backup vault"
+  description: "This is an updated full backup vault"
   location: "us-central1"
   projectRef:
     external: "${projectId}"
-  backupMinimumEnforcedRetentionDuration: "86400s"
+  backupMinimumEnforcedRetentionDuration: "86500s"
   accessRestriction: "WITHIN_ORGANIZATION"
-  ignoreInactiveDatasources: true
+  ignoreInactiveDatasources: false
   effectiveTime: "2025-08-17T10:00:00Z"
