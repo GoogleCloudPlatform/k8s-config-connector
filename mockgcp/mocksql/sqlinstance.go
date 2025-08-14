@@ -67,6 +67,10 @@ func (s *sqlInstancesService) Clone(ctx context.Context, req *pb.SqlInstancesClo
 	clone := proto.Clone(source).(*pb.DatabaseInstance)
 	clone.Name = cloneName
 
+	// the REAL SQL instance server handles setting maintenanceVersion (likely thhrough	subsequent patch calls).
+	// As a hack we empty this out but should revisit and add a separate patch call after the insert.
+	clone.MaintenanceVersion = ""
+
 	insertReq := &pb.SqlInstancesInsertRequest{
 		Project: req.GetProject(),
 		Body:    clone,
