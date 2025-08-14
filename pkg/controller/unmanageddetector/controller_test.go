@@ -20,6 +20,7 @@ import (
 	"reflect"
 	"testing"
 
+	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/unmanageddetector"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -80,95 +81,182 @@ func runManager(t *testing.T, restConfig *rest.Config) manager.Manager {
 }
 
 func TestReconcile_UnmanagedResource(t *testing.T) {
-	ctx := context.TODO()
-	h := test.NewKubeHarness(ctx, t)
-	client := h.GetClient()
+	tests := []struct {
+		name                      string
+		namespace                 string
+		managerNamespace          string
+		managerNamespaceIsolation string
+		ccc                       *unstructured.Unstructured
+	}{
+		{
+			name:                      "namespaced CCC",
+			namespace:                 testvariable.NewUniqueID(),
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationShared,
+		},
+		{
+			name:                      "per namespace CCC",
+			namespace:                 "t1234-tenant0-provider",
+			managerNamespace:          "t1234-tenant0-supervisor",
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
+			ccc:                       newConfigConnectorContextUnstructured("t1234-tenant0-provider", "t1234-tenant0-supervisor"),
+		},
+	}
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			// Cannot run tests in parallel as they create cluster-wide ConfigConnector
+			ctx := context.TODO()
+			h := test.NewKubeHarness(ctx, t)
+			client := h.GetClient()
 
-	h.CreateDummyCRD(fakeCRDGVK)
+			h.CreateDummyCRD(fakeCRDGVK)
 
-	mgr := runManager(t, h.GetRESTConfig())
+			mgr := runManager(t, h.GetRESTConfig())
 
-	testID := testvariable.NewUniqueID()
-	testcontroller.EnsureNamespaceExistsT(t, client, k8s.SystemNamespace)
-	testcontroller.EnsureNamespaceExistsT(t, client, testID)
+			testID := testvariable.NewUniqueID()
+			testcontroller.EnsureNamespaceExistsT(t, client, k8s.SystemNamespace)
+			testcontroller.EnsureNamespaceExistsT(t, client, tc.namespace)
+			if tc.managerNamespace != "" {
+				testcontroller.EnsureNamespaceExistsT(t, client, tc.managerNamespace)
+			}
 
-	resourceNN := types.NamespacedName{
-		Namespace: testID,
-		Name:      testID,
-	}
-	resource := newTestKindUnstructured(resourceNN)
-	test.EnsureObjectExists(t, resource, client)
+			resourceNN := types.NamespacedName{
+				Namespace: tc.namespace,
+				Name:      testID,
+			}
+			resource := newTestKindUnstructured(resourceNN)
+			test.EnsureObjectExists(t, resource, client)
 
-	reconciler, err := unmanageddetector.NewReconciler(mgr, fakeCRDGVK)
-	if err != nil {
-		t.Fatalf("error creating reconciler: %v", err)
-	}
-	res, err := reconciler.Reconcile(ctx, reconcile.Request{NamespacedName: resourceNN})
-	if err != nil {
-		t.Fatalf("unexpected error during reconciliation: %v", err)
-	}
-	emptyResult := reconcile.Result{}
-	if got, want := res, emptyResult; !reflect.DeepEqual(got, want) {
-		t.Fatalf("unexpected diff in reconcile result (-want +got): \n%v", cmp.Diff(want, got))
-	}
+			cc := newConfigConnectorNamespacedUnstructured()
+			test.EnsureObjectExists(t, cc, client)
+			defer func() {
+				err := client.Delete(context.Background(), cc)
+				if err != nil {
+					t.Fatalf("cannot delete ConfigConnector: %v", err)
+				}
+			}()
+			if tc.ccc != nil {
+				test.EnsureObjectExists(t, tc.ccc, client)
+				defer func() {
+					err := client.Delete(context.Background(), tc.ccc)
+					if err != nil {
+						t.Fatalf("cannot delete ConfigConnectorContext: %v", err)
+					}
+				}()
+			}
 
-	condition, found, err := getCurrentCondition(ctx, client, resource)
-	if err != nil {
-		t.Fatalf("error getting resource's condition: %v", err)
-	}
-	if !found {
-		t.Fatalf("got nil condition for resource, want non-nil condition with reason '%v'", k8s.Unmanaged)
-	}
-	if gotReason, wantReason := condition.Reason, k8s.Unmanaged; gotReason != wantReason {
-		t.Fatalf("got condition with reason '%v' for resource, want condition with reason '%v'", gotReason, wantReason)
-	}
-	if gotStatus, wantStatus := condition.Status, corev1.ConditionFalse; gotStatus != wantStatus {
-		t.Fatalf("got condition with status '%v' for resource, want condition with status '%v'", gotStatus, wantStatus)
+			unmanageddetector.ManagerNamespaceIsolation = tc.managerNamespaceIsolation
+			reconciler, err := unmanageddetector.NewReconciler(mgr, fakeCRDGVK)
+			if err != nil {
+				t.Fatalf("error creating reconciler: %v", err)
+			}
+			res, err := reconciler.Reconcile(ctx, reconcile.Request{NamespacedName: resourceNN})
+			if err != nil {
+				t.Fatalf("unexpected error during reconciliation: %v", err)
+			}
+			emptyResult := reconcile.Result{}
+			if got, want := res, emptyResult; !reflect.DeepEqual(got, want) {
+				t.Fatalf("unexpected diff in reconcile result (-want +got): \n%v", cmp.Diff(want, got))
+			}
+
+			condition, found, err := getCurrentCondition(ctx, client, resource)
+			if err != nil {
+				t.Fatalf("error getting resource's condition: %v", err)
+			}
+			if !found {
+				t.Fatalf("got nil condition for resource, want non-nil condition with reason '%v'", k8s.Unmanaged)
+			}
+			if gotReason, wantReason := condition.Reason, k8s.Unmanaged; gotReason != wantReason {
+				t.Fatalf("got condition with reason '%v' for resource, want condition with reason '%v'", gotReason, wantReason)
+			}
+			if gotStatus, wantStatus := condition.Status, corev1.ConditionFalse; gotStatus != wantStatus {
+				t.Fatalf("got condition with status '%v' for resource, want condition with status '%v'", gotStatus, wantStatus)
+			}
+		})
 	}
 }
 
 func TestReconcile_ManagedResource(t *testing.T) {
-	ctx := context.TODO()
-	h := test.NewKubeHarness(ctx, t)
-	client := h.GetClient()
-
-	h.CreateDummyCRD(fakeCRDGVK)
-
-	mgr := runManager(t, h.GetRESTConfig())
-
-	testID := testvariable.NewUniqueID()
-	testcontroller.EnsureNamespaceExistsT(t, client, k8s.SystemNamespace)
-	testcontroller.EnsureNamespaceExistsT(t, client, testID)
-
-	resourceNN := types.NamespacedName{
-		Namespace: testID,
-		Name:      testID,
+	tests := []struct {
+		name                      string
+		namespace                 string
+		managerNamespace          string
+		managerNamespaceIsolation string
+	}{
+		{
+			name:                      "namespaced CCC",
+			namespace:                 testvariable.NewUniqueID(),
+			managerNamespace:          k8s.SystemNamespace,
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationShared,
+		},
+		{
+			name:                      "per namespace CCC",
+			namespace:                 "t1234-tenant0-provider",
+			managerNamespace:          "t1234-tenant0-supervisor",
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
+		},
 	}
-	resource := newTestKindUnstructured(resourceNN)
-	test.EnsureObjectExists(t, resource, client)
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			// Cannot run tests in parallel as they create cluster-wide ConfigConnector
+			ctx := context.TODO()
+			h := test.NewKubeHarness(ctx, t)
+			client := h.GetClient()
 
-	controller := newControllerUnstructuredForNamespace(resourceNN.Namespace)
-	test.EnsureObjectExists(t, controller, client)
+			h.CreateDummyCRD(fakeCRDGVK)
 
-	reconciler, err := unmanageddetector.NewReconciler(mgr, fakeCRDGVK)
-	if err != nil {
-		t.Fatalf("error creating reconciler: %v", err)
-	}
-	res, err := reconciler.Reconcile(ctx, reconcile.Request{NamespacedName: resourceNN})
-	if err != nil {
-		t.Fatalf("unexpected error during reconciliation: %v", err)
-	}
-	emptyResult := reconcile.Result{}
-	if got, want := res, emptyResult; !reflect.DeepEqual(got, want) {
-		t.Fatalf("unexpected diff in reconcile result (-want +got): \n%v", cmp.Diff(want, got))
-	}
+			mgr := runManager(t, h.GetRESTConfig())
 
-	condition, found, err := getCurrentCondition(ctx, client, resource)
-	if err != nil {
-		t.Fatalf("error getting resource's condition: %v", err)
-	}
-	if found {
-		t.Fatalf("got non-nil condition '%v' for resource, want nil condition", condition)
+			testID := testvariable.NewUniqueID()
+			testcontroller.EnsureNamespaceExistsT(t, client, k8s.SystemNamespace)
+			testcontroller.EnsureNamespaceExistsT(t, client, tc.namespace)
+			testcontroller.EnsureNamespaceExistsT(t, client, tc.managerNamespace)
+
+			resourceNN := types.NamespacedName{
+				Namespace: tc.namespace,
+				Name:      testID,
+			}
+			resource := newTestKindUnstructured(resourceNN)
+			test.EnsureObjectExists(t, resource, client)
+
+			cc := newConfigConnectorNamespacedUnstructured()
+			test.EnsureObjectExists(t, cc, client)
+			defer func() {
+				err := client.Delete(context.Background(), cc)
+				if err != nil {
+					t.Fatalf("cannot delete ConfigConnector: %v", err)
+				}
+			}()
+
+			controller := newControllerUnstructuredForNamespace(resourceNN.Namespace, tc.managerNamespace)
+			test.EnsureObjectExists(t, controller, client)
+
+			ccc := newConfigConnectorContextUnstructured(resourceNN.Namespace, tc.managerNamespace)
+			test.EnsureObjectExists(t, ccc, client)
+
+			unmanageddetector.ManagerNamespaceIsolation = tc.managerNamespaceIsolation
+			reconciler, err := unmanageddetector.NewReconciler(mgr, fakeCRDGVK)
+			if err != nil {
+				t.Fatalf("error creating reconciler: %v", err)
+			}
+			res, err := reconciler.Reconcile(ctx, reconcile.Request{NamespacedName: resourceNN})
+			if err != nil {
+				t.Fatalf("unexpected error during reconciliation: %v", err)
+			}
+			emptyResult := reconcile.Result{}
+			if got, want := res, emptyResult; !reflect.DeepEqual(got, want) {
+				t.Fatalf("unexpected diff in reconcile result (-want +got): \n%v", cmp.Diff(want, got))
+			}
+
+			condition, found, err := getCurrentCondition(ctx, client, resource)
+			if err != nil {
+				t.Fatalf("error getting resource's condition: %v", err)
+			}
+			if found {
+				t.Fatalf("got non-nil condition '%v' for resource, want nil condition", condition)
+			}
+		})
 	}
 }
 
@@ -185,7 +273,7 @@ func newTestKindUnstructured(nn types.NamespacedName) *unstructured.Unstructured
 	}
 }
 
-func newControllerUnstructuredForNamespace(namespace string) *unstructured.Unstructured {
+func newControllerUnstructuredForNamespace(namespace, managerNamespace string) *unstructured.Unstructured {
 	controllerName := fmt.Sprintf("%v-%v", k8s.ControllerManagerNamePrefix, randomid.New().String())
 	return &unstructured.Unstructured{
 		Object: map[string]interface{}{
@@ -196,7 +284,7 @@ func newControllerUnstructuredForNamespace(namespace string) *unstructured.Unstr
 					k8s.KCCComponentLabel:    k8s.ControllerManagerNamePrefix,
 					k8s.ScopedNamespaceLabel: namespace,
 				},
-				"namespace": k8s.SystemNamespace,
+				"namespace": managerNamespace,
 				"name":      controllerName,
 			},
 			"spec": map[string]interface{}{
@@ -215,6 +303,61 @@ func newControllerUnstructuredForNamespace(namespace string) *unstructured.Unstr
 						},
 					},
 				},
+			},
+		},
+	}
+}
+
+func newConfigConnectorContextUnstructured(namespace, managerNamespace string) *unstructured.Unstructured {
+	if managerNamespace == k8s.SystemNamespace {
+		return &unstructured.Unstructured{
+			Object: map[string]interface{}{
+				"apiVersion": "core.cnrm.cloud.google.com/v1beta1",
+				"kind":       "ConfigConnectorContext",
+				"metadata": map[string]interface{}{
+					"namespace": namespace,
+					"name":      corev1beta1.ConfigConnectorContextAllowedName,
+				},
+				"spec": map[string]interface{}{
+					"googleServiceAccount": "tenant-gcp-account@1234.iam.gserviceaccount.com",
+					"stateIntoSpec":        "Absent",
+				},
+			},
+		}
+	}
+	return &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "core.cnrm.cloud.google.com/v1beta1",
+			"kind":       "ConfigConnectorContext",
+			"metadata": map[string]interface{}{
+				"labels": map[string]interface{}{
+					"tenancy.gke.io/access-level": "supervisor",
+					"tenancy.gke.io/project":      "t1234",
+					"tenancy.gke.io/tenant":       "t1234-tenant0",
+				},
+				"namespace": namespace,
+				"name":      corev1beta1.ConfigConnectorContextAllowedName,
+			},
+			"spec": map[string]interface{}{
+				"googleServiceAccount": "tenant-gcp-account@1234.iam.gserviceaccount.com",
+				"stateIntoSpec":        "Absent",
+				"managerNamespace":     managerNamespace,
+			},
+		},
+	}
+}
+
+func newConfigConnectorNamespacedUnstructured() *unstructured.Unstructured {
+	apiVersion, kind := corev1beta1.ConfigConnectorGroupVersionKind.ToAPIVersionAndKind()
+	return &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": apiVersion,
+			"kind":       kind,
+			"metadata": map[string]interface{}{
+				"name": "configconnector.core.cnrm.cloud.google.com",
+			},
+			"spec": map[string]interface{}{
+				"mode": "namespaced",
 			},
 		},
 	}

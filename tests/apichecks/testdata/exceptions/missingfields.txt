@@ -1119,6 +1119,7 @@
 [missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.actuationMode" is not set in unstructured objects
 [missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.billingProject" is not set in unstructured objects
 [missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.googleServiceAccount" is not set in unstructured objects
+[missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.managerNamespace" is not set in unstructured objects
 [missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.requestProjectPolicy" is not set in unstructured objects
 [missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.stateIntoSpec" is not set in unstructured objects
 [missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.version" is not set in unstructured objects
