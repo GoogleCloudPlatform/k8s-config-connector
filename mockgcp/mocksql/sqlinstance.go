@@ -93,6 +93,10 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 		return nil, err
 	}
 
+	if maintenanceVersion := req.GetBody().GetMaintenanceVersion(); maintenanceVersion != "" {
+		return nil, status.Errorf(codes.InvalidArgument, "Invalid request: Maintenance version (%s) must not be set.", maintenanceVersion)
+	}
+
 	fqn := name.String()
 	now := time.Now()
 
