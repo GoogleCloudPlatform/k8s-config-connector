@@ -726,11 +726,15 @@ func populatePrivateClusterConfigMasterAuthorizedNetworksConfig(obj *pb.Cluster)
 				obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PrivateEndpoint = "10.128.0.2"
 			}
 
-			if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.GlobalAccess != nil && *obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.GlobalAccess {
-				if obj.PrivateClusterConfig.MasterGlobalAccessConfig == nil {
-					obj.PrivateClusterConfig.MasterGlobalAccessConfig = &pb.PrivateClusterMasterGlobalAccessConfig{}
+			if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.GlobalAccess != nil {
+				if *obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.GlobalAccess {
+					if obj.PrivateClusterConfig.MasterGlobalAccessConfig == nil {
+						obj.PrivateClusterConfig.MasterGlobalAccessConfig = &pb.PrivateClusterMasterGlobalAccessConfig{}
+					}
+					obj.PrivateClusterConfig.MasterGlobalAccessConfig.Enabled = true
+				} else if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PrivateEndpointSubnetwork == "" {
+					obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.GlobalAccess = nil
 				}
-				obj.PrivateClusterConfig.MasterGlobalAccessConfig.Enabled = true
 			}
 
 			if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.PrivateEndpointSubnetwork != "" {
@@ -763,37 +767,24 @@ func populatePrivateClusterConfigMasterAuthorizedNetworksConfig(obj *pb.Cluster)
 				obj.MasterAuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled = PtrTo(true)
 			} else {
 				if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig == nil {
-					obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig = &pb.MasterAuthorizedNetworksConfig{
-						Enabled:                           true,
-						GcpPublicCidrsAccessEnabled:       PtrTo(false),
-						PrivateEndpointEnforcementEnabled: PtrTo(true),
-					}
-				} else {
-
-					if !obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig.Enabled {
-						return fmt.Errorf("'controlPlaneEndpointsConfig.ipEndpointsConfig.authorizedNetworksConfig' must be enabled when private endpoint is enabled")
-					} else if obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled != nil &&
-						*obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled {
-						return fmt.Errorf("'controlPlaneEndpointsConfig.ipEndpointsConfig.authorizedNetworksConfig.gcpPublicCidrsAccessEnabled' cannot be true if private endpoint is enabled")
-					}
+					obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig = &pb.MasterAuthorizedNetworksConfig{}
 				}
-				obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled = PtrTo(false)
-				obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig.PrivateEndpointEnforcementEnabled = PtrTo(true)
 				if obj.MasterAuthorizedNetworksConfig == nil {
-					obj.MasterAuthorizedNetworksConfig = &pb.MasterAuthorizedNetworksConfig{
-						Enabled:                           true,
-						GcpPublicCidrsAccessEnabled:       PtrTo(false),
-						PrivateEndpointEnforcementEnabled: PtrTo(true),
-					}
-				} else {
-					if !obj.MasterAuthorizedNetworksConfig.Enabled {
-						return fmt.Errorf("'masterAuthorizedNetworksConfig' must be enabled when private endpoint is enabled")
-					} else if obj.MasterAuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled != nil &&
-						*obj.MasterAuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled {
-						return fmt.Errorf("'masterAuthorizedNetworksConfig.gcpPublicCidrsAccessEnabled' cannot be true if private endpoint is enabled")
-					}
-					obj.MasterAuthorizedNetworksConfig.PrivateEndpointEnforcementEnabled = PtrTo(true)
+					obj.MasterAuthorizedNetworksConfig = &pb.MasterAuthorizedNetworksConfig{}
 				}
+
+				isMasterCIDR := obj.PrivateClusterConfig != nil && obj.PrivateClusterConfig.MasterIpv4CidrBlock != ""
+				isAdopt := obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig.Enabled
+
+				if isMasterCIDR || isAdopt {
+					obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig.Enabled = true
+					obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled = PtrTo(false)
+					obj.MasterAuthorizedNetworksConfig.Enabled = true
+					obj.MasterAuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled = PtrTo(false)
+				}
+
+				obj.ControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig.PrivateEndpointEnforcementEnabled = PtrTo(true)
+				obj.MasterAuthorizedNetworksConfig.PrivateEndpointEnforcementEnabled = PtrTo(true)
 			}
 		}
 	}

@@ -494,7 +494,6 @@ X-Xss-Protection: 0
       },
       "enablePublicEndpoint": true,
       "enabled": true,
-      "globalAccess": false,
       "privateEndpoint": "10.128.0.2",
       "publicEndpoint": "8.8.8.8"
     }
