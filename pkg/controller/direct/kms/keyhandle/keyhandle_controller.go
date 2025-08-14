@@ -177,7 +177,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 // Update operation not supported for KeyHandle.
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating Logging Link", "name", a.id)
+	log.V(2).Info("updating KeyHandle", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	resource := KMSKeyHandleSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
