@@ -1,0 +1,307 @@
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/global/authorizationPolicies/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "not found: resource not found",
+        "stackEntries": [
+          "cloud/control2/shared/userfriendly/userfriendly.go:1351 +0x25 google3/cloud/control2/shared/userfriendly/userfriendly.DebugInfoWithMessage({0xc0003d1d60, 0x1d})",
+          "cloud/control2/shared/userfriendly/userfriendly.go:1346 +0x2b google3/cloud/control2/shared/userfriendly/userfriendly.debugInfoWithError({0x55ee55a8baa8?, 0xc0044b1900?})",
+          "cloud/control2/shared/userfriendly/userfriendly.go:683 +0xc5 google3/cloud/control2/shared/userfriendly/userfriendly.NotFound({0x55ee55bf65a8, 0xc166644f00}, {0x55ee4815f019, 0x10}, {0xc0baa09860, 0x5c}, {0x55ee55a8baa8, 0xc0044b1900})",
+          "cloud/control2/frontend/userfriendly/userfriendly_store.go:90 +0x4a5 google3/cloud/control2/frontend/userfriendly/userfriendlystore.ResourceErrorToUserFriendly({0x55ee55bf65a8, 0xc166644f00}, 0xc0a49e6680, {0x55ee55a8baa8, 0xc0044b1900})",
+          "cloud/control2/frontend/handler/get.go:191 +0x160e google3/cloud/control2/frontend/handler/handler.Handler.handleGet({{{0x55ee55c00c78, 0xc0027d80c0}, {0x0, 0x0}}, {{0xc006e49a70, 0x1, 0x1}, 0xc004f90258, 0xc006e49a60, {0x55ee55c24e00, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:443 +0x105b google3/cloud/control2/frontend/handler/handler.Handler.start({{{0x55ee55c00c78, 0xc0027d80c0}, {0x0, 0x0}}, {{0xc006e49a70, 0x1, 0x1}, 0xc004f90258, 0xc006e49a60, {0x55ee55c24e00, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:316 +0x66 google3/cloud/control2/frontend/handler/handler.init.func23({_, _}, {{{0x55ee55c00c78, 0xc0027d80c0}, {0x0, 0x0}}, {{0xc006e49a70, 0x1, 0x1}, 0xc004f90258, ...}, ...}, ...)",
+          "cloud/control2/frontend/handler/handler.go:311 +0x173 google3/cloud/control2/frontend/handler/handler.Handler.HandleRequest({{{0x55ee55c00c78, 0xc0027d80c0}, {0x0, 0x0}}, {{0xc006e49a70, 0x1, 0x1}, 0xc004f90258, 0xc006e49a60, {0x55ee55c24e00, ...}, ...}, ...}, ...)",
+          "cloud/control2/frontend/server/request_handler.go:117 +0x53c google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequestWithFullMethodName(0xc00b3d4ea0, {0x55ee55bf65a8, 0xc185d8ede0}, 0xc1c0a70d40, 0xc1b6216ac8, 0xc1b6216eb8, {0xc1f6d3f680?, 0x0?})",
+          "cloud/control2/frontend/server/request_handler.go:90 +0x536 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequest(0xc00b3d4ea0, {0x55ee55bf65a8, 0xc185d8ede0}, 0xc1b6216ac8, 0xc1b6216eb8)",
+          "cloud/control2/frontend/server/request_handler.go:59 +0xd5 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handle(0xc00b3d4ea0, {0x55ee55bf65a8, 0xc185d8ede0}, 0xc1b6216ac8, 0xc1b6216eb8)",
+          "cloud/control2/shared/genericrpc/service.go:171 +0x3ef google3/cloud/control2/shared/genericrpc/genericrpc.(*Dispatcher).DefaultMethodHandler(0xc0082d2870, {0x55ee55bf65a8, 0xc185d8ede0}, 0xc1b6216ac8)",
+          "net/rpc/go/stream.go:1175 +0x43 google3/net/rpc/go/rpc.runStreamHandler({0x55ee55bf65a8?, 0xc185d8ede0?}, 0xc1b6216ac8?, {0x0?, 0x0?}, {0x55ee55c0cee0, 0xc16a9eb6d0})",
+          "net/goa/rpc/rpchandler.go:100 +0x4d7 google3/net/goa/rpc/rpchandler.ExecHandlerSubset({0x55ee55bf65a8?, 0xc15cae7a10?}, 0xc0a02df8c8)",
+          "net/goa/rpc/rpchandler.go:327 +0x9e5 google3/net/goa/rpc/rpchandler.(*closedRegistry).hook(0xc0526d8380, {0x55ee55bf6bf8, 0xc15d087980}, 0xc148caa300)"
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.ResourceInfo",
+        "resourceName": "projects/${projectId}/locations/global/authorizationPolicies/test-${uniqueId}"
+      }
+    ],
+    "message": "Resource 'projects/${projectId}/locations/global/authorizationPolicies/test-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/global/authorizationPolicies?alt=json&authorizationPolicyId=test-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "action": "ALLOW",
+  "description": "A test authorization policy",
+  "name": "test-${uniqueId}",
+  "rules": [
+    {
+      "destinations": [
+        {
+          "hosts": [
+            "example.com"
+          ],
+          "httpHeaderMatch": {
+            "headerName": "X-Test-Header",
+            "regexMatch": ".*"
+          },
+          "methods": [
+            "GET"
+          ],
+          "ports": [
+            8080
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "ipBlocks": [
+            "1.2.3.4/32"
+          ],
+          "principals": [
+            "spiffe://foo.bar/ns/default/sa/default"
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/authorizationPolicies/test-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/authorizationPolicies/test-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.AuthorizationPolicy",
+    "action": "ALLOW",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "A test authorization policy",
+    "name": "projects/${projectId}/locations/global/authorizationPolicies/test-${uniqueId}",
+    "rules": [
+      {
+        "destinations": [
+          {
+            "hosts": [
+              "example.com"
+            ],
+            "httpHeaderMatch": {
+              "headerName": "X-Test-Header",
+              "regexMatch": ".*"
+            },
+            "methods": [
+              "GET"
+            ],
+            "ports": [
+              8080
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "ipBlocks": [
+              "1.2.3.4/32"
+            ],
+            "principals": [
+              "spiffe://foo.bar/ns/default/sa/default"
+            ]
+          }
+        ]
+      }
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/global/authorizationPolicies/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": "ALLOW",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A test authorization policy",
+  "name": "projects/${projectId}/locations/global/authorizationPolicies/test-${uniqueId}",
+  "rules": [
+    {
+      "destinations": [
+        {
+          "hosts": [
+            "example.com"
+          ],
+          "httpHeaderMatch": {
+            "headerName": "X-Test-Header",
+            "regexMatch": ".*"
+          },
+          "methods": [
+            "GET"
+          ],
+          "ports": [
+            8080
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "ipBlocks": [
+            "1.2.3.4/32"
+          ],
+          "principals": [
+            "spiffe://foo.bar/ns/default/sa/default"
+          ]
+        }
+      ]
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/global/authorizationPolicies/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/authorizationPolicies/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/authorizationPolicies/test-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
