@@ -28,26 +28,26 @@ import (
 
 var _ refsv1beta1.ExternalNormalizer = &FutureReservationRef{}
 
-// FutureReservationRef defines the resource reference to FutureReservation, which "External" field
+// FutureReservationRef defines the resource reference to ComputeFutureReservation, which "External" field
 // holds the GCP identifier for the KRM object.
 type FutureReservationRef struct {
-	// A reference to an externally managed FutureReservation resource.
+	// A reference to an externally managed ComputeFutureReservation resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/futurereservations/{{futurereservationID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a FutureReservation resource.
+	// The name of a ComputeFutureReservation resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a FutureReservation resource.
+	// The namespace of a ComputeFutureReservation resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on FutureReservation.
-// If the "External" is given in the other resource's spec.FutureReservationRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual FutureReservation object from the cluster.
+// NormalizedExternal provision the "External" value for other resource that depends on ComputeFutureReservation.
+// If the "External" is given in the other resource's spec.ComputeFutureReservationRef, the given value will be used.
+// Otherwise, the "Name" and "Namespace" will be used to query the actual ComputeFutureReservation object from the cluster.
 func (r *FutureReservationRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", FutureReservationGVK.Kind)
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", ComputeFutureReservationGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
@@ -63,12 +63,12 @@ func (r *FutureReservationRef) NormalizedExternal(ctx context.Context, reader cl
 	}
 	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(FutureReservationGVK)
+	u.SetGroupVersionKind(ComputeFutureReservationGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
 			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", FutureReservationGVK, key, err)
+		return "", fmt.Errorf("reading referenced %s %s: %w", ComputeFutureReservationGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")

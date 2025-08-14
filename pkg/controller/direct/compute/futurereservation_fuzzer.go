@@ -24,13 +24,13 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(ComputeFutureReservationFuzzer())
+	fuzztesting.RegisterKRMFuzzer(computeFutureReservationFuzzer())
 }
 
-func ComputeFutureReservationFuzzer() fuzztesting.KRMFuzzer {
+func computeFutureReservationFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.FutureReservation{},
-		FutureReservationSpec_FromProto, FutureReservationSpec_ToProto,
-		FutureReservationObservedState_FromProto, FutureReservationObservedState_ToProto,
+		ComputeFutureReservationSpec_FromProto, ComputeFutureReservationSpec_ToProto,
+		ComputeFutureReservationObservedState_FromProto, ComputeFutureReservationObservedState_ToProto,
 	)
 
 	// Spec fields
@@ -62,6 +62,9 @@ func ComputeFutureReservationFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".specific_sku_properties")
 	f.StatusFields.Insert(".zone")
 
+	f.UnimplementedFields.Insert(".name")
 	f.UnimplementedFields.Insert(".status")
+	f.UnimplementedFields.Insert(".share_settings.project_map")
+
 	return f
 }

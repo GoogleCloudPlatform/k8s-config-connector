@@ -24,7 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// FutureReservationIdentity defines the resource reference to FutureReservation, which "External" field
+// FutureReservationIdentity defines the resource reference to ComputeFutureReservation, which "External" field
 // holds the GCP identifier for the KRM object.
 type FutureReservationIdentity struct {
 	parent *FutureReservationParent
@@ -53,7 +53,7 @@ func (p *FutureReservationParent) String() string {
 }
 
 // New builds a FutureReservationIdentity from the Config Connector FutureReservation object.
-func NewFutureReservationIdentity(ctx context.Context, reader client.Reader, obj *FutureReservation) (*FutureReservationIdentity, error) {
+func NewFutureReservationIdentity(ctx context.Context, reader client.Reader, obj *ComputeFutureReservation) (*FutureReservationIdentity, error) {
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
@@ -106,7 +106,7 @@ func NewFutureReservationIdentity(ctx context.Context, reader client.Reader, obj
 func ParseFutureReservationExternal(external string) (parent *FutureReservationParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "futurereservations" {
-		return nil, "", fmt.Errorf("format of FutureReservation external=%q was not known (use projects/{{projectID}}/locations/{{location}}/futurereservations/{{futurereservationID}})", external)
+		return nil, "", fmt.Errorf("format of ComputeFutureReservation external=%q was not known (use projects/{{projectID}}/locations/{{location}}/futurereservations/{{futurereservationID}})", external)
 	}
 	parent = &FutureReservationParent{
 		ProjectID: tokens[1],

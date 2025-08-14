@@ -7,19 +7,19 @@ metadata:
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
-  name: futurereservations.compute.cnrm.cloud.google.com
+  name: computefuturereservations.compute.cnrm.cloud.google.com
 spec:
   group: compute.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: FutureReservation
-    listKind: FutureReservationList
-    plural: futurereservations
+    kind: ComputeFutureReservation
+    listKind: ComputeFutureReservationList
+    plural: computefuturereservations
     shortNames:
-    - gcpfuturereservation
-    - gcpfuturereservations
-    singular: futurereservation
+    - gcpcomputefuturereservation
+    - gcpcomputefuturereservations
+    singular: computefuturereservation
   preserveUnknownFields: false
   scope: Namespaced
   versions:
@@ -42,7 +42,8 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
-        description: FutureReservation is the Schema for the FutureReservation API
+        description: ComputeFutureReservation is the Schema for the ComputeFutureReservation
+          API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -57,7 +58,8 @@ spec:
           metadata:
             type: object
           spec:
-            description: FutureReservationSpec defines the desired state of FutureReservation
+            description: ComputeFutureReservationSpec defines the desired state of
+              ComputeFutureReservation
             properties:
               aggregateReservation:
                 description: Aggregate reservation details for the future reservation.
@@ -388,8 +390,8 @@ spec:
             - projectRef
             type: object
           status:
-            description: FutureReservationStatus defines the config connector machine
-              state of FutureReservation
+            description: ComputeFutureReservationStatus defines the config connector
+              machine state of ComputeFutureReservation
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -418,7 +420,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the FutureReservation resource
+                description: A unique specifier for the ComputeFutureReservation resource
                   in GCP.
                 type: string
               observedGeneration:

@@ -20,7 +20,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var FutureReservationGVK = GroupVersion.WithKind("FutureReservation")
+var ComputeFutureReservationGVK = GroupVersion.WithKind("ComputeFutureReservation")
 
 type Parent struct {
 	// +required
@@ -30,9 +30,9 @@ type Parent struct {
 	Location string `json:"location"`
 }
 
-// FutureReservationSpec defines the desired state of FutureReservation
+// ComputeFutureReservationSpec defines the desired state of ComputeFutureReservation
 // +kcc:spec:proto=google.cloud.compute.v1beta.FutureReservation
-type FutureReservationSpec struct {
+type ComputeFutureReservationSpec struct {
 	Parent `json:",inline"`
 
 	// Immutable. Optional. The FutureReservation name. If not given, the metadata.name will be used.
@@ -116,8 +116,8 @@ type FutureReservationSpec struct {
 	TimeWindow *FutureReservationTimeWindow `json:"timeWindow,omitempty"`
 }
 
-// FutureReservationStatus defines the config connector machine state of FutureReservation
-type FutureReservationStatus struct {
+// ComputeFutureReservationStatus defines the config connector machine state of ComputeFutureReservation
+type ComputeFutureReservationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -125,16 +125,16 @@ type FutureReservationStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the FutureReservation resource in GCP.
+	// A unique specifier for the ComputeFutureReservation resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *FutureReservationObservedState `json:"observedState,omitempty"`
+	ObservedState *ComputeFutureReservationObservedState `json:"observedState,omitempty"`
 }
 
-// FutureReservationObservedState is the state of the FutureReservation resource as most recently observed in GCP.
+// ComputeFutureReservationObservedState is the state of the ComputeFutureReservation resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.compute.v1beta.FutureReservation
-type FutureReservationObservedState struct {
+type ComputeFutureReservationObservedState struct {
 	// [Output Only] The current status of the requested amendment.
 	//  Check the AmendmentStatus enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservationStatus.amendment_status
@@ -195,7 +195,7 @@ type FutureReservationObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpfuturereservation;gcpfuturereservations
+// +kubebuilder:resource:categories=gcp,shortName=gcpcomputefuturereservation;gcpcomputefuturereservations
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
@@ -203,25 +203,25 @@ type FutureReservationObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// FutureReservation is the Schema for the FutureReservation API
+// ComputeFutureReservation is the Schema for the ComputeFutureReservation API
 // +k8s:openapi-gen=true
-type FutureReservation struct {
+type ComputeFutureReservation struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   FutureReservationSpec   `json:"spec,omitempty"`
-	Status FutureReservationStatus `json:"status,omitempty"`
+	Spec   ComputeFutureReservationSpec   `json:"spec,omitempty"`
+	Status ComputeFutureReservationStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// FutureReservationList contains a list of FutureReservation
-type FutureReservationList struct {
+// ComputeFutureReservationList contains a list of ComputeFutureReservation
+type ComputeFutureReservationList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []FutureReservation `json:"items"`
+	Items           []ComputeFutureReservation `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&FutureReservation{}, &FutureReservationList{})
+	SchemeBuilder.Register(&ComputeFutureReservation{}, &ComputeFutureReservationList{})
 }

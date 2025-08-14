@@ -16,7 +16,7 @@
 // krm.group: compute.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.cloud.compute.v1beta
-// resource: FutureReservation:FutureReservation
+// resource: ComputeFutureReservation:FutureReservation
 
 package v1beta1
 

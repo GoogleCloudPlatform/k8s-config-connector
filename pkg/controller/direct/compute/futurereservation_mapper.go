@@ -188,11 +188,11 @@ func FutureReservationCommitmentInfo_ToProto(mapCtx *direct.MapContext, in *krmv
 	out.PreviousCommitmentTerms = in.PreviousCommitmentTerms
 	return out
 }
-func FutureReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservation) *krmv1beta1.FutureReservationObservedState {
+func ComputeFutureReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservation) *krmv1beta1.ComputeFutureReservationObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.FutureReservationObservedState{}
+	out := &krmv1beta1.ComputeFutureReservationObservedState{}
 	out.CreationTimestamp = in.CreationTimestamp
 	out.ID = in.Id
 	out.Kind = in.Kind
@@ -203,7 +203,7 @@ func FutureReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.Zone = in.Zone
 	return out
 }
-func FutureReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.FutureReservationObservedState) *pb.FutureReservation {
+func ComputeFutureReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ComputeFutureReservationObservedState) *pb.FutureReservation {
 	if in == nil {
 		return nil
 	}
@@ -220,11 +220,11 @@ func FutureReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1
 	out.Zone = in.Zone
 	return out
 }
-func FutureReservationSpec_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservation) *krmv1beta1.FutureReservationSpec {
+func ComputeFutureReservationSpec_FromProto(mapCtx *direct.MapContext, in *pb.FutureReservation) *krmv1beta1.ComputeFutureReservationSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.FutureReservationSpec{}
+	out := &krmv1beta1.ComputeFutureReservationSpec{}
 	out.AggregateReservation = AllocationAggregateReservation_FromProto(mapCtx, in.GetAggregateReservation())
 	out.AutoCreatedReservationsDeleteTime = in.AutoCreatedReservationsDeleteTime
 	out.AutoCreatedReservationsDuration = Duration_FromProto(mapCtx, in.GetAutoCreatedReservationsDuration())
@@ -246,7 +246,7 @@ func FutureReservationSpec_FromProto(mapCtx *direct.MapContext, in *pb.FutureRes
 	out.TimeWindow = FutureReservationTimeWindow_FromProto(mapCtx, in.GetTimeWindow())
 	return out
 }
-func FutureReservationSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.FutureReservationSpec) *pb.FutureReservation {
+func ComputeFutureReservationSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ComputeFutureReservationSpec) *pb.FutureReservation {
 	if in == nil {
 		return nil
 	}
@@ -263,7 +263,8 @@ func FutureReservationSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Fut
 	if oneof := Duration_ToProto(mapCtx, in.AutoCreatedReservationsDuration); oneof != nil {
 		out.AutoCreatedReservationsDuration = &pb.Duration{
 			Nanos:   oneof.Nanos,
-			Seconds: oneof.Seconds}
+			Seconds: oneof.Seconds,
+		}
 	}
 	out.AutoDeleteAutoCreatedReservations = in.AutoDeleteAutoCreatedReservations
 	if oneof := FutureReservationCommitmentInfo_ToProto(mapCtx, in.CommitmentInfo); oneof != nil {

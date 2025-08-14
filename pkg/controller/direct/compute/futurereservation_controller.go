@@ -38,7 +38,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.FutureReservationGVK, NewFutureReservationModel)
+	registry.RegisterModel(krm.ComputeFutureReservationGVK, NewFutureReservationModel)
 }
 
 func NewFutureReservationModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -52,7 +52,7 @@ type futureReservationModel struct {
 }
 
 func (m *futureReservationModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	obj := &krm.FutureReservation{}
+	obj := &krm.ComputeFutureReservation{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
@@ -87,7 +87,7 @@ func (m *futureReservationModel) AdapterForURL(ctx context.Context, url string) 
 type FutureReservationAdapter struct {
 	id        *krm.FutureReservationIdentity
 	gcpClient *computev1beta.FutureReservationsClient
-	desired   *krm.FutureReservation
+	desired   *krm.ComputeFutureReservation
 	actual    *computepb.FutureReservation
 }
 
@@ -125,7 +125,7 @@ func (a *FutureReservationAdapter) Create(ctx context.Context, createOp *directb
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := FutureReservationSpec_ToProto(mapCtx, &desired.Spec)
+	resource := ComputeFutureReservationSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -152,8 +152,8 @@ func (a *FutureReservationAdapter) Create(ctx context.Context, createOp *directb
 		return fmt.Errorf("getting FutureReservation %s: %w", a.id, err)
 	}
 
-	status := &krm.FutureReservationStatus{}
-	status.ObservedState = FutureReservationObservedState_FromProto(mapCtx, created)
+	status := &krm.ComputeFutureReservationStatus{}
+	status.ObservedState = ComputeFutureReservationObservedState_FromProto(mapCtx, created)
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
@@ -165,7 +165,7 @@ func (a *FutureReservationAdapter) Update(ctx context.Context, updateOp *directb
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := FutureReservationSpec_ToProto(mapCtx, &desired.Spec)
+	resource := ComputeFutureReservationSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -225,8 +225,8 @@ func (a *FutureReservationAdapter) Update(ctx context.Context, updateOp *directb
 		}
 	}
 
-	status := &krm.FutureReservationStatus{}
-	status.ObservedState = FutureReservationObservedState_FromProto(mapCtx, updated)
+	status := &krm.ComputeFutureReservationStatus{}
+	status.ObservedState = ComputeFutureReservationObservedState_FromProto(mapCtx, updated)
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
@@ -238,9 +238,9 @@ func (a *FutureReservationAdapter) Export(ctx context.Context) (*unstructured.Un
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.FutureReservation{}
+	obj := &krm.ComputeFutureReservation{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(FutureReservationSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(ComputeFutureReservationSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -252,7 +252,7 @@ func (a *FutureReservationAdapter) Export(ctx context.Context) (*unstructured.Un
 	}
 
 	u.SetName(a.id.ID())
-	u.SetGroupVersionKind(krm.FutureReservationGVK)
+	u.SetGroupVersionKind(krm.ComputeFutureReservationGVK)
 
 	u.Object = uObj
 	return u, nil
