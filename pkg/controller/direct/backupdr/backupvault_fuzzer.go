@@ -36,7 +36,6 @@ func backupDRBackupVaultFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".backup_minimum_enforced_retention_duration")
-	f.SpecFields.Insert(".etag")
 	f.SpecFields.Insert(".effective_time")
 	f.SpecFields.Insert(".annotations")
 	f.SpecFields.Insert(".access_restriction")
@@ -49,6 +48,7 @@ func backupDRBackupVaultFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".service_account")
 	f.StatusFields.Insert(".total_stored_bytes")
 	f.StatusFields.Insert(".uid")
+	f.StatusFields.Insert(".etag")
 
 	f.UnimplementedFields.Insert(".name")
 
