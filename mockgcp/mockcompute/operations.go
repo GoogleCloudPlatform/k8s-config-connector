@@ -50,6 +50,10 @@ func (s *computeOperations) regionalOperationFQN(projectID string, region string
 	return "projects/" + projectID + "/regions/" + region + "/operations/" + name
 }
 
+func (s *computeOperations) zonalOperationFQN(projectID string, zone string, name string) string {
+	return "projects/" + projectID + "/zones/" + zone + "/operations/" + name
+}
+
 // Deprecated: use startGlobalLRO
 func (s *computeOperations) newLRO(ctx context.Context, projectID string) (*pb.Operation, error) {
 	log := klog.FromContext(ctx)
