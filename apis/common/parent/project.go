@@ -18,6 +18,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -89,7 +91,7 @@ func (p *ProjectRef) Build(ctx context.Context, reader client.Reader, othernames
 	})
 	if err := reader.Get(ctx, key, project); err != nil {
 		if apierrors.IsNotFound(err) {
-			return fmt.Errorf("referenced Project %v not found", key)
+			return k8s.NewReferenceNotFoundError(project.GroupVersionKind(), key)
 		}
 		return fmt.Errorf("error reading referenced Project %v: %w", key, err)
 	}
