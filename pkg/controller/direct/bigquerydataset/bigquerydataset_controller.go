@@ -245,7 +245,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	if desiredKRM.Spec.IsCaseInsensitive != nil && !reflect.DeepEqual(desired.IsCaseInsensitive, resource.IsCaseInsensitive) {
 		resource.IsCaseInsensitive = desired.IsCaseInsensitive
-		updateMask.Paths = append(updateMask.Paths, "is_case_sensitive")
+		updateMask.Paths = append(updateMask.Paths, "is_case_insensitive")
 	}
 	if desired.StorageBillingModel != "" && !reflect.DeepEqual(desired.StorageBillingModel, resource.StorageBillingModel) {
 		resource.StorageBillingModel = desired.StorageBillingModel
@@ -284,6 +284,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	status = BigQueryDatasetStatus_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
+	}
+	if status.ExternalRef == nil {
+		status.ExternalRef = direct.LazyPtr(a.id.String())
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
