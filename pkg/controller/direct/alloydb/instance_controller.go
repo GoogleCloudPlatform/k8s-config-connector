@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	gcp "cloud.google.com/go/alloydb/apiv1beta"
 	alloydbpb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
@@ -182,9 +183,9 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Labels = make(map[string]string)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		resource.Labels[k] = v
+	resource.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
+	if resource.Labels == nil {
+		resource.Labels = make(map[string]string)
 	}
 	resource.Labels["managed-by-cnrm"] = "true"
 
@@ -254,7 +255,7 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if err != nil {
 		return err
 	}
-	desiredLabels := a.desired.GetObjectMeta().GetLabels()
+	desiredLabels := label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
 	if desiredLabels == nil {
 		desiredLabels = make(map[string]string)
 	}
