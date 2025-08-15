@@ -276,15 +276,6 @@
 [missing_field] crd=apphubdiscoveredworkloads.apphub.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=assetfeeds.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=assetfeeds.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.accessSelector.permissions[]" is not set in unstructured objects
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.accessSelector.roles[]" is not set in unstructured objects
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.conditionContext.accessTime" is not set in unstructured objects
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.options.analyzeServiceAccountImpersonation" is not set in unstructured objects
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.options.expandGroups" is not set in unstructured objects
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.options.expandResources" is not set in unstructured objects
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.options.expandRoles" is not set in unstructured objects
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.options.outputGroupEdges" is not set in unstructured objects
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.options.outputResourceEdges" is not set in unstructured objects
 [missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set

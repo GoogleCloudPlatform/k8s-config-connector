@@ -1,7 +1,7 @@
-GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/assetsavedquery-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectNumber}%2FsavedQueries%2Fassetsavedquery-minimal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FsavedQueries%2Fassetsavedquery-full-${uniqueId}
 X-Goog-User-Project: ${projectNumber}
 
 404 Not Found
@@ -31,7 +31,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries?%24alt=json%3Benum-encoding%3Dint&savedQueryId=assetsavedquery-minimal-${uniqueId}
+POST https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries?%24alt=json%3Benum-encoding%3Dint&savedQueryId=assetsavedquery-full-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectNumber}
@@ -48,9 +48,6 @@ X-Goog-User-Project: ${projectNumber}
           "roles/owner"
         ]
       },
-      "conditionContext": {
-        "accessTime": "2025-08-13T10:00:00Z"
-      },
       "identitySelector": {
         "identity": "user:test-user@example.com"
       },
@@ -68,7 +65,7 @@ X-Goog-User-Project: ${projectNumber}
       "scope": "projects/${projectNumber}"
     }
   },
-  "description": "A minimal saved query for testing."
+  "description": "A saved query with all fields for testing."
 }
 
 200 OK
@@ -92,9 +89,6 @@ X-Xss-Protection: 0
           "roles/owner"
         ]
       },
-      "conditionContext": {
-        "accessTime": "2025-08-13T10:00:00Z"
-      },
       "identitySelector": {
         "identity": "user:test-user@example.com"
       },
@@ -113,17 +107,17 @@ X-Xss-Protection: 0
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A minimal saved query for testing.",
+  "description": "A saved query with all fields for testing.",
   "lastUpdateTime": "2025-04-14T20:19:35.325343Z",
-  "name": "projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}"
+  "name": "projects/${projectNumber}/savedQueries/assetsavedquery-full-${uniqueId}"
 }
 
 ---
 
-GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/assetsavedquery-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectNumber}%2FsavedQueries%2Fassetsavedquery-minimal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FsavedQueries%2Fassetsavedquery-full-${uniqueId}
 X-Goog-User-Project: ${projectNumber}
 
 200 OK
@@ -147,9 +141,6 @@ X-Xss-Protection: 0
           "roles/owner"
         ]
       },
-      "conditionContext": {
-        "accessTime": "2025-08-13T10:00:00Z"
-      },
       "identitySelector": {
         "identity": "user:test-user@example.com"
       },
@@ -168,22 +159,22 @@ X-Xss-Protection: 0
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A minimal saved query for testing.",
+  "description": "A saved query with all fields for testing.",
   "lastUpdateTime": "2025-04-14T20:19:35.325343Z",
-  "name": "projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}"
+  "name": "projects/${projectNumber}/savedQueries/assetsavedquery-full-${uniqueId}"
 }
 
 ---
 
-PATCH https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
+PATCH https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/assetsavedquery-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: saved_query.name=projects%2F${projectNumber}%2FsavedQueries%2Fassetsavedquery-minimal-${uniqueId}
+X-Goog-Request-Params: saved_query.name=projects%2F${projectNumber}%2FsavedQueries%2Fassetsavedquery-full-${uniqueId}
 X-Goog-User-Project: ${projectNumber}
 
 {
-  "description": "An updated minimal saved query for testing.",
-  "name": "projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}"
+  "description": "A saved query with all fields for testing - updated.",
+  "name": "projects/${projectNumber}/savedQueries/assetsavedquery-full-${uniqueId}"
 }
 
 200 OK
@@ -207,9 +198,6 @@ X-Xss-Protection: 0
           "roles/owner"
         ]
       },
-      "conditionContext": {
-        "accessTime": "2025-08-13T10:00:00Z"
-      },
       "identitySelector": {
         "identity": "user:test-user@example.com"
       },
@@ -228,17 +216,17 @@ X-Xss-Protection: 0
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "An updated minimal saved query for testing.",
+  "description": "A saved query with all fields for testing - updated.",
   "lastUpdateTime": "2025-04-14T20:19:35.325343Z",
-  "name": "projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}"
+  "name": "projects/${projectNumber}/savedQueries/assetsavedquery-full-${uniqueId}"
 }
 
 ---
 
-GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/assetsavedquery-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectNumber}%2FsavedQueries%2Fassetsavedquery-minimal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FsavedQueries%2Fassetsavedquery-full-${uniqueId}
 X-Goog-User-Project: ${projectNumber}
 
 200 OK
@@ -262,9 +250,6 @@ X-Xss-Protection: 0
           "roles/owner"
         ]
       },
-      "conditionContext": {
-        "accessTime": "2025-08-13T10:00:00Z"
-      },
       "identitySelector": {
         "identity": "user:test-user@example.com"
       },
@@ -283,17 +268,17 @@ X-Xss-Protection: 0
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "An updated minimal saved query for testing.",
+  "description": "A saved query with all fields for testing - updated.",
   "lastUpdateTime": "2025-04-14T20:19:35.325343Z",
-  "name": "projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}"
+  "name": "projects/${projectNumber}/savedQueries/assetsavedquery-full-${uniqueId}"
 }
 
 ---
 
-DELETE https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/assetsavedquery-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://cloudasset.googleapis.com/v1/projects/${projectNumber}/savedQueries/assetsavedquery-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectNumber}%2FsavedQueries%2Fassetsavedquery-minimal-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FsavedQueries%2Fassetsavedquery-full-${uniqueId}
 X-Goog-User-Project: ${projectNumber}
 
 200 OK
