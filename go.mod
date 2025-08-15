@@ -68,7 +68,7 @@ require (
 	cloud.google.com/go/workflows v1.14.2
 	cloud.google.com/go/workstations v1.1.1
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
-	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0
+	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.82.0
 	github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder v0.0.0-20250208024142-7cd1b21e1d1e
 	github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-20240614222432-4bde5b345380
 	github.com/appscode/jsonpatch v0.0.0-20190108182946-7c0e3b262f30
