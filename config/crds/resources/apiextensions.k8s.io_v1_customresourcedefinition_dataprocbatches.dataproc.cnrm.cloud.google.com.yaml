@@ -243,14 +243,15 @@ spec:
                             properties:
                               external:
                                 description: A reference to an externally managed
-                                  DataprocCluster resource. Should be in the format
-                                  "projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}}".
+                                  DataprocNodeGroup resource. Should be in the format
+                                  "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                                 type: string
                               name:
-                                description: The name of a DataprocCluster resource.
+                                description: The name of a DataprocNodeGroup resource.
                                 type: string
                               namespace:
-                                description: The namespace of a DataprocCluster resource.
+                                description: The namespace of a DataprocNodeGroup
+                                  resource.
                                 type: string
                             type: object
                         type: object

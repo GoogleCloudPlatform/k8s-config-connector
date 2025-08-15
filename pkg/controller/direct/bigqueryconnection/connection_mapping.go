@@ -234,7 +234,7 @@ func SparkHistoryServerConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.Sp
 		return nil
 	}
 	out := &krm.SparkHistoryServerConfigSpec{}
-	out.DataprocClusterRef = &dataprocv1beta1.DataprocClusterRef{
+	out.DataprocClusterRef = &dataprocv1beta1.ClusterRef{
 		External: in.DataprocCluster,
 	}
 	return out

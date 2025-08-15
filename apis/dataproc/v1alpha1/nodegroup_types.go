@@ -15,6 +15,8 @@
 package v1alpha1
 
 import (
+	dataprocv1beta "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -43,10 +45,20 @@ type DataprocNodeGroupSpec struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.NodeGroup.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
-	*Parent `json:",inline"`
+	*DataprocNodeGroupParent `json:",inline"`
 
 	// The DataprocNodeGroup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
+}
+
+type DataprocNodeGroupParent struct {
+	// Required.
+	Location string `json:"location,omitempty"`
+
+	// Required.
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	ClusterRef *dataprocv1beta.ClusterRef `json:"clusterRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataproc.v1.DiskConfig
