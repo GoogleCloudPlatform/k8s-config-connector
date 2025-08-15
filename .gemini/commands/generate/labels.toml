@@ -1,0 +1,27 @@
+# In: ~/.gemini/commands/generate/types.toml
+# This command will be invoked via: /generate:labels "AlloyDBInstance"
+
+description = "Asks the model to fix label sanitization."
+
+prompt = """
+You are a golang and config connector expert.
+I am working on a customer issue, can you help me fix it? The errors the customer are seeing are as follows:
+- googleapi: Error 400: resource labels are invalid: key "applyset.kubernetes.io/part-of" contains invalid character ''.'' at index 7
+- googleapi: Error 400: resource labels are invalid: key "app.kubernetes.io/managed-by" contains invalid character ''.'' at index 2
+- googleapi: Error 400: resource labels are invalid: key "configsync.gke.io/declared-version: v1beta1"  contains invalid character ''.'' at index 9
+
+The problematic label is in the {{args}} resources .metadata.labels field.
+A sample of this fix can be found at https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4808.
+The sample fix was for the ComputeForwardingRule resource and a "foo: bar" label.
+
+Please start by reading the fix https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4808
+Then make a plan to create a similar fix for {{args}}.
+Please make sure the generated code compiles.
+Please run 'hack/compare_mock fixtures/{{args}}' to regenerate the golden logs.
+Please add tests as appropriate.
+Prioritize Correctness: Always prioritize security, scalability, and maintainability in your implementations.
+
+Your response should include:
+1. Type objects which can be used to generate the CRD @config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_containerclusters.container.cnrm.cloud.google.com.yaml .
+2. A brief explanation of the key changes you made and why.
+"""
