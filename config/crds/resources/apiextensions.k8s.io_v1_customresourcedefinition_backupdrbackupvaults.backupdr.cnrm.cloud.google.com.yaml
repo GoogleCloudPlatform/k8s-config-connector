@@ -204,6 +204,10 @@ spec:
                     description: Output only. Set to true when there are no backups
                       nested under this resource.
                     type: boolean
+                  etag:
+                    description: Output only. A tag that confirms the content of the
+                      BackupVault resource.
+                    type: string
                   serviceAccount:
                     description: Output only. Service account used by the BackupVault
                       Service for this BackupVault.  The user should grant this account

@@ -48,6 +48,7 @@ func backupDRBackupVaultFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".service_account")
 	f.StatusFields.Insert(".total_stored_bytes")
 	f.StatusFields.Insert(".uid")
+	f.StatusFields.Insert(".etag")
 
 	f.UnimplementedFields.Insert(".name")
 

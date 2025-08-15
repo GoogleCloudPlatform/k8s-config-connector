@@ -130,6 +130,10 @@ type BackupDRBackupVaultObservedState struct {
 	// Output only. Immutable after resource creation until resource deletion.
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.uid
 	UID *string `json:"uid,omitempty"`
+
+	// Output only. A tag that confirms the content of the BackupVault resource.
+	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.etag
+	Etag *string `json:"etag,omitempty"`
 }
 
 // +genclient
