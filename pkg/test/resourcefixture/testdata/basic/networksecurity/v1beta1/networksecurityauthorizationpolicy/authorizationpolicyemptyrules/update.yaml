@@ -1,0 +1,10 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
+kind: NetworkSecurityAuthorizationPolicy
+metadata:
+  name: authorizationpolicyemptyrules-${uniqueId}
+  labels:
+    foo: bar
+spec:
+  location: global
+  action: ALLOW
+  rules: []

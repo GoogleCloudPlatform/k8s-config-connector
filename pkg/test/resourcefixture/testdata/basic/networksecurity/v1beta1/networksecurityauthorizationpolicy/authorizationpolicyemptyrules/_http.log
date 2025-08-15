@@ -1,0 +1,295 @@
+GET https://networksecurity.googleapis.com:443/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/authorizationpolicyemptyrules-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FauthorizationPolicies%2Fauthorizationpolicyemptyrules-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Resource 'projects/${projectId}/locations/global/authorizationPolicies/authorizationpolicyemptyrules-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Resource 'projects/${projectId}/locations/global/authorizationPolicies/authorizationpolicyemptyrules-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://networksecurity.googleapis.com:443/v1beta1/projects/${projectId}/locations/global/authorizationPolicies?%24alt=json%3Benum-encoding%3Dint&authorizationPolicyId=authorizationpolicyemptyrules-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "action": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "foo": "bar",
+    "managed-by-cnrm": "true"
+  },
+  "rules": [
+    {
+      "destinations": [
+        {
+          "hosts": [
+            "*.example.com"
+          ],
+          "methods": [
+            "GET"
+          ],
+          "ports": [
+            8080
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "principals": [
+            "*"
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
+    "apiVersion": "v1beta1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/authorizationPolicies/authorizationpolicyemptyrules-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.AuthorizationPolicy",
+    "action": 1,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "cnrm-test": "true",
+      "foo": "bar",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/global/authorizationPolicies/authorizationpolicyemptyrules-${uniqueId}",
+    "rules": [
+      {
+        "destinations": [
+          {
+            "hosts": [
+              "*.example.com"
+            ],
+            "methods": [
+              "GET"
+            ],
+            "ports": [
+              8080
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "principals": [
+              "*"
+            ]
+          }
+        ]
+      }
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networksecurity.googleapis.com:443/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/authorizationpolicyemptyrules-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FauthorizationPolicies%2Fauthorizationpolicyemptyrules-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": 1,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "foo": "bar",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/authorizationPolicies/authorizationpolicyemptyrules-${uniqueId}",
+  "rules": [
+    {
+      "destinations": [
+        {
+          "hosts": [
+            "*.example.com"
+          ],
+          "methods": [
+            "GET"
+          ],
+          "ports": [
+            8080
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "principals": [
+            "*"
+          ]
+        }
+      ]
+    }
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://networksecurity.googleapis.com:443/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/authorizationpolicyemptyrules-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=rules
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: authorization_policy.name=projects%2F${projectId}%2Flocations%2Fglobal%2FauthorizationPolicies%2Fauthorizationpolicyemptyrules-${uniqueId}
+
+{
+  "action": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "foo": "bar",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/authorizationPolicies/authorizationpolicyemptyrules-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
+    "apiVersion": "v1beta1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/authorizationPolicies/authorizationpolicyemptyrules-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.AuthorizationPolicy",
+    "action": 1,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "cnrm-test": "true",
+      "foo": "bar",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/global/authorizationPolicies/authorizationpolicyemptyrules-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://networksecurity.googleapis.com:443/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/authorizationpolicyemptyrules-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FauthorizationPolicies%2Fauthorizationpolicyemptyrules-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "action": 1,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "foo": "bar",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/global/authorizationPolicies/authorizationpolicyemptyrules-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://networksecurity.googleapis.com:443/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/authorizationpolicyemptyrules-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FauthorizationPolicies%2Fauthorizationpolicyemptyrules-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
+    "apiVersion": "v1beta1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/authorizationPolicies/authorizationpolicyemptyrules-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

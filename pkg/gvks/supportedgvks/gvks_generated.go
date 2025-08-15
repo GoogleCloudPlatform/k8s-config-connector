@@ -1923,14 +1923,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
 		Group:   "networksecurity.cnrm.cloud.google.com",
 		Version: "v1beta1",
-		Kind:    "NetworkSecurityAuthorizationPolicy",
-	}: {
-		Terraform: false,
-		DCL:       true,
-	},
-	{
-		Group:   "networksecurity.cnrm.cloud.google.com",
-		Version: "v1beta1",
 		Kind:    "NetworkSecurityClientTLSPolicy",
 	}: {
 		Terraform: false,
