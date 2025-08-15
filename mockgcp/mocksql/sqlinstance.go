@@ -67,6 +67,10 @@ func (s *sqlInstancesService) Clone(ctx context.Context, req *pb.SqlInstancesClo
 	clone := proto.Clone(source).(*pb.DatabaseInstance)
 	clone.Name = cloneName
 
+	// the REAL SQL instance server handles setting maintenanceVersion (likely thhrough	subsequent patch calls).
+	// As a hack we empty this out but should revisit and add a separate patch call after the insert.
+	clone.MaintenanceVersion = ""
+
 	insertReq := &pb.SqlInstancesInsertRequest{
 		Project: req.GetProject(),
 		Body:    clone,
@@ -91,6 +95,10 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 	name, err := s.buildInstanceName(req.GetProject(), req.GetBody().GetName())
 	if err != nil {
 		return nil, err
+	}
+
+	if maintenanceVersion := req.GetBody().GetMaintenanceVersion(); maintenanceVersion != "" {
+		return nil, status.Errorf(codes.InvalidArgument, "Invalid request: Maintenance version (%s) must not be set.", maintenanceVersion)
 	}
 
 	fqn := name.String()
