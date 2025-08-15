@@ -23,6 +23,7 @@ cd ${REPO_ROOT}/
 SKIP_TEST_APIGROUPS=(
     "alloydb.cnrm.cloud.google.com"
     "apigee.cnrm.cloud.google.com"
+    "asset.cnrm.cloud.google.com"
     "backupdr.cnrm.cloud.google.com"
     "bigquery.cnrm.cloud.google.com"
     "bigtable.cnrm.cloud.google.com"
