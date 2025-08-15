@@ -30,7 +30,7 @@ spec:
       projectId: ${projectId}
       tableId: bigquerytablesample${uniqueId}
   defaultTableExpirationMs: 3600000
-  description: BigQuery Dataset With Full Access Block
+  description: BigQuery Dataset With Full Access Block Updated
   friendlyName: bigquerydataset-fullaccessblock
   location: us-central1
   maxTimeTravelHours: "168"
