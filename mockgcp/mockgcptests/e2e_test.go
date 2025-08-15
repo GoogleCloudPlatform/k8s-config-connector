@@ -56,6 +56,10 @@ func TestScripts(t *testing.T) {
 		if scriptPath == "mockaiplatform/testdata/model/crud" {
 			continue
 		}
+		// skip the crud test for networksecurity. The gcloud command uses v1, while the DCL-based test talks with v1beta1.
+		if scriptPath == "mocknetworksecurity/testdata/authorizationpolicy/crud" {
+			continue
+		}
 		t.Run(scriptPath, func(t *testing.T) {
 			t.Parallel()
 

@@ -166,21 +166,3 @@ func (s *NetworkSecurityServer) parseAuthorizationPolicyName(name string) (*auth
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
-
-func (s *NetworkSecurityServer) buildAuthorizationPolicyName(parent string, authorizationPolicyID string) (*authorizationPolicyName, error) {
-	tokens := strings.Split(parent, "/")
-	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" {
-		project, err := s.Projects.GetProject(&projects.ProjectName{ProjectID: tokens[1]})
-		if err != nil {
-			return nil, err
-		}
-		name := &authorizationPolicyName{
-			Project:               project,
-			Location:              tokens[3],
-			AuthorizationPolicyID: authorizationPolicyID,
-		}
-		return name, nil
-	} else {
-		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", parent)
-	}
-}
