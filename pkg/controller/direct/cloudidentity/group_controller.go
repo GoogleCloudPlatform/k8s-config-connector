@@ -193,39 +193,35 @@ func (a *GroupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 		paths = append(paths, "labels")
 	}
 
+	updated := a.actual
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		status := &krm.CloudIdentityGroupStatus{}
-		status = CloudIdentityGroupStatus_FromAPI(mapCtx, a.actual)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
+	} else {
+		// updateMask is a comma-separated list of fully qualified names of fields.
+		sort.Strings(paths)
+		updateMask := strings.Join(paths, ",")
+
+		op, err := a.gcpClient.Groups.Patch(a.id.String(), resource).UpdateMask(updateMask).Context(ctx).Do()
+		if err != nil {
+			return fmt.Errorf("updating Group %s: %w", a.id, err)
 		}
-		return updateOp.UpdateStatus(ctx, status, nil)
-	}
+		if err := WaitForCloudIdentityOp(ctx, op); err != nil {
+			return fmt.Errorf("error waiting Group %s update: %w", a.id, err)
+		}
 
-	// updateMask is a comma-separated list of fully qualified names of fields.
-	sort.Strings(paths)
-	updateMask := strings.Join(paths, ",")
-
-	op, err := a.gcpClient.Groups.Patch(a.id.String(), resource).UpdateMask(updateMask).Context(ctx).Do()
-	if err != nil {
-		return fmt.Errorf("updating Group %s: %w", a.id, err)
+		updated, err = a.gcpClient.Groups.Get(a.id.String()).Context(ctx).Do()
+		if err != nil {
+			return fmt.Errorf("getting updated Group %q: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated Group", "name", a.id)
 	}
-	if err := WaitForCloudIdentityOp(ctx, op); err != nil {
-		return fmt.Errorf("error waiting Group %s update: %w", a.id, err)
-	}
-
-	updated, err := a.gcpClient.Groups.Get(a.id.String()).Context(ctx).Do()
-	if err != nil {
-		return fmt.Errorf("getting updated Group %q: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated Group", "name", a.id)
 
 	status := &krm.CloudIdentityGroupStatus{}
 	status = CloudIdentityGroupStatus_FromAPI(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
