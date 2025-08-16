@@ -38,6 +38,7 @@ type Placeholders struct {
 	ProjectNumber    int64
 	UniqueID         string
 	BillingAccountID string
+	OrganizationID   string
 }
 
 func TestScripts(t *testing.T) {
@@ -75,12 +76,15 @@ func TestScripts(t *testing.T) {
 				ProjectNumber:    project.ProjectNumber,
 				UniqueID:         uniqueID,
 				BillingAccountID: testgcp.TestBillingAccountID.Get(),
+				OrganizationID:   testgcp.TestOrgID.Get(),
 			}
 			script := loadScript(t, testDir, placeholders)
 
 			h.StartProxy(ctx)
 
 			var httpEvents []*test.LogEntry
+
+			scriptEnv := make(map[string]string)
 
 			for _, step := range script.Steps {
 				stepCmd := ""
@@ -97,6 +101,10 @@ func TestScripts(t *testing.T) {
 					stepCmd = step.Post
 					stepType = "post"
 					captureEvents = false
+				} else if step.SetEnv != nil {
+					stepCmd = step.SetEnv.Exec
+					stepType = "set-env"
+					captureEvents = false
 				}
 				if stepCmd != "" {
 					cmd := exec.CommandContext(ctx, "bash", "-c", stepCmd)
@@ -109,6 +117,10 @@ func TestScripts(t *testing.T) {
 
 					// Don't check for updates to gcloud components (causes spurious requests to dl.google.com)
 					cmd.Env = append(cmd.Env, "CLOUDSDK_COMPONENT_MANAGER_DISABLE_UPDATE_CHECK=yes")
+
+					for k, v := range scriptEnv {
+						cmd.Env = append(cmd.Env, fmt.Sprintf("%s=%s", k, v))
+					}
 
 					if h.gcpAccessToken != "" {
 						cmd.Env = append(cmd.Env, fmt.Sprintf("CLOUDSDK_AUTH_ACCESS_TOKEN=%v", h.gcpAccessToken))
@@ -130,6 +142,13 @@ func TestScripts(t *testing.T) {
 						httpEvents = append(httpEvents, h.Events.HTTPEvents...)
 					}
 					h.Events.HTTPEvents = nil
+
+					if step.SetEnv != nil {
+						k := step.SetEnv.Name
+						v := strings.TrimSpace(stdout.String())
+						t.Logf("setting script env var %q to %q", k, v)
+						scriptEnv[k] = v
+					}
 				}
 			}
 
@@ -195,9 +214,15 @@ type Script struct {
 }
 
 type Step struct {
+	Exec   string  `json:"exec"`
+	Pre    string  `json:"pre"`
+	Post   string  `json:"post"`
+	SetEnv *SetEnv `json:"env"`
+}
+
+type SetEnv struct {
+	Name string `json:"name"`
 	Exec string `json:"exec"`
-	Pre  string `json:"pre"`
-	Post string `json:"post"`
 }
 
 func loadScript(t *testing.T, dir string, placeholders Placeholders) *Script {
@@ -222,9 +247,10 @@ func loadScript(t *testing.T, dir string, placeholders Placeholders) *Script {
 // ReplaceTestVars replaces all occurrences of placeholder strings e.g. ${uniqueId} in a given byte slice.
 func ReplaceTestVars(t *testing.T, b []byte, placeholders Placeholders) []byte {
 	s := string(b)
-	s = strings.Replace(s, "${uniqueId}", placeholders.UniqueID, -1)
-	s = strings.Replace(s, "${projectId}", placeholders.ProjectID, -1)
-	s = strings.Replace(s, "${projectNumber}", strconv.FormatInt(placeholders.ProjectNumber, 10), -1)
-	s = strings.Replace(s, "${BILLING_ACCOUNT_ID}", placeholders.BillingAccountID, -1)
+	s = strings.ReplaceAll(s, "${uniqueId}", placeholders.UniqueID)
+	s = strings.ReplaceAll(s, "${projectId}", placeholders.ProjectID)
+	s = strings.ReplaceAll(s, "${projectNumber}", strconv.FormatInt(placeholders.ProjectNumber, 10))
+	s = strings.ReplaceAll(s, "${BILLING_ACCOUNT_ID}", placeholders.BillingAccountID)
+	s = strings.ReplaceAll(s, "${ORG_ID}", placeholders.OrganizationID)
 	return []byte(s)
 }
