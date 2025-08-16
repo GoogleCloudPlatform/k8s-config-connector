@@ -127,7 +127,7 @@ func shouldRunBasedOnFlag(parentTestName string, fixture resourcefixture.Resourc
 
 	// If a run-tests regex has been provided and it doesn't match the test name, skip the test.
 	if runTestsRegex != "" {
-		if !regexp.MustCompile(runTestsRegex).MatchString(testName) {
+		if !regexp.MustCompile(runTestsRegex).MatchString(fixture.SourceDir) {
 			return false
 		}
 	}
