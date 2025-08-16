@@ -24,6 +24,8 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"path/filepath"
+	"regexp"
 	"strings"
 
 	// Support GCP auth
@@ -63,6 +65,10 @@ func run(ctx context.Context) error {
 	if branch == "" {
 		return fmt.Errorf("must specify --branch")
 	}
+	branchRegex := regexp.MustCompile(`^release_\d+\.\d+$`)
+	if !branchRegex.MatchString(branch) {
+		return fmt.Errorf("branch %q does not match expected format 'release_X.Y'", branch)
+	}
 
 	if remote == "" {
 		return fmt.Errorf("must specify --remote")
@@ -75,8 +81,12 @@ func run(ctx context.Context) error {
 	if versionFile == "" {
 		return fmt.Errorf("must specify --version-file")
 	}
+	fullVersionFilePath := filepath.Join(sourceCheckout, versionFile)
+	if _, err := os.Stat(fullVersionFilePath); err != nil {
+		return fmt.Errorf("could not access version file %q: %w", fullVersionFilePath, err)
+	}
 
-	homeDir, err := os.UserHomeDir()
+	homeDir, err := os.Getwd()
 	if err != nil {
 		return fmt.Errorf("error getting home directory: %w", err)
 	}

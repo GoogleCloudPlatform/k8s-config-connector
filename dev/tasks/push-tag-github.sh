@@ -32,9 +32,21 @@ if [ -z "$VERSION" ]; then
   exit 1
 fi
 
+if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+  echo "ERROR: VERSION must be in the format of major.minor.patch (e.g., 1.116.0)."
+  echo "Current value is: ${VERSION}"
+  exit 1
+fi
+
 if [ -z "$REPO_PATH" ]; then
   echo "ERROR: The REPO_PATH environment variable is not set."
   echo "Usage: export REPO_PATH=<repo-path-string>"
+  exit 1
+fi
+
+if [ -z "$REMOTE" ]; then
+  echo "ERROR: The REMOTE environment variable is not set."
+  echo "Usage: export REMOTE=upstream. This should be the remote repository, for example git@github.com:GoogleCloudPlatform/k8s-config-connector.git."
   exit 1
 fi
 
@@ -50,6 +62,12 @@ SOURCE_CHECKOUT_PATH="${REPO_PATH}"
 # --- Script ---
 
 VERSION_MAJOR_MINOR=$(echo "${VERSION}" | cut -d. -f1,2)
+if ! [[ "$VERSION_MAJOR_MINOR" =~ ^[0-9]+\.[0-9]+$ ]]; then
+  echo "ERROR: VERSION_MAJOR_MINOR must be in the format of major.minor (e.g., 1.116)."
+  echo "Current value is: ${VERSION_MAJOR_MINOR}"
+  exit 1
+fi
+
 BRANCH_NAME="release_${VERSION_MAJOR_MINOR}"
 VERSION_FILE="version/VERSION"
 
@@ -63,9 +81,11 @@ git checkout "${GIT_COMMIT}"
 echo "Creating new branch: ${BRANCH_NAME}"
 git checkout -b "${BRANCH_NAME}"
 
+echo "Pushing tag to remote: ${REMOTE}"
+
 # The command to be run, constructed from the main.go flags and the release document.
 GO_COMMAND=(go run .
-  --remote upstream
+  --remote "${REMOTE}"
   --branch "${BRANCH_NAME}"
   --version-file "${VERSION_FILE}"
   --source "${SOURCE_CHECKOUT_PATH}"
@@ -76,6 +96,7 @@ GO_COMMAND=(go run .
 echo ""
 echo "--- Step 1: Performing Dry Run ---"
 echo "The following command will be executed for a dry run:"
+cd dev/tasks
 echo "${GO_COMMAND[@]}"
 echo ""
 

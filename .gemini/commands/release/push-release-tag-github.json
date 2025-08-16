@@ -57,15 +57,26 @@
       ]
     },
     {
+      "step": "Find Upstream Remote",
+      "actions": [
+        {
+          "action": "run_shell_command",
+          "command": "if git remote get-url upstream &>/dev/null; then echo 'upstream'; else git remote -v | awk '/git@github.com:GoogleCloudPlatform\\/k8s-config-connector.git/ {print $1; exit}'; fi",
+          "description": "Find the upstream remote.",
+          "variable": "REMOTE"
+        }
+      ]
+    },
+    {
       "step": "Verify Variables and Execute the Script",
       "actions": [
         {
           "action": "echo",
-          "message": "VERSION: {{VERSION}}\nGIT_COMMIT: {{GIT_COMMIT}}\nREPO_PATH: {{REPO_PATH}}"
+          "message": "VERSION: {{VERSION}}\nGIT_COMMIT: {{GIT_COMMIT}}\nREPO_PATH: {{REPO_PATH}}\nREMOTE: {{REMOTE}}"
         },
         {
           "action": "run_shell_command",
-          "command": "cd dev/tasks && VERSION={{VERSION}} GIT_COMMIT={{GIT_COMMIT}} REPO_PATH={{REPO_PATH}} ./push-tag-github.sh",
+          "command": "cd dev/tasks && VERSION={{VERSION}} GIT_COMMIT={{GIT_COMMIT}} REPO_PATH={{REPO_PATH}} REMOTE={{REMOTE}} ./push-tag-github.sh",
           "description": "Execute the push-tag-github.sh script for a dry run."
         }
       ]
