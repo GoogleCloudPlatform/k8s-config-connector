@@ -33,6 +33,28 @@ type NetworkServicesClient interface {
 	UpdateEndpointPolicy(ctx context.Context, in *UpdateEndpointPolicyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Deletes a single EndpointPolicy.
 	DeleteEndpointPolicy(ctx context.Context, in *DeleteEndpointPolicyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Lists `WasmPluginVersion` resources in a given project and
+	// location.
+	ListWasmPluginVersions(ctx context.Context, in *ListWasmPluginVersionsRequest, opts ...grpc.CallOption) (*ListWasmPluginVersionsResponse, error)
+	// Gets details of the specified `WasmPluginVersion` resource.
+	GetWasmPluginVersion(ctx context.Context, in *GetWasmPluginVersionRequest, opts ...grpc.CallOption) (*WasmPluginVersion, error)
+	// Creates a new `WasmPluginVersion` resource in a given project
+	// and location.
+	CreateWasmPluginVersion(ctx context.Context, in *CreateWasmPluginVersionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes the specified `WasmPluginVersion` resource.
+	DeleteWasmPluginVersion(ctx context.Context, in *DeleteWasmPluginVersionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Lists `WasmPlugin` resources in a given project and
+	// location.
+	ListWasmPlugins(ctx context.Context, in *ListWasmPluginsRequest, opts ...grpc.CallOption) (*ListWasmPluginsResponse, error)
+	// Gets details of the specified `WasmPlugin` resource.
+	GetWasmPlugin(ctx context.Context, in *GetWasmPluginRequest, opts ...grpc.CallOption) (*WasmPlugin, error)
+	// Creates a new `WasmPlugin` resource in a given project
+	// and location.
+	CreateWasmPlugin(ctx context.Context, in *CreateWasmPluginRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Updates the parameters of the specified `WasmPlugin` resource.
+	UpdateWasmPlugin(ctx context.Context, in *UpdateWasmPluginRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes the specified `WasmPlugin` resource.
+	DeleteWasmPlugin(ctx context.Context, in *DeleteWasmPluginRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Lists Gateways in a given project and location.
 	ListGateways(ctx context.Context, in *ListGatewaysRequest, opts ...grpc.CallOption) (*ListGatewaysResponse, error)
 	// Gets details of a single Gateway.
@@ -170,6 +192,87 @@ func (c *networkServicesClient) UpdateEndpointPolicy(ctx context.Context, in *Up
 func (c *networkServicesClient) DeleteEndpointPolicy(ctx context.Context, in *DeleteEndpointPolicyRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/DeleteEndpointPolicy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServicesClient) ListWasmPluginVersions(ctx context.Context, in *ListWasmPluginVersionsRequest, opts ...grpc.CallOption) (*ListWasmPluginVersionsResponse, error) {
+	out := new(ListWasmPluginVersionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/ListWasmPluginVersions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServicesClient) GetWasmPluginVersion(ctx context.Context, in *GetWasmPluginVersionRequest, opts ...grpc.CallOption) (*WasmPluginVersion, error) {
+	out := new(WasmPluginVersion)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/GetWasmPluginVersion", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServicesClient) CreateWasmPluginVersion(ctx context.Context, in *CreateWasmPluginVersionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/CreateWasmPluginVersion", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServicesClient) DeleteWasmPluginVersion(ctx context.Context, in *DeleteWasmPluginVersionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/DeleteWasmPluginVersion", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServicesClient) ListWasmPlugins(ctx context.Context, in *ListWasmPluginsRequest, opts ...grpc.CallOption) (*ListWasmPluginsResponse, error) {
+	out := new(ListWasmPluginsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/ListWasmPlugins", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServicesClient) GetWasmPlugin(ctx context.Context, in *GetWasmPluginRequest, opts ...grpc.CallOption) (*WasmPlugin, error) {
+	out := new(WasmPlugin)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/GetWasmPlugin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServicesClient) CreateWasmPlugin(ctx context.Context, in *CreateWasmPluginRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/CreateWasmPlugin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServicesClient) UpdateWasmPlugin(ctx context.Context, in *UpdateWasmPluginRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/UpdateWasmPlugin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *networkServicesClient) DeleteWasmPlugin(ctx context.Context, in *DeleteWasmPluginRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.NetworkServices/DeleteWasmPlugin", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -586,6 +689,28 @@ type NetworkServicesServer interface {
 	UpdateEndpointPolicy(context.Context, *UpdateEndpointPolicyRequest) (*longrunningpb.Operation, error)
 	// Deletes a single EndpointPolicy.
 	DeleteEndpointPolicy(context.Context, *DeleteEndpointPolicyRequest) (*longrunningpb.Operation, error)
+	// Lists `WasmPluginVersion` resources in a given project and
+	// location.
+	ListWasmPluginVersions(context.Context, *ListWasmPluginVersionsRequest) (*ListWasmPluginVersionsResponse, error)
+	// Gets details of the specified `WasmPluginVersion` resource.
+	GetWasmPluginVersion(context.Context, *GetWasmPluginVersionRequest) (*WasmPluginVersion, error)
+	// Creates a new `WasmPluginVersion` resource in a given project
+	// and location.
+	CreateWasmPluginVersion(context.Context, *CreateWasmPluginVersionRequest) (*longrunningpb.Operation, error)
+	// Deletes the specified `WasmPluginVersion` resource.
+	DeleteWasmPluginVersion(context.Context, *DeleteWasmPluginVersionRequest) (*longrunningpb.Operation, error)
+	// Lists `WasmPlugin` resources in a given project and
+	// location.
+	ListWasmPlugins(context.Context, *ListWasmPluginsRequest) (*ListWasmPluginsResponse, error)
+	// Gets details of the specified `WasmPlugin` resource.
+	GetWasmPlugin(context.Context, *GetWasmPluginRequest) (*WasmPlugin, error)
+	// Creates a new `WasmPlugin` resource in a given project
+	// and location.
+	CreateWasmPlugin(context.Context, *CreateWasmPluginRequest) (*longrunningpb.Operation, error)
+	// Updates the parameters of the specified `WasmPlugin` resource.
+	UpdateWasmPlugin(context.Context, *UpdateWasmPluginRequest) (*longrunningpb.Operation, error)
+	// Deletes the specified `WasmPlugin` resource.
+	DeleteWasmPlugin(context.Context, *DeleteWasmPluginRequest) (*longrunningpb.Operation, error)
 	// Lists Gateways in a given project and location.
 	ListGateways(context.Context, *ListGatewaysRequest) (*ListGatewaysResponse, error)
 	// Gets details of a single Gateway.
@@ -695,6 +820,33 @@ func (UnimplementedNetworkServicesServer) UpdateEndpointPolicy(context.Context, 
 }
 func (UnimplementedNetworkServicesServer) DeleteEndpointPolicy(context.Context, *DeleteEndpointPolicyRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteEndpointPolicy not implemented")
+}
+func (UnimplementedNetworkServicesServer) ListWasmPluginVersions(context.Context, *ListWasmPluginVersionsRequest) (*ListWasmPluginVersionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListWasmPluginVersions not implemented")
+}
+func (UnimplementedNetworkServicesServer) GetWasmPluginVersion(context.Context, *GetWasmPluginVersionRequest) (*WasmPluginVersion, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWasmPluginVersion not implemented")
+}
+func (UnimplementedNetworkServicesServer) CreateWasmPluginVersion(context.Context, *CreateWasmPluginVersionRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateWasmPluginVersion not implemented")
+}
+func (UnimplementedNetworkServicesServer) DeleteWasmPluginVersion(context.Context, *DeleteWasmPluginVersionRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteWasmPluginVersion not implemented")
+}
+func (UnimplementedNetworkServicesServer) ListWasmPlugins(context.Context, *ListWasmPluginsRequest) (*ListWasmPluginsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListWasmPlugins not implemented")
+}
+func (UnimplementedNetworkServicesServer) GetWasmPlugin(context.Context, *GetWasmPluginRequest) (*WasmPlugin, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWasmPlugin not implemented")
+}
+func (UnimplementedNetworkServicesServer) CreateWasmPlugin(context.Context, *CreateWasmPluginRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateWasmPlugin not implemented")
+}
+func (UnimplementedNetworkServicesServer) UpdateWasmPlugin(context.Context, *UpdateWasmPluginRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateWasmPlugin not implemented")
+}
+func (UnimplementedNetworkServicesServer) DeleteWasmPlugin(context.Context, *DeleteWasmPluginRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteWasmPlugin not implemented")
 }
 func (UnimplementedNetworkServicesServer) ListGateways(context.Context, *ListGatewaysRequest) (*ListGatewaysResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListGateways not implemented")
@@ -927,6 +1079,168 @@ func _NetworkServices_DeleteEndpointPolicy_Handler(srv interface{}, ctx context.
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(NetworkServicesServer).DeleteEndpointPolicy(ctx, req.(*DeleteEndpointPolicyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkServices_ListWasmPluginVersions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListWasmPluginVersionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).ListWasmPluginVersions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/ListWasmPluginVersions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).ListWasmPluginVersions(ctx, req.(*ListWasmPluginVersionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkServices_GetWasmPluginVersion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWasmPluginVersionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).GetWasmPluginVersion(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/GetWasmPluginVersion",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).GetWasmPluginVersion(ctx, req.(*GetWasmPluginVersionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkServices_CreateWasmPluginVersion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateWasmPluginVersionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).CreateWasmPluginVersion(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/CreateWasmPluginVersion",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).CreateWasmPluginVersion(ctx, req.(*CreateWasmPluginVersionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkServices_DeleteWasmPluginVersion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteWasmPluginVersionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).DeleteWasmPluginVersion(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/DeleteWasmPluginVersion",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).DeleteWasmPluginVersion(ctx, req.(*DeleteWasmPluginVersionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkServices_ListWasmPlugins_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListWasmPluginsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).ListWasmPlugins(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/ListWasmPlugins",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).ListWasmPlugins(ctx, req.(*ListWasmPluginsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkServices_GetWasmPlugin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWasmPluginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).GetWasmPlugin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/GetWasmPlugin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).GetWasmPlugin(ctx, req.(*GetWasmPluginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkServices_CreateWasmPlugin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateWasmPluginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).CreateWasmPlugin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/CreateWasmPlugin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).CreateWasmPlugin(ctx, req.(*CreateWasmPluginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkServices_UpdateWasmPlugin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateWasmPluginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).UpdateWasmPlugin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/UpdateWasmPlugin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).UpdateWasmPlugin(ctx, req.(*UpdateWasmPluginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NetworkServices_DeleteWasmPlugin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteWasmPluginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworkServicesServer).DeleteWasmPlugin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.NetworkServices/DeleteWasmPlugin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworkServicesServer).DeleteWasmPlugin(ctx, req.(*DeleteWasmPluginRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1749,6 +2063,42 @@ var NetworkServices_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteEndpointPolicy",
 			Handler:    _NetworkServices_DeleteEndpointPolicy_Handler,
+		},
+		{
+			MethodName: "ListWasmPluginVersions",
+			Handler:    _NetworkServices_ListWasmPluginVersions_Handler,
+		},
+		{
+			MethodName: "GetWasmPluginVersion",
+			Handler:    _NetworkServices_GetWasmPluginVersion_Handler,
+		},
+		{
+			MethodName: "CreateWasmPluginVersion",
+			Handler:    _NetworkServices_CreateWasmPluginVersion_Handler,
+		},
+		{
+			MethodName: "DeleteWasmPluginVersion",
+			Handler:    _NetworkServices_DeleteWasmPluginVersion_Handler,
+		},
+		{
+			MethodName: "ListWasmPlugins",
+			Handler:    _NetworkServices_ListWasmPlugins_Handler,
+		},
+		{
+			MethodName: "GetWasmPlugin",
+			Handler:    _NetworkServices_GetWasmPlugin_Handler,
+		},
+		{
+			MethodName: "CreateWasmPlugin",
+			Handler:    _NetworkServices_CreateWasmPlugin_Handler,
+		},
+		{
+			MethodName: "UpdateWasmPlugin",
+			Handler:    _NetworkServices_UpdateWasmPlugin_Handler,
+		},
+		{
+			MethodName: "DeleteWasmPlugin",
+			Handler:    _NetworkServices_DeleteWasmPlugin_Handler,
 		},
 		{
 			MethodName: "ListGateways",
