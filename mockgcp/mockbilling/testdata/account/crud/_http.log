@@ -1,0 +1,28 @@
+GET https://cloudbilling.googleapis.com/v1/billingAccounts?alt=json&pageSize=100
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "billingAccounts": [
+    {
+      "currencyCode": "USD",
+      "displayName": "Mock Billing Account",
+      "masterBillingAccount": "",
+      "name": "billingAccounts/${billingAccountID}",
+      "open": true,
+      "parent": "organizations/${organizationID}"
+    }
+  ],
+  "nextPageToken": ""
+}
