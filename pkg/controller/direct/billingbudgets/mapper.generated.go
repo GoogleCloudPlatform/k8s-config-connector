@@ -22,6 +22,9 @@ package billingbudgets
 import (
 	pb "cloud.google.com/go/billing/budgets/apiv1beta1/budgetspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billingbudgets/v1beta1"
+	krmmonitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
+	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -30,9 +33,17 @@ func AllUpdatesRule_FromProto(mapCtx *direct.MapContext, in *pb.AllUpdatesRule) 
 		return nil
 	}
 	out := &krm.AllUpdatesRule{}
-	out.PubsubTopic = direct.LazyPtr(in.GetPubsubTopic())
+	if in.GetPubsubTopic() != "" {
+		out.PubsubTopicRef = &krmpubsubv1beta1.PubSubTopicRef{External: in.GetPubsubTopic()}
+	}
 	out.SchemaVersion = direct.LazyPtr(in.GetSchemaVersion())
-	out.MonitoringNotificationChannels = AllUpdatesRule_MonitoringNotificationChannels_FromProto(mapCtx, in.MonitoringNotificationChannels)
+
+	if v := in.GetMonitoringNotificationChannels(); len(v) != 0 {
+		for i := range v {
+			out.MonitoringNotificationChannelRefs = append(out.MonitoringNotificationChannelRefs, &krmmonitoringv1beta1.NotificationChannelRef{External: v[i]})
+		}
+	}
+
 	out.DisableDefaultIAMRecipients = direct.LazyPtr(in.GetDisableDefaultIamRecipients())
 	// MISSING: EnableProjectLevelRecipients
 	return out
@@ -42,9 +53,17 @@ func AllUpdatesRule_ToProto(mapCtx *direct.MapContext, in *krm.AllUpdatesRule) *
 		return nil
 	}
 	out := &pb.AllUpdatesRule{}
-	out.PubsubTopic = AllUpdatesRule_PubsubTopic_ToProto(mapCtx, in.PubsubTopic)
+	if in.PubsubTopicRef != nil {
+		out.PubsubTopic = in.PubsubTopicRef.External
+	}
 	out.SchemaVersion = direct.ValueOf(in.SchemaVersion)
-	out.MonitoringNotificationChannels = AllUpdatesRule_MonitoringNotificationChannels_ToProto(mapCtx, in.MonitoringNotificationChannels)
+
+	if v := in.MonitoringNotificationChannelRefs; len(v) != 0 {
+		for i := range v {
+			out.MonitoringNotificationChannels = append(out.MonitoringNotificationChannels, v[i].External)
+		}
+	}
+
 	out.DisableDefaultIamRecipients = direct.ValueOf(in.DisableDefaultIAMRecipients)
 	// MISSING: EnableProjectLevelRecipients
 	return out
@@ -76,7 +95,7 @@ func BillingBudgetsBudgetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Budget
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.BudgetFilter = Filter_FromProto(mapCtx, in.GetBudgetFilter())
 	out.Amount = BudgetAmount_FromProto(mapCtx, in.GetAmount())
-	out.ThresholdRules = direct.Slice_FromProto(mapCtx, in.ThresholdRules, *ThresholdRule_FromProto)
+	out.ThresholdRules = direct.Slice_FromProto(mapCtx, in.ThresholdRules, ThresholdRule_FromProto)
 	out.AllUpdatesRule = AllUpdatesRule_FromProto(mapCtx, in.GetAllUpdatesRule())
 	// MISSING: Etag
 	return out
@@ -90,7 +109,7 @@ func BillingBudgetsBudgetSpec_ToProto(mapCtx *direct.MapContext, in *krm.Billing
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.BudgetFilter = Filter_ToProto(mapCtx, in.BudgetFilter)
 	out.Amount = BudgetAmount_ToProto(mapCtx, in.Amount)
-	out.ThresholdRules = direct.Slice_ToProto(mapCtx, in.ThresholdRules, *ThresholdRule_ToProto)
+	out.ThresholdRules = direct.Slice_ToProto(mapCtx, in.ThresholdRules, ThresholdRule_ToProto)
 	out.AllUpdatesRule = AllUpdatesRule_ToProto(mapCtx, in.AllUpdatesRule)
 	// MISSING: Etag
 	return out
@@ -140,8 +159,14 @@ func Filter_FromProto(mapCtx *direct.MapContext, in *pb.Filter) *krm.Filter {
 		return nil
 	}
 	out := &krm.Filter{}
-	out.Projects = Filter_Projects_FromProto(mapCtx, in.Projects)
-	out.ResourceAncestors = in.ResourceAncestors
+
+	if v := in.GetProjects(); len(v) != 0 {
+		for i := range v {
+			out.ProjectRefs = append(out.ProjectRefs, &refsv1beta1.ProjectRef{External: v[i]})
+		}
+	}
+
+	// MISSING: ResourceAncestors
 	out.CreditTypes = in.CreditTypes
 	out.CreditTypesTreatment = direct.Enum_FromProto(mapCtx, in.GetCreditTypesTreatment())
 	out.Services = in.Services
@@ -156,8 +181,14 @@ func Filter_ToProto(mapCtx *direct.MapContext, in *krm.Filter) *pb.Filter {
 		return nil
 	}
 	out := &pb.Filter{}
-	out.Projects = Filter_Projects_ToProto(mapCtx, in.Projects)
-	out.ResourceAncestors = in.ResourceAncestors
+
+	if v := in.ProjectRefs; len(v) != 0 {
+		for i := range v {
+			out.Projects = append(out.Projects, v[i].External)
+		}
+	}
+
+	// MISSING: ResourceAncestors
 	out.CreditTypes = in.CreditTypes
 	out.CreditTypesTreatment = direct.Enum_ToProto[pb.Filter_CreditTypesTreatment](mapCtx, in.CreditTypesTreatment)
 	out.Services = in.Services
@@ -170,6 +201,12 @@ func Filter_ToProto(mapCtx *direct.MapContext, in *krm.Filter) *pb.Filter {
 		out.UsagePeriod = &pb.Filter_CustomPeriod{CustomPeriod: oneof}
 	}
 	return out
+}
+func Filter_CalendarPeriod_ToProto(mapCtx *direct.MapContext, in *string) *pb.Filter_CalendarPeriod {
+	if in == nil {
+		return nil
+	}
+	return &pb.Filter_CalendarPeriod{CalendarPeriod: direct.Enum_ToProto[pb.CalendarPeriod](mapCtx, in)}
 }
 func LastPeriodAmount_FromProto(mapCtx *direct.MapContext, in *pb.LastPeriodAmount) *krm.LastPeriodAmount {
 	if in == nil {
