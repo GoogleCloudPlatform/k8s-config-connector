@@ -149,7 +149,8 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 	}
 
 	addCopyright := true
-	if err := mapperGenerator.WriteFiles(addCopyright); err != nil {
+	writeEmptyFiles := true
+	if err := mapperGenerator.WriteFiles(addCopyright, writeEmptyFiles); err != nil {
 		return err
 	}
 
