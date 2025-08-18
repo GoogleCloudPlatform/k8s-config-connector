@@ -784,6 +784,32 @@ func TestCRDShortNamePluralization(t *testing.T) {
 	test.CompareGoldenFile(t, "testdata/exceptions/shortname_pluralization.txt", want)
 }
 
+// TestCRDsNoSpecLabels ensures that CRDs don't include spec.labels fields
+func TestCRDsNoSpecLabels(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading CRDs: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+
+				// Check for spec.labels fields
+				if fieldPath == ".spec.labels" {
+					errs = append(errs, fmt.Sprintf("[no_spec_labels] crd=%s version=%v: field %q should not be in spec", crd.Name, version.Name, fieldPath))
+				}
+			})
+		}
+	}
+
+	sort.Strings(errs)
+	want := strings.Join(errs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/no_spec_labels.txt", want)
+}
+
 // TestMultiVersionCRDNoDiff checks for schema differences between versions of the same CRD.
 func TestMultiVersionCRDNoDiff(t *testing.T) {
 	crds, err := crdloader.LoadAllCRDs()
