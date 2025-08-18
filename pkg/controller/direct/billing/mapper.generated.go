@@ -21,15 +21,15 @@ package billing
 
 import (
 	pb "cloud.google.com/go/billing/apiv1/billingpb"
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BillingAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BillingAccount) *krmv1alpha1.BillingAccountObservedState {
+func BillingAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BillingAccount) *krm.BillingAccountObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.BillingAccountObservedState{}
+	out := &krm.BillingAccountObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Open = direct.LazyPtr(in.GetOpen())
 	out.MasterBillingAccount = direct.LazyPtr(in.GetMasterBillingAccount())
@@ -37,7 +37,7 @@ func BillingAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Bil
 	out.CurrencyCode = direct.LazyPtr(in.GetCurrencyCode())
 	return out
 }
-func BillingAccountObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BillingAccountObservedState) *pb.BillingAccount {
+func BillingAccountObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BillingAccountObservedState) *pb.BillingAccount {
 	if in == nil {
 		return nil
 	}
@@ -49,17 +49,17 @@ func BillingAccountObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alp
 	out.CurrencyCode = direct.ValueOf(in.CurrencyCode)
 	return out
 }
-func BillingAccountSpec_FromProto(mapCtx *direct.MapContext, in *pb.BillingAccount) *krmv1alpha1.BillingAccountSpec {
+func BillingAccountSpec_FromProto(mapCtx *direct.MapContext, in *pb.BillingAccount) *krm.BillingAccountSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.BillingAccountSpec{}
+	out := &krm.BillingAccountSpec{}
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: Parent
 	out.CurrencyCode = direct.LazyPtr(in.GetCurrencyCode())
 	return out
 }
-func BillingAccountSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BillingAccountSpec) *pb.BillingAccount {
+func BillingAccountSpec_ToProto(mapCtx *direct.MapContext, in *krm.BillingAccountSpec) *pb.BillingAccount {
 	if in == nil {
 		return nil
 	}
