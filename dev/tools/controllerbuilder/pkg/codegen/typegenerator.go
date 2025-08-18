@@ -18,7 +18,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"path/filepath"
 	"regexp"
 	"sort"
 	"strconv"
@@ -129,13 +128,13 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			continue
 		}
 
-		krmVersion := filepath.Base(g.goPackage)
-
 		k := generatedFileKey{
 			GoPackage: g.goPackage,
 			FileName:  "types.generated.go",
 		}
 		out := g.getOutputFile(k)
+
+		out.goPackage = lastGoComponent(g.goPackage)
 
 		out.fileAnnotation = g.generatedFileAnnotation
 
@@ -159,8 +158,6 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			continue
 		}
 
-		out.packageName = krmVersion
-
 		WriteMessage(&out.body, msg)
 	}
 	return errors.Join(g.errors...)
@@ -173,13 +170,12 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 			continue
 		}
 
-		krmVersion := filepath.Base(g.goPackage)
-
 		k := generatedFileKey{
 			GoPackage: g.goPackage,
 			FileName:  "types.generated.go",
 		}
 		out := g.getOutputFile(k)
+		out.goPackage = lastGoComponent(g.goPackage)
 
 		out.fileAnnotation = g.generatedFileAnnotation
 
@@ -202,8 +198,6 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 			klog.Infof("found existing non-generated go type with proto tag %q, won't generate", msg.FullName())
 			continue
 		}
-
-		out.packageName = krmVersion
 
 		WriteOutputMessage(&out.body, msgDetails)
 	}
