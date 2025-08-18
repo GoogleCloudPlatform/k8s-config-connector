@@ -882,8 +882,9 @@ func TestHandleReconcileFailed(t *testing.T) {
 
 	ccc := &corev1beta1.ConfigConnectorContext{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      corev1beta1.ConfigConnectorContextAllowedName,
-			Namespace: "foo-ns",
+			Name:       corev1beta1.ConfigConnectorContextAllowedName,
+			Namespace:  "foo-ns",
+			Generation: 1,
 		},
 		Spec: corev1beta1.ConfigConnectorContextSpec{
 			GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
@@ -896,6 +897,13 @@ func TestHandleReconcileFailed(t *testing.T) {
 	if err := c.Create(ctx, ccc); err != nil {
 		t.Fatalf("failed to create ConfigConnectorContext: %v", err)
 	}
+
+	// Manually set the observed generation, simulating the declarative reconciler.
+	ccc.Status.ObservedGeneration = 1
+	if err := c.Status().Update(ctx, ccc); err != nil {
+		t.Fatalf("error updating status: %v", err)
+	}
+
 	reconcileErr := fmt.Errorf("reconciliation error")
 	if err := r.handleReconcileFailed(ctx, nn, reconcileErr); err != nil {
 		t.Errorf("error handling failed reconciliation: %v", err)
@@ -917,6 +925,9 @@ func TestHandleReconcileFailed(t *testing.T) {
 	} else if errMsg := status.Errors[0]; errMsg != expectedErrMsg {
 		t.Errorf("unexpected error in status.errors: got '%v', want '%v'", errMsg, expectedErrMsg)
 	}
+	if status.ObservedGeneration != 1 {
+		t.Errorf("unexpected value for status.observedGeneration: got %v, want 1", status.ObservedGeneration)
+	}
 }
 
 func TestHandleReconcileSucceeded(t *testing.T) {
@@ -934,8 +945,9 @@ func TestHandleReconcileSucceeded(t *testing.T) {
 
 	ccc := &corev1beta1.ConfigConnectorContext{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      corev1beta1.ConfigConnectorContextAllowedName,
-			Namespace: "foo-ns",
+			Name:       corev1beta1.ConfigConnectorContextAllowedName,
+			Namespace:  "foo-ns",
+			Generation: 1,
 		},
 		Spec: corev1beta1.ConfigConnectorContextSpec{
 			GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
@@ -948,6 +960,13 @@ func TestHandleReconcileSucceeded(t *testing.T) {
 	if err := c.Create(ctx, ccc); err != nil {
 		t.Fatalf("failed to create ConfigConnectorContext: %v", err)
 	}
+
+	// Manually set the observed generation, simulating the declarative reconciler.
+	ccc.Status.ObservedGeneration = 1
+	if err := c.Status().Update(ctx, ccc); err != nil {
+		t.Fatalf("error updating status: %v", err)
+	}
+
 	if err := r.handleReconcileSucceeded(ctx, nn); err != nil {
 		t.Errorf("error handling successful reconciliation: %v", err)
 	}
@@ -963,6 +982,9 @@ func TestHandleReconcileSucceeded(t *testing.T) {
 	}
 	if len(status.Errors) != 0 {
 		t.Errorf("unexpected number of errors in status.errors: got %v errors, want 0 errors. Got the errors: %v", len(status.Errors), status.Errors)
+	}
+	if status.ObservedGeneration != 1 {
+		t.Errorf("unexpected value for status.observedGeneration: got %v, want 1", status.ObservedGeneration)
 	}
 }
 
