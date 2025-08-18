@@ -1,0 +1,35 @@
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogMetric
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: metrics-smoke-test-project
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  name: metrics-test-log-metric
+  namespace: ${projectId}
+spec:
+  description: Simple log metric for metrics smoke testing
+  filter: resource.type=gce_instance
+  metricDescriptor:
+    displayName: Metrics Test Log Metric
+    metricKind: DELTA
+    valueType: INT64
+  projectRef:
+    external: ${projectId}
+  resourceID: metrics-test-log-metric
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  createTime: "1970-01-01T00:00:00Z"
+  metricDescriptor:
+    description: Simple log metric for metrics smoke testing
+    name: projects/${projectId}/metricDescriptors/logging.googleapis.com/user/metrics-test-log-metric
+    type: logging.googleapis.com/user/metrics-test-log-metric
+  observedGeneration: 2
+  updateTime: "1970-01-01T00:00:00Z"
