@@ -191,7 +191,7 @@ func (v *MapperGenerator) GenerateMappers() error {
 			FileName:  "mapper.generated.go",
 		}
 		out := v.getOutputFile(k)
-		out.packageName = lastGoComponent(goPackage)
+		out.goPackage = lastGoComponent(goPackage)
 
 		out.fileAnnotation = v.generatedFileAnnotation
 
