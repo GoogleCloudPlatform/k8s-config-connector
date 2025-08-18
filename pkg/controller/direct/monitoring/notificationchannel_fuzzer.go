@@ -36,7 +36,6 @@ func monitoringNotificationChannelFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".type")
 	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".enabled")
-	f.SpecFields.Insert(".force_delete")
 
 	f.StatusFields.Insert(".name")
 	f.StatusFields.Insert(".verification_status")
@@ -51,6 +50,7 @@ func monitoringNotificationChannelFuzzer() fuzztesting.KRMFuzzer {
 		f.UnimplementedFields.Insert(".mutation_records")
 		f.UnimplementedFields.Insert(".description")
 		f.UnimplementedFields.Insert(".user_labels")
+		f.UnimplementedFields.Insert(".display_name")
 	}
 
 	return f
