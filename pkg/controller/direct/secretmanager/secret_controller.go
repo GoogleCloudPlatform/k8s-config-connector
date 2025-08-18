@@ -30,6 +30,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -196,10 +197,60 @@ func MergeMap(a, b map[string]string) map[string]string {
 	return copy
 }
 
+func RemoveKey(a map[string]string, key string) {
+	delete(a, key)
+}
+
+// isValidGCPAnnotation checks if an annotation key is valid for GCP.
+func isValidGCPAnnotation(key string) bool {
+	if len(key) > 63 {
+		return false
+	}
+	if len(key) == 0 {
+		return false
+	}
+	// TODO: This is not a fully-compliant validation of GCP annotation keys
+	return true
+}
+
 func ComputeAnnotations(secret *krm.SecretManagerSecret) map[string]string {
-	annotations := MergeMap(secret.GetAnnotations(), secret.Spec.Annotations)
-	common.RemoveByPrefixes(annotations, "cnrm.cloud.google.com", "alpha.cnrm.cloud.google.com")
+	// Start with spec annotations, which have priority.
+	annotations := secret.Spec.Annotations
+	if annotations == nil {
+		annotations = make(map[string]string)
+	}
+
+	// Merge in metadata annotations, if they don't conflict.
+	for k, v := range secret.GetAnnotations() {
+		if _, found := annotations[k]; found {
+			// Key exists in spec.annotations, so we don't overwrite it.
+			continue
+		}
+		if isValidGCPAnnotation(k) {
+			annotations[k] = v
+		}
+	}
+
 	return annotations
+}
+
+func ComputeLabels(secret *krm.SecretManagerSecret) map[string]string {
+	// Start with spec labels, which have priority.
+	labels := secret.Spec.Labels
+	if labels == nil {
+		labels = make(map[string]string)
+	}
+
+	// Merge in metadata labels, if they don't conflict.
+	for k, v := range secret.GetLabels() {
+		if _, found := labels[k]; found {
+			// Key exists in spec.labels, so we don't overwrite it.
+			continue
+		}
+		labels[k] = v
+	}
+
+	return labels
 }
 
 func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) error {
@@ -213,6 +264,7 @@ func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) er
 		return mapCtx.Err()
 	}
 	resource.Annotations = ComputeAnnotations(desired)
+	resource.Labels = ComputeLabels(desired)
 	// GCP service does not allow setting version aliases during Secret creation.
 	resource.VersionAliases = nil
 	req := &secretmanagerpb.CreateSecretRequest{
@@ -268,6 +320,7 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 		return mapCtx.Err()
 	}
 	resource.Annotations = ComputeAnnotations(desired)
+	resource.Labels = ComputeLabels(desired)
 	// the GCP service use *name* to identify the resource.
 	resource.Name = a.id.String()
 	resource.Etag = a.actual.Etag
