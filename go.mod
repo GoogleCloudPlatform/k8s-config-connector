@@ -17,6 +17,7 @@ require (
 	cloud.google.com/go/backupdr v1.3.1
 	cloud.google.com/go/batch v1.12.2
 	cloud.google.com/go/bigquery v1.69.0
+	cloud.google.com/go/billing v1.20.4
 	cloud.google.com/go/certificatemanager v1.9.5
 	cloud.google.com/go/cloudbuild v1.22.2
 	cloud.google.com/go/clouddms v1.8.7
@@ -149,8 +150,6 @@ require (
 	gopkg.in/evanphx/json-patch.v4 v4.12.0 // indirect
 	sigs.k8s.io/kubebuilder-declarative-pattern/ktest v0.0.0-20250514194322-871029137730 // indirect
 )
-
-require cloud.google.com/go/billing v1.20.4 // indirect
 
 require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect
