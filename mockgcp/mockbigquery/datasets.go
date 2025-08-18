@@ -235,6 +235,27 @@ func (s *datasetsServer) PatchDataset(ctx context.Context, req *pb.PatchDatasetR
 	updated.Type = existing.Type
 	updated.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
 
+	if len(updated.Access) == 0 {
+		updated.Access = []*pb.DatasetAccess{
+			{
+				Role:         PtrTo("WRITER"),
+				SpecialGroup: PtrTo("projectWriters"),
+			},
+			{
+				Role:         PtrTo("OWNER"),
+				SpecialGroup: PtrTo("projectOwners"),
+			},
+			{
+				Role:        PtrTo("OWNER"),
+				UserByEmail: PtrTo("me@example.com"),
+			},
+			{
+				Role:         PtrTo("READER"),
+				SpecialGroup: PtrTo("projectReaders"),
+			},
+		}
+	}
+
 	sortAccess(updated)
 
 	updated.Etag = PtrTo(computeEtag(updated))
