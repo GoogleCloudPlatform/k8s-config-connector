@@ -199,10 +199,8 @@
 [missing_field] crd=billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com version=v1beta1: field ".spec.allUpdatesRule.monitoringNotificationChannels[].namespace" is not set in unstructured objects
 [missing_field] crd=billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com version=v1beta1: field ".spec.amount.lastPeriodAmount" is not set in unstructured objects
 [missing_field] crd=billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com version=v1beta1: field ".spec.budgetFilter.projects[].external" is not set in unstructured objects
+[missing_field] crd=billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com version=v1beta1: field ".spec.budgetFilter.projects[].kind" is not set in unstructured objects
 [missing_field] crd=billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com version=v1beta1: field ".spec.budgetFilter.projects[].namespace" is not set in unstructured objects
-[missing_field] crd=billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com version=v1beta1: field ".spec.budgetFilter.subaccounts[].external" is not set in unstructured objects
-[missing_field] crd=billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com version=v1beta1: field ".spec.budgetFilter.subaccounts[].name" is not set in unstructured objects
-[missing_field] crd=billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com version=v1beta1: field ".spec.budgetFilter.subaccounts[].namespace" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationattestors.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=binaryauthorizationattestors.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.userOwnedDrydockNote.publicKeys[].asciiArmoredPgpPublicKey" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationattestors.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.userOwnedDrydockNote.publicKeys[].id" is not set in unstructured objects
