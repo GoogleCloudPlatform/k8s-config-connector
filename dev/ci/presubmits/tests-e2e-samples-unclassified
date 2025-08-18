@@ -24,16 +24,37 @@ cd ${REPO_ROOT}/
 echo "Downloading envtest assets..."
 export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
 
-echo "Running fixtures in tests/e2e..."
+SKIP_TEST_APIGROUPS=(
+    "alloydb.cnrm.cloud.google.com"
+    "apigateway.cnrm.cloud.google.com"
+    "apigee.cnrm.cloud.google.com"
+    "bigquery.cnrm.cloud.google.com"
+    "bigqueryconnection.cnrm.cloud.google.com"
+    "bigquerydatapolicy.cnrm.cloud.google.com"
+    "bigquerydatatransfer.cnrm.cloud.google.com"
+    "cloudbuild.cnrm.cloud.google.com"
+    "cloudidentity.cnrm.cloud.google.com"
+    "compute.cnrm.cloud.google.com"
+    "dataflow.cnrm.cloud.google.com"
+    "dataproc.cnrm.cloud.google.com"
+    "gkehub.cnrm.cloud.google.com"
+    "iam.cnrm.cloud.google.com"
+    "kms.cnrm.cloud.google.com"
+    "orgpolicy.cnrm.cloud.google.com"
+    "redis.cnrm.cloud.google.com"
+    "secretmanager.cnrm.cloud.google.com"
+    "spanner.cnrm.cloud.google.com"
+    "sql.cnrm.cloud.google.com"
+    "storage.cnrm.cloud.google.com"
+    "workstations.cnrm.cloud.google.com"
+)
 
+export RUN_TESTS=TestAllInSeries/samples
 # The env var 'KCC_ENG_GROUP_EMAIL' needs to be set to unblock sample
 # 'folder-level-entitlement'.
-MOCK_GROUP_EMAIL="test@group.com"
+export MOCK_GROUP_EMAIL="test@group.com"
+export SKIP_TEST_APIGROUP=$(IFS=, ; echo "${SKIP_TEST_APIGROUPS[*]}")
+export TEST_TIMEOUT=1h30m
 
-RUN_E2E=1 \
-E2E_KUBE_TARGET=envtest \
-E2E_GCP_TARGET=mock \
-KCC_USE_DIRECT_RECONCILERS="ComputeForwardingRule,SpannerInstance" \
-KCC_ENG_GROUP_EMAIL="${MOCK_GROUP_EMAIL}" \
-SKIP_TEST_APIGROUP="alloydb.cnrm.cloud.google.com,apigee.cnrm.cloud.google.com,bigquery.cnrm.cloud.google.com,compute.cnrm.cloud.google.com,storage.cnrm.cloud.google.com,iam.cnrm.cloud.google.com,apigateway.cnrm.cloud.google.com,cloudbuild.cnrm.cloud.google.com,dataflow.cnrm.cloud.google.com,dataproc.cnrm.cloud.google.com,gkehub.cnrm.cloud.google.com,bigqueryconnection.cnrm.cloud.google.com,bigquerydatapolicy.cnrm.cloud.google.com,bigquerydatatransfer.cnrm.cloud.google.com,cloudidentity.cnrm.cloud.google.com,kms.cnrm.cloud.google.com,orgpolicy.cnrm.cloud.google.com,redis.cnrm.cloud.google.com,secretmanager.cnrm.cloud.google.com,sql.cnrm.cloud.google.com,spanner.cnrm.cloud.google.com,workstations.cnrm.cloud.google.com" \
-  go test -test.count=1 -timeout 1h30m -v ./tests/e2e -run TestAllInSeries/samples
+echo "Running samples in tests/e2e..."
+${REPO_ROOT}/dev/tasks/run-e2e
