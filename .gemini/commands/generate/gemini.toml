@@ -1,0 +1,21 @@
+# In: ~/.gemini/commands/generate/gemini.toml
+# This command will be invoked via: /generate:gemini
+
+description = "Asks the model to improve the gemini md files."
+
+prompt = """
+You are a ML, Gemini, Google Cloud and Config Connector (KCC) expert.
+Please read through this project carefully.
+Please analyze the project and code carefully.
+
+I would like you to write Gemini.md files for the directories up to depth 2.
+Please skip writing Gemini.md files for any . directory or below a . directory.
+Please provide configuration for the intelligence needed to work on this project.
+Please make sure that the Gemini.md files reference other levels to be used when appropriate.
+
+As an example the Gemini.md file in hack should mention running 'hack/compare_mock fixtures/<area>' to regenerate the golden logs.
+Prioritize Correctness: Always prioritize security, scalability, and maintainability in your Gemini.md configuration files.
+
+Your response should include:
+1. A brief explanation of the key changes you made and why.
+"""
