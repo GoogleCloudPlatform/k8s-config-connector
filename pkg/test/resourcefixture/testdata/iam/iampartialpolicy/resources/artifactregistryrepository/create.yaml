@@ -2,6 +2,8 @@ apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPartialPolicy
 metadata:
   name: iampartialpolicy-${uniqueId}
+  annotations:
+    configsync.gke.io/declared-version: v1beta1
 spec:
   bindings:
   - role: roles/artifactregistry.admin
