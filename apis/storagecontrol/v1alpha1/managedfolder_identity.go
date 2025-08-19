@@ -123,3 +123,11 @@ func ParseManagedFolderExternal(external string) (parent *ManagedFolderParent, r
 	resourceID = tokens[5]
 	return parent, resourceID, nil
 }
+
+func ParseBucketExternal(external string) (string, error) {
+	tokens := strings.Split(external, "/")
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "buckets" {
+		return "", fmt.Errorf("format of BucketRef external should be projects/{project_id}/buckets/{bucket_name}, but received external=%q", external)
+	}
+	return tokens[3], nil
+}

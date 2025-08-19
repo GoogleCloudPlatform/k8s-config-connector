@@ -93,7 +93,7 @@ func (m *modelManagedFolder) AdapterForObject(ctx context.Context, reader client
 }
 
 func (m *modelManagedFolder) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// Expected URL Format: //storage.googleapis.com/projects/{project_id}/buckets/{bucket_id}/managedFolders/{managed_folder=**}
+	// Expected URL Format: //storage.googleapis.com/projects/_/buckets/{bucket_id}/managedFolders/{managed_folder=**}
 	if !strings.HasPrefix(url, managedFolderURLPrefix) {
 		return nil, nil // Not a ManagedFolder URL
 	}
@@ -135,7 +135,11 @@ func (a *ManagedFolderAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting ManagedFolder", "name", a.id)
 
-	req := &pb.GetManagedFolderRequest{Name: a.id.String()}
+	// The format of the request name is verified to use the following format.
+	// Reference: https://https://cloud.google.com/storage/docs/creating-managing-managed-folders#storage-create-managed-folder-go
+	fqn := fmt.Sprintf("projects/_/buckets/%s/managedFolders/%s", a.id.Parent().BucketName, a.id.ID())
+
+	req := &pb.GetManagedFolderRequest{Name: fqn}
 	managedfolderpb, err := a.gcpClient.GetManagedFolder(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -160,8 +164,12 @@ func (a *ManagedFolderAdapter) Create(ctx context.Context, createOp *directbase.
 		return mapCtx.Err()
 	}
 
+	// The format of the request name is verified to use the following format.
+	// Reference: https://https://cloud.google.com/storage/docs/creating-managing-managed-folders#storage-create-managed-folder-go
+	parentPath := fmt.Sprintf("projects/_/buckets/%s", a.id.Parent().BucketName)
+
 	req := &pb.CreateManagedFolderRequest{
-		Parent:          a.id.Parent().String(),
+		Parent:          parentPath,
 		ManagedFolderId: a.id.ID(),
 		ManagedFolder:   resource,
 	}
@@ -176,7 +184,8 @@ func (a *ManagedFolderAdapter) Create(ctx context.Context, createOp *directbase.
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = direct.LazyPtr(created.GetName())
+	fmt.Println("PLEASE DUDE")
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -231,7 +240,11 @@ func (a *ManagedFolderAdapter) Delete(ctx context.Context, deleteOp *directbase.
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting ManagedFolder", "name", a.id)
 
-	req := &pb.DeleteManagedFolderRequest{Name: a.id.String()}
+	// The format of the request name is verified to use the following format.
+	// Reference: https://https://cloud.google.com/storage/docs/creating-managing-managed-folders#storage-create-managed-folder-go
+	fqn := fmt.Sprintf("projects/_/buckets/%s/managedFolders/%s", a.id.Parent().BucketName, a.id.ID())
+
+	req := &pb.DeleteManagedFolderRequest{Name: fqn}
 	err := a.gcpClient.DeleteManagedFolder(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
