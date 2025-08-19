@@ -1,0 +1,3 @@
+- exec: gcloud access-context-manager policies create --organization ${ORG_ID} --title "kcc-${uniqueId}"
+- exec: gcloud access-context-manager policies describe $(gcloud access-context-manager policies list --organization=${TEST_ORG_ID} --filter title=kcc-${uniqueId} --format 'value(name)')
+- exec: gcloud access-context-manager policies delete --quiet $(gcloud access-context-manager policies list --organization=${TEST_ORG_ID} --filter title=kcc-${uniqueId} --format 'value(name)')
