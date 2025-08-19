@@ -184,7 +184,6 @@ func (a *ManagedFolderAdapter) Create(ctx context.Context, createOp *directbase.
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	fmt.Println("PLEASE DUDE")
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
