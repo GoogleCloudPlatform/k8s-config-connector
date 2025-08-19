@@ -172,13 +172,20 @@ func lastGoComponent(goPackage string) string {
 	return filepath.Base(goPackage)
 }
 
-func (v *MapperGenerator) GenerateMappers() error {
+func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 	sort.Slice(v.typePairs, func(i, j int) bool {
 		if v.typePairs[i].KRMType.Name == v.typePairs[j].KRMType.Name {
 			return v.typePairs[i].KRMType.GoPackage < v.typePairs[j].KRMType.GoPackage
 		}
 		return v.typePairs[i].KRMType.Name < v.typePairs[j].KRMType.Name
 	})
+
+	for alias, pkgName := range goImports {
+		v.importedPackages[pkgName] = importedPackage{
+			alias:     alias,
+			goPackage: pkgName,
+		}
+	}
 
 	for _, pair := range v.typePairs {
 		goPackage, shouldVisit := v.goPathForMessage(pair.Proto)
@@ -250,8 +257,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			krmField := goFields[krmFieldName]
 			if krmField == nil {
 				// Support refs
-				krmFieldRef := goFields[krmFieldName+"Ref"]
-				if krmFieldRef != nil {
+				if krmFieldRef := goFields[krmFieldName+"Ref"]; krmFieldRef != nil {
 					fmt.Fprintf(out, "\tif in.%s != \"\" {\n", protoAccessor)
 					qualifiedTypeName := strings.TrimPrefix(krmFieldRef.Type, "*")
 					tokens := strings.SplitN(qualifiedTypeName, ".", 2)
@@ -261,6 +267,33 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					}
 					fmt.Fprintf(out, "\t	out.%v = &%v{External: in.%v}\n", krmFieldRef.Name, qualifiedTypeName, protoAccessor)
 					fmt.Fprintf(out, "\t}\n")
+					continue
+				}
+
+				if krmFieldRefs := goFields[strings.TrimSuffix(krmFieldName, "s")+"Refs"]; krmFieldRefs != nil {
+					template := `
+						if v := in.{protoAccessor}; len(v) != 0 {
+							for i := range v {
+								out.{KRMField} = append(out.{KRMField}, &{RefType}{External: v[i]})
+							}
+						}
+					`
+
+					qualifiedTypeName := strings.TrimPrefix(krmFieldRefs.Type, "*")
+					tokens := strings.SplitN(qualifiedTypeName, ".", 2)
+					if len(tokens) > 1 {
+						alias := v.getGoImportAlias(krmFieldRefs.GoPackage)
+						klog.Infof("getGetImportAlias(%q) => %q", krmFieldRefs.GoPackage, alias)
+						qualifiedTypeName = alias + "." + tokens[1]
+					}
+
+					s := template
+					s = strings.ReplaceAll(s, "{protoAccessor}", protoAccessor)
+					s = strings.ReplaceAll(s, "{KRMField}", krmFieldRefs.Name)
+					s = strings.ReplaceAll(s, "{RefType}", qualifiedTypeName)
+
+					fmt.Fprintf(out, "%s\n", s)
+
 					continue
 				}
 
@@ -431,11 +464,28 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			krmField := goFields[krmFieldName]
 			if krmField == nil {
 				// Support refs
-				krmFieldRef := goFields[krmFieldName+"Ref"]
-				if krmFieldRef != nil {
+				if krmFieldRef := goFields[krmFieldName+"Ref"]; krmFieldRef != nil {
 					fmt.Fprintf(out, "\tif in.%s != nil {\n", krmFieldRef.Name)
 					fmt.Fprintf(out, "\t	out.%v = in.%v.External\n", protoFieldName, krmFieldRef.Name)
 					fmt.Fprintf(out, "\t}\n")
+					continue
+				}
+
+				if krmFieldRefs := goFields[strings.TrimSuffix(krmFieldName, "s")+"Refs"]; krmFieldRefs != nil {
+					template := `
+						if v := in.{KRMField}; len(v) != 0 {
+							for i := range v {
+								out.{protoFieldName} = append(out.{protoFieldName}, v[i].External)
+							}
+						}
+					`
+
+					s := template
+					s = strings.ReplaceAll(s, "{protoFieldName}", protoFieldName)
+					s = strings.ReplaceAll(s, "{KRMField}", krmFieldRefs.Name)
+
+					fmt.Fprintf(out, "%s\n", s)
+
 					continue
 				}
 
@@ -865,8 +915,13 @@ func (o *MapperGenerator) getGoImportAlias(goPackage string) string {
 	// Disambiguate in a way that preserves compatibility with the existing code
 	if strings.Contains(goPackage, "k8s-config-connector/apis/refs/") {
 		importAlias = "refs" + importAlias
-	} else if strings.Contains(goPackage, "k8s-config-connector/apis/") {
-		importAlias = "krm" + importAlias
+	} else if _, suffix, found := strings.Cut(goPackage, "k8s-config-connector/apis/"); found {
+		tokens := strings.Split(suffix, "/")
+		if len(tokens) == 2 {
+			importAlias = "krm" + tokens[0] + tokens[1]
+		} else {
+			klog.Fatalf("cannot determine import alias for %s", goPackage)
+		}
 	}
 
 	o.importedPackages[goPackage] = importedPackage{
