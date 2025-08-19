@@ -26,6 +26,23 @@ import (
 	"google.golang.org/grpc"
 )
 
+// EnabledMetrics is an enum for enabling metrics on different transports.
+type EnabledMetrics string
+
+const (
+	// HTTPMetrics enables metrics on HTTP transports.
+	HTTPMetrics EnabledMetrics = "http"
+)
+
+var validMetrics = map[EnabledMetrics]struct{}{
+	HTTPMetrics: {},
+}
+
+func (e EnabledMetrics) IsValid() bool {
+	_, ok := validMetrics[e]
+	return ok
+}
+
 type ControllerConfig struct {
 	// UserAgent sets the User-Agent to pass in HTTP request headers
 	UserAgent string
@@ -50,8 +67,17 @@ type ControllerConfig struct {
 	// allowing use of a non-default OAuth2 identity
 	GCPTokenSource oauth2.TokenSource
 
-	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
-	EnableMetricsTransport bool
+	// MetricsControls enables automatic wrapping of HTTP clients with metrics transport
+	MetricsControls []EnabledMetrics
+}
+
+func (c *ControllerConfig) httpMetricsEnabled() bool {
+	for _, m := range c.MetricsControls {
+		if m == HTTPMetrics {
+			return true
+		}
+	}
+	return false
 }
 
 func (c *ControllerConfig) RESTClientOptions() ([]option.ClientOption, error) {
@@ -70,7 +96,7 @@ func (c *ControllerConfig) RESTClientOptions() ([]option.ClientOption, error) {
 		*httpClient = *c.HTTPClient
 
 		transport := c.HTTPClient.Transport
-		if c.EnableMetricsTransport {
+		if c.httpMetricsEnabled() {
 			transport = metricstransport.NewMetricsTransport(transport)
 		}
 
@@ -156,7 +182,7 @@ func (c *ControllerConfig) NewAuthenticatedHTTPClient(ctx context.Context) (*htt
 	}
 
 	baseTransport := http.DefaultTransport
-	if c.EnableMetricsTransport {
+	if c.httpMetricsEnabled() {
 		baseTransport = metricstransport.NewMetricsTransport(baseTransport)
 	}
 
