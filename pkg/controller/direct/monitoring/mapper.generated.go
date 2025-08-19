@@ -21,15 +21,15 @@ package monitoring
 
 import (
 	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
-	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func MonitoringNotificationChannelSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotificationChannel) *krmv1beta1.MonitoringNotificationChannelSpec {
+func MonitoringNotificationChannelSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotificationChannel) *krm.MonitoringNotificationChannelSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.MonitoringNotificationChannelSpec{}
+	out := &krm.MonitoringNotificationChannelSpec{}
 	out.Type = direct.LazyPtr(in.GetType())
 	// MISSING: Name
 	// MISSING: DisplayName
@@ -42,7 +42,7 @@ func MonitoringNotificationChannelSpec_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: MutationRecords
 	return out
 }
-func MonitoringNotificationChannelSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MonitoringNotificationChannelSpec) *pb.NotificationChannel {
+func MonitoringNotificationChannelSpec_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringNotificationChannelSpec) *pb.NotificationChannel {
 	if in == nil {
 		return nil
 	}
@@ -59,11 +59,11 @@ func MonitoringNotificationChannelSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: MutationRecords
 	return out
 }
-func MonitoringNotificationChannelStatus_FromProto(mapCtx *direct.MapContext, in *pb.NotificationChannel) *krmv1beta1.MonitoringNotificationChannelStatus {
+func MonitoringNotificationChannelStatus_FromProto(mapCtx *direct.MapContext, in *pb.NotificationChannel) *krm.MonitoringNotificationChannelStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.MonitoringNotificationChannelStatus{}
+	out := &krm.MonitoringNotificationChannelStatus{}
 	// MISSING: Type
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: DisplayName
@@ -76,7 +76,7 @@ func MonitoringNotificationChannelStatus_FromProto(mapCtx *direct.MapContext, in
 	// MISSING: MutationRecords
 	return out
 }
-func MonitoringNotificationChannelStatus_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MonitoringNotificationChannelStatus) *pb.NotificationChannel {
+func MonitoringNotificationChannelStatus_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringNotificationChannelStatus) *pb.NotificationChannel {
 	if in == nil {
 		return nil
 	}
@@ -93,16 +93,16 @@ func MonitoringNotificationChannelStatus_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: MutationRecords
 	return out
 }
-func MutationRecord_FromProto(mapCtx *direct.MapContext, in *pb.MutationRecord) *krmv1beta1.MutationRecord {
+func MutationRecord_FromProto(mapCtx *direct.MapContext, in *pb.MutationRecord) *krm.MutationRecord {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.MutationRecord{}
+	out := &krm.MutationRecord{}
 	out.MutateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetMutateTime())
 	out.MutatedBy = direct.LazyPtr(in.GetMutatedBy())
 	return out
 }
-func MutationRecord_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MutationRecord) *pb.MutationRecord {
+func MutationRecord_ToProto(mapCtx *direct.MapContext, in *krm.MutationRecord) *pb.MutationRecord {
 	if in == nil {
 		return nil
 	}
