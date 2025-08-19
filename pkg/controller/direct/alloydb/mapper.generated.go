@@ -806,8 +806,8 @@ func Instance_PSCInstanceConfig_FromProto(mapCtx *direct.MapContext, in *pb.Inst
 	// MISSING: ServiceAttachmentLink
 	out.AllowedConsumerProjects = in.AllowedConsumerProjects
 	// MISSING: PSCDNSName
-	out.PSCInterfaceConfigs = direct.Slice_FromProto(mapCtx, in.PSCInterfaceConfigs, Instance_PSCInterfaceConfig_FromProto)
-	out.PSCAutoConnections = direct.Slice_FromProto(mapCtx, in.PSCAutoConnections, Instance_PSCAutoConnectionConfig_FromProto)
+	out.PSCInterfaceConfigs = direct.Slice_FromProto(mapCtx, in.PscInterfaceConfigs, Instance_PSCInterfaceConfig_FromProto)
+	out.PSCAutoConnections = direct.Slice_FromProto(mapCtx, in.PscAutoConnections, Instance_PSCAutoConnectionConfig_FromProto)
 	return out
 }
 func Instance_PSCInstanceConfig_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_PSCInstanceConfig) *pb.Instance_PscInstanceConfig {
@@ -831,7 +831,7 @@ func Instance_PSCInstanceConfigObservedState_FromProto(mapCtx *direct.MapContext
 	// MISSING: AllowedConsumerProjects
 	out.PSCDNSName = direct.LazyPtr(in.GetPscDnsName())
 	// MISSING: PSCInterfaceConfigs
-	out.PSCAutoConnections = direct.Slice_FromProto(mapCtx, in.PSCAutoConnections, Instance_PSCAutoConnectionConfigObservedState_FromProto)
+	out.PSCAutoConnections = direct.Slice_FromProto(mapCtx, in.PscAutoConnections, Instance_PSCAutoConnectionConfigObservedState_FromProto)
 	return out
 }
 func Instance_PSCInstanceConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_PSCInstanceConfigObservedState) *pb.Instance_PscInstanceConfig {
