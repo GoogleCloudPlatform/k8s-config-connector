@@ -500,3 +500,23 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	t.Logf("skipping re-reconciliation test for gvk %v", gvk)
 	return false
 }
+
+// ShouldTestMetadataLabels determines if we should test that metadata labels are not sent to GCP
+// during re-reconciliation. This test adds a metadata label and verifies it doesn't cause
+// write operations to the cloud provider.
+// This should not cause write operations to GCP (read operations are OK)
+// We want this test to run for all resources by default, with exceptions added as needed.
+func ShouldTestMetadataLabels(t *testing.T, testName string, primaryResource *unstructured.Unstructured) bool {
+	gvk := primaryResource.GroupVersionKind()
+
+	switch gvk.GroupKind() {
+	// Add exceptions here as needed when we discover resources that need special handling
+	// For now, we test all resources by default
+
+	default:
+		return true
+	}
+
+	// t.Logf("skipping metadata labels test for gvk %v", gvk)
+	// return false
+}
