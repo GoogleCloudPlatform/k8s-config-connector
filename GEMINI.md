@@ -44,6 +44,21 @@ as the trigger for watching that namespace, and also allows configuration of thi
 
 We often abbreviate ConfigConnectorContext to CCC or "triple-C".
 
+# Resources and Controllers
+
+Each resource is represented by a file under config/crds/resources.
+You can extract the name of the resource by running `cat <file> | yq '.spec.names.kind'` on the file.
+
+Terraform (TF) controllers are represented by files under scripts/resource-autogen/generated/servicemappings.
+If a resource can be found in `cat <file> | yq '.spec.resources.[] | .kind'` then it has a Terraform controller.
+If the config/crds/resources file containing the resource name has the following annotation in it `cat <file> | yq '.metadata.labels."cnrm.cloud.google.com/tf2crd"'` the the Terraform controller is the default controller for that resource.
+
+DCL controllers are supported and the default if the config/crds/resources file containing the resource name has the following annotation in it `cat <file> | yq '.metadata.labels."cnrm.cloud.google.com/dcl2crd"'`.
+
+Direct controllers can be found under pkg/controller/direct.
+The controller will have a file name ending in '_controller.go'.
+The controller will call RegisterModel using a KRM containing the resource name and ending in GVK.
+
 # Options
 
 We have an emerging pattern for configuring options.  The "state-into-spec" option was an early option to demonstrate the pattern.
