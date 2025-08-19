@@ -739,9 +739,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "friendlyName": "BigQueryTable Full Example",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true",
-    "spec-label-key1": "value1",
-    "spec-label-key2": "value2"
+    "metadata-key1": "value1",
+    "metadata-key2": "value2"
   },
   "requirePartitionFilter": true,
   "schema": {
@@ -873,9 +874,10 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true",
-    "spec-label-key1": "value1",
-    "spec-label-key2": "value2"
+    "metadata-key1": "value1",
+    "metadata-key2": "value2"
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
@@ -1029,9 +1031,10 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true",
-    "spec-label-key1": "value1",
-    "spec-label-key2": "value2"
+    "metadata-key1": "value1",
+    "metadata-key2": "value2"
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
@@ -1173,9 +1176,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "friendlyName": "BigQueryTable Full Example",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true",
-    "spec-label-key1": "updated-value1",
-    "spec-label-key2": "updated-value2"
+    "metadata-key1": "updated-value1",
+    "metadata-key2": "updated-value2"
   },
   "requirePartitionFilter": true,
   "schema": {
@@ -1321,9 +1325,10 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true",
-    "spec-label-key1": "updated-value1",
-    "spec-label-key2": "updated-value2"
+    "metadata-key1": "updated-value1",
+    "metadata-key2": "updated-value2"
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
@@ -1492,9 +1497,10 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true",
-    "spec-label-key1": "updated-value1",
-    "spec-label-key2": "updated-value2"
+    "metadata-key1": "updated-value1",
+    "metadata-key2": "updated-value2"
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",

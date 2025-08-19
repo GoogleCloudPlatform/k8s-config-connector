@@ -413,6 +413,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 {
   "friendlyName": "mv_test3",
   "labels": {
+    "cnrm-test": "true",
+    "department_name": "marketing",
     "managed-by-cnrm": "true"
   },
   "tableReference": {
@@ -443,6 +445,8 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
+    "department_name": "marketing",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -489,6 +493,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 {
   "friendlyName": "mv_test3",
   "labels": {
+    "cnrm-test": "true",
+    "department_name": "marketing",
     "managed-by-cnrm": "true"
   },
   "schema": {
@@ -535,6 +541,8 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
+    "department_name": "marketing",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -1152,6 +1160,8 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
+    "department_name": "marketing",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
