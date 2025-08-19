@@ -18,8 +18,13 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
     alpha.cnrm.cloud.google.com/reconciler: "direct"
+    cnrm.cloud.google.com/remove-this-annotation: "true"
+    alpha.cnrm.cloud.google.com/remove-this-annotation-2: "true"
+    kubectl.kubernetes.io/last-applied-configuration: "{}"
+    configsync.gke.io: "true"
   labels:
-    label-one: value-one
+    metadata-label-one: value-one
+    configsync.gke.io: "true"
   name: secretmanagersecret-${uniqueId}
 spec:
   replication:
@@ -30,7 +35,7 @@ spec:
             name: kmscryptokey-${uniqueId}
         location: us-central1
   labels:
-    label-one: value-one
+    spec-label-one: value-one
   topics:
     - topicRef:
         name: topic-${uniqueId}
