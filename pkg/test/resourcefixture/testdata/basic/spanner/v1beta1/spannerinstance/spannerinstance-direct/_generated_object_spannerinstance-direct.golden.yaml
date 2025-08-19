@@ -10,8 +10,10 @@ metadata:
   - cnrm.cloud.google.com/deletion-defender
   generation: 2
   labels:
+    app.kubernetes.io/managed-by: kcc
     cnrm-test: "true"
-    label-one: value-one
+    configsync.gke.io/declared-version: v1beta1
+    metadata-label-one: updated-value-one
   name: spannerinstance-sample-${uniqueId}
   namespace: ${uniqueId}
 spec:
