@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
+	"github.com/go-logr/logr"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -214,10 +215,11 @@ func IsValidAnnotation(s string) bool {
 	return validPattern.MatchString(s) && len(s) >= 1 && len(s) <= 63
 }
 
-func ComputeAnnotations(secret *krm.SecretManagerSecret) map[string]string {
+func ComputeAnnotations(secret *krm.SecretManagerSecret, log *logr.Logger) map[string]string {
 	annotations := MergeMap(secret.GetAnnotations(), secret.Spec.Annotations)
 	for key := range annotations {
 		if !IsValidAnnotation(key) {
+			log.V(2).Info("Remove annotation with invalid key", "key", key)
 			delete(annotations, key)
 		}
 	}
@@ -234,7 +236,7 @@ func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) er
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Annotations = ComputeAnnotations(desired)
+	resource.Annotations = ComputeAnnotations(desired, &log)
 	// GCP service does not allow setting version aliases during Secret creation.
 	resource.VersionAliases = nil
 	req := &secretmanagerpb.CreateSecretRequest{
@@ -289,7 +291,7 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Annotations = ComputeAnnotations(desired)
+	resource.Annotations = ComputeAnnotations(desired, &log)
 	// the GCP service use *name* to identify the resource.
 	resource.Name = a.id.String()
 	resource.Etag = a.actual.Etag
