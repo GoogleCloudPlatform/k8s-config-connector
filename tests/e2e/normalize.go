@@ -585,10 +585,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		}
 	}
 
-	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-		return strings.ReplaceAll(s, "organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationID}")
-
-	})
+	if testgcp.TestOrgID.Get() != "" {
+		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+			return strings.ReplaceAll(s, "organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationID}")
+		})
+	}
 
 	return visitor.VisitUnstructured(u)
 }
