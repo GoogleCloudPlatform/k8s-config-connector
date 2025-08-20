@@ -22,8 +22,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"golang.org/x/oauth2/google"
+	"google.golang.org/api/cloudresourcemanager/v1"
 )
 
 type GCPProject struct {
@@ -61,8 +61,18 @@ func GetDefaultProjectID(t *testing.T) string {
 	return projectID
 }
 
+// NewCloudResourceManagerClient returns a GCP Cloud Resource Manager service.
+func NewCloudResourceManagerClient(ctx context.Context) (*cloudresourcemanager.Service, error) {
+	client, err := cloudresourcemanager.NewService(ctx)
+	if err != nil {
+		return nil, err
+	}
+	// client.UserAgent = KCCUserAgent()
+	return client, nil
+}
+
 func GetProjectNumber(ctx context.Context, projectID string) (int64, error) {
-	client, err := gcp.NewCloudResourceManagerClient(ctx)
+	client, err := NewCloudResourceManagerClient(ctx)
 	if err != nil {
 		return 0, fmt.Errorf("error creating resource manager client: %w", err)
 	}
