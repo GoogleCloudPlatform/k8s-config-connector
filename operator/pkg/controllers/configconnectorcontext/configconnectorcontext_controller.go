@@ -205,6 +205,7 @@ func (r *Reconciler) handleReconcileFailed(ctx context.Context, nn types.Namespa
 	status := ccc.GetCommonStatus()
 	status.Healthy = false
 	status.Errors = []string{msg}
+	status.ObservedGeneration = ccc.Generation
 	ccc.SetCommonStatus(status)
 	return r.updateConfigConnectorContextStatus(ctx, ccc)
 }
@@ -223,6 +224,7 @@ func (r *Reconciler) handleReconcileSucceeded(ctx context.Context, nn types.Name
 	status := ccc.GetCommonStatus()
 	status.Healthy = true
 	status.Errors = []string{}
+	status.ObservedGeneration = ccc.Generation
 	ccc.SetCommonStatus(status)
 	return r.updateConfigConnectorContextStatus(ctx, ccc)
 }

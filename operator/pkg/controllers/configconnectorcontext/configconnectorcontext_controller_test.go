@@ -898,12 +898,6 @@ func TestHandleReconcileFailed(t *testing.T) {
 		t.Fatalf("failed to create ConfigConnectorContext: %v", err)
 	}
 
-	// Manually set the observed generation, simulating the declarative reconciler.
-	ccc.Status.ObservedGeneration = 1
-	if err := c.Status().Update(ctx, ccc); err != nil {
-		t.Fatalf("error updating status: %v", err)
-	}
-
 	reconcileErr := fmt.Errorf("reconciliation error")
 	if err := r.handleReconcileFailed(ctx, nn, reconcileErr); err != nil {
 		t.Errorf("error handling failed reconciliation: %v", err)
@@ -959,12 +953,6 @@ func TestHandleReconcileSucceeded(t *testing.T) {
 	testcontroller.EnsureNamespaceExists(c, "foo-ns")
 	if err := c.Create(ctx, ccc); err != nil {
 		t.Fatalf("failed to create ConfigConnectorContext: %v", err)
-	}
-
-	// Manually set the observed generation, simulating the declarative reconciler.
-	ccc.Status.ObservedGeneration = 1
-	if err := c.Status().Update(ctx, ccc); err != nil {
-		t.Fatalf("error updating status: %v", err)
 	}
 
 	if err := r.handleReconcileSucceeded(ctx, nn); err != nil {
