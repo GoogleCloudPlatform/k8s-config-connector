@@ -25,6 +25,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -50,13 +51,16 @@ func (s *NetworkSecurityServer) CreateAuthorizationPolicy(ctx context.Context, r
 
 	now := time.Now()
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		EndTime:    timestamppb.New(now),
-		Target:     name,
-		Verb:       "create",
-		ApiVersion: "v1beta1",
+		CreateTime:            timestamppb.New(now),
+		RequestedCancellation: false,
+		Target:                name,
+		Verb:                  "create",
+		ApiVersion:            "v1",
 	}
-	return s.operations.DoneLRO(ctx, req.Parent, lroMetadata, obj)
+	return s.operations.StartLRO(ctx, req.Parent, lroMetadata, func() (protoreflect.ProtoMessage, error) {
+		result := proto.Clone(obj).(*pb.AuthorizationPolicy)
+		return result, nil
+	})
 }
 
 func (s *NetworkSecurityServer) GetAuthorizationPolicy(ctx context.Context, req *pb.GetAuthorizationPolicyRequest) (*pb.AuthorizationPolicy, error) {
@@ -110,13 +114,17 @@ func (s *NetworkSecurityServer) UpdateAuthorizationPolicy(ctx context.Context, r
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	now := time.Now()
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		EndTime:    timestamppb.New(now),
-		Target:     name.String(),
-		Verb:       "update",
-		ApiVersion: "v1beta1",
+		CreateTime:            timestamppb.New(now),
+		EndTime:               timestamppb.New(now),
+		RequestedCancellation: false,
+		Target:                name.String(),
+		Verb:                  "update",
+		ApiVersion:            "v1",
 	}
-	return s.operations.DoneLRO(ctx, lroPrefix, lroMetadata, updated)
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (protoreflect.ProtoMessage, error) {
+		result := proto.Clone(obj).(*pb.AuthorizationPolicy)
+		return result, nil
+	})
 }
 
 func (s *NetworkSecurityServer) DeleteAuthorizationPolicy(ctx context.Context, req *pb.DeleteAuthorizationPolicyRequest) (*longrunning.Operation, error) {
@@ -129,11 +137,12 @@ func (s *NetworkSecurityServer) DeleteAuthorizationPolicy(ctx context.Context, r
 	}
 	now := time.Now()
 	lroMetadata := &pb.OperationMetadata{
-		CreateTime: timestamppb.New(now),
-		EndTime:    timestamppb.New(now),
-		Target:     name.String(),
-		Verb:       "delete",
-		ApiVersion: "v1beta1",
+		CreateTime:            timestamppb.New(now),
+		EndTime:               timestamppb.New(now),
+		RequestedCancellation: false,
+		Target:                name.String(),
+		Verb:                  "delete",
+		ApiVersion:            "v1",
 	}
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return s.operations.DoneLRO(ctx, lroPrefix, lroMetadata, &emptypb.Empty{})
