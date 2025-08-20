@@ -16,6 +16,7 @@ package mocknetworksecurity
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
@@ -71,5 +72,16 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 			error.Errors = nil
 		}
 	}
-	return mux, nil
+
+	rewriteBetaToV1 := func(w http.ResponseWriter, r *http.Request) {
+		u := r.URL
+		if strings.HasPrefix(u.Path, "/v1beta1/") {
+			u2 := *u
+			u2.Path = "/v1/" + strings.TrimPrefix(u.Path, "/v1beta1/")
+			r = httpmux.RewriteRequest(r, &u2)
+		}
+
+		mux.ServeHTTP(w, r)
+	}
+	return http.HandlerFunc(rewriteBetaToV1), nil
 }
