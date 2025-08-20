@@ -43,6 +43,7 @@ require (
 	cloud.google.com/go/kms v1.21.2
 	cloud.google.com/go/logging v1.13.0
 	cloud.google.com/go/managedkafka v0.4.0
+	cloud.google.com/go/memorystore v0.3.0
 	cloud.google.com/go/metastore v1.14.7
 	cloud.google.com/go/monitoring v1.24.2
 	cloud.google.com/go/netapp v1.7.1
@@ -132,7 +133,6 @@ require (
 require go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 
 require (
-	cloud.google.com/go/memorystore v0.3.0 // indirect
 	cloud.google.com/go/osconfig v1.14.6 // indirect
 	github.com/envoyproxy/go-control-plane/envoy v1.32.4 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect

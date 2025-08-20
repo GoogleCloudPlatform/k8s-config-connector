@@ -41,10 +41,14 @@ func Instance_ConnectionDetail_ToProto(mapCtx *direct.MapContext, in *krmv1alpha
 	}
 	out := &pb.Instance_ConnectionDetail{}
 	if oneof := PscAutoConnection_ToProto(mapCtx, in.PscAutoConnection); oneof != nil {
-		out.Connection = oneof
+		out.Connection = &pb.Instance_ConnectionDetail_PscAutoConnection{
+			PscAutoConnection: oneof,
+		}
 	}
 	if oneof := PscConnection_ToProto(mapCtx, in.PscConnection); oneof != nil {
-		out.Connection = oneof
+		out.Connection = &pb.Instance_ConnectionDetail_PscConnection{
+			PscConnection: oneof,
+		}
 	}
 	return out
 }
@@ -63,10 +67,14 @@ func Instance_ConnectionDetailObservedState_ToProto(mapCtx *direct.MapContext, i
 	}
 	out := &pb.Instance_ConnectionDetail{}
 	if oneof := PscAutoConnectionObservedState_ToProto(mapCtx, in.PscAutoConnection); oneof != nil {
-		out.Connection = oneof
+		out.Connection = &pb.Instance_ConnectionDetail_PscAutoConnection{
+			PscAutoConnection: oneof,
+		}
 	}
 	if oneof := PscConnectionObservedState_ToProto(mapCtx, in.PscConnection); oneof != nil {
-		out.Connection = oneof
+		out.Connection = &pb.Instance_ConnectionDetail_PscConnection{
+			PscConnection: oneof,
+		}
 	}
 	return out
 }
@@ -191,7 +199,6 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.StateInfo = Instance_StateInfoObservedState_ToProto(mapCtx, in.StateInfo)
 	out.Uid = direct.ValueOf(in.Uid)
 	out.NodeConfig = NodeConfigObservedState_ToProto(mapCtx, in.NodeConfig)
-	out.PscAutoConnections = direct.Slice_ToProto(mapCtx, in.PscAutoConnections, PscAutoConnectionObservedState_ToProto)
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_ToProto)
 	return out
 }
