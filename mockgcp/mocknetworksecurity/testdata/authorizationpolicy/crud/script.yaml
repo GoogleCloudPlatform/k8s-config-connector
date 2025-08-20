@@ -1,3 +1,3 @@
-- exec: gcloud network-security authorization-policies import test-${uniqueId} --source=/usr/local/google/home/yuwenma/go/src/github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworksecurity/testdata/authorizationpolicy/crud/policy.yaml --location=global
+- exec: gcloud network-security authorization-policies import test-${uniqueId} --source=policy.yaml --location=global
 - exec: gcloud network-security authorization-policies export test-${uniqueId} --location=global
 - exec: gcloud network-security authorization-policies delete test-${uniqueId} --location=global --quiet
