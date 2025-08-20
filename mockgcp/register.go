@@ -34,6 +34,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocklogging"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmanagedkafka"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmonitoring"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworksecurity"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockorgpolicy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockpubsub"
