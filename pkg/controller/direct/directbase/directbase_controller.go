@@ -98,9 +98,10 @@ func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.Ge
 		ReconcilerMetrics: metrics.ReconcilerMetrics{
 			ResourceNameLabel: metrics.ResourceNameLabel,
 		},
-		jitterGenerator: deps.JitterGenerator,
-		defaulters:      deps.Defaulters,
-		iamDeps:         deps.IAMAdapterDeps,
+		jitterGenerator:    deps.JitterGenerator,
+		defaulters:         deps.Defaulters,
+		iamDeps:            deps.IAMAdapterDeps,
+		reconcilePredicate: deps.ReconcilePredicate,
 	}
 	return &r, nil
 }
@@ -193,6 +194,9 @@ type DirectReconciler struct {
 	defaulters []k8s.Defaulter
 	// For IAM controllers
 	iamDeps *IAMAdapterDeps
+
+	// reconcilePredicate is the predicate which determines if we should be reconciling this object
+	reconcilePredicate predicate.Predicate
 }
 
 type reconcileContext struct {
@@ -237,6 +241,17 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 		// Error reading the object - requeue the request.
 		return reconcile.Result{}, err
 	}
+
+	if r.reconcilePredicate != nil {
+		// We always simulate a Create event (we don't want to check update predicates, and we don't have the previous version anyway)
+		ev := event.TypedCreateEvent[client.Object]{Object: obj}
+		if !r.reconcilePredicate.Create(ev) {
+			logger.Info("skipping direct reconciliation; reconcileGate does not match object", "namespace", request.Namespace, "name", request.Name)
+			// Do not schedule periodic re-reconciliation
+			return reconcile.Result{}, nil
+		}
+	}
+
 	runCtx := &reconcileContext{
 		Reconciler:     r,
 		gvk:            r.gvk,
