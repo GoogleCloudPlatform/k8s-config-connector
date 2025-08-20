@@ -239,6 +239,11 @@ type PscAutoConnection struct {
 // +kcc:proto=google.cloud.memorystore.v1beta.PscConnection
 type PscConnection struct {
 
+	// Required. The PSC connection id of the forwarding rule connected to the
+	//  service attachment.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.psc_connection_id
+	PscConnectionID *string `json:"pscConnectionID,omitempty"`
+
 	// Required. The IP allocated on the consumer network for the PSC forwarding
 	//  rule.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.ip_address
@@ -378,11 +383,6 @@ type PscAutoConnectionObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.memorystore.v1beta.PscConnection
 type PscConnectionObservedState struct {
-	// Output only. The PSC connection id of the forwarding rule connected to the
-	//  service attachment.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.psc_connection_id
-	PscConnectionID *string `json:"pscConnectionID,omitempty"`
-
 	// Output only. The consumer project_id where the forwarding rule is created
 	//  from.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.project_id

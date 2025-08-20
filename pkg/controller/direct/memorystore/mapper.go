@@ -60,10 +60,12 @@ func Instance_ConnectionDetail_ToProto(mapCtx *direct.MapContext, in *krmv1alpha
 		return nil
 	}
 	out := &pb.Instance_ConnectionDetail{}
-	// MISSING: PSCAutoConnection
-	// (near miss): "PSCAutoConnection" vs "PscAutoConnection"
-	// MISSING: PSCConnection
-	// (near miss): "PSCConnection" vs "PscConnection"
+	if oneof := PscAutoConnection_ToProto(mapCtx, in.PscAutoConnection); oneof != nil {
+		out.Connection = oneof
+	}
+	if oneof := PscConnection_ToProto(mapCtx, in.PscConnection); oneof != nil {
+		out.Connection = oneof
+	}
 	return out
 }
 func Instance_ConnectionDetailObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionDetail) *krmv1alpha1.Instance_ConnectionDetailObservedState {
@@ -71,9 +73,8 @@ func Instance_ConnectionDetailObservedState_FromProto(mapCtx *direct.MapContext,
 		return nil
 	}
 	out := &krmv1alpha1.Instance_ConnectionDetailObservedState{}
-	// MISSING: PSCAutoConnection
-	// MISSING: PSCConnection
-	// (near miss): "PSCConnection" vs "PscConnection"
+	out.PscAutoConnection = PscAutoConnectionObservedState_FromProto(mapCtx, in.GetPscAutoConnection())
+	out.PscConnection = PscConnectionObservedState_FromProto(mapCtx, in.GetPscConnection())
 	return out
 }
 func Instance_ConnectionDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Instance_ConnectionDetailObservedState) *pb.Instance_ConnectionDetail {
@@ -81,9 +82,12 @@ func Instance_ConnectionDetailObservedState_ToProto(mapCtx *direct.MapContext, i
 		return nil
 	}
 	out := &pb.Instance_ConnectionDetail{}
-	// MISSING: PSCAutoConnection
-	// MISSING: PSCConnection
-	// (near miss): "PSCConnection" vs "PscConnection"
+	if oneof := PscAutoConnectionObservedState_ToProto(mapCtx, in.PscAutoConnection); oneof != nil {
+		out.Connection = oneof
+	}
+	if oneof := PscConnectionObservedState_ToProto(mapCtx, in.PscConnection); oneof != nil {
+		out.Connection = oneof
+	}
 	return out
 }
 func Instance_InstanceEndpoint_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceEndpoint) *krmv1alpha1.Instance_InstanceEndpoint {
@@ -187,13 +191,11 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 		return nil
 	}
 	out := &krmv1alpha1.MemorystoreInstanceObservedState{}
-	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.StateInfo = Instance_StateInfoObservedState_FromProto(mapCtx, in.GetStateInfo())
 	out.Uid = direct.LazyPtr(in.GetUid())
-	// MISSING: DiscoveryEndpoints
 	out.NodeConfig = NodeConfigObservedState_FromProto(mapCtx, in.GetNodeConfig())
 	out.PscAutoConnections = direct.Slice_FromProto(mapCtx, in.PscAutoConnections, PscAutoConnectionObservedState_FromProto)
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_FromProto)
@@ -204,15 +206,11 @@ func MemorystoreInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 		return nil
 	}
 	out := &pb.Instance{}
-	// MISSING: Name
-	//out.Name = direct.ValueOf(in.Name)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
 	out.StateInfo = Instance_StateInfoObservedState_ToProto(mapCtx, in.StateInfo)
 	out.Uid = direct.ValueOf(in.Uid)
-	// MISSING: DiscoveryEndpoints
-	// out.DiscoveryEndpoints = DiscoveryEndpointObservedState_ToProto(mapCtx, in.DiscoveryEndpoints)
 	out.NodeConfig = NodeConfigObservedState_ToProto(mapCtx, in.NodeConfig)
 	out.PscAutoConnections = direct.Slice_ToProto(mapCtx, in.PscAutoConnections, PscAutoConnectionObservedState_ToProto)
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_ToProto)
@@ -389,11 +387,9 @@ func PscAutoConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1
 		return nil
 	}
 	out := &pb.PscAutoConnection{}
-
-	// Not sure how to capture oneOf structure
-	// if oneof := PscAutoConnectionObservedState_Port_ToProto(mapCtx, in.Port); oneof != nil {
-	// 	out.Ports = oneof
-	// }
+	if oneof := PscAutoConnectionObservedState_Port_ToProto(mapCtx, in.Port); oneof != nil {
+		out.Ports = oneof
+	}
 	out.PscConnectionId = direct.ValueOf(in.PscConnectionID)
 	out.IpAddress = direct.ValueOf(in.IpAddress)
 	out.ForwardingRule = direct.ValueOf(in.ForwardingRule)
@@ -403,11 +399,20 @@ func PscAutoConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1
 	return out
 }
 
+func PscAutoConnectionObservedState_Port_ToProto(mapCtx *direct.MapContext, in *int32) *pb.PscAutoConnection_Port {
+	out := &pb.PscAutoConnection_Port{}
+	out.Port = direct.ValueOf(in)
+	return out
+}
+
 func PscConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krmv1alpha1.PscConnection {
 	if in == nil {
 		return nil
 	}
 	out := &krmv1alpha1.PscConnection{}
+	if in.GetPscConnectionId() != "" {
+		out.PscConnectionID = direct.LazyPtr(in.GetPscConnectionId())
+	}
 	if in.GetIpAddress() != "" {
 		out.IpAddress = direct.LazyPtr(in.GetIpAddress())
 	}
@@ -424,6 +429,8 @@ func PscConnection_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.PscConnect
 		return nil
 	}
 	out := &pb.PscConnection{}
+	out.PscConnectionId = direct.ValueOf(in.PscConnectionID)
+	out.IpAddress = direct.ValueOf(in.IpAddress)
 	if in.NetworkRef != nil {
 		out.Network = in.NetworkRef.External
 	}
@@ -437,7 +444,6 @@ func PscConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscC
 		return nil
 	}
 	out := &krmv1alpha1.PscConnectionObservedState{}
-	out.PscConnectionID = direct.LazyPtr(in.GetPscConnectionId())
 	out.ProjectID = direct.LazyPtr(in.GetProjectId())
 	out.PscConnectionStatus = direct.Enum_FromProto(mapCtx, in.GetPscConnectionStatus())
 	out.ConnectionType = direct.Enum_FromProto(mapCtx, in.GetConnectionType())
@@ -448,7 +454,6 @@ func PscConnectionObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alph
 		return nil
 	}
 	out := &pb.PscConnection{}
-	out.PscConnectionId = direct.ValueOf(in.PscConnectionID)
 	out.ProjectId = direct.ValueOf(in.ProjectID)
 	out.PscConnectionStatus = direct.Enum_ToProto[pb.PscConnectionStatus](mapCtx, in.PscConnectionStatus)
 	out.ConnectionType = direct.Enum_ToProto[pb.ConnectionType](mapCtx, in.ConnectionType)
