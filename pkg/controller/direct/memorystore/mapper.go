@@ -26,26 +26,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DiscoveryEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DiscoveryEndpoint) *krmv1alpha1.DiscoveryEndpointObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.DiscoveryEndpointObservedState{}
-	out.Address = direct.LazyPtr(in.GetAddress())
-	out.Port = direct.LazyPtr(in.GetPort())
-	out.Network = direct.LazyPtr(in.GetNetwork())
-	return out
-}
-func DiscoveryEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DiscoveryEndpointObservedState) *pb.DiscoveryEndpoint {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DiscoveryEndpoint{}
-	out.Address = direct.ValueOf(in.Address)
-	out.Port = direct.ValueOf(in.Port)
-	out.Network = direct.ValueOf(in.Network)
-	return out
-}
 func Instance_ConnectionDetail_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionDetail) *krmv1alpha1.Instance_ConnectionDetail {
 	if in == nil {
 		return nil
@@ -197,7 +177,6 @@ func MemorystoreInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.StateInfo = Instance_StateInfoObservedState_FromProto(mapCtx, in.GetStateInfo())
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.NodeConfig = NodeConfigObservedState_FromProto(mapCtx, in.GetNodeConfig())
-	out.PscAutoConnections = direct.Slice_FromProto(mapCtx, in.PscAutoConnections, PscAutoConnectionObservedState_FromProto)
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpointObservedState_FromProto)
 	return out
 }
@@ -232,7 +211,6 @@ func MemorystoreInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instanc
 	out.EngineConfigs = in.EngineConfigs
 	out.ZoneDistributionConfig = ZoneDistributionConfig_FromProto(mapCtx, in.GetZoneDistributionConfig())
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
-	out.PscAutoConnections = direct.Slice_FromProto(mapCtx, in.PscAutoConnections, PscAutoConnection_FromProto)
 	out.Endpoints = direct.Slice_FromProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_FromProto)
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
 	return out
@@ -253,7 +231,6 @@ func MemorystoreInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.
 	out.EngineConfigs = in.EngineConfigs
 	out.ZoneDistributionConfig = ZoneDistributionConfig_ToProto(mapCtx, in.ZoneDistributionConfig)
 	out.DeletionProtectionEnabled = in.DeletionProtectionEnabled
-	out.PscAutoConnections = direct.Slice_ToProto(mapCtx, in.PscAutoConnections, PscAutoConnection_ToProto)
 	out.Endpoints = direct.Slice_ToProto(mapCtx, in.Endpoints, Instance_InstanceEndpoint_ToProto)
 	out.Mode = direct.Enum_ToProto[pb.Instance_Mode](mapCtx, in.Mode)
 	return out
