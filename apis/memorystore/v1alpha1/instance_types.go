@@ -295,42 +295,6 @@ type DiscoveryEndpointObservedState struct {
 	Network *string `json:"network,omitempty"`
 }
 
-// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.Instance
-type InstanceObservedState struct {
-	// Output only. Creation timestamp of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Latest update timestamp of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. Current state of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. Additional information about the state of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.state_info
-	StateInfo *Instance_StateInfo `json:"stateInfo,omitempty"`
-
-	// Output only. System assigned, unique identifier for the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.uid
-	Uid *string `json:"uid,omitempty"`
-
-	// Output only. Configuration of individual nodes of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.node_config
-	NodeConfig *NodeConfig `json:"nodeConfig,omitempty"`
-
-	// Immutable. User inputs and resource details of the auto-created
-	//  PSC connections.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.psc_auto_connections
-	PscAutoConnections []PscAutoConnectionObservedState `json:"pscAutoConnections,omitempty"`
-
-	// Optional. Endpoints for the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.endpoints
-	Endpoints []Instance_InstanceEndpointObservedState `json:"endpoints,omitempty"`
-}
-
 // +kcc:observedstate:proto=google.cloud.memorystore.v1beta.Instance.ConnectionDetail
 type Instance_ConnectionDetailObservedState struct {
 	// Detailed information of a PSC connection that is created by the user.
