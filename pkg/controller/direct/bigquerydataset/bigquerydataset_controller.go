@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	bigquery "cloud.google.com/go/bigquery"
 	"google.golang.org/api/option"
@@ -136,11 +137,8 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	mapCtx := &direct.MapContext{}
 
 	desiredDataset := BigQueryDatasetSpec_ToProto(mapCtx, &a.desired.Spec)
-	desiredDataset.Labels = make(map[string]string)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		desiredDataset.Labels[k] = v
-	}
-	desiredDataset.Labels["managed-by-cnrm"] = "true"
+	desiredDataset.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.Labels)
+	// return fmt.Errorf("filtered labels: %v", desiredDataset.Labels)
 
 	// Resolve KMS key reference
 	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
@@ -268,10 +266,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	// Compute the dataset metadate for update request
 	datasetMetadataToUpdate := BigQueryDataset_ToMetadataToUpdate(mapCtx, resource, updateMask.Paths)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
+	for k, v := range label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels()) {
 		datasetMetadataToUpdate.SetLabel(k, v)
 	}
-	datasetMetadataToUpdate.SetLabel("managed-by-cnrm", "true")
 	// Call update
 	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
 	updated, err := dsHandler.Update(ctx, *datasetMetadataToUpdate, "")

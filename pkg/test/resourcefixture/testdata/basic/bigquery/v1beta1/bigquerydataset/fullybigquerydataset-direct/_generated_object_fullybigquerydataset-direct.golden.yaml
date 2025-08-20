@@ -6,7 +6,9 @@ metadata:
   - cnrm.cloud.google.com/deletion-defender
   generation: 3
   labels:
+    app.kubernetes.io/managed-by: kcc
     cnrm-test: "true"
+    configsync.gke.io/declared-version: v1beta1
   name: bigquerydataset${uniqueId}
   namespace: ${uniqueId}
 spec:

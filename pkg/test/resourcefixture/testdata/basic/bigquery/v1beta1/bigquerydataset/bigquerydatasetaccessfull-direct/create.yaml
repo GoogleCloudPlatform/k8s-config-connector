@@ -16,6 +16,9 @@ apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
 metadata:
   name: bigquerydatasetaccessfull${uniqueId}
+  labels:
+    configsync.gke.io/declared-version: v1beta1
+    app.kubernetes.io/managed-by: kcc
 spec:
   defaultTableExpirationMs: 3600000
   description: "BigQuery Dataset With Full Access Block"
