@@ -77,10 +77,6 @@ type MemorystoreInstanceSpec struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.deletion_protection_enabled
 	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
 
-	// User inputs and resource details of the auto-created PSC connections.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.psc_auto_connections
-	PscAutoConnections []PscAutoConnection `json:"pscAutoConnections,omitempty"`
-
 	// Optional. Endpoints for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.endpoints
 	Endpoints []Instance_InstanceEndpoint `json:"endpoints,omitempty"`
@@ -142,11 +138,6 @@ type MemorystoreInstanceObservedState struct {
 	// Output only. Configuration of individual nodes of the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.node_config
 	NodeConfig *NodeConfigObservedState `json:"nodeConfig,omitempty"`
-
-	// Immutable. User inputs and resource details of the auto-created
-	//  PSC connections.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.psc_auto_connections
-	PscAutoConnections []PscAutoConnectionObservedState `json:"pscAutoConnections,omitempty"`
 
 	// Optional. Endpoints for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.endpoints
@@ -302,6 +293,10 @@ type DiscoveryEndpointObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.memorystore.v1beta.Instance.ConnectionDetail
 type Instance_ConnectionDetailObservedState struct {
+	// Detailed information of a PSC connection that is created through
+	// service connectivity automation.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.ConnectionDetail.psc_auto_connection
+	PscAutoConnection *PscAutoConnectionObservedState `json:"pscAutoConnection,omitempty"`
 	// Detailed information of a PSC connection that is created by the user.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.ConnectionDetail.psc_connection
 	PscConnection *PscConnectionObservedState `json:"pscConnection,omitempty"`
