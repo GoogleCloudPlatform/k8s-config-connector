@@ -1,0 +1,44 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
+kind: NetworkSecurityAuthorizationPolicy
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: networksecurityauthorizationpolicy-full-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  action: DENY
+  description: A full authorization policy for testing - updated
+  location: global
+  projectRef:
+    external: ${projectId}
+  rules:
+  - destinations:
+    - hosts:
+      - updated.example.com
+      httpHeaderMatch:
+        headerName: X-Test-Header-Updated
+        regexMatch: .*
+      methods:
+      - POST
+      ports:
+      - 8081
+    sources:
+    - ipBlocks:
+      - 1.2.3.5/32
+      principals:
+      - spiffe://foo.bar/ns/default/sa/updated
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  createTime: "1970-01-01T00:00:00Z"
+  externalRef: projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}
+  observedGeneration: 2
+  updateTime: "1970-01-01T00:00:00Z"

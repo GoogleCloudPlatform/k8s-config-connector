@@ -5,7 +5,6 @@ metadata:
     cnrm.cloud.google.com/version: 0.0.0-dev
   creationTimestamp: null
   labels:
-    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
@@ -70,6 +69,12 @@ spec:
               description:
                 description: Optional. Free-text description of the resource.
                 type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: 'Optional. Set of label tags associated with the AuthorizationPolicy
+                  resource. NOTEYET: this field is not in the DCL-based beta resource'
+                type: object
               location:
                 description: Immutable.
                 type: string
