@@ -20,6 +20,8 @@ import (
 	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -27,7 +29,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &SpannerDatabaseRef{}
+var _ reference.ExternalNormalizer = &SpannerDatabaseRef{}
 var SpannerDatabaseGVK = GroupVersion.WithKind("SpannerDatabase")
 
 // SpannerDatabaseRef defines the resource reference to SpannerDatabase, which "External" field

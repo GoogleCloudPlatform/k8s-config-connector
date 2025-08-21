@@ -19,6 +19,8 @@ import (
 	"fmt"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -26,7 +28,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &DataprocClusterRef{}
+var _ reference.ExternalNormalizer = &DataprocClusterRef{}
 var DataprocClusterGVK = GroupVersion.WithKind("DataprocCluster")
 
 // DataprocClusterRef defines the resource reference to DataprocCluster, which "External" field

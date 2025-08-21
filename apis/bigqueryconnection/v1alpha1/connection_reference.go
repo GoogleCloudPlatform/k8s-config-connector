@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/google/uuid"
@@ -87,7 +88,7 @@ func NewBigQueryConnectionConnectionRef(ctx context.Context, reader client.Reade
 	return id, nil
 }
 
-var _ refsv1beta1.ExternalNormalizer = &BigQueryConnectionConnectionRef{}
+var _ reference.ExternalNormalizer = &BigQueryConnectionConnectionRef{}
 
 // BigQueryConnectionConnectionRef defines the resource reference to BigQueryConnectionConnection, which "External" field
 // holds the GCP identifier for the KRM object.

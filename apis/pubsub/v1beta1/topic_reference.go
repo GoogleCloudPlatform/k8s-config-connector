@@ -19,6 +19,8 @@ import (
 	"fmt"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -26,7 +28,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &PubSubTopicRef{}
+var _ reference.ExternalNormalizer = &PubSubTopicRef{}
 var PubSubTopicGVK = GroupVersion.WithKind("PubSubTopic")
 
 // PubSubTopicRef defines the resource reference to PubSubTopic, which "External" field
