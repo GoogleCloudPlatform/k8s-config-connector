@@ -22,6 +22,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -30,7 +31,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &SecureSourceManagerInstanceRef{}
+var _ reference.ExternalNormalizer = &SecureSourceManagerInstanceRef{}
 
 // SecureSourceManagerInstanceRef defines the resource reference to SecureSourceManagerInstance, which "External" field
 // holds the GCP identifier for the KRM object.

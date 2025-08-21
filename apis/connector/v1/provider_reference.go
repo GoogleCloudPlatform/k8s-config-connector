@@ -18,11 +18,11 @@ import (
 	"context"
 	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &ProviderRef{}
+var _ reference.ExternalNormalizer = &ProviderRef{}
 
 // ProviderRef defines the resource reference to Provider, which "External" field
 // holds the GCP identifier for the KRM object.

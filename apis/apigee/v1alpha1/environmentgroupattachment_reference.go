@@ -17,14 +17,13 @@ package v1alpha1
 import (
 	"context"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &ApigeeEnvgroupAttachmentRef{}
+var _ reference.Ref = &ApigeeEnvgroupAttachmentRef{}
 
 // ApigeeEnvgroupAttachmentRef is a reference to a ApigeeEnvgroupAttachment resource.
 type ApigeeEnvgroupAttachmentRef struct {
@@ -67,5 +66,5 @@ func (r *ApigeeEnvgroupAttachmentRef) ValidateExternal(ref string) error {
 }
 
 func (r *ApigeeEnvgroupAttachmentRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+	return reference.Normalize(ctx, reader, r, defaultNamespace)
 }
