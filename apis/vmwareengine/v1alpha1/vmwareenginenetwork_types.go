@@ -98,7 +98,7 @@ type VMwareEngineNetworkObservedState struct {
 	//  from a private cloud to customer projects, the internet, and other Google
 	//  Cloud services.
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.VmwareEngineNetwork.vpc_networks
-	VPCNetworks []VmwareEngineNetwork_VpcNetworkObservedState `json:"vpcNetworks,omitempty"`
+	VPCNetworks []VmwareEngineNetwork_VPCNetworkObservedState `json:"vpcNetworks,omitempty"`
 
 	// Output only. State of the VMware Engine network.
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.VmwareEngineNetwork.state
