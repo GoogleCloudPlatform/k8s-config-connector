@@ -38,7 +38,6 @@ type MultiClusterLeaseReconciler struct {
 	Log        logr.Logger
 	GCSClient  *storage.Client
 	BucketName string
-	Identity   string
 
 	leaderElectorsMutex sync.Mutex
 	leaderElectors      map[string]*leaderelection.LeaderElector // keyed by NamespacedName
@@ -50,14 +49,12 @@ func NewMultiClusterLeaseReconciler(
 	log logr.Logger,
 	gcsClient *storage.Client,
 	bucketName string,
-	identity string,
 ) *MultiClusterLeaseReconciler {
 	return &MultiClusterLeaseReconciler{
 		Client:         client,
 		Log:            log,
 		GCSClient:      gcsClient,
 		BucketName:     bucketName,
-		Identity:       identity,
 		leaderElectors: make(map[string]*leaderelection.LeaderElector),
 	}
 }
@@ -101,11 +98,18 @@ func (r *MultiClusterLeaseReconciler) Reconcile(ctx context.Context, req ctrl.Re
 		return ctrl.Result{}, err
 	}
 
+	// Get the candidate's identity from the spec
+	if mcl.Spec.HolderIdentity == nil || *mcl.Spec.HolderIdentity == "" {
+		log.Info("holderIdentity is not set in the spec; skipping reconciliation")
+		return ctrl.Result{}, nil
+	}
+	identity := *mcl.Spec.HolderIdentity
+
 	// Try to acquire or renew the lease in GCS
-	leaseInfo, err := leaderElector.AcquireOrRenew(ctx)
+	leaseInfo, err := leaderElector.AcquireOrRenew(ctx, identity)
 	if err != nil {
 		log.Error(err, "failed to acquire or renew lease",
-			"identity", r.Identity,
+			"candidate", identity,
 			"currentHolder", leaseInfo.HolderIdentity)
 
 		// Update condition to indicate backend is unhealthy
@@ -123,8 +127,8 @@ func (r *MultiClusterLeaseReconciler) Reconcile(ctx context.Context, req ctrl.Re
 
 	// Log lease status
 	if leaseInfo.Acquired {
-		log.Info("successfully acquired lease",
-			"identity", r.Identity,
+		log.Info("successfully acquired or renewed the lease",
+			"identity", identity,
 			"renewTime", leaseInfo.RenewTime)
 	} else {
 		log.Info("lease held by another identity",
@@ -178,9 +182,6 @@ func (r *MultiClusterLeaseReconciler) handleDeletion(ctx context.Context, mcl *v
 
 // setMCLStatus updates the status of the MultiClusterLease
 func (r *MultiClusterLeaseReconciler) setMCLStatus(mcl *v1alpha1.MultiClusterLease, leaseInfo *leaderelection.LeaseInfo) {
-	// Set leading cluster status
-	mcl.Status.IsLeadingCluster = leaseInfo.Acquired && *leaseInfo.HolderIdentity == r.Identity
-
 	// Set observed generation
 	generation := mcl.Generation
 	mcl.Status.ObservedGeneration = &generation
@@ -283,7 +284,7 @@ func (r *MultiClusterLeaseReconciler) getOrCreateLeaderElector(key string, lease
 	}
 
 	// Create a new LeaderElector
-	le := leaderelection.NewLeaderElector(r.GCSClient, r.BucketName, r.Identity, key, lease)
+	le := leaderelection.NewLeaderElector(r.GCSClient, r.BucketName, key, lease)
 	r.leaderElectors[key] = le
 	return le, nil
 }

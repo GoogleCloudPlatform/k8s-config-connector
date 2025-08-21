@@ -22,11 +22,11 @@ import (
 
 	"cloud.google.com/go/storage"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multiclusterlease/controllers"
-	"github.com/google/uuid"
 	"go.uber.org/zap/zapcore"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
+	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	// +kubebuilder:scaffold:imports
 )
 
@@ -37,12 +37,10 @@ var (
 func main() {
 	var metricsAddr string
 	var gcsBucketName string
-	var clusterIdentity string
 	var verbose bool
 
 	flag.StringVar(&metricsAddr, "metrics-addr", ":8080", "The address the metric endpoint binds to.")
 	flag.StringVar(&gcsBucketName, "gcs-bucket", "", "The GCS bucket to use for multi-cluster leader election.")
-	flag.StringVar(&clusterIdentity, "cluster-identity", "", "The identity of this cluster (defaults to a generated UUID).")
 	flag.BoolVar(&verbose, "verbose", false, "Enable verbose logging")
 	flag.Parse()
 
@@ -53,14 +51,6 @@ func main() {
 	}
 	ctrl.SetLogger(zap.New(opts...))
 
-	// Set up a unique identity for this cluster if not provided
-	if clusterIdentity == "" {
-		// For leader election, we want a fresh identity that doesn't persist
-		// across restarts to avoid stale leader state
-		clusterIdentity = uuid.New().String()
-		setupLog.Info("Generated cluster identity", "identity", clusterIdentity)
-	}
-
 	// Validate required flags
 	if gcsBucketName == "" {
 		setupLog.Error(fmt.Errorf("gcs-bucket flag is required"), "missing required flag")
@@ -70,10 +60,11 @@ func main() {
 	// Create manager
 	setupLog.Info("Creating manager")
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
-		Scheme:             controllers.BuildScheme(),
-		MetricsBindAddress: metricsAddr,
-		Port:               9443,
-		LeaderElection:     false,
+		Scheme: controllers.BuildScheme(),
+		Metrics: metricsserver.Options{
+			BindAddress: metricsAddr,
+		},
+		LeaderElection: false,
 	})
 	if err != nil {
 		setupLog.Error(err, "unable to start manager")
@@ -106,7 +97,6 @@ func main() {
 		ctrl.Log.WithName("controllers").WithName("MultiClusterLease"),
 		gcsClient,
 		gcsBucketName,
-		clusterIdentity,
 	)
 
 	if err = reconciler.SetupWithManager(mgr); err != nil {
@@ -115,7 +105,7 @@ func main() {
 	}
 	// +kubebuilder:scaffold:builder
 
-	setupLog.Info("Starting manager", "clusterIdentity", clusterIdentity, "gcsBucket", gcsBucketName)
+	setupLog.Info("Starting manager", "gcsBucket", gcsBucketName)
 	if err := mgr.Start(ctrl.SetupSignalHandler()); err != nil {
 		setupLog.Error(err, "problem running manager")
 		os.Exit(1)
