@@ -503,7 +503,7 @@ func TestLegacyCompatibleLabels(t *testing.T) {
 		t.Fatalf("error loading CRDs: %v", err)
 	}
 
-	unstructs := loadUnstructs(t)
+	unstructs := loadAllTestFixtures(t)
 	unstructsByKind := make(map[string][]*unstructured.Unstructured)
 	for _, u := range unstructs {
 		kind := u.GetKind()
@@ -526,26 +526,22 @@ func TestLegacyCompatibleLabels(t *testing.T) {
 				if len(parts) == 0 {
 					return
 				}
-				fieldName := parts[len(parts)-1]
 
-				if strings.ToLower(fieldName) == "labels" {
-					// This is a valid label field, check if it is always set
-					kind := crd.Spec.Names.Kind
-					kindUnstructs := unstructsByKind[kind]
-					if len(kindUnstructs) == 0 {
-						return
-					}
-					alwaysSet := true
-					for _, u := range kindUnstructs {
-						if !hasField(u.Object, field.FieldPath) {
-							alwaysSet = false
-							break
-						}
-					}
-					if alwaysSet {
-						errs = append(errs, fmt.Sprintf("[missing_legacy_label_tests] crd=%s version=%v: field %s is always set in tests", crd.Name, version.Name, strings.TrimPrefix(field.FieldPath, ".")))
-					}
+				// This is a valid label field, check if it is always set
+				kind := crd.Spec.Names.Kind
+				kindUnstructs := unstructsByKind[kind]
+				if len(kindUnstructs) == 0 {
 					return
+				}
+				alwaysSet := true
+				for _, u := range kindUnstructs {
+					if !hasField(u.Object, field.FieldPath) {
+						alwaysSet = false
+						break
+					}
+				}
+				if alwaysSet {
+					errs = append(errs, fmt.Sprintf("[missing_legacy_label_tests] crd=%s version=%v: field %s is always set in tests", crd.Name, version.Name, strings.TrimPrefix(field.FieldPath, ".")))
 				}
 			})
 		}
@@ -629,7 +625,7 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 		t.Fatalf("error loading CRDs: %v", err)
 	}
 
-	unstructs := loadUnstructs(t)
+	unstructs := loadAllTestFixtures(t)
 	outputOnlySpecFields, err := loadOutputOnlySpecFields()
 	if err != nil {
 		t.Fatalf("error loading output-only spec fields from file: %v", err)
@@ -774,7 +770,7 @@ func loadOutputOnlySpecFields() (map[string]bool, error) {
 	return outputOnlySpecFields, nil
 }
 
-func loadUnstructs(t *testing.T) []*unstructured.Unstructured {
+func loadAllTestFixtures(t *testing.T) []*unstructured.Unstructured {
 	t.Helper()
 	unstructs := []*unstructured.Unstructured{}
 	fixtures := resourcefixture.Load(t)
@@ -973,8 +969,8 @@ func TestMultiVersionCRDNoDiff(t *testing.T) {
 			if diff := cmp.Diff(string(expectedDiff), allDiffs.String()); diff != "" {
 				// To address inconsistencies between local and CI environments,
 				// we normalize the diff output by replacing non-breaking spaces with regular spaces.
-				normalizedActual := strings.ReplaceAll(allDiffs.String(), " ", " ")
-				normalizedExpected := strings.ReplaceAll(string(expectedDiff), " ", " ")
+				normalizedActual := strings.ReplaceAll(allDiffs.String(), " ", " ")
+				normalizedExpected := strings.ReplaceAll(string(expectedDiff), " ", " ")
 				if diff := cmp.Diff(normalizedExpected, normalizedActual); diff != "" {
 					t.Errorf("crd %s schema diff does not match golden file %s:\n%s", crd.Name, diffFilePath, diff)
 				}
