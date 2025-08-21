@@ -19,7 +19,7 @@
 package memorystore
 
 import (
-	pb "cloud.google.com/go/memorystore/ap1beta1/redispb"
+	pb "cloud.google.com/go/memorystore/apiv1beta/memorystorepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -69,4 +69,3 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 
 	return f
 }
-
