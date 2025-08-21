@@ -57,7 +57,6 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
-  "generation": "1234567890",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": true,
@@ -105,7 +104,6 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
-  "generation": "1234567890",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": true,
@@ -235,7 +233,6 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
-  "generation": "1234567890",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": true,

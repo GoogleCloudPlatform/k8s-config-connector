@@ -124,7 +124,6 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 	obj.StorageClass = PtrTo("STANDARD")
 	obj.TimeCreated = now
 	obj.Updated = now
-	obj.Generation = PtrTo(int64(1234567890))
 	obj.Metageneration = PtrTo(int64(1))
 
 	obj.Etag = PtrTo(computeEtag(obj))

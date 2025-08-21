@@ -16,6 +16,7 @@ package mockstorage
 
 import (
 	"context"
+	"strings"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
@@ -36,6 +37,11 @@ func (s *objects) ListObjects(ctx context.Context, req *pb.ListObjectsRequest) (
 
 	ret := &pb.Objects{}
 	ret.Kind = PtrTo("storage#objects")
+	if strings.Contains(req.GetBucket(), "bucket-for-managed-folder") {
+		return ret, nil
+	}
+	ret.Prefixes = append(ret.Prefixes, "testfolder")
+	ret.Prefixes = append(ret.Prefixes, "testmanagedfolder")
 	return ret, nil
 }
 

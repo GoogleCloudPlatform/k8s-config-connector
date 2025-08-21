@@ -81,13 +81,18 @@ func (m *modelManagedFolder) AdapterForObject(ctx context.Context, reader client
 	}
 
 	// Get storagecontrol GCP client
-	gcpClient, err := m.client(ctx)
+	options, err := m.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
 	}
+	storageControlClient, err := gcp.NewStorageControlClient(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+
 	return &ManagedFolderAdapter{
 		id:        id,
-		gcpClient: gcpClient,
+		gcpClient: storageControlClient,
 		desired:   obj,
 	}, nil
 }
