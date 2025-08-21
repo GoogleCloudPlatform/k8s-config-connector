@@ -3017,8 +3017,6 @@
 [missing_field] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.linkedVpnTunnels.uris[].name" is not set in unstructured objects
 [missing_field] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.linkedVpnTunnels.uris[].namespace" is not set in unstructured objects
 [missing_field] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=networksecurityauthorizationpolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.rules[].destinations[].httpHeaderMatch.headerName" is not set in unstructured objects
-[missing_field] crd=networksecurityauthorizationpolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.rules[].destinations[].httpHeaderMatch.regexMatch" is not set in unstructured objects
 [missing_field] crd=networksecurityclienttlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.clientCertificate.grpcEndpoint.targetUri" is not set in unstructured objects
 [missing_field] crd=networksecurityclienttlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.serverValidationCa[].grpcEndpoint.targetUri" is not set in unstructured objects
 [missing_field] crd=networksecurityservertlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.mtlsPolicy.clientValidationCa[].grpcEndpoint.targetUri" is not set in unstructured objects
