@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: 1.134.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -100,8 +100,8 @@ spec:
                   encryptionConfig:
                     description: Optional. The encryption config can be specified
                       to encrypt the backups with a customer-managed encryption key
-                      (CMEK). When this field is not specified, the backup will then
-                      use default encryption scheme to protect the user data.
+                      (CMEK). When this field is not specified, the backup will use
+                      the cluster's encryption config.
                     properties:
                       kmsKeyNameRef:
                         description: 'The fully-qualified resource name of the KMS
@@ -224,8 +224,8 @@ spec:
                   encryptionConfig:
                     description: The encryption config can be specified to encrypt
                       the backups with a customer-managed encryption key (CMEK). When
-                      this field is not specified, the backup will then use default
-                      encryption scheme to protect the user data.
+                      this field is not specified, the backup will use the cluster's
+                      encryption config.
                     properties:
                       kmsKeyNameRef:
                         description: 'The fully-qualified resource name of the KMS
@@ -858,8 +858,8 @@ spec:
                   encryptionConfig:
                     description: Optional. The encryption config can be specified
                       to encrypt the backups with a customer-managed encryption key
-                      (CMEK). When this field is not specified, the backup will then
-                      use default encryption scheme to protect the user data.
+                      (CMEK). When this field is not specified, the backup will use
+                      the cluster's encryption config.
                     properties:
                       kmsKeyNameRef:
                         description: 'The fully-qualified resource name of the KMS
@@ -982,8 +982,8 @@ spec:
                   encryptionConfig:
                     description: The encryption config can be specified to encrypt
                       the backups with a customer-managed encryption key (CMEK). When
-                      this field is not specified, the backup will then use default
-                      encryption scheme to protect the user data.
+                      this field is not specified, the backup will use the cluster's
+                      encryption config.
                     properties:
                       kmsKeyNameRef:
                         description: 'The fully-qualified resource name of the KMS

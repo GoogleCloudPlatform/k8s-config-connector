@@ -21,199 +21,21 @@ metadata:
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
-  name: storageanywherecaches.storage.cnrm.cloud.google.com
+  name: apigatewayapis.apigateway.cnrm.cloud.google.com
 spec:
-  group: storage.cnrm.cloud.google.com
+  group: apigateway.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: StorageAnywhereCache
-    listKind: StorageAnywhereCacheList
-    plural: storageanywherecaches
+    kind: APIGatewayAPI
+    listKind: APIGatewayAPIList
+    plural: apigatewayapis
     shortNames:
-    - gcpstorageanywherecache
-    - gcpstorageanywherecaches
-    singular: storageanywherecache
+    - gcpapigatewayapi
+    - gcpapigatewayapis
+    singular: apigatewayapi
   scope: Namespaced
   versions:
-  - additionalPrinterColumns:
-    - jsonPath: .metadata.creationTimestamp
-      name: Age
-      type: date
-    - description: When 'True', the most recent reconcile of the resource succeeded
-      jsonPath: .status.conditions[?(@.type=='Ready')].status
-      name: Ready
-      type: string
-    - description: The reason for the value in 'Ready'
-      jsonPath: .status.conditions[?(@.type=='Ready')].reason
-      name: Status
-      type: string
-    - description: The last transition time for the value in 'Status'
-      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
-      name: Status Age
-      type: date
-    name: v1beta1
-    schema:
-      openAPIV3Schema:
-        description: StorageAnywhereCache is the Schema for the StorageAnywhereCache
-          API
-        properties:
-          apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
-            type: string
-          kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
-            type: string
-          metadata:
-            type: object
-          spec:
-            description: StorageAnywhereCacheSpec defines the desired state of StorageAnywhereCache
-            properties:
-              admissionPolicy:
-                default: admit-on-first-miss
-                description: 'Cache admission policy. Valid values includes: `admit-on-first-miss`
-                  and `admit-on-second-miss`. Defaults to `admit-on-first-miss`.'
-                enum:
-                - admit-on-first-miss
-                - admit-on-second-miss
-                type: string
-              bucketRef:
-                description: Immutable. The reference to bucket where cache needs
-                  to be created.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: The StorageBucket selfLink, when not managed by Config
-                      Connector.
-                    type: string
-                  name:
-                    description: The `name` field of a `StorageBucket` resource.
-                    type: string
-                  namespace:
-                    description: The `namespace` field of a `StorageBucket` resource.
-                    type: string
-                type: object
-              desiredState:
-                default: running
-                description: The desired state of the cache. Possible values include
-                  "running", "disabled", and "paused". If not specified, the default
-                  value is "running". This field controls the runtime behavior of
-                  the cache. Please note that changes to the `desiredState` are prioritized
-                  over any other updates. For instance, if both the `desiredState`
-                  and `ttl` are updated simultaneously, the state would be updated
-                  first, followed by `ttl`.
-                enum:
-                - running
-                - paused
-                - disabled
-                type: string
-              resourceID:
-                description: The AnywhereCacheID generated via backend, It can be
-                  used by users to manage an existing cache.
-                type: string
-              ttl:
-                default: 86400s
-                description: Cache entry TTL (ranges between 1h to 7d). This is a
-                  cache-level config that defines how long a cache entry can live.
-                  Defaults to "86400s" TTL must be in whole seconds.
-                type: string
-              zone:
-                description: Immutable. The zone in which the cache instance needs
-                  to be created. For example, us-central1-a.
-                type: string
-            required:
-            - bucketRef
-            - zone
-            type: object
-          status:
-            description: StorageAnywhereCacheStatus defines the config connector machine
-              state of StorageAnywhereCache
-            properties:
-              conditions:
-                description: Conditions represent the latest available observations
-                  of the object's current state.
-                items:
-                  properties:
-                    lastTransitionTime:
-                      description: Last time the condition transitioned from one status
-                        to another.
-                      type: string
-                    message:
-                      description: Human-readable message indicating details about
-                        last transition.
-                      type: string
-                    reason:
-                      description: Unique, one-word, CamelCase reason for the condition's
-                        last transition.
-                      type: string
-                    status:
-                      description: Status is the status of the condition. Can be True,
-                        False, Unknown.
-                      type: string
-                    type:
-                      description: Type is the type of the condition.
-                      type: string
-                  type: object
-                type: array
-              externalRef:
-                description: A unique specifier for the StorageAnywhereCache resource
-                  in GCP.
-                type: string
-              observedGeneration:
-                description: ObservedGeneration is the generation of the resource
-                  that was most recently observed by the Config Connector controller.
-                  If this is equal to metadata.generation, then that means that the
-                  current reported status reflects the most recent desired state of
-                  the resource.
-                format: int64
-                type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                properties:
-                  createTime:
-                    description: Output only. Time when Anywhere cache instance is
-                      allocated.
-                    type: string
-                  pendingUpdate:
-                    description: Output only. True if there is an active update operation
-                      against this cache instance. Subsequential update requests will
-                      be rejected if this field is true. Output only.
-                    type: boolean
-                  state:
-                    description: Output only. Cache state including "running", "creating",
-                      "disabled" and "paused".
-                    type: string
-                  updateTime:
-                    description: Output only. Time when Anywhere cache instance is
-                      last updated, including creation.
-                    type: string
-                type: object
-            type: object
-        required:
-        - spec
-        type: object
-    served: true
-    storage: true
-    subresources:
-      status: {}
   - additionalPrinterColumns:
     - jsonPath: .metadata.creationTimestamp
       name: Age
@@ -233,8 +55,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: StorageAnywhereCache is the Schema for the StorageAnywhereCache
-          API
+        description: APIGatewayAPI is the Schema for the APIGatewayAPI API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -249,19 +70,26 @@ spec:
           metadata:
             type: object
           spec:
-            description: StorageAnywhereCacheSpec defines the desired state of StorageAnywhereCache
+            description: APIGatewayAPISpec defines the desired state of APIGatewayAPI
             properties:
-              admissionPolicy:
-                default: admit-on-first-miss
-                description: 'Cache admission policy. Valid values includes: `admit-on-first-miss`
-                  and `admit-on-second-miss`. Defaults to `admit-on-first-miss`.'
-                enum:
-                - admit-on-first-miss
-                - admit-on-second-miss
+              displayName:
+                description: Optional. Display name.
                 type: string
-              bucketRef:
-                description: Immutable. The reference to bucket where cache needs
-                  to be created.
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Resource labels to represent user-provided
+                  metadata. Refer to cloud documentation on labels for more details.
+                  https://cloud.google.com/compute/docs/labeling-resources
+                type: object
+              managedService:
+                description: Optional. Immutable. The name of a Google Managed Service
+                  ( https://cloud.google.com/service-infrastructure/docs/glossary#managed).
+                  If not specified, a new Service will automatically be created in
+                  the same project as this API.
+                type: string
+              projectRef:
+                description: ' Optional. The project that this resource belongs to.'
                 oneOf:
                 - not:
                     required:
@@ -278,51 +106,28 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The StorageBucket selfLink, when not managed by Config
-                      Connector.
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: The `name` field of a `StorageBucket` resource.
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `StorageBucket` resource.
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
-              desiredState:
-                default: running
-                description: The desired state of the cache. Possible values include
-                  "running", "disabled", and "paused". If not specified, the default
-                  value is "running". This field controls the runtime behavior of
-                  the cache. Please note that changes to the `desiredState` are prioritized
-                  over any other updates. For instance, if both the `desiredState`
-                  and `ttl` are updated simultaneously, the state would be updated
-                  first, followed by `ttl`.
-                enum:
-                - running
-                - paused
-                - disabled
-                type: string
               resourceID:
-                description: The AnywhereCacheID generated via backend, It can be
-                  used by users to manage an existing cache.
+                description: The APIGatewayAPI name. If not given, the metadata.name
+                  will be used.
                 type: string
-              ttl:
-                default: 86400s
-                description: Cache entry TTL (ranges between 1h to 7d). This is a
-                  cache-level config that defines how long a cache entry can live.
-                  Defaults to "86400s" TTL must be in whole seconds.
-                type: string
-              zone:
-                description: Immutable. The zone in which the cache instance needs
-                  to be created. For example, us-central1-a.
-                type: string
-            required:
-            - bucketRef
-            - zone
             type: object
           status:
-            description: StorageAnywhereCacheStatus defines the config connector machine
-              state of StorageAnywhereCache
+            description: APIGatewayAPIStatus defines the config connector machine
+              state of APIGatewayAPI
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -351,8 +156,8 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the StorageAnywhereCache resource
-                  in GCP.
+                description: A unique specifier for the APIGatewayAPI resource in
+                  GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -367,21 +172,16 @@ spec:
                   observed in GCP.
                 properties:
                   createTime:
-                    description: Output only. Time when Anywhere cache instance is
-                      allocated.
+                    description: Created time.
                     type: string
-                  pendingUpdate:
-                    description: Output only. True if there is an active update operation
-                      against this cache instance. Subsequential update requests will
-                      be rejected if this field is true. Output only.
-                    type: boolean
+                  name:
+                    description: 'Resource name of the API. Format: projects/{project}/locations/global/apis/{api}'
+                    type: string
                   state:
-                    description: Output only. Cache state including "running", "creating",
-                      "disabled" and "paused".
+                    description: ' State of the API.'
                     type: string
                   updateTime:
-                    description: Output only. Time when Anywhere cache instance is
-                      last updated, including creation.
+                    description: Updated time.
                     type: string
                 type: object
             type: object
@@ -390,6 +190,165 @@ spec:
         type: object
     served: true
     storage: false
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: APIGatewayAPI is the Schema for the APIGatewayAPI API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: APIGatewayAPISpec defines the desired state of APIGatewayAPI
+            properties:
+              displayName:
+                description: Optional. Display name.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Resource labels to represent user-provided
+                  metadata. Refer to cloud documentation on labels for more details.
+                  https://cloud.google.com/compute/docs/labeling-resources
+                type: object
+              managedService:
+                description: Optional. Immutable. The name of a Google Managed Service
+                  ( https://cloud.google.com/service-infrastructure/docs/glossary#managed).
+                  If not specified, a new Service will automatically be created in
+                  the same project as this API.
+                type: string
+                x-kubernetes-validations:
+                - message: the field is immutable
+                  rule: self == oldSelf
+              projectRef:
+                description: ' Optional. The project that this resource belongs to.'
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The APIGatewayAPI name. If not given, the metadata.name
+                  will be used.
+                type: string
+            type: object
+          status:
+            description: APIGatewayAPIStatus defines the config connector machine
+              state of APIGatewayAPI
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the APIGatewayAPI resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Created time.
+                    type: string
+                  name:
+                    description: 'Resource name of the API. Format: projects/{project}/locations/global/apis/{api}'
+                    type: string
+                  state:
+                    description: ' State of the API.'
+                    type: string
+                  updateTime:
+                    description: Updated time.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
     subresources:
       status: {}
 status:

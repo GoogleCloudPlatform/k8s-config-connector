@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: 1.134.0
   creationTimestamp: null
   labels:
-    cnrm.cloud.google.com/dcl2crd: "true"
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
@@ -107,7 +106,8 @@ spec:
               memberKey:
                 description: Immutable. The `EntityKey` of the member. Either `member_key`
                   or `preferred_member_key` must be set when calling MembershipsService.CreateMembership
-                  but not both; both shall be set when returned.
+                  but not both; both shall be set when returned. Do not set. This
+                  is a legacy OUTPUT-ONLY field.
                 properties:
                   id:
                     description: Immutable. The ID of the entity. For Google-managed

@@ -21,19 +21,19 @@ metadata:
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/system: "true"
-  name: storageanywherecaches.storage.cnrm.cloud.google.com
+  name: metastorebackups.metastore.cnrm.cloud.google.com
 spec:
-  group: storage.cnrm.cloud.google.com
+  group: metastore.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: StorageAnywhereCache
-    listKind: StorageAnywhereCacheList
-    plural: storageanywherecaches
+    kind: MetastoreBackup
+    listKind: MetastoreBackupList
+    plural: metastorebackups
     shortNames:
-    - gcpstorageanywherecache
-    - gcpstorageanywherecaches
-    singular: storageanywherecache
+    - gcpmetastorebackup
+    - gcpmetastorebackups
+    singular: metastorebackup
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -55,8 +55,7 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
-        description: StorageAnywhereCache is the Schema for the StorageAnywhereCache
-          API
+        description: MetastoreBackup is the Schema for the MetastoreBackup API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -71,19 +70,17 @@ spec:
           metadata:
             type: object
           spec:
-            description: StorageAnywhereCacheSpec defines the desired state of StorageAnywhereCache
+            description: MetastoreBackupSpec defines the desired state of MetastoreBackup
             properties:
-              admissionPolicy:
-                default: admit-on-first-miss
-                description: 'Cache admission policy. Valid values includes: `admit-on-first-miss`
-                  and `admit-on-second-miss`. Defaults to `admit-on-first-miss`.'
-                enum:
-                - admit-on-first-miss
-                - admit-on-second-miss
+              description:
+                description: The description of the backup.
                 type: string
-              bucketRef:
-                description: Immutable. The reference to bucket where cache needs
-                  to be created.
+              resourceID:
+                description: The MetastoreBackup name. If not given, the metadata.name
+                  will be used.
+                type: string
+              serviceRef:
+                description: The MetastoreService that the backup belongs to.
                 oneOf:
                 - not:
                     required:
@@ -100,51 +97,22 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The StorageBucket selfLink, when not managed by Config
-                      Connector.
+                    description: A reference to an externally managed MetastoreService
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/services/{{serviceID}}".
                     type: string
                   name:
-                    description: The `name` field of a `StorageBucket` resource.
+                    description: The name of a MetastoreService resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `StorageBucket` resource.
+                    description: The namespace of a MetastoreService resource.
                     type: string
                 type: object
-              desiredState:
-                default: running
-                description: The desired state of the cache. Possible values include
-                  "running", "disabled", and "paused". If not specified, the default
-                  value is "running". This field controls the runtime behavior of
-                  the cache. Please note that changes to the `desiredState` are prioritized
-                  over any other updates. For instance, if both the `desiredState`
-                  and `ttl` are updated simultaneously, the state would be updated
-                  first, followed by `ttl`.
-                enum:
-                - running
-                - paused
-                - disabled
-                type: string
-              resourceID:
-                description: The AnywhereCacheID generated via backend, It can be
-                  used by users to manage an existing cache.
-                type: string
-              ttl:
-                default: 86400s
-                description: Cache entry TTL (ranges between 1h to 7d). This is a
-                  cache-level config that defines how long a cache entry can live.
-                  Defaults to "86400s" TTL must be in whole seconds.
-                type: string
-              zone:
-                description: Immutable. The zone in which the cache instance needs
-                  to be created. For example, us-central1-a.
-                type: string
             required:
-            - bucketRef
-            - zone
+            - serviceRef
             type: object
           status:
-            description: StorageAnywhereCacheStatus defines the config connector machine
-              state of StorageAnywhereCache
+            description: MetastoreBackupStatus defines the config connector machine
+              state of MetastoreBackup
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -173,8 +141,8 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the StorageAnywhereCache resource
-                  in GCP.
+                description: A unique specifier for the MetastoreBackup resource in
+                  GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -189,21 +157,23 @@ spec:
                   observed in GCP.
                 properties:
                   createTime:
-                    description: Output only. Time when Anywhere cache instance is
-                      allocated.
+                    description: Output only. The time when the backup was started.
                     type: string
-                  pendingUpdate:
-                    description: Output only. True if there is an active update operation
-                      against this cache instance. Subsequential update requests will
-                      be rejected if this field is true. Output only.
-                    type: boolean
+                  endTime:
+                    description: Output only. The time when the backup finished creating.
+                    type: string
+                  restoringServices:
+                    description: Output only. Services that are restoring from the
+                      backup.
+                    items:
+                      type: string
+                    type: array
+                  serviceRevision:
+                    description: Output only. The revision of the service at the time
+                      of backup.
+                    x-kubernetes-preserve-unknown-fields: true
                   state:
-                    description: Output only. Cache state including "running", "creating",
-                      "disabled" and "paused".
-                    type: string
-                  updateTime:
-                    description: Output only. Time when Anywhere cache instance is
-                      last updated, including creation.
+                    description: Output only. The current state of the backup.
                     type: string
                 type: object
             type: object
@@ -233,8 +203,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: StorageAnywhereCache is the Schema for the StorageAnywhereCache
-          API
+        description: MetastoreBackup is the Schema for the MetastoreBackup API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -249,19 +218,17 @@ spec:
           metadata:
             type: object
           spec:
-            description: StorageAnywhereCacheSpec defines the desired state of StorageAnywhereCache
+            description: MetastoreBackupSpec defines the desired state of MetastoreBackup
             properties:
-              admissionPolicy:
-                default: admit-on-first-miss
-                description: 'Cache admission policy. Valid values includes: `admit-on-first-miss`
-                  and `admit-on-second-miss`. Defaults to `admit-on-first-miss`.'
-                enum:
-                - admit-on-first-miss
-                - admit-on-second-miss
+              description:
+                description: The description of the backup.
                 type: string
-              bucketRef:
-                description: Immutable. The reference to bucket where cache needs
-                  to be created.
+              resourceID:
+                description: The MetastoreBackup name. If not given, the metadata.name
+                  will be used.
+                type: string
+              serviceRef:
+                description: The MetastoreService that the backup belongs to.
                 oneOf:
                 - not:
                     required:
@@ -278,51 +245,22 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The StorageBucket selfLink, when not managed by Config
-                      Connector.
+                    description: A reference to an externally managed MetastoreService
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/services/{{serviceID}}".
                     type: string
                   name:
-                    description: The `name` field of a `StorageBucket` resource.
+                    description: The name of a MetastoreService resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `StorageBucket` resource.
+                    description: The namespace of a MetastoreService resource.
                     type: string
                 type: object
-              desiredState:
-                default: running
-                description: The desired state of the cache. Possible values include
-                  "running", "disabled", and "paused". If not specified, the default
-                  value is "running". This field controls the runtime behavior of
-                  the cache. Please note that changes to the `desiredState` are prioritized
-                  over any other updates. For instance, if both the `desiredState`
-                  and `ttl` are updated simultaneously, the state would be updated
-                  first, followed by `ttl`.
-                enum:
-                - running
-                - paused
-                - disabled
-                type: string
-              resourceID:
-                description: The AnywhereCacheID generated via backend, It can be
-                  used by users to manage an existing cache.
-                type: string
-              ttl:
-                default: 86400s
-                description: Cache entry TTL (ranges between 1h to 7d). This is a
-                  cache-level config that defines how long a cache entry can live.
-                  Defaults to "86400s" TTL must be in whole seconds.
-                type: string
-              zone:
-                description: Immutable. The zone in which the cache instance needs
-                  to be created. For example, us-central1-a.
-                type: string
             required:
-            - bucketRef
-            - zone
+            - serviceRef
             type: object
           status:
-            description: StorageAnywhereCacheStatus defines the config connector machine
-              state of StorageAnywhereCache
+            description: MetastoreBackupStatus defines the config connector machine
+              state of MetastoreBackup
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -351,8 +289,8 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the StorageAnywhereCache resource
-                  in GCP.
+                description: A unique specifier for the MetastoreBackup resource in
+                  GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -367,21 +305,23 @@ spec:
                   observed in GCP.
                 properties:
                   createTime:
-                    description: Output only. Time when Anywhere cache instance is
-                      allocated.
+                    description: Output only. The time when the backup was started.
                     type: string
-                  pendingUpdate:
-                    description: Output only. True if there is an active update operation
-                      against this cache instance. Subsequential update requests will
-                      be rejected if this field is true. Output only.
-                    type: boolean
+                  endTime:
+                    description: Output only. The time when the backup finished creating.
+                    type: string
+                  restoringServices:
+                    description: Output only. Services that are restoring from the
+                      backup.
+                    items:
+                      type: string
+                    type: array
+                  serviceRevision:
+                    description: Output only. The revision of the service at the time
+                      of backup.
+                    x-kubernetes-preserve-unknown-fields: true
                   state:
-                    description: Output only. Cache state including "running", "creating",
-                      "disabled" and "paused".
-                    type: string
-                  updateTime:
-                    description: Output only. Time when Anywhere cache instance is
-                      last updated, including creation.
+                    description: Output only. The current state of the backup.
                     type: string
                 type: object
             type: object
