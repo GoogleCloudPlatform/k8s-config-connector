@@ -1,0 +1,7 @@
+[bad_labels] crd=monitoringmetricdescriptors.monitoring.cnrm.cloud.google.com version=v1beta1: field spec.labels is not a map of strings
+[bad_labels] crd=workstationclusters.workstations.cnrm.cloud.google.com version=v1alpha1: field spec.labels is not a map of strings
+[bad_labels] crd=workstationclusters.workstations.cnrm.cloud.google.com version=v1beta1: field spec.labels is not a map of strings
+[bad_labels] crd=workstationconfigs.workstations.cnrm.cloud.google.com version=v1alpha1: field spec.labels is not a map of strings
+[bad_labels] crd=workstationconfigs.workstations.cnrm.cloud.google.com version=v1beta1: field spec.labels is not a map of strings
+[bad_labels] crd=workstations.workstations.cnrm.cloud.google.com version=v1alpha1: field spec.labels is not a map of strings
+[bad_labels] crd=workstations.workstations.cnrm.cloud.google.com version=v1beta1: field spec.labels is not a map of strings

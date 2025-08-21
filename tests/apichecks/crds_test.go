@@ -78,6 +78,7 @@ func TestMissingRefs(t *testing.T) {
 
 				isRef := false
 				desc := field.props.Description
+
 				// Heuristic: look for descriptions like "should be of the form projects/{projectID}/locations/{location}/bars/{name}"
 				if strings.Contains(desc, " projects/") {
 					isRef = true
@@ -462,6 +463,126 @@ func TestCRDShortNames(t *testing.T) {
 	sort.Strings(errs)
 	want := strings.Join(errs, "\n")
 	test.CompareGoldenFile(t, "testdata/exceptions/shortnames.txt", want)
+}
+
+func TestSupportGCPLabels(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading CRDs: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			visitCRDVersion(version, func(field *CRDField) {
+				if field.FieldPath != ".spec.labels" {
+					return
+				}
+				// GCP labels are a map of strings
+				if field.props == nil || field.props.Type != "object" || field.props.AdditionalProperties == nil || field.props.AdditionalProperties.Schema == nil || field.props.AdditionalProperties.Schema.Type != "string" {
+					return
+				}
+
+				parts := strings.Split(field.FieldPath, ".")
+				if len(parts) == 0 {
+					return
+				}
+				errs = append(errs, fmt.Sprintf("[gcplabels] crd=%s version=%v: field %s", crd.Name, version.Name, strings.TrimPrefix(field.FieldPath, ".")))
+			})
+		}
+	}
+
+	sort.Strings(errs)
+	want := strings.Join(errs, "\n")
+	test.CompareGoldenFile(t, "testdata/supported_labels.txt", want)
+}
+
+func TestLegacyCompatibleLabels(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading CRDs: %v", err)
+	}
+
+	unstructs := loadUnstructs(t)
+	unstructsByKind := make(map[string][]*unstructured.Unstructured)
+	for _, u := range unstructs {
+		kind := u.GetKind()
+		unstructsByKind[kind] = append(unstructsByKind[kind], u)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			visitCRDVersion(version, func(field *CRDField) {
+				if field.FieldPath != ".spec.labels" {
+					return
+				}
+				// GCP labels are a map of strings
+				if field.props == nil || field.props.Type != "object" || field.props.AdditionalProperties == nil || field.props.AdditionalProperties.Schema == nil || field.props.AdditionalProperties.Schema.Type != "string" {
+					return
+				}
+
+				parts := strings.Split(field.FieldPath, ".")
+				if len(parts) == 0 {
+					return
+				}
+				fieldName := parts[len(parts)-1]
+
+				if strings.ToLower(fieldName) == "labels" {
+					// This is a valid label field, check if it is always set
+					kind := crd.Spec.Names.Kind
+					kindUnstructs := unstructsByKind[kind]
+					if len(kindUnstructs) == 0 {
+						return
+					}
+					alwaysSet := true
+					for _, u := range kindUnstructs {
+						if !hasField(u.Object, field.FieldPath) {
+							alwaysSet = false
+							break
+						}
+					}
+					if alwaysSet {
+						errs = append(errs, fmt.Sprintf("[missing_legacy_label_tests] crd=%s version=%v: field %s is always set in tests", crd.Name, version.Name, strings.TrimPrefix(field.FieldPath, ".")))
+					}
+					return
+				}
+			})
+		}
+	}
+
+	sort.Strings(errs)
+	want := strings.Join(errs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/missing_legacy_label_tests.txt", want)
+}
+
+func TestBadLabels(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading CRDs: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			visitCRDVersion(version, func(field *CRDField) {
+				if !strings.HasPrefix(field.FieldPath, ".spec.") {
+					return
+				}
+				if field.FieldPath != ".spec.labels" {
+					return
+				}
+				// GCP labels are a map of strings
+				if field.props == nil || field.props.Type != "object" || field.props.AdditionalProperties == nil || field.props.AdditionalProperties.Schema == nil || field.props.AdditionalProperties.Schema.Type != "string" {
+					errs = append(errs, fmt.Sprintf("[bad_labels] crd=%s version=%v: field %s is not a map of strings", crd.Name, version.Name, strings.TrimPrefix(field.FieldPath, ".")))
+				}
+			})
+		}
+	}
+
+	sort.Strings(errs)
+	want := strings.Join(errs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/bad_labels.txt", want)
 }
 
 // Run this test with WRITE_GOLDEN_OUTPUT set to update the exceptions list.
@@ -852,8 +973,8 @@ func TestMultiVersionCRDNoDiff(t *testing.T) {
 			if diff := cmp.Diff(string(expectedDiff), allDiffs.String()); diff != "" {
 				// To address inconsistencies between local and CI environments,
 				// we normalize the diff output by replacing non-breaking spaces with regular spaces.
-				normalizedActual := strings.ReplaceAll(allDiffs.String(), " ", " ")
-				normalizedExpected := strings.ReplaceAll(string(expectedDiff), " ", " ")
+				normalizedActual := strings.ReplaceAll(allDiffs.String(), " ", " ")
+				normalizedExpected := strings.ReplaceAll(string(expectedDiff), " ", " ")
 				if diff := cmp.Diff(normalizedExpected, normalizedActual); diff != "" {
 					t.Errorf("crd %s schema diff does not match golden file %s:\n%s", crd.Name, diffFilePath, diff)
 				}
