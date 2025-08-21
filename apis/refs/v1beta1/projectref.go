@@ -19,9 +19,11 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -55,6 +57,25 @@ func AsProjectRef(in *v1alpha1.ResourceRef) *ProjectRef {
 
 type Project struct {
 	ProjectID string
+}
+
+var _ identity.Identity = &Project{}
+
+func (p *Project) String() string {
+	return "projects/" + p.ProjectID
+}
+
+func (p *Project) FromExternal(ref string) error {
+	tokens := strings.Split(ref, "/")
+	if len(tokens) == 1 {
+		p.ProjectID = tokens[0]
+		return nil
+	}
+	if len(tokens) == 2 && tokens[0] == "projects" {
+		p.ProjectID = tokens[1]
+		return nil
+	}
+	return fmt.Errorf("unknown format for project %q (use projects/{projectId})", ref)
 }
 
 // ResolveProjectFromAnnotation resolves the projectID to use for a resource,
@@ -167,4 +188,17 @@ func ResolveProjectID(ctx context.Context, reader client.Reader, obj *unstructur
 	}
 
 	return "", fmt.Errorf("cannot find project id for %v %v/%v", obj.GetKind(), obj.GetNamespace(), obj.GetName())
+}
+
+func ResolveProjectIdentity(ctx context.Context, reader client.Reader, obj client.Object) (*Project, error) {
+	m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, fmt.Errorf("converting to unstructured: %w", err)
+	}
+	u := &unstructured.Unstructured{Object: m}
+	projectID, err := ResolveProjectID(ctx, reader, u)
+	if err != nil {
+		return nil, err
+	}
+	return &Project{ProjectID: projectID}, nil
 }

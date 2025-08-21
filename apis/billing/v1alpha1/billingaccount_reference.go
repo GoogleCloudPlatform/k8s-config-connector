@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1beta1
+package v1alpha1
 
 import (
 	"context"
@@ -24,48 +24,48 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &NotificationChannelRef{}
+var _ refsv1beta1.Ref = &BillingAccountRef{}
 
-// NotificationChannelRef is a reference to a MonitoringNotificationChannel resource.
-type NotificationChannelRef struct {
-	// A reference to an externally managed MonitoringNotificationChannel resource.
-	// Should be in the format "projects/{{projectID}}/notificationChannels/{{channelID}}".
+// BillingAccountRef is a reference to a BillingAccount resource.
+type BillingAccountRef struct {
+	// A reference to an externally managed BillingAccount resource.
+	// Should be in the format "billingAccounts/{billingAccountID}".
 	External string `json:"external,omitempty"`
 
-	// The name of a MonitoringNotificationChannel resource.
+	// The name of a BillingAccount resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a MonitoringNotificationChannel resource.
+	// The namespace of a BillingAccount resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-func (r *NotificationChannelRef) GetGVK() schema.GroupVersionKind {
-	return MonitoringNotificationChannelGVK
+func (r *BillingAccountRef) GetGVK() schema.GroupVersionKind {
+	return BillingAccountGVK
 }
 
-func (r *NotificationChannelRef) GetNamespacedName() types.NamespacedName {
+func (r *BillingAccountRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
 		Name:      r.Name,
 		Namespace: r.Namespace,
 	}
 }
 
-func (r *NotificationChannelRef) GetExternal() string {
+func (r *BillingAccountRef) GetExternal() string {
 	return r.External
 }
 
-func (r *NotificationChannelRef) SetExternal(ref string) {
+func (r *BillingAccountRef) SetExternal(ref string) {
 	r.External = ref
 }
 
-func (r *NotificationChannelRef) ValidateExternal(ref string) error {
-	id := &NotificationChannelIdentity{}
+func (r *BillingAccountRef) ValidateExternal(ref string) error {
+	id := &BillingAccountIdentity{}
 	if err := id.FromExternal(r.GetExternal()); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *NotificationChannelRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+func (r *BillingAccountRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
 }
