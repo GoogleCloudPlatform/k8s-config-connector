@@ -20,6 +20,11 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
+if [[ -n ${SKIP_GENERATE_CRDS:-} ]]; then
+  echo "SKIP_GENERATE_CRDS is set; skipping generation of CRDs"
+  exit 0
+fi
+
 # Run controller-gen to generate CRDs (including deepcopy)
 cd ${REPO_ROOT}/apis
 go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 \
