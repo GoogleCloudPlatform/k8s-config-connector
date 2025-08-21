@@ -47,15 +47,15 @@ You will also need to register the service in mockgcp/register.go by adding an a
 
 ## Running the test and capturing the real GCP output
 
-Now you can run the test and capture the real GCP output (it will be written to `mockgcp/mock<service>/testdata/<resource>/crud/_http.log`
+Now you can run the test and capture the real GCP output (it will be written to `mock<service>/testdata/<resource>/crud/_http.log`)
 
-Run `dev/tasks/record-gcp mock<service>/testdata/<resource>/crud` - that should succeed and write the _http.log
+Run `dev/tasks/record-gcp mock<service>/testdata/<resource>/crud` - that should succeed and write the dev/tasks/record-gcp mock<service>/testdata/<resource>/crud/_http.log
 
 Note that the first time you write this, it will fail because it is updating the golden log.  If you run the test again, ideally the output will not change and the test should pass.
 
 If the output changes, that means that GCP returns "volatile" results (like timestamps, or random identifiers).  Update `normalize.go` to replace these volatile values with placeholders.
 
-Once the output is stable (the tests pass), then please create a commit that is something like "golden output for mock<service>/testdata/<resource>/cred"
+Once the output is stable (the tests pass), then please create a commit that is something like "golden output for mock<service>/testdata/<resource>/crud"
 
 ## Running the test against mockgcp
 
