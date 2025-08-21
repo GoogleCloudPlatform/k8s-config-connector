@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,27 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package kccfeatureflags
+package resourceconfig
 
-import (
-	"os"
-	"strings"
-
-	"k8s.io/apimachinery/pkg/runtime/schema"
-)
-
-// UseDirectReconciler is true if we should use the direct reconciler to actuate the specified resource.
-func UseDirectReconciler(gk schema.GroupKind) bool {
-	directReconcilers := os.Getenv("KCC_USE_DIRECT_RECONCILERS")
-	if directReconcilers == "" {
-		return false
-	}
-
-	for _, directReconciler := range strings.Split(directReconcilers, ",") {
-		if directReconciler == gk.Kind {
-			return true
-		}
-	}
-
-	return false
+func LoadConfig() (*ResourcesControllerMap, error) {
+	return ControllerConfigStatic, nil
 }

@@ -35,6 +35,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policymember"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/reconciliationinterval"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
@@ -42,9 +43,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/kccfeatureflags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
@@ -198,37 +197,28 @@ func ReconcilerTypeForObject(u *unstructured.Unstructured) (k8s.ReconcilerType, 
 	case "IAMAuditConfig":
 		return k8s.ReconcilerTypeIAMAuditConfig, nil
 	default:
-		hasDirectController := registry.IsDirectByGK(objectGVK.GroupKind())
-		hasTerraformController := supportedgvks.IsTFBasedByGVK(objectGVK)
-		hasDCLController := supportedgvks.IsDCLBasedByGVK(objectGVK)
-
-		useDirectReconciler := false
-
-		if kccfeatureflags.UseDirectReconciler(objectGVK.GroupKind()) {
-			// If KCC_USE_DIRECT_RECONCILERS is set for this object, reconciler is always direct.
-			useDirectReconciler = true
-		} else if hasDirectController && (hasTerraformController || hasDCLController) {
-			// If we have a choice of controllers, use reconcile gate to choose between them.
-			if reconcileGate := registry.GetReconcileGate(objectGVK.GroupKind()); reconcileGate != nil {
-				useDirectReconciler = reconcileGate.ShouldReconcile(u)
-			} else {
-				return "", fmt.Errorf("no predicate for gvk %v where we have multiple controllers", objectGVK)
-			}
-		} else if hasDirectController {
-			// Otherwise, if direct controller is available, use direct.
-			useDirectReconciler = true
+		resourceConfig, err := resourceconfig.LoadConfig()
+		if err != nil {
+			return "", fmt.Errorf("error loading controller config: %w", err)
 		}
-
-		if useDirectReconciler {
+		if resourceConfig == nil {
+			return "", fmt.Errorf("controller config is nil")
+		}
+		resourceController, err := resourceConfig.GetControllerForGVK(objectGVK)
+		if err != nil {
+			return "", fmt.Errorf("no controller config for gvk %v: %w", objectGVK, err)
+		}
+		switch resourceController.DefaultController {
+		case "direct":
 			return k8s.ReconcilerTypeDirect, nil
-		} else if hasDCLController {
+		case "dcl":
 			return k8s.ReconcilerTypeDCL, nil
-		} else if hasTerraformController {
+		case "terraform":
 			return k8s.ReconcilerTypeTerraform, nil
+		default:
+			return "", fmt.Errorf("unknown controller type %q for gvk %v", resourceController.DefaultController, objectGVK)
 		}
 	}
-
-	return "", fmt.Errorf("no reconciler type found for: %v", objectGVK)
 }
 
 func (r *TestReconciler) newReconcilerForObject(u *unstructured.Unstructured) reconcile.Reconciler {

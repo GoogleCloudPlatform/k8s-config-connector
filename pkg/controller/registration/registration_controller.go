@@ -17,10 +17,10 @@ package registration
 import (
 	"context"
 	"fmt"
-	"os"
 	"sync"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
@@ -33,15 +33,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policymember"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
-	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
+	tf "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/unmanageddetector"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/kccfeatureflags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -54,7 +52,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	crlog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
-	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
 )
@@ -63,17 +60,16 @@ const serviceAccountKeyAPIGroup = "iam.cnrm.cloud.google.com"
 const serviceAccountKeyKind = "IAMServiceAccountKey"
 
 type RegistrationControllerOptions struct {
-	ControllerName string
+	ControllerName            string
+	ControllerConfig          *config.ControllerConfig
+	ResourcesControllerConfig *resourceconfig.ResourcesControllerMap
 }
 
 // AddDefaultControllers creates the registration controller with the default controller factory,
 // this will dynamically create the default controllers for each CRD.
-func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *controller.Deps, controllerConfig *config.ControllerConfig) error {
-	opt := RegistrationControllerOptions{
-		ControllerName: "registration-controller",
-	}
+func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *controller.Deps, opts RegistrationControllerOptions) error {
 	if err := add(mgr, rd,
-		registerDefaultControllers(ctx, controllerConfig), opt); err != nil {
+		registerDefaultControllers(ctx, opts.ControllerConfig), opts); err != nil {
 		return fmt.Errorf("error adding default registration controller: %w", err)
 	}
 	return nil
@@ -129,6 +125,8 @@ func add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc, opt
 		jitterGenerator:   rd.JitterGen,
 		dependencyTracker: rd.DependencyTracker,
 	}
+
+	r.controllerSelector = resourceconfig.NewControllerSelector(opts.ResourcesControllerConfig)
 	c, err := crcontroller.New(opts.ControllerName, mgr,
 		crcontroller.Options{
 			Reconciler:              r,
@@ -140,7 +138,7 @@ func add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc, opt
 	// return c.Watch(source.Kind(mgr.GetCache(), &apiextensions.CustomResourceDefinition{},
 	// 	&handler.TypedEnqueueRequestForObject[*apiextensions.CustomResourceDefinition]{}, ManagedByKCCPredicate{}))
 	return c.Watch(source.Kind(mgr.GetCache(), &apiextensions.CustomResourceDefinition{},
-		&handler.TypedEnqueueRequestForObject[*apiextensions.CustomResourceDefinition]{}, ManagedByKCCPredicate[*apiextensions.CustomResourceDefinition]{}))
+		&handler.TypedEnqueueRequestForObject[*apiextensions.CustomResourceDefinition]{}))
 }
 
 var _ reconcile.Reconciler = &ReconcileRegistration{}
@@ -148,16 +146,17 @@ var _ reconcile.Reconciler = &ReconcileRegistration{}
 // ReconcileRegistration reconciles a CRD owned by KCC
 type ReconcileRegistration struct {
 	client.Client
-	provider          *tfschema.Provider
-	smLoader          *servicemappingloader.ServiceMappingLoader
-	dclConfig         *dcl.Config
-	dclConverter      *conversion.Converter
-	mgr               manager.Manager
-	controllers       map[string]map[string]controllerContext
-	registrationFunc  registrationFunc
-	defaulters        []k8s.Defaulter
-	jitterGenerator   jitter.Generator
-	dependencyTracker *gcpwatch.DependencyTracker
+	provider           *tfschema.Provider
+	smLoader           *servicemappingloader.ServiceMappingLoader
+	dclConfig          *dcl.Config
+	dclConverter       *conversion.Converter
+	mgr                manager.Manager
+	controllers        map[string]map[string]controllerContext
+	registrationFunc   registrationFunc
+	defaulters         []k8s.Defaulter
+	jitterGenerator    jitter.Generator
+	dependencyTracker  *gcpwatch.DependencyTracker
+	controllerSelector *resourceconfig.ControllerSelector
 
 	mu sync.Mutex
 }
@@ -227,9 +226,9 @@ func isServiceAccountKeyCRD(crd *apiextensions.CustomResourceDefinition) bool {
 	return crd.Spec.Group == serviceAccountKeyAPIGroup && crd.Spec.Names.Kind == serviceAccountKeyKind
 }
 
-func registerDefaultControllers(ctx context.Context, config *config.ControllerConfig) registrationFunc { //nolint:revive
+func registerDefaultControllers(ctx context.Context, controllerConfig *config.ControllerConfig) registrationFunc { //nolint:revive
 	return func(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
-		return registerDefaultController(ctx, r, config, crd, gvk)
+		return registerDefaultController(ctx, r, controllerConfig, crd, gvk)
 	}
 }
 
@@ -248,14 +247,16 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 		//DependencyTracker: r.dependencyTracker,
 	}
 
-	// todo acpana house in KCC mgr flag
-	v := os.Getenv("KCC_RECONCILE_FLAG_GATE")
-	if v == "USE_DEPENDENCY_TRACKER" {
-		cds.DependencyTracker = r.dependencyTracker
-	}
+	cds.DependencyTracker = r.dependencyTracker
 
 	var schemaUpdater k8s.SchemaReferenceUpdater
-	if kccfeatureflags.UseDirectReconciler(gvk.GroupKind()) {
+	ccc := &v1beta1.ConfigConnectorContext{}
+	if err := r.Client.Get(ctx, client.ObjectKey{Name: v1beta1.ConfigConnectorContextAllowedName}, ccc); err != nil {
+		logger.Info("error getting configconnectorconfig: %w", err)
+	}
+	controllerType := r.controllerSelector.SelectController(gvk, "", &ccc.Spec)
+	switch controllerType {
+	case k8s.ReconcilerTypeDirect:
 		groupKind := gvk.GroupKind()
 
 		model, err := registry.GetModel(groupKind)
@@ -280,7 +281,20 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 			}); err != nil {
 			return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 		}
-		return schemaUpdater, nil
+	case k8s.ReconcilerTypeTerraform:
+		var err error
+		schemaUpdater, err = tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters, r.jitterGenerator, nil)
+		if err != nil {
+			return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
+		}
+	case k8s.ReconcilerTypeDCL:
+		var err error
+		schemaUpdater, err = dclcontroller.Add(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, r.defaulters, r.jitterGenerator, nil)
+		if err != nil {
+			return nil, fmt.Errorf("error adding dcl controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
+		}
+	default:
+		logger.Info("no controller configured for resource", "group", gvk.Group, "kind", gvk.Kind)
 	}
 
 	// Depending on which resource it is, we need to register a different controller.
@@ -309,74 +323,6 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 			if err := gsakeysecretgenerator.Add(r.mgr, crd, &controller.Deps{JitterGen: r.jitterGenerator}); err != nil {
 				return nil, fmt.Errorf("error adding the gsa-to-secret generator for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
-		}
-
-		hasDirectController := registry.IsDirectByGK(gvk.GroupKind())
-		hasTerraformController := crd.Labels[crdgeneration.TF2CRDLabel] == "true"
-		hasDCLController := crd.Labels[k8s.DCL2CRDLabel] == "true"
-
-		var useDirectReconcilerPredicate predicate.Predicate
-		var useLegacyPredicate predicate.Predicate
-
-		// If we have a choice of controllers, construct predicates to choose between them
-		if hasDirectController && (hasTerraformController || hasDCLController) {
-			if reconcileGate := registry.GetReconcileGate(gvk.GroupKind()); reconcileGate != nil {
-				// If reconcile gate is enabled for this gvk, generate a controller-runtime predicate that will
-				// run the direct reconciler only when the reconcile gate returns true.
-				useDirectReconcilerPredicate = kccpredicate.NewReconcilePredicate(r.mgr.GetClient(), gvk, reconcileGate)
-				useLegacyPredicate = kccpredicate.NewInverseReconcilePredicate(r.mgr.GetClient(), gvk, reconcileGate)
-			} else {
-				logger.Error(fmt.Errorf("no predicate where we have multiple controllers"), "skipping direct controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
-				hasDirectController = false
-			}
-		}
-
-		// register controllers for direct CRDs
-		if hasDirectController {
-			model, err := registry.GetModel(gvk.GroupKind())
-			if err != nil {
-				return nil, err
-			}
-			deps := directbase.Deps{
-				Defaulters:         r.defaulters,
-				JitterGenerator:    r.jitterGenerator,
-				ReconcilePredicate: useDirectReconcilerPredicate,
-
-				// for iam controllers
-				IAMAdapterDeps: &directbase.IAMAdapterDeps{
-					KubeClient: r.Client,
-					ControllerDeps: &controller.Deps{
-						TFProvider:   r.provider,
-						TFLoader:     r.smLoader,
-						DCLConfig:    r.dclConfig,
-						DCLConverter: r.dclConverter,
-					},
-				},
-			}
-			if err := directbase.AddController(r.mgr, gvk, model, deps); err != nil {
-				return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
-			}
-		}
-		// register controllers for dcl-based CRDs
-		if hasDCLController {
-			su, err := dclcontroller.Add(r.mgr, crd, r.dclConverter, r.dclConfig, r.smLoader, r.defaulters, r.jitterGenerator, useLegacyPredicate)
-			if err != nil {
-				return nil, fmt.Errorf("error adding dcl controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
-			}
-			return su, nil
-		}
-		// register controllers for tf-based CRDs
-		if hasTerraformController {
-			su, err := tf.Add(r.mgr, crd, r.provider, r.smLoader, r.defaulters, r.jitterGenerator, useLegacyPredicate)
-			if err != nil {
-				return nil, fmt.Errorf("error adding terraform controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
-			}
-			return su, nil
-		}
-
-		if !hasDCLController && !hasTerraformController && !hasDirectController {
-			logger.Error(fmt.Errorf("unrecognized CRD: %v", crd.Spec.Names.Kind), "skipping controller registration", "group", gvk.Group, "version", gvk.Version, "kind", gvk.Kind)
-			return nil, nil
 		}
 
 	}

@@ -102,7 +102,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 			"apiVersion": apiVersion,
 		},
 	}
-	predicateList := []predicate.Predicate{kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
+	predicateList := []predicate.Predicate{&kccpredicate.ControllerOverridePredicate{}}
 	if additionalPredicate != nil {
 		predicateList = append(predicateList, additionalPredicate)
 	}

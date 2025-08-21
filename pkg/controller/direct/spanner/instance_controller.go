@@ -25,7 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	gcp "cloud.google.com/go/spanner/admin/instance/apiv1"
@@ -44,26 +44,7 @@ const (
 )
 
 func init() {
-	rg := &InstanceReconcileGate{}
-	registry.RegisterModelWithReconcileGate(krm.SpannerInstanceGVK, NewSpannerInstanceModel, rg)
-}
-
-type InstanceReconcileGate struct {
-	optIn kccpredicate.OptInToDirectReconciliation
-}
-
-var _ kccpredicate.ReconcileGate = &InstanceReconcileGate{}
-
-func (r *InstanceReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
-	if r.optIn.ShouldReconcile(o) {
-		return true
-	}
-	obj := &krm.SpannerInstance{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &obj); err != nil {
-		return false
-	}
-	// If the fields supported by on the direct controller exist, use direct controller.
-	return obj.Spec.DefaultBackupScheduleType != nil || obj.Spec.Labels != nil || obj.Spec.Edition != nil || obj.Spec.AutoscalingConfig != nil
+	registry.RegisterModel(krm.SpannerInstanceGVK, NewSpannerInstanceModel)
 }
 
 func NewSpannerInstanceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {

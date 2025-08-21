@@ -14,8 +14,6 @@
 
 package predicate
 
-import "k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-
 // AnnotationKeyAlphaReconciler allows customers to opt-in to using the direct reconciler.
 const AnnotationKeyAlphaReconciler = "alpha.cnrm.cloud.google.com/reconciler"
 
@@ -24,13 +22,13 @@ const AnnotationUnmanaged = "cnrm.cloud.google.com/unmanaged"
 
 // OptInToDirectReconciliation allows users to opt in to direct reconciliation
 // by specifying an AnnotationKeyAlphaReconciler annotation.
-type OptInToDirectReconciliation struct {
-}
+// type OptInToDirectReconciliation struct {
+// }
 
-var _ ReconcileGate = &OptInToDirectReconciliation{}
+// var _ ReconcileGate = &OptInToDirectReconciliation{}
 
 // ShouldReconcile returns true if the reconciler should be used to for the resource.
-func (r *OptInToDirectReconciliation) ShouldReconcile(o *unstructured.Unstructured) bool {
-	v := o.GetAnnotations()[AnnotationKeyAlphaReconciler]
-	return v == "direct"
-}
+// func (r *OptInToDirectReconciliation) ShouldReconcile(o *unstructured.Unstructured) bool {
+// 	v := o.GetAnnotations()[AnnotationKeyAlphaReconciler]
+// 	return v == "direct"
+// }
