@@ -292,7 +292,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 	case "IAMPartialPolicy":
 		var useDirectReconcilerPredicate predicate.Predicate
 
-		if registry.IsDirectByGK(gvk.GroupKind()) && config.UseLegacyIAM == false {
+		if registry.IsDirectByGK(gvk.GroupKind()) && config.UseDirectIAM {
 			reconcileGate := registry.GetReconcileGate(gvk.GroupKind())
 			if reconcileGate != nil {
 				useDirectReconcilerPredicate = kccpredicate.NewReconcilePredicate(r.mgr.GetClient(), gvk, reconcileGate)

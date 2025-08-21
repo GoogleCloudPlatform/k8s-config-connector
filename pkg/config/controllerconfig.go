@@ -53,8 +53,8 @@ type ControllerConfig struct {
 	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
 	EnableMetricsTransport bool
 
-	// Use the legacy/ handwritten IAM controllers.
-	UseLegacyIAM bool
+	// Use the direct IAM controllers.
+	UseDirectIAM bool
 }
 
 func (c *ControllerConfig) RESTClientOptions() ([]option.ClientOption, error) {

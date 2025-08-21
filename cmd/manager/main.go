@@ -62,10 +62,10 @@ func main() {
 		pprofPort                int
 		rateLimitQps             float32
 		rateLimitBurst           int
-		useLegacyIAM             bool
+		useDirectIAM             bool
 	)
 	flag.StringVar(&prometheusScrapeEndpoint, "prometheus-scrape-endpoint", ":8888", "configure the Prometheus scrape endpoint; :8888 as default")
-	flag.BoolVar(&useLegacyIAM, "legacy-iam-reconciler", false, "experimental flag to allow switching back to legacy IAM controllers")
+	flag.BoolVar(&useDirectIAM, "direct-iam-reconciler", false, "experimental flag to enable the direct IAM reconciler by default for IAMPartialPolicy")
 	flag.BoolVar(&controllermetrics.ResourceNameLabel, "resource-name-label", false, "option to enable the resource name label on some Prometheus metrics; false by default")
 	flag.BoolVar(&userProjectOverride, "user-project-override", false, "option to use the resource project for preconditions, quota, and billing, instead of the project the credentials belong to; false by default")
 	flag.StringVar(&billingProject, "billing-project", "", "project to use for preconditions, quota, and billing if --user-project-override is enabled; empty by default; if this is left empty but --user-project-override is enabled, the resource's project will be used")

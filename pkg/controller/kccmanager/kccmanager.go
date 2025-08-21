@@ -92,8 +92,8 @@ type Config struct {
 	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
 	EnableMetricsTransport bool
 
-	// Use the legacy/ handwritten IAM controllers.
-	UseLegacyIAM bool
+	// Use the direct IAM controllers.
+	UseDirectIAM bool
 }
 
 // Creates a new controller-runtime manager.Manager and starts all of the KCC controllers pointed at the
@@ -169,7 +169,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		GRPCUnaryClientInterceptor: cfg.GRPCUnaryClientInterceptor,
 		UserAgent:                  gcp.KCCUserAgent(),
 		EnableMetricsTransport:     cfg.EnableMetricsTransport,
-		UseLegacyIAM:               cfg.UseLegacyIAM,
+		UseDirectIAM:               cfg.UseDirectIAM,
 	}
 
 	if cfg.GCPAccessToken != "" {
