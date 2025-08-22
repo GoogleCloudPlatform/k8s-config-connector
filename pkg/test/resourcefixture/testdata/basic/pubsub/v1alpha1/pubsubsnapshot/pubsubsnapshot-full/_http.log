@@ -296,7 +296,7 @@ X-Goog-User-Project: ${projectId}
 
 {
   "snapshot": {
-    "expireTime": "2025-08-29T15:48:06.826Z",
+    "expireTime": "2025-08-22T15:50:58.498140504Z",
     "labels": {
       "key": "new-value"
     },
@@ -319,6 +319,7 @@ X-Xss-Protection: 0
 {
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
+    "cnrm-test": "true",
     "key": "new-value"
   },
   "name": "projects/${projectId}/snapshots/pubsubsnapshot-full-${uniqueId}",
@@ -346,6 +347,7 @@ X-Xss-Protection: 0
 {
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
+    "cnrm-test": "true",
     "key": "new-value"
   },
   "name": "projects/${projectId}/snapshots/pubsubsnapshot-full-${uniqueId}",
