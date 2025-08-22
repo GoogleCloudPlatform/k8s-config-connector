@@ -102,3 +102,7 @@ func (r *ApigeeOrganizationRef) Normalize(ctx context.Context, reader client.Rea
 	}
 	return nil
 }
+
+func (r *ApigeeOrganizationRef) NormalizeOnTemplate(ctx context.Context, reader client.Reader, defaultNamespace, tpl string) error {
+	return reference.NormalizeOnTemplate(ctx, reader, r, defaultNamespace, tpl)
+}
