@@ -252,7 +252,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 	var schemaUpdater k8s.SchemaReferenceUpdater
 	ccc := &v1beta1.ConfigConnectorContext{}
 	if err := r.Client.Get(ctx, client.ObjectKey{Name: v1beta1.ConfigConnectorContextAllowedName}, ccc); err != nil {
-		logger.Info("error getting configconnectorconfig: %w", err)
+		logger.Info("error getting configconnectorcontext: %w", err)
 	}
 	controllerType := r.controllerSelector.SelectController(gvk, "", &ccc.Spec)
 	switch controllerType {

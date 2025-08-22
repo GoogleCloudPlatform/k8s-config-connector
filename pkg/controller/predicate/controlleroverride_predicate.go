@@ -18,7 +18,7 @@ import (
 	"context"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
-	
+
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	k8scontrollertype "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
