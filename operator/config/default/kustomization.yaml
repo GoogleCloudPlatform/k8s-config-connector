@@ -22,7 +22,7 @@ commonLabels:
 commonAnnotations:
   # Given our weekly release schedule, the version of the operator should remain the same of ConfigConnector Core,
   # if we have to release the operator independently with the KCC core, append extension e.g. 1.6.0-operator.x
-  cnrm.cloud.google.com/operator-version: "1.132.1"
+  cnrm.cloud.google.com/operator-version: "1.134.0"
 
 bases:
 - ../crd
