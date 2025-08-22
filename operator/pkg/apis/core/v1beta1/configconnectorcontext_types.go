@@ -20,7 +20,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	k8scontrollertype "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/klog/v2"
 	addonv1alpha1 "sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/apis/v1alpha1"
 )
@@ -92,7 +91,7 @@ type Experiments struct {
 	// ControllerOverrides allows specifying which controller to use for a given
 	// resource kind within this namespace, overriding the system default.
 	// +optional
-	ControllerOverrides map[schema.GroupKind]k8scontrollertype.ReconcilerType `json:"controllerOverrides,omitempty"`
+	ControllerOverrides map[string]k8scontrollertype.ReconcilerType `json:"controllerOverrides,omitempty"`
 }
 
 type StateIntoSpecValue string
