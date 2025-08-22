@@ -206,7 +206,7 @@ func (a *ClusterAdapter) resolvePscConfig() error {
 	return nil
 }
 
-// Resovle networking for PSA and PSC.
+// Resolve networking for PSA and PSC.
 func (a *ClusterAdapter) resolveNetworking(ctx context.Context) error {
 	obj := a.desired
 	log := klog.FromContext(ctx)
