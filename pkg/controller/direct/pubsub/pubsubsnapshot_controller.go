@@ -23,13 +23,13 @@ package pubsub
 import (
 	"context"
 	"fmt"
-
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
-	"k8s.io/apimachinery/pkg/util/sets"
+	"reflect"
 
 	api "cloud.google.com/go/pubsub/apiv1"
 	pb "cloud.google.com/go/pubsub/apiv1/pubsubpb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -171,30 +171,38 @@ func (a *snapshotAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
-// PubSubSnapshot does not support update.
 func (a *snapshotAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
-	mapCtx := &direct.MapContext{}
-	resource := PubSubSnapshotSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating pubsub snapshot", "name", a.id)
+
+	updateMask := &fieldmaskpb.FieldMask{}
+	updated := proto.Clone(a.actual).(*pb.Snapshot)
+
+	if !reflect.DeepEqual(a.actual.Labels, a.desired.Spec.Labels) {
+		updated.Labels = a.desired.Spec.Labels
+		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
 
-	paths := make(sets.Set[string])
-	var err error
-	paths, err = common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
+	if len(updateMask.Paths) == 0 {
+		// no-op, just update obj status
+		status := &krm.PubSubSnapshotStatus{}
+		status.ExternalRef = direct.LazyPtr(a.actual.Name)
+		return updateOp.UpdateStatus(ctx, status, nil)
+	}
+
+	req := &pb.UpdateSnapshotRequest{
+		Snapshot:   updated,
+		UpdateMask: updateMask,
+	}
+
+	updatedSnapshot, err := a.gcpClient.UpdateSnapshot(ctx, req)
 	if err != nil {
-		return err
+		return fmt.Errorf("updating pubsub snapshot %s: %w", a.id, err)
 	}
+	log.V(2).Info("successfully updated pubsub snapshot", "name", a.id)
 
-	if len(paths) != 0 {
-		return fmt.Errorf("update pubsub snapshot is not supported")
-	}
-
-	// no-op, just update obj status
-	updated := a.actual
 	status := &krm.PubSubSnapshotStatus{}
-	externalRef := updated.GetName()
-	status.ExternalRef = direct.LazyPtr(externalRef)
+	status.ExternalRef = direct.LazyPtr(updatedSnapshot.Name)
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
