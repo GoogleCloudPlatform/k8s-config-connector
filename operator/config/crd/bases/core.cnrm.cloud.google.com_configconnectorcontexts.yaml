@@ -63,6 +63,18 @@ spec:
                   Specifies the project to use for preconditions, quota and billing.
                   Should only be used when requestProjectPolicy is set to BILLING_PROJECT.
                 type: string
+              experiments:
+                properties:
+                  controllerOverrides:
+                    additionalProperties:
+                      description: ReconcilerType describes the type of reconciler
+                        (controller) being used
+                      type: string
+                    description: |-
+                      ControllerOverrides allows specifying which controller to use for a given
+                      resource kind within this namespace, overriding the system default.
+                    type: object
+                type: object
               googleServiceAccount:
                 description: |-
                   The Google Service Account to be used by Config Connector to

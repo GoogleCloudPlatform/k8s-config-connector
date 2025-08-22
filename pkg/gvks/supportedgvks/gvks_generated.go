@@ -25,6 +25,102 @@ type legacyGVKData struct {
 
 var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
+		Group:   "accesscontextmanager.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "AccessContextManagerAccessLevelCondition",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "accesscontextmanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "AccessContextManagerAccessLevel",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "accesscontextmanager.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "AccessContextManagerGCPUserAccessBinding",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "accesscontextmanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "AccessContextManagerServicePerimeterResource",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "accesscontextmanager.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "AccessContextManagerServicePerimeterResource",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "accesscontextmanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "AccessContextManagerServicePerimeter",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "alloydb.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "AlloyDBBackup",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "alloydb.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "AlloyDBBackup",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "alloydb.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "AlloyDBUser",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "apigateway.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "APIGatewayAPIConfig",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "apigateway.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "APIGatewayGateway",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "apigee.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ApigeeAddonsConfig",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
 		Group:   "apigee.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ApigeeEnvironment",
@@ -34,8 +130,1664 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	},
 	{
 		Group:   "apigee.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ApigeeNATAddress",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "apigee.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ApigeeOrganization",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "apigee.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ApigeeSyncAuthorization",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "appengine.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "AppEngineDomainMapping",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "appengine.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "AppEngineFirewallRule",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "appengine.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "AppEngineFlexibleAppVersion",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "appengine.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "AppEngineServiceSplitTraffic",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "appengine.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "AppEngineStandardAppVersion",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "artifactregistry.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ArtifactRegistryRepository",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "beyondcorp.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "BeyondCorpAppConnection",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "beyondcorp.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "BeyondCorpAppConnector",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "beyondcorp.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "BeyondCorpAppGateway",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "bigquerydatapolicy.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "BigQueryDataPolicyDataPolicy",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "bigquery.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "BigQueryDatasetAccess",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "bigquery.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "BigQueryJob",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "bigqueryreservation.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "BigQueryReservationCapacityCommitment",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "bigquery.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "BigQueryRoutine",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "bigtable.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "BigtableGCPolicy",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "bigtable.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "BigtableTable",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "billingbudgets.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "BillingBudgetsBudget",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "binaryauthorization.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "BinaryAuthorizationAttestor",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "binaryauthorization.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "BinaryAuthorizationPolicy",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "certificatemanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "CertificateManagerCertificateMapEntry",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "certificatemanager.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "CertificateManagerCertificateMapEntry",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "certificatemanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "CertificateManagerCertificateMap",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "certificatemanager.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "CertificateManagerCertificateMap",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "certificatemanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "CertificateManagerCertificate",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "certificatemanager.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "CertificateManagerCertificate",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "cloudasset.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "CloudAssetFolderFeed",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "cloudasset.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "CloudAssetOrganizationFeed",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "cloudasset.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "CloudAssetProjectFeed",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "cloudbuild.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "CloudBuildTrigger",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "cloudfunctions2.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "CloudFunctions2Function",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "cloudfunctions.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "CloudFunctionsFunction",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "cloudids.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "CloudIDSEndpoint",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "cloudids.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "CloudIDSEndpoint",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "cloudiot.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "CloudIOTDeviceRegistry",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "cloudiot.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "CloudIOTDevice",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "cloudscheduler.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "CloudSchedulerJob",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeAddress",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeAutoscaler",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeBackendBucket",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeBackendBucketSignedURLKey",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeBackendService",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeBackendServiceSignedURLKey",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeDiskResourcePolicyAttachment",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeDisk",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeExternalVPNGateway",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeFirewallPolicy",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeFirewallPolicyAssociation",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeFirewall",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeGlobalNetworkEndpointGroup",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeGlobalNetworkEndpoint",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeHealthCheck",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeHTTPHealthCheck",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeHTTPSHealthCheck",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeImage",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeInstanceGroupManager",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeInstanceGroupNamedPort",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeInstanceGroup",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeInstance",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeInstanceTemplate",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeInterconnectAttachment",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeMachineImage",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeManagedSSLCertificate",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeManagedSSLCertificate",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeNetworkEndpointGroup",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeNetworkEndpoint",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeNetworkFirewallPolicy",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeNetworkFirewallPolicyAssociation",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeNetworkFirewallPolicyRule",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeNetworkPeeringRoutesConfig",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeNetworkPeering",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeNetwork",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeNodeGroup",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeNodeTemplate",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeOrganizationSecurityPolicy",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeOrganizationSecurityPolicyAssociation",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeOrganizationSecurityPolicyRule",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputePacketMirroring",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputePerInstanceConfig",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeProjectMetadata",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeRegionAutoscaler",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeRegionDiskResourcePolicyAttachment",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeRegionNetworkEndpointGroup",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeRegionPerInstanceConfig",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ComputeRegionSSLPolicy",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeReservation",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeResourcePolicy",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeRouterInterface",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeRouterNAT",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeRouterPeer",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeRouter",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeRoute",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeSecurityPolicy",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeServiceAttachment",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeSharedVPCHostProject",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeSharedVPCServiceProject",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeSnapshot",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeSSLCertificate",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeSSLPolicy",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeSubnetwork",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeTargetGRPCProxy",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeTargetHTTPProxy",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeTargetHTTPSProxy",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeTargetInstance",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeTargetPool",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeTargetSSLProxy",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeTargetVPNGateway",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeURLMap",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeVPNGateway",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeVPNTunnel",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "configcontroller.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ConfigControllerInstance",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "containeranalysis.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ContainerAnalysisNote",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "containeranalysis.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ContainerAnalysisOccurrence",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "container.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ContainerCluster",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "container.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ContainerNodePool",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "dataflow.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "DataflowJob",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "datafusion.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "DataFusionInstance",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "dataproc.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "DataprocAutoscalingPolicy",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "dataproc.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "DataprocCluster",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "dataproc.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "DataprocWorkflowTemplate",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "datastore.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DatastoreIndex",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "datastream.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DatastreamStream",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "deploymentmanager.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DeploymentManagerDeployment",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "dialogflow.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DialogflowAgent",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "dialogflowcx.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DialogflowCXAgent",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "dialogflowcx.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DialogflowCXEntityType",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "dialogflowcx.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DialogflowCXFlow",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "dialogflowcx.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DialogflowCXIntent",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "dialogflowcx.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DialogflowCXPage",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "dialogflowcx.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DialogflowCXWebhook",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "dialogflow.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DialogflowEntityType",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "dialogflow.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DialogflowFulfillment",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "dialogflow.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DialogflowIntent",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "dlp.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "DLPDeidentifyTemplate",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "dlp.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "DLPInspectTemplate",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "dlp.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "DLPJobTrigger",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "dlp.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "DLPStoredInfoType",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "dns.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "DNSManagedZone",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "dns.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "DNSPolicy",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "dns.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "DNSRecordSet",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "dns.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DNSResponsePolicy",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "dns.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DNSResponsePolicyRule",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "documentai.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "DocumentAIProcessorDefaultVersion",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "edgecontainer.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "EdgeContainerCluster",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "edgecontainer.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "EdgeContainerNodePool",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "edgecontainer.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "EdgeContainerVpnConnection",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "edgenetwork.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "EdgeNetworkNetwork",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "edgenetwork.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "EdgeNetworkSubnet",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "eventarc.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "EventarcTrigger",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "filestore.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "FilestoreBackup",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "filestore.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "FilestoreInstance",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "filestore.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "FilestoreSnapshot",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "firebase.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "FirebaseAndroidApp",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "firebasedatabase.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "FirebaseDatabaseInstance",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "firebasehosting.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "FirebaseHostingChannel",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "firebasehosting.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "FirebaseHostingSite",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "firebase.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "FirebaseProject",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "firebasestorage.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "FirebaseStorageBucket",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "firebase.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "FirebaseWebApp",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "firestore.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "FirestoreIndex",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "resourcemanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "Folder",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "gkehub.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "GKEHubFeature",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "gkehub.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "GKEHubMembership",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "healthcare.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "HealthcareConsentStore",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "healthcare.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "HealthcareDataset",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "healthcare.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "HealthcareDICOMStore",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "healthcare.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "HealthcareFHIRStore",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "healthcare.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "HealthcareHL7V2Store",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "iam.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "IAMAccessBoundaryPolicy",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "iam.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "IAMCustomRole",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "iam.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "IAMServiceAccountKey",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "iam.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "IAMServiceAccount",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "iam.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "IAMWorkforcePoolProvider",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "iam.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "IAMWorkforcePool",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "iam.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "IAMWorkloadIdentityPoolProvider",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "iam.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "IAMWorkloadIdentityPool",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "iap.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "IAPBrand",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "iap.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "IAPIdentityAwareProxyClient",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "identityplatform.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "IdentityPlatformConfig",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "identityplatform.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "IdentityPlatformDefaultSupportedIDPConfig",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "identityplatform.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "IdentityPlatformInboundSAMLConfig",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "identityplatform.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "IdentityPlatformOAuthIDPConfig",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "identityplatform.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "IdentityPlatformProjectDefaultConfig",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "identityplatform.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "IdentityPlatformTenantDefaultSupportedIDPConfig",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "identityplatform.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "IdentityPlatformTenantInboundSAMLConfig",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "identityplatform.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "IdentityPlatformTenantOAuthIDPConfig",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "identityplatform.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "IdentityPlatformTenant",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "kms.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "KMSCryptoKey",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "kms.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "KMSCryptoKeyVersion",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "kms.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "KMSKeyRingImportJob",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "kms.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "KMSSecretCiphertext",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "logging.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "LoggingLogBucket",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "logging.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "LoggingLogExclusion",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "logging.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "LoggingLogSink",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "logging.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "LoggingLogView",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "memcache.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "MemcacheInstance",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "mlengine.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "MLEngineModel",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "monitoring.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "MonitoringAlertPolicy",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "monitoring.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "MonitoringGroup",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "monitoring.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "MonitoringMetricDescriptor",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "monitoring.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "MonitoringMonitoredProject",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "monitoring.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "MonitoringServiceLevelObjective",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "monitoring.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "MonitoringService",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "monitoring.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "MonitoringUptimeCheckConfig",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "networkconnectivity.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "NetworkConnectivityHub",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "networkconnectivity.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "NetworkConnectivitySpoke",
 	}: {
 		Terraform: false,
 		DCL:       true,
@@ -47,4 +1799,556 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform: false,
 		DCL:       true,
+	},
+	{
+		Group:   "networksecurity.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "NetworkSecurityClientTLSPolicy",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "networksecurity.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "NetworkSecurityServerTLSPolicy",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "networkservices.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "NetworkServicesEdgeCacheKeyset",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "networkservices.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "NetworkServicesEdgeCacheOrigin",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "networkservices.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "NetworkServicesEdgeCacheService",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "networkservices.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "NetworkServicesEndpointPolicy",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "networkservices.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "NetworkServicesGateway",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "networkservices.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "NetworkServicesGRPCRoute",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "networkservices.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "NetworkServicesHTTPRoute",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "networkservices.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "NetworkServicesMesh",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "networkservices.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "NetworkServicesTCPRoute",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "networkservices.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "NetworkServicesTLSRoute",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "osconfig.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "OSConfigGuestPolicy",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "osconfig.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "OSConfigOSPolicyAssignment",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "osconfig.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "OSConfigPatchDeployment",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "oslogin.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "OSLoginSSHPublicKey",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "privateca.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "PrivateCACAPool",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "privateca.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "PrivateCACertificateAuthority",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "privateca.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "PrivateCACertificate",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "privateca.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "PrivateCACertificateTemplate",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "resourcemanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "Project",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "pubsublite.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "PubSubLiteReservation",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "pubsublite.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "PubSubLiteSubscription",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "pubsublite.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "PubSubLiteTopic",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "pubsub.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "PubSubSchema",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "pubsub.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "PubSubSubscription",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "pubsub.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "PubSubTopic",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "recaptchaenterprise.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "RecaptchaEnterpriseKey",
+	}: {
+		Terraform: false,
+		DCL:       true,
+	},
+	{
+		Group:   "redis.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "RedisInstance",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "resourcemanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ResourceManagerLien",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "resourcemanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ResourceManagerPolicy",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "run.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "RunJob",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "run.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "RunService",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "securitycenter.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "SecurityCenterNotificationConfig",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "securitycenter.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "SecurityCenterSource",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "servicedirectory.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ServiceDirectoryEndpoint",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "servicedirectory.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ServiceDirectoryNamespace",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "servicedirectory.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ServiceDirectoryService",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "servicenetworking.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ServiceNetworkingConnection",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "serviceusage.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "Service",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "serviceusage.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "ServiceUsageConsumerQuotaOverride",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "sourcerepo.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "SourceRepoRepository",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "spanner.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "SpannerDatabase",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "sql.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "SQLDatabase",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "sql.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "SQLSSLCert",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "sql.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "SQLUser",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "storage.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "StorageBucketAccessControl",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "storage.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "StorageBucket",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "storage.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "StorageDefaultObjectAccessControl",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "storage.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "StorageHMACKey",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "storage.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "StorageNotification",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "storagetransfer.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "StorageTransferAgentPool",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "storagetransfer.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "StorageTransferJob",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "tags.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "TagsLocationTagBinding",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "tags.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "TagsTagBinding",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "tags.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "TagsTagKey",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "tags.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "TagsTagValue",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "tpu.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "TPUNode",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "vertexai.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "VertexAIDataset",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "vertexai.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "VertexAIDataset",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "vertexai.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "VertexAIEndpoint",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "vertexai.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "VertexAIEndpoint",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "vertexai.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "VertexAIFeaturestoreEntityTypeFeature",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "vertexai.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "VertexAIFeaturestoreEntityType",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "vertexai.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "VertexAIIndexEndpoint",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "vertexai.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "VertexAIIndex",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "vertexai.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "VertexAIIndex",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "vertexai.cnrm.cloud.google.com",
+		Version: "v1alpha1",
+		Kind:    "VertexAITensorboard",
+	}: {
+		Terraform: true,
+		DCL:       false,
+	},
+	{
+		Group:   "vpcaccess.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "VPCAccessConnector",
+	}: {
+		Terraform: true,
+		DCL:       false,
 	}}
