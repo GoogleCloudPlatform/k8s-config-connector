@@ -1852,7 +1852,6 @@
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.deletionProtectionEnabled" is not set in unstructured objects
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].connections[].pscAutoConnection.networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].connections[].pscAutoConnection.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].connections[].pscConnection.pscConnectionID" is not set in unstructured objects
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].connections[].pscConnection.ipAddress" is not set in unstructured objects
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].connections[].pscConnection.networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].connections[].pscConnection.pscConnectionID" is not set in unstructured objects
