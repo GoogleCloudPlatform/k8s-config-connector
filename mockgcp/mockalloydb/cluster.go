@@ -52,6 +52,7 @@ func (s *AlloyDBAdminV1) GetCluster(ctx context.Context, req *pb.GetClusterReque
 		return nil, err
 	}
 	updateNetworkInResponse(obj)
+	updatePscConfigInResponse(obj)
 	return obj, nil
 }
 
@@ -109,7 +110,9 @@ func setClusterFields(name *clusterName, obj *pb.Cluster) {
 		}
 	}
 	if obj.GeminiConfig == nil {
-		obj.GeminiConfig = &pb.GeminiClusterConfig{}
+		obj.GeminiConfig = &pb.GeminiClusterConfig{
+			Entitled: true,
+		}
 	}
 	if obj.SubscriptionType == pb.SubscriptionType_SUBSCRIPTION_TYPE_UNSPECIFIED {
 		obj.SubscriptionType = pb.SubscriptionType_STANDARD
@@ -140,7 +143,7 @@ func setClusterFields(name *clusterName, obj *pb.Cluster) {
 	// Context: https://github.com/hashicorp/terraform-provider-google/issues/16960
 	// This field needs to be handled differently in mockgcp after we fix the
 	// behavior in the controller.
-	obj.DatabaseVersion = pb.DatabaseVersion_POSTGRES_15
+	obj.DatabaseVersion = pb.DatabaseVersion_POSTGRES_16
 	if obj.EncryptionConfig != nil && obj.EncryptionConfig.KmsKeyName != "" {
 		obj.EncryptionInfo = &pb.EncryptionInfo{
 			EncryptionType: pb.EncryptionInfo_CUSTOMER_MANAGED_ENCRYPTION,
@@ -185,6 +188,7 @@ func (s *AlloyDBAdminV1) CreateCluster(ctx context.Context, req *pb.CreateCluste
 
 		result := proto.Clone(obj).(*pb.Cluster)
 		updateNetworkInResponse(result)
+		updatePscConfigInResponse(result)
 		return result, nil
 	})
 }
@@ -232,6 +236,7 @@ func (s *AlloyDBAdminV1) CreateSecondaryCluster(ctx context.Context, req *pb.Cre
 
 		result := proto.Clone(obj).(*pb.Cluster)
 		updateNetworkInResponse(result)
+		updatePscConfigInResponse(result)
 		updateSecondaryConfigInResponse(result)
 		return result, nil
 	})
@@ -294,6 +299,7 @@ func (s *AlloyDBAdminV1) UpdateCluster(ctx context.Context, req *pb.UpdateCluste
 
 		result := proto.Clone(obj).(*pb.Cluster)
 		updateNetworkInResponse(result)
+		updatePscConfigInResponse(result)
 		updateSecondaryConfigInResponse(result)
 		return result, nil
 	})
@@ -351,4 +357,12 @@ func updateSecondaryConfigInResponse(obj *pb.Cluster) {
 	// Replace projectID with projectNumber for project "mock-project".
 	primaryClusterName := strings.ReplaceAll(obj.SecondaryConfig.PrimaryClusterName, "mock-project", "518915279")
 	obj.SecondaryConfig.PrimaryClusterName = primaryClusterName
+}
+
+func updatePscConfigInResponse(obj *pb.Cluster) {
+	if obj.PscConfig == nil {
+		return
+	}
+	// Set ServiceOwnedProjectNumber with a mock project number.
+	obj.PscConfig.ServiceOwnedProjectNumber = 10101010101
 }
