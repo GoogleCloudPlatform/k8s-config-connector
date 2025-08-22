@@ -397,7 +397,7 @@
     "apiPath": "apis/pubsub/v1alpha1/snapshot_types.go",
     "controllerPath": "pkg/controller/direct/pubsub/pubsubsnapshot_controller.go",
     "testFixturePath": "pkg/test/resourcefixture/testdata/basic/pubsub/v1alpha1/pubsubsnapshot",
-    "apiCoverage": false
+    "apiCoverage": true
   },
   {
     "kind": "ReCAPTCHAEnterpriseFirewallPolicy",
