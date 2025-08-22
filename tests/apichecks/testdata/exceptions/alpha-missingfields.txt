@@ -2155,9 +2155,6 @@
 [missing_field] crd=pubsublitesubscriptions.pubsublite.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
 [missing_field] crd=pubsublitetopics.pubsublite.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
 [missing_field] crd=pubsublitetopics.pubsublite.cnrm.cloud.google.com version=v1alpha1: field ".spec.retentionConfig.period" is not set in unstructured objects
-[missing_field] crd=pubsubsnapshots.pubsub.cnrm.cloud.google.com version=v1alpha1: field ".spec.expireTime" is not set in unstructured objects
-[missing_field] crd=pubsubsnapshots.pubsub.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=pubsubsnapshots.pubsub.cnrm.cloud.google.com version=v1alpha1: field ".spec.topicRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].allow" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].block" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].includeRecaptchaScript" is not set in unstructured objects
