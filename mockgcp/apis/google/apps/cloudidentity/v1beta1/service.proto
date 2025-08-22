@@ -343,6 +343,46 @@ service GroupsMembershipsServer {
   };
 }
 
+service InboundOidcSsoProfilesServer {
+
+  // Creates an InboundOidcSsoProfile for a customer. When the target customer has enabled [Multi-party approval for sensitive actions](https://support.google.com/a/answer/13790448), the `Operation` in the response will have `"done": false`, it will not have a response, and the metadata will have `"state": "awaiting-multi-party-approval"`.
+  rpc CreateInboundOidcSsoProfile(CreateInboundOidcSsoProfileRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1beta1/inboundOidcSsoProfiles"
+      body: "inbound_oidc_sso_profile"
+    };
+  };
+
+  // Deletes an InboundOidcSsoProfile.
+  rpc DeleteInboundOidcSsoProfile(DeleteInboundOidcSsoProfileRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1beta1/{name=inboundOidcSsoProfiles/*}"
+    };
+  };
+
+  // Gets an InboundOidcSsoProfile.
+  rpc GetInboundOidcSsoProfile(GetInboundOidcSsoProfileRequest) returns (InboundOidcSsoProfile) {
+    option (google.api.http) = {
+      get: "/v1beta1/{name=inboundOidcSsoProfiles/*}"
+    };
+  };
+
+  // Lists InboundOidcSsoProfile objects for a Google enterprise customer.
+  rpc ListInboundOidcSsoProfiles(ListInboundOidcSsoProfilesRequest) returns (ListInboundOidcSsoProfilesResponse) {
+    option (google.api.http) = {
+      get: "/v1beta1/inboundOidcSsoProfiles"
+    };
+  };
+
+  // Updates an InboundOidcSsoProfile. When the target customer has enabled [Multi-party approval for sensitive actions](https://support.google.com/a/answer/13790448), the `Operation` in the response will have `"done": false`, it will not have a response, and the metadata will have `"state": "awaiting-multi-party-approval"`.
+  rpc PatchInboundOidcSsoProfile(PatchInboundOidcSsoProfileRequest) returns (.google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1beta1/{name=inboundOidcSsoProfiles/*}"
+      body: "inbound_oidc_sso_profile"
+    };
+  };
+}
+
 service InboundSamlSsoProfilesServer {
 
   // Creates an InboundSamlSsoProfile for a customer. When the target customer has enabled [Multi-party approval for sensitive actions](https://support.google.com/a/answer/13790448), the `Operation` in the response will have `"done": false`, it will not have a response, and the metadata will have `"state": "awaiting-multi-party-approval"`.
@@ -693,6 +733,12 @@ message CreateDeviceRequest {
   optional Device device = 2 [json_name="device"];
 }
 
+// LRO response metadata for InboundOidcSsoProfilesService.CreateInboundOidcSsoProfile.
+message CreateInboundOidcSsoProfileOperationMetadata {
+  // State of this Operation Will be "awaiting-multi-party-approval" when the operation is deferred due to the target customer having enabled [Multi-party approval for sensitive actions](https://support.google.com/a/answer/13790448).
+  optional string state = 1 [json_name="state"];
+}
+
 // LRO response metadata for InboundSamlSsoProfilesService.CreateInboundSamlSsoProfile.
 message CreateInboundSamlSsoProfileOperationMetadata {
   // State of this Operation Will be "awaiting-multi-party-approval" when the operation is deferred due to the target customer having enabled [Multi-party approval for sensitive actions](https://support.google.com/a/answer/13790448).
@@ -715,6 +761,10 @@ message CustomAttributeValue {
 
 // LRO response metadata for InboundSamlSsoProfilesService.DeleteIdpCredential.
 message DeleteIdpCredentialOperationMetadata {
+}
+
+// LRO response metadata for InboundOidcSsoProfilesService.DeleteInboundOidcSsoProfile.
+message DeleteInboundOidcSsoProfileOperationMetadata {
 }
 
 // LRO response metadata for InboundSamlSsoProfilesService.DeleteInboundSamlSsoProfile.
@@ -1256,6 +1306,20 @@ message IdpCredential {
   optional .google.protobuf.Timestamp update_time = 4 [json_name="updateTime"];
 }
 
+// An [OIDC](https://openid.net/developers/how-connect-works/) federation between a Google enterprise customer and an OIDC identity provider.
+message InboundOidcSsoProfile {
+  // Immutable. The customer. For example: `customers/C0123abc`.
+  optional string customer = 1 [json_name="customer"];
+  // Human-readable name of the OIDC SSO profile.
+  optional string display_name = 2 [json_name="displayName"];
+  // OIDC identity provider configuration.
+  optional OidcIdpConfig idp_config = 3 [json_name="idpConfig"];
+  // Output only. [Resource name](https://cloud.google.com/apis/design/resource_names) of the OIDC SSO profile.
+  optional string name = 4 [json_name="name"];
+  // OIDC relying party (RP) configuration for this OIDC SSO profile. These are the RP details provided by Google that should be configured on the corresponding identity provider.
+  optional OidcRpConfig rp_config = 5 [json_name="rpConfig"];
+}
+
 // A [SAML 2.0](https://www.oasis-open.org/standards#samlv2.0) federation between a Google enterprise customer and a SAML identity provider.
 message InboundSamlSsoProfile {
   // Immutable. The customer. For example: `customers/C0123abc`.
@@ -1276,18 +1340,20 @@ message InboundSsoAssignment {
   optional string customer = 1 [json_name="customer"];
   // Output only. [Resource name](https://cloud.google.com/apis/design/resource_names) of the Inbound SSO Assignment.
   optional string name = 2 [json_name="name"];
+  // OpenID Connect SSO details. Must be set if and only if `sso_mode` is set to `OIDC_SSO`.
+  optional OidcSsoInfo oidc_sso_info = 3 [json_name="oidcSsoInfo"];
   // Must be zero (which is the default value so it can be omitted) for assignments with `target_org_unit` set and must be greater-than-or-equal-to one for assignments with `target_group` set.
-  optional int32 rank = 3 [json_name="rank"];
+  optional int32 rank = 4 [json_name="rank"];
   // SAML SSO details. Must be set if and only if `sso_mode` is set to `SAML_SSO`.
-  optional SamlSsoInfo saml_sso_info = 4 [json_name="samlSsoInfo"];
+  optional SamlSsoInfo saml_sso_info = 5 [json_name="samlSsoInfo"];
   // Assertions about users assigned to an IdP will always be accepted from that IdP. This controls whether/when Google should redirect a user to the IdP. Unset (defaults) is the recommended configuration.
-  optional SignInBehavior sign_in_behavior = 5 [json_name="signInBehavior"];
+  optional SignInBehavior sign_in_behavior = 6 [json_name="signInBehavior"];
   // Inbound SSO behavior.
-  optional string sso_mode = 6 [json_name="ssoMode"];
+  optional string sso_mode = 7 [json_name="ssoMode"];
   // Immutable. Must be of the form `groups/{group}`.
-  optional string target_group = 7 [json_name="targetGroup"];
+  optional string target_group = 8 [json_name="targetGroup"];
   // Immutable. Must be of the form `orgUnits/{org_unit}`.
-  optional string target_org_unit = 8 [json_name="targetOrgUnit"];
+  optional string target_org_unit = 9 [json_name="targetOrgUnit"];
 }
 
 // Response for IsInvitableUser RPC.
@@ -1332,6 +1398,14 @@ message ListGroupsResponse {
 message ListIdpCredentialsResponse {
   // The IdpCredentials from the specified InboundSamlSsoProfile.
   repeated IdpCredential idp_credentials = 1 [json_name="idpCredentials"];
+  // A token, which can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages.
+  optional string next_page_token = 2 [json_name="nextPageToken"];
+}
+
+// Response of the InboundOidcSsoProfilesService.ListInboundOidcSsoProfiles method.
+message ListInboundOidcSsoProfilesResponse {
+  // List of InboundOidcSsoProfiles.
+  repeated InboundOidcSsoProfile inbound_oidc_sso_profiles = 1 [json_name="inboundOidcSsoProfiles"];
   // A token, which can be sent as `page_token` to retrieve the next page. If this field is omitted, there are no subsequent pages.
   optional string next_page_token = 2 [json_name="nextPageToken"];
 }
@@ -1512,6 +1586,30 @@ message MoveOrgMembershipRequest {
   optional string destination_org_unit = 2 [json_name="destinationOrgUnit"];
 }
 
+// OIDC IDP (identity provider) configuration.
+message OidcIdpConfig {
+  // The **Change Password URL** of the identity provider. Users will be sent to this URL when changing their passwords at `myaccount.google.com`. This takes precedence over the change password URL configured at customer-level. Must use `HTTPS`.
+  optional string change_password_uri = 1 [json_name="changePasswordUri"];
+  // Required. The Issuer identifier for the IdP. Must be a URL. The discovery URL will be derived from this as described in Section 4 of [the OIDC specification](https://openid.net/specs/openid-connect-discovery-1_0.html).
+  optional string issuer_uri = 2 [json_name="issuerUri"];
+}
+
+// OIDC RP (relying party) configuration.
+message OidcRpConfig {
+  // OAuth2 client ID for OIDC.
+  optional string client_id = 1 [json_name="clientId"];
+  // Input only. OAuth2 client secret for OIDC.
+  optional string client_secret = 2 [json_name="clientSecret"];
+  // Output only. The URL(s) that this client may use in authentication requests.
+  repeated string redirect_uris = 3 [json_name="redirectUris"];
+}
+
+// Details that are applicable when `sso_mode` is set to `OIDC_SSO`.
+message OidcSsoInfo {
+  // Required. Name of the `InboundOidcSsoProfile` to use. Must be of the form `inboundOidcSsoProfiles/{inbound_oidc_sso_profile}`. 
+  optional string inbound_oidc_sso_profile = 1 [json_name="inboundOidcSsoProfile"];
+}
+
 // A membership in an OrgUnit. An `OrgMembership` defines a relationship between an `OrgUnit` and an entity belonging to that `OrgUnit`, referred to as a "member".
 message OrgMembership {
   // Immutable. Org member id as full resource name. Format for shared drive resource: //drive.googleapis.com/drives/{$memberId} where `$memberId` is the `id` from [Drive API (V3) `Drive` resource](https://developers.google.com/drive/api/v3/reference/drives#resource).
@@ -1676,6 +1774,12 @@ message Status {
 message TransitiveMembershipRole {
   // TransitiveMembershipRole in string format. Currently supported TransitiveMembershipRoles: `"MEMBER"`, `"OWNER"`, and `"MANAGER"`.
   optional string role = 1 [json_name="role"];
+}
+
+// LRO response metadata for InboundOidcSsoProfilesService.UpdateInboundOidcSsoProfile.
+message UpdateInboundOidcSsoProfileOperationMetadata {
+  // State of this Operation Will be "awaiting-multi-party-approval" when the operation is deferred due to the target customer having enabled [Multi-party approval for sensitive actions](https://support.google.com/a/answer/13790448).
+  optional string state = 1 [json_name="state"];
 }
 
 // LRO response metadata for InboundSamlSsoProfilesService.UpdateInboundSamlSsoProfile.
@@ -1963,6 +2067,30 @@ message SearchTransitiveMembershipsGroupsMembershipRequest {
   optional int32 page_size = 1;
   optional string page_token = 2;
   optional string parent = 3;
+}
+
+message CreateInboundOidcSsoProfileRequest {
+  optional InboundOidcSsoProfile inbound_oidc_sso_profile = 1;
+}
+
+message DeleteInboundOidcSsoProfileRequest {
+  optional string name = 1;
+}
+
+message GetInboundOidcSsoProfileRequest {
+  optional string name = 1;
+}
+
+message ListInboundOidcSsoProfilesRequest {
+  optional string filter = 1;
+  optional int32 page_size = 2;
+  optional string page_token = 3;
+}
+
+message PatchInboundOidcSsoProfileRequest {
+  optional string name = 1;
+  optional string update_mask = 2;
+  optional InboundOidcSsoProfile inbound_oidc_sso_profile = 3;
 }
 
 message CreateInboundSamlSsoProfileRequest {
