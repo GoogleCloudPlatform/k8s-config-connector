@@ -229,7 +229,7 @@ func (a *snapshotAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 
 	obj := &krm.PubSubSnapshot{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(PubSubSnapshotSpec_FromProto(mapCtx, a.actual))
+	obj.Status.ObservedState = PubSubSnapshotObservedState_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
