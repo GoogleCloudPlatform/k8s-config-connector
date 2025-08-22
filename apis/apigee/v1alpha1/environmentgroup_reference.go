@@ -68,3 +68,7 @@ func (r *ApigeeEnvgroupRef) ValidateExternal(ref string) error {
 func (r *ApigeeEnvgroupRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	return reference.Normalize(ctx, reader, r, defaultNamespace)
 }
+
+func (r *ApigeeEnvgroupRef) NormalizeOnTemplate(ctx context.Context, reader client.Reader, defaultNamespace, tpl string) error {
+	return reference.NormalizeOnTemplate(ctx, reader, r, defaultNamespace, tpl)
+}
