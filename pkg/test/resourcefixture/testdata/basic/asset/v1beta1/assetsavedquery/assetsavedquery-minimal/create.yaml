@@ -42,4 +42,4 @@ spec:
         outputResourceEdges: true
         analyzeServiceAccountImpersonation: true
       conditionContext:
-        accessTime: "2025-08-13T10:00:00Z"
+        accessTime: "2025-08-23T10:00:00Z"

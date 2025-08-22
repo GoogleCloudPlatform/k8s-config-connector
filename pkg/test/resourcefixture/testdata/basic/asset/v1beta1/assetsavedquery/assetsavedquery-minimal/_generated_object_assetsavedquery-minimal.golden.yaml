@@ -1,4 +1,4 @@
-apiVersion: asset.cnrm.cloud.google.com/v1alpha1
+apiVersion: asset.cnrm.cloud.google.com/v1beta1
 kind: AssetSavedQuery
 metadata:
   finalizers:
@@ -19,7 +19,7 @@ spec:
         roles:
         - roles/owner
       conditionContext:
-        accessTime: "2025-08-13T10:00:00Z"
+        accessTime: "2025-08-23T10:00:00Z"
       identitySelector:
         identity: user:updated-test-user@example.com
       options:

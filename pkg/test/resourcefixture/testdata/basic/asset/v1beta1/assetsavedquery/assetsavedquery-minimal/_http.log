@@ -17,13 +17,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Requested entity was not found.",
-        "reason": "notFound"
-      }
-    ],
     "message": "Requested entity was not found.",
     "status": "NOT_FOUND"
   }
@@ -49,7 +42,7 @@ X-Goog-User-Project: ${projectNumber}
         ]
       },
       "conditionContext": {
-        "accessTime": "2025-08-13T10:00:00Z"
+        "accessTime": "2025-08-23T10:00:00Z"
       },
       "identitySelector": {
         "identity": "user:test-user@example.com"
@@ -93,7 +86,7 @@ X-Xss-Protection: 0
         ]
       },
       "conditionContext": {
-        "accessTime": "2025-08-13T10:00:00Z"
+        "accessTime": "2025-08-23T10:00:00Z"
       },
       "identitySelector": {
         "identity": "user:test-user@example.com"
@@ -148,7 +141,7 @@ X-Xss-Protection: 0
         ]
       },
       "conditionContext": {
-        "accessTime": "2025-08-13T10:00:00Z"
+        "accessTime": "2025-08-23T10:00:00Z"
       },
       "identitySelector": {
         "identity": "user:test-user@example.com"
@@ -208,7 +201,7 @@ X-Xss-Protection: 0
         ]
       },
       "conditionContext": {
-        "accessTime": "2025-08-13T10:00:00Z"
+        "accessTime": "2025-08-23T10:00:00Z"
       },
       "identitySelector": {
         "identity": "user:test-user@example.com"
@@ -263,7 +256,7 @@ X-Xss-Protection: 0
         ]
       },
       "conditionContext": {
-        "accessTime": "2025-08-13T10:00:00Z"
+        "accessTime": "2025-08-23T10:00:00Z"
       },
       "identitySelector": {
         "identity": "user:test-user@example.com"
