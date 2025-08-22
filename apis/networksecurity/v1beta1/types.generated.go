@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: networksecurity.cnrm.cloud.google.com
+// krm.version: v1beta1
+// proto.service: google.cloud.networksecurity.v1beta1
+// resource: NetworkSecurityAuthorizationPolicy:AuthorizationPolicy
+
 package v1beta1
 
 // +kcc:proto=google.cloud.networksecurity.v1beta1.AuthorizationPolicy.Rule
