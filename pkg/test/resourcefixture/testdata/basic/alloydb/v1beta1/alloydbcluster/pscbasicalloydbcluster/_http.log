@@ -156,10 +156,9 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
     "pscConfig": {
       "pscEnabled": true,
-      "serviceOwnedProjectNumber": "757966016423"
+      "serviceOwnedProjectNumber": "10101010101"
     },
     "reconciling": false,
-    "serviceAccountEmail": "c-${projectNumber}-a85eff20@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -244,10 +243,9 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
   "pscConfig": {
     "pscEnabled": true,
-    "serviceOwnedProjectNumber": "757966016423"
+    "serviceOwnedProjectNumber": "10101010101"
   },
   "reconciling": false,
-  "serviceAccountEmail": "c-${projectNumber}-a85eff20@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": 1,
   "subscriptionType": 1,
   "uid": "111111111111111111111",
@@ -422,10 +420,9 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
     "pscConfig": {
       "pscEnabled": true,
-      "serviceOwnedProjectNumber": "757966016423"
+      "serviceOwnedProjectNumber": "10101010101"
     },
     "reconciling": false,
-    "serviceAccountEmail": "c-${projectNumber}-a85eff20@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -510,10 +507,9 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
   "pscConfig": {
     "pscEnabled": true,
-    "serviceOwnedProjectNumber": "757966016423"
+    "serviceOwnedProjectNumber": "10101010101"
   },
   "reconciling": false,
-  "serviceAccountEmail": "c-${projectNumber}-a85eff20@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": 1,
   "subscriptionType": 1,
   "uid": "111111111111111111111",
