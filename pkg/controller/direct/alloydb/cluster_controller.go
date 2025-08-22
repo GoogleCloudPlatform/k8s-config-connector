@@ -197,7 +197,7 @@ func (a *ClusterAdapter) resolvePscConfig() error {
 	obj := a.desired
 
 	if obj.Spec.PscConfig == nil || obj.Spec.PscConfig.PSCEnabled == nil || !direct.ValueOf(obj.Spec.PscConfig.PSCEnabled) {
-		return fmt.Errorf("'spec.pscConfig' is required and must be enabled when 'spec.networkConfig' or 'spec.networkRef' is not configured")
+		return fmt.Errorf("'spec.pscConfig.pscEnabled' must be set to true when 'spec.pscConfig' is configured")
 	}
 
 	obj.Spec.PscConfig = &krm.Cluster_PSCConfig{
@@ -210,17 +210,6 @@ func (a *ClusterAdapter) resolvePscConfig() error {
 func (a *ClusterAdapter) resolveNetworking(ctx context.Context) error {
 	obj := a.desired
 	log := klog.FromContext(ctx)
-
-	if obj.Spec.NetworkRef == nil && obj.Spec.NetworkConfig == nil && obj.Spec.PscConfig == nil {
-		return fmt.Errorf("at least one of 'spec.networkRef', 'spec.networkConfig', " +
-			"and 'spec.pscConfig' should be configured: none is configured")
-	}
-
-	if (obj.Spec.NetworkRef != nil || obj.Spec.NetworkConfig != nil) && obj.Spec.PscConfig != nil {
-		return fmt.Errorf("only one of 'spec.networkRef', 'spec.networkConfig', " +
-			"and 'spec.pscConfig' should be configured: both are configured; " +
-			"recommend using 'spec.networkConfig' or 'spec.pscConfig'")
-	}
 
 	if obj.Spec.NetworkRef != nil || obj.Spec.NetworkConfig != nil {
 		log.V(2).Info("creating Cluster with PSA", "name", a.id)
