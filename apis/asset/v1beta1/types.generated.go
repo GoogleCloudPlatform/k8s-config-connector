@@ -12,7 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+// +generated:types
+// krm.group: asset.cnrm.cloud.google.com
+// krm.version: v1beta1
+// proto.service: google.cloud.asset.v1
+// resource: Asset:SavedQuery
+
+package v1beta1
 
 // +kcc:proto=google.cloud.asset.v1.IamPolicyAnalysisQuery.AccessSelector
 type IAMPolicyAnalysisQuery_AccessSelector struct {
@@ -143,33 +149,14 @@ type IAMPolicyAnalysisQuery_Options struct {
 	AnalyzeServiceAccountImpersonation *bool `json:"analyzeServiceAccountImpersonation,omitempty"`
 }
 
-// +kcc:proto=google.cloud.asset.v1.FeedOutputConfig
-type FeedOutputConfig struct {
-	// Destination on Pub/Sub.
-	// +kcc:proto:field=google.cloud.asset.v1.FeedOutputConfig.pubsub_destination
-	PubsubDestination *PubsubDestination `json:"pubsubDestination,omitempty"`
-}
-
-// +kcc:proto=google.type.Expr
-type Expr struct {
-	// Textual representation of an expression in Common Expression Language
-	//  syntax.
-	// +kcc:proto:field=google.type.Expr.expression
-	Expression *string `json:"expression,omitempty"`
-
-	// Optional. Title for the expression, i.e. a short string describing
-	//  its purpose. This can be used e.g. in UIs which allow to enter the
-	//  expression.
-	// +kcc:proto:field=google.type.Expr.title
-	Title *string `json:"title,omitempty"`
-
-	// Optional. Description of the expression. This is a longer text which
-	//  describes the expression, e.g. when hovered over it in a UI.
-	// +kcc:proto:field=google.type.Expr.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. String indicating the location of the expression for error
-	//  reporting, e.g. a file name and a position in the file.
-	// +kcc:proto:field=google.type.Expr.location
-	Location *string `json:"location,omitempty"`
+// +kcc:proto=google.cloud.asset.v1.SavedQuery.QueryContent
+type SavedQuery_QueryContent struct {
+	// An IAM Policy Analysis query, which could be used in
+	//  the
+	//  [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy]
+	//  RPC or the
+	//  [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning]
+	//  RPC.
+	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.QueryContent.iam_policy_analysis_query
+	IAMPolicyAnalysisQuery *IAMPolicyAnalysisQuery `json:"iamPolicyAnalysisQuery,omitempty"`
 }
