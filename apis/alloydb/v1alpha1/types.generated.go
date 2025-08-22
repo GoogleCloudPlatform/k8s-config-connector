@@ -14,7 +14,7 @@
 
 // +generated:types
 // krm.group: alloydb.cnrm.cloud.google.com
-// krm.version: v1beta1
+// krm.version: v1alpha1
 // proto.service: google.cloud.alloydb.v1beta
 // resource: AlloyDBCluster:Cluster
 // resource: AlloyDBInstance:Instance
