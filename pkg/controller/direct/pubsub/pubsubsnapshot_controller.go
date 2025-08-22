@@ -168,6 +168,12 @@ func (a *snapshotAdapter) Create(ctx context.Context, createOp *directbase.Creat
 
 	status := &krm.PubSubSnapshotStatus{}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
+
+	mapCtx := &direct.MapContext{}
+	status.ObservedState = PubSubSnapshotObservedState_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -203,6 +209,11 @@ func (a *snapshotAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 	status := &krm.PubSubSnapshotStatus{}
 	status.ExternalRef = direct.LazyPtr(updatedSnapshot.Name)
+	mapCtx := &direct.MapContext{}
+	status.ObservedState = PubSubSnapshotObservedState_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
