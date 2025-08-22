@@ -102,7 +102,12 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 			"apiVersion": apiVersion,
 		},
 	}
-	predicateList := []predicate.Predicate{&kccpredicate.ControllerOverridePredicate{}}
+	controllerOverridePredicate := kccpredicate.NewControllerOverridePredicate(mgr.GetClient(), schema.GroupVersionKind{
+		Group:   crd.Spec.Group,
+		Version: k8s.GetVersionFromCRD(crd),
+		Kind:    kind,
+	})
+	predicateList := []predicate.Predicate{controllerOverridePredicate, kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
 	if additionalPredicate != nil {
 		predicateList = append(predicateList, additionalPredicate)
 	}

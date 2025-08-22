@@ -108,7 +108,12 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, conve
 	if jitterGenerator == nil {
 		return nil, fmt.Errorf("jitter generator not initialized")
 	}
-	predicates := []predicate.Predicate{kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
+	controllerOverridePredicate := kccpredicate.NewControllerOverridePredicate(mgr.GetClient(), schema.GroupVersionKind{
+		Group:   crd.Spec.Group,
+		Version: k8s.GetVersionFromCRD(crd),
+		Kind:    crd.Kind,
+	})
+	predicates := []predicate.Predicate{controllerOverridePredicate, kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
 	if additionalPredicate != nil {
 		predicates = append(predicates, additionalPredicate)
 	}

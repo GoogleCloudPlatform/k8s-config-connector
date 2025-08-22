@@ -254,7 +254,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 	if err := r.Client.Get(ctx, client.ObjectKey{Name: v1beta1.ConfigConnectorContextAllowedName}, ccc); err != nil {
 		logger.Info("error getting configconnectorcontext: %w", err)
 	}
-	controllerType := r.controllerSelector.SelectController(gvk, "", &ccc.Spec)
+	controllerType := r.controllerSelector.SelectController(gvk, ccc)
 	switch controllerType {
 	case k8s.ReconcilerTypeDirect:
 		groupKind := gvk.GroupKind()

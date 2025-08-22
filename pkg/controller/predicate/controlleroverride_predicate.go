@@ -90,7 +90,7 @@ func (p *ControllerOverridePredicate) shouldReconcile(obj client.Object) bool {
 	}
 
 	// Check if an override exists for the current GVK.
-	if overrideType, ok := ccc.Spec.Experiments.ControllerOverrides[p.gvk.GroupKind()]; ok {
+	if overrideType, ok := ccc.Spec.Experiments.ControllerOverrides[p.gvk.GroupKind().String()]; ok {
 		// If an override exists, this controller should only reconcile if the override
 		// explicitly specifies the direct controller type.
 		return overrideType == k8scontrollertype.ReconcilerTypeDirect
