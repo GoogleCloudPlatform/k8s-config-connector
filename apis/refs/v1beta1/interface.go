@@ -17,6 +17,8 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"regexp"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -67,28 +69,127 @@ type Ref interface {
 // implement the "Normalize" interface method for most Ref types.
 func Normalize(ctx context.Context, reader client.Reader, ref Ref, defaultNamespace string) error {
 	if ref.GetExternal() == "" {
-		key := ref.GetNamespacedName()
-		if key.Namespace == "" {
-			key.Namespace = defaultNamespace
+		u, err := getReferencedObject(ctx, reader, ref, defaultNamespace)
+		if err != nil {
+			return err
 		}
-		u := &unstructured.Unstructured{}
-		u.SetGroupVersionKind(ref.GetGVK())
-		if err := reader.Get(ctx, key, u); err != nil {
-			if apierrors.IsNotFound(err) {
-				return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-			}
-			return fmt.Errorf("reading referenced %s %s: %w", ref.GetGVK(), key, err)
-		}
-		// Get external from status.externalRef. This is the most trustworthy place.
 		externalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
 		if err != nil {
 			return fmt.Errorf("reading status.externalRef: %w", err)
 		}
 		if externalRef == "" {
-			return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+			return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), ref.GetNamespacedName())
 		}
 		ref.SetExternal(externalRef)
+		return err
 	}
-
 	return ref.ValidateExternal(ref.GetExternal())
 }
+
+// NormalizeOnTemplate returns the resolved resource name formatted with the given template.
+// Used for Ref types that require a format different from the default.
+func NormalizeOnTemplate(ctx context.Context, reader client.Reader, ref Ref, defaultNamespace string, tpl string) error {
+	// Default case: Use status.externalRef(direct) or normalize to the same format(legacy).
+	if tpl == "" {
+		return ref.Normalize(ctx, reader, defaultNamespace)
+	}
+
+	// todo(yuhou): Double-check whether we need this or not
+	// If external is provided: verify if it matches the given template.
+
+	//external := ref.GetExternal()
+	//if external != "" {
+	//	if matchTemplate(external, tpl) {
+	//		return nil
+	//	}
+	//	return fmt.Errorf("format of %s external=%q was not known (use %s)", ref.GetGVK().Kind, external, tpl)
+	//}
+
+	// Otherwise, name and name fields are provided:
+	// Get the referenced object.
+	u, err := getReferencedObject(ctx, reader, ref, defaultNamespace)
+	if err != nil {
+		return err
+	}
+
+	processedTemplate := tpl
+
+	// Case 1: Resolve placeholders from referenced object's resourceId
+	// Get resourceId from the last part of the normalized external
+	err = ref.Normalize(ctx, reader, defaultNamespace)
+	if err != nil {
+		return err
+	}
+	normalizedExternal := ref.GetExternal()
+	tokens := strings.Split(normalizedExternal, "/")
+	resourceId := tokens[len(tokens)-1]
+	processedTemplate = strings.Replace(processedTemplate, "{{resourceId}}", resourceId, 1)
+
+	// Case 2: Resolve placeholders from referenced object's `status` or `status.observedState` fields
+	// Get placeholders
+	re := regexp.MustCompile(`\{\{(.*?)\}\}`)
+	matches := re.FindAllStringSubmatch(processedTemplate, -1)
+	if len(matches) == 0 {
+		ref.SetExternal(processedTemplate)
+		return nil
+	}
+
+	for _, match := range matches {
+		placeholder := match[0] // "{{selfLink}}"
+		fieldName := match[1]   // "selfLink"
+
+		fieldParts := strings.Split(fieldName, ".")
+		observedStateFieldParts := append([]string{"status", "observedState"}, fieldParts...)
+		value, found, err := unstructured.NestedString(u.Object, observedStateFieldParts...)
+		if err != nil {
+			return fmt.Errorf("error getting value for field status.observedState.%s from referenced object %s %s: %w", fieldName, ref.GetGVK(), u.GetNamespace()+"/"+u.GetName(), err)
+		}
+		if !found {
+			statusFieldParts := append([]string{"status"}, fieldParts...)
+			value, found, err = unstructured.NestedString(u.Object, statusFieldParts...)
+			if err != nil {
+				return fmt.Errorf("error getting value for field status.%s from referenced object %s %s: %w", fieldName, ref.GetGVK(), u.GetNamespace()+"/"+u.GetName(), err)
+			}
+			if !found {
+				return fmt.Errorf("template field %q not found in referenced object %s %s (looked in 'status.observedState' and 'status')", fieldName, ref.GetGVK(), u.GetNamespace()+"/"+u.GetName())
+			}
+		}
+		processedTemplate = strings.Replace(processedTemplate, placeholder, value, 1)
+	}
+
+	ref.SetExternal(processedTemplate)
+	return nil
+}
+
+func getReferencedObject(ctx context.Context, reader client.Reader, ref Ref, defaultNamespace string) (*unstructured.Unstructured, error) {
+	key := ref.GetNamespacedName()
+	if key.Namespace == "" {
+		key.Namespace = defaultNamespace
+	}
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(ref.GetGVK())
+	if err := reader.Get(ctx, key, u); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+		}
+		return nil, fmt.Errorf("reading referenced %s %s: %w", ref.GetGVK(), key, err)
+	}
+	return u, nil
+}
+
+// todo(yuhou): Double-check whether we need this or not
+//func matchTemplate(s, template string) bool {
+//	placeholderRegex := regexp.MustCompile(`\{\{.+?\}\}`)
+//
+//	// Replace the placeholder with the regex pattern `([^/]+)`
+//	// This pattern matches one or more characters that are not a `/`
+//	// For example: http://{{host}}/api/{{version}} -> http://([^/]+)/api/([^/]+)
+//	regexTemplate := placeholderRegex.ReplaceAllString(template, "([^/]+)")
+//
+//	// Add `^` at the beginning and `$` to the regexTemplate, ensure entire string matches
+//	re, err := regexp.Compile("^" + regexTemplate + "$")
+//	if err != nil {
+//		return false
+//	}
+//	return re.MatchString(s)
+//}
