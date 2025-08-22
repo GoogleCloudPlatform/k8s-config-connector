@@ -142,20 +142,24 @@ X-Xss-Protection: 0
       ]
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_15",
+    "databaseVersion": "POSTGRES_16",
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
-    "geminiConfig": {},
+    "geminiConfig": {
+      "entitled": true
+    },
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
     "pscConfig": {
-      "pscEnabled": true
+      "pscEnabled": true,
+      "serviceOwnedProjectNumber": "757966016423"
     },
     "reconciling": false,
+    "serviceAccountEmail": "c-${projectNumber}-a85eff20@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -226,20 +230,24 @@ X-Xss-Protection: 0
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 3,
+  "databaseVersion": 4,
   "encryptionInfo": {
     "encryptionType": 1
   },
-  "geminiConfig": {},
+  "geminiConfig": {
+    "entitled": true
+  },
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
   "pscConfig": {
-    "pscEnabled": true
+    "pscEnabled": true,
+    "serviceOwnedProjectNumber": "757966016423"
   },
   "reconciling": false,
+  "serviceAccountEmail": "c-${projectNumber}-a85eff20@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": 1,
   "subscriptionType": 1,
   "uid": "111111111111111111111",
@@ -283,7 +291,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fsoutha
     "enabled": true,
     "recoveryWindowDays": 14
   },
-  "databaseVersion": 3,
+  "databaseVersion": 4,
   "geminiConfig": {},
   "initialUser": {
     "password": "updated",
@@ -400,20 +408,24 @@ X-Xss-Protection: 0
       ]
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_15",
+    "databaseVersion": "POSTGRES_16",
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
-    "geminiConfig": {},
+    "geminiConfig": {
+      "entitled": true
+    },
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
     "pscConfig": {
-      "pscEnabled": true
+      "pscEnabled": true,
+      "serviceOwnedProjectNumber": "757966016423"
     },
     "reconciling": false,
+    "serviceAccountEmail": "c-${projectNumber}-a85eff20@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -484,20 +496,24 @@ X-Xss-Protection: 0
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 3,
+  "databaseVersion": 4,
   "encryptionInfo": {
     "encryptionType": 1
   },
-  "geminiConfig": {},
+  "geminiConfig": {
+    "entitled": true
+  },
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
   "pscConfig": {
-    "pscEnabled": true
+    "pscEnabled": true,
+    "serviceOwnedProjectNumber": "757966016423"
   },
   "reconciling": false,
+  "serviceAccountEmail": "c-${projectNumber}-a85eff20@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": 1,
   "subscriptionType": 1,
   "uid": "111111111111111111111",
