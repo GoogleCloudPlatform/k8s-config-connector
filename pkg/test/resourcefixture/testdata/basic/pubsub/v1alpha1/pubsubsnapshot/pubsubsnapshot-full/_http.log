@@ -296,7 +296,7 @@ X-Goog-User-Project: ${projectId}
 
 {
   "snapshot": {
-    "expireTime": "2025-08-22T15:50:58.498140504Z",
+    "expireTime": "2024-04-01T12:34:56.123456Z",
     "labels": {
       "key": "new-value"
     },

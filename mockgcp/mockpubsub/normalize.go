@@ -21,7 +21,7 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	// No-op for now
+	replacements.ReplacePath(".snapshot.expireTime", "2024-04-01T12:34:56.123456Z")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
