@@ -154,6 +154,24 @@ type FirestoreAdminClient interface {
 	UpdateBackupSchedule(ctx context.Context, in *UpdateBackupScheduleRequest, opts ...grpc.CallOption) (*BackupSchedule, error)
 	// Deletes a backup schedule.
 	DeleteBackupSchedule(ctx context.Context, in *DeleteBackupScheduleRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Creates a new database by cloning an existing one.
+	//
+	// The new database must be in the same cloud region or multi-region location
+	// as the existing database. This behaves similar to
+	// [FirestoreAdmin.CreateDatabase][mockgcp.firestore.admin.v1.FirestoreAdmin.CreateDatabase]
+	// except instead of creating a new empty database, a new database is created
+	// with the database type, index configuration, and documents from an existing
+	// database.
+	//
+	// The [long-running operation][google.longrunning.Operation] can be used to
+	// track the progress of the clone, with the Operation's
+	// [metadata][google.longrunning.Operation.metadata] field type being the
+	// [CloneDatabaseMetadata][mockgcp.firestore.admin.v1.CloneDatabaseMetadata].
+	// The [response][google.longrunning.Operation.response] type is the
+	// [Database][mockgcp.firestore.admin.v1.Database] if the clone was
+	// successful. The new database is not readable or writeable until the LRO has
+	// completed.
+	CloneDatabase(ctx context.Context, in *CloneDatabaseRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
 type firestoreAdminClient struct {
@@ -443,6 +461,15 @@ func (c *firestoreAdminClient) DeleteBackupSchedule(ctx context.Context, in *Del
 	return out, nil
 }
 
+func (c *firestoreAdminClient) CloneDatabase(ctx context.Context, in *CloneDatabaseRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.firestore.admin.v1.FirestoreAdmin/CloneDatabase", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FirestoreAdminServer is the server API for FirestoreAdmin service.
 // All implementations must embed UnimplementedFirestoreAdminServer
 // for forward compatibility
@@ -577,6 +604,24 @@ type FirestoreAdminServer interface {
 	UpdateBackupSchedule(context.Context, *UpdateBackupScheduleRequest) (*BackupSchedule, error)
 	// Deletes a backup schedule.
 	DeleteBackupSchedule(context.Context, *DeleteBackupScheduleRequest) (*empty.Empty, error)
+	// Creates a new database by cloning an existing one.
+	//
+	// The new database must be in the same cloud region or multi-region location
+	// as the existing database. This behaves similar to
+	// [FirestoreAdmin.CreateDatabase][mockgcp.firestore.admin.v1.FirestoreAdmin.CreateDatabase]
+	// except instead of creating a new empty database, a new database is created
+	// with the database type, index configuration, and documents from an existing
+	// database.
+	//
+	// The [long-running operation][google.longrunning.Operation] can be used to
+	// track the progress of the clone, with the Operation's
+	// [metadata][google.longrunning.Operation.metadata] field type being the
+	// [CloneDatabaseMetadata][mockgcp.firestore.admin.v1.CloneDatabaseMetadata].
+	// The [response][google.longrunning.Operation.response] type is the
+	// [Database][mockgcp.firestore.admin.v1.Database] if the clone was
+	// successful. The new database is not readable or writeable until the LRO has
+	// completed.
+	CloneDatabase(context.Context, *CloneDatabaseRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedFirestoreAdminServer()
 }
 
@@ -676,6 +721,9 @@ func (UnimplementedFirestoreAdminServer) UpdateBackupSchedule(context.Context, *
 }
 func (UnimplementedFirestoreAdminServer) DeleteBackupSchedule(context.Context, *DeleteBackupScheduleRequest) (*empty.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteBackupSchedule not implemented")
+}
+func (UnimplementedFirestoreAdminServer) CloneDatabase(context.Context, *CloneDatabaseRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CloneDatabase not implemented")
 }
 func (UnimplementedFirestoreAdminServer) mustEmbedUnimplementedFirestoreAdminServer() {}
 
@@ -1248,6 +1296,24 @@ func _FirestoreAdmin_DeleteBackupSchedule_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FirestoreAdmin_CloneDatabase_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CloneDatabaseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FirestoreAdminServer).CloneDatabase(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.firestore.admin.v1.FirestoreAdmin/CloneDatabase",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FirestoreAdminServer).CloneDatabase(ctx, req.(*CloneDatabaseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FirestoreAdmin_ServiceDesc is the grpc.ServiceDesc for FirestoreAdmin service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1378,6 +1444,10 @@ var FirestoreAdmin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteBackupSchedule",
 			Handler:    _FirestoreAdmin_DeleteBackupSchedule_Handler,
+		},
+		{
+			MethodName: "CloneDatabase",
+			Handler:    _FirestoreAdmin_CloneDatabase_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

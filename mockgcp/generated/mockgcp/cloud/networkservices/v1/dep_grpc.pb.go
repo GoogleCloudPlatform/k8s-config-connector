@@ -44,6 +44,18 @@ type DepServiceClient interface {
 	UpdateLbRouteExtension(ctx context.Context, in *UpdateLbRouteExtensionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Deletes the specified `LbRouteExtension` resource.
 	DeleteLbRouteExtension(ctx context.Context, in *DeleteLbRouteExtensionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Lists `AuthzExtension` resources in a given project and location.
+	ListAuthzExtensions(ctx context.Context, in *ListAuthzExtensionsRequest, opts ...grpc.CallOption) (*ListAuthzExtensionsResponse, error)
+	// Gets details of the specified `AuthzExtension` resource.
+	GetAuthzExtension(ctx context.Context, in *GetAuthzExtensionRequest, opts ...grpc.CallOption) (*AuthzExtension, error)
+	// Creates a new `AuthzExtension` resource in a given project
+	// and location.
+	CreateAuthzExtension(ctx context.Context, in *CreateAuthzExtensionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Updates the parameters of the specified `AuthzExtension`
+	// resource.
+	UpdateAuthzExtension(ctx context.Context, in *UpdateAuthzExtensionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes the specified `AuthzExtension` resource.
+	DeleteAuthzExtension(ctx context.Context, in *DeleteAuthzExtensionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
 type depServiceClient struct {
@@ -144,6 +156,51 @@ func (c *depServiceClient) DeleteLbRouteExtension(ctx context.Context, in *Delet
 	return out, nil
 }
 
+func (c *depServiceClient) ListAuthzExtensions(ctx context.Context, in *ListAuthzExtensionsRequest, opts ...grpc.CallOption) (*ListAuthzExtensionsResponse, error) {
+	out := new(ListAuthzExtensionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.DepService/ListAuthzExtensions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *depServiceClient) GetAuthzExtension(ctx context.Context, in *GetAuthzExtensionRequest, opts ...grpc.CallOption) (*AuthzExtension, error) {
+	out := new(AuthzExtension)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.DepService/GetAuthzExtension", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *depServiceClient) CreateAuthzExtension(ctx context.Context, in *CreateAuthzExtensionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.DepService/CreateAuthzExtension", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *depServiceClient) UpdateAuthzExtension(ctx context.Context, in *UpdateAuthzExtensionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.DepService/UpdateAuthzExtension", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *depServiceClient) DeleteAuthzExtension(ctx context.Context, in *DeleteAuthzExtensionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkservices.v1.DepService/DeleteAuthzExtension", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DepServiceServer is the server API for DepService service.
 // All implementations must embed UnimplementedDepServiceServer
 // for forward compatibility
@@ -169,6 +226,18 @@ type DepServiceServer interface {
 	UpdateLbRouteExtension(context.Context, *UpdateLbRouteExtensionRequest) (*longrunningpb.Operation, error)
 	// Deletes the specified `LbRouteExtension` resource.
 	DeleteLbRouteExtension(context.Context, *DeleteLbRouteExtensionRequest) (*longrunningpb.Operation, error)
+	// Lists `AuthzExtension` resources in a given project and location.
+	ListAuthzExtensions(context.Context, *ListAuthzExtensionsRequest) (*ListAuthzExtensionsResponse, error)
+	// Gets details of the specified `AuthzExtension` resource.
+	GetAuthzExtension(context.Context, *GetAuthzExtensionRequest) (*AuthzExtension, error)
+	// Creates a new `AuthzExtension` resource in a given project
+	// and location.
+	CreateAuthzExtension(context.Context, *CreateAuthzExtensionRequest) (*longrunningpb.Operation, error)
+	// Updates the parameters of the specified `AuthzExtension`
+	// resource.
+	UpdateAuthzExtension(context.Context, *UpdateAuthzExtensionRequest) (*longrunningpb.Operation, error)
+	// Deletes the specified `AuthzExtension` resource.
+	DeleteAuthzExtension(context.Context, *DeleteAuthzExtensionRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedDepServiceServer()
 }
 
@@ -205,6 +274,21 @@ func (UnimplementedDepServiceServer) UpdateLbRouteExtension(context.Context, *Up
 }
 func (UnimplementedDepServiceServer) DeleteLbRouteExtension(context.Context, *DeleteLbRouteExtensionRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteLbRouteExtension not implemented")
+}
+func (UnimplementedDepServiceServer) ListAuthzExtensions(context.Context, *ListAuthzExtensionsRequest) (*ListAuthzExtensionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAuthzExtensions not implemented")
+}
+func (UnimplementedDepServiceServer) GetAuthzExtension(context.Context, *GetAuthzExtensionRequest) (*AuthzExtension, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAuthzExtension not implemented")
+}
+func (UnimplementedDepServiceServer) CreateAuthzExtension(context.Context, *CreateAuthzExtensionRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateAuthzExtension not implemented")
+}
+func (UnimplementedDepServiceServer) UpdateAuthzExtension(context.Context, *UpdateAuthzExtensionRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateAuthzExtension not implemented")
+}
+func (UnimplementedDepServiceServer) DeleteAuthzExtension(context.Context, *DeleteAuthzExtensionRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteAuthzExtension not implemented")
 }
 func (UnimplementedDepServiceServer) mustEmbedUnimplementedDepServiceServer() {}
 
@@ -399,6 +483,96 @@ func _DepService_DeleteLbRouteExtension_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DepService_ListAuthzExtensions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAuthzExtensionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepServiceServer).ListAuthzExtensions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.DepService/ListAuthzExtensions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepServiceServer).ListAuthzExtensions(ctx, req.(*ListAuthzExtensionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepService_GetAuthzExtension_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAuthzExtensionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepServiceServer).GetAuthzExtension(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.DepService/GetAuthzExtension",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepServiceServer).GetAuthzExtension(ctx, req.(*GetAuthzExtensionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepService_CreateAuthzExtension_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateAuthzExtensionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepServiceServer).CreateAuthzExtension(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.DepService/CreateAuthzExtension",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepServiceServer).CreateAuthzExtension(ctx, req.(*CreateAuthzExtensionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepService_UpdateAuthzExtension_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAuthzExtensionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepServiceServer).UpdateAuthzExtension(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.DepService/UpdateAuthzExtension",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepServiceServer).UpdateAuthzExtension(ctx, req.(*UpdateAuthzExtensionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DepService_DeleteAuthzExtension_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteAuthzExtensionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DepServiceServer).DeleteAuthzExtension(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkservices.v1.DepService/DeleteAuthzExtension",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DepServiceServer).DeleteAuthzExtension(ctx, req.(*DeleteAuthzExtensionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DepService_ServiceDesc is the grpc.ServiceDesc for DepService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -445,6 +619,26 @@ var DepService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteLbRouteExtension",
 			Handler:    _DepService_DeleteLbRouteExtension_Handler,
+		},
+		{
+			MethodName: "ListAuthzExtensions",
+			Handler:    _DepService_ListAuthzExtensions_Handler,
+		},
+		{
+			MethodName: "GetAuthzExtension",
+			Handler:    _DepService_GetAuthzExtension_Handler,
+		},
+		{
+			MethodName: "CreateAuthzExtension",
+			Handler:    _DepService_CreateAuthzExtension_Handler,
+		},
+		{
+			MethodName: "UpdateAuthzExtension",
+			Handler:    _DepService_UpdateAuthzExtension_Handler,
+		},
+		{
+			MethodName: "DeleteAuthzExtension",
+			Handler:    _DepService_DeleteAuthzExtension_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
