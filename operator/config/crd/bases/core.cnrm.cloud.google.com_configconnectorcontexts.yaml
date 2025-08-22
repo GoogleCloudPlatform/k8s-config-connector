@@ -63,6 +63,27 @@ spec:
                   Specifies the project to use for preconditions, quota and billing.
                   Should only be used when requestProjectPolicy is set to BILLING_PROJECT.
                 type: string
+              experiments:
+                description: Configuration for experimental features.
+                properties:
+                  controllersOverrides:
+                    description: A list of key-value pairs for controller overrides.
+                    items:
+                      description: ControllerOverride defines a key-value pair for
+                        a controller override.
+                      properties:
+                        name:
+                          description: The name of the controller to override.
+                          type: string
+                        value:
+                          description: The value of the override.
+                          type: string
+                      required:
+                      - name
+                      - value
+                      type: object
+                    type: array
+                type: object
               googleServiceAccount:
                 description: |-
                   The Google Service Account to be used by Config Connector to

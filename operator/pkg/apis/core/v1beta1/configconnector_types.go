@@ -66,6 +66,27 @@ type ConfigConnectorSpec struct {
 	//+kubebuilder:validation:Enum=Absent;Merge
 	//+kubebuilder:validation:Optional
 	StateIntoSpec *StateIntoSpecValue `json:"stateIntoSpec,omitempty"`
+
+	// Configuration for experimental features.
+	// +optional
+	Experiments *Experiments `json:"experiments,omitempty"`
+}
+
+// ControllerOverride defines a key-value pair for a controller override.
+type ControllerOverride struct {
+	// The name of the controller to override.
+	// +required
+	Name string `json:"name"`
+	// The value of the override.
+	// +required
+	Value string `json:"value"`
+}
+
+// Experiments defines the configuration for experimental features.
+type Experiments struct {
+	// A list of key-value pairs for controller overrides.
+	// +optional
+	ControllersOverrides []ControllerOverride `json:"controllersOverrides,omitempty"`
 }
 
 // ConfigConnectorStatus defines the observed state of ConfigConnector

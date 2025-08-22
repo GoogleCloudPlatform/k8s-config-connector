@@ -66,6 +66,27 @@ spec:
                   It's recommended to use `googleServiceAccount` when running ConfigConnector in Google Kubernetes Engine (GKE) clusters with Workload Identity enabled.
                   This field cannot be specified together with `googleServiceAccount`.
                 type: string
+              experiments:
+                description: Configuration for experimental features.
+                properties:
+                  controllersOverrides:
+                    description: A list of key-value pairs for controller overrides.
+                    items:
+                      description: ControllerOverride defines a key-value pair for
+                        a controller override.
+                      properties:
+                        name:
+                          description: The name of the controller to override.
+                          type: string
+                        value:
+                          description: The value of the override.
+                          type: string
+                      required:
+                      - name
+                      - value
+                      type: object
+                    type: array
+                type: object
               googleServiceAccount:
                 description: |-
                   The Google Service Account to be used by Config Connector to authenticate with Google Cloud APIs. This field is used only when running in cluster mode with Workload Identity enabled.
