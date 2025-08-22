@@ -106,4 +106,5 @@ When promoting a resource from `v1alpha1` to `v1beta1`, we should keep `krm` as 
 
 # Promoting resources from alpha to beta
 
-`docs/ai/promote-alpha-to-beta.md` shares tips on how to promote alpha resources to beta.
+`docs/ai/qualify-alpha-for-beta.md` shares tips on how to qualify alpha resources for beta promotion.
+`docs/ai/how-to-promote-resource.md` shares tips on how to promote alpha resources to beta.
