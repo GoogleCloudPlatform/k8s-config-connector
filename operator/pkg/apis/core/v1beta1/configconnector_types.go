@@ -66,6 +66,12 @@ type ConfigConnectorSpec struct {
 	//+kubebuilder:validation:Enum=Absent;Merge
 	//+kubebuilder:validation:Optional
 	StateIntoSpec *StateIntoSpecValue `json:"stateIntoSpec,omitempty"`
+
+	// Experiments are a list of strings that allow opting-in to previews/experiments.
+	// This functionality is generally not supported and not expected to work going forwards,
+	// the intention is to allow new functionality to be delivered to non-production environments quickly,
+	// proving the functionality before it is baked into the supported API.
+	Experiments []string `json:"experiments,omitempty"`
 }
 
 // ConfigConnectorStatus defines the observed state of ConfigConnector
