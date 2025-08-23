@@ -1,52 +1,52 @@
-[gcplabels] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=apigatewayapis.apigateway.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=apigatewayapis.apigateway.cnrm.cloud.google.com version=v1beta1: field spec.labels
-[gcplabels] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=backupdrbackupplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=backupdrbackupvaults.backupdr.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: field spec.labels
-[gcplabels] crd=clouddmsprivateconnections.clouddms.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=cloudidentitygroups.cloudidentity.cnrm.cloud.google.com version=v1beta1: field spec.labels
-[gcplabels] crd=colabruntimes.colab.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=colabruntimetemplates.colab.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=dataplexentrygroups.dataplex.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=dataplexentrytypes.dataplex.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=dataplexlakes.dataplex.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=dataplextasks.dataplex.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=dataplexzones.dataplex.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=dataprocbatches.dataproc.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=dataprocjobs.dataproc.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=datastreamconnectionprofiles.datastream.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=datastreamprivateconnections.datastream.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=datastreamroutes.datastream.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=edgecontainermachines.edgecontainer.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=gkebackupbackupplans.gkebackup.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=gkebackupbackups.gkebackup.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=gkebackuprestoreplans.gkebackup.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=gkebackuprestores.gkebackup.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=managedkafkaclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=managedkafkaclusters.managedkafka.cnrm.cloud.google.com version=v1beta1: field spec.labels
-[gcplabels] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=metastorefederations.metastore.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=monitoringnotificationchannels.monitoring.cnrm.cloud.google.com version=v1beta1: field spec.labels
-[gcplabels] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=networkmanagementconnectivitytests.networkmanagement.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=networkservicesservicebindings.networkservices.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field spec.labels
-[gcplabels] crd=pubsubsnapshots.pubsub.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=secretmanagersecrets.secretmanager.cnrm.cloud.google.com version=v1beta1: field spec.labels
-[gcplabels] crd=securesourcemanagerinstances.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=securesourcemanagerinstances.securesourcemanager.cnrm.cloud.google.com version=v1beta1: field spec.labels
-[gcplabels] crd=spannerinstanceconfigs.spanner.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=spannerinstances.spanner.cnrm.cloud.google.com version=v1beta1: field spec.labels
-[gcplabels] crd=vertexaifeaturestores.vertexai.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=workflowsexecutions.workflowexecutions.cnrm.cloud.google.com version=v1alpha1: field spec.labels
-[gcplabels] crd=workflowsworkflows.workflows.cnrm.cloud.google.com version=v1alpha1: field spec.labels
+[gcplabels] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=apigatewayapis.apigateway.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=apigatewayapis.apigateway.cnrm.cloud.google.com version=v1beta1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=backupdrbackupplans.backupdr.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=backupdrbackupvaults.backupdr.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=bigquerytables.bigquery.cnrm.cloud.google.com version=v1beta1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=clouddmsprivateconnections.clouddms.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=cloudidentitygroups.cloudidentity.cnrm.cloud.google.com version=v1beta1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=colabruntimes.colab.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=colabruntimetemplates.colab.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=computeinterconnects.compute.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=datacatalogentries.datacatalog.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=dataplexentrygroups.dataplex.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=dataplexentrytypes.dataplex.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=dataplexlakes.dataplex.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=dataplextasks.dataplex.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=dataplexzones.dataplex.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=dataprocbatches.dataproc.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=dataprocjobs.dataproc.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=dataprocnodegroups.dataproc.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=datastreamconnectionprofiles.datastream.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=datastreamprivateconnections.datastream.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=datastreamroutes.datastream.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=edgecontainermachines.edgecontainer.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=gkebackupbackupplans.gkebackup.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=gkebackupbackups.gkebackup.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=gkebackuprestoreplans.gkebackup.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=gkebackuprestores.gkebackup.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=managedkafkaclusters.managedkafka.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=managedkafkaclusters.managedkafka.cnrm.cloud.google.com version=v1beta1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=metastorefederations.metastore.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=monitoringnotificationchannels.monitoring.cnrm.cloud.google.com version=v1beta1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=networkconnectivityinternalranges.networkconnectivity.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=networkmanagementconnectivitytests.networkmanagement.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=networkservicesservicebindings.networkservices.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=pubsubsnapshots.pubsub.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=secretmanagersecrets.secretmanager.cnrm.cloud.google.com version=v1beta1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=securesourcemanagerinstances.securesourcemanager.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=securesourcemanagerinstances.securesourcemanager.cnrm.cloud.google.com version=v1beta1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=spannerinstanceconfigs.spanner.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=spannerinstances.spanner.cnrm.cloud.google.com version=v1beta1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=vertexaifeaturestores.vertexai.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=workflowsexecutions.workflowexecutions.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
+[gcplabels] crd=workflowsworkflows.workflows.cnrm.cloud.google.com version=v1alpha1: supports GCP labels. The fixture test should cover both `metadata.labels` and `spec.labels`
