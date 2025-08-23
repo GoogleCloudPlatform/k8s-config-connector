@@ -710,7 +710,7 @@ func runCLI(h *create.Harness, args []string, uniqueID string, baseOutputPath st
 		tempDir := t.TempDir()
 		p := filepath.Join(tempDir, "kubeconfig")
 
-		kubeconfig, err := createKubeconfigFromRestConfig(h.GetRESTConfig())
+		kubeconfig, err := createKubeconfigFromRestConfig(h.GetUserRESTConfig())
 		if err != nil {
 			t.Fatalf("error creating kubeconfig: %v", err)
 		}
