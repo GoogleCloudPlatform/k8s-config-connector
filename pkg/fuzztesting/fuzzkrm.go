@@ -62,6 +62,17 @@ type KRMTypedFuzzer[ProtoT proto.Message, SpecType any, StatusType any] struct {
 	StatusFields        sets.Set[string]
 }
 
+// Unimplemented_NotYetTriaged marks a field as not implemented, because we simply haven't yet looked into supporting it yet.
+// This should be used as the "starting point" for new fields added by services.
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_NotYetTriaged(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
+}
+
+// IdentityField marks a field as not supported in the mapper, because it is part of the identity (URL) rather than being part of the object itself.
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) IdentityField(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
+}
+
 type KRMFuzzer interface {
 	FuzzSpec(t *testing.T, seed int64)
 	FuzzStatus(t *testing.T, seed int64)

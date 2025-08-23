@@ -51,5 +51,7 @@ func GKEBackupRestorePlanFuzzer() fuzztesting.KRMFuzzer {
 	// VolumeTypeEnum_VOLUME_TYPE_UNSPECIFIED, which does not roundtrip due to our Enum_FromProto implementation.
 	f.UnimplementedFields.Insert(".restore_config.volume_data_restore_policy_bindings")
 
+	f.Unimplemented_NotYetTriaged(".restore_channel")
+
 	return f
 }
