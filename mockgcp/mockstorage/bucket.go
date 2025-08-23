@@ -152,13 +152,7 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 		ubla = &pb.UniformBucketLevelAccess{}
 		iamConfiguration.UniformBucketLevelAccess = ubla
 	}
-	if ubla.GetEnabled() {
-		iamConfiguration.BucketPolicyOnly = &pb.BucketPolicyOnly{
-			Enabled:    PtrTo(true),
-			LockedTime: timestamppb.New(now.AsTime()),
-		}
-		ubla.LockedTime = timestamppb.New(now.AsTime())
-	}
+
 	softDeletePolicy := obj.SoftDeletePolicy
 	if softDeletePolicy == nil {
 		softDeletePolicy = &pb.BucketSoftDeletePolicy{}

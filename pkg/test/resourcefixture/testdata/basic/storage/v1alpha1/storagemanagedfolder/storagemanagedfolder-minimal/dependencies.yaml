@@ -18,3 +18,4 @@ metadata:
   name: bucket-for-managed-folder-${uniqueId}
 spec:
   uniformBucketLevelAccess: true
+  bucketPolicyOnly: true
