@@ -18,3 +18,10 @@
 // proto.service: mockgcp.cloud.servicenetworking.v1
 
 package servicenetworking
+
+import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	pb "cloud.google.com/go/servicenetworking/apiv1/servicenetworkingpb"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicenetworking/v1alpha1"
+)
