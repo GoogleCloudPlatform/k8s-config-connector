@@ -16,7 +16,7 @@ apiVersion: storage.cnrm.cloud.google.com/v1alpha1
 kind: StorageManagedFolder
 metadata:
   # This name will be used as the managed folder's ID.
-  name: storagemanagedfolder-test-${uniqueId}
+  name: storagemanagedfolder-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
