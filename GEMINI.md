@@ -95,6 +95,9 @@ We then run the tests again against our mockgcp emulation/testing layer for GCP 
 and often we have to improve our mockgcp layer or the normalization to get the results to be the same.
 We have two scripts `hack/record-gcp` and `hack/compare-mock` to help streamline this process.
 
+# Github Issues
+
+When asked to work with github issues, use the `gh issue` tool to read/update issues.
 
 # GitHub Actions Workflow Generation
 
@@ -104,7 +107,9 @@ We have two scripts `hack/record-gcp` and `hack/compare-mock` to help streamline
 
 When promoting a resource from `v1alpha1` to `v1beta1`, we should keep `krm` as the import alias for `v1alpha1` and use `krmv1beta1` for `v1beta1`. This is to minimize the code changes.
 
-# Promoting resources from alpha to beta
 
-`docs/ai/qualify-alpha-for-beta.md` shares tips on how to qualify alpha resources for beta promotion.
-`docs/ai/how-to-promote-resource.md` shares tips on how to promote alpha resources to beta.
+# Task-Specific Docs
+
+* `docs/ai/qualify-alpha-for-beta.md` shares tips on how to qualify alpha resources for beta promotion.
+* `docs/ai/how-to-promote-resource.md` shares tips on how to promote alpha resources to beta.
+* `docs/ai/add-missing-field.md` describes how to add a missing field, for example when the GCP service adds a new field.
