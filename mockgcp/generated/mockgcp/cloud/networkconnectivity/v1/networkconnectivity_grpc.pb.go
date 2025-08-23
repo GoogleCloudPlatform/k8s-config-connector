@@ -1577,6 +1577,615 @@ var ProjectsLocationsInternalRangesServer_ServiceDesc = grpc.ServiceDesc{
 	Metadata: "mockgcp/cloud/networkconnectivity/v1/networkconnectivity.proto",
 }
 
+// ProjectsLocationsMulticloudDataTransferConfigsServerClient is the client API for ProjectsLocationsMulticloudDataTransferConfigsServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ProjectsLocationsMulticloudDataTransferConfigsServerClient interface {
+	// Creates a MulticloudDataTransferConfig in a given project and location.
+	CreateProjectsLocationsMulticloudDataTransferConfig(ctx context.Context, in *CreateProjectsLocationsMulticloudDataTransferConfigRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes a single MulticloudDataTransferConfig.
+	DeleteProjectsLocationsMulticloudDataTransferConfig(ctx context.Context, in *DeleteProjectsLocationsMulticloudDataTransferConfigRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Gets details of a single MulticloudDataTransferConfig.
+	GetProjectsLocationsMulticloudDataTransferConfig(ctx context.Context, in *GetProjectsLocationsMulticloudDataTransferConfigRequest, opts ...grpc.CallOption) (*MulticloudDataTransferConfig, error)
+	// Lists MulticloudDataTransferConfigs in a given project and location.
+	ListProjectsLocationsMulticloudDataTransferConfigs(ctx context.Context, in *ListProjectsLocationsMulticloudDataTransferConfigsRequest, opts ...grpc.CallOption) (*ListMulticloudDataTransferConfigsResponse, error)
+	// Updates a MulticloudDataTransferConfig in a given project and location.
+	PatchProjectsLocationsMulticloudDataTransferConfig(ctx context.Context, in *PatchProjectsLocationsMulticloudDataTransferConfigRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+}
+
+type projectsLocationsMulticloudDataTransferConfigsServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewProjectsLocationsMulticloudDataTransferConfigsServerClient(cc grpc.ClientConnInterface) ProjectsLocationsMulticloudDataTransferConfigsServerClient {
+	return &projectsLocationsMulticloudDataTransferConfigsServerClient{cc}
+}
+
+func (c *projectsLocationsMulticloudDataTransferConfigsServerClient) CreateProjectsLocationsMulticloudDataTransferConfig(ctx context.Context, in *CreateProjectsLocationsMulticloudDataTransferConfigRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/CreateProjectsLocationsMulticloudDataTransferConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsMulticloudDataTransferConfigsServerClient) DeleteProjectsLocationsMulticloudDataTransferConfig(ctx context.Context, in *DeleteProjectsLocationsMulticloudDataTransferConfigRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/DeleteProjectsLocationsMulticloudDataTransferConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsMulticloudDataTransferConfigsServerClient) GetProjectsLocationsMulticloudDataTransferConfig(ctx context.Context, in *GetProjectsLocationsMulticloudDataTransferConfigRequest, opts ...grpc.CallOption) (*MulticloudDataTransferConfig, error) {
+	out := new(MulticloudDataTransferConfig)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/GetProjectsLocationsMulticloudDataTransferConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsMulticloudDataTransferConfigsServerClient) ListProjectsLocationsMulticloudDataTransferConfigs(ctx context.Context, in *ListProjectsLocationsMulticloudDataTransferConfigsRequest, opts ...grpc.CallOption) (*ListMulticloudDataTransferConfigsResponse, error) {
+	out := new(ListMulticloudDataTransferConfigsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/ListProjectsLocationsMulticloudDataTransferConfigs", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsMulticloudDataTransferConfigsServerClient) PatchProjectsLocationsMulticloudDataTransferConfig(ctx context.Context, in *PatchProjectsLocationsMulticloudDataTransferConfigRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/PatchProjectsLocationsMulticloudDataTransferConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ProjectsLocationsMulticloudDataTransferConfigsServerServer is the server API for ProjectsLocationsMulticloudDataTransferConfigsServer service.
+// All implementations must embed UnimplementedProjectsLocationsMulticloudDataTransferConfigsServerServer
+// for forward compatibility
+type ProjectsLocationsMulticloudDataTransferConfigsServerServer interface {
+	// Creates a MulticloudDataTransferConfig in a given project and location.
+	CreateProjectsLocationsMulticloudDataTransferConfig(context.Context, *CreateProjectsLocationsMulticloudDataTransferConfigRequest) (*longrunningpb.Operation, error)
+	// Deletes a single MulticloudDataTransferConfig.
+	DeleteProjectsLocationsMulticloudDataTransferConfig(context.Context, *DeleteProjectsLocationsMulticloudDataTransferConfigRequest) (*longrunningpb.Operation, error)
+	// Gets details of a single MulticloudDataTransferConfig.
+	GetProjectsLocationsMulticloudDataTransferConfig(context.Context, *GetProjectsLocationsMulticloudDataTransferConfigRequest) (*MulticloudDataTransferConfig, error)
+	// Lists MulticloudDataTransferConfigs in a given project and location.
+	ListProjectsLocationsMulticloudDataTransferConfigs(context.Context, *ListProjectsLocationsMulticloudDataTransferConfigsRequest) (*ListMulticloudDataTransferConfigsResponse, error)
+	// Updates a MulticloudDataTransferConfig in a given project and location.
+	PatchProjectsLocationsMulticloudDataTransferConfig(context.Context, *PatchProjectsLocationsMulticloudDataTransferConfigRequest) (*longrunningpb.Operation, error)
+	mustEmbedUnimplementedProjectsLocationsMulticloudDataTransferConfigsServerServer()
+}
+
+// UnimplementedProjectsLocationsMulticloudDataTransferConfigsServerServer must be embedded to have forward compatible implementations.
+type UnimplementedProjectsLocationsMulticloudDataTransferConfigsServerServer struct {
+}
+
+func (UnimplementedProjectsLocationsMulticloudDataTransferConfigsServerServer) CreateProjectsLocationsMulticloudDataTransferConfig(context.Context, *CreateProjectsLocationsMulticloudDataTransferConfigRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateProjectsLocationsMulticloudDataTransferConfig not implemented")
+}
+func (UnimplementedProjectsLocationsMulticloudDataTransferConfigsServerServer) DeleteProjectsLocationsMulticloudDataTransferConfig(context.Context, *DeleteProjectsLocationsMulticloudDataTransferConfigRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteProjectsLocationsMulticloudDataTransferConfig not implemented")
+}
+func (UnimplementedProjectsLocationsMulticloudDataTransferConfigsServerServer) GetProjectsLocationsMulticloudDataTransferConfig(context.Context, *GetProjectsLocationsMulticloudDataTransferConfigRequest) (*MulticloudDataTransferConfig, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProjectsLocationsMulticloudDataTransferConfig not implemented")
+}
+func (UnimplementedProjectsLocationsMulticloudDataTransferConfigsServerServer) ListProjectsLocationsMulticloudDataTransferConfigs(context.Context, *ListProjectsLocationsMulticloudDataTransferConfigsRequest) (*ListMulticloudDataTransferConfigsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListProjectsLocationsMulticloudDataTransferConfigs not implemented")
+}
+func (UnimplementedProjectsLocationsMulticloudDataTransferConfigsServerServer) PatchProjectsLocationsMulticloudDataTransferConfig(context.Context, *PatchProjectsLocationsMulticloudDataTransferConfigRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchProjectsLocationsMulticloudDataTransferConfig not implemented")
+}
+func (UnimplementedProjectsLocationsMulticloudDataTransferConfigsServerServer) mustEmbedUnimplementedProjectsLocationsMulticloudDataTransferConfigsServerServer() {
+}
+
+// UnsafeProjectsLocationsMulticloudDataTransferConfigsServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ProjectsLocationsMulticloudDataTransferConfigsServerServer will
+// result in compilation errors.
+type UnsafeProjectsLocationsMulticloudDataTransferConfigsServerServer interface {
+	mustEmbedUnimplementedProjectsLocationsMulticloudDataTransferConfigsServerServer()
+}
+
+func RegisterProjectsLocationsMulticloudDataTransferConfigsServerServer(s grpc.ServiceRegistrar, srv ProjectsLocationsMulticloudDataTransferConfigsServerServer) {
+	s.RegisterService(&ProjectsLocationsMulticloudDataTransferConfigsServer_ServiceDesc, srv)
+}
+
+func _ProjectsLocationsMulticloudDataTransferConfigsServer_CreateProjectsLocationsMulticloudDataTransferConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateProjectsLocationsMulticloudDataTransferConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsServerServer).CreateProjectsLocationsMulticloudDataTransferConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/CreateProjectsLocationsMulticloudDataTransferConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsServerServer).CreateProjectsLocationsMulticloudDataTransferConfig(ctx, req.(*CreateProjectsLocationsMulticloudDataTransferConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsMulticloudDataTransferConfigsServer_DeleteProjectsLocationsMulticloudDataTransferConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteProjectsLocationsMulticloudDataTransferConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsServerServer).DeleteProjectsLocationsMulticloudDataTransferConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/DeleteProjectsLocationsMulticloudDataTransferConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsServerServer).DeleteProjectsLocationsMulticloudDataTransferConfig(ctx, req.(*DeleteProjectsLocationsMulticloudDataTransferConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsMulticloudDataTransferConfigsServer_GetProjectsLocationsMulticloudDataTransferConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProjectsLocationsMulticloudDataTransferConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsServerServer).GetProjectsLocationsMulticloudDataTransferConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/GetProjectsLocationsMulticloudDataTransferConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsServerServer).GetProjectsLocationsMulticloudDataTransferConfig(ctx, req.(*GetProjectsLocationsMulticloudDataTransferConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsMulticloudDataTransferConfigsServer_ListProjectsLocationsMulticloudDataTransferConfigs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProjectsLocationsMulticloudDataTransferConfigsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsServerServer).ListProjectsLocationsMulticloudDataTransferConfigs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/ListProjectsLocationsMulticloudDataTransferConfigs",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsServerServer).ListProjectsLocationsMulticloudDataTransferConfigs(ctx, req.(*ListProjectsLocationsMulticloudDataTransferConfigsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsMulticloudDataTransferConfigsServer_PatchProjectsLocationsMulticloudDataTransferConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchProjectsLocationsMulticloudDataTransferConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsServerServer).PatchProjectsLocationsMulticloudDataTransferConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/PatchProjectsLocationsMulticloudDataTransferConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsServerServer).PatchProjectsLocationsMulticloudDataTransferConfig(ctx, req.(*PatchProjectsLocationsMulticloudDataTransferConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ProjectsLocationsMulticloudDataTransferConfigsServer_ServiceDesc is the grpc.ServiceDesc for ProjectsLocationsMulticloudDataTransferConfigsServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ProjectsLocationsMulticloudDataTransferConfigsServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer",
+	HandlerType: (*ProjectsLocationsMulticloudDataTransferConfigsServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateProjectsLocationsMulticloudDataTransferConfig",
+			Handler:    _ProjectsLocationsMulticloudDataTransferConfigsServer_CreateProjectsLocationsMulticloudDataTransferConfig_Handler,
+		},
+		{
+			MethodName: "DeleteProjectsLocationsMulticloudDataTransferConfig",
+			Handler:    _ProjectsLocationsMulticloudDataTransferConfigsServer_DeleteProjectsLocationsMulticloudDataTransferConfig_Handler,
+		},
+		{
+			MethodName: "GetProjectsLocationsMulticloudDataTransferConfig",
+			Handler:    _ProjectsLocationsMulticloudDataTransferConfigsServer_GetProjectsLocationsMulticloudDataTransferConfig_Handler,
+		},
+		{
+			MethodName: "ListProjectsLocationsMulticloudDataTransferConfigs",
+			Handler:    _ProjectsLocationsMulticloudDataTransferConfigsServer_ListProjectsLocationsMulticloudDataTransferConfigs_Handler,
+		},
+		{
+			MethodName: "PatchProjectsLocationsMulticloudDataTransferConfig",
+			Handler:    _ProjectsLocationsMulticloudDataTransferConfigsServer_PatchProjectsLocationsMulticloudDataTransferConfig_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/networkconnectivity/v1/networkconnectivity.proto",
+}
+
+// ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerClient is the client API for ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerClient interface {
+	// Creates a Destination in a given project and location.
+	CreateProjectsLocationsMulticloudDataTransferConfigsDestination(ctx context.Context, in *CreateProjectsLocationsMulticloudDataTransferConfigsDestinationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes a single Destination.
+	DeleteProjectsLocationsMulticloudDataTransferConfigsDestination(ctx context.Context, in *DeleteProjectsLocationsMulticloudDataTransferConfigsDestinationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Gets details of a single Destination.
+	GetProjectsLocationsMulticloudDataTransferConfigsDestination(ctx context.Context, in *GetProjectsLocationsMulticloudDataTransferConfigsDestinationRequest, opts ...grpc.CallOption) (*Destination, error)
+	// Lists Destinations in a given project and location.
+	ListProjectsLocationsMulticloudDataTransferConfigsDestinations(ctx context.Context, in *ListProjectsLocationsMulticloudDataTransferConfigsDestinationsRequest, opts ...grpc.CallOption) (*ListDestinationsResponse, error)
+	// Updates a Destination in a given project and location.
+	PatchProjectsLocationsMulticloudDataTransferConfigsDestination(ctx context.Context, in *PatchProjectsLocationsMulticloudDataTransferConfigsDestinationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+}
+
+type projectsLocationsMulticloudDataTransferConfigsDestinationsServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewProjectsLocationsMulticloudDataTransferConfigsDestinationsServerClient(cc grpc.ClientConnInterface) ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerClient {
+	return &projectsLocationsMulticloudDataTransferConfigsDestinationsServerClient{cc}
+}
+
+func (c *projectsLocationsMulticloudDataTransferConfigsDestinationsServerClient) CreateProjectsLocationsMulticloudDataTransferConfigsDestination(ctx context.Context, in *CreateProjectsLocationsMulticloudDataTransferConfigsDestinationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/CreateProjectsLocationsMulticloudDataTransferConfigsDestination", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsMulticloudDataTransferConfigsDestinationsServerClient) DeleteProjectsLocationsMulticloudDataTransferConfigsDestination(ctx context.Context, in *DeleteProjectsLocationsMulticloudDataTransferConfigsDestinationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/DeleteProjectsLocationsMulticloudDataTransferConfigsDestination", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsMulticloudDataTransferConfigsDestinationsServerClient) GetProjectsLocationsMulticloudDataTransferConfigsDestination(ctx context.Context, in *GetProjectsLocationsMulticloudDataTransferConfigsDestinationRequest, opts ...grpc.CallOption) (*Destination, error) {
+	out := new(Destination)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/GetProjectsLocationsMulticloudDataTransferConfigsDestination", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsMulticloudDataTransferConfigsDestinationsServerClient) ListProjectsLocationsMulticloudDataTransferConfigsDestinations(ctx context.Context, in *ListProjectsLocationsMulticloudDataTransferConfigsDestinationsRequest, opts ...grpc.CallOption) (*ListDestinationsResponse, error) {
+	out := new(ListDestinationsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/ListProjectsLocationsMulticloudDataTransferConfigsDestinations", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsMulticloudDataTransferConfigsDestinationsServerClient) PatchProjectsLocationsMulticloudDataTransferConfigsDestination(ctx context.Context, in *PatchProjectsLocationsMulticloudDataTransferConfigsDestinationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/PatchProjectsLocationsMulticloudDataTransferConfigsDestination", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer is the server API for ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer service.
+// All implementations must embed UnimplementedProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer
+// for forward compatibility
+type ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer interface {
+	// Creates a Destination in a given project and location.
+	CreateProjectsLocationsMulticloudDataTransferConfigsDestination(context.Context, *CreateProjectsLocationsMulticloudDataTransferConfigsDestinationRequest) (*longrunningpb.Operation, error)
+	// Deletes a single Destination.
+	DeleteProjectsLocationsMulticloudDataTransferConfigsDestination(context.Context, *DeleteProjectsLocationsMulticloudDataTransferConfigsDestinationRequest) (*longrunningpb.Operation, error)
+	// Gets details of a single Destination.
+	GetProjectsLocationsMulticloudDataTransferConfigsDestination(context.Context, *GetProjectsLocationsMulticloudDataTransferConfigsDestinationRequest) (*Destination, error)
+	// Lists Destinations in a given project and location.
+	ListProjectsLocationsMulticloudDataTransferConfigsDestinations(context.Context, *ListProjectsLocationsMulticloudDataTransferConfigsDestinationsRequest) (*ListDestinationsResponse, error)
+	// Updates a Destination in a given project and location.
+	PatchProjectsLocationsMulticloudDataTransferConfigsDestination(context.Context, *PatchProjectsLocationsMulticloudDataTransferConfigsDestinationRequest) (*longrunningpb.Operation, error)
+	mustEmbedUnimplementedProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer()
+}
+
+// UnimplementedProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer must be embedded to have forward compatible implementations.
+type UnimplementedProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer struct {
+}
+
+func (UnimplementedProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer) CreateProjectsLocationsMulticloudDataTransferConfigsDestination(context.Context, *CreateProjectsLocationsMulticloudDataTransferConfigsDestinationRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateProjectsLocationsMulticloudDataTransferConfigsDestination not implemented")
+}
+func (UnimplementedProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer) DeleteProjectsLocationsMulticloudDataTransferConfigsDestination(context.Context, *DeleteProjectsLocationsMulticloudDataTransferConfigsDestinationRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteProjectsLocationsMulticloudDataTransferConfigsDestination not implemented")
+}
+func (UnimplementedProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer) GetProjectsLocationsMulticloudDataTransferConfigsDestination(context.Context, *GetProjectsLocationsMulticloudDataTransferConfigsDestinationRequest) (*Destination, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProjectsLocationsMulticloudDataTransferConfigsDestination not implemented")
+}
+func (UnimplementedProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer) ListProjectsLocationsMulticloudDataTransferConfigsDestinations(context.Context, *ListProjectsLocationsMulticloudDataTransferConfigsDestinationsRequest) (*ListDestinationsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListProjectsLocationsMulticloudDataTransferConfigsDestinations not implemented")
+}
+func (UnimplementedProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer) PatchProjectsLocationsMulticloudDataTransferConfigsDestination(context.Context, *PatchProjectsLocationsMulticloudDataTransferConfigsDestinationRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchProjectsLocationsMulticloudDataTransferConfigsDestination not implemented")
+}
+func (UnimplementedProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer) mustEmbedUnimplementedProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer() {
+}
+
+// UnsafeProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer will
+// result in compilation errors.
+type UnsafeProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer interface {
+	mustEmbedUnimplementedProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer()
+}
+
+func RegisterProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer(s grpc.ServiceRegistrar, srv ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer) {
+	s.RegisterService(&ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ServiceDesc, srv)
+}
+
+func _ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_CreateProjectsLocationsMulticloudDataTransferConfigsDestination_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateProjectsLocationsMulticloudDataTransferConfigsDestinationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer).CreateProjectsLocationsMulticloudDataTransferConfigsDestination(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/CreateProjectsLocationsMulticloudDataTransferConfigsDestination",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer).CreateProjectsLocationsMulticloudDataTransferConfigsDestination(ctx, req.(*CreateProjectsLocationsMulticloudDataTransferConfigsDestinationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_DeleteProjectsLocationsMulticloudDataTransferConfigsDestination_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteProjectsLocationsMulticloudDataTransferConfigsDestinationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer).DeleteProjectsLocationsMulticloudDataTransferConfigsDestination(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/DeleteProjectsLocationsMulticloudDataTransferConfigsDestination",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer).DeleteProjectsLocationsMulticloudDataTransferConfigsDestination(ctx, req.(*DeleteProjectsLocationsMulticloudDataTransferConfigsDestinationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_GetProjectsLocationsMulticloudDataTransferConfigsDestination_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProjectsLocationsMulticloudDataTransferConfigsDestinationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer).GetProjectsLocationsMulticloudDataTransferConfigsDestination(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/GetProjectsLocationsMulticloudDataTransferConfigsDestination",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer).GetProjectsLocationsMulticloudDataTransferConfigsDestination(ctx, req.(*GetProjectsLocationsMulticloudDataTransferConfigsDestinationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ListProjectsLocationsMulticloudDataTransferConfigsDestinations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProjectsLocationsMulticloudDataTransferConfigsDestinationsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer).ListProjectsLocationsMulticloudDataTransferConfigsDestinations(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/ListProjectsLocationsMulticloudDataTransferConfigsDestinations",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer).ListProjectsLocationsMulticloudDataTransferConfigsDestinations(ctx, req.(*ListProjectsLocationsMulticloudDataTransferConfigsDestinationsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_PatchProjectsLocationsMulticloudDataTransferConfigsDestination_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchProjectsLocationsMulticloudDataTransferConfigsDestinationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer).PatchProjectsLocationsMulticloudDataTransferConfigsDestination(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/PatchProjectsLocationsMulticloudDataTransferConfigsDestination",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer).PatchProjectsLocationsMulticloudDataTransferConfigsDestination(ctx, req.(*PatchProjectsLocationsMulticloudDataTransferConfigsDestinationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ServiceDesc is the grpc.ServiceDesc for ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer",
+	HandlerType: (*ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateProjectsLocationsMulticloudDataTransferConfigsDestination",
+			Handler:    _ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_CreateProjectsLocationsMulticloudDataTransferConfigsDestination_Handler,
+		},
+		{
+			MethodName: "DeleteProjectsLocationsMulticloudDataTransferConfigsDestination",
+			Handler:    _ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_DeleteProjectsLocationsMulticloudDataTransferConfigsDestination_Handler,
+		},
+		{
+			MethodName: "GetProjectsLocationsMulticloudDataTransferConfigsDestination",
+			Handler:    _ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_GetProjectsLocationsMulticloudDataTransferConfigsDestination_Handler,
+		},
+		{
+			MethodName: "ListProjectsLocationsMulticloudDataTransferConfigsDestinations",
+			Handler:    _ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ListProjectsLocationsMulticloudDataTransferConfigsDestinations_Handler,
+		},
+		{
+			MethodName: "PatchProjectsLocationsMulticloudDataTransferConfigsDestination",
+			Handler:    _ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_PatchProjectsLocationsMulticloudDataTransferConfigsDestination_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/networkconnectivity/v1/networkconnectivity.proto",
+}
+
+// ProjectsLocationsMulticloudDataTransferSupportedServicesServerClient is the client API for ProjectsLocationsMulticloudDataTransferSupportedServicesServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ProjectsLocationsMulticloudDataTransferSupportedServicesServerClient interface {
+	// Gets details of a single MulticloudDataTransferSupportedServices.
+	GetProjectsLocationsMulticloudDataTransferSupportedService(ctx context.Context, in *GetProjectsLocationsMulticloudDataTransferSupportedServiceRequest, opts ...grpc.CallOption) (*MulticloudDataTransferSupportedService, error)
+	// Lists the supported services for Multicloud Data Transfer. This is a passthrough method.
+	ListProjectsLocationsMulticloudDataTransferSupportedServices(ctx context.Context, in *ListProjectsLocationsMulticloudDataTransferSupportedServicesRequest, opts ...grpc.CallOption) (*ListMulticloudDataTransferSupportedServicesResponse, error)
+}
+
+type projectsLocationsMulticloudDataTransferSupportedServicesServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewProjectsLocationsMulticloudDataTransferSupportedServicesServerClient(cc grpc.ClientConnInterface) ProjectsLocationsMulticloudDataTransferSupportedServicesServerClient {
+	return &projectsLocationsMulticloudDataTransferSupportedServicesServerClient{cc}
+}
+
+func (c *projectsLocationsMulticloudDataTransferSupportedServicesServerClient) GetProjectsLocationsMulticloudDataTransferSupportedService(ctx context.Context, in *GetProjectsLocationsMulticloudDataTransferSupportedServiceRequest, opts ...grpc.CallOption) (*MulticloudDataTransferSupportedService, error) {
+	out := new(MulticloudDataTransferSupportedService)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferSupportedServicesServer/GetProjectsLocationsMulticloudDataTransferSupportedService", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *projectsLocationsMulticloudDataTransferSupportedServicesServerClient) ListProjectsLocationsMulticloudDataTransferSupportedServices(ctx context.Context, in *ListProjectsLocationsMulticloudDataTransferSupportedServicesRequest, opts ...grpc.CallOption) (*ListMulticloudDataTransferSupportedServicesResponse, error) {
+	out := new(ListMulticloudDataTransferSupportedServicesResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferSupportedServicesServer/ListProjectsLocationsMulticloudDataTransferSupportedServices", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ProjectsLocationsMulticloudDataTransferSupportedServicesServerServer is the server API for ProjectsLocationsMulticloudDataTransferSupportedServicesServer service.
+// All implementations must embed UnimplementedProjectsLocationsMulticloudDataTransferSupportedServicesServerServer
+// for forward compatibility
+type ProjectsLocationsMulticloudDataTransferSupportedServicesServerServer interface {
+	// Gets details of a single MulticloudDataTransferSupportedServices.
+	GetProjectsLocationsMulticloudDataTransferSupportedService(context.Context, *GetProjectsLocationsMulticloudDataTransferSupportedServiceRequest) (*MulticloudDataTransferSupportedService, error)
+	// Lists the supported services for Multicloud Data Transfer. This is a passthrough method.
+	ListProjectsLocationsMulticloudDataTransferSupportedServices(context.Context, *ListProjectsLocationsMulticloudDataTransferSupportedServicesRequest) (*ListMulticloudDataTransferSupportedServicesResponse, error)
+	mustEmbedUnimplementedProjectsLocationsMulticloudDataTransferSupportedServicesServerServer()
+}
+
+// UnimplementedProjectsLocationsMulticloudDataTransferSupportedServicesServerServer must be embedded to have forward compatible implementations.
+type UnimplementedProjectsLocationsMulticloudDataTransferSupportedServicesServerServer struct {
+}
+
+func (UnimplementedProjectsLocationsMulticloudDataTransferSupportedServicesServerServer) GetProjectsLocationsMulticloudDataTransferSupportedService(context.Context, *GetProjectsLocationsMulticloudDataTransferSupportedServiceRequest) (*MulticloudDataTransferSupportedService, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProjectsLocationsMulticloudDataTransferSupportedService not implemented")
+}
+func (UnimplementedProjectsLocationsMulticloudDataTransferSupportedServicesServerServer) ListProjectsLocationsMulticloudDataTransferSupportedServices(context.Context, *ListProjectsLocationsMulticloudDataTransferSupportedServicesRequest) (*ListMulticloudDataTransferSupportedServicesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListProjectsLocationsMulticloudDataTransferSupportedServices not implemented")
+}
+func (UnimplementedProjectsLocationsMulticloudDataTransferSupportedServicesServerServer) mustEmbedUnimplementedProjectsLocationsMulticloudDataTransferSupportedServicesServerServer() {
+}
+
+// UnsafeProjectsLocationsMulticloudDataTransferSupportedServicesServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ProjectsLocationsMulticloudDataTransferSupportedServicesServerServer will
+// result in compilation errors.
+type UnsafeProjectsLocationsMulticloudDataTransferSupportedServicesServerServer interface {
+	mustEmbedUnimplementedProjectsLocationsMulticloudDataTransferSupportedServicesServerServer()
+}
+
+func RegisterProjectsLocationsMulticloudDataTransferSupportedServicesServerServer(s grpc.ServiceRegistrar, srv ProjectsLocationsMulticloudDataTransferSupportedServicesServerServer) {
+	s.RegisterService(&ProjectsLocationsMulticloudDataTransferSupportedServicesServer_ServiceDesc, srv)
+}
+
+func _ProjectsLocationsMulticloudDataTransferSupportedServicesServer_GetProjectsLocationsMulticloudDataTransferSupportedService_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProjectsLocationsMulticloudDataTransferSupportedServiceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsMulticloudDataTransferSupportedServicesServerServer).GetProjectsLocationsMulticloudDataTransferSupportedService(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferSupportedServicesServer/GetProjectsLocationsMulticloudDataTransferSupportedService",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsMulticloudDataTransferSupportedServicesServerServer).GetProjectsLocationsMulticloudDataTransferSupportedService(ctx, req.(*GetProjectsLocationsMulticloudDataTransferSupportedServiceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProjectsLocationsMulticloudDataTransferSupportedServicesServer_ListProjectsLocationsMulticloudDataTransferSupportedServices_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListProjectsLocationsMulticloudDataTransferSupportedServicesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProjectsLocationsMulticloudDataTransferSupportedServicesServerServer).ListProjectsLocationsMulticloudDataTransferSupportedServices(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferSupportedServicesServer/ListProjectsLocationsMulticloudDataTransferSupportedServices",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProjectsLocationsMulticloudDataTransferSupportedServicesServerServer).ListProjectsLocationsMulticloudDataTransferSupportedServices(ctx, req.(*ListProjectsLocationsMulticloudDataTransferSupportedServicesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ProjectsLocationsMulticloudDataTransferSupportedServicesServer_ServiceDesc is the grpc.ServiceDesc for ProjectsLocationsMulticloudDataTransferSupportedServicesServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ProjectsLocationsMulticloudDataTransferSupportedServicesServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferSupportedServicesServer",
+	HandlerType: (*ProjectsLocationsMulticloudDataTransferSupportedServicesServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetProjectsLocationsMulticloudDataTransferSupportedService",
+			Handler:    _ProjectsLocationsMulticloudDataTransferSupportedServicesServer_GetProjectsLocationsMulticloudDataTransferSupportedService_Handler,
+		},
+		{
+			MethodName: "ListProjectsLocationsMulticloudDataTransferSupportedServices",
+			Handler:    _ProjectsLocationsMulticloudDataTransferSupportedServicesServer_ListProjectsLocationsMulticloudDataTransferSupportedServices_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "mockgcp/cloud/networkconnectivity/v1/networkconnectivity.proto",
+}
+
 // ProjectsLocationsRegionalEndpointsServerClient is the client API for ProjectsLocationsRegionalEndpointsServer service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.

@@ -2024,6 +2024,856 @@ func local_request_ProjectsLocationsInternalRangesServer_PatchProjectsLocationsI
 }
 
 var (
+	filter_ProjectsLocationsMulticloudDataTransferConfigsServer_CreateProjectsLocationsMulticloudDataTransferConfig_0 = &utilities.DoubleArray{Encoding: map[string]int{"projects_locations_multicloud_data_transfer_config": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+)
+
+func request_ProjectsLocationsMulticloudDataTransferConfigsServer_CreateProjectsLocationsMulticloudDataTransferConfig_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsMulticloudDataTransferConfigsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateProjectsLocationsMulticloudDataTransferConfigRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.ProjectsLocationsMulticloudDataTransferConfig); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsMulticloudDataTransferConfigsServer_CreateProjectsLocationsMulticloudDataTransferConfig_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.CreateProjectsLocationsMulticloudDataTransferConfig(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsMulticloudDataTransferConfigsServer_CreateProjectsLocationsMulticloudDataTransferConfig_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsMulticloudDataTransferConfigsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateProjectsLocationsMulticloudDataTransferConfigRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.ProjectsLocationsMulticloudDataTransferConfig); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsMulticloudDataTransferConfigsServer_CreateProjectsLocationsMulticloudDataTransferConfig_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.CreateProjectsLocationsMulticloudDataTransferConfig(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_ProjectsLocationsMulticloudDataTransferConfigsServer_DeleteProjectsLocationsMulticloudDataTransferConfig_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
+func request_ProjectsLocationsMulticloudDataTransferConfigsServer_DeleteProjectsLocationsMulticloudDataTransferConfig_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsMulticloudDataTransferConfigsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteProjectsLocationsMulticloudDataTransferConfigRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsMulticloudDataTransferConfigsServer_DeleteProjectsLocationsMulticloudDataTransferConfig_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.DeleteProjectsLocationsMulticloudDataTransferConfig(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsMulticloudDataTransferConfigsServer_DeleteProjectsLocationsMulticloudDataTransferConfig_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsMulticloudDataTransferConfigsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteProjectsLocationsMulticloudDataTransferConfigRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsMulticloudDataTransferConfigsServer_DeleteProjectsLocationsMulticloudDataTransferConfig_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.DeleteProjectsLocationsMulticloudDataTransferConfig(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_ProjectsLocationsMulticloudDataTransferConfigsServer_GetProjectsLocationsMulticloudDataTransferConfig_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsMulticloudDataTransferConfigsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetProjectsLocationsMulticloudDataTransferConfigRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.GetProjectsLocationsMulticloudDataTransferConfig(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsMulticloudDataTransferConfigsServer_GetProjectsLocationsMulticloudDataTransferConfig_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsMulticloudDataTransferConfigsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetProjectsLocationsMulticloudDataTransferConfigRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.GetProjectsLocationsMulticloudDataTransferConfig(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_ProjectsLocationsMulticloudDataTransferConfigsServer_ListProjectsLocationsMulticloudDataTransferConfigs_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
+func request_ProjectsLocationsMulticloudDataTransferConfigsServer_ListProjectsLocationsMulticloudDataTransferConfigs_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsMulticloudDataTransferConfigsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListProjectsLocationsMulticloudDataTransferConfigsRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsMulticloudDataTransferConfigsServer_ListProjectsLocationsMulticloudDataTransferConfigs_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.ListProjectsLocationsMulticloudDataTransferConfigs(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsMulticloudDataTransferConfigsServer_ListProjectsLocationsMulticloudDataTransferConfigs_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsMulticloudDataTransferConfigsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListProjectsLocationsMulticloudDataTransferConfigsRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsMulticloudDataTransferConfigsServer_ListProjectsLocationsMulticloudDataTransferConfigs_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ListProjectsLocationsMulticloudDataTransferConfigs(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_ProjectsLocationsMulticloudDataTransferConfigsServer_PatchProjectsLocationsMulticloudDataTransferConfig_0 = &utilities.DoubleArray{Encoding: map[string]int{"projects_locations_multicloud_data_transfer_config": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+)
+
+func request_ProjectsLocationsMulticloudDataTransferConfigsServer_PatchProjectsLocationsMulticloudDataTransferConfig_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsMulticloudDataTransferConfigsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq PatchProjectsLocationsMulticloudDataTransferConfigRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.ProjectsLocationsMulticloudDataTransferConfig); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsMulticloudDataTransferConfigsServer_PatchProjectsLocationsMulticloudDataTransferConfig_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.PatchProjectsLocationsMulticloudDataTransferConfig(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsMulticloudDataTransferConfigsServer_PatchProjectsLocationsMulticloudDataTransferConfig_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsMulticloudDataTransferConfigsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq PatchProjectsLocationsMulticloudDataTransferConfigRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.ProjectsLocationsMulticloudDataTransferConfig); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsMulticloudDataTransferConfigsServer_PatchProjectsLocationsMulticloudDataTransferConfig_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.PatchProjectsLocationsMulticloudDataTransferConfig(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_CreateProjectsLocationsMulticloudDataTransferConfigsDestination_0 = &utilities.DoubleArray{Encoding: map[string]int{"projects_locations_multicloud_data_transfer_configs_destination": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+)
+
+func request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_CreateProjectsLocationsMulticloudDataTransferConfigsDestination_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateProjectsLocationsMulticloudDataTransferConfigsDestinationRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.ProjectsLocationsMulticloudDataTransferConfigsDestination); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_CreateProjectsLocationsMulticloudDataTransferConfigsDestination_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.CreateProjectsLocationsMulticloudDataTransferConfigsDestination(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_CreateProjectsLocationsMulticloudDataTransferConfigsDestination_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreateProjectsLocationsMulticloudDataTransferConfigsDestinationRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.ProjectsLocationsMulticloudDataTransferConfigsDestination); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_CreateProjectsLocationsMulticloudDataTransferConfigsDestination_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.CreateProjectsLocationsMulticloudDataTransferConfigsDestination(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_DeleteProjectsLocationsMulticloudDataTransferConfigsDestination_0 = &utilities.DoubleArray{Encoding: map[string]int{"name": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
+func request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_DeleteProjectsLocationsMulticloudDataTransferConfigsDestination_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteProjectsLocationsMulticloudDataTransferConfigsDestinationRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_DeleteProjectsLocationsMulticloudDataTransferConfigsDestination_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.DeleteProjectsLocationsMulticloudDataTransferConfigsDestination(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_DeleteProjectsLocationsMulticloudDataTransferConfigsDestination_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq DeleteProjectsLocationsMulticloudDataTransferConfigsDestinationRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_DeleteProjectsLocationsMulticloudDataTransferConfigsDestination_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.DeleteProjectsLocationsMulticloudDataTransferConfigsDestination(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_GetProjectsLocationsMulticloudDataTransferConfigsDestination_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetProjectsLocationsMulticloudDataTransferConfigsDestinationRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.GetProjectsLocationsMulticloudDataTransferConfigsDestination(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_GetProjectsLocationsMulticloudDataTransferConfigsDestination_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetProjectsLocationsMulticloudDataTransferConfigsDestinationRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.GetProjectsLocationsMulticloudDataTransferConfigsDestination(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ListProjectsLocationsMulticloudDataTransferConfigsDestinations_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
+func request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ListProjectsLocationsMulticloudDataTransferConfigsDestinations_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListProjectsLocationsMulticloudDataTransferConfigsDestinationsRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ListProjectsLocationsMulticloudDataTransferConfigsDestinations_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.ListProjectsLocationsMulticloudDataTransferConfigsDestinations(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ListProjectsLocationsMulticloudDataTransferConfigsDestinations_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListProjectsLocationsMulticloudDataTransferConfigsDestinationsRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ListProjectsLocationsMulticloudDataTransferConfigsDestinations_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ListProjectsLocationsMulticloudDataTransferConfigsDestinations(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_PatchProjectsLocationsMulticloudDataTransferConfigsDestination_0 = &utilities.DoubleArray{Encoding: map[string]int{"projects_locations_multicloud_data_transfer_configs_destination": 0, "name": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
+)
+
+func request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_PatchProjectsLocationsMulticloudDataTransferConfigsDestination_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq PatchProjectsLocationsMulticloudDataTransferConfigsDestinationRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.ProjectsLocationsMulticloudDataTransferConfigsDestination); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_PatchProjectsLocationsMulticloudDataTransferConfigsDestination_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.PatchProjectsLocationsMulticloudDataTransferConfigsDestination(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_PatchProjectsLocationsMulticloudDataTransferConfigsDestination_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq PatchProjectsLocationsMulticloudDataTransferConfigsDestinationRequest
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq.ProjectsLocationsMulticloudDataTransferConfigsDestination); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_PatchProjectsLocationsMulticloudDataTransferConfigsDestination_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.PatchProjectsLocationsMulticloudDataTransferConfigsDestination(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_GetProjectsLocationsMulticloudDataTransferSupportedService_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsMulticloudDataTransferSupportedServicesServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetProjectsLocationsMulticloudDataTransferSupportedServiceRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := client.GetProjectsLocationsMulticloudDataTransferSupportedService(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_GetProjectsLocationsMulticloudDataTransferSupportedService_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsMulticloudDataTransferSupportedServicesServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetProjectsLocationsMulticloudDataTransferSupportedServiceRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "name", err)
+	}
+
+	msg, err := server.GetProjectsLocationsMulticloudDataTransferSupportedService(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_ListProjectsLocationsMulticloudDataTransferSupportedServices_0 = &utilities.DoubleArray{Encoding: map[string]int{"parent": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+)
+
+func request_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_ListProjectsLocationsMulticloudDataTransferSupportedServices_0(ctx context.Context, marshaler runtime.Marshaler, client ProjectsLocationsMulticloudDataTransferSupportedServicesServerClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListProjectsLocationsMulticloudDataTransferSupportedServicesRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_ListProjectsLocationsMulticloudDataTransferSupportedServices_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.ListProjectsLocationsMulticloudDataTransferSupportedServices(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_ListProjectsLocationsMulticloudDataTransferSupportedServices_0(ctx context.Context, marshaler runtime.Marshaler, server ProjectsLocationsMulticloudDataTransferSupportedServicesServerServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ListProjectsLocationsMulticloudDataTransferSupportedServicesRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["parent"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "parent")
+	}
+
+	protoReq.Parent, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "parent", err)
+	}
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_ListProjectsLocationsMulticloudDataTransferSupportedServices_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ListProjectsLocationsMulticloudDataTransferSupportedServices(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
 	filter_ProjectsLocationsRegionalEndpointsServer_CreateProjectsLocationsRegionalEndpoint_0 = &utilities.DoubleArray{Encoding: map[string]int{"projects_locations_regional_endpoint": 0, "parent": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 )
 
@@ -4737,6 +5587,333 @@ func RegisterProjectsLocationsInternalRangesServerHandlerServer(ctx context.Cont
 	return nil
 }
 
+// RegisterProjectsLocationsMulticloudDataTransferConfigsServerHandlerServer registers the http handlers for service ProjectsLocationsMulticloudDataTransferConfigsServer to "mux".
+// UnaryRPC     :call ProjectsLocationsMulticloudDataTransferConfigsServerServer directly.
+// StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterProjectsLocationsMulticloudDataTransferConfigsServerHandlerFromEndpoint instead.
+func RegisterProjectsLocationsMulticloudDataTransferConfigsServerHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ProjectsLocationsMulticloudDataTransferConfigsServerServer) error {
+
+	mux.Handle("POST", pattern_ProjectsLocationsMulticloudDataTransferConfigsServer_CreateProjectsLocationsMulticloudDataTransferConfig_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/CreateProjectsLocationsMulticloudDataTransferConfig", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/multicloudDataTransferConfigs"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsMulticloudDataTransferConfigsServer_CreateProjectsLocationsMulticloudDataTransferConfig_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsServer_CreateProjectsLocationsMulticloudDataTransferConfig_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("DELETE", pattern_ProjectsLocationsMulticloudDataTransferConfigsServer_DeleteProjectsLocationsMulticloudDataTransferConfig_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/DeleteProjectsLocationsMulticloudDataTransferConfig", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/multicloudDataTransferConfigs/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsMulticloudDataTransferConfigsServer_DeleteProjectsLocationsMulticloudDataTransferConfig_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsServer_DeleteProjectsLocationsMulticloudDataTransferConfig_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsMulticloudDataTransferConfigsServer_GetProjectsLocationsMulticloudDataTransferConfig_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/GetProjectsLocationsMulticloudDataTransferConfig", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/multicloudDataTransferConfigs/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsMulticloudDataTransferConfigsServer_GetProjectsLocationsMulticloudDataTransferConfig_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsServer_GetProjectsLocationsMulticloudDataTransferConfig_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsMulticloudDataTransferConfigsServer_ListProjectsLocationsMulticloudDataTransferConfigs_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/ListProjectsLocationsMulticloudDataTransferConfigs", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/multicloudDataTransferConfigs"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsMulticloudDataTransferConfigsServer_ListProjectsLocationsMulticloudDataTransferConfigs_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsServer_ListProjectsLocationsMulticloudDataTransferConfigs_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PATCH", pattern_ProjectsLocationsMulticloudDataTransferConfigsServer_PatchProjectsLocationsMulticloudDataTransferConfig_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/PatchProjectsLocationsMulticloudDataTransferConfig", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/multicloudDataTransferConfigs/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsMulticloudDataTransferConfigsServer_PatchProjectsLocationsMulticloudDataTransferConfig_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsServer_PatchProjectsLocationsMulticloudDataTransferConfig_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
+// RegisterProjectsLocationsMulticloudDataTransferConfigsDestinationsServerHandlerServer registers the http handlers for service ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer to "mux".
+// UnaryRPC     :call ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer directly.
+// StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterProjectsLocationsMulticloudDataTransferConfigsDestinationsServerHandlerFromEndpoint instead.
+func RegisterProjectsLocationsMulticloudDataTransferConfigsDestinationsServerHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerServer) error {
+
+	mux.Handle("POST", pattern_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_CreateProjectsLocationsMulticloudDataTransferConfigsDestination_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/CreateProjectsLocationsMulticloudDataTransferConfigsDestination", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*/multicloudDataTransferConfigs/*}/destinations"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_CreateProjectsLocationsMulticloudDataTransferConfigsDestination_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_CreateProjectsLocationsMulticloudDataTransferConfigsDestination_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("DELETE", pattern_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_DeleteProjectsLocationsMulticloudDataTransferConfigsDestination_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/DeleteProjectsLocationsMulticloudDataTransferConfigsDestination", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/multicloudDataTransferConfigs/*/destinations/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_DeleteProjectsLocationsMulticloudDataTransferConfigsDestination_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_DeleteProjectsLocationsMulticloudDataTransferConfigsDestination_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_GetProjectsLocationsMulticloudDataTransferConfigsDestination_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/GetProjectsLocationsMulticloudDataTransferConfigsDestination", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/multicloudDataTransferConfigs/*/destinations/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_GetProjectsLocationsMulticloudDataTransferConfigsDestination_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_GetProjectsLocationsMulticloudDataTransferConfigsDestination_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ListProjectsLocationsMulticloudDataTransferConfigsDestinations_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/ListProjectsLocationsMulticloudDataTransferConfigsDestinations", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*/multicloudDataTransferConfigs/*}/destinations"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ListProjectsLocationsMulticloudDataTransferConfigsDestinations_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ListProjectsLocationsMulticloudDataTransferConfigsDestinations_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PATCH", pattern_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_PatchProjectsLocationsMulticloudDataTransferConfigsDestination_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/PatchProjectsLocationsMulticloudDataTransferConfigsDestination", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/multicloudDataTransferConfigs/*/destinations/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_PatchProjectsLocationsMulticloudDataTransferConfigsDestination_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_PatchProjectsLocationsMulticloudDataTransferConfigsDestination_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
+// RegisterProjectsLocationsMulticloudDataTransferSupportedServicesServerHandlerServer registers the http handlers for service ProjectsLocationsMulticloudDataTransferSupportedServicesServer to "mux".
+// UnaryRPC     :call ProjectsLocationsMulticloudDataTransferSupportedServicesServerServer directly.
+// StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterProjectsLocationsMulticloudDataTransferSupportedServicesServerHandlerFromEndpoint instead.
+func RegisterProjectsLocationsMulticloudDataTransferSupportedServicesServerHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ProjectsLocationsMulticloudDataTransferSupportedServicesServerServer) error {
+
+	mux.Handle("GET", pattern_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_GetProjectsLocationsMulticloudDataTransferSupportedService_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferSupportedServicesServer/GetProjectsLocationsMulticloudDataTransferSupportedService", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/multicloudDataTransferSupportedServices/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_GetProjectsLocationsMulticloudDataTransferSupportedService_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_GetProjectsLocationsMulticloudDataTransferSupportedService_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_ListProjectsLocationsMulticloudDataTransferSupportedServices_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferSupportedServicesServer/ListProjectsLocationsMulticloudDataTransferSupportedServices", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/multicloudDataTransferSupportedServices"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_ListProjectsLocationsMulticloudDataTransferSupportedServices_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_ListProjectsLocationsMulticloudDataTransferSupportedServices_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
 // RegisterProjectsLocationsRegionalEndpointsServerHandlerServer registers the http handlers for service ProjectsLocationsRegionalEndpointsServer to "mux".
 // UnaryRPC     :call ProjectsLocationsRegionalEndpointsServerServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -6533,6 +7710,453 @@ var (
 	forward_ProjectsLocationsInternalRangesServer_ListProjectsLocationsInternalRanges_0 = runtime.ForwardResponseMessage
 
 	forward_ProjectsLocationsInternalRangesServer_PatchProjectsLocationsInternalRange_0 = runtime.ForwardResponseMessage
+)
+
+// RegisterProjectsLocationsMulticloudDataTransferConfigsServerHandlerFromEndpoint is same as RegisterProjectsLocationsMulticloudDataTransferConfigsServerHandler but
+// automatically dials to "endpoint" and closes the connection when "ctx" gets done.
+func RegisterProjectsLocationsMulticloudDataTransferConfigsServerHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+	conn, err := grpc.Dial(endpoint, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+			return
+		}
+		go func() {
+			<-ctx.Done()
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+		}()
+	}()
+
+	return RegisterProjectsLocationsMulticloudDataTransferConfigsServerHandler(ctx, mux, conn)
+}
+
+// RegisterProjectsLocationsMulticloudDataTransferConfigsServerHandler registers the http handlers for service ProjectsLocationsMulticloudDataTransferConfigsServer to "mux".
+// The handlers forward requests to the grpc endpoint over "conn".
+func RegisterProjectsLocationsMulticloudDataTransferConfigsServerHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterProjectsLocationsMulticloudDataTransferConfigsServerHandlerClient(ctx, mux, NewProjectsLocationsMulticloudDataTransferConfigsServerClient(conn))
+}
+
+// RegisterProjectsLocationsMulticloudDataTransferConfigsServerHandlerClient registers the http handlers for service ProjectsLocationsMulticloudDataTransferConfigsServer
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "ProjectsLocationsMulticloudDataTransferConfigsServerClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "ProjectsLocationsMulticloudDataTransferConfigsServerClient"
+// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
+// "ProjectsLocationsMulticloudDataTransferConfigsServerClient" to call the correct interceptors.
+func RegisterProjectsLocationsMulticloudDataTransferConfigsServerHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ProjectsLocationsMulticloudDataTransferConfigsServerClient) error {
+
+	mux.Handle("POST", pattern_ProjectsLocationsMulticloudDataTransferConfigsServer_CreateProjectsLocationsMulticloudDataTransferConfig_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/CreateProjectsLocationsMulticloudDataTransferConfig", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/multicloudDataTransferConfigs"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsMulticloudDataTransferConfigsServer_CreateProjectsLocationsMulticloudDataTransferConfig_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsServer_CreateProjectsLocationsMulticloudDataTransferConfig_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("DELETE", pattern_ProjectsLocationsMulticloudDataTransferConfigsServer_DeleteProjectsLocationsMulticloudDataTransferConfig_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/DeleteProjectsLocationsMulticloudDataTransferConfig", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/multicloudDataTransferConfigs/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsMulticloudDataTransferConfigsServer_DeleteProjectsLocationsMulticloudDataTransferConfig_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsServer_DeleteProjectsLocationsMulticloudDataTransferConfig_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsMulticloudDataTransferConfigsServer_GetProjectsLocationsMulticloudDataTransferConfig_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/GetProjectsLocationsMulticloudDataTransferConfig", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/multicloudDataTransferConfigs/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsMulticloudDataTransferConfigsServer_GetProjectsLocationsMulticloudDataTransferConfig_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsServer_GetProjectsLocationsMulticloudDataTransferConfig_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsMulticloudDataTransferConfigsServer_ListProjectsLocationsMulticloudDataTransferConfigs_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/ListProjectsLocationsMulticloudDataTransferConfigs", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/multicloudDataTransferConfigs"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsMulticloudDataTransferConfigsServer_ListProjectsLocationsMulticloudDataTransferConfigs_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsServer_ListProjectsLocationsMulticloudDataTransferConfigs_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PATCH", pattern_ProjectsLocationsMulticloudDataTransferConfigsServer_PatchProjectsLocationsMulticloudDataTransferConfig_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsServer/PatchProjectsLocationsMulticloudDataTransferConfig", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/multicloudDataTransferConfigs/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsMulticloudDataTransferConfigsServer_PatchProjectsLocationsMulticloudDataTransferConfig_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsServer_PatchProjectsLocationsMulticloudDataTransferConfig_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
+var (
+	pattern_ProjectsLocationsMulticloudDataTransferConfigsServer_CreateProjectsLocationsMulticloudDataTransferConfig_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3, 2, 4}, []string{"v1", "projects", "locations", "parent", "multicloudDataTransferConfigs"}, ""))
+
+	pattern_ProjectsLocationsMulticloudDataTransferConfigsServer_DeleteProjectsLocationsMulticloudDataTransferConfig_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "projects", "locations", "multicloudDataTransferConfigs", "name"}, ""))
+
+	pattern_ProjectsLocationsMulticloudDataTransferConfigsServer_GetProjectsLocationsMulticloudDataTransferConfig_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "projects", "locations", "multicloudDataTransferConfigs", "name"}, ""))
+
+	pattern_ProjectsLocationsMulticloudDataTransferConfigsServer_ListProjectsLocationsMulticloudDataTransferConfigs_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3, 2, 4}, []string{"v1", "projects", "locations", "parent", "multicloudDataTransferConfigs"}, ""))
+
+	pattern_ProjectsLocationsMulticloudDataTransferConfigsServer_PatchProjectsLocationsMulticloudDataTransferConfig_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "projects", "locations", "multicloudDataTransferConfigs", "name"}, ""))
+)
+
+var (
+	forward_ProjectsLocationsMulticloudDataTransferConfigsServer_CreateProjectsLocationsMulticloudDataTransferConfig_0 = runtime.ForwardResponseMessage
+
+	forward_ProjectsLocationsMulticloudDataTransferConfigsServer_DeleteProjectsLocationsMulticloudDataTransferConfig_0 = runtime.ForwardResponseMessage
+
+	forward_ProjectsLocationsMulticloudDataTransferConfigsServer_GetProjectsLocationsMulticloudDataTransferConfig_0 = runtime.ForwardResponseMessage
+
+	forward_ProjectsLocationsMulticloudDataTransferConfigsServer_ListProjectsLocationsMulticloudDataTransferConfigs_0 = runtime.ForwardResponseMessage
+
+	forward_ProjectsLocationsMulticloudDataTransferConfigsServer_PatchProjectsLocationsMulticloudDataTransferConfig_0 = runtime.ForwardResponseMessage
+)
+
+// RegisterProjectsLocationsMulticloudDataTransferConfigsDestinationsServerHandlerFromEndpoint is same as RegisterProjectsLocationsMulticloudDataTransferConfigsDestinationsServerHandler but
+// automatically dials to "endpoint" and closes the connection when "ctx" gets done.
+func RegisterProjectsLocationsMulticloudDataTransferConfigsDestinationsServerHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+	conn, err := grpc.Dial(endpoint, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+			return
+		}
+		go func() {
+			<-ctx.Done()
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+		}()
+	}()
+
+	return RegisterProjectsLocationsMulticloudDataTransferConfigsDestinationsServerHandler(ctx, mux, conn)
+}
+
+// RegisterProjectsLocationsMulticloudDataTransferConfigsDestinationsServerHandler registers the http handlers for service ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer to "mux".
+// The handlers forward requests to the grpc endpoint over "conn".
+func RegisterProjectsLocationsMulticloudDataTransferConfigsDestinationsServerHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterProjectsLocationsMulticloudDataTransferConfigsDestinationsServerHandlerClient(ctx, mux, NewProjectsLocationsMulticloudDataTransferConfigsDestinationsServerClient(conn))
+}
+
+// RegisterProjectsLocationsMulticloudDataTransferConfigsDestinationsServerHandlerClient registers the http handlers for service ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerClient"
+// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
+// "ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerClient" to call the correct interceptors.
+func RegisterProjectsLocationsMulticloudDataTransferConfigsDestinationsServerHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ProjectsLocationsMulticloudDataTransferConfigsDestinationsServerClient) error {
+
+	mux.Handle("POST", pattern_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_CreateProjectsLocationsMulticloudDataTransferConfigsDestination_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/CreateProjectsLocationsMulticloudDataTransferConfigsDestination", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*/multicloudDataTransferConfigs/*}/destinations"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_CreateProjectsLocationsMulticloudDataTransferConfigsDestination_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_CreateProjectsLocationsMulticloudDataTransferConfigsDestination_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("DELETE", pattern_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_DeleteProjectsLocationsMulticloudDataTransferConfigsDestination_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/DeleteProjectsLocationsMulticloudDataTransferConfigsDestination", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/multicloudDataTransferConfigs/*/destinations/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_DeleteProjectsLocationsMulticloudDataTransferConfigsDestination_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_DeleteProjectsLocationsMulticloudDataTransferConfigsDestination_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_GetProjectsLocationsMulticloudDataTransferConfigsDestination_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/GetProjectsLocationsMulticloudDataTransferConfigsDestination", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/multicloudDataTransferConfigs/*/destinations/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_GetProjectsLocationsMulticloudDataTransferConfigsDestination_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_GetProjectsLocationsMulticloudDataTransferConfigsDestination_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ListProjectsLocationsMulticloudDataTransferConfigsDestinations_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/ListProjectsLocationsMulticloudDataTransferConfigsDestinations", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*/multicloudDataTransferConfigs/*}/destinations"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ListProjectsLocationsMulticloudDataTransferConfigsDestinations_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ListProjectsLocationsMulticloudDataTransferConfigsDestinations_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PATCH", pattern_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_PatchProjectsLocationsMulticloudDataTransferConfigsDestination_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer/PatchProjectsLocationsMulticloudDataTransferConfigsDestination", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/multicloudDataTransferConfigs/*/destinations/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_PatchProjectsLocationsMulticloudDataTransferConfigsDestination_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_PatchProjectsLocationsMulticloudDataTransferConfigsDestination_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
+var (
+	pattern_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_CreateProjectsLocationsMulticloudDataTransferConfigsDestination_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4, 2, 5}, []string{"v1", "projects", "locations", "multicloudDataTransferConfigs", "parent", "destinations"}, ""))
+
+	pattern_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_DeleteProjectsLocationsMulticloudDataTransferConfigsDestination_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 2, 4, 1, 0, 4, 8, 5, 5}, []string{"v1", "projects", "locations", "multicloudDataTransferConfigs", "destinations", "name"}, ""))
+
+	pattern_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_GetProjectsLocationsMulticloudDataTransferConfigsDestination_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 2, 4, 1, 0, 4, 8, 5, 5}, []string{"v1", "projects", "locations", "multicloudDataTransferConfigs", "destinations", "name"}, ""))
+
+	pattern_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ListProjectsLocationsMulticloudDataTransferConfigsDestinations_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4, 2, 5}, []string{"v1", "projects", "locations", "multicloudDataTransferConfigs", "parent", "destinations"}, ""))
+
+	pattern_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_PatchProjectsLocationsMulticloudDataTransferConfigsDestination_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 2, 4, 1, 0, 4, 8, 5, 5}, []string{"v1", "projects", "locations", "multicloudDataTransferConfigs", "destinations", "name"}, ""))
+)
+
+var (
+	forward_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_CreateProjectsLocationsMulticloudDataTransferConfigsDestination_0 = runtime.ForwardResponseMessage
+
+	forward_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_DeleteProjectsLocationsMulticloudDataTransferConfigsDestination_0 = runtime.ForwardResponseMessage
+
+	forward_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_GetProjectsLocationsMulticloudDataTransferConfigsDestination_0 = runtime.ForwardResponseMessage
+
+	forward_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_ListProjectsLocationsMulticloudDataTransferConfigsDestinations_0 = runtime.ForwardResponseMessage
+
+	forward_ProjectsLocationsMulticloudDataTransferConfigsDestinationsServer_PatchProjectsLocationsMulticloudDataTransferConfigsDestination_0 = runtime.ForwardResponseMessage
+)
+
+// RegisterProjectsLocationsMulticloudDataTransferSupportedServicesServerHandlerFromEndpoint is same as RegisterProjectsLocationsMulticloudDataTransferSupportedServicesServerHandler but
+// automatically dials to "endpoint" and closes the connection when "ctx" gets done.
+func RegisterProjectsLocationsMulticloudDataTransferSupportedServicesServerHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+	conn, err := grpc.Dial(endpoint, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+			return
+		}
+		go func() {
+			<-ctx.Done()
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+		}()
+	}()
+
+	return RegisterProjectsLocationsMulticloudDataTransferSupportedServicesServerHandler(ctx, mux, conn)
+}
+
+// RegisterProjectsLocationsMulticloudDataTransferSupportedServicesServerHandler registers the http handlers for service ProjectsLocationsMulticloudDataTransferSupportedServicesServer to "mux".
+// The handlers forward requests to the grpc endpoint over "conn".
+func RegisterProjectsLocationsMulticloudDataTransferSupportedServicesServerHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterProjectsLocationsMulticloudDataTransferSupportedServicesServerHandlerClient(ctx, mux, NewProjectsLocationsMulticloudDataTransferSupportedServicesServerClient(conn))
+}
+
+// RegisterProjectsLocationsMulticloudDataTransferSupportedServicesServerHandlerClient registers the http handlers for service ProjectsLocationsMulticloudDataTransferSupportedServicesServer
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "ProjectsLocationsMulticloudDataTransferSupportedServicesServerClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "ProjectsLocationsMulticloudDataTransferSupportedServicesServerClient"
+// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
+// "ProjectsLocationsMulticloudDataTransferSupportedServicesServerClient" to call the correct interceptors.
+func RegisterProjectsLocationsMulticloudDataTransferSupportedServicesServerHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ProjectsLocationsMulticloudDataTransferSupportedServicesServerClient) error {
+
+	mux.Handle("GET", pattern_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_GetProjectsLocationsMulticloudDataTransferSupportedService_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferSupportedServicesServer/GetProjectsLocationsMulticloudDataTransferSupportedService", runtime.WithHTTPPathPattern("/v1/{name=projects/*/locations/*/multicloudDataTransferSupportedServices/*}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_GetProjectsLocationsMulticloudDataTransferSupportedService_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_GetProjectsLocationsMulticloudDataTransferSupportedService_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_ListProjectsLocationsMulticloudDataTransferSupportedServices_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		var annotatedContext context.Context
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.networkconnectivity.v1.ProjectsLocationsMulticloudDataTransferSupportedServicesServer/ListProjectsLocationsMulticloudDataTransferSupportedServices", runtime.WithHTTPPathPattern("/v1/{parent=projects/*/locations/*}/multicloudDataTransferSupportedServices"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_ListProjectsLocationsMulticloudDataTransferSupportedServices_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_ListProjectsLocationsMulticloudDataTransferSupportedServices_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	return nil
+}
+
+var (
+	pattern_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_GetProjectsLocationsMulticloudDataTransferSupportedService_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 1, 0, 4, 6, 5, 4}, []string{"v1", "projects", "locations", "multicloudDataTransferSupportedServices", "name"}, ""))
+
+	pattern_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_ListProjectsLocationsMulticloudDataTransferSupportedServices_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3, 2, 4}, []string{"v1", "projects", "locations", "parent", "multicloudDataTransferSupportedServices"}, ""))
+)
+
+var (
+	forward_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_GetProjectsLocationsMulticloudDataTransferSupportedService_0 = runtime.ForwardResponseMessage
+
+	forward_ProjectsLocationsMulticloudDataTransferSupportedServicesServer_ListProjectsLocationsMulticloudDataTransferSupportedServices_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterProjectsLocationsRegionalEndpointsServerHandlerFromEndpoint is same as RegisterProjectsLocationsRegionalEndpointsServerHandler but

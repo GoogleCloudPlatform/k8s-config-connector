@@ -763,8 +763,10 @@ message CsvOptions {
 
 // Options for data format adjustments.
 message DataFormatOptions {
+  // Optional. The API output format for a timestamp. This offers more explicit control over the timestamp output format as compared to the existing `use_int64_timestamp` option.
+  optional string timestamp_output_format = 1 [json_name="timestampOutputFormat"];
   // Optional. Output timestamp as usec int64. Default is false.
-  optional bool use_int64_timestamp = 1 [json_name="useInt64Timestamp"];
+  optional bool use_int64_timestamp = 2 [json_name="useInt64Timestamp"];
 }
 
 // Statistics for data-masking.
@@ -1210,30 +1212,32 @@ message ExternalDatasetReference {
 
 // Options for the runtime of the external system.
 message ExternalRuntimeOptions {
-  // Optional. Amount of CPU provisioned for the container instance. If not specified, the default value is 0.33 vCPUs.
+  // Optional. Amount of CPU provisioned for a Python UDF container instance. For more information, see [Configure container limits for Python UDFs](https://cloud.google.com/bigquery/docs/user-defined-functions-python#configure-container-limits)
   optional double container_cpu = 1 [json_name="containerCpu"];
-  // Optional. Amount of memory provisioned for the container instance. Format: {number}{unit} where unit is one of "M", "G", "Mi" and "Gi" (e.g. 1G, 512Mi). If not specified, the default value is 512Mi.
+  // Optional. Amount of memory provisioned for a Python UDF container instance. Format: {number}{unit} where unit is one of "M", "G", "Mi" and "Gi" (e.g. 1G, 512Mi). If not specified, the default value is 512Mi. For more information, see [Configure container limits for Python UDFs](https://cloud.google.com/bigquery/docs/user-defined-functions-python#configure-container-limits)
   optional string container_memory = 2 [json_name="containerMemory"];
   // Optional. Maximum number of rows in each batch sent to the external runtime. If absent or if 0, BigQuery dynamically decides the number of rows in a batch.
   optional int64 max_batching_rows = 3 [json_name="maxBatchingRows"];
   // Optional. Fully qualified name of the connection whose service account will be used to execute the code in the container. Format: ```"projects/{project_id}/locations/{location_id}/connections/{connection_id}"```
   optional string runtime_connection = 4 [json_name="runtimeConnection"];
-  // Optional. Language runtime version (e.g. python-3.11).
+  // Optional. Language runtime version. Example: `python-3.11`.
   optional string runtime_version = 5 [json_name="runtimeVersion"];
 }
 
 // The external service cost is a portion of the total cost, these costs are not additive with total_bytes_billed. Moreover, this field only track external service costs that will show up as BigQuery costs (e.g. training BigQuery ML job with google cloud CAIP or Automl Tables services), not other costs which may be accrued by running the query (e.g. reading from Bigtable or Cloud Storage). The external service costs with different billing sku (e.g. CAIP job is charged based on VM usage) are converted to BigQuery billed_bytes and slot_ms with equivalent amount of US dollars. Services may not directly correlate to these metrics, but these are the equivalents for billing purposes. Output only.
 message ExternalServiceCost {
+  // The billing method used for the external job. This field is only used when billed on the services sku, set to "SERVICES_SKU". Otherwise, it is unspecified for backward compatibility.
+  optional string billing_method = 1 [json_name="billingMethod"];
   // External service cost in terms of bigquery bytes billed.
-  optional int64 bytes_billed = 1 [json_name="bytesBilled"];
+  optional int64 bytes_billed = 2 [json_name="bytesBilled"];
   // External service cost in terms of bigquery bytes processed.
-  optional int64 bytes_processed = 2 [json_name="bytesProcessed"];
+  optional int64 bytes_processed = 3 [json_name="bytesProcessed"];
   // External service name.
-  optional string external_service = 3 [json_name="externalService"];
+  optional string external_service = 4 [json_name="externalService"];
   // Non-preemptable reserved slots used for external job. For example, reserved slots for Cloua AI Platform job are the VM usages converted to BigQuery slot with equivalent mount of price.
-  optional int64 reserved_slot_count = 4 [json_name="reservedSlotCount"];
+  optional int64 reserved_slot_count = 5 [json_name="reservedSlotCount"];
   // External service cost in terms of bigquery slot milliseconds.
-  optional int64 slot_ms = 5 [json_name="slotMs"];
+  optional int64 slot_ms = 6 [json_name="slotMs"];
 }
 
 // Representative value of a single feature within the cluster.
@@ -1925,14 +1929,16 @@ message JobStatistics2 {
   optional string total_bytes_processed_accuracy = 39 [json_name="totalBytesProcessedAccuracy"];
   // Output only. Total number of partitions processed from all partitioned tables referenced in the job.
   optional int64 total_partitions_processed = 40 [json_name="totalPartitionsProcessed"];
+  // Output only. Total slot-milliseconds for the job that run on external services and billed on the service SKU. This field is only populated for jobs that have external service costs, and is the total of the usage for costs whose billing method is "SERVICES_SKU".
+  optional int64 total_services_sku_slot_ms = 41 [json_name="totalServicesSkuSlotMs"];
   // Output only. Slot-milliseconds for the job.
-  optional int64 total_slot_ms = 41 [json_name="totalSlotMs"];
+  optional int64 total_slot_ms = 42 [json_name="totalSlotMs"];
   // Output only. Total bytes transferred for cross-cloud queries such as Cross Cloud Transfer and CREATE TABLE AS SELECT (CTAS).
-  optional int64 transferred_bytes = 42 [json_name="transferredBytes"];
+  optional int64 transferred_bytes = 43 [json_name="transferredBytes"];
   // Output only. GoogleSQL only: list of undeclared query parameters detected during a dry run validation.
-  repeated QueryParameter undeclared_query_parameters = 43 [json_name="undeclaredQueryParameters"];
+  repeated QueryParameter undeclared_query_parameters = 44 [json_name="undeclaredQueryParameters"];
   // Output only. Vector Search query specific statistics.
-  optional VectorSearchStatistics vector_search_statistics = 44 [json_name="vectorSearchStatistics"];
+  optional VectorSearchStatistics vector_search_statistics = 45 [json_name="vectorSearchStatistics"];
 }
 
 // Statistics for a load job.
@@ -2300,9 +2306,9 @@ message ProjectReference {
 
 // Options for a user-defined Python function.
 message PythonOptions {
-  // Required. The entry point function in the user's Python code.
+  // Required. The name of the function defined in Python code as the entry point when the Python UDF is invoked.
   optional string entry_point = 1 [json_name="entryPoint"];
-  // Optional. A list of package names along with versions to be installed. Follows requirements.txt syntax (e.g. numpy==2.0, permutation, urllib3<2.2.1)
+  // Optional. A list of Python package names along with versions to be installed. Example: ["pandas>=2.1", "google-cloud-translate==3.11"]. For more information, see [Use third-party packages](https://cloud.google.com/bigquery/docs/user-defined-functions-python#third-party-packages).
   repeated string packages = 2 [json_name="packages"];
 }
 
@@ -2336,8 +2342,10 @@ message QueryParameterType {
   optional QueryParameterType range_element_type = 2 [json_name="rangeElementType"];
   // Optional. The types of the fields of this struct, in order, if this is a struct.
   repeated QueryParameterTypeStructTypes struct_types = 3 [json_name="structTypes"];
+  // Optional. Precision (maximum number of total digits in base 10) for seconds of TIMESTAMP type. Possible values include: * 6 (Default, for TIMESTAMP type with microsecond precision) * 12 (For TIMESTAMP type with picosecond precision)
+  optional int64 timestamp_precision = 4 [json_name="timestampPrecision"];
   // Required. The top level type of this field.
-  optional string type = 4 [json_name="type"];
+  optional string type = 5 [json_name="type"];
 }
 
 // The value of a query parameter.
@@ -2571,7 +2579,7 @@ message Routine {
   optional string language = 10 [json_name="language"];
   // Output only. The time when this routine was last modified, in milliseconds since the epoch.
   optional int64 last_modified_time = 11 [json_name="lastModifiedTime"];
-  // Optional. Options for Python UDF. [Preview](https://cloud.google.com/products/#product-launch-stages)
+  // Optional. Options for the Python UDF. [Preview](https://cloud.google.com/products/#product-launch-stages)
   optional PythonOptions python_options = 12 [json_name="pythonOptions"];
   // Optional. Remote function specific options.
   optional RemoteFunctionOptions remote_function_options = 13 [json_name="remoteFunctionOptions"];
@@ -3560,14 +3568,15 @@ message GetJobRequest {
 }
 
 message GetQueryResultsJobRequest {
-  optional bool format_options_use_int64_timestamp = 1;
-  optional string job_id = 2;
-  optional string location = 3;
-  optional int32 max_results = 4;
-  optional string page_token = 5;
-  optional string project_id = 6;
-  optional string start_index = 7;
-  optional int32 timeout_ms = 8;
+  optional string format_options_timestamp_output_format = 1;
+  optional bool format_options_use_int64_timestamp = 2;
+  optional string job_id = 3;
+  optional string location = 4;
+  optional int32 max_results = 5;
+  optional string page_token = 6;
+  optional string project_id = 7;
+  optional string start_index = 8;
+  optional int32 timeout_ms = 9;
 }
 
 message InsertJobRequest {
@@ -3716,13 +3725,14 @@ message InsertAllTabledataRequest {
 
 message ListTabledataRequest {
   optional string dataset_id = 1;
-  optional bool format_options_use_int64_timestamp = 2;
-  optional int32 max_results = 3;
-  optional string page_token = 4;
-  optional string project_id = 5;
-  optional string selected_fields = 6;
-  optional string start_index = 7;
-  optional string table_id = 8;
+  optional string format_options_timestamp_output_format = 2;
+  optional bool format_options_use_int64_timestamp = 3;
+  optional int32 max_results = 4;
+  optional string page_token = 5;
+  optional string project_id = 6;
+  optional string selected_fields = 7;
+  optional string start_index = 8;
+  optional string table_id = 9;
 }
 
 message DeleteTableRequest {
