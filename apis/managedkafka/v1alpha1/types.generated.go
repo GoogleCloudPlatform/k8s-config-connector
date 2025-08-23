@@ -14,20 +14,12 @@
 
 // +generated:types
 // krm.group: managedkafka.cnrm.cloud.google.com
-// krm.version: v1beta1
+// krm.version: v1alpha1
 // proto.service: google.cloud.managedkafka.v1
 // resource: ManagedKafkaCluster:Cluster
 // resource: ManagedKafkaTopic:Topic
 
-package v1beta1
-
-// +kcc:proto=google.cloud.managedkafka.v1.RebalanceConfig
-type RebalanceConfig struct {
-	// Optional. The rebalance behavior for the cluster.
-	//  When not specified, defaults to `NO_REBALANCE`.
-	// +kcc:proto:field=google.cloud.managedkafka.v1.RebalanceConfig.mode
-	Mode *string `json:"mode,omitempty"`
-}
+package v1alpha1
 
 // +kcc:proto=google.cloud.managedkafka.v1.TlsConfig
 type TLSConfig struct {
