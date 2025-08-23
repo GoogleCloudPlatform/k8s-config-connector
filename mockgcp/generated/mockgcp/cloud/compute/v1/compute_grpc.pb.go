@@ -27219,6 +27219,8 @@ type ReservationSubBlocksClient interface {
 	Get(ctx context.Context, in *GetReservationSubBlockRequest, opts ...grpc.CallOption) (*ReservationSubBlocksGetResponse, error)
 	// Retrieves a list of reservation subBlocks under a single reservation.
 	List(ctx context.Context, in *ListReservationSubBlocksRequest, opts ...grpc.CallOption) (*ReservationSubBlocksListResponse, error)
+	// Allows customers to perform maintenance on a reservation subBlock
+	PerformMaintenance(ctx context.Context, in *PerformMaintenanceReservationSubBlockRequest, opts ...grpc.CallOption) (*Operation, error)
 }
 
 type reservationSubBlocksClient struct {
@@ -27247,6 +27249,15 @@ func (c *reservationSubBlocksClient) List(ctx context.Context, in *ListReservati
 	return out, nil
 }
 
+func (c *reservationSubBlocksClient) PerformMaintenance(ctx context.Context, in *PerformMaintenanceReservationSubBlockRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.ReservationSubBlocks/PerformMaintenance", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ReservationSubBlocksServer is the server API for ReservationSubBlocks service.
 // All implementations must embed UnimplementedReservationSubBlocksServer
 // for forward compatibility
@@ -27255,6 +27266,8 @@ type ReservationSubBlocksServer interface {
 	Get(context.Context, *GetReservationSubBlockRequest) (*ReservationSubBlocksGetResponse, error)
 	// Retrieves a list of reservation subBlocks under a single reservation.
 	List(context.Context, *ListReservationSubBlocksRequest) (*ReservationSubBlocksListResponse, error)
+	// Allows customers to perform maintenance on a reservation subBlock
+	PerformMaintenance(context.Context, *PerformMaintenanceReservationSubBlockRequest) (*Operation, error)
 	mustEmbedUnimplementedReservationSubBlocksServer()
 }
 
@@ -27267,6 +27280,9 @@ func (UnimplementedReservationSubBlocksServer) Get(context.Context, *GetReservat
 }
 func (UnimplementedReservationSubBlocksServer) List(context.Context, *ListReservationSubBlocksRequest) (*ReservationSubBlocksListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedReservationSubBlocksServer) PerformMaintenance(context.Context, *PerformMaintenanceReservationSubBlockRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PerformMaintenance not implemented")
 }
 func (UnimplementedReservationSubBlocksServer) mustEmbedUnimplementedReservationSubBlocksServer() {}
 
@@ -27317,6 +27333,24 @@ func _ReservationSubBlocks_List_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ReservationSubBlocks_PerformMaintenance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PerformMaintenanceReservationSubBlockRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReservationSubBlocksServer).PerformMaintenance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.ReservationSubBlocks/PerformMaintenance",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReservationSubBlocksServer).PerformMaintenance(ctx, req.(*PerformMaintenanceReservationSubBlockRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ReservationSubBlocks_ServiceDesc is the grpc.ServiceDesc for ReservationSubBlocks service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -27331,6 +27365,10 @@ var ReservationSubBlocks_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _ReservationSubBlocks_List_Handler,
+		},
+		{
+			MethodName: "PerformMaintenance",
+			Handler:    _ReservationSubBlocks_PerformMaintenance_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
