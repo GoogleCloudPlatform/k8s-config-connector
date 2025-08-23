@@ -40,5 +40,7 @@ func bigtableLogicalViewFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".name") // special field
 	f.UnimplementedFields.Insert(".etag")
 
+	f.Unimplemented_NotYetTriaged(".deletion_protection")
+
 	return f
 }

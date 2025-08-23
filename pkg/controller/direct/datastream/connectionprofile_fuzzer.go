@@ -64,13 +64,13 @@ func datastreamConnectionProfileFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".sql_server_profile.username")
 	f.UnimplementedFields.Insert(".sql_server_profile.password")
 
-	// New fields that could potentially be added
-	f.UnimplementedFields.Insert(".salesforce_profile")
-	f.UnimplementedFields.Insert(".satisfies_pzs")
-	f.UnimplementedFields.Insert(".satisfies_pzi")
-
 	// New fields (but unclear whether sensitive)
 	f.UnimplementedFields.Insert(".sql_server_profile.secret_manager_stored_password")
+
+	f.Unimplemented_NotYetTriaged(".salesforce_profile")
+	f.Unimplemented_NotYetTriaged(".satisfies_pzs")
+	f.Unimplemented_NotYetTriaged(".satisfies_pzi")
+	f.Unimplemented_NotYetTriaged(".mongodb_profile")
 
 	return f
 }
