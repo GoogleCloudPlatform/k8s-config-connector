@@ -37,10 +37,15 @@ type MockService struct {
 
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+	ops := operations.NewOperationsService(storage)
+
+	// gcloud is very particular about the operation format
+	ops.SetOperationFormat("{uuid}")
+
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
-		operations:      operations.NewOperationsService(storage),
+		operations:      ops,
 	}
 	return s
 }
@@ -57,6 +62,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterOrganizationsInstancesServerServer(grpcServer, &instancesServer{MockService: s})
 	pb.RegisterOrganizationsInstancesAttachmentsServerServer(grpcServer, &instancesAttachmentsServer{MockService: s})
 	pb.RegisterOrganizationsServerServer(grpcServer, &organizationsServer{MockService: s})
+	pb.RegisterProjectsServerServer(grpcServer, &projectsServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -68,6 +74,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pb.RegisterOrganizationsInstancesServerHandler,
 		pb.RegisterOrganizationsInstancesAttachmentsServerHandler,
 		pb.RegisterOrganizationsServerHandler,
+		pb.RegisterProjectsServerHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
