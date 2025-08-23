@@ -16,6 +16,7 @@ package fuzztesting
 
 import (
 	"math/rand"
+	"reflect"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -27,25 +28,35 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
-type FuzzFn func(t *testing.T, seed int64)
+var krmFuzzers = make(map[string]KRMFuzzer)
 
-var fuzzers []FuzzFn
-
-func RegisterKRMFuzzer(fuzzer KRMFuzzer) {
-	RegisterFuzzer(fuzzer.FuzzSpec)
-	RegisterFuzzer(fuzzer.FuzzStatus)
+func RegisterKRMFuzzerWithKind(kind string, fuzzer KRMFuzzer) {
+	krmFuzzers[kind] = fuzzer
 }
 
-func RegisterKRMSpecFuzzer(fuzzer KRMFuzzer) {
-	RegisterFuzzer(fuzzer.FuzzSpec)
+func GetKRMFuzzer(kind string) KRMFuzzer {
+	return krmFuzzers[kind]
 }
 
-func RegisterFuzzer(fuzzer FuzzFn) {
-	fuzzers = append(fuzzers, fuzzer)
+func GetAllKRMFuzzers() map[string]KRMFuzzer {
+	return krmFuzzers
 }
 
-func ChooseFuzzer(n int64) FuzzFn {
-	return fuzzers[n%int64(len(fuzzers))]
+func ChooseFuzzer(seed int64) func(t *testing.T, seed int64) {
+	allMappers := GetAllKRMFuzzers()
+	var fuzzers []func(t *testing.T, seed int64)
+	for _, m := range allMappers {
+		fuzzers = append(fuzzers, m.FuzzSpec)
+
+		v := reflect.ValueOf(m).Elem().FieldByName("StatusFromProto")
+		if !v.IsValid() || v.IsNil() {
+			continue
+		}
+		fuzzers = append(fuzzers, m.FuzzStatus)
+	}
+
+	n := seed % int64(len(fuzzers))
+	return fuzzers[n]
 }
 
 type KRMTypedFuzzer[ProtoT proto.Message, SpecType any, StatusType any] struct {

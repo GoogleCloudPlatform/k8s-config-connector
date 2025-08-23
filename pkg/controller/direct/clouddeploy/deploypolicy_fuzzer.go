@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(deployDeployPolicyFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("DeployPolicy", deployDeployPolicyFuzzer())
 }
 
 func deployDeployPolicyFuzzer() fuzztesting.KRMFuzzer {

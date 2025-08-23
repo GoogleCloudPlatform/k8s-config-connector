@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(bigtableAppProfileFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("AppProfile", bigtableAppProfileFuzzer())
 }
 
 func bigtableAppProfileFuzzer() fuzztesting.KRMFuzzer {

@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(authorizationPolicyFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("AuthorizationPolicy", authorizationPolicyFuzzer())
 }
 
 func authorizationPolicyFuzzer() fuzztesting.KRMFuzzer {

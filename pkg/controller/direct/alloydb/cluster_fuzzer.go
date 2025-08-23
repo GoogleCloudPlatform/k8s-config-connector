@@ -23,7 +23,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(alloyDBClusterFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Cluster", alloyDBClusterFuzzer())
 }
 
 func alloyDBClusterFuzzer() fuzztesting.KRMFuzzer {

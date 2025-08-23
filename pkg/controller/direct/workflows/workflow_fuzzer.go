@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:fuzz-gen
+// proto.message: google.cloud.workflows.v1.Workflow
+// api.group: workflows.cnrm.cloud.google.com
 package workflows
 
 import (
@@ -21,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(fuzzWorkflowsWorkflow())
+	fuzztesting.RegisterKRMFuzzerWithKind("WorkflowsWorkflow", fuzzWorkflowsWorkflow())
 }
 
 func fuzzWorkflowsWorkflow() fuzztesting.KRMFuzzer {

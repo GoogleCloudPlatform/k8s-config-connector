@@ -27,7 +27,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(fuzzEntitlement())
+	fuzztesting.RegisterKRMFuzzerWithKind("Entitlement", fuzzEntitlement())
 }
 
 func fuzzEntitlement() fuzztesting.KRMFuzzer {

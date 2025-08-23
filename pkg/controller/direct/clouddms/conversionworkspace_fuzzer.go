@@ -21,7 +21,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(fuzzCloudDMSConversionWorkspace())
+	fuzztesting.RegisterKRMFuzzerWithKind("ConversionWorkspace", fuzzCloudDMSConversionWorkspace())
 }
 
 func fuzzCloudDMSConversionWorkspace() fuzztesting.KRMFuzzer {

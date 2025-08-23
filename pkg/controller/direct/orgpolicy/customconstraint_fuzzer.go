@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(orgPolicyCustomConstraintFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("CustomConstraint", orgPolicyCustomConstraintFuzzer())
 }
 
 func orgPolicyCustomConstraintFuzzer() fuzztesting.KRMFuzzer {

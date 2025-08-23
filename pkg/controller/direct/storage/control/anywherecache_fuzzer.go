@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMSpecFuzzer(StorageAnywhereCacheFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("StorageAnywhereCache", StorageAnywhereCacheFuzzer())
 }
 
 func StorageAnywhereCacheFuzzer() fuzztesting.KRMFuzzer {

@@ -25,7 +25,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(aPIQuotaAdjusterSettingsFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("QuotaAdjusterSettings", aPIQuotaAdjusterSettingsFuzzer())
 }
 
 func aPIQuotaAdjusterSettingsFuzzer() fuzztesting.KRMFuzzer {

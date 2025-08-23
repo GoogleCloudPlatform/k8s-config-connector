@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(monitoringNotificationChannelFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("NotificationChannel", monitoringNotificationChannelFuzzer())
 }
 
 func monitoringNotificationChannelFuzzer() fuzztesting.KRMFuzzer {

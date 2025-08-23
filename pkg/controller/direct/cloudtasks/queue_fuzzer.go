@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(tasksQueueFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Queue", tasksQueueFuzzer())
 }
 
 func tasksQueueFuzzer() fuzztesting.KRMFuzzer {

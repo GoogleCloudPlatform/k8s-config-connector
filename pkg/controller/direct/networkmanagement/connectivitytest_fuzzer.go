@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(NetworkManagementConnectivityTestFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("ConnectivityTest", NetworkManagementConnectivityTestFuzzer())
 }
 
 func NetworkManagementConnectivityTestFuzzer() fuzztesting.KRMFuzzer {

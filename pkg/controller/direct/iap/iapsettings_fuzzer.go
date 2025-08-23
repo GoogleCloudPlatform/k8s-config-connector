@@ -23,7 +23,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMSpecFuzzer(iapsettingsFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("IapSettings", iapsettingsFuzzer())
 }
 
 func iapsettingsFuzzer() fuzztesting.KRMFuzzer {

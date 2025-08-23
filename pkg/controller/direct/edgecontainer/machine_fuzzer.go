@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(edgeContainerMachineFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Machine", edgeContainerMachineFuzzer())
 }
 
 func edgeContainerMachineFuzzer() fuzztesting.KRMFuzzer {

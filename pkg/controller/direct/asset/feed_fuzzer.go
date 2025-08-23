@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMSpecFuzzer(AssetFeedFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Feed", AssetFeedFuzzer())
 }
 
 func AssetFeedFuzzer() fuzztesting.KRMFuzzer {

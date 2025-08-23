@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(eventarcChannelFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Channel", eventarcChannelFuzzer())
 }
 
 func eventarcChannelFuzzer() fuzztesting.KRMFuzzer {

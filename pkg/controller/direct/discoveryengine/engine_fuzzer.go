@@ -23,7 +23,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(engineFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Engine", engineFuzzer())
 }
 
 func engineFuzzer() fuzztesting.KRMFuzzer {

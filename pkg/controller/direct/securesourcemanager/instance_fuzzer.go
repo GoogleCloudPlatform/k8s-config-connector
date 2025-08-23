@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(secureSourceManagerInstanceFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("SecureSourceManagerInstance", secureSourceManagerInstanceFuzzer())
 }
 
 func secureSourceManagerInstanceFuzzer() fuzztesting.KRMFuzzer {

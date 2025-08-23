@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(StorageFolderFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("StorageFolder", StorageFolderFuzzer())
 }
 
 func StorageFolderFuzzer() fuzztesting.KRMFuzzer {

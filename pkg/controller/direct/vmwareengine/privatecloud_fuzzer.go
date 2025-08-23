@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(vmwareEnginePrivateCloudFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("VMwareEnginePrivateCloud", vmwareEnginePrivateCloudFuzzer())
 }
 
 func vmwareEnginePrivateCloudFuzzer() fuzztesting.KRMFuzzer {

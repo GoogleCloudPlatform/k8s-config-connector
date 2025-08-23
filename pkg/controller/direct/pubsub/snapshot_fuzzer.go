@@ -20,16 +20,19 @@ package pubsub
 
 import (
 	pb "cloud.google.com/go/pubsub/apiv1/pubsubpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
 func init() {
-	fuzztesting.RegisterKRMSpecFuzzer(pubSubSnapshotFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("PubSubSnapshot", pubSubSnapshotFuzzer())
 }
 
 func pubSubSnapshotFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.Snapshot{},
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.Snapshot{},
 		PubSubSnapshotSpec_FromProto, PubSubSnapshotSpec_ToProto,
+		func(context *direct.MapContext, in *pb.Snapshot) *fuzztesting.NoStatus { return nil },
+		func(context *direct.MapContext, in *fuzztesting.NoStatus) *pb.Snapshot { return nil },
 	)
 
 	f.SpecFields.Insert(".topic")

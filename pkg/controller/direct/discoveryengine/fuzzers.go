@@ -14,6 +14,7 @@
 
 // +tool:fuzz-gen
 // proto.message: google.cloud.discoveryengine.v1.DataStore
+// api.group: discoveryengine.cnrm.cloud.google.com
 
 package discoveryengine
 
@@ -23,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(fuzzDataStore())
+	fuzztesting.RegisterKRMFuzzerWithKind("DataStore", fuzzDataStore())
 }
 
 func fuzzDataStore() fuzztesting.KRMFuzzer {

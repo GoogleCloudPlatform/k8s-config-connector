@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(backupDRBackupPlanAssociationFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("BackupPlanAssociation", backupDRBackupPlanAssociationFuzzer())
 }
 
 func backupDRBackupPlanAssociationFuzzer() fuzztesting.KRMFuzzer {

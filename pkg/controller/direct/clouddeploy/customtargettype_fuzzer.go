@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(customTargetTypeFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("CustomTargetType", customTargetTypeFuzzer())
 }
 
 func customTargetTypeFuzzer() fuzztesting.KRMFuzzer {

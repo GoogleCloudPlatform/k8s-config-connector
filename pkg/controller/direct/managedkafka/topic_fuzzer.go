@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMSpecFuzzer(managedKafkaTopicFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Topic", managedKafkaTopicFuzzer())
 }
 
 func managedKafkaTopicFuzzer() fuzztesting.KRMFuzzer {

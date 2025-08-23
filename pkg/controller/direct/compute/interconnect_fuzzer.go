@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(computeInterconnectFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Interconnect", computeInterconnectFuzzer())
 }
 
 func computeInterconnectFuzzer() fuzztesting.KRMFuzzer {

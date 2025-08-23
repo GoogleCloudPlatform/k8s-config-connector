@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(vmwareEngineExternalAddressFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("VMwareEngineExternalAddress", vmwareEngineExternalAddressFuzzer())
 }
 
 func vmwareEngineExternalAddressFuzzer() fuzztesting.KRMFuzzer {

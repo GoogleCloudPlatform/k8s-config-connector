@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(backupDRManagementServerFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("ManagementServer", backupDRManagementServerFuzzer())
 }
 
 func backupDRManagementServerFuzzer() fuzztesting.KRMFuzzer {

@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(GKEBackupRestorePlanFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("RestorePlan", GKEBackupRestorePlanFuzzer())
 }
 
 func GKEBackupRestorePlanFuzzer() fuzztesting.KRMFuzzer {

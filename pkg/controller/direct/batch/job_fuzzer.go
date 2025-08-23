@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(batchJobFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Job", batchJobFuzzer())
 }
 
 func batchJobFuzzer() fuzztesting.KRMFuzzer {

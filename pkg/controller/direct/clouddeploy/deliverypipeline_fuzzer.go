@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(cloudDeployDeliveryPipelineFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("DeliveryPipeline", cloudDeployDeliveryPipelineFuzzer())
 }
 
 func cloudDeployDeliveryPipelineFuzzer() fuzztesting.KRMFuzzer {

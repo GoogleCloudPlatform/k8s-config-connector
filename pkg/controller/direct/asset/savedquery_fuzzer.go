@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(AssetSavedQueryFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("SavedQuery", AssetSavedQueryFuzzer())
 }
 
 func AssetSavedQueryFuzzer() fuzztesting.KRMFuzzer {

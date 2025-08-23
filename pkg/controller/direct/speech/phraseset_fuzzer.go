@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(speechPhraseSetFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("SpeechPhraseSet", speechPhraseSetFuzzer())
 }
 
 func speechPhraseSetFuzzer() fuzztesting.KRMFuzzer {

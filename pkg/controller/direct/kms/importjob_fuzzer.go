@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(KMSImportJobFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("ImportJob", KMSImportJobFuzzer())
 }
 
 func KMSImportJobFuzzer() fuzztesting.KRMFuzzer {

@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(redisClusterFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("RedisCluster", redisClusterFuzzer())
 }
 
 func redisClusterFuzzer() fuzztesting.KRMFuzzer {

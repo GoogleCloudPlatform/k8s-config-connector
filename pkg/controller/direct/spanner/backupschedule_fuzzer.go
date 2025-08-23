@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(spannerBackupScheduleFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("SpannerBackupSchedule", spannerBackupScheduleFuzzer())
 }
 
 func spannerBackupScheduleFuzzer() fuzztesting.KRMFuzzer {

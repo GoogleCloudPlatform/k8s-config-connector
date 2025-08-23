@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(networkServicesServiceBindingFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("ServiceBinding", networkServicesServiceBindingFuzzer())
 }
 
 func networkServicesServiceBindingFuzzer() fuzztesting.KRMFuzzer {

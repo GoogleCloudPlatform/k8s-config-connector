@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(DocumentAIProcessorVersionFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("ProcessorVersion", DocumentAIProcessorVersionFuzzer())
 }
 
 func DocumentAIProcessorVersionFuzzer() fuzztesting.KRMFuzzer {

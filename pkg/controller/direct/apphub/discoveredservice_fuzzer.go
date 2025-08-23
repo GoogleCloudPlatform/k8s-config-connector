@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(appHubDiscoveredServiceFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("DiscoveredService", appHubDiscoveredServiceFuzzer())
 }
 
 func appHubDiscoveredServiceFuzzer() fuzztesting.KRMFuzzer {

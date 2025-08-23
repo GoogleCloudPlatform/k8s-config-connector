@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(computeNetworkAttachmentFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("NetworkAttachment", computeNetworkAttachmentFuzzer())
 }
 
 func computeNetworkAttachmentFuzzer() fuzztesting.KRMFuzzer {

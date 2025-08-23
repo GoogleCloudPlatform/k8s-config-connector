@@ -1,0 +1,60 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// +tool:fuzz-gen
+// proto.message: google.cloud.firestore.admin.v1.Database
+// api.group: firestore.cnrm.cloud.google.com
+
+package firestore
+
+import (
+	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+)
+
+func init() {
+	fuzztesting.RegisterKRMFuzzerWithKind("FirestoreDatabase", firestoreDatabaseFuzzer())
+}
+
+func firestoreDatabaseFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.Database{},
+		FirestoreDatabaseSpec_FromProto, FirestoreDatabaseSpec_ToProto,
+		FirestoreDatabaseObservedState_FromProto, FirestoreDatabaseObservedState_ToProto,
+	)
+
+	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".delete_time")
+	f.UnimplementedFields.Insert(".key_prefix")
+	f.UnimplementedFields.Insert(".cmek_config")
+	f.UnimplementedFields.Insert(".previous_id")
+	f.UnimplementedFields.Insert(".source_info")
+
+	// Default value fields set by controller
+	f.UnimplementedFields.Insert(".type")
+	f.UnimplementedFields.Insert(".app_engine_integration_mode")
+	f.UnimplementedFields.Insert(".delete_protection_state")
+
+	f.SpecFields.Insert(".location_id")
+	f.SpecFields.Insert(".concurrency_mode")
+	f.SpecFields.Insert(".point_in_time_recovery_enablement")
+
+	f.StatusFields.Insert(".uid")
+	f.StatusFields.Insert(".create_time")
+	f.StatusFields.Insert(".update_time")
+	f.StatusFields.Insert(".version_retention_period")
+	f.StatusFields.Insert(".earliest_version_time")
+	f.StatusFields.Insert(".etag")
+
+	return f
+}

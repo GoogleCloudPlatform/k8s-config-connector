@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(dataprocBatchFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Batch", dataprocBatchFuzzer())
 }
 
 func dataprocBatchFuzzer() fuzztesting.KRMFuzzer {

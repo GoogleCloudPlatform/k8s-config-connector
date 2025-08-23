@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(aiplatformModelFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Model", aiplatformModelFuzzer())
 }
 
 func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {

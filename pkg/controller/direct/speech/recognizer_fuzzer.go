@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(speechRecognizerFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("SpeechRecognizer", speechRecognizerFuzzer())
 }
 
 func speechRecognizerFuzzer() fuzztesting.KRMFuzzer {

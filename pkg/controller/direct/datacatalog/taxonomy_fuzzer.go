@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(dataCatalogTaxonomyFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Taxonomy", dataCatalogTaxonomyFuzzer())
 }
 
 func dataCatalogTaxonomyFuzzer() fuzztesting.KRMFuzzer {

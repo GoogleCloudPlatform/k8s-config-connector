@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(backupDRBackupVaultFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("BackupVault", backupDRBackupVaultFuzzer())
 }
 
 func backupDRBackupVaultFuzzer() fuzztesting.KRMFuzzer {

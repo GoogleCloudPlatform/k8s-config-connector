@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(bigQueryDataTransferConfigFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("TransferConfig", bigQueryDataTransferConfigFuzzer())
 }
 
 func bigQueryDataTransferConfigFuzzer() fuzztesting.KRMFuzzer {

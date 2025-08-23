@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(workflowsExecutionFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("WorkflowExecution", workflowsExecutionFuzzer())
 }
 
 func workflowsExecutionFuzzer() fuzztesting.KRMFuzzer {

@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(eventarcGoogleChannelConfigFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("GoogleChannelConfig", eventarcGoogleChannelConfigFuzzer())
 }
 
 func eventarcGoogleChannelConfigFuzzer() fuzztesting.KRMFuzzer {

@@ -20,10 +20,4 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 
-# This script has been split into multiple smaller scripts for parallel execution.
-# Please refer to the following scripts in this directory:
-# - fuzz-roundtrippers-all-mappers.sh
-# - fuzz-roundtrippers-apigee.sh
-# - fuzz-roundtrippers-compute-cloudidentity.sh
-# - fuzz-roundtrippers-discoveryengine-networkconnectivity.sh
-# - fuzz-roundtrippers-misc.sh
+go test -v ./pkg/fuzztesting/fuzztests/ -fuzz=FuzzAllMappers -fuzztime 600s

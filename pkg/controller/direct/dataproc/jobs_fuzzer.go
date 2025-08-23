@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(dataprocJobFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Job", dataprocJobFuzzer())
 }
 
 func dataprocJobFuzzer() fuzztesting.KRMFuzzer {

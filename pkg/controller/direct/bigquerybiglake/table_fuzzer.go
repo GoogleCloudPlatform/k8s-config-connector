@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(bigLakeTableFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Table", bigLakeTableFuzzer())
 }
 
 func bigLakeTableFuzzer() fuzztesting.KRMFuzzer {

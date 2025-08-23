@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(datastreamPrivateConnectionFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("PrivateConnection", datastreamPrivateConnectionFuzzer())
 }
 
 func datastreamPrivateConnectionFuzzer() fuzztesting.KRMFuzzer {

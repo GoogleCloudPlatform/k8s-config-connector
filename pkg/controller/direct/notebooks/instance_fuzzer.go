@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(notebookInstanceFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Instance", notebookInstanceFuzzer())
 }
 
 func notebookInstanceFuzzer() fuzztesting.KRMFuzzer {

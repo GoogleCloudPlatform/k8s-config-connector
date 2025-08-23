@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(vmwareEngineExternalAccessRuleFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("VMwareEngineExternalAccessRule", vmwareEngineExternalAccessRuleFuzzer())
 }
 
 func vmwareEngineExternalAccessRuleFuzzer() fuzztesting.KRMFuzzer {

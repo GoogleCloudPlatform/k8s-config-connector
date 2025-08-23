@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(datastreamRouteFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Route", datastreamRouteFuzzer())
 }
 
 func datastreamRouteFuzzer() fuzztesting.KRMFuzzer {

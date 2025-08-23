@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(featurestoreFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("VertexAIFeaturestore", featurestoreFuzzer())
 }
 
 func featurestoreFuzzer() fuzztesting.KRMFuzzer {

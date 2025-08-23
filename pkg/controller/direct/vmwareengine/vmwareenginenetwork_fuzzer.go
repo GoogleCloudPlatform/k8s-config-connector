@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(vmwareEngineNetworkFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("VMwareEngineNetwork", vmwareEngineNetworkFuzzer())
 }
 
 func vmwareEngineNetworkFuzzer() fuzztesting.KRMFuzzer {

@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(managedKafkaConsumerGroupFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("ConsumerGroup", managedKafkaConsumerGroupFuzzer())
 }
 
 func managedKafkaConsumerGroupFuzzer() fuzztesting.KRMFuzzer {

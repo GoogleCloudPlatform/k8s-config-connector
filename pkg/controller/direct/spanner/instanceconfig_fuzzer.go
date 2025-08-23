@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(spannerInstanceConfigFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("SpannerInstanceConfig", spannerInstanceConfigFuzzer())
 }
 
 func spannerInstanceConfigFuzzer() fuzztesting.KRMFuzzer {

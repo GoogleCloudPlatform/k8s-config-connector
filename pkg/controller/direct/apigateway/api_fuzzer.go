@@ -21,7 +21,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(fuzzWorkflowsWorkflow())
+	fuzztesting.RegisterKRMFuzzerWithKind("Api", fuzzWorkflowsWorkflow())
 }
 
 func fuzzWorkflowsWorkflow() fuzztesting.KRMFuzzer {

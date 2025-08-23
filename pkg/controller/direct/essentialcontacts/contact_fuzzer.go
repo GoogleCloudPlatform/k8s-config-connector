@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(essentialContactsContactFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Contact", essentialContactsContactFuzzer())
 }
 
 func essentialContactsContactFuzzer() fuzztesting.KRMFuzzer {

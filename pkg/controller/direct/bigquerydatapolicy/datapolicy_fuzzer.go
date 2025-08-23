@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(bigQueryDataPolicyFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("DataPolicy", bigQueryDataPolicyFuzzer())
 }
 
 func bigQueryDataPolicyFuzzer() fuzztesting.KRMFuzzer {

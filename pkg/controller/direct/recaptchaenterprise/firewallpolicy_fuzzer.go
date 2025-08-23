@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(recaptchaEnterpriseFirewallPolicyFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("RecaptchaEnterpriseFirewallPolicy", recaptchaEnterpriseFirewallPolicyFuzzer())
 }
 
 func recaptchaEnterpriseFirewallPolicyFuzzer() fuzztesting.KRMFuzzer {

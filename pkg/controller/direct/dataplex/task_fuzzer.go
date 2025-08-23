@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(dataplexTaskFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Task", dataplexTaskFuzzer())
 }
 
 func dataplexTaskFuzzer() fuzztesting.KRMFuzzer {

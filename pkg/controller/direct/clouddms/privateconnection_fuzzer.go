@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(cloudDMSPrivateConnectionFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("PrivateConnection", cloudDMSPrivateConnectionFuzzer())
 }
 
 func cloudDMSPrivateConnectionFuzzer() fuzztesting.KRMFuzzer {

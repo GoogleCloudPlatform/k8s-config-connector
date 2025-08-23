@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(metastoreBackupFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("Backup", metastoreBackupFuzzer())
 }
 
 func metastoreBackupFuzzer() fuzztesting.KRMFuzzer {

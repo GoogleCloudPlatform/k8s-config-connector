@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(colabRuntimeTemplateFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("NotebookRuntimeTemplate", colabRuntimeTemplateFuzzer())
 }
 
 func colabRuntimeTemplateFuzzer() fuzztesting.KRMFuzzer {

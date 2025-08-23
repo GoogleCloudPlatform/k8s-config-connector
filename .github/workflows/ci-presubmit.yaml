@@ -34,7 +34,7 @@ on:
 
 jobs:
 
-  fuzz-roundtrippers:
+  fuzz-roundtrippers-all-mappers:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -42,17 +42,92 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
-      - name: "Run dev/ci/presubmits/fuzz-roundtrippers"
+      - name: "Run dev/ci/presubmits/fuzz-roundtrippers-all-mappers.sh"
         run: |
-          ./dev/ci/presubmits/fuzz-roundtrippers
+          ./dev/ci/presubmits/fuzz-roundtrippers-all-mappers.sh
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v4
         with:
-          name: artifacts-fuzz-roundtrippers
+          name: artifacts-fuzz-roundtrippers-all-mappers
           path: /tmp/artifacts/
 
+  fuzz-roundtrippers-apigee:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/fuzz-roundtrippers-apigee.sh"
+        run: |
+          ./dev/ci/presubmits/fuzz-roundtrippers-apigee.sh
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-fuzz-roundtrippers-apigee
+          path: /tmp/artifacts/
+
+  fuzz-roundtrippers-compute-cloudidentity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/fuzz-roundtrippers-compute-cloudidentity.sh"
+        run: |
+          ./dev/ci/presubmits/fuzz-roundtrippers-compute-cloudidentity.sh
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-fuzz-roundtrippers-compute-cloudidentity
+          path: /tmp/artifacts/
+
+  fuzz-roundtrippers-discoveryengine-networkconnectivity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/fuzz-roundtrippers-discoveryengine-networkconnectivity.sh"
+        run: |
+          ./dev/ci/presubmits/fuzz-roundtrippers-discoveryengine-networkconnectivity.sh
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-fuzz-roundtrippers-discoveryengine-networkconnectivity
+          path: /tmp/artifacts/
+
+  fuzz-roundtrippers-misc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/fuzz-roundtrippers-misc.sh"
+        run: |
+          ./dev/ci/presubmits/fuzz-roundtrippers-misc.sh
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-fuzz-roundtrippers-misc
+          path: /tmp/artifacts/
 
   test-mockgcp:
     runs-on: ubuntu-latest

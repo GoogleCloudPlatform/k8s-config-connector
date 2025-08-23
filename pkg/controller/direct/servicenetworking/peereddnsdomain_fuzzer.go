@@ -14,6 +14,7 @@
 
 // +tool:fuzz-gen
 // proto.message: mockgcp.cloud.servicenetworking.v1.PeeredDnsDomain
+// api.group: servicenetworking.cnrm.cloud.google.com
 // crd.kind: ServiceNetworkingPeeredDNSDomain
 
 package servicenetworking
@@ -24,7 +25,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(peeredDnsDomainFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("ServiceNetworkingPeeredDNSDomain", peeredDnsDomainFuzzer())
 }
 
 func peeredDnsDomainFuzzer() fuzztesting.KRMFuzzer {

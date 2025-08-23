@@ -14,6 +14,7 @@
 
 // +tool:fuzz-gen
 // proto.message: google.cloud.tpu.v2.Node
+// api.group: tpu.cnrm.cloud.google.com
 // crd.kind: TPUVirtualMachine
 
 package tpu
@@ -24,7 +25,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(virtualMachineFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("TPUNode", virtualMachineFuzzer())
 }
 
 func virtualMachineFuzzer() fuzztesting.KRMFuzzer {

@@ -20,7 +20,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(fuzzNetworkConnectivityInteralRange())
+	fuzztesting.RegisterKRMFuzzerWithKind("InternalRange", fuzzNetworkConnectivityInteralRange())
 }
 
 func fuzzNetworkConnectivityInteralRange() fuzztesting.KRMFuzzer {

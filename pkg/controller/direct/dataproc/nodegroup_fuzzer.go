@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(dataprocNodeGroupFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("NodeGroup", dataprocNodeGroupFuzzer())
 }
 
 func dataprocNodeGroupFuzzer() fuzztesting.KRMFuzzer {

@@ -23,7 +23,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(dataStoreTargetSiteFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("TargetSite", dataStoreTargetSiteFuzzer())
 }
 
 func dataStoreTargetSiteFuzzer() fuzztesting.KRMFuzzer {

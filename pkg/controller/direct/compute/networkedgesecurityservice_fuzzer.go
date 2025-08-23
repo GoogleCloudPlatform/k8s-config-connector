@@ -24,7 +24,7 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(computeNetworkEdgeSecurityServiceFuzzer())
+	fuzztesting.RegisterKRMFuzzerWithKind("NetworkEdgeSecurityService", computeNetworkEdgeSecurityServiceFuzzer())
 }
 
 func computeNetworkEdgeSecurityServiceFuzzer() fuzztesting.KRMFuzzer {
