@@ -494,7 +494,6 @@ X-Xss-Protection: 0
       },
       "enablePublicEndpoint": true,
       "enabled": true,
-      "globalAccess": false,
       "privateEndpoint": "10.128.0.2",
       "publicEndpoint": "8.8.8.8"
     }
@@ -797,7 +796,8 @@ X-Xss-Protection: 0
     "ipEndpointsConfig": {
       "authorizedNetworksConfig": {
         "enabled": true,
-        "gcpPublicCidrsAccessEnabled": false
+        "gcpPublicCidrsAccessEnabled": false,
+        "privateEndpointEnforcementEnabled": true
       },
       "enablePublicEndpoint": false,
       "enabled": true,
@@ -855,7 +855,8 @@ X-Xss-Protection: 0
   },
   "masterAuthorizedNetworksConfig": {
     "enabled": true,
-    "gcpPublicCidrsAccessEnabled": false
+    "gcpPublicCidrsAccessEnabled": false,
+    "privateEndpointEnforcementEnabled": true
   },
   "monitoringConfig": {
     "advancedDatapathObservabilityConfig": {},
@@ -958,6 +959,9 @@ X-Xss-Protection: 0
   "privateClusterConfig": {
     "enablePrivateEndpoint": true,
     "enablePrivateNodes": true,
+    "masterGlobalAccessConfig": {
+      "enabled": true
+    },
     "masterIpv4CidrBlock": "172.16.2.32/28",
     "privateEndpoint": "10.128.0.2",
     "publicEndpoint": "8.8.8.8"
