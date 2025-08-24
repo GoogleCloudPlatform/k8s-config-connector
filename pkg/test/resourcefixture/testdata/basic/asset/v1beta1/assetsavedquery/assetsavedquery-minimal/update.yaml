@@ -12,34 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: asset.cnrm.cloud.google.com/v1alpha1
+apiVersion: asset.cnrm.cloud.google.com/v1beta1
 kind: AssetSavedQuery
 metadata:
-  name: assetsavedquery-full-${uniqueId}
-  labels:
-    key1: "value1"
-    key2: "value2"
+  name: assetsavedquery-minimal-${uniqueId}
 spec:
   projectRef:
     external: "${projectNumber}"
-  description: "A saved query with all fields for testing."
-  resourceID: "assetsavedquery-full-${uniqueId}"
+  description: An updated minimal saved query for testing.
   content:
     iamPolicyAnalysisQuery:
       scope: projects/${projectNumber}
       resourceSelector:
         fullResourceName: //cloudresourcemanager.googleapis.com/projects/${projectNumber}
       identitySelector:
-        identity: user:test-user@example.com
-      accessSelector:
-        roles:
-          - "roles/owner"
-        permissions:
-          - "resourcemanager.projects.get"
-      options:
-        expandGroups: true
-        expandRoles: true
-        expandResources: true
-        outputGroupEdges: true
-        outputResourceEdges: true
-        analyzeServiceAccountImpersonation: true
+        identity: user:updated-test-user@example.com # Changed identity
