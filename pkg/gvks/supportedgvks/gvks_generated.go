@@ -42,14 +42,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	},
 	{
 		Group:   "accesscontextmanager.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "AccessContextManagerAccessPolicy",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "accesscontextmanager.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "AccessContextManagerGCPUserAccessBinding",
 	}: {
@@ -92,22 +84,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 		Group:   "alloydb.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "AlloyDBBackup",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "alloydb.cnrm.cloud.google.com",
-		Version: "v1alpha1",
-		Kind:    "AlloyDBCluster",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "alloydb.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "AlloyDBCluster",
 	}: {
 		Terraform: true,
 		DCL:       false,
@@ -172,14 +148,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 		Group:   "apigee.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "ApigeeSyncAuthorization",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "apikeys.cnrm.cloud.google.com",
-		Version: "v1alpha1",
-		Kind:    "APIKeysKey",
 	}: {
 		Terraform: true,
 		DCL:       false,
@@ -275,14 +243,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
 		Group:   "bigquery.cnrm.cloud.google.com",
 		Version: "v1beta1",
-		Kind:    "BigQueryDataset",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "bigquery.cnrm.cloud.google.com",
-		Version: "v1beta1",
 		Kind:    "BigQueryJob",
 	}: {
 		Terraform: true,
@@ -305,33 +265,9 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 		DCL:       false,
 	},
 	{
-		Group:   "bigquery.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "BigQueryTable",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "bigtable.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "BigtableAppProfile",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
 		Group:   "bigtable.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "BigtableGCPolicy",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "bigtable.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "BigtableInstance",
 	}: {
 		Terraform: true,
 		DCL:       false,
@@ -596,14 +532,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ComputeFirewall",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ComputeForwardingRule",
 	}: {
 		Terraform: true,
 		DCL:       false,
@@ -1067,14 +995,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
 		Group:   "compute.cnrm.cloud.google.com",
 		Version: "v1beta1",
-		Kind:    "ComputeTargetTCPProxy",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
 		Kind:    "ComputeTargetVPNGateway",
 	}: {
 		Terraform: true,
@@ -1129,14 +1049,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 		DCL:       false,
 	},
 	{
-		Group:   "containerattached.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ContainerAttachedCluster",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
 		Group:   "container.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ContainerCluster",
@@ -1148,30 +1060,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 		Group:   "container.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ContainerNodePool",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "datacatalog.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "DataCatalogPolicyTag",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "datacatalog.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "DataCatalogTaxonomy",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "dataflow.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "DataflowFlexTemplateJob",
 	}: {
 		Terraform: true,
 		DCL:       false,
@@ -1778,14 +1666,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	},
 	{
 		Group:   "kms.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "KMSKeyRing",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "kms.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "KMSSecretCiphertext",
 	}: {
@@ -1871,14 +1751,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	}: {
 		Terraform: false,
 		DCL:       true,
-	},
-	{
-		Group:   "monitoring.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "MonitoringNotificationChannel",
-	}: {
-		Terraform: true,
-		DCL:       false,
 	},
 	{
 		Group:   "monitoring.cnrm.cloud.google.com",
@@ -2193,22 +2065,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 		DCL:       false,
 	},
 	{
-		Group:   "secretmanager.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "SecretManagerSecret",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "secretmanager.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "SecretManagerSecretVersion",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
 		Group:   "securitycenter.cnrm.cloud.google.com",
 		Version: "v1alpha1",
 		Kind:    "SecurityCenterNotificationConfig",
@@ -2249,14 +2105,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 		DCL:       false,
 	},
 	{
-		Group:   "serviceusage.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ServiceIdentity",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
 		Group:   "servicenetworking.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "ServiceNetworkingConnection",
@@ -2292,14 +2140,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 		Group:   "spanner.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "SpannerDatabase",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "spanner.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "SpannerInstance",
 	}: {
 		Terraform: true,
 		DCL:       false,

@@ -111,7 +111,8 @@ func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.
 	obj := &unstructured.Unstructured{}
 	obj.SetGroupVersionKind(r.gvk)
 
-	predicateList := []predicate.Predicate{kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
+	controllerOverridePredicate := kccpredicate.NewControllerOverridePredicate(mgr.GetClient(), r.gvk)
+	predicateList := []predicate.Predicate{controllerOverridePredicate, kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
 	if reconcilePredicate != nil {
 		predicateList = append(predicateList, reconcilePredicate)
 	}
@@ -240,16 +241,6 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 		}
 		// Error reading the object - requeue the request.
 		return reconcile.Result{}, err
-	}
-
-	if r.reconcilePredicate != nil {
-		// We always simulate a Create event (we don't want to check update predicates, and we don't have the previous version anyway)
-		ev := event.TypedCreateEvent[client.Object]{Object: obj}
-		if !r.reconcilePredicate.Create(ev) {
-			logger.Info("skipping direct reconciliation; reconcileGate does not match object", "namespace", request.Namespace, "name", request.Name)
-			// Do not schedule periodic re-reconciliation
-			return reconcile.Result{}, nil
-		}
 	}
 
 	runCtx := &reconcileContext{
