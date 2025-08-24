@@ -75,9 +75,35 @@ func (r *TableRef) NormalizedExternal(ctx context.Context, reader client.Reader,
 	if err != nil {
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
 	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	if actualExternalRef != "" {
+		r.External = actualExternalRef
 	}
-	r.External = actualExternalRef
+
+	// For non-direct resources, there's no status.externalRef
+	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+	if err != nil {
+		return "", err
+	}
+	resourceID, err := refsv1beta1.GetResourceID(u)
+	if err != nil {
+		return "", err
+	}
+	datasetName, _, err := unstructured.NestedString(u.Object, "spec", "datasetRef", "name")
+	if err != nil {
+		return "", err
+	}
+	if datasetName != "" {
+		r.External = fmt.Sprintf("projects/%s/datasets/%s/tables/%s", projectID, datasetName, resourceID)
+	} else {
+		// The configured spec.datasetRef.external should match the format projects/{projectID}/datasets/{instanceID}
+		// otherwise the creation of the resource might fail
+		datasetExternal, _, err := unstructured.NestedString(u.Object, "spec", "datasetRef", "external")
+		if err != nil {
+			return "", err
+		}
+		if datasetExternal != "" {
+			r.External = fmt.Sprintf("%s/tables/%s", datasetExternal, resourceID)
+		}
+	}
 	return r.External, nil
 }

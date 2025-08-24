@@ -16,9 +16,8 @@ package bigqueryanalyticshub
 
 import (
 	pb "cloud.google.com/go/bigquery/analyticshub/apiv1/analyticshubpb"
-	bigquery "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
+	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 )
@@ -112,7 +111,7 @@ func Listing_BigQueryDatasetSource_FromProto(mapCtx *direct.MapContext, in *pb.L
 	}
 	out := &krm.BigQueryDatasetSource{}
 	if out.DatasetRef != nil {
-		out.DatasetRef = &bigquery.DatasetRef{
+		out.DatasetRef = &bigqueryv1beta1.DatasetRef{
 			External: in.Dataset,
 		}
 	}
@@ -128,7 +127,7 @@ func Listing_BigQueryDatasetSource_SelectedResource_FromProto(mapCtx *direct.Map
 	}
 	out := &krm.SelectedResource{}
 	if in.GetTable() != "" {
-		out.TableRef = &refs.BigQueryTableRef{
+		out.TableRef = &bigqueryv1beta1.TableRef{
 			External: in.GetTable(),
 		}
 	}
