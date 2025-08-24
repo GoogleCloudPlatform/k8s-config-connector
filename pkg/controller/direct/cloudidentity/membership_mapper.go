@@ -65,7 +65,8 @@ func CloudIdentityMembershipStatus_FromAPI(mapCtx *direct.MapContext, in *api.Me
 	// MISSING: MemberKey
 	// MISSING: Name
 	// MISSING: PreferredMemberKey
-	// MISSING: Roles
+	out.ObservedState = &krm.CloudIdentityMembershipObservedState{}
+	out.ObservedState.Roles = direct.Slice_FromProto(mapCtx, in.Roles, MembershipRoles_FromAPI)
 	out.Type = direct.LazyPtr(in.Type)
 	out.UpdateTime = direct.LazyPtr(in.UpdateTime)
 	return out
@@ -80,7 +81,9 @@ func CloudIdentityMembershipStatus_ToAPI(mapCtx *direct.MapContext, in *krm.Clou
 	// MISSING: MemberKey
 	// MISSING: Name
 	// MISSING: PreferredMemberKey
-	// MISSING: Roles
+	if in.ObservedState != nil {
+		out.Roles = direct.Slice_ToProto(mapCtx, in.ObservedState.Roles, MembershipRoles_ToAPI)
+	}
 	out.Type = direct.ValueOf(in.Type)
 	out.UpdateTime = direct.ValueOf(in.UpdateTime)
 	return out
