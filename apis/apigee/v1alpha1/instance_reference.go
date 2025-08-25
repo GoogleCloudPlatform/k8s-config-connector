@@ -17,14 +17,13 @@ package v1alpha1
 import (
 	"context"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &ApigeeInstanceRef{}
+var _ reference.Ref = &ApigeeInstanceRef{}
 
 // ApigeeInstanceRef is a reference to a ApigeeInstance resource.
 type ApigeeInstanceRef struct {
@@ -67,5 +66,5 @@ func (r *ApigeeInstanceRef) ValidateExternal(ref string) error {
 }
 
 func (r *ApigeeInstanceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+	return reference.Normalize(ctx, reader, r, defaultNamespace)
 }

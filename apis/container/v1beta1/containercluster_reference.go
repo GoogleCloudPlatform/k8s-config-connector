@@ -20,7 +20,7 @@ import (
 	"regexp"
 	"strings"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -29,7 +29,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &ContainerClusterRef{}
+var _ reference.ExternalNormalizer = &ContainerClusterRef{}
 var ContainerClusterGVK = GroupVersion.WithKind("ContainerCluster")
 
 type ContainerClusterRef struct {
