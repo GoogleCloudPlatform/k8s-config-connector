@@ -50,6 +50,10 @@ type ConfigConnectorContextSpec struct {
 	// Should only be used when requestProjectPolicy is set to BILLING_PROJECT.
 	BillingProject string `json:"billingProject,omitempty"`
 
+	// Configuration for experimental features.
+	// +optional
+	Experiments *Experiments `json:"experiments,omitempty"`
+
 	// StateIntoSpec is the user override of the default value for the
 	// 'cnrm.cloud.google.com/state-into-spec' annotation if the annotation is
 	// unset for a resource.
