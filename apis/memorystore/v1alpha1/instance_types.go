@@ -77,10 +77,6 @@ type MemorystoreInstanceSpec struct {
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.deletion_protection_enabled
 	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
 
-	// User inputs and resource details of the auto-created PSC connections.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.psc_auto_connections
-	PscAutoConnections []PscAutoConnection `json:"pscAutoConnections,omitempty"`
-
 	// Optional. Endpoints for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.endpoints
 	Endpoints []Instance_InstanceEndpoint `json:"endpoints,omitempty"`
@@ -142,11 +138,6 @@ type MemorystoreInstanceObservedState struct {
 	// Output only. Configuration of individual nodes of the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.node_config
 	NodeConfig *NodeConfigObservedState `json:"nodeConfig,omitempty"`
-
-	// Immutable. User inputs and resource details of the auto-created
-	//  PSC connections.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.psc_auto_connections
-	PscAutoConnections []PscAutoConnectionObservedState `json:"pscAutoConnections,omitempty"`
 
 	// Optional. Endpoints for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.endpoints
@@ -239,6 +230,11 @@ type PscAutoConnection struct {
 // +kcc:proto=google.cloud.memorystore.v1beta.PscConnection
 type PscConnection struct {
 
+	// Required. The PSC connection id of the forwarding rule connected to the
+	//  service attachment.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.psc_connection_id
+	PscConnectionID *string `json:"pscConnectionID,omitempty"`
+
 	// Required. The IP allocated on the consumer network for the PSC forwarding
 	//  rule.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.ip_address
@@ -295,44 +291,12 @@ type DiscoveryEndpointObservedState struct {
 	Network *string `json:"network,omitempty"`
 }
 
-// +kcc:observedstate:proto=google.cloud.memorystore.v1beta.Instance
-type InstanceObservedState struct {
-	// Output only. Creation timestamp of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Latest update timestamp of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. Current state of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. Additional information about the state of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.state_info
-	StateInfo *Instance_StateInfo `json:"stateInfo,omitempty"`
-
-	// Output only. System assigned, unique identifier for the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.uid
-	Uid *string `json:"uid,omitempty"`
-
-	// Output only. Configuration of individual nodes of the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.node_config
-	NodeConfig *NodeConfig `json:"nodeConfig,omitempty"`
-
-	// Immutable. User inputs and resource details of the auto-created
-	//  PSC connections.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.psc_auto_connections
-	PscAutoConnections []PscAutoConnectionObservedState `json:"pscAutoConnections,omitempty"`
-
-	// Optional. Endpoints for the instance.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.endpoints
-	Endpoints []Instance_InstanceEndpointObservedState `json:"endpoints,omitempty"`
-}
-
 // +kcc:observedstate:proto=google.cloud.memorystore.v1beta.Instance.ConnectionDetail
 type Instance_ConnectionDetailObservedState struct {
+	// Detailed information of a PSC connection that is created through
+	// service connectivity automation.
+	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.ConnectionDetail.psc_auto_connection
+	PscAutoConnection *PscAutoConnectionObservedState `json:"pscAutoConnection,omitempty"`
 	// Detailed information of a PSC connection that is created by the user.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.Instance.ConnectionDetail.psc_connection
 	PscConnection *PscConnectionObservedState `json:"pscConnection,omitempty"`
@@ -414,11 +378,6 @@ type PscAutoConnectionObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.memorystore.v1beta.PscConnection
 type PscConnectionObservedState struct {
-	// Output only. The PSC connection id of the forwarding rule connected to the
-	//  service attachment.
-	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.psc_connection_id
-	PscConnectionID *string `json:"pscConnectionID,omitempty"`
-
 	// Output only. The consumer project_id where the forwarding rule is created
 	//  from.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.project_id
