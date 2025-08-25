@@ -10,7 +10,6 @@ metadata:
   name: pubsubsnapshot-full-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  expireTime: "2025-10-03T15:01:23Z"
   labels:
     key: new-value
   projectRef:
@@ -28,3 +27,5 @@ status:
     type: Ready
   externalRef: projects/${projectId}/snapshots/pubsubsnapshot-full-${uniqueId}
   observedGeneration: 2
+  observedState:
+    expireTime: "2024-04-01T12:34:56.123456Z"
