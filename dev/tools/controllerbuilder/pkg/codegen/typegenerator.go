@@ -199,7 +199,7 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 			continue
 		}
 
-		WriteOutputMessage(&out.body, msgDetails)
+		WriteObservedStateMessage(&out.body, msgDetails)
 	}
 	return errors.Join(g.errors...)
 }
@@ -220,7 +220,7 @@ func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
 	fmt.Fprintf(out, "}\n")
 }
 
-func WriteOutputMessage(out io.Writer, msgDetails *OutputMessageDetails) {
+func WriteObservedStateMessage(out io.Writer, msgDetails *OutputMessageDetails) {
 	msg := msgDetails.Message
 	goType := goNameForOutputProtoMessage(msg)
 
