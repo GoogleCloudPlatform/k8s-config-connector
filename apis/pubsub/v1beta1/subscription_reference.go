@@ -19,6 +19,8 @@ import (
 	"fmt"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -26,7 +28,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &PubSubSubscriptionRef{}
+var _ reference.ExternalNormalizer = &PubSubSubscriptionRef{}
 var PubSubSubscriptionGVK = GroupVersion.WithKind("PubSubSubscription")
 
 // PubSubSubscriptionRef defines the resource reference to PubSubSubscription, which "External" field
