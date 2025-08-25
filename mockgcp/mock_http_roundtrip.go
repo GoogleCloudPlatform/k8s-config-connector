@@ -27,6 +27,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/workflows"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/interceptor"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapigee"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapikeys"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapphub"
@@ -120,6 +121,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	env.Projects = resourcemanagerService.GetProjectStore()
 
 	var serverOpts []grpc.ServerOption
+	serverOpts = append(serverOpts, grpc.UnaryInterceptor(interceptor.LabelValidationInterceptor))
 	server := grpc.NewServer(serverOpts...)
 
 	var services []mockgcpregistry.MockService
