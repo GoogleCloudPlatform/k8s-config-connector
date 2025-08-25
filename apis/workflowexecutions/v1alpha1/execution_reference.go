@@ -20,6 +20,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	workflow "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -29,7 +30,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &ExecutionRef{}
+var _ reference.ExternalNormalizer = &ExecutionRef{}
 
 // ExecutionRef defines the resource reference to WorkflowsExecution, which "External" field
 // holds the GCP identifier for the KRM object.

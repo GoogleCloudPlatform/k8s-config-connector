@@ -23,12 +23,12 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &ComputeSecurityPolicyRef{}
+var _ reference.ExternalNormalizer = &ComputeSecurityPolicyRef{}
 var ComputeSecurityPolicyGVK = GroupVersion.WithKind("ComputeSecurityPolicy")
 
 // ComputeSecurityPolicyRef defines the resource reference to ComputeSecurityPolicy, which "External" field

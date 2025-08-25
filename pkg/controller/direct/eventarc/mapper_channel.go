@@ -21,7 +21,7 @@ package eventarc
 
 import (
 	pb "cloud.google.com/go/eventarc/apiv1/eventarcpb"
-	connectorv1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/connector/v1"
+	connectorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/connector/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/eventarc/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
@@ -45,7 +45,7 @@ func EventarcChannelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Channel) *k
 	// MISSING: Name
 	// Provider is a ProviderRef struct in the KRM type, not a string
 	if provider := in.GetProvider(); provider != "" {
-		out.ProviderRef = &connectorv1.ProviderRef{
+		out.ProviderRef = &connectorv1beta1.ProviderRef{
 			External: provider,
 		}
 	}

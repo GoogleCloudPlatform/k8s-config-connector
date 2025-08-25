@@ -18,11 +18,11 @@ import (
 	"context"
 	"fmt"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &ServiceRef{}
+var _ reference.ExternalNormalizer = &ServiceRef{}
 var DataprocServiceGVK = GroupVersion.WithKind("DataprocService")
 
 // ServiceRef defines the resource reference to DataprocService, which "External" field

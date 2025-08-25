@@ -19,11 +19,11 @@ import (
 	"fmt"
 	"strings"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &RevisionRef{}
+var _ reference.ExternalNormalizer = &RevisionRef{}
 
 // Revision defines the resource reference to RunRevision, which "External" field
 // holds the GCP identifier for the KRM object.
