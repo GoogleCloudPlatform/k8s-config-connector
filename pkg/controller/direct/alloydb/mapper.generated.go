@@ -127,7 +127,7 @@ func AlloyDBClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *kr
 	out.SecondaryConfig = Cluster_SecondaryConfig_FromProto(mapCtx, in.GetSecondaryConfig())
 	// MISSING: PrimaryConfig
 	// MISSING: SatisfiesPzs
-	// MISSING: PSCConfig
+	out.PscConfig = Cluster_PSCConfig_FromProto(mapCtx, in.GetPscConfig())
 	out.MaintenanceUpdatePolicy = MaintenanceUpdatePolicy_FromProto(mapCtx, in.GetMaintenanceUpdatePolicy())
 	// MISSING: MaintenanceSchedule
 	// MISSING: GeminiConfig
@@ -171,7 +171,7 @@ func AlloyDBClusterSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AlloyD
 	out.SecondaryConfig = Cluster_SecondaryConfig_ToProto(mapCtx, in.SecondaryConfig)
 	// MISSING: PrimaryConfig
 	// MISSING: SatisfiesPzs
-	// MISSING: PSCConfig
+	out.PscConfig = Cluster_PSCConfig_ToProto(mapCtx, in.PscConfig)
 	out.MaintenanceUpdatePolicy = MaintenanceUpdatePolicy_ToProto(mapCtx, in.MaintenanceUpdatePolicy)
 	// MISSING: MaintenanceSchedule
 	// MISSING: GeminiConfig
