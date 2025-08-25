@@ -67,10 +67,6 @@ for f in $(find apis -name "generate.sh"); do
         echo "Skipping ${f}"
         continue
     fi
-    if [[ "${f}" == *"networksecurity"* ]]; then
-        echo "Skipping ${f}"
-        continue
-    fi
     if [[ "${f}" == *"orgpolicy"* ]]; then
         echo "Skipping ${f}"
         continue

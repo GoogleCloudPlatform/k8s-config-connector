@@ -121,6 +121,7 @@ func (info *messageInfo) parseComments(ts *ast.TypeSpec, docMap map[ast.Node]*as
 				codegen.KCCProtoMessageAnnotationMisc,
 				codegen.KCCProtoMessageAnnotationSpec,
 				codegen.KCCProtoMessageAnnotationObservedState,
+				codegen.KCCProtoMessageAnnotationStatus,
 			} {
 				if strings.HasPrefix(text, annotation+"=") {
 					protoName := strings.TrimSpace(strings.TrimPrefix(text, annotation+"="))
