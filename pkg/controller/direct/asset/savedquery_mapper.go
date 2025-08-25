@@ -16,7 +16,7 @@ package asset
 
 import (
 	pb "cloud.google.com/go/asset/apiv1/assetpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
