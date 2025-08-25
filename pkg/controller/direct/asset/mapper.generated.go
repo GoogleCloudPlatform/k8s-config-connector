@@ -20,12 +20,12 @@
 package asset
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	pb "cloud.google.com/go/asset/apiv1/assetpb"
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1alpha1"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
-
 func AssetFeedSpec_FromProto(mapCtx *direct.MapContext, in *pb.Feed) *krmv1alpha1.AssetFeedSpec {
 	if in == nil {
 		return nil
@@ -144,6 +144,24 @@ func IAMPolicyAnalysisQuery_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.IA
 	out.ConditionContext = IAMPolicyAnalysisQuery_ConditionContext_ToProto(mapCtx, in.ConditionContext)
 	return out
 }
+func IAMPolicyAnalysisQuery_AccessSelector_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_AccessSelector) *krmv1alpha1.IAMPolicyAnalysisQuery_AccessSelector {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.IAMPolicyAnalysisQuery_AccessSelector{}
+	out.Roles = in.Roles
+	out.Permissions = in.Permissions
+	return out
+}
+func IAMPolicyAnalysisQuery_AccessSelector_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.IAMPolicyAnalysisQuery_AccessSelector) *pb.IamPolicyAnalysisQuery_AccessSelector {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IamPolicyAnalysisQuery_AccessSelector{}
+	out.Roles = in.Roles
+	out.Permissions = in.Permissions
+	return out
+}
 func IAMPolicyAnalysisQuery_AccessSelector_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_AccessSelector) *krmv1beta1.IAMPolicyAnalysisQuery_AccessSelector {
 	if in == nil {
 		return nil
@@ -160,6 +178,24 @@ func IAMPolicyAnalysisQuery_AccessSelector_ToProto(mapCtx *direct.MapContext, in
 	out := &pb.IamPolicyAnalysisQuery_AccessSelector{}
 	out.Roles = in.Roles
 	out.Permissions = in.Permissions
+	return out
+}
+func IAMPolicyAnalysisQuery_ConditionContext_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_ConditionContext) *krmv1alpha1.IAMPolicyAnalysisQuery_ConditionContext {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.IAMPolicyAnalysisQuery_ConditionContext{}
+	out.AccessTime = direct.StringTimestamp_FromProto(mapCtx, in.GetAccessTime())
+	return out
+}
+func IAMPolicyAnalysisQuery_ConditionContext_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.IAMPolicyAnalysisQuery_ConditionContext) *pb.IamPolicyAnalysisQuery_ConditionContext {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IamPolicyAnalysisQuery_ConditionContext{}
+	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.AccessTime); oneof != nil {
+		out.TimeContext = &pb.IamPolicyAnalysisQuery_ConditionContext_AccessTime{AccessTime: oneof}
+	}
 	return out
 }
 func IAMPolicyAnalysisQuery_ConditionContext_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_ConditionContext) *krmv1beta1.IAMPolicyAnalysisQuery_ConditionContext {
@@ -194,6 +230,32 @@ func IAMPolicyAnalysisQuery_IdentitySelector_ToProto(mapCtx *direct.MapContext, 
 	}
 	out := &pb.IamPolicyAnalysisQuery_IdentitySelector{}
 	out.Identity = direct.ValueOf(in.Identity)
+	return out
+}
+func IAMPolicyAnalysisQuery_Options_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_Options) *krmv1alpha1.IAMPolicyAnalysisQuery_Options {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.IAMPolicyAnalysisQuery_Options{}
+	out.ExpandGroups = direct.LazyPtr(in.GetExpandGroups())
+	out.ExpandRoles = direct.LazyPtr(in.GetExpandRoles())
+	out.ExpandResources = direct.LazyPtr(in.GetExpandResources())
+	out.OutputResourceEdges = direct.LazyPtr(in.GetOutputResourceEdges())
+	out.OutputGroupEdges = direct.LazyPtr(in.GetOutputGroupEdges())
+	out.AnalyzeServiceAccountImpersonation = direct.LazyPtr(in.GetAnalyzeServiceAccountImpersonation())
+	return out
+}
+func IAMPolicyAnalysisQuery_Options_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.IAMPolicyAnalysisQuery_Options) *pb.IamPolicyAnalysisQuery_Options {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IamPolicyAnalysisQuery_Options{}
+	out.ExpandGroups = direct.ValueOf(in.ExpandGroups)
+	out.ExpandRoles = direct.ValueOf(in.ExpandRoles)
+	out.ExpandResources = direct.ValueOf(in.ExpandResources)
+	out.OutputResourceEdges = direct.ValueOf(in.OutputResourceEdges)
+	out.OutputGroupEdges = direct.ValueOf(in.OutputGroupEdges)
+	out.AnalyzeServiceAccountImpersonation = direct.ValueOf(in.AnalyzeServiceAccountImpersonation)
 	return out
 }
 func IAMPolicyAnalysisQuery_Options_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_Options) *krmv1beta1.IAMPolicyAnalysisQuery_Options {

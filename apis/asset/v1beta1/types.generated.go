@@ -16,9 +16,10 @@
 // krm.group: asset.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.cloud.asset.v1
-// resource: Asset:SavedQuery
+// resource: AssetSavedQuery:SavedQuery
 
 package v1beta1
+
 
 // +kcc:proto=google.cloud.asset.v1.IamPolicyAnalysisQuery.AccessSelector
 type IAMPolicyAnalysisQuery_AccessSelector struct {
