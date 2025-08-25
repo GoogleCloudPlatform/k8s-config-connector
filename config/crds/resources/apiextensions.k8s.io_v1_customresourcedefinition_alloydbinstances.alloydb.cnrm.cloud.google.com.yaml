@@ -40,7 +40,7 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1alpha1
+    name: v1beta1
     schema:
       openAPIV3Schema:
         description: AlloyDBInstance is the Schema for the AlloyDBInstance API
@@ -332,7 +332,7 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1beta1
+    name: v1alpha1
     schema:
       openAPIV3Schema:
         description: AlloyDBInstance is the Schema for the AlloyDBInstance API
