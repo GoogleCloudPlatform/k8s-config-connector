@@ -202,10 +202,11 @@ func (r *Reconciler) handleReconcileFailed(ctx context.Context, nn types.Namespa
 	msg := fmt.Errorf("error during reconciliation: %w", reconcileErr).Error()
 	r.recorder.Event(ccc, corev1.EventTypeWarning, k8s.UpdateFailed, msg)
 	r.log.Info("surfacing error messages in status...", "namespace", nn.Namespace, "name", nn.Name, "error", msg)
-	ccc.SetCommonStatus(v1alpha1.CommonStatus{
-		Healthy: false,
-		Errors:  []string{msg},
-	})
+	status := ccc.GetCommonStatus()
+	status.Healthy = false
+	status.Errors = []string{msg}
+	status.ObservedGeneration = ccc.Generation
+	ccc.SetCommonStatus(status)
 	return r.updateConfigConnectorContextStatus(ctx, ccc)
 }
 
@@ -220,10 +221,11 @@ func (r *Reconciler) handleReconcileSucceeded(ctx context.Context, nn types.Name
 	}
 
 	r.recorder.Event(ccc, corev1.EventTypeNormal, k8s.UpToDate, k8s.UpToDateMessage)
-	ccc.SetCommonStatus(v1alpha1.CommonStatus{
-		Healthy: true,
-		Errors:  []string{},
-	})
+	status := ccc.GetCommonStatus()
+	status.Healthy = true
+	status.Errors = []string{}
+	status.ObservedGeneration = ccc.Generation
+	ccc.SetCommonStatus(status)
 	return r.updateConfigConnectorContextStatus(ctx, ccc)
 }
 

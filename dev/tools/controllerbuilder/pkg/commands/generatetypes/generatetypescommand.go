@@ -185,7 +185,8 @@ func RunGenerateCRD(ctx context.Context, o *GenerateCRDOptions) error {
 	}
 
 	addCopyright := true
-	if err := typeGenerator.WriteFiles(addCopyright); err != nil {
+	writeEmptyFiles := true
+	if err := typeGenerator.WriteFiles(addCopyright, writeEmptyFiles); err != nil {
 		return err
 	}
 

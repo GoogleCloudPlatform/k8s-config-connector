@@ -34,6 +34,7 @@ func BackupDRBackupVaultObservedState_v1alpha1_FromProto(mapCtx *direct.MapConte
 	out.BackupCount = direct.LazyPtr(in.GetBackupCount())
 	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
 	out.TotalStoredBytes = direct.LazyPtr(in.GetTotalStoredBytes())
+	out.Etag = in.Etag
 	out.UID = direct.LazyPtr(in.GetUid())
 	return out
 }
@@ -51,6 +52,7 @@ func BackupDRBackupVaultObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext
 	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
 	out.TotalStoredBytes = direct.ValueOf(in.TotalStoredBytes)
 	out.Uid = direct.ValueOf(in.UID)
+	out.Etag = in.Etag
 	return out
 }
 func BackupDRBackupVaultSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupVaultSpec) *pb.BackupVault {
@@ -62,7 +64,6 @@ func BackupDRBackupVaultSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Description = in.Description
 	out.Labels = in.Labels
 	out.BackupMinimumEnforcedRetentionDuration = direct.StringDuration_ToProto(mapCtx, in.BackupMinimumEnforcedRetentionDuration)
-	out.Etag = in.Etag
 	out.EffectiveTime = direct.StringTimestamp_ToProto(mapCtx, in.EffectiveTime)
 	// MISSING: Uid
 	out.Annotations = in.Annotations

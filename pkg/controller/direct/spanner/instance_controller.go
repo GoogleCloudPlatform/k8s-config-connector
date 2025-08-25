@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	gcp "cloud.google.com/go/spanner/admin/instance/apiv1"
 
@@ -77,11 +78,15 @@ type modelSpannerInstance struct {
 
 func (m *modelSpannerInstance) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.SpannerInstance{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+	copied := u.DeepCopy()
+	if err := label.ComputeLabels(copied); err != nil {
+		return nil, err
+	}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(copied.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewSpannerInstanceIdentity(ctx, reader, obj, u)
+	id, err := krm.NewSpannerInstanceIdentity(ctx, reader, obj, copied)
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +166,6 @@ func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbas
 	if resource.Labels == nil {
 		resource.Labels = make(map[string]string)
 	}
-	resource.Labels["managed-by-cnrm"] = "true"
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -203,7 +207,6 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 	if resource.Labels == nil {
 		resource.Labels = make(map[string]string)
 	}
-	resource.Labels["managed-by-cnrm"] = "true"
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

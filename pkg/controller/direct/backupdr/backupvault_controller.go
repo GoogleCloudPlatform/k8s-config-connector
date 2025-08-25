@@ -177,7 +177,6 @@ func (a *BackupVaultAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if desired.Spec.BackupMinimumEnforcedRetentionDuration != nil && !reflect.DeepEqual(resource.BackupMinimumEnforcedRetentionDuration, a.actual.BackupMinimumEnforcedRetentionDuration) {
 		paths = append(paths, "backup_minimum_enforced_retention_duration")
 	}
-	// TODO: etag
 	if desired.Spec.EffectiveTime != nil && !reflect.DeepEqual(resource.EffectiveTime, a.actual.EffectiveTime) {
 		paths = append(paths, "effective_time")
 	}
@@ -195,6 +194,7 @@ func (a *BackupVaultAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		updated = a.actual
 	} else {
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
+		resource.Etag = a.actual.Etag // Etag is always updated, even if it is not changed.
 		req := &pb.UpdateBackupVaultRequest{
 			BackupVault: resource,
 			UpdateMask:  &fieldmaskpb.FieldMask{Paths: paths},

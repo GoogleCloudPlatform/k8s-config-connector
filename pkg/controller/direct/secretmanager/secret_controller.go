@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"regexp"
 
 	gcp "cloud.google.com/go/secretmanager/apiv1"
 	secretmanagerpb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
@@ -26,10 +27,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
+	"github.com/go-logr/logr"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -90,16 +93,21 @@ func (m *secretModel) client(ctx context.Context) (*gcp.Client, error) {
 
 func (m *secretModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.SecretManagerSecret{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+
+	copied := u.DeepCopy()
+	if err := label.ComputeLabels(copied); err != nil {
+		return nil, err
+	}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(copied.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewSecretIdentity(ctx, reader, obj, u)
+	id, err := krm.NewSecretIdentity(ctx, reader, obj, copied)
 	if err != nil {
 		return nil, err
 	}
 
-	if err = normalizeExternal(ctx, reader, u, obj); err != nil {
+	if err = normalizeExternal(ctx, reader, copied, obj); err != nil {
 		return nil, err
 	}
 
@@ -196,9 +204,25 @@ func MergeMap(a, b map[string]string) map[string]string {
 	return copy
 }
 
-func ComputeAnnotations(secret *krm.SecretManagerSecret) map[string]string {
+// Annotation keys must be between 1 and 63 characters long
+// have a UTF-8 encoding of maximum 128 bytes
+// begin and end with an alphanumeric character ([a-z0-9A-Z]),
+// may have dashes (-), underscores (_), dots (.), and alphanumerics in between these symbols.
+func IsValidAnnotation(s string) bool {
+	var validPattern = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9\.\-_]*[a-zA-Z0-9]$`)
+
+	// A string is valid if it matches the pattern AND its length is between 1 and 63.
+	return validPattern.MatchString(s) && len(s) >= 1 && len(s) <= 63
+}
+
+func ComputeAnnotations(secret *krm.SecretManagerSecret, log *logr.Logger) map[string]string {
 	annotations := MergeMap(secret.GetAnnotations(), secret.Spec.Annotations)
-	common.RemoveByPrefixes(annotations, "cnrm.cloud.google.com", "alpha.cnrm.cloud.google.com")
+	for key := range annotations {
+		if !IsValidAnnotation(key) {
+			log.V(2).Info("Remove annotation with invalid key", "key", key)
+			delete(annotations, key)
+		}
+	}
 	return annotations
 }
 
@@ -212,7 +236,7 @@ func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) er
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Annotations = ComputeAnnotations(desired)
+	resource.Annotations = ComputeAnnotations(desired, &log)
 	// GCP service does not allow setting version aliases during Secret creation.
 	resource.VersionAliases = nil
 	req := &secretmanagerpb.CreateSecretRequest{
@@ -267,7 +291,7 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Annotations = ComputeAnnotations(desired)
+	resource.Annotations = ComputeAnnotations(desired, &log)
 	// the GCP service use *name* to identify the resource.
 	resource.Name = a.id.String()
 	resource.Etag = a.actual.Etag

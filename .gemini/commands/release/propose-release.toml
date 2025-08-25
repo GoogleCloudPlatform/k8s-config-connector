@@ -1,0 +1,12 @@
+
+# In: ~/.gemini/commands/release/propose-release.toml
+# Invoked via: /release:propose-release
+# Gemini custom command docs can be found at https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/commands.md#toml-file-format-v1
+
+
+description = "Proposes a new release candidate."
+
+
+prompt = """
+Follow instructsions @.gemini/commands/release/propose-release.json
+"""

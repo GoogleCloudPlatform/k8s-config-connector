@@ -30,8 +30,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/log"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"golang.org/x/oauth2"
@@ -41,6 +39,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -115,9 +114,9 @@ func (t *Harness) getCloudResourceManagerClient(httpClient *http.Client) *cloudr
 
 func (t *Harness) Init() {
 	// t := h.t
-	// log := klog.FromContext(ctx)
 
 	ctx := t.Ctx
+	log := klog.FromContext(ctx)
 
 	var mockCloudGRPCClientConnection *grpc.ClientConn
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
@@ -289,7 +288,10 @@ func (t *Harness) Init() {
 		// Intercept (and log) DCL and direct(non TF) requests
 		if len(eventSinks) != 0 {
 			if t.HTTPClient == nil {
-				httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
+				clientScopes := []string{
+					"https://www.googleapis.com/auth/cloud-platform",
+				}
+				httpClient, err := google.DefaultClient(ctx, clientScopes...)
 				if err != nil {
 					t.Fatalf("error creating the http client to be used by DCL: %v", err)
 				}

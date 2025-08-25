@@ -276,25 +276,12 @@
 [missing_field] crd=apphubdiscoveredworkloads.apphub.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=assetfeeds.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=assetfeeds.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.accessSelector.permissions[]" is not set in unstructured objects
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.accessSelector.roles[]" is not set in unstructured objects
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.conditionContext.accessTime" is not set in unstructured objects
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.options.analyzeServiceAccountImpersonation" is not set in unstructured objects
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.options.expandGroups" is not set in unstructured objects
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.options.expandResources" is not set in unstructured objects
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.options.expandRoles" is not set in unstructured objects
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.options.outputGroupEdges" is not set in unstructured objects
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.content.iamPolicyAnalysisQuery.options.outputResourceEdges" is not set in unstructured objects
 [missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=backupdrbackupplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
 [missing_field] crd=backupdrbackupplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=backupdrbackupvaults.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessRestriction" is not set in unstructured objects
 [missing_field] crd=backupdrbackupvaults.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
-[missing_field] crd=backupdrbackupvaults.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.effectiveTime" is not set in unstructured objects
-[missing_field] crd=backupdrbackupvaults.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
-[missing_field] crd=backupdrbackupvaults.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.ignoreInactiveDatasources" is not set in unstructured objects
 [missing_field] crd=backupdrbackupvaults.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
@@ -2168,9 +2155,6 @@
 [missing_field] crd=pubsublitesubscriptions.pubsublite.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
 [missing_field] crd=pubsublitetopics.pubsublite.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
 [missing_field] crd=pubsublitetopics.pubsublite.cnrm.cloud.google.com version=v1alpha1: field ".spec.retentionConfig.period" is not set in unstructured objects
-[missing_field] crd=pubsubsnapshots.pubsub.cnrm.cloud.google.com version=v1alpha1: field ".spec.expireTime" is not set in unstructured objects
-[missing_field] crd=pubsubsnapshots.pubsub.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=pubsubsnapshots.pubsub.cnrm.cloud.google.com version=v1alpha1: field ".spec.topicRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].allow" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].block" is not set in unstructured objects
 [missing_field] crd=recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].includeRecaptchaScript" is not set in unstructured objects

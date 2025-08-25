@@ -44,6 +44,21 @@ as the trigger for watching that namespace, and also allows configuration of thi
 
 We often abbreviate ConfigConnectorContext to CCC or "triple-C".
 
+# Resources and Controllers
+
+Each resource is represented by a file under config/crds/resources.
+You can extract the name of the resource by running `cat <file> | yq '.spec.names.kind'` on the file.
+
+Terraform (TF) controllers are represented by files under scripts/resource-autogen/generated/servicemappings.
+If a resource can be found in `cat <file> | yq '.spec.resources.[] | .kind'` then it has a Terraform controller.
+If the config/crds/resources file containing the resource name has the following annotation in it `cat <file> | yq '.metadata.labels."cnrm.cloud.google.com/tf2crd"'` the the Terraform controller is the default controller for that resource.
+
+DCL controllers are supported and the default if the config/crds/resources file containing the resource name has the following annotation in it `cat <file> | yq '.metadata.labels."cnrm.cloud.google.com/dcl2crd"'`.
+
+Direct controllers can be found under pkg/controller/direct.
+The controller will have a file name ending in '_controller.go'.
+The controller will call RegisterModel using a KRM containing the resource name and ending in GVK.
+
 # Options
 
 We have an emerging pattern for configuring options.  The "state-into-spec" option was an early option to demonstrate the pattern.
@@ -80,6 +95,9 @@ We then run the tests again against our mockgcp emulation/testing layer for GCP 
 and often we have to improve our mockgcp layer or the normalization to get the results to be the same.
 We have two scripts `hack/record-gcp` and `hack/compare-mock` to help streamline this process.
 
+# Github Issues
+
+When asked to work with github issues, use the `gh issue` tool to read/update issues.
 
 # GitHub Actions Workflow Generation
 
@@ -89,6 +107,9 @@ We have two scripts `hack/record-gcp` and `hack/compare-mock` to help streamline
 
 When promoting a resource from `v1alpha1` to `v1beta1`, we should keep `krm` as the import alias for `v1alpha1` and use `krmv1beta1` for `v1beta1`. This is to minimize the code changes.
 
-# Promoting resources from alpha to beta
 
-`docs/ai/promote-alpha-to-beta.md` shares tips on how to promote alpha resources to beta.
+# Task-Specific Docs
+
+* `docs/ai/qualify-alpha-for-beta.md` shares tips on how to qualify alpha resources for beta promotion.
+* `docs/ai/how-to-promote-resource.md` shares tips on how to promote alpha resources to beta.
+* `docs/ai/add-missing-field.md` describes how to add a missing field, for example when the GCP service adds a new field.

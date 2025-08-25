@@ -20,7 +20,6 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/version"
 	"golang.org/x/oauth2/google"
-	"google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/iam/v1"
 	"google.golang.org/api/storage/v1"
 )
@@ -52,20 +51,6 @@ func NewStorageClient(ctx context.Context) (*storage.Service, error) {
 		return nil, err
 	}
 	client, err := storage.New(httpClient)
-	if err != nil {
-		return nil, err
-	}
-	client.UserAgent = KCCUserAgent()
-	return client, nil
-}
-
-// NewCloudResourceManagerClient returns a GCP Cloud Resource Manager service.
-func NewCloudResourceManagerClient(ctx context.Context) (*cloudresourcemanager.Service, error) {
-	httpClient, err := google.DefaultClient(ctx, cloudresourcemanager.CloudPlatformScope)
-	if err != nil {
-		return nil, err
-	}
-	client, err := cloudresourcemanager.New(httpClient)
 	if err != nil {
 		return nil, err
 	}

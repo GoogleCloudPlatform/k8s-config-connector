@@ -88,3 +88,20 @@ func (s *BillingV1) UpdateProjectBillingInfo(ctx context.Context, req *pb.Update
 
 	return obj, nil
 }
+
+func (s *BillingV1) ListBillingAccounts(ctx context.Context, req *pb.ListBillingAccountsRequest) (*pb.ListBillingAccountsResponse, error) {
+	// For now, return a dummy billing account.
+	// In a more complete mock, this would retrieve from storage.
+	dummyAccount := &pb.BillingAccount{
+		Name:         "billingAccounts/000000-123456-000000",
+		Open:         true,
+		DisplayName:  "Mock Billing Account",
+		CurrencyCode: "USD",
+		Parent:       "organizations/12345678",
+	}
+
+	response := &pb.ListBillingAccountsResponse{
+		BillingAccounts: []*pb.BillingAccount{dummyAccount},
+	}
+	return response, nil
+}

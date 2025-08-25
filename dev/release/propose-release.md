@@ -87,64 +87,37 @@ This document outlines the automated steps to prepare a new release for KCC.
 
 ## PHASE 4: GENERATE RELEASE SUMMARY
 
-**Description:** Analyze the three release commits to create a detailed summary for the pull request body, following the specified format. Save the output to `release-summary.md`.
+**Description:** Analyze the three release commits to create a detailed summary for the pull request body. This process filters out noisy changes like simple version bumps to highlight the most important changes.
 
 **Actions:**
 
-1.  **Get Commit Hashes:**
-    *   Run `git log -n 3 --pretty="format:%H"` to get the hashes of the last three commits. Identify which hash corresponds to which commit (Release, CRDs, Golden Files).
+1.  **Get Commit Information:**
+    *   Run the following command to get the hash and subject of the last three commits and save them to `commits.log`:
+        ```bash
+        git log -n 3 --pretty="format:%H %s" > commits.log
+        ```
+    *   Inspect `commits.log` to identify the commit hashes for the "Release", "Update alpha CRDs", and "Update golden files" commits.
 
-2.  **For each commit, gather the following details:**
-    *   **Statistics:** Run `git show --stat <commit_hash>` to get the number of files changed, insertions, and deletions.
-    *   **New Files:** Run `git show --summary <commit_hash> | grep "create mode"` to list newly created files.
-    *   **Renamed Files/Dirs:** Run `git show --summary <commit_hash> | grep "rename"` to list renames.
+2.  **Generate and Filter Diffs:**
+    *   For each of the three commits, perform the following steps. Replace `<commit_hash>` with the hash of the commit and `<commit_name>` with a descriptive name (e.g., `release`, `crd_update`, `golden_file_update`).
+
+    *   **Generate Raw Diff:**
+        ```bash
+        git show <commit_hash> > <commit_name>_diff.txt
+        ```
+
+    *   **Filter Diff:**
+        *   The following command filters the raw diff, removing file-specific diffs that only contain changes to the `cnrm.cloud.google.com/version` annotation. This helps to focus on more substantial changes.
+        ```bash
+        cat <commit_name>_diff.txt | perl -pe 'BEGIN{$/="\ndiff --git "} s/^.*//s if !grep {/^[+-]/ && !/---|\+\+\+/ && !/cnrm\.cloud\.google\.com\/version/} split/\n/' > <commit_name>_filtered_diff.txt
+        ```
+        *   After running this for all three commits, you will have three filtered diff files (e.g., `release_filtered_diff.txt`, `crd_update_filtered_diff.txt`, `golden_file_update_filtered_diff.txt`).
 
 3.  **Assemble `release-summary.md`:**
     *   Create a new file named `release-summary.md`.
-    *   Using the information gathered above, construct the summary by formatting the text exactly as specified in the example below.
-    *   For Commit 2, calculate the number of "Modified" files by subtracting the number of "Added" and "Renamed" files from the total number of "files changed".
+    *   Review the filtered diff files to identify the key changes for the release.
+    *   Write a summary of the changes in `release-summary.md`. Your summary should describe the significant updates, such as new features, bug fixes, or important structural changes, using the filtered diffs as a reference.
 
-**Example Output Format:**
-
-```text
-Commit 1: Release 1.133.0
-
-This commit handled the main version bump for the release.
-
-Summary of Changes: 19 files changed, with 4,060 additions and 1,576 deletions.
-Added Directories: The script renamed versioned directories from 1.132.1 to 1.133.0.
-operator/autopilot-channels/packages/configconnector/1.133.0
-operator/channels/packages/configconnector/1.133.0
-Content Changes: The vast majority of the 4,000+ line changes in the modified files were the replacement of the version string
-1.132.1 with 1.133.0 and updating the corresponding image tags.
----
-Commit 2: Update alpha CRDs for Release 1.133.0
-
-This commit updated the CRD files in the /crds directory based on the new release version. The changes reflect structural updates
-to the CRDs themselves, not just version number changes.
-
-Summary of Changes: 440 files changed, with 1,688 additions and 618 deletions.
-File Changes:
-Added: 1 new CRD file was added.
-crds/apigateway_v1beta1_apigatewayapi.yaml
-Renamed: 2 CRD files were renamed, reflecting a promotion in their API version from v1alpha1 to v1beta1.
-crds/{apphub_v1alpha1_apphubapplication.yaml => apphub_v1beta1_apphubapplication.yaml}
-crds/{apigateway_v1alpha1_apigatewayapi.yaml => bigtable_v1alpha1_bigtablelogicalview.yaml}
-Modified: The remaining 437 files were modified with various structural changes to the CRD definitions as a result of the
-sync-crds-folder.sh script.
----
-Commit 3: Update golden files for operator controllers (ac75bf2)
-
-This commit updated the golden test files to align with the changes from the previous two commits, ensuring the tests pass with
-the new version and CRD structures.
-
-Summary of Changes: 2 files changed, with 63 additions and 53 deletions.
-Files Changed: 2 golden test files were modified.
-operator/pkg/controllers/configconnector/testdata/golden/simple/_expected.yaml
-operator/pkg/controllers/configconnectorcontext/testdata/golden/simple/_expected.yaml
-Content Changes: The modifications inside these files align the test expectations with the changes from the previous two
-commits, including the version bump to 1.133.0 and the addition/modification of CRD definitions in the test output.
-```
 
 ## PHASE 5: PUSH & FINALIZE
 

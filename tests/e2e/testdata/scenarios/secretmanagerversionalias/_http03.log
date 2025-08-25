@@ -16,6 +16,9 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectNumber}/secrets/secret-${uniqueId}",
   "replication": {
     "userManaged": {
@@ -37,6 +40,9 @@ X-Goog-Request-Params: secret.name=projects%2F${projectId}%2Fsecrets%2Fsecret-${
 
 {
   "etag": "abcdef0123A=",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/secrets/secret-${uniqueId}",
   "replication": {
     "userManaged": {
@@ -65,6 +71,9 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectNumber}/secrets/secret-${uniqueId}",
   "replication": {
     "userManaged": {
@@ -99,6 +108,9 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectNumber}/secrets/secret-${uniqueId}",
   "replication": {
     "userManaged": {

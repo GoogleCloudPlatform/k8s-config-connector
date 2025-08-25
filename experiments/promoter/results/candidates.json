@@ -21,7 +21,7 @@
     "apiPath": "apis/asset/v1alpha1/savedquery_types.go",
     "controllerPath": "pkg/controller/direct/asset/savedquery_controller.go",
     "testFixturePath": "pkg/test/resourcefixture/testdata/basic/asset/v1alpha1/assetsavedquery",
-    "apiCoverage": false
+    "apiCoverage": true
   },
   {
     "kind": "BackupDRBackupPlan",
@@ -397,7 +397,7 @@
     "apiPath": "apis/pubsub/v1alpha1/snapshot_types.go",
     "controllerPath": "pkg/controller/direct/pubsub/pubsubsnapshot_controller.go",
     "testFixturePath": "pkg/test/resourcefixture/testdata/basic/pubsub/v1alpha1/pubsubsnapshot",
-    "apiCoverage": false
+    "apiCoverage": true
   },
   {
     "kind": "ReCAPTCHAEnterpriseFirewallPolicy",

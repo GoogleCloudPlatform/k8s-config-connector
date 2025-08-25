@@ -62,6 +62,10 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
+      - uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          version: '531.0.0'
+          install_components: 'alpha,beta'
       - name: "Run dev/ci/presubmits/test-mockgcp"
         run: |
           ./dev/ci/presubmits/test-mockgcp
@@ -94,6 +98,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-accesscontextmanager:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-accesscontextmanager"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-accesscontextmanager
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-accesscontextmanager
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-alloydb:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -111,6 +135,26 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifacts-tests-e2e-fixtures-alloydb
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-apigateway:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apigateway"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-apigateway
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-apigateway
           path: /tmp/artifacts/
 
 
@@ -134,6 +178,66 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-apikeys:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-apikeys"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-apikeys
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-apikeys
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-artifactregistry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-artifactregistry"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-artifactregistry
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-artifactregistry
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-asset:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-asset"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-asset
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-asset
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-backupdr:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -154,6 +258,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-batch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-batch"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-batch
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-batch
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-bigquery:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -171,6 +295,46 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifacts-tests-e2e-fixtures-bigquery
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-bigquerybiglake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigquerybiglake"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-bigquerybiglake
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-bigquerybiglake
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-bigquerydatapolicy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-bigquerydatapolicy"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-bigquerydatapolicy
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-bigquerydatapolicy
           path: /tmp/artifacts/
 
 
@@ -214,6 +378,66 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-cloudbuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudbuild"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-cloudbuild
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-cloudbuild
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-clouddeploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-clouddeploy"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-clouddeploy
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-clouddeploy
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-clouddms:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-clouddms"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-clouddms
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-clouddms
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-cloudidentity:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -231,6 +455,86 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifacts-tests-e2e-fixtures-cloudidentity
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-cloudquota:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudquota"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-cloudquota
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-cloudquota
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-cloudtasks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-cloudtasks"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-cloudtasks
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-cloudtasks
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-colab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-colab"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-colab
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-colab
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-composer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-composer"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-composer
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-composer
           path: /tmp/artifacts/
 
 
@@ -274,6 +578,46 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-containerattached:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-containerattached"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-containerattached
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-containerattached
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-datacatalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-datacatalog"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-datacatalog
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-datacatalog
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-dataflow:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -291,6 +635,206 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifacts-tests-e2e-fixtures-dataflow
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-dataform:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dataform"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-dataform
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-dataform
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-dataplex:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dataplex"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-dataplex
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-dataplex
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-dataproc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-dataproc"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-dataproc
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-dataproc
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-datastream:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-datastream"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-datastream
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-datastream
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-discoveryengine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-discoveryengine"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-discoveryengine
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-discoveryengine
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-documentai:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-documentai"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-documentai
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-documentai
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-edgecontainer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-edgecontainer"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-edgecontainer
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-edgecontainer
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-essentialcontacts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-essentialcontacts"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-essentialcontacts
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-essentialcontacts
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-eventarc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-eventarc"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-eventarc
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-eventarc
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-firestore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-firestore"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-firestore
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-firestore
           path: /tmp/artifacts/
 
 
@@ -334,6 +878,146 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-iam:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-iam"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-iam
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-iam
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-iap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-iap"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-iap
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-iap
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-kms:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-kms"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-kms
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-kms
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-logging:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-logging"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-logging
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-logging
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-managedkafka:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-managedkafka"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-managedkafka
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-managedkafka
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-memorystore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-memorystore"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-memorystore
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-memorystore
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-metastore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-metastore"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-metastore
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-metastore
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-monitoring:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -351,6 +1035,226 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifacts-tests-e2e-fixtures-monitoring
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-netapp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-netapp"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-netapp
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-netapp
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-networkconnectivity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-networkconnectivity"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-networkconnectivity
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-networkconnectivity
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-networkmanagement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-networkmanagement"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-networkmanagement
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-networkmanagement
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-networksecurity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-networksecurity"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-networksecurity
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-networksecurity
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-networkservices:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-networkservices"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-networkservices
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-networkservices
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-notebooks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-notebooks"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-notebooks
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-notebooks
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-orgpolicy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-orgpolicy"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-orgpolicy
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-orgpolicy
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-privilegedaccessmanager:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-privilegedaccessmanager"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-privilegedaccessmanager
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-privilegedaccessmanager
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-pubsub:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-pubsub"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-pubsub
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-pubsub
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-recaptchaenterprise:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-recaptchaenterprise"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-recaptchaenterprise
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-recaptchaenterprise
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-redis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-redis"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-redis
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-redis
           path: /tmp/artifacts/
 
 
@@ -374,6 +1278,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-fixtures-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-run"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-run
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-run
+          path: /tmp/artifacts/
+
+
   tests-e2e-fixtures-secretmanager:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -391,6 +1315,26 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifacts-tests-e2e-fixtures-secretmanager
+          path: /tmp/artifacts/
+
+
+  tests-e2e-fixtures-securesourcemanager:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-securesourcemanager"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-securesourcemanager
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-fixtures-securesourcemanager
           path: /tmp/artifacts/
 
 
@@ -994,26 +1938,6 @@ jobs:
           path: /tmp/artifacts/
 
 
-  tests-scenarios:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: 'go.mod'
-      - name: "Run dev/ci/presubmits/tests-scenarios"
-        run: |
-          ./dev/ci/presubmits/tests-scenarios
-        env:
-          ARTIFACTS: /tmp/artifacts
-      - name: "Upload artifacts"
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifacts-tests-scenarios
-          path: /tmp/artifacts/
-
-
   tests-scenarios-acquisition:
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -1071,6 +1995,26 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifacts-tests-scenarios-powertool
+          path: /tmp/artifacts/
+
+
+  tests-scenarios-unclassified:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-scenarios-unclassified"
+        run: |
+          ./dev/ci/presubmits/tests-scenarios-unclassified
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-scenarios-unclassified
           path: /tmp/artifacts/
 
 

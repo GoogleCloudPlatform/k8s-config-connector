@@ -339,7 +339,7 @@ func (x *ReadFeatureValuesResponse) GetEntityView() *ReadFeatureValuesResponse_E
 }
 
 // Request message for
-// [FeaturestoreOnlineServingService.StreamingFeatureValuesRead][].
+// [FeaturestoreOnlineServingService.StreamingReadFeatureValues][mockgcp.cloud.aiplatform.v1beta1.FeaturestoreOnlineServingService.StreamingReadFeatureValues].
 type StreamingReadFeatureValuesRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1060,9 +1060,11 @@ type FeatureValue_Metadata struct {
 	// Feature generation timestamp. Typically, it is provided by user at
 	// feature ingestion time. If not, feature store
 	// will use the system timestamp when the data is ingested into feature
-	// store. For streaming ingestion, the time, aligned by days, must be no
-	// older than five years (1825 days) and no later than one year (366 days)
-	// in the future.
+	// store.
+	//
+	// Legacy Feature Store: For streaming ingestion, the time, aligned by days,
+	// must be no older than five years (1825 days) and no later than one year
+	// (366 days) in the future.
 	GenerateTime *timestamp.Timestamp `protobuf:"bytes,1,opt,name=generate_time,json=generateTime,proto3" json:"generate_time,omitempty"`
 }
 

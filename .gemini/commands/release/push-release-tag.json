@@ -1,0 +1,67 @@
+{
+  "name": "push_release_tag_internal",
+  "description": "Finds the correct release commit, and if approved, executes the release-push-tag.sh script to push a release tag to the repository.",
+  "steps": [
+    {
+      "step": "Get the major.minor version from the user.",
+      "type": "prompt",
+      "message": "What is the major.minor version of the release (e.g., 1.133)?",
+      "variable": "VERSION_MAJOR_MINOR"
+    },
+    {
+      "step": "Ensure the local repository is up-to-date.",
+      "type": "shell",
+      "command": "git checkout main && git pull --rebase origin main && git fetch origin --tags"
+    },
+    {
+      "step": "Check out the release branch.",
+      "type": "shell",
+      "command": "git checkout origin/github/release-{{VERSION_MAJOR_MINOR}}"
+    },
+    {
+      "step": "Find the release commit and version string.",
+      "type": "shell",
+      "command": "git log --grep=\"^Release {{VERSION_MAJOR_MINOR}}.\" --pretty=format:'%H %s' -n 1",
+      "variable": "COMMIT_INFO"
+    },
+    {
+      "step": "Extract the commit hash.",
+      "type": "shell",
+      "command": "echo {{COMMIT_INFO}} | cut -d ' ' -f 1",
+      "variable": "GIT_COMMIT"
+    },
+    {
+      "step": "Extract the full version.",
+      "type": "shell",
+      "command": "echo {{COMMIT_INFO}} | cut -d ' ' -f 3",
+      "variable": "VERSION"
+    },
+    {
+      "step": "Return to the main branch.",
+      "type": "shell",
+      "command": "git checkout main && git rebase origin"
+    },
+    {
+      "step": "Perform a dry run of the release script.",
+      "type": "shell",
+      "command": "cd dev/tasks && export VERSION={{VERSION}} && export GIT_COMMIT={{GIT_COMMIT}} && export VERSION_MAJOR_MINOR={{VERSION_MAJOR_MINOR}} && export REPO_PATH=/usr/local/google/home/xiaoweim/gitonborg/cnrm && ../../google-internal/scripts/release/release-push-tag.sh",
+      "variable": "DRY_RUN_OUTPUT"
+    },
+    {
+      "step": "Ask for user confirmation to proceed with the actual push.",
+      "type": "confirm",
+      "message": "Dry run successful. Do you want to proceed with pushing the release tag?"
+    },
+    {
+      "step": "Extract the go command from the dry run output.",
+      "type": "shell",
+      "command": "echo \"{{DRY_RUN_OUTPUT}}\" | grep \"go run\"",
+      "variable": "GO_COMMAND"
+    },
+    {
+      "step": "Execute the final push.",
+      "type": "shell",
+      "command": "cd dev/tasks && {{GO_COMMAND}} --yes=true"
+    }
+  ]
+}

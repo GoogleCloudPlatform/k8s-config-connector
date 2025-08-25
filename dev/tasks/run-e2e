@@ -33,8 +33,12 @@ fi
 # Temporarily skip flaky tests in presubmit
 # Add skip reason and test name into below list
 flaky_tests=(
-  # b/321582240 flaky test due to deletion ordering
-  "TestE2EScript/scenarios/gkehubfeaturemembership/update_single_membership"
+  # https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/2745
+  "TestAllInSeries/samples/regular-cluster"
+  # b/321582240 flaky gkehubfeaturemembership scenarios test due to deletion ordering
+  "TestE2EScript/scenarios/gkehubfeaturemembership"
+  # https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/4624
+  "TestE2EScript/scenarios/iam/iampartialpolicy"
 )
 
 if [[ -n "${SKIP_TESTS:-}" ]]; then

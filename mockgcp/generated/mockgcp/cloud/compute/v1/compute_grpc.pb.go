@@ -16134,6 +16134,8 @@ type NetworksClient interface {
 	Patch(ctx context.Context, in *PatchNetworkRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Removes a peering from the specified network.
 	RemovePeering(ctx context.Context, in *RemovePeeringNetworkRequest, opts ...grpc.CallOption) (*Operation, error)
+	// Requests to remove a peering from the specified network. Applicable only for PeeringConnection with update_strategy=CONSENSUS.
+	RequestRemovePeering(ctx context.Context, in *RequestRemovePeeringNetworkRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Switches the network mode from auto subnet mode to custom subnet mode.
 	SwitchToCustomMode(ctx context.Context, in *SwitchToCustomModeNetworkRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Updates the specified network peering with the data included in the request. You can only modify the NetworkPeering.export_custom_routes field and the NetworkPeering.import_custom_routes field.
@@ -16229,6 +16231,15 @@ func (c *networksClient) RemovePeering(ctx context.Context, in *RemovePeeringNet
 	return out, nil
 }
 
+func (c *networksClient) RequestRemovePeering(ctx context.Context, in *RequestRemovePeeringNetworkRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Networks/RequestRemovePeering", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *networksClient) SwitchToCustomMode(ctx context.Context, in *SwitchToCustomModeNetworkRequest, opts ...grpc.CallOption) (*Operation, error) {
 	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.Networks/SwitchToCustomMode", in, out, opts...)
@@ -16269,6 +16280,8 @@ type NetworksServer interface {
 	Patch(context.Context, *PatchNetworkRequest) (*Operation, error)
 	// Removes a peering from the specified network.
 	RemovePeering(context.Context, *RemovePeeringNetworkRequest) (*Operation, error)
+	// Requests to remove a peering from the specified network. Applicable only for PeeringConnection with update_strategy=CONSENSUS.
+	RequestRemovePeering(context.Context, *RequestRemovePeeringNetworkRequest) (*Operation, error)
 	// Switches the network mode from auto subnet mode to custom subnet mode.
 	SwitchToCustomMode(context.Context, *SwitchToCustomModeNetworkRequest) (*Operation, error)
 	// Updates the specified network peering with the data included in the request. You can only modify the NetworkPeering.export_custom_routes field and the NetworkPeering.import_custom_routes field.
@@ -16306,6 +16319,9 @@ func (UnimplementedNetworksServer) Patch(context.Context, *PatchNetworkRequest) 
 }
 func (UnimplementedNetworksServer) RemovePeering(context.Context, *RemovePeeringNetworkRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemovePeering not implemented")
+}
+func (UnimplementedNetworksServer) RequestRemovePeering(context.Context, *RequestRemovePeeringNetworkRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RequestRemovePeering not implemented")
 }
 func (UnimplementedNetworksServer) SwitchToCustomMode(context.Context, *SwitchToCustomModeNetworkRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SwitchToCustomMode not implemented")
@@ -16488,6 +16504,24 @@ func _Networks_RemovePeering_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Networks_RequestRemovePeering_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestRemovePeeringNetworkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NetworksServer).RequestRemovePeering(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.Networks/RequestRemovePeering",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NetworksServer).RequestRemovePeering(ctx, req.(*RequestRemovePeeringNetworkRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Networks_SwitchToCustomMode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SwitchToCustomModeNetworkRequest)
 	if err := dec(in); err != nil {
@@ -16566,6 +16600,10 @@ var Networks_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemovePeering",
 			Handler:    _Networks_RemovePeering_Handler,
+		},
+		{
+			MethodName: "RequestRemovePeering",
+			Handler:    _Networks_RequestRemovePeering_Handler,
 		},
 		{
 			MethodName: "SwitchToCustomMode",
@@ -27219,6 +27257,8 @@ type ReservationSubBlocksClient interface {
 	Get(ctx context.Context, in *GetReservationSubBlockRequest, opts ...grpc.CallOption) (*ReservationSubBlocksGetResponse, error)
 	// Retrieves a list of reservation subBlocks under a single reservation.
 	List(ctx context.Context, in *ListReservationSubBlocksRequest, opts ...grpc.CallOption) (*ReservationSubBlocksListResponse, error)
+	// Allows customers to perform maintenance on a reservation subBlock
+	PerformMaintenance(ctx context.Context, in *PerformMaintenanceReservationSubBlockRequest, opts ...grpc.CallOption) (*Operation, error)
 }
 
 type reservationSubBlocksClient struct {
@@ -27247,6 +27287,15 @@ func (c *reservationSubBlocksClient) List(ctx context.Context, in *ListReservati
 	return out, nil
 }
 
+func (c *reservationSubBlocksClient) PerformMaintenance(ctx context.Context, in *PerformMaintenanceReservationSubBlockRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.compute.v1.ReservationSubBlocks/PerformMaintenance", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ReservationSubBlocksServer is the server API for ReservationSubBlocks service.
 // All implementations must embed UnimplementedReservationSubBlocksServer
 // for forward compatibility
@@ -27255,6 +27304,8 @@ type ReservationSubBlocksServer interface {
 	Get(context.Context, *GetReservationSubBlockRequest) (*ReservationSubBlocksGetResponse, error)
 	// Retrieves a list of reservation subBlocks under a single reservation.
 	List(context.Context, *ListReservationSubBlocksRequest) (*ReservationSubBlocksListResponse, error)
+	// Allows customers to perform maintenance on a reservation subBlock
+	PerformMaintenance(context.Context, *PerformMaintenanceReservationSubBlockRequest) (*Operation, error)
 	mustEmbedUnimplementedReservationSubBlocksServer()
 }
 
@@ -27267,6 +27318,9 @@ func (UnimplementedReservationSubBlocksServer) Get(context.Context, *GetReservat
 }
 func (UnimplementedReservationSubBlocksServer) List(context.Context, *ListReservationSubBlocksRequest) (*ReservationSubBlocksListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedReservationSubBlocksServer) PerformMaintenance(context.Context, *PerformMaintenanceReservationSubBlockRequest) (*Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PerformMaintenance not implemented")
 }
 func (UnimplementedReservationSubBlocksServer) mustEmbedUnimplementedReservationSubBlocksServer() {}
 
@@ -27317,6 +27371,24 @@ func _ReservationSubBlocks_List_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ReservationSubBlocks_PerformMaintenance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PerformMaintenanceReservationSubBlockRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReservationSubBlocksServer).PerformMaintenance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.compute.v1.ReservationSubBlocks/PerformMaintenance",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReservationSubBlocksServer).PerformMaintenance(ctx, req.(*PerformMaintenanceReservationSubBlockRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ReservationSubBlocks_ServiceDesc is the grpc.ServiceDesc for ReservationSubBlocks service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -27331,6 +27403,10 @@ var ReservationSubBlocks_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _ReservationSubBlocks_List_Handler,
+		},
+		{
+			MethodName: "PerformMaintenance",
+			Handler:    _ReservationSubBlocks_PerformMaintenance_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
