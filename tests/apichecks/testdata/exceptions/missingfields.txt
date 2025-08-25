@@ -1116,18 +1116,6 @@
 [missing_field] crd=computevpntunnels.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sharedSecret.value" is not set in unstructured objects
 [missing_field] crd=computevpntunnels.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.vpnGatewayInterface" is not set in unstructured objects
 [missing_field] crd=computevpntunnels.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.vpnGatewayRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.actuationMode" is not set in unstructured objects
-[missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.billingProject" is not set in unstructured objects
-[missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.googleServiceAccount" is not set in unstructured objects
-[missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.managerNamespace" is not set in unstructured objects
-[missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.requestProjectPolicy" is not set in unstructured objects
-[missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.stateIntoSpec" is not set in unstructured objects
-[missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.version" is not set in unstructured objects
-[missing_field] crd=configconnectors.core.cnrm.cloud.google.com version=v1beta1: field ".spec.actuationMode" is not set in unstructured objects
-[missing_field] crd=configconnectors.core.cnrm.cloud.google.com version=v1beta1: field ".spec.credentialSecretName" is not set in unstructured objects
-[missing_field] crd=configconnectors.core.cnrm.cloud.google.com version=v1beta1: field ".spec.googleServiceAccount" is not set in unstructured objects
-[missing_field] crd=configconnectors.core.cnrm.cloud.google.com version=v1beta1: field ".spec.mode" is not set in unstructured objects
-[missing_field] crd=configconnectors.core.cnrm.cloud.google.com version=v1beta1: field ".spec.stateIntoSpec" is not set in unstructured objects
 [missing_field] crd=configcontrollerinstances.configcontroller.cnrm.cloud.google.com version=v1beta1: field ".spec.managementConfig.fullManagementConfig.clusterCidrBlock" is not set in unstructured objects
 [missing_field] crd=configcontrollerinstances.configcontroller.cnrm.cloud.google.com version=v1beta1: field ".spec.managementConfig.fullManagementConfig.clusterNamedRange" is not set in unstructured objects
 [missing_field] crd=configcontrollerinstances.configcontroller.cnrm.cloud.google.com version=v1beta1: field ".spec.managementConfig.fullManagementConfig.manBlock" is not set in unstructured objects
