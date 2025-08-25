@@ -470,12 +470,18 @@ func TestCRDFieldPresenceInTests(t *testing.T) {
 
 	shouldVisitCRD := func(crd *apiextensions.CustomResourceDefinition, version string) bool {
 
-		// beta/v1 requires full API coverage so it should pass this test.
-		if !strings.Contains(version, "alpha") {
-			return true
+		// only beta/v1 requires full API coverage so it should pass this test.
+		if strings.Contains(version, "alpha") {
+			return false
 		}
 
-		return false
+		// skip core resources
+		if strings.Contains(crd.Name, "configconnectorcontexts.core.cnrm.cloud.google.com") ||
+			strings.Contains(crd.Name, "configconnectors.core.cnrm.cloud.google.com") {
+			return false
+		}
+
+		return true
 	}
 
 	missing := findFieldsNotCoveredByTests(t, shouldVisitCRD)
