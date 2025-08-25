@@ -29,6 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
 	dclconversion "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
@@ -211,7 +212,19 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
-	if err := registration.AddDefaultControllers(ctx, mgr, &rd, controllerConfig); err != nil {
+
+	ResourcesControllerConfig, err := resourceconfig.LoadConfig()
+	if err != nil {
+		return nil, fmt.Errorf("error loading controller config: %w", err)
+	}
+
+	regOpts := registration.RegistrationControllerOptions{
+		ControllerName:            "registration-controller",
+		ControllerConfig:          controllerConfig,
+		ResourcesControllerConfig: ResourcesControllerConfig,
+	}
+
+	if err := registration.AddDefaultControllers(ctx, mgr, &rd, regOpts); err != nil {
 		return nil, fmt.Errorf("error adding registration controller: %w", err)
 	}
 	return mgr, nil
