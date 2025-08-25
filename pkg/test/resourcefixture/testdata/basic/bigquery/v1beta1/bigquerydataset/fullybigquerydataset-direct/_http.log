@@ -554,10 +554,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     },
     {
       "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
       "userByEmail": "user@google.com"
     }
   ],
@@ -593,10 +589,6 @@ X-Xss-Protection: 0
     {
       "domain": "google.com",
       "role": "READER"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",
@@ -664,10 +656,6 @@ X-Xss-Protection: 0
     },
     {
       "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
       "userByEmail": "user@google.com"
     }
   ],
@@ -720,10 +708,6 @@ X-Xss-Protection: 0
     {
       "domain": "google.com",
       "role": "READER"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",
