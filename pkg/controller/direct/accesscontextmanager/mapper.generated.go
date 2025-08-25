@@ -79,31 +79,3 @@ func AccessContextManagerAccessPolicySpec_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: Etag
 	return out
 }
-func AccessPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AccessPolicy) *krmv1beta1.AccessPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1beta1.AccessPolicy{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Parent = direct.LazyPtr(in.GetParent())
-	out.Title = direct.LazyPtr(in.GetTitle())
-	out.Scopes = in.Scopes
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	return out
-}
-func AccessPolicy_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AccessPolicy) *pb.AccessPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AccessPolicy{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Parent = direct.ValueOf(in.Parent)
-	out.Title = direct.ValueOf(in.Title)
-	out.Scopes = in.Scopes
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.Etag = direct.ValueOf(in.Etag)
-	return out
-}
