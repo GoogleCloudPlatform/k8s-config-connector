@@ -21,6 +21,7 @@ package v1beta1
 import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -580,7 +581,7 @@ func (in *OrganizationParent) DeepCopyInto(out *OrganizationParent) {
 	*out = *in
 	if in.Ref != nil {
 		in, out := &in.Ref, &out.Ref
-		*out = new(refsv1beta1.OrganizationRef)
+		*out = new(resourcemanagerv1beta1.OrganizationRef)
 		**out = **in
 	}
 }
@@ -600,7 +601,7 @@ func (in *Parent) DeepCopyInto(out *Parent) {
 	*out = *in
 	if in.OrganizationRef != nil {
 		in, out := &in.OrganizationRef, &out.OrganizationRef
-		*out = new(refsv1beta1.OrganizationRef)
+		*out = new(resourcemanagerv1beta1.OrganizationRef)
 		**out = **in
 	}
 	if in.FolderRef != nil {

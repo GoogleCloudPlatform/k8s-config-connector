@@ -19,8 +19,9 @@ import (
 	"fmt"
 	"strings"
 
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -53,16 +54,16 @@ func (p *CustomConstraintParent) String() string {
 
 // New builds a CustomConstraintIdentity from the Config Connector CustomConstraint object.
 func NewCustomConstraintIdentity(ctx context.Context, reader client.Reader, obj *OrgPolicyCustomConstraint) (*CustomConstraintIdentity, error) {
-
 	// Get Parent
-	organizationRef, err := refsv1beta1.ResolveOrganization(ctx, reader, obj, obj.Spec.OrganizationRef)
+	err := obj.Spec.OrganizationRef.Normalize(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
-	organizationID := organizationRef.OrganizationID
-	if organizationID == "" {
-		return nil, fmt.Errorf("cannot resolve organization")
+	organizationIdentity, err := resourcemanagerv1beta1.ParseOrganizationExternal(obj.Spec.OrganizationRef.External)
+	if err != nil {
+		return nil, err
 	}
+	organizationID := organizationIdentity.ResourceID
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)

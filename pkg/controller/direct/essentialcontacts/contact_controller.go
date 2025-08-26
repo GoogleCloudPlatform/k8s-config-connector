@@ -25,6 +25,8 @@ import (
 	"fmt"
 	"reflect"
 
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
+
 	gcp "cloud.google.com/go/essentialcontacts/apiv1"
 	pb "cloud.google.com/go/essentialcontacts/apiv1/essentialcontactspb"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -247,7 +249,7 @@ func (a *contactAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 			External: parentIdentity.String(),
 		}
 	} else if parentIdentity.OrganizationID != "" {
-		obj.Spec.OrganizationRef = &refv1beta1.OrganizationRef{
+		obj.Spec.OrganizationRef = &resourcemanagerv1beta1.OrganizationRef{
 			External: parentIdentity.String(),
 		}
 	} else {

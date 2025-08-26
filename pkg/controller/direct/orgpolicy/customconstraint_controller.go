@@ -18,8 +18,9 @@ import (
 	"context"
 	"fmt"
 
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/orgpolicy/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -195,7 +196,7 @@ func (a *CustomConstraintAdapter) Export(ctx context.Context) (*unstructured.Uns
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.OrganizationRef = &refs.OrganizationRef{External: a.id.Parent().OrganizationID}
+	obj.Spec.OrganizationRef = &resourcemanagerv1beta1.OrganizationRef{External: a.id.Parent().OrganizationID}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

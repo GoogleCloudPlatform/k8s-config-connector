@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -102,15 +104,15 @@ type parentReference interface {
 
 // OrganizationParent represents organization-level settings
 type OrganizationParent struct {
-	Ref *refsv1beta1.OrganizationRef
+	Ref *resourcemanagerv1beta1.OrganizationRef
 }
 
 func (p OrganizationParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, namespace string) (string, error) {
-	organization, err := refsv1beta1.ResolveOrganization(ctx, reader, nil, p.Ref)
+	err := p.Ref.Normalize(ctx, reader, namespace)
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("organizations/%s", organization.OrganizationID), nil
+	return p.Ref.External, nil
 }
 
 // FolderParent represents folder-level settings

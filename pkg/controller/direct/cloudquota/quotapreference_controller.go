@@ -25,6 +25,8 @@ import (
 	"fmt"
 	"reflect"
 
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
+
 	gcp "cloud.google.com/go/cloudquotas/apiv1beta"
 	pb "cloud.google.com/go/cloudquotas/apiv1beta/cloudquotaspb"
 	cloudquotav1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudquota/v1alpha1"
@@ -241,7 +243,7 @@ func (a *apiQuotaPreferenceAdapter) Export(ctx context.Context) (*unstructured.U
 	} else if parentIdentity.FolderID != "" {
 		obj.Spec.Parent.FolderRef = &refs.FolderRef{External: parentIdentity.FolderID}
 	} else if parentIdentity.OrganizationID != "" {
-		obj.Spec.Parent.OrganizationRef = &refs.OrganizationRef{External: parentIdentity.OrganizationID}
+		obj.Spec.Parent.OrganizationRef = &resourcemanagerv1beta1.OrganizationRef{External: parentIdentity.OrganizationID}
 	} else {
 		return nil, fmt.Errorf("unknown parent type in name %q", a.actual.Name)
 	}

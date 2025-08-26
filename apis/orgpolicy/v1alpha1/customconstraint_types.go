@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -28,7 +28,7 @@ var OrgPolicyCustomConstraintGVK = GroupVersion.WithKind("OrgPolicyCustomConstra
 type OrgPolicyCustomConstraintSpec struct {
 	// The Organization that this resource belongs to.
 	// +required
-	OrganizationRef *refsv1beta1.OrganizationRef `json:"organizationRef"`
+	OrganizationRef *resourcemanagerv1beta1.OrganizationRef `json:"organizationRef"`
 
 	// The OrgPolicyCustomConstraint name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
