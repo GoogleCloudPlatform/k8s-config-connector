@@ -122,6 +122,7 @@ func (m *modelCluster) AdapterForObject(ctx context.Context, reader client.Reade
 		gcpClient: gcpClient,
 		desired:   obj,
 		reader:    reader,
+		u:         u,
 	}, nil
 }
 
@@ -136,6 +137,7 @@ type ClusterAdapter struct {
 	desired   *krm.AlloyDBCluster
 	actual    *alloydbpb.Cluster
 	reader    client.Reader
+	u         *unstructured.Unstructured
 }
 
 var _ directbase.Adapter = &ClusterAdapter{}
@@ -324,16 +326,10 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 
 	desired := a.desired.DeepCopy()
 	resource := AlloyDBClusterSpec_ToProto(mapCtx, &desired.Spec)
+	resource.Labels = common.ComputeLabels_ToProto(mapCtx, a.u)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-
-	// 5. Handle labels.
-	resource.Labels = make(map[string]string)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		resource.Labels[k] = v
-	}
-	resource.Labels["managed-by-cnrm"] = "true"
 
 	var created *alloydbpb.Cluster
 	if desired.Spec.RestoreBackupSource != nil || desired.Spec.RestoreContinuousBackupSource != nil {
@@ -532,16 +528,11 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 
 	desiredPb := AlloyDBClusterSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	// 5. Handle labels.
+	desiredPb.Labels = common.ComputeLabels_ToProto(mapCtx, a.u)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-
-	// 5. Handle labels.
-	desiredPb.Labels = make(map[string]string)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		desiredPb.Labels[k] = v
-	}
-	desiredPb.Labels["managed-by-cnrm"] = "true"
 
 	// 6. Set resource name. This step is not needed for other operations.
 	desiredPb.Name = a.id.String()

@@ -32,7 +32,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -93,21 +92,16 @@ func (m *secretModel) client(ctx context.Context) (*gcp.Client, error) {
 
 func (m *secretModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.SecretManagerSecret{}
-
-	copied := u.DeepCopy()
-	if err := label.ComputeLabels(copied); err != nil {
-		return nil, err
-	}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(copied.Object, &obj); err != nil {
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewSecretIdentity(ctx, reader, obj, copied)
+	id, err := krm.NewSecretIdentity(ctx, reader, obj, u)
 	if err != nil {
 		return nil, err
 	}
 
-	if err = normalizeExternal(ctx, reader, copied, obj); err != nil {
+	if err = normalizeExternal(ctx, reader, u, obj); err != nil {
 		return nil, err
 	}
 
@@ -120,6 +114,7 @@ func (m *secretModel) AdapterForObject(ctx context.Context, reader client.Reader
 		id:        id,
 		gcpClient: gcpClient,
 		desired:   obj,
+		u:         u,
 	}, nil
 }
 
@@ -133,6 +128,7 @@ type Adapter struct {
 	gcpClient *gcp.Client
 	desired   *krm.SecretManagerSecret
 	actual    *secretmanagerpb.Secret
+	u         *unstructured.Unstructured
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -233,6 +229,7 @@ func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) er
 
 	desired := a.desired.DeepCopy()
 	resource := SecretManagerSecretSpec_ToProto(mapCtx, &desired.Spec)
+	resource.Labels = common.ComputeLabels_ToProto(mapCtx, a.u)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -288,6 +285,7 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 
 	desired := a.desired.DeepCopy()
 	resource := SecretManagerSecretSpec_ToProto(mapCtx, &desired.Spec)
+	resource.Labels = common.ComputeLabels_ToProto(mapCtx, a.u)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

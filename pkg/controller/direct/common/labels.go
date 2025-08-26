@@ -15,32 +15,27 @@
 package common
 
 import (
-	"strings"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
-func ComputeGCPLabels(labels map[string]string) map[string]string {
-	if labels == nil {
-		return map[string]string{}
+// This function should be called if the typed object has `spec.labels` field.
+func ComputeLabels_ToProto(mapCtx *direct.MapContext, u *unstructured.Unstructured) map[string]string {
+	var newLabels map[string]string
+	specLabels, found, err := unstructured.NestedStringMap(u.Object, "spec", "labels")
+	if err != nil {
+		mapCtx.Errorf("retrieve %s: %s `spec.labels` field: %w", u.GroupVersionKind().Kind, u.GetName(), err)
+		return nil
 	}
-	RemoveByPrefixes(labels, "cnrm.cloud.google.com")
-	labels["managed-by-cnrm"] = "true"
-	return labels
-}
-
-func RemoveByPrefixes(a map[string]string, prefixes ...string) {
-	for k := range a {
-		for i := range prefixes {
-			if strings.HasPrefix(k, prefixes[i]) {
-				delete(a, k)
-			}
-		}
+	if specLabels != nil {
+		newLabels = specLabels
+	} else if found {
+		newLabels = map[string]string{}
+	} else {
+		newLabels = u.GetLabels()
 	}
-}
-
-func AddLabelManagedByCNRM(labels map[string]string) map[string]string {
-	if labels == nil {
-		labels = map[string]string{}
-	}
-	labels["managed-by-cnrm"] = "true"
-	return labels
+	// No matter where the labels come from, sanitize them based on GCP label validation.
+	newLabels = label.SanitizeGCPLabels(newLabels)
+	return newLabels
 }

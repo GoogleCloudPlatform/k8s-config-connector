@@ -15,36 +15,11 @@
 package label
 
 import (
-	"fmt"
 	"unicode"
-
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
-
-// This function should be called if the typed object has `spec.labels` field.
-func ComputeLabels(u *unstructured.Unstructured) error {
-	var newLabels map[string]string
-	specLabels, found, err := unstructured.NestedStringMap(u.Object, "spec", "labels")
-	if err != nil {
-		return fmt.Errorf("retrieve %s: %s `spec.labels` field: %w", u.GroupVersionKind().Kind, u.GetName(), err)
-	}
-	if specLabels != nil {
-		newLabels = specLabels
-	} else if found {
-		newLabels = map[string]string{}
-	} else {
-		newLabels = u.GetLabels()
-	}
-	// No matter where the labels come from, sanitize them based on GCP label validation.
-	newLabels = SanitizeGCPLabels(newLabels)
-	newLabels[CnrmManagedKey] = "true"
-	return unstructured.SetNestedStringMap(u.Object, newLabels, "spec", "labels")
-}
 
 func NewGCPLabelsFromK8sLabels(labels map[string]string) map[string]string {
 	res := SanitizeGCPLabels(labels)
-	// Apply default label.
-	res[CnrmManagedKey] = "true"
 	return res
 }
 
@@ -83,6 +58,8 @@ keyLoop:
 
 		res[k] = v
 	}
+	// Add the managed-by label to indicate that this resource is managed by KCC.
+	res[CnrmManagedKey] = "true"
 	return res
 }
 

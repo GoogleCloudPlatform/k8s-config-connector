@@ -23,10 +23,10 @@ import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	bigquery "google.golang.org/api/bigquery/v2"
 	"google.golang.org/api/option"
@@ -93,11 +93,7 @@ func (m *model) tableService(ctx context.Context) (*bigquery.TablesService, erro
 
 func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.BigQueryTable{}
-	copied := u.DeepCopy()
-	if err := label.ComputeLabels(copied); err != nil {
-		return nil, err
-	}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(copied.Object, &obj); err != nil {
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
@@ -115,6 +111,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		gcpService: gcpService,
 		desired:    obj,
 		reader:     reader,
+		u:          u,
 	}
 	unmanaged, ok := obj.GetAnnotations()[kccpredicate.AnnotationUnmanaged]
 	if ok && unmanaged != "" {
@@ -141,6 +138,7 @@ type Adapter struct {
 	actual          *bigquery.Table
 	reader          client.Reader
 	unmanagedFields []string
+	u               *unstructured.Unstructured
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -171,7 +169,10 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	desired := a.desired.DeepCopy()
 	table := BigQueryTableSpec_ToProto(mapCtx, &desired.Spec)
-
+	table.Labels = common.ComputeLabels_ToProto(mapCtx, a.u)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 	a.customTableLogic(table)
 	parent := a.id.Parent()
 	if table.View != nil && table.Schema != nil {
@@ -234,7 +235,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	desired := a.desired.DeepCopy()
 	table := BigQueryTableSpec_ToProto(mapCtx, &desired.Spec)
-
+	table.Labels = common.ComputeLabels_ToProto(mapCtx, a.u)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
