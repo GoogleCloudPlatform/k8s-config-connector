@@ -31,10 +31,10 @@ def analyze_crd(file_path):
     metadata = crd.get('metadata', {})
     labels = metadata.get('labels', {})
     names = spec.get('names', {})
-    
+
     group = spec.get('group', '')
     kind = names.get('kind', '')
-    
+
     versions = [v['name'] for v in spec.get('versions', [])]
     has_v1alpha1 = 'v1alpha1' in versions
     has_v1beta1 = 'v1beta1' in versions
@@ -82,7 +82,7 @@ def write_markdown_report(results, fieldnames, mdfile):
     for res in results:
         for h in fieldnames:
             col_widths[h] = max(col_widths[h], len(str(res[h])))
-    
+
     header_line = "| " + " | ".join([h.ljust(col_widths[h]) for h in fieldnames]) + " |"
     mdfile.write(header_line + '\n')
 
@@ -105,7 +105,7 @@ def main():
     Main function to find CRD files, analyze them, and write reports.
     """
     switch_to_repo_root()
-    
+
     crd_files = glob.glob('config/crds/resources/*.yaml')
     if not crd_files:
         print("No CRD files found in config/crds/resources/")
@@ -124,15 +124,15 @@ def main():
     md_path = os.path.join(output_dir, 'crd_report.md')
 
     fieldnames = ['group', 'kind', 'has_v1alpha1', 'has_v1beta1', 'has_v1', 'reconciler']
-    
+
     write_csv_report(results, fieldnames, csv_path)
     print(f"Generated {file_path}")
 
     with open(md_path, 'w') as mdfile:
       mdfile.write('# CRD Analysis Report\n\n')
-  
+
       write_markdown_report(results, fieldnames, mdfile)
     print(f"Generated {md_path}")
-     
+
 if __name__ == '__main__':
     main()
