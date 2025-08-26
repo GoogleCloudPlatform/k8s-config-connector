@@ -1131,6 +1131,11 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.ReplacePath(".response.discoveryEndpoints[].address", "10.11.12.13")
 	}
 
+	// Specific to Memorystore
+	{
+		visitor.ReplacePath(".response.pscAttachmentDetails[].serviceAttachment", "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment")
+	}
+
 	// Specific to Sql
 	{
 		visitor.ReplacePath(".ipAddresses[].ipAddress", "10.1.2.3")
