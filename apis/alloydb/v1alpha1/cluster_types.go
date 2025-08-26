@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1beta1
+package v1alpha1
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -76,7 +76,7 @@ type AlloyDBClusterSpec struct {
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.network_config
 	NetworkConfig *Cluster_NetworkConfig `json:"networkConfig,omitempty"`
 
-	// The resource link for the VPC network in which cluster resources
+	// Required. The resource link for the VPC network in which cluster resources
 	//  are created and from which they are accessible via Private IP. The network
 	//  must belong to the same project as the cluster. It is specified in the
 	//  form: `projects/{project}/global/networks/{network_id}`. This is required
@@ -251,7 +251,7 @@ type TimeOfDay struct {
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Cluster.NetworkConfig
 type Cluster_NetworkConfig struct {
-	// The resource link for the VPC network in which cluster
+	// Optional. The resource link for the VPC network in which cluster
 	//  resources are created and from which they are accessible via Private IP.
 	//  The network must belong to the same project as the cluster. It is
 	//  specified in the form:
@@ -422,7 +422,7 @@ type AlloyDBClusterObservedState struct {
 	ClusterType *string `json:"clusterType,omitempty"`
 }
 
-/*
+/* NOTYET
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Cluster
 type ClusterObservedState struct {
 
@@ -481,17 +481,15 @@ type ClusterObservedState struct {
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpalloydbcluster;gcpalloydbclusters
-// +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
+// +kubebuilder:subresource:status// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
-// +kubebuilder:storageversion
 
 // AlloyDBCluster is the Schema for the AlloyDBCluster API
 // +k8s:openapi-gen=true
+// +kubebuilder:storageversion
 type AlloyDBCluster struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
