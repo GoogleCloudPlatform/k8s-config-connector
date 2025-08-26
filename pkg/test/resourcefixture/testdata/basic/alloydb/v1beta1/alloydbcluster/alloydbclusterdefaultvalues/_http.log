@@ -165,7 +165,17 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
     "recoveryWindowDays": 14
   },
   "labels": {
+    "app.kubernetes.io/component": "mock-component",
+    "app.kubernetes.io/instance": "mock-instance",
+    "app.kubernetes.io/managed-by": "configmanagement.gke.io",
+    "app.kubernetes.io/name": "mock-app",
+    "app.kubernetes.io/part-of": "mock-part-of",
+    "app.kubernetes.io/version": "v1.0.0",
+    "applyset.kubernetes.io/id": "mock-applyset-id",
     "cnrm-test": "true",
+    "configmanagement.gke.io/sync-name": "mock-sync-name",
+    "configmanagement.gke.io/sync-namespace": "mock-sync-namespace",
+    "custom-label": "foo",
     "managed-by-cnrm": "true"
   },
   "networkConfig": {
@@ -281,7 +291,17 @@ X-Xss-Protection: 0
     },
     "geminiConfig": {},
     "labels": {
+      "app.kubernetes.io/component": "mock-component",
+      "app.kubernetes.io/instance": "mock-instance",
+      "app.kubernetes.io/managed-by": "configmanagement.gke.io",
+      "app.kubernetes.io/name": "mock-app",
+      "app.kubernetes.io/part-of": "mock-part-of",
+      "app.kubernetes.io/version": "v1.0.0",
+      "applyset.kubernetes.io/id": "mock-applyset-id",
       "cnrm-test": "true",
+      "configmanagement.gke.io/sync-name": "mock-sync-name",
+      "configmanagement.gke.io/sync-namespace": "mock-sync-namespace",
+      "custom-label": "foo",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
@@ -369,7 +389,17 @@ X-Xss-Protection: 0
   },
   "geminiConfig": {},
   "labels": {
+    "app.kubernetes.io/component": "mock-component",
+    "app.kubernetes.io/instance": "mock-instance",
+    "app.kubernetes.io/managed-by": "configmanagement.gke.io",
+    "app.kubernetes.io/name": "mock-app",
+    "app.kubernetes.io/part-of": "mock-part-of",
+    "app.kubernetes.io/version": "v1.0.0",
+    "applyset.kubernetes.io/id": "mock-applyset-id",
     "cnrm-test": "true",
+    "configmanagement.gke.io/sync-name": "mock-sync-name",
+    "configmanagement.gke.io/sync-namespace": "mock-sync-namespace",
+    "custom-label": "foo",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
@@ -386,7 +416,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy%2Clabels
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-west2%2Fclusters%2Falloydbcluster-${uniqueId}
@@ -427,7 +457,17 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-wes
   "databaseVersion": 3,
   "geminiConfig": {},
   "labels": {
+    "app.kubernetes.io/component": "mock-component",
+    "app.kubernetes.io/instance": "mock-instance",
+    "app.kubernetes.io/managed-by": "configmanagement.gke.io",
+    "app.kubernetes.io/name": "mock-app",
+    "app.kubernetes.io/part-of": "mock-part-of",
+    "app.kubernetes.io/version": "v1.0.0",
+    "applyset.kubernetes.io/id": "mock-applyset-id",
     "cnrm-test": "true",
+    "configmanagement.gke.io/sync-name": "mock-sync-name",
+    "configmanagement.gke.io/sync-namespace": "mock-sync-namespace",
+    "custom-label": "bar",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
@@ -547,7 +587,17 @@ X-Xss-Protection: 0
     },
     "geminiConfig": {},
     "labels": {
+      "app.kubernetes.io/component": "mock-component",
+      "app.kubernetes.io/instance": "mock-instance",
+      "app.kubernetes.io/managed-by": "configmanagement.gke.io",
+      "app.kubernetes.io/name": "mock-app",
+      "app.kubernetes.io/part-of": "mock-part-of",
+      "app.kubernetes.io/version": "v1.0.0",
+      "applyset.kubernetes.io/id": "mock-applyset-id",
       "cnrm-test": "true",
+      "configmanagement.gke.io/sync-name": "mock-sync-name",
+      "configmanagement.gke.io/sync-namespace": "mock-sync-namespace",
+      "custom-label": "bar",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
@@ -635,7 +685,17 @@ X-Xss-Protection: 0
   },
   "geminiConfig": {},
   "labels": {
+    "app.kubernetes.io/component": "mock-component",
+    "app.kubernetes.io/instance": "mock-instance",
+    "app.kubernetes.io/managed-by": "configmanagement.gke.io",
+    "app.kubernetes.io/name": "mock-app",
+    "app.kubernetes.io/part-of": "mock-part-of",
+    "app.kubernetes.io/version": "v1.0.0",
+    "applyset.kubernetes.io/id": "mock-applyset-id",
     "cnrm-test": "true",
+    "configmanagement.gke.io/sync-name": "mock-sync-name",
+    "configmanagement.gke.io/sync-namespace": "mock-sync-namespace",
+    "custom-label": "bar",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",

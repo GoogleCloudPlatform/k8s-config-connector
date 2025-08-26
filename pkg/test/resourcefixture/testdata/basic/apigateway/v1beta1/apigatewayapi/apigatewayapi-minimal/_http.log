@@ -38,8 +38,9 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
 {
   "displayName": "Initial displayName",
   "labels": {
-    "managed-by-cnrm": "true",
-    "name": "wrench"
+    "cnrm-test": "true",
+    "custom-label": "foo",
+    "managed-by-cnrm": "true"
   }
 }
 
@@ -97,8 +98,9 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "Initial displayName",
     "labels": {
-      "managed-by-cnrm": "true",
-      "name": "wrench"
+      "cnrm-test": "true",
+      "custom-label": "foo",
+      "managed-by-cnrm": "true"
     },
     "managedService": "apigatewayapi-minimal-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog",
     "name": "projects/${projectId}/locations/global/apis/apigatewayapi-minimal-${uniqueId}",
@@ -128,8 +130,9 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Initial displayName",
   "labels": {
-    "managed-by-cnrm": "true",
-    "name": "wrench"
+    "cnrm-test": "true",
+    "custom-label": "foo",
+    "managed-by-cnrm": "true"
   },
   "managedService": "apigatewayapi-minimal-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog",
   "name": "projects/${projectId}/locations/global/apis/apigatewayapi-minimal-${uniqueId}",
@@ -147,8 +150,9 @@ X-Goog-Request-Params: api.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fa
 {
   "displayName": "Updated displayName",
   "labels": {
-    "managed-by-cnrm": "true",
-    "name": "updatedwrench"
+    "cnrm-test": "true",
+    "custom-label": "bar",
+    "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/apis/apigatewayapi-minimal-${uniqueId}"
 }
@@ -207,8 +211,9 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "Updated displayName",
     "labels": {
-      "managed-by-cnrm": "true",
-      "name": "updatedwrench"
+      "cnrm-test": "true",
+      "custom-label": "bar",
+      "managed-by-cnrm": "true"
     },
     "managedService": "apigatewayapi-minimal-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog",
     "name": "projects/${projectId}/locations/global/apis/apigatewayapi-minimal-${uniqueId}",
@@ -238,8 +243,9 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Updated displayName",
   "labels": {
-    "managed-by-cnrm": "true",
-    "name": "updatedwrench"
+    "cnrm-test": "true",
+    "custom-label": "bar",
+    "managed-by-cnrm": "true"
   },
   "managedService": "apigatewayapi-minimal-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog",
   "name": "projects/${projectId}/locations/global/apis/apigatewayapi-minimal-${uniqueId}",

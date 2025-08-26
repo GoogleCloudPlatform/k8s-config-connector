@@ -4,12 +4,19 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
-    app.kubernetes.io/managed-by: whatever
-    applyset.kubernetes.io/part-of: whatever
+    app.kubernetes.io/component: mock-component
+    app.kubernetes.io/instance: mock-instance
+    app.kubernetes.io/managed-by: configmanagement.gke.io
+    app.kubernetes.io/name: mock-app
+    app.kubernetes.io/part-of: mock-part-of
+    app.kubernetes.io/version: v1.0.0
+    applyset.kubernetes.io/id: mock-applyset-id
     cnrm-test: "true"
-    configsync.gke.io/declared-version: v1beta1
+    configmanagement.gke.io/sync-name: mock-sync-name
+    configmanagement.gke.io/sync-namespace: mock-sync-namespace
+    custom-label: bar
   name: alloydbinstance-${uniqueId}
   namespace: ${uniqueId}
 spec:
@@ -19,7 +26,7 @@ spec:
   instanceTypeRef:
     name: alloydbcluster-${uniqueId}
   machineConfig:
-    cpuCount: 2
+    cpuCount: 3
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -31,7 +38,7 @@ status:
   externalRef: projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}
   ipAddress: 10.1.2.3
   name: projects/${projectId}/locations/europe-west1/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}
-  observedGeneration: 1
+  observedGeneration: 2
   state: READY
   uid: "12345678"
   updateTime: "1970-01-01T00:00:00Z"

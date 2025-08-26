@@ -740,9 +740,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "friendlyName": "BigQueryTable Full Example",
   "labels": {
     "cnrm-test": "true",
-    "managed-by-cnrm": "true",
-    "metadata-key1": "value1",
-    "metadata-key2": "value2"
+    "custom-label": "foo",
+    "managed-by-cnrm": "true"
   },
   "requirePartitionFilter": true,
   "schema": {
@@ -875,9 +874,8 @@ X-Xss-Protection: 0
   "kind": "bigquery#table",
   "labels": {
     "cnrm-test": "true",
-    "managed-by-cnrm": "true",
-    "metadata-key1": "value1",
-    "metadata-key2": "value2"
+    "custom-label": "foo",
+    "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
@@ -1032,9 +1030,8 @@ X-Xss-Protection: 0
   "kind": "bigquery#table",
   "labels": {
     "cnrm-test": "true",
-    "managed-by-cnrm": "true",
-    "metadata-key1": "value1",
-    "metadata-key2": "value2"
+    "custom-label": "foo",
+    "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
@@ -1177,9 +1174,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "friendlyName": "BigQueryTable Full Example",
   "labels": {
     "cnrm-test": "true",
-    "managed-by-cnrm": "true",
-    "metadata-key1": "updated-value1",
-    "metadata-key2": "updated-value2"
+    "custom-label": "bar",
+    "managed-by-cnrm": "true"
   },
   "requirePartitionFilter": true,
   "schema": {
@@ -1326,9 +1322,8 @@ X-Xss-Protection: 0
   "kind": "bigquery#table",
   "labels": {
     "cnrm-test": "true",
-    "managed-by-cnrm": "true",
-    "metadata-key1": "updated-value1",
-    "metadata-key2": "updated-value2"
+    "custom-label": "bar",
+    "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
@@ -1498,9 +1493,8 @@ X-Xss-Protection: 0
   "kind": "bigquery#table",
   "labels": {
     "cnrm-test": "true",
-    "managed-by-cnrm": "true",
-    "metadata-key1": "updated-value1",
-    "metadata-key2": "updated-value2"
+    "custom-label": "bar",
+    "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
