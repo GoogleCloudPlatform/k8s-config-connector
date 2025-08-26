@@ -6,6 +6,7 @@ metadata:
   - cnrm.cloud.google.com/deletion-defender
   generation: 1
   labels:
+    app.kubernetes.io/managed-by: config-sync
     cnrm-test: "true"
   name: keyhandle-${uniqueId}
   namespace: ${uniqueId}
