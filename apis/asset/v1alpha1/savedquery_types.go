@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -23,9 +24,9 @@ import (
 var AssetSavedQueryGVK = GroupVersion.WithKind("AssetSavedQuery")
 
 type Parent struct {
-	ProjectRef      *refv1beta1.ProjectRef      `json:"projectRef,omitempty"`
-	FolderRef       *refv1beta1.FolderRef       `json:"folderRef,omitempty"`
-	OrganizationRef *refv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
+	ProjectRef      *refv1beta1.ProjectRef                  `json:"projectRef,omitempty"`
+	FolderRef       *refv1beta1.FolderRef                   `json:"folderRef,omitempty"`
+	OrganizationRef *resourcemanagerv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.asset.v1.IamPolicyAnalysisQuery.ResourceSelector

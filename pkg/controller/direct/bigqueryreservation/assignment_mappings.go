@@ -17,6 +17,8 @@ package bigqueryreservation
 import (
 	"strings"
 
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
+
 	pb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -48,7 +50,7 @@ func BigqueryReservationAssignmentSpec_Assignee_FromProto(mapCtx *direct.MapCont
 		}
 	case "organizations":
 		return &krm.Assignee{
-			OrganizationRef: &refsv1beta1.OrganizationRef{
+			OrganizationRef: &resourcemanagerv1beta1.OrganizationRef{
 				External: tokens[1],
 			},
 		}

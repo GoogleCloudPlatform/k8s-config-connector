@@ -97,12 +97,11 @@ func (m *modelAssignment) AdapterForObject(ctx context.Context, reader client.Re
 		}
 		obj.Spec.Assignee.FolderRef.External = folder.FolderID
 	}
-	if obj.Spec.Assignee.OrganizationRef != nil {
-		org, err := refsv1beta1.ResolveOrganization(ctx, reader, u, obj.Spec.Assignee.OrganizationRef)
+	if organizationRef := obj.Spec.Assignee.OrganizationRef; organizationRef != nil {
+		err = organizationRef.Normalize(ctx, reader, u.GetNamespace())
 		if err != nil {
 			return nil, err
 		}
-		obj.Spec.Assignee.OrganizationRef.External = org.OrganizationID
 	}
 
 	return &AssignmentAdapter{

@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -116,7 +117,7 @@ type Assignee struct {
 	FolderRef *refv1beta1.FolderRef `json:"folderRef"`
 	// Exactly one of ProjectRef or FolderRef or OrganizationRef must be specified.
 	// +optional
-	OrganizationRef *refv1beta1.OrganizationRef `json:"organizationRef"`
+	OrganizationRef *resourcemanagerv1beta1.OrganizationRef `json:"organizationRef"`
 }
 
 func init() {
