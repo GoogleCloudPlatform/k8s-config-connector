@@ -394,11 +394,10 @@ spec:
                 description: Organization-level settings
                 properties:
                   external:
-                    description: The 'name' field of an organization, when not managed
-                      by Config Connector.
+                    description: A reference to an externally managed Organization
+                      resource. Should be in the format "organizations/{{organizationID}}"
+                      or "{{organizationID}}".
                     type: string
-                required:
-                - external
                 type: object
               projectRef:
                 description: Project-level settings
@@ -904,11 +903,10 @@ spec:
                 description: Organization-level settings
                 properties:
                   external:
-                    description: The 'name' field of an organization, when not managed
-                      by Config Connector.
+                    description: A reference to an externally managed Organization
+                      resource. Should be in the format "organizations/{{organizationID}}"
+                      or "{{organizationID}}".
                     type: string
-                required:
-                - external
                 type: object
               projectRef:
                 description: Project-level settings

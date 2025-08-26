@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
@@ -26,7 +27,7 @@ var IAPSettingsGVK = GroupVersion.WithKind("IAPSettings")
 
 type Parent struct {
 	// Organization-level settings
-	OrganizationRef *refs.OrganizationRef `json:"organizationRef,omitempty"`
+	OrganizationRef *resourcemanagerv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
 
 	// Folder-level settings
 	FolderRef *refs.FolderRef `json:"folderRef,omitempty"`

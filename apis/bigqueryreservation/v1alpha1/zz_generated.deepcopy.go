@@ -21,6 +21,7 @@ package v1alpha1
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -40,7 +41,7 @@ func (in *Assignee) DeepCopyInto(out *Assignee) {
 	}
 	if in.OrganizationRef != nil {
 		in, out := &in.OrganizationRef, &out.OrganizationRef
-		*out = new(refsv1beta1.OrganizationRef)
+		*out = new(resourcemanagerv1beta1.OrganizationRef)
 		**out = **in
 	}
 }

@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -103,15 +105,16 @@ func NewQuotaPreferenceIdentity(ctx context.Context, reader client.Reader, obj *
 		if projectID == "" {
 			return nil, fmt.Errorf("cannot resolve project")
 		}
-	} else if obj.Spec.Parent.OrganizationRef != nil {
-		organizationRef, err := refsv1beta1.ResolveOrganization(ctx, reader, obj, obj.Spec.Parent.OrganizationRef)
+	} else if organizationRef := obj.Spec.Parent.OrganizationRef; organizationRef != nil {
+		err := organizationRef.Normalize(ctx, reader, obj.Namespace)
 		if err != nil {
 			return nil, err
 		}
-		organizationID = organizationRef.OrganizationID
-		if organizationID == "" {
-			return nil, fmt.Errorf("cannot resolve organization")
+		organizationIdentity, err := resourcemanagerv1beta1.ParseOrganizationExternal(organizationRef.External)
+		if err != nil {
+			return nil, err
 		}
+		organizationID = organizationIdentity.ResourceID
 	} else if obj.Spec.Parent.FolderRef != nil {
 		folderRef, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.Parent.FolderRef)
 		if err != nil {

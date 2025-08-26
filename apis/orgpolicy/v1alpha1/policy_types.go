@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -42,7 +43,7 @@ type OrgPolicyPolicySpec struct {
 	// One and only one of 'projectRef', 'folderRef', or 'organizationRef' must
 	// be set.
 	// +optional
-	OrganizationRef *refs.OrganizationRef `json:"organizationRef,omitempty"`
+	OrganizationRef *resourcemanagerv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
 
 	// The OrgPolicyPolicy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

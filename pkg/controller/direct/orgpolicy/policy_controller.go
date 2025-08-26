@@ -18,6 +18,8 @@ import (
 	"context"
 	"fmt"
 
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/orgpolicy/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -209,7 +211,7 @@ func (a *PolicyAdapter) Export(ctx context.Context) (*unstructured.Unstructured,
 	} else if parentRef.FolderID != "" {
 		obj.Spec.FolderRef = &refs.FolderRef{External: parentRef.String()}
 	} else if parentRef.OrganizationID != "" {
-		obj.Spec.OrganizationRef = &refs.OrganizationRef{External: parentRef.String()}
+		obj.Spec.OrganizationRef = &resourcemanagerv1beta1.OrganizationRef{External: parentRef.String()}
 	} else {
 		return nil, fmt.Errorf("unknown parent type in name %q", a.actual.Name)
 	}

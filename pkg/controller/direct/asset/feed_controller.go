@@ -24,6 +24,8 @@ import (
 	"context"
 	"fmt"
 
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
+
 	gcp "cloud.google.com/go/asset/apiv1"
 	pb "cloud.google.com/go/asset/apiv1/assetpb"
 	"google.golang.org/api/option"
@@ -286,7 +288,7 @@ func (a *feedAdapter) Export(ctx context.Context) (*unstructured.Unstructured, e
 	} else if parentRef.FolderID != "" {
 		obj.Spec.Parent.FolderRef = &refs.FolderRef{External: parentRef.String()}
 	} else if parentRef.OrganizationID != "" {
-		obj.Spec.Parent.OrganizationRef = &refs.OrganizationRef{External: parentRef.String()}
+		obj.Spec.Parent.OrganizationRef = &resourcemanagerv1beta1.OrganizationRef{External: parentRef.String()}
 	} else {
 		return nil, fmt.Errorf("unknown parent type in name %q", a.actual.Name)
 	}
