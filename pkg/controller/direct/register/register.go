@@ -64,7 +64,6 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms/keyhandle"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/logging"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/managedkafka"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/memorystore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/metastore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/monitoring"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/netapp"
