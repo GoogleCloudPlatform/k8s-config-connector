@@ -1,6 +1,6 @@
 # CRD Analysis Report
 
-| Group                                         | Kind                                            | has_v1alpha1 | has_v1beta1 | has_v1 | Reconciler |
+| group                                         | kind                                            | has_v1alpha1 | has_v1beta1 | has_v1 | reconciler |
 |-----------------------------------------------|- ------------------------------------------------|- -------------|- ------------|- -------|- -----------|
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerAccessLevelCondition        | True         | False       | False  | Terraform  |
 | accesscontextmanager.cnrm.cloud.google.com    | AccessContextManagerAccessLevel                 | False        | True        | False  | Terraform  |
@@ -14,7 +14,7 @@
 | alloydb.cnrm.cloud.google.com                 | AlloyDBInstance                                 | True         | True        | False  | Direct     |
 | alloydb.cnrm.cloud.google.com                 | AlloyDBUser                                     | False        | True        | False  | Terraform  |
 | apigateway.cnrm.cloud.google.com              | APIGatewayAPIConfig                             | True         | False       | False  | Terraform  |
-| apigateway.cnrm.cloud.google.com              | APIGatewayAPI                                   | True         | False       | False  | Direct     |
+| apigateway.cnrm.cloud.google.com              | APIGatewayAPI                                   | True         | True        | False  | Direct     |
 | apigateway.cnrm.cloud.google.com              | APIGatewayGateway                               | True         | False       | False  | Terraform  |
 | apigee.cnrm.cloud.google.com                  | ApigeeAddonsConfig                              | True         | False       | False  | Terraform  |
 | apigee.cnrm.cloud.google.com                  | ApigeeEndpointAttachment                        | True         | True        | False  | Direct     |
@@ -27,20 +27,20 @@
 | apigee.cnrm.cloud.google.com                  | ApigeeOrganization                              | False        | True        | False  | DCL        |
 | apigee.cnrm.cloud.google.com                  | ApigeeSyncAuthorization                         | True         | False       | False  | Terraform  |
 | apikeys.cnrm.cloud.google.com                 | APIKeysKey                                      | True         | False       | False  | Terraform  |
-| cloudquota.cnrm.cloud.google.com              | APIQuotaAdjusterSettings                        | True         | False       | False  | Direct     |
+| cloudquota.cnrm.cloud.google.com              | APIQuotaAdjusterSettings                        | True         | True        | False  | Direct     |
 | cloudquota.cnrm.cloud.google.com              | APIQuotaPreference                              | True         | False       | False  | Direct     |
 | appengine.cnrm.cloud.google.com               | AppEngineDomainMapping                          | True         | False       | False  | Terraform  |
 | appengine.cnrm.cloud.google.com               | AppEngineFirewallRule                           | True         | False       | False  | Terraform  |
 | appengine.cnrm.cloud.google.com               | AppEngineFlexibleAppVersion                     | True         | False       | False  | Terraform  |
 | appengine.cnrm.cloud.google.com               | AppEngineServiceSplitTraffic                    | True         | False       | False  | Terraform  |
 | appengine.cnrm.cloud.google.com               | AppEngineStandardAppVersion                     | True         | False       | False  | Terraform  |
-| apphub.cnrm.cloud.google.com                  | AppHubApplication                               | True         | False       | False  | Direct     |
+| apphub.cnrm.cloud.google.com                  | AppHubApplication                               | True         | True        | False  | Direct     |
 | apphub.cnrm.cloud.google.com                  | AppHubDiscoveredService                         | True         | False       | False  | Direct     |
 | apphub.cnrm.cloud.google.com                  | AppHubDiscoveredWorkload                        | True         | False       | False  | Direct     |
 | artifactregistry.cnrm.cloud.google.com        | ArtifactRegistryRepository                      | False        | True        | False  | Terraform  |
 | asset.cnrm.cloud.google.com                   | AssetFeed                                       | True         | False       | False  | Direct     |
 | asset.cnrm.cloud.google.com                   | AssetSavedQuery                                 | True         | False       | False  | Direct     |
-| backupdr.cnrm.cloud.google.com                | BackupDRBackupPlanAssociation                   | True         | False       | False  | Direct     |
+| backupdr.cnrm.cloud.google.com                | BackupDRBackupPlanAssociation                   | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupPlan                              | True         | False       | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupVault                             | True         | False       | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRManagementServer                        | True         | False       | False  | Direct     |
@@ -63,7 +63,7 @@
 | bigquery.cnrm.cloud.google.com                | BigQueryJob                                     | False        | True        | False  | Terraform  |
 | bigqueryreservation.cnrm.cloud.google.com     | BigQueryReservationAssignment                   | True         | False       | False  | Direct     |
 | bigqueryreservation.cnrm.cloud.google.com     | BigQueryReservationCapacityCommitment           | True         | False       | False  | Terraform  |
-| bigqueryreservation.cnrm.cloud.google.com     | BigQueryReservationReservation                  | True         | False       | False  | Direct     |
+| bigqueryreservation.cnrm.cloud.google.com     | BigQueryReservationReservation                  | True         | True        | False  | Direct     |
 | bigquery.cnrm.cloud.google.com                | BigQueryRoutine                                 | False        | True        | False  | Terraform  |
 | bigquery.cnrm.cloud.google.com                | BigQueryTable                                   | False        | True        | False  | Terraform  |
 | bigtable.cnrm.cloud.google.com                | BigtableAppProfile                              | False        | True        | False  | Terraform  |
@@ -72,7 +72,7 @@
 | bigtable.cnrm.cloud.google.com                | BigtableCluster                                 | True         | False       | False  | Direct     |
 | bigtable.cnrm.cloud.google.com                | BigtableGCPolicy                                | False        | True        | False  | Terraform  |
 | bigtable.cnrm.cloud.google.com                | BigtableInstance                                | False        | True        | False  | Terraform  |
-| bigtable.cnrm.cloud.google.com                | BigtableLogicalView                             | False        | True        | False  | Direct     |
+| bigtable.cnrm.cloud.google.com                | BigtableLogicalView                             | True         | False       | False  | Direct     |
 | bigtable.cnrm.cloud.google.com                | BigtableTable                                   | False        | True        | False  | Terraform  |
 | billingbudgets.cnrm.cloud.google.com          | BillingBudgetsBudget                            | False        | True        | False  | DCL        |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationAttestor                     | False        | True        | False  | DCL        |
@@ -92,8 +92,8 @@
 | clouddms.cnrm.cloud.google.com                | CloudDMSPrivateConnection                       | True         | False       | False  | Direct     |
 | cloudfunctions2.cnrm.cloud.google.com         | CloudFunctions2Function                         | True         | False       | False  | Terraform  |
 | cloudfunctions.cnrm.cloud.google.com          | CloudFunctionsFunction                          | False        | True        | False  | DCL        |
-| cloudidentity.cnrm.cloud.google.com           | CloudIdentityGroup                              | False        | True        | False  | Terraform  |
-| cloudidentity.cnrm.cloud.google.com           | CloudIdentityMembership                         | False        | True        | False  | DCL        |
+| cloudidentity.cnrm.cloud.google.com           | CloudIdentityGroup                              | False        | True        | False  | Direct     |
+| cloudidentity.cnrm.cloud.google.com           | CloudIdentityMembership                         | False        | True        | False  | Direct     |
 | cloudids.cnrm.cloud.google.com                | CloudIDSEndpoint                                | True         | True        | False  | Terraform  |
 | cloudiot.cnrm.cloud.google.com                | CloudIOTDeviceRegistry                          | True         | False       | False  | Terraform  |
 | cloudiot.cnrm.cloud.google.com                | CloudIOTDevice                                  | True         | False       | False  | Terraform  |
@@ -300,7 +300,7 @@
 | kms.cnrm.cloud.google.com                     | KMSAutokeyConfig                                | True         | True        | False  | Direct     |
 | kms.cnrm.cloud.google.com                     | KMSCryptoKey                                    | False        | True        | False  | Terraform  |
 | kms.cnrm.cloud.google.com                     | KMSCryptoKeyVersion                             | True         | False       | False  | Terraform  |
-| kms.cnrm.cloud.google.com                     | KMSImportJob                                    | True         | False       | False  | Direct     |
+| kms.cnrm.cloud.google.com                     | KMSImportJob                                    | True         | True        | False  | Direct     |
 | kms.cnrm.cloud.google.com                     | KMSKeyHandle                                    | True         | True        | False  | Direct     |
 | kms.cnrm.cloud.google.com                     | KMSKeyRingImportJob                             | True         | False       | False  | Terraform  |
 | kms.cnrm.cloud.google.com                     | KMSKeyRing                                      | False        | True        | False  | Terraform  |
@@ -316,7 +316,7 @@
 | managedkafka.cnrm.cloud.google.com            | ManagedKafkaTopic                               | True         | True        | False  | Direct     |
 | memcache.cnrm.cloud.google.com                | MemcacheInstance                                | False        | True        | False  | Terraform  |
 | memorystore.cnrm.cloud.google.com             | MemorystoreInstance                             | True         | False       | False  | Direct     |
-| metastore.cnrm.cloud.google.com               | MetastoreBackup                                 | True         | False       | False  | Direct     |
+| metastore.cnrm.cloud.google.com               | MetastoreBackup                                 | True         | True        | False  | Direct     |
 | metastore.cnrm.cloud.google.com               | MetastoreFederation                             | True         | False       | False  | Direct     |
 | metastore.cnrm.cloud.google.com               | MetastoreService                                | True         | False       | False  | Direct     |
 | mlengine.cnrm.cloud.google.com                | MLEngineModel                                   | True         | False       | False  | Terraform  |
@@ -390,10 +390,11 @@
 | servicedirectory.cnrm.cloud.google.com        | ServiceDirectoryService                         | False        | True        | False  | Terraform  |
 | serviceusage.cnrm.cloud.google.com            | ServiceIdentity                                 | False        | True        | False  | Terraform  |
 | servicenetworking.cnrm.cloud.google.com       | ServiceNetworkingConnection                     | False        | True        | False  | Terraform  |
+| servicenetworking.cnrm.cloud.google.com       | ServiceNetworkingPeeredDNSDomain                | True         | False       | False  | Direct     |
 | serviceusage.cnrm.cloud.google.com            | Service                                         | False        | True        | False  | Terraform  |
 | serviceusage.cnrm.cloud.google.com            | ServiceUsageConsumerQuotaOverride               | True         | False       | False  | Terraform  |
 | sourcerepo.cnrm.cloud.google.com              | SourceRepoRepository                            | False        | True        | False  | Terraform  |
-| spanner.cnrm.cloud.google.com                 | SpannerBackupSchedule                           | True         | False       | False  | Direct     |
+| spanner.cnrm.cloud.google.com                 | SpannerBackupSchedule                           | True         | True        | False  | Direct     |
 | spanner.cnrm.cloud.google.com                 | SpannerDatabase                                 | False        | True        | False  | Terraform  |
 | spanner.cnrm.cloud.google.com                 | SpannerInstanceConfig                           | True         | False       | False  | Direct     |
 | spanner.cnrm.cloud.google.com                 | SpannerInstance                                 | False        | True        | False  | Terraform  |
@@ -404,7 +405,7 @@
 | sql.cnrm.cloud.google.com                     | SQLInstance                                     | False        | True        | False  | Direct     |
 | sql.cnrm.cloud.google.com                     | SQLSSLCert                                      | False        | True        | False  | Terraform  |
 | sql.cnrm.cloud.google.com                     | SQLUser                                         | False        | True        | False  | Terraform  |
-| storage.cnrm.cloud.google.com                 | StorageAnywhereCache                            | False        | True        | False  | Direct     |
+| storage.cnrm.cloud.google.com                 | StorageAnywhereCache                            | True         | True        | False  | Direct     |
 | storage.cnrm.cloud.google.com                 | StorageBucketAccessControl                      | False        | True        | False  | Terraform  |
 | storage.cnrm.cloud.google.com                 | StorageBucket                                   | False        | True        | False  | Terraform  |
 | storage.cnrm.cloud.google.com                 | StorageDefaultObjectAccessControl               | False        | True        | False  | Terraform  |
