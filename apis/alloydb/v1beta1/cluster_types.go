@@ -51,6 +51,10 @@ type AlloyDBClusterSpec struct {
 	// +required
 	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
 
+	// Optional. Whether to enable Private Service Connect for the cluster.
+	// Once enabled, Private Service Connect cannot be turned off.
+	PscConfig *Cluster_PSCConfig `json:"pscConfig,omitempty"`
+
 	// Immutable. The source when restoring from a backup. Conflicts
 	// with 'restoreContinuousBackupSource', both can't be set together.
 	RestoreBackupSource *BackupSource `json:"restoreBackupSource,omitempty"`
@@ -134,13 +138,6 @@ type AlloyDBClusterSpec struct {
 	// Cross Region replication config specific to SECONDARY cluster.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.secondary_config
 	SecondaryConfig *Cluster_SecondaryConfig `json:"secondaryConfig,omitempty"`
-
-	/* NOTYET
-	// Optional. The configuration for Private Service Connect (PSC) for the
-	//  cluster.
-	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.psc_config
-	PSCConfig *Cluster_PSCConfig `json:"pscConfig,omitempty"`
-	*/
 
 	// Optional. The maintenance update policy determines when to allow or deny
 	//  updates.
