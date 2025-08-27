@@ -19,11 +19,11 @@ import (
 	"fmt"
 	"strings"
 
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refs.ExternalNormalizer = &KMSKeyRef_OneOf{}
+var _ reference.ExternalNormalizer = &KMSKeyRef_OneOf{}
 
 // A reference to the KMSCryptoKey(manual management), or the KMSKeyHandle(automated management)
 type KMSKeyRef_OneOf struct {

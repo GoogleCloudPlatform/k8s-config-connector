@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"strings"
 
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -28,7 +28,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &SecretRef{}
+var _ reference.ExternalNormalizer = &SecretRef{}
 
 // SecretRef defines the resource reference to SecretManagerSecret, which "External" field
 // holds the GCP identifier for the KRM object.
