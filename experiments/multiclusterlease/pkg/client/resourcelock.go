@@ -29,16 +29,25 @@ import (
 
 // MultiClusterLeaseLock implements the resourcelock.Interface using a MultiClusterLease CR.
 type MultiClusterLeaseLock struct {
-	Client    client.Client
-	LeaseName string
-	LeaseNS   string
-	Identity  string
+	client    client.Client
+	leaseName string
+	leaseNS   string
+	identity  string
+}
+
+func New(client client.Client, leaseName, leaseNS, identity string) *MultiClusterLeaseLock {
+	return &MultiClusterLeaseLock{
+		client:    client,
+		leaseName: leaseName,
+		leaseNS:   leaseNS,
+		identity:  identity,
+	}
 }
 
 // Get returns the current leader election record from the MultiClusterLease CR.
 func (mcl *MultiClusterLeaseLock) Get(ctx context.Context) (*resourcelock.LeaderElectionRecord, []byte, error) {
 	lease := &v1alpha1.MultiClusterLease{}
-	err := mcl.Client.Get(ctx, client.ObjectKey{Namespace: mcl.LeaseNS, Name: mcl.LeaseName}, lease)
+	err := mcl.client.Get(ctx, client.ObjectKey{Namespace: mcl.leaseNS, Name: mcl.leaseName}, lease)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -58,8 +67,8 @@ func (mcl *MultiClusterLeaseLock) Create(ctx context.Context, ler resourcelock.L
 	// Phase 1: Asynchronous Creation
 	lease := &v1alpha1.MultiClusterLease{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      mcl.LeaseName,
-			Namespace: mcl.LeaseNS,
+			Name:      mcl.leaseName,
+			Namespace: mcl.leaseNS,
 		},
 		Spec: v1alpha1.MultiClusterLeaseSpec{
 			HolderIdentity:       &ler.HolderIdentity,
@@ -67,13 +76,13 @@ func (mcl *MultiClusterLeaseLock) Create(ctx context.Context, ler resourcelock.L
 			LeaseDurationSeconds: int32Ptr(int32(ler.LeaseDurationSeconds)),
 		},
 	}
-	err := mcl.Client.Create(ctx, lease)
+	err := mcl.client.Create(ctx, lease)
 	if err != nil {
 		return err
 	}
 
 	// After creating, get the generation that we need to see reflected in the status.
-	if err := mcl.Client.Get(ctx, client.ObjectKey{Namespace: mcl.LeaseNS, Name: mcl.LeaseName}, lease); err != nil {
+	if err := mcl.client.Get(ctx, client.ObjectKey{Namespace: mcl.leaseNS, Name: mcl.leaseName}, lease); err != nil {
 		return fmt.Errorf("failed to get generation after create: %w", err)
 	}
 	expectedGeneration := lease.Generation
@@ -84,7 +93,7 @@ func (mcl *MultiClusterLeaseLock) Create(ctx context.Context, ler resourcelock.L
 
 	err = wait.PollUntilContextCancel(pollCtx, 1*time.Second, true, func(ctx context.Context) (bool, error) {
 		var currentLease v1alpha1.MultiClusterLease
-		if err := mcl.Client.Get(ctx, client.ObjectKey{Namespace: mcl.LeaseNS, Name: mcl.LeaseName}, &currentLease); err != nil {
+		if err := mcl.client.Get(ctx, client.ObjectKey{Namespace: mcl.leaseNS, Name: mcl.leaseName}, &currentLease); err != nil {
 			return false, nil // Don't stop polling on transient errors
 		}
 
@@ -110,7 +119,7 @@ func (mcl *MultiClusterLeaseLock) Create(ctx context.Context, ler resourcelock.L
 func (mcl *MultiClusterLeaseLock) Update(ctx context.Context, ler resourcelock.LeaderElectionRecord) error {
 	// Phase 1: Asynchronous Heartbeat
 	lease := &v1alpha1.MultiClusterLease{}
-	if err := mcl.Client.Get(ctx, client.ObjectKey{Namespace: mcl.LeaseNS, Name: mcl.LeaseName}, lease); err != nil {
+	if err := mcl.client.Get(ctx, client.ObjectKey{Namespace: mcl.leaseNS, Name: mcl.leaseName}, lease); err != nil {
 		return err // Let the LeaderElector handle NotFound errors.
 	}
 
@@ -119,12 +128,12 @@ func (mcl *MultiClusterLeaseLock) Update(ctx context.Context, ler resourcelock.L
 	lease.Spec.HolderIdentity = &ler.HolderIdentity
 	lease.Spec.RenewTime = &metav1.MicroTime{Time: ler.RenewTime.Time}
 	lease.Spec.LeaseDurationSeconds = int32Ptr(int32(ler.LeaseDurationSeconds))
-	if err := mcl.Client.Patch(ctx, lease, patch); err != nil {
+	if err := mcl.client.Patch(ctx, lease, patch); err != nil {
 		return fmt.Errorf("failed to patch MultiClusterLease spec for heartbeat: %w", err)
 	}
 
 	// After patching, get the updated generation that we need to see reflected in the status.
-	if err := mcl.Client.Get(ctx, client.ObjectKey{Namespace: mcl.LeaseNS, Name: mcl.LeaseName}, lease); err != nil {
+	if err := mcl.client.Get(ctx, client.ObjectKey{Namespace: mcl.leaseNS, Name: mcl.leaseName}, lease); err != nil {
 		return fmt.Errorf("failed to get updated generation after patch: %w", err)
 	}
 	expectedGeneration := lease.Generation
@@ -136,7 +145,7 @@ func (mcl *MultiClusterLeaseLock) Update(ctx context.Context, ler resourcelock.L
 
 	err := wait.PollUntilContextCancel(pollCtx, 1*time.Second, true, func(ctx context.Context) (bool, error) {
 		var currentLease v1alpha1.MultiClusterLease
-		if err := mcl.Client.Get(ctx, client.ObjectKey{Namespace: mcl.LeaseNS, Name: mcl.LeaseName}, &currentLease); err != nil {
+		if err := mcl.client.Get(ctx, client.ObjectKey{Namespace: mcl.leaseNS, Name: mcl.leaseName}, &currentLease); err != nil {
 			return false, nil // Don't stop polling on transient errors
 		}
 
@@ -158,11 +167,11 @@ func (mcl *MultiClusterLeaseLock) Update(ctx context.Context, ler resourcelock.L
 }
 
 // RecordEvent is a no-op for this implementation.
-func (mcl *MultiClusterLeaseLock) RecordEvent(string, string) {}
+func (mcl *MultiClusterLeaseLock) RecordEvent(string) {}
 
 // Describe is a human-readable description of the lock.
 func (mcl *MultiClusterLeaseLock) Describe() string {
-	return fmt.Sprintf("multiclusterlease/%s/%s", mcl.LeaseNS, mcl.LeaseName)
+	return fmt.Sprintf("multiclusterlease/%s/%s", mcl.leaseNS, mcl.leaseName)
 }
 
 func (mcl *MultiClusterLeaseLock) leaseToRecord(lease *v1alpha1.MultiClusterLease) *resourcelock.LeaderElectionRecord {
@@ -202,6 +211,11 @@ func (mcl *MultiClusterLeaseLock) leaseToRecord(lease *v1alpha1.MultiClusterLeas
 		RenewTime:            renewTime,
 		LeaderTransitions:    leaderTransitions,
 	}
+}
+
+// Identity returns the identity of the lock holder.
+func (mcl *MultiClusterLeaseLock) Identity() string {
+	return mcl.identity
 }
 
 func int32Ptr(i int32) *int32 {

@@ -12,43 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    control-plane: controller-manager
-  name: system
----
+# This patch adds the necessary volume, volumeMount, and environment variable
+# to the controller manager to authenticate to GCP using a service account key.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: controller-manager
   namespace: system
-  labels:
-    control-plane: controller-manager
 spec:
-  selector:
-    matchLabels:
-      control-plane: controller-manager
-  replicas: 1
   template:
-    metadata:
-      labels:
-        control-plane: controller-manager
     spec:
       containers:
-      - command:
-        - /manager
-        args:
-        - --gcs-bucket=multiclusterlease-test
-        image: controller:latest
-        imagePullPolicy: IfNotPresent
-        name: manager
-        resources:
-          limits:
-            cpu: 100m
-            memory: 30Mi
-          requests:
-            cpu: 100m
-            memory: 20Mi
-      terminationGracePeriodSeconds: 10
+      - name: manager
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /etc/gcp/key.json
+        volumeMounts:
+        - name: gcp-sa-key
+          mountPath: /etc/gcp
+          readOnly: true
+      volumes:
+      - name: gcp-sa-key
+        secret:
+          secretName: gcp-sa-key
