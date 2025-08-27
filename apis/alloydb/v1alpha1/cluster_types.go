@@ -70,8 +70,8 @@ type AlloyDBClusterSpec struct {
 	//  supplied at cluster creation time, then a default database version will
 	//  be used.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.database_version
-	DatabaseVersion *string `json:"databaseVersion,omitempty"`
 	*/
+	DatabaseVersion *string `json:"databaseVersion,omitempty"`
 
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.network_config
 	NetworkConfig *Cluster_NetworkConfig `json:"networkConfig,omitempty"`
