@@ -241,7 +241,7 @@ func (a *apiQuotaPreferenceAdapter) Export(ctx context.Context) (*unstructured.U
 	if parentIdentity.ProjectID != "" {
 		obj.Spec.Parent.ProjectRef = &refs.ProjectRef{External: parentIdentity.ProjectID}
 	} else if parentIdentity.FolderID != "" {
-		obj.Spec.Parent.FolderRef = &refs.FolderRef{External: parentIdentity.FolderID}
+		obj.Spec.Parent.FolderRef = &resourcemanagerv1beta1.FolderRef{External: parentIdentity.FolderID}
 	} else if parentIdentity.OrganizationID != "" {
 		obj.Spec.Parent.OrganizationRef = &resourcemanagerv1beta1.OrganizationRef{External: parentIdentity.OrganizationID}
 	} else {

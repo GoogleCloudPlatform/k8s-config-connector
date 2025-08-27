@@ -20,6 +20,7 @@ package v1beta1
 
 import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	k8sv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
@@ -260,7 +261,7 @@ func (in *KMSAutokeyConfigSpec) DeepCopyInto(out *KMSAutokeyConfigSpec) {
 	*out = *in
 	if in.FolderRef != nil {
 		in, out := &in.FolderRef, &out.FolderRef
-		*out = new(refsv1beta1.FolderRef)
+		*out = new(resourcemanagerv1beta1.FolderRef)
 		**out = **in
 	}
 	if in.KeyProjectRef != nil {

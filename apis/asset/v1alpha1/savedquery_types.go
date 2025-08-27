@@ -25,7 +25,7 @@ var AssetSavedQueryGVK = GroupVersion.WithKind("AssetSavedQuery")
 
 type Parent struct {
 	ProjectRef      *refv1beta1.ProjectRef                  `json:"projectRef,omitempty"`
-	FolderRef       *refv1beta1.FolderRef                   `json:"folderRef,omitempty"`
+	FolderRef       *resourcemanagerv1beta1.FolderRef       `json:"folderRef,omitempty"`
 	OrganizationRef *resourcemanagerv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
 }
 

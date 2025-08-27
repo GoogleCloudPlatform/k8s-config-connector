@@ -32,7 +32,7 @@ type Parent struct {
 	// +optional
 	OrganizationRef *resourcemanagerv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
 	// +optional
-	FolderRef *refv1beta1.FolderRef `json:"folderRef,omitempty"`
+	FolderRef *resourcemanagerv1beta1.FolderRef `json:"folderRef,omitempty"`
 }
 
 // +kcc:spec:proto=google.api.cloudquotas.v1beta.QuotaPreference

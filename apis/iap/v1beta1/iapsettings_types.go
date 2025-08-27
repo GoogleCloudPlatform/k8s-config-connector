@@ -30,7 +30,7 @@ type Parent struct {
 	OrganizationRef *resourcemanagerv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
 
 	// Folder-level settings
-	FolderRef *refs.FolderRef `json:"folderRef,omitempty"`
+	FolderRef *resourcemanagerv1beta1.FolderRef `json:"folderRef,omitempty"`
 
 	// Project-level settings
 	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`

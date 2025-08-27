@@ -44,7 +44,7 @@ func BigqueryReservationAssignmentSpec_Assignee_FromProto(mapCtx *direct.MapCont
 		}
 	case "folers":
 		return &krm.Assignee{
-			FolderRef: &refsv1beta1.FolderRef{
+			FolderRef: &resourcemanagerv1beta1.FolderRef{
 				External: tokens[1],
 			},
 		}

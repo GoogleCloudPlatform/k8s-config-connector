@@ -117,15 +117,15 @@ func (p OrganizationParent) buildIAPSettingsID(ctx context.Context, reader clien
 
 // FolderParent represents folder-level settings
 type FolderParent struct {
-	Ref *refsv1beta1.FolderRef
+	Ref *resourcemanagerv1beta1.FolderRef
 }
 
 func (p FolderParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, namespace string) (string, error) {
-	folder, err := refsv1beta1.ResolveFolder(ctx, reader, nil, p.Ref)
+	err := p.Ref.Normalize(ctx, reader, "")
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("folders/%s", folder.FolderID), nil
+	return p.Ref.External, nil
 }
 
 // ProjectParent represents project-level settings

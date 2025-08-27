@@ -90,12 +90,11 @@ func (m *modelAssignment) AdapterForObject(ctx context.Context, reader client.Re
 		}
 		obj.Spec.Assignee.ProjectRef.External = project.ProjectID
 	}
-	if obj.Spec.Assignee.FolderRef != nil {
-		folder, err := refsv1beta1.ResolveFolder(ctx, reader, u, obj.Spec.Assignee.FolderRef)
+	if folderRef := obj.Spec.Assignee.FolderRef; folderRef != nil {
+		err = folderRef.Normalize(ctx, reader, u.GetNamespace())
 		if err != nil {
 			return nil, err
 		}
-		obj.Spec.Assignee.FolderRef.External = folder.FolderID
 	}
 	if organizationRef := obj.Spec.Assignee.OrganizationRef; organizationRef != nil {
 		err = organizationRef.Normalize(ctx, reader, u.GetNamespace())

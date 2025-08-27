@@ -19,6 +19,7 @@ import (
 	pb "cloud.google.com/go/kms/apiv1/kmspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -65,7 +66,7 @@ func KMSAutokeyConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyCon
 	}
 	out := &krm.KMSAutokeyConfigSpec{}
 	parent, _ := krm.ParseKMSAutokeyConfigExternal(in.Name)
-	out.FolderRef = &refs.FolderRef{
+	out.FolderRef = &resourcemanagerv1beta1.FolderRef{
 		External: parent.String(),
 	}
 	if in.GetKeyProject() != "" {

@@ -160,7 +160,7 @@ func checkExactlyOneOf(values ...interface{}) (bool, interface{}) {
 	return true, nonNilVal
 }
 
-func oneOfContainer(ctx context.Context, reader client.Reader, obj *krm.PrivilegedAccessManagerEntitlement, projectRef *refs.ProjectRef, folderRef *refs.FolderRef, organizationRef *resourcemanagerv1beta1.OrganizationRef) (string, error) {
+func oneOfContainer(ctx context.Context, reader client.Reader, obj *krm.PrivilegedAccessManagerEntitlement, projectRef *refs.ProjectRef, folderRef *resourcemanagerv1beta1.FolderRef, organizationRef *resourcemanagerv1beta1.OrganizationRef) (string, error) {
 	hasExactlyOneContainer, containerRef := checkExactlyOneOf(projectRef, folderRef, organizationRef)
 	if !hasExactlyOneContainer {
 		return "", fmt.Errorf("exactly one of 'projectRef', 'folderRef' "+
@@ -180,16 +180,12 @@ func oneOfContainer(ctx context.Context, reader client.Reader, obj *krm.Privileg
 			return "", fmt.Errorf("cannot resolve project: project ID is empty")
 		}
 		container = fmt.Sprintf("projects/%s", projectID)
-	case *refs.FolderRef:
-		folder, err := refs.ResolveFolder(ctx, reader, obj, folderRef)
+	case *resourcemanagerv1beta1.FolderRef:
+		err := folderRef.Normalize(ctx, reader, obj.GetNamespace())
 		if err != nil {
 			return "", err
 		}
-		folderID := folder.FolderID
-		if folderID == "" {
-			return "", fmt.Errorf("cannot resolve folder: folder ID is empty")
-		}
-		container = fmt.Sprintf("folders/%s", folderID)
+		container = folderRef.External
 	case *resourcemanagerv1beta1.OrganizationRef:
 		err := organizationRef.Normalize(ctx, reader, obj.GetNamespace())
 		if err != nil {
@@ -422,7 +418,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if strings.HasPrefix(a.id.Parent.Container, "projects") {
 		obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent.Container}
 	} else if strings.HasPrefix(a.id.Parent.Container, "folders") {
-		obj.Spec.FolderRef = &refs.FolderRef{External: a.id.Parent.Container}
+		obj.Spec.FolderRef = &resourcemanagerv1beta1.FolderRef{External: a.id.Parent.Container}
 	} else {
 		obj.Spec.OrganizationRef = &resourcemanagerv1beta1.OrganizationRef{External: a.id.Parent.Container}
 	}

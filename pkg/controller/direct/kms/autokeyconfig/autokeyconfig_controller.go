@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"reflect"
 
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -206,7 +208,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 		return nil, mapCtx.Err()
 	}
 	parent := a.id.Parent()
-	obj.Spec.FolderRef = &refs.FolderRef{External: parent.FolderID}
+	obj.Spec.FolderRef = &resourcemanagerv1beta1.FolderRef{External: parent.FolderID}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

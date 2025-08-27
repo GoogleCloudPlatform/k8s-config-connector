@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -34,7 +35,7 @@ type KMSAutokeyConfigSpec struct {
 
 	// Immutable. The folder that this resource belongs to.
 	// +required
-	FolderRef *refs.FolderRef `json:"folderRef"`
+	FolderRef *resourcemanagerv1beta1.FolderRef `json:"folderRef"`
 
 	// +optional
 	KeyProjectRef *refs.ProjectRef `json:"keyProject,omitempty"`

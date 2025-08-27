@@ -245,7 +245,7 @@ func (a *contactAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 			External: parentIdentity.String(),
 		}
 	} else if parentIdentity.FolderID != "" {
-		obj.Spec.FolderRef = &refv1beta1.FolderRef{
+		obj.Spec.FolderRef = &resourcemanagerv1beta1.FolderRef{
 			External: parentIdentity.String(),
 		}
 	} else if parentIdentity.OrganizationID != "" {

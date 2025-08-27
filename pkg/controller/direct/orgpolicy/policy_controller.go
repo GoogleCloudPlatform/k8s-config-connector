@@ -209,7 +209,7 @@ func (a *PolicyAdapter) Export(ctx context.Context) (*unstructured.Unstructured,
 	if parentRef.ProjectID != "" {
 		obj.Spec.ProjectRef = &refs.ProjectRef{External: parentRef.String()}
 	} else if parentRef.FolderID != "" {
-		obj.Spec.FolderRef = &refs.FolderRef{External: parentRef.String()}
+		obj.Spec.FolderRef = &resourcemanagerv1beta1.FolderRef{External: parentRef.String()}
 	} else if parentRef.OrganizationID != "" {
 		obj.Spec.OrganizationRef = &resourcemanagerv1beta1.OrganizationRef{External: parentRef.String()}
 	} else {

@@ -37,7 +37,7 @@ type OrgPolicyPolicySpec struct {
 	// One and only one of 'projectRef', 'folderRef', or 'organizationRef' must
 	// be set.
 	// +optional
-	FolderRef *refs.FolderRef `json:"folderRef,omitempty"`
+	FolderRef *resourcemanagerv1beta1.FolderRef `json:"folderRef,omitempty"`
 
 	// Immutable. The Organization that this resource belongs to.
 	// One and only one of 'projectRef', 'folderRef', or 'organizationRef' must

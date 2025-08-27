@@ -88,19 +88,16 @@ func NewContactIdentity(ctx context.Context, reader client.Reader, obj *Essentia
 			return nil, err
 		}
 		organizationID = organizationIdentity.ResourceID
-	} else if obj.Spec.FolderRef != nil {
-		if obj.Spec.FolderRef.External != "" {
-			folderID = obj.Spec.FolderRef.External
-		} else {
-			folder, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.Parent.FolderRef)
-			if err != nil {
-				return nil, err
-			}
-			folderID = folder.FolderID
+	} else if folderRef := obj.Spec.FolderRef; folderRef != nil {
+		err := folderRef.Normalize(ctx, reader, obj.Namespace)
+		if err != nil {
+			return nil, err
 		}
-		if folderID == "" {
-			return nil, fmt.Errorf("cannot resolve folder")
+		folderIdentity, err := resourcemanagerv1beta1.ParseFolderExternal(folderRef.External)
+		if err != nil {
+			return nil, err
 		}
+		folderID = folderIdentity.ResourceID
 	} else {
 		return nil, fmt.Errorf("cannot resolve parent for contact")
 	}

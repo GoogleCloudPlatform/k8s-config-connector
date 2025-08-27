@@ -307,7 +307,7 @@ func (a *savedQueryAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 	if parentRef.ProjectID != "" {
 		obj.Spec.Parent.ProjectRef = &refs.ProjectRef{External: parentRef.String()}
 	} else if parentRef.FolderID != "" {
-		obj.Spec.Parent.FolderRef = &refs.FolderRef{External: parentRef.String()}
+		obj.Spec.Parent.FolderRef = &resourcemanagerv1beta1.FolderRef{External: parentRef.String()}
 	} else if parentRef.OrganizationID != "" {
 		obj.Spec.Parent.OrganizationRef = &resourcemanagerv1beta1.OrganizationRef{External: parentRef.String()}
 	} else {

@@ -28,7 +28,7 @@ var AssetFeedGVK = GroupVersion.WithKind("AssetFeed")
 type AssetFeedParent struct {
 	ProjectRef      *refv1beta1.ProjectRef                  `json:"projectRef,omitempty"`
 	OrganizationRef *resourcemanagerv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
-	FolderRef       *refv1beta1.FolderRef                   `json:"folderRef,omitempty"`
+	FolderRef       *resourcemanagerv1beta1.FolderRef       `json:"folderRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.asset.v1.PubsubDestination

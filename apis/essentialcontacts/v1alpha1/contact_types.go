@@ -27,7 +27,7 @@ type Parent struct {
 	// +optional
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef,omitempty"`
 	// +optional
-	FolderRef *refv1beta1.FolderRef `json:"folderRef,omitempty"`
+	FolderRef *resourcemanagerv1beta1.FolderRef `json:"folderRef,omitempty"`
 	// +optional
 	OrganizationRef *resourcemanagerv1beta1.OrganizationRef `json:"organizationRef,omitempty"`
 }

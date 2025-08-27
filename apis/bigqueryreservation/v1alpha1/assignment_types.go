@@ -114,7 +114,7 @@ type Assignee struct {
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
 	// Exactly one of ProjectRef or FolderRef or OrganizationRef must be specified.
 	// +optional
-	FolderRef *refv1beta1.FolderRef `json:"folderRef"`
+	FolderRef *resourcemanagerv1beta1.FolderRef `json:"folderRef"`
 	// Exactly one of ProjectRef or FolderRef or OrganizationRef must be specified.
 	// +optional
 	OrganizationRef *resourcemanagerv1beta1.OrganizationRef `json:"organizationRef"`

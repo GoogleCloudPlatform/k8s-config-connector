@@ -19,8 +19,9 @@ import (
 	"fmt"
 	"strings"
 
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -46,12 +47,15 @@ func (p *KMSAutokeyConfigParent) String() string {
 
 func NewAutokeyConfigIdentity(ctx context.Context, reader client.Reader, obj *KMSAutokeyConfig) (*KMSAutokeyConfigIdentity, error) {
 	// Get Parent
-	folderRef, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.FolderRef)
-
+	err := obj.Spec.FolderRef.Normalize(ctx, reader, obj.Namespace)
 	if err != nil {
 		return nil, err
 	}
-	folderID := folderRef.FolderID
+	folderIdentity, err := resourcemanagerv1beta1.ParseFolderExternal(obj.Spec.FolderRef.External)
+	if err != nil {
+		return nil, err
+	}
+	folderID := folderIdentity.ResourceID
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		actualIdentity, err := ParseKMSAutokeyConfigExternal(externalRef)

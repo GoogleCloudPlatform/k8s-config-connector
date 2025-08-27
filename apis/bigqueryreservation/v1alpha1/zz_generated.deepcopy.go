@@ -36,7 +36,7 @@ func (in *Assignee) DeepCopyInto(out *Assignee) {
 	}
 	if in.FolderRef != nil {
 		in, out := &in.FolderRef, &out.FolderRef
-		*out = new(refsv1beta1.FolderRef)
+		*out = new(resourcemanagerv1beta1.FolderRef)
 		**out = **in
 	}
 	if in.OrganizationRef != nil {

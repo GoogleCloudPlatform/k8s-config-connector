@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	resourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/resourcemanager/v1beta1"
+
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -88,16 +90,16 @@ func (r *KMSAutokeyConfigRef) NormalizedExternal(ctx context.Context, reader cli
 // New builds a KMSAutokeyConfigRef from the Config Connector KMSAutokeyConfig object.
 func NewKMSAutokeyConfigRef(ctx context.Context, reader client.Reader, obj *KMSAutokeyConfig) (*KMSAutokeyConfigRef, error) {
 	id := &KMSAutokeyConfigRef{}
-
 	// Get Parent
-	folderRef, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.FolderRef)
+	err := obj.Spec.FolderRef.Normalize(ctx, reader, obj.Namespace)
 	if err != nil {
 		return nil, err
 	}
-	folderID := folderRef.FolderID
-	if folderID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+	folderIdentity, err := resourcemanagerv1beta1.ParseFolderExternal(obj.Spec.FolderRef.External)
+	if err != nil {
+		return nil, err
 	}
+	folderID := folderIdentity.ResourceID
 	id.parent = &KMSAutokeyConfigParent{FolderID: folderID}
 
 	// Use approved External

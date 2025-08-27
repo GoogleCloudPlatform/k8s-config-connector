@@ -78,18 +78,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The 'name' field of a folder, when not managed by
-                      Config Connector. This field must be set when 'name' field is
-                      not set.
+                    description: A reference to an externally managed Folder resource.
+                      Should be in the format "folders/{{folderID}}" or "{{folderID}}".
                     type: string
                   name:
-                    description: The 'name' field of a 'Folder' resource. This field
-                      must be set when 'external' field is not set.
+                    description: The name of a Folder resource.
                     type: string
                   namespace:
-                    description: The 'namespace' field of a 'Folder' resource. If
-                      unset, the namespace is defaulted to the namespace of the referencer
-                      resource.
+                    description: The namespace of a Folder resource.
                     type: string
                 type: object
               keyProject:
@@ -240,18 +236,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The 'name' field of a folder, when not managed by
-                      Config Connector. This field must be set when 'name' field is
-                      not set.
+                    description: A reference to an externally managed Folder resource.
+                      Should be in the format "folders/{{folderID}}" or "{{folderID}}".
                     type: string
                   name:
-                    description: The 'name' field of a 'Folder' resource. This field
-                      must be set when 'external' field is not set.
+                    description: The name of a Folder resource.
                     type: string
                   namespace:
-                    description: The 'namespace' field of a 'Folder' resource. If
-                      unset, the namespace is defaulted to the namespace of the referencer
-                      resource.
+                    description: The namespace of a Folder resource.
                     type: string
                 type: object
               keyProject:

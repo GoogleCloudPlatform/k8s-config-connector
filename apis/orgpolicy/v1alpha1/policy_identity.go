@@ -79,15 +79,16 @@ func NewPolicyIdentity(ctx context.Context, reader client.Reader, obj *OrgPolicy
 		if projectID == "" {
 			return nil, fmt.Errorf("cannot resolve project")
 		}
-	} else if obj.Spec.FolderRef != nil {
-		folderRef, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.FolderRef)
+	} else if folderRef := obj.Spec.FolderRef; folderRef != nil {
+		err := folderRef.Normalize(ctx, reader, obj.Namespace)
 		if err != nil {
 			return nil, err
 		}
-		folderID = folderRef.FolderID
-		if folderID == "" {
-			return nil, fmt.Errorf("cannot resolve folder")
+		folderIdentity, err := resourcemanagerv1beta1.ParseFolderExternal(folderRef.External)
+		if err != nil {
+			return nil, err
 		}
+		folderID = folderIdentity.ResourceID
 	} else if organizationRef := obj.Spec.OrganizationRef; organizationRef != nil {
 		err := organizationRef.Normalize(ctx, reader, obj.Namespace)
 		if err != nil {

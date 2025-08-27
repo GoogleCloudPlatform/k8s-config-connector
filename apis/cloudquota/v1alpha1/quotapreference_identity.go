@@ -115,15 +115,16 @@ func NewQuotaPreferenceIdentity(ctx context.Context, reader client.Reader, obj *
 			return nil, err
 		}
 		organizationID = organizationIdentity.ResourceID
-	} else if obj.Spec.Parent.FolderRef != nil {
-		folderRef, err := refsv1beta1.ResolveFolder(ctx, reader, obj, obj.Spec.Parent.FolderRef)
+	} else if folderRef := obj.Spec.Parent.FolderRef; folderRef != nil {
+		err := folderRef.Normalize(ctx, reader, obj.Namespace)
 		if err != nil {
 			return nil, err
 		}
-		folderID = folderRef.FolderID
-		if folderID == "" {
-			return nil, fmt.Errorf("cannot resolve folder")
+		folderIdentity, err := resourcemanagerv1beta1.ParseFolderExternal(folderRef.External)
+		if err != nil {
+			return nil, err
 		}
+		folderID = folderIdentity.ResourceID
 	} else {
 		return nil, fmt.Errorf("one of spec.projectRef, spec.organizationRef, or spec.folderRef must be set")
 	}
