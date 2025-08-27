@@ -29,7 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/gsakeysecretgenerator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
+	legacypartialpolicy "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policymember"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
@@ -290,9 +290,42 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 			return nil, err
 		}
 	case "IAMPartialPolicy":
-		if err := partialpolicy.Add(r.mgr, &cds); err != nil {
-			return nil, err
+		var useDirectReconcilerPredicate predicate.Predicate
+
+		if registry.IsDirectByGK(gvk.GroupKind()) && config.UseLegacyIAM == false {
+			reconcileGate := registry.GetReconcileGate(gvk.GroupKind())
+			if reconcileGate != nil {
+				useDirectReconcilerPredicate = kccpredicate.NewReconcilePredicate(r.mgr.GetClient(), gvk, reconcileGate)
+			}
+			model, err := registry.GetModel(gvk.GroupKind())
+			if err != nil {
+				return nil, err
+			}
+			deps := directbase.Deps{
+				Defaulters:         r.defaulters,
+				JitterGenerator:    r.jitterGenerator,
+				ReconcilePredicate: useDirectReconcilerPredicate,
+
+				// for iam controllers
+				IAMAdapterDeps: &directbase.IAMAdapterDeps{
+					KubeClient: r.Client,
+					ControllerDeps: &controller.Deps{
+						TFProvider:   r.provider,
+						TFLoader:     r.smLoader,
+						DCLConfig:    r.dclConfig,
+						DCLConverter: r.dclConverter,
+					},
+				},
+			}
+			if err := directbase.AddController(r.mgr, gvk, model, deps); err != nil {
+				return nil, fmt.Errorf("error adding direct controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
+			}
+		} else {
+			if err := legacypartialpolicy.Add(r.mgr, &cds); err != nil {
+				return nil, err
+			}
 		}
+
 	case "IAMPolicyMember":
 		if err := policymember.Add(r.mgr, &cds); err != nil {
 			return nil, err
