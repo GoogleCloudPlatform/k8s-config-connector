@@ -31,7 +31,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
 {
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
+    "custom-label": "foo",
     "managed-by-cnrm": "true"
   },
   "replication": {
@@ -60,7 +60,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
+    "custom-label": "foo",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
@@ -96,7 +96,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
+    "custom-label": "foo",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
@@ -133,7 +133,7 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
-    "label-one": "value-one",
+    "custom-label": "foo",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",

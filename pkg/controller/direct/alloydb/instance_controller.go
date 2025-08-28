@@ -24,9 +24,9 @@ import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	gcp "cloud.google.com/go/alloydb/apiv1beta"
 	alloydbpb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
@@ -127,6 +127,7 @@ func (m *instanceModel) AdapterForObject(ctx context.Context, reader client.Read
 		gcpClient: gcpClient,
 		reader:    reader,
 		desired:   obj,
+		u:         u,
 	}, nil
 }
 
@@ -141,6 +142,7 @@ type instanceAdapter struct {
 	reader    client.Reader
 	desired   *krm.AlloyDBInstance
 	actual    *alloydbpb.Instance
+	u         *unstructured.Unstructured
 }
 
 var _ directbase.Adapter = &instanceAdapter{}
@@ -180,14 +182,10 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 
 	desired := a.desired.DeepCopy()
 	resource := AlloyDBInstanceSpec_ToProto(mapCtx, &desired.Spec)
+	resource.Labels = common.Labels_ToProto(mapCtx, a.u)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
-	if resource.Labels == nil {
-		resource.Labels = make(map[string]string)
-	}
-	resource.Labels["managed-by-cnrm"] = "true"
 
 	var created *alloydbpb.Instance
 	instanceType := a.desired.Spec.InstanceTypeRef.External
@@ -249,17 +247,17 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	desiredLabels := common.Labels_ToProto(mapCtx, a.u)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 
 	// TODO: Change to CompareProtoMessage once we support all the files in the instance pb.
 	updatePaths, err := compareInstance(ctx, parsedActual, &a.desired.Spec)
 	if err != nil {
 		return err
 	}
-	desiredLabels := label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
-	if desiredLabels == nil {
-		desiredLabels = make(map[string]string)
-	}
-	desiredLabels["managed-by-cnrm"] = "true"
+
 	if !reflect.DeepEqual(a.actual.GetLabels(), desiredLabels) {
 		log.V(2).Info("'metadata.labels' field is updated (-old +new)", cmp.Diff(a.actual.GetLabels(), desiredLabels))
 		updatePaths = append(updatePaths, "labels")

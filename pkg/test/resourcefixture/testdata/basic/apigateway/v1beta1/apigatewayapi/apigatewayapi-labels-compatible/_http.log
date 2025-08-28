@@ -38,7 +38,15 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
 {
   "displayName": "Initial displayName",
   "labels": {
-    "cnrm-test": "true",
+    "app.kubernetes.io/component": "mock-component",
+    "app.kubernetes.io/instance": "mock-instance",
+    "app.kubernetes.io/managed-by": "configmanagement.gke.io",
+    "app.kubernetes.io/name": "mock-app",
+    "app.kubernetes.io/part-of": "mock-part-of",
+    "app.kubernetes.io/version": "v1.0.0",
+    "applyset.kubernetes.io/id": "mock-applyset-id",
+    "configmanagement.gke.io/sync-name": "mock-sync-name",
+    "configmanagement.gke.io/sync-namespace": "mock-sync-namespace",
     "custom-label": "foo",
     "managed-by-cnrm": "true"
   }
@@ -98,7 +106,15 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "Initial displayName",
     "labels": {
-      "cnrm-test": "true",
+      "app.kubernetes.io/component": "mock-component",
+      "app.kubernetes.io/instance": "mock-instance",
+      "app.kubernetes.io/managed-by": "configmanagement.gke.io",
+      "app.kubernetes.io/name": "mock-app",
+      "app.kubernetes.io/part-of": "mock-part-of",
+      "app.kubernetes.io/version": "v1.0.0",
+      "applyset.kubernetes.io/id": "mock-applyset-id",
+      "configmanagement.gke.io/sync-name": "mock-sync-name",
+      "configmanagement.gke.io/sync-namespace": "mock-sync-namespace",
       "custom-label": "foo",
       "managed-by-cnrm": "true"
     },
@@ -130,7 +146,15 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Initial displayName",
   "labels": {
-    "cnrm-test": "true",
+    "app.kubernetes.io/component": "mock-component",
+    "app.kubernetes.io/instance": "mock-instance",
+    "app.kubernetes.io/managed-by": "configmanagement.gke.io",
+    "app.kubernetes.io/name": "mock-app",
+    "app.kubernetes.io/part-of": "mock-part-of",
+    "app.kubernetes.io/version": "v1.0.0",
+    "applyset.kubernetes.io/id": "mock-applyset-id",
+    "configmanagement.gke.io/sync-name": "mock-sync-name",
+    "configmanagement.gke.io/sync-namespace": "mock-sync-namespace",
     "custom-label": "foo",
     "managed-by-cnrm": "true"
   },
@@ -142,15 +166,23 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/apis/apigatewayapi-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2Clabels
+PATCH https://apigateway.googleapis.com/v1/projects/${projectId}/locations/global/apis/apigatewayapi-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: api.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fapis%2Fapigatewayapi-minimal-${uniqueId}
 
 {
-  "displayName": "Updated displayName",
+  "displayName": "Initial displayName",
   "labels": {
-    "cnrm-test": "true",
+    "app.kubernetes.io/component": "mock-component",
+    "app.kubernetes.io/instance": "mock-instance",
+    "app.kubernetes.io/managed-by": "configmanagement.gke.io",
+    "app.kubernetes.io/name": "mock-app",
+    "app.kubernetes.io/part-of": "mock-part-of",
+    "app.kubernetes.io/version": "v1.0.0",
+    "applyset.kubernetes.io/id": "mock-applyset-id",
+    "configmanagement.gke.io/sync-name": "mock-sync-name",
+    "configmanagement.gke.io/sync-namespace": "mock-sync-namespace",
     "custom-label": "bar",
     "managed-by-cnrm": "true"
   },
@@ -209,9 +241,17 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.apigateway.v1.Api",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "displayName": "Updated displayName",
+    "displayName": "Initial displayName",
     "labels": {
-      "cnrm-test": "true",
+      "app.kubernetes.io/component": "mock-component",
+      "app.kubernetes.io/instance": "mock-instance",
+      "app.kubernetes.io/managed-by": "configmanagement.gke.io",
+      "app.kubernetes.io/name": "mock-app",
+      "app.kubernetes.io/part-of": "mock-part-of",
+      "app.kubernetes.io/version": "v1.0.0",
+      "applyset.kubernetes.io/id": "mock-applyset-id",
+      "configmanagement.gke.io/sync-name": "mock-sync-name",
+      "configmanagement.gke.io/sync-namespace": "mock-sync-namespace",
       "custom-label": "bar",
       "managed-by-cnrm": "true"
     },
@@ -241,9 +281,17 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "Updated displayName",
+  "displayName": "Initial displayName",
   "labels": {
-    "cnrm-test": "true",
+    "app.kubernetes.io/component": "mock-component",
+    "app.kubernetes.io/instance": "mock-instance",
+    "app.kubernetes.io/managed-by": "configmanagement.gke.io",
+    "app.kubernetes.io/name": "mock-app",
+    "app.kubernetes.io/part-of": "mock-part-of",
+    "app.kubernetes.io/version": "v1.0.0",
+    "applyset.kubernetes.io/id": "mock-applyset-id",
+    "configmanagement.gke.io/sync-name": "mock-sync-name",
+    "configmanagement.gke.io/sync-namespace": "mock-sync-namespace",
     "custom-label": "bar",
     "managed-by-cnrm": "true"
   },

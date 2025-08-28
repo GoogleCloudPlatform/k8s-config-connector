@@ -17,9 +17,16 @@ kind: AlloyDBInstance
 metadata:
   name: alloydbinstance-${uniqueId}
   labels:
-    "applyset.kubernetes.io/part-of": "whatever"
-    "app.kubernetes.io/managed-by": "whatever"
-    "configsync.gke.io/declared-version": "v1beta1"
+    app.kubernetes.io/name: "mock-app"
+    app.kubernetes.io/instance: "mock-instance"
+    app.kubernetes.io/version: "v1.0.0"
+    app.kubernetes.io/component: "mock-component"
+    app.kubernetes.io/part-of: "mock-part-of"
+    app.kubernetes.io/managed-by: "configmanagement.gke.io"
+    applyset.kubernetes.io/id: mock-applyset-id
+    configmanagement.gke.io/sync-name: mock-sync-name
+    configmanagement.gke.io/sync-namespace: mock-sync-namespace
+    custom-label: "foo" # valid label
 spec:
   clusterRef:
     name: alloydbcluster-${uniqueId}
