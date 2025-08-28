@@ -44,32 +44,11 @@ const (
 )
 
 func init() {
-	rg := &TableReconcileGate{}
-	registry.RegisterModelWithReconcileGate(krm.BigQueryTableGVK, NewModel, rg)
+	registry.RegisterModel(krm.BigQueryTableGVK, NewModel)
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
 	return &model{config: *config}, nil
-}
-
-type TableReconcileGate struct {
-	optIn kccpredicate.OptInToDirectReconciliation
-}
-
-var _ kccpredicate.ReconcileGate = &TableReconcileGate{}
-
-func (r *TableReconcileGate) ShouldReconcile(o *unstructured.Unstructured) bool {
-	if r.optIn.ShouldReconcile(o) {
-		return true
-	}
-	if _, ok := o.GetAnnotations()[kccpredicate.AnnotationUnmanaged]; ok {
-		return true
-	}
-	obj := &krm.BigQueryTable{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(o.Object, &obj); err != nil {
-		return false
-	}
-	return obj.Spec.Labels != nil
 }
 
 var _ directbase.Model = &model{}
