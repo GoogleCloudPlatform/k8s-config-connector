@@ -229,7 +229,8 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
 
-	if !reflect.DeepEqual(resource.DefaultBackupScheduleType, a.actual.DefaultBackupScheduleType) {
+	// if defaultBackupScheduleType is not set in spec, the field become unmanaged.
+	if a.desired.Spec.DefaultBackupScheduleType != nil && !reflect.DeepEqual(resource.DefaultBackupScheduleType, a.actual.DefaultBackupScheduleType) {
 		updateMask.Paths = append(updateMask.Paths, "default_backup_schedule_type")
 	}
 
