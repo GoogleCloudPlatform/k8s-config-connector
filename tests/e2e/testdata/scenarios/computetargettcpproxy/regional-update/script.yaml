@@ -41,6 +41,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeTargetTCPProxy
 metadata:
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/project-id: ${projectId}
   name: computetargettcpproxy-${uniqueId}
 spec:
@@ -56,6 +57,7 @@ apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeTargetTCPProxy
 metadata:
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/project-id: ${projectId}
   name: computetargettcpproxy-${uniqueId}
 spec:
