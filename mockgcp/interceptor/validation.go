@@ -17,6 +17,7 @@ package interceptor
 import (
 	"context"
 	"reflect"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/validation"
 	"google.golang.org/grpc"
@@ -53,6 +54,17 @@ func LabelValidationInterceptor(ctx context.Context, req interface{}, info *grpc
 	resource := getResourceFromRequest(req)
 	if resource == nil {
 		// If we can't find a resource, just pass through
+		return handler(ctx, req)
+	}
+
+	// HACK: Skip validation for CloudIdentityGroup, which uses `labels` for a different purpose.
+	// See https://cloud.google.com/identity/docs/groups
+	messageName := proto.MessageName(resource)
+	if strings.Contains(string(messageName), "cloudidentity") {
+		return handler(ctx, req)
+	}
+	// HACK: Skip validation for Monitoring resources, which use `labels` for a different purpose (email).
+	if strings.Contains(string(messageName), "monitoring") {
 		return handler(ctx, req)
 	}
 
