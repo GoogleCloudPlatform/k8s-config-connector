@@ -208,6 +208,186 @@ spec:
 	}
 }
 
+func TestPreviewDirect(t *testing.T) {
+	log.SetLogger(klogr.New())
+
+	if os.Getenv("KUBEBUILDER_ASSETS") == "" {
+		assetDir, err := getKubebuilderAssetDir()
+		if err != nil {
+			t.Fatalf("getting asset dir: %v", err)
+		}
+		klog.Warningf("defaulting KUBEBUILDER_ASSETS to %v", assetDir)
+		os.Setenv("KUBEBUILDER_ASSETS", assetDir)
+	}
+
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	harness := create.NewHarness(ctx, t, create.WithKubeTarget("envtest"), create.WithGCPTarget("mock"))
+
+	// Create KCC objects
+	ns := &unstructured.Unstructured{}
+	ns.SetGroupVersionKind(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Namespace"})
+	ns.SetName(harness.Project.ProjectID)
+	if err := harness.GetClient().Create(ctx, ns); err != nil {
+		t.Fatalf("creating object: %v", err)
+	}
+
+	cc := &unstructured.Unstructured{}
+	cc.SetGroupVersionKind(schema.GroupVersionKind{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnector"})
+	cc.SetName("configconnector.core.cnrm.cloud.google.com")
+	MustSetNestedField(t, cc, "spec.mode", "namespaced")
+	if err := harness.GetClient().Create(ctx, cc); err != nil {
+		t.Fatalf("creating object: %v", err)
+	}
+
+	ccc := &unstructured.Unstructured{}
+	ccc.SetGroupVersionKind(schema.GroupVersionKind{Group: "core.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ConfigConnectorContext"})
+	ccc.SetName("configconnectorcontext.core.cnrm.cloud.google.com")
+	ccc.SetNamespace(ns.GetName())
+	MustSetNestedField(t, ccc, "spec.googleServiceAccount", "fake@fake.iam.gserviceaccount.com")
+	if err := harness.GetClient().Create(ctx, ccc); err != nil {
+		t.Fatalf("creating object: %v", err)
+	}
+
+	// Create a pubsub topic (should be created in mock gcp)
+	testObj := &unstructured.Unstructured{}
+
+	{
+		y := `
+apiVersion: spanner.cnrm.cloud.google.com/v1beta1
+kind: SpannerInstance
+metadata:
+  labels:
+    label-one: "value-one"
+  name: spannerinstance-sample-1
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+spec:
+  config: regional-us-west1
+  displayName: Spanner Instance Sample
+  numNodes: 2
+`
+
+		if err := yaml.Unmarshal([]byte(y), testObj); err != nil {
+			t.Fatalf("unmarshaling yaml: %v", err)
+		}
+		testObj.SetNamespace(ns.GetName())
+		if err := harness.GetClient().Create(ctx, testObj); err != nil {
+			t.Fatalf("creating object: %v", err)
+		}
+
+		// Wait for object to be ready
+		create.WaitForReady(harness, time.Minute, testObj)
+	}
+
+	// Now we can run our test ... let's run the preview mode, we expect a read of the GCP object but no write
+	upstreamRESTConfig := harness.GetRESTConfig()
+
+	recorder := NewRecorder()
+
+	authorization := harness.GCPAuthorization()
+
+	preview, err := NewPreviewInstance(recorder, PreviewInstanceOptions{
+		UpstreamRESTConfig:       upstreamRESTConfig,
+		UpstreamGCPAuthorization: authorization,
+		UpstreamGCPHTTPClient:    harness.GCPHTTPClient(),
+	})
+	if err != nil {
+		t.Fatalf("building preview instance: %v", err)
+	}
+
+	go func() {
+		if err := preview.Start(ctx); err != nil {
+			t.Errorf("starting preview: %v", err)
+		}
+	}()
+
+	timeoutAt := time.Now().Add(1 * time.Minute)
+	for {
+		// Wait for the object to be reconciled
+		if len(recorder.objects) > 0 {
+			hasReconciled := make(map[GKNN]bool)
+			for gknn, obj := range recorder.objects {
+				for _, event := range obj.events {
+					if event.eventType == EventTypeReconcileEnd {
+						hasReconciled[gknn] = true
+					}
+				}
+			}
+			if len(hasReconciled) > 0 {
+				break
+			}
+		}
+		if time.Now().After(timeoutAt) {
+			t.Fatalf("did not see captured object in recorder")
+		}
+		time.Sleep(time.Second)
+	}
+
+	t.Logf("Printing captured changes")
+	if len(recorder.objects) != 1 {
+		t.Errorf("expected exactly one object to be reconciled; got %v", len(recorder.objects))
+	}
+
+	for gknn, obj := range recorder.objects {
+		t.Logf("object %+v", gknn)
+		for _, event := range obj.events {
+			switch event.eventType {
+			case EventTypeDiff:
+				t.Logf("  diff %+v", event.diff)
+
+			case EventTypeReconcileStart:
+				t.Logf("  reconcileStart %+v", event.object)
+
+			case EventTypeReconcileEnd:
+				t.Logf("  reconcileEnd %+v", event.object)
+
+			case EventTypeKubeAction:
+				t.Logf("  kubeAction %+v", event.kubeAction)
+
+			case EventTypeGCPAction:
+				t.Logf("  gcpAction %+v", event.gcpAction)
+
+			default:
+				t.Logf("  unknown event: %+v", event)
+			}
+		}
+		expectedGKNN := GKNN{
+			Group:     testObj.GroupVersionKind().Group,
+			Kind:      testObj.GroupVersionKind().Kind,
+			Name:      testObj.GetName(),
+			Namespace: testObj.GetNamespace(),
+		}
+		if gknn != expectedGKNN {
+			t.Errorf("unexpected object in changelist; got %v; want %v", gknn, expectedGKNN)
+		}
+
+		for _, event := range obj.events {
+			switch event.eventType {
+			case EventTypeDiff:
+				// We aren't expected changes
+				t.Errorf("unexpected diff in changelist: %+v", event.diff)
+
+			case EventTypeKubeAction:
+				// TODO: Check direct controller make an update status kube call.
+				// t.Errorf("unexpected kubeAction in changelist: %+v", event.kubeAction)
+
+			case EventTypeGCPAction:
+				// We aren't expected changes
+				t.Errorf("unexpected gcpAction in changelist: %+v", event.gcpAction)
+
+			case EventTypeReconcileStart, EventTypeReconcileEnd:
+				// We do expect this!
+
+			default:
+				t.Errorf("unexpected event type in changelist: %v", event.eventType)
+			}
+		}
+	}
+}
+
 // getKubebuilderAssetDir returns the path to the kubebuilder assets directory
 // which is the latest directory in the ~/.local/share/kubebuilder-envtest/k8s directory
 func getKubebuilderAssetDir() (string, error) {
