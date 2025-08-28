@@ -14,6 +14,6 @@
 
 package resourceconfig
 
-func LoadConfig() (*ResourcesControllerMap, error) {
-	return ControllerConfigStatic, nil
+func LoadConfig() *ResourcesControllerMap {
+	return ControllerConfigStatic
 }

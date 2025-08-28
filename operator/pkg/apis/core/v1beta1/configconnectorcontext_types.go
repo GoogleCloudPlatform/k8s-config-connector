@@ -82,7 +82,7 @@ type ConfigConnectorContextSpec struct {
 	//+kubebuilder:validation:XValidation:rule="self == oldSelf",message="ManagerNamespace field is immutable"
 	ManagerNamespace string `json:"managerNamespace,omitempty"`
 
-	Experiments Experiments `json:"experiments,omitempty"`
+	Experiments *Experiments `json:"experiments,omitempty"`
 }
 
 // Experiments contains experimental features.

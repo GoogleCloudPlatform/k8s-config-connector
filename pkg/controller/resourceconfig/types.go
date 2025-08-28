@@ -15,19 +15,20 @@
 package resourceconfig
 
 import (
+	"fmt"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-type ResourcesControllerMap map[schema.GroupKind]ResourceConfig
-
-// ResourceConfig defines the controller configuration for a specific resource Kind.
-type ResourceConfig struct {
+type ResourceControllerConfig struct {
 	DefaultController    k8s.ReconcilerType
 	SupportedControllers []k8s.ReconcilerType
 }
 
-func (c *ResourcesControllerMap) GetControllerForGVK(gvk schema.GroupVersionKind) (*ResourceConfig, error) {
+type ResourcesControllerMap map[schema.GroupKind]ResourceControllerConfig
+
+func (c *ResourcesControllerMap) GetControllersForGVK(gvk schema.GroupVersionKind) (*ResourceControllerConfig, error) {
 	groupKind := schema.GroupKind{
 		Group: gvk.Group,
 		Kind:  gvk.Kind,
@@ -35,5 +36,5 @@ func (c *ResourcesControllerMap) GetControllerForGVK(gvk schema.GroupVersionKind
 	if config, ok := (*c)[groupKind]; ok {
 		return &config, nil
 	}
-	return nil, nil
+	return nil, fmt.Errorf("no controller config found for GVK %v", gvk)
 }
