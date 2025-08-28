@@ -81,7 +81,9 @@ func TestE2E_LeaderElection(t *testing.T) {
 	identity := uuid.New().String()
 
 	// Create our custom resourcelock.
-	lock := multiclusterleaselock.New(kubeClient, leaseName, ns.Name, identity)
+	lock := multiclusterleaselock.New(kubeClient, leaseName, ns.Name, identity, retryPeriod)
+
+	testfinished := make(chan struct{})
 
 	// Configure the LeaderElector.
 	elector, err := leaderelection.NewLeaderElector(leaderelection.LeaderElectionConfig{
@@ -95,8 +97,8 @@ func TestE2E_LeaderElection(t *testing.T) {
 				close(leaderCh) // Signal that we are the leader.
 			},
 			OnStoppedLeading: func() {
-				time.Sleep(2)
 				t.Logf("elector [%s] stopped leading", identity)
+				close(testfinished)
 			},
 		},
 		Name: "e2e-test-elector",
@@ -115,13 +117,35 @@ func TestE2E_LeaderElection(t *testing.T) {
 		t.Fatalf("elector [%s] failed to acquire leadership within %s", identity, leaderTimeout)
 	}
 
-	// Verification:
+	// Verification 1: Initial Acquisition
 	// Once we are the leader, the status of the CR should reflect our identity.
-	var finalLease v1alpha1.MultiClusterLease
+	var lease v1alpha1.MultiClusterLease
 	key := client.ObjectKey{Namespace: ns.Name, Name: leaseName}
-	require.NoError(t, kubeClient.Get(ctx, key, &finalLease))
+	require.NoError(t, kubeClient.Get(ctx, key, &lease))
 
-	require.NotNil(t, finalLease.Status.GlobalHolderIdentity, "GlobalHolderIdentity should not be nil")
-	require.Equal(t, identity, *finalLease.Status.GlobalHolderIdentity, "GlobalHolderIdentity should be our identity")
-	t.Logf("successfully verified that status.globalHolderIdentity is %s", identity)
+	require.NotNil(t, lease.Status.GlobalHolderIdentity, "GlobalHolderIdentity should not be nil after acquisition")
+	require.Equal(t, identity, *lease.Status.GlobalHolderIdentity, "GlobalHolderIdentity should be our identity after acquisition")
+	t.Logf("successfully verified initial acquisition")
+
+	// Keep track of the renew time after the first acquisition.
+	initialRenewTime, err := time.Parse(time.RFC3339, *lease.Status.GlobalRenewTime)
+	require.NoError(t, err)
+
+	// Verification 2: Lease Renewal
+	// Wait for a period longer than the RetryPeriod to ensure a renewal must have happened.
+	renewalWait := retryPeriod + (1 * time.Second)
+	t.Logf("waiting %s to verify lease renewal...", renewalWait)
+	time.Sleep(renewalWait)
+
+	// Get the lease again and check that the renew time has been updated.
+	require.NoError(t, kubeClient.Get(ctx, key, &lease))
+	require.NotNil(t, lease.Status.GlobalRenewTime, "GlobalRenewTime should not be nil after renewal")
+	renewedTime, err := time.Parse(time.RFC3339, *lease.Status.GlobalRenewTime)
+	require.NoError(t, err)
+
+	require.True(t, renewedTime.After(initialRenewTime), "renewedTime (%s) should be after initialRenewTime (%s)", renewedTime, initialRenewTime)
+	t.Logf("successfully verified lease renewal")
+
+	// Wait for the test to finish
+	<-testfinished
 }

@@ -29,18 +29,20 @@ import (
 
 // MultiClusterLeaseLock implements the resourcelock.Interface using a MultiClusterLease CR.
 type MultiClusterLeaseLock struct {
-	client    client.Client
-	leaseName string
-	leaseNS   string
-	identity  string
+	client      client.Client
+	leaseName   string
+	leaseNS     string
+	identity    string
+	retryPeriod time.Duration
 }
 
-func New(client client.Client, leaseName, leaseNS, identity string) *MultiClusterLeaseLock {
+func New(client client.Client, leaseName, leaseNS, identity string, retryPeriod time.Duration) *MultiClusterLeaseLock {
 	return &MultiClusterLeaseLock{
-		client:    client,
-		leaseName: leaseName,
-		leaseNS:   leaseNS,
-		identity:  identity,
+		client:      client,
+		leaseName:   leaseName,
+		leaseNS:     leaseNS,
+		identity:    identity,
+		retryPeriod: retryPeriod,
 	}
 }
 
@@ -74,6 +76,7 @@ func (mcl *MultiClusterLeaseLock) Create(ctx context.Context, ler resourcelock.L
 			HolderIdentity:       &ler.HolderIdentity,
 			RenewTime:            &metav1.MicroTime{Time: ler.RenewTime.Time},
 			LeaseDurationSeconds: int32Ptr(int32(ler.LeaseDurationSeconds)),
+			RetryPeriodSeconds:   int32Ptr(int32(mcl.retryPeriod.Seconds())),
 		},
 	}
 	err := mcl.client.Create(ctx, lease)
@@ -128,6 +131,7 @@ func (mcl *MultiClusterLeaseLock) Update(ctx context.Context, ler resourcelock.L
 	lease.Spec.HolderIdentity = &ler.HolderIdentity
 	lease.Spec.RenewTime = &metav1.MicroTime{Time: ler.RenewTime.Time}
 	lease.Spec.LeaseDurationSeconds = int32Ptr(int32(ler.LeaseDurationSeconds))
+	lease.Spec.RetryPeriodSeconds = int32Ptr(int32(mcl.retryPeriod.Seconds()))
 	if err := mcl.client.Patch(ctx, lease, patch); err != nil {
 		return fmt.Errorf("failed to patch MultiClusterLease spec for heartbeat: %w", err)
 	}

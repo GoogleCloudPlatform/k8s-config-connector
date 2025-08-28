@@ -25,16 +25,18 @@ This document outlines the steps to implement the asynchronous, multi-cluster le
 
 ## Phase 3: End-to-End Testing
 
-4.  **[ ] Create a `kind`-based E2E Test**
-    -   [ ] Create a new test file, e.g., `controllers/e2e_test.go`.
-    -   [ ] Write a Go test that:
+4.  **[x] Create a `kind`-based E2E Test**
+    -   [x] Create a new test file, e.g., `controllers/e2e_test.go`.
+    -   [x] Write a Go test that:
         -   Connects to a Kubernetes cluster (expecting a `kind` cluster context).
         -   Creates a test namespace.
         -   Creates a `LeaderElector` instance configured with our custom `MultiClusterLeaseLock`.
         -   Runs the `LeaderElector` in a background goroutine.
         -   Asserts that the `onStartedLeading` callback is fired within a reasonable timeout.
         -   Asserts that the `MultiClusterLease` CR's `status.globalHolderIdentity` is correctly updated with the test's identity.
-    -   [ ] Add a new `Makefile` target (e.g., `test-e2e`) that:
+        -   Waits for a renewal period (e.g., `retryPeriod + 1s`).
+        -   Asserts that the `status.globalRenewTime` on the CR has been updated, confirming the renewal "happy path".
+    -   [x] Add a new `Makefile` target (e.g., `test-e2e`) that:
         -   Builds the controller Docker image.
         -   Creates a `kind` cluster.
         -   Loads the controller image into the `kind` cluster.
