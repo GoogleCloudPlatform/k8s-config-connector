@@ -1,10 +1,10 @@
-# Copyright 2022 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,22 +13,10 @@
 # limitations under the License.
 
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeForwardingRule
+kind: ComputeTargetTCPProxy
 metadata:
-  labels:
-    label-one: "value-one"
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: "direct"
-  name: computeglobalforwardingrule-${uniqueId}
+  name: computetargettcpproxy-sample
 spec:
-  description: "A global forwarding rule"
-  location: global
-  target:
-    targetTCPProxyRef:
-      name: computetargettcpproxy-${uniqueId}
-  portRange: "110"
-  ipProtocol: "TCP"
-  loadBalancingScheme: EXTERNAL
-  ipAddress:
-    addressRef:
-      name: computeaddress-${uniqueId}
+  description: "A sample global TCP proxy."
+  backendServiceRef:
+    name: computetargettcpproxy-dep
