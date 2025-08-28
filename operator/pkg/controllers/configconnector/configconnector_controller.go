@@ -194,8 +194,9 @@ func (r *Reconciler) handleReconcileFailed(ctx context.Context, nn types.Namespa
 	msg := fmt.Errorf("error during reconciliation: %w", reconcileErr).Error()
 	r.recordEvent(cc, corev1.EventTypeWarning, k8s.UpdateFailed, msg)
 	cc.SetCommonStatus(v1alpha1.CommonStatus{
-		Healthy: false,
-		Errors:  []string{msg},
+		Healthy:            false,
+		Errors:             []string{msg},
+		ObservedGeneration: cc.GetGeneration(),
 	})
 	return r.updateConfigConnectorStatus(ctx, cc)
 }
@@ -211,8 +212,9 @@ func (r *Reconciler) handleReconcileSucceeded(ctx context.Context, nn types.Name
 	}
 	r.recordEvent(cc, corev1.EventTypeNormal, k8s.UpToDate, k8s.UpToDateMessage)
 	cc.SetCommonStatus(v1alpha1.CommonStatus{
-		Healthy: true,
-		Errors:  []string{},
+		Healthy:            true,
+		Errors:             []string{},
+		ObservedGeneration: cc.GetGeneration(),
 	})
 	return r.updateConfigConnectorStatus(ctx, cc)
 }
