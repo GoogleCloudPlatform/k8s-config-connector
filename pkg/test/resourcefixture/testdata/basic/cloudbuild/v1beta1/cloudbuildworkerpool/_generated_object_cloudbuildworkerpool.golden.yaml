@@ -30,7 +30,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: //cloudbuild.googleapis.com/projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}
+  externalRef: projects/${projectId}/locations/us-central1/workerPools/cloudbuildworkerpool-${uniqueId}
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
