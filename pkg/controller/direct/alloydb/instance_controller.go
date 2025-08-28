@@ -182,7 +182,7 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 
 	desired := a.desired.DeepCopy()
 	resource := AlloyDBInstanceSpec_ToProto(mapCtx, &desired.Spec)
-	resource.Labels = common.ComputeLabels_ToProto(mapCtx, a.u)
+	resource.Labels = common.Labels_ToProto(mapCtx, a.u)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -244,7 +244,10 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	}
 
 	parsedActual := AlloyDBInstanceSpec_FromProto(mapCtx, a.actual)
-	desiredLabels := common.ComputeLabels_ToProto(mapCtx, a.u)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	desiredLabels := common.Labels_ToProto(mapCtx, a.u)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

@@ -169,7 +169,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	desired := a.desired.DeepCopy()
 	table := BigQueryTableSpec_ToProto(mapCtx, &desired.Spec)
-	table.Labels = common.ComputeLabels_ToProto(mapCtx, a.u)
+	table.Labels = common.Labels_ToProto(mapCtx, a.u)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -235,7 +235,10 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	desired := a.desired.DeepCopy()
 	table := BigQueryTableSpec_ToProto(mapCtx, &desired.Spec)
-	table.Labels = common.ComputeLabels_ToProto(mapCtx, a.u)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	table.Labels = common.Labels_ToProto(mapCtx, a.u)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

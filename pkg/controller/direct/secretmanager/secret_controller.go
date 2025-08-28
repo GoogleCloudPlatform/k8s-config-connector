@@ -229,7 +229,7 @@ func (a *Adapter) Create(ctx context.Context, op *directbase.CreateOperation) er
 
 	desired := a.desired.DeepCopy()
 	resource := SecretManagerSecretSpec_ToProto(mapCtx, &desired.Spec)
-	resource.Labels = common.ComputeLabels_ToProto(mapCtx, a.u)
+	resource.Labels = common.Labels_ToProto(mapCtx, a.u)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -285,7 +285,10 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 
 	desired := a.desired.DeepCopy()
 	resource := SecretManagerSecretSpec_ToProto(mapCtx, &desired.Spec)
-	resource.Labels = common.ComputeLabels_ToProto(mapCtx, a.u)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	resource.Labels = common.Labels_ToProto(mapCtx, a.u)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

@@ -16,6 +16,7 @@ package label
 
 import (
 	"unicode"
+	"unicode/utf8"
 )
 
 func NewGCPLabelsFromK8sLabels(labels map[string]string) map[string]string {
@@ -34,10 +35,11 @@ keyLoop:
 		// See: https://cloud.google.com/compute/docs/labeling-resources#requirements
 
 		// Key validation: 1-63 characters, lowercase letters, digits, underscores, hyphens. Must start with a letter.
-		if len(k) < 1 || len(k) > 63 {
+		if utf8.RuneCountInString(k) < 1 || utf8.RuneCountInString(k) > 63 {
 			continue
 		}
-		if !unicode.IsLower(rune(k[0])) {
+		firstRune, _ := utf8.DecodeRuneInString(k)
+		if !unicode.IsLower(firstRune) {
 			continue
 		}
 		for _, r := range k {
@@ -47,7 +49,7 @@ keyLoop:
 		}
 
 		// Value validation: 0-63 characters, lowercase letters, digits, underscores, hyphens.
-		if len(v) > 63 {
+		if utf8.RuneCountInString(v) > 63 {
 			continue
 		}
 		for _, r := range v {

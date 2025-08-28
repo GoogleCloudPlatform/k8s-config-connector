@@ -21,7 +21,7 @@ import (
 )
 
 // This function should be called if the typed object has `spec.labels` field.
-func ComputeLabels_ToProto(mapCtx *direct.MapContext, u *unstructured.Unstructured) map[string]string {
+func Labels_ToProto(mapCtx *direct.MapContext, u *unstructured.Unstructured) map[string]string {
 	var newLabels map[string]string
 	specLabels, found, err := unstructured.NestedStringMap(u.Object, "spec", "labels")
 	if err != nil {
@@ -33,9 +33,9 @@ func ComputeLabels_ToProto(mapCtx *direct.MapContext, u *unstructured.Unstructur
 	} else if found {
 		newLabels = map[string]string{}
 	} else {
-		newLabels = u.GetLabels()
+		newLabels = label.SanitizeGCPLabels(u.GetLabels())
 	}
-	// No matter where the labels come from, sanitize them based on GCP label validation.
-	newLabels = label.SanitizeGCPLabels(newLabels)
+	// Add the managed-by label to indicate that this resource is managed by KCC.
+	newLabels[label.CnrmManagedKey] = "true"
 	return newLabels
 }

@@ -128,7 +128,10 @@ func (a *apiAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 	desired := a.desired.DeepCopy()
 
 	resource := APIGatewayAPISpec_ToProto(mapCtx, &desired.Spec)
-	resource.Labels = common.ComputeLabels_ToProto(mapCtx, a.u)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	resource.Labels = common.Labels_ToProto(mapCtx, a.u)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -165,7 +168,10 @@ func (a *apiAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 
 	desired := a.desired.DeepCopy()
 	resource := APIGatewayAPISpec_ToProto(mapCtx, &desired.Spec)
-	resource.Labels = common.ComputeLabels_ToProto(mapCtx, a.u)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	resource.Labels = common.Labels_ToProto(mapCtx, a.u)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

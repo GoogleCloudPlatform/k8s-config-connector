@@ -326,7 +326,7 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 
 	desired := a.desired.DeepCopy()
 	resource := AlloyDBClusterSpec_ToProto(mapCtx, &desired.Spec)
-	resource.Labels = common.ComputeLabels_ToProto(mapCtx, a.u)
+	resource.Labels = common.Labels_ToProto(mapCtx, a.u)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -528,8 +528,11 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	}
 
 	desiredPb := AlloyDBClusterSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 	// 5. Handle labels.
-	desiredPb.Labels = common.ComputeLabels_ToProto(mapCtx, a.u)
+	desiredPb.Labels = common.Labels_ToProto(mapCtx, a.u)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

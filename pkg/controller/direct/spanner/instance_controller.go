@@ -153,7 +153,7 @@ func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbas
 		return err
 	}
 	resource := SpannerInstanceSpec_ToProto(mapCtx, &desired.Spec, a.id.SpannerInstanceConfigPrefix())
-	resource.Labels = common.ComputeLabels_ToProto(mapCtx, a.u)
+	resource.Labels = common.Labels_ToProto(mapCtx, a.u)
 	// If node count or processing unit and auto-scaling config is not specify,
 	// Default NodeCount to 1.
 	if resource.NodeCount == 0 && resource.ProcessingUnits == 0 && resource.AutoscalingConfig == nil {
@@ -200,7 +200,13 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 	}
 	desired := a.desired.DeepCopy()
 	resource := SpannerInstanceSpec_ToProto(mapCtx, &a.desired.Spec, a.id.SpannerInstanceConfigPrefix())
-	resource.Labels = common.ComputeLabels_ToProto(mapCtx, a.u)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	resource.Labels = common.Labels_ToProto(mapCtx, a.u)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
 	resource.Name = a.id.String()
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
