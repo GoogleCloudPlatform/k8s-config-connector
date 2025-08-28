@@ -1389,7 +1389,7 @@ func TestControllerOverridesField(t *testing.T) {
 			Namespace: "foo-ns",
 		},
 		Spec: corev1beta1.ConfigConnectorContextSpec{
-			Experiments: corev1beta1.Experiments{
+			Experiments: &corev1beta1.Experiments{
 				ControllerOverrides: map[string]k8sreconciler.ReconcilerType{
 					"BigQueryDataset.bigquery.cnrm.cloud.google.com": "direct",
 				},
