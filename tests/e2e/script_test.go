@@ -69,6 +69,11 @@ func TestE2EScript(t *testing.T) {
 	}
 
 	logCheckTimeout := 10 * time.Second
+	subtestTimeout := time.Hour
+	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
+		subtestTimeout = 3 * time.Minute
+	}
+
 	t.Run("scenarios", func(t *testing.T) {
 		scenarioDir := "testdata/scenarios"
 		scenarioPaths := findScripts(t, scenarioDir)
@@ -77,6 +82,7 @@ func TestE2EScript(t *testing.T) {
 			scenarioPath := scenarioPath
 
 			t.Run(scenarioPath, func(t *testing.T) {
+				ctx := addTestTimeout(ctx, t, subtestTimeout, scenarioPath)
 				uniqueID := testvariable.NewUniqueID()
 				folderID := ""
 
