@@ -23,6 +23,9 @@ const (
 	KCCProtoMessageAnnotationSpec = "+kcc:spec:proto"
 	// KCCProtoMessageAnnotationObservedState is used for top-level ObservedState structs that map to proto messages
 	KCCProtoMessageAnnotationObservedState = "+kcc:observedstate:proto"
+	// KCCProtoMessageAnnotationObservedState is used for top-level Status structs that map to proto messages
+	// (Used by legacy controllers)
+	KCCProtoMessageAnnotationStatus = "+kcc:status:proto"
 
 	// KCCProtoFieldAnnotation is used for go struct fields that map to proto fields
 	KCCProtoFieldAnnotation = "+kcc:proto:field"
@@ -39,6 +42,7 @@ func GetProtoMessageFromAnnotation(commentLine string) (string, bool) {
 		KCCProtoMessageAnnotationMisc,
 		KCCProtoMessageAnnotationSpec,
 		KCCProtoMessageAnnotationObservedState,
+		KCCProtoMessageAnnotationStatus,
 	} {
 		if strings.HasPrefix(trimmed, annotation+"=") {
 			return strings.TrimSpace(strings.TrimPrefix(trimmed, annotation+"=")), true
