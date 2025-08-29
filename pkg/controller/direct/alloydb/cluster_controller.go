@@ -435,6 +435,11 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 		}
 		log.V(2).Info("successfully created Cluster", "name", a.id)
 	}
+	status := AlloyDBClusterStatus_FromProto(mapCtx, created)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return a.updateStatus(ctx, mapCtx, createOp, created)
 }
 
