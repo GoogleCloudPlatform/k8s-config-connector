@@ -159,7 +159,7 @@ func (a *savedQueryAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	}
 
 	desired := a.desired.DeepCopy()
-	resource := AssetSavedQuerySpec_ToProto(mapCtx, &desired.Spec)
+	resource := AssetSavedQuerySpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -219,7 +219,7 @@ func (a *savedQueryAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	}
 
 	desired := a.desired.DeepCopy()
-	resource := AssetSavedQuerySpec_ToProto(mapCtx, &desired.Spec)
+	resource := AssetSavedQuerySpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -293,7 +293,7 @@ func (a *savedQueryAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 	mapCtx := &direct.MapContext{}
 
 	obj := &krm.AssetSavedQuery{}
-	obj.Spec = direct.ValueOf(AssetSavedQuerySpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(AssetSavedQuerySpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

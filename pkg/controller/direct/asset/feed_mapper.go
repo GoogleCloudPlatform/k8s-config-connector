@@ -22,7 +22,7 @@ import (
 	exprpb "google.golang.org/genproto/googleapis/type/expr"
 )
 
-func Expr_FromProto(mapCtx *direct.MapContext, in *exprpb.Expr) *krmv1alpha1.Expr {
+func Expr_v1alpha1_FromProto(mapCtx *direct.MapContext, in *exprpb.Expr) *krmv1alpha1.Expr {
 	if in == nil {
 		return nil
 	}
@@ -34,7 +34,7 @@ func Expr_FromProto(mapCtx *direct.MapContext, in *exprpb.Expr) *krmv1alpha1.Exp
 	return out
 }
 
-func Expr_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Expr) *exprpb.Expr {
+func Expr_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Expr) *exprpb.Expr {
 	if in == nil {
 		return nil
 	}
