@@ -69,16 +69,6 @@ func ComputeFirewallPolicyRuleStatus_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: TargetSecureTags
 	return out
 }
-func ComputeFirewallPolicyRuleStatus_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallPolicyRuleStatus) *pb.FirewallPolicyRule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FirewallPolicyRule{}
-	out.Kind = in.Kind
-	out.RuleTupleCount = direct.LazyPtr(int32(*in.RuleTupleCount))
-	// MISSING: TargetSecureTags
-	return out
-}
 
 func FirewallpolicyruleLayer4Configs_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcherLayer4Config) *krm.FirewallPolicyRuleLayer4Configs {
 	if in == nil {
