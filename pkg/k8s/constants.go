@@ -98,6 +98,8 @@ const (
 	ManagerNamespaceIsolationFlag      = "manager-namespace-isolation"
 	ManagerNamespaceIsolationShared    = "shared"
 	ManagerNamespaceIsolationDedicated = "dedicated"
+
+	ReconcilerTypeAnnotation = "cnrm.cloud.google.com/reconciler"
 )
 
 var (
