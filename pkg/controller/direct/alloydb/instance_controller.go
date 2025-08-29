@@ -267,7 +267,7 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 	if len(updatePaths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		if *a.desired.Status.ExternalRef == "" {
+		if a.desired.Status.ExternalRef == nil {
 			// If it is the first reconciliation after switching to direct controller,
 			// or is an acquisition, then update Status to fill out the ExternalRef
 			// and ObservedState.
@@ -306,7 +306,7 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	if *a.desired.Status.ExternalRef == "" {
+	if a.desired.Status.ExternalRef == nil {
 		// If it is the first reconciliation after switching to direct controller,
 		// or is an acquisition with updates, then fill out the ExternalRef.
 		status.ExternalRef = direct.LazyPtr(a.id.String())
