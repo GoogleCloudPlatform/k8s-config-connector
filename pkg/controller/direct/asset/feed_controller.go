@@ -163,7 +163,7 @@ func (a *feedAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 	}
 
 	desired := a.desired.DeepCopy()
-	resource := AssetFeedSpec_ToProto(mapCtx, &desired.Spec)
+	resource := AssetFeedSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -221,7 +221,7 @@ func (a *feedAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	}
 
 	desired := a.desired.DeepCopy()
-	resource := AssetFeedSpec_ToProto(mapCtx, &desired.Spec)
+	resource := AssetFeedSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -272,7 +272,7 @@ func (a *feedAdapter) Export(ctx context.Context) (*unstructured.Unstructured, e
 
 	obj := &krm.AssetFeed{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(AssetFeedSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(AssetFeedSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

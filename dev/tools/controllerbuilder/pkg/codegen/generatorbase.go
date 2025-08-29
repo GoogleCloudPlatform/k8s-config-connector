@@ -23,6 +23,7 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
+	"golang.org/x/tools/imports"
 	"k8s.io/klog/v2"
 )
 
@@ -123,8 +124,14 @@ func (f *generatedFile) Write(addCopyright bool, writeEmptyFiles bool) error {
 	f.body.WriteTo(&w)
 
 	p := filepath.Join(dir, f.key.FileName)
+	formatted, err := imports.Process(p, w.Bytes(), nil)
+	if err != nil {
+		klog.Errorf("error from goimports processing file %q:\n%s", p, w.String())
+		return fmt.Errorf("running goimports on %q: %w", p, err)
+	}
+
 	klog.Infof("writing file %v", p)
-	if err := os.WriteFile(p, w.Bytes(), 0644); err != nil {
+	if err := os.WriteFile(p, formatted, 0644); err != nil {
 		return fmt.Errorf("writing %q: %w", p, err)
 	}
 

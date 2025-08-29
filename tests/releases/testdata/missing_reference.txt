@@ -1,3 +1,4 @@
+asset.cnrm.cloud.google.com/v1beta1, Kind=AssetSavedQuery
 bigquery.cnrm.cloud.google.com/v1beta1, Kind=BigQueryRoutine
 bigqueryreservation.cnrm.cloud.google.com/v1beta1, Kind=BigQueryReservationReservation
 datacatalog.cnrm.cloud.google.com/v1beta1, Kind=DataCatalogPolicyTag
