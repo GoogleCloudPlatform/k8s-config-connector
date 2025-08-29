@@ -51,5 +51,7 @@ func dashboardFuzzer() fuzztesting.KRMFuzzer {
 		fuzzer.UnimplementedFields.Insert(widgetPath + ".time_series_table.data_sets[].time_series_query.time_series_filter_ratio.pick_time_series_filter.interval")
 	}
 
+	fuzzer.StatusFields.Insert(".etag")
+
 	return fuzzer
 }
