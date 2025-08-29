@@ -148,7 +148,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -179,7 +179,7 @@ X-Xss-Protection: 0
 
 POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "Description of BQ Table",
@@ -306,7 +306,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -356,266 +356,6 @@ X-Xss-Protection: 0
             "mode": "NULLABLE",
             "name": "key",
             "policyTags": {},
-            "type": "STRING"
-          },
-          {
-            "description": "values",
-            "mode": "NULLABLE",
-            "name": "value",
-            "policyTags": {},
-            "type": "STRING"
-          }
-        ],
-        "mode": "REPEATED",
-        "name": "labels",
-        "type": "RECORD"
-      }
-    ]
-  },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable-${uniqueId}"
-  },
-  "type": "TABLE"
-}
-
----
-
-PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "description": "Description of BQ Table",
-  "friendlyName": "BigQueryTable Example",
-  "labels": {
-    "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
-    "managed-by-cnrm": "true"
-  },
-  "schema": {
-    "fields": [
-      {
-        "dataPolicies": [
-          {
-            "name": "mock dataPolicies"
-          }
-        ],
-        "description": "Name of the entity",
-        "mode": "REQUIRED",
-        "name": "name",
-        "policyTags": {
-          "names": [
-            "mock policytags"
-          ]
-        },
-        "type": "STRING"
-      },
-      {
-        "description": "atlan BQ labels",
-        "fields": [
-          {
-            "dataPolicies": [
-              {
-                "name": "mock dataPolicies"
-              }
-            ],
-            "description": "key",
-            "mode": "NULLABLE",
-            "name": "key",
-            "policyTags": {
-              "names": [
-                "mock policytags"
-              ]
-            },
-            "type": "STRING"
-          },
-          {
-            "description": "values",
-            "mode": "NULLABLE",
-            "name": "value",
-            "policyTags": {},
-            "type": "STRING"
-          }
-        ],
-        "mode": "REPEATED",
-        "name": "labels",
-        "type": "RECORD"
-      }
-    ]
-  },
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable-${uniqueId}"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTime": "123456789",
-  "description": "Description of BQ Table",
-  "etag": "abcdef0123A=",
-  "friendlyName": "BigQueryTable Example",
-  "id": "000000000000000000000",
-  "kind": "bigquery#table",
-  "labels": {
-    "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "numActiveLogicalBytes": "0",
-  "numBytes": "0",
-  "numLongTermBytes": "0",
-  "numLongTermLogicalBytes": "0",
-  "numRows": "0",
-  "numTotalLogicalBytes": "0",
-  "schema": {
-    "fields": [
-      {
-        "dataPolicies": [
-          {
-            "name": "mock dataPolicies"
-          }
-        ],
-        "description": "Name of the entity",
-        "mode": "REQUIRED",
-        "name": "name",
-        "policyTags": {
-          "names": [
-            "mock policytags"
-          ]
-        },
-        "type": "STRING"
-      },
-      {
-        "description": "atlan BQ labels",
-        "fields": [
-          {
-            "dataPolicies": [
-              {
-                "name": "mock dataPolicies"
-              }
-            ],
-            "description": "key",
-            "mode": "NULLABLE",
-            "name": "key",
-            "policyTags": {
-              "names": [
-                "mock policytags"
-              ]
-            },
-            "type": "STRING"
-          },
-          {
-            "description": "values",
-            "mode": "NULLABLE",
-            "name": "value",
-            "policyTags": {},
-            "type": "STRING"
-          }
-        ],
-        "mode": "REPEATED",
-        "name": "labels",
-        "type": "RECORD"
-      }
-    ]
-  },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable-${uniqueId}"
-  },
-  "type": "TABLE"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTime": "123456789",
-  "description": "Description of BQ Table",
-  "etag": "abcdef0123A=",
-  "friendlyName": "BigQueryTable Example",
-  "id": "000000000000000000000",
-  "kind": "bigquery#table",
-  "labels": {
-    "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "numActiveLogicalBytes": "0",
-  "numBytes": "0",
-  "numLongTermBytes": "0",
-  "numLongTermLogicalBytes": "0",
-  "numRows": "0",
-  "numTotalLogicalBytes": "0",
-  "schema": {
-    "fields": [
-      {
-        "dataPolicies": [
-          {
-            "name": "mock dataPolicies"
-          }
-        ],
-        "description": "Name of the entity",
-        "mode": "REQUIRED",
-        "name": "name",
-        "policyTags": {
-          "names": [
-            "mock policytags"
-          ]
-        },
-        "type": "STRING"
-      },
-      {
-        "description": "atlan BQ labels",
-        "fields": [
-          {
-            "dataPolicies": [
-              {
-                "name": "mock dataPolicies"
-              }
-            ],
-            "description": "key",
-            "mode": "NULLABLE",
-            "name": "key",
-            "policyTags": {
-              "names": [
-                "mock policytags"
-              ]
-            },
             "type": "STRING"
           },
           {
@@ -644,7 +384,7 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json; charset=UTF-8

@@ -774,7 +774,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -805,7 +805,7 @@ X-Xss-Protection: 0
 
 POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "clustering": {
@@ -821,10 +821,9 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "friendlyName": "BigQueryTable Full Example",
   "labels": {
-    "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "spec-label-key1": "value1",
+    "spec-label-key2": "value2"
   },
   "requirePartitionFilter": true,
   "schema": {
@@ -956,10 +955,9 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
-    "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "spec-label-key1": "value1",
+    "spec-label-key2": "value2"
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
@@ -1083,7 +1081,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1113,10 +1111,9 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
-    "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "spec-label-key1": "value1",
+    "spec-label-key2": "value2"
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
@@ -1242,7 +1239,7 @@ X-Xss-Protection: 0
 
 PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "clustering": {
@@ -1258,10 +1255,9 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "friendlyName": "BigQueryTable Full Example",
   "labels": {
-    "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "spec-label-key1": "updated-value1",
+    "spec-label-key2": "updated-value2"
   },
   "requirePartitionFilter": true,
   "schema": {
@@ -1407,10 +1403,9 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
-    "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "spec-label-key1": "updated-value1",
+    "spec-label-key2": "updated-value2"
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
@@ -1579,10 +1574,9 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
-    "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "spec-label-key1": "updated-value1",
+    "spec-label-key2": "updated-value2"
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
@@ -1721,7 +1715,7 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json; charset=UTF-8
