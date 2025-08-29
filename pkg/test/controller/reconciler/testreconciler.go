@@ -24,9 +24,15 @@ import (
 	"testing"
 	"time"
 
+	bigquerykrm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
+	computekrm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	secretkrm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
+	spannerkrm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
@@ -34,6 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policymember"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
+	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/reconciliationinterval"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
@@ -56,6 +63,9 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
@@ -179,7 +189,7 @@ func ExpectedSuccessfulReconcileResultFor(r *TestReconciler, u *unstructured.Uns
 	return reconcile.Result{RequeueAfter: reconciliationinterval.MeanReconcileReenqueuePeriod(u.GroupVersionKind(), r.smLoader, r.dclConverter.MetadataLoader)}
 }
 
-func ReconcilerTypeForObject(u *unstructured.Unstructured) (k8s.ReconcilerType, error) {
+func ReconcilerTypeForObject(u *unstructured.Unstructured, c client.Client) (k8s.ReconcilerType, error) {
 	if !k8s.IsManagedByKCC(u.GroupVersionKind()) {
 		// It is only valid to call this function for KCC-managed objects.
 		return "", fmt.Errorf("%v %v/%v is not managed by KCC; cannot determine reconciler type", u.GetKind(), u.GetNamespace(), u.GetName())
@@ -200,6 +210,70 @@ func ReconcilerTypeForObject(u *unstructured.Unstructured) (k8s.ReconcilerType, 
 		// Check for alpha annotation to opt in to direct reconciliation.
 		if _, ok := u.GetAnnotations()[k8s.ReconcilerTypeAnnotation]; ok {
 			return k8s.ReconcilerTypeDirect, nil
+		}
+
+		// Check for resource-specific fields that indicate the resource should be
+		// reconciled via direct.
+		if objectGVK.Kind == "BigQueryTable" {
+			obj := &bigquerykrm.BigQueryTable{}
+			if _, ok := u.GetAnnotations()[kccpredicate.AnnotationUnmanaged]; ok {
+				return k8s.ReconcilerTypeDirect, nil
+			}
+			if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+				return "", fmt.Errorf("error converting to %T: %w", obj, err)
+			}
+			if obj.Spec.Labels != nil {
+				return k8s.ReconcilerTypeDirect, nil
+			}
+		}
+		if objectGVK.Kind == "ComputeForwardingRule" {
+			obj := &computekrm.ComputeForwardingRule{}
+			if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+				return "", fmt.Errorf("error converting to %T: %w", obj, err)
+			}
+			if obj.Spec.Target != nil && obj.Spec.Target.GoogleAPIsBundle != nil {
+				return k8s.ReconcilerTypeDirect, nil
+			}
+		}
+		if objectGVK.Kind == "ComputeTargetTCPProxy" {
+			obj := &computekrm.ComputeTargetTCPProxy{}
+			if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+				return "", fmt.Errorf("error converting to %T: %w", obj, err)
+			}
+			if obj.Spec.Location != nil && obj.Spec.Location != direct.PtrTo("global") {
+				return k8s.ReconcilerTypeDirect, nil
+			}
+		}
+		if objectGVK.Kind == "SecretManagerSecret" {
+			obj := &secretkrm.SecretManagerSecret{}
+			if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+				return "", fmt.Errorf("error converting to %T: %w", obj, err)
+			}
+			if obj.Spec.Labels != nil {
+				return k8s.ReconcilerTypeDirect, nil
+			}
+		}
+		if objectGVK.Kind == "SpannerInstance" {
+			obj := &spannerkrm.SpannerInstance{}
+			if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+				return "", fmt.Errorf("error converting to %T: %w", obj, err)
+			}
+			if obj.Spec.DefaultBackupScheduleType != nil || obj.Spec.Labels != nil || obj.Spec.Edition != nil || obj.Spec.AutoscalingConfig != nil {
+				return k8s.ReconcilerTypeDirect, nil
+			}
+		}
+
+		// Check for CCC setting
+		_, ccc, err := kccstate.FetchLiveKCCState(context.Background(), c, types.NamespacedName{Namespace: u.GetNamespace(), Name: u.GetName()})
+		if err != nil {
+			return "", fmt.Errorf("error fetching kcc state: %w", err)
+		}
+		if ccc.Spec.Experiments != nil {
+			for k, v := range ccc.Spec.Experiments.ControllerOverrides {
+				if k == u.GetObjectKind().GroupVersionKind().GroupKind().String() {
+					return v, nil
+				}
+			}
 		}
 
 		// Check static config to determine the reconciler type.
@@ -254,7 +328,7 @@ func (r *TestReconciler) newReconcilerForObject(u *unstructured.Unstructured) re
 		r.t.Fatal(err)
 	}
 
-	rt, err := ReconcilerTypeForObject(u)
+	rt, err := ReconcilerTypeForObject(u, r.mgr.GetClient())
 	if err != nil {
 		r.t.Fatal(err)
 	}

@@ -202,8 +202,8 @@ var ControllerConfigStatic = &ResourcesControllerMap{
 		SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform, k8s.ReconcilerTypeDirect},
 	},
 	{Group: "iam.cnrm.cloud.google.com", Kind: "IAMAuditConfig"}: {
-		DefaultController:    k8s.ReconcilerTypeDirect,
-		SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect},
+		DefaultController:    k8s.ReconcilerTypeIAMAuditConfig,
+		SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeIAMAuditConfig},
 	},
 	{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeFirewallPolicyAssociation"}: {
 		DefaultController:    k8s.ReconcilerTypeDCL,
@@ -594,8 +594,8 @@ var ControllerConfigStatic = &ResourcesControllerMap{
 		SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect},
 	},
 	{Group: "iam.cnrm.cloud.google.com", Kind: "IAMPartialPolicy"}: {
-		DefaultController:    k8s.ReconcilerTypeDirect,
-		SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect},
+		DefaultController:    k8s.ReconcilerTypeIAMPartialPolicy,
+		SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeIAMPartialPolicy},
 	},
 	{Group: "monitoring.cnrm.cloud.google.com", Kind: "MonitoringDashboard"}: {
 		DefaultController:    k8s.ReconcilerTypeDirect,
@@ -934,8 +934,8 @@ var ControllerConfigStatic = &ResourcesControllerMap{
 		SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform},
 	},
 	{Group: "iam.cnrm.cloud.google.com", Kind: "IAMPolicyMember"}: {
-		DefaultController:    k8s.ReconcilerTypeTerraform,
-		SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform},
+		DefaultController:    k8s.ReconcilerTypeIAMPolicyMember,
+		SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeIAMPolicyMember},
 	},
 	{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBCluster"}: {
 		DefaultController:    k8s.ReconcilerTypeTerraform,
@@ -1470,8 +1470,8 @@ var ControllerConfigStatic = &ResourcesControllerMap{
 		SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect},
 	},
 	{Group: "iam.cnrm.cloud.google.com", Kind: "IAMPolicy"}: {
-		DefaultController:    k8s.ReconcilerTypeTerraform,
-		SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform},
+		DefaultController:    k8s.ReconcilerTypeIAMPolicy,
+		SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeIAMPolicy},
 	},
 	{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeOrganizationSecurityPolicyRule"}: {
 		DefaultController:    k8s.ReconcilerTypeTerraform,
