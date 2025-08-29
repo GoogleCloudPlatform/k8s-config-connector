@@ -640,7 +640,7 @@ spark:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed DataprocCluster resource. Should be in the format "projects/{{projectID}}/regions/{{region}}/clusters/{{clusterName}}".{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed DataprocNodeGroup resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -650,7 +650,7 @@ spark:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of a DataprocCluster resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a DataprocNodeGroup resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -660,7 +660,7 @@ spark:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The namespace of a DataprocCluster resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a DataprocNodeGroup resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
