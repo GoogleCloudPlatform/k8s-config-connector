@@ -22,7 +22,7 @@ import (
 	api "google.golang.org/api/sqladmin/v1beta4"
 )
 
-func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance, actual *api.DatabaseInstance, unmanagedFields []string) {
 	if in.Spec.InstanceType == nil {
 		// GCP default InstanceType is CLOUD_SQL_INSTANCE.
 		out.InstanceType = "CLOUD_SQL_INSTANCE"
@@ -61,10 +61,21 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		// GCP default DiskType is PD_SSD.
 		out.Settings.DataDiskType = "PD_SSD"
 	}
-	if in.Spec.Settings.Edition == nil {
-		// GCP default Edition is ENTERPRISE.
+	isEditionUnmanaged := false
+	for _, field := range unmanagedFields {
+		if field == "spec.settings.edition" {
+			isEditionUnmanaged = true
+			break
+		}
+	}
+	if isEditionUnmanaged {
+		// just take the value of actual
+		out.Settings.Edition = actual.Settings.Edition
+	} else if in.Spec.Settings.Edition == nil {
+		// Apply client side GCP default Edition is ENTERPRISE.
 		out.Settings.Edition = "ENTERPRISE"
 	}
+
 	if in.Spec.Settings.IpConfiguration == nil {
 		// GCP default IpConfiguration.
 		out.Settings.IpConfiguration = &api.IpConfiguration{
