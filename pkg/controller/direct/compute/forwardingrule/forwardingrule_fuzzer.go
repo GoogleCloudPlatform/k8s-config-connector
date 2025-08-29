@@ -65,6 +65,7 @@ func computeForwardingRuleFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".psc_connection_status")
 	f.StatusFields.Insert(".self_link")
 	f.StatusFields.Insert(".service_name")
+	f.StatusFields.Insert(".I_p_address")
 
 	// Unimplemented fields
 	f.UnimplementedFields.Insert(".id")
