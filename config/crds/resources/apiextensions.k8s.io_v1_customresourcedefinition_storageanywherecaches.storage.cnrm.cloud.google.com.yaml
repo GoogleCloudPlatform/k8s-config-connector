@@ -112,14 +112,14 @@ spec:
                 - disabled
                 type: string
               resourceID:
-                description: The AnywhereCacheID generated via backend, It can be
+                description: The AnywhereCacheID generated via backend. It can be
                   used by users to manage an existing cache.
                 type: string
               ttl:
                 default: 86400s
                 description: Cache entry TTL (ranges between 1h to 7d). This is a
                   cache-level config that defines how long a cache entry can live.
-                  Defaults to "86400s" TTL must be in whole seconds.
+                  Defaults to "86400s". TTL must be in whole seconds.
                 type: string
               zone:
                 description: Immutable. The zone in which the cache instance needs
@@ -290,14 +290,14 @@ spec:
                 - disabled
                 type: string
               resourceID:
-                description: The AnywhereCacheID generated via backend, It can be
+                description: The AnywhereCacheID generated via backend. It can be
                   used by users to manage an existing cache.
                 type: string
               ttl:
                 default: 86400s
                 description: Cache entry TTL (ranges between 1h to 7d). This is a
                   cache-level config that defines how long a cache entry can live.
-                  Defaults to "86400s" TTL must be in whole seconds.
+                  Defaults to "86400s". TTL must be in whole seconds.
                 type: string
               zone:
                 description: Immutable. The zone in which the cache instance needs

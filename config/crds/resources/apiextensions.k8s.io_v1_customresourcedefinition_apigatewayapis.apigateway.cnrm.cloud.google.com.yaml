@@ -66,8 +66,7 @@ spec:
                 additionalProperties:
                   type: string
                 description: Optional. Resource labels to represent user-provided
-                  metadata. Refer to cloud documentation on labels for more details.
-                  https://cloud.google.com/compute/docs/labeling-resources
+                  metadata. Refer to Google Cloud on labels for more details. https://cloud.google.com/compute/docs/labeling-resources
                 type: object
               managedService:
                 description: Optional. Immutable. The name of a Google Managed Service
@@ -222,8 +221,7 @@ spec:
                 additionalProperties:
                   type: string
                 description: Optional. Resource labels to represent user-provided
-                  metadata. Refer to cloud documentation on labels for more details.
-                  https://cloud.google.com/compute/docs/labeling-resources
+                  metadata. Refer to Google Cloud on labels for more details. https://cloud.google.com/compute/docs/labeling-resources
                 type: object
               managedService:
                 description: Optional. Immutable. The name of a Google Managed Service
