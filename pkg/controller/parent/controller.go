@@ -19,8 +19,13 @@ import (
 	"fmt"
 	"strings"
 
+	bigquerykrm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
+	computekrm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	secretkrm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
+	spannerkrm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
@@ -29,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
@@ -127,6 +133,56 @@ func (r *ParentReconciler) determineControllerType(ctx context.Context, u *unstr
 	annotations := u.GetAnnotations()
 	if annotations[k8s.AlphaReconcilerAnnotation] == "direct" {
 		return k8s.ReconcilerTypeDirect, nil
+	}
+
+	// Special case handling. Will be removed after the resources have turned on direct as default.
+	if r.gvk.Kind == "BigQueryTable" {
+		obj := &bigquerykrm.BigQueryTable{}
+		if _, ok := annotations[kccpredicate.AnnotationUnmanaged]; ok {
+			return k8s.ReconcilerTypeDirect, nil
+		}
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+			return "", fmt.Errorf("error converting to %T: %w", obj, err)
+		}
+		if obj.Spec.Labels != nil {
+			return k8s.ReconcilerTypeDirect, nil
+		}
+	}
+	if r.gvk.Kind == "ComputeForwardingRule" {
+		obj := &computekrm.ComputeForwardingRule{}
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+			return "", fmt.Errorf("error converting to %T: %w", obj, err)
+		}
+		if obj.Spec.Target != nil && obj.Spec.Target.GoogleAPIsBundle != nil {
+			return k8s.ReconcilerTypeDirect, nil
+		}
+	}
+	if r.gvk.Kind == "ComputeTargetTCPProxy" {
+		obj := &computekrm.ComputeTargetTCPProxy{}
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+			return "", fmt.Errorf("error converting to %T: %w", obj, err)
+		}
+		if obj.Spec.Location != nil && obj.Spec.Location != direct.PtrTo("global") {
+			return k8s.ReconcilerTypeDirect, nil
+		}
+	}
+	if r.gvk.Kind == "SecretManagerSecret" {
+		obj := &secretkrm.SecretManagerSecret{}
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+			return "", fmt.Errorf("error converting to %T: %w", obj, err)
+		}
+		if obj.Spec.Labels != nil {
+			return k8s.ReconcilerTypeDirect, nil
+		}
+	}
+	if r.gvk.Kind == "SpannerInstance" {
+		obj := &spannerkrm.SpannerInstance{}
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+			return "", fmt.Errorf("error converting to %T: %w", obj, err)
+		}
+		if obj.Spec.DefaultBackupScheduleType != nil || obj.Spec.Labels != nil || obj.Spec.Edition != nil || obj.Spec.AutoscalingConfig != nil {
+			return k8s.ReconcilerTypeDirect, nil
+		}
 	}
 
 	// Check for CCC setting
