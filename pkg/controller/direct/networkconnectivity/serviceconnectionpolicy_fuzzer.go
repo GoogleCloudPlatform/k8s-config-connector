@@ -49,6 +49,7 @@ func serviceConnectionPolicyFuzzer() fuzztesting.KRMFuzzer {
 	fuzzer.StatusFields.Insert(".update_time")
 	fuzzer.StatusFields.Insert(".infrastructure")
 	fuzzer.StatusFields.Insert(".psc_connections")
+	fuzzer.StatusFields.Insert(".etag")
 
 	return fuzzer
 }
