@@ -56,6 +56,7 @@ func dataflowFlexTemplateJobFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".disk_size_gb")
 	f.UnimplementedFields.Insert(".dump_heap_on_oom")
 	f.UnimplementedFields.Insert(".save_heap_dumps_to_gcs_path")
+	f.UnimplementedFields.Insert(".streaming_mode")
 
 	return f
 }
