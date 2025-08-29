@@ -58,6 +58,7 @@ func computeForwardingRuleFuzzer() fuzztesting.KRMFuzzer {
 
 	// Status fields
 	f.StatusFields.Insert(".base_forwarding_rule")
+	f.StatusFields.Insert(".I_p_protocol")
 	f.StatusFields.Insert(".creation_timestamp")
 	f.StatusFields.Insert(".label_fingerprint")
 	f.StatusFields.Insert(".psc_connection_id")
