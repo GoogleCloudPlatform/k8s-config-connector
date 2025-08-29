@@ -54,7 +54,7 @@ controllerbuilder prompt --src-dir ~/kcc/k8s-config-connector --proto-dir ~/kcc/
 EOF
 
 # TODO: We could easily do this "classically"
-codebot --prompt=/dev/stdin <<EOF
+gemini --prompt=/dev/stdin <<EOF
 Add an unnamed (_) go import for  
 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/${SERVICE}"
 to the imports in pkg/controller/direct/register/register.go

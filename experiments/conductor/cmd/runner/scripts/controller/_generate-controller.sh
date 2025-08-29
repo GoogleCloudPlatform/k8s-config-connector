@@ -27,7 +27,7 @@ echo "SERVICE: $SERVICE, the config connector api group name" # e.g. cloudbuild
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 DEBUG_LOG="${REPO_ROOT}/resource-${KIND}-fail.log" 
-CODEBOT_LOG="${REPO_ROOT}/resource-${KIND}-codebot.log" 
+CODEBOT_LOG="${REPO_ROOT}/resource-${KIND}-gemini.log" 
 INS_PATH="${REPO_ROOT}/experiments/conductor/cmd/runner/scripts/controller"
 
 function git_commit() {    
@@ -74,9 +74,8 @@ function run_worker() {
         ins="${INS_PATH}"/llm-gcp-imports.txt
         msg=$(cat $ins)
         msg=$(eval "echo \"$msg\"")
-        codebot --ui-type "bash" --base-dir "${REPO_ROOT}" --proto-dir "${REPO_ROOT}"/.build/third_party/googleapis/  <<EOF >> ${CODEBOT_LOG} 2>&1 
-"${msg}"
-EOF
+        msg="The base directory is ${REPO_ROOT}. The proto directory is ${REPO_ROOT}/.build/third_party/googleapis. ${msg}"
+        gemini --prompt="${msg}" >> ${CODEBOT_LOG} 2>&1
         if [[ $? -eq 0 ]]; then
             git_commit "[llm] fix gcp imports for ${KIND}"
         fi 
@@ -84,9 +83,8 @@ EOF
         ins="${INS_PATH}"/llm-fix-gobuild.txt
         msg=$(cat $ins)
         msg=$(eval "echo \"$msg\"")
-        codebot --ui-type "bash" --base-dir "${REPO_ROOT}" --proto-dir "${REPO_ROOT}"/.build/third_party/googleapis/  <<EOF >> ${CODEBOT_LOG} 2>&1 
-"${msg}"
-EOF
+        msg="The base directory is ${REPO_ROOT}. The proto directory is ${REPO_ROOT}/.build/third_party/googleapis. ${msg}"
+        gemini --prompt="${msg}" >> ${CODEBOT_LOG} 2>&1
         if [[ $? -eq 0 ]]; then
             git_commit "[llm] fix gobuilds for ${KIND}"
         fi 

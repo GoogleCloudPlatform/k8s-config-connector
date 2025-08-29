@@ -96,7 +96,7 @@ EOF
 cat ${PROMPT_DIR}/03-add-service.prompt | \
     envsubst '$SERVICE' > ${LOG_DIR}/03-add-service.prompt
 
-codebot --prompt=${LOG_DIR}/03-add-service.prompt
+gemini --prompt=${LOG_DIR}/03-add-service.prompt
 
 
 git status

@@ -339,7 +339,7 @@ Respond only with the YAML content, no explanations.`,
 
 	cfg := CommandConfig{
 		Name:         "Generate Create YAML",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(createPrompt),
 		WorkDir:      opts.branchRepoDir,
@@ -369,7 +369,7 @@ Respond only with the YAML content, no explanations.`,
 
 	cfg = CommandConfig{
 		Name:         "Generate Update YAML",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(updatePrompt),
 		WorkDir:      opts.branchRepoDir,
@@ -651,7 +651,7 @@ func createFullCoverageTest(ctx context.Context, opts *RunnerOptions, branch Bra
 		createPrompt = strings.ReplaceAll(createPrompt, "${MISSING_FIELDS}", fmt.Sprintf("%+v", missingFields))
 		cfg = CommandConfig{
 			Name:         "Generate Create YAML",
-			Cmd:          "codebot",
+			Cmd:          "gemini",
 			Args:         []string{"--prompt=/dev/stdin"},
 			Stdin:        strings.NewReader(createPrompt),
 			WorkDir:      opts.branchRepoDir,
@@ -668,7 +668,7 @@ func createFullCoverageTest(ctx context.Context, opts *RunnerOptions, branch Bra
 		updatePrompt = strings.ReplaceAll(updatePrompt, "${KIND}", branch.Kind)
 		cfg = CommandConfig{
 			Name:         "Generate Update YAML",
-			Cmd:          "codebot",
+			Cmd:          "gemini",
 			Args:         []string{"--prompt=/dev/stdin"},
 			Stdin:        strings.NewReader(updatePrompt),
 			WorkDir:      opts.branchRepoDir,
@@ -686,7 +686,7 @@ func createFullCoverageTest(ctx context.Context, opts *RunnerOptions, branch Bra
 		dependenciesPrompt = strings.ReplaceAll(dependenciesPrompt, "${CURRENT_YEAR}", fmt.Sprintf("%d", currentYear))
 		cfg = CommandConfig{
 			Name:         "Generate Dependencies YAML",
-			Cmd:          "codebot",
+			Cmd:          "gemini",
 			Args:         []string{"--prompt=/dev/stdin"},
 			Stdin:        strings.NewReader(dependenciesPrompt),
 			WorkDir:      opts.branchRepoDir,
@@ -796,7 +796,7 @@ in the file config/tests/samples/create/harness.go
 
 	cfg := CommandConfig{
 		Name:         "Codebot Update Harness",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		WorkDir:      opts.branchRepoDir,
 		Stdin:        strings.NewReader(prompt),
@@ -958,7 +958,7 @@ func fixControllerBuild(ctx context.Context, opts *RunnerOptions, branch Branch,
 	// Run codebot to fix the issues
 	cfg := CommandConfig{
 		Name:         "Fix Controller Build Errors",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,
@@ -1083,7 +1083,7 @@ Use ReadFile, EditFile to make the changes.
 
 	cfg := CommandConfig{
 		Name:         "Fix Golden Tests",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		WorkDir:      opts.branchRepoDir,
 		Stdin:        strings.NewReader(prompt),
@@ -1248,7 +1248,7 @@ func fixMockGcpForGoldenTests(ctx context.Context, opts *RunnerOptions, branch B
 	// Run the LLM to generate the file.
 	cfg := CommandConfig{
 		Name:         "Fix mockgcp for golden failures",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      filepath.Join(opts.branchRepoDir, "mockgcp"),

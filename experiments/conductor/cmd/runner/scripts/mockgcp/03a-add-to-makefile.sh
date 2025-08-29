@@ -59,7 +59,7 @@ cd ${REPO_ROOT}/mockgcp
 cat ${PROMPT_DIR}/03-add-to-makefile.prompt | \
     envsubst '$PROTO_PACKAGE' > ${LOG_DIR}/03-add-to-makefile.prompt
 
-codebot --prompt=${LOG_DIR}/03-add-to-makefile.prompt
+gemini --prompt=${LOG_DIR}/03-add-to-makefile.prompt
 
 
 git status

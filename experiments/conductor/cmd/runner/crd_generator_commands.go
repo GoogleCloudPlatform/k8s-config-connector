@@ -114,8 +114,8 @@ func generateCRDFromScripts(opts *RunnerOptions, branch Branch) {
 
 		cfg := CommandConfig{
 			Name:    "CODEBOT GENERATE",
-			Cmd:     "codebot",
-			Args:    []string{"--ui-type=prompt", "--prompt=mockgcp/crdgen_prompt.txt"},
+			Cmd:     "gemini",
+			Args:    []string{"--prompt=mockgcp/crdgen_prompt.txt"},
 			WorkDir: workDir,
 		}
 		if err := executeCommand(cfg, &out); err != nil {
@@ -320,7 +320,7 @@ func generateFuzzer(ctx context.Context, opts *RunnerOptions, branch Branch, exe
 
 	cfg = CommandConfig{
 		Name:         "Import addition",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		WorkDir:      workDir,
 		Stdin:        strings.NewReader(stdinInput),
@@ -368,7 +368,7 @@ func setTypeSpecStatus(ctx context.Context, opts *RunnerOptions, branch Branch, 
 	// Run codebot with the prepared prompt
 	cfg := CommandConfig{
 		Name:         "Set spec and status",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,
@@ -438,7 +438,7 @@ func setTypeParent(ctx context.Context, opts *RunnerOptions, branch Branch, exec
 	// Run codebot to adjust types
 	cfg := CommandConfig{
 		Name:         "Set parent",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,
@@ -551,7 +551,7 @@ func adjustIdentityParent(ctx context.Context, opts *RunnerOptions, branch Branc
 	// Run codebot to adjust types
 	cfg := CommandConfig{
 		Name:         "Adjust identity parent",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,
@@ -603,7 +603,7 @@ func adjustIdentityParentNewFunction(ctx context.Context, opts *RunnerOptions, b
 	// Run codebot to adjust types
 	cfg := CommandConfig{
 		Name:         "Adjust identity parent new function",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,
@@ -648,7 +648,7 @@ func removeNameField(ctx context.Context, opts *RunnerOptions, branch Branch, ex
 	// Run codebot to adjust types
 	cfg := CommandConfig{
 		Name:         "Remove Name Field",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,
@@ -692,7 +692,7 @@ func moveEtagField(ctx context.Context, opts *RunnerOptions, branch Branch, exec
 	// Run codebot to adjust types
 	cfg := CommandConfig{
 		Name:         "Move Etag Field",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,
@@ -744,7 +744,7 @@ func addRequiredFieldTags(ctx context.Context, opts *RunnerOptions, branch Branc
 	// Run codebot to adjust types
 	cfg := CommandConfig{
 		Name:         "Add Required Field Tags",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,
@@ -880,7 +880,7 @@ func fixAPICheckFailures(ctx context.Context, opts *RunnerOptions, branch Branch
 	// Run codebot to fix the issues
 	cfg := CommandConfig{
 		Name:         "Fix API Check Failures",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,

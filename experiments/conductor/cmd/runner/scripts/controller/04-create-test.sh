@@ -98,7 +98,7 @@ git status
 git add .
 git commit -m "${CRD_KIND}: Create minimal test"
 
-codebot --prompt=/dev/stdin <<EOF
+gemini --prompt=/dev/stdin <<EOF
 Please add a case statement for Group "${CRD_GROUP}" and Kind "${CRD_KIND}" to the switch statement in MaybeSkip,
 in the file config/tests/samples/create/harness.go
 
