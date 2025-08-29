@@ -142,7 +142,7 @@ Vary: X-Origin
 GRPC /google.storage.control.v2.StorageControl/GetManagedFolder
 
 {
-  "name": "projects/_/buckets/bucket-for-managed-folder-${uniqueId}/managedFolders/storagemanagedfolder-${uniqueId}",
+  "name": "projects/_/buckets/bucket-for-managed-folder-${uniqueId}/managedFolders/storagemanagedfolder-${uniqueId}/",
   "requestId": "1234"
 }
 
@@ -175,7 +175,7 @@ OK
 GRPC /google.storage.control.v2.StorageControl/GetManagedFolder
 
 {
-  "name": "projects/_/buckets/bucket-for-managed-folder-${uniqueId}/managedFolders/storagemanagedfolder-${uniqueId}",
+  "name": "projects/_/buckets/bucket-for-managed-folder-${uniqueId}/managedFolders/storagemanagedfolder-${uniqueId}/",
   "requestId": "1234"
 }
 
@@ -193,7 +193,7 @@ OK
 GRPC /google.storage.control.v2.StorageControl/GetManagedFolder
 
 {
-  "name": "projects/_/buckets/bucket-for-managed-folder-${uniqueId}/managedFolders/storagemanagedfolder-${uniqueId}",
+  "name": "projects/_/buckets/bucket-for-managed-folder-${uniqueId}/managedFolders/storagemanagedfolder-${uniqueId}/",
   "requestId": "1234"
 }
 
@@ -211,7 +211,7 @@ OK
 GRPC /google.storage.control.v2.StorageControl/DeleteManagedFolder
 
 {
-  "name": "projects/_/buckets/bucket-for-managed-folder-${uniqueId}/managedFolders/storagemanagedfolder-${uniqueId}",
+  "name": "projects/_/buckets/bucket-for-managed-folder-${uniqueId}/managedFolders/storagemanagedfolder-${uniqueId}/",
   "requestId": "1234"
 }
 

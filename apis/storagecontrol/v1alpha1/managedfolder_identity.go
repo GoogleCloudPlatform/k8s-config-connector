@@ -52,14 +52,6 @@ func (p *ManagedFolderParent) String() string {
 	return "projects/" + p.ProjectID + "/buckets/" + p.BucketName
 }
 
-// Builds a new ManagedFolderIdentity from parent and resourceID
-func GetManagedFolderIdentity(parent *ManagedFolderParent, id string) *ManagedFolderIdentity {
-	return &ManagedFolderIdentity{
-		parent: parent,
-		id:     id,
-	}
-}
-
 // New builds a ManagedFolderIdentity from the Config Connector ManagedFolder object.
 func NewManagedFolderIdentity(ctx context.Context, reader client.Reader, obj *StorageManagedFolder) (*ManagedFolderIdentity, error) {
 
