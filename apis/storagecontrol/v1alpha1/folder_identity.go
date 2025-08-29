@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -64,12 +66,17 @@ func NewFolderIdentity(ctx context.Context, reader client.Reader, obj *StorageFo
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	//TODO: Update to use storagebucket parseExternal once the resource is migrated to SciFi.
-	storageBucketRef, err := refsv1beta1.ResolveStorageBucketRef(ctx, reader, obj, obj.Spec.StorageBucketRef)
+
+	external, err := obj.Spec.StorageBucketRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
-	bucketName := strings.Split(storageBucketRef.External, "/")[3]
+	bucketIdentity, err := storagev1beta1.ParseStorageBucketExternal(external)
+	if err != nil {
+		return nil, err
+	}
+
+	bucketName := bucketIdentity.ID()
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
