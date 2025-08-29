@@ -265,43 +265,32 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		updatePaths = append(updatePaths, "labels")
 	}
 
+	updated := a.actual
 	if len(updatePaths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		if a.desired.Status.ExternalRef == nil {
-			// If it is the first reconciliation after switching to direct controller,
-			// or is an acquisition, then update Status to fill out the ExternalRef
-			// and ObservedState.
-			status := AlloyDBInstanceStatus_FromProto(mapCtx, a.actual)
-			if mapCtx.Err() != nil {
-				return mapCtx.Err()
-			}
-			status.ExternalRef = direct.LazyPtr(a.id.String())
-			return updateOp.UpdateStatus(ctx, status, nil)
+	} else {
+		updateMask := &fieldmaskpb.FieldMask{
+			Paths: updatePaths,
 		}
-		return nil
+		desiredPb := AlloyDBInstanceSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+		desiredPb.Labels = desiredLabels
+		desiredPb.Name = a.id.String()
+		req := &alloydbpb.UpdateInstanceRequest{
+			UpdateMask: updateMask,
+			Instance:   desiredPb,
+		}
+		op, err := a.gcpClient.UpdateInstance(ctx, req)
+		if err != nil {
+			log.V(2).Info("error updating instance", "name", a.id, "error", err)
+			return fmt.Errorf("updating instance %s: %w", a.id, err)
+		}
+		updated, err = op.Wait(ctx)
+		if err != nil {
+			log.V(2).Info("error waiting instance update", "name", a.id, "error", err)
+			return fmt.Errorf("instance %s waiting update: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated instance", "name", a.id)
 	}
-	updateMask := &fieldmaskpb.FieldMask{
-		Paths: updatePaths,
-	}
-	desiredPb := AlloyDBInstanceSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	desiredPb.Labels = desiredLabels
-	desiredPb.Name = a.id.String()
-	req := &alloydbpb.UpdateInstanceRequest{
-		UpdateMask: updateMask,
-		Instance:   desiredPb,
-	}
-	op, err := a.gcpClient.UpdateInstance(ctx, req)
-	if err != nil {
-		log.V(2).Info("error updating instance", "name", a.id, "error", err)
-		return fmt.Errorf("updating instance %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		log.V(2).Info("error waiting instance update", "name", a.id, "error", err)
-		return fmt.Errorf("instance %s waiting update: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated instance", "name", a.id)
-
 	status := AlloyDBInstanceStatus_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()

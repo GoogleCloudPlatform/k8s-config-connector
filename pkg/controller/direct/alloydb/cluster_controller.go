@@ -572,51 +572,37 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	paths.Delete("network_config.network")
 	paths.Delete("network")
 
+	updated := a.actual
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-
-		if a.desired.Status.ExternalRef == nil {
-			// If it is the first reconciliation after switching to direct controller,
-			// or is an acquisition, then update Status to fill out the ExternalRef
-			// and ObservedState.
-			status := AlloyDBClusterStatus_FromProto(mapCtx, a.actual)
-			if mapCtx.Err() != nil {
-				return mapCtx.Err()
-			}
-			status.ExternalRef = direct.LazyPtr(a.id.String())
-			return updateOp.UpdateStatus(ctx, status, nil)
+	} else {
+		// TODO: Decide if we want to clean up default fields set in desired state.
+		topLevelFieldPaths := sets.New[string]()
+		for path, _ := range paths {
+			tokens := strings.Split(path, ".")
+			topLevelFieldPaths.Insert(tokens[0])
 		}
-		return nil
-	}
+		updateMask := &fieldmaskpb.FieldMask{
+			Paths: sets.List(topLevelFieldPaths),
+		}
 
-	// TODO: Decide if we want to clean up default fields set in desired state.
-
-	topLevelFieldPaths := sets.New[string]()
-	for path, _ := range paths {
-		tokens := strings.Split(path, ".")
-		topLevelFieldPaths.Insert(tokens[0])
+		updateOp.RecordUpdatingEvent()
+		req := &alloydbpb.UpdateClusterRequest{
+			UpdateMask: updateMask,
+			Cluster:    desiredPb,
+		}
+		op, err := a.gcpClient.UpdateCluster(ctx, req)
+		if err != nil {
+			log.V(2).Info("error updating Cluster", "name", a.id, "error", err)
+			return fmt.Errorf("updating Cluster %s: %w", a.id, err)
+		}
+		updated, err = op.Wait(ctx)
+		if err != nil {
+			log.V(2).Info("error waiting for Cluster update op", "name", a.id, "error", err)
+			return fmt.Errorf("Cluster %s waiting update: %w", a.id.String(), err)
+		}
+		log.V(2).Info("successfully updated Cluster", "name", a.id)
 	}
-	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(topLevelFieldPaths),
-	}
-
-	updateOp.RecordUpdatingEvent()
-	req := &alloydbpb.UpdateClusterRequest{
-		UpdateMask: updateMask,
-		Cluster:    desiredPb,
-	}
-	op, err := a.gcpClient.UpdateCluster(ctx, req)
-	if err != nil {
-		log.V(2).Info("error updating Cluster", "name", a.id, "error", err)
-		return fmt.Errorf("updating Cluster %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		log.V(2).Info("error waiting for Cluster update op", "name", a.id, "error", err)
-		return fmt.Errorf("Cluster %s waiting update: %w", a.id.String(), err)
-	}
-	log.V(2).Info("successfully updated Cluster", "name", a.id)
-
 	status := AlloyDBClusterStatus_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
