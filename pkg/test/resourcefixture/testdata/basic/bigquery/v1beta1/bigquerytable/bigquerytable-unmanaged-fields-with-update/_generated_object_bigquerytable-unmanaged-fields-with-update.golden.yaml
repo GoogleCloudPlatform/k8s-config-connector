@@ -4,12 +4,11 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/state-into-spec: absent
     cnrm.cloud.google.com/unmanaged: spec.schema.fields.policyTags,spec.schema.fields.dataPolicies
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
     key1: value1
@@ -21,7 +20,6 @@ spec:
     name: bigquerydataset${uniqueId}
   description: Updated Description of BQ Table
   friendlyName: BigQueryTable Example
-  resourceID: bigquerytable-${uniqueId}
   schema: |-
     [
       {
@@ -64,8 +62,9 @@ status:
     type: Ready
   creationTime: "1970-01-01T00:00:00Z"
   etag: abcdef123456
+  externalRef: projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}
   lastModifiedTime: "1970-01-01T00:00:00Z"
   location: us-central1
-  observedGeneration: 3
+  observedGeneration: 2
   selfLink: https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}
   type: TABLE

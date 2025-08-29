@@ -15,7 +15,5 @@ spec:
   description: Updated Description of BQ Table
   friendlyName: BigQueryTable Example
   resourceID: bigquerytable-${uniqueId}
-  schema: '[{"dataPolicies":[{"name":"mock dataPolicies"}],"description":"Name of
-    the entity","mode":"REQUIRED","name":"name","policyTags":{"names":["mock policytags"]},"type":"STRING"},{"description":"atlan
-    BQ labels","fields":[{"dataPolicies":[{"name":"mock dataPolicies"}],"description":"key","mode":"NULLABLE","name":"key","policyTags":{"names":["mock
-    policytags"]},"type":"STRING"},{"description":"values","mode":"NULLABLE","name":"value","policyTags":{},"type":"STRING"}],"mode":"REPEATED","name":"labels","type":"RECORD"}]'
+  schema: '[{"description":"Name of the entity","mode":"REQUIRED","name":"name","type":"STRING"},{"description":"atlan
+    BQ labels","fields":[{"description":"key","mode":"NULLABLE","name":"key","type":"STRING"},{"description":"values","mode":"NULLABLE","name":"value","type":"STRING"}],"mode":"REPEATED","name":"labels","type":"RECORD"}]'
