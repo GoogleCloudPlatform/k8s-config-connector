@@ -29,7 +29,6 @@ import (
 	gcp "cloud.google.com/go/storage/control/apiv2"
 
 	pb "cloud.google.com/go/storage/control/apiv2/controlpb"
-	"google.golang.org/api/option"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -54,19 +53,6 @@ var _ directbase.Model = &modelManagedFolder{}
 
 type modelManagedFolder struct {
 	config config.ControllerConfig
-}
-
-func (m *modelManagedFolder) client(ctx context.Context) (*gcp.StorageControlClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.GRPCClientOptions()
-	if err != nil {
-		return nil, err
-	}
-	gcpClient, err := gcp.NewStorageControlClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building ManagedFolder client: %w", err)
-	}
-	return gcpClient, err
 }
 
 func (m *modelManagedFolder) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -112,20 +98,33 @@ func (m *modelManagedFolder) AdapterForURL(ctx context.Context, url string) (dir
 		return nil, nil
 	}
 
-	gcpClient, err := m.client(ctx)
-	if err != nil {
-		return nil, err
+	// Create in-memory KRM object from the parsed URL.
+	// This allows us to use the identity creation logic in AdapterForObject.
+	u := &unstructured.Unstructured{
+		Object: map[string]any{
+			"apiVersion": krm.StorageManagedFolderGVK.GroupVersion().String(),
+			"kind":       krm.StorageManagedFolderGVK.Kind,
+			"metadata": map[string]any{
+				"name": id,
+			},
+			"spec": map[string]any{
+				"projectRef": map[string]any{
+					"external": parent.ProjectID,
+				},
+				"storageBucketRef": map[string]any{
+					"external": parent.BucketName,
+				},
+			},
+		},
 	}
 
-	return &ManagedFolderAdapter{
-		id:        krm.GetManagedFolderIdentity(parent, id),
-		gcpClient: gcpClient,
-	}, nil
+	// Call AdapterForObject with the dynamically created object.
+	return m.AdapterForObject(ctx, nil, u)
 }
 
 type ManagedFolderAdapter struct {
 	id        *krm.ManagedFolderIdentity
-	gcpClient ManagedFolderAPI
+	gcpClient *gcp.StorageControlClient
 	desired   *krm.StorageManagedFolder
 	actual    *pb.ManagedFolder
 }
@@ -142,7 +141,7 @@ func (a *ManagedFolderAdapter) Find(ctx context.Context) (bool, error) {
 
 	// The format of the request name is verified to use the following format.
 	// Reference: https://https://cloud.google.com/storage/docs/creating-managing-managed-folders#storage-create-managed-folder-go
-	fqn := fmt.Sprintf("projects/_/buckets/%s/managedFolders/%s", a.id.Parent().BucketName, a.id.ID())
+	fqn := fmt.Sprintf("projects/_/buckets/%s/managedFolders/%s/", a.id.Parent().BucketName, a.id.ID())
 
 	req := &pb.GetManagedFolderRequest{Name: fqn}
 	managedfolderpb, err := a.gcpClient.GetManagedFolder(ctx, req)
@@ -246,7 +245,7 @@ func (a *ManagedFolderAdapter) Delete(ctx context.Context, deleteOp *directbase.
 
 	// The format of the request name is verified to use the following format.
 	// Reference: https://https://cloud.google.com/storage/docs/creating-managing-managed-folders#storage-create-managed-folder-go
-	fqn := fmt.Sprintf("projects/_/buckets/%s/managedFolders/%s", a.id.Parent().BucketName, a.id.ID())
+	fqn := fmt.Sprintf("projects/_/buckets/%s/managedFolders/%s/", a.id.Parent().BucketName, a.id.ID())
 
 	req := &pb.DeleteManagedFolderRequest{Name: fqn}
 	err := a.gcpClient.DeleteManagedFolder(ctx, req)

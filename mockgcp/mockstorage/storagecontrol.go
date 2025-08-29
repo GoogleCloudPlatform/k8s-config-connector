@@ -204,8 +204,7 @@ func (s *StorageControlService) DisableAnywhereCache(ctx context.Context, req *p
 func (s *StorageControlService) GetManagedFolder(ctx context.Context, req *pb.GetManagedFolderRequest) (*pb.ManagedFolder, error) {
 	obj := &pb.ManagedFolder{}
 	// Since a ManagedFolder's Name is stored with a trailing "/", we need to add it to the end of the request Name.
-	storedName := req.GetName() + "/"
-	if err := s.storage.Get(ctx, storedName, obj); err != nil {
+	if err := s.storage.Get(ctx, req.GetName(), obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "The specified managed folder does not exist.")
 		}
@@ -253,9 +252,7 @@ func (s *StorageControlService) CreateManagedFolder(ctx context.Context, req *pb
 
 func (s *StorageControlService) DeleteManagedFolder(ctx context.Context, req *pb.DeleteManagedFolderRequest) (*emptypb.Empty, error) {
 	deleted := &pb.ManagedFolder{}
-	// Since a ManagedFolder's Name is stored with a trailing "/", we need to add it to the end of the request Name.
-	storedName := req.GetName() + "/"
-	if err := s.storage.Delete(ctx, storedName, deleted); err != nil {
+	if err := s.storage.Delete(ctx, req.GetName(), deleted); err != nil {
 		return nil, err
 	}
 
