@@ -31,11 +31,13 @@ Vary: X-Origin
   },
   "iamConfiguration": {
     "bucketPolicyOnly": {
-      "enabled": false
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
     },
     "publicAccessPrevention": "inherited",
     "uniformBucketLevelAccess": {
-      "enabled": true
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
     }
   },
   "id": "000000000000000000000",
