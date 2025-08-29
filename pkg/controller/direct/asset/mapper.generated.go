@@ -20,12 +20,12 @@
 package asset
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1beta1"
 	pb "cloud.google.com/go/asset/apiv1/assetpb"
 	krmassetv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
 func AssetFeedSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Feed) *krmassetv1alpha1.AssetFeedSpec {
 	if in == nil {
 		return nil

@@ -20,7 +20,6 @@
 
 package v1beta1
 
-
 // +kcc:proto=google.cloud.asset.v1.IamPolicyAnalysisQuery.AccessSelector
 type IAMPolicyAnalysisQuery_AccessSelector struct {
 	// Optional. The roles to appear in result.
