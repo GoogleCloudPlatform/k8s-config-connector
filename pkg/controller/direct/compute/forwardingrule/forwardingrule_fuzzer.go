@@ -54,7 +54,7 @@ func computeForwardingRuleFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".service_label")
 	f.SpecFields.Insert(".source_ip_ranges")
 	f.SpecFields.Insert(".subnetwork")
-	f.SpecFields.Insert(".target")
+	// f.SpecFields.Insert(".target") // Remove from SpecFields
 
 	// Status fields
 	f.StatusFields.Insert(".base_forwarding_rule")
@@ -76,6 +76,7 @@ func computeForwardingRuleFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".region")
 	f.UnimplementedFields.Insert(".fingerprint")
 	f.UnimplementedFields.Insert(".service_directory_registrations.service_directory_region")
+	f.UnimplementedFields.Insert(".target") // Add to UnimplementedFields
 
 	return f
 }
