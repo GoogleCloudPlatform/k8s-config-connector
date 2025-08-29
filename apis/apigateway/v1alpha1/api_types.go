@@ -29,7 +29,7 @@ type APIGatewayAPISpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Optional. Resource labels to represent user-provided metadata.
-	//  Refer to cloud documentation on labels for more details.
+	//  Refer to Google Cloud on labels for more details.
 	//  https://cloud.google.com/compute/docs/labeling-resources
 	// +kcc:proto:field=google.cloud.apigateway.v1.Api.labels
 	Labels map[string]string `json:"labels,omitempty"`
