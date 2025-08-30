@@ -35,6 +35,8 @@ import (
 	"k8s.io/klog/v2"
 )
 
+const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
+
 func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) error {
 	replacements := NewReplacements()
 	findLinksInKRMObject(t, replacements, u)
@@ -110,12 +112,23 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to Dataflow
 	visitor.sortAndDeduplicateSlices.Insert(".spec.additionalExperiments")
 
-	//Specific to Dataproc
-	visitor.replacePaths[".status.observedState.stateHistory[].stateStartTime"] = "2024-04-01T12:34:56.123456Z"
-	visitor.replacePaths[".status.observedState.stateTime"] = "2024-04-01T12:34:56.123456Z"
-	visitor.replacePaths[".status.observedState.statusHistory[].stateStartTime"] = "2024-04-01T12:34:56.123456Z"
-	visitor.replacePaths[".status.observedState.status.stateStartTime"] = "2024-04-01T12:34:56.123456Z"
-	visitor.replacePaths[".status.observedState.outputUri"] = "gs://dataproc-staging-us-central1-${projectNumber}-h/google-cloud-dataproc-metainfo/fffc/jobs/srvls-batch/driveroutput"
+	// Specific to Dataproc
+	{
+		visitor.ReplacePath(".status.clusterUuid", "${clusterUuid}")
+		visitor.ReplacePath(".status.status.stateStartTime", PlaceholderTimestamp)
+		visitor.ReplacePath(".status.statusHistory[].stateStartTime", PlaceholderTimestamp)
+
+		visitor.ReplacePath(".status.metrics.hdfsMetrics.dfs-capacity-present", "56789")
+		visitor.ReplacePath(".status.metrics.hdfsMetrics.dfs-capacity-remaining", "56789")
+		visitor.ReplacePath(".status.metrics.hdfsMetrics.dfs-capacity-total", "56789")
+		visitor.ReplacePath(".status.metrics.hdfsMetrics.dfs-capacity-used", "56789")
+
+		visitor.replacePaths[".status.observedState.stateHistory[].stateStartTime"] = PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.stateTime"] = PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.statusHistory[].stateStartTime"] = PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.status.stateStartTime"] = PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.outputUri"] = "gs://dataproc-staging-us-central1-${projectNumber}-h/google-cloud-dataproc-metainfo/fffc/jobs/srvls-batch/driveroutput"
+	}
 
 	// Specific to Firestore
 	visitor.replacePaths[".status.observedState.earliestVersionTime"] = "1970-01-01T00:00:00Z"
