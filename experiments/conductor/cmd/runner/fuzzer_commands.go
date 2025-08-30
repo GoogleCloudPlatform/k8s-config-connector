@@ -140,7 +140,7 @@ func fixFuzzerFailures(ctx context.Context, opts *RunnerOptions, branch Branch, 
 	// Run codebot to fix the issues
 	cfg := CommandConfig{
 		Name:         "Fix Fuzzer Failures",
-		Cmd:          "codebot",
+		Cmd:          "gemini",
 		Args:         []string{"--prompt=/dev/stdin"},
 		Stdin:        strings.NewReader(prompt),
 		WorkDir:      opts.branchRepoDir,

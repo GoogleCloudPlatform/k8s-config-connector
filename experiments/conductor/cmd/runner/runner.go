@@ -739,17 +739,13 @@ func addEnableAPIsModifier(opts *RunnerOptions, branch Branch, workDir string) B
 
 	cfg := CommandConfig{
 		Name:    "API Discovery",
-		Cmd:     "codebot",
+		Cmd:     "gemini",
 		Args:    []string{"--prompt=/dev/stdin"},
 		WorkDir: workDir,
 		Stdin: strings.NewReader(fmt.Sprintf(`Given the gcloud command %q, what Google Cloud APIs need to be enabled to use this command?
-Try inferring the apis required from the command.
-If needed use gcloud command to instrospect the error message to get the API name.
 Please respond with a list of API service names in the format needed for 'gcloud services enable'.
 For example, if a command needs the Cloud Storage API, respond with 'storage.googleapis.com'.
-If you are using gcloud to create something, make sure you are deleting it after you are done.
-Print the list of APIs, one on each line in this format api-required: <api-name>
-Only include APIs that are directly needed by this command.
+Print only the list of APIs, one on each line.
 `, branch.Command)),
 		RetryBackoff: GenerativeCommandRetryBackoff,
 	}
@@ -760,21 +756,10 @@ Only include APIs that are directly needed by this command.
 		return branch
 	}
 
-	// Parse the codebot output to get API list
-	var filteredLines []string
-	for _, line := range strings.Split(strings.TrimSpace(output.Stdout), "\n") {
-		line = strings.TrimSpace(line)
-		if strings.HasPrefix(line, "api-required:") {
-			filteredLines = append(filteredLines, line)
-		}
-	}
-
-	// split the structred output into a list of APIs
+	// Parse the output to get API list
 	var cleanedAPIs []string
-	for _, api := range filteredLines {
-		api = strings.TrimSpace(api)
-		api = strings.TrimPrefix(api, "api-required:")
-		api = strings.TrimSpace(api)
+	for _, line := range strings.Split(strings.TrimSpace(output.Stdout), "\n") {
+		api := strings.TrimSpace(line)
 		if api != "" {
 			cleanedAPIs = append(cleanedAPIs, api)
 		}

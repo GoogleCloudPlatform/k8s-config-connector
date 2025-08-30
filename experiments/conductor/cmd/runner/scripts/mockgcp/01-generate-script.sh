@@ -62,7 +62,7 @@ git co ${BRANCH_NAME} || git co -b ${BRANCH_NAME}
 
 cd ${REPO_ROOT}/mockgcp
 
-codebot --prompt=${LOG_DIR}/prompt | tee ${LOG_DIR}/codebot.log
+gemini --prompt=${LOG_DIR}/prompt | tee ${LOG_DIR}/gemini.log
 
 git status
 git add ${EXPECTED_PATH}/script.yaml
