@@ -28,13 +28,13 @@ func init() {
 }
 
 func pubSubSnapshotFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.Snapshot{},
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.Snapshot{},
 		PubSubSnapshotSpec_FromProto, PubSubSnapshotSpec_ToProto,
+		PubSubSnapshotObservedState_FromProto, PubSubSnapshotObservedState_ToProto,
 	)
-
 	f.SpecFields.Insert(".topic")
-	f.SpecFields.Insert(".expire_time")
 	f.SpecFields.Insert(".labels")
+	f.StatusFields.Insert(".expire_time")
 
 	f.UnimplementedFields.Insert(".name") // special field
 

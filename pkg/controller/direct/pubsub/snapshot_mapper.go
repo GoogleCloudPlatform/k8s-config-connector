@@ -35,7 +35,6 @@ func PubSubSnapshotSpec_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *k
 	if in.GetTopic() != "" {
 		out.TopicRef = &pubsubv1beta1.PubSubTopicRef{External: in.GetTopic()}
 	}
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	out.Labels = in.Labels
 	return out
 }
@@ -48,7 +47,6 @@ func PubSubSnapshotSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSubSnapsho
 	if in.TopicRef != nil {
 		out.Topic = in.TopicRef.External
 	}
-	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
 	out.Labels = in.Labels
 	return out
 }
