@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	bigquery "cloud.google.com/go/bigquery"
 	"google.golang.org/api/option"
@@ -136,11 +137,8 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	mapCtx := &direct.MapContext{}
 
 	desiredDataset := BigQueryDatasetSpec_ToProto(mapCtx, &a.desired.Spec)
-	desiredDataset.Labels = make(map[string]string)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		desiredDataset.Labels[k] = v
-	}
-	desiredDataset.Labels["managed-by-cnrm"] = "true"
+	desiredDataset.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.Labels)
+	// return fmt.Errorf("filtered labels: %v", desiredDataset.Labels)
 
 	// Resolve KMS key reference
 	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
@@ -245,7 +243,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	if desiredKRM.Spec.IsCaseInsensitive != nil && !reflect.DeepEqual(desired.IsCaseInsensitive, resource.IsCaseInsensitive) {
 		resource.IsCaseInsensitive = desired.IsCaseInsensitive
-		updateMask.Paths = append(updateMask.Paths, "is_case_sensitive")
+		updateMask.Paths = append(updateMask.Paths, "is_case_insensitive")
 	}
 	if desired.StorageBillingModel != "" && !reflect.DeepEqual(desired.StorageBillingModel, resource.StorageBillingModel) {
 		resource.StorageBillingModel = desired.StorageBillingModel
@@ -258,10 +256,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		resource.MaxTimeTravel = desired.MaxTimeTravel
 		updateMask.Paths = append(updateMask.Paths, "max_time_travel")
 	}
-	if desired.Access != nil && resource.Access != nil && len(desired.Access) > 0 && !reflect.DeepEqual(desired.Access, resource.Access) {
-		for _, access := range desired.Access {
-			resource.Access = append(resource.Access, access)
-		}
+	if desired.Access != nil && !reflect.DeepEqual(desired.Access, resource.Access) {
+		resource.Access = desired.Access
+		updateMask.Paths = append(updateMask.Paths, "access")
 	}
 	if len(updateMask.Paths) == 0 {
 		return nil
@@ -269,10 +266,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	// Compute the dataset metadate for update request
 	datasetMetadataToUpdate := BigQueryDataset_ToMetadataToUpdate(mapCtx, resource, updateMask.Paths)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
+	for k, v := range label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels()) {
 		datasetMetadataToUpdate.SetLabel(k, v)
 	}
-	datasetMetadataToUpdate.SetLabel("managed-by-cnrm", "true")
 	// Call update
 	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
 	updated, err := dsHandler.Update(ctx, *datasetMetadataToUpdate, "")
@@ -285,6 +281,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	status = BigQueryDatasetStatus_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
+	}
+	if status.ExternalRef == nil {
+		status.ExternalRef = direct.LazyPtr(a.id.String())
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
