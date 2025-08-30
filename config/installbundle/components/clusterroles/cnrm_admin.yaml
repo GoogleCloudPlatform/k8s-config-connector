@@ -260,6 +260,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - billing.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - billingbudgets.cnrm.cloud.google.com
   resources:
   - '*'
