@@ -26,11 +26,12 @@ import (
 	"testing"
 	"time"
 
+	"k8s.io/apimachinery/pkg/runtime/schema"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
@@ -481,54 +482,60 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		if externalRef != "" {
 			tokens := strings.Split(externalRef, "/")
 			n := len(tokens)
-			typeName := tokens[len(tokens)-2]
-
-			switch typeName {
-			case "contacts":
-				// "projects/${projectNumber}/contacts/${contactId}"
-				needle := "contacts/" + tokens[len(tokens)-1]
-				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-					return strings.ReplaceAll(s, needle, "contacts/${contactId}")
-				})
-			case "rules":
-				// Get firewall policy id from firewall policy rule's externalRef and replace it
-				// e.g. "locations/global/firewallPolicies/${firewallPolicyID}/rules/9000"
-				if n >= 3 {
-					firewallPolicyId := tokens[len(tokens)-3]
+			if n >= 2 {
+				typeName := tokens[len(tokens)-2]
+				switch typeName {
+				case "contacts":
+					// "projects/${projectNumber}/contacts/${contactId}"
+					needle := "contacts/" + tokens[len(tokens)-1]
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-						return strings.ReplaceAll(s, firewallPolicyId, "${firewallPolicyID}")
+						return strings.ReplaceAll(s, needle, "contacts/${contactId}")
 					})
-				}
-			case "processorVersions":
-				// Get processor id and version id from processor version's externalRef and replace it
-				// e.g. "projects/${projectId}/locations/us/processors/7f8f177e3b9cc6d9/processorVersions/1954ace3de6"
-				if n >= 3 {
-					processorId := tokens[len(tokens)-3]
-					processorVersionId := tokens[len(tokens)-1]
-					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-						return strings.ReplaceAll(s, processorId, "${processorID}")
-					})
-					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-						return strings.ReplaceAll(s, processorVersionId, "${processorVersionID}")
-					})
-				}
-			// Replace the server generated group id
-			case "groups":
-				// e.g. "groups/194f77d03ad"
-				groupId := tokens[len(tokens)-1]
-				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-					return strings.ReplaceAll(s, groupId, "${groupID}")
-				})
-			case "memberships":
-				// e.g. "groups/194f77d03ad/memberships/196a3927214"
-				if n >= 3 {
-					groupId := tokens[len(tokens)-3]
+				case "rules":
+					// Get firewall policy id from firewall policy rule's externalRef and replace it
+					// e.g. "locations/global/firewallPolicies/${firewallPolicyID}/rules/9000"
+					if n >= 3 {
+						firewallPolicyId := tokens[len(tokens)-3]
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, firewallPolicyId, "${firewallPolicyID}")
+						})
+					}
+				case "processorVersions":
+					// Get processor id and version id from processor version's externalRef and replace it
+					// e.g. "projects/${projectId}/locations/us/processors/7f8f177e3b9cc6d9/processorVersions/1954ace3de6"
+					if n >= 3 {
+						processorId := tokens[len(tokens)-3]
+						processorVersionId := tokens[len(tokens)-1]
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, processorId, "${processorID}")
+						})
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, processorVersionId, "${processorVersionID}")
+						})
+					}
+				// Replace the server generated group id
+				case "groups":
+					// e.g. "groups/194f77d03ad"
+					groupId := tokens[len(tokens)-1]
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 						return strings.ReplaceAll(s, groupId, "${groupID}")
 					})
-					membershipId := tokens[len(tokens)-1]
+				case "memberships":
+					// e.g. "groups/194f77d03ad/memberships/196a3927214"
+					if n >= 3 {
+						groupId := tokens[len(tokens)-3]
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, groupId, "${groupID}")
+						})
+						membershipId := tokens[len(tokens)-1]
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, membershipId, "${membershipID}")
+						})
+					}
+				case "keyHandles":
+					uuid := tokens[len(tokens)-1]
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-						return strings.ReplaceAll(s, membershipId, "${membershipID}")
+						return strings.ReplaceAll(s, uuid, "1a1a1a-222b-3cc3-d444-e555ee555555")
 					})
 				}
 			}
