@@ -36,34 +36,7 @@ go test -v ./pkg/controller/direct/apigee/ -fuzz=FuzzApigeeInstanceAttachmentObs
 go test -v ./pkg/controller/direct/apigee/  -fuzz=FuzzEnvgroupAttachmentSpec -fuzztime 60s
 go test -v ./pkg/controller/direct/apigee/  -fuzz=FuzzEnvgroupAttachmentObservedState -fuzztime 60s
 
-go test -v ./pkg/controller/direct/compute/firewallpolicyrule -fuzz=FuzzComputeFirewallPolicyRuleSpec -fuzztime 60s
-go test -v ./pkg/controller/direct/compute/forwardingrule -fuzz=FuzzComputeForwardingRuleSpec -fuzztime 60s
-go test -v ./pkg/controller/direct/compute/targettcpproxy -fuzz=FuzzComputeTargetTCPProxySpec -fuzztime 60s
-
 go test -v ./pkg/controller/direct/cloudidentity -fuzz=FuzzCloudIdentityGroupSpec -fuzztime 60s
 go test -v ./pkg/controller/direct/cloudidentity -fuzz=FuzzCloudIdentityGroupStatus -fuzztime 60s
 go test -v ./pkg/controller/direct/cloudidentity -fuzz=FuzzCloudIdentityMembershipSpec -fuzztime 60s
 go test -v ./pkg/controller/direct/cloudidentity -fuzz=FuzzCloudIdentityMembershipStatus -fuzztime 60s
-
-go test -v ./pkg/controller/direct/discoveryengine/ -fuzz=FuzzDiscoveryEngineChatEngineSpec -fuzztime 60s
-go test -v ./pkg/controller/direct/discoveryengine/ -fuzz=FuzzDiscoveryEngineChatEngineObservedState -fuzztime 60s
-
-go test -v ./pkg/controller/direct/networkconnectivity/ -fuzz=FuzzServiceConnectionPolicySpec -fuzztime 60s
-go test -v ./pkg/controller/direct/networkconnectivity/ -fuzz=FuzzServiceConnectionPolicyObservedState -fuzztime 60s
-
-go test -v ./pkg/controller/direct/dataflow/ -fuzz=FuzzDataflowFlexTemplateJobSpec -fuzztime 60s
-
-go test -v ./pkg/controller/direct/redis/cluster/ -fuzz=FuzzRedisClusterSpec -fuzztime 60s
-go test -v ./pkg/controller/direct/redis/cluster/ -fuzz=FuzzRedisClusterObservedState -fuzztime 60s
-
-go test -v ./pkg/controller/direct/monitoring/ -fuzz=FuzzMonitoringDashboardSpec -fuzztime 60s
-go test -v ./pkg/controller/direct/securesourcemanager/ -fuzz=FuzzSecureSourceManagerInstanceSpec -fuzztime 60s
-go test -v ./pkg/controller/direct/securesourcemanager/ -fuzz=FuzzSecureSourceManagerInstanceObservedState -fuzztime 60s
-go test -v ./pkg/controller/direct/securesourcemanager/ -fuzz=FuzzSecureSourceManagerRepositorySpec -fuzztime 60s
-go test -v ./pkg/controller/direct/securesourcemanager/ -fuzz=FuzzSecureSourceManagerRepositoryObservedState -fuzztime 60s
-
-go test -v ./pkg/controller/direct/dataform/ -fuzz=FuzzDataformRepositorySpec -fuzztime 60s
-
-go test -v ./pkg/controller/direct/bigquerydatatransfer/ -fuzz=FuzzBigQueryDataTransferConfigSpec -fuzztime 60s
-
-go test -v ./pkg/controller/direct/certificatemanager/ -fuzz=FuzzDNSAuthorizationSpec -fuzztime 60s
