@@ -2043,6 +2043,16 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
+              pscConfig:
+                description: Optional. Whether to enable Private Service Connect for
+                  the cluster. Once enabled, Private Service Connect cannot be turned
+                  off.
+                properties:
+                  pscEnabled:
+                    description: Optional. Create an instance that allows connections
+                      from Private Service Connect endpoints to the instance.
+                    type: boolean
+                type: object
               resourceID:
                 description: The AlloyDBCluster name. If not given, the metadata.name
                   will be used.
