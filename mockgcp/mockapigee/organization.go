@@ -28,6 +28,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/apigee/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type organizationsServer struct {
@@ -97,6 +98,38 @@ func (s *organizationsServer) CreateOrganization(ctx context.Context, req *pb.Cr
 		opMetadata.State = "FINISHED"
 		return obj, nil
 	})
+}
+
+func (s *organizationsServer) ListOrganizations(ctx context.Context, req *pb.ListOrganizationsRequest) (*pb.GoogleCloudApigeeV1ListOrganizationsResponse, error) {
+	prefix := ""
+
+	parent := req.GetParent()
+	tokens := strings.Split(parent, "/")
+	if len(tokens) == 1 && tokens[0] == "organizations" {
+		prefix = "organizations/"
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", parent)
+	}
+
+	response := &pb.GoogleCloudApigeeV1ListOrganizationsResponse{}
+
+	modelKind := (&pb.GoogleCloudApigeeV1Organization{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, modelKind, storage.ListOptions{
+		Prefix: prefix,
+	}, func(obj proto.Message) error {
+		org := obj.(*pb.GoogleCloudApigeeV1Organization)
+		mapping := &pb.GoogleCloudApigeeV1OrganizationProjectMapping{}
+		mapping.Organization = org.Name
+		mapping.ProjectId = org.ProjectId
+		mapping.ProjectIds = []string{org.ProjectId}
+		response.Organizations = append(response.Organizations, mapping)
+
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return response, nil
+
 }
 
 func (s *organizationsServer) SetAddonsOrganization(ctx context.Context, req *pb.SetAddonsOrganizationRequest) (*longrunningpb.Operation, error) {

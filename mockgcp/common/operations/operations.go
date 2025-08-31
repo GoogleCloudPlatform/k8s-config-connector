@@ -36,13 +36,20 @@ import (
 type Operations struct {
 	storage storage.Storage
 
+	operationFormat string
+
 	pb.UnimplementedOperationsServer
 }
 
 func NewOperationsService(storage storage.Storage) *Operations {
 	return &Operations{
-		storage: storage,
+		storage:         storage,
+		operationFormat: "operation-{uuid}",
 	}
+}
+
+func (s *Operations) SetOperationFormat(format string) {
+	s.operationFormat = format
 }
 
 func (s *Operations) RegisterGRPCServices(grpcServer *grpc.Server) {
@@ -68,13 +75,16 @@ func (s *Operations) NewLRO(ctx context.Context) (*pb.Operation, error) {
 }
 
 func (s *Operations) StartLRO(ctx context.Context, prefix string, metadata proto.Message, callback func() (proto.Message, error)) (*pb.Operation, error) {
-	now := time.Now()
-	millis := now.UnixMilli()
-	id := uuid.NewUUID()
+	// now := time.Now()
 
 	op := &pb.Operation{}
 
-	op.Name = fmt.Sprintf("operations/operation-%d-%s", millis, id)
+	operationID := s.operationFormat
+	for strings.Contains(operationID, "{uuid}") {
+		id := uuid.NewUUID()
+		operationID = strings.Replace(operationID, "{uuid}", string(id), 1)
+	}
+	op.Name = "operations/" + operationID
 	if prefix != "" {
 		op.Name = prefix + "/" + op.Name
 	}
