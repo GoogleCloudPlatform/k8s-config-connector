@@ -27,7 +27,7 @@ type Parent struct {
 	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
 
 	// +required
-	Location string `json:"location"`
+	Zone string `json:"zone"`
 }
 
 // ComputeFutureReservationSpec defines the desired state of ComputeFutureReservation

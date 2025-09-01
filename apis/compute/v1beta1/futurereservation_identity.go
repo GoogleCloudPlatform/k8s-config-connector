@@ -32,7 +32,7 @@ type FutureReservationIdentity struct {
 }
 
 func (i *FutureReservationIdentity) String() string {
-	return i.parent.String() + "/futurereservations/" + i.id
+	return i.parent.String() + "/futureReservations/" + i.id
 }
 
 func (i *FutureReservationIdentity) ID() string {
@@ -45,11 +45,11 @@ func (i *FutureReservationIdentity) Parent() *FutureReservationParent {
 
 type FutureReservationParent struct {
 	ProjectID string
-	Location  string
+	Zone      string
 }
 
 func (p *FutureReservationParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+	return "projects/" + p.ProjectID + "/zones/" + p.Zone
 }
 
 // New builds a FutureReservationIdentity from the Config Connector FutureReservation object.
@@ -64,7 +64,7 @@ func NewFutureReservationIdentity(ctx context.Context, reader client.Reader, obj
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
 	}
-	location := obj.Spec.Location
+	zone := obj.Spec.Zone
 
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
@@ -86,8 +86,8 @@ func NewFutureReservationIdentity(ctx context.Context, reader client.Reader, obj
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.Zone != zone {
+			return nil, fmt.Errorf("spec.zone changed, expect %s, got %s", actualParent.Zone, zone)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -97,7 +97,7 @@ func NewFutureReservationIdentity(ctx context.Context, reader client.Reader, obj
 	return &FutureReservationIdentity{
 		parent: &FutureReservationParent{
 			ProjectID: projectID,
-			Location:  location,
+			Zone:      zone,
 		},
 		id: resourceID,
 	}, nil
@@ -105,12 +105,12 @@ func NewFutureReservationIdentity(ctx context.Context, reader client.Reader, obj
 
 func ParseFutureReservationExternal(external string) (parent *FutureReservationParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "futurereservations" {
-		return nil, "", fmt.Errorf("format of ComputeFutureReservation external=%q was not known (use projects/{{projectID}}/locations/{{location}}/futurereservations/{{futurereservationID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "zones" || tokens[4] != "futureReservations" {
+		return nil, "", fmt.Errorf("format of ComputeFutureReservation external=%q was not known (use projects/{{projectID}}/zones/{{zone}}/futureReservations/{{futurereservationID}})", external)
 	}
 	parent = &FutureReservationParent{
 		ProjectID: tokens[1],
-		Location:  tokens[3],
+		Zone:      tokens[3],
 	}
 	resourceID = tokens[5]
 	return parent, resourceID, nil

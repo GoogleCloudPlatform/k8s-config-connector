@@ -182,7 +182,7 @@ spec:
                 description: Indicates if this group of VMs have emergent maintenance
                   enabled.
                 type: boolean
-              location:
+              zone:
                 type: string
               name:
                 description: The name of the resource, provided by the client when
@@ -386,7 +386,7 @@ spec:
                 type: object
             required:
             - autoDeleteAutoCreatedReservations
-            - location
+            - zone
             - projectRef
             type: object
           status:

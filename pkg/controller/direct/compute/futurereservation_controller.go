@@ -103,7 +103,7 @@ func (a *FutureReservationAdapter) Find(ctx context.Context) (bool, error) {
 
 	req := &computepb.GetFutureReservationRequest{
 		Project:           a.id.Parent().ProjectID,
-		Zone:              a.id.Parent().Location,
+		Zone:              a.id.Parent().Zone,
 		FutureReservation: a.id.ID(),
 	}
 	futurereservationpb, err := a.gcpClient.Get(ctx, req)
@@ -133,7 +133,7 @@ func (a *FutureReservationAdapter) Create(ctx context.Context, createOp *directb
 
 	req := &computepb.InsertFutureReservationRequest{
 		Project:                   a.id.Parent().ProjectID,
-		Zone:                      a.id.Parent().Location,
+		Zone:                      a.id.Parent().Zone,
 		FutureReservationResource: resource,
 	}
 	op, err := a.gcpClient.Insert(ctx, req)
@@ -203,7 +203,7 @@ func (a *FutureReservationAdapter) Update(ctx context.Context, updateOp *directb
 
 		req := &computepb.UpdateFutureReservationRequest{
 			Project:                   a.id.Parent().ProjectID,
-			Zone:                      a.id.Parent().Location,
+			Zone:                      a.id.Parent().Zone,
 			UpdateMask:                direct.LazyPtr(strings.Join(paths, ",")),
 			FutureReservation:         a.id.ID(),
 			FutureReservationResource: resource,
@@ -245,7 +245,7 @@ func (a *FutureReservationAdapter) Export(ctx context.Context) (*unstructured.Un
 		return nil, mapCtx.Err()
 	}
 	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.Zone = a.id.Parent().Zone
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -265,7 +265,7 @@ func (a *FutureReservationAdapter) Delete(ctx context.Context, deleteOp *directb
 
 	req := &computepb.DeleteFutureReservationRequest{
 		Project:           a.id.Parent().ProjectID,
-		Zone:              a.id.Parent().Location,
+		Zone:              a.id.Parent().Zone,
 		FutureReservation: a.id.ID(),
 	}
 	op, err := a.gcpClient.Delete(ctx, req)
@@ -289,7 +289,7 @@ func (a *FutureReservationAdapter) Delete(ctx context.Context, deleteOp *directb
 func (a *FutureReservationAdapter) get(ctx context.Context) (*computepb.FutureReservation, error) {
 	getReq := &computepb.GetFutureReservationRequest{
 		Project:           a.id.Parent().ProjectID,
-		Zone:              a.id.Parent().Location,
+		Zone:              a.id.Parent().Zone,
 		FutureReservation: a.id.ID(),
 	}
 	resource, err := a.gcpClient.Get(ctx, getReq)

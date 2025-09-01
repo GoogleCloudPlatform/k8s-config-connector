@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &FutureReservationRef{}
 // holds the GCP identifier for the KRM object.
 type FutureReservationRef struct {
 	// A reference to an externally managed ComputeFutureReservation resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/futurereservations/{{futurereservationID}}".
+	// Should be in the format "projects/{{projectID}}/zones/{{zone}}/futureReservations/{{futurereservationID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a ComputeFutureReservation resource.
