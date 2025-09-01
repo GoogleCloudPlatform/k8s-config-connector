@@ -41,7 +41,7 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1alpha1
+    name: v1beta1
     schema:
       openAPIV3Schema:
         description: AlloyDBCluster is the Schema for the AlloyDBCluster API
@@ -406,10 +406,10 @@ spec:
                       is intended to be consistent with Cloud SQL.'
                     type: string
                   networkRef:
-                    description: 'Optional. The resource link for the VPC network
-                      in which cluster resources are created and from which they are
-                      accessible via Private IP. The network must belong to the same
-                      project as the cluster. It is specified in the form: `projects/{project_number}/global/networks/{network_id}`.
+                    description: 'The resource link for the VPC network in which cluster
+                      resources are created and from which they are accessible via
+                      Private IP. The network must belong to the same project as the
+                      cluster. It is specified in the form: `projects/{project_number}/global/networks/{network_id}`.
                       This is required to create a cluster.'
                     oneOf:
                     - not:
@@ -439,10 +439,10 @@ spec:
                     type: object
                 type: object
               networkRef:
-                description: 'Required. The resource link for the VPC network in which
-                  cluster resources are created and from which they are accessible
-                  via Private IP. The network must belong to the same project as the
-                  cluster. It is specified in the form: `projects/{project}/global/networks/{network_id}`.
+                description: 'The resource link for the VPC network in which cluster
+                  resources are created and from which they are accessible via Private
+                  IP. The network must belong to the same project as the cluster.
+                  It is specified in the form: `projects/{project}/global/networks/{network_id}`.
                   This is required to create a cluster. Deprecated, use network_config.network
                   instead.'
                 oneOf:
@@ -782,7 +782,8 @@ spec:
         type: object
     served: true
     storage: true
-    subresources: {}
+    subresources:
+      status: {}
   - additionalPrinterColumns:
     - jsonPath: .metadata.creationTimestamp
       name: Age
@@ -799,7 +800,7 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1beta1
+    name: v1alpha1
     schema:
       openAPIV3Schema:
         description: AlloyDBCluster is the Schema for the AlloyDBCluster API

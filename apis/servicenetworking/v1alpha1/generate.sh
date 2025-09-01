@@ -33,5 +33,4 @@ go run . generate-mapper \
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
-go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/bigtable/
-
+go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w  pkg/controller/direct/servicenetworking/

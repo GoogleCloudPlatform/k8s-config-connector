@@ -98,7 +98,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	},
 	{
 		Group:   "alloydb.cnrm.cloud.google.com",
-		Version: "v1alpha1",
+		Version: "v1beta1",
 		Kind:    "AlloyDBCluster",
 	}: {
 		Terraform: true,
@@ -106,7 +106,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	},
 	{
 		Group:   "alloydb.cnrm.cloud.google.com",
-		Version: "v1beta1",
+		Version: "v1alpha1",
 		Kind:    "AlloyDBCluster",
 	}: {
 		Terraform: true,

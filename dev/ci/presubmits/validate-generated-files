@@ -42,6 +42,7 @@ def main():
     run_and_verify_no_changes(["dev/tasks/generate-github-actions"])
     run_and_verify_no_changes(["dev/tasks/generate-types-and-mappers"])
     run_and_verify_no_changes(["dev/tasks/generate-crds"])
+    run_and_verify_no_changes(["dev/tasks/generate-resource-report"])
 
 if __name__ == "__main__":
     main()

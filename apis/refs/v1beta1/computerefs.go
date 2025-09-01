@@ -20,8 +20,7 @@ import (
 	"strconv"
 	"strings"
 
-	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
-	resourcemanagerpb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -74,7 +73,22 @@ func ParseComputeNetworkID(external string) (*ComputeNetworkID, error) {
 }
 
 // ConvertToProjectNumber converts the external reference to use a project number.
-func (ref *ComputeNetworkRef) ConvertToProjectNumber(ctx context.Context, projectsClient *resourcemanager.ProjectsClient) error {
+func (id *ComputeNetworkID) ConvertToProjectNumber(ctx context.Context, projectMapper *projects.ProjectMapper) error {
+	if id == nil {
+		return nil
+	}
+
+	projectNumber, err := projectMapper.LookupProjectNumber(ctx, id.Project)
+	if err != nil {
+		return fmt.Errorf("error looking up project number for project %q: %w", id.Project, err)
+	}
+
+	id.Project = strconv.FormatInt(projectNumber, 10)
+	return nil
+}
+
+// ConvertToProjectNumber converts the external reference to use a project number.
+func (ref *ComputeNetworkRef) ConvertToProjectNumber(ctx context.Context, projectMapper *projects.ProjectMapper) error {
 	if ref == nil {
 		return nil
 	}
@@ -84,24 +98,10 @@ func (ref *ComputeNetworkRef) ConvertToProjectNumber(ctx context.Context, projec
 		return err
 	}
 
-	// Check if the project number is already a valid integer
-	// If not, we need to look it up
-	projectNumber, err := strconv.ParseInt(id.Project, 10, 64)
-	if err != nil {
-		req := &resourcemanagerpb.GetProjectRequest{
-			Name: "projects/" + id.Project,
-		}
-		project, err := projectsClient.GetProject(ctx, req)
-		if err != nil {
-			return fmt.Errorf("error getting project %q: %w", req.Name, err)
-		}
-		n, err := strconv.ParseInt(strings.TrimPrefix(project.Name, "projects/"), 10, 64)
-		if err != nil {
-			return fmt.Errorf("error parsing project number for %q: %w", project.Name, err)
-		}
-		projectNumber = n
+	if err := id.ConvertToProjectNumber(ctx, projectMapper); err != nil {
+		return err
 	}
-	id.Project = strconv.FormatInt(projectNumber, 10)
+
 	ref.External = id.String()
 	return nil
 }

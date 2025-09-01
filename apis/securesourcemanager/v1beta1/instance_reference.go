@@ -20,10 +20,8 @@ import (
 	"strconv"
 	"strings"
 
-	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
-	resourcemanagerpb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -76,29 +74,18 @@ func parseSecureSourceManagerInstanceExternal(external string) (*ProjectIDAndLoc
 }
 
 // ConvertToProjectNumber converts the external reference to use a project number.
-func (r *SecureSourceManagerInstanceRef) ConvertToProjectNumber(ctx context.Context, projectsClient *resourcemanager.ProjectsClient) error {
+func (r *SecureSourceManagerInstanceRef) ConvertToProjectNumber(ctx context.Context, projectMapper *projects.ProjectMapper) error {
 	if r == nil {
 		return nil
 	}
 
 	parent, id, err := parseSecureSourceManagerInstanceExternal(r.External)
-
-	// Check if the project number is already a valid integer
-	// If not, we need to look it up
-	projectNumber, err := strconv.ParseInt(parent.ProjectID, 10, 64)
 	if err != nil {
-		req := &resourcemanagerpb.GetProjectRequest{
-			Name: "projects/" + parent.ProjectID,
-		}
-		project, err := projectsClient.GetProject(ctx, req)
-		if err != nil {
-			return fmt.Errorf("error getting project %q: %w", req.Name, err)
-		}
-		n, err := strconv.ParseInt(strings.TrimPrefix(project.Name, "projects/"), 10, 64)
-		if err != nil {
-			return fmt.Errorf("error parsing project number for %q: %w", project.Name, err)
-		}
-		projectNumber = n
+		return fmt.Errorf("parsing reference %q: %w", r.External, err)
+	}
+	projectNumber, err := projectMapper.LookupProjectNumber(ctx, parent.ProjectID)
+	if err != nil {
+		return fmt.Errorf("error looking up project number for project %q: %w", parent.ProjectID, err)
 	}
 	parent.ProjectID = strconv.FormatInt(projectNumber, 10)
 	r.External = fmt.Sprintf("%s/instances/%s", parent.String(), id)

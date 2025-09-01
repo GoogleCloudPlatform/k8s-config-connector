@@ -94,6 +94,9 @@ func (x *ExtractToolMarkers) Extract(ctx context.Context, description string, sr
 				if strings.Contains(comment, codegen.KCCProtoMessageAnnotationObservedState) {
 					toolName = "kcc-proto-observedstate"
 				}
+				if strings.Contains(comment, codegen.KCCProtoMessageAnnotationStatus) {
+					toolName = "kcc-proto-status"
+				}
 				dataPoint := &DataPoint{
 					Description: description,
 					Type:        toolName,

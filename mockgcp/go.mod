@@ -14,6 +14,7 @@ require (
 	cloud.google.com/go/apigateway v1.7.6
 	cloud.google.com/go/batch v1.12.2
 	cloud.google.com/go/bigtable v1.38.0
+	cloud.google.com/go/billing v1.20.4
 	cloud.google.com/go/clouddms v1.8.7
 	cloud.google.com/go/compute v1.38.0
 	cloud.google.com/go/dataplex v1.25.3
