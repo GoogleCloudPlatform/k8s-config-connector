@@ -270,11 +270,6 @@ func (a *FutureReservationAdapter) Delete(ctx context.Context, deleteOp *directb
 	}
 	op, err := a.gcpClient.Delete(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent FutureReservation, assuming it was already deleted", "name", a.id)
-			return true, nil
-		}
 		return false, fmt.Errorf("deleting FutureReservation %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted FutureReservation", "name", a.id)
