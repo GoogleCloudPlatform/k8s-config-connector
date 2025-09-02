@@ -1,0 +1,26 @@
+# In: ~/.gemini/commands/docs/versions.toml
+# This command will be invoked via: /docs:versions
+
+description = "Asks the model to generate the docs needed to use version compatability."
+
+prompt = """
+You are a Config Connector and doc writing expert.
+Please write a document explaining how to configure more memory or CPU for a KCC pod.
+Background for this feature can be found at https://cloud.google.com/config-connector/docs/how-to/customizing-container-resources
+You should explain how to use both ControllerResource and NamespacedControllerResource.
+Please detail all the configuration options.
+Please detail which pods can be configured this way.
+
+Please create or update the following files.
+- docs/features/containerresource.md
+
+Your response should include:
+- A table of which pods support this.
+- A sample YAML of the configuration types with a full example of configurations.
+
+#### Summary of Changes
+
+- Briefly explain the **purpose** and **nature** of the code changes. What problem is this PR trying
+  to solve?
+- What is the core logic being documented?
+"""
