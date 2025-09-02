@@ -50,7 +50,6 @@ func computeForwardingRuleFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".no_automate_dns_zone")
 	f.SpecFields.Insert(".port_range")
 	f.SpecFields.Insert(".ports")
-	f.SpecFields.Insert(".service_directory_registrations")
 	f.SpecFields.Insert(".service_label")
 	f.SpecFields.Insert(".source_ip_ranges")
 	f.SpecFields.Insert(".subnetwork")
@@ -58,16 +57,16 @@ func computeForwardingRuleFuzzer() fuzztesting.KRMFuzzer {
 
 	// Status fields
 	f.StatusFields.Insert(".base_forwarding_rule")
-	f.StatusFields.Insert(".I_p_protocol")
 	f.StatusFields.Insert(".creation_timestamp")
 	f.StatusFields.Insert(".label_fingerprint")
 	f.StatusFields.Insert(".psc_connection_id")
 	f.StatusFields.Insert(".psc_connection_status")
 	f.StatusFields.Insert(".self_link")
 	f.StatusFields.Insert(".service_name")
-	f.StatusFields.Insert(".I_p_address")
 
 	// Unimplemented fields
+	f.UnimplementedFields.Insert(".I_p_protocol")
+	f.UnimplementedFields.Insert(".I_p_address")
 	f.UnimplementedFields.Insert(".id")
 	f.UnimplementedFields.Insert(".ip_collection")
 	f.UnimplementedFields.Insert(".kind")
@@ -75,7 +74,7 @@ func computeForwardingRuleFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".name")
 	f.UnimplementedFields.Insert(".region")
 	f.UnimplementedFields.Insert(".fingerprint")
-	f.UnimplementedFields.Insert(".service_directory_registrations.service_directory_region")
+	f.UnimplementedFields.Insert(".service_directory_registrations")
 	f.UnimplementedFields.Insert(".target") // Add to UnimplementedFields
 
 	return f
