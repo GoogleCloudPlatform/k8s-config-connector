@@ -15,6 +15,8 @@
 package firewallpolicyrule
 
 import (
+	pb "cloud.google.com/go/compute/apiv1/computepb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -77,5 +79,16 @@ func ComputeFirewallPolicyRuleSpec_TargetServiceAccounts_FromProto(mapCtx *direc
 			External: i,
 		})
 	}
+	return out
+}
+
+func ComputeFirewallPolicyRuleStatus_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallPolicyRuleStatus) *pb.FirewallPolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicyRule{}
+	out.Kind = in.Kind
+	out.RuleTupleCount = direct.PtrInt64ToPtrInt32(in.RuleTupleCount)
+	// MISSING: TargetSecureTags
 	return out
 }
