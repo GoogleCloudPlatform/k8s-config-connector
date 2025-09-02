@@ -29,8 +29,8 @@ func init() {
 
 func backupDRBackupPlanFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.BackupPlan{},
-		BackupDRBackupPlanSpec_FromProto, BackupDRBackupPlanSpec_ToProto,
-		BackupDRBackupPlanObservedState_FromProto, BackupDRBackupPlanObservedState_ToProto,
+		BackupDRBackupPlanSpec_v1alpha1_FromProto, BackupDRBackupPlanSpec_v1alpha1_ToProto,
+		BackupDRBackupPlanObservedState_v1alpha1_FromProto, BackupDRBackupPlanObservedState_v1alpha1_ToProto,
 	)
 
 	f.SpecFields.Insert(".description")

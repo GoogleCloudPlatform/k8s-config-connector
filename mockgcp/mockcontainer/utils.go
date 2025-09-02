@@ -14,7 +14,13 @@
 
 package mockcontainer
 
-import "strings"
+import (
+	"context"
+	"strings"
+
+	"google.golang.org/grpc/metadata"
+	"k8s.io/klog/v2"
+)
 
 func PtrTo[T any](t T) *T {
 	return &t
@@ -52,4 +58,33 @@ func AsZonalLink(link string) string {
 func isZone(location string) bool {
 	tokens := strings.Split(location, "-")
 	return len(tokens) == 3
+}
+
+// getAPIVersion returns the version of the API the caller is using.
+// It defaults to v1beta1
+func getAPIVersion(ctx context.Context) string {
+	md, _ := metadata.FromIncomingContext(ctx)
+	path := ""
+	if md != nil {
+		for _, v := range md.Get("path") {
+			path = v
+		}
+	}
+	path = strings.TrimPrefix(path, "/")
+	version, _, _ := strings.Cut(path, "/")
+	if version == "" {
+		// We could default to v1beta1, but because this is a test we panic instead
+		klog.Fatalf("could not determine API version from path %q", path)
+	}
+	if version != "v1beta1" && version != "v1" {
+		// This does not look like an api version
+		klog.Fatalf("unexpected API version %q", version)
+	}
+	return version
+}
+
+// buildSelfLink constructs a full self link (including https://container.googleapis.com/<version>/)
+func buildSelfLink(ctx context.Context, fqn string) string {
+	version := getAPIVersion(ctx)
+	return "https://container.googleapis.com/" + version + "/" + fqn
 }

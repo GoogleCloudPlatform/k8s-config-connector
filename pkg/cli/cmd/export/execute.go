@@ -34,7 +34,11 @@ func Execute(ctx context.Context, params *parameters.Parameters) error {
 	}
 
 	// Initialize direct controllers/exporters
-	if err := registry.Init(ctx, params.ControllerConfig()); err != nil {
+	controllerConfig, err := params.NewControllerConfig(ctx)
+	if err != nil {
+		return err
+	}
+	if err := registry.Init(ctx, controllerConfig); err != nil {
 		return err
 	}
 

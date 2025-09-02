@@ -62,6 +62,40 @@ type KRMTypedFuzzer[ProtoT proto.Message, SpecType any, StatusType any] struct {
 	StatusFields        sets.Set[string]
 }
 
+// SpecField marks the specified fieldPath as round-tripping to/from the Spec
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) SpecField(fieldPath string) {
+	f.SpecFields.Insert(fieldPath)
+}
+
+// StatusField marks the specified fieldPath as round-tripping to/from the Status
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) StatusField(fieldPath string) {
+	f.StatusFields.Insert(fieldPath)
+}
+
+// Unimplemented_Internal marks the specified fieldPath as not round-tripped,
+// and should be used for fields that are considered internal implementation details of the service
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_Internal(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
+}
+
+// Unimplemented_LabelsAnnotations marks the specified fieldPath as not round-tripped,
+// and should be used for fields that are either labels or annotations
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_LabelsAnnotations(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
+}
+
+// Unimplemented_NotYetTriaged marks the specified fieldPath as not round-tripped,
+// and should be used for fields that are added by the service and where we haven't decided whether or not to implement them.
+// This should be the "starting point" for new fields added by services.
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_NotYetTriaged(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
+}
+
+// IdentityField marks a field as not supported in the mapper, because it is part of the identity (URL) rather than being part of the object itself.
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) IdentityField(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
+}
+
 type KRMFuzzer interface {
 	FuzzSpec(t *testing.T, seed int64)
 	FuzzStatus(t *testing.T, seed int64)

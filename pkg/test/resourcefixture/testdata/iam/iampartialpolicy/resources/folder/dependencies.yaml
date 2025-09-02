@@ -1,0 +1,8 @@
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Folder
+metadata:
+  name: folder-${uniqueId}
+spec:
+  displayName: Test Folder
+  parentRef:
+    external: organizations/${TEST_ORG_ID}

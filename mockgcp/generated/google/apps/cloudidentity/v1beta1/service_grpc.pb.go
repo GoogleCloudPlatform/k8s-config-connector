@@ -1930,6 +1930,247 @@ var GroupsMembershipsServer_ServiceDesc = grpc.ServiceDesc{
 	Metadata: "google/apps/cloudidentity/v1beta1/service.proto",
 }
 
+// InboundOidcSsoProfilesServerClient is the client API for InboundOidcSsoProfilesServer service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type InboundOidcSsoProfilesServerClient interface {
+	// Creates an InboundOidcSsoProfile for a customer. When the target customer has enabled [Multi-party approval for sensitive actions](https://support.google.com/a/answer/13790448), the `Operation` in the response will have `"done": false`, it will not have a response, and the metadata will have `"state": "awaiting-multi-party-approval"`.
+	CreateInboundOidcSsoProfile(ctx context.Context, in *CreateInboundOidcSsoProfileRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Deletes an InboundOidcSsoProfile.
+	DeleteInboundOidcSsoProfile(ctx context.Context, in *DeleteInboundOidcSsoProfileRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Gets an InboundOidcSsoProfile.
+	GetInboundOidcSsoProfile(ctx context.Context, in *GetInboundOidcSsoProfileRequest, opts ...grpc.CallOption) (*InboundOidcSsoProfile, error)
+	// Lists InboundOidcSsoProfile objects for a Google enterprise customer.
+	ListInboundOidcSsoProfiles(ctx context.Context, in *ListInboundOidcSsoProfilesRequest, opts ...grpc.CallOption) (*ListInboundOidcSsoProfilesResponse, error)
+	// Updates an InboundOidcSsoProfile. When the target customer has enabled [Multi-party approval for sensitive actions](https://support.google.com/a/answer/13790448), the `Operation` in the response will have `"done": false`, it will not have a response, and the metadata will have `"state": "awaiting-multi-party-approval"`.
+	PatchInboundOidcSsoProfile(ctx context.Context, in *PatchInboundOidcSsoProfileRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+}
+
+type inboundOidcSsoProfilesServerClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewInboundOidcSsoProfilesServerClient(cc grpc.ClientConnInterface) InboundOidcSsoProfilesServerClient {
+	return &inboundOidcSsoProfilesServerClient{cc}
+}
+
+func (c *inboundOidcSsoProfilesServerClient) CreateInboundOidcSsoProfile(ctx context.Context, in *CreateInboundOidcSsoProfileRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.v1beta1.InboundOidcSsoProfilesServer/CreateInboundOidcSsoProfile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *inboundOidcSsoProfilesServerClient) DeleteInboundOidcSsoProfile(ctx context.Context, in *DeleteInboundOidcSsoProfileRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.v1beta1.InboundOidcSsoProfilesServer/DeleteInboundOidcSsoProfile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *inboundOidcSsoProfilesServerClient) GetInboundOidcSsoProfile(ctx context.Context, in *GetInboundOidcSsoProfileRequest, opts ...grpc.CallOption) (*InboundOidcSsoProfile, error) {
+	out := new(InboundOidcSsoProfile)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.v1beta1.InboundOidcSsoProfilesServer/GetInboundOidcSsoProfile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *inboundOidcSsoProfilesServerClient) ListInboundOidcSsoProfiles(ctx context.Context, in *ListInboundOidcSsoProfilesRequest, opts ...grpc.CallOption) (*ListInboundOidcSsoProfilesResponse, error) {
+	out := new(ListInboundOidcSsoProfilesResponse)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.v1beta1.InboundOidcSsoProfilesServer/ListInboundOidcSsoProfiles", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *inboundOidcSsoProfilesServerClient) PatchInboundOidcSsoProfile(ctx context.Context, in *PatchInboundOidcSsoProfileRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/google.apps.cloudidentity.v1beta1.InboundOidcSsoProfilesServer/PatchInboundOidcSsoProfile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// InboundOidcSsoProfilesServerServer is the server API for InboundOidcSsoProfilesServer service.
+// All implementations must embed UnimplementedInboundOidcSsoProfilesServerServer
+// for forward compatibility
+type InboundOidcSsoProfilesServerServer interface {
+	// Creates an InboundOidcSsoProfile for a customer. When the target customer has enabled [Multi-party approval for sensitive actions](https://support.google.com/a/answer/13790448), the `Operation` in the response will have `"done": false`, it will not have a response, and the metadata will have `"state": "awaiting-multi-party-approval"`.
+	CreateInboundOidcSsoProfile(context.Context, *CreateInboundOidcSsoProfileRequest) (*longrunningpb.Operation, error)
+	// Deletes an InboundOidcSsoProfile.
+	DeleteInboundOidcSsoProfile(context.Context, *DeleteInboundOidcSsoProfileRequest) (*longrunningpb.Operation, error)
+	// Gets an InboundOidcSsoProfile.
+	GetInboundOidcSsoProfile(context.Context, *GetInboundOidcSsoProfileRequest) (*InboundOidcSsoProfile, error)
+	// Lists InboundOidcSsoProfile objects for a Google enterprise customer.
+	ListInboundOidcSsoProfiles(context.Context, *ListInboundOidcSsoProfilesRequest) (*ListInboundOidcSsoProfilesResponse, error)
+	// Updates an InboundOidcSsoProfile. When the target customer has enabled [Multi-party approval for sensitive actions](https://support.google.com/a/answer/13790448), the `Operation` in the response will have `"done": false`, it will not have a response, and the metadata will have `"state": "awaiting-multi-party-approval"`.
+	PatchInboundOidcSsoProfile(context.Context, *PatchInboundOidcSsoProfileRequest) (*longrunningpb.Operation, error)
+	mustEmbedUnimplementedInboundOidcSsoProfilesServerServer()
+}
+
+// UnimplementedInboundOidcSsoProfilesServerServer must be embedded to have forward compatible implementations.
+type UnimplementedInboundOidcSsoProfilesServerServer struct {
+}
+
+func (UnimplementedInboundOidcSsoProfilesServerServer) CreateInboundOidcSsoProfile(context.Context, *CreateInboundOidcSsoProfileRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateInboundOidcSsoProfile not implemented")
+}
+func (UnimplementedInboundOidcSsoProfilesServerServer) DeleteInboundOidcSsoProfile(context.Context, *DeleteInboundOidcSsoProfileRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteInboundOidcSsoProfile not implemented")
+}
+func (UnimplementedInboundOidcSsoProfilesServerServer) GetInboundOidcSsoProfile(context.Context, *GetInboundOidcSsoProfileRequest) (*InboundOidcSsoProfile, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetInboundOidcSsoProfile not implemented")
+}
+func (UnimplementedInboundOidcSsoProfilesServerServer) ListInboundOidcSsoProfiles(context.Context, *ListInboundOidcSsoProfilesRequest) (*ListInboundOidcSsoProfilesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListInboundOidcSsoProfiles not implemented")
+}
+func (UnimplementedInboundOidcSsoProfilesServerServer) PatchInboundOidcSsoProfile(context.Context, *PatchInboundOidcSsoProfileRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchInboundOidcSsoProfile not implemented")
+}
+func (UnimplementedInboundOidcSsoProfilesServerServer) mustEmbedUnimplementedInboundOidcSsoProfilesServerServer() {
+}
+
+// UnsafeInboundOidcSsoProfilesServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to InboundOidcSsoProfilesServerServer will
+// result in compilation errors.
+type UnsafeInboundOidcSsoProfilesServerServer interface {
+	mustEmbedUnimplementedInboundOidcSsoProfilesServerServer()
+}
+
+func RegisterInboundOidcSsoProfilesServerServer(s grpc.ServiceRegistrar, srv InboundOidcSsoProfilesServerServer) {
+	s.RegisterService(&InboundOidcSsoProfilesServer_ServiceDesc, srv)
+}
+
+func _InboundOidcSsoProfilesServer_CreateInboundOidcSsoProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateInboundOidcSsoProfileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InboundOidcSsoProfilesServerServer).CreateInboundOidcSsoProfile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.apps.cloudidentity.v1beta1.InboundOidcSsoProfilesServer/CreateInboundOidcSsoProfile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InboundOidcSsoProfilesServerServer).CreateInboundOidcSsoProfile(ctx, req.(*CreateInboundOidcSsoProfileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InboundOidcSsoProfilesServer_DeleteInboundOidcSsoProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteInboundOidcSsoProfileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InboundOidcSsoProfilesServerServer).DeleteInboundOidcSsoProfile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.apps.cloudidentity.v1beta1.InboundOidcSsoProfilesServer/DeleteInboundOidcSsoProfile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InboundOidcSsoProfilesServerServer).DeleteInboundOidcSsoProfile(ctx, req.(*DeleteInboundOidcSsoProfileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InboundOidcSsoProfilesServer_GetInboundOidcSsoProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetInboundOidcSsoProfileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InboundOidcSsoProfilesServerServer).GetInboundOidcSsoProfile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.apps.cloudidentity.v1beta1.InboundOidcSsoProfilesServer/GetInboundOidcSsoProfile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InboundOidcSsoProfilesServerServer).GetInboundOidcSsoProfile(ctx, req.(*GetInboundOidcSsoProfileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InboundOidcSsoProfilesServer_ListInboundOidcSsoProfiles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListInboundOidcSsoProfilesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InboundOidcSsoProfilesServerServer).ListInboundOidcSsoProfiles(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.apps.cloudidentity.v1beta1.InboundOidcSsoProfilesServer/ListInboundOidcSsoProfiles",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InboundOidcSsoProfilesServerServer).ListInboundOidcSsoProfiles(ctx, req.(*ListInboundOidcSsoProfilesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _InboundOidcSsoProfilesServer_PatchInboundOidcSsoProfile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchInboundOidcSsoProfileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InboundOidcSsoProfilesServerServer).PatchInboundOidcSsoProfile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.apps.cloudidentity.v1beta1.InboundOidcSsoProfilesServer/PatchInboundOidcSsoProfile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InboundOidcSsoProfilesServerServer).PatchInboundOidcSsoProfile(ctx, req.(*PatchInboundOidcSsoProfileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// InboundOidcSsoProfilesServer_ServiceDesc is the grpc.ServiceDesc for InboundOidcSsoProfilesServer service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var InboundOidcSsoProfilesServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "google.apps.cloudidentity.v1beta1.InboundOidcSsoProfilesServer",
+	HandlerType: (*InboundOidcSsoProfilesServerServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateInboundOidcSsoProfile",
+			Handler:    _InboundOidcSsoProfilesServer_CreateInboundOidcSsoProfile_Handler,
+		},
+		{
+			MethodName: "DeleteInboundOidcSsoProfile",
+			Handler:    _InboundOidcSsoProfilesServer_DeleteInboundOidcSsoProfile_Handler,
+		},
+		{
+			MethodName: "GetInboundOidcSsoProfile",
+			Handler:    _InboundOidcSsoProfilesServer_GetInboundOidcSsoProfile_Handler,
+		},
+		{
+			MethodName: "ListInboundOidcSsoProfiles",
+			Handler:    _InboundOidcSsoProfilesServer_ListInboundOidcSsoProfiles_Handler,
+		},
+		{
+			MethodName: "PatchInboundOidcSsoProfile",
+			Handler:    _InboundOidcSsoProfilesServer_PatchInboundOidcSsoProfile_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "google/apps/cloudidentity/v1beta1/service.proto",
+}
+
 // InboundSamlSsoProfilesServerClient is the client API for InboundSamlSsoProfilesServer service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.

@@ -28,6 +28,9 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/nasa9084/go-openapi"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+
+	// Register all direct controllers.
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 func TestDCLSchemaToJSONSchema(t *testing.T) {

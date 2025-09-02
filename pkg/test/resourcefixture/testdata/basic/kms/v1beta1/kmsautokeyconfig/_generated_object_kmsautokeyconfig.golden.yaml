@@ -13,7 +13,8 @@ spec:
   folderRef:
     external: folders/${folderID}
   keyProject:
-    external: projects/diff-{uniqueId}
+    kind: Project
+    name: project2-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

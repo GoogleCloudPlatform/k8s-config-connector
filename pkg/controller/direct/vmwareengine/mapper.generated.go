@@ -143,7 +143,6 @@ func VMwareEngineNetworkSpec_FromProto(mapCtx *direct.MapContext, in *pb.VmwareE
 	out := &krmv1alpha1.VMwareEngineNetworkSpec{}
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: VpcNetworks
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	// MISSING: Uid
 	out.Etag = direct.LazyPtr(in.GetEtag())
@@ -156,7 +155,6 @@ func VMwareEngineNetworkSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.
 	out := &pb.VmwareEngineNetwork{}
 	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
-	// MISSING: VpcNetworks
 	out.Type = direct.Enum_ToProto[pb.VmwareEngineNetwork_Type](mapCtx, in.Type)
 	// MISSING: Uid
 	out.Etag = direct.ValueOf(in.Etag)
@@ -192,16 +190,16 @@ func VMwareEnginePrivateCloudSpec_ToProto(mapCtx *direct.MapContext, in *krmv1al
 	out.Type = direct.Enum_ToProto[pb.PrivateCloud_Type](mapCtx, in.Type)
 	return out
 }
-func VmwareEngineNetwork_VpcNetwork_FromProto(mapCtx *direct.MapContext, in *pb.VmwareEngineNetwork_VpcNetwork) *krmv1alpha1.VmwareEngineNetwork_VpcNetwork {
+func VmwareEngineNetwork_VPCNetwork_FromProto(mapCtx *direct.MapContext, in *pb.VmwareEngineNetwork_VpcNetwork) *krmv1alpha1.VmwareEngineNetwork_VPCNetwork {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.VmwareEngineNetwork_VpcNetwork{}
+	out := &krmv1alpha1.VmwareEngineNetwork_VPCNetwork{}
 	// MISSING: Type
 	// MISSING: Network
 	return out
 }
-func VmwareEngineNetwork_VpcNetwork_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.VmwareEngineNetwork_VpcNetwork) *pb.VmwareEngineNetwork_VpcNetwork {
+func VmwareEngineNetwork_VPCNetwork_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.VmwareEngineNetwork_VPCNetwork) *pb.VmwareEngineNetwork_VpcNetwork {
 	if in == nil {
 		return nil
 	}
@@ -210,16 +208,16 @@ func VmwareEngineNetwork_VpcNetwork_ToProto(mapCtx *direct.MapContext, in *krmv1
 	// MISSING: Network
 	return out
 }
-func VmwareEngineNetwork_VpcNetworkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VmwareEngineNetwork_VpcNetwork) *krmv1alpha1.VmwareEngineNetwork_VpcNetworkObservedState {
+func VmwareEngineNetwork_VPCNetworkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VmwareEngineNetwork_VpcNetwork) *krmv1alpha1.VmwareEngineNetwork_VPCNetworkObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.VmwareEngineNetwork_VpcNetworkObservedState{}
+	out := &krmv1alpha1.VmwareEngineNetwork_VPCNetworkObservedState{}
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.Network = direct.LazyPtr(in.GetNetwork())
 	return out
 }
-func VmwareEngineNetwork_VpcNetworkObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.VmwareEngineNetwork_VpcNetworkObservedState) *pb.VmwareEngineNetwork_VpcNetwork {
+func VmwareEngineNetwork_VPCNetworkObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.VmwareEngineNetwork_VPCNetworkObservedState) *pb.VmwareEngineNetwork_VpcNetwork {
 	if in == nil {
 		return nil
 	}

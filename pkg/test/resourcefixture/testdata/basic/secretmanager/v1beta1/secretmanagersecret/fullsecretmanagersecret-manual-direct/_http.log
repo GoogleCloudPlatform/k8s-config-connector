@@ -667,11 +667,12 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
   "annotations": {
+    "configsync.gke.io": "true",
     "foo": "secretmanagersecret"
   },
   "labels": {
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "spec-label-one": "value-one"
   },
   "replication": {
     "userManaged": {
@@ -709,14 +710,15 @@ X-Xss-Protection: 0
 
 {
   "annotations": {
+    "configsync.gke.io": "true",
     "foo": "secretmanagersecret"
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "spec-label-one": "value-one"
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
   "replication": {
@@ -761,14 +763,15 @@ X-Xss-Protection: 0
 
 {
   "annotations": {
+    "configsync.gke.io": "true",
     "foo": "secretmanagersecret"
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "spec-label-one": "value-one"
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
   "replication": {
@@ -804,14 +807,15 @@ X-Goog-Request-Params: secret.name=projects%2F${projectId}%2Fsecrets%2Fsecretman
 {
   "annotations": {
     "bar": "secretmanagersecret-bar",
+    "configsync.gke.io": "true",
     "foo": "secretmanagersecret"
   },
   "etag": "abcdef0123A=",
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
-    "label-one": "value-one",
-    "label-two": "value-two",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "spec-label-one": "value-one",
+    "spec-label-two": "value-two"
   },
   "name": "projects/${projectId}/secrets/secretmanagersecret-${uniqueId}",
   "replication": {
@@ -850,15 +854,16 @@ X-Xss-Protection: 0
 {
   "annotations": {
     "bar": "secretmanagersecret-bar",
+    "configsync.gke.io": "true",
     "foo": "secretmanagersecret"
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
-    "label-one": "value-one",
-    "label-two": "value-two",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "spec-label-one": "value-one",
+    "spec-label-two": "value-two"
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
   "replication": {
@@ -903,15 +908,16 @@ X-Xss-Protection: 0
 {
   "annotations": {
     "bar": "secretmanagersecret-bar",
+    "configsync.gke.io": "true",
     "foo": "secretmanagersecret"
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
-    "label-one": "value-one",
-    "label-two": "value-two",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "spec-label-one": "value-one",
+    "spec-label-two": "value-two"
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
   "replication": {
@@ -957,15 +963,16 @@ X-Xss-Protection: 0
 {
   "annotations": {
     "bar": "secretmanagersecret-bar",
+    "configsync.gke.io": "true",
     "foo": "secretmanagersecret"
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "expireTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
-    "label-one": "value-one",
-    "label-two": "value-two",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "spec-label-one": "value-one",
+    "spec-label-two": "value-two"
   },
   "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
   "replication": {

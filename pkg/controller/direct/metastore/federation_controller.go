@@ -16,7 +16,7 @@
 // proto.service: google.cloud.metastore.v1.DataprocMetastoreFederation
 // proto.message: google.cloud.metastore.v1.Federation
 // crd.type: MetastoreFederation
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package metastore
 

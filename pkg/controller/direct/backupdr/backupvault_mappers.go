@@ -21,7 +21,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BackupDRBackupVaultObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupDRBackupVaultObservedState {
+func BackupDRBackupVaultObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupDRBackupVaultObservedState {
 	if in == nil {
 		return nil
 	}
@@ -34,10 +34,11 @@ func BackupDRBackupVaultObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.BackupCount = direct.LazyPtr(in.GetBackupCount())
 	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
 	out.TotalStoredBytes = direct.LazyPtr(in.GetTotalStoredBytes())
+	out.Etag = in.Etag
 	out.UID = direct.LazyPtr(in.GetUid())
 	return out
 }
-func BackupDRBackupVaultObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupVaultObservedState) *pb.BackupVault {
+func BackupDRBackupVaultObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupVaultObservedState) *pb.BackupVault {
 	if in == nil {
 		return nil
 	}
@@ -51,9 +52,10 @@ func BackupDRBackupVaultObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
 	out.TotalStoredBytes = direct.ValueOf(in.TotalStoredBytes)
 	out.Uid = direct.ValueOf(in.UID)
+	out.Etag = in.Etag
 	return out
 }
-func BackupDRBackupVaultSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupVaultSpec) *pb.BackupVault {
+func BackupDRBackupVaultSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRBackupVaultSpec) *pb.BackupVault {
 	if in == nil {
 		return nil
 	}
@@ -62,7 +64,6 @@ func BackupDRBackupVaultSpec_ToProto(mapCtx *direct.MapContext, in *krm.BackupDR
 	out.Description = in.Description
 	out.Labels = in.Labels
 	out.BackupMinimumEnforcedRetentionDuration = direct.StringDuration_ToProto(mapCtx, in.BackupMinimumEnforcedRetentionDuration)
-	out.Etag = in.Etag
 	out.EffectiveTime = direct.StringTimestamp_ToProto(mapCtx, in.EffectiveTime)
 	// MISSING: Uid
 	out.Annotations = in.Annotations

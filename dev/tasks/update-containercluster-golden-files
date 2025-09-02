@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+echo "Running mock tests for test cases using mock container cluster..."
+
+MOCK_TEST_ENV_VARS="E2E_KUBE_TARGET=envtest \
+RUN_E2E=1 \
+E2E_GCP_TARGET=mock \
+GOLDEN_REQUEST_CHECKS=1 \
+GOLDEN_OBJECT_CHECKS=1 \
+WRITE_GOLDEN_OUTPUT=1"
+
+export $MOCK_TEST_ENV_VARS
+
+go test ./mockgcptests -run TestScripts/mockpubsub/testdata/topic/crud 2>&1
+
+go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/containercluster 2>&1
+go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/containernodepool 2>&1
+go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/removedefaultnodepool 2>&1
+# Update of test case "fullpocogkehubfeaturemembership" may trigger the following
+# error when running locally possibly due to SSA:
+#     samples.go:155: error updating resource: GKEHubFeatureMembership.gkehub.cnrm.cloud.google.com
+#     "gkehubfeaturemembership-full-poco-dj4fppxo3fn3idq" is invalid: [spec.policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.requests:
+#     Invalid value: "null": spec.policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.requests
+#     in body must be of type object: "null", spec.policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.limits:
+#     Invalid value: "null": spec.policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.limits
+#     in body must be of type object: "null", spec.policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.limits:
+#     Invalid value: "null": spec.policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.limits
+#     in body must be of type object: "null", spec.policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.requests:
+#     Invalid value: "null": spec.policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.requests
+#     in body must be of type object: "null"]
+go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/gkehub 2>&1
+go test -test.count=1 -timeout 3600s -v ./tests/e2e -run TestAllInSeries/fixtures/gkebackup 2>&1
+
+go test -test.count=1 -timeout 600s -v ./tests/e2e -run TestE2EScript/scenarios/gkehubfeaturemembership 2>&1
+# Last step of test case "scenarios/fields/management/gkehub/featuremembership/set_unset" may trigger
+# the following error when running locally possibly due to SSA:
+#   script_test.go:464: error applying resource: GKEHubFeatureMembership.gkehub.cnrm.cloud.google.com
+#   "gkehubfeaturemembership-ea3e6ezynlulriq" is invalid: spec.configmanagement.configSync.git.gcpServiceAccountRef:
+#   Invalid value: "null": spec.configmanagement.configSync.git.gcpServiceAccountRef in body must be of type object: "null"
+go test -test.count=1 -timeout 600s -v ./tests/e2e -run TestE2EScript/scenarios/fields/management/gkehub/featuremembership/set_unset 2>&1

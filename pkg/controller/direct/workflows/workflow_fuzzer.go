@@ -48,12 +48,11 @@ func fuzzWorkflowsWorkflow() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".state_error.details")
 	f.StatusFields.Insert(".state_error.type")
 
-	// New fields that could potentially be added
-	f.UnimplementedFields.Insert(".tags")
-	f.UnimplementedFields.Insert(".all_kms_keys")
-	f.UnimplementedFields.Insert(".all_kms_keys_versions")
-	f.UnimplementedFields.Insert(".crypto_key_version")
-	f.UnimplementedFields.Insert(".execution_history_level")
+	f.Unimplemented_NotYetTriaged(".tags")
+	f.Unimplemented_NotYetTriaged(".all_kms_keys")
+	f.Unimplemented_NotYetTriaged(".all_kms_keys_versions")
+	f.Unimplemented_NotYetTriaged(".crypto_key_version")
+	f.Unimplemented_NotYetTriaged(".execution_history_level")
 
 	return f
 }

@@ -633,8 +633,26 @@ message BucketCustomPlacementConfig {
   repeated string data_locations = 1 [json_name="dataLocations"];
 }
 
+message CustomerManagedEncryptionEnforcementConfig {
+  optional .google.protobuf.Timestamp effective_time = 1 [json_name="effectiveTime"];
+  optional string restriction_mode = 2 [json_name="restrictionMode"];
+}
+
+message CustomerSuppliedEncryptionEnforcementConfig {
+  optional .google.protobuf.Timestamp effective_time = 1 [json_name="effectiveTime"];
+  optional string restriction_mode = 2 [json_name="restrictionMode"];
+}
+
+message GoogleManagedEncryptionEnforcementConfig {
+  optional .google.protobuf.Timestamp effective_time = 1 [json_name="effectiveTime"];
+  optional string restriction_mode = 2 [json_name="restrictionMode"];
+}
+
 message BucketEncryption {
-  optional string default_kms_key_name = 1 [json_name="defaultKmsKeyName"];
+  optional CustomerManagedEncryptionEnforcementConfig customer_managed_encryption_enforcement_config = 1 [json_name="customerManagedEncryptionEnforcementConfig"];
+  optional CustomerSuppliedEncryptionEnforcementConfig customer_supplied_encryption_enforcement_config = 2 [json_name="customerSuppliedEncryptionEnforcementConfig"];
+  optional string default_kms_key_name = 3 [json_name="defaultKmsKeyName"];
+  optional GoogleManagedEncryptionEnforcementConfig google_managed_encryption_enforcement_config = 4 [json_name="googleManagedEncryptionEnforcementConfig"];
 }
 
 message BucketHierarchicalNamespace {
@@ -907,12 +925,16 @@ message BulkRestoreObjectsRequest {
   optional bool allow_overwrite = 1 [json_name="allowOverwrite"];
   // If true, copies the source object's ACL; otherwise, uses the bucket's default object ACL. The default is false.
   optional bool copy_source_acl = 2 [json_name="copySourceAcl"];
+  // Restores only the objects that were created after this time.
+  optional .google.protobuf.Timestamp created_after_time = 3 [json_name="createdAfterTime"];
+  // Restores only the objects that were created before this time.
+  optional .google.protobuf.Timestamp created_before_time = 4 [json_name="createdBeforeTime"];
   // Restores only the objects matching any of the specified glob(s). If this parameter is not specified, all objects will be restored within the specified time range.
-  repeated string match_globs = 3 [json_name="matchGlobs"];
+  repeated string match_globs = 5 [json_name="matchGlobs"];
   // Restores only the objects that were soft-deleted after this time.
-  optional .google.protobuf.Timestamp soft_deleted_after_time = 4 [json_name="softDeletedAfterTime"];
+  optional .google.protobuf.Timestamp soft_deleted_after_time = 6 [json_name="softDeletedAfterTime"];
   // Restores only the objects that were soft-deleted before this time.
-  optional .google.protobuf.Timestamp soft_deleted_before_time = 5 [json_name="softDeletedBeforeTime"];
+  optional .google.protobuf.Timestamp soft_deleted_before_time = 7 [json_name="softDeletedBeforeTime"];
 }
 
 // An notification channel used to watch for resource changes.

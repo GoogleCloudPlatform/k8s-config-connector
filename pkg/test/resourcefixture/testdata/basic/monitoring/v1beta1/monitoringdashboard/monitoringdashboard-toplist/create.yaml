@@ -1,0 +1,43 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringDashboard
+metadata:
+  name: monitoringdashboard-${uniqueId}
+spec:
+  displayName: "Example with TopList"
+  mosaicLayout:
+    columns: 48
+    tiles:
+    - height: 16
+      widget:
+        timeSeriesTable:
+          dataSets:
+          - minAlignmentPeriod: 60s
+            timeSeriesQuery:
+              outputFullDuration: true
+              timeSeriesFilter:
+                aggregation:
+                  alignmentPeriod: 60s
+                  crossSeriesReducer: REDUCE_SUM
+                  perSeriesAligner: ALIGN_RATE
+                filter: metric.type="monitoring.googleapis.com/billing/time_series_billed_for_queries_count" resource.type="global"
+                pickTimeSeriesFilter:
+                  direction: TOP
+                  numTimeSeries: 30
+                  rankingMethod: METHOD_MEAN
+          metricVisualization: BAR
+        title: Count of time series billed for queries [SUM]
+      width: 24

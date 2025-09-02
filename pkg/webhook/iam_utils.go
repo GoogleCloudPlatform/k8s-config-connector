@@ -17,7 +17,7 @@ package webhook
 import (
 	"reflect"
 
-	iamapi "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	iamapi "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )

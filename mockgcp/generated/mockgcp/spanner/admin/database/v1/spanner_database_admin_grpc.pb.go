@@ -214,6 +214,9 @@ type DatabaseAdminClient interface {
 	DeleteBackupSchedule(ctx context.Context, in *DeleteBackupScheduleRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	// Lists all the backup schedules for the database.
 	ListBackupSchedules(ctx context.Context, in *ListBackupSchedulesRequest, opts ...grpc.CallOption) (*ListBackupSchedulesResponse, error)
+	// This is an internal API called by Spanner Graph jobs. You should never need
+	// to call this API directly.
+	InternalUpdateGraphOperation(ctx context.Context, in *InternalUpdateGraphOperationRequest, opts ...grpc.CallOption) (*InternalUpdateGraphOperationResponse, error)
 }
 
 type databaseAdminClient struct {
@@ -458,6 +461,15 @@ func (c *databaseAdminClient) ListBackupSchedules(ctx context.Context, in *ListB
 	return out, nil
 }
 
+func (c *databaseAdminClient) InternalUpdateGraphOperation(ctx context.Context, in *InternalUpdateGraphOperationRequest, opts ...grpc.CallOption) (*InternalUpdateGraphOperationResponse, error) {
+	out := new(InternalUpdateGraphOperationResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.spanner.admin.database.v1.DatabaseAdmin/InternalUpdateGraphOperation", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DatabaseAdminServer is the server API for DatabaseAdmin service.
 // All implementations must embed UnimplementedDatabaseAdminServer
 // for forward compatibility
@@ -651,6 +663,9 @@ type DatabaseAdminServer interface {
 	DeleteBackupSchedule(context.Context, *DeleteBackupScheduleRequest) (*empty.Empty, error)
 	// Lists all the backup schedules for the database.
 	ListBackupSchedules(context.Context, *ListBackupSchedulesRequest) (*ListBackupSchedulesResponse, error)
+	// This is an internal API called by Spanner Graph jobs. You should never need
+	// to call this API directly.
+	InternalUpdateGraphOperation(context.Context, *InternalUpdateGraphOperationRequest) (*InternalUpdateGraphOperationResponse, error)
 	mustEmbedUnimplementedDatabaseAdminServer()
 }
 
@@ -735,6 +750,9 @@ func (UnimplementedDatabaseAdminServer) DeleteBackupSchedule(context.Context, *D
 }
 func (UnimplementedDatabaseAdminServer) ListBackupSchedules(context.Context, *ListBackupSchedulesRequest) (*ListBackupSchedulesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListBackupSchedules not implemented")
+}
+func (UnimplementedDatabaseAdminServer) InternalUpdateGraphOperation(context.Context, *InternalUpdateGraphOperationRequest) (*InternalUpdateGraphOperationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InternalUpdateGraphOperation not implemented")
 }
 func (UnimplementedDatabaseAdminServer) mustEmbedUnimplementedDatabaseAdminServer() {}
 
@@ -1217,6 +1235,24 @@ func _DatabaseAdmin_ListBackupSchedules_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DatabaseAdmin_InternalUpdateGraphOperation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InternalUpdateGraphOperationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DatabaseAdminServer).InternalUpdateGraphOperation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.spanner.admin.database.v1.DatabaseAdmin/InternalUpdateGraphOperation",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DatabaseAdminServer).InternalUpdateGraphOperation(ctx, req.(*InternalUpdateGraphOperationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DatabaseAdmin_ServiceDesc is the grpc.ServiceDesc for DatabaseAdmin service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1327,6 +1363,10 @@ var DatabaseAdmin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListBackupSchedules",
 			Handler:    _DatabaseAdmin_ListBackupSchedules_Handler,
+		},
+		{
+			MethodName: "InternalUpdateGraphOperation",
+			Handler:    _DatabaseAdmin_InternalUpdateGraphOperation_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

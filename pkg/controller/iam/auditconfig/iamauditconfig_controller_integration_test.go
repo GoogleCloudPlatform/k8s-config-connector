@@ -25,8 +25,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
-	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/auditconfig"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -38,6 +37,7 @@ import (
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/teststatus"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 
 	"github.com/google/go-cmp/cmp"
@@ -57,14 +57,14 @@ var (
 func TestReconcileIAMAuditConfigResourceLevelCreate(t *testing.T) {
 	ctx := context.TODO()
 
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		auditLogConfigs := []iamv1beta1.AuditLogConfig{
 			{
 				LogType: "DATA_WRITE",
 			},
 			{
 				LogType:         "DATA_READ",
-				ExemptedMembers: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				ExemptedMembers: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		k8sAuditConfig := newIAMAuditConfigFixture(t, refResource, resourceRef, "allServices", auditLogConfigs)
@@ -76,14 +76,14 @@ func TestReconcileIAMAuditConfigResourceLevelCreate(t *testing.T) {
 func TestReconcileIAMAuditConfigResourceLevelCreateWithSISMerge(t *testing.T) {
 	ctx := context.TODO()
 
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		auditLogConfigs := []iamv1beta1.AuditLogConfig{
 			{
 				LogType: "DATA_WRITE",
 			},
 			{
 				LogType:         "DATA_READ",
-				ExemptedMembers: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				ExemptedMembers: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		k8sAuditConfig := newIAMAuditConfigFixture(t, refResource, resourceRef, "allServices", auditLogConfigs)
@@ -101,14 +101,14 @@ func TestReconcileIAMAuditConfigResourceLevelCreateWithExternalRef(t *testing.T)
 	shouldRun := func(fixture resourcefixture.ResourceFixture) bool {
 		return testiam.ShouldRunWithAuditConfigs(fixture) && testiam.ShouldRunWithExternalRef(fixture)
 	}
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		auditLogConfigs := []iamv1beta1.AuditLogConfig{
 			{
 				LogType: "DATA_WRITE",
 			},
 			{
 				LogType:         "DATA_READ",
-				ExemptedMembers: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				ExemptedMembers: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		k8sAuditConfig := newIAMAuditConfigFixture(t, refResource, resourceRef, "allServices", auditLogConfigs)
@@ -147,7 +147,7 @@ func testReconcileResourceLevelCreate(ctx context.Context, t *testing.T, mgr man
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sAuditConfig), k8sAuditConfig); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	testcontroller.AssertReadyCondition(t, k8sAuditConfig, preReconcileGeneration)
+	teststatus.AssertReadyCondition(t, k8sAuditConfig, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMAuditConfigGVK.Kind, &k8sAuditConfig.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, k8sAuditConfig, preReconcileGeneration)
 }
@@ -155,7 +155,7 @@ func testReconcileResourceLevelCreate(ctx context.Context, t *testing.T, mgr man
 func TestReconcileIAMAuditConfigResourceLevelUpdate(t *testing.T) {
 	ctx := context.TODO()
 
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		auditLogConfigs := []iamv1beta1.AuditLogConfig{
 			{
 				LogType: "DATA_WRITE",
@@ -167,7 +167,7 @@ func TestReconcileIAMAuditConfigResourceLevelUpdate(t *testing.T) {
 			},
 			{
 				LogType:         "DATA_READ",
-				ExemptedMembers: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				ExemptedMembers: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		k8sAuditConfig := newIAMAuditConfigFixture(t, refResource, resourceRef, "allServices", auditLogConfigs)
@@ -184,7 +184,7 @@ func TestReconcileIAMAuditConfigResourceLevelUpdateWithExternalRef(t *testing.T)
 	shouldRun := func(fixture resourcefixture.ResourceFixture) bool {
 		return testiam.ShouldRunWithAuditConfigs(fixture) && testiam.ShouldRunWithExternalRef(fixture)
 	}
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		auditLogConfigs := []iamv1beta1.AuditLogConfig{
 			{
 				LogType: "DATA_WRITE",
@@ -196,7 +196,7 @@ func TestReconcileIAMAuditConfigResourceLevelUpdateWithExternalRef(t *testing.T)
 			},
 			{
 				LogType:         "DATA_READ",
-				ExemptedMembers: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				ExemptedMembers: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		k8sAuditConfig := newIAMAuditConfigFixture(t, refResource, resourceRef, "allServices", auditLogConfigs)
@@ -244,7 +244,7 @@ func testReconcileResourceLevelUpdate(ctx context.Context, t *testing.T, mgr man
 		t.Fatalf("error retrieving GCP audit config: %v", err)
 	}
 	assertSameAuditConfigs(t, newK8sAuditConfig, gcpAuditConfig)
-	testcontroller.AssertReadyCondition(t, newK8sAuditConfig, preReconcileGeneration)
+	teststatus.AssertReadyCondition(t, newK8sAuditConfig, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMAuditConfigGVK.Kind, &newK8sAuditConfig.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, newK8sAuditConfig, preReconcileGeneration)
 }
@@ -252,14 +252,14 @@ func testReconcileResourceLevelUpdate(ctx context.Context, t *testing.T, mgr man
 func TestReconcileIAMAuditConfigResourceLevelNoChanges(t *testing.T) {
 	ctx := context.TODO()
 
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		auditLogConfigs := []iamv1beta1.AuditLogConfig{
 			{
 				LogType: "DATA_WRITE",
 			},
 			{
 				LogType:         "DATA_READ",
-				ExemptedMembers: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				ExemptedMembers: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		k8sAuditConfig := newIAMAuditConfigFixture(t, refResource, resourceRef, "allServices", auditLogConfigs)
@@ -274,14 +274,14 @@ func TestReconcileIAMAuditConfigResourceLevelNoChangesWithExternalRef(t *testing
 	shouldRun := func(fixture resourcefixture.ResourceFixture) bool {
 		return testiam.ShouldRunWithAuditConfigs(fixture) && testiam.ShouldRunWithExternalRef(fixture)
 	}
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		auditLogConfigs := []iamv1beta1.AuditLogConfig{
 			{
 				LogType: "DATA_WRITE",
 			},
 			{
 				LogType:         "DATA_READ",
-				ExemptedMembers: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				ExemptedMembers: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		k8sAuditConfig := newIAMAuditConfigFixture(t, refResource, resourceRef, "allServices", auditLogConfigs)
@@ -327,7 +327,7 @@ func testReconcileResourceLevelNoChanges(ctx context.Context, t *testing.T, mgr 
 	if k8sAuditConfig.GetResourceVersion() != newK8sAuditConfig.GetResourceVersion() {
 		t.Errorf("reconcile that was expected to be a no-op resulted in a write to the API server")
 	}
-	testcontroller.AssertReadyCondition(t, newK8sAuditConfig, preReconcileGeneration)
+	teststatus.AssertReadyCondition(t, newK8sAuditConfig, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMAuditConfigGVK.Kind, &newK8sAuditConfig.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, newK8sAuditConfig, preReconcileGeneration)
 }
@@ -335,14 +335,14 @@ func testReconcileResourceLevelNoChanges(ctx context.Context, t *testing.T, mgr 
 func TestReconcileIAMAuditConfigResourceLevelDelete(t *testing.T) {
 	ctx := context.TODO()
 
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		auditLogConfigs := []iamv1beta1.AuditLogConfig{
 			{
 				LogType: "DATA_WRITE",
 			},
 			{
 				LogType:         "DATA_READ",
-				ExemptedMembers: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				ExemptedMembers: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		k8sAuditConfig := newIAMAuditConfigFixture(t, refResource, resourceRef, "allServices", auditLogConfigs)
@@ -357,14 +357,14 @@ func TestReconcileIAMAuditConfigResourceLevelDeleteWithExternalRef(t *testing.T)
 	shouldRun := func(fixture resourcefixture.ResourceFixture) bool {
 		return testiam.ShouldRunWithAuditConfigs(fixture) && testiam.ShouldRunWithExternalRef(fixture)
 	}
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		auditLogConfigs := []iamv1beta1.AuditLogConfig{
 			{
 				LogType: "DATA_WRITE",
 			},
 			{
 				LogType:         "DATA_READ",
-				ExemptedMembers: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				ExemptedMembers: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		k8sAuditConfig := newIAMAuditConfigFixture(t, refResource, resourceRef, "allServices", auditLogConfigs)
@@ -395,7 +395,7 @@ func testReconcileResourceLevelDelete(ctx context.Context, t *testing.T, mgr man
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sAuditConfig), k8sAuditConfig); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	testcontroller.AssertReadyCondition(t, k8sAuditConfig, preReconcileGeneration)
+	teststatus.AssertReadyCondition(t, k8sAuditConfig, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMAuditConfigGVK.Kind, &k8sAuditConfig.ObjectMeta, k8s.UpToDate)
 	if err := kubeClient.Delete(ctx, k8sAuditConfig); err != nil {
 		t.Fatalf("error deleting k8s resource: %v", err)
@@ -405,7 +405,7 @@ func testReconcileResourceLevelDelete(ctx context.Context, t *testing.T, mgr man
 	if err != nil {
 		t.Fatalf("expected audit config to exist in GCP, but got error: %v", err)
 	}
-	testk8s.RemoveDeletionDefenderFinalizer(t, k8sAuditConfig, v1beta1.IAMAuditConfigGVK, kubeClient)
+	testk8s.RemoveDeletionDefenderFinalizer(t, k8sAuditConfig, iamv1beta1.IAMAuditConfigGVK, kubeClient)
 	reconcileIAMAuditConfig(ctx, t, reconciler, k8sAuditConfig, expectedReconcileResult, nil)
 	if _, err := tfIamClient.GetAuditConfig(ctx, k8sAuditConfig); !errors.Is(err, kcciamclient.ErrNotFound) {
 		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
@@ -413,20 +413,20 @@ func testReconcileResourceLevelDelete(ctx context.Context, t *testing.T, mgr man
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sAuditConfig), k8sAuditConfig); err == nil || !apierrors.IsNotFound(err) {
 		t.Fatalf("unexpected error value: %v", err)
 	}
-	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, v1beta1.IAMAuditConfigGVK.Kind, &k8sAuditConfig.ObjectMeta, k8s.Deleted)
+	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMAuditConfigGVK.Kind, &k8sAuditConfig.ObjectMeta, k8s.Deleted)
 }
 
 func TestReconcileIAMAuditConfigResourceLevelDeleteParentFirst(t *testing.T) {
 	ctx := context.TODO()
 
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		auditLogConfigs := []iamv1beta1.AuditLogConfig{
 			{
 				LogType: "DATA_WRITE",
 			},
 			{
 				LogType:         "DATA_READ",
-				ExemptedMembers: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				ExemptedMembers: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		k8sAuditConfig := newIAMAuditConfigFixture(t, refResource, resourceRef, "allServices", auditLogConfigs)
@@ -441,14 +441,14 @@ func TestReconcileIAMAuditConfigResourceLevelDeleteParentFirstWithExternalRef(t 
 	shouldRun := func(fixture resourcefixture.ResourceFixture) bool {
 		return testiam.ShouldRunWithAuditConfigs(fixture) && testiam.ShouldRunWithExternalRef(fixture)
 	}
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		auditLogConfigs := []iamv1beta1.AuditLogConfig{
 			{
 				LogType: "DATA_WRITE",
 			},
 			{
 				LogType:         "DATA_READ",
-				ExemptedMembers: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				ExemptedMembers: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		k8sAuditConfig := newIAMAuditConfigFixture(t, refResource, resourceRef, "allServices", auditLogConfigs)
@@ -479,7 +479,7 @@ func testReconcileResourceLevelDeleteParentFirst(ctx context.Context, t *testing
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sAuditConfig), k8sAuditConfig); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	testcontroller.AssertReadyCondition(t, k8sAuditConfig, preReconcileGeneration)
+	teststatus.AssertReadyCondition(t, k8sAuditConfig, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMAuditConfigGVK.Kind, &k8sAuditConfig.ObjectMeta, k8s.UpToDate)
 
 	// First, delete the parent resource of the IAMAuditConfig
@@ -493,25 +493,25 @@ func testReconcileResourceLevelDeleteParentFirst(ctx context.Context, t *testing
 	if err := kubeClient.Delete(ctx, k8sAuditConfig); err != nil {
 		t.Fatalf("error deleting k8s resource: %v", err)
 	}
-	testk8s.RemoveDeletionDefenderFinalizer(t, k8sAuditConfig, v1beta1.IAMAuditConfigGVK, kubeClient)
+	testk8s.RemoveDeletionDefenderFinalizer(t, k8sAuditConfig, iamv1beta1.IAMAuditConfigGVK, kubeClient)
 	reconcileIAMAuditConfig(ctx, t, reconciler, k8sAuditConfig, expectedReconcileResult, nil)
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sAuditConfig), k8sAuditConfig); err == nil || !apierrors.IsNotFound(err) {
 		t.Fatalf("unexpected error value: %v", err)
 	}
-	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, v1beta1.IAMAuditConfigGVK.Kind, &k8sAuditConfig.ObjectMeta, k8s.Deleted)
+	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMAuditConfigGVK.Kind, &k8sAuditConfig.ObjectMeta, k8s.Deleted)
 }
 
 func TestReconcileIAMAuditConfigResourceLevelAcquire(t *testing.T) {
 	ctx := context.TODO()
 
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		auditLogConfigs := []iamv1beta1.AuditLogConfig{
 			{
 				LogType: "DATA_WRITE",
 			},
 			{
 				LogType:         "DATA_READ",
-				ExemptedMembers: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				ExemptedMembers: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		k8sAuditConfig := newIAMAuditConfigFixture(t, refResource, resourceRef, "allServices", auditLogConfigs)
@@ -526,14 +526,14 @@ func TestReconcileIAMAuditConfigResourceLevelAcquireWithExternalRef(t *testing.T
 	shouldRun := func(fixture resourcefixture.ResourceFixture) bool {
 		return testiam.ShouldRunWithAuditConfigs(fixture) && testiam.ShouldRunWithExternalRef(fixture)
 	}
-	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef v1beta1.ResourceReference) {
+	testFunc := func(ctx context.Context, t *testing.T, _ string, mgr manager.Manager, rc testiam.IAMResourceContext, refResource *unstructured.Unstructured, resourceRef iamv1beta1.ResourceReference) {
 		auditLogConfigs := []iamv1beta1.AuditLogConfig{
 			{
 				LogType: "DATA_WRITE",
 			},
 			{
 				LogType:         "DATA_READ",
-				ExemptedMembers: []v1beta1.Member{v1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
+				ExemptedMembers: []iamv1beta1.Member{iamv1beta1.Member(testgcp.GetIAMPolicyBindingMember(t))},
 			},
 		}
 		k8sAuditConfig := newIAMAuditConfigFixture(t, refResource, resourceRef, "allServices", auditLogConfigs)
@@ -566,8 +566,8 @@ func testReconcileResourceLevelAcquire(ctx context.Context, t *testing.T, mgr ma
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sAuditConfig), k8sAuditConfig); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	testcontroller.AssertReadyCondition(t, k8sAuditConfig, preReconcileGeneration)
-	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, v1beta1.IAMAuditConfigGVK.Kind, &k8sAuditConfig.ObjectMeta, k8s.UpToDate)
+	teststatus.AssertReadyCondition(t, k8sAuditConfig, preReconcileGeneration)
+	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, iamv1beta1.IAMAuditConfigGVK.Kind, &k8sAuditConfig.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, k8sAuditConfig, preReconcileGeneration)
 }
 

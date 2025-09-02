@@ -139,6 +139,7 @@ X-Goog-Request-Params: backup_vault.name=projects%2F${projectId}%2Flocations%2Fu
 {
   "backupMinimumEnforcedRetentionDuration": "200000s",
   "description": "Updated description",
+  "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/us-west2/backupVaults/backupdrbackupvault-minimal-${uniqueId}"
 }
 

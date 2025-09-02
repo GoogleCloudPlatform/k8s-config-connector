@@ -178,6 +178,25 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.id"] = 1111111111111111
 	visitor.replacePaths[".status.generatedId"] = 1111111111111111
 
+	// Specific to Container
+	visitor.replacePaths[".status.endpoint"] = "1.23.456.78"
+	visitor.replacePaths[".status.masterVersion"] = "1.30.5-gke.1014001"
+	visitor.replacePaths[".status.observedState.masterAuth.clusterCaCertificate"] = "1234567890abcdefghijklmn"
+	visitor.replacePaths[".status.observedState.privateClusterConfig.privateEndpoint"] = "10.128.0.2"
+	visitor.replacePaths[".status.observedState.privateClusterConfig.publicEndpoint"] = "8.8.8.8"
+
+	endpoint, _, _ := unstructured.NestedString(u.Object, "status", "observedState", "controlPlaneEndpointsConfig", "dnsEndpointConfig", "endpoint")
+	if endpoint != "" {
+		tokens := strings.Split(endpoint, "-")
+		if len(tokens) > 2 {
+			endpoint = strings.Replace(endpoint, tokens[1], "12345trewq", 1)
+			endpoint = strings.Replace(endpoint, fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}", -1)
+		}
+	} else {
+		endpoint = "gke-12345trewq-${projectNumber}.us-central1.gke.goog"
+	}
+	visitor.replacePaths[".status.observedState.controlPlaneEndpointsConfig.dnsEndpointConfig.endpoint"] = endpoint
+
 	// Specific to Certificate Manager
 	visitor.replacePaths[".status.dnsResourceRecord[].data"] = "${uniqueId}"
 
@@ -566,10 +585,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		}
 	}
 
-	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-		return strings.ReplaceAll(s, "organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationID}")
-
-	})
+	if testgcp.TestOrgID.Get() != "" {
+		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+			return strings.ReplaceAll(s, "organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationID}")
+		})
+	}
 
 	return visitor.VisitUnstructured(u)
 }
@@ -818,6 +838,14 @@ func (o *objectWalker) VisitUnstructured(v *unstructured.Unstructured) error {
 		return err
 	}
 	return nil
+}
+
+func (o *objectWalker) RewriteURL(url string) (string, error) {
+	v2, err := o.visitString(url, "{url}")
+	if err != nil {
+		return "", err
+	}
+	return v2, nil
 }
 
 // findLinksInEvent looks for link paths and feeds the values into replacement.ExtractIDsFromLinks
@@ -1216,6 +1244,15 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 		for _, entry := range events {
 			normalizer.Previsit(entry, replacements)
+		}
+
+		// Replace URLs
+		for _, event := range events {
+			s, err := replacements.RewriteURL(event.Request.URL)
+			if err != nil {
+				t.Fatalf("error normalizing url %q: %v", event.Request.URL, err)
+			}
+			event.Request.URL = s
 		}
 
 		events.PrettifyJSON(func(requestURL string, obj map[string]any) {

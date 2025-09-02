@@ -19,6 +19,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
 type LogListener struct {
@@ -48,4 +49,14 @@ func (l *LogListener) OnReconcileStart(ctx context.Context, u *unstructured.Unst
 	log.Info("structuredreporting OnReconcileStart",
 		"object.kind", u.GroupVersionKind().Kind,
 		"object.name", u.GetName())
+}
+
+// OnReconcileEnd is called when a controller calls ReportReconcileEnd
+func (l *LogListener) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error) {
+	log := log.FromContext(ctx)
+	log.Info("structuredreporting OnReconcileEnd",
+		"object.kind", u.GroupVersionKind().Kind,
+		"object.name", u.GetName(),
+		"result", result,
+		"error", err)
 }

@@ -1,0 +1,18 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: iampartialpolicy-${uniqueId}
+spec:
+  bindings:
+  - role: roles/run.admin
+    members:
+    - member: user:test@example.com
+    - member: serviceAccount:test-sa@test-project.iam.gserviceaccount.com
+    - member: group:test-group@example.com
+  - role: roles/run.editor
+    members:
+    - member: user:editor@example.com
+  resourceRef:
+    apiVersion: run.cnrm.cloud.google.com/v1beta1
+    kind: RunJob
+    name: runjob-${uniqueId}

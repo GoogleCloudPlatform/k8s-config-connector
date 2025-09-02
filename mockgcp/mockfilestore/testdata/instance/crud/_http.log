@@ -17,6 +17,7 @@ Content-Type: application/json
       "network": "default"
     }
   ],
+  "protocol": "NFS_V3",
   "tier": "BASIC_HDD"
 }
 
@@ -89,6 +90,7 @@ X-Xss-Protection: 0
         "reservedIpRange": "10.20.30.0/24"
       }
     ],
+    "protocol": "NFS_V3",
     "state": "READY",
     "tier": "BASIC_HDD"
   }
@@ -130,6 +132,7 @@ X-Xss-Protection: 0
       "reservedIpRange": "10.20.30.0/24"
     }
   ],
+  "protocol": "NFS_V3",
   "state": "READY",
   "tier": "BASIC_HDD"
 }

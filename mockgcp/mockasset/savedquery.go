@@ -24,6 +24,7 @@ import (
 	"strings"
 	"time"
 
+	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -42,7 +43,17 @@ func (s *AssetService) GetSavedQuery(ctx context.Context, req *pb.GetSavedQueryR
 	obj := &pb.SavedQuery{}
 	if err := s.storage.Get(ctx, name.String(), obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
+			st := status.New(codes.NotFound, "Requested entity was not found.")
+			br := &errdetails.BadRequest{}
+			br.FieldViolations = append(br.FieldViolations, &errdetails.BadRequest_FieldViolation{
+				Field:       "name",
+				Description: "SavedQuery not found",
+			})
+			st, err := st.WithDetails(br)
+			if err != nil {
+				return nil, status.Errorf(codes.Internal, "unexpected error attaching details to status: %v", err)
+			}
+			return nil, st.Err()
 		}
 		return nil, err
 	}

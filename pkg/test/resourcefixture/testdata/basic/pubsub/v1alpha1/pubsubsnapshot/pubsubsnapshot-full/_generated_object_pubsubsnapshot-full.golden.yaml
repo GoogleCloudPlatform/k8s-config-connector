@@ -1,0 +1,30 @@
+apiVersion: pubsub.cnrm.cloud.google.com/v1alpha1
+kind: PubSubSnapshot
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: pubsubsnapshot-full-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  expireTime: "2025-10-03T15:01:23Z"
+  labels:
+    key: new-value
+  projectRef:
+    external: ${projectId}
+  pubSubSubscriptionRef:
+    name: pubsubsnapshot-dep-${uniqueId}
+  topicRef:
+    name: pubsubsnapshot-dep-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/snapshots/pubsubsnapshot-full-${uniqueId}
+  observedGeneration: 2

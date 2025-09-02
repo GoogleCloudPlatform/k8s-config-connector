@@ -20,6 +20,13 @@ import (
 
 // MultiClusterLeaseSpec defines the desired state of MultiClusterLease
 type MultiClusterLeaseSpec struct {
+	// HolderIdentity is the unique identifier of the last known leader.
+	// This is the identity of the client that is trying to acquire or renew the lease.
+	HolderIdentity *string `json:"holderIdentity,omitempty"`
+
+	// RenewTime is the timestamp when the client last renewed the lease.
+	RenewTime *metav1.MicroTime `json:"renewTime,omitempty"`
+
 	// LeaseDurationSeconds is the duration that non-leader candidates will
 	// wait to force acquire leadership.
 	LeaseDurationSeconds *int32 `json:"leaseDurationSeconds,omitempty"`
@@ -42,10 +49,6 @@ type MultiClusterLeaseStatus struct {
 	// that was last processed to produce this status.
 	// Used by clients to determine if the status reflects their latest spec changes.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
-
-	// IsLeadingCluster is true if the local cluster is holding the global lease.
-	// This is the source of truth for leadership.
-	IsLeadingCluster bool `json:"isLeadingCluster,omitempty"`
 
 	// GlobalHolderIdentity is the globally unique identifier of the candidate
 	// last observed as holding the global lock for this lease scope.

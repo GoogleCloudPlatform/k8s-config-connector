@@ -87,10 +87,6 @@ spec:
                 description: Optional. Time after which the BackupVault resource is
                   locked.
                 type: string
-              etag:
-                description: Optional. Server specified ETag for the backup vault
-                  resource to prevent simultaneous updates from overwiting each other.
-                type: string
               ignoreInactiveDatasources:
                 description: Optional. If set to true, allows deletion of a backup
                   vault even when it contains inactive data sources. This overrides
@@ -208,6 +204,10 @@ spec:
                     description: Output only. Set to true when there are no backups
                       nested under this resource.
                     type: boolean
+                  etag:
+                    description: Output only. A tag that confirms the content of the
+                      BackupVault resource.
+                    type: string
                   serviceAccount:
                     description: Output only. Service account used by the BackupVault
                       Service for this BackupVault.  The user should grant this account

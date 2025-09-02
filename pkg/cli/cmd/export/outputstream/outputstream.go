@@ -43,17 +43,24 @@ func NewResourceByteStream(tfProvider *schema.Provider, params *parameters.Param
 }
 
 func NewUnstructuredStream(params *parameters.Parameters, provider *schema.Provider, smLoader *servicemappingloader.ServiceMappingLoader) (stream.UnstructuredStream, error) {
+	ctx := context.TODO()
+
 	httpClient := params.HTTPClient
 	if httpClient == nil {
-		hc, err := serviceclient.NewHTTPClient(context.TODO(), params.GCPAccessToken)
+		hc, err := serviceclient.NewHTTPClient(ctx, params.GCPAccessToken)
 		if err != nil {
 			return nil, fmt.Errorf("error creating http client: %w", err)
 		}
 		httpClient = hc
 	}
 
+	controllerConfig, err := params.NewControllerConfig(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	gcpClient := gcpclient.New(provider, smLoader)
-	unstructuredResourceStream := stream.NewUnstructuredResourceStreamFromURL(params.URI, provider, smLoader, gcpClient, httpClient)
+	unstructuredResourceStream := stream.NewUnstructuredResourceStreamFromURL(params.URI, provider, smLoader, gcpClient, httpClient, controllerConfig)
 	fixupStream := stream.NewUnstructuredResourceFixupStream(unstructuredResourceStream)
 	if params.IAMFormat == commonparams.NoneIAMFormatOption {
 		return fixupStream, nil

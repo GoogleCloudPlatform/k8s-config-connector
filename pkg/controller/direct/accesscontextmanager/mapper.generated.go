@@ -21,15 +21,15 @@ package accesscontextmanager
 
 import (
 	pb "cloud.google.com/go/accesscontextmanager/apiv1/accesscontextmanagerpb"
-	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/accesscontextmanager/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/accesscontextmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AccessContextManagerAccessPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AccessPolicy) *krmv1beta1.AccessContextManagerAccessPolicyObservedState {
+func AccessContextManagerAccessPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AccessPolicy) *krm.AccessContextManagerAccessPolicyObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.AccessContextManagerAccessPolicyObservedState{}
+	out := &krm.AccessContextManagerAccessPolicyObservedState{}
 	// MISSING: Name
 	// MISSING: Parent
 	// MISSING: Scopes
@@ -38,7 +38,7 @@ func AccessContextManagerAccessPolicyObservedState_FromProto(mapCtx *direct.MapC
 	// MISSING: Etag
 	return out
 }
-func AccessContextManagerAccessPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AccessContextManagerAccessPolicyObservedState) *pb.AccessPolicy {
+func AccessContextManagerAccessPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerAccessPolicyObservedState) *pb.AccessPolicy {
 	if in == nil {
 		return nil
 	}
@@ -51,11 +51,11 @@ func AccessContextManagerAccessPolicyObservedState_ToProto(mapCtx *direct.MapCon
 	// MISSING: Etag
 	return out
 }
-func AccessContextManagerAccessPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.AccessPolicy) *krmv1beta1.AccessContextManagerAccessPolicySpec {
+func AccessContextManagerAccessPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.AccessPolicy) *krm.AccessContextManagerAccessPolicySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.AccessContextManagerAccessPolicySpec{}
+	out := &krm.AccessContextManagerAccessPolicySpec{}
 	// MISSING: Name
 	// MISSING: Parent
 	out.Title = direct.LazyPtr(in.GetTitle())
@@ -65,7 +65,7 @@ func AccessContextManagerAccessPolicySpec_FromProto(mapCtx *direct.MapContext, i
 	// MISSING: Etag
 	return out
 }
-func AccessContextManagerAccessPolicySpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AccessContextManagerAccessPolicySpec) *pb.AccessPolicy {
+func AccessContextManagerAccessPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerAccessPolicySpec) *pb.AccessPolicy {
 	if in == nil {
 		return nil
 	}
@@ -77,33 +77,5 @@ func AccessContextManagerAccessPolicySpec_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: Etag
-	return out
-}
-func AccessPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AccessPolicy) *krmv1beta1.AccessPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1beta1.AccessPolicy{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Parent = direct.LazyPtr(in.GetParent())
-	out.Title = direct.LazyPtr(in.GetTitle())
-	out.Scopes = in.Scopes
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.Etag = direct.LazyPtr(in.GetEtag())
-	return out
-}
-func AccessPolicy_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AccessPolicy) *pb.AccessPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AccessPolicy{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Parent = direct.ValueOf(in.Parent)
-	out.Title = direct.ValueOf(in.Title)
-	out.Scopes = in.Scopes
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }

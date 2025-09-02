@@ -19,8 +19,10 @@ import (
 	"fmt"
 	"strings"
 
+	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	v1 "k8s.io/api/apps/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -28,12 +30,17 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	crlog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
+)
+
+var (
+	ManagerNamespaceIsolation string
 )
 
 type Reconciler struct {
@@ -143,6 +150,24 @@ func controllerExistsForNamespace(ctx context.Context, namespace string, c clien
 		Namespace:     k8s.SystemNamespace,
 		LabelSelector: stsLabelSelector,
 		Limit:         1,
+	}
+	if ManagerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
+		u := &unstructured.Unstructured{}
+		u.SetGroupVersionKind(corev1beta1.ConfigConnectorContextGroupVersionKind)
+		err = c.Get(ctx, types.NamespacedName{
+			Namespace: namespace,
+			Name:      corev1beta1.ConfigConnectorContextAllowedName,
+		}, u)
+		if err != nil {
+			if apierrors.IsNotFound(err) {
+				return false, nil
+			}
+			return false, err
+		}
+		managerNamespace, found, err := unstructured.NestedString(u.Object, "spec", "managerNamespace")
+		if err == nil && found && managerNamespace != "" {
+			stsOpts.Namespace = managerNamespace
+		}
 	}
 	if err := c.List(ctx, stsList, stsOpts); err != nil {
 		return false, fmt.Errorf("error listing controller manager StatefulSets: %w", err)

@@ -8,7 +8,7 @@ spec:
       bounds:
       - 1.5
       - 4.5
-  description: a description
+  description: an updated description
   disabled: false
   filter: resource.type=gae_app AND severity<=ERROR
   labelExtractors:
@@ -20,9 +20,9 @@ spec:
       key: testkey
       valueType: STRING
     launchStage: ""
-    metricKind: DELTA
-    unit: ""
-    valueType: DISTRIBUTION
+    metricKind: CUMULATIVE
+    unit: "1"
+    valueType: INT64
   projectRef:
     external: ${projectId}
   valueExtractor: EXTRACT(jsonPayload.response)

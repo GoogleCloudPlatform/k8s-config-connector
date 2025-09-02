@@ -113,6 +113,19 @@ func IsDirectByGK(gk schema.GroupKind) bool {
 	return registration != nil
 }
 
+func AllDirectGVKs() map[schema.GroupVersionKind]bool {
+	directGVKs := make(map[schema.GroupVersionKind]bool)
+	for _, registration := range singleton.registrations {
+		directGVKs[registration.gvk] = true
+	}
+
+	// Check that we have registered all direct GVKs.
+	if len(directGVKs) < 20 {
+		klog.Fatalf("Expected at least 20 direct GVKs, but found only %d; have you imported github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register?", len(directGVKs))
+	}
+	return directGVKs
+}
+
 // IsIAMDirect returns true if this resource uses the direct-reconciliation model for IAM.
 func IsIAMDirect(groupKind schema.GroupKind) bool {
 	registration := singleton.registrations[groupKind]

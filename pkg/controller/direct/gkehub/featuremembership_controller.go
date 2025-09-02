@@ -182,7 +182,15 @@ func (a *gkeHubAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteO
 }
 
 func (a *gkeHubAdapter) patchMembershipSpec(ctx context.Context) ([]byte, error) {
-	feature := a.actual
+	var feature *featureapi.Feature
+	if a.actual != nil {
+		feature = a.actual
+	} else {
+		// if the feature does not exist, create a new one.
+		feature = &featureapi.Feature{
+			Name: fmt.Sprintf("projects/%s/locations/%s/features/%s", a.projectID, a.location, a.featureID),
+		}
+	}
 	mSpecs := make(map[string]featureapi.MembershipFeatureSpec)
 	// only change the feature configuration for the associated membership
 	desiredApiObj, err := featureMembershipSpecKRMtoMembershipFeatureSpecAPI(&a.desired.Spec)

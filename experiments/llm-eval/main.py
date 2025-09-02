@@ -21,55 +21,57 @@ import argparse
 import yaml
 from evaluator import MCPEvaluator
 
-def setup_mcp_config(config_data, config_file_path="~/.gemini/settings.json"):
-    """
-    Writes MCP server configuration to the Gemini CLI settings.json.
-    """
-    expanded_path = os.path.expanduser(config_file_path)
-    os.makedirs(os.path.dirname(expanded_path), exist_ok=True)
-    with open(expanded_path, 'w') as f:
-        json.dump(config_data, f, indent=4)
-    print(f"MCP configuration written to: {expanded_path}")
+def get_git_root():
+    try:
+        return subprocess.check_output(["git", "rev-parse", "--show-toplevel"], text=True).strip()
+    except subprocess.CalledProcessError:
+        print("Warning: Not a git repository. Assuming current directory is project root.")
+        return "."
 
-def discover_tasks(tasks_dir="tasks"):
+def discover_tasks(tasks_dir="tasks", specific_task=None):
     """
-    Discovers test cases from subdirectories in the tasks directory.
+    Discovers test cases by recursively searching for 'task.yaml' files.
     """
     test_cases = []
-    for root, dirs, files in os.walk(tasks_dir):
+    for root, _, files in os.walk(tasks_dir):
         if "task.yaml" in files:
-            task_path = os.path.join(root, "task.yaml")
-            with open(task_path, 'r') as f:
+            task_dir = root
+            task_name = os.path.basename(root)
+
+            if specific_task and task_name != specific_task:
+                continue
+
+            task_yaml_path = os.path.join(task_dir, "task.yaml")
+            setup_script_path = os.path.join(task_dir, "setup.sh")
+
+            with open(task_yaml_path, 'r') as f:
                 try:
                     task_data = yaml.safe_load(f)
-                    test_name = os.path.basename(root)
                     
-                    # Ensure script is a list
                     script = task_data.get("script", [])
                     if not isinstance(script, list):
                         script = [script]
 
-                    # The prompt is the first item in the script list
                     prompt = script[0].get("prompt") if script and "prompt" in script[0] else None
 
                     if not prompt:
-                        print(f"Warning: No prompt found for task {test_name}, skipping.")
+                        print(f"Warning: No prompt found for task {task_name}, skipping.")
                         continue
                     
-                    output_file = task_data.get("output_file", f"{test_name}.yaml")
-                    prompt += f"\nPlace the generated YAML in a file at `$(git rev-parse --show-toplevel)/.build/{root}/{output_file}`."
-                    prompt += "\nHint: Use the available MCP tools to find the resource schema and generate the YAML. If the mcp tool is not available, use your knowledge to generate the YAML manifest."
-
                     test_cases.append({
-                        "name": test_name,
+                        "name": task_name,
                         "prompt": prompt,
                         "verifier_script": task_data.get("verifier"),
                         "cleanup_script": task_data.get("cleanup"),
-                        "setup_script": "setup.sh" if "setup.sh" in files else None,
-                        "task_dir": root,
+                        "setup_script": "setup.sh" if os.path.isfile(setup_script_path) else None,
+                        "task_dir": task_dir,
                     })
                 except yaml.YAMLError as e:
-                    print(f"Error parsing YAML in {task_path}: {e}")
+                    print(f"Error parsing YAML in {task_yaml_path}: {e}")
+    
+    if not test_cases and not specific_task:
+        print(f"Warning: No tasks found in '{tasks_dir}'")
+
     return test_cases
 
 
@@ -126,59 +128,68 @@ if __name__ == "__main__":
         default="tasks",
         help='Path to the directory containing test tasks.'
     )
+    parser.add_argument("--no-mcp", action="store_true", help="Disable MCP for the evaluation")
+    parser.add_argument("--task", help="Run a specific task by name (e.g., APIQuotaAdjusterSettings-promote)")
+    parser.add_argument("--gemini-cli-path", default="gemini", help="Path to the Gemini CLI executable")
+    parser.add_argument("--log", help="Path to the log file to store stdout and stderr.")
     args = parser.parse_args()
 
+    git_root = get_git_root()
+
     # Discover test cases from the tasks directory
-    test_cases = discover_tasks(args.tasks_dir)
+    tasks_dir = os.path.expanduser(args.tasks_dir)
+    if not os.path.isabs(tasks_dir):
+        tasks_dir = os.path.join(git_root, tasks_dir)
+    
+    test_cases = discover_tasks(tasks_dir, args.task)
     if not test_cases:
-        print(f"No test cases found in the '{args.tasks_dir}' directory. Exiting.")
+        print(f"No test cases found in the '{tasks_dir}' directory. Exiting.")
         sys.exit(0)
 
     # Create or clear the report file
-    report_path = os.path.join(args.tasks_dir, "report.txt")
+    report_path = os.path.join(tasks_dir, "report.txt")
     with open(report_path, "w") as f:
         f.write("Evaluation Report\n")
         f.write("="*20 + "\n")
 
-    # --- Run with MCP Enabled ---
-    with open('config.json', 'r') as f:
-        mcp_config = json.load(f)
-    
-    # Access the value of --config-path
-    if args.config_path:
-        mcp_config_path = args.config_path
-    else:
-        mcp_config_path = os.path.join(os.getcwd(), ".gemini/settings.json") 
-        
-    # --- Run with MCP Disabled ---
-    print("\n--- Starting Evaluation with MCP Disabled ---")
-    setup_mcp_config({}, config_file_path=mcp_config_path) # Empty config disables MCP
-    no_mcp_evaluator = MCPEvaluator()
-    for test in test_cases:
-        no_mcp_evaluator.run_test_case(**test)
-    no_mcp_results_df = no_mcp_evaluator.generate_report()
-    with open(report_path, "a") as f:
-        f.write("\n--- Summary for MCP Disabled ---\n")
-        f.write(no_mcp_evaluator.get_summary() + "\n")
-
-    # --- Run with MCP Enabled ---
-    print("--- Starting Evaluation with MCP Enabled ---")
-    setup_mcp_config(mcp_config, config_file_path=mcp_config_path)
-    mcp_evaluator = MCPEvaluator()
-    for test in test_cases:
-        mcp_evaluator.run_test_case(**test)
-    mcp_results_df = mcp_evaluator.generate_report()
-    with open(report_path, "a") as f:
-        f.write("\n--- Summary for MCP Enabled ---\n")
-        f.write(mcp_evaluator.get_summary() + "\n")
-
-    # --- Compare Results ---
-    if not mcp_results_df.empty and not no_mcp_results_df.empty:
-        report = compare_reports(mcp_results_df, no_mcp_results_df)
-        print(report)
+    if args.no_mcp:
+        # --- Run with MCP Disabled ---
+        print("\n--- Starting Evaluation with MCP Disabled ---")
+        no_mcp_evaluator = MCPEvaluator(gemini_cli_path=args.gemini_cli_path, use_mcp=False, log_path=args.log)
+        for test in test_cases:
+            no_mcp_evaluator.run_test_case(**test)
+        no_mcp_results_df = no_mcp_evaluator.generate_report()
         with open(report_path, "a") as f:
-            f.write(report)
+            f.write("\n--- Summary for MCP Disabled ---\n")
+            f.write(no_mcp_evaluator.get_summary() + "\n")
     else:
-        print("\nCould not generate comparison report due to one or both evaluation runs failing.")
+        # --- Run with MCP Enabled ---
+        print("--- Starting Evaluation with MCP Enabled ---")
+        mcp_evaluator = MCPEvaluator(gemini_cli_path=args.gemini_cli_path, use_mcp=True, src_mcp_config_path=args.config_path, log_path=args.log)
+        for test in test_cases:
+            mcp_evaluator.run_test_case(**test)
+        mcp_results_df = mcp_evaluator.generate_report()
+        with open(report_path, "a") as f:
+            f.write("\n--- Summary for MCP Enabled ---\n")
+            f.write(mcp_evaluator.get_summary() + "\n")
+
+        # --- Run with MCP Disabled and Compare ---
+        if not args.task:
+            print("\n--- Starting Evaluation with MCP Disabled ---")
+            no_mcp_evaluator = MCPEvaluator(gemini_cli_path=args.gemini_cli_path, use_mcp=False, log_path=args.log)
+            for test in test_cases:
+                no_mcp_evaluator.run_test_case(**test)
+            no_mcp_results_df = no_mcp_evaluator.generate_report()
+            with open(report_path, "a") as f:
+                f.write("\n--- Summary for MCP Disabled ---\n")
+                f.write(no_mcp_evaluator.get_summary() + "\n")
+            
+            if not mcp_results_df.empty and not no_mcp_results_df.empty:
+                report = compare_reports(mcp_results_df, no_mcp_results_df)
+                print(report)
+                with open(report_path, "a") as f:
+                    f.write(report)
+            else:
+                print("\nCould not generate comparison report due to one or both evaluation runs failing.")
 
     print(f"\nEvaluation complete. Full report written to {report_path}")

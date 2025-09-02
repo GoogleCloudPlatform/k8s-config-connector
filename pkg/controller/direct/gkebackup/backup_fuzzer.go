@@ -62,11 +62,10 @@ func GKEBackupBackupFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".config_backup_size_bytes")
 	f.StatusFields.Insert(".permissive_mode")
 
-	f.UnimplementedFields.Insert(".name")
+	f.IdentityField(".name")
 
-	// New fields that could potentially be added
-	f.UnimplementedFields.Insert(".satisfies_pzs")
-	f.UnimplementedFields.Insert(".satisfies_pzi")
+	f.Unimplemented_NotYetTriaged(".satisfies_pzs")
+	f.Unimplemented_NotYetTriaged(".satisfies_pzi")
 
 	return f
 }

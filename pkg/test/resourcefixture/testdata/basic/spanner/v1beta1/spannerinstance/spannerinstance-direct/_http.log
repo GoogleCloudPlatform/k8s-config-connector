@@ -32,7 +32,9 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "displayName": "Spanner Instance Sample",
     "labels": {
-      "managed-by-cnrm": "true"
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true",
+      "metadata-label-one": "value-one"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
     "nodeCount": 2
@@ -60,7 +62,9 @@ X-Xss-Protection: 0
       "edition": 1,
       "instanceType": 1,
       "labels": {
-        "managed-by-cnrm": "true"
+        "cnrm-test": "true",
+        "managed-by-cnrm": "true",
+        "metadata-label-one": "value-one"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
       "nodeCount": 2,
@@ -110,7 +114,9 @@ X-Xss-Protection: 0
       "edition": "STANDARD",
       "instanceType": "PROVISIONED",
       "labels": {
-        "managed-by-cnrm": "true"
+        "cnrm-test": "true",
+        "managed-by-cnrm": "true",
+        "metadata-label-one": "value-one"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
       "nodeCount": 2,
@@ -138,7 +144,9 @@ X-Xss-Protection: 0
     "edition": "STANDARD",
     "instanceType": "PROVISIONED",
     "labels": {
-      "managed-by-cnrm": "true"
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true",
+      "metadata-label-one": "value-one"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
     "nodeCount": 2,
@@ -180,7 +188,9 @@ X-Xss-Protection: 0
   "edition": 1,
   "instanceType": 1,
   "labels": {
-    "managed-by-cnrm": "true"
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "metadata-label-one": "value-one"
   },
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
   "nodeCount": 2,
@@ -205,12 +215,14 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: instance.name=projects%2F${projectId}%2Finstances%2Fspannerinstance-sample-${uniqueId}
 
 {
-  "fieldMask": "displayName,nodeCount,defaultBackupScheduleType",
+  "fieldMask": "displayName,nodeCount,labels,defaultBackupScheduleType",
   "instance": {
     "config": "projects/${projectId}/instanceConfigs/regional-us-west1",
     "displayName": "New Spanner Instance Sample",
     "labels": {
-      "managed-by-cnrm": "true"
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true",
+      "metadata-label-one": "updated-value-one"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
     "nodeCount": 3
@@ -236,7 +248,9 @@ X-Xss-Protection: 0
       "edition": 1,
       "instanceType": 1,
       "labels": {
-        "managed-by-cnrm": "true"
+        "cnrm-test": "true",
+        "managed-by-cnrm": "true",
+        "metadata-label-one": "updated-value-one"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
       "nodeCount": 3,
@@ -286,7 +300,9 @@ X-Xss-Protection: 0
       "edition": "STANDARD",
       "instanceType": "PROVISIONED",
       "labels": {
-        "managed-by-cnrm": "true"
+        "cnrm-test": "true",
+        "managed-by-cnrm": "true",
+        "metadata-label-one": "updated-value-one"
       },
       "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
       "nodeCount": 3,
@@ -313,7 +329,9 @@ X-Xss-Protection: 0
     "edition": "STANDARD",
     "instanceType": "PROVISIONED",
     "labels": {
-      "managed-by-cnrm": "true"
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true",
+      "metadata-label-one": "updated-value-one"
     },
     "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
     "nodeCount": 3,
@@ -354,7 +372,9 @@ X-Xss-Protection: 0
   "edition": 1,
   "instanceType": 1,
   "labels": {
-    "managed-by-cnrm": "true"
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true",
+    "metadata-label-one": "updated-value-one"
   },
   "name": "projects/${projectId}/instances/spannerinstance-sample-${uniqueId}",
   "nodeCount": 3,

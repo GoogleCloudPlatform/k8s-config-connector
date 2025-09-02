@@ -1,0 +1,6 @@
+# Test for gcloud iam service-accounts key
+- exec: gcloud iam service-accounts create test-${uniqueId} --display-name="Test Service Account" --description="Test Service Account"
+- exec: gcloud iam service-accounts keys create --iam-account=test-${uniqueId}@${projectId}.iam.gserviceaccount.com serviceaccountkey.json
+- exec: rm serviceaccountkey.json
+- exec: gcloud iam service-accounts keys delete --iam-account=test-${uniqueId}@${projectId}.iam.gserviceaccount.com --quiet $(gcloud iam service-accounts keys list --iam-account=test-${uniqueId}@${projectId}.iam.gserviceaccount.com '--format=value(name)' --limit=1)
+- exec: gcloud iam service-accounts delete test-${uniqueId}@${projectId}.iam.gserviceaccount.com --quiet

@@ -200,6 +200,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   },
   "friendlyName": "BigQuery Table",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "tableReference": {
@@ -242,6 +243,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -314,6 +316,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -372,6 +375,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   },
   "friendlyName": "BigQuery Table Updated",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "schema": {
@@ -429,6 +433,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",
@@ -502,6 +507,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
+    "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "lastModifiedTime": "123456789",

@@ -96,6 +96,7 @@
 [missing_field] crd=bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudSpanner.useServerlessAnalytics" is not set in unstructured objects
 [missing_field] crd=bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com version=v1beta1: field ".spec.spark.metastoreService.metastoreServiceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com version=v1beta1: field ".spec.spark.sparkHistoryServer.dataprocClusterRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.dataRefreshWindowDays" is not set in unstructured objects
 [missing_field] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.emailPreferences.enableFailureEmail" is not set in unstructured objects
 [missing_field] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfiguration.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.pubSubTopicRef" is not set; neither 'external' nor 'name' are set
@@ -309,10 +310,7 @@
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.webhookConfig.secretRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.webhookConfig.state" is not set in unstructured objects
 [missing_field] crd=cloudidentitygroups.cloudidentity.cnrm.cloud.google.com version=v1beta1: field ".spec.groupKey.namespace" is not set in unstructured objects
-[missing_field] crd=cloudidentitymemberships.cloudidentity.cnrm.cloud.google.com version=v1beta1: field ".spec.memberKey.id" is not set in unstructured objects
-[missing_field] crd=cloudidentitymemberships.cloudidentity.cnrm.cloud.google.com version=v1beta1: field ".spec.memberKey.namespace" is not set in unstructured objects
 [missing_field] crd=cloudidentitymemberships.cloudidentity.cnrm.cloud.google.com version=v1beta1: field ".spec.preferredMemberKey.namespace" is not set in unstructured objects
-[missing_field] crd=cloudidentitymemberships.cloudidentity.cnrm.cloud.google.com version=v1beta1: field ".spec.roles[].restrictionEvaluations.memberRestrictionEvaluation.state" is not set in unstructured objects
 [missing_field] crd=cloudidsendpoints.cloudids.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=cloudschedulerjobs.cloudscheduler.cnrm.cloud.google.com version=v1beta1: field ".spec.appEngineHttpTarget.appEngineRouting.instance" is not set in unstructured objects
 [missing_field] crd=cloudschedulerjobs.cloudscheduler.cnrm.cloud.google.com version=v1beta1: field ".spec.appEngineHttpTarget.appEngineRouting.service" is not set in unstructured objects
@@ -753,6 +751,7 @@
 [missing_field] crd=computenodegroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.shareSettings.projectMap[].projectIdRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computenodegroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.shareSettings.shareType" is not set in unstructured objects
 [missing_field] crd=computenodetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.cpuOvercommitType" is not set in unstructured objects
+[missing_field] crd=computenodetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeType" is not set in unstructured objects
 [missing_field] crd=computenodetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeTypeFlexibility.localSsd" is not set in unstructured objects
 [missing_field] crd=computenodetemplates.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.serverBinding.type" is not set in unstructured objects
 [missing_field] crd=computepacketmirrorings.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.mirroredResources.instances[].canonicalUrl" is not set in unstructured objects
@@ -799,6 +798,7 @@
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.minPortsPerVm" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.natIps[].external" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.natIps[].namespace" is not set in unstructured objects
+[missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.rules[].action.sourceNatDrainIpsRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.subnetwork[].secondaryIpRangeNames[]" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.tcpEstablishedIdleTimeoutSec" is not set in unstructured objects
 [missing_field] crd=computerouternats.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.tcpTimeWaitTimeoutSec" is not set in unstructured objects
@@ -1116,17 +1116,6 @@
 [missing_field] crd=computevpntunnels.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sharedSecret.value" is not set in unstructured objects
 [missing_field] crd=computevpntunnels.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.vpnGatewayInterface" is not set in unstructured objects
 [missing_field] crd=computevpntunnels.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.vpnGatewayRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.actuationMode" is not set in unstructured objects
-[missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.billingProject" is not set in unstructured objects
-[missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.googleServiceAccount" is not set in unstructured objects
-[missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.requestProjectPolicy" is not set in unstructured objects
-[missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.stateIntoSpec" is not set in unstructured objects
-[missing_field] crd=configconnectorcontexts.core.cnrm.cloud.google.com version=v1beta1: field ".spec.version" is not set in unstructured objects
-[missing_field] crd=configconnectors.core.cnrm.cloud.google.com version=v1beta1: field ".spec.actuationMode" is not set in unstructured objects
-[missing_field] crd=configconnectors.core.cnrm.cloud.google.com version=v1beta1: field ".spec.credentialSecretName" is not set in unstructured objects
-[missing_field] crd=configconnectors.core.cnrm.cloud.google.com version=v1beta1: field ".spec.googleServiceAccount" is not set in unstructured objects
-[missing_field] crd=configconnectors.core.cnrm.cloud.google.com version=v1beta1: field ".spec.mode" is not set in unstructured objects
-[missing_field] crd=configconnectors.core.cnrm.cloud.google.com version=v1beta1: field ".spec.stateIntoSpec" is not set in unstructured objects
 [missing_field] crd=configcontrollerinstances.configcontroller.cnrm.cloud.google.com version=v1beta1: field ".spec.managementConfig.fullManagementConfig.clusterCidrBlock" is not set in unstructured objects
 [missing_field] crd=configcontrollerinstances.configcontroller.cnrm.cloud.google.com version=v1beta1: field ".spec.managementConfig.fullManagementConfig.clusterNamedRange" is not set in unstructured objects
 [missing_field] crd=configcontrollerinstances.configcontroller.cnrm.cloud.google.com version=v1beta1: field ".spec.managementConfig.fullManagementConfig.manBlock" is not set in unstructured objects
@@ -1209,7 +1198,6 @@
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.authenticatorGroupsConfig.securityGroup" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.binaryAuthorization.enabled" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.binaryAuthorization.evaluationMode" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.clusterAutoscaling.autoProvisioningDefaults.management.upgradeOptions[]" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.clusterIpv4Cidr" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.clusterTelemetry.type" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.confidentialNodes.enabled" is not set in unstructured objects
@@ -1241,15 +1229,6 @@
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.ipAllocationPolicy.podCidrOverprovisionConfig.disabled" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.ipAllocationPolicy.servicesSecondaryRangeName" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.ipAllocationPolicy.stackType" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.dailyMaintenanceWindow.duration" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.dailyMaintenanceWindow.startTime" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.maintenanceExclusion[].endTime" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.maintenanceExclusion[].exclusionName" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.maintenanceExclusion[].exclusionOptions.scope" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.maintenanceExclusion[].startTime" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.recurringWindow.endTime" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.recurringWindow.recurrence" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenancePolicy.recurringWindow.startTime" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.masterAuth.clientCertificate" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.masterAuth.clientCertificateConfig.issueClientCertificate" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.masterAuth.clientKey" is not set in unstructured objects
@@ -1259,7 +1238,6 @@
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.masterAuth.username" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.masterAuthorizedNetworksConfig.cidrBlocks[].cidrBlock" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.masterAuthorizedNetworksConfig.cidrBlocks[].displayName" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.masterAuthorizedNetworksConfig.gcpPublicCidrsAccessEnabled" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.meshCertificates.enableCertificates" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.minMasterVersion" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.monitoringConfig.advancedDatapathObservabilityConfig[].enableMetrics" is not set in unstructured objects
@@ -1323,14 +1301,6 @@
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.nodeVersion" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.notificationConfig.pubsub.filter.eventType[]" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.podSecurityPolicyConfig.enabled" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.privateClusterConfig.enablePrivateEndpoint" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.privateClusterConfig.enablePrivateNodes" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.privateClusterConfig.masterGlobalAccessConfig.enabled" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.privateClusterConfig.masterIpv4CidrBlock" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.privateClusterConfig.peeringName" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.privateClusterConfig.privateEndpoint" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.privateClusterConfig.privateEndpointSubnetworkRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.privateClusterConfig.publicEndpoint" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.privateIpv6GoogleAccess" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.protectConfig.workloadConfig.auditMode" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.protectConfig.workloadVulnerabilityMode" is not set in unstructured objects
@@ -2134,6 +2104,7 @@
 [missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.configmanagement.policyController.referentialRulesEnabled" is not set in unstructured objects
 [missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.configmanagement.policyController.templateLibraryInstalled" is not set in unstructured objects
 [missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.mesh.controlPlane" is not set in unstructured objects
+[missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.policycontroller.policyControllerHubConfig.deploymentConfigs.audit.replicaCount" is not set in unstructured objects
 [missing_field] crd=gkehubfeatures.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.fleetobservability.loggingConfig.defaultConfig.mode" is not set in unstructured objects
 [missing_field] crd=gkehubfeatures.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.spec.fleetobservability.loggingConfig.fleetScopeLogsConfig.mode" is not set in unstructured objects
 [missing_field] crd=gkehubmemberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.endpoint.kubernetesResource.membershipCrManifest" is not set in unstructured objects
@@ -2193,8 +2164,7 @@
 [missing_field] crd=identityplatformtenants.identityplatform.cnrm.cloud.google.com version=v1beta1: field ".spec.disableAuth" is not set in unstructured objects
 [missing_field] crd=identityplatformtenants.identityplatform.cnrm.cloud.google.com version=v1beta1: field ".spec.enableAnonymousUser" is not set in unstructured objects
 [missing_field] crd=identityplatformtenants.identityplatform.cnrm.cloud.google.com version=v1beta1: field ".spec.enableEmailLinkSignin" is not set in unstructured objects
-[missing_field] crd=kmsautokeyconfigs.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.keyProject.kind" is not set in unstructured objects
-[missing_field] crd=kmsautokeyconfigs.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.keyProject.name" is not set in unstructured objects
+[missing_field] crd=kmsautokeyconfigs.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.keyProject.external" is not set in unstructured objects
 [missing_field] crd=kmsautokeyconfigs.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.keyProject.namespace" is not set in unstructured objects
 [missing_field] crd=kmscryptokeys.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.destroyScheduledDuration" is not set in unstructured objects
 [missing_field] crd=kmscryptokeys.kms.cnrm.cloud.google.com version=v1beta1: field ".spec.rotationPeriod" is not set in unstructured objects
@@ -2414,11 +2384,13 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].alertChart.alertPolicyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].blank" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].collapsibleGroup.collapsed" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].errorReportingPanel.projectRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].errorReportingPanel.services[]" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].errorReportingPanel.versions[]" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].id" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].incidentList.monitoredResources[].labels" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].incidentList.monitoredResources[].type" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].incidentList.policyRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].logsPanel.filter" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].logsPanel.resourceNames[].external" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].logsPanel.resourceNames[].kind" is not set in unstructured objects
@@ -2608,10 +2580,12 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.gridLayout.widgets[].xyChart.yAxis.scale" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.alertChart.alertPolicyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.blank" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.errorReportingPanel.projectRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.errorReportingPanel.services[]" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.errorReportingPanel.versions[]" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.incidentList.monitoredResources[].labels" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.incidentList.monitoredResources[].type" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.incidentList.policyRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.logsPanel.filter" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.logsPanel.resourceNames[].external" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.logsPanel.resourceNames[].kind" is not set in unstructured objects
@@ -2707,19 +2681,10 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.text.style.verticalAlignment" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.columnSettings[].column" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.columnSettings[].visible" is not set in unstructured objects
-[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].minAlignmentPeriod" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].tableDisplayOptions.shownColumns[]" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].tableTemplate" is not set in unstructured objects
-[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.outputFullDuration" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.prometheusQuery" is not set in unstructured objects
-[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.alignmentPeriod" is not set in unstructured objects
-[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.crossSeriesReducer" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.groupByFields[]" is not set in unstructured objects
-[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.timeSeriesFilter.aggregation.perSeriesAligner" is not set in unstructured objects
-[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.timeSeriesFilter.filter" is not set in unstructured objects
-[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter.direction" is not set in unstructured objects
-[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter.numTimeSeries" is not set in unstructured objects
-[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.timeSeriesFilter.pickTimeSeriesFilter.rankingMethod" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.alignmentPeriod" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.crossSeriesReducer" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.timeSeriesFilter.secondaryAggregation.groupByFields[]" is not set in unstructured objects
@@ -2743,7 +2708,6 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.timeSeriesFilterRatio.secondaryAggregation.perSeriesAligner" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.timeSeriesQueryLanguage" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.dataSets[].timeSeriesQuery.unitOverride" is not set in unstructured objects
-[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.timeSeriesTable.metricVisualization" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.xyChart.chartOptions.mode" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.xyChart.dataSets[].legendTemplate" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.mosaicLayout.tiles[].widget.xyChart.dataSets[].minAlignmentPeriod" is not set in unstructured objects
@@ -2798,11 +2762,13 @@
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].alertChart.alertPolicyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].blank" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].collapsibleGroup.collapsed" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].errorReportingPanel.projectRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].errorReportingPanel.services[]" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].errorReportingPanel.versions[]" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].id" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].incidentList.monitoredResources[].labels" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].incidentList.monitoredResources[].type" is not set in unstructured objects
+[missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].incidentList.policyRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].logsPanel.filter" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].logsPanel.resourceNames[].external" is not set in unstructured objects
 [missing_field] crd=monitoringdashboards.monitoring.cnrm.cloud.google.com version=v1beta1: field ".spec.rowLayout.rows[].widgets[].logsPanel.resourceNames[].kind" is not set in unstructured objects
@@ -3039,8 +3005,6 @@
 [missing_field] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.linkedVpnTunnels.uris[].name" is not set in unstructured objects
 [missing_field] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.linkedVpnTunnels.uris[].namespace" is not set in unstructured objects
 [missing_field] crd=networkconnectivityspokes.networkconnectivity.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=networksecurityauthorizationpolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.rules[].destinations[].httpHeaderMatch.headerName" is not set in unstructured objects
-[missing_field] crd=networksecurityauthorizationpolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.rules[].destinations[].httpHeaderMatch.regexMatch" is not set in unstructured objects
 [missing_field] crd=networksecurityclienttlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.clientCertificate.grpcEndpoint.targetUri" is not set in unstructured objects
 [missing_field] crd=networksecurityclienttlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.serverValidationCa[].grpcEndpoint.targetUri" is not set in unstructured objects
 [missing_field] crd=networksecurityservertlspolicies.networksecurity.cnrm.cloud.google.com version=v1beta1: field ".spec.mtlsPolicy.clientValidationCa[].grpcEndpoint.targetUri" is not set in unstructured objects
@@ -3298,6 +3262,7 @@
 [missing_field] crd=securesourcemanagerinstances.securesourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=servicenetworkingconnections.servicenetworking.cnrm.cloud.google.com version=v1beta1: field ".spec.reservedPeeringRanges[].external" is not set in unstructured objects
 [missing_field] crd=servicenetworkingconnections.servicenetworking.cnrm.cloud.google.com version=v1beta1: field ".spec.reservedPeeringRanges[].namespace" is not set in unstructured objects
+[missing_field] crd=spannerbackupschedules.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfig.kmsKeyRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=spannerdatabases.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.databaseDialect" is not set in unstructured objects
 [missing_field] crd=spannerdatabases.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.enableDropProtection" is not set in unstructured objects
 [missing_field] crd=spannerdatabases.spanner.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfig.kmsKeyRef" is not set; neither 'external' nor 'name' are set
@@ -3309,7 +3274,6 @@
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.cloneSource.binLogCoordinates.binLogPosition" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.cloneSource.databaseNames[]" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.cloneSource.pointInTime" is not set in unstructured objects
-[missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.maintenanceVersion" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.caCertificate" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.clientCertificate" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.clientKey" is not set in unstructured objects
@@ -3332,7 +3296,6 @@
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.pricingPlan" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.settings.replicationType" is not set in unstructured objects
 [missing_field] crd=sqlusers.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.password.value" is not set in unstructured objects
-[missing_field] crd=sqlusers.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.passwordPolicy.status[]" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.autoclass.enabled" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.bucketPolicyOnly" is not set in unstructured objects
 [missing_field] crd=storagebuckets.storage.cnrm.cloud.google.com version=v1beta1: field ".spec.cors[].maxAgeSeconds" is not set in unstructured objects

@@ -1,0 +1,10 @@
+# In: ~/.gemini/commands/release/push-tag.toml
+# Invoked via: /release:push-tag
+# Gemini custom command docs can be found at https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/commands.md#toml-file-format-v1
+
+
+description = "Push release tag internally."
+
+prompt = """
+Follow instructsions @.gemini/commands/release/push-release-tag.json
+"""

@@ -126,7 +126,7 @@ func (a *BackupVaultAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := BackupDRBackupVaultSpec_ToProto(mapCtx, &desired.Spec)
+	resource := BackupDRBackupVaultSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -147,7 +147,7 @@ func (a *BackupVaultAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	log.V(2).Info("successfully created BackupVault", "name", a.id)
 
 	status := &krm.BackupDRBackupVaultStatus{}
-	status.ObservedState = BackupDRBackupVaultObservedState_FromProto(mapCtx, created)
+	status.ObservedState = BackupDRBackupVaultObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -162,7 +162,7 @@ func (a *BackupVaultAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := BackupDRBackupVaultSpec_ToProto(mapCtx, &desired.Spec)
+	resource := BackupDRBackupVaultSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -177,7 +177,6 @@ func (a *BackupVaultAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if desired.Spec.BackupMinimumEnforcedRetentionDuration != nil && !reflect.DeepEqual(resource.BackupMinimumEnforcedRetentionDuration, a.actual.BackupMinimumEnforcedRetentionDuration) {
 		paths = append(paths, "backup_minimum_enforced_retention_duration")
 	}
-	// TODO: etag
 	if desired.Spec.EffectiveTime != nil && !reflect.DeepEqual(resource.EffectiveTime, a.actual.EffectiveTime) {
 		paths = append(paths, "effective_time")
 	}
@@ -195,6 +194,7 @@ func (a *BackupVaultAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		updated = a.actual
 	} else {
 		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
+		resource.Etag = a.actual.Etag // Etag is always updated, even if it is not changed.
 		req := &pb.UpdateBackupVaultRequest{
 			BackupVault: resource,
 			UpdateMask:  &fieldmaskpb.FieldMask{Paths: paths},
@@ -212,7 +212,7 @@ func (a *BackupVaultAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	status := &krm.BackupDRBackupVaultStatus{}
-	status.ObservedState = BackupDRBackupVaultObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = BackupDRBackupVaultObservedState_v1alpha1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -229,7 +229,7 @@ func (a *BackupVaultAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 	obj := &krm.BackupDRBackupVault{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(BackupDRBackupVaultSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(BackupDRBackupVaultSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

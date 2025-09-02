@@ -48,6 +48,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/contexts"
 	testrunner "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/runner"
 	testservicemapping "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemapping"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/teststatus"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 
@@ -192,7 +193,8 @@ func TestAcquire(t *testing.T) {
 			"Folder": true,
 			// used as an integration test verifying that falsey values are not
 			// incorrectly defaulted. (b/178744782)
-			"ComputeNetwork": true,
+			"ComputeNetwork":  true,
+			"BigQueryDataset": true,
 		}
 		return kinds[fixture.GVK.Kind]
 	}
@@ -295,7 +297,7 @@ func validateCreate(ctx context.Context, t *testing.T, testContext testrunner.Te
 
 	// Check that condition is ready and "UpToDate" event was recorded
 	// TODO: (eventually) check default fields are propagated correctly
-	testcontroller.AssertReadyCondition(t, reconciledUnstruct, preReconcileGeneration)
+	teststatus.AssertReadyCondition(t, reconciledUnstruct, preReconcileGeneration)
 	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.UpToDate)
 
 	verifyResourceIDIfSupported(t, systemContext, resourceContext, reconciledUnstruct, initialUnstruct)
@@ -487,7 +489,7 @@ func testUpdate(ctx context.Context, t *testing.T, testContext testrunner.TestCo
 		testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.Updating)
 	}
 	// Check if condition is ready and update event was recorded
-	testcontroller.AssertReadyCondition(t, reconciledUnstruct, preReconcileGeneration)
+	teststatus.AssertReadyCondition(t, reconciledUnstruct, preReconcileGeneration)
 	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.UpToDate)
 
 	// Check observedGeneration matches with the pre-reconcile generation
@@ -764,7 +766,7 @@ func testReconcileAcquire(ctx context.Context, t *testing.T, testContext testrun
 	}
 
 	// Check that condition is ready and "UpToDate" event was recorded
-	testcontroller.AssertReadyCondition(t, reconciledUnstruct, preReconcileGeneration)
+	teststatus.AssertReadyCondition(t, reconciledUnstruct, preReconcileGeneration)
 	testcontroller.AssertEventRecordedforUnstruct(t, kubeClient, reconciledUnstruct, k8s.UpToDate)
 
 	// Check observedGeneration matches with the pre-reconcile generation

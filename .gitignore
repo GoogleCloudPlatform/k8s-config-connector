@@ -176,4 +176,4 @@ experiments/mcp/**/__pycache__
 experiments/mcp/**/*.egg-info
 
 # MCP eval
-experiments/mcp-eval/**/__pycache__
+experiments/**/__pycache__/

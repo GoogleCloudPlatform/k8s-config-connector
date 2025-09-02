@@ -130,7 +130,7 @@ func (a *ManagementServerAdapter) Create(ctx context.Context, createOp *directba
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	resource := BackupDRManagementServerSpec_ToProto(mapCtx, &desired.Spec)
+	resource := BackupDRManagementServerSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -151,7 +151,7 @@ func (a *ManagementServerAdapter) Create(ctx context.Context, createOp *directba
 	log.V(2).Info("successfully created ManagementServer", "name", a.id)
 
 	status := &krm.BackupDRManagementServerStatus{}
-	status.ObservedState = BackupDRManagementServerObservedState_FromProto(mapCtx, created)
+	status.ObservedState = BackupDRManagementServerObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -170,7 +170,7 @@ func (a *ManagementServerAdapter) Update(ctx context.Context, updateOp *directba
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	resource := BackupDRManagementServerSpec_ToProto(mapCtx, &desired.Spec)
+	resource := BackupDRManagementServerSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -194,7 +194,7 @@ func (a *ManagementServerAdapter) Update(ctx context.Context, updateOp *directba
 	}
 
 	status := &krm.BackupDRManagementServerStatus{}
-	status.ObservedState = BackupDRManagementServerObservedState_FromProto(mapCtx, a.actual)
+	status.ObservedState = BackupDRManagementServerObservedState_v1alpha1_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -211,7 +211,7 @@ func (a *ManagementServerAdapter) Export(ctx context.Context) (*unstructured.Uns
 
 	obj := &krm.BackupDRManagementServer{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(BackupDRManagementServerSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(BackupDRManagementServerSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

@@ -70,7 +70,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/test-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -98,7 +98,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/test-${uniqueId}?alt=json
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -176,7 +176,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/test-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -204,7 +204,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/test-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendBuckets/${backendBucketID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive

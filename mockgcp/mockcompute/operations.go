@@ -156,7 +156,8 @@ func (s *computeOperations) startLRO0(ctx context.Context, op *pb.Operation, fqn
 			}
 			klog.Warningf("TODO: more fully handle LRO error %v", err)
 		} else {
-			klog.Warningf("TODO: handle LRO result %v", result)
+			// The LRO result does not appear to be returned in the operation
+			klog.V(4).Infof("LRO result: %+v", result)
 		}
 		if err := s.storage.Update(ctx, fqn, finished); err != nil {
 			klog.Warningf("error updating LRO: %v", err)

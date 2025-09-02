@@ -327,6 +327,14 @@ service ProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionsServer {
     };
   };
 
+  // Decapsulates data that was encapsulated with a public key retrieved from GetPublicKey corresponding to a CryptoKeyVersion with CryptoKey.purpose KEY_ENCAPSULATION.
+  rpc DecapsulateProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersion(DecapsulateProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest) returns (DecapsulateResponse) {
+    option (google.api.http) = {
+      post: "/v1/{name=projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*}:decapsulate"
+      body: "projects_locations_key_rings_crypto_keys_crypto_key_version"
+    };
+  };
+
   // Schedule a CryptoKeyVersion for destruction. Upon calling this method, CryptoKeyVersion.state will be set to DESTROY_SCHEDULED, and destroy_time will be set to the time destroy_scheduled_duration in the future. At that time, the state will automatically change to DESTROYED, and the key material will be irrevocably destroyed. Before the destroy_time is reached, RestoreCryptoKeyVersion may be called to reverse the process.
   rpc DestroyProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersion(DestroyProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest) returns (CryptoKeyVersion) {
     option (google.api.http) = {
@@ -502,13 +510,13 @@ message AuditLogConfig {
   optional string log_type = 2 [json_name="logType"];
 }
 
-// Cloud KMS Autokey configuration for a folder.
+// Cloud KMS Autokey configuration for a folder or project.
 message AutokeyConfig {
   // Optional. A checksum computed by the server based on the value of other fields. This may be sent on update requests to ensure that the client has an up-to-date value before proceeding. The request will be rejected with an ABORTED error on a mismatched etag.
   optional string etag = 1 [json_name="etag"];
   // Optional. Name of the key project, e.g. `projects/{PROJECT_ID}` or `projects/{PROJECT_NUMBER}`, where Cloud KMS Autokey will provision a new CryptoKey when a KeyHandle is created. On UpdateAutokeyConfig, the caller will require `cloudkms.cryptoKeys.setIamPolicy` permission on this key project. Once configured, for Cloud KMS Autokey to function properly, this key project must have the Cloud KMS API activated and the Cloud KMS Service Agent for this key project must be granted the `cloudkms.admin` role (or pertinent permissions). A request with an empty key project field will clear the configuration.
   optional string key_project = 2 [json_name="keyProject"];
-  // Identifier. Name of the AutokeyConfig resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig`.
+  // Identifier. Name of the AutokeyConfig resource, e.g. `folders/{FOLDER_NUMBER}/autokeyConfig` `projects/{PROJECT_NUMBER}/autokeyConfig`.
   optional string name = 3 [json_name="name"];
   // Output only. The state for the AutokeyConfig.
   optional string state = 4 [json_name="state"];
@@ -634,6 +642,28 @@ message CryptoKeyVersionTemplate {
   optional string algorithm = 1 [json_name="algorithm"];
   // ProtectionLevel to use when creating a CryptoKeyVersion based on this template. Immutable. Defaults to SOFTWARE.
   optional string protection_level = 2 [json_name="protectionLevel"];
+}
+
+// Request message for KeyManagementService.Decapsulate.
+message DecapsulateRequest {
+  // Required. The ciphertext produced from encapsulation with the named CryptoKeyVersion public key(s).
+  optional bytes ciphertext = 1 [json_name="ciphertext"];
+  // Optional. A CRC32C checksum of the DecapsulateRequest.ciphertext. If specified, KeyManagementService will verify the integrity of the received DecapsulateRequest.ciphertext using this checksum. KeyManagementService will report an error if the checksum verification fails. If you receive a checksum error, your client should verify that CRC32C(DecapsulateRequest.ciphertext) is equal to DecapsulateRequest.ciphertext_crc32c, and if so, perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 ciphertext_crc32c = 2 [json_name="ciphertextCrc32c"];
+}
+
+// Response message for KeyManagementService.Decapsulate.
+message DecapsulateResponse {
+  // The resource name of the CryptoKeyVersion used for decapsulation. Check this field to verify that the intended resource was used for decapsulation.
+  optional string name = 1 [json_name="name"];
+  // The ProtectionLevel of the CryptoKeyVersion used in decapsulation.
+  optional string protection_level = 2 [json_name="protectionLevel"];
+  // The decapsulated shared_secret originally encapsulated with the matching public key.
+  optional bytes shared_secret = 3 [json_name="sharedSecret"];
+  // Integrity verification field. A CRC32C checksum of the returned DecapsulateResponse.shared_secret. An integrity check of DecapsulateResponse.shared_secret can be performed by computing the CRC32C checksum of DecapsulateResponse.shared_secret and comparing your results to this field. Discard the response in case of non-matching checksum values, and perform a limited number of retries. A persistent mismatch may indicate an issue in your computation of the CRC32C checksum. Note: receiving this response message indicates that KeyManagementService is able to successfully decrypt the ciphertext. Note: This field is defined as int64 for reasons of compatibility across different languages. However, it is a non-negative integer, which will never exceed 2^32-1, and can be safely downconverted to uint32 in languages that support this type.
+  optional int64 shared_secret_crc32c = 4 [json_name="sharedSecretCrc32c"];
+  // Integrity verification field. A flag indicating whether DecapsulateRequest.ciphertext_crc32c was received by KeyManagementService and used for the integrity verification of the ciphertext. A false value of this field indicates either that DecapsulateRequest.ciphertext_crc32c was left unset or that it was not delivered to KeyManagementService. If you've set DecapsulateRequest.ciphertext_crc32c but this field is still false, discard the response and perform a limited number of retries.
+  optional bool verified_ciphertext_crc32c = 5 [json_name="verifiedCiphertextCrc32c"];
 }
 
 // Request message for KeyManagementService.Decrypt.
@@ -1372,6 +1402,11 @@ message AsymmetricSignProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest
 message CreateProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
   optional string parent = 1;
   optional CryptoKeyVersion projects_locations_key_rings_crypto_keys_crypto_key_version = 2;
+}
+
+message DecapsulateProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {
+  optional string name = 1;
+  optional DecapsulateRequest projects_locations_key_rings_crypto_keys_crypto_key_version = 2;
 }
 
 message DestroyProjectsLocationsKeyRingsCryptoKeysCryptoKeyVersionRequest {

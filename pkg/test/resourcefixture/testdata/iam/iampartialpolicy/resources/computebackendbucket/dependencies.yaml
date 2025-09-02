@@ -1,0 +1,7 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendBucket
+metadata:
+  name: computebackendbucket-${uniqueId}
+spec:
+  bucketName: test-bucket-${uniqueId}
+  enableCdn: true

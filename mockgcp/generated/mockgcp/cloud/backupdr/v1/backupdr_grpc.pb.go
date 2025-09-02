@@ -63,22 +63,36 @@ type BackupDRClient interface {
 	RestoreBackup(ctx context.Context, in *RestoreBackupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Create a BackupPlan
 	CreateBackupPlan(ctx context.Context, in *CreateBackupPlanRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Update a BackupPlan.
+	UpdateBackupPlan(ctx context.Context, in *UpdateBackupPlanRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Gets details of a single BackupPlan.
 	GetBackupPlan(ctx context.Context, in *GetBackupPlanRequest, opts ...grpc.CallOption) (*BackupPlan, error)
 	// Lists BackupPlans in a given project and location.
 	ListBackupPlans(ctx context.Context, in *ListBackupPlansRequest, opts ...grpc.CallOption) (*ListBackupPlansResponse, error)
 	// Deletes a single BackupPlan.
 	DeleteBackupPlan(ctx context.Context, in *DeleteBackupPlanRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Gets details of a single BackupPlanRevision.
+	GetBackupPlanRevision(ctx context.Context, in *GetBackupPlanRevisionRequest, opts ...grpc.CallOption) (*BackupPlanRevision, error)
+	// Lists BackupPlanRevisions in a given project and location.
+	ListBackupPlanRevisions(ctx context.Context, in *ListBackupPlanRevisionsRequest, opts ...grpc.CallOption) (*ListBackupPlanRevisionsResponse, error)
 	// Create a BackupPlanAssociation
 	CreateBackupPlanAssociation(ctx context.Context, in *CreateBackupPlanAssociationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Update a BackupPlanAssociation.
+	UpdateBackupPlanAssociation(ctx context.Context, in *UpdateBackupPlanAssociationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Gets details of a single BackupPlanAssociation.
 	GetBackupPlanAssociation(ctx context.Context, in *GetBackupPlanAssociationRequest, opts ...grpc.CallOption) (*BackupPlanAssociation, error)
 	// Lists BackupPlanAssociations in a given project and location.
 	ListBackupPlanAssociations(ctx context.Context, in *ListBackupPlanAssociationsRequest, opts ...grpc.CallOption) (*ListBackupPlanAssociationsResponse, error)
+	// List BackupPlanAssociations for a given resource type.
+	FetchBackupPlanAssociationsForResourceType(ctx context.Context, in *FetchBackupPlanAssociationsForResourceTypeRequest, opts ...grpc.CallOption) (*FetchBackupPlanAssociationsForResourceTypeResponse, error)
 	// Deletes a single BackupPlanAssociation.
 	DeleteBackupPlanAssociation(ctx context.Context, in *DeleteBackupPlanAssociationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Triggers a new Backup.
 	TriggerBackup(ctx context.Context, in *TriggerBackupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Gets details of a single DataSourceReference.
+	GetDataSourceReference(ctx context.Context, in *GetDataSourceReferenceRequest, opts ...grpc.CallOption) (*DataSourceReference, error)
+	// Fetch DataSourceReferences for a given project, location and resource type.
+	FetchDataSourceReferencesForResourceType(ctx context.Context, in *FetchDataSourceReferencesForResourceTypeRequest, opts ...grpc.CallOption) (*FetchDataSourceReferencesForResourceTypeResponse, error)
 	// Initializes the service related config for a project.
 	InitializeService(ctx context.Context, in *InitializeServiceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
@@ -262,6 +276,15 @@ func (c *backupDRClient) CreateBackupPlan(ctx context.Context, in *CreateBackupP
 	return out, nil
 }
 
+func (c *backupDRClient) UpdateBackupPlan(ctx context.Context, in *UpdateBackupPlanRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.backupdr.v1.BackupDR/UpdateBackupPlan", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *backupDRClient) GetBackupPlan(ctx context.Context, in *GetBackupPlanRequest, opts ...grpc.CallOption) (*BackupPlan, error) {
 	out := new(BackupPlan)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.backupdr.v1.BackupDR/GetBackupPlan", in, out, opts...)
@@ -289,9 +312,36 @@ func (c *backupDRClient) DeleteBackupPlan(ctx context.Context, in *DeleteBackupP
 	return out, nil
 }
 
+func (c *backupDRClient) GetBackupPlanRevision(ctx context.Context, in *GetBackupPlanRevisionRequest, opts ...grpc.CallOption) (*BackupPlanRevision, error) {
+	out := new(BackupPlanRevision)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.backupdr.v1.BackupDR/GetBackupPlanRevision", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupDRClient) ListBackupPlanRevisions(ctx context.Context, in *ListBackupPlanRevisionsRequest, opts ...grpc.CallOption) (*ListBackupPlanRevisionsResponse, error) {
+	out := new(ListBackupPlanRevisionsResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.backupdr.v1.BackupDR/ListBackupPlanRevisions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *backupDRClient) CreateBackupPlanAssociation(ctx context.Context, in *CreateBackupPlanAssociationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.backupdr.v1.BackupDR/CreateBackupPlanAssociation", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupDRClient) UpdateBackupPlanAssociation(ctx context.Context, in *UpdateBackupPlanAssociationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.backupdr.v1.BackupDR/UpdateBackupPlanAssociation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -316,6 +366,15 @@ func (c *backupDRClient) ListBackupPlanAssociations(ctx context.Context, in *Lis
 	return out, nil
 }
 
+func (c *backupDRClient) FetchBackupPlanAssociationsForResourceType(ctx context.Context, in *FetchBackupPlanAssociationsForResourceTypeRequest, opts ...grpc.CallOption) (*FetchBackupPlanAssociationsForResourceTypeResponse, error) {
+	out := new(FetchBackupPlanAssociationsForResourceTypeResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.backupdr.v1.BackupDR/FetchBackupPlanAssociationsForResourceType", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *backupDRClient) DeleteBackupPlanAssociation(ctx context.Context, in *DeleteBackupPlanAssociationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.backupdr.v1.BackupDR/DeleteBackupPlanAssociation", in, out, opts...)
@@ -328,6 +387,24 @@ func (c *backupDRClient) DeleteBackupPlanAssociation(ctx context.Context, in *De
 func (c *backupDRClient) TriggerBackup(ctx context.Context, in *TriggerBackupRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.backupdr.v1.BackupDR/TriggerBackup", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupDRClient) GetDataSourceReference(ctx context.Context, in *GetDataSourceReferenceRequest, opts ...grpc.CallOption) (*DataSourceReference, error) {
+	out := new(DataSourceReference)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.backupdr.v1.BackupDR/GetDataSourceReference", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *backupDRClient) FetchDataSourceReferencesForResourceType(ctx context.Context, in *FetchDataSourceReferencesForResourceTypeRequest, opts ...grpc.CallOption) (*FetchDataSourceReferencesForResourceTypeResponse, error) {
+	out := new(FetchDataSourceReferencesForResourceTypeResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.backupdr.v1.BackupDR/FetchDataSourceReferencesForResourceType", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -387,22 +464,36 @@ type BackupDRServer interface {
 	RestoreBackup(context.Context, *RestoreBackupRequest) (*longrunningpb.Operation, error)
 	// Create a BackupPlan
 	CreateBackupPlan(context.Context, *CreateBackupPlanRequest) (*longrunningpb.Operation, error)
+	// Update a BackupPlan.
+	UpdateBackupPlan(context.Context, *UpdateBackupPlanRequest) (*longrunningpb.Operation, error)
 	// Gets details of a single BackupPlan.
 	GetBackupPlan(context.Context, *GetBackupPlanRequest) (*BackupPlan, error)
 	// Lists BackupPlans in a given project and location.
 	ListBackupPlans(context.Context, *ListBackupPlansRequest) (*ListBackupPlansResponse, error)
 	// Deletes a single BackupPlan.
 	DeleteBackupPlan(context.Context, *DeleteBackupPlanRequest) (*longrunningpb.Operation, error)
+	// Gets details of a single BackupPlanRevision.
+	GetBackupPlanRevision(context.Context, *GetBackupPlanRevisionRequest) (*BackupPlanRevision, error)
+	// Lists BackupPlanRevisions in a given project and location.
+	ListBackupPlanRevisions(context.Context, *ListBackupPlanRevisionsRequest) (*ListBackupPlanRevisionsResponse, error)
 	// Create a BackupPlanAssociation
 	CreateBackupPlanAssociation(context.Context, *CreateBackupPlanAssociationRequest) (*longrunningpb.Operation, error)
+	// Update a BackupPlanAssociation.
+	UpdateBackupPlanAssociation(context.Context, *UpdateBackupPlanAssociationRequest) (*longrunningpb.Operation, error)
 	// Gets details of a single BackupPlanAssociation.
 	GetBackupPlanAssociation(context.Context, *GetBackupPlanAssociationRequest) (*BackupPlanAssociation, error)
 	// Lists BackupPlanAssociations in a given project and location.
 	ListBackupPlanAssociations(context.Context, *ListBackupPlanAssociationsRequest) (*ListBackupPlanAssociationsResponse, error)
+	// List BackupPlanAssociations for a given resource type.
+	FetchBackupPlanAssociationsForResourceType(context.Context, *FetchBackupPlanAssociationsForResourceTypeRequest) (*FetchBackupPlanAssociationsForResourceTypeResponse, error)
 	// Deletes a single BackupPlanAssociation.
 	DeleteBackupPlanAssociation(context.Context, *DeleteBackupPlanAssociationRequest) (*longrunningpb.Operation, error)
 	// Triggers a new Backup.
 	TriggerBackup(context.Context, *TriggerBackupRequest) (*longrunningpb.Operation, error)
+	// Gets details of a single DataSourceReference.
+	GetDataSourceReference(context.Context, *GetDataSourceReferenceRequest) (*DataSourceReference, error)
+	// Fetch DataSourceReferences for a given project, location and resource type.
+	FetchDataSourceReferencesForResourceType(context.Context, *FetchDataSourceReferencesForResourceTypeRequest) (*FetchDataSourceReferencesForResourceTypeResponse, error)
 	// Initializes the service related config for a project.
 	InitializeService(context.Context, *InitializeServiceRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedBackupDRServer()
@@ -469,6 +560,9 @@ func (UnimplementedBackupDRServer) RestoreBackup(context.Context, *RestoreBackup
 func (UnimplementedBackupDRServer) CreateBackupPlan(context.Context, *CreateBackupPlanRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateBackupPlan not implemented")
 }
+func (UnimplementedBackupDRServer) UpdateBackupPlan(context.Context, *UpdateBackupPlanRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateBackupPlan not implemented")
+}
 func (UnimplementedBackupDRServer) GetBackupPlan(context.Context, *GetBackupPlanRequest) (*BackupPlan, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBackupPlan not implemented")
 }
@@ -478,8 +572,17 @@ func (UnimplementedBackupDRServer) ListBackupPlans(context.Context, *ListBackupP
 func (UnimplementedBackupDRServer) DeleteBackupPlan(context.Context, *DeleteBackupPlanRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteBackupPlan not implemented")
 }
+func (UnimplementedBackupDRServer) GetBackupPlanRevision(context.Context, *GetBackupPlanRevisionRequest) (*BackupPlanRevision, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBackupPlanRevision not implemented")
+}
+func (UnimplementedBackupDRServer) ListBackupPlanRevisions(context.Context, *ListBackupPlanRevisionsRequest) (*ListBackupPlanRevisionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListBackupPlanRevisions not implemented")
+}
 func (UnimplementedBackupDRServer) CreateBackupPlanAssociation(context.Context, *CreateBackupPlanAssociationRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateBackupPlanAssociation not implemented")
+}
+func (UnimplementedBackupDRServer) UpdateBackupPlanAssociation(context.Context, *UpdateBackupPlanAssociationRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateBackupPlanAssociation not implemented")
 }
 func (UnimplementedBackupDRServer) GetBackupPlanAssociation(context.Context, *GetBackupPlanAssociationRequest) (*BackupPlanAssociation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBackupPlanAssociation not implemented")
@@ -487,11 +590,20 @@ func (UnimplementedBackupDRServer) GetBackupPlanAssociation(context.Context, *Ge
 func (UnimplementedBackupDRServer) ListBackupPlanAssociations(context.Context, *ListBackupPlanAssociationsRequest) (*ListBackupPlanAssociationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListBackupPlanAssociations not implemented")
 }
+func (UnimplementedBackupDRServer) FetchBackupPlanAssociationsForResourceType(context.Context, *FetchBackupPlanAssociationsForResourceTypeRequest) (*FetchBackupPlanAssociationsForResourceTypeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FetchBackupPlanAssociationsForResourceType not implemented")
+}
 func (UnimplementedBackupDRServer) DeleteBackupPlanAssociation(context.Context, *DeleteBackupPlanAssociationRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteBackupPlanAssociation not implemented")
 }
 func (UnimplementedBackupDRServer) TriggerBackup(context.Context, *TriggerBackupRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TriggerBackup not implemented")
+}
+func (UnimplementedBackupDRServer) GetDataSourceReference(context.Context, *GetDataSourceReferenceRequest) (*DataSourceReference, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDataSourceReference not implemented")
+}
+func (UnimplementedBackupDRServer) FetchDataSourceReferencesForResourceType(context.Context, *FetchDataSourceReferencesForResourceTypeRequest) (*FetchDataSourceReferencesForResourceTypeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FetchDataSourceReferencesForResourceType not implemented")
 }
 func (UnimplementedBackupDRServer) InitializeService(context.Context, *InitializeServiceRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InitializeService not implemented")
@@ -851,6 +963,24 @@ func _BackupDR_CreateBackupPlan_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BackupDR_UpdateBackupPlan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateBackupPlanRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupDRServer).UpdateBackupPlan(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.backupdr.v1.BackupDR/UpdateBackupPlan",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupDRServer).UpdateBackupPlan(ctx, req.(*UpdateBackupPlanRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BackupDR_GetBackupPlan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetBackupPlanRequest)
 	if err := dec(in); err != nil {
@@ -905,6 +1035,42 @@ func _BackupDR_DeleteBackupPlan_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BackupDR_GetBackupPlanRevision_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBackupPlanRevisionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupDRServer).GetBackupPlanRevision(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.backupdr.v1.BackupDR/GetBackupPlanRevision",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupDRServer).GetBackupPlanRevision(ctx, req.(*GetBackupPlanRevisionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupDR_ListBackupPlanRevisions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListBackupPlanRevisionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupDRServer).ListBackupPlanRevisions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.backupdr.v1.BackupDR/ListBackupPlanRevisions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupDRServer).ListBackupPlanRevisions(ctx, req.(*ListBackupPlanRevisionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BackupDR_CreateBackupPlanAssociation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateBackupPlanAssociationRequest)
 	if err := dec(in); err != nil {
@@ -919,6 +1085,24 @@ func _BackupDR_CreateBackupPlanAssociation_Handler(srv interface{}, ctx context.
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BackupDRServer).CreateBackupPlanAssociation(ctx, req.(*CreateBackupPlanAssociationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupDR_UpdateBackupPlanAssociation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateBackupPlanAssociationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupDRServer).UpdateBackupPlanAssociation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.backupdr.v1.BackupDR/UpdateBackupPlanAssociation",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupDRServer).UpdateBackupPlanAssociation(ctx, req.(*UpdateBackupPlanAssociationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -959,6 +1143,24 @@ func _BackupDR_ListBackupPlanAssociations_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BackupDR_FetchBackupPlanAssociationsForResourceType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchBackupPlanAssociationsForResourceTypeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupDRServer).FetchBackupPlanAssociationsForResourceType(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.backupdr.v1.BackupDR/FetchBackupPlanAssociationsForResourceType",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupDRServer).FetchBackupPlanAssociationsForResourceType(ctx, req.(*FetchBackupPlanAssociationsForResourceTypeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BackupDR_DeleteBackupPlanAssociation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteBackupPlanAssociationRequest)
 	if err := dec(in); err != nil {
@@ -991,6 +1193,42 @@ func _BackupDR_TriggerBackup_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BackupDRServer).TriggerBackup(ctx, req.(*TriggerBackupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupDR_GetDataSourceReference_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDataSourceReferenceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupDRServer).GetDataSourceReference(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.backupdr.v1.BackupDR/GetDataSourceReference",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupDRServer).GetDataSourceReference(ctx, req.(*GetDataSourceReferenceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BackupDR_FetchDataSourceReferencesForResourceType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchDataSourceReferencesForResourceTypeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BackupDRServer).FetchDataSourceReferencesForResourceType(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.backupdr.v1.BackupDR/FetchDataSourceReferencesForResourceType",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BackupDRServer).FetchDataSourceReferencesForResourceType(ctx, req.(*FetchDataSourceReferencesForResourceTypeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1097,6 +1335,10 @@ var BackupDR_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _BackupDR_CreateBackupPlan_Handler,
 		},
 		{
+			MethodName: "UpdateBackupPlan",
+			Handler:    _BackupDR_UpdateBackupPlan_Handler,
+		},
+		{
 			MethodName: "GetBackupPlan",
 			Handler:    _BackupDR_GetBackupPlan_Handler,
 		},
@@ -1109,8 +1351,20 @@ var BackupDR_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _BackupDR_DeleteBackupPlan_Handler,
 		},
 		{
+			MethodName: "GetBackupPlanRevision",
+			Handler:    _BackupDR_GetBackupPlanRevision_Handler,
+		},
+		{
+			MethodName: "ListBackupPlanRevisions",
+			Handler:    _BackupDR_ListBackupPlanRevisions_Handler,
+		},
+		{
 			MethodName: "CreateBackupPlanAssociation",
 			Handler:    _BackupDR_CreateBackupPlanAssociation_Handler,
+		},
+		{
+			MethodName: "UpdateBackupPlanAssociation",
+			Handler:    _BackupDR_UpdateBackupPlanAssociation_Handler,
 		},
 		{
 			MethodName: "GetBackupPlanAssociation",
@@ -1121,12 +1375,24 @@ var BackupDR_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _BackupDR_ListBackupPlanAssociations_Handler,
 		},
 		{
+			MethodName: "FetchBackupPlanAssociationsForResourceType",
+			Handler:    _BackupDR_FetchBackupPlanAssociationsForResourceType_Handler,
+		},
+		{
 			MethodName: "DeleteBackupPlanAssociation",
 			Handler:    _BackupDR_DeleteBackupPlanAssociation_Handler,
 		},
 		{
 			MethodName: "TriggerBackup",
 			Handler:    _BackupDR_TriggerBackup_Handler,
+		},
+		{
+			MethodName: "GetDataSourceReference",
+			Handler:    _BackupDR_GetDataSourceReference_Handler,
+		},
+		{
+			MethodName: "FetchDataSourceReferencesForResourceType",
+			Handler:    _BackupDR_FetchDataSourceReferencesForResourceType_Handler,
 		},
 		{
 			MethodName: "InitializeService",

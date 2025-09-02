@@ -1,0 +1,15 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  name: bigquerydataset-${uniqueId}
+spec:
+  datasetId: dataset_${uniqueId}
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigquerytable-${uniqueId}
+spec:
+  datasetRef:
+    name: bigquerydataset-${uniqueId}
+  tableId: test_table

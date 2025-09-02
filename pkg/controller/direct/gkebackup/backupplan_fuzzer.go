@@ -52,10 +52,10 @@ func GKEBackupBackupPlanFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".rpo_risk_level")
 	f.StatusFields.Insert(".rpo_risk_reason")
 
-	f.UnimplementedFields.Insert(".name") // special field
+	f.IdentityField(".name")
 
-	// New fields that could potentially be added
-	f.UnimplementedFields.Insert(".last_successful_backup_time")
+	f.Unimplemented_NotYetTriaged(".last_successful_backup_time")
+	f.Unimplemented_NotYetTriaged(".backup_channel")
 
 	return f
 }

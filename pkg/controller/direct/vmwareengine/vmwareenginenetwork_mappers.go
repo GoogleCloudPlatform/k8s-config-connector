@@ -29,7 +29,7 @@ func VMwareEngineNetworkObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.VPCNetworks = direct.Slice_FromProto(mapCtx, in.VpcNetworks, VmwareEngineNetwork_VpcNetworkObservedState_FromProto)
+	out.VPCNetworks = direct.Slice_FromProto(mapCtx, in.VpcNetworks, VmwareEngineNetwork_VPCNetworkObservedState_FromProto)
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.UID = direct.LazyPtr(in.GetUid())
 	return out
@@ -42,7 +42,7 @@ func VMwareEngineNetworkObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.VpcNetworks = direct.Slice_ToProto(mapCtx, in.VPCNetworks, VmwareEngineNetwork_VpcNetworkObservedState_ToProto)
+	out.VpcNetworks = direct.Slice_ToProto(mapCtx, in.VPCNetworks, VmwareEngineNetwork_VPCNetworkObservedState_ToProto)
 	out.State = direct.Enum_ToProto[pb.VmwareEngineNetwork_State](mapCtx, in.State)
 	out.Uid = direct.ValueOf(in.UID)
 	return out

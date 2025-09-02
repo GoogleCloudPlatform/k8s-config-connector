@@ -1,0 +1,360 @@
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+
+{
+  "displayName": "Example with TopList",
+  "mosaicLayout": {
+    "columns": 48,
+    "tiles": [
+      {
+        "height": 16,
+        "widget": {
+          "timeSeriesTable": {
+            "dataSets": [
+              {
+                "minAlignmentPeriod": "60s",
+                "timeSeriesQuery": {
+                  "outputFullDuration": true,
+                  "timeSeriesFilter": {
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "crossSeriesReducer": 4,
+                      "perSeriesAligner": 2
+                    },
+                    "filter": "metric.type=\"monitoring.googleapis.com/billing/time_series_billed_for_queries_count\" resource.type=\"global\"",
+                    "pickTimeSeriesFilter": {
+                      "direction": 1,
+                      "numTimeSeries": 30,
+                      "rankingMethod": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "metricVisualization": 2
+          },
+          "title": "Count of time series billed for queries [SUM]"
+        },
+        "width": 24
+      }
+    ]
+  },
+  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Example with TopList",
+  "etag": "abcdef0123A=",
+  "mosaicLayout": {
+    "columns": 48,
+    "tiles": [
+      {
+        "height": 16,
+        "widget": {
+          "timeSeriesTable": {
+            "dataSets": [
+              {
+                "minAlignmentPeriod": "60s",
+                "timeSeriesQuery": {
+                  "outputFullDuration": true,
+                  "timeSeriesFilter": {
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "crossSeriesReducer": 4,
+                      "perSeriesAligner": 2
+                    },
+                    "filter": "metric.type=\"monitoring.googleapis.com/billing/time_series_billed_for_queries_count\" resource.type=\"global\"",
+                    "pickTimeSeriesFilter": {
+                      "direction": 1,
+                      "numTimeSeries": 30,
+                      "rankingMethod": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "metricVisualization": 2
+          },
+          "title": "Count of time series billed for queries [SUM]"
+        },
+        "width": 24
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Example with TopList",
+  "etag": "abcdef0123A=",
+  "mosaicLayout": {
+    "columns": 48,
+    "tiles": [
+      {
+        "height": 16,
+        "widget": {
+          "timeSeriesTable": {
+            "dataSets": [
+              {
+                "minAlignmentPeriod": "60s",
+                "timeSeriesQuery": {
+                  "outputFullDuration": true,
+                  "timeSeriesFilter": {
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "crossSeriesReducer": 4,
+                      "perSeriesAligner": 2
+                    },
+                    "filter": "metric.type=\"monitoring.googleapis.com/billing/time_series_billed_for_queries_count\" resource.type=\"global\"",
+                    "pickTimeSeriesFilter": {
+                      "direction": 1,
+                      "numTimeSeries": 30,
+                      "rankingMethod": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "metricVisualization": 2
+          },
+          "title": "Count of time series billed for queries [SUM]"
+        },
+        "width": 24
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
+}
+
+---
+
+PATCH https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+
+{
+  "displayName": "Example with TopList",
+  "etag": "abcdef0123A=",
+  "mosaicLayout": {
+    "columns": 48,
+    "tiles": [
+      {
+        "height": 16,
+        "widget": {
+          "timeSeriesTable": {
+            "dataSets": [
+              {
+                "minAlignmentPeriod": "60s",
+                "timeSeriesQuery": {
+                  "outputFullDuration": true,
+                  "timeSeriesFilter": {
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "crossSeriesReducer": 4,
+                      "perSeriesAligner": 2
+                    },
+                    "filter": "metric.type=\"monitoring.googleapis.com/billing/time_series_billed_for_queries_count\" resource.type=\"global\"",
+                    "pickTimeSeriesFilter": {
+                      "direction": 1,
+                      "numTimeSeries": 30,
+                      "rankingMethod": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "metricVisualization": 2
+          },
+          "title": "Count of time series billed for queries [SUM]"
+        },
+        "width": 24
+      }
+    ]
+  },
+  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Example with TopList",
+  "etag": "abcdef0123A=",
+  "mosaicLayout": {
+    "columns": 48,
+    "tiles": [
+      {
+        "height": 16,
+        "widget": {
+          "timeSeriesTable": {
+            "dataSets": [
+              {
+                "minAlignmentPeriod": "60s",
+                "timeSeriesQuery": {
+                  "outputFullDuration": true,
+                  "timeSeriesFilter": {
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "crossSeriesReducer": 4,
+                      "perSeriesAligner": 2
+                    },
+                    "filter": "metric.type=\"monitoring.googleapis.com/billing/time_series_billed_for_queries_count\" resource.type=\"global\"",
+                    "pickTimeSeriesFilter": {
+                      "direction": 1,
+                      "numTimeSeries": 30,
+                      "rankingMethod": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "metricVisualization": 2
+          },
+          "title": "Count of time series billed for queries [SUM]"
+        },
+        "width": 24
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Example with TopList",
+  "etag": "abcdef0123A=",
+  "mosaicLayout": {
+    "columns": 48,
+    "tiles": [
+      {
+        "height": 16,
+        "widget": {
+          "timeSeriesTable": {
+            "dataSets": [
+              {
+                "minAlignmentPeriod": "60s",
+                "timeSeriesQuery": {
+                  "outputFullDuration": true,
+                  "timeSeriesFilter": {
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "crossSeriesReducer": 4,
+                      "perSeriesAligner": 2
+                    },
+                    "filter": "metric.type=\"monitoring.googleapis.com/billing/time_series_billed_for_queries_count\" resource.type=\"global\"",
+                    "pickTimeSeriesFilter": {
+                      "direction": 1,
+                      "numTimeSeries": 30,
+                      "rankingMethod": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "metricVisualization": 2
+          },
+          "title": "Count of time series billed for queries [SUM]"
+        },
+        "width": 24
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

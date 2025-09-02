@@ -1,0 +1,9 @@
+apiVersion: apigee.cnrm.cloud.google.com/v1beta1
+kind: ApigeeEnvironment
+metadata:
+  name: apigeeenvironment-${uniqueId}
+spec:
+  apigeeOrganizationRef:
+    external: organizations/${TEST_ORG_ID}
+  description: Test environment for IAM tests
+  displayName: test-environment

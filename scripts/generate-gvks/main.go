@@ -20,64 +20,32 @@ import (
 	"flag"
 	"fmt"
 	"go/format"
-	"io/fs"
 	"os"
 	"path/filepath"
-	"sort"
-	"strings"
 
-	"github.com/ghodss/yaml" //nolint:depguard
-	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-var (
-	inputDir   = ""
-	outputFile = ""
-)
-
 func main() {
-	flag.StringVar(&inputDir, "input-dir", "", "Input directory to read CRD listing.")
-	flag.StringVar(&outputFile, "output-file", "", "Output file to write GVK -> reconciler type mapping.")
+	outputDir := ""
+	flag.StringVar(&outputDir, "output-dir", outputDir, "Output directory to write GVK -> reconciler type mapping.")
 	flag.Parse()
 
-	if inputDir == "" {
-		fmt.Fprintf(os.Stderr, "error: invalid value for input directory: '%s'\n", "empty string")
+	if outputDir == "" {
+		fmt.Fprintf(os.Stderr, "error: --output-dir must be specified\n")
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
 
-	if outputFile == "" {
-		fmt.Fprintf(os.Stderr, "error: invalid value for output file: '%s'\n", "empty string")
-		flag.PrintDefaults()
-		os.Exit(1)
-	}
-
-	crds := make([]apiextensions.CustomResourceDefinition, 0)
-	err := filepath.WalkDir(inputDir, func(path string, info fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-		if info.IsDir() || !strings.HasSuffix(path, ".yaml") {
-			return nil
-		}
-		y, err := os.ReadFile(path)
-		if err != nil {
-			return fmt.Errorf("failed to read CRD file %s: %w", path, err)
-		}
-		var crd apiextensions.CustomResourceDefinition
-		if err := yaml.Unmarshal(y, &crd); err != nil {
-			return fmt.Errorf("error unmarshalling bytes into CRD: %w", err)
-		}
-		crds = append(crds, crd)
-		return nil
-	})
+	crds, err := crdloader.LoadCRDs()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to read CRDs: %v\n", err)
+		fmt.Fprintf(os.Stderr, "error loading CRDs: %v\n", err)
 		os.Exit(1)
 	}
 
-	out := `// Copyright 2024 Google LLC
+	out := `// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -97,11 +65,12 @@ package supportedgvks
 
 import "k8s.io/apimachinery/pkg/runtime/schema"
 
-type GVKMetadata struct {
-	Labels map[string]string
+type legacyGVKData struct {
+	Terraform bool
+	DCL       bool
 }
 
-var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{`
+var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{`
 
 	for _, crd := range crds {
 		for _, version := range crd.Spec.Versions {
@@ -111,28 +80,23 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{`
 				Version: version.Name,
 			}
 
+			terraform := crd.Labels[k8s.TF2CRDLabel] == "true"
+			dcl := crd.Labels[k8s.DCL2CRDLabel] == "true"
+
+			if !terraform && !dcl {
+				continue // Skip direct GVKs
+			}
+
 			gvkEntry := `
 	{
 		Group:   "%s",
 		Version: "%s",
 		Kind:    "%s",
 	}: {
-		Labels: map[string]string{`
-			// Iterate over the labels in sorted order to produce deterministic output.
-			keys := make([]string, 0)
-			for k, _ := range crd.Labels {
-				keys = append(keys, k)
-			}
-			sort.Strings(keys)
-			for _, k := range keys {
-				labelEntry := `
-			"%s": "%s",`
-				gvkEntry += fmt.Sprintf(labelEntry, k, crd.Labels[k])
-			}
-			gvkEntry += `
-		},
+		Terraform: %v,
+		DCL:       %v,
 	},`
-			out += fmt.Sprintf(gvkEntry, gvk.Group, gvk.Version, gvk.Kind)
+			out += fmt.Sprintf(gvkEntry, gvk.Group, gvk.Version, gvk.Kind, terraform, dcl)
 		}
 	}
 
@@ -144,16 +108,10 @@ var SupportedGVKs = map[schema.GroupVersionKind]GVKMetadata{`
 		os.Exit(1)
 	}
 
-	file, err := os.OpenFile(outputFile, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error opening output file: %s\n", err)
-		os.Exit(1)
-	}
-	defer file.Close()
-
-	_, err = file.Write(outFormatted)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error writing to output file: %s\n", err)
+	outputFile := filepath.Join(outputDir, "gvks_generated.go")
+	fmt.Fprintf(os.Stderr, "Writing output to %s\n", outputFile)
+	if err := os.WriteFile(outputFile, outFormatted, 0644); err != nil {
+		fmt.Fprintf(os.Stderr, "Error writing output file: %s\n", err)
 		os.Exit(1)
 	}
 }

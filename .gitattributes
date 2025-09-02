@@ -1,3 +1,4 @@
+.github/workflows/ci-presubmit.yaml linguist-generated=true
 mockgcp/generated/** linguist-generated=true
 pkg/clients/generated/** linguist-generated=true
 **/*.generated.go linguist-generated=true

@@ -1,4 +1,3 @@
-
 # Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -63,6 +63,11 @@ spec:
           spec:
             description: MultiClusterLeaseSpec defines the desired state of MultiClusterLease
             properties:
+              holderIdentity:
+                description: HolderIdentity is the unique identifier of the last known
+                  leader. This is the identity of the client that is trying to acquire
+                  or renew the lease.
+                type: string
               leaseDurationSeconds:
                 description: LeaseDurationSeconds is the duration that non-leader
                   candidates will wait to force acquire leadership.
@@ -73,6 +78,11 @@ spec:
                   will wait to renew its leadership.
                 format: int32
                 type: integer
+              renewTime:
+                description: RenewTime is the timestamp when the client last renewed
+                  the lease.
+                format: date-time
+                type: string
               retryPeriodSeconds:
                 description: RetryPeriodSeconds is the period between attempts to
                   acquire or renew leadership.
@@ -171,10 +181,6 @@ spec:
                 description: GlobalRenewTime is the timestamp when the GlobalHolderIdentity
                   was last observed to renew the lease.
                 type: string
-              isLeadingCluster:
-                description: IsLeadingCluster is true if the local cluster is holding
-                  the global lease. This is the source of truth for leadership.
-                type: boolean
               observedGeneration:
                 description: ObservedGeneration is the .metadata.generation of the
                   MultiClusterLease CR that was last processed to produce this status.

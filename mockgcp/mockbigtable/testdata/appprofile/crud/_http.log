@@ -140,9 +140,7 @@ Content-Type: application/json
 
 {
   "description": "Test App Profile",
-  "multiClusterRoutingUseAny": {
-    "failoverRadius": "ANY_REGION"
-  }
+  "multiClusterRoutingUseAny": {}
 }
 
 200 OK

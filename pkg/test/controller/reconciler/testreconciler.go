@@ -187,10 +187,6 @@ func ReconcilerTypeForObject(u *unstructured.Unstructured) (k8s.ReconcilerType, 
 	}
 
 	objectGVK := u.GroupVersionKind()
-	gvkMetadata, ok := supportedgvks.SupportedGVKs[objectGVK]
-	if !ok {
-		return "", fmt.Errorf("%v is not recognized as a supported GVK; cannot determine reconciler type", objectGVK)
-	}
 
 	switch objectGVK.Kind {
 	case "IAMPolicy":
@@ -203,8 +199,8 @@ func ReconcilerTypeForObject(u *unstructured.Unstructured) (k8s.ReconcilerType, 
 		return k8s.ReconcilerTypeIAMAuditConfig, nil
 	default:
 		hasDirectController := registry.IsDirectByGK(objectGVK.GroupKind())
-		hasTerraformController := gvkMetadata.Labels[k8s.TF2CRDLabel] == "true"
-		hasDCLController := gvkMetadata.Labels[k8s.DCL2CRDLabel] == "true"
+		hasTerraformController := supportedgvks.IsTFBasedByGVK(objectGVK)
+		hasDCLController := supportedgvks.IsDCLBasedByGVK(objectGVK)
 
 		useDirectReconciler := false
 

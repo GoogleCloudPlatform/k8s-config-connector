@@ -215,56 +215,71 @@ func TestCRDsAcronyms(t *testing.T) {
 		t.Fatalf("error loading crds: %v", err)
 	}
 
-	var errs []string
-	for _, crd := range crds {
-		for _, version := range crd.Spec.Versions {
-			visitCRDVersion(version, func(field *CRDField) {
-				fieldPath := field.FieldPath
-				tokens := splitCamelCase(fieldPath)
+	correctAcronyms := func(s string) string {
+		tokens := splitCamelCase(s)
 
-				for i, token := range tokens {
-					var singular, pluralSuffix string
+		for i, token := range tokens {
+			var singular, pluralSuffix string
 
-					if strings.HasSuffix(token, "ies") {
-						singular = token[:len(token)-3] + "y"
-						pluralSuffix = "ies"
-					} else if strings.HasSuffix(token, "es") {
-						singular = token[:len(token)-2]
-						pluralSuffix = "es"
-					} else if strings.HasSuffix(token, "s") {
-						singular = token   // or token[:len(token)-1]
-						pluralSuffix = "s" // maybe
-					} else {
-						singular = token
+			if strings.HasSuffix(token, "ies") {
+				singular = token[:len(token)-3] + "y"
+				pluralSuffix = "ies"
+			} else if strings.HasSuffix(token, "es") {
+				singular = token[:len(token)-2]
+				pluralSuffix = "es"
+			} else if strings.HasSuffix(token, "s") {
+				singular = token   // or token[:len(token)-1]
+				pluralSuffix = "s" // maybe
+			} else {
+				singular = token
+				pluralSuffix = ""
+			}
+
+			for _, acronym := range codegen.Acronyms {
+				if pluralSuffix == "s" {
+					if strings.EqualFold(acronym, singular) {
 						pluralSuffix = ""
+					} else if !strings.EqualFold(acronym, singular[:len(singular)-1]) {
+						continue
 					}
-
-					for _, acronym := range codegen.Acronyms {
-						if pluralSuffix == "s" {
-							if strings.EqualFold(acronym, singular) {
-								pluralSuffix = ""
-							} else if !strings.EqualFold(acronym, singular[:len(singular)-1]) {
-								continue
-							}
-						} else {
-							if !strings.EqualFold(acronym, singular) {
-								continue
-							}
-						}
-
-						switch pluralSuffix {
-						case "ies": // y
-							tokens[i] = acronym[:len(acronym)-1] + "ies"
-						case "es":
-							tokens[i] = acronym + "es"
-						case "s":
-							tokens[i] = acronym + "s"
-						case "":
-							tokens[i] = acronym
-						}
+				} else {
+					if !strings.EqualFold(acronym, singular) {
+						continue
 					}
 				}
-				corrected := strings.Join(tokens, "")
+
+				switch pluralSuffix {
+				case "ies": // y
+					tokens[i] = acronym[:len(acronym)-1] + "ies"
+				case "es":
+					tokens[i] = acronym + "es"
+				case "s":
+					tokens[i] = acronym + "s"
+				case "":
+					tokens[i] = acronym
+				}
+			}
+		}
+		corrected := strings.Join(tokens, "")
+		return corrected
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		// Check the CRD Kind
+		{
+			kind := crd.Spec.Names.Kind
+			corrected := correctAcronyms(kind)
+			if corrected != kind {
+				errs = append(errs, fmt.Sprintf("[acronyms] crd=%s: kind %q should be %q", crd.Name, kind, corrected))
+			}
+		}
+
+		for _, version := range crd.Spec.Versions {
+			// Check each field in the CRD
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+				corrected := correctAcronyms(fieldPath)
 
 				if corrected != fieldPath {
 					errs = append(errs, fmt.Sprintf("[acronyms] crd=%s version=%v: field %q should be %q", crd.Name, version.Name, fieldPath, corrected))
@@ -451,6 +466,49 @@ func TestCRDShortNames(t *testing.T) {
 
 // Run this test with WRITE_GOLDEN_OUTPUT set to update the exceptions list.
 func TestCRDFieldPresenceInTests(t *testing.T) {
+	t.Parallel()
+
+	shouldVisitCRD := func(crd *apiextensions.CustomResourceDefinition, version string) bool {
+
+		// only beta/v1 requires full API coverage so it should pass this test.
+		if strings.Contains(version, "alpha") {
+			return false
+		}
+
+		// skip core resources
+		if strings.Contains(crd.Name, "configconnectorcontexts.core.cnrm.cloud.google.com") ||
+			strings.Contains(crd.Name, "configconnectors.core.cnrm.cloud.google.com") {
+			return false
+		}
+
+		return true
+	}
+
+	missing := findFieldsNotCoveredByTests(t, shouldVisitCRD)
+
+	want := strings.Join(missing, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/missingfields.txt", want)
+}
+
+// Run this test with WRITE_GOLDEN_OUTPUT set to update the exceptions list.
+func TestCRDFieldPresenceInTestsForAlpha(t *testing.T) {
+	t.Parallel()
+
+	shouldVisitCRD := func(crd *apiextensions.CustomResourceDefinition, version string) bool {
+		// Only visit alpha CRDs, we don't want to duplicate the beta
+		if !strings.Contains(version, "alpha") {
+			return false
+		}
+		return true
+	}
+
+	missing := findFieldsNotCoveredByTests(t, shouldVisitCRD)
+
+	want := strings.Join(missing, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/alpha-missingfields.txt", want)
+}
+
+func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiextensions.CustomResourceDefinition, version string) bool) []string {
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
 		t.Fatalf("error loading CRDs: %v", err)
@@ -464,16 +522,31 @@ func TestCRDFieldPresenceInTests(t *testing.T) {
 
 	var errs []string
 	for _, crd := range crds {
+		// Only visit the latest version of the CRD.
+		versions := make(map[string]bool)
 		for _, version := range crd.Spec.Versions {
+			versions[version.Name] = true
+		}
+		latest := ""
+		for _, version := range []string{"v1", "v1beta1", "v1alpha1"} {
+			if versions[version] {
+				latest = version
+				break
+			}
+		}
+		if latest == "" {
+			t.Fatalf("no latest version found for crd %s", crd.Name)
+		}
+
+		for _, version := range crd.Spec.Versions {
+			if version.Name != latest {
+				continue
+			}
 
 			kind := crd.Spec.Names.Kind
 
-			// Beta requires full API coverage so it should pass this test.
-			if version.Name == "v1alpha1" {
-				// This env allows us to run the API coverage test for a certain alpha resource.
-				if os.Getenv("TARGET_KIND") == "" || os.Getenv("TARGET_KIND") != kind {
-					continue
-				}
+			if !shouldVisitCRD(&crd, version.Name) {
+				continue
 			}
 
 			visitCRDVersion(version, func(field *CRDField) {
@@ -489,7 +562,7 @@ func TestCRDFieldPresenceInTests(t *testing.T) {
 				}
 
 				// Check for "Ref" fields
-				if strings.HasSuffix(fieldPath, "Ref") {
+				if strings.HasSuffix(fieldPath, "Ref") || strings.HasSuffix(fieldPath, "Refs[]") {
 					hasExternal := false
 					hasName := false
 
@@ -513,8 +586,27 @@ func TestCRDFieldPresenceInTests(t *testing.T) {
 					return
 				}
 
-				// Any XYZRef field was already handled and handling the children will just double count
-				if strings.Contains(fieldPath, "Ref") {
+				// Skip non-terminal fields. A field is considered non-terminal if it's a struct-like object
+				// (i.e., an object with properties) or an array. Other fields, including primitives and
+				// map-like objects (objects without properties), are considered terminal and will be checked for presence.
+				if field.props != nil {
+					switch field.props.Type {
+					case "object":
+						// Struct-like objects with properties are non-terminal.
+						// Map-like objects without properties are considered terminal.
+						if len(field.props.Properties) > 0 {
+							return
+						}
+					case "array":
+						// Arrays are always non-terminal containers.
+						return
+					}
+				}
+
+				// Any reference field was already handled and handling the children will just double count
+				// Check for `Ref.` or `Refs[].` to ensure it's a reference field,
+				// and avoid field names that include `Ref` (e.g., allowedReferrers in APIKeysKey).
+				if strings.Contains(fieldPath, "Ref.") || strings.Contains(fieldPath, "Refs[].") {
 					return
 				}
 
@@ -544,35 +636,7 @@ func TestCRDFieldPresenceInTests(t *testing.T) {
 	}
 
 	sort.Strings(errs)
-	// Filter out errors for fields that are also reported for their array equivalent.
-	// For example, if we have an error for "spec.foo" and "spec.foo[]", we only keep the latter.
-	if len(errs) > 0 {
-		filteredErrs := make([]string, 0, len(errs))
-		i := 0
-		for i < len(errs) {
-			addCurrent := true
-			if i+1 < len(errs) {
-				currentErr := errs[i]
-				nextErr := errs[i+1]
-				const suffix = "\" is not set in unstructured objects"
-				prefix := strings.TrimSuffix(currentErr, suffix)
-				if strings.HasPrefix(nextErr, prefix) {
-					diff := strings.TrimPrefix(nextErr, prefix)
-					if strings.Contains(diff, "[]") || strings.Contains(diff, ".") {
-						addCurrent = false
-					}
-				}
-			}
-			if addCurrent {
-				filteredErrs = append(filteredErrs, errs[i])
-			}
-			i++
-		}
-		errs = filteredErrs
-	}
-
-	want := strings.Join(errs, "\n")
-	test.CompareGoldenFile(t, "testdata/exceptions/missingfields.txt", want)
+	return errs
 }
 
 func loadOutputOnlySpecFields() (map[string]bool, error) {

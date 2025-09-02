@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -68,6 +69,35 @@ func (s *subscriberService) CreateSnapshot(ctx context.Context, req *pb.CreateSn
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *subscriberService) UpdateSnapshot(ctx context.Context, req *pb.UpdateSnapshotRequest) (*pb.Snapshot, error) {
+	name, err := parseSnapshotName(req.Snapshot.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	for _, path := range req.UpdateMask.Paths {
+		if path == "expire_time" {
+			return nil, status.Errorf(codes.InvalidArgument, "Invalid update_mask provided in the UpdateSnapshotRequest: the 'expire_time' field in the Snapshot is not mutable.")
+		}
+	}
+
+	obj := &pb.Snapshot{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	// Mask should be applied here
+	proto.Merge(obj, req.Snapshot)
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 

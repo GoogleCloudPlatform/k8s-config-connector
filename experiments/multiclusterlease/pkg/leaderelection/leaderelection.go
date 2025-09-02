@@ -32,7 +32,6 @@ import (
 type LeaderElector struct {
 	client     *storage.Client
 	bucketName string
-	identity   string
 	leaseKey   string
 	lease      *v1alpha1.MultiClusterLease
 
@@ -40,11 +39,10 @@ type LeaderElector struct {
 }
 
 // NewLeaderElector creates a new LeaderElector instance
-func NewLeaderElector(client *storage.Client, bucketName, identity, leaseKey string, lease *v1alpha1.MultiClusterLease) *LeaderElector {
+func NewLeaderElector(client *storage.Client, bucketName, leaseKey string, lease *v1alpha1.MultiClusterLease) *LeaderElector {
 	return &LeaderElector{
 		client:     client,
 		bucketName: bucketName,
-		identity:   identity,
 		leaseKey:   leaseKey,
 		lease:      lease,
 	}
@@ -63,12 +61,21 @@ type LeaseInfo struct {
 }
 
 // AcquireOrRenew attempts to acquire or renew the lease in GCS
-func (le *LeaderElector) AcquireOrRenew(ctx context.Context) (*LeaseInfo, error) {
+func (le *LeaderElector) AcquireOrRenew(ctx context.Context, identity string) (*LeaseInfo, error) {
+	// Check if the candidate is alive by checking its renewTime
+	if le.lease.Spec.RenewTime == nil {
+		return &LeaseInfo{Acquired: false}, fmt.Errorf("candidate has no renew time")
+	}
+	// TODO: Make the staleness check configurable
+	/*if time.Since(le.lease.Spec.RenewTime.Time) > 40*time.Second {
+		return &LeaseInfo{Acquired: false}, fmt.Errorf("candidate lease is stale")
+	}*/
+
 	// Try to get the current lease state
 	data, err := le.readLease(ctx)
-	if err == storage.ErrObjectNotExist {
+	if errors.Is(err, storage.ErrObjectNotExist) {
 		// This is the first time anyone is trying to acquire this lease
-		return le.createNewLease(ctx)
+		return le.createNewLease(ctx, identity)
 	}
 	if err != nil {
 		return &LeaseInfo{Acquired: false}, err
@@ -85,16 +92,16 @@ func (le *LeaderElector) AcquireOrRenew(ctx context.Context) (*LeaseInfo, error)
 		time.Since(data.RenewTime) > time.Duration(leaseDuration)*time.Second
 
 	// If we're the current holder or the lease is expired, try to acquire/renew
-	if data.HolderIdentity == le.identity || leaseExpired {
+	if data.HolderIdentity == identity || leaseExpired {
 		// If this is a new leader, increment transitions
-		if data.HolderIdentity != le.identity && data.HolderIdentity != "" {
+		if data.HolderIdentity != identity && data.HolderIdentity != "" {
 			data.LeaseTransitions++
 		}
 
 		// Update the lease
 		now := time.Now()
 		updatedLeaseData := &data
-		updatedLeaseData.HolderIdentity = le.identity
+		updatedLeaseData.HolderIdentity = identity
 		updatedLeaseData.RenewTime = now
 
 		if err := le.updateLease(ctx, updatedLeaseData, data.Generation); err != nil {
@@ -118,7 +125,7 @@ func (le *LeaderElector) AcquireOrRenew(ctx context.Context) (*LeaseInfo, error)
 		// Successfully acquired/renewed the lease
 		return &LeaseInfo{
 			Acquired:         true,
-			HolderIdentity:   &le.identity,
+			HolderIdentity:   &identity,
 			RenewTime:        &now,
 			LeaseTransitions: &updatedLeaseData.LeaseTransitions,
 		}, nil
@@ -221,14 +228,14 @@ func (le *LeaderElector) updateLease(ctx context.Context, data *leaseData, gener
 
 // createNewLease creates a new lease object in GCS with this instance as the holder
 // Uses a precondition to ensure the object doesn't exist (preventing race conditions)
-func (le *LeaderElector) createNewLease(ctx context.Context) (*LeaseInfo, error) {
+func (le *LeaderElector) createNewLease(ctx context.Context, identity string) (*LeaseInfo, error) {
 	obj := le.getObjectHandle()
 	now := time.Now()
 	leaseTransitions := int32(0)
 
 	// Create the lease data
 	data := leaseData{
-		HolderIdentity:   le.identity,
+		HolderIdentity:   identity,
 		RenewTime:        now,
 		LeaseTransitions: leaseTransitions,
 	}
@@ -266,7 +273,7 @@ func (le *LeaderElector) createNewLease(ctx context.Context) (*LeaseInfo, error)
 	// Successfully created and acquired the lease
 	return &LeaseInfo{
 		Acquired:         true,
-		HolderIdentity:   &le.identity,
+		HolderIdentity:   &identity,
 		RenewTime:        &now,
 		LeaseTransitions: &leaseTransitions,
 	}, nil

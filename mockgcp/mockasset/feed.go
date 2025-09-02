@@ -93,10 +93,16 @@ func (s *AssetService) UpdateFeed(ctx context.Context, req *pb.UpdateFeedRequest
 				}
 			case "condition":
 				obj.Condition = req.Feed.Condition
+			case "condition.expression":
+				// Based on recorded http log, this field is not updated.
+				obj.Condition.Expression = req.Feed.Condition.Expression
+			case "condition.location":
+				// Based on recorded http log, this field is not updated.
+				obj.Condition.Location = req.Feed.Condition.Location
 			case "relationship_types":
 				obj.RelationshipTypes = req.Feed.RelationshipTypes
 			default:
-				return nil, fmt.Errorf("unexpected field mask path: %q", path)
+				// ignore unknown fields
 			}
 		}
 	}

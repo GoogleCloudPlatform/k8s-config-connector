@@ -27,12 +27,12 @@ import (
 	"time"
 
 	opv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/teststatus"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
@@ -49,6 +49,7 @@ const DefaultWaitForReadyTimeout = 35 * time.Minute
 
 type Sample struct {
 	Name      string
+	APIGroup  string
 	Resources []*unstructured.Unstructured
 }
 
@@ -223,7 +224,7 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeou
 			logger.Info("resource does not yet have conditions", "kind", u.GetKind(), "name", u.GetName())
 			return false, nil
 		}
-		objectStatus := dynamic.GetObjectStatus(t.T, u)
+		objectStatus := teststatus.GetObjectStatus(t.T, u)
 		if objectStatus.ObservedGeneration == nil {
 			logger.Info("resource does not yet have status.observedGeneration", "kind", u.GetKind(), "name", u.GetName())
 			return false, nil
@@ -257,7 +258,7 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeou
 		t.Error(fmt.Errorf("%v, error retrieving final status.conditions: %w", baseMsg, err))
 		return
 	}
-	objectStatus := dynamic.GetObjectStatus(t.T, u)
+	objectStatus := teststatus.GetObjectStatus(t.T, u)
 	t.Errorf("%v, final status: %+v", baseMsg, objectStatus)
 }
 
@@ -358,6 +359,7 @@ func LoadSample(t *testing.T, sampleKey SampleKey, project testgcp.GCPProject) S
 type SampleKey struct {
 	Name      string
 	SourceDir string
+	APIGroup  string
 	files     []string
 }
 
@@ -373,6 +375,7 @@ func loadSampleOntoUnstructs(t *testing.T, sampleKey SampleKey, project testgcp.
 	s := Sample{
 		Name:      sampleKey.Name,
 		Resources: resources,
+		APIGroup:  sampleKey.APIGroup,
 	}
 	return s
 }
@@ -389,38 +392,33 @@ func ListMatchingSamples(t *testing.T, regex *regexp.Regexp) []SampleKey {
 		if strings.HasSuffix(d.Name(), ".yaml") {
 			sampleName := filepath.Base(filepath.Dir(path))
 			if regex.MatchString(sampleName) {
-				sampleKey := samples[filepath.Dir(path)]
+				sourceDir := filepath.Dir(path)
+				sampleKey := samples[sourceDir]
 				sampleKey.Name = sampleName
-				sampleKey.SourceDir = filepath.Dir(path)
-
-				// Heuristic to find the "main" resource for the sample, which we define as the resource
-				// whose group matches the service name in the path.
-				// We will prepend this to the list of files so that it is created first.
-				shouldPrepend := false
-				b := test.MustReadFile(t, path)
-				yamls := testyaml.SplitYAML(t, b)
-				if len(yamls) > 0 {
-					u := &unstructured.Unstructured{}
-					if err := yaml.Unmarshal(yamls[0], u); err == nil {
-						gvk := u.GroupVersionKind()
-						apiGroup := gvk.Group
-
-						if strings.HasSuffix(apiGroup, ".cnrm.cloud.google.com") {
-							service := strings.TrimSuffix(apiGroup, ".cnrm.cloud.google.com")
-							if strings.Contains(path, "/"+service+"/") {
-								shouldPrepend = true
+				sampleKey.SourceDir = sourceDir
+				// The sampleKey.APIGroup can be found from the Kind, the Kind is in the path as config/samples/resources/<KIND>,
+				// Then by iterating the files under the sourceDir, you can find the `apiGroup` value if the `kind` matches <KIND>
+				if sampleKey.APIGroup == "" {
+					b := test.MustReadFile(t, path)
+					yamls := testyaml.SplitYAML(t, b)
+					// The resource kind is part of the path: config/samples/resources/<KIND>/...
+					resourceKind := filepath.Base(filepath.Dir(sourceDir))
+					for _, y := range yamls {
+						var u unstructured.Unstructured
+						if err := yaml.Unmarshal(y, &u); err != nil {
+							continue
+						}
+						if strings.EqualFold(u.GetKind(), resourceKind) {
+							apiVersion := u.GetAPIVersion()
+							parts := strings.Split(apiVersion, "/")
+							if len(parts) == 2 {
+								sampleKey.APIGroup = parts[0]
 							}
+							break
 						}
 					}
 				}
-
-				if shouldPrepend {
-					sampleKey.files = append([]string{path}, sampleKey.files...)
-				} else {
-					sampleKey.files = append(sampleKey.files, path)
-				}
-
-				samples[filepath.Dir(path)] = sampleKey
+				samples[sourceDir] = sampleKey
 			}
 		}
 		return nil

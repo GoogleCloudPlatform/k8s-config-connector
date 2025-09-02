@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import subprocess
+import sys
+
+def main():
+    """
+    Runs a mockgcp test against mockgcp and compares the output to the golden output.
+    """
+    parser = argparse.ArgumentParser(
+        description="Compare mockgcp test output to golden output."
+    )
+    parser.add_argument(
+        "test_name",
+        help="The name of the test to run (e.g., mocksql/testdata/instance/dr-replica)",
+    )
+    args = parser.parse_args()
+
+    # The go test -run flag uses a regex.
+    # We anchor it to the start of the test name.
+    test_run_arg = f"^TestScripts/{args.test_name}$"
+
+    env = os.environ.copy()
+    env["WRITE_GOLDEN_OUTPUT"] = "1"
+    env["E2E_GCP_TARGET"] = "mock"
+
+    # We must run the test from the mockgcp directory
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    mockgcp_dir = os.path.abspath(os.path.join(script_dir, "..", ".."))
+
+    timeout = "90m"
+    command = ["go", "test", "-v", "./mockgcptests/", "-timeout", timeout, "-count", "1", "-run", test_run_arg]
+
+    print(f"Running command: {' '.join(command)}", file=sys.stderr)
+    print(f"Working directory: {mockgcp_dir}", file=sys.stderr)
+
+    process = subprocess.run(command, env=env, cwd=mockgcp_dir)
+
+    if process.returncode != 0:
+        print(f"Command failed with exit code {process.returncode}", file=sys.stderr)
+        sys.exit(process.returncode)
+
+
+if __name__ == "__main__":
+    main()

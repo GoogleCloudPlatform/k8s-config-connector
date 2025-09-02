@@ -64,6 +64,11 @@ func computeInterconnectFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".creation_timestamp")
 	f.StatusFields.Insert(".peer_ip_address")
 
-	f.UnimplementedFields.Insert(".name") // special field
+	f.IdentityField(".name")
+
+	f.Unimplemented_NotYetTriaged(".interconnect_groups")
+	f.Unimplemented_NotYetTriaged(".aai_enabled")
+	f.Unimplemented_NotYetTriaged(".application_aware_interconnect")
+
 	return f
 }

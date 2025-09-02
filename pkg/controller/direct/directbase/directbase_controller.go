@@ -33,6 +33,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	"golang.org/x/sync/semaphore"
@@ -97,9 +98,10 @@ func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.Ge
 		ReconcilerMetrics: metrics.ReconcilerMetrics{
 			ResourceNameLabel: metrics.ResourceNameLabel,
 		},
-		jitterGenerator: deps.JitterGenerator,
-		defaulters:      deps.Defaulters,
-		iamDeps:         deps.IAMAdapterDeps,
+		jitterGenerator:    deps.JitterGenerator,
+		defaulters:         deps.Defaulters,
+		iamDeps:            deps.IAMAdapterDeps,
+		reconcilePredicate: deps.ReconcilePredicate,
 	}
 	return &r, nil
 }
@@ -192,6 +194,9 @@ type DirectReconciler struct {
 	defaulters []k8s.Defaulter
 	// For IAM controllers
 	iamDeps *IAMAdapterDeps
+
+	// reconcilePredicate is the predicate which determines if we should be reconciling this object
+	reconcilePredicate predicate.Predicate
 }
 
 type reconcileContext struct {
@@ -213,6 +218,8 @@ func (r *DirectReconciler) mapSecretToResources(ctx context.Context, obj client.
 
 // Reconcile checks k8s for the current state of the resource.
 func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Request) (result reconcile.Result, err error) {
+	ctx = metricstransport.WithControllerName(ctx, r.controllerName)
+
 	logger := log.FromContext(ctx)
 
 	logger.Info("Running reconcile", "resource", request.NamespacedName)
@@ -234,6 +241,17 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 		// Error reading the object - requeue the request.
 		return reconcile.Result{}, err
 	}
+
+	if r.reconcilePredicate != nil {
+		// We always simulate a Create event (we don't want to check update predicates, and we don't have the previous version anyway)
+		ev := event.TypedCreateEvent[client.Object]{Object: obj}
+		if !r.reconcilePredicate.Create(ev) {
+			logger.Info("skipping direct reconciliation; reconcileGate does not match object", "namespace", request.Namespace, "name", request.Name)
+			// Do not schedule periodic re-reconciliation
+			return reconcile.Result{}, nil
+		}
+	}
+
 	runCtx := &reconcileContext{
 		Reconciler:     r,
 		gvk:            r.gvk,
@@ -547,7 +565,7 @@ func (r *reconcileContext) handleUnresolvableDeps(ctx context.Context, policy *u
 		ctx, cancel := context.WithTimeout(context.TODO(), timeoutPeriod)
 		defer cancel()
 		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
-		if err := watcher.WaitForResourceToBeReady(ctx, refNN, refGVK); err != nil {
+		if err := watcher.WaitForResourceToBeReadyOrDeleted(ctx, refNN, refGVK); err != nil {
 			logger.Error(err, "error while waiting for resource's reference to be ready")
 			return
 		}

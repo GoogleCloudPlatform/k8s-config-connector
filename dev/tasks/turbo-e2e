@@ -39,7 +39,7 @@ fi
 
 if [[ ${EXIT_CODE} -ne 0 ]]; then
   echo "Some tests failed!"
-  rgrep FAIL testlogs/
+  grep -r FAIL testlogs/
 fi
 
 exit ${EXIT_CODE}

@@ -15,6 +15,7 @@
 package parameters
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"regexp"
@@ -66,7 +67,7 @@ type Parameters struct {
 	Verbose                 bool
 }
 
-func (p *Parameters) ControllerConfig() *config.ControllerConfig {
+func (p *Parameters) NewControllerConfig(ctx context.Context) (*config.ControllerConfig, error) {
 	c := &config.ControllerConfig{
 		UserAgent: gcp.KCCUserAgent(),
 	}
@@ -75,7 +76,10 @@ func (p *Parameters) ControllerConfig() *config.ControllerConfig {
 			&oauth2.Token{AccessToken: p.OAuth2Token},
 		)
 	}
-	return c
+	if err := c.Init(ctx); err != nil {
+		return nil, err
+	}
+	return c, nil
 }
 
 // convenience struct used during validation

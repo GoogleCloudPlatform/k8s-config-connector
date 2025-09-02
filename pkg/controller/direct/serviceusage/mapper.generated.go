@@ -20,21 +20,21 @@
 package serviceusage
 
 import (
-	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/serviceusage/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/serviceusage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1beta1"
 )
 
-func ServiceIdentityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceIdentity) *krmv1beta1.ServiceIdentityObservedState {
+func ServiceIdentityObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceIdentity) *krm.ServiceIdentityObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.ServiceIdentityObservedState{}
+	out := &krm.ServiceIdentityObservedState{}
 	out.Email = direct.LazyPtr(in.GetEmail())
 	out.UniqueID = direct.LazyPtr(in.GetUniqueId())
 	return out
 }
-func ServiceIdentityObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ServiceIdentityObservedState) *pb.ServiceIdentity {
+func ServiceIdentityObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ServiceIdentityObservedState) *pb.ServiceIdentity {
 	if in == nil {
 		return nil
 	}
@@ -43,14 +43,14 @@ func ServiceIdentityObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1be
 	out.UniqueId = direct.ValueOf(in.UniqueID)
 	return out
 }
-func ServiceIdentitySpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceIdentity) *krmv1beta1.ServiceIdentitySpec {
+func ServiceIdentitySpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceIdentity) *krm.ServiceIdentitySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1beta1.ServiceIdentitySpec{}
+	out := &krm.ServiceIdentitySpec{}
 	return out
 }
-func ServiceIdentitySpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.ServiceIdentitySpec) *pb.ServiceIdentity {
+func ServiceIdentitySpec_ToProto(mapCtx *direct.MapContext, in *krm.ServiceIdentitySpec) *pb.ServiceIdentity {
 	if in == nil {
 		return nil
 	}

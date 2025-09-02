@@ -28,6 +28,6 @@
       "**Completeness**: The YAML must include all required fields as defined in the CRD.",
       "**Correctness**: User-provided configurations must be placed at the correct paths within the YAML structure.",
       "**Validity**: All values, especially names and labels, must adhere to Kubernetes syntax and naming conventions.",
-      "**Minimalism**: The generated YAML should not include optional fields unless they are explicitly requested or required for a specific configuration.",
+      "**Minimalism**: The generated YAML should not include optional fields unless they are explicitly requested or required for a specific configuration."
     ]
   }

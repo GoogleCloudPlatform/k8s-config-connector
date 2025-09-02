@@ -22,7 +22,7 @@ import (
 var AccessContextManagerAccessPolicyGVK = GroupVersion.WithKind("AccessContextManagerAccessPolicy")
 
 // AccessContextManagerAccessPolicySpec defines the desired state of AccessContextManagerAccessPolicy
-// +kcc:proto=google.identity.accesscontextmanager.v1.AccessPolicy
+// +kcc:spec:proto=google.identity.accesscontextmanager.v1.AccessPolicy
 type AccessContextManagerAccessPolicySpec struct {
 	// The AccessContextManagerAccessPolicy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
@@ -52,7 +52,7 @@ type AccessContextManagerAccessPolicyStatus struct {
 }
 
 // AccessContextManagerAccessPolicyObservedState is the state of the AccessContextManagerAccessPolicy resource as most recently observed in GCP.
-// +kcc:proto=google.identity.accesscontextmanager.v1.AccessPolicy
+// +kcc:observedstate:proto=google.identity.accesscontextmanager.v1.AccessPolicy
 type AccessContextManagerAccessPolicyObservedState struct {
 }
 

@@ -22,7 +22,7 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkservices/v1"
+	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
 )
 
 type NetworkServicesServer struct {

@@ -25,7 +25,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var KMSCryptoKeyGVK = SchemeGroupVersion.WithKind("KMSCryptoKey")
+var KMSCryptoKeyGVK = GroupVersion.WithKind("KMSCryptoKey")
 
 // KMSCryptoKeyRef defines the resource reference to KMSCryptoKey.
 type kmsCryptoKeyRef struct {

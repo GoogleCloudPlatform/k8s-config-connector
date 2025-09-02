@@ -90,6 +90,8 @@ func (s *QuotaAdjusterSettingsManagerV1Beta) UpdateQuotaAdjusterSettings(ctx con
 			updated.Enablement = req.GetQuotaAdjusterSettings().GetEnablement()
 		case "name":
 			updated.Name = req.GetQuotaAdjusterSettings().GetName()
+		case "inherited":
+			updated.Inherited = req.GetQuotaAdjusterSettings().GetInherited()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}

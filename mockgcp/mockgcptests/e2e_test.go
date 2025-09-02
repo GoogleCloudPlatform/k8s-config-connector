@@ -107,6 +107,9 @@ func TestScripts(t *testing.T) {
 
 					cmd.Env = append(cmd.Env, os.Environ()...)
 
+					// Don't check for updates to gcloud components (causes spurious requests to dl.google.com)
+					cmd.Env = append(cmd.Env, "CLOUDSDK_COMPONENT_MANAGER_DISABLE_UPDATE_CHECK=yes")
+
 					if h.gcpAccessToken != "" {
 						cmd.Env = append(cmd.Env, fmt.Sprintf("CLOUDSDK_AUTH_ACCESS_TOKEN=%v", h.gcpAccessToken))
 					}

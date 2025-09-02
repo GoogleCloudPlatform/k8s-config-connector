@@ -94,6 +94,10 @@ const (
 
 	KCCAPIVersionV1Beta1  = "v1beta1"
 	KCCAPIVersionV1Alpha1 = "v1alpha1"
+
+	ManagerNamespaceIsolationFlag      = "manager-namespace-isolation"
+	ManagerNamespaceIsolationShared    = "shared"
+	ManagerNamespaceIsolationDedicated = "dedicated"
 )
 
 var (

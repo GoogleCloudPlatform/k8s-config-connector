@@ -16,7 +16,9 @@ apiVersion: spanner.cnrm.cloud.google.com/v1beta1
 kind: SpannerInstance
 metadata:
   labels:
-    label-one: "value-one"
+    metadata-label-one: "updated-value-one"
+    configsync.gke.io/declared-version: "v1beta1"
+    app.kubernetes.io/managed-by: "kcc"
   name: spannerinstance-sample-${uniqueId}
   annotations:
     alpha.cnrm.cloud.google.com/reconciler: "direct"

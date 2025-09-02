@@ -44,9 +44,9 @@ func datastreamPrivateConnectionFuzzer() fuzztesting.KRMFuzzer {
 
 	f.UnimplementedFields.Insert(".name")
 
-	// New fields that could be added
-	f.UnimplementedFields.Insert(".satisfies_pzs")
-	f.UnimplementedFields.Insert(".satisfies_pzi")
+	f.Unimplemented_NotYetTriaged(".satisfies_pzs")
+	f.Unimplemented_NotYetTriaged(".satisfies_pzi")
+	f.Unimplemented_NotYetTriaged(".psc_interface_config")
 
 	return f
 }

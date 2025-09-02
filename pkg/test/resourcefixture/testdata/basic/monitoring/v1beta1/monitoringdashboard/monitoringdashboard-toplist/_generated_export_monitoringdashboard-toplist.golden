@@ -1,0 +1,32 @@
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringDashboard
+metadata:
+  name: monitoringdashboard-${uniqueId}
+spec:
+  displayName: Example with TopList
+  mosaicLayout:
+    columns: 48
+    tiles:
+    - height: 16
+      widget:
+        timeSeriesTable:
+          dataSets:
+          - minAlignmentPeriod: 60s
+            timeSeriesQuery:
+              outputFullDuration: true
+              timeSeriesFilter:
+                aggregation:
+                  alignmentPeriod: "60"
+                  crossSeriesReducer: REDUCE_SUM
+                  perSeriesAligner: ALIGN_RATE
+                filter: metric.type="monitoring.googleapis.com/billing/time_series_billed_for_queries_count"
+                  resource.type="global"
+                pickTimeSeriesFilter:
+                  direction: TOP
+                  numTimeSeries: 30
+                  rankingMethod: METHOD_MEAN
+          metricVisualization: BAR
+        title: Count of time series billed for queries [SUM]
+      width: 24
+  projectRef:
+    external: ${projectId}
