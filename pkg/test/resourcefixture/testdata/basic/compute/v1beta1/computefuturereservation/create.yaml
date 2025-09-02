@@ -19,7 +19,7 @@ metadata:
 spec:
   projectRef:
     external: ${projectId}
-  location: us-central1-a
+  zone: us-central1-a
   autoDeleteAutoCreatedReservations: true
   specificSkuProperties:
     totalCount: 1
