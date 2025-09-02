@@ -14,11 +14,6 @@
 
 package v1beta1
 
-import (
-	"fmt"
-	"strings"
-)
-
 // ClusterIdentity defines the resource reference to DataprocCluster, which "External" field
 // holds the GCP identifier for the KRM object.
 type ClusterIdentity struct {
@@ -45,13 +40,4 @@ type ClusterParent struct {
 
 func (p *ClusterParent) String() string {
 	return "projects/" + p.ProjectID + "/regions/" + p.Region
-}
-
-func ParseClusterExternal(external string) (id *ClusterIdentity, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "clusters" {
-		return nil, fmt.Errorf("format of DataprocCluster external=%q was not known (use projects/<projectID>/regions/<region>/clusters/<clusterName>)", external)
-	}
-
-	return &ClusterIdentity{parent: &ClusterParent{ProjectID: tokens[1], Region: tokens[3]}, id: tokens[5]}, nil
 }

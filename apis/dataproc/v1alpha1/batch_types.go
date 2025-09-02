@@ -435,7 +435,7 @@ type SparkHistoryServerConfig struct {
 	//
 	//  * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
 	// +kcc:proto:field=google.cloud.dataproc.v1.SparkHistoryServerConfig.dataproc_cluster
-	DataprocClusterRef *dataprocv1beta1.DataprocClusterRef `json:"dataprocClusterRef,omitempty"`
+	DataprocClusterRef *dataprocv1beta1.ClusterRef `json:"dataprocClusterRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataproc.v1.UsageMetrics
