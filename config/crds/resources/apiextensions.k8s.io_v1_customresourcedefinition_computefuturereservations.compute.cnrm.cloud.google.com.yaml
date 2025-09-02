@@ -117,6 +117,8 @@ spec:
                 description: Future timestamp when the FR auto-created reservations
                   will be deleted by Compute Engine. Format of this field must be
                   a valid href="https://www.ietf.org/rfc/rfc3339.txt">RFC3339 value.
+                  GCP computes this fields' value based on other field values [auto_delete_auto_created_reservations,
+                  auto_created_reservations_duration].
                 type: string
               autoCreatedReservationsDuration:
                 description: Specifies the duration of auto-created reservations.
@@ -147,7 +149,7 @@ spec:
                   user's defined timestamp if any of the [auto_created_reservations_delete_time,
                   auto_created_reservations_duration] values is specified. For keeping
                   auto-created reservation indefinitely, this value should be set
-                  to false.
+                  to false. GCP resets this to false in DRAFTING state.
                 type: boolean
               commitmentInfo:
                 description: If not present, then FR will not deliver a new commitment
@@ -182,8 +184,6 @@ spec:
                 description: Indicates if this group of VMs have emergent maintenance
                   enabled.
                 type: boolean
-              zone:
-                type: string
               name:
                 description: The name of the resource, provided by the client when
                   initially creating the resource. The resource name must be 1-63
@@ -200,8 +200,10 @@ spec:
                   name format will be -date-####.
                 type: string
               planningStatus:
-                description: Planning state before being submitted for evaluation
-                  Check the PlanningStatus enum for the list of possible values.
+                description: Planning state before being submitted for evaluation.
+                  This field is NOT required to be set, GCP manages lifecycle state
+                  transitions and will set it accordingly. Check the PlanningStatus
+                  enum for the list of possible values.
                 type: string
               projectRef:
                 description: The Project that this resource belongs to.
@@ -384,10 +386,12 @@ spec:
                       is an RFC3339 string.
                     type: string
                 type: object
+              zone:
+                type: string
             required:
             - autoDeleteAutoCreatedReservations
-            - zone
             - projectRef
+            - zone
             type: object
           status:
             description: ComputeFutureReservationStatus defines the config connector

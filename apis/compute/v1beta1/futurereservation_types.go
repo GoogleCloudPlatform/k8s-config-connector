@@ -44,6 +44,7 @@ type ComputeFutureReservationSpec struct {
 	AggregateReservation *AllocationAggregateReservation `json:"aggregateReservation,omitempty"`
 
 	// Future timestamp when the FR auto-created reservations will be deleted by Compute Engine. Format of this field must be a valid href="https://www.ietf.org/rfc/rfc3339.txt">RFC3339 value.
+	// GCP computes this fields' value based on other field values [auto_delete_auto_created_reservations, auto_created_reservations_duration].
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.auto_created_reservations_delete_time
 	AutoCreatedReservationsDeleteTime *string `json:"autoCreatedReservationsDeleteTime,omitempty"`
 
@@ -52,6 +53,7 @@ type ComputeFutureReservationSpec struct {
 	AutoCreatedReservationsDuration *Duration `json:"autoCreatedReservationsDuration,omitempty"`
 
 	// Setting for enabling or disabling automatic deletion for auto-created reservation. If set to true, auto-created reservations will be deleted at Future Reservation's end time (default) or at user's defined timestamp if any of the [auto_created_reservations_delete_time, auto_created_reservations_duration] values is specified. For keeping auto-created reservation indefinitely, this value should be set to false.
+	// GCP resets this to false in DRAFTING state.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.auto_delete_auto_created_reservations
 	AutoDeleteAutoCreatedReservations *bool `json:"autoDeleteAutoCreatedReservations"`
 
@@ -80,7 +82,7 @@ type ComputeFutureReservationSpec struct {
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.name_prefix
 	NamePrefix *string `json:"namePrefix,omitempty"`
 
-	// Planning state before being submitted for evaluation
+	// Planning state before being submitted for evaluation. This field is NOT required to be set, GCP manages lifecycle state transitions and will set it accordingly.
 	//  Check the PlanningStatus enum for the list of possible values.
 	// +kcc:proto:field=google.cloud.compute.v1beta.FutureReservation.planning_status
 	PlanningStatus *string `json:"planningStatus,omitempty"`
