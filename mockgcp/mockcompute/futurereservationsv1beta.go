@@ -22,13 +22,11 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"time"
 
 	pbv1beta "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1beta"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	"k8s.io/klog/v2"
 )
 
 type FutureReservationsV1beta struct {
@@ -92,7 +90,9 @@ func (s *FutureReservationsV1beta) Insert(ctx context.Context, req *pbv1beta.Ins
 		TargetLink:    obj.SelfLink,
 		User:          PtrTo("user@example.com"),
 	}
-	return s.newZonalLRO(ctx, name.Project, name.Zone, op)
+	return s.startZonalLRO(ctx, name.Project, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *FutureReservationsV1beta) Update(ctx context.Context, req *pbv1beta.UpdateFutureReservationRequest) (*pbv1beta.Operation, error) {
@@ -133,7 +133,9 @@ func (s *FutureReservationsV1beta) Update(ctx context.Context, req *pbv1beta.Upd
 		TargetLink:    obj.SelfLink,
 		User:          PtrTo("user@example.com"),
 	}
-	return s.newZonalLRO(ctx, name.Project, name.Zone, op)
+	return s.startZonalLRO(ctx, name.Project, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *FutureReservationsV1beta) Delete(ctx context.Context, req *pbv1beta.DeleteFutureReservationRequest) (*pbv1beta.Operation, error) {
@@ -156,7 +158,9 @@ func (s *FutureReservationsV1beta) Delete(ctx context.Context, req *pbv1beta.Del
 		TargetLink:    deleted.SelfLink,
 		User:          PtrTo("user@example.com"),
 	}
-	return s.newZonalLRO(ctx, name.Project, name.Zone, op)
+	return s.startZonalLRO(ctx, name.Project, name.Zone, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 type futureReservationName struct {
@@ -185,32 +189,4 @@ func (s *MockService) parseFutureReservationName(name string) (*futureReservatio
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
-}
-
-// newZonalLRO creates a zonal LRO for v1beta operation
-func (s *FutureReservationsV1beta) newZonalLRO(ctx context.Context, projectID string, zone string, op *pbv1beta.Operation) (*pbv1beta.Operation, error) {
-	log := klog.FromContext(ctx)
-
-	now := time.Now()
-	millis := now.UnixMilli()
-	id := s.generateID()
-
-	name := fmt.Sprintf("operation-%d-%d", millis, id)
-	fqn := fmt.Sprintf("projects/%s/zones/%s/operations/%s", projectID, zone, name)
-
-	op.StartTime = PtrTo(s.nowString())
-	op.InsertTime = PtrTo(s.nowString())
-	op.Id = PtrTo(id)
-	op.Name = PtrTo(name)
-	op.Kind = PtrTo("compute#operation")
-	op.Progress = PtrTo(int32(0))
-	op.Status = PtrTo(pbv1beta.Operation_RUNNING)
-	op.Zone = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s", projectID, zone)))
-	op.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
-
-	log.Info("storing v1beta operation", "fqn", fqn)
-	if err := s.storage.Create(ctx, fqn, op); err != nil {
-		return nil, err
-	}
-	return op, nil
 }
