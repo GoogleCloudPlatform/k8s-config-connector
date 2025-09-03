@@ -21,14 +21,14 @@ metadata:
     key3: "value3"
 spec:
   projectRef:
-    external: "${projectNumber}"
+    external: "${projectId}"
   description: "A saved query with all fields for testing - updated."
   resourceID: "assetsavedquery-full-${uniqueId}"
   content:
     iamPolicyAnalysisQuery:
-      scope: projects/${projectNumber}
+      scope: projects/${projectId}
       resourceSelector:
-        fullResourceName: //cloudresourcemanager.googleapis.com/projects/${projectNumber}
+        fullResourceName: //cloudresourcemanager.googleapis.com/projects/${projectId}
       identitySelector:
         identity: user:test-user@example.com
       accessSelector:

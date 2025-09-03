@@ -18,12 +18,12 @@ metadata:
   name: assetsavedquery-minimal-${uniqueId}
 spec:
   projectRef:
-    external: "${projectNumber}"
+    external: "${projectId}"
   description: An updated minimal saved query for testing.
   content:
     iamPolicyAnalysisQuery:
-      scope: projects/${projectNumber}
+      scope: projects/${projectId}
       resourceSelector:
-        fullResourceName: //cloudresourcemanager.googleapis.com/projects/${projectNumber}
+        fullResourceName: //cloudresourcemanager.googleapis.com/projects/${projectId}
       identitySelector:
         identity: user:updated-test-user@example.com # Changed identity

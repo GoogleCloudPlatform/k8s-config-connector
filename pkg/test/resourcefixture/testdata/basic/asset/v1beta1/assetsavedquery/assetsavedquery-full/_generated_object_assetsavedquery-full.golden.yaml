@@ -30,11 +30,11 @@ spec:
         outputGroupEdges: true
         outputResourceEdges: true
       resourceSelector:
-        fullResourceName: //cloudresourcemanager.googleapis.com/projects/${projectNumber}
-      scope: projects/${projectNumber}
+        fullResourceName: //cloudresourcemanager.googleapis.com/projects/${projectId}
+      scope: projects/${projectId}
   description: A saved query with all fields for testing - updated.
   projectRef:
-    external: ${projectNumber}
+    external: ${projectId}
   resourceID: assetsavedquery-full-${uniqueId}
 status:
   conditions:
@@ -43,7 +43,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectNumber}/savedQueries/assetsavedquery-full-${uniqueId}
+  externalRef: projects/${projectId}/savedQueries/assetsavedquery-full-${uniqueId}
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"

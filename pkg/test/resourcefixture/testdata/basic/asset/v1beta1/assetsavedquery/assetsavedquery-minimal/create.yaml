@@ -20,13 +20,13 @@ metadata:
     key1: "value1"
 spec:
   projectRef:
-    external: "${projectNumber}"
+    external: "${projectId}"
   description: A minimal saved query for testing.
   content:
     iamPolicyAnalysisQuery:
-      scope: projects/${projectNumber}
+      scope: projects/${projectId}
       resourceSelector:
-        fullResourceName: //cloudresourcemanager.googleapis.com/projects/${projectNumber}
+        fullResourceName: //cloudresourcemanager.googleapis.com/projects/${projectId}
       identitySelector:
         identity: user:test-user@example.com
       accessSelector:
@@ -42,4 +42,4 @@ spec:
         outputResourceEdges: true
         analyzeServiceAccountImpersonation: true
       conditionContext:
-        accessTime: "2025-08-23T10:00:00Z"
+        accessTime: "2025-09-23T10:00:00Z"
