@@ -17,6 +17,7 @@
 // krm.version: v1beta1
 // proto.service: google.firestore.admin.v1
 // resource: FirestoreDatabase:Database
+// resource: FirestoreIndex:Index
 
 package v1beta1
 
@@ -57,6 +58,24 @@ type Database_SourceInfo_BackupSource struct {
 	//  `projects/{project}/locations/{location}/backups/{backup}`.
 	// +kcc:proto:field=google.firestore.admin.v1.Database.SourceInfo.BackupSource.backup
 	Backup *string `json:"backup,omitempty"`
+}
+
+// +kcc:proto=google.firestore.admin.v1.Index.IndexField.VectorConfig
+type Index_IndexField_VectorConfig struct {
+	// Required. The vector dimension this configuration applies to.
+	//
+	//  The resulting index will only include vectors of this dimension, and
+	//  can be used for vector search with the same dimension.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.VectorConfig.dimension
+	Dimension *int32 `json:"dimension,omitempty"`
+
+	// Indicates the vector index is a flat index.
+	// +kcc:proto:field=google.firestore.admin.v1.Index.IndexField.VectorConfig.flat
+	Flat *Index_IndexField_VectorConfig_FlatIndex `json:"flat,omitempty"`
+}
+
+// +kcc:proto=google.firestore.admin.v1.Index.IndexField.VectorConfig.FlatIndex
+type Index_IndexField_VectorConfig_FlatIndex struct {
 }
 
 // +kcc:observedstate:proto=google.firestore.admin.v1.Database.CmekConfig
