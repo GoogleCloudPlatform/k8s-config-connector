@@ -77,6 +77,7 @@ func TestMissingRefs(t *testing.T) {
 				}
 
 				isRef := false
+
 				desc := field.props.Description
 				// Heuristic: look for descriptions like "should be of the form projects/{projectID}/locations/{location}/bars/{name}"
 				if strings.Contains(desc, " projects/") {
@@ -484,10 +485,13 @@ func TestCRDFieldPresenceInTests(t *testing.T) {
 		return true
 	}
 
-	missing := findFieldsNotCoveredByTests(t, shouldVisitCRD)
+	missing, missingRefs := findFieldsNotCoveredByTests(t, shouldVisitCRD)
 
-	want := strings.Join(missing, "\n")
-	test.CompareGoldenFile(t, "testdata/exceptions/missingfields.txt", want)
+	wantMissing := strings.Join(missing, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/missingfields.txt", wantMissing)
+
+	wantMissingRefs := strings.Join(missingRefs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/missingreffields.txt", wantMissingRefs)
 }
 
 // Run this test with WRITE_GOLDEN_OUTPUT set to update the exceptions list.
@@ -502,13 +506,54 @@ func TestCRDFieldPresenceInTestsForAlpha(t *testing.T) {
 		return true
 	}
 
-	missing := findFieldsNotCoveredByTests(t, shouldVisitCRD)
+	missing, missingRefs := findFieldsNotCoveredByTests(t, shouldVisitCRD)
 
-	want := strings.Join(missing, "\n")
-	test.CompareGoldenFile(t, "testdata/exceptions/alpha-missingfields.txt", want)
+	wantMissing := strings.Join(missing, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/alpha-missingfields.txt", wantMissing)
+
+	wantMissingRefs := strings.Join(missingRefs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/alpha-missingreffields.txt", wantMissingRefs)
 }
 
-func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiextensions.CustomResourceDefinition, version string) bool) []string {
+// TestCRDFieldPresenceInTestsForDirect is a subset of TestCRDFieldPresenceInTests,
+// only focus on missing fields in direct CRDs and version v1beta1.
+// Run this test with WRITE_GOLDEN_OUTPUT set to update the exceptions list.
+func TestCRDFieldPresenceInTestsForDirect(t *testing.T) {
+	t.Parallel()
+
+	shouldVisitCRD := func(crd *apiextensions.CustomResourceDefinition, version string) bool {
+		// only check direct crds
+		if val, ok := crd.Labels["cnrm.cloud.google.com/dcl2crd"]; ok && val == "true" {
+			return false
+		}
+		if val, ok := crd.Labels["cnrm.cloud.google.com/tf2crd"]; ok && val == "true" {
+			return false
+		}
+
+		// only beta/v1 requires full API coverage so it should pass this test.
+		if strings.Contains(version, "alpha") {
+			return false
+		}
+
+		// skip core resources
+		if strings.Contains(crd.Name, "configconnectorcontexts.core.cnrm.cloud.google.com") ||
+			strings.Contains(crd.Name, "configconnectors.core.cnrm.cloud.google.com") {
+			return false
+		}
+
+		return true
+	}
+
+	missing, missingRefs := findFieldsNotCoveredByTests(t, shouldVisitCRD)
+
+	wantMissing := strings.Join(missing, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/direct-missingfields.txt", wantMissing)
+
+	wantMissingRefs := strings.Join(missingRefs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/direct-missingreffields.txt", wantMissingRefs)
+}
+
+func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiextensions.CustomResourceDefinition, version string) bool) ([]string, []string) {
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
 		t.Fatalf("error loading CRDs: %v", err)
@@ -521,6 +566,7 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 	}
 
 	var errs []string
+	var missingRefErrs []string
 	for _, crd := range crds {
 		// Only visit the latest version of the CRD.
 		versions := make(map[string]bool)
@@ -581,7 +627,7 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 
 					// Only report an error if neither external nor name is set
 					if !hasExternal && !hasName {
-						errs = append(errs, fmt.Sprintf("[missing_field] crd=%s version=%v: field %q is not set; neither 'external' nor 'name' are set", crd.Name, version.Name, fieldPath))
+						missingRefErrs = append(missingRefErrs, fmt.Sprintf("[missing_ref_field] crd=%s version=%v: field %q is not set", crd.Name, version.Name, fieldPath))
 					}
 					return
 				}
@@ -636,7 +682,8 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 	}
 
 	sort.Strings(errs)
-	return errs
+	sort.Strings(missingRefErrs)
+	return errs, missingRefErrs
 }
 
 func loadOutputOnlySpecFields() (map[string]bool, error) {
