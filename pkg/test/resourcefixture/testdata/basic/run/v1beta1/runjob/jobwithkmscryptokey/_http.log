@@ -88,6 +88,12 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbatch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/batch.serviceAgent"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudaicompanion.serviceAgent"
@@ -121,6 +127,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
     },
     {
       "members": [
@@ -359,6 +371,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
       ],
       "role": "roles/sourcerepo.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -457,6 +475,12 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbatch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/batch.serviceAgent"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudaicompanion.serviceAgent"
@@ -490,6 +514,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
     },
     {
       "members": [
@@ -728,6 +758,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
       ],
       "role": "roles/sourcerepo.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -826,6 +862,12 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbatch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/batch.serviceAgent"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudaicompanion.serviceAgent"
@@ -859,6 +901,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
     },
     {
       "members": [
@@ -1097,6 +1145,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
       ],
       "role": "roles/sourcerepo.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -1180,6 +1234,12 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       },
       {
         "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-cloudbatch.iam.gserviceaccount.com"
+        ],
+        "role": "roles/batch.serviceAgent"
+      },
+      {
+        "members": [
           "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
         ],
         "role": "roles/cloudaicompanion.serviceAgent"
@@ -1210,9 +1270,21 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       },
       {
         "members": [
+          "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+      },
+      {
+        "members": [
           "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
         ],
         "role": "roles/cloudkms.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudscheduler.serviceAgent"
       },
       {
         "members": [
@@ -1442,12 +1514,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       },
       {
         "members": [
-          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-        ],
-        "role": "roles/secretmanager.secretAccessor"
-      },
-      {
-        "members": [
           "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
         ],
         "role": "roles/servicenetworking.serviceAgent"
@@ -1457,6 +1523,12 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
           "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
         ],
         "role": "roles/sourcerepo.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+        ],
+        "role": "roles/vpcaccess.serviceAgent"
       }
     ],
     "etag": "abcdef0123A=",
@@ -1545,6 +1617,12 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbatch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/batch.serviceAgent"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudaicompanion.serviceAgent"
@@ -1575,9 +1653,21 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
     },
     {
       "members": [
@@ -1807,12 +1897,6 @@ X-Xss-Protection: 0
     },
     {
       "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/secretmanager.secretAccessor"
-    },
-    {
-      "members": [
         "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
       ],
       "role": "roles/servicenetworking.serviceAgent"
@@ -1822,6 +1906,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
       ],
       "role": "roles/sourcerepo.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -1920,6 +2010,12 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbatch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/batch.serviceAgent"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudaicompanion.serviceAgent"
@@ -1950,9 +2046,21 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
     },
     {
       "members": [
@@ -2182,12 +2290,6 @@ X-Xss-Protection: 0
     },
     {
       "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/secretmanager.secretAccessor"
-    },
-    {
-      "members": [
         "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
       ],
       "role": "roles/servicenetworking.serviceAgent"
@@ -2197,6 +2299,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
       ],
       "role": "roles/sourcerepo.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -2295,6 +2403,12 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbatch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/batch.serviceAgent"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudaicompanion.serviceAgent"
@@ -2325,9 +2439,21 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
     },
     {
       "members": [
@@ -2557,12 +2683,6 @@ X-Xss-Protection: 0
     },
     {
       "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/secretmanager.secretAccessor"
-    },
-    {
-      "members": [
         "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
       ],
       "role": "roles/servicenetworking.serviceAgent"
@@ -2572,6 +2692,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
       ],
       "role": "roles/sourcerepo.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -2670,6 +2796,12 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbatch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/batch.serviceAgent"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudaicompanion.serviceAgent"
@@ -2700,9 +2832,21 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
     },
     {
       "members": [
@@ -2932,12 +3076,6 @@ X-Xss-Protection: 0
     },
     {
       "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/secretmanager.secretAccessor"
-    },
-    {
-      "members": [
         "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
       ],
       "role": "roles/servicenetworking.serviceAgent"
@@ -2947,6 +3085,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
       ],
       "role": "roles/sourcerepo.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -3045,6 +3189,12 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbatch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/batch.serviceAgent"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudaicompanion.serviceAgent"
@@ -3075,9 +3225,21 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
     },
     {
       "members": [
@@ -3307,12 +3469,6 @@ X-Xss-Protection: 0
     },
     {
       "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/secretmanager.secretAccessor"
-    },
-    {
-      "members": [
         "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
       ],
       "role": "roles/servicenetworking.serviceAgent"
@@ -3322,6 +3478,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
       ],
       "role": "roles/sourcerepo.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -3330,7 +3492,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-1-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -3347,53 +3509,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Secret [projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}] not found.",
+    "message": "KeyRing projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId} not found.",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?alt=json&secretId=secretmanagersecret-1-${uniqueId}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "replication": {
-    "automatic": {}
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
-  "replication": {
-    "automatic": {}
-  }
-}
-
----
-
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-1-${uniqueId}?alt=json
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings?alt=json&keyRingId=kmskeyring-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -3409,20 +3532,33 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
-  "replication": {
-    "automatic": {}
-  }
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
 }
 
 ---
 
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-2-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -3439,14 +3575,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Secret [projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}] not found.",
+    "message": "CryptoKey projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId} not found.",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?alt=json&secretId=secretmanagersecret-2-${uniqueId}
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys?alt=json&cryptoKeyId=kmscryptokey-1-${uniqueId}&skipInitialVersionCreation=false
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -3455,9 +3591,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "replication": {
-    "automatic": {}
-  }
+  "purpose": "ENCRYPT_DECRYPT"
 }
 
 200 OK
@@ -3472,20 +3606,30 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
+  "destroyScheduledDuration": "2592000s",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
-  "replication": {
-    "automatic": {}
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}",
+  "primary": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": "SOFTWARE",
+    "state": "ENABLED"
+  },
+  "purpose": "ENCRYPT_DECRYPT",
+  "versionTemplate": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "protectionLevel": "SOFTWARE"
   }
 }
 
 ---
 
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-2-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -3501,30 +3645,34 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
+  "destroyScheduledDuration": "2592000s",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
-  "replication": {
-    "automatic": {}
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}",
+  "primary": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": "SOFTWARE",
+    "state": "ENABLED"
+  },
+  "purpose": "ENCRYPT_DECRYPT",
+  "versionTemplate": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "protectionLevel": "SOFTWARE"
   }
 }
 
 ---
 
-POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}:addVersion?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-{
-  "payload": {
-    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE="
-  }
-}
-
-200 OK
+404 Not Found
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -3535,96 +3683,26 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1",
-  "replicationStatus": {
-    "automatic": {}
-  },
-  "state": "ENABLED"
-}
-
----
-
-POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1:enable?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1",
-  "replicationStatus": {
-    "automatic": {}
-  },
-  "state": "ENABLED"
-}
-
----
-
-GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1",
-  "replicationStatus": {
-    "automatic": {}
-  },
-  "state": "ENABLED"
-}
-
----
-
-GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1:access?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1",
-  "payload": {
-    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=",
-    "dataCrc32c": "98593831"
+  "error": {
+    "code": 404,
+    "message": "CryptoKey projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId} not found.",
+    "status": "NOT_FOUND"
   }
 }
 
 ---
 
-GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1?alt=json
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys?alt=json&cryptoKeyId=kmscryptokey-2-${uniqueId}&skipInitialVersionCreation=false
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "purpose": "ENCRYPT_DECRYPT"
+}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -3638,73 +3716,30 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1",
-  "replicationStatus": {
-    "automatic": {}
+  "destroyScheduledDuration": "2592000s",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   },
-  "state": "ENABLED"
-}
-
----
-
-GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1:access?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1",
-  "payload": {
-    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=",
-    "dataCrc32c": "98593831"
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
+  "primary": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": "SOFTWARE",
+    "state": "ENABLED"
+  },
+  "purpose": "ENCRYPT_DECRYPT",
+  "versionTemplate": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "protectionLevel": "SOFTWARE"
   }
 }
 
 ---
 
-POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}:addVersion?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "payload": {
-    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE="
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1",
-  "replicationStatus": {
-    "automatic": {}
-  },
-  "state": "ENABLED"
-}
-
----
-
-POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1:enable?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -3720,111 +3755,24 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1",
-  "replicationStatus": {
-    "automatic": {}
+  "destroyScheduledDuration": "2592000s",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
   },
-  "state": "ENABLED"
-}
-
----
-
-GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1",
-  "replicationStatus": {
-    "automatic": {}
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
+  "primary": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": "SOFTWARE",
+    "state": "ENABLED"
   },
-  "state": "ENABLED"
-}
-
----
-
-GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1:access?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1",
-  "payload": {
-    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=",
-    "dataCrc32c": "98593831"
-  }
-}
-
----
-
-GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1",
-  "replicationStatus": {
-    "automatic": {}
-  },
-  "state": "ENABLED"
-}
-
----
-
-GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1:access?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1",
-  "payload": {
-    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=",
-    "dataCrc32c": "98593831"
+  "purpose": "ENCRYPT_DECRYPT",
+  "versionTemplate": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "protectionLevel": "SOFTWARE"
   }
 }
 
@@ -3864,24 +3812,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "template": {
       "containers": [
         {
-          "env": [
-            {
-              "name": "FOO",
-              "value": "bar"
-            },
-            {
-              "name": "SECRET_ENV_VAR",
-              "valueSource": {
-                "secretKeyRef": {
-                  "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
-                  "version": "1"
-                }
-              }
-            }
-          ],
           "image": "us-docker.pkg.dev/cloudrun/container/hello"
         }
       ],
+      "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}",
       "maxRetries": 3
     }
   }
@@ -3902,7 +3836,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "yuwenma@google.com",
-    "etag": "\"CK294cUGEJjq0swD/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2ItaHJhejJ3YW14aXlvcmV5\"",
+    "etag": "\"CPKx4sUGELims44D/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2IteWRkd2NtNnN3aW00N2R5\"",
     "generation": "1",
     "lastModifier": "yuwenma@google.com",
     "latestCreatedExecution": {},
@@ -3914,21 +3848,6 @@ X-Xss-Protection: 0
       "template": {
         "containers": [
           {
-            "env": [
-              {
-                "name": "FOO",
-                "value": "bar"
-              },
-              {
-                "name": "SECRET_ENV_VAR",
-                "valueSource": {
-                  "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
-                    "version": "1"
-                  }
-                }
-              }
-            ],
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
             "resources": {
               "limits": {
@@ -3938,6 +3857,7 @@ X-Xss-Protection: 0
             }
           }
         ],
+        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}",
         "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
         "maxRetries": 3,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
@@ -3974,7 +3894,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "yuwenma@google.com",
-    "etag": "\"CK294cUGEJjq0swD/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2ItaHJhejJ3YW14aXlvcmV5\"",
+    "etag": "\"CPKx4sUGELims44D/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2IteWRkd2NtNnN3aW00N2R5\"",
     "generation": "1",
     "lastModifier": "yuwenma@google.com",
     "latestCreatedExecution": {},
@@ -3986,21 +3906,6 @@ X-Xss-Protection: 0
       "template": {
         "containers": [
           {
-            "env": [
-              {
-                "name": "FOO",
-                "value": "bar"
-              },
-              {
-                "name": "SECRET_ENV_VAR",
-                "valueSource": {
-                  "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
-                    "version": "1"
-                  }
-                }
-              }
-            ],
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
             "resources": {
               "limits": {
@@ -4010,6 +3915,7 @@ X-Xss-Protection: 0
             }
           }
         ],
+        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}",
         "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
         "maxRetries": 3,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
@@ -4017,7 +3923,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T15:28:46.316459Z",
+      "lastTransitionTime": "2025-09-03T19:37:23.236235Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -4040,21 +3946,6 @@ X-Xss-Protection: 0
       "template": {
         "containers": [
           {
-            "env": [
-              {
-                "name": "FOO",
-                "value": "bar"
-              },
-              {
-                "name": "SECRET_ENV_VAR",
-                "valueSource": {
-                  "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
-                    "version": "1"
-                  }
-                }
-              }
-            ],
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
             "resources": {
               "limits": {
@@ -4064,6 +3955,7 @@ X-Xss-Protection: 0
             }
           }
         ],
+        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}",
         "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
         "maxRetries": 3,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
@@ -4071,7 +3963,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T15:28:46.316459Z",
+      "lastTransitionTime": "2025-09-03T19:37:23.236235Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -4111,21 +4003,6 @@ X-Xss-Protection: 0
     "template": {
       "containers": [
         {
-          "env": [
-            {
-              "name": "FOO",
-              "value": "bar"
-            },
-            {
-              "name": "SECRET_ENV_VAR",
-              "valueSource": {
-                "secretKeyRef": {
-                  "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
-                  "version": "1"
-                }
-              }
-            }
-          ],
           "image": "us-docker.pkg.dev/cloudrun/container/hello",
           "resources": {
             "limits": {
@@ -4135,6 +4012,7 @@ X-Xss-Protection: 0
           }
         }
       ],
+      "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}",
       "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
       "maxRetries": 3,
       "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
@@ -4142,7 +4020,7 @@ X-Xss-Protection: 0
     }
   },
   "terminalCondition": {
-    "lastTransitionTime": "2025-09-03T15:28:46.316459Z",
+    "lastTransitionTime": "2025-09-03T19:37:23.236235Z",
     "state": "CONDITION_SUCCEEDED",
     "type": "Ready"
   },
@@ -4163,21 +4041,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "template": {
       "containers": [
         {
-          "env": [
-            {
-              "name": "Foo",
-              "value": "buzz"
-            },
-            {
-              "name": "SECRET_ENV_VAR",
-              "valueSource": {
-                "secretKeyRef": {
-                  "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
-                  "version": "1"
-                }
-              }
-            }
-          ],
           "image": "us-docker.pkg.dev/cloudrun/container/hello",
           "resources": {
             "limits": {
@@ -4187,6 +4050,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
           }
         }
       ],
+      "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
       "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
       "maxRetries": 3,
       "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
@@ -4210,7 +4074,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "yuwenma@google.com",
-    "etag": "\"CLm94cUGEIje5esC/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2ItaHJhejJ3YW14aXlvcmV5\"",
+    "etag": "\"CP-x4sUGENDYkYgC/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2IteWRkd2NtNnN3aW00N2R5\"",
     "generation": "2",
     "lastModifier": "yuwenma@google.com",
     "latestCreatedExecution": {},
@@ -4223,21 +4087,6 @@ X-Xss-Protection: 0
       "template": {
         "containers": [
           {
-            "env": [
-              {
-                "name": "Foo",
-                "value": "buzz"
-              },
-              {
-                "name": "SECRET_ENV_VAR",
-                "valueSource": {
-                  "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
-                    "version": "1"
-                  }
-                }
-              }
-            ],
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
             "resources": {
               "limits": {
@@ -4247,6 +4096,7 @@ X-Xss-Protection: 0
             }
           }
         ],
+        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
         "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
         "maxRetries": 3,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
@@ -4254,7 +4104,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T15:28:46.316459Z",
+      "lastTransitionTime": "2025-09-03T19:37:23.236235Z",
       "state": "CONDITION_PENDING",
       "type": "Ready"
     },
@@ -4285,7 +4135,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "yuwenma@google.com",
-    "etag": "\"CLm94cUGEIje5esC/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2ItaHJhejJ3YW14aXlvcmV5\"",
+    "etag": "\"CP-x4sUGENDYkYgC/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2IteWRkd2NtNnN3aW00N2R5\"",
     "generation": "2",
     "lastModifier": "yuwenma@google.com",
     "latestCreatedExecution": {},
@@ -4297,21 +4147,6 @@ X-Xss-Protection: 0
       "template": {
         "containers": [
           {
-            "env": [
-              {
-                "name": "Foo",
-                "value": "buzz"
-              },
-              {
-                "name": "SECRET_ENV_VAR",
-                "valueSource": {
-                  "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
-                    "version": "1"
-                  }
-                }
-              }
-            ],
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
             "resources": {
               "limits": {
@@ -4321,6 +4156,7 @@ X-Xss-Protection: 0
             }
           }
         ],
+        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
         "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
         "maxRetries": 3,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
@@ -4328,7 +4164,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T15:28:46.316459Z",
+      "lastTransitionTime": "2025-09-03T19:37:23.236235Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -4351,21 +4187,6 @@ X-Xss-Protection: 0
       "template": {
         "containers": [
           {
-            "env": [
-              {
-                "name": "Foo",
-                "value": "buzz"
-              },
-              {
-                "name": "SECRET_ENV_VAR",
-                "valueSource": {
-                  "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
-                    "version": "1"
-                  }
-                }
-              }
-            ],
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
             "resources": {
               "limits": {
@@ -4375,6 +4196,7 @@ X-Xss-Protection: 0
             }
           }
         ],
+        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
         "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
         "maxRetries": 3,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
@@ -4382,7 +4204,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T15:28:46.316459Z",
+      "lastTransitionTime": "2025-09-03T19:37:23.236235Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -4422,21 +4244,6 @@ X-Xss-Protection: 0
     "template": {
       "containers": [
         {
-          "env": [
-            {
-              "name": "Foo",
-              "value": "buzz"
-            },
-            {
-              "name": "SECRET_ENV_VAR",
-              "valueSource": {
-                "secretKeyRef": {
-                  "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
-                  "version": "1"
-                }
-              }
-            }
-          ],
           "image": "us-docker.pkg.dev/cloudrun/container/hello",
           "resources": {
             "limits": {
@@ -4446,6 +4253,7 @@ X-Xss-Protection: 0
           }
         }
       ],
+      "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
       "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
       "maxRetries": 3,
       "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
@@ -4453,7 +4261,7 @@ X-Xss-Protection: 0
     }
   },
   "terminalCondition": {
-    "lastTransitionTime": "2025-09-03T15:28:46.316459Z",
+    "lastTransitionTime": "2025-09-03T19:37:23.236235Z",
     "state": "CONDITION_SUCCEEDED",
     "type": "Ready"
   },
@@ -4482,9 +4290,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "yuwenma@google.com",
-    "deleteTime": "2025-09-03T15:29:09.718840Z",
-    "etag": "\"CMW94cUGEMDB4tYC/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2ItaHJhejJ3YW14aXlvcmV5\"",
-    "expireTime": "2025-10-03T15:29:09.718840Z",
+    "deleteTime": "2025-09-03T19:37:47.375704Z",
+    "etag": "\"CIuy4sUGEMCTk7MB/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2IteWRkd2NtNnN3aW00N2R5\"",
+    "expireTime": "2025-10-03T19:37:47.375704Z",
     "generation": "3",
     "lastModifier": "yuwenma@google.com",
     "latestCreatedExecution": {},
@@ -4497,21 +4305,6 @@ X-Xss-Protection: 0
       "template": {
         "containers": [
           {
-            "env": [
-              {
-                "name": "Foo",
-                "value": "buzz"
-              },
-              {
-                "name": "SECRET_ENV_VAR",
-                "valueSource": {
-                  "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
-                    "version": "1"
-                  }
-                }
-              }
-            ],
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
             "resources": {
               "limits": {
@@ -4521,6 +4314,7 @@ X-Xss-Protection: 0
             }
           }
         ],
+        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
         "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
         "maxRetries": 3,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
@@ -4528,7 +4322,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T15:28:46.316459Z",
+      "lastTransitionTime": "2025-09-03T19:37:23.236235Z",
       "state": "CONDITION_PENDING",
       "type": "Ready"
     },
@@ -4559,9 +4353,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "yuwenma@google.com",
-    "deleteTime": "2025-09-03T15:29:09.718840Z",
-    "etag": "\"CMW94cUGELCW5IkD/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2ItaHJhejJ3YW14aXlvcmV5\"",
-    "expireTime": "2025-10-03T15:29:09.718840Z",
+    "deleteTime": "2025-09-03T19:37:47.375704Z",
+    "etag": "\"CIuy4sUGEMjDuPkB/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2IteWRkd2NtNnN3aW00N2R5\"",
+    "expireTime": "2025-10-03T19:37:47.375704Z",
     "generation": "3",
     "lastModifier": "yuwenma@google.com",
     "latestCreatedExecution": {},
@@ -4573,21 +4367,6 @@ X-Xss-Protection: 0
       "template": {
         "containers": [
           {
-            "env": [
-              {
-                "name": "Foo",
-                "value": "buzz"
-              },
-              {
-                "name": "SECRET_ENV_VAR",
-                "valueSource": {
-                  "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
-                    "version": "1"
-                  }
-                }
-              }
-            ],
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
             "resources": {
               "limits": {
@@ -4597,6 +4376,7 @@ X-Xss-Protection: 0
             }
           }
         ],
+        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
         "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
         "maxRetries": 3,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
@@ -4604,7 +4384,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T15:28:46.316459Z",
+      "lastTransitionTime": "2025-09-03T19:37:23.236235Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -4629,21 +4409,6 @@ X-Xss-Protection: 0
       "template": {
         "containers": [
           {
-            "env": [
-              {
-                "name": "Foo",
-                "value": "buzz"
-              },
-              {
-                "name": "SECRET_ENV_VAR",
-                "valueSource": {
-                  "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
-                    "version": "1"
-                  }
-                }
-              }
-            ],
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
             "resources": {
               "limits": {
@@ -4653,6 +4418,7 @@ X-Xss-Protection: 0
             }
           }
         ],
+        "encryptionKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
         "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
         "maxRetries": 3,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
@@ -4660,7 +4426,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T15:28:46.316459Z",
+      "lastTransitionTime": "2025-09-03T19:37:23.236235Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -4671,7 +4437,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -4687,176 +4453,31 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1",
-  "replicationStatus": {
-    "automatic": {}
-  },
-  "state": "ENABLED"
-}
-
----
-
-GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1:access?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1",
-  "payload": {
-    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=",
-    "dataCrc32c": "98593831"
-  }
-}
-
----
-
-POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1:destroy?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1",
-  "replicationStatus": {
-    "automatic": {}
-  },
-  "state": "DESTROYED"
-}
-
----
-
-GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1",
-  "replicationStatus": {
-    "automatic": {}
-  },
-  "state": "ENABLED"
-}
-
----
-
-GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1:access?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1",
-  "payload": {
-    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=",
-    "dataCrc32c": "98593831"
-  }
-}
-
----
-
-POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1:destroy?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1",
-  "replicationStatus": {
-    "automatic": {}
-  },
-  "state": "DESTROYED"
-}
-
----
-
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-2-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
+  "destroyScheduledDuration": "2592000s",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
-  "replication": {
-    "automatic": {}
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}",
+  "primary": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": "SOFTWARE",
+    "state": "ENABLED"
+  },
+  "purpose": "ENCRYPT_DECRYPT",
+  "versionTemplate": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "protectionLevel": "SOFTWARE"
   }
 }
 
 ---
 
-DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-2-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}/cryptoKeyVersions?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -4868,11 +4489,51 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-{}
+{
+  "cryptoKeyVersions": [
+    {
+      "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "generateTime": "2024-04-01T12:34:56.123456Z",
+      "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}/cryptoKeyVersions/1",
+      "protectionLevel": "SOFTWARE",
+      "state": "ENABLED"
+    }
+  ],
+  "totalSize": 1
+}
 
 ---
 
-GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-1-${uniqueId}?alt=json
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyTime": "2024-04-01T12:34:56.123456Z",
+  "generateTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}/cryptoKeyVersions/1",
+  "protectionLevel": "SOFTWARE",
+  "state": "DESTROY_SCHEDULED"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -4888,20 +4549,87 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
+  "destroyScheduledDuration": "2592000s",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
-  "replication": {
-    "automatic": {}
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}",
+  "primary": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "generateTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}/cryptoKeyVersions/1",
+    "protectionLevel": "SOFTWARE",
+    "state": "ENABLED"
+  },
+  "purpose": "ENCRYPT_DECRYPT",
+  "versionTemplate": {
+    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+    "protectionLevel": "SOFTWARE"
   }
 }
 
 ---
 
-DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-1-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}/cryptoKeyVersions?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cryptoKeyVersions": [
+    {
+      "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "generateTime": "2024-04-01T12:34:56.123456Z",
+      "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}/cryptoKeyVersions/1",
+      "protectionLevel": "SOFTWARE",
+      "state": "ENABLED"
+    }
+  ],
+  "totalSize": 1
+}
+
+---
+
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyTime": "2024-04-01T12:34:56.123456Z",
+  "generateTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}/cryptoKeyVersions/1",
+  "protectionLevel": "SOFTWARE",
+  "state": "DESTROY_SCHEDULED"
+}
+
+---
+
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -4915,7 +4643,10 @@ X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
-{}
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
+}
 
 ---
 
@@ -5009,6 +4740,12 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbatch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/batch.serviceAgent"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudaicompanion.serviceAgent"
@@ -5039,9 +4776,21 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
     },
     {
       "members": [
@@ -5271,12 +5020,6 @@ X-Xss-Protection: 0
     },
     {
       "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/secretmanager.secretAccessor"
-    },
-    {
-      "members": [
         "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
       ],
       "role": "roles/servicenetworking.serviceAgent"
@@ -5286,6 +5029,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
       ],
       "role": "roles/sourcerepo.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -5384,6 +5133,12 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbatch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/batch.serviceAgent"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudaicompanion.serviceAgent"
@@ -5414,9 +5169,21 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
     },
     {
       "members": [
@@ -5646,12 +5413,6 @@ X-Xss-Protection: 0
     },
     {
       "members": [
-        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
-      ],
-      "role": "roles/secretmanager.secretAccessor"
-    },
-    {
-      "members": [
         "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
       ],
       "role": "roles/servicenetworking.serviceAgent"
@@ -5661,6 +5422,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
       ],
       "role": "roles/sourcerepo.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -5744,6 +5511,12 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
       },
       {
         "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-cloudbatch.iam.gserviceaccount.com"
+        ],
+        "role": "roles/batch.serviceAgent"
+      },
+      {
+        "members": [
           "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
         ],
         "role": "roles/cloudaicompanion.serviceAgent"
@@ -5777,6 +5550,12 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
           "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
         ],
         "role": "roles/cloudkms.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudscheduler.serviceAgent"
       },
       {
         "members": [
@@ -6015,6 +5794,12 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
           "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
         ],
         "role": "roles/sourcerepo.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+        ],
+        "role": "roles/vpcaccess.serviceAgent"
       }
     ],
     "etag": "abcdef0123A=",
@@ -6103,6 +5888,12 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbatch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/batch.serviceAgent"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudaicompanion.serviceAgent"
@@ -6136,6 +5927,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
     },
     {
       "members": [
@@ -6374,6 +6171,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
       ],
       "role": "roles/sourcerepo.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -6472,6 +6275,12 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbatch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/batch.serviceAgent"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudaicompanion.serviceAgent"
@@ -6505,6 +6314,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
     },
     {
       "members": [
@@ -6743,6 +6558,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
       ],
       "role": "roles/sourcerepo.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -6841,6 +6662,12 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbatch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/batch.serviceAgent"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudaicompanion.serviceAgent"
@@ -6874,6 +6701,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
     },
     {
       "members": [
@@ -7112,6 +6945,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
       ],
       "role": "roles/sourcerepo.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -7210,6 +7049,12 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbatch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/batch.serviceAgent"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudaicompanion.serviceAgent"
@@ -7243,6 +7088,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
     },
     {
       "members": [
@@ -7481,6 +7332,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
       ],
       "role": "roles/sourcerepo.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -7579,6 +7436,12 @@ X-Xss-Protection: 0
     },
     {
       "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbatch.iam.gserviceaccount.com"
+      ],
+      "role": "roles/batch.serviceAgent"
+    },
+    {
+      "members": [
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudaicompanion.serviceAgent"
@@ -7612,6 +7475,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@gcp-sa-cloudkms.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
     },
     {
       "members": [
@@ -7850,6 +7719,12 @@ X-Xss-Protection: 0
         "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
       ],
       "role": "roles/sourcerepo.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
