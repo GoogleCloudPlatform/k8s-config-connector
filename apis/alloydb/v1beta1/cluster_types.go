@@ -418,6 +418,12 @@ type AlloyDBClusterObservedState struct {
 	//  the cluster (i.e. `CreateCluster` vs. `CreateSecondaryCluster`
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.cluster_type
 	ClusterType *string `json:"clusterType,omitempty"`
+
+	// The database engine major version. This is an output-only
+	// field and it's populated at the Cluster creation time. This field
+	// cannot be changed after cluster creation.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.database_version
+	DatabaseVersion *string `json:"databaseVersion,omitempty"`
 }
 
 /*

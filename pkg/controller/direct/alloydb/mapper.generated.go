@@ -42,6 +42,7 @@ func AlloyDBClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Clu
 	// MISSING: Labels
 	// MISSING: State
 	out.ClusterType = direct.Enum_FromProto(mapCtx, in.GetClusterType())
+	out.DatabaseVersion = direct.Enum_FromProto(mapCtx, in.GetDatabaseVersion())
 	// MISSING: Etag
 	// MISSING: Annotations
 	// MISSING: Reconciling
@@ -74,6 +75,7 @@ func AlloyDBClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1bet
 	// MISSING: Labels
 	// MISSING: State
 	out.ClusterType = direct.Enum_ToProto[pb.Cluster_ClusterType](mapCtx, in.ClusterType)
+	out.DatabaseVersion = direct.Enum_ToProto[pb.DatabaseVersion](mapCtx, in.DatabaseVersion)
 	// MISSING: Etag
 	// MISSING: Annotations
 	// MISSING: Reconciling
