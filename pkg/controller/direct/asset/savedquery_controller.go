@@ -37,7 +37,8 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1beta1"
+
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -158,7 +159,7 @@ func (a *savedQueryAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	}
 
 	desired := a.desired.DeepCopy()
-	resource := AssetSavedQuerySpec_ToProto(mapCtx, &desired.Spec)
+	resource := AssetSavedQuerySpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -204,7 +205,7 @@ func (a *savedQueryAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -218,7 +219,7 @@ func (a *savedQueryAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	}
 
 	desired := a.desired.DeepCopy()
-	resource := AssetSavedQuerySpec_ToProto(mapCtx, &desired.Spec)
+	resource := AssetSavedQuerySpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -282,6 +283,7 @@ func (a *savedQueryAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -292,7 +294,7 @@ func (a *savedQueryAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 	mapCtx := &direct.MapContext{}
 
 	obj := &krm.AssetSavedQuery{}
-	obj.Spec = direct.ValueOf(AssetSavedQuerySpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(AssetSavedQuerySpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
