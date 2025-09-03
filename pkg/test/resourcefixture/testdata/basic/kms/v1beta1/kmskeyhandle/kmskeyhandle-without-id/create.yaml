@@ -16,8 +16,9 @@ apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSKeyHandle
 metadata:
   name: keyhandle-${uniqueId}
+  labels:
+    app.kubernetes.io/managed-by: "config-sync" #invalid label
 spec:
-  resourceID: 5a4fa10e-995d-4ee0-a426-a220aa390320
   projectRef:
     external: projects/${projectId}
   location: us-central1

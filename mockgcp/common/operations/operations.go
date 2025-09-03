@@ -68,6 +68,10 @@ func (s *Operations) NewLRO(ctx context.Context) (*pb.Operation, error) {
 }
 
 func (s *Operations) StartLRO(ctx context.Context, prefix string, metadata proto.Message, callback func() (proto.Message, error)) (*pb.Operation, error) {
+	return s.StartLROWithOptions(ctx, prefix, metadata, callback, true)
+}
+
+func (s *Operations) StartLROWithOptions(ctx context.Context, prefix string, metadata proto.Message, callback func() (proto.Message, error), keepMetadata bool) (*pb.Operation, error) {
 	now := time.Now()
 	millis := now.UnixMilli()
 	id := uuid.NewUUID()
@@ -114,7 +118,7 @@ func (s *Operations) StartLRO(ctx context.Context, prefix string, metadata proto
 			}
 		}
 
-		if err2 := markDone(finished, result, err); err2 != nil {
+		if err2 := markDone(finished, result, err, keepMetadata); err2 != nil {
 			klog.Warningf("error marking LRO as done: %v", err2)
 		}
 
@@ -127,7 +131,7 @@ func (s *Operations) StartLRO(ctx context.Context, prefix string, metadata proto
 	return op, nil
 }
 
-func markDone(op *pb.Operation, result proto.Message, err error) error {
+func markDone(op *pb.Operation, result proto.Message, err error, keepMetadataOnDone bool) error {
 	op.Done = true
 	if err != nil {
 		op.Result = &pb.Operation_Error{
@@ -142,7 +146,9 @@ func markDone(op *pb.Operation, result proto.Message, err error) error {
 			op.Result = &pb.Operation_Response{}
 		} else {
 			rewriteTypes(resultAny)
-
+			if !keepMetadataOnDone {
+				op.Metadata = nil
+			}
 			op.Result = &pb.Operation_Response{
 				Response: resultAny,
 			}
@@ -164,7 +170,7 @@ func (s *Operations) DoneLRO(ctx context.Context, prefix string, metadata proto.
 	}
 	op.Done = false
 
-	if err := markDone(op, result, nil); err != nil {
+	if err := markDone(op, result, nil, false); err != nil {
 		return nil, err
 	}
 
