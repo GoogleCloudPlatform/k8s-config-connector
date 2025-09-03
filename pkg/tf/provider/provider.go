@@ -60,9 +60,6 @@ type Config struct {
 	// but UserProjectOverride is set to true, then the TF provider uses the resource's project.
 	// https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference#billing_project
 	BillingProject string
-
-	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
-	EnableMetricsTransport bool
 }
 
 var DefaultConfig = NewConfig()
@@ -93,15 +90,14 @@ func NewConfig() Config {
 // New builds a new tfschema.Provider for the google provider.
 func New(ctx context.Context, config Config) (*tfschema.Provider, error) {
 
-	if config.EnableMetricsTransport {
-		transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
-			inner.Transport = transport.NewMetricsTransport(inner.Transport)
-			return inner
-		}
-		transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
-			inner.Transport = transport.NewMetricsTransport(inner.Transport)
-			return inner
-		}
+	// Always enable metrics transport
+	transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+		inner.Transport = transport.NewMetricsTransport(inner.Transport)
+		return inner
+	}
+	transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+		inner.Transport = transport.NewMetricsTransport(inner.Transport)
+		return inner
 	}
 
 	googleProvider := provider.Provider()

@@ -52,9 +52,6 @@ type ControllerConfig struct {
 	// allowing use of a non-default OAuth2 identity
 	GCPTokenSource oauth2.TokenSource
 
-	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
-	EnableMetricsTransport bool
-
 	// ProjectMapper maps between project ids and numbers
 	ProjectMapper *projects.ProjectMapper
 }
@@ -91,9 +88,7 @@ func (c *ControllerConfig) RESTClientOptions() ([]option.ClientOption, error) {
 		*httpClient = *c.HTTPClient
 
 		transport := c.HTTPClient.Transport
-		if c.EnableMetricsTransport {
-			transport = metricstransport.NewMetricsTransport(transport)
-		}
+		transport = metricstransport.NewMetricsTransport(transport)
 
 		httpClient.Transport = &optionsRoundTripper{
 			config:       *c,
@@ -177,9 +172,7 @@ func (c *ControllerConfig) NewAuthenticatedHTTPClient(ctx context.Context) (*htt
 	}
 
 	baseTransport := http.DefaultTransport
-	if c.EnableMetricsTransport {
-		baseTransport = metricstransport.NewMetricsTransport(baseTransport)
-	}
+	baseTransport = metricstransport.NewMetricsTransport(baseTransport)
 
 	// Create an authenticated transport
 	authTransport, err := ghttptransport.NewTransport(ctx, baseTransport, opts...)
