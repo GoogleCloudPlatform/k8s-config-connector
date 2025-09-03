@@ -72,6 +72,7 @@ func (c *ControllerConfig) Init(ctx context.Context) error {
 	return nil
 }
 
+// When constructing GCP API clients, prefer NewAuthenticatedHTTPClient
 func (c *ControllerConfig) RESTClientOptions() ([]option.ClientOption, error) {
 	quotaProject := ""
 	if c.UserProjectOverride && c.BillingProject != "" {
