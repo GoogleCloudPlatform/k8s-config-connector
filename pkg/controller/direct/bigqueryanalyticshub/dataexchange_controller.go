@@ -57,12 +57,11 @@ type model struct {
 }
 
 func (m *model) client(ctx context.Context) (*gcp.Client, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building DataExchange client: %w", err)
 	}

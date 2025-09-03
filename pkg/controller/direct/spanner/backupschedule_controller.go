@@ -55,12 +55,11 @@ type modelBackupSchedule struct {
 }
 
 func (m *modelBackupSchedule) client(ctx context.Context) (*gcp.DatabaseAdminClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewDatabaseAdminRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewDatabaseAdminRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building BackupSchedule client: %w", err)
 	}

@@ -51,12 +51,11 @@ type modelEnvironment struct {
 }
 
 func (m *modelEnvironment) client(ctx context.Context) (*gcp.NotebookClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewNotebookRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewNotebookRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building Environment client: %w", err)
 	}

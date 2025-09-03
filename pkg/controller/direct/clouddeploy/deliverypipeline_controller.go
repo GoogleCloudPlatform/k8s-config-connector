@@ -54,12 +54,11 @@ type modelDeliveryPipeline struct {
 }
 
 func (m *modelDeliveryPipeline) client(ctx context.Context) (*gcp.CloudDeployClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewCloudDeployRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewCloudDeployRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building DeliveryPipeline client: %w", err)
 	}

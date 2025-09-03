@@ -57,8 +57,6 @@ type batchModel struct {
 }
 
 func (m *batchModel) Client(ctx context.Context, projectID string) (*dataproc.BatchControllerClient, error) {
-	var opts []option.ClientOption
-
 	config := m.config
 
 	// Workaround for an unusual behaviour (bug?):
@@ -68,12 +66,12 @@ func (m *batchModel) Client(ctx context.Context, projectID string) (*dataproc.Ba
 		config.BillingProject = projectID
 	}
 
-	opts, err := config.RESTClientOptions()
+	httpClient, err := config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	gcpClient, err := dataproc.NewBatchControllerRESTClient(ctx, opts...)
+	gcpClient, err := dataproc.NewBatchControllerRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building dataproc batch client: %w", err)
 	}

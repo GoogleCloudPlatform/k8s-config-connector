@@ -28,6 +28,7 @@ import (
 
 	gcp "cloud.google.com/go/dataform/apiv1beta1"
 	dataformpb "cloud.google.com/go/dataform/apiv1beta1/dataformpb"
+	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -53,12 +54,12 @@ type model struct {
 }
 
 func (m *model) client(ctx context.Context) (*gcp.Client, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building dataform client: %w", err)
 	}

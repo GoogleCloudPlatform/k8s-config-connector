@@ -20,6 +20,7 @@ import (
 
 	api "cloud.google.com/go/resourcemanager/apiv3"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -34,11 +35,11 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 }
 
 func (m *gcpClient) newTagKeysClient(ctx context.Context) (*api.TagKeysClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewTagKeysRESTClient(ctx, opts...)
+	client, err := api.NewTagKeysRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building tag keys client: %w", err)
 	}

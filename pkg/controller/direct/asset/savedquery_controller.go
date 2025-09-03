@@ -61,8 +61,6 @@ type savedQueryModel struct {
 }
 
 func (m *savedQueryModel) client(ctx context.Context, projectID string) (*gcp.Client, error) {
-	var opts []option.ClientOption
-
 	config := m.config
 	// Workaround for an unusual behaviour (bug?):
 	//  the service requires that a quota project be set
@@ -70,12 +68,12 @@ func (m *savedQueryModel) client(ctx context.Context, projectID string) (*gcp.Cl
 		config.UserProjectOverride = true
 		config.BillingProject = projectID
 	}
-	opts, err := config.RESTClientOptions()
+	httpClient, err := config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building asset saved query client: %w", err)
 	}

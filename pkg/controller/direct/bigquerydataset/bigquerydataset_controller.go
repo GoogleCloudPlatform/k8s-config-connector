@@ -57,12 +57,11 @@ type model struct {
 }
 
 func (m *model) service(ctx context.Context, projectID string) (*bigquery.Client, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	gcpService, err := bigquery.NewClient(ctx, projectID, opts...)
+	gcpService, err := bigquery.NewClient(ctx, projectID, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building Dataset client: %w", err)
 	}

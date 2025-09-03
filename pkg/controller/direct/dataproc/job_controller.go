@@ -26,6 +26,7 @@ import (
 
 	dataproc "cloud.google.com/go/dataproc/v2/apiv1"
 	pb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
+	"google.golang.org/api/option"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -65,12 +66,12 @@ type dataprocJobModel struct {
 }
 
 func (m *dataprocJobModel) client(ctx context.Context) (*dataproc.JobControllerClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	return dataproc.NewJobControllerRESTClient(ctx, opts...)
+	return dataproc.NewJobControllerRESTClient(ctx, option.WithHTTPClient(httpClient))
 }
 
 func (m *dataprocJobModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {

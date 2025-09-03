@@ -79,12 +79,11 @@ type model struct {
 }
 
 func (m *model) tableService(ctx context.Context) (*bigquery.TablesService, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	gcpService, err := bigquery.NewService(ctx, opts...)
+	gcpService, err := bigquery.NewService(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building Table client: %w", err)
 	}

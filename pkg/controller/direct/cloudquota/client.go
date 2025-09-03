@@ -23,6 +23,7 @@ import (
 
 	api "cloud.google.com/go/cloudquotas/apiv1beta"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -37,11 +38,11 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 }
 
 func (m *gcpClient) newQuotaAdjusterSettingsManagerClient(ctx context.Context) (*api.QuotaAdjusterSettingsManagerClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewQuotaAdjusterSettingsManagerRESTClient(ctx, opts...)
+	client, err := api.NewQuotaAdjusterSettingsManagerRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building cloudquotas quotaAdjusterSettingsManager client: %w", err)
 	}
@@ -49,11 +50,11 @@ func (m *gcpClient) newQuotaAdjusterSettingsManagerClient(ctx context.Context) (
 }
 
 func (m *gcpClient) newQuotaClient(ctx context.Context) (*api.Client, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewRESTClient(ctx, opts...)
+	client, err := api.NewRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building cloudquotas client: %w", err)
 	}
