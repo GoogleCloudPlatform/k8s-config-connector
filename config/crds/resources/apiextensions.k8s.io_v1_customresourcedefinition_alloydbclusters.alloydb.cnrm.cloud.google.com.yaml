@@ -776,6 +776,11 @@ spec:
                       by which RPC was used to create the cluster (i.e. `CreateCluster`
                       vs. `CreateSecondaryCluster`
                     type: string
+                  databaseVersion:
+                    description: The database engine major version. This is an output-only
+                      field and it's populated at the Cluster creation time. This
+                      field cannot be changed after cluster creation.
+                    type: string
                 type: object
               uid:
                 description: Output only. The system-generated UID of the resource.
@@ -1540,6 +1545,11 @@ spec:
                       time or the Cluster promotion time. The cluster type is determined
                       by which RPC was used to create the cluster (i.e. `CreateCluster`
                       vs. `CreateSecondaryCluster`
+                    type: string
+                  databaseVersion:
+                    description: The database engine major version. This is an output-only
+                      field and it's populated at the Cluster creation time. This
+                      field cannot be changed after cluster creation.
                     type: string
                 type: object
               uid:
