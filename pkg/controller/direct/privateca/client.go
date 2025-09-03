@@ -20,6 +20,7 @@ import (
 
 	api "cloud.google.com/go/security/privateca/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -34,11 +35,11 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 }
 
 func (m *gcpClient) newCertificateAuthorityClient(ctx context.Context) (*api.CertificateAuthorityClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	service, err := api.NewCertificateAuthorityRESTClient(ctx, opts...)
+	service, err := api.NewCertificateAuthorityRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building service for certificate authority: %w", err)
 	}

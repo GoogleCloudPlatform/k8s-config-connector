@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	api "google.golang.org/api/cloudidentity/v1beta1"
+	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -65,11 +66,11 @@ func (m *modelGroup) AdapterForObject(ctx context.Context, reader client.Reader,
 	}
 
 	// Get cloudidentitygroup GCP client
-	opts, err := m.config.RESTClientOptions()
+	opts, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := api.NewService(ctx, opts...)
+	gcpClient, err := api.NewService(ctx, option.WithHTTPClient(opts))
 	if err != nil {
 		return nil, err
 	}

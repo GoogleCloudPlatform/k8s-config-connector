@@ -17,7 +17,6 @@ package forwardingrule
 import (
 	"context"
 	"fmt"
-	"net/http"
 
 	api "cloud.google.com/go/compute/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -35,48 +34,20 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 	return gcpClient, nil
 }
 
-func (m *gcpClient) options() ([]option.ClientOption, error) {
-	var opts []option.ClientOption
-	if m.config.UserAgent != "" {
-		opts = append(opts, option.WithUserAgent(m.config.UserAgent))
+func (m *gcpClient) newClientOptions(ctx context.Context) ([]option.ClientOption, error) {
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
+	if err != nil {
+		return nil, err
 	}
-	if m.config.HTTPClient != nil {
-		// TODO: Set UserAgent in this scenario (error is: WithHTTPClient is incompatible with gRPC dial options)
-
-		httpClient := &http.Client{}
-		*httpClient = *m.config.HTTPClient
-		httpClient.Transport = &optionsRoundTripper{
-			config: m.config,
-			inner:  m.config.HTTPClient.Transport,
-		}
-		opts = append(opts, option.WithHTTPClient(httpClient))
-	}
+	opts := []option.ClientOption{option.WithHTTPClient(httpClient)}
 	if m.config.UserProjectOverride && m.config.BillingProject != "" {
 		opts = append(opts, option.WithQuotaProject(m.config.BillingProject))
 	}
-
-	// TODO: support endpoints?
-	// if m.config.Endpoint != "" {
-	// 	opts = append(opts, option.WithEndpoint(m.config.Endpoint))
-	// }
-
 	return opts, nil
 }
 
-type optionsRoundTripper struct {
-	config config.ControllerConfig
-	inner  http.RoundTripper
-}
-
-func (m *optionsRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
-	if m.config.UserAgent != "" {
-		req.Header.Set("User-Agent", m.config.UserAgent)
-	}
-	return m.inner.RoundTrip(req)
-}
-
 func (m *gcpClient) globalForwardingRuleClient(ctx context.Context) (*api.GlobalForwardingRulesClient, error) {
-	opts, err := m.options()
+	opts, err := m.newClientOptions(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +59,7 @@ func (m *gcpClient) globalForwardingRuleClient(ctx context.Context) (*api.Global
 }
 
 func (m *gcpClient) forwardingRuleClient(ctx context.Context) (*api.ForwardingRulesClient, error) {
-	opts, err := m.options()
+	opts, err := m.newClientOptions(ctx)
 	if err != nil {
 		return nil, err
 	}

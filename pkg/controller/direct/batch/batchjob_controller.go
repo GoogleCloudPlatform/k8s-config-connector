@@ -59,8 +59,6 @@ type jobModel struct {
 }
 
 func (m *jobModel) Client(ctx context.Context, projectID string) (*batch.Client, error) {
-	var opts []option.ClientOption
-
 	config := m.config
 
 	// Workaround for an unusual behaviour (bug?):
@@ -70,12 +68,12 @@ func (m *jobModel) Client(ctx context.Context, projectID string) (*batch.Client,
 		config.BillingProject = projectID
 	}
 
-	opts, err := config.RESTClientOptions()
+	httpClient, err := config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	gcpClient, err := batch.NewRESTClient(ctx, opts...)
+	gcpClient, err := batch.NewRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building batch job client: %w", err)
 	}

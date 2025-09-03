@@ -88,9 +88,6 @@ type Config struct {
 	// UseCache is true if we should use the informer cache
 	// Currently only used in preview
 	UseCache bool
-
-	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
-	EnableMetricsTransport bool
 }
 
 // Creates a new controller-runtime manager.Manager and starts all of the KCC controllers pointed at the
@@ -127,7 +124,6 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	tfCfg.UserProjectOverride = cfg.UserProjectOverride
 	tfCfg.BillingProject = cfg.BillingProject
 	tfCfg.GCPAccessToken = cfg.GCPAccessToken
-	tfCfg.EnableMetricsTransport = cfg.EnableMetricsTransport
 
 	provider, err := tfprovider.New(ctx, tfCfg)
 	if err != nil {
@@ -150,7 +146,6 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	dclOptions.BillingProject = cfg.BillingProject
 	dclOptions.HTTPClient = cfg.HTTPClient
 	dclOptions.UserAgent = gcp.KCCUserAgent()
-	dclOptions.EnableMetricsTransport = cfg.EnableMetricsTransport
 
 	dclConfig, err := clientconfig.New(ctx, dclOptions)
 	if err != nil {
@@ -165,7 +160,6 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		HTTPClient:                 cfg.HTTPClient,
 		GRPCUnaryClientInterceptor: cfg.GRPCUnaryClientInterceptor,
 		UserAgent:                  gcp.KCCUserAgent(),
-		EnableMetricsTransport:     cfg.EnableMetricsTransport,
 	}
 
 	if cfg.GCPAccessToken != "" {

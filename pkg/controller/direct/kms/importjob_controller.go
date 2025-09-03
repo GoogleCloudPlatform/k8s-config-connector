@@ -57,16 +57,14 @@ type importJobModel struct {
 }
 
 func (m *importJobModel) client(ctx context.Context, projectID string) (*kms.KeyManagementClient, error) {
-	var opts []option.ClientOption
-
 	config := m.config
 
-	opts, err := config.RESTClientOptions()
+	httpClient, err := config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	gcpClient, err := kms.NewKeyManagementRESTClient(ctx, opts...)
+	gcpClient, err := kms.NewKeyManagementRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building kms importjob client: %w", err)
 	}

@@ -22,9 +22,8 @@ import (
 	"fmt"
 
 	api "cloud.google.com/go/recaptchaenterprise/v2/apiv1"
-	"google.golang.org/api/option"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -35,10 +34,14 @@ func newReCAPTCHAEnterpriseClient(ctx context.Context, config *config.Controller
 	gcpClient := &gcpClient{
 		config: *config,
 	}
-	opts, err := gcpClient.config.GRPCClientOptions()
+
+	httpClient, err := gcpClient.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
+
+	var opts []option.ClientOption
+	opts = append(opts, option.WithHTTPClient(httpClient))
 	opts = append(opts, option.WithEndpoint("public-preview-recaptchaenterprise.googleapis.com:443"))
 
 	grpcClient, err := api.NewClient(ctx, opts...)

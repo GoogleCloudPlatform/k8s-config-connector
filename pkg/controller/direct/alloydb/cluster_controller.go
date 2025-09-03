@@ -59,12 +59,11 @@ type modelCluster struct {
 }
 
 func (m *modelCluster) client(ctx context.Context) (*gcp.AlloyDBAdminClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewAlloyDBAdminRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewAlloyDBAdminRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building Cluster client: %w", err)
 	}

@@ -20,6 +20,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	api "google.golang.org/api/alloydb/v1beta"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -34,11 +35,12 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 }
 
 func (m *gcpClient) newAlloyDBAdminClient(ctx context.Context) (*api.Service, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewService(ctx, opts...)
+
+	client, err := api.NewService(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building alloydb client: %w", err)
 	}

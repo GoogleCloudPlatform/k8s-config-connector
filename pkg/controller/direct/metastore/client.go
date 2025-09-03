@@ -23,6 +23,7 @@ import (
 
 	api "cloud.google.com/go/metastore/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -37,11 +38,11 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 }
 
 func (m *gcpClient) newDataprocMetastoreClient(ctx context.Context) (*api.DataprocMetastoreClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewDataprocMetastoreRESTClient(ctx, opts...)
+	client, err := api.NewDataprocMetastoreRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building metastore client: %w", err)
 	}
@@ -49,11 +50,11 @@ func (m *gcpClient) newDataprocMetastoreClient(ctx context.Context) (*api.Datapr
 }
 
 func (m *gcpClient) newDataprocMetastoreFederationClient(ctx context.Context) (*api.DataprocMetastoreFederationClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewDataprocMetastoreFederationRESTClient(ctx, opts...)
+	client, err := api.NewDataprocMetastoreFederationRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building metastore federation client: %w", err)
 	}

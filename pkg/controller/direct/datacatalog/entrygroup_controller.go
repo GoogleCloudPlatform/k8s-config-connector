@@ -59,8 +59,6 @@ type entryGroupModel struct {
 }
 
 func (m *entryGroupModel) client(ctx context.Context, projectID string) (*api.Client, error) {
-	var opts []option.ClientOption
-
 	config := m.config
 
 	// the service requires that a quota project be set
@@ -69,17 +67,17 @@ func (m *entryGroupModel) client(ctx context.Context, projectID string) (*api.Cl
 		config.BillingProject = projectID
 	}
 
-	opts, err := config.RESTClientOptions()
+	httpClient, err := config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	gcpClient, err := api.NewRESTClient(ctx, opts...)
+	gcpClient, err := api.NewRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building datacatalog entrygroup client: %w", err)
 	}
 
-	return gcpClient, nil
+	return gcpClient, err
 }
 
 func (m *entryGroupModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {

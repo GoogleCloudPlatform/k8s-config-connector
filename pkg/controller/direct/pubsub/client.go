@@ -24,6 +24,7 @@ import (
 
 	api "cloud.google.com/go/pubsub/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -38,11 +39,11 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 }
 
 func (m *gcpClient) newSubscriberClient(ctx context.Context) (*api.SubscriberClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewSubscriberRESTClient(ctx, opts...)
+	client, err := api.NewSubscriberRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building pubsub subscriber client: %w", err)
 	}

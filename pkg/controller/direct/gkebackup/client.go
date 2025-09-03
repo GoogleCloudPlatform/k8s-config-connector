@@ -23,6 +23,7 @@ import (
 
 	api "cloud.google.com/go/gkebackup/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -37,11 +38,11 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 }
 
 func (m *gcpClient) newBackupForGKEClient(ctx context.Context) (*api.BackupForGKEClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewBackupForGKERESTClient(ctx, opts...)
+	client, err := api.NewBackupForGKERESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building gkebackup client: %w", err)
 	}

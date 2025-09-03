@@ -53,12 +53,11 @@ type modelTable struct {
 }
 
 func (m *modelTable) client(ctx context.Context) (*gcp.MetastoreClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewMetastoreRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewMetastoreRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building Table client: %w", err)
 	}

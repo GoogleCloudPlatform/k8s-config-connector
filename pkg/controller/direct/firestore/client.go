@@ -20,6 +20,7 @@ import (
 
 	api "cloud.google.com/go/firestore/apiv1/admin"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -34,11 +35,11 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 }
 
 func (m *gcpClient) newFirestoreAdminClient(ctx context.Context) (*api.FirestoreAdminClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewFirestoreAdminRESTClient(ctx, opts...)
+	client, err := api.NewFirestoreAdminRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building firestore admin client: %w", err)
 	}

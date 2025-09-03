@@ -65,12 +65,11 @@ type firewallPolicyRuleAdapter struct {
 var _ directbase.Adapter = &firewallPolicyRuleAdapter{}
 
 func (m *firewallPolicyRuleModel) client(ctx context.Context) (*gcp.FirewallPoliciesClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewFirewallPoliciesRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewFirewallPoliciesRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building FirewallPolicy client: %w", err)
 	}

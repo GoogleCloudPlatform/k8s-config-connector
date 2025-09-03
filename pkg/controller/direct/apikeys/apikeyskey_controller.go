@@ -21,6 +21,7 @@ import (
 
 	api "cloud.google.com/go/apikeys/apiv2"
 	pb "cloud.google.com/go/apikeys/apiv2/apikeyspb"
+	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -87,12 +88,12 @@ type adapter struct {
 var _ directbase.Adapter = &adapter{}
 
 func (m *model) client(ctx context.Context) (*api.Client, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	gcpClient, err := api.NewRESTClient(ctx, opts...)
+	gcpClient, err := api.NewRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building apikeys client: %w", err)
 	}

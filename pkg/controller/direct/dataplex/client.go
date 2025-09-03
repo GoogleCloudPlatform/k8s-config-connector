@@ -37,16 +37,23 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 	return gcpClient, nil
 }
 
-func (m *gcpClient) options() ([]option.ClientOption, error) {
-	opts, err := m.config.GRPCClientOptions()
+func (m *gcpClient) options(ctx context.Context) ([]option.ClientOption, error) {
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
+	}
+
+	var opts []option.ClientOption
+	opts = append(opts, option.WithHTTPClient(httpClient))
+
+	if m.config.UserProjectOverride && m.config.BillingProject != "" {
+		opts = append(opts, option.WithQuotaProject(m.config.BillingProject))
 	}
 	return opts, nil
 }
 
 func (m *gcpClient) client(ctx context.Context) (*api.Client, error) {
-	opts, err := m.options()
+	opts, err := m.options(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +67,7 @@ func (m *gcpClient) client(ctx context.Context) (*api.Client, error) {
 }
 
 func (m *gcpClient) catalogClient(ctx context.Context) (*api.CatalogClient, error) {
-	opts, err := m.options()
+	opts, err := m.options(ctx)
 	if err != nil {
 		return nil, err
 	}

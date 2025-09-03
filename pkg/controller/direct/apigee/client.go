@@ -20,6 +20,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	api "google.golang.org/api/apigee/v1"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -32,12 +33,12 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 		config: *config,
 	}
 
-	opts, err := config.RESTClientOptions()
+	httpClient, err := config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	gcpClient.service, err = api.NewService(ctx, opts...)
+	gcpClient.service, err = api.NewService(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building gcp service client: %w", err)
 	}

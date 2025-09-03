@@ -58,8 +58,6 @@ type dataStoreModel struct {
 }
 
 func (m *dataStoreModel) client(ctx context.Context, projectID string) (*gcp.DataStoreClient, error) {
-	var opts []option.ClientOption
-
 	config := m.config
 
 	// Workaround for an unusual behaviour (bug?):
@@ -69,12 +67,12 @@ func (m *dataStoreModel) client(ctx context.Context, projectID string) (*gcp.Dat
 		config.BillingProject = projectID
 	}
 
-	opts, err := config.RESTClientOptions()
+	httpClient, err := config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	gcpClient, err := gcp.NewDataStoreRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewDataStoreRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building discoveryengine datastore client: %w", err)
 	}

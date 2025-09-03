@@ -52,9 +52,8 @@ func newConfigAndClient(ctx context.Context, opt Options) (*dcl.Config, *http.Cl
 		opt.HTTPClient = httpClient
 	}
 
-	if opt.EnableMetricsTransport {
-		opt.HTTPClient.Transport = transport.NewMetricsTransport(opt.HTTPClient.Transport)
-	}
+	// Always enable metrics transport
+	opt.HTTPClient.Transport = transport.NewMetricsTransport(opt.HTTPClient.Transport)
 
 	configOptions := []dcl.ConfigOption{
 		dcl.WithHTTPClient(opt.HTTPClient),

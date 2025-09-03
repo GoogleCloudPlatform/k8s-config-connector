@@ -24,6 +24,7 @@ import (
 
 	compute "cloud.google.com/go/compute/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -38,11 +39,11 @@ func newGCPClient(config *config.ControllerConfig) (*gcpClient, error) {
 }
 
 func (m *gcpClient) newNetworkEdgeSecurityServicesClient(ctx context.Context) (*compute.NetworkEdgeSecurityServicesClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := compute.NewNetworkEdgeSecurityServicesRESTClient(ctx, opts...)
+	client, err := compute.NewNetworkEdgeSecurityServicesRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building compute networkEdgeSecurityServices client: %w", err)
 	}
@@ -50,11 +51,11 @@ func (m *gcpClient) newNetworkEdgeSecurityServicesClient(ctx context.Context) (*
 }
 
 func (m *gcpClient) newNetworkAttachmentsClient(ctx context.Context) (*compute.NetworkAttachmentsClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := compute.NewNetworkAttachmentsRESTClient(ctx, opts...)
+	client, err := compute.NewNetworkAttachmentsRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building compute networkEdgeSecurityServices client: %w", err)
 

@@ -49,12 +49,11 @@ type modelProcessorVersion struct {
 }
 
 func (m *modelProcessorVersion) client(ctx context.Context) (*gcp.DocumentProcessorClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewDocumentProcessorRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewDocumentProcessorRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building ProcessorVersion client: %w", err)
 	}

@@ -23,14 +23,15 @@ import (
 
 	api "cloud.google.com/go/networkmanagement/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/option"
 )
 
 func newReachabilityClient(ctx context.Context, config *config.ControllerConfig) (*api.ReachabilityClient, error) {
-	opts, err := config.RESTClientOptions()
+	httpClient, err := config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewReachabilityRESTClient(ctx, opts...)
+	client, err := api.NewReachabilityRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building networkmanagement reachability client: %w", err)
 	}

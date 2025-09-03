@@ -24,6 +24,7 @@ import (
 
 	api "cloud.google.com/go/dataflow/apiv1beta3"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -38,11 +39,11 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 }
 
 func (m *gcpClient) newFlexTemplatesClient(ctx context.Context) (*api.FlexTemplatesClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewFlexTemplatesRESTClient(ctx, opts...)
+	client, err := api.NewFlexTemplatesRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building dataflow flexTemplates client: %w", err)
 	}
@@ -50,11 +51,11 @@ func (m *gcpClient) newFlexTemplatesClient(ctx context.Context) (*api.FlexTempla
 }
 
 func (m *gcpClient) newJobsClient(ctx context.Context) (*api.JobsV1Beta3Client, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewJobsV1Beta3RESTClient(ctx, opts...)
+	client, err := api.NewJobsV1Beta3RESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building dataflow jobs client: %w", err)
 	}

@@ -53,14 +53,12 @@ type modelFeaturestore struct {
 }
 
 func (m *modelFeaturestore) client(ctx context.Context, location string) (*gcp.FeaturestoreClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 	endpoint := fmt.Sprintf("https://%s-aiplatform.googleapis.com", location)
-	opts = append(opts, option.WithEndpoint(endpoint))
-	gcpClient, err := gcp.NewFeaturestoreRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewFeaturestoreRESTClient(ctx, option.WithHTTPClient(httpClient), option.WithEndpoint(endpoint))
 	if err != nil {
 		return nil, fmt.Errorf("building Featurestore client: %w", err)
 	}

@@ -61,8 +61,6 @@ type SnapshotModel struct {
 }
 
 func (m *SnapshotModel) client(ctx context.Context, projectID string) (*api.SubscriberClient, error) {
-	var opts []option.ClientOption
-
 	config := m.config
 
 	//  the service requires that a quota project be set
@@ -71,12 +69,12 @@ func (m *SnapshotModel) client(ctx context.Context, projectID string) (*api.Subs
 		config.BillingProject = projectID
 	}
 
-	opts, err := config.RESTClientOptions()
+	httpClient, err := config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	gcpClient, err := api.NewSubscriberRESTClient(ctx, opts...)
+	gcpClient, err := api.NewSubscriberRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building pubsub snapshot client: %w", err)
 	}
