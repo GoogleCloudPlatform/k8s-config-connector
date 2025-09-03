@@ -33,7 +33,7 @@ type StorageAnywhereCacheSpec struct {
 	// +required
 	Zone *string `json:"zone"`
 
-	// The AnywhereCacheID generated via backend, It can be used by users to manage an existing cache.
+	// The AnywhereCacheID generated via backend. It can be used by users to manage an existing cache.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// The desired state of the cache. Possible values include "running", "disabled", and "paused".
@@ -46,7 +46,7 @@ type StorageAnywhereCacheSpec struct {
 	DesiredState *string `json:"desiredState,omitempty"`
 
 	// Cache entry TTL (ranges between 1h to 7d). This is a cache-level config
-	//  that defines how long a cache entry can live. Defaults to "86400s"
+	//  that defines how long a cache entry can live. Defaults to "86400s".
 	//  TTL must be in whole seconds.
 	// +kubebuilder:default="86400s"
 	Ttl *string `json:"ttl,omitempty"`

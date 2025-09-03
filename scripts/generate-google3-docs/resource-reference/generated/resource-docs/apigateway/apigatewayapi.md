@@ -37,8 +37,10 @@
 <td>{{product_name_short}} Resource Short Names</td>
 <td>gcpapigatewayapi<br>gcpapigatewayapis<br>apigatewayapi</td>
 </tr>
+<tr>
 <td>{{product_name_short}} Service Name</td>
 <td>apigateway.googleapis.com</td>
+</tr>
 <tr>
 <td>{{product_name_short}} Resource Fully Qualified Name</td>
 <td>apigatewayapis.apigateway.cnrm.cloud.google.com</td>
@@ -100,7 +102,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Optional. Resource labels to represent user-provided metadata. Refer to cloud documentation on labels for more details. https://cloud.google.com/compute/docs/labeling-resources{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Resource labels to represent user-provided metadata. Refer to Google Cloud on labels for more details. https://cloud.google.com/compute/docs/labeling-resources{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
