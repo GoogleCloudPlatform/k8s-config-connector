@@ -22,9 +22,6 @@ import (
 
 var FirestoreDatabaseGVK = GroupVersion.WithKind("FirestoreDatabase")
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
 // FirestoreDatabaseSpec defines the desired state of FirestoreDatabase
 // +kcc:spec:proto=google.firestore.admin.v1.Database
 type FirestoreDatabaseSpec struct {
@@ -123,6 +120,7 @@ type FirestoreDatabaseObservedState struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpfirestoredatabase;gcpfirestoredatabases
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
