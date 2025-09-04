@@ -15,7 +15,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'runjob-${uniqueId}' of kind 'JOB' in region 'us-central1' in project '${projectId}' does not exist.",
+    "message": "job \"projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -54,14 +54,13 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
-    "etag": "\"CIy04sUGEMDh1-cB/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2Itc2NmMjZpYmo0bTVmZTZ5\"",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
     "generation": "1",
-    "lastModifier": "yuwenma@google.com",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "reconciling": true,
     "template": {
       "taskCount": 1,
       "template": {
@@ -83,7 +82,9 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "state": "CONDITION_PENDING"
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
   },
@@ -111,14 +112,13 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
-    "etag": "\"CIy04sUGEMDh1-cB/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2Itc2NmMjZpYmo0bTVmZTZ5\"",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
     "generation": "1",
-    "lastModifier": "yuwenma@google.com",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "1",
     "template": {
       "taskCount": 1,
       "template": {
@@ -140,7 +140,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T19:42:04.930571Z",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -150,14 +150,13 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
-    "lastModifier": "yuwenma@google.com",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "1",
     "template": {
       "taskCount": 1,
       "template": {
@@ -179,7 +178,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T19:42:04.930571Z",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -209,11 +208,10 @@ X-Xss-Protection: 0
   "creator": "${creatorID}",
   "etag": "abcdef0123A=",
   "generation": "1",
-  "lastModifier": "yuwenma@google.com",
+  "lastModifier": "test@google.com",
   "latestCreatedExecution": {},
   "launchStage": "GA",
   "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-  "observedGeneration": "1",
   "template": {
     "taskCount": 1,
     "template": {
@@ -235,7 +233,7 @@ X-Xss-Protection: 0
     }
   },
   "terminalCondition": {
-    "lastTransitionTime": "2025-09-03T19:42:04.930571Z",
+    "lastTransitionTime": "2025-01-01T00:00:00Z",
     "state": "CONDITION_SUCCEEDED",
     "type": "Ready"
   },
@@ -288,22 +286,19 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
-    "etag": "\"CJi04sUGEPiQgoQB/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2Itc2NmMjZpYmo0bTVmZTZ5\"",
-    "generation": "2",
-    "lastModifier": "yuwenma@google.com",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "1",
-    "reconciling": true,
     "template": {
       "taskCount": 1,
       "template": {
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
-            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -319,8 +314,8 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T19:42:04.930571Z",
-      "state": "CONDITION_PENDING",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -349,21 +344,19 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
-    "etag": "\"CJi04sUGEPiQgoQB/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2Itc2NmMjZpYmo0bTVmZTZ5\"",
-    "generation": "2",
-    "lastModifier": "yuwenma@google.com",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "2",
     "template": {
       "taskCount": 1,
       "template": {
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
-            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -379,7 +372,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T19:42:04.930571Z",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -389,21 +382,19 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
-    "generation": "2",
-    "lastModifier": "yuwenma@google.com",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "2",
     "template": {
       "taskCount": 1,
       "template": {
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
-            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -419,7 +410,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T19:42:04.930571Z",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -448,19 +439,17 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creator": "${creatorID}",
   "etag": "abcdef0123A=",
-  "generation": "2",
-  "lastModifier": "yuwenma@google.com",
+  "generation": "1",
+  "lastModifier": "test@google.com",
   "latestCreatedExecution": {},
   "launchStage": "GA",
   "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-  "observedGeneration": "2",
   "template": {
     "taskCount": 1,
     "template": {
       "containers": [
         {
           "image": "us-docker.pkg.dev/cloudrun/container/hello",
-          "name": "container-name",
           "resources": {
             "limits": {
               "cpu": "1000m",
@@ -476,7 +465,7 @@ X-Xss-Protection: 0
     }
   },
   "terminalCondition": {
-    "lastTransitionTime": "2025-09-03T19:42:04.930571Z",
+    "lastTransitionTime": "2025-01-01T00:00:00Z",
     "state": "CONDITION_SUCCEEDED",
     "type": "Ready"
   },
@@ -504,24 +493,19 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
-    "deleteTime": "2025-09-03T19:42:27.932979Z",
-    "etag": "\"CKO04sUGELjC8LwD/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2Itc2NmMjZpYmo0bTVmZTZ5\"",
-    "expireTime": "2025-10-03T19:42:27.932979Z",
-    "generation": "3",
-    "lastModifier": "yuwenma@google.com",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "2",
-    "reconciling": true,
     "template": {
       "taskCount": 1,
       "template": {
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
-            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -537,8 +521,8 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T19:42:04.930571Z",
-      "state": "CONDITION_PENDING",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -567,23 +551,19 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
-    "deleteTime": "2025-09-03T19:42:27.932979Z",
-    "etag": "\"CKS04sUGEKiK7Qw/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2Itc2NmMjZpYmo0bTVmZTZ5\"",
-    "expireTime": "2025-10-03T19:42:27.932979Z",
-    "generation": "3",
-    "lastModifier": "yuwenma@google.com",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "3",
     "template": {
       "taskCount": 1,
       "template": {
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
-            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -599,7 +579,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T19:42:04.930571Z",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -609,23 +589,19 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
-    "deleteTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
-    "expireTime": "2024-04-01T12:34:56.123456Z",
-    "generation": "3",
-    "lastModifier": "yuwenma@google.com",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "3",
     "template": {
       "taskCount": 1,
       "template": {
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
-            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -641,7 +617,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T19:42:04.930571Z",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },

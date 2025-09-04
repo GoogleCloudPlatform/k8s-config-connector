@@ -75,6 +75,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".metadata.deletionTimestamp"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.creationTimestamp"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.conditions[].lastTransitionTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.terminalCondition[].lastTransitionTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.uniqueId"] = "12345678"
 	visitor.replacePaths[".status.uid"] = "12345678"
 	visitor.replacePaths[".status.creationTime"] = "1970-01-01T00:00:00Z"
@@ -103,9 +104,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.outboundPublicIpAddresses"] = []string{"6.6.6.6", "8.8.8.8"}
 
 	// Specific to CloudKMS
-	visitor.replacePaths[".primary.createTime"] = "2024-04-01T12:34:56.123456Z"
-	visitor.replacePaths[".primary.generateTime"] = "2024-04-01T12:34:56.123456Z"
-	visitor.replacePaths[".status.observedState.expireTime"] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[`.primary.createTime`] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[`.primary.generateTime`] = "2024-04-01T12:34:56.123456Z"
+	visitor.replacePaths[`.status.observedState.expireTime`] = "2024-04-01T12:34:56.123456Z"
 
 	// Specific to BigQuery
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
@@ -491,7 +492,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 			}
 		}
 		// Get firewall policy id from firewall policy rule's externalRef and replace it
-		externalRef, _, _ := unstructured.NestedString(u.Object, "status", "externalRef")
+	externalRef, _, _ := unstructured.NestedString(u.Object, "status", "externalRef")
 		if externalRef != "" {
 			tokens := strings.Split(externalRef, "/")
 			n := len(tokens)
@@ -667,9 +668,9 @@ type stringReplacement struct {
 
 func newObjectWalker() *objectWalker {
 	return &objectWalker{
-		removePaths:              sets.New[string](),
-		sortSlices:               sets.New[string](),
-		sortAndDeduplicateSlices: sets.New[string](),
+		removePaths:              sets.New[string]() ,
+		sortSlices:               sets.New[string]() ,
+		sortAndDeduplicateSlices: sets.New[string]() ,
 		replacePaths:             make(map[string]any),
 	}
 }
@@ -882,14 +883,14 @@ func findLinksInEvent(t *testing.T, replacement *Replacements, event *test.LogEn
 		".response.pscConnections[].pscConnectionId": "${pscConnectionID}",
 	}
 
-	s := event.Response.Body
-	if s == "" {
+	ss := event.Response.Body
+	if ss == "" {
 		return
 	}
 
 	obj := make(map[string]any)
-	if err := json.Unmarshal([]byte(s), &obj); err != nil {
-		t.Fatalf("error from json.Unmarshal(%q): %v", s, err)
+	if err := json.Unmarshal([]byte(ss), &obj); err != nil {
+		t.Fatalf("error from json.Unmarshal(%q): %v", ss, err)
 		return
 	}
 

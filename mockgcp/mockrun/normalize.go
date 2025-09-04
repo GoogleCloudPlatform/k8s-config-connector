@@ -22,6 +22,8 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	replacements.ReplacePath(".metadata.terminalCondition.lastTransitionTime", "2025-01-01T00:00:00Z")
+	replacements.ReplacePath(".terminalCondition.lastTransitionTime", "2025-01-01T00:00:00Z")
+	replacements.ReplacePath(".response.terminalCondition.lastTransitionTime", "2025-01-01T00:00:00Z")
 	replacements.ReplacePath(".metadata.etag", "abcdef0123A=")
 }
 
