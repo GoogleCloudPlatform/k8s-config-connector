@@ -141,7 +141,6 @@ X-Xss-Protection: 0
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
-  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -150,11 +149,10 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20250531.01_15",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
   "name": "sqlinstance-1-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-1-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -176,7 +174,6 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
-      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -197,10 +194,9 @@ X-Xss-Protection: 0
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "zone": "us-central1-c"
+      "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
-    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -283,26 +279,6 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
-    },
-    {
-      "displayName": "MySQL 8.0.39",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_39"
-    },
-    {
-      "displayName": "MySQL 8.0.40",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_40"
-    },
-    {
-      "displayName": "MySQL 8.0.41",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_41"
-    },
-    {
-      "displayName": "MySQL 8.0.42",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_42"
     }
   ]
 }
@@ -514,7 +490,6 @@ X-Xss-Protection: 0
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
-  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -523,11 +498,10 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20250531.01_15",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
   "name": "sqlinstance-2-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-2-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -549,7 +523,6 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
-      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -570,10 +543,9 @@ X-Xss-Protection: 0
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "zone": "us-central1-c"
+      "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
-    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -656,26 +628,6 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
-    },
-    {
-      "displayName": "MySQL 8.0.39",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_39"
-    },
-    {
-      "displayName": "MySQL 8.0.40",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_40"
-    },
-    {
-      "displayName": "MySQL 8.0.41",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_41"
-    },
-    {
-      "displayName": "MySQL 8.0.42",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_42"
     }
   ]
 }
@@ -761,7 +713,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'runjob-${uniqueId}' of kind 'JOB' in region 'us-central1' in project '${projectId}' does not exist.",
+    "message": "job \"projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -816,14 +768,13 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
-    "etag": "\"CNnk4cUGEPCQl8wB/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2ItNnBlcnNyZHBld2w3c2h5\"",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
     "generation": "1",
-    "lastModifier": "yuwenma@google.com",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "reconciling": true,
     "template": {
       "taskCount": 1,
       "template": {
@@ -861,7 +812,9 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "state": "CONDITION_PENDING"
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
   },
@@ -889,14 +842,13 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
-    "etag": "\"CNnk4cUGEPCQl8wB/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2ItNnBlcnNyZHBld2w3c2h5\"",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
     "generation": "1",
-    "lastModifier": "yuwenma@google.com",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "1",
     "template": {
       "taskCount": 1,
       "template": {
@@ -934,7 +886,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T16:52:41.805014Z",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -944,14 +896,13 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
-    "lastModifier": "yuwenma@google.com",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "1",
     "template": {
       "taskCount": 1,
       "template": {
@@ -989,7 +940,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T16:52:41.805014Z",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -1019,11 +970,10 @@ X-Xss-Protection: 0
   "creator": "${creatorID}",
   "etag": "abcdef0123A=",
   "generation": "1",
-  "lastModifier": "yuwenma@google.com",
+  "lastModifier": "test@google.com",
   "latestCreatedExecution": {},
   "launchStage": "GA",
   "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-  "observedGeneration": "1",
   "template": {
     "taskCount": 1,
     "template": {
@@ -1061,7 +1011,7 @@ X-Xss-Protection: 0
     }
   },
   "terminalCondition": {
-    "lastTransitionTime": "2025-09-03T16:52:41.805014Z",
+    "lastTransitionTime": "2025-01-01T00:00:00Z",
     "state": "CONDITION_SUCCEEDED",
     "type": "Ready"
   },
@@ -1131,22 +1081,19 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
-    "etag": "\"COXk4cUGEODd2zU/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2ItNnBlcnNyZHBld2w3c2h5\"",
-    "generation": "2",
-    "lastModifier": "yuwenma@google.com",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "1",
-    "reconciling": true,
     "template": {
       "taskCount": 1,
       "template": {
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
-            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -1169,8 +1116,7 @@ X-Xss-Protection: 0
           {
             "cloudSqlInstance": {
               "instances": [
-                "${projectId}:us-central1:sqlinstance-1-${uniqueId}",
-                "${projectId}:us-central1:sqlinstance-2-${uniqueId}"
+                "${projectId}:us-central1:sqlinstance-1-${uniqueId}"
               ]
             },
             "name": "cloudsql"
@@ -1179,8 +1125,8 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T16:52:41.805014Z",
-      "state": "CONDITION_PENDING",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -1209,21 +1155,19 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
-    "etag": "\"COXk4cUGEODd2zU/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2ItNnBlcnNyZHBld2w3c2h5\"",
-    "generation": "2",
-    "lastModifier": "yuwenma@google.com",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "2",
     "template": {
       "taskCount": 1,
       "template": {
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
-            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -1246,8 +1190,7 @@ X-Xss-Protection: 0
           {
             "cloudSqlInstance": {
               "instances": [
-                "${projectId}:us-central1:sqlinstance-1-${uniqueId}",
-                "${projectId}:us-central1:sqlinstance-2-${uniqueId}"
+                "${projectId}:us-central1:sqlinstance-1-${uniqueId}"
               ]
             },
             "name": "cloudsql"
@@ -1256,7 +1199,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T16:52:41.805014Z",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -1266,21 +1209,19 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
-    "generation": "2",
-    "lastModifier": "yuwenma@google.com",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "2",
     "template": {
       "taskCount": 1,
       "template": {
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
-            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -1303,8 +1244,7 @@ X-Xss-Protection: 0
           {
             "cloudSqlInstance": {
               "instances": [
-                "${projectId}:us-central1:sqlinstance-1-${uniqueId}",
-                "${projectId}:us-central1:sqlinstance-2-${uniqueId}"
+                "${projectId}:us-central1:sqlinstance-1-${uniqueId}"
               ]
             },
             "name": "cloudsql"
@@ -1313,7 +1253,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T16:52:41.805014Z",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -1342,19 +1282,17 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creator": "${creatorID}",
   "etag": "abcdef0123A=",
-  "generation": "2",
-  "lastModifier": "yuwenma@google.com",
+  "generation": "1",
+  "lastModifier": "test@google.com",
   "latestCreatedExecution": {},
   "launchStage": "GA",
   "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-  "observedGeneration": "2",
   "template": {
     "taskCount": 1,
     "template": {
       "containers": [
         {
           "image": "us-docker.pkg.dev/cloudrun/container/hello",
-          "name": "container-name",
           "resources": {
             "limits": {
               "cpu": "1000m",
@@ -1377,8 +1315,7 @@ X-Xss-Protection: 0
         {
           "cloudSqlInstance": {
             "instances": [
-              "${projectId}:us-central1:sqlinstance-1-${uniqueId}",
-              "${projectId}:us-central1:sqlinstance-2-${uniqueId}"
+              "${projectId}:us-central1:sqlinstance-1-${uniqueId}"
             ]
           },
           "name": "cloudsql"
@@ -1387,7 +1324,7 @@ X-Xss-Protection: 0
     }
   },
   "terminalCondition": {
-    "lastTransitionTime": "2025-09-03T16:52:41.805014Z",
+    "lastTransitionTime": "2025-01-01T00:00:00Z",
     "state": "CONDITION_SUCCEEDED",
     "type": "Ready"
   },
@@ -1415,24 +1352,19 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
-    "deleteTime": "2025-09-03T16:52:55.181020Z",
-    "etag": "\"COfk4cUGEODKqFY/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2ItNnBlcnNyZHBld2w3c2h5\"",
-    "expireTime": "2025-10-03T16:52:55.181020Z",
-    "generation": "3",
-    "lastModifier": "yuwenma@google.com",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "2",
-    "reconciling": true,
     "template": {
       "taskCount": 1,
       "template": {
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
-            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -1455,8 +1387,7 @@ X-Xss-Protection: 0
           {
             "cloudSqlInstance": {
               "instances": [
-                "${projectId}:us-central1:sqlinstance-1-${uniqueId}",
-                "${projectId}:us-central1:sqlinstance-2-${uniqueId}"
+                "${projectId}:us-central1:sqlinstance-1-${uniqueId}"
               ]
             },
             "name": "cloudsql"
@@ -1465,8 +1396,8 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T16:52:41.805014Z",
-      "state": "CONDITION_PENDING",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -1495,23 +1426,19 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
-    "deleteTime": "2025-09-03T16:52:55.181020Z",
-    "etag": "\"COfk4cUGEICIwZ4B/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2ItNnBlcnNyZHBld2w3c2h5\"",
-    "expireTime": "2025-10-03T16:52:55.181020Z",
-    "generation": "3",
-    "lastModifier": "yuwenma@google.com",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "3",
     "template": {
       "taskCount": 1,
       "template": {
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
-            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -1534,8 +1461,7 @@ X-Xss-Protection: 0
           {
             "cloudSqlInstance": {
               "instances": [
-                "${projectId}:us-central1:sqlinstance-1-${uniqueId}",
-                "${projectId}:us-central1:sqlinstance-2-${uniqueId}"
+                "${projectId}:us-central1:sqlinstance-1-${uniqueId}"
               ]
             },
             "name": "cloudsql"
@@ -1544,7 +1470,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T16:52:41.805014Z",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -1554,23 +1480,19 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
-    "deleteTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
-    "expireTime": "2024-04-01T12:34:56.123456Z",
-    "generation": "3",
-    "lastModifier": "yuwenma@google.com",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "3",
     "template": {
       "taskCount": 1,
       "template": {
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
-            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -1593,8 +1515,7 @@ X-Xss-Protection: 0
           {
             "cloudSqlInstance": {
               "instances": [
-                "${projectId}:us-central1:sqlinstance-1-${uniqueId}",
-                "${projectId}:us-central1:sqlinstance-2-${uniqueId}"
+                "${projectId}:us-central1:sqlinstance-1-${uniqueId}"
               ]
             },
             "name": "cloudsql"
@@ -1603,7 +1524,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-09-03T16:52:41.805014Z",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -1641,7 +1562,6 @@ X-Xss-Protection: 0
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
-  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -1650,11 +1570,10 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20250531.01_15",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
   "name": "sqlinstance-2-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-2-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -1676,7 +1595,6 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
-      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -1697,10 +1615,9 @@ X-Xss-Protection: 0
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "zone": "us-central1-c"
+      "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
-    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -1783,26 +1700,6 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
-    },
-    {
-      "displayName": "MySQL 8.0.39",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_39"
-    },
-    {
-      "displayName": "MySQL 8.0.40",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_40"
-    },
-    {
-      "displayName": "MySQL 8.0.41",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_41"
-    },
-    {
-      "displayName": "MySQL 8.0.42",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_42"
     }
   ]
 }
@@ -1894,7 +1791,6 @@ X-Xss-Protection: 0
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
-  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -1903,11 +1799,10 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20250531.01_15",
+  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
   "name": "sqlinstance-1-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-1-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -1929,7 +1824,6 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
-      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -1950,10 +1844,9 @@ X-Xss-Protection: 0
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
-      "zone": "us-central1-c"
+      "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
-    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -2036,26 +1929,6 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
-    },
-    {
-      "displayName": "MySQL 8.0.39",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_39"
-    },
-    {
-      "displayName": "MySQL 8.0.40",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_40"
-    },
-    {
-      "displayName": "MySQL 8.0.41",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_41"
-    },
-    {
-      "displayName": "MySQL 8.0.42",
-      "majorVersion": "MYSQL_8_0",
-      "name": "MYSQL_8_0_42"
     }
   ]
 }
