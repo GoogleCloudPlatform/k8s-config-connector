@@ -1391,7 +1391,17 @@ func TestControllerOverridesField(t *testing.T) {
 		Spec: corev1beta1.ConfigConnectorContextSpec{
 			Experiments: &corev1beta1.Experiments{
 				ControllerOverrides: map[string]k8sreconciler.ReconcilerType{
-					"BigQueryDataset.bigquery.cnrm.cloud.google.com": "direct",
+					"BigQueryDataset.bigquery.cnrm.cloud.google.com":              "direct",    // default is terraform
+					"AlloyDBClusters.alloydb.cnrm.cloud.google.com":               "direct",    // default is terraform
+					"CloudIdentityGroups.cloudidentity.cnrm.cloud.google.com":     "terraform", // default is direct
+					"SQLInstances.sql.cnrm.cloud.google.com":                      "terraform", // default is direct
+					"CloudIdentityMembership.cloudidentity.cnrm.cloud.google.com": "dcl",       // default is direct
+					"UnknownResource.example.cnrm.cloud.google.com":               "direct",    // invalid resource
+					"AlloyDBInstance.alloydb.cnrm.cloud.google.com":               "unknown",   // invalid controller type
+					"example.cnrm.cloud.google.com":                               "unknown",   // invalid resource and invalid controller
+					"SpannerInstance.spanner.cnrm.cloud.google.com":               "terraform", // default is terraform
+					"GKEHubFeature.gkehub.cnrm.cloud.google.com":                  "dcl",       // default is dcl
+					"ComputeInstance.compute.cnrm.cloud.google.com":               "direct",    // direct is not supported for this resource
 				},
 			},
 		},
