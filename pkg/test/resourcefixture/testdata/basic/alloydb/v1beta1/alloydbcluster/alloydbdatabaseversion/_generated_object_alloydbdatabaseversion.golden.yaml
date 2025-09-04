@@ -52,4 +52,5 @@ status:
   observedGeneration: 1
   observedState:
     clusterType: PRIMARY
+    databaseVersion: POSTGRES_16
   uid: "12345678"
