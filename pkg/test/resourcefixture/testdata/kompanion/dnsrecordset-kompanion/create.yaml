@@ -1,0 +1,21 @@
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSRecordSet
+metadata:
+  name: dnsrecordset-kompanion-${uniqueId}
+  namespace: ${projectId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  name: chaosmonkey.cloudnetworks.x.gcpnp.example.com.
+  type: A
+  ttl: 300
+  managedZoneRef:
+    name: dnsmanagedzone-kompanion-${uniqueId}
+  routingPolicy:
+    geo:
+    - location: australia-southeast1
+      rrdatas:
+      - "10.165.151.117"
+    - location: australia-southeast2
+      rrdatas:
+      - "10.165.151.52"

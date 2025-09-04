@@ -1,0 +1,117 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computebackendservice-default-kompanion-${uniqueId}
+  namespace: ${projectId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  description: Default Backend Service for test-ilb-multiregion
+  loadBalancingScheme: INTERNAL_MANAGED
+  portName: http
+  protocol: HTTPS
+  sessionAffinity: NONE
+  timeoutSec: 30
+  connectionDrainingTimeoutSec: 0
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computebackendservice-kompanion-${uniqueId}
+  namespace: ${projectId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  description: Backend Service for computebackendservice-kompanion-${uniqueId}
+  backend:
+  - group:
+      networkEndpointGroupRef:
+        name: computeregionnetworkendpointgroup-kompanion-ase1-${uniqueId}
+  - group:
+      networkEndpointGroupRef:
+        name: computeregionnetworkendpointgroup-kompanion-ase2-${uniqueId}
+  loadBalancingScheme: INTERNAL_MANAGED
+  protocol: HTTPS
+  sessionAffinity: NONE
+  timeoutSec: 30
+  outlierDetection:
+    maxEjectionPercent: 50
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computebackendservice-multi-kompanion-${uniqueId}
+  namespace: ${projectId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  description: Backend Service for test-ilb-multi
+  backend:
+  - group:
+      networkEndpointGroupRef:
+        name: computeregionnetworkendpointgroup-multi-kompanion-ase1-${uniqueId}
+  - group:
+      networkEndpointGroupRef:
+        name: computeregionnetworkendpointgroup-multi-kompanion-ase2-${uniqueId}
+  loadBalancingScheme: INTERNAL_MANAGED
+  protocol: HTTPS
+  sessionAffinity: NONE
+  timeoutSec: 30
+  outlierDetection:
+    maxEjectionPercent: 50
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRegionNetworkEndpointGroup
+metadata:
+  name: computeregionnetworkendpointgroup-kompanion-ase1-${uniqueId}
+  namespace: ${projectId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  networkEndpointType: SERVERLESS
+  region: australia-southeast1
+  cloudRun:
+    serviceRef:
+      external: test-httpbin-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRegionNetworkEndpointGroup
+metadata:
+  name: computeregionnetworkendpointgroup-kompanion-ase2-${uniqueId}
+  namespace: ${projectId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  networkEndpointType: SERVERLESS
+  region: australia-southeast2
+  cloudRun:
+    serviceRef:
+      external: helloworld-multi-region-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRegionNetworkEndpointGroup
+metadata:
+  name: computeregionnetworkendpointgroup-multi-kompanion-ase1-${uniqueId}
+  namespace: ${projectId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  networkEndpointType: SERVERLESS
+  region: australia-southeast1
+  cloudRun:
+    serviceRef:
+      external: helloworld-multi-region-syd-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRegionNetworkEndpointGroup
+metadata:
+  name: computeregionnetworkendpointgroup-multi-kompanion-ase2-${uniqueId}
+  namespace: ${projectId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  networkEndpointType: SERVERLESS
+  region: australia-southeast2
+  cloudRun:
+    serviceRef:
+      external: helloworld-multi-region-mel-${uniqueId}

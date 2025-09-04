@@ -1,0 +1,15 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computebackendservice-default-kompanion-${uniqueId}
+  namespace: ${projectId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  description: Default Backend Service for test-ilb-multiregion
+  loadBalancingScheme: INTERNAL_MANAGED
+  portName: http
+  protocol: HTTPS
+  sessionAffinity: NONE
+  timeoutSec: 30
+  connectionDrainingTimeoutSec: 0

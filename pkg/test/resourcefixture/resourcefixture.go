@@ -36,6 +36,7 @@ type TestType string
 const (
 	Unknown                     TestType = "unknown"
 	Basic                       TestType = "basic"
+	Kompanion                   TestType = "kompanion"
 	ContainerAnnotations        TestType = "containerannotations"
 	Directives                  TestType = "directives"
 	ExternalRef                 TestType = "externalref"
@@ -243,6 +244,8 @@ func parseTestTypeFromPath(t *testing.T, path string) TestType {
 		return "iam"
 	case "basic":
 		return Basic
+	case "kompanion":
+		return Kompanion
 	case "containerannotations":
 		return ContainerAnnotations
 	case "directives":

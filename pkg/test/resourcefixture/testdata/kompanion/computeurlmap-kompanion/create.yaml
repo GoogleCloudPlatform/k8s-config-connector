@@ -1,0 +1,55 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  name: computeurlmap-kompanion-${uniqueId}
+  namespace: ${projectId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  location: global
+  defaultService:
+    backendServiceRef:
+      name: computebackendservice-default-kompanion-${uniqueId}
+  hostRule:
+  - hosts:
+    - chaosmonkey.cloudnetworks.x.gcpnp.example.com
+    - chaosmonkey.cloudnetworks.x.gcpnp.example.com:*
+    pathMatcher: chaosmonkey-cloudnetworks-x-gcpnp-anz
+  - hosts:
+    - chaosmonkeymulti.cloudnetworks.x.gcpnp.example.com
+    - chaosmonkeymulti.cloudnetworks.x.gcpnp.example.com:*
+    pathMatcher: chaosmonkeymulti-cloudnetworks-x-gcpnp-anz
+  - hosts:
+    - svc.gcp.example.com
+    pathMatcher: test-ilb-multiregion-default
+  pathMatcher:
+  - name: chaosmonkey-cloudnetworks-x-gcpnp-anz
+    defaultService:
+      backendServiceRef:
+        name: computebackendservice-kompanion-${uniqueId}
+    routeRules:
+    - priority: 1
+      matchRules:
+      - prefixMatch: /status/*
+      routeAction:
+        weightedBackendServices:
+        - backendServiceRef:
+            name: computebackendservice-kompanion-${uniqueId}
+          weight: 500
+  - name: chaosmonkeymulti-cloudnetworks-x-gcpnp-anz
+    defaultService:
+      backendServiceRef:
+        name: computebackendservice-multi-kompanion-${uniqueId}
+    routeRules:
+    - priority: 1
+      matchRules:
+      - prefixMatch: /helloworld
+      routeAction:
+        weightedBackendServices:
+        - backendServiceRef:
+            name: computebackendservice-multi-kompanion-${uniqueId}
+          weight: 500
+  - name: test-ilb-multiregion-default
+    defaultService:
+      backendServiceRef:
+        name: computebackendservice-default-kompanion-${uniqueId}

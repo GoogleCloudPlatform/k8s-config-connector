@@ -1,0 +1,50 @@
+apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+kind: CertificateManagerCertificate
+metadata:
+  name: certificatemanagercertificate-kompanion-${uniqueId}
+  namespace: ${projectId}
+spec:
+  description: self managed Certificate Manager certificate for ilb multi region
+  location: global
+  scope: ALL_REGIONS
+  selfManaged:
+    pemCertificate: |
+      -----BEGIN CERTIFICATE-----
+      MIIF1DCCA7ygAwIBAgITJF2z2IAYsqpE1Xee8jybIO52hTANBgkqhkiG9w0BAQ0F
+      ADBwMQswCQYDVQQGEwJBVTEMMAoGA1UECBMDVklDMRIwEAYDVQQHEwlNZWxib3Vy
+      bmUxDTALBgNVBAoTBGFuengxDDAKBgNVBAsTA2djcDEiMCAGA1UEAxMZQU5aeCBH
+      bG9iYWxUZXN0IEdDUCBDQSAwMTAeFw0yNTAzMDUyMjIyMTZaFw0yNTA2MDMyMjIy
+      MTVaMDUxMzAxBgNVBAMTKmlsYi5tdWx0aS1yZWdpb24uY2xvdWRuZXR3b3Jrcy54
+      LmdjcG5wLmFuejCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALdmbge2
+      MWVa9vnV+jS7e83xTP3+uB/pZuK0fB7n2VNJZGyARANp7NRydve0b6L5Y82fvd5Y
+      LfXx78DiQ6rWYfQSxDiVCc4oyCoht911U18mHmMg/p7ArKJUVs+ZCrIeIqWuGfGM
+      5isVlvMRDzsjiHq1kRNIUFwFVrDjvRpSORs9fo0c9B0J2h3uRNE9j5Gb0McbAlCe
+      YUoYE3mcJnA+UtQVyLAJCaaQDZllTsy1hZn+cDkRiIlg4iBdqmUD8Nq+WxobNeyv
+      LpJHIsE36E/qaJr3Pl0Jvo0Rll8HIIfDHXlmrV6YoX9iuoOc9yed6aBrMt25Ziul
+      0XfIO+lgiYaziO0CAwEAAaOCAaAwggGcMA4GA1UdDwEB/wQEAwIFoDAdBgNVHQ4E
+      FgQUcIg1ui6k9lEd5gYnKTIZeKrX3aIwHwYDVR0jBBgwFoAUf8CsYC8pdL3bAPty
+      yq3rDl59gGcwgY0GCCsGAQUFBwEBBIGAMH4wfAYIKwYBBQUHMAKGcGh0dHA6Ly9w
+      cml2YXRlY2EtY29udGVudC02NzA1OGI2MS0wMDAwLTIwZjEtOTkxOC05NGViMmMx
+      Yjk5YTguc3RvcmFnZS5nb29nbGVhcGlzLmNvbS85YTU5OTMzY2E4ZjNmMmJkOWRl
+      MS9jYS5jcnQwNQYDVR0RBC4wLIIqaWxiLm11bHRpLXJlZ2lvbi5jbG91ZG5ldHdv
+      cmtzLnguZ2NwbnAuYW56MIGCBgNVHR8EezB5MHegdaBzhnFodHRwOi8vcHJpdmF0
+      ZWNhLWNvbnRlbnQtNjcwNThiNjEtMDAwMC0yMGYxLTk5MTgtOTRlYjJjMWI5OWE4
+      LnN0b3JhZ2UuZ29vZ2xlYXBpcy5jb20vOWE1OTkzM2NhOGYzZjJiZDlkZTEvY3Js
+      LmNybDANBgkqhkiG9w0BAQ0FAAOCAgEAGmxpRJfX5RAJg86LXh0OiWTcREOsL1UN
+      DHvvGiBwudvM9ptufev+l0rGFDQsNo492S+cjwIrOb1b+MuAvS2IhxxeysKN785n
+      UXQ0uUTrTGUzTM4VNwiIWUZNjPPNGcDz1jg6/+L0qaUrFJCvNEQtxuSQcNnt3/kO
+      kxkgEvrbJtImn0AtEdTQtQjPskTXtxkPQg3qdD1Pr/fQPusnrI12DlHvBvIIGpkx
+      Fov3weJ5ggnVN2qarZaOKg/RuhWoxK11z78cbPmpT9H+UiLia0GETLQfVwymDSeo
+      36UJIAgRbcO4kWWKV4u3DBM2TBl+oi6BpOBhtL4q3TkMDUrkdU24pJ0UI0CuAcRD
+      uX5g5hKGvudWMXuWLsMCfdfAp2STpQo80ya4IztkRv/xGfwB1ZtQzlq+vdTbzRFr
+      GAzrsJRMWJNIsspVcUmhMNSQFeJaMTD1piNT8w6vk0GD65nNwDRWu306irHa9xN3
+      0oD1Nuzj/LfzPw+YLXPn/A8S2kMth9VOEDAFRq+n73tbQjydXc8OzetTdvkwN4MG
+      fZuNSoNjCcFyZyx1tNAnjNG7kPJCctbc7cHvp2rJx1RfCl23oOskPHykKTJzMfv+
+      rhsqEPSiXgIV1/v019A3+hswlltKWM5+7psn+/Du6YfPdY2UliEWid2wqYaH56Hk
+      MjFIAFsU4sk=
+      -----END CERTIFICATE-----
+    pemPrivateKey:
+      valueFrom:
+        secretKeyRef:
+          key: tls.key
+          name: certificatemanagercertificate-kompanion-secret-${uniqueId}
