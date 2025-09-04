@@ -34,8 +34,7 @@ func bigtableLogicalViewFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.SpecFields.Insert(".query")
-	// TODO: enable this once deletion protection feature is live.
-	// f.SpecFields.Insert(".deletion_protection")
+	f.SpecFields.Insert(".deletion_protection")
 
 	f.UnimplementedFields.Insert(".name") // special field
 	f.UnimplementedFields.Insert(".etag")
