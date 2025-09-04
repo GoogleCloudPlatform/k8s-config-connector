@@ -148,7 +148,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The AnywhereCacheID generated via backend, It can be used by users to manage an existing cache.{% endverbatim %}</p>
+            <p>{% verbatim %}The AnywhereCacheID generated via backend. It can be used by users to manage an existing cache.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -158,7 +158,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Cache entry TTL (ranges between 1h to 7d). This is a cache-level config that defines how long a cache entry can live. Defaults to "86400s" TTL must be in whole seconds.{% endverbatim %}</p>
+            <p>{% verbatim %}Cache entry TTL (ranges between 1h to 7d). This is a cache-level config that defines how long a cache entry can live. Defaults to "86400s". TTL must be in whole seconds.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -16,19 +16,19 @@
 <tbody>
 <tr>
 <td>{{gcp_name_short}} Service Name</td>
-<td>AlloyDB for PostgreSQL</td>
+<td>Cloud Spanner API</td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} Service Documentation</td>
-<td><a href="/alloydb/docs/">/alloydb/docs/</a></td>
+<td><a href="/spanner/docs/">/spanner/docs/</a></td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>
-<td>v1.projects.locations.backups</td>
+<td>v1.projects.instances.databases.backupSchedules</td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Documentation</td>
-<td><a href="/alloydb/docs/reference/rest/v1/projects.locations.backups">/alloydb/docs/reference/rest/v1/projects.locations.clusters</a></td>
+<td><a href="/spanner/docs/reference/rest/v1/projects.instances.databases.backupSchedules">/spanner/docs/reference/rest/v1/projects.instances.databases.backupSchedules</a></td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Short Names</td>
@@ -36,7 +36,7 @@
 </tr>
 <tr>
 <td>{{product_name_short}} Service Name</td>
-<td>alloydb.googleapis.com</td>
+<td>spanner.googleapis.com</td>
 </tr>
 <tr>
 <td>{{product_name_short}} Resource Fully Qualified Name</td>

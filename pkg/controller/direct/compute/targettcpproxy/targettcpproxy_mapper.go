@@ -65,7 +65,7 @@ func ComputeTargetTCPProxyStatus_ToProto(mapCtx *direct.MapContext, in *krm.Comp
 	}
 	out := &pb.TargetTcpProxy{}
 	out.CreationTimestamp = in.CreationTimestamp
-	out.Id = direct.LazyPtr(uint64(*in.ProxyId))
+	out.Id = direct.PtrInt64ToPtrUint64(in.ProxyId)
 	// Kind
 	out.SelfLink = in.SelfLink
 	return out

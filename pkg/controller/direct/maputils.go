@@ -527,3 +527,19 @@ func StringPtrToByteSlice(mapCtx *MapContext, in *string) []byte {
 	}
 	return []byte(*in)
 }
+
+func PtrInt64ToPtrUint64(in *int64) *uint64 {
+	if in == nil {
+		return nil
+	}
+	out := uint64(*in)
+	return &out
+}
+
+func PtrInt64ToPtrInt32(in *int64) *int32 {
+	if in == nil {
+		return nil
+	}
+	out := int32(*in)
+	return &out
+}

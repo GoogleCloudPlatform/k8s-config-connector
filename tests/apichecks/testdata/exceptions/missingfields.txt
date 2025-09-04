@@ -92,6 +92,9 @@
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.remoteRepositoryConfig.mavenRepository.publicRepository" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.remoteRepositoryConfig.npmRepository.publicRepository" is not set in unstructured objects
 [missing_field] crd=artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com version=v1beta1: field ".spec.remoteRepositoryConfig.pythonRepository.publicRepository" is not set in unstructured objects
+[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1beta1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1beta1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1beta1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=bigqueryanalyticshublistings.bigqueryanalyticshub.cnrm.cloud.google.com version=v1beta1: field ".spec.source.bigQueryDatasetSource.selectedResources[].tableRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudSpanner.useServerlessAnalytics" is not set in unstructured objects
 [missing_field] crd=bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com version=v1beta1: field ".spec.spark.metastoreService.metastoreServiceRef" is not set; neither 'external' nor 'name' are set
@@ -1508,9 +1511,7 @@
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workerConfig.diskConfig.localSsdInterface" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workerConfig.diskConfig.numLocalSsds" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workerConfig.imageRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workerConfig.machineType" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workerConfig.minCpuPlatform" is not set in unstructured objects
-[missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workerConfig.numInstances" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workerConfig.preemptibility" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.virtualClusterConfig.auxiliaryServicesConfig.metastoreConfig.dataprocMetastoreServiceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.virtualClusterConfig.auxiliaryServicesConfig.sparkHistoryServerConfig.dataprocClusterRef" is not set; neither 'external' nor 'name' are set

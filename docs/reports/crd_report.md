@@ -39,7 +39,7 @@
 | apphub.cnrm.cloud.google.com                  | AppHubDiscoveredWorkload                        | True         | False       | False  | Direct     |
 | artifactregistry.cnrm.cloud.google.com        | ArtifactRegistryRepository                      | False        | True        | False  | Terraform  |
 | asset.cnrm.cloud.google.com                   | AssetFeed                                       | True         | False       | False  | Direct     |
-| asset.cnrm.cloud.google.com                   | AssetSavedQuery                                 | True         | False       | False  | Direct     |
+| asset.cnrm.cloud.google.com                   | AssetSavedQuery                                 | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupPlanAssociation                   | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupPlan                              | True         | False       | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupVault                             | True         | False       | False  | Direct     |
@@ -74,6 +74,7 @@
 | bigtable.cnrm.cloud.google.com                | BigtableInstance                                | False        | True        | False  | Terraform  |
 | bigtable.cnrm.cloud.google.com                | BigtableLogicalView                             | True         | False       | False  | Direct     |
 | bigtable.cnrm.cloud.google.com                | BigtableTable                                   | False        | True        | False  | Terraform  |
+| billing.cnrm.cloud.google.com                 | BillingAccount                                  | True         | False       | False  | Direct     |
 | billingbudgets.cnrm.cloud.google.com          | BillingBudgetsBudget                            | False        | True        | False  | DCL        |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationAttestor                     | False        | True        | False  | DCL        |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationPolicy                       | False        | True        | False  | DCL        |

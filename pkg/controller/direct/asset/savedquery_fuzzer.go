@@ -29,8 +29,8 @@ func init() {
 
 func AssetSavedQueryFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.SavedQuery{},
-		AssetSavedQuerySpec_FromProto, AssetSavedQuerySpec_ToProto,
-		AssetSavedQueryObservedState_FromProto, AssetSavedQueryObservedState_ToProto,
+		AssetSavedQuerySpec_v1beta1_FromProto, AssetSavedQuerySpec_v1beta1_ToProto,
+		AssetSavedQueryObservedState_v1beta1_FromProto, AssetSavedQueryObservedState_v1beta1_ToProto,
 	)
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".labels")

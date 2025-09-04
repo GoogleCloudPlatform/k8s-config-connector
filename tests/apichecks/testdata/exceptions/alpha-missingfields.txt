@@ -276,9 +276,6 @@
 [missing_field] crd=apphubdiscoveredworkloads.apphub.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=assetfeeds.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=assetfeeds.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=backupdrbackupplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
 [missing_field] crd=backupdrbackupplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=backupdrbackupvaults.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
@@ -445,6 +442,11 @@
 [missing_field] crd=bigtableclusters.bigtable.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=bigtableclusters.bigtable.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeScalingFactor" is not set in unstructured objects
 [missing_field] crd=bigtableclusters.bigtable.cnrm.cloud.google.com version=v1alpha1: field ".spec.serveNodes" is not set in unstructured objects
+[missing_field] crd=billingaccounts.billing.cnrm.cloud.google.com version=v1alpha1: field ".spec.currencyCode" is not set in unstructured objects
+[missing_field] crd=billingaccounts.billing.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=billingaccounts.billing.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent.external" is not set in unstructured objects
+[missing_field] crd=billingaccounts.billing.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent.name" is not set in unstructured objects
+[missing_field] crd=billingaccounts.billing.cnrm.cloud.google.com version=v1alpha1: field ".spec.parent.namespace" is not set in unstructured objects
 [missing_field] crd=cloudassetfolderfeeds.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.assetNames[]" is not set in unstructured objects
 [missing_field] crd=cloudassetfolderfeeds.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.assetTypes[]" is not set in unstructured objects
 [missing_field] crd=cloudassetfolderfeeds.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.billingProject" is not set in unstructured objects

@@ -226,21 +226,21 @@ X-Xss-Protection: 0
           "enableSecureBoot": true,
           "enableVtpm": true
         },
-        "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-c"
+        "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
       },
       "masterConfig": {
         "diskConfig": {
           "bootDiskSizeGb": 1000,
           "bootDiskType": "pd-standard"
         },
-        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-c/machineTypes/n2-standard-4",
+        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 1,
         "preemptibility": "NON_PREEMPTIBLE"
       },
       "softwareConfig": {
-        "imageVersion": "2.2.47-debian12",
+        "imageVersion": "2.2.63-debian12",
         "properties": {
           "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
           "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
@@ -310,21 +310,19 @@ X-Xss-Protection: 0
           "bootDiskSizeGb": 1000,
           "bootDiskType": "pd-standard"
         },
-        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-c/machineTypes/n2-standard-4",
+        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 2,
         "preemptibility": "NON_PREEMPTIBLE"
       }
     },
     "labels": {
-      "cnrm-test": "true",
       "goog-dataproc-autozone": "enabled",
       "goog-dataproc-cluster-name": "test-${uniqueId}",
       "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
-      "goog-dataproc-location": "us-central1",
-      "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}",
-      "managed-by-cnrm": "true"
+      "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
+      "goog-dataproc-location": "us-central1"
     },
     "projectId": "${projectId}"
   }
@@ -365,24 +363,24 @@ X-Xss-Protection: 0
         "enableSecureBoot": true,
         "enableVtpm": true
       },
-      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-c"
+      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
     },
     "masterConfig": {
       "diskConfig": {
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
-      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01",
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
       "instanceNames": [
         "test-${uniqueId}-m"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-c/machineTypes/n2-standard-4",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
       "preemptibility": "NON_PREEMPTIBLE"
     },
     "softwareConfig": {
-      "imageVersion": "2.2.47-debian12",
+      "imageVersion": "2.2.63-debian12",
       "properties": {
         "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
         "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
@@ -452,25 +450,23 @@ X-Xss-Protection: 0
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
-      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01",
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
       "instanceNames": [
         "test-${uniqueId}-w-0",
         "test-${uniqueId}-w-1"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-c/machineTypes/n2-standard-4",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
       "preemptibility": "NON_PREEMPTIBLE"
     }
   },
   "labels": {
-    "cnrm-test": "true",
     "goog-dataproc-autozone": "enabled",
     "goog-dataproc-cluster-name": "test-${uniqueId}",
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
-    "goog-dataproc-location": "us-central1",
-    "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}",
-    "managed-by-cnrm": "true"
+    "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
+    "goog-dataproc-location": "us-central1"
   },
   "projectId": "${projectId}",
   "status": {
@@ -590,21 +586,21 @@ X-Xss-Protection: 0
           "enableSecureBoot": true,
           "enableVtpm": true
         },
-        "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-c"
+        "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
       },
       "masterConfig": {
         "diskConfig": {
           "bootDiskSizeGb": 1000,
           "bootDiskType": "pd-standard"
         },
-        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-c/machineTypes/n2-standard-4",
+        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 1,
         "preemptibility": "NON_PREEMPTIBLE"
       },
       "softwareConfig": {
-        "imageVersion": "2.2.47-debian12",
+        "imageVersion": "2.2.63-debian12",
         "properties": {
           "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
           "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
@@ -674,21 +670,19 @@ X-Xss-Protection: 0
           "bootDiskSizeGb": 1000,
           "bootDiskType": "pd-standard"
         },
-        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-c/machineTypes/n2-standard-4",
+        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 3,
         "preemptibility": "NON_PREEMPTIBLE"
       }
     },
     "labels": {
-      "cnrm-test": "true",
       "goog-dataproc-autozone": "enabled",
       "goog-dataproc-cluster-name": "test-${uniqueId}",
       "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
-      "goog-dataproc-location": "us-central1",
-      "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}",
-      "managed-by-cnrm": "true"
+      "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
+      "goog-dataproc-location": "us-central1"
     },
     "projectId": "${projectId}"
   }
@@ -729,24 +723,24 @@ X-Xss-Protection: 0
         "enableSecureBoot": true,
         "enableVtpm": true
       },
-      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-c"
+      "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
     },
     "masterConfig": {
       "diskConfig": {
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
-      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01",
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
       "instanceNames": [
         "test-${uniqueId}-m"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-c/machineTypes/n2-standard-4",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
       "preemptibility": "NON_PREEMPTIBLE"
     },
     "softwareConfig": {
-      "imageVersion": "2.2.47-debian12",
+      "imageVersion": "2.2.63-debian12",
       "properties": {
         "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
         "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
@@ -816,26 +810,70 @@ X-Xss-Protection: 0
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
-      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01",
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
       "instanceNames": [
         "test-${uniqueId}-w-0",
         "test-${uniqueId}-w-1",
         "test-${uniqueId}-w-2"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-c/machineTypes/n2-standard-4",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 3,
       "preemptibility": "NON_PREEMPTIBLE"
     }
   },
   "labels": {
-    "cnrm-test": "true",
     "goog-dataproc-autozone": "enabled",
     "goog-dataproc-cluster-name": "test-${uniqueId}",
     "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
-    "goog-dataproc-location": "us-central1",
-    "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}",
-    "managed-by-cnrm": "true"
+    "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
+    "goog-dataproc-location": "us-central1"
+  },
+  "metrics": {
+    "hdfsMetrics": {
+      "dfs-blocks-corrupt": "0",
+      "dfs-blocks-default-replication-factor": "2",
+      "dfs-blocks-missing": "0",
+      "dfs-blocks-missing-repl-one": "0",
+      "dfs-blocks-pending-deletion": "0",
+      "dfs-blocks-under-replication": "0",
+      "dfs-capacity-present": 12345,
+      "dfs-capacity-remaining": 12345,
+      "dfs-capacity-total": 12345,
+      "dfs-capacity-used": 12345,
+      "dfs-nodes-decommissioned": "0",
+      "dfs-nodes-decommissioning": "0",
+      "dfs-nodes-running": "3"
+    },
+    "yarnMetrics": {
+      "yarn-apps-completed": "0",
+      "yarn-apps-failed": "0",
+      "yarn-apps-killed": "0",
+      "yarn-apps-pending": "0",
+      "yarn-apps-running": "0",
+      "yarn-apps-submitted": "0",
+      "yarn-containers-allocated": "0",
+      "yarn-containers-pending": "0",
+      "yarn-containers-reserved": "0",
+      "yarn-memory-mb-allocated": "0",
+      "yarn-memory-mb-available": "27088",
+      "yarn-memory-mb-pending": "0",
+      "yarn-memory-mb-reserved": "0",
+      "yarn-memory-mb-total": "27088",
+      "yarn-nodes-active": "2",
+      "yarn-nodes-decommissioned": "0",
+      "yarn-nodes-decommissioning": "0",
+      "yarn-nodes-lost": "0",
+      "yarn-nodes-new": "0",
+      "yarn-nodes-rebooted": "0",
+      "yarn-nodes-shutdown": "0",
+      "yarn-nodes-unhealthy": "0",
+      "yarn-vcores-allocated": "0",
+      "yarn-vcores-available": "8",
+      "yarn-vcores-pending": "0",
+      "yarn-vcores-reserved": "0",
+      "yarn-vcores-total": "8"
+    }
   },
   "projectId": "${projectId}",
   "status": {
@@ -853,10 +891,6 @@ X-Xss-Protection: 0
     },
     {
       "state": "UPDATING",
-      "stateStartTime": "2024-04-01T12:34:56.123456Z"
-    },
-    {
-      "state": "RUNNING",
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   ]
@@ -899,24 +933,24 @@ X-Xss-Protection: 0
             "enableSecureBoot": true,
             "enableVtpm": true
           },
-          "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-c"
+          "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
         },
         "masterConfig": {
           "diskConfig": {
             "bootDiskSizeGb": 1000,
             "bootDiskType": "pd-standard"
           },
-          "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01",
+          "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
           "instanceNames": [
             "test-${uniqueId}-m"
           ],
-          "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-c/machineTypes/n2-standard-4",
+          "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
           "minCpuPlatform": "AUTOMATIC",
           "numInstances": 1,
           "preemptibility": "NON_PREEMPTIBLE"
         },
         "softwareConfig": {
-          "imageVersion": "2.2.47-debian12",
+          "imageVersion": "2.2.63-debian12",
           "properties": {
             "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
             "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
@@ -986,26 +1020,70 @@ X-Xss-Protection: 0
             "bootDiskSizeGb": 1000,
             "bootDiskType": "pd-standard"
           },
-          "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250212-155100-rc01",
+          "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
           "instanceNames": [
             "test-${uniqueId}-w-0",
             "test-${uniqueId}-w-1",
             "test-${uniqueId}-w-2"
           ],
-          "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-c/machineTypes/n2-standard-4",
+          "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
           "minCpuPlatform": "AUTOMATIC",
           "numInstances": 3,
           "preemptibility": "NON_PREEMPTIBLE"
         }
       },
       "labels": {
-        "cnrm-test": "true",
         "goog-dataproc-autozone": "enabled",
         "goog-dataproc-cluster-name": "test-${uniqueId}",
         "goog-dataproc-cluster-uuid": "${dataStoreClusterUUID}",
-        "goog-dataproc-location": "us-central1",
-        "goog-drz-dataproc-uuid": "cluster-${dataStoreClusterUUID}",
-        "managed-by-cnrm": "true"
+        "goog-dataproc-drz-resource-uuid": "cluster-${dataStoreClusterUUID}",
+        "goog-dataproc-location": "us-central1"
+      },
+      "metrics": {
+        "hdfsMetrics": {
+          "dfs-blocks-corrupt": "0",
+          "dfs-blocks-default-replication-factor": "2",
+          "dfs-blocks-missing": "0",
+          "dfs-blocks-missing-repl-one": "0",
+          "dfs-blocks-pending-deletion": "0",
+          "dfs-blocks-under-replication": "0",
+          "dfs-capacity-present": 12345,
+          "dfs-capacity-remaining": 12345,
+          "dfs-capacity-total": 12345,
+          "dfs-capacity-used": 12345,
+          "dfs-nodes-decommissioned": "0",
+          "dfs-nodes-decommissioning": "0",
+          "dfs-nodes-running": "3"
+        },
+        "yarnMetrics": {
+          "yarn-apps-completed": "0",
+          "yarn-apps-failed": "0",
+          "yarn-apps-killed": "0",
+          "yarn-apps-pending": "0",
+          "yarn-apps-running": "0",
+          "yarn-apps-submitted": "0",
+          "yarn-containers-allocated": "0",
+          "yarn-containers-pending": "0",
+          "yarn-containers-reserved": "0",
+          "yarn-memory-mb-allocated": "0",
+          "yarn-memory-mb-available": "27088",
+          "yarn-memory-mb-pending": "0",
+          "yarn-memory-mb-reserved": "0",
+          "yarn-memory-mb-total": "27088",
+          "yarn-nodes-active": "2",
+          "yarn-nodes-decommissioned": "0",
+          "yarn-nodes-decommissioning": "0",
+          "yarn-nodes-lost": "0",
+          "yarn-nodes-new": "0",
+          "yarn-nodes-rebooted": "0",
+          "yarn-nodes-shutdown": "0",
+          "yarn-nodes-unhealthy": "0",
+          "yarn-vcores-allocated": "0",
+          "yarn-vcores-available": "8",
+          "yarn-vcores-pending": "0",
+          "yarn-vcores-reserved": "0",
+          "yarn-vcores-total": "8"
+        }
       },
       "projectId": "${projectId}",
       "status": {
@@ -1023,10 +1101,6 @@ X-Xss-Protection: 0
         },
         {
           "state": "UPDATING",
-          "stateStartTime": "2024-04-01T12:34:56.123456Z"
-        },
-        {
-          "state": "RUNNING",
           "stateStartTime": "2024-04-01T12:34:56.123456Z"
         }
       ]

@@ -143,18 +143,6 @@ type IAMPolicyAnalysisQuery_Options struct {
 	AnalyzeServiceAccountImpersonation *bool `json:"analyzeServiceAccountImpersonation,omitempty"`
 }
 
-// +kcc:proto=google.cloud.asset.v1.SavedQuery.QueryContent
-type SavedQuery_QueryContent struct {
-	// An IAM Policy Analysis query, which could be used in
-	//  the
-	//  [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy]
-	//  RPC or the
-	//  [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning]
-	//  RPC.
-	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.QueryContent.iam_policy_analysis_query
-	IAMPolicyAnalysisQuery *IAMPolicyAnalysisQuery `json:"iamPolicyAnalysisQuery,omitempty"`
-}
-
 // +kcc:proto=google.cloud.asset.v1.FeedOutputConfig
 type FeedOutputConfig struct {
 	// Destination on Pub/Sub.
