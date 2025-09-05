@@ -17,10 +17,16 @@ kind: BigQueryTable
 metadata:
   name: bigquerytable-${uniqueId}
   labels:
-    metadata-key1: updated-value1
-    metadata-key2: updated-value2
-    app.kubernetes.io/managed-by: kcc
-    configsync.gke.io/declared-version: v1beta1
+    app.kubernetes.io/name: "mock-app"
+    app.kubernetes.io/instance: "mock-instance"
+    app.kubernetes.io/version: "v1.0.0"
+    app.kubernetes.io/component: "mock-component"
+    app.kubernetes.io/part-of: "mock-part-of"
+    app.kubernetes.io/managed-by: "configmanagement.gke.io"
+    applyset.kubernetes.io/id: mock-applyset-id
+    configmanagement.gke.io/sync-name: mock-sync-name
+    configmanagement.gke.io/sync-namespace: mock-sync-namespace
+    custom-label: "bar" # valid label
   annotations:
     alpha.cnrm.cloud.google.com/reconciler: direct
 spec:
