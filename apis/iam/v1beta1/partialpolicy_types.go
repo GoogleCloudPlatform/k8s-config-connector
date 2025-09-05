@@ -80,6 +80,7 @@ type IAMPartialPolicyBinding struct {
 type IAMPartialPolicySpec struct {
 	// Immutable. Required. The GCP resource to set the IAM policy on (e.g.
 	// organization, project...)
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="resourceRef is immutable"
 	ResourceReference ResourceReference `json:"resourceRef"`
 	// Optional. The list of IAM bindings managed by Config Connector.
 	Bindings []IAMPartialPolicyBinding `json:"bindings,omitempty"`
