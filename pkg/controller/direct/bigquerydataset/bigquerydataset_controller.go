@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"sort"
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
@@ -104,6 +105,21 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 	return nil, nil
 }
 
+func sortAccessEntries(entries []*bigquery.AccessEntry) {
+	if entries == nil {
+		return
+	}
+	sort.Slice(entries, func(i, j int) bool {
+		if entries[i].Role != entries[j].Role {
+			return entries[i].Role < entries[j].Role
+		}
+		if entries[i].EntityType != entries[j].EntityType {
+			return entries[i].EntityType < entries[j].EntityType
+		}
+		return entries[i].Entity < entries[j].Entity
+	})
+}
+
 type Adapter struct {
 	id         *krm.DatasetIdentity
 	gcpService *bigquery.Client
@@ -138,7 +154,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 	desiredDataset := BigQueryDatasetSpec_ToProto(mapCtx, &a.desired.Spec)
 	desiredDataset.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.Labels)
-	// return fmt.Errorf("filtered labels: %v", desiredDataset.Labels)
+	ApplyBigqueryDatasetGCPDefaults(mapCtx, &a.desired.Spec, desiredDataset, nil)
 
 	// Resolve KMS key reference
 	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
@@ -200,6 +216,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	ApplyBigqueryDatasetGCPDefaults(mapCtx, &desiredKRM.Spec, desired, a.actual)
 
 	// Resolve KMS key reference
 	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
@@ -209,8 +226,8 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		}
 		desired.DefaultEncryptionConfig.KMSKeyName = kmsRef.External
 	}
-
 	resource := cloneBigQueryDatasetMetadate(a.actual)
+
 	// Check for immutable fields
 	if desiredKRM.Spec.Location != nil && !reflect.DeepEqual(desired.Location, resource.Location) {
 		return fmt.Errorf("BigQueryDataset %s/%s location cannot be changed, actual: %s, desired: %s", u.GetNamespace(), u.GetName(), resource.Location, desired.Location)
@@ -256,7 +273,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		resource.MaxTimeTravel = desired.MaxTimeTravel
 		updateMask.Paths = append(updateMask.Paths, "max_time_travel")
 	}
-	if desired.Access != nil && !reflect.DeepEqual(desired.Access, resource.Access) {
+	if desired.Access != nil && foundDiffDatasetAccessEntry(desired.Access, resource.Access) {
 		resource.Access = desired.Access
 		updateMask.Paths = append(updateMask.Paths, "access")
 	}

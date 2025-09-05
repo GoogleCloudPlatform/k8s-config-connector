@@ -41,7 +41,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "location": "us-central1"
+  "location": "us-central1",
+  "maxTimeTravelHours": "168"
 }
 
 200 OK
@@ -88,6 +89,7 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
+  "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_${uniqueId}",
   "type": "DEFAULT"
 }
@@ -153,9 +155,25 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "access": null,
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    }
+  ],
   "friendlyName": "bigquerydataset-sample-updated",
-  "isCaseInsensitive": false,
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -200,7 +218,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-sample-updated",
   "id": "000000000000000000000",
-  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -256,7 +273,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-sample-updated",
   "id": "000000000000000000000",
-  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -311,7 +327,6 @@ X-Xss-Protection: 0
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-sample-updated",
   "id": "000000000000000000000",
-  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",

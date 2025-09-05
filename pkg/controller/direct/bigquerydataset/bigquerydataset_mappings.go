@@ -213,7 +213,9 @@ func BigQueryDataset_ToMetadataToUpdate(mapCtx *direct.MapContext, in *pb.Datase
 	if in.MaxTimeTravel != 0 || slices.Contains(updatePaths, "max_time_travel") {
 		out.MaxTimeTravel = in.MaxTimeTravel
 	}
-	out.IsCaseInsensitive = in.IsCaseInsensitive
+	if slices.Contains(updatePaths, "is_case_insensitive") {
+		out.IsCaseInsensitive = in.IsCaseInsensitive
+	}
 	if in.Name != "" || slices.Contains(updatePaths, "friendly_name") {
 		out.Name = in.Name
 	}
