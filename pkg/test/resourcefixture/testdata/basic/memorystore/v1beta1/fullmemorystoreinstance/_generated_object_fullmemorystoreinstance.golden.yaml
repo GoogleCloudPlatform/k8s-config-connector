@@ -1,0 +1,77 @@
+apiVersion: memorystore.cnrm.cloud.google.com/v1alpha1
+kind: MemorystoreInstance
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: memorystore-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  authorizationMode: IAM_AUTH
+  deletionProtectionEnabled: false
+  endpoints:
+  - connections:
+    - pscAutoConnection:
+        networkRef:
+          external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+        projectRef:
+          external: ${projectId}
+  engineConfigs:
+    maxclients: "10"
+    maxmemory-policy: volatile-ttl
+  engineVersion: VALKEY_7_2
+  location: us-central1
+  nodeType: STANDARD_SMALL
+  persistenceConfig:
+    aofConfig:
+      appendFsync: EVERY_SEC
+    mode: RDB
+    rdbConfig:
+      rdbSnapshotPeriod: ONE_HOUR
+      rdbSnapshotStartTime: "2025-10-02T15:01:23Z"
+  projectRef:
+    external: ${projectId}
+  replicaCount: 1
+  shardCount: 12
+  transitEncryptionMode: SERVER_AUTHENTICATION
+  zoneDistributionConfig:
+    mode: SINGLE_ZONE
+    zone: us-central1-b
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: |-
+      Update call failed: error updating: updating instance projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}: googleapi: Error 400: invalid argument: prepareUpdate failed: unable to update RDB and AOF config at the same time
+      req: update_mask:{paths:"persistence_config"} instance:{name:"projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}" replica_count:1 authorization_mode:IAM_AUTH transit_encryption_mode:SERVER_AUTHENTICATION shard_count:12 node_type:STANDARD_SMALL persistence_config:{mode:RDB rdb_config:{rdb_snapshot_period:ONE_HOUR rdb_snapshot_start_time:{seconds:1759417283}} aof_config:{append_fsync:EVERY_SEC}} engine_version:"VALKEY_7_2" engine_configs:{key:"maxclients" value:"10"} engine_configs:{key:"maxmemory-policy" value:"volatile-ttl"} zone_distribution_config:{zone:"us-central1-b" mode:SINGLE_ZONE} deletion_protection_enabled:false endpoints:{connections:{psc_auto_connection:{project_id:"${projectId}" network:"projects/${projectId}/global/networks/computenetwork-${uniqueId}"}}}}
+      error details: name = DebugInfo detail = generic::invalid_argument: invalid argument: prepareUpdate failed: unable to update RDB and AOF config at the same time
+      req: update_mask:{paths:"persistence_config"} instance:{name:"projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}" replica_count:1 authorization_mode:IAM_AUTH transit_encryption_mode:SERVER_AUTHENTICATION shard_count:12 node_type:STANDARD_SMALL persistence_config:{mode:RDB rdb_config:{rdb_snapshot_period:ONE_HOUR rdb_snapshot_start_time:{seconds:1759417283}} aof_config:{append_fsync:EVERY_SEC}} engine_version:"VALKEY_7_2" engine_configs:{key:"maxclients" value:"10"} engine_configs:{key:"maxmemory-policy" value:"volatile-ttl"} zone_distribution_config:{zone:"us-central1-b" mode:SINGLE_ZONE} deletion_protection_enabled:false endpoints:{connections:{psc_auto_connection:{project_id:"${projectId}" network:"projects/${projectId}/global/networks/computenetwork-${uniqueId}"}}}} stack = cloud/control2/shared/userfriendly/userfriendly.go:1351 +0x25 google3/cloud/control2/shared/userfriendly/userfriendly.DebugInfoWithMessage({0xc01e4ee400, 0x3a6}) cloud/control2/shared/userfriendly/userfriendly.go:1346 +0x2b google3/cloud/control2/shared/userfriendly/userfriendly.debugInfoWithError({0x55d31f693a00?, 0xc020a900c0?}) cloud/control2/shared/userfriendly/userfriendly.go:1235 +0x247 google3/cloud/control2/shared/userfriendly/userfriendly.FromExternalUserFriendlyStatus({0x55d31f7fdec8, 0xc01e976540}, {0x55d311d4d190, 0xd}, 0xc020a900c0, 0x1, 0x0) cloud/control2/frontend/clhprotocol/clh_client.go:193 +0x60d google3/cloud/control2/frontend/clhprotocol/clhclient.CLHClient.callBackendMethod({0x55d31e8a7c60?}, {0x55d31f7fdec8, 0xc01e976540}, {0xc020e36f90, 0xb}, 0x94626834a6, {0x55d31f7ed310, 0xc027c61d60}, {0x55d31f693468, 0xc019784a00}, ...) cloud/control2/frontend/clhprotocol/clh_client.go:57 +0x78 google3/cloud/control2/frontend/clhprotocol/clhclient.CLHClient.CallPreprocess({0xc0148061d0?}, {0x55d31f7fdec8, 0xc01e976540}, 0x0, {0xc020e36f90?, 0xc0018bbb00?}, 0xc027c61c70?, 0x55d31f69baa0?, {0x55d31f693468, 0xc019784a00}, ...) cloud/control2/frontend/handler/mutate.go:490 +0x2c98 google3/cloud/control2/frontend/handler/handler.Handler.handleResourceMutation({{{0x55d31f8086b8, 0xc005ec1080}, {0x0, 0x0}}, {{0xc00c1f4f30, 0x1, 0x1}, 0xc00c5b9698, 0xc00c1f4f20, {0x55d31f82c840, ...}, ...}, ...}, ...) cloud/control2/frontend/handler/handler.go:416 +0xc5b google3/cloud/control2/frontend/handler/handler.Handler.start({{{0x55d31f8086b8, 0xc005ec1080}, {0x0, 0x0}}, {{0xc00c1f4f30, 0x1, 0x1}, 0xc00c5b9698, 0xc00c1f4f20, {0x55d31f82c840, ...}, ...}, ...}, ...) cloud/control2/frontend/handler/handler.go:316 +0x66 google3/cloud/control2/frontend/handler/handler.init.func23({_, _}, {{{0x55d31f8086b8, 0xc005ec1080}, {0x0, 0x0}}, {{0xc00c1f4f30, 0x1, 0x1}, 0xc00c5b9698, ...}, ...}, ...) cloud/control2/frontend/handler/handler.go:311 +0x173 google3/cloud/control2/frontend/handler/handler.Handler.HandleRequest({{{0x55d31f8086b8, 0xc005ec1080}, {0x0, 0x0}}, {{0xc00c1f4f30, 0x1, 0x1}, 0xc00c5b9698, 0xc00c1f4f20, {0x55d31f82c840, ...}, ...}, ...}, ...) cloud/control2/frontend/server/request_handler.go:117 +0x53c google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequestWithFullMethodName(0xc010f43c20, {0x55d31f7fdec8, 0xc02b0539e0}, 0xc02bd27400, 0xc01dfa42e8, 0xc0243e2228, {0xc01fcb8720?, 0x0?}) cloud/control2/frontend/server/request_handler.go:90 +0x536 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handleRequest(0xc010f43c20, {0x55d31f7fdec8, 0xc02b0539e0}, 0xc01dfa42e8, 0xc0243e2228) cloud/control2/frontend/server/request_handler.go:59 +0xd5 google3/cloud/control2/frontend/server/requesthandler.(*Handler).handle(0xc010f43c20, {0x55d31f7fdec8, 0xc02b0539e0}, 0xc01dfa42e8, 0xc0243e2228) cloud/control2/shared/genericrpc/service.go:171 +0x3ef google3/cloud/control2/shared/genericrpc/genericrpc.(*Dispatcher).DefaultMethodHandler(0xc010cd8c60, {0x55d31f7fdec8, 0xc02b0539e0}, 0xc01dfa42e8) net/rpc/go/stream.go:1175 +0x43 google3/net/rpc/go/rpc.runStreamHandler({0x55d31f7fdec8?, 0xc02b0539e0?}, 0xc01dfa42e8?, {0x0?, 0x0?}, {0x55d31f814920, 0xc027c61bd0}) net/goa/rpc/rpchandler.go:100 +0x4d7 google3/net/goa/rpc/rpchandler.ExecHandlerSubset({0x55d31f7fdec8?, 0xc008102060?}, 0xc014807550) net/goa/rpc/rpchandler.go:327 +0x9e5 google3/net/goa/rpc/rpchandler.(*closedRegistry).hook(0xc00f55c020, {0x55d31f7fe518, 0xc023f51080}, 0xc014702200) production/fireaxe/go/filters/rpcserverinterceptor.go:62 +0x2f0 google3/production/fireaxe/go/filters/rpcserverinterceptor.(*Interceptor).MakeHook-fm.(*Interceptor).MakeHook.func2({0x55d31f7fe518, 0xc023f51080}, 0xc014702200)
+    reason: UpdateFailed
+    status: "False"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    endpoints:
+    - connections:
+      - pscAutoConnection:
+          connectionType: CONNECTION_TYPE_DISCOVERY
+          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-483d1fba-6b97-4277-b351-e475f843915a
+          ipAddress: 10.128.0.2
+          port: 6379
+          pscConnectionID: "143547445115092994"
+          serviceAttachment: projects/962198197892/regions/us-central1/serviceAttachments/gcp-memorystore-auto-eb3c5838-232f-40-psc-sa
+      - pscAutoConnection:
+          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-cea8fc2e-3e7f-41a3-be6f-73198bd198f2
+          ipAddress: 10.128.0.3
+          port: 6379
+          pscConnectionID: "143547445115092995"
+          serviceAttachment: projects/962198197892/regions/us-central1/serviceAttachments/gcp-memorystore-auto-eb3c5838-232f-40-psc-sa-2
+    nodeConfig:
+      sizeGB: 6.5
+    state: ACTIVE
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
