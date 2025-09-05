@@ -14,59 +14,71 @@
 
 package v1alpha1
 
-/* NOTYET
+// +tool:krm-identity
+// proto.message: mockgcp.cloud.servicenetworking.v1.PeeredDnsDomain
+// proto.service: mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer
+// crd.kind: ServiceNetworkingPeeredDnsDomain
+// crd.version: v1alpha1
+
 import (
 	"context"
 	"fmt"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// PeeredDnsDomainIdentity defines the resource reference to ServiceNetworkingPeeredDNSDomain, which "External" field
-// holds the GCP identifier for the KRM object.
-type PeeredDnsDomainIdentity struct {
-	parent *PeeredDnsDomainParent
-	id     string
+var _ identity.Identity = &PeeredDNSDomainIdentity{}
+
+// +k8s:deepcopy-gen=false
+type PeeredDNSDomainIdentity struct {
+	Network *refs.ComputeNetworkID
+	Name    string
 }
 
-func (i *PeeredDnsDomainIdentity) String() string {
-	return i.parent.String() + "/peereddnsdomains/" + i.id
+func (i *PeeredDNSDomainIdentity) String() string {
+	return fmt.Sprintf("services/servicenetworking.googleapis.com/projects/%s/global/networks/%s/peeredDnsDomains/%s", i.Network.Project, i.Network.Network, i.Name)
 }
 
-func (i *PeeredDnsDomainIdentity) ID() string {
-	return i.id
+func (i *PeeredDNSDomainIdentity) FromExternal(ref string) error {
+	tokens := strings.Split(ref, "/")
+	if len(tokens) == 9 &&
+		tokens[0] == "services" &&
+		tokens[1] == "servicenetworking.googleapis.com" &&
+		tokens[2] == "projects" &&
+		tokens[4] == "global" &&
+		tokens[5] == "networks" &&
+		tokens[7] == "peeredDnsDomains" {
+
+		network := &refs.ComputeNetworkID{}
+		if err := network.FromExternal("projects/" + tokens[3] + "/global/networks/" + tokens[6]); err != nil {
+			return fmt.Errorf("format of PeeredDNSDomain ref=%q was not known (use %q)", ref, "services/servicenetworking.googleapis.com/projects/<project>/global/networks/<networkID>/peeredDnsDomains/<name>")
+		}
+
+		name := tokens[8]
+
+		i.Network = network
+		i.Name = name
+
+		return nil
+	}
+
+	return fmt.Errorf("format of PeeredDNSDomain ref=%q was not known (use %q)", ref, "services/servicenetworking.googleapis.com/projects/<project>/global/networks/<networkID>/peeredDnsDomains/<name>")
 }
 
-func (i *PeeredDnsDomainIdentity) Parent() *PeeredDnsDomainParent {
-	return i.parent
-}
+var _ identity.Resource = &ServiceNetworkingPeeredDNSDomain{}
 
-type PeeredDnsDomainParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *PeeredDnsDomainParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-// New builds a PeeredDnsDomainIdentity from the Config Connector PeeredDnsDomain object.
-func NewPeeredDnsDomainIdentity(ctx context.Context, reader client.Reader, obj *ServiceNetworkingPeeredDNSDomain) (*PeeredDnsDomainIdentity, error) {
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+func (obj *ServiceNetworkingPeeredDNSDomain) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	// Get parent ID
+	networkID, err := obj.GetParentIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	// location := obj.Spec.Location
 
-	// Get desired ID
+	// Get resource ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
@@ -75,44 +87,36 @@ func NewPeeredDnsDomainIdentity(ctx context.Context, reader client.Reader, obj *
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	id := &PeeredDNSDomainIdentity{
+		Network: networkID.(*refs.ComputeNetworkID),
+		Name:    resourceID,
+	}
+
+	// Attempt to ensure ID is immutable, by verifying against previously-set `status.externalRef`.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
-		actualParent, actualResourceID, err := ParsePeeredDnsDomainExternal(externalRef)
-		if err != nil {
+		previousID := &PeeredDNSDomainIdentity{}
+		if err := previousID.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Network != network {
-			return nil, fmt.Errorf("spec.network changed, expect %s, got %s", actualParent.Network, network)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+		if id.String() != previousID.String() {
+			return nil, fmt.Errorf("cannot update ServiceNetworkingPeeredDNSDomain identity (old=%q, new=%q): identity is immutable", previousID.String(), id.String())
 		}
 	}
-	return &PeeredDnsDomainIdentity{
-		parent: &PeeredDnsDomainParent{
-			ProjectID: projectID,
-			Network:  network,
-		},
-		id: resourceID,
-	}, nil
+
+	return id, nil
 }
 
-func ParsePeeredDnsDomainExternal(external string) (parent *PeeredDnsDomainParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "peereddnsdomains" {
-		return nil, "", fmt.Errorf("format of ServiceNetworkingPeeredDNSDomain external=%q was not known (use projects/{{projectID}}/locations/{{location}}/peereddnsdomains/{{peereddnsdomainID}})", external)
+func (obj *ServiceNetworkingPeeredDNSDomain) GetParentIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	// Normalize parent reference
+	networkRef := *obj.Spec.NetworkRef
+	if err := networkRef.Normalize(ctx, reader, obj); err != nil {
+		return nil, err
 	}
-	parent = &PeeredDnsDomainParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+	// Get parent identity
+	networkID := &refs.ComputeNetworkID{}
+	if err := networkID.FromExternal(networkRef.External); err != nil {
+		return nil, err
 	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return networkID, nil
 }
-*/

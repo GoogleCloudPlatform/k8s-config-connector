@@ -2170,8 +2170,6 @@
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.pubsubTopic" is not set in unstructured objects
 [missing_field] crd=securitycenternotificationconfigs.securitycenter.cnrm.cloud.google.com version=v1alpha1: field ".spec.streamingConfig.filter" is not set in unstructured objects
-[missing_field] crd=servicenetworkingpeereddnsdomains.servicenetworking.cnrm.cloud.google.com version=v1alpha1: field ".spec.dnsSuffix" is not set in unstructured objects
-[missing_field] crd=servicenetworkingpeereddnsdomains.servicenetworking.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=serviceusageconsumerquotaoverrides.serviceusage.cnrm.cloud.google.com version=v1alpha1: field ".spec.dimensions" is not set in unstructured objects
 [missing_field] crd=serviceusageconsumerquotaoverrides.serviceusage.cnrm.cloud.google.com version=v1alpha1: field ".spec.force" is not set in unstructured objects
 [missing_field] crd=serviceusageconsumerquotaoverrides.serviceusage.cnrm.cloud.google.com version=v1alpha1: field ".spec.limit" is not set in unstructured objects

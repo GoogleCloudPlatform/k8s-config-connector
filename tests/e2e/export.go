@@ -19,6 +19,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -79,6 +80,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecret"}:
 		exportURI = "//secretmanager.googleapis.com/projects/" + projectID + "/secrets/" + resourceID
 
+	case schema.GroupKind{Group: "servicenetworking.cnrm.cloud.google.com", Kind: "ServiceNetworkingPeeredDnsDomain"}:
+		network := resolveNetwork(h, obj)
+		exportURI = fmt.Sprintf("//servicenetworking.googleapis.com/services/servicenetworking.googleapis.com/projects/%s/global/networks/%s/peeredDnsDomains/{resourceID}", network.Project, network.Network)
 	}
 
 	if exportURI == "" {
@@ -129,7 +133,7 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 		break
 	default:
 		if err := export.Execute(h.Ctx, &exportParams); err != nil {
-			h.Errorf("error from export.Execute: %v", err)
+			h.Errorf("error from export.Execute of %q: %v", exportURI, err)
 			return ""
 		}
 	}
@@ -195,4 +199,22 @@ func resolveProjectID(h *create.Harness, obj *unstructured.Unstructured) string 
 
 	// Assume it's the namespace
 	return h.Project.ProjectID
+}
+
+func resolveNetwork(h *create.Harness, obj *unstructured.Unstructured) v1beta1.ComputeNetworkID {
+	networkRef := v1beta1.ComputeNetworkRef{}
+
+	networkRef.External, _, _ = unstructured.NestedString(obj.Object, "spec", "networkRef", "external")
+	networkRef.Name, _, _ = unstructured.NestedString(obj.Object, "spec", "networkRef", "name")
+	networkRef.Namespace, _, _ = unstructured.NestedString(obj.Object, "spec", "networkRef", "namespace")
+
+	if err := networkRef.Normalize(h.Ctx, h.GetClient(), obj); err != nil {
+		h.Fatalf("normalizing networkRef: %v", err)
+	}
+
+	var id v1beta1.ComputeNetworkID
+	if err := id.FromExternal(networkRef.External); err != nil {
+		h.Fatalf("error from id.FromExternal: %v", err)
+	}
+	return id
 }
