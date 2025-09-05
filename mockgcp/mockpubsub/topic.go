@@ -47,7 +47,7 @@ func (s *publisherService) CreateTopic(ctx context.Context, req *pb.Topic) (*pb.
 	obj.Name = name.String()
 
 	s.populateDefaultsForTopic(obj)
-	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+	if err := s.topics.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
@@ -97,7 +97,7 @@ func (s *publisherService) UpdateTopic(ctx context.Context, req *pb.UpdateTopicR
 	}
 	fqn := name.String()
 	existing := &pb.Topic{}
-	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+	if err := s.topics.Get(ctx, fqn, existing); err != nil {
 		return nil, err
 	}
 
@@ -151,7 +151,7 @@ func (s *publisherService) UpdateTopic(ctx context.Context, req *pb.UpdateTopicR
 	//   }
 	// }
 
-	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+	if err := s.topics.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
 	return updated, nil
@@ -164,7 +164,7 @@ func (s *publisherService) GetTopic(ctx context.Context, req *pb.GetTopicRequest
 	}
 	fqn := name.String()
 	obj := &pb.Topic{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+	if err := s.topics.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource not found (resource=%s).", name.ID)
 		}
@@ -184,9 +184,7 @@ func (s *publisherService) ListTopics(ctx context.Context, req *pb.ListTopicsReq
 
 	var topics []*pb.Topic
 
-	topicKind := (&pb.Topic{}).ProtoReflect().Descriptor()
-	if err := s.storage.List(ctx, topicKind, storage.ListOptions{}, func(obj proto.Message) error {
-		topic := obj.(*pb.Topic)
+	if err := s.topics.List(ctx, storage.ListOptions{}, func(topic *pb.Topic) error {
 		if strings.HasPrefix(topic.Name, findPrefix) {
 			topics = append(topics, topic)
 		}
@@ -208,7 +206,7 @@ func (s *publisherService) DeleteTopic(ctx context.Context, req *pb.DeleteTopicR
 	}
 	fqn := name.String()
 	deletedObj := &pb.Topic{}
-	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
+	if err := s.topics.Delete(ctx, fqn, deletedObj); err != nil {
 		return nil, err
 	}
 	return &emptypb.Empty{}, nil
