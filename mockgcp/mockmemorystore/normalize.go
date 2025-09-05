@@ -21,7 +21,8 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	replacements.ReplacePath("pscAttachmentDetails[].serviceAttachment", "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment")
+	replacements.ReplacePath(".pscAttachmentDetails[].serviceAttachment", "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment")
+	replacements.ReplacePath(".satisfiesPzi", "true")
 	// 	visitor.ReplacePath(".response.pscConnections[].address", "10.11.12.13")
 	// 	visitor.ReplacePath(".discoveryEndpoints[].address", "10.11.12.13")
 	// 	visitor.ReplacePath(".response.discoveryEndpoints[].address", "10.11.12.13")
