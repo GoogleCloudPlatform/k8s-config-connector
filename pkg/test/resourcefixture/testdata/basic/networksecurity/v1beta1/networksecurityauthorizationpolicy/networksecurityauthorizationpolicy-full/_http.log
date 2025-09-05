@@ -31,6 +31,11 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
 {
   "action": 1,
   "description": "A full authorization policy for testing",
+  "labels": {
+    "cnrm-test": "true",
+    "custom-label": "foo",
+    "managed-by-cnrm": "true"
+  },
   "rules": [
     {
       "destinations": [
@@ -106,6 +111,11 @@ X-Xss-Protection: 0
   "action": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A full authorization policy for testing",
+  "labels": {
+    "cnrm-test": "true",
+    "custom-label": "foo",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
   "rules": [
     {
@@ -151,6 +161,11 @@ X-Goog-Request-Params: authorization_policy.name=networksecurityauthorizationpol
 {
   "action": 1,
   "description": "A full authorization policy for testing",
+  "labels": {
+    "cnrm-test": "true",
+    "custom-label": "foo",
+    "managed-by-cnrm": "true"
+  },
   "name": "networksecurityauthorizationpolicy-full-${uniqueId}",
   "rules": [
     {
@@ -224,6 +239,11 @@ X-Xss-Protection: 0
   "action": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A full authorization policy for testing",
+  "labels": {
+    "cnrm-test": "true",
+    "custom-label": "foo",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
   "rules": [
     {
@@ -261,7 +281,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://networksecurity.googleapis.com/v1beta1/networksecurityauthorizationpolicy-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=action%2Cdescription%2Cname%2Crules
+PATCH https://networksecurity.googleapis.com/v1beta1/networksecurityauthorizationpolicy-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=action%2Cdescription%2Clabels%2Cname%2Crules
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: authorization_policy.name=networksecurityauthorizationpolicy-full-${uniqueId}
@@ -269,6 +289,11 @@ X-Goog-Request-Params: authorization_policy.name=networksecurityauthorizationpol
 {
   "action": 2,
   "description": "A full authorization policy for testing - updated",
+  "labels": {
+    "cnrm-test": "true",
+    "custom-label": "bar",
+    "managed-by-cnrm": "true"
+  },
   "name": "networksecurityauthorizationpolicy-full-${uniqueId}",
   "rules": [
     {
@@ -342,6 +367,11 @@ X-Xss-Protection: 0
   "action": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A full authorization policy for testing",
+  "labels": {
+    "cnrm-test": "true",
+    "custom-label": "foo",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
   "rules": [
     {

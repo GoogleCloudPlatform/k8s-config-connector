@@ -117,13 +117,7 @@ func (m *authorizationPolicyModel) client(ctx context.Context) (*networksecurity
 
 func (m *authorizationPolicyModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.NetworkSecurityAuthorizationPolicy{}
-
-	copied := u.DeepCopy()
-	if err := label.ComputeLabels(copied); err != nil {
-		return nil, err
-	}
-
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(copied.Object, &obj); err != nil {
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
@@ -191,6 +185,7 @@ func (a *authorizationPolicyAdapter) Create(ctx context.Context, createOp *direc
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	desired.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.Labels)
 	req := &networksecuritypb.CreateAuthorizationPolicyRequest{
 		Parent:                a.id.Parent().String(),
 		AuthorizationPolicyId: a.id.ID(),
@@ -230,6 +225,7 @@ func (a *authorizationPolicyAdapter) Update(ctx context.Context, updateOp *direc
 		return mapCtx.Err()
 	}
 	desired.Name = a.id.ID()
+	desired.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.Labels)
 
 	diff, err := common.CompareProtoMessage(desired, a.actual, common.BasicDiff)
 	if err != nil {
