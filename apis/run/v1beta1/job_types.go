@@ -17,6 +17,7 @@ package v1beta1
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 
+	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vpcaccess/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -788,7 +789,8 @@ type VPCAccess struct {
 	//  For more information on sending traffic to a VPC network via a connector,
 	//  visit https://cloud.google.com/run/docs/configuring/vpc-connectors.
 	// +kcc:proto:field=google.cloud.run.v2.VpcAccess.connector
-	Connector *string `json:"connector,omitempty"`
+	// +kcc:ref=VPCAccessConnector
+	ConnectorRef *vpcaccessv1beta1.VPCAccessConnectorRef `json:"connectorRef,omitempty"`
 
 	// Optional. Traffic VPC egress settings. If not provided, it defaults to
 	//  PRIVATE_RANGES_ONLY.
