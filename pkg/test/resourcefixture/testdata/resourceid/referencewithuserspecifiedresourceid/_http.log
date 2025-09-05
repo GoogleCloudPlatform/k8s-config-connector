@@ -40,7 +40,8 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "location": "us-central1"
+  "location": "us-central1",
+  "maxTimeTravelHours": "168"
 }
 
 200 OK
@@ -86,6 +87,7 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
+  "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}",
   "type": "DEFAULT"
 }

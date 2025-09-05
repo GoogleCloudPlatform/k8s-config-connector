@@ -17,6 +17,8 @@ package bigquerydataset
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
+	"sort"
 
 	bigquery "cloud.google.com/go/bigquery"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -89,6 +91,7 @@ func cloneBigQueryDatasetMetadate(in *bigquery.DatasetMetadata) *bigquery.Datase
 					ProjectID: access.Dataset.Dataset.ProjectID,
 					DatasetID: access.Dataset.Dataset.DatasetID,
 				},
+				TargetTypes: append([]string{}, access.Dataset.TargetTypes...),
 			}
 		}
 		acccessList = append(acccessList, curAccess)
@@ -129,4 +132,85 @@ func cloneBigQueryDatasetMetadate(in *bigquery.DatasetMetadata) *bigquery.Datase
 	out.ETag = in.ETag
 	out.FullID = in.FullID
 	return out
+}
+
+func foundDiffDatasetAccessEntry(a1, a2 []*bigquery.AccessEntry) bool {
+	if len(a1) != len(a2) {
+		return true
+	}
+	sortAccessEntries(a1)
+	sortAccessEntries(a2)
+	for i := range a1 {
+		if a1[i].EntityType != bigquery.RoutineEntity && a1[i].EntityType != bigquery.ViewEntity && a1[i].EntityType != bigquery.DatasetEntity {
+			if !reflect.DeepEqual(a1[i], a2[i]) {
+				return true
+			}
+			continue
+		}
+		if diffView(a1[i].View, a2[i].View) {
+			return true
+		}
+		if diffRoutine(a1[i].Routine, a2[i].Routine) {
+			return true
+		}
+		if diffDataset(a1[i].Dataset, a2[i].Dataset) {
+			return true
+		}
+	}
+	return false
+}
+
+func diffView(v1, v2 *bigquery.Table) bool {
+	if v1 == nil && v2 == nil {
+		return false
+	}
+	if v1.DatasetID != v2.DatasetID || v1.ProjectID != v2.ProjectID || v1.TableID != v2.TableID {
+		return true
+	}
+	return false
+}
+func diffRoutine(r1, r2 *bigquery.Routine) bool {
+	if r1 == nil && r2 == nil {
+		return false
+	}
+	if r1.DatasetID != r2.DatasetID || r1.ProjectID != r2.ProjectID || r1.RoutineID != r2.RoutineID {
+		return true
+	}
+	return false
+}
+func diffDataset(d1, d2 *bigquery.DatasetAccessEntry) bool {
+	if d1 == nil && d2 == nil {
+		return false
+	}
+	if d1.Dataset == nil && d2.Dataset == nil {
+		return false
+	}
+	if d1.Dataset.DatasetID != d2.Dataset.DatasetID || d1.Dataset.ProjectID != d2.Dataset.ProjectID {
+		return true
+	}
+	if len(d1.TargetTypes) != len(d2.TargetTypes) {
+		return true
+	}
+	if len(d1.TargetTypes) > 0 {
+		sortStringSlice(d1.TargetTypes)
+		sortStringSlice(d2.TargetTypes)
+		for i := range d1.TargetTypes {
+			if d1.TargetTypes[i] != d2.TargetTypes[i] {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// sortStringSlice sorts a slice of strings in place.
+func sortStringSlice(s []string) {
+	if len(s) <= 1 {
+		return
+	}
+	// Use the standard library sort
+	// Import "sort" package at the top if not already imported
+	// sort.Strings(s)
+	// Since sort is not imported yet, add it to the imports
+	sort.Strings(s)
 }
