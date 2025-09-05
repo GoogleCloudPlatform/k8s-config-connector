@@ -792,12 +792,39 @@ spec:
                         description: Optional. VPC Access configuration to use for
                           this Task. For more information, visit https://cloud.google.com/run/docs/configuring/connecting-vpc.
                         properties:
-                          connector:
+                          connectorRef:
                             description: 'VPC Access connector name. Format: `projects/{project}/locations/{location}/connectors/{connector}`,
                               where `{project}` can be project id or number. For more
                               information on sending traffic to a VPC network via
                               a connector, visit https://cloud.google.com/run/docs/configuring/vpc-connectors.'
-                            type: string
+                            oneOf:
+                            - not:
+                                required:
+                                - external
+                              required:
+                              - name
+                            - not:
+                                anyOf:
+                                - required:
+                                  - name
+                                - required:
+                                  - namespace
+                              required:
+                              - external
+                            properties:
+                              external:
+                                description: A reference to an externally managed
+                                  VPCAccessConnector resource. Should be in the format
+                                  `projects/{project_id}/locations/{location}/connectors/{connector_id}`
+                                type: string
+                              name:
+                                description: The name of a VPCAccessConnector resource.
+                                type: string
+                              namespace:
+                                description: The namespace of a VPCAccessConnector
+                                  resource.
+                                type: string
+                            type: object
                           egress:
                             description: Optional. Traffic VPC egress settings. If
                               not provided, it defaults to PRIVATE_RANGES_ONLY.
