@@ -547,3 +547,19 @@ func PtrInt64ToPtrInt32(in *int64) *int32 {
 	out := int32(*in)
 	return &out
 }
+
+func StringPtrToInt32(mapCtx *MapContext, in *string) int32 {
+	if in == nil {
+		return 0
+	}
+	s := *in
+	if s == "" {
+		return 0
+	}
+	i64, err := strconv.ParseInt(s, 10, 32)
+	if err != nil {
+		mapCtx.Errorf("cannot parse string %q to int32: %v", s, err)
+		return 0
+	}
+	return int32(i64)
+}
