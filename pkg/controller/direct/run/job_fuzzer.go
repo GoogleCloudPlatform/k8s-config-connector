@@ -55,10 +55,12 @@ func runJobFuzzer() fuzztesting.KRMFuzzer {
 
 	f.Unimplemented_LabelsAnnotations(".labels")
 	f.Unimplemented_NotYetTriaged(".binary_authorization.policy")
+	f.Unimplemented_NotYetTriaged(".binary_authorization.use_default")
 	f.Unimplemented_NotYetTriaged(".conditions")
 	f.Unimplemented_NotYetTriaged(".generation")
 	f.Unimplemented_NotYetTriaged(".observed_generation")
 	f.Unimplemented_NotYetTriaged(".run_execution_token")
+	f.Unimplemented_NotYetTriaged(".satisfies_pzs")
 	f.Unimplemented_NotYetTriaged(".template.labels")
 	f.Unimplemented_NotYetTriaged(".template.template.containers.depends_on")
 	f.Unimplemented_NotYetTriaged(".template.template.containers.base_image_uri")
