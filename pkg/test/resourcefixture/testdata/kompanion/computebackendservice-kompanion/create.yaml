@@ -1,0 +1,22 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computebackendservice-kompanion-${uniqueId}
+  namespace: ${projectId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  description: Backend Service for computebackendservice-kompanion-${uniqueId}
+  backend:
+  - group:
+      networkEndpointGroupRef:
+        name: computeregionnetworkendpointgroup-kompanion-ase1-${uniqueId}
+  - group:
+      networkEndpointGroupRef:
+        name: computeregionnetworkendpointgroup-kompanion-ase2-${uniqueId}
+  loadBalancingScheme: INTERNAL_MANAGED
+  protocol: HTTPS
+  sessionAffinity: NONE
+  timeoutSec: 30
+  outlierDetection:
+    maxEjectionPercent: 50

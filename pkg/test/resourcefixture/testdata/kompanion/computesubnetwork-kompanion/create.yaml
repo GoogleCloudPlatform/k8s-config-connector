@@ -1,0 +1,18 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computesubnetwork-kompanion-${uniqueId}
+  namespace: ${projectId}
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+spec:
+  description: Sample subnet for melbourne.
+  ipCidrRange: 10.1.3.0/24
+  logConfig:
+    aggregationInterval: INTERVAL_10_MIN
+    flowSampling: 0.5
+    metadata: INCLUDE_ALL_METADATA
+  networkRef:
+    name: computenetwork-kompanion-${uniqueId}
+  privateIpGoogleAccess: true
+  region: australia-southeast2
