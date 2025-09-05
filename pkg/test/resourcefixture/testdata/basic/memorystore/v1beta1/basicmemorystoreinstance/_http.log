@@ -108,14 +108,14 @@ X-Xss-Protection: 0
     "pscAttachmentDetails": [
       {
         "connectionType": "CONNECTION_TYPE_DISCOVERY",
-        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+        "serviceAttachment": "projects/916304508226/regions/us-central1/serviceAttachments/gcp-memorystore-auto-71a5588a-5b81-45-psc-sa"
       },
       {
-        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+        "serviceAttachment": "projects/916304508226/regions/us-central1/serviceAttachments/gcp-memorystore-auto-71a5588a-5b81-45-psc-sa-2"
       }
     ],
     "replicaCount": 0,
-    "satisfiesPzi": "true",
+    "satisfiesPzi": false,
     "shardCount": 3,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
@@ -167,10 +167,10 @@ X-Xss-Protection: 0
   "pscAttachmentDetails": [
     {
       "connectionType": 1,
-      "serviceAttachment": "projects/509013522885/regions/us-central1/serviceAttachments/gcp-memorystore-auto-bd276596-9451-46-psc-sa"
+      "serviceAttachment": "projects/916304508226/regions/us-central1/serviceAttachments/gcp-memorystore-auto-71a5588a-5b81-45-psc-sa"
     },
     {
-      "serviceAttachment": "projects/509013522885/regions/us-central1/serviceAttachments/gcp-memorystore-auto-bd276596-9451-46-psc-sa-2"
+      "serviceAttachment": "projects/916304508226/regions/us-central1/serviceAttachments/gcp-memorystore-auto-71a5588a-5b81-45-psc-sa-2"
     }
   ],
   "replicaCount": 0,
@@ -273,14 +273,14 @@ X-Xss-Protection: 0
     "pscAttachmentDetails": [
       {
         "connectionType": "CONNECTION_TYPE_DISCOVERY",
-        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+        "serviceAttachment": "projects/916304508226/regions/us-central1/serviceAttachments/gcp-memorystore-auto-71a5588a-5b81-45-psc-sa"
       },
       {
-        "serviceAttachment": "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment"
+        "serviceAttachment": "projects/916304508226/regions/us-central1/serviceAttachments/gcp-memorystore-auto-71a5588a-5b81-45-psc-sa-2"
       }
     ],
     "replicaCount": 0,
-    "satisfiesPzi": "true",
+    "satisfiesPzi": false,
     "shardCount": 10,
     "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
@@ -332,10 +332,10 @@ X-Xss-Protection: 0
   "pscAttachmentDetails": [
     {
       "connectionType": 1,
-      "serviceAttachment": "projects/509013522885/regions/us-central1/serviceAttachments/gcp-memorystore-auto-bd276596-9451-46-psc-sa"
+      "serviceAttachment": "projects/916304508226/regions/us-central1/serviceAttachments/gcp-memorystore-auto-71a5588a-5b81-45-psc-sa"
     },
     {
-      "serviceAttachment": "projects/509013522885/regions/us-central1/serviceAttachments/gcp-memorystore-auto-bd276596-9451-46-psc-sa-2"
+      "serviceAttachment": "projects/916304508226/regions/us-central1/serviceAttachments/gcp-memorystore-auto-71a5588a-5b81-45-psc-sa-2"
     }
   ],
   "replicaCount": 0,

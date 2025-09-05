@@ -122,27 +122,31 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 
 		for _, endpoint := range obj.Endpoints {
 			for _, connections := range endpoint.Connections {
-				autoConnection := connections.GetPscAutoConnection()
-				network, err := s.parseNetworkName(autoConnection.GetNetwork())
-				if err != nil {
-					return status.Errorf(codes.InvalidArgument, "unexpected format for network %q", autoConnection.Network)
+				if connections.GetPscAutoConnection() != nil {
+					autoConnection := connections.GetPscAutoConnection()
+					network, err := s.parseNetworkName(autoConnection.GetNetwork())
+					if err != nil {
+						return status.Errorf(codes.InvalidArgument, "unexpected format for network %q", autoConnection.Network)
+					}
+					forwardingRuleID := fmt.Sprintf("ssc-auto-fr-%x", pscConnectionID)
+					autoConnection.IpAddress = fmt.Sprintf("10.128.0.%d", rand.IntN(100))
+					autoConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/%s", network.Project.ID, name.Location, forwardingRuleID)
+					autoConnection.PscConnectionId = fmt.Sprintf("%d", pscConnectionID)
+					pscConnectionID++
 				}
-				forwardingRuleID := fmt.Sprintf("ssc-auto-fr-%x", pscConnectionID)
-				autoConnection.IpAddress = fmt.Sprintf("10.128.0.%d", rand.IntN(100))
-				autoConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/%s", network.Project.ID, name.Location, forwardingRuleID)
-				autoConnection.PscConnectionId = fmt.Sprintf("%d", pscConnectionID)
-
-				// pscConnection := &pb.PscAutoConnection{
-				// 	// The assigned addresses are (seemingly) not deterministic
-				// 	IpAddress:       fmt.Sprintf("10.128.0.%d", rand.IntN(100)),
-				// 	ForwardingRule:  fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/%s", network.Project.ID, name.Location, forwardingRuleID),
-				// 	Network:         autoConnection.Network,
-				// 	ProjectId:       autoConnection.ProjectId,
-				// 	PscConnectionId: fmt.Sprintf("%d", pscConnectionID),
-				// }
-				pscConnectionID++
+				if connections.GetPscConnection() != nil {
+					userConnection := connections.GetPscConnection()
+					network, err := s.parseNetworkName(userConnection.GetNetwork())
+					if err != nil {
+						return status.Errorf(codes.InvalidArgument, "unexpected format for network %q", userConnection.Network)
+					}
+					forwardingRuleID := fmt.Sprintf("ssc-auto-fr-%x", pscConnectionID)
+					userConnection.IpAddress = fmt.Sprintf("10.128.0.%d", rand.IntN(100))
+					userConnection.ForwardingRule = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/%s", network.Project.ID, name.Location, forwardingRuleID)
+					userConnection.PscConnectionId = fmt.Sprintf("%d", pscConnectionID)
+					pscConnectionID++
+				}
 			}
-			//obj.Endpoints = append(obj.Endpoints)
 		}
 	}
 
@@ -156,24 +160,28 @@ func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb
 	if obj.ReplicaCount == nil {
 		obj.ReplicaCount = mocks.PtrTo[int32](0)
 	}
+	if obj.Mode == pb.Instance_MODE_UNSPECIFIED {
+		obj.Mode = pb.Instance_CLUSTER
+	}
+	nodeCapacity := float64(1)
+	switch obj.GetNodeType() {
+	case pb.Instance_SHARED_CORE_NANO:
+		nodeCapacity = 1.4
+	case pb.Instance_STANDARD_SMALL:
+		nodeCapacity = 6.5
+	case pb.Instance_HIGHMEM_MEDIUM:
+		nodeCapacity = 13.0
+	case pb.Instance_HIGHMEM_XLARGE:
+		nodeCapacity = 58.0
+	default:
+		return fmt.Errorf("unknown node type %v", obj.GetNodeType())
+	}
 
-	// nodeCapacity := float64(1)
-	// switch obj.GetNodeType() {
-	// case pb.Instance_SHARED_CORE_NANO:
-	// 	nodeCapacity = 1.4
-	// case pb.Instance_STANDARD_SMALL:
-	// 	nodeCapacity = 6.5
-	// case pb.Instance_HIGHMEM_MEDIUM:
-	// 	nodeCapacity = 13.0
-	// case pb.Instance_HIGHMEM_XLARGE:
-	// 	nodeCapacity = 58.0
-	// default:
-	// 	return fmt.Errorf("unknown node type %v", obj.GetNodeType())
-	// }
-	// obj.M = mocks.PtrTo(float64(nodeCapacity * float64(obj.GetShardCount())))
-	// obj.SizeGb = mocks.PtrTo(int32(obj.GetPreciseSizeGb()))
-
-	
+	if obj.NodeConfig == nil {
+		obj.NodeConfig = &pb.NodeConfig{
+			SizeGb: *mocks.PtrTo(float64(nodeCapacity)),
+		}
+	}
 
 	if obj.TransitEncryptionMode == pb.Instance_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
 		obj.TransitEncryptionMode = pb.Instance_TRANSIT_ENCRYPTION_DISABLED
