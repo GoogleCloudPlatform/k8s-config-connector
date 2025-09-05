@@ -34,7 +34,7 @@ gen-proto: tools sync-repo
 
 .PHONY: gen-proto-no-fixup
 gen-proto-no-fixup:
-	PATH=bin/:${PATH} bin/protoc/bin/protoc \
+	PATH="bin/:${PATH}" bin/protoc/bin/protoc \
 		-I ./third_party/googleapis \
 		-I ./apis \
 		--go_out ./generated \
@@ -120,6 +120,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/tasks/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/common/*.proto \
 		./third_party/googleapis/mockgcp/cloud/compute/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/compute/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/documentai/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/edgecontainer/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/edgenetwork/v1/*.proto \
