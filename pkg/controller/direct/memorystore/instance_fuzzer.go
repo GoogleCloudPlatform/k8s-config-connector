@@ -56,7 +56,6 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".deletion_protection_enabled")
 	f.SpecFields.Insert(".endpoints")
 	f.SpecFields.Insert(".mode")
-	f.SpecFields.Insert(".psc_auto_connections")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")

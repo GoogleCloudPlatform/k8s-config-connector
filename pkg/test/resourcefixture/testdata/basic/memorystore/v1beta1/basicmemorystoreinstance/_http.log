@@ -108,10 +108,10 @@ X-Xss-Protection: 0
     "pscAttachmentDetails": [
       {
         "connectionType": "CONNECTION_TYPE_DISCOVERY",
-        "serviceAttachment": "projects/916304508226/regions/us-central1/serviceAttachments/gcp-memorystore-auto-71a5588a-5b81-45-psc-sa"
+        "serviceAttachment": "projects/348365477993/regions/us-central1/serviceAttachments/gcp-memorystore-auto-0009c753-fe4e-45-psc-sa"
       },
       {
-        "serviceAttachment": "projects/916304508226/regions/us-central1/serviceAttachments/gcp-memorystore-auto-71a5588a-5b81-45-psc-sa-2"
+        "serviceAttachment": "projects/348365477993/regions/us-central1/serviceAttachments/gcp-memorystore-auto-0009c753-fe4e-45-psc-sa-2"
       }
     ],
     "replicaCount": 0,
@@ -167,10 +167,10 @@ X-Xss-Protection: 0
   "pscAttachmentDetails": [
     {
       "connectionType": 1,
-      "serviceAttachment": "projects/916304508226/regions/us-central1/serviceAttachments/gcp-memorystore-auto-71a5588a-5b81-45-psc-sa"
+      "serviceAttachment": "projects/348365477993/regions/us-central1/serviceAttachments/gcp-memorystore-auto-0009c753-fe4e-45-psc-sa"
     },
     {
-      "serviceAttachment": "projects/916304508226/regions/us-central1/serviceAttachments/gcp-memorystore-auto-71a5588a-5b81-45-psc-sa-2"
+      "serviceAttachment": "projects/348365477993/regions/us-central1/serviceAttachments/gcp-memorystore-auto-0009c753-fe4e-45-psc-sa-2"
     }
   ],
   "replicaCount": 0,
@@ -273,10 +273,10 @@ X-Xss-Protection: 0
     "pscAttachmentDetails": [
       {
         "connectionType": "CONNECTION_TYPE_DISCOVERY",
-        "serviceAttachment": "projects/916304508226/regions/us-central1/serviceAttachments/gcp-memorystore-auto-71a5588a-5b81-45-psc-sa"
+        "serviceAttachment": "projects/348365477993/regions/us-central1/serviceAttachments/gcp-memorystore-auto-0009c753-fe4e-45-psc-sa"
       },
       {
-        "serviceAttachment": "projects/916304508226/regions/us-central1/serviceAttachments/gcp-memorystore-auto-71a5588a-5b81-45-psc-sa-2"
+        "serviceAttachment": "projects/348365477993/regions/us-central1/serviceAttachments/gcp-memorystore-auto-0009c753-fe4e-45-psc-sa-2"
       }
     ],
     "replicaCount": 0,
@@ -332,10 +332,10 @@ X-Xss-Protection: 0
   "pscAttachmentDetails": [
     {
       "connectionType": 1,
-      "serviceAttachment": "projects/916304508226/regions/us-central1/serviceAttachments/gcp-memorystore-auto-71a5588a-5b81-45-psc-sa"
+      "serviceAttachment": "projects/348365477993/regions/us-central1/serviceAttachments/gcp-memorystore-auto-0009c753-fe4e-45-psc-sa"
     },
     {
-      "serviceAttachment": "projects/916304508226/regions/us-central1/serviceAttachments/gcp-memorystore-auto-71a5588a-5b81-45-psc-sa-2"
+      "serviceAttachment": "projects/348365477993/regions/us-central1/serviceAttachments/gcp-memorystore-auto-0009c753-fe4e-45-psc-sa-2"
     }
   ],
   "replicaCount": 0,
