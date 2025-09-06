@@ -170,92 +170,94 @@ func (a *MembershipAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		return mapCtx.Err()
 	}
 
+	updated := a.actual
 	if reflect.DeepEqual(resource.Roles, a.actual.Roles) {
 		log.V(2).Info("no field needs update", "name", a.id)
-		status := CloudIdentityMembershipStatus_FromAPI(mapCtx, a.actual)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
+	} else {
+
+		var addRoles []*api.MembershipRole
+		var removeRoles []string
+		var updateRolesParams []*api.UpdateMembershipRolesParams
+
+		beforeSet := make(map[string]bool)
+		if a.actual.Roles != nil {
+			for _, item := range a.actual.Roles {
+				beforeSet[item.Name] = true
+			}
 		}
-		return updateOp.UpdateStatus(ctx, status, nil)
-	}
 
-	var addRoles []*api.MembershipRole
-	var removeRoles []string
-	var updateRolesParams []*api.UpdateMembershipRolesParams
-
-	beforeSet := make(map[string]bool)
-	if a.actual.Roles != nil {
-		for _, item := range a.actual.Roles {
-			beforeSet[item.Name] = true
+		afterSet := make(map[string]bool)
+		if resource.Roles != nil {
+			for _, item := range resource.Roles {
+				afterSet[item.Name] = true
+			}
 		}
-	}
 
-	afterSet := make(map[string]bool)
-	if resource.Roles != nil {
 		for _, item := range resource.Roles {
-			afterSet[item.Name] = true
+			if !beforeSet[item.Name] {
+				addRoles = append(addRoles, item)
+			}
 		}
-	}
 
-	for _, item := range resource.Roles {
-		if !beforeSet[item.Name] {
-			addRoles = append(addRoles, item)
+		for _, item := range a.actual.Roles {
+			name := item.Name
+			if !afterSet[name] {
+				removeRoles = append(removeRoles, name)
+			}
 		}
-	}
 
-	for _, item := range a.actual.Roles {
-		name := item.Name
-		if !afterSet[name] {
-			removeRoles = append(removeRoles, name)
-		}
-	}
-
-	for _, afterRole := range resource.Roles {
-		for _, beforeRole := range a.actual.Roles {
-			if afterRole.Name == beforeRole.Name {
-				if afterRole.ExpiryDetail == nil && beforeRole.ExpiryDetail == nil {
-					continue
-				}
-				if afterRole.ExpiryDetail.ExpireTime == "" && beforeRole.ExpiryDetail.ExpireTime == "" {
-					continue
-				}
-				if !cmp.Equal(afterRole, beforeRole) {
-					updateRolesParam := &api.UpdateMembershipRolesParams{
-						// Only expiry_detail.expire_time is configurable and can be updated
-						FieldMask:      "expiry_detail.expire_time",
-						MembershipRole: afterRole,
+		for _, afterRole := range resource.Roles {
+			for _, beforeRole := range a.actual.Roles {
+				if afterRole.Name == beforeRole.Name {
+					if afterRole.ExpiryDetail == nil && beforeRole.ExpiryDetail == nil {
+						continue
 					}
-					updateRolesParams = append(updateRolesParams, updateRolesParam)
+					if afterRole.ExpiryDetail.ExpireTime == "" && beforeRole.ExpiryDetail.ExpireTime == "" {
+						continue
+					}
+					if !cmp.Equal(afterRole, beforeRole) {
+						updateRolesParam := &api.UpdateMembershipRolesParams{
+							// Only expiry_detail.expire_time is configurable and can be updated
+							FieldMask:      "expiry_detail.expire_time",
+							MembershipRole: afterRole,
+						}
+						updateRolesParams = append(updateRolesParams, updateRolesParam)
+					}
 				}
 			}
 		}
-	}
 
-	req := &api.ModifyMembershipRolesRequest{
-		AddRoles:    addRoles,
-		RemoveRoles: removeRoles,
-		// UpdateRolesParams: The `MembershipRole`s to be updated. Updating roles in
-		// the same request as adding or removing roles is not supported. Must not be
-		// set if either `add_roles` or `remove_roles` is set.
-		// todo: shall we handle this or let the API to handle this?
-		UpdateRolesParams: updateRolesParams,
-	}
+		req := &api.ModifyMembershipRolesRequest{
+			AddRoles:    addRoles,
+			RemoveRoles: removeRoles,
+			// UpdateRolesParams: The `MembershipRole`s to be updated. Updating roles in
+			// the same request as adding or removing roles is not supported. Must not be
+			// set if either `add_roles` or `remove_roles` is set.
+			// todo: shall we handle this or let the API to handle this?
+			UpdateRolesParams: updateRolesParams,
+		}
 
-	_, err := a.gcpClient.Groups.Memberships.ModifyMembershipRoles(a.id.String(), req).Context(ctx).Do()
+		_, err := a.gcpClient.Groups.Memberships.ModifyMembershipRoles(a.id.String(), req).Context(ctx).Do()
 
-	if err != nil {
-		return fmt.Errorf("updating Membership %s: %w", a.id, err)
-	}
+		if err != nil {
+			return fmt.Errorf("updating Membership %s: %w", a.id, err)
+		}
 
-	updated, err := a.gcpClient.Groups.Memberships.Get(a.id.String()).Context(ctx).Do()
-	if err != nil {
-		return fmt.Errorf("getting updated Membership %q: %w", a.id, err)
+		updated, err = a.gcpClient.Groups.Memberships.Get(a.id.String()).Context(ctx).Do()
+		if err != nil {
+			return fmt.Errorf("getting updated Membership %q: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated Membership", "name", a.id)
 	}
-	log.V(2).Info("successfully updated Membership", "name", a.id)
 
 	status := CloudIdentityMembershipStatus_FromAPI(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
+	}
+	if a.desired.Status.ExternalRef == nil {
+		// If it is the first reconciliation after switching to direct controller,
+		// or is an acquisition with updates, then fill out the ExternalRef.
+		status.ExternalRef = direct.LazyPtr(a.id.String())
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
