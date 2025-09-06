@@ -19,6 +19,7 @@ import (
 	"strings"
 	"time"
 
+	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -83,6 +84,91 @@ func (s *managedZonesService) CreateManagedZone(ctx context.Context, req *pb.Cre
 	}
 
 	return obj, nil
+}
+
+func (s *managedZonesService) UpdateManagedZone(ctx context.Context, req *pb.UpdateManagedZoneRequest) (*longrunningpb.Operation, error) {
+	name, err := s.parseManagedZoneName("projects/" + req.GetProject() + "/managedZones/" + req.GetManagedZone().GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	var existing pb.ManagedZone
+
+	if err := s.storage.Get(ctx, fqn, &existing); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "managedZone %q not found", name)
+		}
+		return nil, err
+	}
+
+	obj := proto.Clone(req.ManagedZone).(*pb.ManagedZone)
+
+	// These fields are output only and cannot be changed.
+	obj.CreationTime = existing.CreationTime
+	obj.CloudLoggingConfig = existing.CloudLoggingConfig
+	obj.Id = existing.Id
+	obj.Kind = existing.Kind
+	obj.NameServers = existing.NameServers
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	lroPrefix := ""
+	lroMetadata := &emptypb.Empty{}
+
+	// Note: this LRO does not follow the usual pattern with real GCP, but we don't seem to care
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *managedZonesService) PatchManagedZone(ctx context.Context, req *pb.PatchManagedZoneRequest) (*longrunningpb.Operation, error) {
+	name, err := s.parseManagedZoneName("projects/" + req.GetProject() + "/managedZones/" + req.GetManagedZone().GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	var existing pb.ManagedZone
+
+	if err := s.storage.Get(ctx, fqn, &existing); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "managedZone %q not found", name)
+		}
+		return nil, err
+	}
+
+	updated := proto.Clone(&existing).(*pb.ManagedZone)
+	if req.GetManagedZone().Description != nil {
+		updated.Description = req.GetManagedZone().Description
+	}
+	if req.GetManagedZone().DnsName != nil {
+		updated.DnsName = req.GetManagedZone().DnsName
+	}
+	if req.GetManagedZone().Visibility != nil {
+		updated.Visibility = req.GetManagedZone().Visibility
+	}
+	if req.GetManagedZone().PrivateVisibilityConfig != nil {
+		updated.PrivateVisibilityConfig = req.GetManagedZone().PrivateVisibilityConfig
+	}
+	if req.GetManagedZone().CloudLoggingConfig != nil {
+		updated.CloudLoggingConfig = req.GetManagedZone().CloudLoggingConfig
+	}
+
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+
+	lroPrefix := ""
+	lroMetadata := &emptypb.Empty{}
+
+	// Note: this LRO does not follow the usual pattern with real GCP, but we don't seem to care
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		return updated, nil
+	})
 }
 
 func (s *managedZonesService) DeleteManagedZone(ctx context.Context, req *pb.DeleteManagedZoneRequest) (*emptypb.Empty, error) {

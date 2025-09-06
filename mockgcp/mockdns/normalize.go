@@ -32,6 +32,8 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	// DNS ManagedZone
 	replacements.ReplacePath(".nameServers", []string{"ns-cloud-a1.googledomains.com.", "ns-cloud-a2.googledomains.com.", "ns-cloud-a3.googledomains.com.", "ns-cloud-a4.googledomains.com."})
+	replacements.ReplacePath(".managedZones[].nameServers", []string{"ns-cloud-a1.googledomains.com.", "ns-cloud-a2.googledomains.com.", "ns-cloud-a3.googledomains.com.", "ns-cloud-a4.googledomains.com."})
+	replacements.ReplacePath(".creationTime", PlaceholderTimestamp)
 	replacements.ReplacePath(".managedZones[].creationTime", PlaceholderTimestamp)
 }
 

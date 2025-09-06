@@ -101,7 +101,7 @@ X-Xss-Protection: 0
         "kind": "dns#managedZoneCloudLoggingConfig"
       },
       "creationTime": "2024-04-01T12:34:56.123456Z",
-      "description": "a test zone",
+      "description": "updated description",
       "dnsName": "test-${uniqueId}.example.com.",
       "id": "${managedZoneId}",
       "kind": "dns#managedZone",

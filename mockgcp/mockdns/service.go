@@ -17,9 +17,11 @@ package mockdns
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -37,13 +39,16 @@ type MockService struct {
 	storage storage.Storage
 
 	projects projects.ProjectStore
+
+	operations *operations.Operations
 }
 
 // New creates a dnsService.
 func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
-		storage:  storage,
-		projects: env.Projects,
+		storage:    storage,
+		projects:   env.Projects,
+		operations: operations.NewOperationsService(storage),
 	}
 	return s
 }
