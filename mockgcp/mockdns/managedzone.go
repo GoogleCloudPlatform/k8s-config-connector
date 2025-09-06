@@ -19,7 +19,6 @@ import (
 	"strings"
 	"time"
 
-	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -86,7 +85,7 @@ func (s *managedZonesService) CreateManagedZone(ctx context.Context, req *pb.Cre
 	return obj, nil
 }
 
-func (s *managedZonesService) UpdateManagedZone(ctx context.Context, req *pb.UpdateManagedZoneRequest) (*longrunningpb.Operation, error) {
+func (s *managedZonesService) UpdateManagedZone(ctx context.Context, req *pb.UpdateManagedZoneRequest) (*pb.Operation, error) {
 	name, err := s.parseManagedZoneName("projects/" + req.GetProject() + "/managedZones/" + req.GetManagedZone().GetName())
 	if err != nil {
 		return nil, err
@@ -103,29 +102,35 @@ func (s *managedZonesService) UpdateManagedZone(ctx context.Context, req *pb.Upd
 		return nil, err
 	}
 
-	obj := proto.Clone(req.ManagedZone).(*pb.ManagedZone)
+	updated := proto.Clone(req.ManagedZone).(*pb.ManagedZone)
 
 	// These fields are output only and cannot be changed.
-	obj.CreationTime = existing.CreationTime
-	obj.CloudLoggingConfig = existing.CloudLoggingConfig
-	obj.Id = existing.Id
-	obj.Kind = existing.Kind
-	obj.NameServers = existing.NameServers
+	updated.CreationTime = existing.CreationTime
+	updated.CloudLoggingConfig = existing.CloudLoggingConfig
+	updated.Id = existing.Id
+	updated.Kind = existing.Kind
+	updated.NameServers = existing.NameServers
 
-	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
 
-	lroPrefix := ""
-	lroMetadata := &emptypb.Empty{}
-
+	op := &pb.Operation{
+		Status: PtrTo("done"),
+		Type:   PtrTo("UPDATE"),
+		User:   PtrTo(currentUser(ctx)),
+		ZoneContext: &pb.OperationManagedZoneContext{
+			NewValue: updated,
+			OldValue: &existing,
+		},
+	}
 	// Note: this LRO does not follow the usual pattern with real GCP, but we don't seem to care
-	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-		return obj, nil
+	return s.operations.StartLRO(ctx, op, func() (proto.Message, error) {
+		return updated, nil
 	})
 }
 
-func (s *managedZonesService) PatchManagedZone(ctx context.Context, req *pb.PatchManagedZoneRequest) (*longrunningpb.Operation, error) {
+func (s *managedZonesService) PatchManagedZone(ctx context.Context, req *pb.PatchManagedZoneRequest) (*pb.Operation, error) {
 	name, err := s.parseManagedZoneName("projects/" + req.GetProject() + "/managedZones/" + req.GetManagedZone().GetName())
 	if err != nil {
 		return nil, err
@@ -162,11 +167,17 @@ func (s *managedZonesService) PatchManagedZone(ctx context.Context, req *pb.Patc
 		return nil, err
 	}
 
-	lroPrefix := ""
-	lroMetadata := &emptypb.Empty{}
+	op := &pb.Operation{
+		Status: PtrTo("done"),
+		Type:   PtrTo("UPDATE"),
+		User:   PtrTo(currentUser(ctx)),
+		ZoneContext: &pb.OperationManagedZoneContext{
+			NewValue: updated,
+			OldValue: &existing,
+		},
+	}
 
-	// Note: this LRO does not follow the usual pattern with real GCP, but we don't seem to care
-	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, op, func() (proto.Message, error) {
 		return updated, nil
 	})
 }
@@ -253,4 +264,8 @@ func (s *MockService) parseManagedZoneName(name string) (*managedZoneName, error
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+}
+
+func currentUser(ctx context.Context) string {
+	return "user@example.com"
 }
