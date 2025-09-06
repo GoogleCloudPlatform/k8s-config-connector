@@ -8,26 +8,23 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
-  name: alloydbcluster-2-${uniqueId}
+  name: alloydbcluster-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  automatedBackupPolicy:
-    labels:
-      source: kcc-test
-  clusterType: SECONDARY
-  deletionPolicy: FORCE
-  location: europe-west8
-  networkConfig:
-    networkRef:
-      name: computenetwork-${uniqueId}
+  databaseVersion: POSTGRES_16
+  initialUser:
+    password:
+      value: postgres
+    user: postgres
+  location: southamerica-east1
+  networkRef:
+    name: default
   projectRef:
     external: ${projectId}
-  secondaryConfig:
-    primaryClusterNameRef:
-      name: alloydbcluster-1-${uniqueId}
+  resourceID: alloydbcluster${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -50,10 +47,10 @@ status:
   databaseVersion: POSTGRES_16
   encryptionInfo:
   - encryptionType: GOOGLE_DEFAULT_ENCRYPTION
-  externalRef: projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}
-  name: projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}
-  observedGeneration: 2
+  externalRef: projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}
+  name: projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}
+  observedGeneration: 1
   observedState:
-    clusterType: SECONDARY
+    clusterType: PRIMARY
     databaseVersion: POSTGRES_16
   uid: "12345678"
