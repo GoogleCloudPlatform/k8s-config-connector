@@ -20,7 +20,8 @@
 package pubsub
 
 import (
-	pb "cloud.google.com/go/pubsub/apiv1/pubsubpb"
+	pb "cloud.google.com/go/pubsub/v2/apiv1/pubsubpb"
+	krmpubsubv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -41,5 +42,27 @@ func PubSubSnapshotObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PubS
 	out := &pb.Snapshot{}
 	// MISSING: Name
 	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	return out
+}
+func Snapshot_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krmpubsubv1alpha1.Snapshot {
+	if in == nil {
+		return nil
+	}
+	out := &krmpubsubv1alpha1.Snapshot{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Topic = direct.LazyPtr(in.GetTopic())
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	out.Labels = in.Labels
+	return out
+}
+func Snapshot_ToProto(mapCtx *direct.MapContext, in *krmpubsubv1alpha1.Snapshot) *pb.Snapshot {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Snapshot{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Topic = direct.ValueOf(in.Topic)
+	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	out.Labels = in.Labels
 	return out
 }

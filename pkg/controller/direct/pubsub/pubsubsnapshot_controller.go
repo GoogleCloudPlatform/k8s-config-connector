@@ -25,8 +25,9 @@ import (
 	"fmt"
 	"reflect"
 
-	api "cloud.google.com/go/pubsub/apiv1"
-	pb "cloud.google.com/go/pubsub/apiv1/pubsubpb"
+	api "cloud.google.com/go/pubsub/v2/apiv1"
+	pb "cloud.google.com/go/pubsub/v2/apiv1/pubsubpb"
+
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -59,7 +60,7 @@ type SnapshotModel struct {
 	config config.ControllerConfig
 }
 
-func (m *SnapshotModel) client(ctx context.Context, projectID string) (*api.SubscriberClient, error) {
+func (m *SnapshotModel) client(ctx context.Context, projectID string) (*api.SubscriptionAdminClient, error) {
 	var opts []option.ClientOption
 
 	config := m.config
@@ -75,7 +76,7 @@ func (m *SnapshotModel) client(ctx context.Context, projectID string) (*api.Subs
 		return nil, err
 	}
 
-	gcpClient, err := api.NewSubscriberRESTClient(ctx, opts...)
+	gcpClient, err := api.NewSubscriptionAdminClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building pubsub snapshot client: %w", err)
 	}
@@ -120,7 +121,7 @@ func (m *SnapshotModel) AdapterForURL(ctx context.Context, url string) (directba
 }
 
 type snapshotAdapter struct {
-	gcpClient *api.SubscriberClient
+	gcpClient *api.SubscriptionAdminClient
 	id        *krm.SnapshotIdentity
 	desired   *krm.PubSubSnapshot
 	actual    *pb.Snapshot
