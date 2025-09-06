@@ -15,6 +15,8 @@
 package mockdns
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
@@ -25,6 +27,10 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 var placeholderNameServers = []string{"ns-cloud-a1.googledomains.com.", "ns-cloud-a2.googledomains.com.", "ns-cloud-a3.googledomains.com.", "ns-cloud-a4.googledomains.com."}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !isDNSAPI(url) {
+		return
+	}
+
 	// DNS ManagedZone
 	{
 		replacements.ReplacePath(".nameServers", placeholderNameServers)
@@ -39,8 +45,11 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	}
 }
 
-func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+func isDNSAPI(url string) bool {
+	return strings.HasPrefix(url, "https://dns.googleapis.com/")
+}
 
+func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
 	kind := ""
 
 	event.VisitResponseStringValues(func(path string, value string) {
