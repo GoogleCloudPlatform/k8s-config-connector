@@ -1,4 +1,4 @@
-# In: ~/.gemini/commands/generate/types.toml
+# In: ~/.gemini/commands/generate/labels.toml
 # This command will be invoked via: /generate:labels "AlloyDBInstance"
 
 description = "Asks the model to fix label sanitization."
