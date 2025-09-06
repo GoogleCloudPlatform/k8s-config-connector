@@ -17,6 +17,7 @@ package mockdns
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
@@ -37,14 +38,22 @@ type MockService struct {
 	storage storage.Storage
 
 	projects projects.ProjectStore
+
+	operations *dnsOperations
+
+	managedZonesService       *managedZonesService
+	resourceRecordSetsService *resourceRecordSetsService
 }
 
 // New creates a dnsService.
 func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
-		storage:  storage,
-		projects: env.Projects,
+		storage:    storage,
+		projects:   env.Projects,
+		operations: newDNSOperationsService(storage),
 	}
+	s.resourceRecordSetsService = &resourceRecordSetsService{MockService: s}
+	s.managedZonesService = &managedZonesService{MockService: s}
 	return s
 }
 
@@ -53,17 +62,32 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterManagedZonesServerServer(grpcServer, &managedZonesService{MockService: s})
+	pb.RegisterManagedZonesServerServer(grpcServer, s.managedZonesService)
+	pb.RegisterResourceRecordSetsServerServer(grpcServer, s.resourceRecordSetsService)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterManagedZonesServerHandler,
+		pb.RegisterResourceRecordSetsServerHandler,
 	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return mux, nil
+	// Terraform uses the /v1beta2/ endpoints, but we prefer to implement v1.
+	// Rewrite the the request (they seem to be compatible).
+	rewriteBetaToV1 := func(w http.ResponseWriter, r *http.Request) {
+		u := r.URL
+		if strings.HasPrefix(u.Path, "/dns/v1beta2/") {
+			u2 := *u
+			u2.Path = "/dns/v1/" + strings.TrimPrefix(u.Path, "/dns/v1beta2/")
+			r = httpmux.RewriteRequest(r, &u2)
+		}
+
+		mux.ServeHTTP(w, r)
+	}
+
+	return http.HandlerFunc(rewriteBetaToV1), nil
 }

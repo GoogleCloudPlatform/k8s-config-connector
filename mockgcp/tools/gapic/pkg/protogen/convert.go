@@ -43,6 +43,14 @@ type OpenAPIConverter struct {
 
 	// protoPackageName is the name of the proto package we are generating.
 	protoPackageName string
+
+	// opt holds our conversion options
+	opt ConvertOptions
+}
+
+type ConvertOptions struct {
+	// NormalizeLRO indicates whether to normalize long-running operations to our standard LRO
+	NormalizeLRO bool
 }
 
 // Comments holds all the comments for our messages / fields
@@ -67,7 +75,7 @@ type Comment struct {
 	Text string
 }
 
-func NewOpenAPIConverter(protoPackageName string, doc *openapi.Document) *OpenAPIConverter {
+func NewOpenAPIConverter(protoPackageName string, doc *openapi.Document, opt ConvertOptions) *OpenAPIConverter {
 	return &OpenAPIConverter{
 		doc:              doc,
 		protoPackageName: protoPackageName,
@@ -75,6 +83,7 @@ func NewOpenAPIConverter(protoPackageName string, doc *openapi.Document) *OpenAP
 		Comments: Comments{
 			comments: make(map[string]*Comment),
 		},
+		opt: opt,
 	}
 }
 
@@ -707,9 +716,12 @@ func (c *OpenAPIConverter) resolveMessageType(ref string) string {
 
 	switch ref {
 	case "Operation", "GoogleLongrunningOperation":
-		c.addImport("google/longrunning/operations.proto")
-		return "google.longrunning.Operation"
-
+		if c.opt.NormalizeLRO {
+			// Normalize to our standard LRO
+			c.addImport("google/longrunning/operations.proto")
+			return "google.longrunning.Operation"
+		}
+		return ref
 	default:
 		return ref
 	}

@@ -16,6 +16,7 @@ package mockdns
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"time"
 
@@ -82,7 +83,142 @@ func (s *managedZonesService) CreateManagedZone(ctx context.Context, req *pb.Cre
 		return nil, err
 	}
 
+	// Create an automatic NS record for the zone itself.
+	{
+		ns := &pb.ResourceRecordSet{
+			Name:    obj.DnsName,
+			Rrdatas: obj.NameServers,
+			Ttl:     PtrTo(int32(21600)),
+			Type:    PtrTo("NS"),
+		}
+		_, err := s.resourceRecordSetsService.CreateResourceRecordSet(ctx, &pb.CreateResourceRecordSetRequest{
+			Project:           PtrTo(name.Project.ID),
+			ManagedZone:       PtrTo(name.Name),
+			ResourceRecordSet: ns,
+		})
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	// Create an automatic SOA record for the zone itself.
+	{
+		soa := &pb.ResourceRecordSet{
+			Name: obj.DnsName,
+			Rrdatas: []string{
+				fmt.Sprintf("ns-cloud-c1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"),
+			},
+			Ttl:  PtrTo(int32(21600)),
+			Type: PtrTo("SOA"),
+		}
+		_, err := s.resourceRecordSetsService.CreateResourceRecordSet(ctx, &pb.CreateResourceRecordSetRequest{
+			Project:           PtrTo(name.Project.ID),
+			ManagedZone:       PtrTo(name.Name),
+			ResourceRecordSet: soa,
+		})
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	return obj, nil
+}
+
+func (s *managedZonesService) UpdateManagedZone(ctx context.Context, req *pb.UpdateManagedZoneRequest) (*pb.Operation, error) {
+	name, err := s.parseManagedZoneName("projects/" + req.GetProject() + "/managedZones/" + req.GetManagedZone().GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	var existing pb.ManagedZone
+
+	if err := s.storage.Get(ctx, fqn, &existing); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "managedZone %q not found", name)
+		}
+		return nil, err
+	}
+
+	updated := proto.Clone(req.ManagedZone).(*pb.ManagedZone)
+
+	// These fields are output only and cannot be changed.
+	updated.CreationTime = existing.CreationTime
+	updated.CloudLoggingConfig = existing.CloudLoggingConfig
+	updated.Id = existing.Id
+	updated.Kind = existing.Kind
+	updated.NameServers = existing.NameServers
+
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		Status: PtrTo("done"),
+		Type:   PtrTo("UPDATE"),
+		User:   PtrTo(currentUser(ctx)),
+		ZoneContext: &pb.OperationManagedZoneContext{
+			NewValue: updated,
+			OldValue: &existing,
+		},
+	}
+	// Note: this LRO does not follow the usual pattern with real GCP, but we don't seem to care
+	return s.operations.StartLRO(ctx, op, func() (proto.Message, error) {
+		return updated, nil
+	})
+}
+
+func (s *managedZonesService) PatchManagedZone(ctx context.Context, req *pb.PatchManagedZoneRequest) (*pb.Operation, error) {
+	name, err := s.parseManagedZoneName("projects/" + req.GetProject() + "/managedZones/" + req.GetManagedZone().GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	var existing pb.ManagedZone
+
+	if err := s.storage.Get(ctx, fqn, &existing); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "managedZone %q not found", name)
+		}
+		return nil, err
+	}
+
+	updated := proto.Clone(&existing).(*pb.ManagedZone)
+	if req.GetManagedZone().Description != nil {
+		updated.Description = req.GetManagedZone().Description
+	}
+	if req.GetManagedZone().DnsName != nil {
+		updated.DnsName = req.GetManagedZone().DnsName
+	}
+	if req.GetManagedZone().Visibility != nil {
+		updated.Visibility = req.GetManagedZone().Visibility
+	}
+	if req.GetManagedZone().PrivateVisibilityConfig != nil {
+		updated.PrivateVisibilityConfig = req.GetManagedZone().PrivateVisibilityConfig
+	}
+	if req.GetManagedZone().CloudLoggingConfig != nil {
+		updated.CloudLoggingConfig = req.GetManagedZone().CloudLoggingConfig
+	}
+
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		Status: PtrTo("done"),
+		Type:   PtrTo("UPDATE"),
+		User:   PtrTo(currentUser(ctx)),
+		ZoneContext: &pb.OperationManagedZoneContext{
+			NewValue: updated,
+			OldValue: &existing,
+		},
+	}
+
+	return s.operations.StartLRO(ctx, op, func() (proto.Message, error) {
+		return updated, nil
+	})
 }
 
 func (s *managedZonesService) DeleteManagedZone(ctx context.Context, req *pb.DeleteManagedZoneRequest) (*emptypb.Empty, error) {
@@ -167,4 +303,8 @@ func (s *MockService) parseManagedZoneName(name string) (*managedZoneName, error
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+}
+
+func currentUser(ctx context.Context) string {
+	return "user@example.com"
 }

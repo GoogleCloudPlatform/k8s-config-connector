@@ -1173,8 +1173,8 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	// BigQueryConnection
 	{
 		visitor.ReplacePath(".cloudResource.serviceAccountId", "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com")
-		visitor.ReplacePath(".creationTime", "123456789")
-		visitor.ReplacePath(".lastModifiedTime", "123456789")
+		visitor.ReplacePath(".creationTime", PlaceholderTimestamp)
+		visitor.ReplacePath(".lastModifiedTime", PlaceholderTimestamp)
 	}
 
 	// Workflows
