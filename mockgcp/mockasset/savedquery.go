@@ -70,10 +70,7 @@ func (s *AssetService) CreateSavedQuery(ctx context.Context, req *pb.CreateSaved
 
 	now := time.Now()
 
-	if req.SavedQuery.GetContent() != nil &&
-		req.SavedQuery.GetContent().GetIamPolicyAnalysisQuery() != nil &&
-		req.SavedQuery.GetContent().GetIamPolicyAnalysisQuery().GetConditionContext() != nil &&
-		req.SavedQuery.GetContent().GetIamPolicyAnalysisQuery().GetConditionContext().GetAccessTime() != nil {
+	if t := req.SavedQuery.GetContent().GetIamPolicyAnalysisQuery().GetConditionContext().GetAccessTime(); t != nil {
 		accessTime := req.SavedQuery.GetContent().GetIamPolicyAnalysisQuery().GetConditionContext().GetAccessTime().AsTime()
 		if accessTime.Before(now) {
 			st := status.New(codes.InvalidArgument, "Some specified value(s) are invalid. Please check details following https://cloud.google.com/apis/design/errors#error_model.")
