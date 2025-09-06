@@ -100,11 +100,50 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
-  },
-  "name": "operations/${operationID}"
+  "id": "000000000000000000000",
+  "kind": "dns#operation",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "done",
+  "type": "UPDATE",
+  "user": "user@example.com",
+  "zoneContext": {
+    "newValue": {
+      "cloudLoggingConfig": {
+        "kind": "dns#managedZoneCloudLoggingConfig"
+      },
+      "creationTime": "2024-04-01T12:34:56.123456Z",
+      "description": "updated description",
+      "dnsName": "test-${uniqueId}.example.com.",
+      "id": "${managedZoneId}",
+      "kind": "dns#managedZone",
+      "name": "test-zone-${uniqueId}",
+      "nameServers": [
+        "ns-cloud-a1.googledomains.com.",
+        "ns-cloud-a2.googledomains.com.",
+        "ns-cloud-a3.googledomains.com.",
+        "ns-cloud-a4.googledomains.com."
+      ],
+      "visibility": "public"
+    },
+    "oldValue": {
+      "cloudLoggingConfig": {
+        "kind": "dns#managedZoneCloudLoggingConfig"
+      },
+      "creationTime": "2024-04-01T12:34:56.123456Z",
+      "description": "a test zone",
+      "dnsName": "test-${uniqueId}.example.com.",
+      "id": "${managedZoneId}",
+      "kind": "dns#managedZone",
+      "name": "test-zone-${uniqueId}",
+      "nameServers": [
+        "ns-cloud-a1.googledomains.com.",
+        "ns-cloud-a2.googledomains.com.",
+        "ns-cloud-a3.googledomains.com.",
+        "ns-cloud-a4.googledomains.com."
+      ],
+      "visibility": "public"
+    }
+  }
 }
 
 ---
