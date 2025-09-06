@@ -70,6 +70,23 @@ func (s *AssetService) CreateSavedQuery(ctx context.Context, req *pb.CreateSaved
 
 	now := time.Now()
 
+	if t := req.SavedQuery.GetContent().GetIamPolicyAnalysisQuery().GetConditionContext().GetAccessTime(); t != nil {
+		accessTime := req.SavedQuery.GetContent().GetIamPolicyAnalysisQuery().GetConditionContext().GetAccessTime().AsTime()
+		if accessTime.Before(now) {
+			st := status.New(codes.InvalidArgument, "Some specified value(s) are invalid. Please check details following https://cloud.google.com/apis/design/errors#error_model.")
+			br := &errdetails.BadRequest{}
+			br.FieldViolations = append(br.FieldViolations, &errdetails.BadRequest_FieldViolation{
+				Field:       "query.condition_context.access_time",
+				Description: "Condition context access time cannot be older than current timestamp.",
+			})
+			st, err := st.WithDetails(br)
+			if err != nil {
+				return nil, status.Errorf(codes.Internal, "unexpected error attaching details to status: %v", err)
+			}
+			return nil, st.Err()
+		}
+	}
+
 	obj := proto.Clone(req.GetSavedQuery()).(*pb.SavedQuery)
 	obj.Name = reqName
 	obj.CreateTime = timestamppb.New(now)
