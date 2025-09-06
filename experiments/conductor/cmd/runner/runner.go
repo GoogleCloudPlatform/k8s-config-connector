@@ -739,7 +739,7 @@ func addEnableAPIsModifier(opts *RunnerOptions, branch Branch, workDir string) B
 
 	cfg := CommandConfig{
 		Name:    "API Discovery",
-		Cmd:     "codebot",
+		Cmd:     "gemini",
 		Args:    []string{"--prompt=/dev/stdin"},
 		WorkDir: workDir,
 		Stdin: strings.NewReader(fmt.Sprintf(`Given the gcloud command %q, what Google Cloud APIs need to be enabled to use this command?
@@ -760,7 +760,7 @@ Only include APIs that are directly needed by this command.
 		return branch
 	}
 
-	// Parse the codebot output to get API list
+	// Parse the output to get API list
 	var filteredLines []string
 	for _, line := range strings.Split(strings.TrimSpace(output.Stdout), "\n") {
 		line = strings.TrimSpace(line)
