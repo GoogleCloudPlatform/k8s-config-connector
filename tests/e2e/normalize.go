@@ -18,6 +18,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"reflect"
 	"regexp"
 	"sort"
@@ -674,6 +675,48 @@ func newObjectWalker() *objectWalker {
 	}
 }
 
+type normalizingVisitor struct {
+	*objectWalker
+	perHost map[string]*objectWalker
+}
+
+func NewNormalizingVisitor() *normalizingVisitor {
+	return &normalizingVisitor{
+		objectWalker: newObjectWalker(),
+		perHost:      make(map[string]*objectWalker),
+	}
+}
+
+func (n *normalizingVisitor) rewriteURL(s string) (string, error) {
+	u, err := url.Parse(s)
+	if err != nil {
+		return "", fmt.Errorf("error parsing URL %q: %w", s, err)
+	}
+
+	s, err = n.objectWalker.visitString(s, "{url}")
+	if err != nil {
+		return "", err
+	}
+
+	hostVisitor := n.perHost[u.Host]
+	if hostVisitor != nil {
+		s, err = hostVisitor.visitString(s, "{url}")
+		if err != nil {
+			return "", err
+		}
+	}
+	return s, nil
+}
+
+func (n *normalizingVisitor) ForHost(host string) mockgcpregistry.NormalizingVisitorScope {
+	forHost := n.perHost[host]
+	if forHost == nil {
+		forHost = newObjectWalker()
+		n.perHost[host] = forHost
+	}
+	return forHost
+}
+
 func (o *objectWalker) ReplacePath(path string, v any) {
 	if v2, found := o.replacePaths[path]; found && !reflect.DeepEqual(v, v2) {
 		klog.Fatalf("objectWalker has duplicate ReplacePath %q", path)
@@ -858,14 +901,6 @@ func (o *objectWalker) VisitUnstructured(v *unstructured.Unstructured) error {
 		return err
 	}
 	return nil
-}
-
-func (o *objectWalker) RewriteURL(url string) (string, error) {
-	v2, err := o.visitString(url, "{url}")
-	if err != nil {
-		return "", err
-	}
-	return v2, nil
 }
 
 // findLinksInEvent looks for link paths and feeds the values into replacement.ExtractIDsFromLinks
@@ -1256,7 +1291,7 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// Run per-service replaceres
 	{
-		replacements := newObjectWalker()
+		replacements := NewNormalizingVisitor()
 
 		for _, entry := range events {
 			normalizer.ConfigureVisitor(entry.Request.URL, replacements)
@@ -1268,7 +1303,7 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 		// Replace URLs
 		for _, event := range events {
-			s, err := replacements.RewriteURL(event.Request.URL)
+			s, err := replacements.rewriteURL(event.Request.URL)
 			if err != nil {
 				t.Fatalf("error normalizing url %q: %v", event.Request.URL, err)
 			}
@@ -1278,6 +1313,17 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		events.PrettifyJSON(func(requestURL string, obj map[string]any) {
 			if err := replacements.visitMap(obj, ""); err != nil {
 				t.Fatalf("error normalizing response: %v", err)
+			}
+			u, err := url.Parse(requestURL)
+			if err != nil {
+				t.Fatalf("error parsing requestURL %q: %v", requestURL, err)
+			}
+
+			hostVisitor := replacements.perHost[u.Host]
+			if hostVisitor != nil {
+				if err := hostVisitor.visitMap(obj, ""); err != nil {
+					t.Fatalf("error normalizing response with host visitor: %v", err)
+				}
 			}
 		})
 	}

@@ -43,7 +43,7 @@ type SupportsNormalization interface {
 	Previsit(event Event, visitor NormalizingVisitor)
 }
 
-type NormalizingVisitor interface {
+type NormalizingVisitorScope interface {
 	// ReplacePath replaces values at the given path with newValue
 	ReplacePath(path string, newValue any)
 
@@ -58,6 +58,13 @@ type NormalizingVisitor interface {
 
 	// SortSliceBy will sort the slice at the given path, ordering by the given field
 	SortSliceBy(path string, sortBy string)
+}
+
+type NormalizingVisitor interface {
+	NormalizingVisitorScope
+
+	// ForHost returns a NormalizingVisitor that only applies to the given host
+	ForHost(host string) NormalizingVisitorScope
 }
 
 type Normalizer interface {

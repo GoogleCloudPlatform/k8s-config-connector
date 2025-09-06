@@ -7,7 +7,6 @@
 package dnspb
 
 import (
-	longrunningpb "cloud.google.com/go/longrunning/autogen/longrunningpb"
 	context "context"
 	empty "github.com/golang/protobuf/ptypes/empty"
 	grpc "google.golang.org/grpc"
@@ -315,7 +314,7 @@ var DnsKeysServer_ServiceDesc = grpc.ServiceDesc{
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ManagedZoneOperationsServerClient interface {
 	// Fetches the representation of an existing Operation.
-	GetManagedZoneOperation(ctx context.Context, in *GetManagedZoneOperationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	GetManagedZoneOperation(ctx context.Context, in *GetManagedZoneOperationRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Enumerates Operations for the given ManagedZone.
 	ListManagedZoneOperations(ctx context.Context, in *ListManagedZoneOperationsRequest, opts ...grpc.CallOption) (*ManagedZoneOperationsListResponse, error)
 }
@@ -328,8 +327,8 @@ func NewManagedZoneOperationsServerClient(cc grpc.ClientConnInterface) ManagedZo
 	return &managedZoneOperationsServerClient{cc}
 }
 
-func (c *managedZoneOperationsServerClient) GetManagedZoneOperation(ctx context.Context, in *GetManagedZoneOperationRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
-	out := new(longrunningpb.Operation)
+func (c *managedZoneOperationsServerClient) GetManagedZoneOperation(ctx context.Context, in *GetManagedZoneOperationRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/google.cloud.dns.v1.ManagedZoneOperationsServer/GetManagedZoneOperation", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -351,7 +350,7 @@ func (c *managedZoneOperationsServerClient) ListManagedZoneOperations(ctx contex
 // for forward compatibility
 type ManagedZoneOperationsServerServer interface {
 	// Fetches the representation of an existing Operation.
-	GetManagedZoneOperation(context.Context, *GetManagedZoneOperationRequest) (*longrunningpb.Operation, error)
+	GetManagedZoneOperation(context.Context, *GetManagedZoneOperationRequest) (*Operation, error)
 	// Enumerates Operations for the given ManagedZone.
 	ListManagedZoneOperations(context.Context, *ListManagedZoneOperationsRequest) (*ManagedZoneOperationsListResponse, error)
 	mustEmbedUnimplementedManagedZoneOperationsServerServer()
@@ -361,7 +360,7 @@ type ManagedZoneOperationsServerServer interface {
 type UnimplementedManagedZoneOperationsServerServer struct {
 }
 
-func (UnimplementedManagedZoneOperationsServerServer) GetManagedZoneOperation(context.Context, *GetManagedZoneOperationRequest) (*longrunningpb.Operation, error) {
+func (UnimplementedManagedZoneOperationsServerServer) GetManagedZoneOperation(context.Context, *GetManagedZoneOperationRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetManagedZoneOperation not implemented")
 }
 func (UnimplementedManagedZoneOperationsServerServer) ListManagedZoneOperations(context.Context, *ListManagedZoneOperationsRequest) (*ManagedZoneOperationsListResponse, error) {
@@ -450,9 +449,9 @@ type ManagedZonesServerClient interface {
 	// Enumerates ManagedZones that have been created but not yet deleted.
 	ListManagedZones(ctx context.Context, in *ListManagedZonesRequest, opts ...grpc.CallOption) (*ManagedZonesListResponse, error)
 	// Applies a partial update to an existing ManagedZone.
-	PatchManagedZone(ctx context.Context, in *PatchManagedZoneRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	PatchManagedZone(ctx context.Context, in *PatchManagedZoneRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Updates an existing ManagedZone.
-	UpdateManagedZone(ctx context.Context, in *UpdateManagedZoneRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	UpdateManagedZone(ctx context.Context, in *UpdateManagedZoneRequest, opts ...grpc.CallOption) (*Operation, error)
 }
 
 type managedZonesServerClient struct {
@@ -499,8 +498,8 @@ func (c *managedZonesServerClient) ListManagedZones(ctx context.Context, in *Lis
 	return out, nil
 }
 
-func (c *managedZonesServerClient) PatchManagedZone(ctx context.Context, in *PatchManagedZoneRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
-	out := new(longrunningpb.Operation)
+func (c *managedZonesServerClient) PatchManagedZone(ctx context.Context, in *PatchManagedZoneRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/google.cloud.dns.v1.ManagedZonesServer/PatchManagedZone", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -508,8 +507,8 @@ func (c *managedZonesServerClient) PatchManagedZone(ctx context.Context, in *Pat
 	return out, nil
 }
 
-func (c *managedZonesServerClient) UpdateManagedZone(ctx context.Context, in *UpdateManagedZoneRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
-	out := new(longrunningpb.Operation)
+func (c *managedZonesServerClient) UpdateManagedZone(ctx context.Context, in *UpdateManagedZoneRequest, opts ...grpc.CallOption) (*Operation, error) {
+	out := new(Operation)
 	err := c.cc.Invoke(ctx, "/google.cloud.dns.v1.ManagedZonesServer/UpdateManagedZone", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -530,9 +529,9 @@ type ManagedZonesServerServer interface {
 	// Enumerates ManagedZones that have been created but not yet deleted.
 	ListManagedZones(context.Context, *ListManagedZonesRequest) (*ManagedZonesListResponse, error)
 	// Applies a partial update to an existing ManagedZone.
-	PatchManagedZone(context.Context, *PatchManagedZoneRequest) (*longrunningpb.Operation, error)
+	PatchManagedZone(context.Context, *PatchManagedZoneRequest) (*Operation, error)
 	// Updates an existing ManagedZone.
-	UpdateManagedZone(context.Context, *UpdateManagedZoneRequest) (*longrunningpb.Operation, error)
+	UpdateManagedZone(context.Context, *UpdateManagedZoneRequest) (*Operation, error)
 	mustEmbedUnimplementedManagedZonesServerServer()
 }
 
@@ -552,10 +551,10 @@ func (UnimplementedManagedZonesServerServer) GetManagedZone(context.Context, *Ge
 func (UnimplementedManagedZonesServerServer) ListManagedZones(context.Context, *ListManagedZonesRequest) (*ManagedZonesListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListManagedZones not implemented")
 }
-func (UnimplementedManagedZonesServerServer) PatchManagedZone(context.Context, *PatchManagedZoneRequest) (*longrunningpb.Operation, error) {
+func (UnimplementedManagedZonesServerServer) PatchManagedZone(context.Context, *PatchManagedZoneRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PatchManagedZone not implemented")
 }
-func (UnimplementedManagedZonesServerServer) UpdateManagedZone(context.Context, *UpdateManagedZoneRequest) (*longrunningpb.Operation, error) {
+func (UnimplementedManagedZonesServerServer) UpdateManagedZone(context.Context, *UpdateManagedZoneRequest) (*Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateManagedZone not implemented")
 }
 func (UnimplementedManagedZonesServerServer) mustEmbedUnimplementedManagedZonesServerServer() {}
