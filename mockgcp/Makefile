@@ -260,6 +260,7 @@ generate-protos-from-openapi:
 
 	wget -O temp/dns-api.json https://raw.githubusercontent.com/googleapis/google-api-go-client/refs/heads/main/dns/v1/dns-api.json
 	mkdir -p apis/google/cloud/dns/v1/
-	cd tools/gapic; go run . --proto-version=2 --proto-package google.cloud.dns.v1 ../../temp/dns-api.json > ../../apis/google/cloud/dns/v1/service.proto
+	# DNS sadly uses a bespoke operation type
+	cd tools/gapic; go run . --proto-version=2 --proto-package google.cloud.dns.v1 --normalize-lro=false ../../temp/dns-api.json > ../../apis/google/cloud/dns/v1/service.proto
 
 	rm -r temp
