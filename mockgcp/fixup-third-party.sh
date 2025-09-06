@@ -51,59 +51,47 @@ mv grafeas mockgrafeas
 
 cd mockgcp
 
-# Rewrite import paths.
-find . -type f -print0 | xargs -0 sed -i -e "s@google/cloud/@mockgcp/cloud/@g"
-find . -type f -print0 | xargs -0 sed -i -e "s@google\.cloud@mockgcp.cloud@g"
+# Rewrite import paths: google.cloud. -> mockgcp.cloud. etc
+find . -type f -print0 | xargs -0 sed -i \
+  -e "s@google/cloud/@mockgcp/cloud/@g" \
+  -e "s@google\.cloud@mockgcp.cloud@g" \
+  -e "s@google/container/@mockgcp/container/@g" \
+  -e "s@google\.container@mockgcp.container@g" \
+  -e "s@google/dataflow/@mockgcp/dataflow/@g" \
+  -e "s@google\.dataflow@mockgcp.dataflow@g" \
+  -e "s@google/firestore/@mockgcp/firestore/@g" \
+  -e "s@google\.firestore@mockgcp.firestore@g" \
+  -e "s@google/iam/@mockgcp/iam/@g" \
+  -e "s@google\.iam@mockgcp.iam@g" \
+  -e "s@google/logging/@mockgcp/logging/@g" \
+  -e "s@google\.logging@mockgcp.logging@g" \
+  -e "s@google/pubsub/@mockgcp/pubsub/@g" \
+  -e "s@google\.pubsub@mockgcp.pubsub@g" \
+  -e "s@google/monitoring/@mockgcp/monitoring/@g" \
+  -e "s@google\.monitoring@mockgcp.monitoring@g" \
+  -e "s@google/storage/@mockgcp/storage/@g" \
+  -e "s@google\.storage@mockgcp.storage@g" \
+  -e "s@google/spanner/@mockgcp/spanner/@g" \
+  -e "s@google\.spanner@mockgcp.spanner@g" \
+  -e "s@google/api/apikeys/@mockgcp/api/apikeys/@g" \
+  -e "s@google\.api\.apikeys@mockgcp.api.apikeys@g" \
+  -e "s@google/api/serviceusage/@mockgcp/api/serviceusage/@g" \
+  -e "s@google\.api\.serviceusage@mockgcp.api.serviceusage@g" \
+  -e "s@google/api/cloudquotas/@mockgcp/api/cloudquotas/@g" \
+  -e "s@google\.api\.cloudquotas@mockgcp.api.cloudquotas@g" \
+  -e "s@google/devtools/artifactregistry/@mockgcp/devtools/artifactregistry/@g" \
+  -e "s@google\.devtools\.artifactregistry@mockgcp.devtools.artifactregistry@g" \
+  -e "s@google/devtools/cloudbuild/@mockgcp/devtools/cloudbuild/@g" \
+  -e "s@google\.devtools\.cloudbuild@mockgcp.devtools.cloudbuild@g" \
+  -e 's@option go_package = "cloud.google.com/go/gkehub/configmanagement/apiv1beta/configmanagementpb;configmanagementpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/configmanagement;configmanagementpb"@g' \
+  -e 's@option go_package = "cloud.google.com/go/gkehub/metering/apiv1beta/meteringpb;meteringpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/metering;meteringpb"@g' \
+  -e 's@option go_package = "cloud.google.com/go/gkehub/multiclusteringress/apiv1beta/multiclusteringresspb;multiclusteringresspb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/multiclusteringress;multiclusteringresspb"@g' \
+  -e 's@option go_package = "cloud.google.com/go/gkehub/servicemesh/apiv1beta/servicemeshpb;servicemeshpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/servicemesh/v1beta;servicemeshpb"@g' \
+  -e 's@option go_package = "cloud.google.com/go/gkehub/policycontroller/apiv1beta/policycontrollerpb;policycontrollerpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/policycontroller/v1beta;policycontrollerpb"@g'
 
-find . -type f -print0 | xargs -0 sed -i -e "s@google/container/@mockgcp/container/@g"
-find . -type f -print0 | xargs -0 sed -i -e "s@google\.container@mockgcp.container@g"
-
-find . -type f -print0 | xargs -0 sed -i -e "s@google/dataflow/@mockgcp/dataflow/@g"
-find . -type f -print0 | xargs -0 sed -i -e "s@google\.dataflow@mockgcp.dataflow@g"
-
-find . -type f -print0 | xargs -0 sed -i -e "s@google/firestore/@mockgcp/firestore/@g"
-find . -type f -print0 | xargs -0 sed -i -e "s@google\.firestore@mockgcp.firestore@g"
-
-find . -type f -print0 | xargs -0 sed -i -e "s@google/iam/@mockgcp/iam/@g"
-find . -type f -print0 | xargs -0 sed -i -e "s@google\.iam@mockgcp.iam@g"
-
-find . -type f -print0 | xargs -0 sed -i -e "s@google/logging/@mockgcp/logging/@g"
-find . -type f -print0 | xargs -0 sed -i -e "s@google\.logging@mockgcp.logging@g"
-
-find . -type f -print0 | xargs -0 sed -i -e "s@google/pubsub/@mockgcp/pubsub/@g"
-find . -type f -print0 | xargs -0 sed -i -e "s@google\.pubsub@mockgcp.pubsub@g"
-
-find . -type f -print0 | xargs -0 sed -i -e "s@google/monitoring/@mockgcp/monitoring/@g"
-find . -type f -print0 | xargs -0 sed -i -e "s@google\.monitoring@mockgcp.monitoring@g"
-
-find . -type f -print0 | xargs -0 sed -i -e "s@google/storage/@mockgcp/storage/@g"
-find . -type f -print0 | xargs -0 sed -i -e "s@google\.storage@mockgcp.storage@g"
-
-find . -type f -print0 | xargs -0 sed -i -e "s@google/spanner/@mockgcp/spanner/@g"
-find . -type f -print0 | xargs -0 sed -i -e "s@google\.spanner@mockgcp.spanner@g"
-
-find . -type f -print0 | xargs -0 sed -i -e "s@google/api/apikeys/@mockgcp/api/apikeys/@g"
-find . -type f -print0 | xargs -0 sed -i -e "s@google\.api\.apikeys@mockgcp.api.apikeys@g"
-
-find . -type f -print0 | xargs -0 sed -i -e "s@google/api/serviceusage/@mockgcp/api/serviceusage/@g"
-find . -type f -print0 | xargs -0 sed -i -e "s@google\.api\.serviceusage@mockgcp.api.serviceusage@g"
-
-find . -type f -print0 | xargs -0 sed -i -e "s@google/api/cloudquotas/@mockgcp/api/cloudquotas/@g"
-find . -type f -print0 | xargs -0 sed -i -e "s@google\.api\.cloudquotas@mockgcp.api.cloudquotas@g"
-
-find . -type f -print0 | xargs -0 sed -i -e "s@google/devtools/artifactregistry/@mockgcp/devtools/artifactregistry/@g"
-find . -type f -print0 | xargs -0 sed -i -e "s@google\.devtools\.artifactregistry@mockgcp.devtools.artifactregistry@g"
-
-find . -type f -print0 | xargs -0 sed -i -e "s@google/devtools/cloudbuild/@mockgcp/devtools/cloudbuild/@g"
-find . -type f -print0 | xargs -0 sed -i -e "s@google\.devtools\.cloudbuild@mockgcp.devtools.cloudbuild@g"
-
-# Fix some go packages to cross-imported packages (where it matters)
-find . -type f -print0 | xargs -0 sed -i -e 's@option go_package = "cloud.google.com/go/gkehub/configmanagement/apiv1beta/configmanagementpb;configmanagementpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/configmanagement;configmanagementpb"@g'
-find . -type f -print0 | xargs -0 sed -i -e 's@option go_package = "cloud.google.com/go/gkehub/metering/apiv1beta/meteringpb;meteringpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/metering;meteringpb"@g'
-find . -type f -print0 | xargs -0 sed -i -e 's@option go_package = "cloud.google.com/go/gkehub/multiclusteringress/apiv1beta/multiclusteringresspb;multiclusteringresspb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta/multiclusteringress;multiclusteringresspb"@g'
-find . -type f -print0 | xargs -0 sed -i -e 's@option go_package = "cloud.google.com/go/gkehub/servicemesh/apiv1beta/servicemeshpb;servicemeshpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/servicemesh/v1beta;servicemeshpb"@g'
-find . -type f -print0 | xargs -0 sed -i -e 's@option go_package = "cloud.google.com/go/gkehub/policycontroller/apiv1beta/policycontrollerpb;policycontrollerpb"@option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/policycontroller/v1beta;policycontrollerpb"@g'
 
 cd ${GOOGLEAPIS}/mockgrafeas
-find . -type f -print0 | xargs -0 sed -i -e "s@grafeas/@mockgrafeas/@g"
-find . -type f -print0 | xargs -0 sed -i -e "s@grafeas\.@mockgrafeas.@g"
+# Rewrite grafeas -> mockgrafeas
+find . -type f -print0 | xargs -0 sed -i \
+  -e "s@grafeas/@mockgrafeas/@g" \
+  -e "s@grafeas\.@mockgrafeas.@g"
