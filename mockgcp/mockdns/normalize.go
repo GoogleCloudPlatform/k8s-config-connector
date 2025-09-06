@@ -15,8 +15,6 @@
 package mockdns
 
 import (
-	"strings"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
@@ -27,26 +25,20 @@ var _ mockgcpregistry.SupportsNormalization = &MockService{}
 var placeholderNameServers = []string{"ns-cloud-a1.googledomains.com.", "ns-cloud-a2.googledomains.com.", "ns-cloud-a3.googledomains.com.", "ns-cloud-a4.googledomains.com."}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	if !isDNSAPI(url) {
-		return
-	}
+	scope := replacements.ForHost("dns.googleapis.com")
 
 	// DNS ManagedZone
 	{
-		replacements.ReplacePath(".nameServers", placeholderNameServers)
-		replacements.ReplacePath(".managedZones[].nameServers", placeholderNameServers)
-		replacements.ReplacePath(".zoneContext.newValue.nameServers", placeholderNameServers)
-		replacements.ReplacePath(".zoneContext.oldValue.nameServers", placeholderNameServers)
+		scope.ReplacePath(".nameServers", placeholderNameServers)
+		scope.ReplacePath(".managedZones[].nameServers", placeholderNameServers)
+		scope.ReplacePath(".zoneContext.newValue.nameServers", placeholderNameServers)
+		scope.ReplacePath(".zoneContext.oldValue.nameServers", placeholderNameServers)
 
-		replacements.ReplacePath(".creationTime", PlaceholderTimestamp)
-		replacements.ReplacePath(".managedZones[].creationTime", PlaceholderTimestamp)
-		replacements.ReplacePath(".zoneContext.newValue.creationTime", PlaceholderTimestamp)
-		replacements.ReplacePath(".zoneContext.oldValue.creationTime", PlaceholderTimestamp)
+		scope.ReplacePath(".creationTime", PlaceholderTimestamp)
+		scope.ReplacePath(".managedZones[].creationTime", PlaceholderTimestamp)
+		scope.ReplacePath(".zoneContext.newValue.creationTime", PlaceholderTimestamp)
+		scope.ReplacePath(".zoneContext.oldValue.creationTime", PlaceholderTimestamp)
 	}
-}
-
-func isDNSAPI(url string) bool {
-	return strings.HasPrefix(url, "https://dns.googleapis.com/")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
