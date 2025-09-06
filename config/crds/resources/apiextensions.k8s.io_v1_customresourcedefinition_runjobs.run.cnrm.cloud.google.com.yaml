@@ -974,7 +974,7 @@ spec:
                 type: integer
               expireTime:
                 description: Output only. For a deleted resource, the time after which
-                  it will be permamently deleted.
+                  it will be permanently deleted.
                 type: string
               externalRef:
                 description: A unique specifier for the RunJob resource in GCP.

@@ -61,12 +61,15 @@ func runJobFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".observed_generation")
 	f.Unimplemented_NotYetTriaged(".run_execution_token")
 	f.Unimplemented_NotYetTriaged(".satisfies_pzs")
+	f.Unimplemented_NotYetTriaged(".start_execution_token")
 	f.Unimplemented_NotYetTriaged(".template.labels")
 	f.Unimplemented_NotYetTriaged(".template.template.containers.depends_on")
 	f.Unimplemented_NotYetTriaged(".template.template.containers.base_image_uri")
 	f.Unimplemented_NotYetTriaged(".template.template.node_selector")
 	f.Unimplemented_NotYetTriaged(".template.template.volumes")
 	f.Unimplemented_NotYetTriaged(".terminal_condition.execution_reason")
+	f.Unimplemented_NotYetTriaged(".terminal_condition.reason")
+	f.Unimplemented_NotYetTriaged(".terminal_condition.revision_reason")
 
 	f.UnimplementedFields.Insert(".name") // Read-only, special handling
 

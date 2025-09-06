@@ -87,7 +87,7 @@ func NewJobIdentity(ctx context.Context, reader client.Reader, obj *RunJob) (*Jo
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
 		if actualParent.Location != *location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, *location)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
