@@ -12,31 +12,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: redis.cnrm.cloud.google.com/v1beta1
-kind: RedisCluster
+apiVersion: memorystore.cnrm.cloud.google.com/v1alpha1
+kind: MemorystoreInstance
 metadata:
-  name: rediscluster-${uniqueId}
+  name: memorystore-${uniqueId}
 spec:
   shardCount: 6
-  pscConfigs:
-  - networkRef:
-      external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
   location: us-central1
   projectRef:
     external: ${projectId}
-  replicaCount: 1
-  nodeType: REDIS_STANDARD_SMALL
-  transitEncryptionMode: TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION
-  authorizationMode: AUTH_MODE_IAM_AUTH
-  redisConfigs:
+  replicaCount: 2
+  nodeType: STANDARD_SMALL
+  transitEncryptionMode: SERVER_AUTHENTICATION
+  authorizationMode: IAM_AUTH
+  engineVersion: VALKEY_7_2
+  engineConfigs:
     maxmemory-policy: volatile-ttl
-    maxclients: '1000'
   zoneDistributionConfig:
     mode: SINGLE_ZONE
     zone: us-central1-b
   persistenceConfig:
-    mode: RDB
-    rdbConfig:
-      rdbSnapshotPeriod: ONE_HOUR
-      rdbSnapshotStartTime: 2024-10-02T15:01:23Z
-  deletionProtectionEnabled: false
+    mode: AOF
+    aofConfig:
+      appendFsync: EVERY_SEC
+  deletionProtectionEnabled: true
+  endpoints:
+  - connections:
+    - pscAutoConnection:
+          networkRef:
+            external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+          projectRef:
+            external: ${projectId}
