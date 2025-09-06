@@ -40,6 +40,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockorgpolicy"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockpubsub"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockrun"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockservicedirectory"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockserviceusage"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksql"

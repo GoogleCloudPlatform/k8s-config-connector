@@ -1,0 +1,887 @@
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "gsa-1-${uniqueId}",
+  "serviceAccount": {
+    "displayName": "TestGSA-1-${uniqueId}"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "TestGSA-1-${uniqueId}",
+  "email": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "TestGSA-1-${uniqueId}",
+  "email": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "gsa-2-${uniqueId}",
+  "serviceAccount": {
+    "displayName": "TestGSA-2-${uniqueId}"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "TestGSA-2-${uniqueId}",
+  "email": "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "TestGSA-2-${uniqueId}",
+  "email": "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "job \"projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs?alt=json&jobId=${jobID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "launchStage": "GA",
+  "template": {
+    "template": {
+      "containers": [
+        {
+          "image": "us-docker.pkg.dev/cloudrun/container/hello"
+        }
+      ],
+      "maxRetries": 3,
+      "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Job",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
+    "latestCreatedExecution": {},
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+    "template": {
+      "taskCount": 1,
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+        "maxRetries": 3,
+        "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "timeout": "600s"
+      }
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Job",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
+    "latestCreatedExecution": {},
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+    "template": {
+      "taskCount": 1,
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+        "maxRetries": 3,
+        "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "timeout": "600s"
+      }
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Job",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
+    "latestCreatedExecution": {},
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+    "template": {
+      "taskCount": 1,
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+        "maxRetries": 3,
+        "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "timeout": "600s"
+      }
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "etag": "abcdef0123A=",
+  "generation": "1",
+  "lastModifier": "test@google.com",
+  "latestCreatedExecution": {},
+  "launchStage": "GA",
+  "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+  "template": {
+    "taskCount": 1,
+    "template": {
+      "containers": [
+        {
+          "image": "us-docker.pkg.dev/cloudrun/container/hello",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          }
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxRetries": 3,
+      "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+      "timeout": "600s"
+    }
+  },
+  "terminalCondition": {
+    "lastTransitionTime": "2025-01-01T00:00:00Z",
+    "state": "CONDITION_SUCCEEDED",
+    "type": "Ready"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "launchStage": "GA",
+  "template": {
+    "taskCount": 1,
+    "template": {
+      "containers": [
+        {
+          "image": "us-docker.pkg.dev/cloudrun/container/hello",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          }
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxRetries": 3,
+      "serviceAccount": "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+      "timeout": "600s"
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Job",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
+    "latestCreatedExecution": {},
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+    "template": {
+      "taskCount": 1,
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+        "maxRetries": 3,
+        "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "timeout": "600s"
+      }
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Job",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
+    "latestCreatedExecution": {},
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+    "template": {
+      "taskCount": 1,
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+        "maxRetries": 3,
+        "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "timeout": "600s"
+      }
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Job",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
+    "latestCreatedExecution": {},
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+    "template": {
+      "taskCount": 1,
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+        "maxRetries": 3,
+        "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "timeout": "600s"
+      }
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "etag": "abcdef0123A=",
+  "generation": "1",
+  "lastModifier": "test@google.com",
+  "latestCreatedExecution": {},
+  "launchStage": "GA",
+  "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+  "template": {
+    "taskCount": 1,
+    "template": {
+      "containers": [
+        {
+          "image": "us-docker.pkg.dev/cloudrun/container/hello",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          }
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxRetries": 3,
+      "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+      "timeout": "600s"
+    }
+  },
+  "terminalCondition": {
+    "lastTransitionTime": "2025-01-01T00:00:00Z",
+    "state": "CONDITION_SUCCEEDED",
+    "type": "Ready"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Job",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
+    "latestCreatedExecution": {},
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+    "template": {
+      "taskCount": 1,
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+        "maxRetries": 3,
+        "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "timeout": "600s"
+      }
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Job",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
+    "latestCreatedExecution": {},
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+    "template": {
+      "taskCount": 1,
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+        "maxRetries": 3,
+        "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "timeout": "600s"
+      }
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Job",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
+    "latestCreatedExecution": {},
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+    "template": {
+      "taskCount": 1,
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+        "maxRetries": 3,
+        "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "timeout": "600s"
+      }
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "TestGSA-2-${uniqueId}",
+  "email": "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "TestGSA-1-${uniqueId}",
+  "email": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

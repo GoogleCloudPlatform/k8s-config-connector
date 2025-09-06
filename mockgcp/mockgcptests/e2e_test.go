@@ -56,6 +56,12 @@ func TestScripts(t *testing.T) {
 		if scriptPath == "mockaiplatform/testdata/model/crud" {
 			continue
 		}
+		// skip the crud test for cloud run due to GCP version differences.
+		// The gcloud commands use run v1 proto, but the KCC reconciler is based on run v2 proto.
+		// The v1 and v2 are totally different in their Host, URL, Request/Response payloads.
+		if scriptPath == "mockrun/testdata/job/crud" {
+			continue
+		}
 		t.Run(scriptPath, func(t *testing.T) {
 			t.Parallel()
 
