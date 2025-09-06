@@ -65,5 +65,18 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
-	return mux, nil
+	// Terraform uses the /v1beta2/ endpoints, but we prefer to implement v1.
+	// Rewrite the the request (they seem to be compatible).
+	rewriteBetaToV1 := func(w http.ResponseWriter, r *http.Request) {
+		u := r.URL
+		if strings.HasPrefix(u.Path, "/dns/v1beta2/") {
+			u2 := *u
+			u2.Path = "/dns/v1/" + strings.TrimPrefix(u.Path, "/dns/v1beta2/")
+			r = httpmux.RewriteRequest(r, &u2)
+		}
+
+		mux.ServeHTTP(w, r)
+	}
+
+	return http.HandlerFunc(rewriteBetaToV1), nil
 }
