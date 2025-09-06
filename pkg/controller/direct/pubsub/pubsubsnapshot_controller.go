@@ -16,7 +16,7 @@
 // proto.service: google.pubsub.v1.Subscriber
 // proto.message: google.pubsub.v1.Snapshot
 // crd.type: PubSubSnapshot
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package pubsub
 
@@ -25,8 +25,9 @@ import (
 	"fmt"
 	"reflect"
 
-	api "cloud.google.com/go/pubsub/apiv1"
-	pb "cloud.google.com/go/pubsub/apiv1/pubsubpb"
+	api "cloud.google.com/go/pubsub/v2/apiv1"
+	pb "cloud.google.com/go/pubsub/v2/apiv1/pubsubpb"
+
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -37,8 +38,7 @@ import (
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1alpha1"
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -60,7 +60,7 @@ type SnapshotModel struct {
 	config config.ControllerConfig
 }
 
-func (m *SnapshotModel) client(ctx context.Context, projectID string) (*api.SubscriberClient, error) {
+func (m *SnapshotModel) client(ctx context.Context, projectID string) (*api.SubscriptionAdminClient, error) {
 	var opts []option.ClientOption
 
 	config := m.config
@@ -76,7 +76,7 @@ func (m *SnapshotModel) client(ctx context.Context, projectID string) (*api.Subs
 		return nil, err
 	}
 
-	gcpClient, err := api.NewSubscriberRESTClient(ctx, opts...)
+	gcpClient, err := api.NewSubscriptionAdminClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building pubsub snapshot client: %w", err)
 	}
@@ -121,8 +121,8 @@ func (m *SnapshotModel) AdapterForURL(ctx context.Context, url string) (directba
 }
 
 type snapshotAdapter struct {
-	gcpClient *api.SubscriberClient
-	id        *v1alpha1.SnapshotIdentity
+	gcpClient *api.SubscriptionAdminClient
+	id        *krm.SnapshotIdentity
 	desired   *krm.PubSubSnapshot
 	actual    *pb.Snapshot
 }
