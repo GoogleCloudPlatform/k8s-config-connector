@@ -195,7 +195,6 @@ func (a *authorizationPolicyAdapter) Create(ctx context.Context, createOp *direc
 	if err != nil {
 		return fmt.Errorf("creating networksecurity authorizationpolicy %s: %w", a.id.String(), err)
 	}
-
 	created, err := op.Wait(ctx)
 	if err != nil {
 		return fmt.Errorf("waiting for create of networksecurity authorizationpolicy %s: %w", a.id.String(), err)
@@ -224,7 +223,7 @@ func (a *authorizationPolicyAdapter) Update(ctx context.Context, updateOp *direc
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	desired.Name = a.id.ID()
+	desired.Name = a.id.String()
 	desired.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.Labels)
 
 	diff, err := common.CompareProtoMessage(desired, a.actual, common.BasicDiff)
