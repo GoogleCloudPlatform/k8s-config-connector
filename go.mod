@@ -71,7 +71,7 @@ require (
 	cloud.google.com/go/workstations v1.1.1
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0
-	github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder v0.0.0-20250208024142-7cd1b21e1d1e
+	github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder v0.0.0-20250906011412-c973f26a88e8
 	github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-20240614222432-4bde5b345380
 	github.com/appscode/jsonpatch v0.0.0-20190108182946-7c0e3b262f30
 	github.com/blang/semver v3.5.1+incompatible
@@ -140,7 +140,7 @@ require (
 	github.com/go-jose/go-jose/v4 v4.0.5 // indirect
 	github.com/google/flatbuffers v23.5.26+incompatible // indirect
 	github.com/google/gnostic-models v0.6.8 // indirect
-	github.com/gorilla/websocket v1.5.0 // indirect
+	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f // indirect
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
