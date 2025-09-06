@@ -25,6 +25,14 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".terminalCondition.lastTransitionTime", "2025-01-01T00:00:00Z")
 	replacements.ReplacePath(".response.terminalCondition.lastTransitionTime", "2025-01-01T00:00:00Z")
 	replacements.ReplacePath(".metadata.etag", "abcdef0123A=")
+	replacements.ReplacePath(".metadata.annotations.run.googleapis.com/operation-id", "00000000-0000-0000-0000-000000000000")
+	replacements.ReplacePath(".metadata.annotations.run.googleapis.com/client-version", "0.0.0")
+	replacements.ReplacePath(".metadata.annotations.run.googleapis.com/creator", "test@google.com")
+	replacements.ReplacePath(".metadata.annotations.run.googleapis.com/lastModifier", "test@google.com")
+	replacements.ReplacePath(".response.metadata.annotations.run.googleapis.com/operation-id", "00000000-0000-0000-0000-000000000000")
+	replacements.ReplacePath(".response.metadata.annotations.run.googleapis.com/client-version", "0.0.0")
+	replacements.ReplacePath(".response.metadata.annotations.run.googleapis.com/client-creator", "test@google.com")
+	replacements.ReplacePath(".response.metadata.annotations.run.googleapis.com/client-lastModifier", "test@google.com")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

@@ -10,7 +10,7 @@ Content-Type: application/json
   "metadata": {
     "annotations": {
       "run.googleapis.com/client-name": "gcloud",
-      "run.googleapis.com/client-version": "537.0.0",
+      "run.googleapis.com/client-version": "0.0.0",
       "run.googleapis.com/launch-stage": "ALPHA"
     },
     "labels": {},
@@ -25,7 +25,7 @@ Content-Type: application/json
           "run.googleapis.com/client-version": "537.0.0"
         },
         "labels": {
-          "client.knative.dev/nonce": "buc_qig_tav"
+          "client.knative.dev/nonce": "guw_hod_nuh"
         }
       },
       "spec": {
@@ -64,15 +64,15 @@ X-Xss-Protection: 0
   "metadata": {
     "annotations": {
       "run.googleapis.com/client-name": "gcloud",
-      "run.googleapis.com/client-version": "537.0.0",
-      "run.googleapis.com/creator": "yuwenma@google.com",
-      "run.googleapis.com/lastModifier": "yuwenma@google.com",
-      "run.googleapis.com/operation-id": "2f742195-f217-4dd5-bfac-0e257e4b3410"
+      "run.googleapis.com/client-version": "0.0.0",
+      "run.googleapis.com/creator": "test@google.com",
+      "run.googleapis.com/lastModifier": "test@google.com",
+      "run.googleapis.com/operation-id": "00000000-0000-0000-0000-000000000000"
     },
     "generation": 1,
     "labels": {
       "cloud.googleapis.com/location": "us-central1",
-      "run.googleapis.com/lastUpdatedTime": "2025-09-03T16:13:54.272555Z"
+      "run.googleapis.com/lastUpdatedTime": "2025-09-06T06:24:03.838874Z"
     },
     "name": "test-${uniqueId}",
     "namespace": "${projectNumber}",
@@ -87,7 +87,7 @@ X-Xss-Protection: 0
           "run.googleapis.com/execution-environment": "gen2"
         },
         "labels": {
-          "client.knative.dev/nonce": "buc_qig_tav"
+          "client.knative.dev/nonce": "guw_hod_nuh"
         }
       },
       "spec": {
@@ -139,15 +139,15 @@ X-Xss-Protection: 0
   "metadata": {
     "annotations": {
       "run.googleapis.com/client-name": "gcloud",
-      "run.googleapis.com/client-version": "537.0.0",
-      "run.googleapis.com/creator": "yuwenma@google.com",
-      "run.googleapis.com/lastModifier": "yuwenma@google.com",
-      "run.googleapis.com/operation-id": "2f742195-f217-4dd5-bfac-0e257e4b3410"
+      "run.googleapis.com/client-version": "0.0.0",
+      "run.googleapis.com/creator": "test@google.com",
+      "run.googleapis.com/lastModifier": "test@google.com",
+      "run.googleapis.com/operation-id": "00000000-0000-0000-0000-000000000000"
     },
     "generation": 1,
     "labels": {
       "cloud.googleapis.com/location": "us-central1",
-      "run.googleapis.com/lastUpdatedTime": "2025-09-03T16:13:54.272555Z"
+      "run.googleapis.com/lastUpdatedTime": "2025-09-06T06:24:03.838874Z"
     },
     "name": "test-${uniqueId}",
     "namespace": "${projectNumber}",
@@ -162,99 +162,7 @@ X-Xss-Protection: 0
           "run.googleapis.com/execution-environment": "gen2"
         },
         "labels": {
-          "client.knative.dev/nonce": "buc_qig_tav"
-        }
-      },
-      "spec": {
-        "taskCount": 1,
-        "template": {
-          "spec": {
-            "containers": [
-              {
-                "image": "us-docker.pkg.dev/cloudrun/container/job:latest",
-                "resources": {
-                  "limits": {
-                    "cpu": "1000m",
-                    "memory": "512Mi"
-                  }
-                }
-              }
-            ],
-            "maxRetries": 3,
-            "serviceAccountName": "${projectNumber}-compute@developer.gserviceaccount.com",
-            "timeoutSeconds": "600"
-          }
-        }
-      }
-    }
-  },
-  "status": {
-    "conditions": [
-      {
-        "lastTransitionTime": "1970-01-01T00:00:00Z",
-        "status": "Unknown",
-        "type": "Ready"
-      },
-      {
-        "lastTransitionTime": "1970-01-01T00:00:00Z",
-        "message": "System will retry after 0:00:00 from lastTransitionTime for attempt 0.",
-        "reason": "ImmediateRetry",
-        "severity": "Info",
-        "status": "True",
-        "type": "Retry"
-      }
-    ],
-    "observedGeneration": 1
-  }
-}
-
----
-
-GET https://us-central1-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/${projectId}/jobs/${jobID}?alt=json
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "apiVersion": "run.googleapis.com/v1",
-  "kind": "Job",
-  "metadata": {
-    "annotations": {
-      "run.googleapis.com/client-name": "gcloud",
-      "run.googleapis.com/client-version": "537.0.0",
-      "run.googleapis.com/creator": "yuwenma@google.com",
-      "run.googleapis.com/lastModifier": "yuwenma@google.com",
-      "run.googleapis.com/operation-id": "2f742195-f217-4dd5-bfac-0e257e4b3410"
-    },
-    "generation": 1,
-    "labels": {
-      "cloud.googleapis.com/location": "us-central1",
-      "run.googleapis.com/lastUpdatedTime": "2025-09-03T16:13:54.272555Z"
-    },
-    "name": "test-${uniqueId}",
-    "namespace": "${projectNumber}",
-    "selfLink": "/apis/run.googleapis.com/v1/namespaces/${projectNumber}/jobs/test-${uniqueId}"
-  },
-  "spec": {
-    "template": {
-      "metadata": {
-        "annotations": {
-          "run.googleapis.com/client-name": "gcloud",
-          "run.googleapis.com/client-version": "537.0.0",
-          "run.googleapis.com/execution-environment": "gen2"
-        },
-        "labels": {
-          "client.knative.dev/nonce": "buc_qig_tav"
+          "client.knative.dev/nonce": "guw_hod_nuh"
         }
       },
       "spec": {
@@ -306,16 +214,16 @@ Content-Type: application/json
   "metadata": {
     "annotations": {
       "run.googleapis.com/client-name": "gcloud",
-      "run.googleapis.com/client-version": "537.0.0",
-      "run.googleapis.com/creator": "yuwenma@google.com",
-      "run.googleapis.com/lastModifier": "yuwenma@google.com",
+      "run.googleapis.com/client-version": "0.0.0",
+      "run.googleapis.com/creator": "test@google.com",
+      "run.googleapis.com/lastModifier": "test@google.com",
       "run.googleapis.com/launch-stage": "ALPHA",
-      "run.googleapis.com/operation-id": "2f742195-f217-4dd5-bfac-0e257e4b3410"
+      "run.googleapis.com/operation-id": "00000000-0000-0000-0000-000000000000"
     },
     "generation": 1,
     "labels": {
       "cloud.googleapis.com/location": "us-central1",
-      "run.googleapis.com/lastUpdatedTime": "2025-09-03T16:13:54.272555Z"
+      "run.googleapis.com/lastUpdatedTime": "2025-09-06T06:24:03.838874Z"
     },
     "name": "test-${uniqueId}",
     "namespace": "${projectNumber}",
@@ -330,7 +238,7 @@ Content-Type: application/json
           "run.googleapis.com/execution-environment": "gen2"
         },
         "labels": {
-          "client.knative.dev/nonce": "hig_qah_nit"
+          "client.knative.dev/nonce": "muk_dog_mij"
         }
       },
       "spec": {
@@ -384,15 +292,15 @@ X-Xss-Protection: 0
   "metadata": {
     "annotations": {
       "run.googleapis.com/client-name": "gcloud",
-      "run.googleapis.com/client-version": "537.0.0",
-      "run.googleapis.com/creator": "yuwenma@google.com",
-      "run.googleapis.com/lastModifier": "yuwenma@google.com",
-      "run.googleapis.com/operation-id": "de9d967e-490f-4041-bdb6-c50ae793a1e6"
+      "run.googleapis.com/client-version": "0.0.0",
+      "run.googleapis.com/creator": "test@google.com",
+      "run.googleapis.com/lastModifier": "test@google.com",
+      "run.googleapis.com/operation-id": "00000000-0000-0000-0000-000000000000"
     },
     "generation": 2,
     "labels": {
       "cloud.googleapis.com/location": "us-central1",
-      "run.googleapis.com/lastUpdatedTime": "2025-09-03T16:14:02.531435Z"
+      "run.googleapis.com/lastUpdatedTime": "2025-09-06T06:24:20.342537Z"
     },
     "name": "test-${uniqueId}",
     "namespace": "${projectNumber}",
@@ -407,7 +315,7 @@ X-Xss-Protection: 0
           "run.googleapis.com/execution-environment": "gen2"
         },
         "labels": {
-          "client.knative.dev/nonce": "hig_qah_nit"
+          "client.knative.dev/nonce": "muk_dog_mij"
         }
       },
       "spec": {
@@ -468,15 +376,15 @@ X-Xss-Protection: 0
   "metadata": {
     "annotations": {
       "run.googleapis.com/client-name": "gcloud",
-      "run.googleapis.com/client-version": "537.0.0",
-      "run.googleapis.com/creator": "yuwenma@google.com",
-      "run.googleapis.com/lastModifier": "yuwenma@google.com",
-      "run.googleapis.com/operation-id": "de9d967e-490f-4041-bdb6-c50ae793a1e6"
+      "run.googleapis.com/client-version": "0.0.0",
+      "run.googleapis.com/creator": "test@google.com",
+      "run.googleapis.com/lastModifier": "test@google.com",
+      "run.googleapis.com/operation-id": "00000000-0000-0000-0000-000000000000"
     },
     "generation": 2,
     "labels": {
       "cloud.googleapis.com/location": "us-central1",
-      "run.googleapis.com/lastUpdatedTime": "2025-09-03T16:14:02.531435Z"
+      "run.googleapis.com/lastUpdatedTime": "2025-09-06T06:24:20.342537Z"
     },
     "name": "test-${uniqueId}",
     "namespace": "${projectNumber}",
@@ -491,7 +399,7 @@ X-Xss-Protection: 0
           "run.googleapis.com/execution-environment": "gen2"
         },
         "labels": {
-          "client.knative.dev/nonce": "hig_qah_nit"
+          "client.knative.dev/nonce": "muk_dog_mij"
         }
       },
       "spec": {
@@ -553,10 +461,100 @@ X-Xss-Protection: 0
     "group": "v1",
     "kind": "job",
     "name": "test-${uniqueId}",
-    "uid": "c8b94c02-2503-4d31-a806-e46db139f839"
+    "uid": "37cb8dcd-3bab-423b-9a95-65ed19995d82"
   },
-  "reason": "27157267-39cc-46da-b206-84c7c6e7b575",
+  "reason": "ece0f818-1027-4c82-964f-ffd6b00de6e9",
   "status": "Success"
+}
+
+---
+
+GET https://us-central1-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/${projectId}/jobs/${jobID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "apiVersion": "run.googleapis.com/v1",
+  "kind": "Job",
+  "metadata": {
+    "annotations": {
+      "run.googleapis.com/client-name": "gcloud",
+      "run.googleapis.com/client-version": "0.0.0",
+      "run.googleapis.com/creator": "test@google.com",
+      "run.googleapis.com/lastModifier": "test@google.com",
+      "run.googleapis.com/operation-id": "00000000-0000-0000-0000-000000000000"
+    },
+    "deletionTimestamp": "1970-01-01T00:00:00Z",
+    "finalizers": [
+      "JobFinalizer"
+    ],
+    "generation": 3,
+    "labels": {
+      "cloud.googleapis.com/location": "us-central1",
+      "run.googleapis.com/lastUpdatedTime": "2025-09-06T06:24:32.787800Z"
+    },
+    "name": "test-${uniqueId}",
+    "namespace": "${projectNumber}",
+    "selfLink": "/apis/run.googleapis.com/v1/namespaces/${projectNumber}/jobs/test-${uniqueId}"
+  },
+  "spec": {
+    "template": {
+      "metadata": {
+        "annotations": {
+          "run.googleapis.com/client-name": "gcloud",
+          "run.googleapis.com/client-version": "537.0.0",
+          "run.googleapis.com/execution-environment": "gen2"
+        },
+        "labels": {
+          "client.knative.dev/nonce": "muk_dog_mij"
+        }
+      },
+      "spec": {
+        "taskCount": 1,
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "image": "us-docker.pkg.dev/cloudrun/container/job:v2",
+                "resources": {
+                  "limits": {
+                    "cpu": "1000m",
+                    "memory": "512Mi"
+                  }
+                }
+              }
+            ],
+            "maxRetries": 3,
+            "serviceAccountName": "${projectNumber}-compute@developer.gserviceaccount.com",
+            "timeoutSeconds": "600"
+          }
+        }
+      }
+    }
+  },
+  "status": {
+    "conditions": [
+      {
+        "lastTransitionTime": "1970-01-01T00:00:00Z",
+        "message": "Image 'us-docker.pkg.dev/cloudrun/container/job:v2' not found.",
+        "reason": "ContainerMissing",
+        "status": "False",
+        "type": "Ready"
+      }
+    ],
+    "observedGeneration": 2
+  }
 }
 
 ---
