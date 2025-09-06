@@ -108,7 +108,7 @@ func (m *sqlInstanceModel) AdapterForURL(ctx context.Context, url string) (direc
 	return nil, nil
 }
 
-func (a *sqlInstanceAdapter) Find(ctx context.Context) (bool, error) {
+func (a *sqlInstanceAdapter) Find(ctx context.Context, op *directbase.FindOperation) (bool, error) {
 	if a.resourceID == "" {
 		return false, nil
 	}
@@ -122,6 +122,32 @@ func (a *sqlInstanceAdapter) Find(ctx context.Context) (bool, error) {
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("found SQLInstance", "actual", a.actual)
+
+	// Update status if there are any changes
+	u := op.GetUnstructured()
+	newStatus, err := SQLInstanceStatusGCPToKRM(a.actual)
+	if err != nil {
+		log.Error(err, "failed to convert GCP status to KRM")
+		return true, nil
+	}
+
+	// Get current status from the unstructured object
+	currentStatusMap, found, err := unstructured.NestedMap(u.Object, "status")
+	var currentStatus *krm.SQLInstanceStatus
+	if err == nil && found {
+		var status krm.SQLInstanceStatus
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(currentStatusMap, &status); err == nil {
+			currentStatus = &status
+		}
+	}
+
+	if StatusNeedsUpdate(currentStatus, newStatus) {
+		if err := setStatus(u, newStatus); err != nil {
+			log.Error(err, "failed to update status")
+		} else {
+			log.V(2).Info("updated status from GCP state")
+		}
+	}
 
 	return true, nil
 }
