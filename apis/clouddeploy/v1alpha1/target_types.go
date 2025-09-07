@@ -57,7 +57,7 @@ type CloudDeployTargetSpec struct {
 	RequireApproval *bool `json:"requireApproval,omitempty"`
 
 	// Information specifying a GKE Cluster.
-	Gke *GKECluster `json:"gke,omitempty"`
+	Gke *GkeCluster `json:"gke,omitempty"`
 
 	// Information specifying an Anthos Cluster.
 	AnthosCluster *AnthosCluster `json:"anthosCluster,omitempty"`

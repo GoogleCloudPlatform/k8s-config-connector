@@ -58,7 +58,7 @@ type AnthosCluster struct {
 type AssociatedEntities struct {
 	// Optional. Information specifying GKE clusters as associated entities.
 	// +kcc:proto:field=google.cloud.deploy.v1.AssociatedEntities.gke_clusters
-	GKEClusters []GKECluster `json:"gkeClusters,omitempty"`
+	GkeClusters []GkeCluster `json:"gkeClusters,omitempty"`
 
 	// Optional. Information specifying Anthos clusters as associated entities.
 	// +kcc:proto:field=google.cloud.deploy.v1.AssociatedEntities.anthos_clusters
@@ -427,7 +427,7 @@ type ExecutionConfig struct {
 }
 
 // +kcc:proto=google.cloud.deploy.v1.GkeCluster
-type GKECluster struct {
+type GkeCluster struct {
 	// Optional. Information specifying a GKE Cluster. Format is
 	//  `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}`.
 	// +kcc:proto:field=google.cloud.deploy.v1.GkeCluster.cluster
@@ -937,7 +937,7 @@ type Target struct {
 
 	// Optional. Information specifying a GKE Cluster.
 	// +kcc:proto:field=google.cloud.deploy.v1.Target.gke
-	GKE *GKECluster `json:"gke,omitempty"`
+	GKE *GkeCluster `json:"gke,omitempty"`
 
 	// Optional. Information specifying an Anthos Cluster.
 	// +kcc:proto:field=google.cloud.deploy.v1.Target.anthos_cluster
