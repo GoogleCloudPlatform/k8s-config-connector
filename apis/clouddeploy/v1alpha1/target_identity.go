@@ -24,36 +24,36 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// DeliveryPipelineIdentity defines the resource reference to DeployDeliveryPipeline, which "External" field
+// TargetIdentity defines the resource reference to DeployTarget, which "External" field
 // holds the GCP identifier for the KRM object.
-type DeliveryPipelineIdentity struct {
-	parent *DeliveryPipelineParent
+type TargetIdentity struct {
+	parent *TargetParent
 	id     string
 }
 
-func (i *DeliveryPipelineIdentity) String() string {
-	return i.parent.String() + "/deliveryPipelines/" + i.id
+func (i *TargetIdentity) String() string {
+	return i.parent.String() + "/targets/" + i.id
 }
 
-func (i *DeliveryPipelineIdentity) ID() string {
+func (i *TargetIdentity) ID() string {
 	return i.id
 }
 
-func (i *DeliveryPipelineIdentity) Parent() *DeliveryPipelineParent {
+func (i *TargetIdentity) Parent() *TargetParent {
 	return i.parent
 }
 
-type DeliveryPipelineParent struct {
+type TargetParent struct {
 	ProjectID string
 	Location  string
 }
 
-func (p *DeliveryPipelineParent) String() string {
+func (p *TargetParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a DeliveryPipelineIdentity from the Config Connector DeliveryPipeline object.
-func NewDeliveryPipelineIdentity(ctx context.Context, reader client.Reader, obj *CloudDeployDeliveryPipeline) (*DeliveryPipelineIdentity, error) {
+// New builds a TargetIdentity from the Config Connector Target object.
+func NewTargetIdentity(ctx context.Context, reader client.Reader, obj *CloudDeployTarget) (*TargetIdentity, error) {
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
@@ -82,7 +82,7 @@ func NewDeliveryPipelineIdentity(ctx context.Context, reader client.Reader, obj 
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseDeliveryPipelineExternal(externalRef)
+		actualParent, actualResourceID, err := ParseTargetExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
@@ -97,8 +97,8 @@ func NewDeliveryPipelineIdentity(ctx context.Context, reader client.Reader, obj 
 				resourceID, actualResourceID)
 		}
 	}
-	return &DeliveryPipelineIdentity{
-		parent: &DeliveryPipelineParent{
+	return &TargetIdentity{
+		parent: &TargetParent{
 			ProjectID: projectID,
 			Location:  *location,
 		},
@@ -106,33 +106,15 @@ func NewDeliveryPipelineIdentity(ctx context.Context, reader client.Reader, obj 
 	}, nil
 }
 
-func ParseDeliveryPipelineExternal(external string) (parent *DeliveryPipelineParent, resourceID string, err error) {
+func ParseTargetExternal(external string) (parent *TargetParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "deliveryPipelines" {
-		return nil, "", fmt.Errorf("format of DeployDeliveryPipeline external=%q was not known (use projects/{{projectID}}/locations/{{location}}/deliveryPipelines/{{deliverypipelineID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "targets" {
+		return nil, "", fmt.Errorf("format of DeployTarget external=%q was not known (use projects/{{projectID}}/locations/{{location}}/targets/{{deliverypipelineID}})", external)
 	}
-	parent = &DeliveryPipelineParent{
+	parent = &TargetParent{
 		ProjectID: tokens[1],
 		Location:  tokens[3],
 	}
 	resourceID = tokens[5]
 	return parent, resourceID, nil
-}
-
-func NewDeliveryPipelineIdentityFromRef(ctx context.Context, reader client.Reader, namespace string, ref *DeliveryPipelineRef) (*DeliveryPipelineIdentity, error) {
-	if ref == nil {
-		return nil, fmt.Errorf("ref is nil")
-	}
-	if ref.External == "" {
-		return nil, fmt.Errorf("ref.external is empty")
-	}
-
-	parent, id, err := ParseDeliveryPipelineExternal(ref.External)
-	if err != nil {
-		return nil, fmt.Errorf("parsing ref %q: %w", ref.External, err)
-	}
-	return &DeliveryPipelineIdentity{
-		parent: parent,
-		id:     id,
-	}, nil
 }
