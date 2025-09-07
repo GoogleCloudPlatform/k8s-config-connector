@@ -23,6 +23,7 @@ import (
 
 	api "cloud.google.com/go/kms/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -37,11 +38,11 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 }
 
 func (m *gcpClient) newKeyManagementClient(ctx context.Context) (*api.KeyManagementClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewKeyManagementRESTClient(ctx, opts...)
+	client, err := api.NewKeyManagementRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building kms keyManagement client: %w", err)
 	}

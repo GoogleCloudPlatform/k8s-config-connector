@@ -20,6 +20,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	api "google.golang.org/api/networkconnectivity/v1"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -34,11 +35,11 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 }
 
 func (m *gcpClient) newNetworkConnectivityClient(ctx context.Context) (*api.Service, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewService(ctx, opts...)
+	client, err := api.NewService(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building networkconnectivity client: %w", err)
 	}

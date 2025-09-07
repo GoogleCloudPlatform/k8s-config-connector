@@ -86,12 +86,11 @@ type targetTCPProxyAdapter struct {
 var _ directbase.Adapter = &targetTCPProxyAdapter{}
 
 func (m *targetTCPProxyModel) client(ctx context.Context) (*gcp.TargetTcpProxiesClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewTargetTcpProxiesRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewTargetTcpProxiesRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building TargetTcpProxy client: %w", err)
 	}
@@ -99,12 +98,11 @@ func (m *targetTCPProxyModel) client(ctx context.Context) (*gcp.TargetTcpProxies
 }
 
 func (m *targetTCPProxyModel) regionalClient(ctx context.Context) (*gcp.RegionTargetTcpProxiesClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewRegionTargetTcpProxiesRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewRegionTargetTcpProxiesRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building TargetTcpProxy client: %w", err)
 	}

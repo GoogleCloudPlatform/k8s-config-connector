@@ -20,6 +20,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	featureapi "google.golang.org/api/gkehub/v1beta"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -39,11 +40,11 @@ type gkeHubClient struct {
 }
 
 func (m *gcpClient) newGkeHubClient(ctx context.Context) (*gkeHubClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	service, err := featureapi.NewService(ctx, opts...)
+	service, err := featureapi.NewService(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building service for gkehub: %w", err)
 	}

@@ -57,16 +57,14 @@ type recognizerModel struct {
 }
 
 func (m *recognizerModel) client(ctx context.Context, projectID string) (*gcp.Client, error) {
-	var opts []option.ClientOption
-
 	config := m.config
 
-	opts, err := config.RESTClientOptions()
+	httpClient, err := config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building speech recognizer client: %w", err)
 	}

@@ -30,6 +30,7 @@ import (
 
 	api "cloud.google.com/go/dataproc/v2/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -44,11 +45,11 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 }
 
 func (m *gcpClient) newAutoscalingPolicyClient(ctx context.Context) (*api.AutoscalingPolicyClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewAutoscalingPolicyRESTClient(ctx, opts...)
+	client, err := api.NewAutoscalingPolicyRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building dataproc autoscalingpolicy client: %w", err)
 	}
@@ -56,11 +57,11 @@ func (m *gcpClient) newAutoscalingPolicyClient(ctx context.Context) (*api.Autosc
 }
 
 func (m *gcpClient) newBatchControllerClient(ctx context.Context) (*api.BatchControllerClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewBatchControllerRESTClient(ctx, opts...)
+	client, err := api.NewBatchControllerRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building dataproc batchcontroller client: %w", err)
 	}
@@ -68,11 +69,11 @@ func (m *gcpClient) newBatchControllerClient(ctx context.Context) (*api.BatchCon
 }
 
 func (m *gcpClient) newClusterControllerClient(ctx context.Context) (*api.ClusterControllerClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewClusterControllerRESTClient(ctx, opts...)
+	client, err := api.NewClusterControllerRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building dataproc clustercontroller client: %w", err)
 	}
@@ -80,11 +81,11 @@ func (m *gcpClient) newClusterControllerClient(ctx context.Context) (*api.Cluste
 }
 
 func (m *gcpClient) newJobControllerClient(ctx context.Context) (*api.JobControllerClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewJobControllerRESTClient(ctx, opts...)
+	client, err := api.NewJobControllerRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building dataproc jobcontroller client: %w", err)
 	}
@@ -92,11 +93,11 @@ func (m *gcpClient) newJobControllerClient(ctx context.Context) (*api.JobControl
 }
 
 func (m *gcpClient) newNodeGroupControllerClient(ctx context.Context) (*api.NodeGroupControllerClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewNodeGroupControllerRESTClient(ctx, opts...)
+	client, err := api.NewNodeGroupControllerRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building dataproc nodegroupcontroller client: %w", err)
 	}
@@ -104,11 +105,11 @@ func (m *gcpClient) newNodeGroupControllerClient(ctx context.Context) (*api.Node
 }
 
 func (m *gcpClient) newSessionControllerClient(ctx context.Context) (*api.SessionControllerClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewSessionControllerRESTClient(ctx, opts...)
+	client, err := api.NewSessionControllerRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building dataproc sessioncontroller client: %w", err)
 	}
@@ -116,11 +117,11 @@ func (m *gcpClient) newSessionControllerClient(ctx context.Context) (*api.Sessio
 }
 
 func (m *gcpClient) newSessionTemplateControllerClient(ctx context.Context) (*api.SessionTemplateControllerClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewSessionTemplateControllerRESTClient(ctx, opts...)
+	client, err := api.NewSessionTemplateControllerRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building dataproc sessiontemplatecontroller client: %w", err)
 	}
@@ -128,11 +129,11 @@ func (m *gcpClient) newSessionTemplateControllerClient(ctx context.Context) (*ap
 }
 
 func (m *gcpClient) newWorkflowTemplateClient(ctx context.Context) (*api.WorkflowTemplateClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewWorkflowTemplateRESTClient(ctx, opts...)
+	client, err := api.NewWorkflowTemplateRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building dataproc workflowtemplate client: %w", err)
 	}

@@ -52,14 +52,12 @@ type modelMetadataStore struct {
 }
 
 func (m *modelMetadataStore) client(ctx context.Context, location string) (*gcp.MetadataClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 	aiplatformurl := fmt.Sprintf("https://%s-aiplatform.googleapis.com", location)
-	opts = append(opts, option.WithEndpoint(aiplatformurl))
-	gcpClient, err := gcp.NewMetadataRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewMetadataRESTClient(ctx, option.WithHTTPClient(httpClient), option.WithEndpoint(aiplatformurl))
 	if err != nil {
 		return nil, fmt.Errorf("error building MetadataStore client: %w", err)
 	}

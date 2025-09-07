@@ -20,6 +20,7 @@ import (
 
 	api "cloud.google.com/go/redis/cluster/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"google.golang.org/api/option"
 )
 
 type gcpClient struct {
@@ -34,11 +35,11 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 }
 
 func (m *gcpClient) newClusterClient(ctx context.Context) (*api.CloudRedisClusterClient, error) {
-	opts, err := m.config.RESTClientOptions()
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewCloudRedisClusterRESTClient(ctx, opts...)
+	client, err := api.NewCloudRedisClusterRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building dashboard client: %w", err)
 	}

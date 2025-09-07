@@ -57,16 +57,14 @@ type runtimeModel struct {
 }
 
 func (m *runtimeModel) client(ctx context.Context, location string) (*gcp.NotebookClient, error) {
-	var opts []option.ClientOption
 	config := m.config
-	opts, err := config.RESTClientOptions()
+	httpClient, err := config.NewAuthenticatedHTTPClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	endpoint := fmt.Sprintf("https://%s-aiplatform.googleapis.com", location)
-	opts = append(opts, option.WithEndpoint(endpoint))
-	gcpClient, err := gcp.NewNotebookRESTClient(ctx, opts...)
+	gcpClient, err := gcp.NewNotebookRESTClient(ctx, option.WithHTTPClient(httpClient), option.WithEndpoint(endpoint))
 	if err != nil {
 		return nil, fmt.Errorf("building colabruntimetemplate client: %w", err)
 	}
