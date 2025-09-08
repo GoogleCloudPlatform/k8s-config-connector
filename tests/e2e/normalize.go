@@ -370,6 +370,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to OrgPolicy
 	visitor.replacePaths[".status.observedState.spec.updateTime"] = "2024-04-01T12:34:56.123456Z"
 
+	// Specific to RunJob
+	visitor.replacePaths[".status.terminalCondition[].lastTransitionTime"] = "1970-01-01T00:00:00Z"
+
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
 	visitor.sortSlices.Insert(".spec.nodeConfig.oauthScopes")
