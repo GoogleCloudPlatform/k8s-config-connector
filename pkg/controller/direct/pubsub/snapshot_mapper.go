@@ -20,7 +20,7 @@
 package pubsub
 
 import (
-	pb "cloud.google.com/go/pubsub/apiv1/pubsubpb"
+	pb "cloud.google.com/go/pubsub/v2/apiv1/pubsubpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1alpha1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
