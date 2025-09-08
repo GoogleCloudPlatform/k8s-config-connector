@@ -1,5 +1,0 @@
-- exec: gcloud alpha run jobs create test-${uniqueId} --image=us-docker.pkg.dev/cloudrun/container/job:latest --region=us-central1 --project=${projectId}
-- exec: gcloud alpha run jobs describe test-${uniqueId} --region=us-central1 --project=${projectId}
-- exec: gcloud alpha run jobs update test-${uniqueId} --image=us-docker.pkg.dev/cloudrun/container/job:v2 --region=us-central1 --project=${projectId}
-- exec: gcloud alpha run jobs describe test-${uniqueId} --region=us-central1 --project=${projectId}
-- exec: gcloud alpha run jobs delete test-${uniqueId} --region=us-central1 --project=${projectId} --quiet
