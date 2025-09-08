@@ -25,27 +25,21 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func PubSubSnapshotSpec_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.PubSubSnapshotSpec {
+func PubSubSnapshotObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *krm.PubSubSnapshotObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PubSubSnapshotSpec{}
+	out := &krm.PubSubSnapshotObservedState{}
 	// MISSING: Name
-	if in.GetTopic() != "" {
-		out.TopicRef = &krm.PubSubTopicRef{External: in.GetTopic()}
-	}
-	out.Labels = in.Labels
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	return out
 }
-func PubSubSnapshotSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSubSnapshotSpec) *pb.Snapshot {
+func PubSubSnapshotObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PubSubSnapshotObservedState) *pb.Snapshot {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Snapshot{}
 	// MISSING: Name
-	if in.TopicRef != nil {
-		out.Topic = in.TopicRef.External
-	}
-	out.Labels = in.Labels
+	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
 	return out
 }
