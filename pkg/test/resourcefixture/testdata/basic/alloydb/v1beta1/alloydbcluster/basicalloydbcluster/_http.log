@@ -20,36 +20,6 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "peerings": [
-    {
-      "autoCreateRoutes": true,
-      "connectionStatus": {
-        "trafficConfiguration": {
-          "exportCustomRoutesToPeer": false,
-          "exportSubnetRoutesWithPublicIpToPeer": false,
-          "importCustomRoutesFromPeer": false,
-          "importSubnetRoutesWithPublicIpFromPeer": false,
-          "stackType": "IPV4_ONLY"
-        },
-        "updateStrategy": "INDEPENDENT"
-      },
-      "exchangeSubnetRoutes": true,
-      "exportCustomRoutes": false,
-      "exportSubnetRoutesWithPublicIp": false,
-      "importCustomRoutes": false,
-      "importSubnetRoutesWithPublicIp": false,
-      "name": "servicenetworking-googleapis-com",
-      "network": "https://www.googleapis.com/compute/beta/projects/vb85baa40a492a8c5p-tp/global/networks/servicenetworking",
-      "stackType": "IPV4_ONLY",
-      "state": "ACTIVE",
-      "stateDetails": "[2025-08-11T00:50:06.736-07:00]: Connected.",
-      "updateStrategy": "INDEPENDENT"
-    }
-  ],
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "subnetworks": [
@@ -247,9 +217,7 @@ X-Xss-Protection: 0
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
-    "geminiConfig": {
-      "entitled": true
-    },
+    "geminiConfig": {},
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -260,7 +228,6 @@ X-Xss-Protection: 0
       "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
-    "serviceAccountEmail": "c-${projectNumber}-5908c908@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -335,9 +302,7 @@ X-Xss-Protection: 0
   "encryptionInfo": {
     "encryptionType": 1
   },
-  "geminiConfig": {
-    "entitled": true
-  },
+  "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -348,7 +313,6 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
-  "serviceAccountEmail": "c-${projectNumber}-5908c908@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": 1,
   "subscriptionType": 1,
   "uid": "111111111111111111111",
@@ -514,9 +478,7 @@ X-Xss-Protection: 0
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
-    "geminiConfig": {
-      "entitled": true
-    },
+    "geminiConfig": {},
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -527,7 +489,6 @@ X-Xss-Protection: 0
       "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
-    "serviceAccountEmail": "c-${projectNumber}-5908c908@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -602,9 +563,7 @@ X-Xss-Protection: 0
   "encryptionInfo": {
     "encryptionType": 1
   },
-  "geminiConfig": {
-    "entitled": true
-  },
+  "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -615,7 +574,6 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
-  "serviceAccountEmail": "c-${projectNumber}-5908c908@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": 1,
   "subscriptionType": 1,
   "uid": "111111111111111111111",

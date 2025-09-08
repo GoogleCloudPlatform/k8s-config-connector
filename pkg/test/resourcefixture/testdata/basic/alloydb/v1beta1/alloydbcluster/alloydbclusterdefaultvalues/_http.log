@@ -117,10 +117,6 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
@@ -283,9 +279,7 @@ X-Xss-Protection: 0
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
-    "geminiConfig": {
-      "entitled": true
-    },
+    "geminiConfig": {},
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -296,7 +290,6 @@ X-Xss-Protection: 0
       "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
-    "serviceAccountEmail": "c-${projectNumber}-e4c6053d@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -374,9 +367,7 @@ X-Xss-Protection: 0
   "encryptionInfo": {
     "encryptionType": 1
   },
-  "geminiConfig": {
-    "entitled": true
-  },
+  "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -387,7 +378,6 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
-  "serviceAccountEmail": "c-${projectNumber}-e4c6053d@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": 1,
   "subscriptionType": 1,
   "uid": "111111111111111111111",
@@ -555,9 +545,7 @@ X-Xss-Protection: 0
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
-    "geminiConfig": {
-      "entitled": true
-    },
+    "geminiConfig": {},
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -568,7 +556,6 @@ X-Xss-Protection: 0
       "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
-    "serviceAccountEmail": "c-${projectNumber}-e4c6053d@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -646,9 +633,7 @@ X-Xss-Protection: 0
   "encryptionInfo": {
     "encryptionType": 1
   },
-  "geminiConfig": {
-    "entitled": true
-  },
+  "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -659,7 +644,6 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
-  "serviceAccountEmail": "c-${projectNumber}-e4c6053d@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": 1,
   "subscriptionType": 1,
   "uid": "111111111111111111111",
@@ -753,10 +737,6 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }

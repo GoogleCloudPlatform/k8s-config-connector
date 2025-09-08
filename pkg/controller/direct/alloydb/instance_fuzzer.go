@@ -67,6 +67,7 @@ func instanceFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".writable_node")
 	f.Unimplemented_NotYetTriaged(".nodes")
 	f.Unimplemented_NotYetTriaged(".reconciling")
+	f.Unimplemented_NotYetTriaged(".connection_pool_config")
 
 	return f
 }
