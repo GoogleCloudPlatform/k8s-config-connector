@@ -169,7 +169,7 @@ func (a *ManagedFolderAdapter) Create(ctx context.Context, createOp *directbase.
 	}
 
 	// The format of the request name is verified to use the following format.
-	// Reference: https://https://cloud.google.com/storage/docs/creating-managing-managed-folders#storage-create-managed-folder-go
+	// Reference: https://cloud.google.com/storage/docs/creating-managing-managed-folders#storage-create-managed-folder-go
 	parentPath := fmt.Sprintf("projects/_/buckets/%s", a.id.Parent().BucketName)
 
 	req := &pb.CreateManagedFolderRequest{
@@ -244,7 +244,7 @@ func (a *ManagedFolderAdapter) Delete(ctx context.Context, deleteOp *directbase.
 	log.V(2).Info("deleting ManagedFolder", "name", a.id)
 
 	// The format of the request name is verified to use the following format.
-	// Reference: https://https://cloud.google.com/storage/docs/creating-managing-managed-folders#storage-create-managed-folder-go
+	// Reference: https://cloud.google.com/storage/docs/creating-managing-managed-folders#storage-create-managed-folder-go
 	fqn := fmt.Sprintf("projects/_/buckets/%s/managedFolders/%s/", a.id.Parent().BucketName, a.id.ID())
 
 	req := &pb.DeleteManagedFolderRequest{Name: fqn}
