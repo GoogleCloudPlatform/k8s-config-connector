@@ -23,16 +23,14 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 go run . generate-types \
     --service google.cloud.vmwareengine.v1 \
-    --api-version vmwareengine.cnrm.cloud.google.com/v1alpha1  \
-    --resource VMwareEngineNetwork:VmwareEngineNetwork \
-    --resource VMwareEngineNetworkPeering:NetworkPeering \
-    --resource VMwareEngineNetworkPolicy:NetworkPolicy \
-    --resource VMwareEngineExternalAccessRule:ExternalAccessRule \
-    --resource VMwareEnginePrivateCloud:PrivateCloud \
+    --api-version vmwareengine.cnrm.cloud.google.com/v1beta1  \
+    --resource VMwareEngineExternalAddress:ExternalAddress
 
 go run . generate-mapper \
     --service google.cloud.vmwareengine.v1 \
-    --api-version vmwareengine.cnrm.cloud.google.com/v1alpha1
+    --api-version vmwareengine.cnrm.cloud.google.com/v1beta1 \
+    --multiversion
+
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

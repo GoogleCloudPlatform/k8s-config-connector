@@ -433,7 +433,7 @@
 | vertexai.cnrm.cloud.google.com                | VertexAIMetadataStore                           | True         | True        | False  | Direct     |
 | vertexai.cnrm.cloud.google.com                | VertexAITensorboard                             | True         | False       | False  | Terraform  |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineExternalAccessRule                  | True         | False       | False  | Direct     |
-| vmwareengine.cnrm.cloud.google.com            | VMwareEngineExternalAddress                     | True         | False       | False  | Direct     |
+| vmwareengine.cnrm.cloud.google.com            | VMwareEngineExternalAddress                     | True         | True        | False  | Direct     |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineNetworkPeering                      | True         | False       | False  | Direct     |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineNetworkPolicy                       | True         | False       | False  | Direct     |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineNetwork                             | True         | False       | False  | Direct     |

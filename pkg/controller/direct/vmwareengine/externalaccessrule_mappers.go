@@ -17,6 +17,7 @@ package vmwareengine
 import (
 	pb "cloud.google.com/go/vmwareengine/apiv1/vmwareenginepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vmwareengine/v1alpha1"
+	krmvmwareenginev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vmwareengine/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -34,8 +35,10 @@ func VMwareEngineExternalAccessRuleSpec_FromProto(mapCtx *direct.MapContext, in 
 	out.SourcePorts = in.SourcePorts
 	out.DestinationIPRanges = direct.Slice_FromProto(mapCtx, in.DestinationIpRanges, ExternalAccessRule_IPRange_FromProto)
 	out.DestinationPorts = in.DestinationPorts
+	// MISSING: Uid
 	return out
 }
+
 func VMwareEngineExternalAccessRuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExternalAccessRule) *krm.VMwareEngineExternalAccessRuleObservedState {
 	if in == nil {
 		return nil
@@ -68,7 +71,7 @@ func ExternalAccessRule_IPRange_FromProto(mapCtx *direct.MapContext, in *pb.Exte
 	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
 	out.IPAddressRange = direct.LazyPtr(in.GetIpAddressRange())
 	if in.GetExternalAddress() != "" {
-		out.ExternalAddressRef = &krm.ExternalAddressRef{External: in.GetExternalAddress()}
+		out.ExternalAddressRef = &krmvmwareenginev1beta1.ExternalAddressRef{External: in.GetExternalAddress()}
 	}
 	return out
 }
@@ -104,7 +107,7 @@ func ExternalAccessRule_IPRange_IpAddressRange_ToProto(mapCtx *direct.MapContext
 		IpAddressRange: *IPAddressRange,
 	}
 }
-func ExternalAccessRule_IPRange_ExternalAddress_ToProto(mapCtx *direct.MapContext, ExternalAddressRef *krm.ExternalAddressRef) *pb.ExternalAccessRule_IpRange_ExternalAddress {
+func ExternalAccessRule_IPRange_ExternalAddress_ToProto(mapCtx *direct.MapContext, ExternalAddressRef *krmvmwareenginev1beta1.ExternalAddressRef) *pb.ExternalAccessRule_IpRange_ExternalAddress {
 	if ExternalAddressRef == nil {
 		return nil
 	}
