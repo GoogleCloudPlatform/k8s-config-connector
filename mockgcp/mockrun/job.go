@@ -44,14 +44,6 @@ func (s *RunV2) GetJob(ctx context.Context, req *pb.GetJobRequest) (*pb.Job, err
 		return nil, err
 	}
 
-	project, err := s.Projects.GetProjectByID(name.Project.ID)
-	if err != nil {
-		return nil, status.Errorf(codes.NotFound, "project %q not found", name.Project.ID)
-	}
-	if project == nil {
-		return nil, status.Errorf(codes.NotFound, "project %q not found", name.Project.ID)
-	}
-
 	fqn := name.String()
 
 	obj := &pb.Job{}
@@ -67,14 +59,6 @@ func (s *RunV2) CreateJob(ctx context.Context, req *pb.CreateJobRequest) (*longr
 	name, err := s.parseJobName(reqName)
 	if err != nil {
 		return nil, err
-	}
-
-	project, err := s.Projects.GetProjectByID(name.Project.ID)
-	if err != nil {
-		return nil, status.Errorf(codes.NotFound, "project %q not found", name.Project.ID)
-	}
-	if project == nil {
-		return nil, status.Errorf(codes.NotFound, "project %q not found", name.Project.ID)
 	}
 
 	fqn := name.String()
@@ -104,7 +88,7 @@ func (s *RunV2) CreateJob(ctx context.Context, req *pb.CreateJobRequest) (*longr
 		obj.Template.Template.Timeout = &duration.Duration{Seconds: 600}
 	}
 	if obj.Template.Template.ServiceAccount == "" {
-		obj.Template.Template.ServiceAccount = fmt.Sprintf("%d-compute@developer.gserviceaccount.com", project.Number)
+		obj.Template.Template.ServiceAccount = fmt.Sprintf("%d-compute@developer.gserviceaccount.com", name.Project.Number)
 	}
 	if obj.Template.Template.ExecutionEnvironment == 0 {
 		obj.Template.Template.ExecutionEnvironment = pb.ExecutionEnvironment_EXECUTION_ENVIRONMENT_GEN2
@@ -151,14 +135,6 @@ func (s *RunV2) UpdateJob(ctx context.Context, req *pb.UpdateJobRequest) (*longr
 		return nil, err
 	}
 
-	project, err := s.Projects.GetProjectByID(name.Project.ID)
-	if err != nil {
-		return nil, status.Errorf(codes.NotFound, "project %q not found", name.Project.ID)
-	}
-	if project == nil {
-		return nil, status.Errorf(codes.NotFound, "project %q not found", name.Project.ID)
-	}
-
 	fqn := name.String()
 
 	obj := &pb.Job{}
@@ -181,14 +157,6 @@ func (s *RunV2) DeleteJob(ctx context.Context, req *pb.DeleteJobRequest) (*longr
 	name, err := s.parseJobName(req.Name)
 	if err != nil {
 		return nil, err
-	}
-
-	project, err := s.Projects.GetProjectByID(name.Project.ID)
-	if err != nil {
-		return nil, status.Errorf(codes.NotFound, "project %q not found", name.Project.ID)
-	}
-	if project == nil {
-		return nil, status.Errorf(codes.NotFound, "project %q not found", name.Project.ID)
 	}
 
 	fqn := name.String()
