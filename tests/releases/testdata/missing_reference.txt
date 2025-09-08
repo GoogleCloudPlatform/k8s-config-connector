@@ -5,6 +5,7 @@ datacatalog.cnrm.cloud.google.com/v1beta1, Kind=DataCatalogPolicyTag
 datacatalog.cnrm.cloud.google.com/v1beta1, Kind=DataCatalogTaxonomy
 kms.cnrm.cloud.google.com/v1beta1, Kind=KMSImportJob
 metastore.cnrm.cloud.google.com/v1beta1, Kind=MetastoreBackup
+pubsub.cnrm.cloud.google.com/v1beta1, Kind=PubSubSnapshot
 tags.cnrm.cloud.google.com/v1beta1, Kind=TagsTagBinding
 tags.cnrm.cloud.google.com/v1beta1, Kind=TagsTagKey
 tags.cnrm.cloud.google.com/v1beta1, Kind=TagsTagValue
