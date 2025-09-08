@@ -14,7 +14,7 @@
 
 // +generated:mapper
 // krm.group: pubsub.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: google.pubsub.v1
 
 package pubsub
@@ -22,7 +22,6 @@ package pubsub
 import (
 	pb "cloud.google.com/go/pubsub/v2/apiv1/pubsubpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1alpha1"
-	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -33,7 +32,7 @@ func PubSubSnapshotSpec_FromProto(mapCtx *direct.MapContext, in *pb.Snapshot) *k
 	out := &krm.PubSubSnapshotSpec{}
 	// MISSING: Name
 	if in.GetTopic() != "" {
-		out.TopicRef = &pubsubv1beta1.PubSubTopicRef{External: in.GetTopic()}
+		out.TopicRef = &krm.PubSubTopicRef{External: in.GetTopic()}
 	}
 	out.Labels = in.Labels
 	return out
