@@ -20,26 +20,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-// func VMwareEngineExternalAddressSpec_FromProto(mapCtx *direct.MapContext, in *pb.ExternalAddress) *krm.VMwareEngineExternalAddressSpec {
-// 	if in == nil {
-// 		return nil
-// 	}
-// 	out := &krm.VMwareEngineExternalAddressSpec{}
-// 	out.InternalIP = direct.LazyPtr(in.GetInternalIp())
-// 	out.Description = direct.LazyPtr(in.GetDescription())
-// 	return out
-// }
-
-// func VMwareEngineExternalAddressSpec_ToProto(mapCtx *direct.MapContext, in *krm.VMwareEngineExternalAddressSpec) *pb.ExternalAddress {
-// 	if in == nil {
-// 		return nil
-// 	}
-// 	out := &pb.ExternalAddress{}
-// 	out.InternalIp = direct.ValueOf(in.InternalIP)
-// 	out.Description = direct.ValueOf(in.Description)
-// 	return out
-// }
-
 func VMwareEngineExternalAddressObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExternalAddress) *krm.VMwareEngineExternalAddressObservedState {
 	if in == nil {
 		return nil
@@ -52,7 +32,6 @@ func VMwareEngineExternalAddressObservedState_FromProto(mapCtx *direct.MapContex
 	out.UID = direct.LazyPtr(in.GetUid())
 	return out
 }
-
 func VMwareEngineExternalAddressObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VMwareEngineExternalAddressObservedState) *pb.ExternalAddress {
 	if in == nil {
 		return nil
@@ -63,7 +42,6 @@ func VMwareEngineExternalAddressObservedState_ToProto(mapCtx *direct.MapContext,
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.ExternalIp = direct.ValueOf(in.ExternalIP)
 	out.State = direct.Enum_ToProto[pb.ExternalAddress_State](mapCtx, in.State)
-	// MISSING: Uid
-	// (near miss): "Uid" vs "UID"
+	out.Uid = direct.ValueOf(in.UID)
 	return out
 }

@@ -17,14 +17,9 @@ package v1alpha1
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-var VMwareEnginePrivateCloudGVK = schema.GroupVersionKind{
-	Group:   "vmwareengine.cnrm.cloud.google.com",
-	Version: "v1alpha1",
-	Kind:    "VMwareEnginePrivateCloud",
-}
+var VMwareEnginePrivateCloudGVK = GroupVersion.WithKind("VMwareEnginePrivateCloud")
 
 // VMwareEnginePrivateCloudSpec defines the desired state of VMwareEnginePrivateCloud
 // +kcc:spec:proto=google.cloud.vmwareengine.v1.PrivateCloud

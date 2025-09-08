@@ -21,22 +21,24 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-//	func VMwareEngineExternalAccessRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.ExternalAccessRule) *krm.VMwareEngineExternalAccessRuleSpec {
-//		if in == nil {
-//			return nil
-//		}
-//		out := &krm.VMwareEngineExternalAccessRuleSpec{}
-//		// MISSING: Name
-//		out.Description = direct.LazyPtr(in.GetDescription())
-//		out.Priority = direct.LazyPtr(in.GetPriority())
-//		out.Action = direct.Enum_FromProto(mapCtx, in.GetAction())
-//		out.IPProtocol = direct.LazyPtr(in.GetIpProtocol())
-//		out.SourceIPRanges = direct.Slice_FromProto(mapCtx, in.SourceIpRanges, ExternalAccessRule_IPRange_FromProto)
-//		out.SourcePorts = in.SourcePorts
-//		out.DestinationIPRanges = direct.Slice_FromProto(mapCtx, in.DestinationIpRanges, ExternalAccessRule_IPRange_FromProto)
-//		out.DestinationPorts = in.DestinationPorts
-//		return out
-//	}
+func VMwareEngineExternalAccessRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.ExternalAccessRule) *krm.VMwareEngineExternalAccessRuleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VMwareEngineExternalAccessRuleSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Priority = direct.LazyPtr(in.GetPriority())
+	out.Action = direct.Enum_FromProto(mapCtx, in.GetAction())
+	out.IPProtocol = direct.LazyPtr(in.GetIpProtocol())
+	out.SourceIPRanges = direct.Slice_FromProto(mapCtx, in.SourceIpRanges, ExternalAccessRule_IPRange_FromProto)
+	out.SourcePorts = in.SourcePorts
+	out.DestinationIPRanges = direct.Slice_FromProto(mapCtx, in.DestinationIpRanges, ExternalAccessRule_IPRange_FromProto)
+	out.DestinationPorts = in.DestinationPorts
+	// MISSING: Uid
+	return out
+}
+
 func VMwareEngineExternalAccessRuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExternalAccessRule) *krm.VMwareEngineExternalAccessRuleObservedState {
 	if in == nil {
 		return nil
@@ -112,21 +114,4 @@ func ExternalAccessRule_IPRange_ExternalAddress_ToProto(mapCtx *direct.MapContex
 	return &pb.ExternalAccessRule_IpRange_ExternalAddress{
 		ExternalAddress: ExternalAddressRef.External,
 	}
-}
-func VMwareEngineExternalAccessRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.ExternalAccessRule) *krm.VMwareEngineExternalAccessRuleSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VMwareEngineExternalAccessRuleSpec{}
-	// MISSING: Name
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Priority = direct.LazyPtr(in.GetPriority())
-	out.Action = direct.Enum_FromProto(mapCtx, in.GetAction())
-	out.IPProtocol = direct.LazyPtr(in.GetIpProtocol())
-	out.SourceIPRanges = direct.Slice_FromProto(mapCtx, in.SourceIpRanges, ExternalAccessRule_IPRange_FromProto)
-	out.SourcePorts = in.SourcePorts
-	out.DestinationIPRanges = direct.Slice_FromProto(mapCtx, in.DestinationIpRanges, ExternalAccessRule_IPRange_FromProto)
-	out.DestinationPorts = in.DestinationPorts
-	// MISSING: Uid
-	return out
 }

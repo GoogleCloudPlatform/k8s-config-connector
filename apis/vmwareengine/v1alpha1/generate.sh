@@ -32,7 +32,7 @@ go run . generate-types \
 
 go run . generate-mapper \
     --service google.cloud.vmwareengine.v1 \
-    --api-version vmwareengine.cnrm.cloud.google.com/v1alpha1 \
+    --api-version vmwareengine.cnrm.cloud.google.com/v1alpha1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

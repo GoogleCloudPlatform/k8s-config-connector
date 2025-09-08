@@ -98,7 +98,6 @@ func StretchedClusterConfig_ToProto(mapCtx *direct.MapContext, in *krm.Stretched
 	out.SecondaryLocation = direct.ValueOf(in.SecondaryLocation)
 	return out
 }
-
 func VMwareEngineExternalAccessRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.VMwareEngineExternalAccessRuleSpec) *pb.ExternalAccessRule {
 	if in == nil {
 		return nil
