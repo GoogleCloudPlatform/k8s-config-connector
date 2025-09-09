@@ -30,7 +30,7 @@ spec:
   authorizationMode: AUTH_MODE_IAM_AUTH
   redisConfigs:
     maxmemory-policy: volatile-ttl
-    maxclients: '1000'
+    maxclients: '10'
   zoneDistributionConfig:
     mode: SINGLE_ZONE
     zone: us-central1-b
