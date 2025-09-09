@@ -2,10 +2,73 @@
 # Invoked via: /release:generate-summary
 # Gemini custom command docs can be found at https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/commands.md#toml-file-format-v1
 
-
-description = "Generates a release summary."
-
+description = "Generates a detailed summary of changes for a new release."
 
 prompt = """
-Follow instructsions @.gemini/commands/release/generate-summary.json
+$(
+  echo "Preparing release summary..."
+  COMMIT_HASH=$(git log --grep='^Update alpha CRDs for Release ' --pretty=format:%H -n 1)
+  if [ -n "$COMMIT_HASH" ]; then
+    # 1. CRD Version Upgrades
+    VERSIONS=$(git diff --no-prefix -M $COMMIT_HASH^! | grep -E '^[+-]    cnrm.cloud.google.com/version:' | sed -E 's/.*version: (.*)/\\1/' | paste -d ' ' - -)
+    OLD_VERSION=$(echo "$VERSIONS" | cut -d ' ' -f 1 | head -n 1)
+    NEW_VERSION=$(echo "$VERSIONS" | cut -d ' ' -f 2 | head -n 1)
+    COUNT=$(echo "$VERSIONS" | wc -l)
+    VERSION_UPGRADES="* $COUNT version upgrades in crds/ were upgraded from version $OLD_VERSION to $NEW_VERSION."
+
+    # 2. API Version Promotions
+    PROMOTIONS=$(git diff --summary $COMMIT_HASH^! | grep 'rename crds/.*v1alpha1.* => crds/.*v1beta1.*' | sed -E 's/ rename (.*) => (.*) \\(.*\\)/* `\\1` was promoted to `\\2`./' || echo "No API version promotions in this release.")
+
+    # 3. New CRDs
+    NEW_CRDS=$(git diff --summary $COMMIT_HASH^! | grep 'create mode .* crds/.*' | sed -E 's/ create mode [0-9]+ (.*)/* `\\1`/' || echo "No new CRDs in this release.")
+
+    # 4. Other Notable Changes
+    FILTERED_DIFF=$(git diff $COMMIT_HASH^! | grep -vE '^[+-]    cnrm.cloud.google.com/version:')
+    echo "$FILTERED_DIFF" > filtered_crd_changes.diff
+
+    # 5. Verification
+    OPERATOR_VERIFICATION=$(git diff $COMMIT_HASH^! operator/ | grep $NEW_VERSION && echo "Operator channel versions updated to $NEW_VERSION" || echo "Operator channel versions not updated.")
+    MISSED_VERSIONS=$(git diff $COMMIT_HASH^! | grep $OLD_VERSION || echo "No missed old versions found.")
+
+    # Generate Summary
+    echo "Please act as a release notes generator for the Config Connector project."
+    echo "Your task is to analyze the git diff for the commit that updates the CRDs for the new release and generate a structured summary."
+    echo ""
+    echo "The filtered diff has been saved to \`filtered_crd_changes.diff\`."
+    echo ""
+    echo "**CRD Version Upgrades**"
+    echo ""
+    echo "CRD Version Upgrades:"
+    echo "$VERSION_UPGRADES"
+    echo ""
+    echo "**API Version Promotions (v1alpha1 to v1beta1)**"
+    echo ""
+    echo "API Version Promotions (v1alpha1 to v1beta1):"
+    echo "$PROMOTIONS"
+    echo ""
+    echo "**New CRDs**"
+    echo ""
+    echo "New CRDs:"
+    echo "$NEW_CRDS"
+    echo ""
+    echo "**Other Notable Changes**"
+    echo ""
+    echo "The filtered diff has been saved to \`filtered_crd_changes.diff\`. Please review this file for a detailed list of other notable changes."
+    echo ""
+    echo "**Verification**"
+    echo ""
+    echo "Based on the new version number you identified in step 1, please perform the following checks using the full diff provided at the beginning:"
+    echo "- Scan the entire diff for any instances of the *old* version number within the \`crds/\` directories that might have been missed during the upgrade. Report any files that seem to have been missed."
+    echo ""
+    echo "Operator Channel Verification:"
+    echo "- $OPERATOR_VERIFICATION"
+    echo ""
+    echo "Missed Old Versions:"
+    echo "- $MISSED_VERSIONS"
+
+  else
+    echo "Could not find 'Update alpha CRDs for Release' commit. Some parts of the summary may be incomplete."
+  fi
+  echo "After the summary generation, follow instructions in .gemini/commands/release/generate-summary.json"
+)
 """

@@ -89,7 +89,7 @@
       "name": "Push and Finalize",
       "actions": [
         {
-          "run": "git push origin release-${get_version.input}"
+          "echo": "git push origin release-${get_version.input}"
         },
         {
           "echo": "Pull request URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/new/release-${get_version.input}"
