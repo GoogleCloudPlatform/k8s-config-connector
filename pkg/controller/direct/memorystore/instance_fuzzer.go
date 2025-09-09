@@ -37,7 +37,7 @@ func memorystoreInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".satisfies_pzi")
 	f.UnimplementedFields.Insert(".satisfies_pzs")
 	f.UnimplementedFields.Insert(".psc_auto_connections")
-	f.UnimplementedFields.Insert(".discover_endpoints")
+	f.UnimplementedFields.Insert(".discovery_endpoints")
 	f.UnimplementedFields.Insert(".node_config") // Handled in status, but not spec.
 	// The `port` field in PscAutoConnection is a repeated field in proto
 	// but a singular field in KRM, making it not round-trippable.
