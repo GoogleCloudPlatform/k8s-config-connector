@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,15 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package predicate
+package resourceconfig
 
-// AnnotationKeyAlphaReconciler allows customers to opt-in to using the direct reconciler.
-const AnnotationKeyAlphaReconciler = "alpha.cnrm.cloud.google.com/reconciler"
-
-// AnnotationUnmanaged allows customer to specify the fields that are not managed by the controller.
-const AnnotationUnmanaged = "cnrm.cloud.google.com/unmanaged"
-
-// OptInToDirectReconciliation allows users to opt in to direct reconciliation
-// by specifying an AnnotationKeyAlphaReconciler annotation.
-type OptInToDirectReconciliation struct {
+func LoadConfig() *ResourcesControllerMap {
+	return ControllerConfigStatic
 }
