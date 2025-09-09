@@ -1,8 +1,10 @@
-## Technical Design: Ignoring Unspecified Fields in Direct Controllers
+## Technical Design: Defaulting to GCP values for Unspecified Fields in Direct Controllers
 
 ### 1. Overview
 
-This document proposes a new feature for KCC's "direct" controllers to give users more flexible control over how resource fields are managed. The goal is to allow users to have KCC manage only the fields they explicitly define in their resource manifest, while ignoring all other fields and preserving any values set directly on the GCP resource.
+This document proposes a new feature for KCC's "direct" controllers that provides a flexible way to manage fields that have server-side defaults or are managed out-of-band. The goal is to allow users to instruct KCC to preserve the value of a field as it exists in GCP, but only when that field is not specified in the KCC resource's spec. This allows for a smoother transition to managing existing resources with KCC and provides a safe way to handle emergency changes made directly in GCP.
+
+This is enabled by a new annotation, `cnrm.cloud.google.com/default-to-gcp-fields`, which takes a comma-separated list of field paths.
 
 This design is:
 *   **Focused:** It applies exclusively to the "direct" controller architecture, aligning with the project's strategic goals.
@@ -11,7 +13,7 @@ This design is:
 
 ### 2. Goals
 
-*   To allow users to instruct KCC to ignore any field that is not explicitly set in the resource `spec`.
+*   To allow users to provide a list of fields in the `spec` that KCC should default to the GCP value during reconciliation, if the field is not specified in the spec.
 *   To implement this feature for **all** "direct" controllers in a consistent manner.
 *   To ensure the user's `spec` is treated as immutable by the controller.
 *   To provide a simple, declarative, and user-initiated way to enable this behavior.
@@ -22,92 +24,55 @@ This design is:
 
 ### 4. Proposed Solution
 
-The user-facing contract remains a simple, resource-level annotation:
+To provide this fine-grained, conditional control, we will introduce a new annotation:
 
-`cnrm.cloud.google.com/ignore-unspecified-fields: "true"`
+`cnrm.cloud.google.com/default-to-gcp-fields: "spec.field.one,spec.field.two"`
 
-When a direct controller reconciles a resource with this annotation, it will construct a new, **temporary, in-memory "effective desired state" object** before running its diff logic. This object is *only used for the comparison step* and is *never written back to the resource's `.spec`*.
+This annotation instructs the controller to handle the listed fields with a "preserve-if-unspecified" logic. The behavior is as follows:
 
-The process for constructing this "effective desired state" is as follows:
+*   **If a field is listed in the annotation AND is NOT specified in the resource's `.spec`:** The controller will preserve the value of the field as it exists in GCP. It will not detect any drift for this field, effectively defaulting to the GCP value.
+*   **If a field is listed in the annotation AND IS specified in the resource's `.spec`:** The `.spec` takes precedence. The controller will manage the field and ensure its value matches what is defined in the spec.
 
-1.  The controller fetches the actual, live state of the resource from GCP.
-2.  It creates a deep copy of this **actual state** to use as a baseline for the comparison.
-3.  It then overlays the fields from the user's `spec` (the original, immutable desired state) on top of this baseline. Any field that is explicitly defined in the `spec` will overwrite the corresponding value from the actual state in this in-memory copy. The logic for this overlay will be implemented on a **per-controller basis**, ensuring it is tailored to the specific resource structure.
-4.  The resulting merged object is the "effective desired state". It effectively represents "what the user wants, plus what GCP has for everything else."
-5.  This "effective desired state" is then passed to the controller's existing comparison function (e.g., `CompareProtoMessage`, `InstancesMatch`, or other custom diff logic) in place of the original `spec`.
+This is achieved by constructing a temporary, in-memory "effective desired state" object for comparison, as follows:
 
-Because the effective desired state already contains the server-side values for any unspecified fields, the comparison function will find no difference for those fields, and KCC will not attempt to modify them. This approach avoids the complexity of a generic, shared library for merging, and instead empowers each controller to handle its own resource type correctly.
+1.  The controller starts with the user's desired spec as a baseline.
+2.  It fetches the actual, live state of the resource from GCP.
+3.  It parses the comma-separated list of JSON field paths from the `default-to-gcp-fields` annotation.
+4.  For each field path in the annotation, it checks if that field is present in the user's original spec.
+5.  If the field is **NOT** in the spec, it retrieves the value for that field from the **actual state** and overlays it onto the baseline object.
+6.  The resulting merged object is the "effective desired state", which is then used for comparison with the actual state.
 
 ### 5. Implementation Details
 
-The logic for constructing the "effective desired state" will be implemented at the controller level, providing type safety and allowing for resource-specific handling.
+1.  **Design Principle: Pointers for Optional Fields:**
+    *   As a design principle for all direct KRM APIs, all optional fields in the `spec` **must** be pointers (e.g., `*string`, `*int64`, `*bool`). This allows the controller to reliably distinguish between a field that is not specified by the user (`nil`) and a field that is explicitly set to its zero value. This principle is a prerequisite for the "preserve-if-unspecified" logic to work correctly.
 
-1.  **Controller-Specific Merge Function:**
-    *   Each direct controller that supports this feature will implement a new, private function to handle the merge logic for its specific resource type.
-    *   **Example for `SQLInstance`:** In `pkg/controller/direct/sql/sqlinstance_controller.go`, a new function could be introduced:
-        *   **Signature:** `func buildEffectiveDesiredSQLInstance(userKRM *krm.SQLInstance, liveState *api.DatabaseInstance) (*api.DatabaseInstance, error)`
-        *   **Purpose:** This function will take the user's desired KRM resource and the live state from GCP, and return a new `DatabaseInstance` object representing the effective desired state for comparison.
-        *   **Implementation:** The function will create a deep copy of the `liveState` and then carefully overlay the fields from the `userKRM.Spec`. This ensures that any field not present in the user's spec will retain its value from the `liveState`.
+2.  **Controller-Specific Merge Logic:**
+    *   Each direct controller that supports the `default-to-gcp-fields` annotation will implement its own, private function to construct the "effective desired state".
+    *   **Example for `SQLInstance`:** In `pkg/controller/direct/sql/sqlinstance_controller.go`, a new function `buildEffectiveDesiredSQLInstance` will be created.
+    *   **Implementation:** This function will take the user's KRM spec and the live GCP state as input. It will create a deep copy of the live state, and then overlay the fields from the user's spec *only if the field in the spec is not `nil`*.
 
-2.  **Controller Integration Strategy:**
-    The reconciliation logic in each direct controller will be updated to use this new function.
-
-    *   **Common Pattern:** In the `Update` function of each direct controller, after fetching the user's resource and the live state, the controller will check for the `cnrm.cloud.google.com/ignore-unspecified-fields: "true"` annotation.
-    *   **Conditional Execution:**
-        *   If the annotation is **present**, the controller will call its specific merge function (e.g., `buildEffectiveDesiredSQLInstance`) to construct the effective desired state. This effective state will then be used as the "desired" input for the controller's comparison function.
-        *   If the annotation is **not present**, the controller will convert the original user spec to the GCP API format (as it does today) and use that for the comparison, maintaining the default "prune" behavior.
-
-    *   **Example for `SQLInstance`:**
-        *   In `pkg/controller/direct/sql/sqlinstance_controller.go`, the `Update` function will be modified:
-        ```go
-        func (a *sqlInstanceAdapter) Update(...) {
-            ...
-            var desiredForComparison *api.DatabaseInstance
-            var err error
-
-            if u.GetAnnotations()["cnrm.cloud.google.com/ignore-unspecified-fields"] == "true" {
-                desiredForComparison, err = buildEffectiveDesiredSQLInstance(a.desired, a.actual)
-            } else {
-                desiredForComparison, err = SQLInstanceKRMToGCP(a.desired, a.actual, false)
-            }
-            if err != nil {
-                return err
-            }
-
-            if !InstancesMatch(desiredForComparison, a.actual, ...) {
-                // ... perform update
-            }
-            ...
-        }
-        ```
-
-This per-controller approach ensures that the merge logic is tailored to the specific resource, is type-safe, and is easier to maintain and debug than a single, generic, and untyped library function.
+3.  **Controller Integration:**
+    *   The `Update` function in each controller will parse the `default-to-gcp-fields` annotation.
+    *   It will then call its specific merge function to get the effective desired state for comparison.
 
 ### 6. Testing Strategy
 
-The testing strategy will focus on both the correctness of the per-controller merge logic and the end-to-end user experience.
-
 *   **Unit Tests:**
-    *   For each direct controller that implements this feature, extensive unit tests will be added for its **new, resource-specific merge function** (e.g., `buildEffectiveDesiredSQLInstance`).
-    *   These tests will cover various scenarios, including:
-        *   Correctly overlaying fields from the user's spec onto the live state.
-        *   Handling of nested fields, lists, and other complex structures specific to that resource.
-        *   Ensuring that fields *not* in the user's spec retain their values from the live state.
-        *   Asserting that the original user spec and live state objects are not mutated by the merge function.
+    *   Extensive unit tests for the new **Selective Merging Library**, covering:
+        *   Correctly preserving a GCP value when the field is unspecified in the spec and listed in the annotation.
+        *   Correctly using the spec value when the field is specified in the spec, even if it is also listed in the annotation.
+        *   Handling of nested fields, lists, and different data types.
+        *   Robust field presence detection logic.
 
 *   **End-to-End Tests:**
-    *   We will add test fixtures for at least two resources to ensure broad coverage of the pattern:
-        1.  The **`SQLInstance` resource**, to validate the approach for controllers with custom comparison logic.
-        2.  Another key direct controller (e.g., `StorageBucket` if it becomes a direct controller, or another suitable candidate) to validate the pattern for more standard controllers.
-    *   Each test fixture will execute the following scenarios to verify the complete lifecycle:
-        1.  **Create with Annotation:** Create the resource with the `cnrm.cloud.google.com/ignore-unspecified-fields: "true"` annotation and a minimal `spec`. Verify that server-side default values are preserved and KCC does not try to overwrite them.
-        2.  **Update to Manage Field:** Update the resource to explicitly specify a field that was previously ignored. Verify that KCC now correctly manages this field and updates it to the value in the spec.
-        3.  **Remove Annotation:** Remove the annotation from the resource. Verify that the controller reverts to its default "prune" behavior, and that any fields present in the live state but not in the spec are now removed (or reset to their zero value) by KCC.
-        3.  **Remove Annotation:** Remove the annotation from the resource. Verify that the controller reverts to its default "prune" behavior, and that any fields present in the live state but not in the spec are now removed (or reset to their zero value) by KCC.
-        3.  **Remove Annotation:** Remove the annotation from the resource. Verify that the controller reverts to its default "prune" behavior, and that any fields present in the live state but not in the spec are now removed (or reset to their zero value) by KCC.
+    *   Each test fixture will execute the following scenarios:
+        1.  **Preserve GCP Value:** Create a resource with a field managed out-of-band and listed in the `default-to-gcp-fields` annotation. Verify that a KCC reconciliation does not overwrite the out-of-band value.
+        2.  **Take Ownership of Field:** Update the KCC resource to specify a value for the previously preserved field. Verify that KCC now enforces the value from the spec.
+        3.  **Release Ownership of Field:** Update the KCC resource to remove the field from the spec (while keeping it in the `default-to-gcp-fields` annotation). Verify that KCC no longer manages the field and preserves the value from the previous step.
 
 *   **Migration Testing for Beta Resources:**
-    *   As a mandatory part of migrating any existing TF or DCL-based Beta resource to a direct controller, the migration plan **must** include the addition of an end-to-end test fixture. This test must validate the complete lifecycle of the `ignore-unspecified-fields` annotation for that specific resource, ensuring that we maintain behavioral consistency and prevent regressions for our stable, Beta-level resources.
+    *   As a mandatory part of migrating any existing TF or DCL-based Beta resource to a direct controller, the migration plan **must** include the addition of an end-to-end test fixture. This test must validate the complete lifecycle of the `default-to-gcp-fields` annotation for that specific resource, ensuring that we maintain behavioral consistency and prevent regressions for our stable, Beta-level resources.
 
 ### 7. Alternatives Considered
 
@@ -117,17 +82,16 @@ Instead of introducing a new annotation, we considered reusing the existing `cnr
 
 *   **Rationale for Rejection**:
     *   **Legacy Coupling**: The `state-into-spec` annotation is tied to the legacy Terraform-based controller architecture. A key goal of the direct controller effort is to move away from these legacy concepts and adopt cleaner, more Kubernetes-native patterns. Introducing a new, purpose-built annotation provides a clean break.
-    *   **Confusing Semantics**: The `state-into-spec` annotation has a history of being complex and sometimes confusing for users. A new annotation with a clear name like `ignore-unspecified-fields` makes the user's intent much more explicit and self-documenting.
+    *   **Confusing Semantics**: The `state-into-spec` annotation has a history of being complex and sometimes confusing for users. A new annotation with a clear name like `default-to-gcp-fields` makes the user's intent much more explicit and self-documenting.
     *   **Future Flexibility**: A new annotation gives us the flexibility to evolve the behavior of direct controllers independently of the legacy controllers.
 
-#### 7.2. Field-level Annotation
+#### 7.2. Ignoring All Unspecified Fields
 
-We considered an alternative where the user would specify which fields to ignore at a more granular level, for example, by listing them in an annotation: `cnrm.cloud.google.com/ignore-fields: "fieldA,fieldB.subFieldC"`.
+We considered a simpler approach with a single annotation, `cnrm.cloud.google.com/ignore-unspecified-fields: "true"`, which would instruct the controller to ignore *all* fields not present in the user's spec.
 
 *   **Rationale for Rejection**:
-    *   **High User Burden**: This approach would be very cumbersome for users. They would need to identify and list every single server-defaulted field they want to preserve. This is error-prone and creates a high maintenance burden.
-    *   **Brittleness**: If the GCP API introduces new server-defaulted fields, users' manifests would become outdated and would need to be updated to preserve the new fields.
-    *   **Complexity**: The implementation would be more complex, as it would require parsing the field paths and selectively merging them. The proposed "all or nothing" approach is much simpler to implement and for users to understand.
+    *   **Lack of Granularity**: This "all or nothing" approach is not flexible enough. Users often want to manage some server-defaulted fields while ignoring others. For example, they might want to manage the `activationPolicy` but ignore the `diskSize`.
+    *   **Unexpected Behavior**: If a user adds a new field to their spec, they might be surprised to find that KCC suddenly starts managing it and potentially overwriting a server-side value. The proposed field-level annotation makes the user's intent more explicit.
 
 #### 7.3. Modifying the `.spec` in-place
 
@@ -135,12 +99,3 @@ Another alternative was to have the controller read the live state from GCP and 
 
 *   **Rationale for Rejection**:
     *   **Violation of Kubernetes Principles**: This is a strong anti-pattern in Kubernetes. The `.spec` should be owned by the user, and controllers should not mutate it. Mutating the spec would lead to unexpected behavior, conflicts with other controllers or webhooks, and a confusing user experience. The proposed solution respects the immutability of the user's desired state by only creating a temporary, in-memory object for comparison.
-
-#### 7.4. Centralized, Generic Merge Library
-
-We initially considered implementing the merge logic in a single, shared library function, `BuildEffectiveDesiredStateForComparison`, that would operate on untyped `unstructured.Unstructured` objects. This function would have been called by all direct controllers to ensure consistency.
-
-*   **Rationale for Rejection**:
-    *   **High Complexity and Brittleness**: A generic function that can correctly merge any two arbitrary resource structures is extremely difficult to write and maintain. GCP resources have a wide variety of structures, including nested objects, lists of objects with different merge keys (e.g., by `name` or by `port`), and other idiosyncrasies. A "one size fits all" approach is likely to be complex, buggy, and result in a "magic" function that is hard to debug.
-    *   **Loss of Type Safety**: Operating on `unstructured.Unstructured` (i.e., `map[string]interface{}`) means giving up Go's type safety. This makes the code harder to reason about, more prone to runtime errors, and moves error detection from compile-time to runtime.
-    *   **Controller-Specific Knowledge**: The logic for merging two resource states often requires knowledge of the specific resource's semantics. For example, merging a list of disks requires knowing that the `deviceName` is the key. This domain-specific knowledge is best encapsulated within the resource's own controller, rather than in a generic, central function. The proposed per-controller approach allows for this, leading to more robust and maintainable code.
