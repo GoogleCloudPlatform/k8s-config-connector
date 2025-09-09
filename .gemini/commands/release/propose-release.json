@@ -86,20 +86,6 @@
       ]
     },
     {
-      "name": "Generate Release Summary",
-      "actions": [
-        {
-          "run": "git log -n 3 --pretty=\"format:%H %s\" > commits.log"
-        },
-        {
-          "prompt": {
-            "message": "Please review commits.log and then create a release-summary.md file with a summary of the changes. Once you are done, type 'ok' to continue.",
-            "id": "create_summary"
-          }
-        }
-      ]
-    },
-    {
       "name": "Push and Finalize",
       "actions": [
         {

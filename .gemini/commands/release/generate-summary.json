@@ -1,0 +1,78 @@
+{
+  "name": "generate-summary",
+  "description": "Generates a summary of CRD changes and a comparison of release files.",
+  "steps": [
+    {
+      "name": "Get CRD Commit Hash",
+      "description": "Gets the commit hash of the 'Update alpha CRDs' commit.",
+      "actions": [
+        {
+          "run": "git log --grep='^Update alpha CRDs for Release ' --pretty=format:%H -n 1",
+          "id": "commit2_hash"
+        }
+      ]
+    },
+    {
+      "name": "Create CRD Diff File",
+      "description": "Creates a temporary diff file for the 'Update alpha CRDs' commit.",
+      "actions": [
+        {
+          "run": "if [ -n \"${commit2_hash.stdout}\" ]; then git diff ${commit2_hash.stdout}^! > crd_commit.diff.tmp; fi"
+        }
+      ]
+    },
+    {
+      "name": "Process 'Update alpha CRDs' Commit Diff",
+      "description": "Counts version updates and removes them from the 'Update alpha CRDs' commit diff.",
+      "actions": [
+        {
+          "run": "if [ -f crd_commit.diff.tmp ]; then grep -A 1 -- \"- cnrm.cloud.google.com/version:\" crd_commit.diff.tmp | grep -- \"+ cnrm.cloud.google.com/version:\" | wc -l; fi",
+          "id": "version_update_count2"
+        },
+        {
+          "run": "if [ -f crd_commit.diff.tmp ]; then echo \"Number of version updates: ${version_update_count2.stdout}\" > crd_commit.diff; fi"
+        },
+        {
+          "run": "if [ -f crd_commit.diff.tmp ]; then echo \"============================================\" >> crd_commit.diff; fi"
+        },
+        {
+          "run": "if [ -f crd_commit.diff.tmp ]; then grep -v \"cnrm.cloud.google.com/version:\" crd_commit.diff.tmp >> crd_commit.diff; fi"
+        },
+        {
+          "run": "rm -f crd_commit.diff.tmp"
+        }
+      ]
+    },
+    {
+      "name": "Get Release Tags",
+      "description": "Gets the new and stale release tags.",
+      "actions": [
+        {
+          "run": "git describe --tags --abbrev=0",
+          "id": "new_version_tag"
+        },
+        {
+          "run": "git describe --tags --abbrev=0 ${new_version_tag.stdout}^",
+          "id": "stale_version_tag"
+        }
+      ]
+    },
+    {
+      "name": "Generate Release Artifacts Comparison",
+      "description": "Compares release artifacts between the new and previous release.",
+      "actions": [
+        {
+          "run": "#!/bin/bash\nNEW_VERSION_TAG=${new_version_tag.stdout}\nSTALE_VERSION_TAG=${stale_version_tag.stdout}\n\nNEW_VERSION=${NEW_VERSION_TAG#v}\nSTALE_VERSION=${STALE_VERSION_TAG#v}\n\necho \"Comparing new release ${NEW_VERSION} with previous release ${STALE_VERSION}\" > release_artifacts_comparison.diff\n\nNEW_AUTOPILOT_DIR=\"operator/autopilot-channels/packages/configconnector/${NEW_VERSION}\"\nSTALE_AUTOPILOT_DIR=\"operator/autopilot-channels/packages/configconnector/${STALE_VERSION}\"\nNEW_CHANNELS_DIR=\"operator/channels/packages/configconnector/${NEW_VERSION}\"\nSTALE_CHANNELS_DIR=\"operator/channels/packages/configconnector/${STALE_VERSION}\"\n\nif [ -d \"$STALE_AUTOPILOT_DIR\" ] && [ -d \"$NEW_AUTOPILOT_DIR\" ]; then\n  echo \"====================================================================\" >> release_artifacts_comparison.diff\n  echo \"Diff for autopilot channels\" >> release_artifacts_comparison.diff\n  echo \"====================================================================\" >> release_artifacts_comparison.diff\n  diff -r -u \"$STALE_AUTOPILOT_DIR\" \"$NEW_AUTOPILOT_DIR\" >> release_artifacts_comparison.diff\nfi\n\nif [ -d \"$STALE_CHANNELS_DIR\" ] && [ -d \"$NEW_CHANNELS_DIR\" ]; then\n  echo \"====================================================================\" >> release_artifacts_comparison.diff\n  echo \"Diff for channels\" >> release_artifacts_comparison.diff\n  echo \"====================================================================\" >> release_artifacts_comparison.diff\n  diff -r -u \"$STALE_CHANNELS_DIR\" \"$NEW_CHANNELS_DIR\" >> release_artifacts_comparison.diff\nfi"
+        }
+      ]
+    },
+    {
+      "name": "Finalize",
+      "actions": [
+        {
+          "echo": "Processed CRD diff is in crd_commit.diff and release artifacts comparison is in release_artifacts_comparison.diff"
+        }
+      ]
+    }
+  ]
+}
