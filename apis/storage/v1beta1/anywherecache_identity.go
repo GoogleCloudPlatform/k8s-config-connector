@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -71,11 +70,11 @@ func GetAnywhereCacheIdentity(parent *AnywhereCacheParent, id string) *AnywhereC
 func NewAnywhereCacheIdentity(ctx context.Context, reader client.Reader, obj *StorageAnywhereCache) (*AnywhereCacheIdentity, error) {
 
 	// Get Parent
-	storageBucketRef, err := refsv1beta1.ResolveStorageBucketRef(ctx, reader, obj, obj.Spec.BucketRef)
+	storageBucketExternal, err := obj.Spec.BucketRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
-	bucketName, err := ParseBucketExternal(storageBucketRef.External)
+	bucketName, err := ParseBucketExternal(storageBucketExternal)
 	if err != nil {
 		return nil, err
 	}

@@ -21,6 +21,7 @@ package v1alpha1
 import (
 	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -985,7 +986,7 @@ func (in *StorageConfig) DeepCopyInto(out *StorageConfig) {
 	*out = *in
 	if in.BucketRef != nil {
 		in, out := &in.BucketRef, &out.BucketRef
-		*out = new(v1beta1.StorageBucketRef)
+		*out = new(storagev1beta1.StorageBucketRef)
 		**out = **in
 	}
 }

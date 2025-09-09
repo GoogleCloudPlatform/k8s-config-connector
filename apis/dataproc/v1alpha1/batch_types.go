@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -360,7 +361,7 @@ type ExecutionConfig struct {
 	//  **This field requires a Cloud Storage bucket name, not a `gs://...` URI to
 	//  a Cloud Storage bucket.**
 	// +kcc:proto:field=google.cloud.dataproc.v1.ExecutionConfig.staging_bucket
-	StagingBucketRef *v1beta1.StorageBucketRef `json:"stagingBucketRef,omitempty"`
+	StagingBucketRef *storagev1beta1.StorageBucketRef `json:"stagingBucketRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataproc.v1.PeripheralsConfig

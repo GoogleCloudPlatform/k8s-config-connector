@@ -19,6 +19,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
 	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -323,7 +324,7 @@ func ExecutionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionConfig
 	}
 	out.IdleTTL = direct.StringDuration_FromProto(mapCtx, in.GetIdleTtl())
 	out.TTL = direct.StringDuration_FromProto(mapCtx, in.GetTtl())
-	out.StagingBucketRef = &refs.StorageBucketRef{
+	out.StagingBucketRef = &storagev1beta1.StorageBucketRef{
 		External: in.GetStagingBucket(),
 	}
 	return out

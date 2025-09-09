@@ -17,6 +17,8 @@ package sql
 import (
 	"fmt"
 
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
+
 	api "google.golang.org/api/sqladmin/v1beta4"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
@@ -530,7 +532,7 @@ func InstanceSqlServerAuditConfigKRMToGCP(in *krm.InstanceSqlServerAuditConfig) 
 	return out
 }
 
-func InstanceAuditConfigBucketRefKRMToGCP(in *refs.StorageBucketRef) string {
+func InstanceAuditConfigBucketRefKRMToGCP(in *storagev1beta1.StorageBucketRef) string {
 	if in == nil {
 		return ""
 	}
@@ -995,12 +997,12 @@ func InstanceSqlServerAuditConfigGCPToKRM(in *api.SqlServerAuditConfig) *krm.Ins
 	return out
 }
 
-func InstanceAuditConfigBucketRefGCPToKRM(in string) *refs.StorageBucketRef {
+func InstanceAuditConfigBucketRefGCPToKRM(in string) *storagev1beta1.StorageBucketRef {
 	if in == "" {
 		return nil
 	}
 
-	out := &refs.StorageBucketRef{
+	out := &storagev1beta1.StorageBucketRef{
 		External: in,
 	}
 
