@@ -473,6 +473,18 @@ func (in *CloudDeployTargetSpec) DeepCopyInto(out *CloudDeployTargetSpec) {
 		*out = new(CustomTarget)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.AssociatedEntities != nil {
+		in, out := &in.AssociatedEntities, &out.AssociatedEntities
+		*out = make(map[string]*AssociatedEntities, len(*in))
+		for key, val := range *in {
+			var outVal *AssociatedEntities
+			if val != nil {
+				outVal = new(AssociatedEntities)
+				val.DeepCopyInto(outVal)
+			}
+			(*out)[key] = outVal
+		}
+	}
 	if in.ExecutionConfigs != nil {
 		in, out := &in.ExecutionConfigs, &out.ExecutionConfigs
 		*out = make([]*ExecutionConfig, len(*in))

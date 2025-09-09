@@ -71,6 +71,9 @@ type CloudDeployTargetSpec struct {
 	// Information specifying a custom target.
 	CustomTarget *CustomTarget `json:"customTarget,omitempty"`
 
+	// Optional. The associations between the Target and other entities.
+	AssociatedEntities map[string]*AssociatedEntities `json:"associatedEntities,omitempty"`
+
 	// Optional. Configurations for all execution that relates to this `Target`.
 	// Each `ExecutionEnvironmentUsage` value may only be used in a single
 	// configuration; using the same value multiple times is an error.
