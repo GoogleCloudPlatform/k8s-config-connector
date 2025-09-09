@@ -15,28 +15,41 @@
 package mockdns
 
 import (
-	"regexp"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
-)
-
-var (
-	// Example: ns-cloud-e1.googledomains.com.
-	dnsNameServerRegex = regexp.MustCompile(`"ns-cloud-[a-z]([1-4]).googledomains.com."`)
 )
 
 const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
+var placeholderNameServers = []string{"ns-cloud-a1.googledomains.com.", "ns-cloud-a2.googledomains.com.", "ns-cloud-a3.googledomains.com.", "ns-cloud-a4.googledomains.com."}
+
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !isDNSAPI(url) {
+		return
+	}
+
 	// DNS ManagedZone
-	replacements.ReplacePath(".nameServers", []string{"ns-cloud-a1.googledomains.com.", "ns-cloud-a2.googledomains.com.", "ns-cloud-a3.googledomains.com.", "ns-cloud-a4.googledomains.com."})
-	replacements.ReplacePath(".managedZones[].creationTime", PlaceholderTimestamp)
+	{
+		replacements.ReplacePath(".nameServers", placeholderNameServers)
+		replacements.ReplacePath(".managedZones[].nameServers", placeholderNameServers)
+		replacements.ReplacePath(".zoneContext.newValue.nameServers", placeholderNameServers)
+		replacements.ReplacePath(".zoneContext.oldValue.nameServers", placeholderNameServers)
+
+		replacements.ReplacePath(".creationTime", PlaceholderTimestamp)
+		replacements.ReplacePath(".managedZones[].creationTime", PlaceholderTimestamp)
+		replacements.ReplacePath(".zoneContext.newValue.creationTime", PlaceholderTimestamp)
+		replacements.ReplacePath(".zoneContext.oldValue.creationTime", PlaceholderTimestamp)
+	}
+}
+
+func isDNSAPI(url string) bool {
+	return strings.HasPrefix(url, "https://dns.googleapis.com/")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
-
 	kind := ""
 
 	event.VisitResponseStringValues(func(path string, value string) {

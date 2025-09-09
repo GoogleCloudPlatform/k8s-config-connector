@@ -1,0 +1,181 @@
+POST https://iam.googleapis.com/v2/policies/cloudresourcemanager.googleapis.com%252Fprojects%252F${projectId}/denypolicies?alt=json&policyId=test-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "displayName": "Test Deny Policy",
+  "rules": [
+    {
+      "denyRule": {
+        "deniedPermissions": [
+          "storage.googleapis.com/objects.get"
+        ],
+        "deniedPrincipals": [
+          "principalSet://goog/public:all"
+        ]
+      }
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.iam.v2.PolicyOperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "policies/cloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/denypolicies/test-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.iam.v2.Policy",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Test Deny Policy",
+    "etag": "abcdef0123A=",
+    "kind": "DenyPolicy",
+    "name": "policies/cloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/denypolicies/test-${uniqueId}",
+    "rules": [
+      {
+        "denyRule": {
+          "deniedPermissions": [
+            "storage.googleapis.com/objects.get"
+          ],
+          "deniedPrincipals": [
+            "principalSet://goog/public:all"
+          ]
+        }
+      }
+    ],
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v2/policies/cloudresourcemanager.googleapis.com%252Fprojects%252F${projectId}/denypolicies?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "policies": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "displayName": "Test Deny Policy",
+      "etag": "abcdef0123A=",
+      "kind": "DenyPolicy",
+      "name": "policies/cloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/denypolicies/test-${uniqueId}",
+      "uid": "111111111111111111111",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ]
+}
+
+---
+
+GET https://iam.googleapis.com/v2/policies/cloudresourcemanager.googleapis.com%252Fprojects%252F${projectId}/denypolicies/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Test Deny Policy",
+  "etag": "abcdef0123A=",
+  "kind": "DenyPolicy",
+  "name": "policies/cloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/denypolicies/test-${uniqueId}",
+  "rules": [
+    {
+      "denyRule": {
+        "deniedPermissions": [
+          "storage.googleapis.com/objects.get"
+        ],
+        "deniedPrincipals": [
+          "principalSet://goog/public:all"
+        ]
+      }
+    }
+  ],
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v2/policies/cloudresourcemanager.googleapis.com%252Fprojects%252F${projectId}/denypolicies/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.iam.v2.PolicyOperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "policies/cloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/denypolicies/test-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.iam.v2.Policy",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deleteTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Test Deny Policy",
+    "etag": "abcdef0123A=",
+    "kind": "DenyPolicy",
+    "name": "policies/cloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/denypolicies/test-${uniqueId}",
+    "rules": [
+      {
+        "denyRule": {
+          "deniedPermissions": [
+            "storage.googleapis.com/objects.get"
+          ],
+          "deniedPrincipals": [
+            "principalSet://goog/public:all"
+          ]
+        }
+      }
+    ],
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}

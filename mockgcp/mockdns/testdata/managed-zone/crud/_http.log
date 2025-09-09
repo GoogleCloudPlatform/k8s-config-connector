@@ -25,7 +25,7 @@ X-Xss-Protection: 0
   "cloudLoggingConfig": {
     "kind": "dns#managedZoneCloudLoggingConfig"
   },
-  "creationTime": "123456789",
+  "creationTime": "2024-04-01T12:34:56.123456Z",
   "description": "a test zone",
   "dnsName": "test-${uniqueId}.example.com.",
   "id": "000000000000000000000",
@@ -61,7 +61,7 @@ X-Xss-Protection: 0
   "cloudLoggingConfig": {
     "kind": "dns#managedZoneCloudLoggingConfig"
   },
-  "creationTime": "123456789",
+  "creationTime": "2024-04-01T12:34:56.123456Z",
   "description": "a test zone",
   "dnsName": "test-${uniqueId}.example.com.",
   "id": "000000000000000000000",
@@ -74,6 +74,76 @@ X-Xss-Protection: 0
     "ns-cloud-a4.googledomains.com."
   ],
   "visibility": "public"
+}
+
+---
+
+PATCH https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/test-zone-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "description": "updated description",
+  "name": "test-zone-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "kind": "dns#operation",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "done",
+  "type": "UPDATE",
+  "user": "user@example.com",
+  "zoneContext": {
+    "newValue": {
+      "cloudLoggingConfig": {
+        "kind": "dns#managedZoneCloudLoggingConfig"
+      },
+      "creationTime": "2024-04-01T12:34:56.123456Z",
+      "description": "updated description",
+      "dnsName": "test-${uniqueId}.example.com.",
+      "id": "${managedZoneId}",
+      "kind": "dns#managedZone",
+      "name": "test-zone-${uniqueId}",
+      "nameServers": [
+        "ns-cloud-a1.googledomains.com.",
+        "ns-cloud-a2.googledomains.com.",
+        "ns-cloud-a3.googledomains.com.",
+        "ns-cloud-a4.googledomains.com."
+      ],
+      "visibility": "public"
+    },
+    "oldValue": {
+      "cloudLoggingConfig": {
+        "kind": "dns#managedZoneCloudLoggingConfig"
+      },
+      "creationTime": "2024-04-01T12:34:56.123456Z",
+      "description": "a test zone",
+      "dnsName": "test-${uniqueId}.example.com.",
+      "id": "${managedZoneId}",
+      "kind": "dns#managedZone",
+      "name": "test-zone-${uniqueId}",
+      "nameServers": [
+        "ns-cloud-a1.googledomains.com.",
+        "ns-cloud-a2.googledomains.com.",
+        "ns-cloud-a3.googledomains.com.",
+        "ns-cloud-a4.googledomains.com."
+      ],
+      "visibility": "public"
+    }
+  }
 }
 
 ---
@@ -101,16 +171,16 @@ X-Xss-Protection: 0
         "kind": "dns#managedZoneCloudLoggingConfig"
       },
       "creationTime": "2024-04-01T12:34:56.123456Z",
-      "description": "a test zone",
+      "description": "updated description",
       "dnsName": "test-${uniqueId}.example.com.",
       "id": "${managedZoneId}",
       "kind": "dns#managedZone",
       "name": "test-zone-${uniqueId}",
       "nameServers": [
-        "ns-cloud-c1.googledomains.com.",
-        "ns-cloud-c2.googledomains.com.",
-        "ns-cloud-c3.googledomains.com.",
-        "ns-cloud-c4.googledomains.com."
+        "ns-cloud-a1.googledomains.com.",
+        "ns-cloud-a2.googledomains.com.",
+        "ns-cloud-a3.googledomains.com.",
+        "ns-cloud-a4.googledomains.com."
       ],
       "visibility": "public"
     }
