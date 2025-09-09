@@ -166,11 +166,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "defaultTableExpirationMs": "7200000",
-  "description": "BigQuery Dataset With Access Block v2 Updated",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
+  "description": "BigQuery Dataset With Access Block v2 Updated"
 }
 
 200 OK
@@ -186,20 +182,16 @@ X-Xss-Protection: 0
 {
   "access": [
     {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "iamMember": "allUsers",
+      "role": "READER"
+    },
+    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",
@@ -242,20 +234,16 @@ X-Xss-Protection: 0
 {
   "access": [
     {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "iamMember": "allUsers",
+      "role": "READER"
+    },
+    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",
@@ -298,20 +286,16 @@ X-Xss-Protection: 0
 {
   "access": [
     {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "iamMember": "allUsers",
+      "role": "READER"
+    },
+    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",

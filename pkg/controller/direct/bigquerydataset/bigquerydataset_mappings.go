@@ -224,6 +224,11 @@ func BigQueryDataset_ToMetadataToUpdate(mapCtx *direct.MapContext, in *pb.Datase
 	if slices.Contains(updatePaths, "storage_billing_model") {
 		out.StorageBillingModel = in.StorageBillingModel
 	}
+	if slices.Contains(updatePaths, "labels") {
+		for k, v := range in.Labels {
+			out.SetLabel(k, v)
+		}
+	}
 	return out
 }
 func DatasetAccessEntry_FromProto(mapCtx *direct.MapContext, in *pb.DatasetAccessEntry) *krm.DatasetAccessEntry {

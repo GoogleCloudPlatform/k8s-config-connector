@@ -56,9 +56,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
   "description": "Fully Configured BigQuery Dataset unset",
-  "labels": {
-    "managed-by-cnrm": "true"
-  },
   "maxTimeTravelHours": "168"
 }
 
@@ -77,18 +74,6 @@ X-Xss-Protection: 0
     {
       "role": "OWNER",
       "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",
@@ -139,18 +124,6 @@ X-Xss-Protection: 0
     {
       "role": "OWNER",
       "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",

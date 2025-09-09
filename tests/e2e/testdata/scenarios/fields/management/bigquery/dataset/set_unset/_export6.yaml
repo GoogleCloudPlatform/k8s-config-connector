@@ -10,12 +10,6 @@ spec:
   access:
   - role: OWNER
     specialGroup: projectOwners
-  - role: OWNER
-    userByEmail: user@google.com
-  - role: READER
-    specialGroup: projectReaders
-  - role: WRITER
-    specialGroup: projectWriters
   defaultCollation: und:ci
   defaultEncryptionConfiguration:
     kmsKeyRef:

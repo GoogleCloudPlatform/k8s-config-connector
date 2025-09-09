@@ -565,10 +565,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "description": "Fully Configured BigQuery Dataset updated",
   "friendlyName": "bigquerydataset-fullyconfigured-updated",
   "isCaseInsensitive": false,
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
   "maxTimeTravelHours": "96"
 }
 

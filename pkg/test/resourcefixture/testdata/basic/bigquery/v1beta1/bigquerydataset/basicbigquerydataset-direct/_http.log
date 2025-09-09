@@ -152,11 +152,7 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "friendlyName": "bigquerydataset-sample-updated",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
+  "friendlyName": "bigquerydataset-sample-updated"
 }
 
 200 OK

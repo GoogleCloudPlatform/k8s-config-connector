@@ -260,15 +260,18 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		resource.Access = desired.Access
 		updateMask.Paths = append(updateMask.Paths, "access")
 	}
+	if desired.Labels != nil && !reflect.DeepEqual(desired.Labels, resource.Labels) {
+		// We always send the full map of labels to GCP, so we do not need to specify each label key in the update mask.
+		resource.Labels = desired.Labels
+		updateMask.Paths = append(updateMask.Paths, "labels")
+	}
 	if len(updateMask.Paths) == 0 {
 		return nil
 	}
 
 	// Compute the dataset metadate for update request
 	datasetMetadataToUpdate := BigQueryDataset_ToMetadataToUpdate(mapCtx, resource, updateMask.Paths)
-	for k, v := range label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels()) {
-		datasetMetadataToUpdate.SetLabel(k, v)
-	}
+
 	// Call update
 	dsHandler := a.gcpService.DatasetInProject(a.id.Parent().ProjectID, a.id.ID())
 	updated, err := dsHandler.Update(ctx, *datasetMetadataToUpdate, "")

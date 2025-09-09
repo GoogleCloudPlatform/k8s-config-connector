@@ -963,11 +963,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "tableId": "bigquerytablesample${uniqueId}"
       }
     }
-  ],
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
+  ]
 }
 
 200 OK
@@ -1164,11 +1160,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       }
     }
   ],
-  "description": "BigQuery Dataset With Full Access Block Updated",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  }
+  "description": "BigQuery Dataset With Full Access Block Updated"
 }
 
 200 OK
