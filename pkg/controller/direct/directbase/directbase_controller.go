@@ -34,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	"golang.org/x/sync/semaphore"
@@ -257,6 +258,8 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 		gvk:            r.gvk,
 		NamespacedName: request.NamespacedName,
 	}
+	structuredreporting.ReportReconcileStart(ctx, obj)
+	defer structuredreporting.ReportReconcileEnd(ctx, obj, result, err)
 
 	skip, err := resourceactuation.ShouldSkip(obj)
 	if err != nil {
