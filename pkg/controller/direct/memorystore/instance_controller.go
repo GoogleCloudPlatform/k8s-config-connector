@@ -77,7 +77,10 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, reader client.Read
 		return nil, err
 	}
 
-	normalize(ctx, reader, obj)
+	err = normalize(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
 
 	// Get memorystore GCP client
 	gcpClient, err := m.client(ctx)
@@ -98,6 +101,11 @@ func normalize(ctx context.Context, reader client.Reader, obj *krm.MemorystoreIn
 				autoConnection := connection.PscAutoConnection
 				if autoConnection.NetworkRef != nil {
 					if err := autoConnection.NetworkRef.Normalize(ctx, reader, obj); err != nil {
+						return err
+					}
+				}
+				if autoConnection.ProjectRef != nil {
+					if err := autoConnection.ProjectRef.Normalize(ctx, reader, obj.Namespace); err != nil {
 						return err
 					}
 				}
@@ -204,32 +212,32 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	paths := make(sets.Set[string])
 
 	// If replica count is unset, the field become unmanaged.
-	if a.desired.Spec.ReplicaCount != nil && !reflect.DeepEqual(a.desired.Spec.ReplicaCount, a.actual.ReplicaCount) {
+	if a.desired.Spec.ReplicaCount != nil && !reflect.DeepEqual(desiredPb.ReplicaCount, a.actual.ReplicaCount) {
 		paths.Insert("replica_count")
 	}
-	if a.desired.Spec.ShardCount != nil && !reflect.DeepEqual(a.desired.Spec.ShardCount, a.actual.ShardCount) {
+	if a.desired.Spec.ShardCount != nil && !reflect.DeepEqual(desiredPb.ShardCount, desiredPb.ShardCount) {
 		log.V(2).Info("diff shard count", "desired", a.desired.Spec.ShardCount, "actual", a.actual.ShardCount)
 		paths.Insert("shard_count")
 	}
-	if a.desired.Spec.DeletionProtectionEnabled != nil && !reflect.DeepEqual(a.desired.Spec.DeletionProtectionEnabled, a.actual.DeletionProtectionEnabled) {
+	if a.desired.Spec.DeletionProtectionEnabled != nil && !reflect.DeepEqual(desiredPb.DeletionProtectionEnabled, a.actual.DeletionProtectionEnabled) {
 		paths.Insert("deletion_protection_enabled")
 	}
-	if a.desired.Spec.PersistenceConfig != nil && !reflect.DeepEqual(a.desired.Spec.PersistenceConfig, a.actual.PersistenceConfig) {
+	if a.desired.Spec.PersistenceConfig != nil && !reflect.DeepEqual(desiredPb.PersistenceConfig, a.actual.PersistenceConfig) {
 		paths.Insert("persistence_config")
 	}
-	if a.desired.Spec.EngineConfigs != nil && !reflect.DeepEqual(a.desired.Spec.EngineConfigs, a.actual.EngineConfigs) {
+	if a.desired.Spec.EngineConfigs != nil && !reflect.DeepEqual(desiredPb.EngineConfigs, a.actual.EngineConfigs) {
 		paths.Insert("engine_configs")
 	}
-	if a.desired.Spec.Endpoints != nil && !reflect.DeepEqual(a.desired.Spec.Endpoints, a.actual.Endpoints) {
+	if a.desired.Spec.Endpoints != nil && !reflect.DeepEqual(desiredPb.Endpoints, a.actual.Endpoints) {
 		paths.Insert("endpoints")
 	}
-	if a.desired.Spec.Labels != nil && !reflect.DeepEqual(a.desired.Spec.Labels, a.actual.Labels) {
+	if a.desired.Spec.Labels != nil && !reflect.DeepEqual(desiredPb.Labels, a.actual.Labels) {
 		paths.Insert("labels")
 	}
-	if a.desired.Spec.EngineVersion != nil && !reflect.DeepEqual(a.desired.Spec.EngineVersion, a.actual.EngineVersion) {
+	if a.desired.Spec.EngineVersion != nil && !reflect.DeepEqual(desiredPb.EngineVersion, a.actual.EngineVersion) {
 		paths.Insert("engine_version")
 	}
-	if a.desired.Spec.NodeType != nil && !reflect.DeepEqual(a.desired.Spec.NodeType, a.actual.NodeType) {
+	if a.desired.Spec.NodeType != nil && !reflect.DeepEqual(desiredPb.NodeType, a.actual.NodeType) {
 		paths.Insert("node_type")
 	}
 
