@@ -38,6 +38,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -177,6 +178,16 @@ func (r *ReconcileIAMPolicy) Reconcile(ctx context.Context, request reconcile.Re
 		Ctx:            ctx,
 		NamespacedName: request.NamespacedName,
 	}
+	uObj := &unstructured.Unstructured{}
+	uObj.Object, err = runtime.DefaultUnstructuredConverter.ToUnstructured(policy)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+	uObj.SetNamespace(policy.GetNamespace())
+	uObj.SetName(policy.GetName())
+	uObj.SetGroupVersionKind(iamv1beta1.IAMPolicyGVK)
+	structuredreporting.ReportReconcileStart(ctx, uObj)
+	defer structuredreporting.ReportReconcileEnd(ctx, uObj, result, err)
 	requeue, err := runCtx.doReconcile(policy)
 	if err != nil {
 		return reconcile.Result{}, err
