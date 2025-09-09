@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.132.1
+    cnrm.cloud.google.com/version: 1.134.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -80,6 +80,177 @@ spec:
                 description: Optional. If set to true deletion of the instance will
                   fail.
                 type: boolean
+              endpoints:
+                description: Optional. Endpoints for the instance.
+                items:
+                  properties:
+                    connections:
+                      description: Optional. A group of PSC connections. They are
+                        created in the same VPC network, one for each service attachment
+                        in the cluster.
+                      items:
+                        properties:
+                          pscAutoConnection:
+                            description: Detailed information of a PSC connection
+                              that is created through service connectivity automation.
+                            properties:
+                              networkRef:
+                                description: Required. The network where the PSC endpoints
+                                  are created, in the form of projects/{project_id}/global/networks/{network_id}.
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: A reference to an externally managed
+                                      Compute Network resource. Should be in the format
+                                      `projects/{{projectID}}/global/networks/{{network}}`.
+                                    type: string
+                                  name:
+                                    description: The `name` field of a `ComputeNetwork`
+                                      resource.
+                                    type: string
+                                  namespace:
+                                    description: The `namespace` field of a `ComputeNetwork`
+                                      resource.
+                                    type: string
+                                type: object
+                              projectRef:
+                                description: Required. The consumer project_id where
+                                  PSC connections are established. This should be
+                                  the same project_id that the instance is being created
+                                  in.
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                  - kind
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                    - required:
+                                      - kind
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: The `projectID` field of a project,
+                                      when not managed by Config Connector.
+                                    type: string
+                                  kind:
+                                    description: The kind of the Project resource;
+                                      optional but must be `Project` if provided.
+                                    type: string
+                                  name:
+                                    description: The `name` field of a `Project` resource.
+                                    type: string
+                                  namespace:
+                                    description: The `namespace` field of a `Project`
+                                      resource.
+                                    type: string
+                                type: object
+                            required:
+                            - networkRef
+                            - projectRef
+                            type: object
+                          pscConnection:
+                            description: Detailed information of a PSC connection
+                              that is created by the user.
+                            properties:
+                              ipAddress:
+                                description: Required. The IP allocated on the consumer
+                                  network for the PSC forwarding rule.
+                                type: string
+                              networkRef:
+                                description: Required. The consumer network where
+                                  the IP address resides, in the form of projects/{project_id}/global/networks/{network_id}.
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: A reference to an externally managed
+                                      Compute Network resource. Should be in the format
+                                      `projects/{{projectID}}/global/networks/{{network}}`.
+                                    type: string
+                                  name:
+                                    description: The `name` field of a `ComputeNetwork`
+                                      resource.
+                                    type: string
+                                  namespace:
+                                    description: The `namespace` field of a `ComputeNetwork`
+                                      resource.
+                                    type: string
+                                type: object
+                              serviceAttachmentRef:
+                                description: Required. The service attachment which
+                                  is the target of the PSC connection, in the form
+                                  of projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+                                oneOf:
+                                - not:
+                                    required:
+                                    - external
+                                  required:
+                                  - name
+                                - not:
+                                    anyOf:
+                                    - required:
+                                      - name
+                                    - required:
+                                      - namespace
+                                  required:
+                                  - external
+                                properties:
+                                  external:
+                                    description: The ComputeServiceAttachment selflink
+                                      in the form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}"
+                                      when not managed by Config Connector.
+                                    type: string
+                                  name:
+                                    description: The `name` field of a `ComputeServiceAttachment`
+                                      resource.
+                                    type: string
+                                  namespace:
+                                    description: The `namespace` field of a `ComputeServiceAttachment`
+                                      resource.
+                                    type: string
+                                type: object
+                            required:
+                            - ipAddress
+                            - networkRef
+                            - serviceAttachmentRef
+                            type: object
+                        type: object
+                      type: array
+                  type: object
+                type: array
               engineConfigs:
                 additionalProperties:
                   type: string
@@ -89,12 +260,20 @@ spec:
               engineVersion:
                 description: Optional. Immutable. Engine version of the instance.
                 type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Labels to represent user-provided metadata.
+                type: object
               location:
                 description: Immutable.
                 type: string
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              mode:
+                description: Optional. The mode config for the instance.
+                type: string
               nodeType:
                 description: Optional. Immutable. Machine type for individual nodes
                   of the instance.
@@ -160,11 +339,9 @@ spec:
                     type: string
                 type: object
               pscAutoConnections:
-                description: Required. Immutable. User inputs for the auto-created
+                description: User inputs and resource details of the auto-created
                   PSC connections.
                 items:
-                  description: kcc specific struct to separate input and output fields
-                    in google.cloud.memorystore.v1beta.PscAutoConnection
                   properties:
                     networkRef:
                       description: Required. The network where the PSC endpoints are
@@ -199,7 +376,7 @@ spec:
                     projectRef:
                       description: Required. The consumer project_id where PSC connections
                         are established. This should be the same project_id that the
-                        cluster is being created in.
+                        instance is being created in.
                       oneOf:
                       - not:
                           required:
@@ -244,8 +421,8 @@ spec:
                 format: int32
                 type: integer
               resourceID:
-                description: Optional. Immutable. The MemorystoreInstance name. If
-                  not given, the metadata.name will be used.
+                description: The MemorystoreInstance name. If not given, the metadata.name
+                  will be used.
                 type: string
               shardCount:
                 description: Optional. Number of shards for the instance.
@@ -257,7 +434,7 @@ spec:
                 type: string
               zoneDistributionConfig:
                 description: Optional. Immutable. Zone distribution configuration
-                  of the instance for node allocatiteon.
+                  of the instance for node allocation.
                 properties:
                   mode:
                     description: Optional. Current zone distribution mode. Defaults
@@ -318,56 +495,59 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
-                  authorizationMode:
-                    description: Optional. Immutable. Authorization mode of the instance.
-                    type: string
                   createTime:
                     description: Output only. Creation timestamp of the instance.
                     type: string
-                  discoveryEndpoints:
-                    description: Output only. Endpoints clients can connect to the
-                      instance through. Currently only one discovery endpoint is supported.
+                  endpoints:
+                    description: Optional. Endpoints for the instance.
                     items:
                       properties:
-                        address:
-                          description: Output only. IP address of the exposed endpoint
-                            clients connect to.
-                          type: string
-                        network:
-                          description: Output only. The network where the IP address
-                            of the discovery endpoint will be reserved, in the form
-                            of projects/{network_project}/global/networks/{network_id}.
-                          type: string
-                        port:
-                          description: Output only. The port number of the exposed
-                            endpoint.
-                          format: int32
-                          type: integer
+                        connections:
+                          description: Optional. A group of PSC connections. They
+                            are created in the same VPC network, one for each service
+                            attachment in the cluster.
+                          items:
+                            properties:
+                              pscConnection:
+                                description: Detailed information of a PSC connection
+                                  that is created by the user.
+                                properties:
+                                  connectionType:
+                                    description: Output only. Type of the PSC connection.
+                                    type: string
+                                  projectID:
+                                    description: Output only. The consumer project_id
+                                      where the forwarding rule is created from.
+                                    type: string
+                                  pscConnectionID:
+                                    description: Output only. The PSC connection id
+                                      of the forwarding rule connected to the service
+                                      attachment.
+                                    type: string
+                                  pscConnectionStatus:
+                                    description: 'Output only. The status of the PSC
+                                      connection: whether a connection exists and
+                                      ACTIVE or it no longer exists. Please note that
+                                      this value is updated periodically. Please use
+                                      Private Service Connect APIs for the latest
+                                      status.'
+                                    type: string
+                                type: object
+                            type: object
+                          type: array
                       type: object
                     type: array
-                  engineVersion:
-                    description: Optional. Immutable. Engine version of the instance.
-                      https://cloud.google.com/memorystore/docs/valkey/supported-versions
-                    type: string
-                  name:
-                    description: 'Identifier. Unique name of the instance. Format:
-                      projects/{project}/locations/{location}/instances/{instance}'
-                    type: string
                   nodeConfig:
                     description: Output only. Configuration of individual nodes of
                       the instance.
                     properties:
-                      sizeGb:
+                      sizeGB:
                         description: Output only. Memory size in GB of the node.
                         type: number
                     type: object
-                  nodeType:
-                    description: Optional. Immutable. Machine type for individual
-                      nodes of the instance.
-                    type: string
                   pscAutoConnections:
-                    description: Output only. Resource details of the auto-created
-                      PSC connections.
+                    description: Immutable. User inputs and resource details of the
+                      auto-created PSC connections.
                     items:
                       properties:
                         connectionType:
@@ -381,20 +561,11 @@ spec:
                           description: Output only. The IP allocated on the consumer
                             network for the PSC forwarding rule.
                           type: string
-                        network:
-                          description: Required. The network where the PSC endpoints
-                            are created, in the form of projects/{project_id}/global/networks/{network_id}.
-                          type: string
                         port:
                           description: Optional. Output only. port will only be set
                             for Primary/Reader or Discovery endpoint.
                           format: int32
                           type: integer
-                        projectID:
-                          description: Required. The consumer project_id where PSC
-                            connections are established. This should be the same project_id
-                            that the cluster is being created in.
-                          type: string
                         pscConnectionID:
                           description: Output only. The PSC connection id of the forwarding
                             rule connected to the service attachment.
@@ -422,23 +593,8 @@ spec:
                       updateInfo:
                         description: Output only. Describes ongoing update when instance
                           state is UPDATING.
-                        properties:
-                          targetReplicaCount:
-                            description: Output only. Target number of replica nodes
-                              per shard for the instance.
-                            format: int32
-                            type: integer
-                          targetShardCount:
-                            description: Output only. Target number of shards for
-                              the instance.
-                            format: int32
-                            type: integer
                         type: object
                     type: object
-                  transitEncryptionMode:
-                    description: Optional. Immutable. In-transit encryption mode of
-                      the instance.
-                    type: string
                   uid:
                     description: Output only. System assigned, unique identifier for
                       the instance.
@@ -446,20 +602,6 @@ spec:
                   updateTime:
                     description: Output only. Latest update timestamp of the instance.
                     type: string
-                  zoneDistributionConfig:
-                    description: Optional. Immutable. Zone distribution configuration
-                      of the instance for node allocation.
-                    properties:
-                      mode:
-                        description: Optional. Current zone distribution mode. Defaults
-                          to MULTI_ZONE.
-                        type: string
-                      zone:
-                        description: Optional. Defines zone where all resources will
-                          be allocated with SINGLE_ZONE mode. Ignored for MULTI_ZONE
-                          mode.
-                        type: string
-                    type: object
                 type: object
             type: object
         required:
