@@ -1,5 +1,3 @@
-//go:build e2e
-
 // Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package controllers_test
+//go:build e2e
+
+package controllers
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"testing"
 	"time"
 
+	"cloud.google.com/go/storage"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 	corev1 "k8s.io/api/core/v1"
@@ -148,4 +150,117 @@ func TestE2E_LeaderElection(t *testing.T) {
 
 	// Wait for the test to finish
 	<-testfinished
+}
+
+var gcsBucketName = "multiclusterlease-test"
+
+func TestE2E_LeaseAlreadyHeld(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	// --- Setup Kubernetes and GCS Clients ---
+	cfg, err := config.GetConfig()
+	require.NoError(t, err)
+	err = v1alpha1.AddToScheme(scheme.Scheme)
+	require.NoError(t, err)
+	kubeClient, err := client.New(cfg, client.Options{Scheme: scheme.Scheme})
+	require.NoError(t, err)
+	gcsClient, err := storage.NewClient(ctx)
+	require.NoError(t, err)
+
+	// --- Create Test Namespace ---
+	ns := &corev1.Namespace{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: fmt.Sprintf("%s-%s", testNamespace, uuid.New().String()[:8]),
+		},
+	}
+	t.Logf("creating test namespace: %s", ns.Name)
+	require.NoError(t, kubeClient.Create(ctx, ns))
+	defer func() {
+		t.Logf("deleting test namespace: %s", ns.Name)
+		require.NoError(t, kubeClient.Delete(ctx, ns))
+	}()
+
+	// --- Pre-create the Global Lock in GCS ---
+	incumbentLeader := "the-incumbent-leader"
+	gcsObjectKey := fmt.Sprintf("leases/%s/%s", ns.Name, leaseName)
+	t.Logf("pre-creating GCS lock object '%s' with holder '%s'", gcsObjectKey, incumbentLeader)
+	err = writeToGCS(ctx, gcsClient, gcsBucketName, gcsObjectKey, incumbentLeader, time.Now())
+	require.NoError(t, err)
+	defer func() {
+		t.Logf("deleting GCS lock object '%s'", gcsObjectKey)
+		deleteFromGCS(ctx, gcsClient, gcsBucketName, gcsObjectKey)
+	}()
+
+	// --- Start the Elector ---
+	leaderCh := make(chan struct{})
+	identity := uuid.New().String()
+	lock := multiclusterleaselock.New(kubeClient, leaseName, ns.Name, identity, retryPeriod)
+	elector, err := leaderelection.NewLeaderElector(leaderelection.LeaderElectionConfig{
+		Lock:          lock,
+		LeaseDuration: leaseDuration,
+		RenewDeadline: renewDeadline,
+		RetryPeriod:   retryPeriod,
+		Callbacks: leaderelection.LeaderCallbacks{
+			OnStartedLeading: func(ctx context.Context) {
+				// This should never be called.
+				t.Errorf("elector [%s] started leading but should have been locked out", identity)
+				close(leaderCh)
+			},
+			OnStoppedLeading: func() {
+				t.Logf("elector [%s] stopped leading", identity)
+			},
+		},
+		Name: "e2e-test-locked-out-elector",
+	})
+	require.NoError(t, err)
+	go elector.Run(ctx)
+
+	// --- Verification ---
+	t.Logf("elector [%s] waiting to see if it incorrectly acquires leadership...", identity)
+	select {
+	case <-leaderCh:
+		t.Fatalf("elector [%s] acquired leadership, but should have been locked out", identity)
+	case <-time.After(leaderTimeout):
+		t.Logf("SUCCESS: elector [%s] did not acquire leadership within %s", identity, leaderTimeout)
+	}
+
+	// Verify that the CR status correctly reflects the incumbent leader.
+	var lease v1alpha1.MultiClusterLease
+	key := client.ObjectKey{Namespace: ns.Name, Name: leaseName}
+	require.NoError(t, kubeClient.Get(ctx, key, &lease))
+	require.NotNil(t, lease.Status.GlobalHolderIdentity)
+	require.Equal(t, incumbentLeader, *lease.Status.GlobalHolderIdentity)
+	t.Logf("successfully verified that status shows incumbent leader '%s'", incumbentLeader)
+}
+
+// leaseData is a helper struct for GCS object content.
+type leaseData struct {
+	HolderIdentity   string    `json:"holderIdentity"`
+	RenewTime        time.Time `json:"renewTime"`
+	LeaseTransitions int32     `json:"leaseTransitions"`
+}
+
+func writeToGCS(ctx context.Context, client *storage.Client, bucket, object, holder string, renewTime time.Time) error {
+	w := client.Bucket(bucket).Object(object).NewWriter(ctx)
+	w.ContentType = "application/json"
+	w.CacheControl = "no-cache, no-store, must-revalidate"
+
+	data := leaseData{
+		HolderIdentity:   holder,
+		RenewTime:        renewTime,
+		LeaseTransitions: 1,
+	}
+	bytes, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+	if _, err := w.Write(bytes); err != nil {
+		return err
+	}
+	return w.Close()
+}
+
+func deleteFromGCS(ctx context.Context, client *storage.Client, bucket, object string) {
+	_ = client.Bucket(bucket).Object(object).Delete(ctx)
 }
