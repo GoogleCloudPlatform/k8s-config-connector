@@ -40,8 +40,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "location": "us-central1",
-  "maxTimeTravelHours": "168"
+  "location": "us-central1"
 }
 
 200 OK
@@ -87,7 +86,6 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
-  "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
   "type": "DEFAULT"
 }
@@ -769,8 +767,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "location": "us-central1",
-  "maxTimeTravelHours": "168"
+  "location": "us-central1"
 }
 
 200 OK
@@ -840,7 +837,6 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
-  "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetaccessfull${uniqueId}",
   "type": "DEFAULT"
 }
@@ -968,14 +964,211 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       }
     }
   ],
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "dataset": {
+        "dataset": {
+          "datasetId": "bigquerydatasetsample${uniqueId}",
+          "projectId": "${projectId}"
+        },
+        "targetTypes": [
+          "VIEWS"
+        ]
+      }
+    },
+    {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "groupByEmail": "kcc-eng@google.com",
+      "role": "READER"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "routine": {
+        "datasetId": "bigquerydatasetsample${uniqueId}",
+        "projectId": "${projectId}",
+        "routineId": "bigqueryroutine${uniqueId}"
+      }
+    },
+    {
+      "view": {
+        "datasetId": "bigquerydatasetsample${uniqueId}",
+        "projectId": "${projectId}",
+        "tableId": "bigquerytablesample${uniqueId}"
+      }
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydatasetaccessfull${uniqueId}",
+    "projectId": "${projectId}"
+  },
   "defaultTableExpirationMs": "3600000",
-  "description": "BigQuery Dataset With Full Access Block Updated",
+  "description": "BigQuery Dataset With Full Access Block",
+  "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-fullaccessblock",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "maxTimeTravelHours": "168"
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetaccessfull${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "dataset": {
+        "dataset": {
+          "datasetId": "bigquerydatasetsample${uniqueId}",
+          "projectId": "${projectId}"
+        },
+        "targetTypes": [
+          "VIEWS"
+        ]
+      }
+    },
+    {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "groupByEmail": "kcc-eng@google.com",
+      "role": "READER"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "routine": {
+        "datasetId": "bigquerydatasetsample${uniqueId}",
+        "projectId": "${projectId}",
+        "routineId": "bigqueryroutine${uniqueId}"
+      }
+    },
+    {
+      "view": {
+        "datasetId": "bigquerydatasetsample${uniqueId}",
+        "projectId": "${projectId}",
+        "tableId": "bigquerytablesample${uniqueId}"
+      }
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydatasetaccessfull${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "defaultTableExpirationMs": "3600000",
+  "description": "BigQuery Dataset With Full Access Block",
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerydataset-fullaccessblock",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "maxTimeTravelHours": "168",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetaccessfull${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "access": [
+    {
+      "dataset": {
+        "dataset": {
+          "datasetId": "bigquerydatasetsample${uniqueId}",
+          "projectId": "${projectId}"
+        },
+        "targetTypes": [
+          "VIEWS"
+        ]
+      }
+    },
+    {
+      "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "groupByEmail": "kcc-eng@google.com",
+      "role": "READER"
+    },
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "routine": {
+        "datasetId": "bigquerydatasetsample${uniqueId}",
+        "projectId": "${projectId}",
+        "routineId": "bigqueryroutine${uniqueId}"
+      }
+    },
+    {
+      "view": {
+        "datasetId": "bigquerydatasetsample${uniqueId}",
+        "projectId": "${projectId}",
+        "tableId": "bigquerytablesample${uniqueId}"
+      }
+    }
+  ],
+  "description": "BigQuery Dataset With Full Access Block Updated",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
 }
 
 200 OK
@@ -1045,7 +1238,6 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
-  "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetaccessfull${uniqueId}",
   "type": "DEFAULT"
 }

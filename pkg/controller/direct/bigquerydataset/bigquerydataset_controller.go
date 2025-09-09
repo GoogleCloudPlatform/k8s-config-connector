@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 	"reflect"
-	"sort"
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
@@ -105,21 +104,6 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 	return nil, nil
 }
 
-func sortAccessEntries(entries []*bigquery.AccessEntry) {
-	if entries == nil {
-		return
-	}
-	sort.Slice(entries, func(i, j int) bool {
-		if entries[i].Role != entries[j].Role {
-			return entries[i].Role < entries[j].Role
-		}
-		if entries[i].EntityType != entries[j].EntityType {
-			return entries[i].EntityType < entries[j].EntityType
-		}
-		return entries[i].Entity < entries[j].Entity
-	})
-}
-
 type Adapter struct {
 	id         *krm.DatasetIdentity
 	gcpService *bigquery.Client
@@ -154,7 +138,6 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 	desiredDataset := BigQueryDatasetSpec_ToProto(mapCtx, &a.desired.Spec)
 	desiredDataset.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.Labels)
-	ApplyBigqueryDatasetGCPDefaults(mapCtx, &a.desired.Spec, desiredDataset, nil)
 
 	// Resolve KMS key reference
 	if a.desired.Spec.DefaultEncryptionConfiguration != nil {
@@ -216,7 +199,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	ApplyBigqueryDatasetGCPDefaults(mapCtx, &desiredKRM.Spec, desired, a.actual)
+	ApplyBigQueryDatasetGCPDefaults(mapCtx, &desiredKRM.Spec, desired, a.actual)
 
 	// Resolve KMS key reference
 	if a.desired.Spec.DefaultEncryptionConfiguration != nil {

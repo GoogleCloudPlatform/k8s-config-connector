@@ -147,70 +147,30 @@ func foundDiffDatasetAccessEntry(a1, a2 []*bigquery.AccessEntry) bool {
 			}
 			continue
 		}
-		if diffView(a1[i].View, a2[i].View) {
+		if reflect.DeepEqual(a1[i].View, a2[i].View) {
 			return true
 		}
-		if diffRoutine(a1[i].Routine, a2[i].Routine) {
+		if reflect.DeepEqual(a1[i].Routine, a2[i].Routine) {
 			return true
 		}
-		if diffDataset(a1[i].Dataset, a2[i].Dataset) {
+		if reflect.DeepEqual(a1[i].Dataset, a2[i].Dataset) {
 			return true
 		}
 	}
 	return false
 }
 
-func diffView(v1, v2 *bigquery.Table) bool {
-	if v1 == nil && v2 == nil {
-		return false
-	}
-	if v1.DatasetID != v2.DatasetID || v1.ProjectID != v2.ProjectID || v1.TableID != v2.TableID {
-		return true
-	}
-	return false
-}
-func diffRoutine(r1, r2 *bigquery.Routine) bool {
-	if r1 == nil && r2 == nil {
-		return false
-	}
-	if r1.DatasetID != r2.DatasetID || r1.ProjectID != r2.ProjectID || r1.RoutineID != r2.RoutineID {
-		return true
-	}
-	return false
-}
-func diffDataset(d1, d2 *bigquery.DatasetAccessEntry) bool {
-	if d1 == nil && d2 == nil {
-		return false
-	}
-	if d1.Dataset == nil && d2.Dataset == nil {
-		return false
-	}
-	if d1.Dataset.DatasetID != d2.Dataset.DatasetID || d1.Dataset.ProjectID != d2.Dataset.ProjectID {
-		return true
-	}
-	if len(d1.TargetTypes) != len(d2.TargetTypes) {
-		return true
-	}
-	if len(d1.TargetTypes) > 0 {
-		sortStringSlice(d1.TargetTypes)
-		sortStringSlice(d2.TargetTypes)
-		for i := range d1.TargetTypes {
-			if d1.TargetTypes[i] != d2.TargetTypes[i] {
-				return true
-			}
-		}
-	}
-	return false
-}
-
-// sortStringSlice sorts a slice of strings in place.
-func sortStringSlice(s []string) {
-	if len(s) <= 1 {
+func sortAccessEntries(entries []*bigquery.AccessEntry) {
+	if entries == nil {
 		return
 	}
-	// Use the standard library sort
-	// Import "sort" package at the top if not already imported
-	// sort.Strings(s)
-	// Since sort is not imported yet, add it to the imports
-	sort.Strings(s)
+	sort.Slice(entries, func(i, j int) bool {
+		if entries[i].Role != entries[j].Role {
+			return entries[i].Role < entries[j].Role
+		}
+		if entries[i].EntityType != entries[j].EntityType {
+			return entries[i].EntityType < entries[j].EntityType
+		}
+		return entries[i].Entity < entries[j].Entity
+	})
 }

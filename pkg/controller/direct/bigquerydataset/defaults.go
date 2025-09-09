@@ -25,7 +25,7 @@ import (
 
 const defaultMaxTimeTravelHours = "168" // 7 days (in hours)
 
-func ApplyBigqueryDatasetGCPDefaults(mapCtx *direct.MapContext, in *krm.BigQueryDatasetSpec, out *bigquery.DatasetMetadata, actual *bigquery.DatasetMetadata) {
+func ApplyBigQueryDatasetGCPDefaults(mapCtx *direct.MapContext, in *krm.BigQueryDatasetSpec, out *bigquery.DatasetMetadata, actual *bigquery.DatasetMetadata) {
 	if in == nil {
 		return
 	}

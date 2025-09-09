@@ -41,8 +41,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "location": "us-central1",
-  "maxTimeTravelHours": "168"
+  "location": "us-central1"
 }
 
 200 OK
@@ -89,7 +88,6 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
-  "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
   "type": "DEFAULT"
 }
@@ -155,30 +153,11 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "access": [
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "userByEmail": "user@google.com"
-    },
-    {
-      "role": "READER",
-      "specialGroup": "projectReaders"
-    },
-    {
-      "role": "WRITER",
-      "specialGroup": "projectWriters"
-    }
-  ],
   "friendlyName": "bigquerydataset-sample-updated",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
-  },
-  "maxTimeTravelHours": "168"
+  }
 }
 
 200 OK
@@ -225,7 +204,6 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
-  "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
   "type": "DEFAULT"
 }

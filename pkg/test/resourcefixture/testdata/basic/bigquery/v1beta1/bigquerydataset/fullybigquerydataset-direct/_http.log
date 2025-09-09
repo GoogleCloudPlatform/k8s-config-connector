@@ -557,7 +557,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "userByEmail": "user@google.com"
     }
   ],
-  "defaultCollation": "und:ci",
   "defaultEncryptionConfiguration": {
     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
@@ -570,8 +569,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "maxTimeTravelHours": "96",
-  "storageBillingModel": "LOGICAL"
+  "maxTimeTravelHours": "96"
 }
 
 200 OK

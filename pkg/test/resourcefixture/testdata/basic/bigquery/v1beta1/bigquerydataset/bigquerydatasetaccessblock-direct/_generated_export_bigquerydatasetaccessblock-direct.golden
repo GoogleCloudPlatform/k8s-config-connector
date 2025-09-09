@@ -9,12 +9,14 @@ metadata:
   name: bigquerydataset${uniqueId}
 spec:
   access:
-  - domain: google.com
-    role: READER
-  - iamMember: allUsers
-    role: READER
   - role: OWNER
     specialGroup: projectOwners
+  - role: OWNER
+    userByEmail: user@google.com
+  - role: READER
+    specialGroup: projectReaders
+  - role: WRITER
+    specialGroup: projectWriters
   defaultTableExpirationMs: 7200000
   description: BigQuery Dataset With Access Block v2 Updated
   friendlyName: bigquerydataset-accessblock

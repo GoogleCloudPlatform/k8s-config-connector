@@ -57,8 +57,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "location": "US",
-  "maxTimeTravelHours": "168"
+  "location": "US"
 }
 
 200 OK
@@ -103,7 +102,6 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "US",
-  "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
   "type": "DEFAULT"
 }
@@ -167,28 +165,12 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "access": [
-    {
-      "domain": "google.com",
-      "role": "READER"
-    },
-    {
-      "iamMember": "allUsers",
-      "role": "READER"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    }
-  ],
   "defaultTableExpirationMs": "7200000",
   "description": "BigQuery Dataset With Access Block v2 Updated",
-  "friendlyName": "bigquerydataset-accessblock",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
-  },
-  "maxTimeTravelHours": "168"
+  }
 }
 
 200 OK
@@ -204,16 +186,20 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "domain": "google.com",
-      "role": "READER"
-    },
-    {
-      "iamMember": "allUsers",
-      "role": "READER"
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",
-      "specialGroup": "projectOwners"
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",
@@ -233,7 +219,6 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "US",
-  "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
   "type": "DEFAULT"
 }
@@ -257,16 +242,20 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "domain": "google.com",
-      "role": "READER"
-    },
-    {
-      "iamMember": "allUsers",
-      "role": "READER"
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",
-      "specialGroup": "projectOwners"
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",
@@ -309,16 +298,20 @@ X-Xss-Protection: 0
 {
   "access": [
     {
-      "domain": "google.com",
-      "role": "READER"
-    },
-    {
-      "iamMember": "allUsers",
-      "role": "READER"
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",
-      "specialGroup": "projectOwners"
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",

@@ -171,8 +171,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "location": "US",
-  "maxTimeTravelHours": "168"
+  "location": "US"
 }
 
 200 OK
@@ -221,7 +220,6 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "US",
-  "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/foldersink${uniqueId}",
   "type": "DEFAULT"
 }

@@ -16,6 +16,18 @@ X-Xss-Protection: 0
     {
       "role": "OWNER",
       "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
     }
   ],
   "creationTime": "123456789",
@@ -40,7 +52,7 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "US",
-  "maxTimeTravelHours": "72",
+  "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
   "type": "DEFAULT"
 }
@@ -58,15 +70,11 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "specialGroup": "projectOwners"
     }
   ],
-  "defaultCollation": "und:ci",
   "defaultEncryptionConfiguration": {
     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
-  "defaultPartitionExpirationMs": "3600000",
-  "defaultTableExpirationMs": "3600000",
   "description": "Fully Configured BigQuery Dataset set",
   "friendlyName": "bigquerydataset",
-  "isCaseInsensitive": true,
   "labels": {
     "managed-by-cnrm": "true"
   },
