@@ -6,6 +6,12 @@ metadata:
   - cnrm.cloud.google.com/deletion-defender
   generation: 2
   labels:
+    cnrm-test: "true"
+  name: apigatewayapi-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: Initial displayName
+  labels:
     app.kubernetes.io/component: mock-component
     app.kubernetes.io/instance: mock-instance
     app.kubernetes.io/managed-by: configmanagement.gke.io
@@ -13,14 +19,9 @@ metadata:
     app.kubernetes.io/part-of: mock-part-of
     app.kubernetes.io/version: v1.0.0
     applyset.kubernetes.io/id: mock-applyset-id
-    cnrm-test: "true"
     configmanagement.gke.io/sync-name: mock-sync-name
     configmanagement.gke.io/sync-namespace: mock-sync-namespace
     custom-label: bar
-  name: apigatewayapi-minimal-${uniqueId}
-  namespace: ${uniqueId}
-spec:
-  displayName: Updated displayName
   projectRef:
     external: ${projectId}
 status:

@@ -5,9 +5,8 @@ metadata:
     cnrm.cloud.google.com/project-id: ${projectId}
   labels:
     cnrm-test: "true"
+    custom-label: bar
     managed-by-cnrm: "true"
-    metadata-key1: updated-value1
-    metadata-key2: updated-value2
   name: bigquerytable-${uniqueId}
 spec:
   clustering:

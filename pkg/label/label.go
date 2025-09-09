@@ -15,48 +15,53 @@
 package label
 
 import (
-	"fmt"
-	"strings"
-
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"unicode"
+	"unicode/utf8"
 )
 
-// This function should be called if the typed object has `spec.labels` field.
-func ComputeLabels(u *unstructured.Unstructured) error {
-	var newLabels map[string]string
-	specLabels, found, err := unstructured.NestedStringMap(u.Object, "spec", "labels")
-	if err != nil {
-		return fmt.Errorf("retrieve %s: %s `spec.labels` field: %w", u.GroupVersionKind().Kind, u.GetName(), err)
-	}
-	if specLabels != nil {
-		newLabels = specLabels
-	} else if found {
-		newLabels = map[string]string{}
-	} else {
-		newLabels = removeLabelsWithKRMPrefix(u.GetLabels())
-	}
-	newLabels[CnrmManagedKey] = "true"
-	return unstructured.SetNestedStringMap(u.Object, newLabels, "spec", "labels")
-}
-
 func NewGCPLabelsFromK8sLabels(labels map[string]string) map[string]string {
-	res := removeLabelsWithKRMPrefix(labels)
-	// Apply default label.
-	res[CnrmManagedKey] = "true"
+	res := SanitizeGCPLabels(labels)
 	return res
 }
 
-func removeLabelsWithKRMPrefix(labels map[string]string) map[string]string {
+// Sanitize labels with GCP label validation
+func SanitizeGCPLabels(labels map[string]string) map[string]string {
 	res := make(map[string]string)
+keyLoop:
 	for k, v := range labels {
-		if len(strings.Split(k, "/")) == 2 {
-			// Do not include any KRM-style labels (labels that include a prefix
-			// denoted with a '/').
-			// TODO(b/137755194): Determine long-term solution.
+		// GCP labels have strict validation rules. This function filters out any
+		// labels from Kubernetes metadata that do not conform to these rules,
+		// preventing them from being propagated to GCP.
+		// See: https://cloud.google.com/compute/docs/labeling-resources#requirements
+
+		// Key validation: 1-63 characters, lowercase letters, digits, underscores, hyphens. Must start with a letter.
+		if utf8.RuneCountInString(k) < 1 || utf8.RuneCountInString(k) > 63 {
 			continue
 		}
+		firstRune, _ := utf8.DecodeRuneInString(k)
+		if !unicode.IsLower(firstRune) {
+			continue
+		}
+		for _, r := range k {
+			if !(unicode.IsLower(r) || unicode.IsDigit(r) || r == '_' || r == '-') {
+				continue keyLoop
+			}
+		}
+
+		// Value validation: 0-63 characters, lowercase letters, digits, underscores, hyphens.
+		if utf8.RuneCountInString(v) > 63 {
+			continue
+		}
+		for _, r := range v {
+			if !(unicode.IsLower(r) || unicode.IsDigit(r) || r == '_' || r == '-') {
+				continue keyLoop
+			}
+		}
+
 		res[k] = v
 	}
+	// Add the managed-by label to indicate that this resource is managed by KCC.
+	res[CnrmManagedKey] = "true"
 	return res
 }
 

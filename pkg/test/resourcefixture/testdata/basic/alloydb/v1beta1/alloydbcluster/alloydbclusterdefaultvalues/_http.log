@@ -166,6 +166,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
   },
   "labels": {
     "cnrm-test": "true",
+    "custom-label": "foo",
     "managed-by-cnrm": "true"
   },
   "networkConfig": {
@@ -282,6 +283,7 @@ X-Xss-Protection: 0
     "geminiConfig": {},
     "labels": {
       "cnrm-test": "true",
+      "custom-label": "foo",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
@@ -370,6 +372,7 @@ X-Xss-Protection: 0
   "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
+    "custom-label": "foo",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
@@ -386,7 +389,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy%2Clabels
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-west2%2Fclusters%2Falloydbcluster-${uniqueId}
@@ -428,6 +431,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-wes
   "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
+    "custom-label": "bar",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
@@ -548,6 +552,7 @@ X-Xss-Protection: 0
     "geminiConfig": {},
     "labels": {
       "cnrm-test": "true",
+      "custom-label": "bar",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",
@@ -636,6 +641,7 @@ X-Xss-Protection: 0
   "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
+    "custom-label": "bar",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}",

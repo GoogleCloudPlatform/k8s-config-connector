@@ -16,6 +16,10 @@ apiVersion: apigateway.cnrm.cloud.google.com/v1beta1
 kind: APIGatewayAPI
 metadata:
   name: apigatewayapi-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  displayName: "Initial displayName"
   labels:
     app.kubernetes.io/name: "mock-app"
     app.kubernetes.io/instance: "mock-instance"
@@ -26,8 +30,5 @@ metadata:
     applyset.kubernetes.io/id: mock-applyset-id
     configmanagement.gke.io/sync-name: mock-sync-name
     configmanagement.gke.io/sync-namespace: mock-sync-namespace
-    custom-label: "foo" # valid label
-spec:
-  projectRef:
-    external: ${projectId}
-  displayName: "Initial displayName"
+    custom-label: "bar" # valid label
+

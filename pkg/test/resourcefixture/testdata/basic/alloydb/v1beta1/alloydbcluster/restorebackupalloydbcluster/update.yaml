@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: apigateway.cnrm.cloud.google.com/v1beta1
-kind: APIGatewayAPI
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBCluster
 metadata:
-  name: apigatewayapi-minimal-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/state-into-spec: absent
+    alpha.cnrm.cloud.google.com/reconciler: direct
   labels:
     app.kubernetes.io/name: "mock-app"
     app.kubernetes.io/instance: "mock-instance"
@@ -26,8 +28,15 @@ metadata:
     applyset.kubernetes.io/id: mock-applyset-id
     configmanagement.gke.io/sync-name: mock-sync-name
     configmanagement.gke.io/sync-namespace: mock-sync-namespace
-    custom-label: "foo" # valid label
+    custom-label: "bar" # valid label
+  name: restored-alloydbcluster-${uniqueId}
 spec:
+  location: europe-west4
+  networkConfig:
+    networkRef: 
+      name: computenetwork-${uniqueId}
   projectRef:
     external: ${projectId}
-  displayName: "Initial displayName"
+  restoreBackupSource:
+    backupNameRef:
+      name: alloydbbackup-${uniqueId}

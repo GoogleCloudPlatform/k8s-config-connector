@@ -26,7 +26,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	gcp "cloud.google.com/go/spanner/admin/instance/apiv1"
 
@@ -78,15 +77,11 @@ type modelSpannerInstance struct {
 
 func (m *modelSpannerInstance) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.SpannerInstance{}
-	copied := u.DeepCopy()
-	if err := label.ComputeLabels(copied); err != nil {
-		return nil, err
-	}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(copied.Object, &obj); err != nil {
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewSpannerInstanceIdentity(ctx, reader, obj, copied)
+	id, err := krm.NewSpannerInstanceIdentity(ctx, reader, obj, u)
 	if err != nil {
 		return nil, err
 	}
@@ -112,6 +107,7 @@ func (m *modelSpannerInstance) AdapterForObject(ctx context.Context, reader clie
 		id:        id,
 		gcpClient: instanceClient,
 		desired:   obj,
+		u:         u,
 	}, nil
 }
 
@@ -125,6 +121,7 @@ type SpannerInstanceAdapter struct {
 	gcpClient *gcp.InstanceAdminClient
 	desired   *krm.SpannerInstance
 	actual    *spannerpb.Instance
+	u         *unstructured.Unstructured
 }
 
 var _ directbase.Adapter = &SpannerInstanceAdapter{}
@@ -156,7 +153,7 @@ func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbas
 		return err
 	}
 	resource := SpannerInstanceSpec_ToProto(mapCtx, &desired.Spec, a.id.SpannerInstanceConfigPrefix())
-
+	resource.Labels = common.Labels_ToProto(mapCtx, a.u)
 	// If node count or processing unit and auto-scaling config is not specify,
 	// Default NodeCount to 1.
 	if resource.NodeCount == 0 && resource.ProcessingUnits == 0 && resource.AutoscalingConfig == nil {
@@ -202,11 +199,15 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 		return err
 	}
 	desired := a.desired.DeepCopy()
-	resource := SpannerInstanceSpec_ToProto(mapCtx, &desired.Spec, a.id.SpannerInstanceConfigPrefix())
-	resource.Name = a.id.String()
-	if resource.Labels == nil {
-		resource.Labels = make(map[string]string)
+	resource := SpannerInstanceSpec_ToProto(mapCtx, &a.desired.Spec, a.id.SpannerInstanceConfigPrefix())
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
 	}
+	resource.Labels = common.Labels_ToProto(mapCtx, a.u)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	resource.Name = a.id.String()
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
