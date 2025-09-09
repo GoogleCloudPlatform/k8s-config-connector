@@ -64,14 +64,12 @@ type AlloyDBClusterSpec struct {
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
-	/* NOTYET
 	// Optional. The database engine major version. This is an optional field and
 	//  it is populated at the Cluster creation time. If a database version is not
 	//  supplied at cluster creation time, then a default database version will
 	//  be used.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.database_version
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`
-	*/
 
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.network_config
 	NetworkConfig *Cluster_NetworkConfig `json:"networkConfig,omitempty"`
@@ -420,6 +418,12 @@ type AlloyDBClusterObservedState struct {
 	//  the cluster (i.e. `CreateCluster` vs. `CreateSecondaryCluster`
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.cluster_type
 	ClusterType *string `json:"clusterType,omitempty"`
+
+	// The database engine major version. This is an output-only
+	// field and it's populated at the Cluster creation time. This field
+	// cannot be changed after cluster creation.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.database_version
+	DatabaseVersion *string `json:"databaseVersion,omitempty"`
 }
 
 /*

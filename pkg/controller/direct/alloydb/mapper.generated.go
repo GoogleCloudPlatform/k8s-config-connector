@@ -42,7 +42,7 @@ func AlloyDBClusterObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Clu
 	// MISSING: Labels
 	// MISSING: State
 	out.ClusterType = direct.Enum_FromProto(mapCtx, in.GetClusterType())
-	// MISSING: DatabaseVersion
+	out.DatabaseVersion = direct.Enum_FromProto(mapCtx, in.GetDatabaseVersion())
 	// MISSING: Etag
 	// MISSING: Annotations
 	// MISSING: Reconciling
@@ -75,7 +75,7 @@ func AlloyDBClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1bet
 	// MISSING: Labels
 	// MISSING: State
 	out.ClusterType = direct.Enum_ToProto[pb.Cluster_ClusterType](mapCtx, in.ClusterType)
-	// MISSING: DatabaseVersion
+	out.DatabaseVersion = direct.Enum_ToProto[pb.DatabaseVersion](mapCtx, in.DatabaseVersion)
 	// MISSING: Etag
 	// MISSING: Annotations
 	// MISSING: Reconciling
@@ -109,7 +109,7 @@ func AlloyDBClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *kr
 	// MISSING: Labels
 	// MISSING: State
 	out.ClusterType = direct.Enum_FromProto(mapCtx, in.GetClusterType())
-	// MISSING: DatabaseVersion
+	out.DatabaseVersion = direct.Enum_FromProto(mapCtx, in.GetDatabaseVersion())
 	out.NetworkConfig = Cluster_NetworkConfig_FromProto(mapCtx, in.GetNetworkConfig())
 	if in.GetNetwork() != "" {
 		out.NetworkRef = &refs.ComputeNetworkRef{External: in.GetNetwork()}
@@ -153,7 +153,7 @@ func AlloyDBClusterSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.AlloyD
 	// MISSING: Labels
 	// MISSING: State
 	out.ClusterType = direct.Enum_ToProto[pb.Cluster_ClusterType](mapCtx, in.ClusterType)
-	// MISSING: DatabaseVersion
+	out.DatabaseVersion = direct.Enum_ToProto[pb.DatabaseVersion](mapCtx, in.DatabaseVersion)
 	out.NetworkConfig = Cluster_NetworkConfig_ToProto(mapCtx, in.NetworkConfig)
 	if in.NetworkRef != nil {
 		out.Network = in.NetworkRef.External
