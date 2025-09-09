@@ -369,7 +369,7 @@
 | pubsublite.cnrm.cloud.google.com              | PubSubLiteSubscription                          | True         | False       | False  | Terraform  |
 | pubsublite.cnrm.cloud.google.com              | PubSubLiteTopic                                 | True         | False       | False  | Terraform  |
 | pubsub.cnrm.cloud.google.com                  | PubSubSchema                                    | False        | True        | False  | Terraform  |
-| pubsub.cnrm.cloud.google.com                  | PubSubSnapshot                                  | True         | False       | False  | Direct     |
+| pubsub.cnrm.cloud.google.com                  | PubSubSnapshot                                  | True         | True        | False  | Direct     |
 | pubsub.cnrm.cloud.google.com                  | PubSubSubscription                              | False        | True        | False  | Terraform  |
 | pubsub.cnrm.cloud.google.com                  | PubSubTopic                                     | False        | True        | False  | Terraform  |
 | recaptchaenterprise.cnrm.cloud.google.com     | ReCAPTCHAEnterpriseFirewallPolicy               | True         | False       | False  | Direct     |

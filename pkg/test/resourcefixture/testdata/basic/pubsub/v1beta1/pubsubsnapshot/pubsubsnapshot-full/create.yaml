@@ -1,4 +1,4 @@
-apiVersion: pubsub.cnrm.cloud.google.com/v1alpha1
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
 kind: PubSubSnapshot
 metadata:
   name: pubsubsnapshot-full-${uniqueId}
@@ -9,5 +9,6 @@ spec:
     name: pubsubsnapshot-dep-${uniqueId}
   pubSubSubscriptionRef:
     name: pubsubsnapshot-dep-${uniqueId}
+  expireTime: "2025-08-22T23:20:50.52Z"
   labels:
-    key: new-value
+    key: value
