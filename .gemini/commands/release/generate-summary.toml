@@ -1,0 +1,11 @@
+# In: ~/.gemini/commands/release/generate-summary.toml
+# Invoked via: /release:generate-summary
+# Gemini custom command docs can be found at https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/commands.md#toml-file-format-v1
+
+
+description = "Generates a release summary."
+
+
+prompt = """
+Follow instructsions @.gemini/commands/release/generate-summary.json
+"""
