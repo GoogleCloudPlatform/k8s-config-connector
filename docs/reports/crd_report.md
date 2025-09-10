@@ -28,7 +28,7 @@
 | apigee.cnrm.cloud.google.com                  | ApigeeSyncAuthorization                         | True         | False       | False  | Terraform  |
 | apikeys.cnrm.cloud.google.com                 | APIKeysKey                                      | True         | False       | False  | Terraform  |
 | cloudquota.cnrm.cloud.google.com              | APIQuotaAdjusterSettings                        | True         | True        | False  | Direct     |
-| cloudquota.cnrm.cloud.google.com              | APIQuotaPreference                              | True         | False       | False  | Direct     |
+| cloudquota.cnrm.cloud.google.com              | APIQuotaPreference                              | False        | True        | False  | Direct     |
 | appengine.cnrm.cloud.google.com               | AppEngineDomainMapping                          | True         | False       | False  | Terraform  |
 | appengine.cnrm.cloud.google.com               | AppEngineFirewallRule                           | True         | False       | False  | Terraform  |
 | appengine.cnrm.cloud.google.com               | AppEngineFlexibleAppVersion                     | True         | False       | False  | Terraform  |
