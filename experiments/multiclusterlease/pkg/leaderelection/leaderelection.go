@@ -68,13 +68,22 @@ func (le *LeaderElector) AcquireOrRenew(ctx context.Context, lease *v1alpha1.Mul
 		return &LeaseInfo{Acquired: false}, fmt.Errorf("candidate has no renew time")
 	}
 
-	/*
-		// TODO: Make the staleness check configurable
-		if time.Since(lease.Spec.RenewTime.Time) > 40*time.Second {
-			log.Info("candidate lease is stale")
-			return &LeaseInfo{Acquired: false}, fmt.Errorf("candidate lease is stale")
+	// TODO: Make the staleness check configurable
+	if time.Since(lease.Spec.RenewTime.Time) > 15*time.Second {
+		log.Info("candidate lease is stale")
+
+		// still need to return latest lease data
+		data, err := le.readLease(ctx)
+		if err != nil {
+			return nil, fmt.Errorf("failed to read lease: %w", err)
 		}
-	*/
+		return &LeaseInfo{
+			Acquired:         false,
+			HolderIdentity:   &data.HolderIdentity,
+			RenewTime:        &data.RenewTime,
+			LeaseTransitions: &data.LeaseTransitions,
+		}, fmt.Errorf("candidate lease is stale")
+	}
 
 	// 1. Try to read the existing lease from GCS.
 	log.Info("reading lease from GCS")

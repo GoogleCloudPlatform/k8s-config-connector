@@ -119,6 +119,7 @@ func (r *MultiClusterLeaseReconciler) Reconcile(ctx context.Context, req ctrl.Re
 		r.setBackendHealthyCondition(&mcl, false, err)
 
 		// Update status
+		r.setMCLStatus(&mcl, leaseInfo)
 		if updateErr := r.Status().Update(ctx, &mcl); updateErr != nil {
 			log.Error(updateErr, "failed to update status with backend error")
 			return ctrl.Result{}, updateErr
