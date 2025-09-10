@@ -19,7 +19,7 @@
 package pubsub
 
 import (
-	pb "cloud.google.com/go/pubsub/apiv1/pubsubpb"
+	pb "cloud.google.com/go/pubsub/v2/apiv1/pubsubpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
@@ -36,7 +36,7 @@ func pubSubSnapshotFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".labels")
 	f.StatusFields.Insert(".expire_time")
 
-	f.UnimplementedFields.Insert(".name") // special field
+	f.Unimplemented_Internal(".name") // special field
 
 	return f
 }

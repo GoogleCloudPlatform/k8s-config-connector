@@ -16,8 +16,6 @@
 // proto.service: google.cloud.vmwareengine.v1.VmwareEngine
 // proto.message: google.cloud.vmwareengine.v1.ExternalAddress
 // crd.type: VMwareEngineExternalAddress
-// crd.version: v1alpha1
-
 package vmwareengine
 
 import (
@@ -33,7 +31,7 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vmwareengine/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vmwareengine/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -207,7 +205,7 @@ func (a *externalAddressAdapter) Export(ctx context.Context) (*unstructured.Unst
 
 	obj := &krm.VMwareEngineExternalAddress{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(VMwareEngineExternalAddressSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = *VMwareEngineExternalAddressSpec_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

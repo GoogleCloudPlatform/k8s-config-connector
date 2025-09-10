@@ -147,6 +147,7 @@ func WaitForUnstructDeleteToFinish(t *testing.T, kubeClient client.Client, origU
 func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project testgcp.GCPProject) []byte {
 	s := string(b)
 	s = strings.Replace(s, "${uniqueId}", uniqueID, -1)
+	s = strings.Replace(s, "${futureTimestamp}", "2035-01-01T10:00:00Z", -1)
 	s = strings.Replace(s, "${projectId}", project.ProjectID, -1)
 	if strings.Contains(s, "${projectNumber}") {
 		projectNumber := strconv.FormatInt(project.ProjectNumber, 10)

@@ -29,12 +29,10 @@ go run . generate-types \
     --resource VMwareEngineNetworkPolicy:NetworkPolicy \
     --resource VMwareEngineExternalAccessRule:ExternalAccessRule \
     --resource VMwareEnginePrivateCloud:PrivateCloud \
-    --resource VMwareEngineExternalAddress:ExternalAddress
 
 go run . generate-mapper \
     --service google.cloud.vmwareengine.v1 \
     --api-version vmwareengine.cnrm.cloud.google.com/v1alpha1
-
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

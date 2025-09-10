@@ -34,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	"golang.org/x/sync/semaphore"
@@ -69,7 +70,7 @@ func AddController(mgr manager.Manager, gvk schema.GroupVersionKind, model Model
 	if err != nil {
 		return err
 	}
-	return add(mgr, reconciler, deps.ReconcilePredicate)
+	return add(mgr, reconciler)
 }
 
 // NewReconciler returns a new reconcile.Reconciler.
@@ -98,23 +99,19 @@ func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.Ge
 		ReconcilerMetrics: metrics.ReconcilerMetrics{
 			ResourceNameLabel: metrics.ResourceNameLabel,
 		},
-		jitterGenerator:    deps.JitterGenerator,
-		defaulters:         deps.Defaulters,
-		iamDeps:            deps.IAMAdapterDeps,
-		reconcilePredicate: deps.ReconcilePredicate,
+		jitterGenerator: deps.JitterGenerator,
+		defaulters:      deps.Defaulters,
+		iamDeps:         deps.IAMAdapterDeps,
 	}
 	return &r, nil
 }
 
 // add adds a new Controller to mgr with r as the reconcile.Reconciler.
-func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.Predicate) error {
+func add(mgr manager.Manager, r *DirectReconciler) error {
 	obj := &unstructured.Unstructured{}
 	obj.SetGroupVersionKind(r.gvk)
 
 	predicateList := []predicate.Predicate{kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
-	if reconcilePredicate != nil {
-		predicateList = append(predicateList, reconcilePredicate)
-	}
 
 	controllerBuilder := builder.
 		ControllerManagedBy(mgr).
@@ -159,9 +156,8 @@ var _ reconcile.Reconciler = &DirectReconciler{}
 
 // Reconciler dependencies.
 type Deps struct {
-	Defaulters         []k8s.Defaulter
-	JitterGenerator    jitter.Generator
-	ReconcilePredicate predicate.Predicate
+	Defaulters      []k8s.Defaulter
+	JitterGenerator jitter.Generator
 
 	// There are Dependencies for Adapters in particular (not the reconcilers)
 	IAMAdapterDeps *IAMAdapterDeps
@@ -242,21 +238,13 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 		return reconcile.Result{}, err
 	}
 
-	if r.reconcilePredicate != nil {
-		// We always simulate a Create event (we don't want to check update predicates, and we don't have the previous version anyway)
-		ev := event.TypedCreateEvent[client.Object]{Object: obj}
-		if !r.reconcilePredicate.Create(ev) {
-			logger.Info("skipping direct reconciliation; reconcileGate does not match object", "namespace", request.Namespace, "name", request.Name)
-			// Do not schedule periodic re-reconciliation
-			return reconcile.Result{}, nil
-		}
-	}
-
 	runCtx := &reconcileContext{
 		Reconciler:     r,
 		gvk:            r.gvk,
 		NamespacedName: request.NamespacedName,
 	}
+	structuredreporting.ReportReconcileStart(ctx, obj)
+	defer structuredreporting.ReportReconcileEnd(ctx, obj, result, err)
 
 	skip, err := resourceactuation.ShouldSkip(obj)
 	if err != nil {

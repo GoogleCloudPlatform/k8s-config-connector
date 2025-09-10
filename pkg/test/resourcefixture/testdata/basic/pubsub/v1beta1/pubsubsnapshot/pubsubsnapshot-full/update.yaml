@@ -1,0 +1,13 @@
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSnapshot
+metadata:
+  name: pubsubsnapshot-full-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  topicRef:
+    name: pubsubsnapshot-dep-${uniqueId}
+  pubSubSubscriptionRef:
+    name: pubsubsnapshot-dep-${uniqueId}
+  labels:
+    key: new-value

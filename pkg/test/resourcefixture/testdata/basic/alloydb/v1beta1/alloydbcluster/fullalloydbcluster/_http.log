@@ -968,7 +968,7 @@ X-Xss-Protection: 0
       ]
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_15",
+    "databaseVersion": "POSTGRES_16",
     "encryptionConfig": {
       "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}"
     },
@@ -1073,7 +1073,7 @@ X-Xss-Protection: 0
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 3,
+  "databaseVersion": 4,
   "encryptionConfig": {
     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}"
   },
@@ -1156,7 +1156,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
     },
     "recoveryWindowDays": 7
   },
-  "databaseVersion": 3,
+  "databaseVersion": 4,
   "displayName": "A test alloyDB cluster with updated display name",
   "encryptionConfig": {
     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}"
@@ -1300,7 +1300,7 @@ X-Xss-Protection: 0
       ]
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_15",
+    "databaseVersion": "POSTGRES_16",
     "encryptionConfig": {
       "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}"
     },
@@ -1410,7 +1410,7 @@ X-Xss-Protection: 0
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": 3,
+  "databaseVersion": 4,
   "encryptionConfig": {
     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}"
   },

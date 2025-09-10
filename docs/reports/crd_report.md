@@ -369,7 +369,7 @@
 | pubsublite.cnrm.cloud.google.com              | PubSubLiteSubscription                          | True         | False       | False  | Terraform  |
 | pubsublite.cnrm.cloud.google.com              | PubSubLiteTopic                                 | True         | False       | False  | Terraform  |
 | pubsub.cnrm.cloud.google.com                  | PubSubSchema                                    | False        | True        | False  | Terraform  |
-| pubsub.cnrm.cloud.google.com                  | PubSubSnapshot                                  | True         | False       | False  | Direct     |
+| pubsub.cnrm.cloud.google.com                  | PubSubSnapshot                                  | True         | True        | False  | Direct     |
 | pubsub.cnrm.cloud.google.com                  | PubSubSubscription                              | False        | True        | False  | Terraform  |
 | pubsub.cnrm.cloud.google.com                  | PubSubTopic                                     | False        | True        | False  | Terraform  |
 | recaptchaenterprise.cnrm.cloud.google.com     | ReCAPTCHAEnterpriseFirewallPolicy               | True         | False       | False  | Direct     |
@@ -433,7 +433,7 @@
 | vertexai.cnrm.cloud.google.com                | VertexAIMetadataStore                           | True         | True        | False  | Direct     |
 | vertexai.cnrm.cloud.google.com                | VertexAITensorboard                             | True         | False       | False  | Terraform  |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineExternalAccessRule                  | True         | False       | False  | Direct     |
-| vmwareengine.cnrm.cloud.google.com            | VMwareEngineExternalAddress                     | True         | False       | False  | Direct     |
+| vmwareengine.cnrm.cloud.google.com            | VMwareEngineExternalAddress                     | True         | True        | False  | Direct     |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineNetworkPeering                      | True         | False       | False  | Direct     |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineNetworkPolicy                       | True         | False       | False  | Direct     |
 | vmwareengine.cnrm.cloud.google.com            | VMwareEngineNetwork                             | True         | False       | False  | Direct     |

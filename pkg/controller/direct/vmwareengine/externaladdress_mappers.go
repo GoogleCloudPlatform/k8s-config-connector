@@ -16,16 +16,15 @@ package vmwareengine
 
 import (
 	pb "cloud.google.com/go/vmwareengine/apiv1/vmwareenginepb"
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vmwareengine/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vmwareengine/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func VMwareEngineExternalAddressObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExternalAddress) *krmv1alpha1.VMwareEngineExternalAddressObservedState {
+func VMwareEngineExternalAddressObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExternalAddress) *krm.VMwareEngineExternalAddressObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.VMwareEngineExternalAddressObservedState{}
-	// MISSING: Name
+	out := &krm.VMwareEngineExternalAddressObservedState{}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.ExternalIP = direct.LazyPtr(in.GetExternalIp())
@@ -33,7 +32,7 @@ func VMwareEngineExternalAddressObservedState_FromProto(mapCtx *direct.MapContex
 	out.UID = direct.LazyPtr(in.GetUid())
 	return out
 }
-func VMwareEngineExternalAddressObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.VMwareEngineExternalAddressObservedState) *pb.ExternalAddress {
+func VMwareEngineExternalAddressObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VMwareEngineExternalAddressObservedState) *pb.ExternalAddress {
 	if in == nil {
 		return nil
 	}

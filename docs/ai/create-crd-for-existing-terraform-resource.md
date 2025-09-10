@@ -2,9 +2,9 @@
 
 As part of moving resources from terraform controllers to direct controllers, we want to create a normal CRD using the controller-runtime framework.
 
-These CRDs are defined with go types under apis/<service>/v1beta1/<kind>_types.go
+These direct CRDs are defined with go types under apis/<service>/v1beta1/<kind>_types.go
 
-When we initially create the CRD, we want to make sure that we do not change the schema, for compatability and so we can roll back.  Ideally the generated CRD (under `config/crds` would be identical).
+When we initially create the direct CRD, we want to make sure that we keep the same schema as the old Terraform CRD, for compatability and so we can roll back.  Ideally the generated CRD (under `config/crds`) does not change.
 We accept some changes, more details below.
 
 As with all CRD creation, we want to create reviewable PR that has tests.  So we want to send a PR with a CRD, Mapper and Fuzz-test.

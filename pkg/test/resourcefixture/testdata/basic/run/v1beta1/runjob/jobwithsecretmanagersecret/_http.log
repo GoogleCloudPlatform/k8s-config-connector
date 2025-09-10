@@ -1,6 +1,6 @@
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -19,188 +19,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.reader"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.repoAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sandbox-clouddeploy.iam.gserviceaccount.com"
-      ],
-      "role": "roles/clouddeploy.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectId}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-      ],
-      "role": "roles/compute.networkViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-computescanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/computescanning.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.nodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerscanning.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com",
-        "user:mmaly@google.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:gkehub-codelab@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-gkehub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com"
-      ],
-      "role": "roles/krmapihosting.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-multiclusteringress.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusteringress.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-mcmetering.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcsd.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusterservicediscovery.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "etag": "abcdef0123A="
 }
 
 ---
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -219,188 +45,14 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.reader"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.repoAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sandbox-clouddeploy.iam.gserviceaccount.com"
-      ],
-      "role": "roles/clouddeploy.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectId}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-      ],
-      "role": "roles/compute.networkViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-computescanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/computescanning.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.nodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerscanning.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com",
-        "user:mmaly@google.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:gkehub-codelab@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-gkehub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com"
-      ],
-      "role": "roles/krmapihosting.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-multiclusteringress.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusteringress.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-mcmetering.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcsd.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusterservicediscovery.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "etag": "abcdef0123A="
 }
 
 ---
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -419,368 +71,23 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.reader"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.repoAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sandbox-clouddeploy.iam.gserviceaccount.com"
-      ],
-      "role": "roles/clouddeploy.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectId}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-      ],
-      "role": "roles/compute.networkViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-computescanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/computescanning.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.nodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerscanning.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com",
-        "user:mmaly@google.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:gkehub-codelab@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-gkehub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com"
-      ],
-      "role": "roles/krmapihosting.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-multiclusteringress.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusteringress.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-mcmetering.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcsd.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusterservicediscovery.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
+  "etag": "abcdef0123A="
 }
 
 ---
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "policy": {
     "bindings": [
       {
         "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-        ],
-        "role": "roles/anthosconfigmanagement.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com"
-        ],
-        "role": "roles/artifactregistry.reader"
-      },
-      {
-        "members": [
-          "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com"
-        ],
-        "role": "roles/artifactregistry.repoAdmin"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-        ],
-        "role": "roles/artifactregistry.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-        ],
-        "role": "roles/cloudbuild.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-sandbox-clouddeploy.iam.gserviceaccount.com"
-        ],
-        "role": "roles/clouddeploy.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:${projectId}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-        ],
-        "role": "roles/compute.networkViewer"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-        ],
-        "role": "roles/compute.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-computescanning.iam.gserviceaccount.com"
-        ],
-        "role": "roles/computescanning.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-        ],
-        "role": "roles/container.nodeServiceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-        ],
-        "role": "roles/container.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-        ],
-        "role": "roles/containeranalysis.ServiceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
-        ],
-        "role": "roles/containerscanning.ServiceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-          "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-          "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com",
-          "user:mmaly@google.com"
-        ],
-        "role": "roles/editor"
-      },
-      {
-        "members": [
-          "serviceAccount:gkehub-codelab@${projectId}.iam.gserviceaccount.com"
-        ],
-        "role": "roles/gkehub.admin"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-autopush-gkehub.iam.gserviceaccount.com",
-          "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-        ],
-        "role": "roles/gkehub.serviceAgent"
-      },
-      {
-        "members": [
-          "user:yuwenma@google.com"
-        ],
-        "role": "roles/iam.serviceAccountAdmin"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com"
-        ],
-        "role": "roles/krmapihosting.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-multiclusteringress.iam.gserviceaccount.com"
-        ],
-        "role": "roles/multiclusteringress.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-autopush-mcmetering.iam.gserviceaccount.com",
-          "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-        ],
-        "role": "roles/multiclustermetering.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-mcsd.iam.gserviceaccount.com"
-        ],
-        "role": "roles/multiclusterservicediscovery.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-        ],
-        "role": "roles/networkconnectivity.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-          "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com",
-          "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com",
-          "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
-          "user:yuwenma@google.com"
-        ],
-        "role": "roles/owner"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-        ],
-        "role": "roles/redis.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-        ],
-        "role": "roles/run.serviceAgent"
-      },
-      {
-        "members": [
           "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
         ],
         "role": "roles/secretmanager.secretAccessor"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-        ],
-        "role": "roles/servicenetworking.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-        ],
-        "role": "roles/sourcerepo.serviceAgent"
       }
     ],
     "etag": "abcdef0123A=",
@@ -803,180 +110,9 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.reader"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.repoAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sandbox-clouddeploy.iam.gserviceaccount.com"
-      ],
-      "role": "roles/clouddeploy.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectId}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-      ],
-      "role": "roles/compute.networkViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-computescanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/computescanning.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.nodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerscanning.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com",
-        "user:mmaly@google.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:gkehub-codelab@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-gkehub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com"
-      ],
-      "role": "roles/krmapihosting.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-multiclusteringress.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusteringress.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-mcmetering.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcsd.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusterservicediscovery.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
         "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
       ],
       "role": "roles/secretmanager.secretAccessor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -987,7 +123,7 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -1009,180 +145,9 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.reader"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.repoAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sandbox-clouddeploy.iam.gserviceaccount.com"
-      ],
-      "role": "roles/clouddeploy.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectId}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-      ],
-      "role": "roles/compute.networkViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-computescanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/computescanning.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.nodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerscanning.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com",
-        "user:mmaly@google.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:gkehub-codelab@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-gkehub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com"
-      ],
-      "role": "roles/krmapihosting.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-multiclusteringress.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusteringress.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-mcmetering.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcsd.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusterservicediscovery.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
         "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
       ],
       "role": "roles/secretmanager.secretAccessor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -1193,7 +158,7 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -1215,180 +180,9 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.reader"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.repoAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sandbox-clouddeploy.iam.gserviceaccount.com"
-      ],
-      "role": "roles/clouddeploy.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectId}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-      ],
-      "role": "roles/compute.networkViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-computescanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/computescanning.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.nodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerscanning.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com",
-        "user:mmaly@google.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:gkehub-codelab@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-gkehub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com"
-      ],
-      "role": "roles/krmapihosting.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-multiclusteringress.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusteringress.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-mcmetering.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcsd.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusterservicediscovery.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
         "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
       ],
       "role": "roles/secretmanager.secretAccessor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -1399,7 +193,7 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -1421,180 +215,9 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.reader"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.repoAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sandbox-clouddeploy.iam.gserviceaccount.com"
-      ],
-      "role": "roles/clouddeploy.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectId}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-      ],
-      "role": "roles/compute.networkViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-computescanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/computescanning.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.nodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerscanning.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com",
-        "user:mmaly@google.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:gkehub-codelab@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-gkehub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com"
-      ],
-      "role": "roles/krmapihosting.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-multiclusteringress.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusteringress.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-mcmetering.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcsd.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusterservicediscovery.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
         "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
       ],
       "role": "roles/secretmanager.secretAccessor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -1605,7 +228,7 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -1627,180 +250,9 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.reader"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.repoAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sandbox-clouddeploy.iam.gserviceaccount.com"
-      ],
-      "role": "roles/clouddeploy.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectId}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-      ],
-      "role": "roles/compute.networkViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-computescanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/computescanning.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.nodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerscanning.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com",
-        "user:mmaly@google.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:gkehub-codelab@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-gkehub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com"
-      ],
-      "role": "roles/krmapihosting.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-multiclusteringress.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusteringress.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-mcmetering.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcsd.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusterservicediscovery.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
         "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
       ],
       "role": "roles/secretmanager.secretAccessor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -1811,7 +263,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-1-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -1835,7 +287,7 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?alt=json&secretId=secretmanagersecret-1-${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -1874,7 +326,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-1-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1903,7 +355,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-2-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -1927,7 +379,7 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?alt=json&secretId=secretmanagersecret-2-${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -1966,7 +418,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-2-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1995,7 +447,7 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}:addVersion?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "payload": {
@@ -2027,7 +479,7 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1:enable?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2053,7 +505,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2079,7 +531,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1:access?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2103,7 +555,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2129,7 +581,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1:access?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2153,7 +605,7 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}:addVersion?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "payload": {
@@ -2185,7 +637,7 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1:enable?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2211,7 +663,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2237,7 +689,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1:access?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2261,7 +713,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2287,7 +739,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1:access?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2311,7 +763,7 @@ X-Xss-Protection: 0
 
 GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -2326,16 +778,16 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'runjob-${uniqueId}' of kind 'JOB' in region 'us-central1' in project '${projectId}' does not exist.",
+    "message": "job \"projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs?alt=json&jobId=runjob-${uniqueId}
+POST https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs?alt=json&jobId=${jobID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "launchStage": "GA",
@@ -2380,12 +832,13 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "etag": "\"CMLVs7cGEMC_hRo/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2ItZm81aG5wbjI3ZXN0NG5iMjc3cHE\"",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
     "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "reconciling": true,
     "template": {
       "taskCount": 1,
       "template": {
@@ -2422,9 +875,11 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "state": "CONDITION_PENDING"
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
     },
-    "updateTime": "2024-09-20T03:23:46.054616Z"
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
@@ -2433,7 +888,7 @@ X-Xss-Protection: 0
 
 GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2450,12 +905,13 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "etag": "\"CMLVs7cGEMC_hRo/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2ItZm81aG5wbjI3ZXN0NG5iMjc3cHE\"",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
     "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "1",
     "template": {
       "taskCount": 1,
       "template": {
@@ -2492,22 +948,23 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2024-09-20T03:23:46.470396Z",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
-    "updateTime": "2024-09-20T03:23:46.054616Z"
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "1",
     "template": {
       "taskCount": 1,
       "template": {
@@ -2544,7 +1001,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2024-09-20T03:23:46.470396Z",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -2557,7 +1014,7 @@ X-Xss-Protection: 0
 
 GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2571,12 +1028,13 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
   "etag": "abcdef0123A=",
   "generation": "1",
+  "lastModifier": "test@google.com",
   "latestCreatedExecution": {},
   "launchStage": "GA",
   "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-  "observedGeneration": "1",
   "template": {
     "taskCount": 1,
     "template": {
@@ -2613,7 +1071,7 @@ X-Xss-Protection: 0
     }
   },
   "terminalCondition": {
-    "lastTransitionTime": "2024-09-20T03:23:46.470396Z",
+    "lastTransitionTime": "2025-01-01T00:00:00Z",
     "state": "CONDITION_SUCCEEDED",
     "type": "Ready"
   },
@@ -2625,7 +1083,7 @@ X-Xss-Protection: 0
 
 PATCH https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "launchStage": "GA",
@@ -2680,13 +1138,13 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "etag": "\"CM3Vs7cGEOiyj4kD/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2ItZm81aG5wbjI3ZXN0NG5iMjc3cHE\"",
-    "generation": "2",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "1",
-    "reconciling": true,
     "template": {
       "taskCount": 1,
       "template": {
@@ -2694,14 +1152,14 @@ X-Xss-Protection: 0
           {
             "env": [
               {
-                "name": "Foo",
-                "value": "buzz"
+                "name": "FOO",
+                "value": "bar"
               },
               {
                 "name": "SECRET_ENV_VAR",
                 "valueSource": {
                   "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
+                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
                     "version": "1"
                   }
                 }
@@ -2723,11 +1181,11 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2024-09-20T03:23:46.470396Z",
-      "state": "CONDITION_PENDING",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
-    "updateTime": "2024-09-20T03:23:57.824433Z"
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
@@ -2736,7 +1194,7 @@ X-Xss-Protection: 0
 
 GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2753,12 +1211,13 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "etag": "\"CM3Vs7cGEOiyj4kD/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2ItZm81aG5wbjI3ZXN0NG5iMjc3cHE\"",
-    "generation": "2",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "2",
     "template": {
       "taskCount": 1,
       "template": {
@@ -2766,14 +1225,14 @@ X-Xss-Protection: 0
           {
             "env": [
               {
-                "name": "Foo",
-                "value": "buzz"
+                "name": "FOO",
+                "value": "bar"
               },
               {
                 "name": "SECRET_ENV_VAR",
                 "valueSource": {
                   "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
+                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
                     "version": "1"
                   }
                 }
@@ -2795,22 +1254,23 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2024-09-20T03:23:46.470396Z",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
-    "updateTime": "2024-09-20T03:23:57.824433Z"
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
-    "generation": "2",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "2",
     "template": {
       "taskCount": 1,
       "template": {
@@ -2818,14 +1278,14 @@ X-Xss-Protection: 0
           {
             "env": [
               {
-                "name": "Foo",
-                "value": "buzz"
+                "name": "FOO",
+                "value": "bar"
               },
               {
                 "name": "SECRET_ENV_VAR",
                 "valueSource": {
                   "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
+                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
                     "version": "1"
                   }
                 }
@@ -2847,7 +1307,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2024-09-20T03:23:46.470396Z",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -2860,7 +1320,7 @@ X-Xss-Protection: 0
 
 GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2874,12 +1334,13 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
   "etag": "abcdef0123A=",
-  "generation": "2",
+  "generation": "1",
+  "lastModifier": "test@google.com",
   "latestCreatedExecution": {},
   "launchStage": "GA",
   "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-  "observedGeneration": "2",
   "template": {
     "taskCount": 1,
     "template": {
@@ -2887,14 +1348,14 @@ X-Xss-Protection: 0
         {
           "env": [
             {
-              "name": "Foo",
-              "value": "buzz"
+              "name": "FOO",
+              "value": "bar"
             },
             {
               "name": "SECRET_ENV_VAR",
               "valueSource": {
                 "secretKeyRef": {
-                  "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
+                  "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
                   "version": "1"
                 }
               }
@@ -2916,7 +1377,7 @@ X-Xss-Protection: 0
     }
   },
   "terminalCondition": {
-    "lastTransitionTime": "2024-09-20T03:23:46.470396Z",
+    "lastTransitionTime": "2025-01-01T00:00:00Z",
     "state": "CONDITION_SUCCEEDED",
     "type": "Ready"
   },
@@ -2928,7 +1389,7 @@ X-Xss-Protection: 0
 
 DELETE https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2944,15 +1405,13 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "deleteTime": "2024-09-20T03:24:08.791634Z",
-    "etag": "\"CNjVs7cGENDAvfkC/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2ItZm81aG5wbjI3ZXN0NG5iMjc3cHE\"",
-    "expireTime": "2024-10-20T03:24:08.791634Z",
-    "generation": "3",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "2",
-    "reconciling": true,
     "template": {
       "taskCount": 1,
       "template": {
@@ -2960,14 +1419,14 @@ X-Xss-Protection: 0
           {
             "env": [
               {
-                "name": "Foo",
-                "value": "buzz"
+                "name": "FOO",
+                "value": "bar"
               },
               {
                 "name": "SECRET_ENV_VAR",
                 "valueSource": {
                   "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
+                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
                     "version": "1"
                   }
                 }
@@ -2989,11 +1448,11 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2024-09-20T03:23:46.470396Z",
-      "state": "CONDITION_PENDING",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
-    "updateTime": "2024-09-20T03:24:08.791634Z"
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
@@ -3002,7 +1461,7 @@ X-Xss-Protection: 0
 
 GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -3019,14 +1478,13 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "deleteTime": "2024-09-20T03:24:08.791634Z",
-    "etag": "\"CNnVs7cGELDH2gI/cHJvamVjdHMveXV3ZW5tYS1na2UtcGxheWdyb3VuZC9sb2NhdGlvbnMvdXMtY2VudHJhbDEvam9icy9ydW5qb2ItZm81aG5wbjI3ZXN0NG5iMjc3cHE\"",
-    "expireTime": "2024-10-20T03:24:08.791634Z",
-    "generation": "3",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "3",
     "template": {
       "taskCount": 1,
       "template": {
@@ -3034,14 +1492,14 @@ X-Xss-Protection: 0
           {
             "env": [
               {
-                "name": "Foo",
-                "value": "buzz"
+                "name": "FOO",
+                "value": "bar"
               },
               {
                 "name": "SECRET_ENV_VAR",
                 "valueSource": {
                   "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
+                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
                     "version": "1"
                   }
                 }
@@ -3063,24 +1521,23 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2024-09-20T03:24:09.005678Z",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
-    "updateTime": "2024-09-20T03:24:09.005678Z"
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "deleteTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
-    "expireTime": "2024-10-20T03:24:08.791634Z",
-    "generation": "3",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
-    "observedGeneration": "3",
     "template": {
       "taskCount": 1,
       "template": {
@@ -3088,14 +1545,14 @@ X-Xss-Protection: 0
           {
             "env": [
               {
-                "name": "Foo",
-                "value": "buzz"
+                "name": "FOO",
+                "value": "bar"
               },
               {
                 "name": "SECRET_ENV_VAR",
                 "valueSource": {
                   "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
+                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
                     "version": "1"
                   }
                 }
@@ -3117,7 +1574,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2024-09-20T03:24:09.005678Z",
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
       "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
@@ -3130,7 +1587,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -3156,7 +1613,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1:access?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -3180,7 +1637,7 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}/versions/1:destroy?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -3207,7 +1664,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -3233,7 +1690,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1:access?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -3257,7 +1714,7 @@ X-Xss-Protection: 0
 
 POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}/versions/1:destroy?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -3284,7 +1741,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-2-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -3313,7 +1770,7 @@ X-Xss-Protection: 0
 
 DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-2-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -3331,7 +1788,7 @@ X-Xss-Protection: 0
 
 GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-1-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -3360,7 +1817,7 @@ X-Xss-Protection: 0
 
 DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-1-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -3378,7 +1835,7 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -3400,180 +1857,9 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.reader"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.repoAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sandbox-clouddeploy.iam.gserviceaccount.com"
-      ],
-      "role": "roles/clouddeploy.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectId}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-      ],
-      "role": "roles/compute.networkViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-computescanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/computescanning.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.nodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerscanning.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com",
-        "user:mmaly@google.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:gkehub-codelab@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-gkehub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com"
-      ],
-      "role": "roles/krmapihosting.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-multiclusteringress.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusteringress.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-mcmetering.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcsd.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusterservicediscovery.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
         "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
       ],
       "role": "roles/secretmanager.secretAccessor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -3584,7 +1870,7 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -3606,180 +1892,9 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.reader"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.repoAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sandbox-clouddeploy.iam.gserviceaccount.com"
-      ],
-      "role": "roles/clouddeploy.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectId}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-      ],
-      "role": "roles/compute.networkViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-computescanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/computescanning.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.nodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerscanning.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com",
-        "user:mmaly@google.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:gkehub-codelab@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-gkehub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com"
-      ],
-      "role": "roles/krmapihosting.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-multiclusteringress.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusteringress.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-mcmetering.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcsd.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusterservicediscovery.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
         "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
       ],
       "role": "roles/secretmanager.secretAccessor"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
     }
   ],
   "etag": "abcdef0123A=",
@@ -3790,183 +1905,10 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "policy": {
-    "bindings": [
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-        ],
-        "role": "roles/anthosconfigmanagement.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com"
-        ],
-        "role": "roles/artifactregistry.reader"
-      },
-      {
-        "members": [
-          "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com"
-        ],
-        "role": "roles/artifactregistry.repoAdmin"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-        ],
-        "role": "roles/artifactregistry.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-        ],
-        "role": "roles/cloudbuild.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-sandbox-clouddeploy.iam.gserviceaccount.com"
-        ],
-        "role": "roles/clouddeploy.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:${projectId}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-        ],
-        "role": "roles/compute.networkViewer"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-        ],
-        "role": "roles/compute.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-computescanning.iam.gserviceaccount.com"
-        ],
-        "role": "roles/computescanning.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-        ],
-        "role": "roles/container.nodeServiceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-        ],
-        "role": "roles/container.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-        ],
-        "role": "roles/containeranalysis.ServiceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
-        ],
-        "role": "roles/containerscanning.ServiceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-          "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-          "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com",
-          "user:mmaly@google.com"
-        ],
-        "role": "roles/editor"
-      },
-      {
-        "members": [
-          "serviceAccount:gkehub-codelab@${projectId}.iam.gserviceaccount.com"
-        ],
-        "role": "roles/gkehub.admin"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-autopush-gkehub.iam.gserviceaccount.com",
-          "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-        ],
-        "role": "roles/gkehub.serviceAgent"
-      },
-      {
-        "members": [
-          "user:yuwenma@google.com"
-        ],
-        "role": "roles/iam.serviceAccountAdmin"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com"
-        ],
-        "role": "roles/krmapihosting.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-multiclusteringress.iam.gserviceaccount.com"
-        ],
-        "role": "roles/multiclusteringress.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-autopush-mcmetering.iam.gserviceaccount.com",
-          "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-        ],
-        "role": "roles/multiclustermetering.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-mcsd.iam.gserviceaccount.com"
-        ],
-        "role": "roles/multiclusterservicediscovery.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-        ],
-        "role": "roles/networkconnectivity.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-          "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com",
-          "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com",
-          "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
-          "user:yuwenma@google.com"
-        ],
-        "role": "roles/owner"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-        ],
-        "role": "roles/redis.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-        ],
-        "role": "roles/run.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-        ],
-        "role": "roles/servicenetworking.serviceAgent"
-      },
-      {
-        "members": [
-          "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-        ],
-        "role": "roles/sourcerepo.serviceAgent"
-      }
-    ],
     "etag": "abcdef0123A=",
     "version": 1
   },
@@ -3984,179 +1926,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.reader"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.repoAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sandbox-clouddeploy.iam.gserviceaccount.com"
-      ],
-      "role": "roles/clouddeploy.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectId}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-      ],
-      "role": "roles/compute.networkViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-computescanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/computescanning.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.nodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerscanning.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com",
-        "user:mmaly@google.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:gkehub-codelab@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-gkehub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com"
-      ],
-      "role": "roles/krmapihosting.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-multiclusteringress.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusteringress.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-mcmetering.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcsd.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusterservicediscovery.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
-    }
-  ],
   "etag": "abcdef0123A=",
   "version": 1
 }
@@ -4165,7 +1934,7 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -4184,179 +1953,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.reader"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.repoAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sandbox-clouddeploy.iam.gserviceaccount.com"
-      ],
-      "role": "roles/clouddeploy.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectId}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-      ],
-      "role": "roles/compute.networkViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-computescanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/computescanning.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.nodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerscanning.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com",
-        "user:mmaly@google.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:gkehub-codelab@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-gkehub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com"
-      ],
-      "role": "roles/krmapihosting.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-multiclusteringress.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusteringress.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-mcmetering.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcsd.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusterservicediscovery.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
-    }
-  ],
   "etag": "abcdef0123A=",
   "version": 1
 }
@@ -4365,7 +1961,7 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -4384,179 +1980,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.reader"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.repoAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sandbox-clouddeploy.iam.gserviceaccount.com"
-      ],
-      "role": "roles/clouddeploy.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectId}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-      ],
-      "role": "roles/compute.networkViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-computescanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/computescanning.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.nodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerscanning.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com",
-        "user:mmaly@google.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:gkehub-codelab@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-gkehub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com"
-      ],
-      "role": "roles/krmapihosting.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-multiclusteringress.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusteringress.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-mcmetering.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcsd.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusterservicediscovery.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
-    }
-  ],
   "etag": "abcdef0123A=",
   "version": 1
 }
@@ -4565,7 +1988,7 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -4584,179 +2007,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.reader"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.repoAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sandbox-clouddeploy.iam.gserviceaccount.com"
-      ],
-      "role": "roles/clouddeploy.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectId}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-      ],
-      "role": "roles/compute.networkViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-computescanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/computescanning.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.nodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerscanning.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com",
-        "user:mmaly@google.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:gkehub-codelab@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-gkehub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com"
-      ],
-      "role": "roles/krmapihosting.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-multiclusteringress.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusteringress.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-mcmetering.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcsd.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusterservicediscovery.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
-    }
-  ],
   "etag": "abcdef0123A=",
   "version": 1
 }
@@ -4765,7 +2015,7 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -4784,179 +2034,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-anthosconfigmanagement.iam.gserviceaccount.com"
-      ],
-      "role": "roles/anthosconfigmanagement.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.reader"
-    },
-    {
-      "members": [
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.repoAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-      ],
-      "role": "roles/artifactregistry.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
-      ],
-      "role": "roles/cloudbuild.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-sandbox-clouddeploy.iam.gserviceaccount.com"
-      ],
-      "role": "roles/clouddeploy.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectId}.svc.id.goog[gke-mcs/gke-mcs-importer]"
-      ],
-      "role": "roles/compute.networkViewer"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
-      ],
-      "role": "roles/compute.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-computescanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/computescanning.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.nodeServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
-      ],
-      "role": "roles/container.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containeranalysis.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-containerscanning.iam.gserviceaccount.com"
-      ],
-      "role": "roles/containerscanning.ServiceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com",
-        "user:mmaly@google.com"
-      ],
-      "role": "roles/editor"
-    },
-    {
-      "members": [
-        "serviceAccount:gkehub-codelab@${projectId}.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.admin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-gkehub.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-gkehub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/gkehub.serviceAgent"
-    },
-    {
-      "members": [
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/iam.serviceAccountAdmin"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com"
-      ],
-      "role": "roles/krmapihosting.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-multiclusteringress.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusteringress.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-autopush-mcmetering.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcmetering.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclustermetering.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-mcsd.iam.gserviceaccount.com"
-      ],
-      "role": "roles/multiclusterservicediscovery.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
-      ],
-      "role": "roles/networkconnectivity.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-server@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:porch-sync@${projectId}.iam.gserviceaccount.com",
-        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
-        "user:yuwenma@google.com"
-      ],
-      "role": "roles/owner"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
-      ],
-      "role": "roles/redis.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
-      ],
-      "role": "roles/run.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
-      ],
-      "role": "roles/servicenetworking.serviceAgent"
-    },
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@sourcerepo-service-accounts.iam.gserviceaccount.com"
-      ],
-      "role": "roles/sourcerepo.serviceAgent"
-    }
-  ],
   "etag": "abcdef0123A=",
   "version": 1
 }

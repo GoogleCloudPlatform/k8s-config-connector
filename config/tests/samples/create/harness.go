@@ -976,6 +976,8 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 
 			case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:
 
+			case schema.GroupKind{Group: "dns.cnrm.cloud.google.com", Kind: "DNSManagedZone"}:
+
 			case schema.GroupKind{Group: "essentialcontacts.cnrm.cloud.google.com", Kind: "EssentialContactsContact"}:
 
 			case schema.GroupKind{Group: "iam.cnrm.cloud.google.com", Kind: "IAMPartialPolicy"}:
@@ -1057,6 +1059,8 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "Folder"}:
 			case schema.GroupKind{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "Project"}:
 
+			case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
+
 			case schema.GroupKind{Group: "pubsublite.cnrm.cloud.google.com", Kind: "PubSubLiteReservation"}:
 			case schema.GroupKind{Group: "pubsublite.cnrm.cloud.google.com", Kind: "PubSubLiteSubscription"}:
 			case schema.GroupKind{Group: "pubsublite.cnrm.cloud.google.com", Kind: "PubSubLiteTopic"}:
@@ -1071,6 +1075,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "servicedirectory.cnrm.cloud.google.com", Kind: "ServiceDirectoryService"}:
 
 			case schema.GroupKind{Group: "servicenetworking.cnrm.cloud.google.com", Kind: "ServiceNetworkingConnection"}:
+			case schema.GroupKind{Group: "servicenetworking.cnrm.cloud.google.com", Kind: "ServiceNetworkingPeeredDnsDomain"}:
 
 			case schema.GroupKind{Group: "serviceusage.cnrm.cloud.google.com", Kind: "Service"}:
 

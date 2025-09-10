@@ -97,3 +97,123 @@ func Database_SourceInfo_BackupSource_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Backup = direct.ValueOf(in.Backup)
 	return out
 }
+func FirestoreIndexSpec_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.FirestoreIndexSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirestoreIndexSpec{}
+	// MISSING: Name
+	out.QueryScope = direct.Enum_FromProto(mapCtx, in.GetQueryScope())
+	// MISSING: APIScope
+	out.Fields = direct.Slice_FromProto(mapCtx, in.Fields, IndexFields_FromProto)
+	// MISSING: State
+	// MISSING: Density
+	// MISSING: Multikey
+	// MISSING: ShardCount
+	return out
+}
+func FirestoreIndexSpec_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreIndexSpec) *pb.Index {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index{}
+	// MISSING: Name
+	out.QueryScope = direct.Enum_ToProto[pb.Index_QueryScope](mapCtx, in.QueryScope)
+	// MISSING: APIScope
+	out.Fields = direct.Slice_ToProto(mapCtx, in.Fields, IndexFields_ToProto)
+	// MISSING: State
+	// MISSING: Density
+	// MISSING: Multikey
+	// MISSING: ShardCount
+	return out
+}
+func FirestoreIndexStatus_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.FirestoreIndexStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirestoreIndexStatus{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: QueryScope
+	// MISSING: APIScope
+	// MISSING: Fields
+	// MISSING: State
+	// MISSING: Density
+	// MISSING: Multikey
+	// MISSING: ShardCount
+	return out
+}
+func FirestoreIndexStatus_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreIndexStatus) *pb.Index {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: QueryScope
+	// MISSING: APIScope
+	// MISSING: Fields
+	// MISSING: State
+	// MISSING: Density
+	// MISSING: Multikey
+	// MISSING: ShardCount
+	return out
+}
+func IndexFields_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField) *krm.IndexFields {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IndexFields{}
+	out.FieldPath = direct.LazyPtr(in.GetFieldPath())
+	out.Order = direct.Enum_FromProto(mapCtx, in.GetOrder())
+	out.ArrayConfig = direct.Enum_FromProto(mapCtx, in.GetArrayConfig())
+	// MISSING: VectorConfig
+	return out
+}
+func IndexFields_ToProto(mapCtx *direct.MapContext, in *krm.IndexFields) *pb.Index_IndexField {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_IndexField{}
+	out.FieldPath = direct.ValueOf(in.FieldPath)
+	if oneof := IndexFields_Order_ToProto(mapCtx, in.Order); oneof != nil {
+		out.ValueMode = oneof
+	}
+	if oneof := IndexFields_ArrayConfig_ToProto(mapCtx, in.ArrayConfig); oneof != nil {
+		out.ValueMode = oneof
+	}
+	// MISSING: VectorConfig
+	return out
+}
+func Index_IndexField_VectorConfig_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_VectorConfig) *krm.Index_IndexField_VectorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Index_IndexField_VectorConfig{}
+	out.Dimension = direct.LazyPtr(in.GetDimension())
+	out.Flat = Index_IndexField_VectorConfig_FlatIndex_FromProto(mapCtx, in.GetFlat())
+	return out
+}
+func Index_IndexField_VectorConfig_ToProto(mapCtx *direct.MapContext, in *krm.Index_IndexField_VectorConfig) *pb.Index_IndexField_VectorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_IndexField_VectorConfig{}
+	out.Dimension = direct.ValueOf(in.Dimension)
+	if oneof := Index_IndexField_VectorConfig_FlatIndex_ToProto(mapCtx, in.Flat); oneof != nil {
+		out.Type = &pb.Index_IndexField_VectorConfig_Flat{Flat: oneof}
+	}
+	return out
+}
+func Index_IndexField_VectorConfig_FlatIndex_FromProto(mapCtx *direct.MapContext, in *pb.Index_IndexField_VectorConfig_FlatIndex) *krm.Index_IndexField_VectorConfig_FlatIndex {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Index_IndexField_VectorConfig_FlatIndex{}
+	return out
+}
+func Index_IndexField_VectorConfig_FlatIndex_ToProto(mapCtx *direct.MapContext, in *krm.Index_IndexField_VectorConfig_FlatIndex) *pb.Index_IndexField_VectorConfig_FlatIndex {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Index_IndexField_VectorConfig_FlatIndex{}
+	return out
+}

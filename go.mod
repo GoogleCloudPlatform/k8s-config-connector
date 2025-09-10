@@ -44,6 +44,7 @@ require (
 	cloud.google.com/go/kms v1.22.0
 	cloud.google.com/go/logging v1.13.0
 	cloud.google.com/go/managedkafka v0.4.0
+	cloud.google.com/go/memorystore v0.3.0
 	cloud.google.com/go/metastore v1.14.7
 	cloud.google.com/go/monitoring v1.24.2
 	cloud.google.com/go/netapp v1.7.1
@@ -55,7 +56,7 @@ require (
 	cloud.google.com/go/orgpolicy v1.15.0
 	cloud.google.com/go/privilegedaccessmanager v0.2.5
 	cloud.google.com/go/profiler v0.4.1
-	cloud.google.com/go/pubsub v1.49.0
+	cloud.google.com/go/pubsub/v2 v2.0.0
 	cloud.google.com/go/recaptchaenterprise/v2 v2.20.4
 	cloud.google.com/go/redis v1.18.2
 	cloud.google.com/go/resourcemanager v1.10.6
@@ -86,7 +87,7 @@ require (
 	github.com/hashicorp/go-cty v1.4.1-0.20200414143053-d3edf31b6320
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/hashicorp/hcl v1.0.0
-	github.com/hashicorp/hcl/v2 v2.23.0
+	github.com/hashicorp/hcl/v2 v2.24.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.24.0
 	github.com/hashicorp/terraform-provider-google-beta v0.0.0-00010101000000-000000000000
 	github.com/nasa9084/go-openapi v0.0.0-20200604141640-2875b7376353
@@ -101,7 +102,7 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.10.0
 	github.com/tmccombs/hcl2json v0.6.7
-	github.com/zclconf/go-cty v1.16.2
+	github.com/zclconf/go-cty v1.16.3
 	go.opencensus.io v0.24.0
 	go.uber.org/mock v0.5.2
 	go.uber.org/zap v1.27.0

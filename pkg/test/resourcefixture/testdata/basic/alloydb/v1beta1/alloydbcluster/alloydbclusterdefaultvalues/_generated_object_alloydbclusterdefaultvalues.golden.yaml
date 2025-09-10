@@ -46,7 +46,7 @@ status:
     - FRIDAY
     - SATURDAY
     - SUNDAY
-  databaseVersion: POSTGRES_15
+  databaseVersion: POSTGRES_16
   encryptionInfo:
   - encryptionType: GOOGLE_DEFAULT_ENCRYPTION
   externalRef: projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}
@@ -54,4 +54,5 @@ status:
   observedGeneration: 2
   observedState:
     clusterType: PRIMARY
+    databaseVersion: POSTGRES_16
   uid: "12345678"

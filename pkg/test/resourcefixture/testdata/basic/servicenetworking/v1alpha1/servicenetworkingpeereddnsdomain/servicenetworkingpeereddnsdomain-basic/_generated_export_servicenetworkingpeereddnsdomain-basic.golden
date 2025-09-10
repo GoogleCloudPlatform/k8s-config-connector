@@ -1,0 +1,8 @@
+apiVersion: servicenetworking.cnrm.cloud.google.com/v1alpha1
+kind: ServiceNetworkingPeeredDnsDomain
+metadata:
+  name: peerdomain-${uniqueId}
+spec:
+  dnsSuffix: example.com.
+  networkRef:
+    external: projects/${projectNumber}/global/networks/computenetwork-${uniqueId}
