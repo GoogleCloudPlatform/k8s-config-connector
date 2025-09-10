@@ -14,12 +14,13 @@
 
 //go:build e2e
 
-package controllers
+package controllers_test
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"sync"
 	"testing"
 	"time"
 
@@ -40,7 +41,7 @@ import (
 const (
 	leaseName     = "e2e-test-lease"
 	testNamespace = "e2e-test-ns"
-	leaderTimeout = 30 * time.Second
+	leaderTimeout = 20 * time.Second
 	leaseDuration = 15 * time.Second
 	renewDeadline = 10 * time.Second
 	retryPeriod   = 2 * time.Second
@@ -85,8 +86,6 @@ func TestE2E_LeaderElection(t *testing.T) {
 	// Create our custom resourcelock.
 	lock := multiclusterleaselock.New(kubeClient, leaseName, ns.Name, identity, retryPeriod)
 
-	testfinished := make(chan struct{})
-
 	// Configure the LeaderElector.
 	elector, err := leaderelection.NewLeaderElector(leaderelection.LeaderElectionConfig{
 		Lock:          lock,
@@ -100,7 +99,7 @@ func TestE2E_LeaderElection(t *testing.T) {
 			},
 			OnStoppedLeading: func() {
 				t.Logf("elector [%s] stopped leading", identity)
-				close(testfinished)
+				cancel()
 			},
 		},
 		Name: "e2e-test-elector",
@@ -147,16 +146,13 @@ func TestE2E_LeaderElection(t *testing.T) {
 
 	require.True(t, renewedTime.After(initialRenewTime), "renewedTime (%s) should be after initialRenewTime (%s)", renewedTime, initialRenewTime)
 	t.Logf("successfully verified lease renewal")
-
-	// Wait for the test to finish
-	<-testfinished
 }
 
 var gcsBucketName = "multiclusterlease-test"
 
-func TestE2E_LeaseAlreadyHeld(t *testing.T) {
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+func TestE2E_LeaseHeldThenFailover(t *testing.T) {
+	testCtx, testCancel := context.WithTimeout(context.Background(), 90*time.Second)
+	defer testCancel()
 
 	// --- Setup Kubernetes and GCS Clients ---
 	cfg, err := config.GetConfig()
@@ -165,7 +161,7 @@ func TestE2E_LeaseAlreadyHeld(t *testing.T) {
 	require.NoError(t, err)
 	kubeClient, err := client.New(cfg, client.Options{Scheme: scheme.Scheme})
 	require.NoError(t, err)
-	gcsClient, err := storage.NewClient(ctx)
+	gcsClient, err := storage.NewClient(testCtx)
 	require.NoError(t, err)
 
 	// --- Create Test Namespace ---
@@ -175,24 +171,28 @@ func TestE2E_LeaseAlreadyHeld(t *testing.T) {
 		},
 	}
 	t.Logf("creating test namespace: %s", ns.Name)
-	require.NoError(t, kubeClient.Create(ctx, ns))
+	require.NoError(t, kubeClient.Create(testCtx, ns))
 	defer func() {
 		t.Logf("deleting test namespace: %s", ns.Name)
-		require.NoError(t, kubeClient.Delete(ctx, ns))
+		require.NoError(t, kubeClient.Delete(testCtx, ns))
 	}()
 
-	// --- Pre-create the Global Lock in GCS ---
+	// --- Stage 1: Lease is Held ---
 	incumbentLeader := "the-incumbent-leader"
 	gcsObjectKey := fmt.Sprintf("leases/%s/%s", ns.Name, leaseName)
-	t.Logf("pre-creating GCS lock object '%s' with holder '%s'", gcsObjectKey, incumbentLeader)
-	err = writeToGCS(ctx, gcsClient, gcsBucketName, gcsObjectKey, incumbentLeader, time.Now())
+	t.Logf("[Stage 1] Pre-creating GCS lock object '%s' with healthy holder '%s'", gcsObjectKey, incumbentLeader)
+	err = writeToGCS(testCtx, gcsClient, gcsBucketName, gcsObjectKey, incumbentLeader, time.Now().Add(1*time.Hour))
 	require.NoError(t, err)
 	defer func() {
 		t.Logf("deleting GCS lock object '%s'", gcsObjectKey)
-		deleteFromGCS(ctx, gcsClient, gcsBucketName, gcsObjectKey)
+		deleteFromGCS(testCtx, gcsClient, gcsBucketName, gcsObjectKey)
 	}()
 
 	// --- Start the Elector ---
+	electorCtx, electorCancel := context.WithCancel(testCtx)
+	var wg sync.WaitGroup
+	wg.Add(1)
+
 	leaderCh := make(chan struct{})
 	identity := uuid.New().String()
 	lock := multiclusterleaselock.New(kubeClient, leaseName, ns.Name, identity, retryPeriod)
@@ -203,35 +203,65 @@ func TestE2E_LeaseAlreadyHeld(t *testing.T) {
 		RetryPeriod:   retryPeriod,
 		Callbacks: leaderelection.LeaderCallbacks{
 			OnStartedLeading: func(ctx context.Context) {
-				// This should never be called.
-				t.Errorf("elector [%s] started leading but should have been locked out", identity)
+				t.Logf("elector [%s] started leading", identity)
 				close(leaderCh)
 			},
 			OnStoppedLeading: func() {
 				t.Logf("elector [%s] stopped leading", identity)
 			},
 		},
-		Name: "e2e-test-locked-out-elector",
+		Name: "e2e-test-failover-elector",
 	})
 	require.NoError(t, err)
-	go elector.Run(ctx)
 
-	// --- Verification ---
-	t.Logf("elector [%s] waiting to see if it incorrectly acquires leadership...", identity)
+	go func() {
+		defer wg.Done()
+		elector.Run(electorCtx)
+	}()
+
+	// --- Verification for Stage 1 ---
+	t.Logf("[Stage 1] Elector [%s] waiting for %s to ensure it does not acquire leadership...", identity, leaderTimeout)
 	select {
 	case <-leaderCh:
 		t.Fatalf("elector [%s] acquired leadership, but should have been locked out", identity)
 	case <-time.After(leaderTimeout):
-		t.Logf("SUCCESS: elector [%s] did not acquire leadership within %s", identity, leaderTimeout)
+		t.Logf("[Stage 1] SUCCESS: elector [%s] did not acquire leadership", identity)
 	}
 
 	// Verify that the CR status correctly reflects the incumbent leader.
 	var lease v1alpha1.MultiClusterLease
 	key := client.ObjectKey{Namespace: ns.Name, Name: leaseName}
-	require.NoError(t, kubeClient.Get(ctx, key, &lease))
+	require.NoError(t, kubeClient.Get(testCtx, key, &lease))
 	require.NotNil(t, lease.Status.GlobalHolderIdentity)
 	require.Equal(t, incumbentLeader, *lease.Status.GlobalHolderIdentity)
-	t.Logf("successfully verified that status shows incumbent leader '%s'", incumbentLeader)
+	t.Logf("[Stage 1] Successfully verified that status shows incumbent leader '%s'", incumbentLeader)
+
+	// --- Stage 2: Lease Expires and Fails Over ---
+	t.Logf("[Stage 2] Expiring the lease in GCS for holder '%s'", incumbentLeader)
+	err = writeToGCS(testCtx, gcsClient, gcsBucketName, gcsObjectKey, incumbentLeader, time.Now().Add(-1*time.Hour))
+	require.NoError(t, err)
+
+	// --- Verification for Stage 2 ---
+	t.Logf("[Stage 2] Elector [%s] waiting to see if it can take over the expired lease...", identity)
+	select {
+	case <-leaderCh:
+		t.Logf("[Stage 2] SUCCESS: elector [%s] successfully acquired the expired lease", identity)
+	case <-testCtx.Done():
+		t.Fatalf("[Stage 2] elector [%s] failed to acquire expired lease within test timeout", identity)
+	}
+
+	// Verify that the CR status correctly reflects the new leader.
+	require.NoError(t, kubeClient.Get(testCtx, key, &lease))
+	require.NotNil(t, lease.Status.GlobalHolderIdentity)
+	require.Equal(t, identity, *lease.Status.GlobalHolderIdentity)
+	require.NotNil(t, lease.Status.GlobalLeaseTransitions)
+	require.Equal(t, int32(2), *lease.Status.GlobalLeaseTransitions, "lease transitions should be incremented")
+	t.Logf("[Stage 2] Successfully verified that status shows new leader '%s'", identity)
+
+	// --- Cleanup ---
+	t.Logf("shutting down elector")
+	electorCancel()
+	wg.Wait()
 }
 
 // leaseData is a helper struct for GCS object content.
