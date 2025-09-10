@@ -1,5 +1,4 @@
-#!/bin/bash
-# Copyright 2025 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,20 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-set -o errexit
-set -o nounset
-set -o pipefail
-
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
-
-go run . generate-types \
-    --service google.pubsub.v1 \
-    --api-version pubsub.cnrm.cloud.google.com/v1alpha1 \
-    --resource PubSubSnapshot:Snapshot
-
-go run . generate-mapper \
-    --service google.pubsub.v1 \
-    --api-version pubsub.cnrm.cloud.google.com/v1alpha1
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: default
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  description: Default network for the project

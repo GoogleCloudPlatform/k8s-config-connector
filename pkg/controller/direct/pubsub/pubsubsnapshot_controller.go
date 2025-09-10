@@ -16,7 +16,7 @@
 // proto.service: google.pubsub.v1.Subscriber
 // proto.message: google.pubsub.v1.Snapshot
 // crd.type: PubSubSnapshot
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package pubsub
 
@@ -38,8 +38,7 @@ import (
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1alpha1"
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -123,7 +122,7 @@ func (m *SnapshotModel) AdapterForURL(ctx context.Context, url string) (directba
 
 type snapshotAdapter struct {
 	gcpClient *api.SubscriptionAdminClient
-	id        *v1alpha1.SnapshotIdentity
+	id        *krm.SnapshotIdentity
 	desired   *krm.PubSubSnapshot
 	actual    *pb.Snapshot
 }

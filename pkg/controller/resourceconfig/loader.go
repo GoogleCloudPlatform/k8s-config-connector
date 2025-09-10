@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +generated:types
-// krm.group: pubsub.cnrm.cloud.google.com
-// krm.version: v1alpha1
-// proto.service: google.pubsub.v1
-// resource: PubSubSnapshot:Snapshot
+package resourceconfig
 
-package v1alpha1
+func LoadConfig() *ResourcesControllerMap {
+	return ControllerConfigStatic
+}

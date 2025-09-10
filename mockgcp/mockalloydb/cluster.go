@@ -140,7 +140,9 @@ func setClusterFields(name *clusterName, obj *pb.Cluster) {
 	// Context: https://github.com/hashicorp/terraform-provider-google/issues/16960
 	// This field needs to be handled differently in mockgcp after we fix the
 	// behavior in the controller.
-	obj.DatabaseVersion = pb.DatabaseVersion_POSTGRES_15
+	if obj.DatabaseVersion == pb.DatabaseVersion_DATABASE_VERSION_UNSPECIFIED {
+		obj.DatabaseVersion = pb.DatabaseVersion_POSTGRES_16
+	}
 	if obj.EncryptionConfig != nil && obj.EncryptionConfig.KmsKeyName != "" {
 		obj.EncryptionInfo = &pb.EncryptionInfo{
 			EncryptionType: pb.EncryptionInfo_CUSTOMER_MANAGED_ENCRYPTION,

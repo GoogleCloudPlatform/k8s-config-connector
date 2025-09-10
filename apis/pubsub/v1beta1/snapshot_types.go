@@ -12,10 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
-	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -39,7 +38,7 @@ type PubSubSnapshotSpec struct {
 	// Optional. The name of the topic from which this snapshot is retaining
 	//  messages.
 	// +kcc:proto:field=google.pubsub.v1.Snapshot.topic
-	TopicRef *pubsubv1beta1.PubSubTopicRef `json:"topicRef,omitempty"`
+	TopicRef *PubSubTopicRef `json:"topicRef,omitempty"`
 
 	// Optional. See [Creating and managing labels]
 	//  (https://cloud.google.com/pubsub/docs/labels).
@@ -53,7 +52,7 @@ type PubSubSnapshotSpec struct {
 	// subscription's topic following the successful completion of the snapshots.create request.
 	// Format is projects/{project}/subscriptions/{sub}.
 	// +required
-	PubSubSubscriptionRef *pubsubv1beta1.PubSubSubscriptionRef `json:"pubSubSubscriptionRef"`
+	PubSubSubscriptionRef *PubSubSubscriptionRef `json:"pubSubSubscriptionRef"`
 }
 
 // PubSubSnapshotStatus defines the config connector machine state of PubSubSnapshot
@@ -93,7 +92,8 @@ type PubSubSnapshotObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcppubsubsnapshot;gcppubsubsnapshots
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:storageversion
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

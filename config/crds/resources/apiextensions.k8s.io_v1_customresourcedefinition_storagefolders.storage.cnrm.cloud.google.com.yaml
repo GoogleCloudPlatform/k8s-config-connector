@@ -114,14 +114,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The StorageBucket selfLink, when not managed by Config
-                      Connector.
+                    description: A reference to an externally managed StorageBucket
+                      resource.
                     type: string
                   name:
-                    description: The `name` field of a `StorageBucket` resource.
+                    description: The name of a StorageBucket resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `StorageBucket` resource.
+                    description: The namespace of a StorageBucket resource.
                     type: string
                 type: object
             type: object
