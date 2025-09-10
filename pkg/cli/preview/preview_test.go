@@ -114,7 +114,7 @@ spec:
   displayName: Spanner Instance Sample
   numNodes: 2
 `,
-			expectedEventType: []EventType{EventTypeReconcileStart, EventTypeKubeAction, EventTypeDiff},
+			expectedEventType: []EventType{EventTypeReconcileStart, EventTypeKubeAction, EventTypeReconcileEnd},
 		},
 	}
 	{
@@ -216,7 +216,7 @@ spec:
 				}
 				for i, event := range objectInfo.events {
 					if event.eventType != resource.expectedEventType[i] {
-						t.Logf("unexpected event type in changelist; got %v; want %v", event.eventType, resource.expectedEventType[i])
+						t.Errorf("unexpected event type in changelist; got %v; want %v", event.eventType, resource.expectedEventType[i])
 					}
 				}
 			}
