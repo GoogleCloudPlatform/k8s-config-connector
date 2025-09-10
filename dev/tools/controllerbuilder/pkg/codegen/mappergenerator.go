@@ -222,6 +222,18 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 	return nil
 }
 
+func isWrapperType(protoField protoreflect.FieldDescriptor) bool {
+	if protoField.Kind() != protoreflect.MessageKind {
+		return false
+	}
+	switch protoField.Message().FullName() {
+	case "google.protobuf.Int64Value", "google.protobuf.StringValue", "google.protobuf.BoolValue", "google.protobuf.FloatValue", "google.protobuf.DoubleValue", "google.protobuf.Int32Value", "google.protobuf.UInt32Value", "google.protobuf.UInt64Value":
+		return true
+	default:
+		return false
+	}
+}
+
 func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string, pair *typePair) {
 	klog.V(2).InfoS("writeMapFunctionsForPair", "pair.Proto.FullName", pair.Proto.FullName(), "pair.KRMType.Name", pair.KRMType.Name)
 	msg := pair.Proto
@@ -396,11 +408,19 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					functionName = krmFromProtoFunctionName(protoField, krmField.Name)
 				}
 
-				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
-					krmFieldName,
-					functionName,
-					protoAccessor,
-				)
+				if isWrapperType(protoField) && strings.HasPrefix(krmField.Type, "*") {
+					fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(%s(mapCtx, in.%s))\n",
+						krmFieldName,
+						functionName,
+						protoAccessor,
+					)
+				} else {
+					fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+						krmFieldName,
+						functionName,
+						protoAccessor,
+					)
+				}
 			case protoreflect.EnumKind:
 				functionName := "direct.Enum_FromProto"
 				// Not needed if we use the accessor:
@@ -593,9 +613,13 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 				oneof := protoField.ContainingOneof()
 				if oneof != nil && !protoField.HasOptionalKeyword() {
-					fmt.Fprintf(out, "\tif oneof := %s(mapCtx, in.%s); oneof != nil {\n",
+					krmArg := "in." + krmFieldName
+					if isWrapperType(protoField) {
+						krmArg = "direct.ValueOf(" + krmArg + ")"
+					}
+					fmt.Fprintf(out, "\tif oneof := %s(mapCtx, %s); oneof != nil {\n",
 						functionName,
-						krmFieldName,
+						krmArg,
 					)
 
 					oneofFieldName := ToGoFieldName(oneof.Name())
@@ -609,10 +633,14 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					fmt.Fprintf(out, "\t}\n")
 					continue
 				}
-				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, in.%s)\n",
+				krmArg := "in." + krmFieldName
+				if isWrapperType(protoField) {
+					krmArg = "direct.ValueOf(" + krmArg + ")"
+				}
+				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, %s)\n",
 					protoFieldName,
 					functionName,
-					krmFieldName,
+					krmArg,
 				)
 			case protoreflect.EnumKind:
 				protoTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
