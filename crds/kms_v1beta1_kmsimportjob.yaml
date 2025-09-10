@@ -1,0 +1,466 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.134.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: kmsimportjobs.kms.cnrm.cloud.google.com
+spec:
+  group: kms.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: KMSImportJob
+    listKind: KMSImportJobList
+    plural: kmsimportjobs
+    shortNames:
+    - gcpkmsimportjob
+    - gcpkmsimportjobs
+    singular: kmsimportjob
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: KMSImportJob is the Schema for the KMSImportJob API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: KMSImportJobSpec defines the desired state of KMSImportJob
+            properties:
+              importMethod:
+                description: Required. Immutable. The wrapping method to be used for
+                  incoming key material.
+                type: string
+              kmsKeyRingRef:
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: ' If provided must be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]`.'
+                    type: string
+                  name:
+                    description: The `name` field of a `KMSKeyRing` resource.
+                    type: string
+                  namespace:
+                    description: The `metadata.namespace` field of a `KMSKeyRing`
+                      resource.
+                    type: string
+                type: object
+              protectionLevel:
+                description: Required. Immutable. The protection level of the [ImportJob][google.cloud.kms.v1.ImportJob].
+                  This must match the [protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level]
+                  of the [version_template][google.cloud.kms.v1.CryptoKey.version_template]
+                  on the [CryptoKey][google.cloud.kms.v1.CryptoKey] you attempt to
+                  import into.
+                type: string
+              resourceID:
+                description: The KMSImportJob name. If not given, the metadata.name
+                  will be used.
+                type: string
+            required:
+            - importMethod
+            - kmsKeyRingRef
+            - protectionLevel
+            type: object
+          status:
+            description: KMSImportJobStatus defines the config connector machine state
+              of KMSImportJob
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the KMSImportJob resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  attestation:
+                    description: Output only. Statement that was generated and signed
+                      by the key creator (for example, an HSM) at key creation time.
+                      Use this statement to verify attributes of the key as stored
+                      on the HSM, independently of Google. Only present if the chosen
+                      [ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod] is
+                      one with a protection level of [HSM][google.cloud.kms.v1.ProtectionLevel.HSM].
+                    properties:
+                      certChains:
+                        description: Output only. The certificate chains needed to
+                          validate the attestation
+                        properties:
+                          caviumCerts:
+                            description: Cavium certificate chain corresponding to
+                              the attestation.
+                            items:
+                              type: string
+                            type: array
+                          googleCardCerts:
+                            description: Google card certificate chain corresponding
+                              to the attestation.
+                            items:
+                              type: string
+                            type: array
+                          googlePartitionCerts:
+                            description: Google partition certificate chain corresponding
+                              to the attestation.
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                      content:
+                        description: Output only. The attestation data provided by
+                          the HSM when the key operation was performed.
+                        format: byte
+                        type: string
+                      format:
+                        description: Output only. The format of the attestation data.
+                        type: string
+                    type: object
+                  createTime:
+                    description: Output only. The time at which this [ImportJob][google.cloud.kms.v1.ImportJob]
+                      was created.
+                    type: string
+                  expireEventTime:
+                    description: Output only. The time this [ImportJob][google.cloud.kms.v1.ImportJob]
+                      expired. Only present if [state][google.cloud.kms.v1.ImportJob.state]
+                      is [EXPIRED][google.cloud.kms.v1.ImportJob.ImportJobState.EXPIRED].
+                    type: string
+                  expireTime:
+                    description: Output only. The time at which this [ImportJob][google.cloud.kms.v1.ImportJob]
+                      is scheduled for expiration and can no longer be used to import
+                      key material.
+                    type: string
+                  generateTime:
+                    description: Output only. The time this [ImportJob][google.cloud.kms.v1.ImportJob]'s
+                      key material was generated.
+                    type: string
+                  publicKey:
+                    description: Output only. The public key with which to wrap key
+                      material prior to import. Only returned if [state][google.cloud.kms.v1.ImportJob.state]
+                      is [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE].
+                    properties:
+                      pem:
+                        description: The public key, encoded in PEM format. For more
+                          information, see the [RFC 7468](https://tools.ietf.org/html/rfc7468)
+                          sections for [General Considerations](https://tools.ietf.org/html/rfc7468#section-2)
+                          and [Textual Encoding of Subject Public Key Info] (https://tools.ietf.org/html/rfc7468#section-13).
+                        type: string
+                    type: object
+                  state:
+                    description: Output only. The current state of the [ImportJob][google.cloud.kms.v1.ImportJob],
+                      indicating if it can be used.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: KMSImportJob is the Schema for the KMSImportJob API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: KMSImportJobSpec defines the desired state of KMSImportJob
+            properties:
+              importMethod:
+                description: Required. Immutable. The wrapping method to be used for
+                  incoming key material.
+                type: string
+              kmsKeyRingRef:
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: ' If provided must be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]`.'
+                    type: string
+                  name:
+                    description: The `name` field of a `KMSKeyRing` resource.
+                    type: string
+                  namespace:
+                    description: The `metadata.namespace` field of a `KMSKeyRing`
+                      resource.
+                    type: string
+                type: object
+              protectionLevel:
+                description: Required. Immutable. The protection level of the [ImportJob][google.cloud.kms.v1.ImportJob].
+                  This must match the [protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level]
+                  of the [version_template][google.cloud.kms.v1.CryptoKey.version_template]
+                  on the [CryptoKey][google.cloud.kms.v1.CryptoKey] you attempt to
+                  import into.
+                type: string
+              resourceID:
+                description: The KMSImportJob name. If not given, the metadata.name
+                  will be used.
+                type: string
+            required:
+            - importMethod
+            - kmsKeyRingRef
+            - protectionLevel
+            type: object
+          status:
+            description: KMSImportJobStatus defines the config connector machine state
+              of KMSImportJob
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the KMSImportJob resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  attestation:
+                    description: Output only. Statement that was generated and signed
+                      by the key creator (for example, an HSM) at key creation time.
+                      Use this statement to verify attributes of the key as stored
+                      on the HSM, independently of Google. Only present if the chosen
+                      [ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod] is
+                      one with a protection level of [HSM][google.cloud.kms.v1.ProtectionLevel.HSM].
+                    properties:
+                      certChains:
+                        description: Output only. The certificate chains needed to
+                          validate the attestation
+                        properties:
+                          caviumCerts:
+                            description: Cavium certificate chain corresponding to
+                              the attestation.
+                            items:
+                              type: string
+                            type: array
+                          googleCardCerts:
+                            description: Google card certificate chain corresponding
+                              to the attestation.
+                            items:
+                              type: string
+                            type: array
+                          googlePartitionCerts:
+                            description: Google partition certificate chain corresponding
+                              to the attestation.
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                      content:
+                        description: Output only. The attestation data provided by
+                          the HSM when the key operation was performed.
+                        format: byte
+                        type: string
+                      format:
+                        description: Output only. The format of the attestation data.
+                        type: string
+                    type: object
+                  createTime:
+                    description: Output only. The time at which this [ImportJob][google.cloud.kms.v1.ImportJob]
+                      was created.
+                    type: string
+                  expireEventTime:
+                    description: Output only. The time this [ImportJob][google.cloud.kms.v1.ImportJob]
+                      expired. Only present if [state][google.cloud.kms.v1.ImportJob.state]
+                      is [EXPIRED][google.cloud.kms.v1.ImportJob.ImportJobState.EXPIRED].
+                    type: string
+                  expireTime:
+                    description: Output only. The time at which this [ImportJob][google.cloud.kms.v1.ImportJob]
+                      is scheduled for expiration and can no longer be used to import
+                      key material.
+                    type: string
+                  generateTime:
+                    description: Output only. The time this [ImportJob][google.cloud.kms.v1.ImportJob]'s
+                      key material was generated.
+                    type: string
+                  publicKey:
+                    description: Output only. The public key with which to wrap key
+                      material prior to import. Only returned if [state][google.cloud.kms.v1.ImportJob.state]
+                      is [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE].
+                    properties:
+                      pem:
+                        description: The public key, encoded in PEM format. For more
+                          information, see the [RFC 7468](https://tools.ietf.org/html/rfc7468)
+                          sections for [General Considerations](https://tools.ietf.org/html/rfc7468#section-2)
+                          and [Textual Encoding of Subject Public Key Info] (https://tools.ietf.org/html/rfc7468#section-13).
+                        type: string
+                    type: object
+                  state:
+                    description: Output only. The current state of the [ImportJob][google.cloud.kms.v1.ImportJob],
+                      indicating if it can be used.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null

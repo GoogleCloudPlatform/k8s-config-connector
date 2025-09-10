@@ -1,0 +1,530 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.134.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: bigqueryreservationreservations.bigqueryreservation.cnrm.cloud.google.com
+spec:
+  group: bigqueryreservation.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: BigQueryReservationReservation
+    listKind: BigQueryReservationReservationList
+    plural: bigqueryreservationreservations
+    shortNames:
+    - gcpbigqueryreservationreservation
+    - gcpbigqueryreservationreservations
+    singular: bigqueryreservationreservation
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: BigQueryReservationReservation is the Schema for the BigQueryReservationReservation
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BigQueryReservationReservationSpec defines the desired state
+              of BigQueryReservationReservation
+            properties:
+              autoscale:
+                description: Optional. The configuration parameters for the auto scaling
+                  feature.
+                properties:
+                  maxSlots:
+                    description: Number of slots to be scaled when needed.
+                    format: int64
+                    type: integer
+                type: object
+              concurrency:
+                description: 'Job concurrency target which sets a soft upper bound
+                  on the number of jobs that can run concurrently in this reservation.
+                  This is a soft target due to asynchronous nature of the system and
+                  various optimizations for small queries. Default value is 0 which
+                  means that concurrency target will be automatically computed by
+                  the system. NOTE: this field is exposed as target job concurrency
+                  in the Information Schema, DDL and BigQuery CLI.'
+                format: int64
+                type: integer
+              edition:
+                description: Immutable. Optional. Edition of the reservation. Valid
+                  values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS
+                type: string
+              failover:
+                description: Optional. This field is only set for reservations using
+                  the managed disaster recovery feature. Users can set this to create
+                  a failover reservation.
+                properties:
+                  secondaryLocation:
+                    description: |-
+                      Users can update this field to convert a non-failover reservation to a
+                      failover reservation (by setting a specific region value) or convert a
+                      failover reservation to a non-failover reservation (by removing spec.failover).
+                      However, changes from one region to another region will be ignored by the
+                      controller. Additionally, if the value of this field changes during manual failover
+                      by the API, the controller will not attempt to revert these changes.
+
+                      Note: This field is only available for ENTERPRISE_PLUS edition reservations.
+                      Immutable.
+                    type: string
+                    x-kubernetes-validations:
+                    - message: secondaryLocation field is immutable
+                      rule: self == oldSelf
+                required:
+                - secondaryLocation
+                type: object
+              ignoreIdleSlots:
+                description: If false, any query or pipeline job using this reservation
+                  will use idle slots from other reservations within the same admin
+                  project. If true, a query or pipeline job using this reservation
+                  will execute with the slot capacity specified in the slot_capacity
+                  field at most.
+                type: boolean
+              location:
+                description: Immutable. You can configure spec.secondaryLocation to
+                  enable the reservation fail-over to a secondary location, in which
+                  case the primary location could be different from the spec.location.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: 'Immutable. Optional. The BigQuery Reservation ID used
+                  for resource creation or acquisition. It must only contain lower
+                  case alphanumeric characters or dashes. It must start with a letter
+                  and must not end with a dash. Its maximum length is 64 characters.
+                  For creation: If specified, this value is used as the Reservation
+                  ID. If not provided, a UUID will be generated and assigned as the
+                  Reservation ID. For acquisition: This field must be provided to
+                  identify the Reservation resource to acquire.'
+                type: string
+              slotCapacity:
+                description: |-
+                  Optional. Baseline slots available to this reservation. A slot is a unit of
+                   computational power in BigQuery, and serves as the unit of parallelism.
+
+                   Queries using this reservation might use more slots during runtime if
+                   ignore_idle_slots is set to false, or autoscaling is enabled.
+                format: int64
+                type: integer
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: BigQueryReservationReservationStatus defines the config connector
+              machine state of BigQueryReservationReservation
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the BigQueryReservationReservation
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  autoscale:
+                    properties:
+                      currentSlots:
+                        description: 'The slot capacity added to this reservation
+                          when autoscale happens. Will be between [0, max_slots].
+                          Note: after users reduce max_slots, it may take a while
+                          before it can be propagated, so current_slots may stay in
+                          the original value and could be larger than max_slots for
+                          that brief period (less than one minute)'
+                        format: int64
+                        type: integer
+                    type: object
+                  failover:
+                    properties:
+                      originalPrimaryLocation:
+                        description: The location where the reservation was originally
+                          created. This is set only during the failover reservation's
+                          creation. All billing charges for the failover reservation
+                          will be applied to this location.
+                        type: string
+                      primaryLocation:
+                        description: The current location of the reservation's primary
+                          replica. This field is only set for reservations using the
+                          managed disaster recovery feature.
+                        type: string
+                      secondaryLocation:
+                        description: The current location of the reservation's secondary
+                          replica. This field is only set for reservations using the
+                          managed disaster recovery feature. Users can set this in
+                          create reservation calls to create a failover reservation
+                          or in update reservation calls to convert a non-failover
+                          reservation to a failover reservation(or vice versa).
+                        type: string
+                    type: object
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: BigQueryReservationReservation is the Schema for the BigQueryReservationReservation
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BigQueryReservationReservationSpec defines the desired state
+              of BigQueryReservationReservation
+            properties:
+              autoscale:
+                description: Optional. The configuration parameters for the auto scaling
+                  feature.
+                properties:
+                  maxSlots:
+                    description: Number of slots to be scaled when needed.
+                    format: int64
+                    type: integer
+                type: object
+              concurrency:
+                description: 'Job concurrency target which sets a soft upper bound
+                  on the number of jobs that can run concurrently in this reservation.
+                  This is a soft target due to asynchronous nature of the system and
+                  various optimizations for small queries. Default value is 0 which
+                  means that concurrency target will be automatically computed by
+                  the system. NOTE: this field is exposed as target job concurrency
+                  in the Information Schema, DDL and BigQuery CLI.'
+                format: int64
+                type: integer
+              edition:
+                description: Immutable. Optional. Edition of the reservation. Valid
+                  values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS
+                type: string
+              failover:
+                description: Optional. This field is only set for reservations using
+                  the managed disaster recovery feature. Users can set this to create
+                  a failover reservation.
+                properties:
+                  secondaryLocation:
+                    description: |-
+                      Users can update this field to convert a non-failover reservation to a
+                      failover reservation (by setting a specific region value) or convert a
+                      failover reservation to a non-failover reservation (by removing spec.failover).
+                      However, changes from one region to another region will be ignored by the
+                      controller. Additionally, if the value of this field changes during manual failover
+                      by the API, the controller will not attempt to revert these changes.
+
+                      Note: This field is only available for ENTERPRISE_PLUS edition reservations.
+                      Immutable.
+                    type: string
+                    x-kubernetes-validations:
+                    - message: secondaryLocation field is immutable
+                      rule: self == oldSelf
+                required:
+                - secondaryLocation
+                type: object
+              ignoreIdleSlots:
+                description: If false, any query or pipeline job using this reservation
+                  will use idle slots from other reservations within the same admin
+                  project. If true, a query or pipeline job using this reservation
+                  will execute with the slot capacity specified in the slot_capacity
+                  field at most.
+                type: boolean
+              location:
+                description: Immutable. You can configure spec.secondaryLocation to
+                  enable the reservation fail-over to a secondary location, in which
+                  case the primary location could be different from the spec.location.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: 'Immutable. Optional. The BigQuery Reservation ID used
+                  for resource creation or acquisition. It must only contain lower
+                  case alphanumeric characters or dashes. It must start with a letter
+                  and must not end with a dash. Its maximum length is 64 characters.
+                  For creation: If specified, this value is used as the Reservation
+                  ID. If not provided, a UUID will be generated and assigned as the
+                  Reservation ID. For acquisition: This field must be provided to
+                  identify the Reservation resource to acquire.'
+                type: string
+              slotCapacity:
+                description: |-
+                  Optional. Baseline slots available to this reservation. A slot is a unit of
+                   computational power in BigQuery, and serves as the unit of parallelism.
+
+                   Queries using this reservation might use more slots during runtime if
+                   ignore_idle_slots is set to false, or autoscaling is enabled.
+                format: int64
+                type: integer
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: BigQueryReservationReservationStatus defines the config connector
+              machine state of BigQueryReservationReservation
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the BigQueryReservationReservation
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  autoscale:
+                    properties:
+                      currentSlots:
+                        description: 'The slot capacity added to this reservation
+                          when autoscale happens. Will be between [0, max_slots].
+                          Note: after users reduce max_slots, it may take a while
+                          before it can be propagated, so current_slots may stay in
+                          the original value and could be larger than max_slots for
+                          that brief period (less than one minute)'
+                        format: int64
+                        type: integer
+                    type: object
+                  failover:
+                    properties:
+                      originalPrimaryLocation:
+                        description: The location where the reservation was originally
+                          created. This is set only during the failover reservation's
+                          creation. All billing charges for the failover reservation
+                          will be applied to this location.
+                        type: string
+                      primaryLocation:
+                        description: The current location of the reservation's primary
+                          replica. This field is only set for reservations using the
+                          managed disaster recovery feature.
+                        type: string
+                      secondaryLocation:
+                        description: The current location of the reservation's secondary
+                          replica. This field is only set for reservations using the
+                          managed disaster recovery feature. Users can set this in
+                          create reservation calls to create a failover reservation
+                          or in update reservation calls to convert a non-failover
+                          reservation to a failover reservation(or vice versa).
+                        type: string
+                    type: object
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null

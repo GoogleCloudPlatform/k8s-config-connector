@@ -81,6 +81,12 @@ spec:
         command:
         - /configconnector/manager
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        env:
+        - name: GOMEMLIMIT
+          value: 460MiB
+>>>>>>> v1.134.0
         image: foobar.local/controller:{{stable.latest}}
 =======
         image: foobar.local/controller:1.133.0
