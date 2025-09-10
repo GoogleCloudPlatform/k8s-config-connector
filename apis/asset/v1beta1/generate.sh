@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 set -o errexit
 set -o nounset
 set -o pipefail
@@ -24,9 +23,9 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.cloud.asset.v1 \
     --api-version asset.cnrm.cloud.google.com/v1beta1 \
+    --resource AssetFeed:Feed \
     --resource AssetSavedQuery:SavedQuery
 
 go run . generate-mapper \
-    --multiversion \
     --service google.cloud.asset.v1 \
-    --api-version asset.cnrm.cloud.google.com/v1beta1
+    --api-version asset.cnrm.cloud.google.com/v1beta1 \

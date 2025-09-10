@@ -16,17 +16,17 @@ package asset
 
 import (
 	pb "cloud.google.com/go/asset/apiv1/assetpb"
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1beta1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	exprpb "google.golang.org/genproto/googleapis/type/expr"
 )
 
-func Expr_v1alpha1_FromProto(mapCtx *direct.MapContext, in *exprpb.Expr) *krmv1alpha1.Expr {
+func Expr_FromProto(mapCtx *direct.MapContext, in *exprpb.Expr) *krm.Expr {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.Expr{}
+	out := &krm.Expr{}
 	out.Expression = direct.LazyPtr(in.GetExpression())
 	out.Title = direct.LazyPtr(in.GetTitle())
 	out.Description = direct.LazyPtr(in.GetDescription())
@@ -34,7 +34,7 @@ func Expr_v1alpha1_FromProto(mapCtx *direct.MapContext, in *exprpb.Expr) *krmv1a
 	return out
 }
 
-func Expr_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Expr) *exprpb.Expr {
+func Expr_ToProto(mapCtx *direct.MapContext, in *krm.Expr) *exprpb.Expr {
 	if in == nil {
 		return nil
 	}
@@ -46,15 +46,15 @@ func Expr_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Expr) *exp
 	return out
 }
 
-func PubsubDestination_FromProto(mapCtx *direct.MapContext, in *pb.PubsubDestination) *krmv1alpha1.PubsubDestination {
+func PubsubDestination_FromProto(mapCtx *direct.MapContext, in *pb.PubsubDestination) *krm.PubsubDestination {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.PubsubDestination{}
+	out := &krm.PubsubDestination{}
 	out.TopicRef = &pubsubv1beta1.PubSubTopicRef{External: in.GetTopic()}
 	return out
 }
-func PubsubDestination_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.PubsubDestination) *pb.PubsubDestination {
+func PubsubDestination_ToProto(mapCtx *direct.MapContext, in *krm.PubsubDestination) *pb.PubsubDestination {
 	if in == nil {
 		return nil
 	}
