@@ -16,7 +16,7 @@
 // proto.service: google.cloud.asset.v1.AssetService
 // proto.message: google.cloud.asset.v1.Feed
 // crd.type: AssetFeed
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package asset
 
@@ -35,7 +35,7 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -163,7 +163,7 @@ func (a *feedAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 	}
 
 	desired := a.desired.DeepCopy()
-	resource := AssetFeedSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
+	resource := AssetFeedSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -221,7 +221,7 @@ func (a *feedAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	}
 
 	desired := a.desired.DeepCopy()
-	resource := AssetFeedSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
+	resource := AssetFeedSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -272,7 +272,7 @@ func (a *feedAdapter) Export(ctx context.Context) (*unstructured.Unstructured, e
 
 	obj := &krm.AssetFeed{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(AssetFeedSpec_v1alpha1_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(AssetFeedSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

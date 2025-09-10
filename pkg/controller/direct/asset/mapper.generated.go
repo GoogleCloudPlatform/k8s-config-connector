@@ -21,26 +21,25 @@ package asset
 
 import (
 	pb "cloud.google.com/go/asset/apiv1/assetpb"
-	krmassetv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AssetFeedSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Feed) *krmassetv1alpha1.AssetFeedSpec {
+func AssetFeedSpec_FromProto(mapCtx *direct.MapContext, in *pb.Feed) *krm.AssetFeedSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmassetv1alpha1.AssetFeedSpec{}
+	out := &krm.AssetFeedSpec{}
 	// MISSING: Name
 	out.AssetNames = in.AssetNames
 	out.AssetTypes = in.AssetTypes
 	out.ContentType = direct.Enum_FromProto(mapCtx, in.GetContentType())
-	out.FeedOutputConfig = FeedOutputConfig_v1alpha1_FromProto(mapCtx, in.GetFeedOutputConfig())
-	out.Condition = Expr_v1alpha1_FromProto(mapCtx, in.GetCondition())
+	out.FeedOutputConfig = FeedOutputConfig_FromProto(mapCtx, in.GetFeedOutputConfig())
+	out.Condition = Expr_FromProto(mapCtx, in.GetCondition())
 	out.RelationshipTypes = in.RelationshipTypes
 	return out
 }
-func AssetFeedSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmassetv1alpha1.AssetFeedSpec) *pb.Feed {
+func AssetFeedSpec_ToProto(mapCtx *direct.MapContext, in *krm.AssetFeedSpec) *pb.Feed {
 	if in == nil {
 		return nil
 	}
@@ -49,12 +48,12 @@ func AssetFeedSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmassetv1alp
 	out.AssetNames = in.AssetNames
 	out.AssetTypes = in.AssetTypes
 	out.ContentType = direct.Enum_ToProto[pb.ContentType](mapCtx, in.ContentType)
-	out.FeedOutputConfig = FeedOutputConfig_v1alpha1_ToProto(mapCtx, in.FeedOutputConfig)
-	out.Condition = Expr_v1alpha1_ToProto(mapCtx, in.Condition)
+	out.FeedOutputConfig = FeedOutputConfig_ToProto(mapCtx, in.FeedOutputConfig)
+	out.Condition = Expr_ToProto(mapCtx, in.Condition)
 	out.RelationshipTypes = in.RelationshipTypes
 	return out
 }
-func AssetSavedQueryObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery) *krm.AssetSavedQueryObservedState {
+func AssetSavedQueryObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery) *krm.AssetSavedQueryObservedState {
 	if in == nil {
 		return nil
 	}
@@ -66,7 +65,7 @@ func AssetSavedQueryObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, i
 	out.LastUpdater = direct.LazyPtr(in.GetLastUpdater())
 	return out
 }
-func AssetSavedQueryObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AssetSavedQueryObservedState) *pb.SavedQuery {
+func AssetSavedQueryObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AssetSavedQueryObservedState) *pb.SavedQuery {
 	if in == nil {
 		return nil
 	}
@@ -78,7 +77,7 @@ func AssetSavedQueryObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	out.LastUpdater = direct.ValueOf(in.LastUpdater)
 	return out
 }
-func AssetSavedQuerySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery) *krm.AssetSavedQuerySpec {
+func AssetSavedQuerySpec_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery) *krm.AssetSavedQuerySpec {
 	if in == nil {
 		return nil
 	}
@@ -86,10 +85,10 @@ func AssetSavedQuerySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Sav
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Labels = in.Labels
-	out.Content = SavedQuery_QueryContent_v1beta1_FromProto(mapCtx, in.GetContent())
+	out.Content = SavedQuery_QueryContent_FromProto(mapCtx, in.GetContent())
 	return out
 }
-func AssetSavedQuerySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AssetSavedQuerySpec) *pb.SavedQuery {
+func AssetSavedQuerySpec_ToProto(mapCtx *direct.MapContext, in *krm.AssetSavedQuerySpec) *pb.SavedQuery {
 	if in == nil {
 		return nil
 	}
@@ -97,72 +96,54 @@ func AssetSavedQuerySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Asse
 	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
 	out.Labels = in.Labels
-	out.Content = SavedQuery_QueryContent_v1beta1_ToProto(mapCtx, in.Content)
+	out.Content = SavedQuery_QueryContent_ToProto(mapCtx, in.Content)
 	return out
 }
-func FeedOutputConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FeedOutputConfig) *krmassetv1alpha1.FeedOutputConfig {
+func FeedOutputConfig_FromProto(mapCtx *direct.MapContext, in *pb.FeedOutputConfig) *krm.FeedOutputConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krmassetv1alpha1.FeedOutputConfig{}
-	out.PubsubDestination = PubsubDestination_v1alpha1_FromProto(mapCtx, in.GetPubsubDestination())
+	out := &krm.FeedOutputConfig{}
+	out.PubsubDestination = PubsubDestination_FromProto(mapCtx, in.GetPubsubDestination())
 	return out
 }
-func FeedOutputConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmassetv1alpha1.FeedOutputConfig) *pb.FeedOutputConfig {
+func FeedOutputConfig_ToProto(mapCtx *direct.MapContext, in *krm.FeedOutputConfig) *pb.FeedOutputConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.FeedOutputConfig{}
-	if oneof := PubsubDestination_v1alpha1_ToProto(mapCtx, in.PubsubDestination); oneof != nil {
+	if oneof := PubsubDestination_ToProto(mapCtx, in.PubsubDestination); oneof != nil {
 		out.Destination = &pb.FeedOutputConfig_PubsubDestination{PubsubDestination: oneof}
 	}
 	return out
 }
-func IAMPolicyAnalysisQuery_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery) *krm.IAMPolicyAnalysisQuery {
+func IAMPolicyAnalysisQuery_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery) *krm.IAMPolicyAnalysisQuery {
 	if in == nil {
 		return nil
 	}
 	out := &krm.IAMPolicyAnalysisQuery{}
 	out.Scope = direct.LazyPtr(in.GetScope())
-	out.ResourceSelector = IAMPolicyAnalysisQuery_ResourceSelector_v1beta1_FromProto(mapCtx, in.GetResourceSelector())
-	out.IdentitySelector = IAMPolicyAnalysisQuery_IdentitySelector_v1beta1_FromProto(mapCtx, in.GetIdentitySelector())
-	out.AccessSelector = IAMPolicyAnalysisQuery_AccessSelector_v1beta1_FromProto(mapCtx, in.GetAccessSelector())
-	out.Options = IAMPolicyAnalysisQuery_Options_v1beta1_FromProto(mapCtx, in.GetOptions())
-	out.ConditionContext = IAMPolicyAnalysisQuery_ConditionContext_v1beta1_FromProto(mapCtx, in.GetConditionContext())
+	out.ResourceSelector = IAMPolicyAnalysisQuery_ResourceSelector_FromProto(mapCtx, in.GetResourceSelector())
+	out.IdentitySelector = IAMPolicyAnalysisQuery_IdentitySelector_FromProto(mapCtx, in.GetIdentitySelector())
+	out.AccessSelector = IAMPolicyAnalysisQuery_AccessSelector_FromProto(mapCtx, in.GetAccessSelector())
+	out.Options = IAMPolicyAnalysisQuery_Options_FromProto(mapCtx, in.GetOptions())
+	out.ConditionContext = IAMPolicyAnalysisQuery_ConditionContext_FromProto(mapCtx, in.GetConditionContext())
 	return out
 }
-func IAMPolicyAnalysisQuery_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicyAnalysisQuery) *pb.IamPolicyAnalysisQuery {
+func IAMPolicyAnalysisQuery_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicyAnalysisQuery) *pb.IamPolicyAnalysisQuery {
 	if in == nil {
 		return nil
 	}
 	out := &pb.IamPolicyAnalysisQuery{}
 	out.Scope = direct.ValueOf(in.Scope)
-	out.ResourceSelector = IAMPolicyAnalysisQuery_ResourceSelector_v1beta1_ToProto(mapCtx, in.ResourceSelector)
-	out.IdentitySelector = IAMPolicyAnalysisQuery_IdentitySelector_v1beta1_ToProto(mapCtx, in.IdentitySelector)
-	out.AccessSelector = IAMPolicyAnalysisQuery_AccessSelector_v1beta1_ToProto(mapCtx, in.AccessSelector)
-	out.Options = IAMPolicyAnalysisQuery_Options_v1beta1_ToProto(mapCtx, in.Options)
-	out.ConditionContext = IAMPolicyAnalysisQuery_ConditionContext_v1beta1_ToProto(mapCtx, in.ConditionContext)
+	out.ResourceSelector = IAMPolicyAnalysisQuery_ResourceSelector_ToProto(mapCtx, in.ResourceSelector)
+	out.IdentitySelector = IAMPolicyAnalysisQuery_IdentitySelector_ToProto(mapCtx, in.IdentitySelector)
+	out.AccessSelector = IAMPolicyAnalysisQuery_AccessSelector_ToProto(mapCtx, in.AccessSelector)
+	out.Options = IAMPolicyAnalysisQuery_Options_ToProto(mapCtx, in.Options)
+	out.ConditionContext = IAMPolicyAnalysisQuery_ConditionContext_ToProto(mapCtx, in.ConditionContext)
 	return out
 }
-func IAMPolicyAnalysisQuery_AccessSelector_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_AccessSelector) *krmassetv1alpha1.IAMPolicyAnalysisQuery_AccessSelector {
-	if in == nil {
-		return nil
-	}
-	out := &krmassetv1alpha1.IAMPolicyAnalysisQuery_AccessSelector{}
-	out.Roles = in.Roles
-	out.Permissions = in.Permissions
-	return out
-}
-func IAMPolicyAnalysisQuery_AccessSelector_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmassetv1alpha1.IAMPolicyAnalysisQuery_AccessSelector) *pb.IamPolicyAnalysisQuery_AccessSelector {
-	if in == nil {
-		return nil
-	}
-	out := &pb.IamPolicyAnalysisQuery_AccessSelector{}
-	out.Roles = in.Roles
-	out.Permissions = in.Permissions
-	return out
-}
-func IAMPolicyAnalysisQuery_AccessSelector_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_AccessSelector) *krm.IAMPolicyAnalysisQuery_AccessSelector {
+func IAMPolicyAnalysisQuery_AccessSelector_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_AccessSelector) *krm.IAMPolicyAnalysisQuery_AccessSelector {
 	if in == nil {
 		return nil
 	}
@@ -171,7 +152,7 @@ func IAMPolicyAnalysisQuery_AccessSelector_v1beta1_FromProto(mapCtx *direct.MapC
 	out.Permissions = in.Permissions
 	return out
 }
-func IAMPolicyAnalysisQuery_AccessSelector_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicyAnalysisQuery_AccessSelector) *pb.IamPolicyAnalysisQuery_AccessSelector {
+func IAMPolicyAnalysisQuery_AccessSelector_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicyAnalysisQuery_AccessSelector) *pb.IamPolicyAnalysisQuery_AccessSelector {
 	if in == nil {
 		return nil
 	}
@@ -180,25 +161,7 @@ func IAMPolicyAnalysisQuery_AccessSelector_v1beta1_ToProto(mapCtx *direct.MapCon
 	out.Permissions = in.Permissions
 	return out
 }
-func IAMPolicyAnalysisQuery_ConditionContext_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_ConditionContext) *krmassetv1alpha1.IAMPolicyAnalysisQuery_ConditionContext {
-	if in == nil {
-		return nil
-	}
-	out := &krmassetv1alpha1.IAMPolicyAnalysisQuery_ConditionContext{}
-	out.AccessTime = direct.StringTimestamp_FromProto(mapCtx, in.GetAccessTime())
-	return out
-}
-func IAMPolicyAnalysisQuery_ConditionContext_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmassetv1alpha1.IAMPolicyAnalysisQuery_ConditionContext) *pb.IamPolicyAnalysisQuery_ConditionContext {
-	if in == nil {
-		return nil
-	}
-	out := &pb.IamPolicyAnalysisQuery_ConditionContext{}
-	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.AccessTime); oneof != nil {
-		out.TimeContext = &pb.IamPolicyAnalysisQuery_ConditionContext_AccessTime{AccessTime: oneof}
-	}
-	return out
-}
-func IAMPolicyAnalysisQuery_ConditionContext_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_ConditionContext) *krm.IAMPolicyAnalysisQuery_ConditionContext {
+func IAMPolicyAnalysisQuery_ConditionContext_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_ConditionContext) *krm.IAMPolicyAnalysisQuery_ConditionContext {
 	if in == nil {
 		return nil
 	}
@@ -206,7 +169,7 @@ func IAMPolicyAnalysisQuery_ConditionContext_v1beta1_FromProto(mapCtx *direct.Ma
 	out.AccessTime = direct.StringTimestamp_FromProto(mapCtx, in.GetAccessTime())
 	return out
 }
-func IAMPolicyAnalysisQuery_ConditionContext_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicyAnalysisQuery_ConditionContext) *pb.IamPolicyAnalysisQuery_ConditionContext {
+func IAMPolicyAnalysisQuery_ConditionContext_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicyAnalysisQuery_ConditionContext) *pb.IamPolicyAnalysisQuery_ConditionContext {
 	if in == nil {
 		return nil
 	}
@@ -216,7 +179,7 @@ func IAMPolicyAnalysisQuery_ConditionContext_v1beta1_ToProto(mapCtx *direct.MapC
 	}
 	return out
 }
-func IAMPolicyAnalysisQuery_IdentitySelector_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_IdentitySelector) *krm.IAMPolicyAnalysisQuery_IdentitySelector {
+func IAMPolicyAnalysisQuery_IdentitySelector_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_IdentitySelector) *krm.IAMPolicyAnalysisQuery_IdentitySelector {
 	if in == nil {
 		return nil
 	}
@@ -224,7 +187,7 @@ func IAMPolicyAnalysisQuery_IdentitySelector_v1beta1_FromProto(mapCtx *direct.Ma
 	out.Identity = direct.LazyPtr(in.GetIdentity())
 	return out
 }
-func IAMPolicyAnalysisQuery_IdentitySelector_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicyAnalysisQuery_IdentitySelector) *pb.IamPolicyAnalysisQuery_IdentitySelector {
+func IAMPolicyAnalysisQuery_IdentitySelector_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicyAnalysisQuery_IdentitySelector) *pb.IamPolicyAnalysisQuery_IdentitySelector {
 	if in == nil {
 		return nil
 	}
@@ -232,33 +195,7 @@ func IAMPolicyAnalysisQuery_IdentitySelector_v1beta1_ToProto(mapCtx *direct.MapC
 	out.Identity = direct.ValueOf(in.Identity)
 	return out
 }
-func IAMPolicyAnalysisQuery_Options_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_Options) *krmassetv1alpha1.IAMPolicyAnalysisQuery_Options {
-	if in == nil {
-		return nil
-	}
-	out := &krmassetv1alpha1.IAMPolicyAnalysisQuery_Options{}
-	out.ExpandGroups = direct.LazyPtr(in.GetExpandGroups())
-	out.ExpandRoles = direct.LazyPtr(in.GetExpandRoles())
-	out.ExpandResources = direct.LazyPtr(in.GetExpandResources())
-	out.OutputResourceEdges = direct.LazyPtr(in.GetOutputResourceEdges())
-	out.OutputGroupEdges = direct.LazyPtr(in.GetOutputGroupEdges())
-	out.AnalyzeServiceAccountImpersonation = direct.LazyPtr(in.GetAnalyzeServiceAccountImpersonation())
-	return out
-}
-func IAMPolicyAnalysisQuery_Options_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmassetv1alpha1.IAMPolicyAnalysisQuery_Options) *pb.IamPolicyAnalysisQuery_Options {
-	if in == nil {
-		return nil
-	}
-	out := &pb.IamPolicyAnalysisQuery_Options{}
-	out.ExpandGroups = direct.ValueOf(in.ExpandGroups)
-	out.ExpandRoles = direct.ValueOf(in.ExpandRoles)
-	out.ExpandResources = direct.ValueOf(in.ExpandResources)
-	out.OutputResourceEdges = direct.ValueOf(in.OutputResourceEdges)
-	out.OutputGroupEdges = direct.ValueOf(in.OutputGroupEdges)
-	out.AnalyzeServiceAccountImpersonation = direct.ValueOf(in.AnalyzeServiceAccountImpersonation)
-	return out
-}
-func IAMPolicyAnalysisQuery_Options_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_Options) *krm.IAMPolicyAnalysisQuery_Options {
+func IAMPolicyAnalysisQuery_Options_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_Options) *krm.IAMPolicyAnalysisQuery_Options {
 	if in == nil {
 		return nil
 	}
@@ -271,7 +208,7 @@ func IAMPolicyAnalysisQuery_Options_v1beta1_FromProto(mapCtx *direct.MapContext,
 	out.AnalyzeServiceAccountImpersonation = direct.LazyPtr(in.GetAnalyzeServiceAccountImpersonation())
 	return out
 }
-func IAMPolicyAnalysisQuery_Options_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicyAnalysisQuery_Options) *pb.IamPolicyAnalysisQuery_Options {
+func IAMPolicyAnalysisQuery_Options_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicyAnalysisQuery_Options) *pb.IamPolicyAnalysisQuery_Options {
 	if in == nil {
 		return nil
 	}
@@ -284,7 +221,7 @@ func IAMPolicyAnalysisQuery_Options_v1beta1_ToProto(mapCtx *direct.MapContext, i
 	out.AnalyzeServiceAccountImpersonation = direct.ValueOf(in.AnalyzeServiceAccountImpersonation)
 	return out
 }
-func IAMPolicyAnalysisQuery_ResourceSelector_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_ResourceSelector) *krm.IAMPolicyAnalysisQuery_ResourceSelector {
+func IAMPolicyAnalysisQuery_ResourceSelector_FromProto(mapCtx *direct.MapContext, in *pb.IamPolicyAnalysisQuery_ResourceSelector) *krm.IAMPolicyAnalysisQuery_ResourceSelector {
 	if in == nil {
 		return nil
 	}
@@ -292,7 +229,7 @@ func IAMPolicyAnalysisQuery_ResourceSelector_v1beta1_FromProto(mapCtx *direct.Ma
 	out.FullResourceName = direct.LazyPtr(in.GetFullResourceName())
 	return out
 }
-func IAMPolicyAnalysisQuery_ResourceSelector_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicyAnalysisQuery_ResourceSelector) *pb.IamPolicyAnalysisQuery_ResourceSelector {
+func IAMPolicyAnalysisQuery_ResourceSelector_ToProto(mapCtx *direct.MapContext, in *krm.IAMPolicyAnalysisQuery_ResourceSelector) *pb.IamPolicyAnalysisQuery_ResourceSelector {
 	if in == nil {
 		return nil
 	}
@@ -300,30 +237,20 @@ func IAMPolicyAnalysisQuery_ResourceSelector_v1beta1_ToProto(mapCtx *direct.MapC
 	out.FullResourceName = direct.ValueOf(in.FullResourceName)
 	return out
 }
-func PubsubDestination_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmassetv1alpha1.PubsubDestination) *pb.PubsubDestination {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PubsubDestination{}
-	if in.TopicRef != nil {
-		out.Topic = in.TopicRef.External
-	}
-	return out
-}
-func SavedQuery_QueryContent_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery_QueryContent) *krm.SavedQuery_QueryContent {
+func SavedQuery_QueryContent_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuery_QueryContent) *krm.SavedQuery_QueryContent {
 	if in == nil {
 		return nil
 	}
 	out := &krm.SavedQuery_QueryContent{}
-	out.IAMPolicyAnalysisQuery = IAMPolicyAnalysisQuery_v1beta1_FromProto(mapCtx, in.GetIamPolicyAnalysisQuery())
+	out.IAMPolicyAnalysisQuery = IAMPolicyAnalysisQuery_FromProto(mapCtx, in.GetIamPolicyAnalysisQuery())
 	return out
 }
-func SavedQuery_QueryContent_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SavedQuery_QueryContent) *pb.SavedQuery_QueryContent {
+func SavedQuery_QueryContent_ToProto(mapCtx *direct.MapContext, in *krm.SavedQuery_QueryContent) *pb.SavedQuery_QueryContent {
 	if in == nil {
 		return nil
 	}
 	out := &pb.SavedQuery_QueryContent{}
-	if oneof := IAMPolicyAnalysisQuery_v1beta1_ToProto(mapCtx, in.IAMPolicyAnalysisQuery); oneof != nil {
+	if oneof := IAMPolicyAnalysisQuery_ToProto(mapCtx, in.IAMPolicyAnalysisQuery); oneof != nil {
 		out.QueryContent = &pb.SavedQuery_QueryContent_IamPolicyAnalysisQuery{IamPolicyAnalysisQuery: oneof}
 	}
 	return out
