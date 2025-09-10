@@ -23,3 +23,4 @@ spec:
   instanceRef:
     name: lvdep${uniqueId}
   query: "SELECT 1 AS value"
+  deletionProtection: false
