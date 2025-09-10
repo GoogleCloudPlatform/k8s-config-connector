@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -137,7 +137,6 @@ type APIQuotaPreferenceObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpapiquotapreference;gcpapiquotapreferences
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
