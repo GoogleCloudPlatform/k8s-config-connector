@@ -1,4 +1,4 @@
-apiVersion: cloudquota.cnrm.cloud.google.com/v1alpha1
+apiVersion: cloudquota.cnrm.cloud.google.com/v1beta1
 kind: APIQuotaPreference
 metadata:
   finalizers:
