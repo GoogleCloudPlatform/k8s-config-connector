@@ -5,7 +5,7 @@ go 1.24.0
 toolchain go1.24.6
 
 require (
-	github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition v0.0.0-20241216141910-490104000f4f
+	github.com/GoogleCloudPlatform/k8s-config-connector/experiments/compositions/composition v0.0.0-20250911134839-510cf4bd9c02
 	google.golang.org/grpc v1.67.1
 	k8s.io/apimachinery v0.29.1
 	sigs.k8s.io/controller-runtime v0.17.2
