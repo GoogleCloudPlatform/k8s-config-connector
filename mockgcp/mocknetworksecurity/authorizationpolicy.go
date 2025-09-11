@@ -52,10 +52,11 @@ func (s *NetworkSecurityServer) CreateAuthorizationPolicy(ctx context.Context, r
 	now := time.Now()
 	lroMetadata := &pb.OperationMetadata{
 		CreateTime:            timestamppb.New(now),
+		EndTime:               timestamppb.New(now),
 		RequestedCancellation: false,
 		Target:                name,
 		Verb:                  "create",
-		ApiVersion:            "v1",
+		ApiVersion:            "v1beta1",
 	}
 	return s.operations.StartLRO(ctx, req.Parent, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		result := proto.Clone(obj).(*pb.AuthorizationPolicy)
@@ -82,7 +83,6 @@ func (s *NetworkSecurityServer) GetAuthorizationPolicy(ctx context.Context, req 
 	now := time.Now()
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
-
 	return obj, nil
 }
 
@@ -119,10 +119,10 @@ func (s *NetworkSecurityServer) UpdateAuthorizationPolicy(ctx context.Context, r
 		RequestedCancellation: false,
 		Target:                name.String(),
 		Verb:                  "update",
-		ApiVersion:            "v1",
+		ApiVersion:            "v1beta1",
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (protoreflect.ProtoMessage, error) {
-		result := proto.Clone(obj).(*pb.AuthorizationPolicy)
+		result := proto.Clone(updated).(*pb.AuthorizationPolicy)
 		return result, nil
 	})
 }
@@ -132,6 +132,7 @@ func (s *NetworkSecurityServer) DeleteAuthorizationPolicy(ctx context.Context, r
 	if err != nil {
 		return nil, err
 	}
+
 	if err := s.storage.Delete(ctx, name.String(), &pb.AuthorizationPolicy{}); err != nil {
 		return nil, err
 	}
@@ -142,10 +143,12 @@ func (s *NetworkSecurityServer) DeleteAuthorizationPolicy(ctx context.Context, r
 		RequestedCancellation: false,
 		Target:                name.String(),
 		Verb:                  "delete",
-		ApiVersion:            "v1",
+		ApiVersion:            "v1beta1",
 	}
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.DoneLRO(ctx, lroPrefix, lroMetadata, &emptypb.Empty{})
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (protoreflect.ProtoMessage, error) {
+		return &emptypb.Empty{}, nil
+	})
 }
 
 type authorizationPolicyName struct {
