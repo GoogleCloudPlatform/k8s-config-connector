@@ -75,53 +75,55 @@ spec:
                     type: string
                 type: object
               associatedEntities:
+                additionalProperties:
+                  properties:
+                    anthosClusters:
+                      description: Optional. Information specifying Anthos clusters
+                        as associated entities.
+                      items:
+                        properties:
+                          membership:
+                            description: Optional. Membership of the GKE Hub-registered
+                              cluster to which to apply the Skaffold configuration.
+                              Format is `projects/{project}/locations/{location}/memberships/{membership_name}`.
+                            type: string
+                        type: object
+                      type: array
+                    gkeClusters:
+                      description: Optional. Information specifying GKE clusters as
+                        associated entities.
+                      items:
+                        properties:
+                          cluster:
+                            description: Optional. Information specifying a GKE Cluster.
+                              Format is `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}`.
+                            type: string
+                          dnsEndpoint:
+                            description: Optional. If set, the cluster will be accessed
+                              using the DNS endpoint. Note that both `dns_endpoint`
+                              and `internal_ip` cannot be set to true.
+                            type: boolean
+                          internalIP:
+                            description: |-
+                              Optional. If true, `cluster` is accessed using the private IP address of
+                               the control plane endpoint. Otherwise, the default IP address of the
+                               control plane endpoint is used. The default IP address is the private IP
+                               address for clusters with private control-plane endpoints and the public IP
+                               address otherwise.
+
+                               Only specify this option when `cluster` is a [private GKE
+                               cluster](https://cloud.google.com/kubernetes-engine/docs/concepts/private-cluster-concept).
+                               Note that `internal_ip` and `dns_endpoint` cannot both be set to true.
+                            type: boolean
+                          proxyURL:
+                            description: Optional. If set, used to configure a [proxy](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/#proxy)
+                              to the Kubernetes server.
+                            type: string
+                        type: object
+                      type: array
+                  type: object
                 description: Optional. The associations between the Target and other
                   entities.
-                properties:
-                  anthosClusters:
-                    description: Optional. Information specifying Anthos clusters
-                      as associated entities.
-                    items:
-                      properties:
-                        membership:
-                          description: Optional. Membership of the GKE Hub-registered
-                            cluster to which to apply the Skaffold configuration.
-                            Format is `projects/{project}/locations/{location}/memberships/{membership_name}`.
-                          type: string
-                      type: object
-                    type: array
-                  gkeClusters:
-                    description: Optional. Information specifying GKE clusters as
-                      associated entities.
-                    items:
-                      properties:
-                        cluster:
-                          description: Optional. Information specifying a GKE Cluster.
-                            Format is `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}`.
-                          type: string
-                        dnsEndpoint:
-                          description: Optional. If set, the cluster will be accessed
-                            using the DNS endpoint. Note that both `dns_endpoint`
-                            and `internal_ip` cannot be set to true.
-                          type: boolean
-                        internalIP:
-                          description: |-
-                            Optional. If true, `cluster` is accessed using the private IP address of
-                             the control plane endpoint. Otherwise, the default IP address of the
-                             control plane endpoint is used. The default IP address is the private IP
-                             address for clusters with private control-plane endpoints and the public IP
-                             address otherwise.
-
-                             Only specify this option when `cluster` is a [private GKE
-                             cluster](https://cloud.google.com/kubernetes-engine/docs/concepts/private-cluster-concept).
-                             Note that `internal_ip` and `dns_endpoint` cannot both be set to true.
-                          type: boolean
-                        proxyURL:
-                          description: Optional. If set, used to configure a [proxy](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/#proxy)
-                            to the Kubernetes server.
-                          type: string
-                      type: object
-                    type: array
                 type: object
               customTarget:
                 description: Information specifying a custom target.
