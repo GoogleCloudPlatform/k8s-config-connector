@@ -18,7 +18,6 @@ import (
 	"context"
 	"sort"
 	"strings"
-	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -28,7 +27,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type sqlUsersService struct {
@@ -101,16 +99,6 @@ func (s *sqlUsersService) Insert(ctx context.Context, req *pb.SqlUsersInsertRequ
 	obj.Project = name.Project.ID
 	obj.Instance = name.Instance
 	obj.Kind = "sql#user"
-	if obj.PasswordPolicy == nil {
-		obj.PasswordPolicy = &pb.UserPasswordValidationPolicy{Status: &pb.PasswordStatus{}}
-	} else {
-		if obj.PasswordPolicy.PasswordExpirationDuration != nil {
-			if obj.PasswordPolicy.Status == nil {
-				obj.PasswordPolicy.Status = &pb.PasswordStatus{}
-			}
-			obj.PasswordPolicy.Status.PasswordExpirationTime = timestamppb.New(time.Now().Add(obj.PasswordPolicy.PasswordExpirationDuration.AsDuration()))
-		}
-	}
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
