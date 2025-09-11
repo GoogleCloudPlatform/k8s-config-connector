@@ -563,6 +563,16 @@ type SQLInstanceStatus struct {
 	/* The service account email address assigned to the instance. */
 	// +optional
 	ServiceAccountEmailAddress *string `json:"serviceAccountEmailAddress,omitempty"`
+
+	/* LastAppliedSpecHash is a hash of the spec that was last successfully applied.
+	This is used by the controller to detect if the user's desired state has changed. */
+	// +optional
+	LastAppliedSpecHash *string `json:"lastAppliedSpecHash,omitempty"`
+
+	/* LastAppliedGCPHash is a hash of the GCP resource state that was observed
+	after the last successful reconciliation. This is used for fast-path drift detection. */
+	// +optional
+	LastAppliedGCPHash *string `json:"lastAppliedGCPHash,omitempty"`
 }
 
 // +genclient
