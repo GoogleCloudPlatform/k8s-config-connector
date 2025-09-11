@@ -632,3 +632,42 @@ type VPCAccess_NetworkInterface struct {
 	// +kcc:proto:field=google.cloud.run.v2.VpcAccess.NetworkInterface.tags
 	Tags []string `json:"tags,omitempty"`
 }
+
+// +kcc:proto=google.cloud.run.v2.Condition
+type Condition struct {
+	// type is used to communicate the status of the reconciliation process.
+	//  See also:
+	//  https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting
+	//  Types common to all resources include:
+	//  * "Ready": True when the Resource is ready.
+	// +kcc:proto:field=google.cloud.run.v2.Condition.type
+	Type *string `json:"type,omitempty"`
+
+	// State of the condition.
+	// +kcc:proto:field=google.cloud.run.v2.Condition.state
+	State *string `json:"state,omitempty"`
+
+	// Human readable message indicating details about the current status.
+	// +kcc:proto:field=google.cloud.run.v2.Condition.message
+	Message *string `json:"message,omitempty"`
+
+	// Last time the condition transitioned from one status to another.
+	// +kcc:proto:field=google.cloud.run.v2.Condition.last_transition_time
+	LastTransitionTime *string `json:"lastTransitionTime,omitempty"`
+
+	// How to interpret failures of this condition, one of Error, Warning, Info
+	// +kcc:proto:field=google.cloud.run.v2.Condition.severity
+	Severity *string `json:"severity,omitempty"`
+
+	// Note: `Reason`, `RevisionReason` and `ExecutionReason` are OneOf fields. The GCP proto uses a single interface field
+	// but the KCC (DCL-based) has split them into individual fields.
+
+	// A common (service-level) reason for this condition.
+	Reason *string `json:"reason,omitempty"`
+
+	// A reason for the revision condition.
+	RevisionReason *string `json:"revisionReason,omitempty"`
+
+	// A reason for the execution condition.
+	ExecutionReason *string `json:"executionReason,omitempty"`
+}
