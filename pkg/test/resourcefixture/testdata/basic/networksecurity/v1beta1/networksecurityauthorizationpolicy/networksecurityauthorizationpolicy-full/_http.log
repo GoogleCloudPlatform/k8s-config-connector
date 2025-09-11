@@ -31,6 +31,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "description": "A full authorization policy for testing",
   "labels": {
     "cnrm-test": "true",
+    "custom-label": "foo",
     "managed-by-cnrm": "true"
   },
   "name": "projects/*/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
@@ -78,10 +79,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
-    "apiVersion": "v1",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
+    "apiVersion": "v1beta1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
     "verb": "create"
   },
@@ -107,20 +110,23 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
-    "apiVersion": "v1",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
+    "apiVersion": "v1beta1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.AuthorizationPolicy",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.AuthorizationPolicy",
     "action": "ALLOW",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "A full authorization policy for testing",
     "labels": {
       "cnrm-test": "true",
+      "custom-label": "foo",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
@@ -181,6 +187,7 @@ X-Xss-Protection: 0
   "description": "A full authorization policy for testing",
   "labels": {
     "cnrm-test": "true",
+    "custom-label": "foo",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
@@ -229,6 +236,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "description": "A full authorization policy for testing - updated",
   "labels": {
     "cnrm-test": "true",
+    "custom-label": "bar",
     "managed-by-cnrm": "true"
   },
   "rules": [
@@ -275,11 +283,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
-    "apiVersion": "v1",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
+    "apiVersion": "v1beta1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
     "verb": "update"
   },
@@ -305,21 +314,23 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
-    "apiVersion": "v1",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
+    "apiVersion": "v1beta1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
     "verb": "update"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.AuthorizationPolicy",
-    "action": "ALLOW",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.AuthorizationPolicy",
+    "action": "DENY",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "A full authorization policy for testing",
+    "description": "A full authorization policy for testing - updated",
     "labels": {
       "cnrm-test": "true",
+      "custom-label": "bar",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
@@ -328,27 +339,27 @@ X-Xss-Protection: 0
         "destinations": [
           {
             "hosts": [
-              "example.com"
+              "updated.example.com"
             ],
             "httpHeaderMatch": {
-              "headerName": "X-Test-Header",
+              "headerName": "X-Test-Header-Updated",
               "regexMatch": ".*"
             },
             "methods": [
-              "GET"
+              "POST"
             ],
             "ports": [
-              8080
+              8081
             ]
           }
         ],
         "sources": [
           {
             "ipBlocks": [
-              "1.2.3.4/32"
+              "1.2.3.5/32"
             ],
             "principals": [
-              "spiffe://foo.bar/ns/default/sa/default"
+              "spiffe://foo.bar/ns/default/sa/updated"
             ]
           }
         ]
@@ -380,6 +391,7 @@ X-Xss-Protection: 0
   "description": "A full authorization policy for testing - updated",
   "labels": {
     "cnrm-test": "true",
+    "custom-label": "bar",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
@@ -434,12 +446,42 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
+    "apiVersion": "v1beta1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
-    "apiVersion": "v1",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
+    "apiVersion": "v1beta1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
     "verb": "delete"
   },
