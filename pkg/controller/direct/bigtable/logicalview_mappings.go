@@ -46,7 +46,7 @@ func BigtableLogicalViewSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.
 		Query: *in.Query,
 	}
 
-	if in.DeletionProtection != nil && *in.DeletionProtection {
+	if in.DeletionProtection != nil {
 		out.DeletionProtection = *in.DeletionProtection
 	}
 	return out

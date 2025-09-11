@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"slices"
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
@@ -54,6 +55,9 @@ type modelLogicalView struct {
 func (m *modelLogicalView) client(ctx context.Context, parentProject string) (*gcp.InstanceAdminClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.GRPCClientOptions()
+	if err != nil {
+		return nil, fmt.Errorf("building BigtableLogicalView client options: %w", err)
+	}
 	gcpClient, err := gcp.NewInstanceAdminClient(ctx, parentProject, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building BigtableLogicalView client: %w", err)
@@ -66,7 +70,7 @@ func (m *modelLogicalView) client(ctx context.Context, parentProject string) (*g
 func (m *modelLogicalView) getProjectId(fullyQualifiedProject string) (string, error) {
 	tokens := strings.Split(fullyQualifiedProject, "/")
 	if len(tokens) != 2 || tokens[0] != "projects" {
-		return "", fmt.Errorf("Unexpected format for LogicalView Parent Project ID=%q was not known (expected projects/{projectID})", fullyQualifiedProject)
+		return "", fmt.Errorf("unexpected format for LogicalView Parent Project ID=%q was not known (expected projects/{projectID})", fullyQualifiedProject)
 	}
 	return tokens[1], nil
 }
@@ -142,6 +146,13 @@ func (a *LogicalViewAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
+func ConvertBoolToDeletionProtection(boolean bool) gcp.DeletionProtection {
+	if boolean {
+		return 1
+	}
+	return 0
+}
+
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *LogicalViewAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
@@ -154,16 +165,21 @@ func (a *LogicalViewAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		return mapCtx.Err()
 	}
 
-	deletionProtection := gcp.Unprotected
-	if resource.DeletionProtection {
-		deletionProtection = gcp.Protected
+	gcpDeletionProtection := gcp.None
+	if desired.Spec.DeletionProtection != nil {
+		if *desired.Spec.DeletionProtection {
+			gcpDeletionProtection = gcp.Protected
+		} else {
+			gcpDeletionProtection = gcp.Unprotected
+		}
 	}
 
 	logicalViewInfo := &gcp.LogicalViewInfo{
 		LogicalViewID:      a.id.ID(),
 		Query:              resource.Query,
-		DeletionProtection: deletionProtection,
+		DeletionProtection: gcpDeletionProtection,
 	}
+
 	err := a.gcpClient.CreateLogicalView(ctx, a.id.ParentInstanceIdString(), logicalViewInfo)
 	if err != nil {
 		return fmt.Errorf("creating LogicalView %s: %w", a.id, err)
@@ -204,7 +220,8 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if !reflect.DeepEqual(a.desired.Spec.Query, a.actual.Query) {
 		updateMask.Paths = append(updateMask.Paths, "query")
 	}
-	if !reflect.DeepEqual(a.desired.Spec.DeletionProtection, a.actual.DeletionProtection) {
+
+	if desiredPb.DeletionProtection {
 		updateMask.Paths = append(updateMask.Paths, "deletion_protection")
 	}
 
@@ -213,16 +230,23 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	} else {
 		log.V(2).Info("fields need update", "name", a.id, "paths", updateMask.Paths)
 
-		deletionProtection := gcp.Unprotected
-		if desiredPb.DeletionProtection {
-			deletionProtection = gcp.Protected
+		desiredlogicalview := gcp.LogicalViewInfo{
+			LogicalViewID: a.id.ID(),
+			Query:         desiredPb.Query,
+		}
+		if slices.Contains(updateMask.Paths, "deletion_protection") {
+
+			gcpDeletionProtection := gcp.None
+			if a.desired.Spec.DeletionProtection != nil {
+				if *a.desired.Spec.DeletionProtection {
+					gcpDeletionProtection = gcp.Protected
+				} else {
+					gcpDeletionProtection = gcp.Unprotected
+				}
+			}
+			desiredlogicalview.DeletionProtection = gcpDeletionProtection
 		}
 
-		desiredlogicalview := gcp.LogicalViewInfo{
-			LogicalViewID:      a.id.ID(),
-			Query:              desiredPb.Query,
-			DeletionProtection: deletionProtection,
-		}
 		err := a.gcpClient.UpdateLogicalView(ctx, a.id.ParentInstanceIdString(), desiredlogicalview)
 		if err != nil {
 			return fmt.Errorf("updating LogicalView %s: %w", a.id, err)
