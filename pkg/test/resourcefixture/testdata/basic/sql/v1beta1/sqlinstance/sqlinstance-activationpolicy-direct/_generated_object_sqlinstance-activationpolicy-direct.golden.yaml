@@ -31,6 +31,8 @@ status:
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
+  lastAppliedGCPHash: 20acbc1272ec6bcba8ae8d908ddffc75ae89c92b5721c9b4a90d866ba2607931
+  lastAppliedSpecHash: 37b390003a28505e2ba33cabed197b316bb7598365cf9c76970e3abae9e570d6
   observedGeneration: 2
   publicIpAddress: 10.1.2.3
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-direct-${uniqueId}
