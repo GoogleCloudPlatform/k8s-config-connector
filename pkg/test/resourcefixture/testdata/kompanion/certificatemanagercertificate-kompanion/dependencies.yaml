@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: certificatemanagercertificate-kompanion-secret-${uniqueId}
+  namespace: ${projectId}
+type: Opaque
+stringData:
+  tls.key: |
+    -----BEGIN PRIVATE KEY-----
+    MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC3Zm4HtjFlWvb5
+    1fo0u3vN8Uz9/rgf6WbitHwe59lTSWRsgEQDae_...
+    -----END PRIVATE KEY-----
