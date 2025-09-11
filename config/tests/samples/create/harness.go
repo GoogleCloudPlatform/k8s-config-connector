@@ -826,6 +826,9 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			if gvk.Group == "" && gvk.Kind == "SystemRun" {
 				continue
 			}
+			if gvk.Group == "" && gvk.Kind == "CheckMetrics" {
+				continue
+			}
 			if name == "dclbasedresourceserviceaccountref" {
 				t.Skip()
 			}
