@@ -15,7 +15,6 @@
 package v1beta1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -25,7 +24,7 @@ var KMSImportJobGVK = GroupVersion.WithKind("KMSImportJob")
 // KMSImportJobSpec defines the desired state of KMSImportJob
 // +kcc:spec:proto=google.cloud.kms.v1.ImportJob
 type KMSImportJobSpec struct {
-	KMSKeyRingRef *refs.KMSKeyRingRef `json:"kmsKeyRingRef"`
+	KMSKeyRingRef *KMSKeyRingRef `json:"kmsKeyRingRef"`
 
 	// The KMSImportJob name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
