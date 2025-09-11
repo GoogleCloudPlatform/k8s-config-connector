@@ -1043,6 +1043,9 @@ spec:
                   not reach the desired state.
                 items:
                   properties:
+                    executionReason:
+                      description: A reason for the execution condition.
+                      type: string
                     lastTransitionTime:
                       description: Last time the condition transitioned from one status
                         to another.
@@ -1050,6 +1053,12 @@ spec:
                     message:
                       description: Human readable message indicating details about
                         the current status.
+                      type: string
+                    reason:
+                      description: A common (service-level) reason for this condition.
+                      type: string
+                    revisionReason:
+                      description: A reason for the revision condition.
                       type: string
                     severity:
                       description: How to interpret failures of this condition, one
