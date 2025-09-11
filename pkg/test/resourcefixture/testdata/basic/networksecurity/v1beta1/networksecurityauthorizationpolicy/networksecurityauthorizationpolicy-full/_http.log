@@ -79,12 +79,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
     "verb": "create"
   },
@@ -110,17 +108,15 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.AuthorizationPolicy",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.AuthorizationPolicy",
     "action": "ALLOW",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "A full authorization policy for testing",
@@ -283,12 +279,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
     "verb": "update"
   },
@@ -314,23 +309,22 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
     "verb": "update"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.AuthorizationPolicy",
-    "action": "DENY",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.AuthorizationPolicy",
+    "action": "ALLOW",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "A full authorization policy for testing - updated",
+    "description": "A full authorization policy for testing",
     "labels": {
       "cnrm-test": "true",
-      "custom-label": "bar",
+      "custom-label": "foo",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
@@ -339,27 +333,27 @@ X-Xss-Protection: 0
         "destinations": [
           {
             "hosts": [
-              "updated.example.com"
+              "example.com"
             ],
             "httpHeaderMatch": {
-              "headerName": "X-Test-Header-Updated",
+              "headerName": "X-Test-Header",
               "regexMatch": ".*"
             },
             "methods": [
-              "POST"
+              "GET"
             ],
             "ports": [
-              8081
+              8080
             ]
           }
         ],
         "sources": [
           {
             "ipBlocks": [
-              "1.2.3.5/32"
+              "1.2.3.4/32"
             ],
             "principals": [
-              "spiffe://foo.bar/ns/default/sa/updated"
+              "spiffe://foo.bar/ns/default/sa/default"
             ]
           }
         ]
@@ -446,42 +440,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
-    "apiVersion": "v1beta1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
-    "verb": "delete"
-  },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}"
-}
-
----
-
-GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
-    "apiVersion": "v1beta1",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
     "verb": "delete"
   },
