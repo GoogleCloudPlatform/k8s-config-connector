@@ -43,3 +43,7 @@ spec:
             external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
           projectRef:
             external: ${projectId}
+  mode: CLUSTER
+  labels:
+    key1: val1
+    key2: val2
