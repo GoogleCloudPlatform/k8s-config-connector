@@ -146,13 +146,6 @@ func (a *LogicalViewAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func ConvertBoolToDeletionProtection(boolean bool) gcp.DeletionProtection {
-	if boolean {
-		return 1
-	}
-	return 0
-}
-
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *LogicalViewAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
@@ -223,6 +216,7 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	if desiredPb.DeletionProtection {
 		updateMask.Paths = append(updateMask.Paths, "deletion_protection")
+		log.V(1).Info("Added deletion protection bit")
 	}
 
 	if len(updateMask.Paths) == 0 {
@@ -235,7 +229,7 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 			Query:         desiredPb.Query,
 		}
 		if slices.Contains(updateMask.Paths, "deletion_protection") {
-
+			log.V(1).Info("Adding deletion protection bit in the object itself")
 			gcpDeletionProtection := gcp.None
 			if a.desired.Spec.DeletionProtection != nil {
 				if *a.desired.Spec.DeletionProtection {
@@ -246,6 +240,8 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 			}
 			desiredlogicalview.DeletionProtection = gcpDeletionProtection
 		}
+
+		log.V(1).Info("Updating logical view with desired logical view", desiredlogicalview)
 
 		err := a.gcpClient.UpdateLogicalView(ctx, a.id.ParentInstanceIdString(), desiredlogicalview)
 		if err != nil {
