@@ -18,6 +18,8 @@ metadata:
   labels:
     key-one: value-one
   name: networksecurityauthorizationpolicy-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/reconciler: direct
 spec:
   projectRef:
     external: "projects/${projectId}"
