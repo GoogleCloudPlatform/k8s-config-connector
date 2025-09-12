@@ -25,37 +25,30 @@ import (
 // IAMPolicySpecDiffers compares two IAMPolicySpec objects and returns true if they differ.
 // Details of the differences are added to the provided diff object.
 func IAMPolicySpecDiffers(desired, actual *IAMPolicySpec, diff *structuredreporting.Diff) bool {
-	changed := false
 
 	// Compare ResourceReference, which is immutable.
 	if desired.ResourceReference.Kind != actual.ResourceReference.Kind {
 		diff.AddField("spec.resourceRef.kind", desired.ResourceReference.Kind, actual.ResourceReference.Kind)
-		changed = true
 	}
 	if desired.ResourceReference.Namespace != actual.ResourceReference.Namespace {
 		diff.AddField("spec.resourceRef.namespace", desired.ResourceReference.Namespace, actual.ResourceReference.Namespace)
-		changed = true
 	}
 	if desired.ResourceReference.Name != actual.ResourceReference.Name {
 		diff.AddField("spec.resourceRef.name", desired.ResourceReference.Name, actual.ResourceReference.Name)
-		changed = true
 	}
 	if desired.ResourceReference.External != actual.ResourceReference.External {
 		diff.AddField("spec.resourceRef.external", desired.ResourceReference.External, actual.ResourceReference.External)
-		changed = true
 	}
 
 	// Compare Bindings
 	if bindingsDiffer(desired.Bindings, actual.Bindings, diff) {
-		changed = true
 	}
 
 	// Compare AuditConfigs
 	if auditConfigsDiffer(desired.AuditConfigs, actual.AuditConfigs, diff) {
-		changed = true
 	}
 
-	return changed
+	return len(diff.Fields) > 0
 }
 
 // bindingsDiffer compares two slices of IAMPolicyBinding.
