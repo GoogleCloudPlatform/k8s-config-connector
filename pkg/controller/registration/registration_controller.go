@@ -262,10 +262,11 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 		if err := policy.Add(r.mgr, &cds); err != nil {
 			return nil, err
 		}
-	case "IAMPartialPolicy":
-		if err := partialpolicy.Add(r.mgr, &cds); err != nil {
-			return nil, err
-		}
+	// slowly moving over decision making for routing outside of this control block.
+	// case "IAMPartialPolicy":
+	// 	if err := partialpolicy.Add(r.mgr, &cds); err != nil {
+	// 		return nil, err
+	// 	}
 	case "IAMPolicyMember":
 		if err := policymember.Add(r.mgr, &cds); err != nil {
 			return nil, err
@@ -293,6 +294,11 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 			var err error
 			for _, reconcilerType := range config.SupportedControllers {
 				switch reconcilerType {
+				case k8s.ReconcilerTypeIAMPartialPolicy:
+					reconcilers.PartialPolicy, err = partialpolicy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, nil, nil, r.defaulters, r.jitterGenerator, cds.DependencyTracker)
+					if err != nil {
+						return nil, err
+					}
 				case k8s.ReconcilerTypeTerraform:
 					reconcilers.TF, err = tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader, nil, nil, r.defaulters, r.jitterGenerator)
 					if err != nil {
@@ -328,7 +334,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 				}
 			}
 			r.reconcilers[gvk] = reconcilers
-			if err := parent.Add(r.mgr, gvk, reconcilers.TF, reconcilers.DCL, reconcilers.Direct); err != nil {
+			if err := parent.Add(r.mgr, gvk, reconcilers); err != nil {
 				return nil, fmt.Errorf("error adding parent controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
 		}

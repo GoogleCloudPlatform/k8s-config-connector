@@ -27,6 +27,7 @@ import (
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/partialpolicy"
 	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
@@ -53,6 +54,13 @@ type Reconcilers struct {
 	TF     *tf.Reconciler
 	DCL    *dclcontroller.Reconciler
 	Direct *directbase.DirectReconciler
+
+	/*
+	 TODO KCC-team:
+	 - while we migrate the handrolled/ legacy IAM controllers to direct
+	 we will have these standout types here.
+	*/
+	PartialPolicy *partialpolicy.ReconcileIAMPartialPolicy
 }
 
 // ParentReconciler is a top-level controller that decides which underlying
@@ -64,7 +72,7 @@ type ParentReconciler struct {
 	reconcilers Reconcilers
 }
 
-func Add(mgr manager.Manager, gvk schema.GroupVersionKind, tf *tf.Reconciler, dcl *dclcontroller.Reconciler, direct *directbase.DirectReconciler) error {
+func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcilers) error {
 	controllerName := fmt.Sprintf("%v-parent-controller", strings.ToLower(gvk.Kind))
 	obj := &unstructured.Unstructured{}
 	obj.SetGroupVersionKind(gvk)
@@ -76,9 +84,10 @@ func Add(mgr manager.Manager, gvk schema.GroupVersionKind, tf *tf.Reconciler, dc
 		mgr:    mgr,
 		gvk:    gvk,
 		reconcilers: Reconcilers{
-			TF:     tf,
-			DCL:    dcl,
-			Direct: direct,
+			TF:            reconcilers.TF,
+			DCL:           reconcilers.DCL,
+			Direct:        reconcilers.Direct,
+			PartialPolicy: reconcilers.PartialPolicy,
 		},
 	}
 
@@ -123,6 +132,9 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 	case k8s.ReconcilerTypeDirect:
 		logger.Info("routing to Direct reconciler")
 		return r.reconcilers.Direct.Reconcile(ctx, req)
+	case k8s.ReconcilerTypeIAMPartialPolicy:
+		logger.Info("routing to legacy IAM Partial Policy reconciler")
+		return r.reconcilers.PartialPolicy.Reconcile(ctx, req)
 	default:
 		return reconcile.Result{}, fmt.Errorf("unknown controller type: %v", controllerType)
 	}
