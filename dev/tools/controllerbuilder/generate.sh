@@ -40,6 +40,22 @@ go run . generate-mapper \
     --service google.cloud.discoveryengine.v1 \
     --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1
 
+# vpcacccess
+go run . generate-types \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.vpcaccess.v1 \
+    --api-version vpcaccess.cnrm.cloud.google.com/v1beta1 \
+    --output-api ${APIS_DIR} \
+    --resource VPCAccessConnector:Connector
+
+go run . generate-mapper \
+    --proto-source-path ../proto-to-mapper/build/googleapis.pb \
+    --service google.cloud.vpcaccess.v1 \
+    --api-version vpcaccess.cnrm.cloud.google.com/v1alpha1 \
+    --api-go-package-path github.com/GoogleCloudPlatform/k8s-config-connector/apis \
+    --output-dir ${OUTPUT_MAPPER} \
+    --api-dir ${APIS_DIR}
+
 # DataFlow
 go run . generate-types \
     --service google.dataflow.v1beta3 \
