@@ -3,7 +3,7 @@ kind: NetworkSecurityAuthorizationPolicy
 metadata:
   name: networksecurityauthorizationpolicy-full-${uniqueId}
   annotations:
-    cnrm.cloud.google.com/reconciler: direct
+    alpha.cnrm.cloud.google.com/reconciler: direct
   labels:
     app.kubernetes.io/name: "mock-app"
     app.kubernetes.io/instance: "mock-instance"
