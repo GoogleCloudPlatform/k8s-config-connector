@@ -265,7 +265,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						alias := v.getGoImportAlias(krmFieldRef.GoPackage)
 						qualifiedTypeName = alias + "." + tokens[1]
 					}
-					fmt.Fprintf(out, "\t	out.%v = &%v{External: in.%v}\n", krmFieldRef.Name, qualifiedTypeName, protoAccessor)
+					fmt.Fprintf(out, "\t\tout.%v = &%v{External: in.%v}\n", krmFieldRef.Name, qualifiedTypeName, protoAccessor)
 					fmt.Fprintf(out, "\t}\n")
 					continue
 				}
@@ -466,7 +466,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				// Support refs
 				if krmFieldRef := goFields[krmFieldName+"Ref"]; krmFieldRef != nil {
 					fmt.Fprintf(out, "\tif in.%s != nil {\n", krmFieldRef.Name)
-					fmt.Fprintf(out, "\t	out.%v = in.%v.External\n", protoFieldName, krmFieldRef.Name)
+					fmt.Fprintf(out, "\t\tout.%v = in.%v.External\n", protoFieldName, krmFieldRef.Name)
 					fmt.Fprintf(out, "\t}\n")
 					continue
 				}
@@ -712,6 +712,62 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		klog.Infof("found existing non-generated mapping function %q, won't generate", goTypeName+"_ToProto")
 	}
 
+	// Generate ToProto helpers for oneof fields that are not messages
+	for i := 0; i < msg.Fields().Len(); i++ {
+		protoField := msg.Fields().Get(i)
+		oneof := protoField.ContainingOneof()
+		if oneof == nil || protoField.HasOptionalKeyword() || protoField.Kind() == protoreflect.MessageKind {
+			continue
+		}
+
+		protoFieldName := protoNameForField(protoField)
+		functionName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
+
+		if v.findFuncDeclaration(functionName, srcDir, true) != nil {
+			continue
+		}
+
+		krmFieldName := goFieldName(protoField)
+		krmField, ok := goFields[krmFieldName]
+		if !ok {
+			// This can happen if the field is not in the KRM struct (e.g. output-only).
+			// We should not generate a helper if there is no corresponding KRM field.
+			continue
+		}
+		krmFieldType := krmField.Type
+
+		oneofWrapperTypeName := "pb." + protoNameForOneOf(protoField)
+
+		fmt.Fprintf(out, "func %s(mapCtx *direct.MapContext, in %s) *%s {\n", functionName, krmFieldType, oneofWrapperTypeName)
+		fmt.Fprintf(out, "\tif in == nil {\n")
+		fmt.Fprintf(out, "\t\treturn nil\n")
+		fmt.Fprintf(out, "\t}\n")
+
+		switch protoField.Kind() {
+		case protoreflect.EnumKind:
+			protoEnumTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
+			fmt.Fprintf(out, "\treturn &%s{%s: direct.Enum_ToProto[%s](mapCtx, in)}\n", oneofWrapperTypeName, protoFieldName, protoEnumTypeName)
+
+		case protoreflect.BoolKind:
+			fmt.Fprintf(out, "\tif !*in {\n")
+			fmt.Fprintf(out, "\t\treturn nil\n")
+			fmt.Fprintf(out, "\t}\n")
+			fmt.Fprintf(out, "\treturn &%s{%s: *in}\n", oneofWrapperTypeName, protoFieldName)
+
+		case protoreflect.StringKind,
+			protoreflect.FloatKind,
+			protoreflect.DoubleKind,
+			protoreflect.Int64Kind,
+			protoreflect.Int32Kind,
+			protoreflect.Uint32Kind,
+			protoreflect.Uint64Kind,
+			protoreflect.Fixed64Kind,
+			protoreflect.BytesKind:
+
+			fmt.Fprintf(out, "\treturn &%s{%s: *in}\n", oneofWrapperTypeName, protoFieldName)
+		}
+		fmt.Fprintf(out, "}\n")
+	}
 }
 
 func protoNameForType(msg protoreflect.MessageDescriptor) string {
