@@ -340,7 +340,12 @@ func PscAutoConnection_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.PscAut
 		out.Network = in.NetworkRef.External
 	}
 	if in.ProjectRef != nil {
-		out.ProjectId = in.ProjectRef.External
+		project := refs.Project{}
+		err := project.FromExternal(in.ProjectRef.External)
+		if err != nil {
+			panic(err)
+		}
+		out.ProjectId = project.ProjectID
 	}
 	return out
 }
