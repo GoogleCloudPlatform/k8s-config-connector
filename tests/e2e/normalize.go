@@ -148,6 +148,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.serverCaCert.expirationTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.serverCaCert.sha1Fingerprint"] = "12345678"
 	visitor.replacePaths[".status.serviceAccountEmailAddress"] = "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com"
+	visitor.replacePaths[".status.lastModifiedCookie"] = "normalized-cookie"
 
 	// Specific to Redis
 	visitor.replacePaths[".status.observedState.uid"] = "0123456789abcdef"
