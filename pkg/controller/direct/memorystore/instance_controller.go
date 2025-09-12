@@ -215,8 +215,7 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if a.desired.Spec.ReplicaCount != nil && !reflect.DeepEqual(desiredPb.ReplicaCount, a.actual.ReplicaCount) {
 		paths.Insert("replica_count")
 	}
-	if a.desired.Spec.ShardCount != nil && !reflect.DeepEqual(desiredPb.ShardCount, desiredPb.ShardCount) {
-		log.V(2).Info("diff shard count", "desired", a.desired.Spec.ShardCount, "actual", a.actual.ShardCount)
+	if a.desired.Spec.ShardCount != nil && !reflect.DeepEqual(desiredPb.ShardCount, a.actual.ShardCount) {
 		paths.Insert("shard_count")
 	}
 	if a.desired.Spec.DeletionProtectionEnabled != nil && !reflect.DeepEqual(desiredPb.DeletionProtectionEnabled, a.actual.DeletionProtectionEnabled) {
