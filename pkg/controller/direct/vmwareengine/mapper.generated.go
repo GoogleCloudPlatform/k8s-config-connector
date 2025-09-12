@@ -26,6 +26,28 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func Hcx_FromProto(mapCtx *direct.MapContext, in *pb.Hcx) *krm.Hcx {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Hcx{}
+	out.InternalIP = direct.LazyPtr(in.GetInternalIp())
+	out.Version = direct.LazyPtr(in.GetVersion())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.FQDN = direct.LazyPtr(in.GetFqdn())
+	return out
+}
+func Hcx_ToProto(mapCtx *direct.MapContext, in *krm.Hcx) *pb.Hcx {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Hcx{}
+	out.InternalIp = direct.ValueOf(in.InternalIP)
+	out.Version = direct.ValueOf(in.Version)
+	out.State = direct.Enum_ToProto[pb.Hcx_State](mapCtx, in.State)
+	out.Fqdn = direct.ValueOf(in.FQDN)
+	return out
+}
 func NetworkPolicy_NetworkService_FromProto(mapCtx *direct.MapContext, in *pb.NetworkPolicy_NetworkService) *krm.NetworkPolicy_NetworkService {
 	if in == nil {
 		return nil
@@ -78,6 +100,28 @@ func NodeTypeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodeTypeConfig) *
 	out := &pb.NodeTypeConfig{}
 	out.NodeCount = direct.ValueOf(in.NodeCount)
 	out.CustomCoreCount = direct.ValueOf(in.CustomCoreCount)
+	return out
+}
+func Nsx_FromProto(mapCtx *direct.MapContext, in *pb.Nsx) *krm.Nsx {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Nsx{}
+	out.InternalIP = direct.LazyPtr(in.GetInternalIp())
+	out.Version = direct.LazyPtr(in.GetVersion())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.FQDN = direct.LazyPtr(in.GetFqdn())
+	return out
+}
+func Nsx_ToProto(mapCtx *direct.MapContext, in *krm.Nsx) *pb.Nsx {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Nsx{}
+	out.InternalIp = direct.ValueOf(in.InternalIP)
+	out.Version = direct.ValueOf(in.Version)
+	out.State = direct.Enum_ToProto[pb.Nsx_State](mapCtx, in.State)
+	out.Fqdn = direct.ValueOf(in.FQDN)
 	return out
 }
 func StretchedClusterConfig_FromProto(mapCtx *direct.MapContext, in *pb.StretchedClusterConfig) *krm.StretchedClusterConfig {
@@ -189,6 +233,28 @@ func VMwareEnginePrivateCloudSpec_ToProto(mapCtx *direct.MapContext, in *krm.VMw
 	// MISSING: Nsx
 	// MISSING: Uid
 	out.Type = direct.Enum_ToProto[pb.PrivateCloud_Type](mapCtx, in.Type)
+	return out
+}
+func Vcenter_FromProto(mapCtx *direct.MapContext, in *pb.Vcenter) *krm.Vcenter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Vcenter{}
+	out.InternalIP = direct.LazyPtr(in.GetInternalIp())
+	out.Version = direct.LazyPtr(in.GetVersion())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.FQDN = direct.LazyPtr(in.GetFqdn())
+	return out
+}
+func Vcenter_ToProto(mapCtx *direct.MapContext, in *krm.Vcenter) *pb.Vcenter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Vcenter{}
+	out.InternalIp = direct.ValueOf(in.InternalIP)
+	out.Version = direct.ValueOf(in.Version)
+	out.State = direct.Enum_ToProto[pb.Vcenter_State](mapCtx, in.State)
+	out.Fqdn = direct.ValueOf(in.FQDN)
 	return out
 }
 func VmwareEngineNetwork_VPCNetwork_FromProto(mapCtx *direct.MapContext, in *pb.VmwareEngineNetwork_VpcNetwork) *krm.VmwareEngineNetwork_VPCNetwork {
