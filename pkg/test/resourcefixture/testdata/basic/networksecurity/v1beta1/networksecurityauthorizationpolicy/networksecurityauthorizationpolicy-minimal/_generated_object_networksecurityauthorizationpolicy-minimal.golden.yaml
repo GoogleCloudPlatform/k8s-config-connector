@@ -2,13 +2,12 @@ apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
 kind: NetworkSecurityAuthorizationPolicy
 metadata:
   annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/reconciler: direct
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
     key-one: value-one
@@ -20,7 +19,6 @@ spec:
   location: global
   projectRef:
     external: projects/${projectId}
-  resourceID: networksecurityauthorizationpolicy-${uniqueId}
   rules:
   - destinations:
     - hosts:
@@ -56,5 +54,6 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
-  observedGeneration: 3
+  externalRef: projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}
+  observedGeneration: 2
   updateTime: "1970-01-01T00:00:00Z"
