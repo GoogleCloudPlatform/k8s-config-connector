@@ -16,6 +16,9 @@ package sql
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -115,7 +118,10 @@ func (a *sqlInstanceAdapter) Find(ctx context.Context) (bool, error) {
 
 	instance, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
 	if err != nil {
-		return false, nil
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
+		return false, fmt.Errorf("getting SQLInstance %q: %w", a.resourceID, err)
 	}
 
 	a.actual = instance
@@ -128,7 +134,6 @@ func (a *sqlInstanceAdapter) Find(ctx context.Context) (bool, error) {
 
 func (a *sqlInstanceAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	u := createOp.GetUnstructured()
-
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("creating SQLInstance", "desired", a.desired)
 
@@ -139,95 +144,75 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		return fmt.Errorf("resourceID is empty")
 	}
 
+	var created *api.DatabaseInstance
+	var err error
+
 	if a.desired.Spec.CloneSource != nil {
-		return a.cloneInstance(ctx, u, log)
+		created, err = a.cloneInstance(ctx, u, log)
 	} else {
-		// if the maitenance version is provided on CREATE, we need to break up the operation between
-		// a create and a patch with the maintenance version
-		maintenanceVersion := ""
-		if a.desired.Spec.MaintenanceVersion != nil {
-			maintenanceVersion = *a.desired.Spec.MaintenanceVersion
-			a.desired.Spec.MaintenanceVersion = nil
-		}
-
-		if err := a.insertInstance(ctx, u, log); err != nil {
-			return err
-		}
-		if maintenanceVersion != "" {
-			newMaintDb := &api.DatabaseInstance{
-				MaintenanceVersion: direct.ValueOf(a.desired.Spec.MaintenanceVersion),
-			}
-
-			op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newMaintDb).Context(ctx).Do()
-			if err != nil {
-				return fmt.Errorf("patching SQLInstance %s maintenanceVersion failed: %w", a.resourceID, err)
-			}
-			if err := a.pollForLROCompletion(ctx, op, "maintenanceVersion patch"); err != nil {
-				return err
-			}
-
-			updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
-			if err != nil {
-				return fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
-			}
-
-			log.V(2).Info("instance maintenanceVersion updated", "op", op, "instance", updated)
-		}
-		return nil
+		created, err = a.insertInstance(ctx, u, log)
 	}
-}
-
-func (a *sqlInstanceAdapter) cloneInstance(ctx context.Context, u *unstructured.Unstructured, log klog.Logger) error {
-	desiredGCP, err := SQLInstanceCloneKRMToGCP(a.desired)
 	if err != nil {
 		return err
+	}
+
+	return a.updateStatus(u, created)
+}
+
+func (a *sqlInstanceAdapter) cloneInstance(ctx context.Context, u *unstructured.Unstructured, log klog.Logger) (*api.DatabaseInstance, error) {
+	desiredGCP, err := SQLInstanceCloneKRMToGCP(a.desired)
+	if err != nil {
+		return nil, err
 	}
 
 	sourceInstance := a.desired.Spec.CloneSource.SQLInstanceRef.External
 	op, err := a.sqlInstancesClient.Clone(a.projectID, sourceInstance, desiredGCP).Context(ctx).Do()
 	if err != nil {
-		return fmt.Errorf("cloning SQLInstance %s failed: %w", a.desired.Name, err)
+		return nil, fmt.Errorf("cloning SQLInstance %s failed: %w", a.desired.Name, err)
 	}
 	if err := a.pollForLROCompletion(ctx, op, "clone"); err != nil {
-		return err
+		return nil, err
 	}
 
 	created, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
 	if err != nil {
-		return fmt.Errorf("getting SQLInstance %s failed: %w", a.desired.Name, err)
+		return nil, fmt.Errorf("getting SQLInstance %s failed: %w", a.desired.Name, err)
 	}
 
 	log.V(2).Info("instance cloned", "op", op, "instance", created)
-
-	status, err := SQLInstanceStatusGCPToKRM(created)
-	if err != nil {
-		return fmt.Errorf("updating SQLInstance status failed: %w", err)
-	}
-	return setStatus(u, status)
+	return created, nil
 }
 
-func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured.Unstructured, log klog.Logger) error {
+func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured.Unstructured, log klog.Logger) (*api.DatabaseInstance, error) {
+	// if the maitenance version is provided on CREATE, we need to break up the operation between
+	// a create and a patch with the maintenance version
+	maintenanceVersion := ""
+	if a.desired.Spec.MaintenanceVersion != nil {
+		maintenanceVersion = *a.desired.Spec.MaintenanceVersion
+		a.desired.Spec.MaintenanceVersion = nil
+	}
+
 	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	op, err := a.sqlInstancesClient.Insert(a.projectID, desiredGCP).Context(ctx).Do()
 	if err != nil {
-		return fmt.Errorf("creating SQLInstance %s failed: %w", a.desired.Name, err)
+		return nil, fmt.Errorf("creating SQLInstance %s failed: %w", a.desired.Name, err)
 	}
 	if err := a.pollForLROCompletion(ctx, op, "create"); err != nil {
-		return err
+		return nil, err
 	}
 
 	created, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
 	if err != nil {
-		return fmt.Errorf("getting SQLInstance %s failed: %w", a.desired.Name, err)
+		return nil, fmt.Errorf("getting SQLInstance %s failed: %w", a.desired.Name, err)
 	}
 
 	users, err := a.sqlUsersClient.List(a.projectID, a.resourceID).Context(ctx).Do()
 	if err != nil {
-		return fmt.Errorf("listing SQLInstance %s users failed: %w", a.desired.Name, err)
+		return nil, fmt.Errorf("listing SQLInstance %s users failed: %w", a.desired.Name, err)
 	}
 
 	if users != nil {
@@ -237,10 +222,10 @@ func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured
 				// Ref: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/sql_database_instance
 				op, err := a.sqlUsersClient.Delete(a.projectID, a.resourceID).Context(ctx).Name(user.Name).Host(user.Host).Do()
 				if err != nil {
-					return fmt.Errorf("deleting SQLInstance %s root user failed: %w", a.desired.Name, err)
+					return nil, fmt.Errorf("deleting SQLInstance %s root user failed: %w", a.desired.Name, err)
 				}
 				if err := a.pollForLROCompletion(ctx, op, "delete root user"); err != nil {
-					return err
+					return nil, err
 				}
 			}
 		}
@@ -248,17 +233,63 @@ func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured
 
 	log.V(2).Info("instance created", "op", op, "instance", created)
 
-	status, err := SQLInstanceStatusGCPToKRM(created)
-	if err != nil {
-		return fmt.Errorf("updating SQLInstance status failed: %w", err)
+	if maintenanceVersion != "" {
+		newMaintDb := &api.DatabaseInstance{
+			MaintenanceVersion: maintenanceVersion,
+		}
+
+		op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newMaintDb).Context(ctx).Do()
+		if err != nil {
+			return nil, fmt.Errorf("patching SQLInstance %s maintenanceVersion failed: %w", a.resourceID, err)
+		}
+		if err := a.pollForLROCompletion(ctx, op, "maintenanceVersion patch"); err != nil {
+			return nil, err
+		}
+
+		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
+		if err != nil {
+			return nil, fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
+		}
+		created = updated
+		log.V(2).Info("instance maintenanceVersion updated", "op", op, "instance", updated)
 	}
-	return setStatus(u, status)
+
+	return created, nil
 }
 
 func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	u := updateOp.GetUnstructured()
-
 	log := klog.FromContext(ctx)
+
+	currentSpecHash, err := hashSpec(&a.desired.Spec)
+	if err != nil {
+		return fmt.Errorf("hashing spec: %w", err)
+	}
+
+	var lastAppliedSpecHash, lastAppliedGCPHash string
+	if a.desired.Status.LastModifiedCookie != nil {
+		parts := strings.Split(*a.desired.Status.LastModifiedCookie, "/")
+		if len(parts) == 2 {
+			lastAppliedSpecHash = parts[0]
+			lastAppliedGCPHash = parts[1]
+		}
+	}
+
+	// Fast-path for no-op reconciliations
+	if currentSpecHash == lastAppliedSpecHash {
+		log.V(2).Info("spec has not changed, entering fast-path drift detection")
+		currentGCPHash, err := hashGCPObject(a.actual)
+		if err != nil {
+			return fmt.Errorf("hashing actual GCP object: %w", err)
+		}
+		if currentGCPHash == lastAppliedGCPHash {
+			log.V(2).Info("resource is up-to-date")
+			// Even though we are not making changes, we should update the status
+			// to reflect the latest observed state from the API.
+			return a.updateStatus(u, a.actual)
+		}
+	}
+
 	log.V(2).Info("updating SQLInstance", "desired", a.desired)
 
 	// First, handle database version updates
@@ -387,11 +418,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		instanceForStatus = updated
 	}
 
-	status, err := SQLInstanceStatusGCPToKRM(instanceForStatus)
-	if err != nil {
-		return fmt.Errorf("updating SQLInstance status failed: %w", err)
-	}
-	return setStatus(u, status)
+	return a.updateStatus(u, instanceForStatus)
 }
 
 // Delete implements the Adapter interface.
@@ -454,6 +481,9 @@ func (a *sqlInstanceAdapter) pollForLROCompletion(ctx context.Context, op *api.O
 		log.V(2).Info("polling", "op", op)
 
 		if op.Status == "DONE" {
+			if op.Error != nil {
+				return NewGCPOperationError(op.Error)
+			}
 			break
 		}
 		if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
@@ -468,19 +498,92 @@ func (a *sqlInstanceAdapter) pollForLROCompletion(ctx context.Context, op *api.O
 	return nil
 }
 
-func setStatus(u *unstructured.Unstructured, typedStatus any) error {
-	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
+func (a *sqlInstanceAdapter) updateStatus(u *unstructured.Unstructured, gcpObj *api.DatabaseInstance) error {
+	status, err := SQLInstanceStatusGCPToKRM(gcpObj)
+	if err != nil {
+		return fmt.Errorf("converting GCP status to KRM: %w", err)
+	}
+
+	specHash, err := hashSpec(&a.desired.Spec)
+	if err != nil {
+		return fmt.Errorf("hashing spec: %w", err)
+	}
+	gcpHash, err := hashGCPObject(gcpObj)
+	if err != nil {
+		return fmt.Errorf("hashing GCP object: %w", err)
+	}
+
+	cookie := fmt.Sprintf("%s/%s", specHash, gcpHash)
+	status.LastModifiedCookie = &cookie
+
+	unstructuredStatus, err := runtime.DefaultUnstructuredConverter.ToUnstructured(status)
 	if err != nil {
 		return fmt.Errorf("converting status to unstructured failed: %w", err)
 	}
 
 	old, _, _ := unstructured.NestedMap(u.Object, "status")
 	if old != nil {
-		status["conditions"] = old["conditions"]
-		status["observedGeneration"] = old["observedGeneration"]
+		unstructuredStatus["conditions"] = old["conditions"]
+		unstructuredStatus["observedGeneration"] = old["observedGeneration"]
 	}
 
-	u.Object["status"] = status
+	u.Object["status"] = unstructuredStatus
 
 	return nil
 }
+
+func hashString(s string) string {
+	h := sha256.New()
+	h.Write([]byte(s))
+	return hex.EncodeToString(h.Sum(nil))
+}
+
+func hashSpec(spec *krm.SQLInstanceSpec) (string, error) {
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		return "", fmt.Errorf("marshaling spec: %w", err)
+	}
+	return hashString(string(specBytes)), nil
+}
+
+func hashGCPObject(in *api.DatabaseInstance) (string, error) {
+	// normalized := normalizeGCPObject(in)
+	// gcpBytes, err := json.Marshal(normalized)
+	gcpBytes, err := json.Marshal(in)
+	if err != nil {
+		return "", fmt.Errorf("marshaling gcp object: %w", err)
+	}
+	return hashString(string(gcpBytes)), nil
+}
+
+// func normalizeGCPObject(in *api.DatabaseInstance) *api.DatabaseInstance {
+// 	out := &api.DatabaseInstance{}
+// 	if err := direct.DeepCopy(out, in); err != nil {
+// 		// This should not happen.
+// 		klog.Warningf("error deep copying api.DatabaseInstance: %v", err)
+// 		return in
+// 	}
+
+// 	// Clear out fields that are volatile or server-managed and not part of the user's desired state.
+// 	out.Etag = ""
+// 	out.SelfLink = ""
+// 	out.ServerCaCert = nil
+// 	out.ServiceAccountEmailAddress = ""
+// 	out.IpAddresses = nil
+// 	out.ConnectionName = ""
+// 	out.DnsName = ""
+// 	out.PscServiceAttachmentLink = ""
+// 	out.ForceSendFields = nil
+// 	out.NullFields = nil
+
+// 	if out.Settings != nil {
+// 		out.Settings.ForceSendFields = nil
+// 		out.Settings.NullFields = nil
+// 		if out.Settings.IpConfiguration != nil {
+// 			out.Settings.IpConfiguration.ForceSendFields = nil
+// 			out.Settings.IpConfiguration.NullFields = nil
+// 		}
+// 	}
+
+// 	return out
+// }
