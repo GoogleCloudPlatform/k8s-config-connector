@@ -50,6 +50,15 @@ func BinaryAuthorization_ToProto(mapCtx *direct.MapContext, in *krm.BinaryAuthor
 	out.BreakglassJustification = direct.ValueOf(in.BreakglassJustification)
 	return out
 }
+func BinaryAuthorization_UseDefault_ToProto(mapCtx *direct.MapContext, in *bool) *pb.BinaryAuthorization_UseDefault {
+	if in == nil {
+		return nil
+	}
+	if !*in {
+		return nil
+	}
+	return &pb.BinaryAuthorization_UseDefault{UseDefault: *in}
+}
 func BuildInfo_FromProto(mapCtx *direct.MapContext, in *pb.BuildInfo) *krm.BuildInfo {
 	if in == nil {
 		return nil
@@ -149,6 +158,24 @@ func Condition_ToProto(mapCtx *direct.MapContext, in *krm.Condition) *pb.Conditi
 		out.Reasons = oneof
 	}
 	return out
+}
+func Condition_Reason_ToProto(mapCtx *direct.MapContext, in *string) *pb.Condition_Reason {
+	if in == nil {
+		return nil
+	}
+	return &pb.Condition_Reason{Reason: direct.Enum_ToProto[pb.Condition_CommonReason](mapCtx, in)}
+}
+func Condition_RevisionReason_ToProto(mapCtx *direct.MapContext, in *string) *pb.Condition_RevisionReason_ {
+	if in == nil {
+		return nil
+	}
+	return &pb.Condition_RevisionReason_{RevisionReason: direct.Enum_ToProto[pb.Condition_RevisionReason](mapCtx, in)}
+}
+func Condition_ExecutionReason_ToProto(mapCtx *direct.MapContext, in *string) *pb.Condition_ExecutionReason_ {
+	if in == nil {
+		return nil
+	}
+	return &pb.Condition_ExecutionReason_{ExecutionReason: direct.Enum_ToProto[pb.Condition_ExecutionReason](mapCtx, in)}
 }
 func Container_FromProto(mapCtx *direct.MapContext, in *pb.Container) *krm.Container {
 	if in == nil {
@@ -251,6 +278,12 @@ func EnvVar_ToProto(mapCtx *direct.MapContext, in *krm.EnvVar) *pb.EnvVar {
 		out.Values = &pb.EnvVar_ValueSource{ValueSource: oneof}
 	}
 	return out
+}
+func EnvVar_Value_ToProto(mapCtx *direct.MapContext, in *string) *pb.EnvVar_Value {
+	if in == nil {
+		return nil
+	}
+	return &pb.EnvVar_Value{Value: *in}
 }
 func EnvVarSource_FromProto(mapCtx *direct.MapContext, in *pb.EnvVarSource) *krm.EnvVarSource {
 	if in == nil {
@@ -687,6 +720,12 @@ func TaskTemplate_ToProto(mapCtx *direct.MapContext, in *krm.TaskTemplate) *pb.T
 	// MISSING: NodeSelector
 	// MISSING: GpuZonalRedundancyDisabled
 	return out
+}
+func TaskTemplate_MaxRetries_ToProto(mapCtx *direct.MapContext, in *int32) *pb.TaskTemplate_MaxRetries {
+	if in == nil {
+		return nil
+	}
+	return &pb.TaskTemplate_MaxRetries{MaxRetries: *in}
 }
 func VPCAccess_FromProto(mapCtx *direct.MapContext, in *pb.VpcAccess) *krm.VPCAccess {
 	if in == nil {
