@@ -116,7 +116,8 @@ func (s *instanceAdminServer) UpdateLogicalView(ctx context.Context, req *pb.Upd
 		switch path {
 		case "query":
 			updated.Query = req.GetLogicalView().GetQuery()
-		// TODO: Add deletion protection mask.
+		case "deletion_protection":
+			updated.DeletionProtection = req.GetLogicalView().GetDeletionProtection()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
@@ -136,7 +137,9 @@ func (s *instanceAdminServer) UpdateLogicalView(ctx context.Context, req *pb.Upd
 	if !updatePaths.Has("query") {
 		lroRet.Query = ""
 	}
-	// TODO: Add deletion protection.
+	if !updatePaths.Has("deletion_protection") {
+		lroRet.DeletionProtection = false
+	}
 
 	if isAsync {
 		return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
