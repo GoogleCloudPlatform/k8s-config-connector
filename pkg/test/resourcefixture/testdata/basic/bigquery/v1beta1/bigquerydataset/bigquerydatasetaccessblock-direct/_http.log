@@ -39,6 +39,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "role": "READER"
     },
     {
+      "iamMember": "allUsers",
+      "role": "READER"
+    },
+    {
       "role": "OWNER",
       "specialGroup": "projectOwners"
     }
@@ -70,6 +74,10 @@ X-Xss-Protection: 0
   "access": [
     {
       "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "iamMember": "allUsers",
       "role": "READER"
     },
     {
@@ -117,6 +125,10 @@ X-Xss-Protection: 0
   "access": [
     {
       "domain": "google.com",
+      "role": "READER"
+    },
+    {
+      "iamMember": "allUsers",
       "role": "READER"
     },
     {
@@ -153,37 +165,8 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "access": [
-    {
-      "domain": "google.com",
-      "role": "READER"
-    },
-    {
-      "domain": "google.com",
-      "role": "READER"
-    },
-    {
-      "iamMember": "allUsers",
-      "role": "READER"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    }
-  ],
   "defaultTableExpirationMs": "7200000",
-  "description": "BigQuery Dataset With Access Block v2",
-  "friendlyName": "bigquerydataset-accessblock",
-  "isCaseInsensitive": false,
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "maxTimeTravelHours": "168"
+  "description": "BigQuery Dataset With Access Block v2 Updated"
 }
 
 200 OK
@@ -203,16 +186,8 @@ X-Xss-Protection: 0
       "role": "READER"
     },
     {
-      "domain": "google.com",
-      "role": "READER"
-    },
-    {
       "iamMember": "allUsers",
       "role": "READER"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",
@@ -225,11 +200,10 @@ X-Xss-Protection: 0
     "projectId": "${projectId}"
   },
   "defaultTableExpirationMs": "7200000",
-  "description": "BigQuery Dataset With Access Block v2",
+  "description": "BigQuery Dataset With Access Block v2 Updated",
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-accessblock",
   "id": "000000000000000000000",
-  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -237,7 +211,6 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "US",
-  "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
   "type": "DEFAULT"
 }
@@ -265,16 +238,8 @@ X-Xss-Protection: 0
       "role": "READER"
     },
     {
-      "domain": "google.com",
-      "role": "READER"
-    },
-    {
       "iamMember": "allUsers",
       "role": "READER"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",
@@ -287,11 +252,10 @@ X-Xss-Protection: 0
     "projectId": "${projectId}"
   },
   "defaultTableExpirationMs": "7200000",
-  "description": "BigQuery Dataset With Access Block v2",
+  "description": "BigQuery Dataset With Access Block v2 Updated",
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-accessblock",
   "id": "000000000000000000000",
-  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",
@@ -326,16 +290,8 @@ X-Xss-Protection: 0
       "role": "READER"
     },
     {
-      "domain": "google.com",
-      "role": "READER"
-    },
-    {
       "iamMember": "allUsers",
       "role": "READER"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",
@@ -348,11 +304,10 @@ X-Xss-Protection: 0
     "projectId": "${projectId}"
   },
   "defaultTableExpirationMs": "7200000",
-  "description": "BigQuery Dataset With Access Block v2",
+  "description": "BigQuery Dataset With Access Block v2 Updated",
   "etag": "abcdef0123A=",
   "friendlyName": "bigquerydataset-accessblock",
   "id": "000000000000000000000",
-  "isCaseInsensitive": false,
   "kind": "bigquery#dataset",
   "labels": {
     "cnrm-test": "true",

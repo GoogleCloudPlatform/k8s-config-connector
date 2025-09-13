@@ -52,25 +52,11 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "access": [
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
-    }
-  ],
-  "defaultCollation": "und:ci",
   "defaultEncryptionConfiguration": {
     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
-  "defaultPartitionExpirationMs": "3600000",
-  "defaultTableExpirationMs": "3600000",
   "description": "Fully Configured BigQuery Dataset unset",
-  "friendlyName": "bigquerydataset-fullyconfigured",
-  "isCaseInsensitive": true,
-  "labels": {
-    "managed-by-cnrm": "true"
-  },
-  "maxTimeTravelHours": "72"
+  "maxTimeTravelHours": "168"
 }
 
 200 OK
@@ -112,7 +98,7 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "US",
-  "maxTimeTravelHours": "72",
+  "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
   "type": "DEFAULT"
 }
@@ -162,7 +148,7 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "US",
-  "maxTimeTravelHours": "72",
+  "maxTimeTravelHours": "168",
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
   "type": "DEFAULT"
 }
