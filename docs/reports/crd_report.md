@@ -277,6 +277,7 @@
 | iam.cnrm.cloud.google.com                     | IAMAccessBoundaryPolicy                         | False        | True        | False  | Terraform  |
 | iam.cnrm.cloud.google.com                     | IAMAuditConfig                                  | False        | True        | False  | Direct     |
 | iam.cnrm.cloud.google.com                     | IAMCustomRole                                   | False        | True        | False  | Terraform  |
+| iam.cnrm.cloud.google.com                     | IAMDenyPolicy                                   | True         | False       | False  | Direct     |
 | iam.cnrm.cloud.google.com                     | IAMPartialPolicy                                | False        | True        | False  | Direct     |
 | iam.cnrm.cloud.google.com                     | IAMPolicy                                       | False        | True        | False  | Direct     |
 | iam.cnrm.cloud.google.com                     | IAMPolicyMember                                 | False        | True        | False  | Direct     |
