@@ -768,6 +768,10 @@ spec:
                       type: string
                   type: object
                 type: array
+              lastModifiedCookie:
+                description: LastModifiedCookie is a value used by the controller
+                  to detect if the resource is out of sync.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.

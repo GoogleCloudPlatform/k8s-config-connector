@@ -258,7 +258,9 @@ PATCH https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instance
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
-{}
+{
+  "maintenanceVersion": "POSTGRES_16_9.R20250302.00_19"
+}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -355,7 +357,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_16_3.R20240527.01_10",
+  "maintenanceVersion": "POSTGRES_16_9.R20250302.00_19",
   "name": "sqlinstance-postgres-minimal-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
