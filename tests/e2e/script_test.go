@@ -548,6 +548,7 @@ func touchObject(h *create.Harness, obj *unstructured.Unstructured) {
 
 func setAnnotation(h *create.Harness, obj *unstructured.Unstructured, k, v string) {
 	patch := &unstructured.Unstructured{}
+	patch.Object = obj.Object
 	patch.SetGroupVersionKind(obj.GroupVersionKind())
 	patch.SetNamespace(obj.GetNamespace())
 	patch.SetName(obj.GetName())
@@ -556,7 +557,7 @@ func setAnnotation(h *create.Harness, obj *unstructured.Unstructured, k, v strin
 	}
 	patch.SetAnnotations(annotations)
 
-	if err := h.GetClient().Patch(h.Ctx, patch, client.Apply, client.FieldOwner("kcc-tests-setannotation"), client.ForceOwnership); err != nil {
+	if err := h.GetClient().Patch(h.Ctx, removeTestFields(patch), client.Apply, client.FieldOwner("kcc-tests-setannotation"), client.ForceOwnership); err != nil {
 		h.Fatalf("error setting annotations on resource: %v", err)
 	}
 }
