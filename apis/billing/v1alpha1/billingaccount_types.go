@@ -45,7 +45,7 @@ type BillingAccountSpec struct {
 	CurrencyCode *string `json:"currencyCode,omitempty"`
 
 	// Optional. The billing account's parent resource.
-	ParentBillingAccountRef *BillingAccountRef `json:"parent,omitempty"`
+	ParentRef *BillingAccountRef `json:"parentRef,omitempty"`
 }
 
 // BillingAccountStatus defines the config connector machine state of BillingAccount

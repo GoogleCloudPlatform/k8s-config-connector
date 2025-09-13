@@ -34,13 +34,13 @@ func billingBillingAccountFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".parent")
 	f.SpecFields.Insert(".currency_code")
+	f.SpecFields.Insert(".parent")
 
 	f.StatusFields.Insert(".name")
 	f.StatusFields.Insert(".open")
-	f.StatusFields.Insert(".parent")
 	f.StatusFields.Insert(".master_billing_account")
+	f.StatusFields.Insert(".currency_code")
 
 	return f
 }

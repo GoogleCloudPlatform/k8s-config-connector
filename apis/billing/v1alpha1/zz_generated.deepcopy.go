@@ -165,8 +165,8 @@ func (in *BillingAccountSpec) DeepCopyInto(out *BillingAccountSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ParentBillingAccountRef != nil {
-		in, out := &in.ParentBillingAccountRef, &out.ParentBillingAccountRef
+	if in.ParentRef != nil {
+		in, out := &in.ParentRef, &out.ParentRef
 		*out = new(BillingAccountRef)
 		**out = **in
 	}
