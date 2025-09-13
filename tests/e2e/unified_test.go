@@ -221,6 +221,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 
 				loadFixture := func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
 					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
+					AddTestingGCPLabels(t, primaryResource)
 
 					opt := create.CreateDeleteTestOptions{CleanupResources: true}
 
@@ -236,6 +237,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 
 					if fixture.Update != nil {
 						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
+						AddTestingGCPLabels(t, u)
 						opt.Updates = append(opt.Updates, u)
 					}
 
@@ -401,6 +403,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
 								t.Fatalf("FAIL: error from normalizeObject: %v", err)
 							}
+							VerifyTestingLabels(t, u)
 							got, err := yaml.Marshal(u)
 							if err != nil {
 								t.Fatalf("FAIL: failed to convert KRM object to yaml: %v", err)
@@ -464,6 +467,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 				// Verify events against golden file or records events
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					events := test.LogEntries(h.Events.HTTPEvents)
+
+					// Verify HTTP log only contain valid labels (if any)
+					VerifyLabelsInGoldenHTTPLog(t, primaryResource, events)
 
 					got, normalizers := LegacyNormalize(t, h, project, uniqueID, events)
 					if testPause {
