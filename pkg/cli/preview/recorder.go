@@ -16,6 +16,8 @@ package preview
 
 import (
 	"context"
+	"fmt"
+	"os"
 	"strings"
 	"sync"
 
@@ -281,4 +283,42 @@ func (r *Recorder) getObjectInfo(gknn GKNN) *objectInfo {
 		r.objects[gknn] = info
 	}
 	return info
+}
+
+func (r *Recorder) PrintObjectsEvent(filename string) error {
+	r.mutex.Lock()
+	defer r.mutex.Unlock()
+
+	f, err := os.Create(filename)
+	if err != nil {
+		return fmt.Errorf("error creating file %q: %w", filename, err)
+	}
+	defer f.Close()
+	fmt.Fprintf(f, "Number of objects captured: %d\n", len(r.objects))
+	for gknn, info := range r.objects {
+		fmt.Fprintln(f, "-----------------------------------------------------------------")
+		fmt.Fprintf(f, "object %+v\n", gknn)
+		for _, event := range info.events {
+			switch event.eventType {
+			case EventTypeDiff:
+				fmt.Fprintf(f, "  diff %+v\n", event.diff)
+
+			case EventTypeReconcileStart:
+				fmt.Fprintf(f, "  reconcileStart %+v\n", event.object)
+
+			case EventTypeReconcileEnd:
+				fmt.Fprintf(f, "  reconcileEnd %+v\n", event.object)
+
+			case EventTypeKubeAction:
+				fmt.Fprintf(f, "  kubeAction %+v\n", event.kubeAction)
+
+			case EventTypeGCPAction:
+				fmt.Fprintf(f, "  gcpAction %+v\n", event.gcpAction)
+
+			default:
+				fmt.Fprintf(f, "  unknown event: %+v\n", event)
+			}
+		}
+	}
+	return nil
 }
