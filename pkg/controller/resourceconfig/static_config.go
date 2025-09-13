@@ -14,7 +14,10 @@
 
 package resourceconfig
 
-import "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+)
 
 // ControllerConfigStatic is the static controller configuration for all resources.
 // It is ordered by GroupKind alphabetically.
@@ -435,4 +438,17 @@ var ControllerConfigStatic = &ResourcesControllerMap{
 	{Group: "workstations.cnrm.cloud.google.com", Kind: "Workstation"}:                                          {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "workstations.cnrm.cloud.google.com", Kind: "WorkstationCluster"}:                                   {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "workstations.cnrm.cloud.google.com", Kind: "WorkstationConfig"}:                                    {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
+}
+
+func (m *ResourcesControllerMap) IsControllerSupported(gvk schema.GroupVersionKind, controllerType k8s.ReconcilerType) bool {
+	config, err := ControllerConfigStatic.GetControllersForGVK(gvk)
+	if err != nil {
+		return false
+	}
+	for _, c := range config.SupportedControllers {
+		if c == controllerType {
+			return true
+		}
+	}
+	return false
 }
