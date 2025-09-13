@@ -29,7 +29,7 @@ func init() {
 
 func AssetFeedFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.Feed{},
-		AssetFeedSpec_v1alpha1_FromProto, AssetFeedSpec_v1alpha1_ToProto,
+		AssetFeedSpec_FromProto, AssetFeedSpec_ToProto,
 	)
 
 	f.SpecFields.Insert(".asset_names")
