@@ -15,7 +15,7 @@ spec:
   description: A basic organization firewall policy
   organizationRef:
     external: organizations/${organizationID}
-  resourceID: firewallPolicies/${firewallPolicyID}
+  resourceID: ${firewallPolicyID}
   shortName: test-acquire-policy
 status:
   conditions:
