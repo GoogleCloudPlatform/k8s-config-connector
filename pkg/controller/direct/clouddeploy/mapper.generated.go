@@ -21,12 +21,266 @@ package clouddeploy
 
 import (
 	pb "cloud.google.com/go/deploy/apiv1/deploypb"
-	cloudbuildv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1alpha1"
+	krmcloudbuildv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddeploy/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	dayofweek "google.golang.org/genproto/googleapis/type/dayofweek"
+	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 )
 
+func AnthosCluster_FromProto(mapCtx *direct.MapContext, in *pb.AnthosCluster) *krm.AnthosCluster {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AnthosCluster{}
+	out.Membership = direct.LazyPtr(in.GetMembership())
+	return out
+}
+func AnthosCluster_ToProto(mapCtx *direct.MapContext, in *krm.AnthosCluster) *pb.AnthosCluster {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AnthosCluster{}
+	out.Membership = direct.ValueOf(in.Membership)
+	return out
+}
+func Canary_FromProto(mapCtx *direct.MapContext, in *pb.Canary) *krm.Canary {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Canary{}
+	out.RuntimeConfig = RuntimeConfig_FromProto(mapCtx, in.GetRuntimeConfig())
+	out.CanaryDeployment = CanaryDeployment_FromProto(mapCtx, in.GetCanaryDeployment())
+	out.CustomCanaryDeployment = CustomCanaryDeployment_FromProto(mapCtx, in.GetCustomCanaryDeployment())
+	return out
+}
+func Canary_ToProto(mapCtx *direct.MapContext, in *krm.Canary) *pb.Canary {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Canary{}
+	out.RuntimeConfig = RuntimeConfig_ToProto(mapCtx, in.RuntimeConfig)
+	if oneof := CanaryDeployment_ToProto(mapCtx, in.CanaryDeployment); oneof != nil {
+		out.Mode = &pb.Canary_CanaryDeployment{CanaryDeployment: oneof}
+	}
+	if oneof := CustomCanaryDeployment_ToProto(mapCtx, in.CustomCanaryDeployment); oneof != nil {
+		out.Mode = &pb.Canary_CustomCanaryDeployment{CustomCanaryDeployment: oneof}
+	}
+	return out
+}
+func CanaryDeployment_FromProto(mapCtx *direct.MapContext, in *pb.CanaryDeployment) *krm.CanaryDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CanaryDeployment{}
+	out.Percentages = in.Percentages
+	out.Verify = direct.LazyPtr(in.GetVerify())
+	out.Predeploy = Predeploy_FromProto(mapCtx, in.GetPredeploy())
+	out.Postdeploy = Postdeploy_FromProto(mapCtx, in.GetPostdeploy())
+	return out
+}
+func CanaryDeployment_ToProto(mapCtx *direct.MapContext, in *krm.CanaryDeployment) *pb.CanaryDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CanaryDeployment{}
+	out.Percentages = in.Percentages
+	out.Verify = direct.ValueOf(in.Verify)
+	out.Predeploy = Predeploy_ToProto(mapCtx, in.Predeploy)
+	out.Postdeploy = Postdeploy_ToProto(mapCtx, in.Postdeploy)
+	return out
+}
+func CloudRunConfig_FromProto(mapCtx *direct.MapContext, in *pb.CloudRunConfig) *krm.CloudRunConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudRunConfig{}
+	out.AutomaticTrafficControl = direct.LazyPtr(in.GetAutomaticTrafficControl())
+	out.CanaryRevisionTags = in.CanaryRevisionTags
+	out.PriorRevisionTags = in.PriorRevisionTags
+	out.StableRevisionTags = in.StableRevisionTags
+	return out
+}
+func CloudRunConfig_ToProto(mapCtx *direct.MapContext, in *krm.CloudRunConfig) *pb.CloudRunConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudRunConfig{}
+	out.AutomaticTrafficControl = direct.ValueOf(in.AutomaticTrafficControl)
+	out.CanaryRevisionTags = in.CanaryRevisionTags
+	out.PriorRevisionTags = in.PriorRevisionTags
+	out.StableRevisionTags = in.StableRevisionTags
+	return out
+}
+func CloudRunLocation_FromProto(mapCtx *direct.MapContext, in *pb.CloudRunLocation) *krm.CloudRunLocation {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudRunLocation{}
+	out.Location = direct.LazyPtr(in.GetLocation())
+	return out
+}
+func CloudRunLocation_ToProto(mapCtx *direct.MapContext, in *krm.CloudRunLocation) *pb.CloudRunLocation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudRunLocation{}
+	out.Location = direct.ValueOf(in.Location)
+	return out
+}
+func CustomCanaryDeployment_FromProto(mapCtx *direct.MapContext, in *pb.CustomCanaryDeployment) *krm.CustomCanaryDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomCanaryDeployment{}
+	out.PhaseConfigs = direct.Slice_FromProto(mapCtx, in.PhaseConfigs, CustomCanaryDeployment_PhaseConfig_FromProto)
+	return out
+}
+func CustomCanaryDeployment_ToProto(mapCtx *direct.MapContext, in *krm.CustomCanaryDeployment) *pb.CustomCanaryDeployment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomCanaryDeployment{}
+	out.PhaseConfigs = direct.Slice_ToProto(mapCtx, in.PhaseConfigs, CustomCanaryDeployment_PhaseConfig_ToProto)
+	return out
+}
+func CustomCanaryDeployment_PhaseConfig_FromProto(mapCtx *direct.MapContext, in *pb.CustomCanaryDeployment_PhaseConfig) *krm.CustomCanaryDeployment_PhaseConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomCanaryDeployment_PhaseConfig{}
+	out.PhaseID = direct.LazyPtr(in.GetPhaseId())
+	out.Percentage = direct.LazyPtr(in.GetPercentage())
+	out.Profiles = in.Profiles
+	out.Verify = direct.LazyPtr(in.GetVerify())
+	out.Predeploy = Predeploy_FromProto(mapCtx, in.GetPredeploy())
+	out.Postdeploy = Postdeploy_FromProto(mapCtx, in.GetPostdeploy())
+	return out
+}
+func CustomCanaryDeployment_PhaseConfig_ToProto(mapCtx *direct.MapContext, in *krm.CustomCanaryDeployment_PhaseConfig) *pb.CustomCanaryDeployment_PhaseConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomCanaryDeployment_PhaseConfig{}
+	out.PhaseId = direct.ValueOf(in.PhaseID)
+	out.Percentage = direct.ValueOf(in.Percentage)
+	out.Profiles = in.Profiles
+	out.Verify = direct.ValueOf(in.Verify)
+	out.Predeploy = Predeploy_ToProto(mapCtx, in.Predeploy)
+	out.Postdeploy = Postdeploy_ToProto(mapCtx, in.Postdeploy)
+	return out
+}
+func CustomTarget_FromProto(mapCtx *direct.MapContext, in *pb.CustomTarget) *krm.CustomTarget {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomTarget{}
+	out.CustomTargetType = direct.LazyPtr(in.GetCustomTargetType())
+	return out
+}
+func CustomTarget_ToProto(mapCtx *direct.MapContext, in *krm.CustomTarget) *pb.CustomTarget {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomTarget{}
+	out.CustomTargetType = direct.ValueOf(in.CustomTargetType)
+	return out
+}
+func CustomTargetSkaffoldActions_FromProto(mapCtx *direct.MapContext, in *pb.CustomTargetSkaffoldActions) *krm.CustomTargetSkaffoldActions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomTargetSkaffoldActions{}
+	out.RenderAction = direct.LazyPtr(in.GetRenderAction())
+	out.DeployAction = direct.LazyPtr(in.GetDeployAction())
+	out.IncludeSkaffoldModules = direct.Slice_FromProto(mapCtx, in.IncludeSkaffoldModules, SkaffoldModules_FromProto)
+	return out
+}
+func CustomTargetSkaffoldActions_ToProto(mapCtx *direct.MapContext, in *krm.CustomTargetSkaffoldActions) *pb.CustomTargetSkaffoldActions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomTargetSkaffoldActions{}
+	out.RenderAction = direct.ValueOf(in.RenderAction)
+	out.DeployAction = direct.ValueOf(in.DeployAction)
+	out.IncludeSkaffoldModules = direct.Slice_ToProto(mapCtx, in.IncludeSkaffoldModules, SkaffoldModules_ToProto)
+	return out
+}
+func CustomTargetTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomTargetType) *krm.CustomTargetTypeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomTargetTypeObservedState{}
+	// MISSING: Name
+	out.CustomTargetTypeID = direct.LazyPtr(in.GetCustomTargetTypeId())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	// MISSING: Annotations
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Etag
+	return out
+}
+func CustomTargetTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CustomTargetTypeObservedState) *pb.CustomTargetType {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomTargetType{}
+	// MISSING: Name
+	out.CustomTargetTypeId = direct.ValueOf(in.CustomTargetTypeID)
+	out.Uid = direct.ValueOf(in.Uid)
+	// MISSING: Annotations
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Etag
+	return out
+}
+func CustomTargetTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomTargetType) *krm.CustomTargetTypeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CustomTargetTypeSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: Annotations
+	// MISSING: Labels
+	// MISSING: Etag
+	out.CustomActions = CustomTargetSkaffoldActions_FromProto(mapCtx, in.GetCustomActions())
+	return out
+}
+func CustomTargetTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.CustomTargetTypeSpec) *pb.CustomTargetType {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CustomTargetType{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: Annotations
+	// MISSING: Labels
+	// MISSING: Etag
+	if oneof := CustomTargetSkaffoldActions_ToProto(mapCtx, in.CustomActions); oneof != nil {
+		out.Definition = &pb.CustomTargetType_CustomActions{CustomActions: oneof}
+	}
+	return out
+}
+func DefaultPool_FromProto(mapCtx *direct.MapContext, in *pb.DefaultPool) *krm.DefaultPool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DefaultPool{}
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.ArtifactStorage = direct.LazyPtr(in.GetArtifactStorage())
+	return out
+}
+func DefaultPool_ToProto(mapCtx *direct.MapContext, in *krm.DefaultPool) *pb.DefaultPool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DefaultPool{}
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.ArtifactStorage = direct.ValueOf(in.ArtifactStorage)
+	return out
+}
 func DeliveryPipelineAttribute_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipelineAttribute) *krm.DeliveryPipelineAttribute {
 	if in == nil {
 		return nil
@@ -101,41 +355,22 @@ func DeliveryPipelineSpec_ToProto(mapCtx *direct.MapContext, in *krm.DeliveryPip
 	out.Suspended = direct.ValueOf(in.Suspended)
 	return out
 }
-
-func DeployPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.DeployPolicy) *krm.DeployPolicySpec {
+func DeployParameters_FromProto(mapCtx *direct.MapContext, in *pb.DeployParameters) *krm.DeployParameters {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DeployPolicySpec{}
-	// MISSING: Name
-	// MISSING: Uid
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// out.Annotations = in.Annotations
-	// out.Labels = in.Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Suspended = direct.LazyPtr(in.GetSuspended())
-	out.Selectors = direct.Slice_FromProto(mapCtx, in.Selectors, DeployPolicyResourceSelector_FromProto)
-	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, PolicyRule_FromProto)
-	//out.Etag = direct.LazyPtr(in.GetEtag())
+	out := &krm.DeployParameters{}
+	out.Values = in.Values
+	out.MatchTargetLabels = in.MatchTargetLabels
 	return out
 }
-func DeployPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.DeployPolicySpec) *pb.DeployPolicy {
+func DeployParameters_ToProto(mapCtx *direct.MapContext, in *krm.DeployParameters) *pb.DeployParameters {
 	if in == nil {
 		return nil
 	}
-	out := &pb.DeployPolicy{}
-	// MISSING: Name
-	// MISSING: Uid
-	out.Description = direct.ValueOf(in.Description)
-	// out.Annotations = in.Annotations
-	// out.Labels = in.Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Suspended = direct.ValueOf(in.Suspended)
-	out.Selectors = direct.Slice_ToProto(mapCtx, in.Selectors, DeployPolicyResourceSelector_ToProto)
-	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, PolicyRule_ToProto)
-	//out.Etag = direct.ValueOf(in.Etag)
+	out := &pb.DeployParameters{}
+	out.Values = in.Values
+	out.MatchTargetLabels = in.MatchTargetLabels
 	return out
 }
 func DeployPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DeployPolicy) *krm.DeployPolicyObservedState {
@@ -145,14 +380,10 @@ func DeployPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Deplo
 	out := &krm.DeployPolicyObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Uid = direct.LazyPtr(in.GetUid())
-	// MISSING: Description
 	// MISSING: Annotations
 	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Suspended
-	// MISSING: Selectors
-	// MISSING: Rules
 	// MISSING: Etag
 	return out
 }
@@ -163,14 +394,10 @@ func DeployPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Deploy
 	out := &pb.DeployPolicy{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Uid = direct.ValueOf(in.Uid)
-	// MISSING: Description
 	// MISSING: Annotations
 	// MISSING: Labels
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Suspended
-	// MISSING: Selectors
-	// MISSING: Rules
 	// MISSING: Etag
 	return out
 }
@@ -192,440 +419,88 @@ func DeployPolicyResourceSelector_ToProto(mapCtx *direct.MapContext, in *krm.Dep
 	out.Target = TargetAttribute_ToProto(mapCtx, in.Target)
 	return out
 }
-func OneTimeWindow_FromProto(mapCtx *direct.MapContext, in *pb.OneTimeWindow) *krm.OneTimeWindow {
+func DeployPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.DeployPolicy) *krm.DeployPolicySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.OneTimeWindow{}
-	out.StartDate = Date_FromProto(mapCtx, in.GetStartDate())
-	out.StartTime = TimeOfDay_FromProto(mapCtx, in.GetStartTime())
-	out.EndDate = Date_FromProto(mapCtx, in.GetEndDate())
-	out.EndTime = TimeOfDay_FromProto(mapCtx, in.GetEndTime())
-	return out
-}
-func OneTimeWindow_ToProto(mapCtx *direct.MapContext, in *krm.OneTimeWindow) *pb.OneTimeWindow {
-	if in == nil {
-		return nil
-	}
-	out := &pb.OneTimeWindow{}
-	out.StartDate = Date_ToProto(mapCtx, in.StartDate)
-	out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
-	out.EndDate = Date_ToProto(mapCtx, in.EndDate)
-	out.EndTime = TimeOfDay_ToProto(mapCtx, in.EndTime)
-	return out
-}
-func PolicyRule_FromProto(mapCtx *direct.MapContext, in *pb.PolicyRule) *krm.PolicyRule {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PolicyRule{}
-	out.RolloutRestriction = RolloutRestriction_FromProto(mapCtx, in.GetRolloutRestriction())
-	return out
-}
-func PolicyRule_ToProto(mapCtx *direct.MapContext, in *krm.PolicyRule) *pb.PolicyRule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PolicyRule{}
-	if oneof := RolloutRestriction_ToProto(mapCtx, in.RolloutRestriction); oneof != nil {
-		out.Rule = &pb.PolicyRule_RolloutRestriction{RolloutRestriction: oneof}
-	}
-	return out
-}
-func RolloutRestriction_FromProto(mapCtx *direct.MapContext, in *pb.RolloutRestriction) *krm.RolloutRestriction {
-	if in == nil {
-		return nil
-	}
-	out := &krm.RolloutRestriction{}
-	out.ID = direct.LazyPtr(in.GetId())
-	out.Invokers = direct.EnumSlice_FromProto(mapCtx, in.Invokers)
-	out.Actions = direct.EnumSlice_FromProto(mapCtx, in.Actions)
-	out.TimeWindows = TimeWindows_FromProto(mapCtx, in.GetTimeWindows())
-	return out
-}
-func RolloutRestriction_ToProto(mapCtx *direct.MapContext, in *krm.RolloutRestriction) *pb.RolloutRestriction {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RolloutRestriction{}
-	out.Id = direct.ValueOf(in.ID)
-	out.Invokers = direct.EnumSlice_ToProto[pb.DeployPolicy_Invoker](mapCtx, in.Invokers)
-	out.Actions = direct.EnumSlice_ToProto[pb.RolloutRestriction_RolloutActions](mapCtx, in.Actions)
-	out.TimeWindows = TimeWindows_ToProto(mapCtx, in.TimeWindows)
-	return out
-}
-func TargetAttribute_FromProto(mapCtx *direct.MapContext, in *pb.TargetAttribute) *krm.TargetAttribute {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TargetAttribute{}
-	out.ID = direct.LazyPtr(in.GetId())
-	out.Labels = in.Labels
-	return out
-}
-func TargetAttribute_ToProto(mapCtx *direct.MapContext, in *krm.TargetAttribute) *pb.TargetAttribute {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TargetAttribute{}
-	out.Id = direct.ValueOf(in.ID)
-	out.Labels = in.Labels
-	return out
-}
-func TimeWindows_FromProto(mapCtx *direct.MapContext, in *pb.TimeWindows) *krm.TimeWindows {
-	if in == nil {
-		return nil
-	}
-	out := &krm.TimeWindows{}
-	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
-	out.OneTimeWindows = direct.Slice_FromProto(mapCtx, in.OneTimeWindows, OneTimeWindow_FromProto)
-	out.WeeklyWindows = direct.Slice_FromProto(mapCtx, in.WeeklyWindows, WeeklyWindow_FromProto)
-	return out
-}
-func TimeWindows_ToProto(mapCtx *direct.MapContext, in *krm.TimeWindows) *pb.TimeWindows {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TimeWindows{}
-	out.TimeZone = direct.ValueOf(in.TimeZone)
-	out.OneTimeWindows = direct.Slice_ToProto(mapCtx, in.OneTimeWindows, OneTimeWindow_ToProto)
-	out.WeeklyWindows = direct.Slice_ToProto(mapCtx, in.WeeklyWindows, WeeklyWindow_ToProto)
-	return out
-}
-func WeeklyWindow_FromProto(mapCtx *direct.MapContext, in *pb.WeeklyWindow) *krm.WeeklyWindow {
-	if in == nil {
-		return nil
-	}
-	out := &krm.WeeklyWindow{}
-	out.DaysOfWeek = direct.EnumSlice_FromProto(mapCtx, in.DaysOfWeek)
-	out.StartTime = TimeOfDay_FromProto(mapCtx, in.GetStartTime())
-	out.EndTime = TimeOfDay_FromProto(mapCtx, in.GetEndTime())
-	return out
-}
-func WeeklyWindow_ToProto(mapCtx *direct.MapContext, in *krm.WeeklyWindow) *pb.WeeklyWindow {
-	if in == nil {
-		return nil
-	}
-	out := &pb.WeeklyWindow{}
-	out.DaysOfWeek = direct.EnumSlice_ToProto[dayofweek.DayOfWeek](mapCtx, in.DaysOfWeek)
-	out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
-	out.EndTime = TimeOfDay_ToProto(mapCtx, in.EndTime)
-	return out
-}
-
-func CustomTargetSkaffoldActions_FromProto(mapCtx *direct.MapContext, in *pb.CustomTargetSkaffoldActions) *krm.CustomTargetSkaffoldActions {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomTargetSkaffoldActions{}
-	out.RenderAction = direct.LazyPtr(in.GetRenderAction())
-	out.DeployAction = direct.LazyPtr(in.GetDeployAction())
-	out.IncludeSkaffoldModules = direct.Slice_FromProto(mapCtx, in.IncludeSkaffoldModules, SkaffoldModules_FromProto)
-	return out
-}
-func CustomTargetSkaffoldActions_ToProto(mapCtx *direct.MapContext, in *krm.CustomTargetSkaffoldActions) *pb.CustomTargetSkaffoldActions {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomTargetSkaffoldActions{}
-	out.RenderAction = direct.ValueOf(in.RenderAction)
-	out.DeployAction = direct.ValueOf(in.DeployAction)
-	out.IncludeSkaffoldModules = direct.Slice_ToProto(mapCtx, in.IncludeSkaffoldModules, SkaffoldModules_ToProto)
-	return out
-}
-func CustomTargetType_FromProto(mapCtx *direct.MapContext, in *pb.CustomTargetType) *krm.CustomTargetTypeSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomTargetTypeSpec{}
-	//out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: CustomTargetTypeID
-	// MISSING: Uid
+	out := &krm.DeployPolicySpec{}
 	out.Description = direct.LazyPtr(in.GetDescription())
-	//out.Annotations = in.Annotations
-	//out.Labels = in.Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	//out.Etag = direct.LazyPtr(in.GetEtag())
-	out.CustomActions = CustomTargetSkaffoldActions_FromProto(mapCtx, in.GetCustomActions())
+	// MISSING: Annotations
+	// MISSING: Labels
+	out.Suspended = direct.LazyPtr(in.GetSuspended())
+	out.Selectors = direct.Slice_FromProto(mapCtx, in.Selectors, DeployPolicyResourceSelector_FromProto)
+	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, PolicyRule_FromProto)
+	// MISSING: Etag
 	return out
 }
-func CustomTargetType_ToProto(mapCtx *direct.MapContext, in *krm.CustomTargetTypeSpec) *pb.CustomTargetType {
+func DeployPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.DeployPolicySpec) *pb.DeployPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &pb.CustomTargetType{}
-	// out.Name = direct.ValueOf(in.Name)
-	// MISSING: CustomTargetTypeID
-	// MISSING: Uid
+	out := &pb.DeployPolicy{}
 	out.Description = direct.ValueOf(in.Description)
-	// out.Annotations = in.Annotations
-	// out.Labels = in.Labels
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// out.Etag = direct.ValueOf(in.Etag)
-	if oneof := CustomTargetSkaffoldActions_ToProto(mapCtx, in.CustomActions); oneof != nil {
-		out.Definition = &pb.CustomTargetType_CustomActions{CustomActions: oneof}
-	}
-	return out
-}
-func CustomTargetTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomTargetType) *krm.CustomTargetTypeObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomTargetTypeObservedState{}
-	// MISSING: Name
-	out.CustomTargetTypeID = direct.LazyPtr(in.GetCustomTargetTypeId())
-	out.Uid = direct.LazyPtr(in.GetUid())
-	// MISSING: Description
 	// MISSING: Annotations
 	// MISSING: Labels
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Suspended = direct.ValueOf(in.Suspended)
+	out.Selectors = direct.Slice_ToProto(mapCtx, in.Selectors, DeployPolicyResourceSelector_ToProto)
+	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, PolicyRule_ToProto)
 	// MISSING: Etag
-	// MISSING: CustomActions
 	return out
 }
-func CustomTargetTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CustomTargetTypeObservedState) *pb.CustomTargetType {
+func ExecutionConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExecutionConfig) *krm.ExecutionConfig {
 	if in == nil {
 		return nil
 	}
-	out := &pb.CustomTargetType{}
-	// MISSING: Name
-	out.CustomTargetTypeId = direct.ValueOf(in.CustomTargetTypeID)
-	out.Uid = direct.ValueOf(in.Uid)
-	// MISSING: Description
-	// MISSING: Annotations
-	// MISSING: Labels
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Etag
-	// MISSING: CustomActions
+	out := &krm.ExecutionConfig{}
+	out.Usages = direct.EnumSlice_FromProto(mapCtx, in.Usages)
+	out.DefaultPool = DefaultPool_FromProto(mapCtx, in.GetDefaultPool())
+	out.PrivatePool = PrivatePool_FromProto(mapCtx, in.GetPrivatePool())
+	out.WorkerPool = direct.LazyPtr(in.GetWorkerPool())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.ArtifactStorage = direct.LazyPtr(in.GetArtifactStorage())
+	out.ExecutionTimeout = direct.StringDuration_FromProto(mapCtx, in.GetExecutionTimeout())
+	out.Verbose = direct.LazyPtr(in.GetVerbose())
 	return out
 }
-
-func SkaffoldModules_FromProto(mapCtx *direct.MapContext, in *pb.SkaffoldModules) *krm.SkaffoldModules {
+func ExecutionConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExecutionConfig) *pb.ExecutionConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SkaffoldModules{}
-	out.Configs = in.Configs
-	out.Git = SkaffoldModules_SkaffoldGitSource_FromProto(mapCtx, in.GetGit())
-	out.GoogleCloudStorage = SkaffoldModules_SkaffoldGCSSource_FromProto(mapCtx, in.GetGoogleCloudStorage())
-	out.GoogleCloudBuildRepo = SkaffoldModules_SkaffoldGcbRepoSource_FromProto(mapCtx, in.GetGoogleCloudBuildRepo())
+	out := &pb.ExecutionConfig{}
+	out.Usages = direct.EnumSlice_ToProto[pb.ExecutionConfig_ExecutionEnvironmentUsage](mapCtx, in.Usages)
+	if oneof := DefaultPool_ToProto(mapCtx, in.DefaultPool); oneof != nil {
+		out.ExecutionEnvironment = &pb.ExecutionConfig_DefaultPool{DefaultPool: oneof}
+	}
+	if oneof := PrivatePool_ToProto(mapCtx, in.PrivatePool); oneof != nil {
+		out.ExecutionEnvironment = &pb.ExecutionConfig_PrivatePool{PrivatePool: oneof}
+	}
+	out.WorkerPool = direct.ValueOf(in.WorkerPool)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.ArtifactStorage = direct.ValueOf(in.ArtifactStorage)
+	out.ExecutionTimeout = direct.StringDuration_ToProto(mapCtx, in.ExecutionTimeout)
+	out.Verbose = direct.ValueOf(in.Verbose)
 	return out
 }
-func SkaffoldModules_ToProto(mapCtx *direct.MapContext, in *krm.SkaffoldModules) *pb.SkaffoldModules {
+func GkeCluster_FromProto(mapCtx *direct.MapContext, in *pb.GkeCluster) *krm.GkeCluster {
 	if in == nil {
 		return nil
 	}
-	out := &pb.SkaffoldModules{}
-	out.Configs = in.Configs
-	if oneof := SkaffoldModules_SkaffoldGitSource_ToProto(mapCtx, in.Git); oneof != nil {
-		out.Source = &pb.SkaffoldModules_Git{Git: oneof}
-	}
-	if oneof := SkaffoldModules_SkaffoldGCSSource_ToProto(mapCtx, in.GoogleCloudStorage); oneof != nil {
-		out.Source = &pb.SkaffoldModules_GoogleCloudStorage{GoogleCloudStorage: oneof}
-	}
-	if oneof := SkaffoldModules_SkaffoldGcbRepoSource_ToProto(mapCtx, in.GoogleCloudBuildRepo); oneof != nil {
-		out.Source = &pb.SkaffoldModules_GoogleCloudBuildRepo{GoogleCloudBuildRepo: oneof}
-	}
+	out := &krm.GkeCluster{}
+	out.Cluster = direct.LazyPtr(in.GetCluster())
+	out.InternalIP = direct.LazyPtr(in.GetInternalIp())
+	out.ProxyURL = direct.LazyPtr(in.GetProxyUrl())
+	out.DNSEndpoint = direct.LazyPtr(in.GetDnsEndpoint())
 	return out
 }
-func SkaffoldModules_SkaffoldGCSSource_FromProto(mapCtx *direct.MapContext, in *pb.SkaffoldModules_SkaffoldGCSSource) *krm.SkaffoldModules_SkaffoldGCSSource {
+func GkeCluster_ToProto(mapCtx *direct.MapContext, in *krm.GkeCluster) *pb.GkeCluster {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SkaffoldModules_SkaffoldGCSSource{}
-	out.Source = direct.LazyPtr(in.GetSource())
-	out.Path = direct.LazyPtr(in.GetPath())
-	return out
-}
-func SkaffoldModules_SkaffoldGCSSource_ToProto(mapCtx *direct.MapContext, in *krm.SkaffoldModules_SkaffoldGCSSource) *pb.SkaffoldModules_SkaffoldGCSSource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SkaffoldModules_SkaffoldGCSSource{}
-	out.Source = direct.ValueOf(in.Source)
-	out.Path = direct.ValueOf(in.Path)
-	return out
-}
-func SkaffoldModules_SkaffoldGcbRepoSource_FromProto(mapCtx *direct.MapContext, in *pb.SkaffoldModules_SkaffoldGCBRepoSource) *krm.SkaffoldModules_SkaffoldGcbRepoSource {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SkaffoldModules_SkaffoldGcbRepoSource{}
-	if in.GetRepository() != "" {
-		out.RepositoryRef = &cloudbuildv1alpha1.RepositoryRef{
-			External: in.GetRepository(),
-		}
-	}
-
-	out.Path = direct.LazyPtr(in.GetPath())
-	out.Ref = direct.LazyPtr(in.GetRef())
-	return out
-}
-func SkaffoldModules_SkaffoldGcbRepoSource_ToProto(mapCtx *direct.MapContext, in *krm.SkaffoldModules_SkaffoldGcbRepoSource) *pb.SkaffoldModules_SkaffoldGCBRepoSource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SkaffoldModules_SkaffoldGCBRepoSource{}
-	if in.RepositoryRef != nil {
-		out.Repository = in.RepositoryRef.External
-	}
-	out.Path = direct.ValueOf(in.Path)
-	out.Ref = direct.ValueOf(in.Ref)
-	return out
-}
-func SkaffoldModules_SkaffoldGitSource_FromProto(mapCtx *direct.MapContext, in *pb.SkaffoldModules_SkaffoldGitSource) *krm.SkaffoldModules_SkaffoldGitSource {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SkaffoldModules_SkaffoldGitSource{}
-	out.Repo = direct.LazyPtr(in.GetRepo())
-	out.Path = direct.LazyPtr(in.GetPath())
-	out.Ref = direct.LazyPtr(in.GetRef())
-	return out
-}
-func SkaffoldModules_SkaffoldGitSource_ToProto(mapCtx *direct.MapContext, in *krm.SkaffoldModules_SkaffoldGitSource) *pb.SkaffoldModules_SkaffoldGitSource {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SkaffoldModules_SkaffoldGitSource{}
-	out.Repo = direct.ValueOf(in.Repo)
-	out.Path = direct.ValueOf(in.Path)
-	out.Ref = direct.ValueOf(in.Ref)
-
-	return out
-}
-
-func Canary_FromProto(mapCtx *direct.MapContext, in *pb.Canary) *krm.Canary {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Canary{}
-	out.RuntimeConfig = RuntimeConfig_FromProto(mapCtx, in.GetRuntimeConfig())
-	out.CanaryDeployment = CanaryDeployment_FromProto(mapCtx, in.GetCanaryDeployment())
-	out.CustomCanaryDeployment = CustomCanaryDeployment_FromProto(mapCtx, in.GetCustomCanaryDeployment())
-	return out
-}
-func Canary_ToProto(mapCtx *direct.MapContext, in *krm.Canary) *pb.Canary {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Canary{}
-	out.RuntimeConfig = RuntimeConfig_ToProto(mapCtx, in.RuntimeConfig)
-	if oneof := CanaryDeployment_ToProto(mapCtx, in.CanaryDeployment); oneof != nil {
-		out.Mode = &pb.Canary_CanaryDeployment{CanaryDeployment: oneof}
-	}
-	if oneof := CustomCanaryDeployment_ToProto(mapCtx, in.CustomCanaryDeployment); oneof != nil {
-		out.Mode = &pb.Canary_CustomCanaryDeployment{CustomCanaryDeployment: oneof}
-	}
-	return out
-}
-func CanaryDeployment_FromProto(mapCtx *direct.MapContext, in *pb.CanaryDeployment) *krm.CanaryDeployment {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CanaryDeployment{}
-	out.Percentages = in.Percentages
-	out.Verify = direct.LazyPtr(in.GetVerify())
-	out.Predeploy = Predeploy_FromProto(mapCtx, in.GetPredeploy())
-	out.Postdeploy = Postdeploy_FromProto(mapCtx, in.GetPostdeploy())
-	return out
-}
-func CanaryDeployment_ToProto(mapCtx *direct.MapContext, in *krm.CanaryDeployment) *pb.CanaryDeployment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CanaryDeployment{}
-	out.Percentages = in.Percentages
-	out.Verify = direct.ValueOf(in.Verify)
-	out.Predeploy = Predeploy_ToProto(mapCtx, in.Predeploy)
-	out.Postdeploy = Postdeploy_ToProto(mapCtx, in.Postdeploy)
-	return out
-}
-func CloudRunConfig_FromProto(mapCtx *direct.MapContext, in *pb.CloudRunConfig) *krm.CloudRunConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CloudRunConfig{}
-	out.AutomaticTrafficControl = direct.LazyPtr(in.GetAutomaticTrafficControl())
-	out.CanaryRevisionTags = in.CanaryRevisionTags
-	out.PriorRevisionTags = in.PriorRevisionTags
-	out.StableRevisionTags = in.StableRevisionTags
-	return out
-}
-func CloudRunConfig_ToProto(mapCtx *direct.MapContext, in *krm.CloudRunConfig) *pb.CloudRunConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CloudRunConfig{}
-	out.AutomaticTrafficControl = direct.ValueOf(in.AutomaticTrafficControl)
-	out.CanaryRevisionTags = in.CanaryRevisionTags
-	out.PriorRevisionTags = in.PriorRevisionTags
-	out.StableRevisionTags = in.StableRevisionTags
-	return out
-}
-func CustomCanaryDeployment_FromProto(mapCtx *direct.MapContext, in *pb.CustomCanaryDeployment) *krm.CustomCanaryDeployment {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomCanaryDeployment{}
-	out.PhaseConfigs = direct.Slice_FromProto(mapCtx, in.PhaseConfigs, CustomCanaryDeployment_PhaseConfig_FromProto)
-	return out
-}
-func CustomCanaryDeployment_ToProto(mapCtx *direct.MapContext, in *krm.CustomCanaryDeployment) *pb.CustomCanaryDeployment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomCanaryDeployment{}
-	out.PhaseConfigs = direct.Slice_ToProto(mapCtx, in.PhaseConfigs, CustomCanaryDeployment_PhaseConfig_ToProto)
-	return out
-}
-func CustomCanaryDeployment_PhaseConfig_FromProto(mapCtx *direct.MapContext, in *pb.CustomCanaryDeployment_PhaseConfig) *krm.CustomCanaryDeployment_PhaseConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CustomCanaryDeployment_PhaseConfig{}
-	out.PhaseID = direct.LazyPtr(in.GetPhaseId())
-	out.Percentage = direct.LazyPtr(in.GetPercentage())
-	out.Profiles = in.Profiles
-	out.Verify = direct.LazyPtr(in.GetVerify())
-	out.Predeploy = Predeploy_FromProto(mapCtx, in.GetPredeploy())
-	out.Postdeploy = Postdeploy_FromProto(mapCtx, in.GetPostdeploy())
-	return out
-}
-func CustomCanaryDeployment_PhaseConfig_ToProto(mapCtx *direct.MapContext, in *krm.CustomCanaryDeployment_PhaseConfig) *pb.CustomCanaryDeployment_PhaseConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CustomCanaryDeployment_PhaseConfig{}
-	out.PhaseId = direct.ValueOf(in.PhaseID)
-	out.Percentage = direct.ValueOf(in.Percentage)
-	out.Profiles = in.Profiles
-	out.Verify = direct.ValueOf(in.Verify)
-	out.Predeploy = Predeploy_ToProto(mapCtx, in.Predeploy)
-	out.Postdeploy = Postdeploy_ToProto(mapCtx, in.Postdeploy)
-	return out
-}
-
-func DeployParameters_FromProto(mapCtx *direct.MapContext, in *pb.DeployParameters) *krm.DeployParameters {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DeployParameters{}
-	out.Values = in.Values
-	out.MatchTargetLabels = in.MatchTargetLabels
-	return out
-}
-func DeployParameters_ToProto(mapCtx *direct.MapContext, in *krm.DeployParameters) *pb.DeployParameters {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DeployParameters{}
-	out.Values = in.Values
-	out.MatchTargetLabels = in.MatchTargetLabels
+	out := &pb.GkeCluster{}
+	out.Cluster = direct.ValueOf(in.Cluster)
+	out.InternalIp = direct.ValueOf(in.InternalIP)
+	out.ProxyUrl = direct.ValueOf(in.ProxyURL)
+	out.DnsEndpoint = direct.ValueOf(in.DNSEndpoint)
 	return out
 }
 func KubernetesConfig_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesConfig) *krm.KubernetesConfig {
@@ -683,7 +558,7 @@ func KubernetesConfig_GatewayServiceMesh_RouteDestinations_FromProto(mapCtx *dir
 		return nil
 	}
 	out := &krm.KubernetesConfig_GatewayServiceMesh_RouteDestinations{}
-	out.DestinationIDs = in.DestinationIds
+	out.DestinationIds = in.DestinationIds
 	out.PropagateService = direct.LazyPtr(in.GetPropagateService())
 	return out
 }
@@ -692,7 +567,7 @@ func KubernetesConfig_GatewayServiceMesh_RouteDestinations_ToProto(mapCtx *direc
 		return nil
 	}
 	out := &pb.KubernetesConfig_GatewayServiceMesh_RouteDestinations{}
-	out.DestinationIds = in.DestinationIDs
+	out.DestinationIds = in.DestinationIds
 	out.PropagateService = direct.ValueOf(in.PropagateService)
 	return out
 }
@@ -716,6 +591,44 @@ func KubernetesConfig_ServiceNetworking_ToProto(mapCtx *direct.MapContext, in *k
 	out.Deployment = direct.ValueOf(in.Deployment)
 	out.DisablePodOverprovisioning = direct.ValueOf(in.DisablePodOverprovisioning)
 	out.PodSelectorLabel = direct.ValueOf(in.PodSelectorLabel)
+	return out
+}
+func MultiTarget_FromProto(mapCtx *direct.MapContext, in *pb.MultiTarget) *krm.MultiTarget {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MultiTarget{}
+	out.TargetIds = in.TargetIds
+	return out
+}
+func MultiTarget_ToProto(mapCtx *direct.MapContext, in *krm.MultiTarget) *pb.MultiTarget {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MultiTarget{}
+	out.TargetIds = in.TargetIds
+	return out
+}
+func OneTimeWindow_FromProto(mapCtx *direct.MapContext, in *pb.OneTimeWindow) *krm.OneTimeWindow {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OneTimeWindow{}
+	out.StartDate = Date_FromProto(mapCtx, in.GetStartDate())
+	out.StartTime = TimeOfDay_FromProto(mapCtx, in.GetStartTime())
+	out.EndDate = Date_FromProto(mapCtx, in.GetEndDate())
+	out.EndTime = TimeOfDay_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+func OneTimeWindow_ToProto(mapCtx *direct.MapContext, in *krm.OneTimeWindow) *pb.OneTimeWindow {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OneTimeWindow{}
+	out.StartDate = Date_ToProto(mapCtx, in.StartDate)
+	out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
+	out.EndDate = Date_ToProto(mapCtx, in.EndDate)
+	out.EndTime = TimeOfDay_ToProto(mapCtx, in.EndTime)
 	return out
 }
 func PipelineCondition_FromProto(mapCtx *direct.MapContext, in *pb.PipelineCondition) *krm.PipelineCondition {
@@ -756,6 +669,24 @@ func PipelineReadyCondition_ToProto(mapCtx *direct.MapContext, in *krm.PipelineR
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+func PolicyRule_FromProto(mapCtx *direct.MapContext, in *pb.PolicyRule) *krm.PolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PolicyRule{}
+	out.RolloutRestriction = RolloutRestriction_FromProto(mapCtx, in.GetRolloutRestriction())
+	return out
+}
+func PolicyRule_ToProto(mapCtx *direct.MapContext, in *krm.PolicyRule) *pb.PolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PolicyRule{}
+	if oneof := RolloutRestriction_ToProto(mapCtx, in.RolloutRestriction); oneof != nil {
+		out.Rule = &pb.PolicyRule_RolloutRestriction{RolloutRestriction: oneof}
+	}
+	return out
+}
 func Postdeploy_FromProto(mapCtx *direct.MapContext, in *pb.Postdeploy) *krm.Postdeploy {
 	if in == nil {
 		return nil
@@ -786,6 +717,48 @@ func Predeploy_ToProto(mapCtx *direct.MapContext, in *krm.Predeploy) *pb.Predepl
 	}
 	out := &pb.Predeploy{}
 	out.Actions = in.Actions
+	return out
+}
+func PrivatePool_FromProto(mapCtx *direct.MapContext, in *pb.PrivatePool) *krm.PrivatePool {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivatePool{}
+	out.WorkerPool = direct.LazyPtr(in.GetWorkerPool())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.ArtifactStorage = direct.LazyPtr(in.GetArtifactStorage())
+	return out
+}
+func PrivatePool_ToProto(mapCtx *direct.MapContext, in *krm.PrivatePool) *pb.PrivatePool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivatePool{}
+	out.WorkerPool = direct.ValueOf(in.WorkerPool)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.ArtifactStorage = direct.ValueOf(in.ArtifactStorage)
+	return out
+}
+func RolloutRestriction_FromProto(mapCtx *direct.MapContext, in *pb.RolloutRestriction) *krm.RolloutRestriction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RolloutRestriction{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.Invokers = direct.EnumSlice_FromProto(mapCtx, in.Invokers)
+	out.Actions = direct.EnumSlice_FromProto(mapCtx, in.Actions)
+	out.TimeWindows = TimeWindows_FromProto(mapCtx, in.GetTimeWindows())
+	return out
+}
+func RolloutRestriction_ToProto(mapCtx *direct.MapContext, in *krm.RolloutRestriction) *pb.RolloutRestriction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RolloutRestriction{}
+	out.Id = direct.ValueOf(in.ID)
+	out.Invokers = direct.EnumSlice_ToProto[pb.DeployPolicy_Invoker](mapCtx, in.Invokers)
+	out.Actions = direct.EnumSlice_ToProto[pb.RolloutRestriction_RolloutActions](mapCtx, in.Actions)
+	out.TimeWindows = TimeWindows_ToProto(mapCtx, in.TimeWindows)
 	return out
 }
 func RuntimeConfig_FromProto(mapCtx *direct.MapContext, in *pb.RuntimeConfig) *krm.RuntimeConfig {
@@ -824,6 +797,96 @@ func SerialPipeline_ToProto(mapCtx *direct.MapContext, in *krm.SerialPipeline) *
 	}
 	out := &pb.SerialPipeline{}
 	out.Stages = direct.Slice_ToProto(mapCtx, in.Stages, Stage_ToProto)
+	return out
+}
+func SkaffoldModules_FromProto(mapCtx *direct.MapContext, in *pb.SkaffoldModules) *krm.SkaffoldModules {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SkaffoldModules{}
+	out.Configs = in.Configs
+	out.Git = SkaffoldModules_SkaffoldGitSource_FromProto(mapCtx, in.GetGit())
+	out.GoogleCloudStorage = SkaffoldModules_SkaffoldGCSSource_FromProto(mapCtx, in.GetGoogleCloudStorage())
+	out.GoogleCloudBuildRepo = SkaffoldModules_SkaffoldGcbRepoSource_FromProto(mapCtx, in.GetGoogleCloudBuildRepo())
+	return out
+}
+func SkaffoldModules_ToProto(mapCtx *direct.MapContext, in *krm.SkaffoldModules) *pb.SkaffoldModules {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SkaffoldModules{}
+	out.Configs = in.Configs
+	if oneof := SkaffoldModules_SkaffoldGitSource_ToProto(mapCtx, in.Git); oneof != nil {
+		out.Source = &pb.SkaffoldModules_Git{Git: oneof}
+	}
+	if oneof := SkaffoldModules_SkaffoldGCSSource_ToProto(mapCtx, in.GoogleCloudStorage); oneof != nil {
+		out.Source = &pb.SkaffoldModules_GoogleCloudStorage{GoogleCloudStorage: oneof}
+	}
+	if oneof := SkaffoldModules_SkaffoldGcbRepoSource_ToProto(mapCtx, in.GoogleCloudBuildRepo); oneof != nil {
+		out.Source = &pb.SkaffoldModules_GoogleCloudBuildRepo{GoogleCloudBuildRepo: oneof}
+	}
+	return out
+}
+func SkaffoldModules_SkaffoldGCSSource_FromProto(mapCtx *direct.MapContext, in *pb.SkaffoldModules_SkaffoldGCSSource) *krm.SkaffoldModules_SkaffoldGCSSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SkaffoldModules_SkaffoldGCSSource{}
+	out.Source = direct.LazyPtr(in.GetSource())
+	out.Path = direct.LazyPtr(in.GetPath())
+	return out
+}
+func SkaffoldModules_SkaffoldGCSSource_ToProto(mapCtx *direct.MapContext, in *krm.SkaffoldModules_SkaffoldGCSSource) *pb.SkaffoldModules_SkaffoldGCSSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SkaffoldModules_SkaffoldGCSSource{}
+	out.Source = direct.ValueOf(in.Source)
+	out.Path = direct.ValueOf(in.Path)
+	return out
+}
+func SkaffoldModules_SkaffoldGcbRepoSource_FromProto(mapCtx *direct.MapContext, in *pb.SkaffoldModules_SkaffoldGCBRepoSource) *krm.SkaffoldModules_SkaffoldGcbRepoSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SkaffoldModules_SkaffoldGcbRepoSource{}
+	if in.GetRepository() != "" {
+		out.RepositoryRef = &krmcloudbuildv1alpha1.RepositoryRef{External: in.GetRepository()}
+	}
+	out.Path = direct.LazyPtr(in.GetPath())
+	out.Ref = direct.LazyPtr(in.GetRef())
+	return out
+}
+func SkaffoldModules_SkaffoldGcbRepoSource_ToProto(mapCtx *direct.MapContext, in *krm.SkaffoldModules_SkaffoldGcbRepoSource) *pb.SkaffoldModules_SkaffoldGCBRepoSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SkaffoldModules_SkaffoldGCBRepoSource{}
+	if in.RepositoryRef != nil {
+		out.Repository = in.RepositoryRef.External
+	}
+	out.Path = direct.ValueOf(in.Path)
+	out.Ref = direct.ValueOf(in.Ref)
+	return out
+}
+func SkaffoldModules_SkaffoldGitSource_FromProto(mapCtx *direct.MapContext, in *pb.SkaffoldModules_SkaffoldGitSource) *krm.SkaffoldModules_SkaffoldGitSource {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SkaffoldModules_SkaffoldGitSource{}
+	out.Repo = direct.LazyPtr(in.GetRepo())
+	out.Path = direct.LazyPtr(in.GetPath())
+	out.Ref = direct.LazyPtr(in.GetRef())
+	return out
+}
+func SkaffoldModules_SkaffoldGitSource_ToProto(mapCtx *direct.MapContext, in *krm.SkaffoldModules_SkaffoldGitSource) *pb.SkaffoldModules_SkaffoldGitSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SkaffoldModules_SkaffoldGitSource{}
+	out.Repo = direct.ValueOf(in.Repo)
+	out.Path = direct.ValueOf(in.Path)
+	out.Ref = direct.ValueOf(in.Ref)
 	return out
 }
 func Stage_FromProto(mapCtx *direct.MapContext, in *pb.Stage) *krm.Stage {
@@ -890,6 +953,134 @@ func Strategy_ToProto(mapCtx *direct.MapContext, in *krm.Strategy) *pb.Strategy 
 	}
 	return out
 }
+func Target_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krm.Target {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Target{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: TargetID
+	// MISSING: Uid
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Annotations = in.Annotations
+	out.Labels = in.Labels
+	out.RequireApproval = direct.LazyPtr(in.GetRequireApproval())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.GKE = GkeCluster_FromProto(mapCtx, in.GetGke())
+	out.AnthosCluster = AnthosCluster_FromProto(mapCtx, in.GetAnthosCluster())
+	out.Run = CloudRunLocation_FromProto(mapCtx, in.GetRun())
+	out.MultiTarget = MultiTarget_FromProto(mapCtx, in.GetMultiTarget())
+	out.CustomTarget = CustomTarget_FromProto(mapCtx, in.GetCustomTarget())
+	// MISSING: AssociatedEntities
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.ExecutionConfigs = direct.Slice_FromProto(mapCtx, in.ExecutionConfigs, ExecutionConfig_FromProto)
+	out.DeployParameters = in.DeployParameters
+	return out
+}
+func Target_ToProto(mapCtx *direct.MapContext, in *krm.Target) *pb.Target {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Target{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: TargetID
+	// MISSING: Uid
+	out.Description = direct.ValueOf(in.Description)
+	out.Annotations = in.Annotations
+	out.Labels = in.Labels
+	out.RequireApproval = direct.ValueOf(in.RequireApproval)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	if oneof := GkeCluster_ToProto(mapCtx, in.GKE); oneof != nil {
+		out.DeploymentTarget = &pb.Target_Gke{Gke: oneof}
+	}
+	if oneof := AnthosCluster_ToProto(mapCtx, in.AnthosCluster); oneof != nil {
+		out.DeploymentTarget = &pb.Target_AnthosCluster{AnthosCluster: oneof}
+	}
+	if oneof := CloudRunLocation_ToProto(mapCtx, in.Run); oneof != nil {
+		out.DeploymentTarget = &pb.Target_Run{Run: oneof}
+	}
+	if oneof := MultiTarget_ToProto(mapCtx, in.MultiTarget); oneof != nil {
+		out.DeploymentTarget = &pb.Target_MultiTarget{MultiTarget: oneof}
+	}
+	if oneof := CustomTarget_ToProto(mapCtx, in.CustomTarget); oneof != nil {
+		out.DeploymentTarget = &pb.Target_CustomTarget{CustomTarget: oneof}
+	}
+	// MISSING: AssociatedEntities
+	out.Etag = direct.ValueOf(in.Etag)
+	out.ExecutionConfigs = direct.Slice_ToProto(mapCtx, in.ExecutionConfigs, ExecutionConfig_ToProto)
+	out.DeployParameters = in.DeployParameters
+	return out
+}
+func TargetAttribute_FromProto(mapCtx *direct.MapContext, in *pb.TargetAttribute) *krm.TargetAttribute {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TargetAttribute{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.Labels = in.Labels
+	return out
+}
+func TargetAttribute_ToProto(mapCtx *direct.MapContext, in *krm.TargetAttribute) *pb.TargetAttribute {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TargetAttribute{}
+	out.Id = direct.ValueOf(in.ID)
+	out.Labels = in.Labels
+	return out
+}
+func TargetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Target) *krm.TargetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TargetObservedState{}
+	// MISSING: Name
+	out.TargetID = direct.LazyPtr(in.GetTargetId())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	// MISSING: Description
+	// MISSING: Annotations
+	// MISSING: Labels
+	// MISSING: RequireApproval
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: GKE
+	// MISSING: AnthosCluster
+	// MISSING: Run
+	// MISSING: MultiTarget
+	// MISSING: CustomTarget
+	// MISSING: AssociatedEntities
+	// MISSING: Etag
+	// MISSING: ExecutionConfigs
+	// MISSING: DeployParameters
+	return out
+}
+func TargetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TargetObservedState) *pb.Target {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Target{}
+	// MISSING: Name
+	out.TargetId = direct.ValueOf(in.TargetID)
+	out.Uid = direct.ValueOf(in.Uid)
+	// MISSING: Description
+	// MISSING: Annotations
+	// MISSING: Labels
+	// MISSING: RequireApproval
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: GKE
+	// MISSING: AnthosCluster
+	// MISSING: Run
+	// MISSING: MultiTarget
+	// MISSING: CustomTarget
+	// MISSING: AssociatedEntities
+	// MISSING: Etag
+	// MISSING: ExecutionConfigs
+	// MISSING: DeployParameters
+	return out
+}
 func TargetsPresentCondition_FromProto(mapCtx *direct.MapContext, in *pb.TargetsPresentCondition) *krm.TargetsPresentCondition {
 	if in == nil {
 		return nil
@@ -926,5 +1117,45 @@ func TargetsTypeCondition_ToProto(mapCtx *direct.MapContext, in *krm.TargetsType
 	out := &pb.TargetsTypeCondition{}
 	out.Status = direct.ValueOf(in.Status)
 	out.ErrorDetails = direct.ValueOf(in.ErrorDetails)
+	return out
+}
+func TimeWindows_FromProto(mapCtx *direct.MapContext, in *pb.TimeWindows) *krm.TimeWindows {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TimeWindows{}
+	out.TimeZone = direct.LazyPtr(in.GetTimeZone())
+	out.OneTimeWindows = direct.Slice_FromProto(mapCtx, in.OneTimeWindows, OneTimeWindow_FromProto)
+	out.WeeklyWindows = direct.Slice_FromProto(mapCtx, in.WeeklyWindows, WeeklyWindow_FromProto)
+	return out
+}
+func TimeWindows_ToProto(mapCtx *direct.MapContext, in *krm.TimeWindows) *pb.TimeWindows {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TimeWindows{}
+	out.TimeZone = direct.ValueOf(in.TimeZone)
+	out.OneTimeWindows = direct.Slice_ToProto(mapCtx, in.OneTimeWindows, OneTimeWindow_ToProto)
+	out.WeeklyWindows = direct.Slice_ToProto(mapCtx, in.WeeklyWindows, WeeklyWindow_ToProto)
+	return out
+}
+func WeeklyWindow_FromProto(mapCtx *direct.MapContext, in *pb.WeeklyWindow) *krm.WeeklyWindow {
+	if in == nil {
+		return nil
+	}
+	out := &krm.WeeklyWindow{}
+	out.DaysOfWeek = direct.EnumSlice_FromProto(mapCtx, in.DaysOfWeek)
+	out.StartTime = TimeOfDay_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = TimeOfDay_FromProto(mapCtx, in.GetEndTime())
+	return out
+}
+func WeeklyWindow_ToProto(mapCtx *direct.MapContext, in *krm.WeeklyWindow) *pb.WeeklyWindow {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WeeklyWindow{}
+	out.DaysOfWeek = direct.EnumSlice_ToProto[dayofweekpb.DayOfWeek](mapCtx, in.DaysOfWeek)
+	out.StartTime = TimeOfDay_ToProto(mapCtx, in.StartTime)
+	out.EndTime = TimeOfDay_ToProto(mapCtx, in.EndTime)
 	return out
 }
