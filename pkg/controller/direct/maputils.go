@@ -493,20 +493,6 @@ func UInt64Value_ToProto(mapCtx *MapContext, in *uint64) *wrapperspb.UInt64Value
 	return out
 }
 
-func BytesValue_FromProto(mapCtx *MapContext, in *wrapperspb.BytesValue) []byte {
-	if in == nil {
-		return nil
-	}
-	return in.Value
-}
-
-func BytesValue_ToProto(mapCtx *MapContext, in []byte) *wrapperspb.BytesValue {
-	if in == nil {
-		return nil
-	}
-	return wrapperspb.Bytes(in)
-}
-
 // Convert a number of milliseconds since the Unix epoch to a time.Time.
 // Treat an input of zero specially: convert it to the zero time,
 // rather than the start of the epoch.
