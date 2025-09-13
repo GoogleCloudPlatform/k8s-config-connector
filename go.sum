@@ -125,6 +125,8 @@ cloud.google.com/go/redis v1.18.2 h1:JlHLceAOILEmbn+NIS7l+vmUKkFuobLToCWTxL7NGcQ
 cloud.google.com/go/redis v1.18.2/go.mod h1:q6mPRhLiR2uLf584Lcl4tsiRn0xiFlu6fnJLwCORMtY=
 cloud.google.com/go/resourcemanager v1.10.6 h1:LIa8kKE8HF71zm976oHMqpWFiaDHVw/H1YMO71lrGmo=
 cloud.google.com/go/resourcemanager v1.10.6/go.mod h1:VqMoDQ03W4yZmxzLPrB+RuAoVkHDS5tFUUQUhOtnRTg=
+cloud.google.com/go/run v1.10.0 h1:CDhz0PPzI/cVpmNFyHe3Yp21jNpiAqtkfRxuoLi+JU0=
+cloud.google.com/go/run v1.10.0/go.mod h1:z7/ZidaHOCjdn5dV0eojRbD+p8RczMk3A7Qi2L+koHg=
 cloud.google.com/go/secretmanager v1.14.7 h1:VkscIRzj7GcmZyO4z9y1EH7Xf81PcoiAo7MtlD+0O80=
 cloud.google.com/go/secretmanager v1.14.7/go.mod h1:uRuB4F6NTFbg0vLQ6HsT7PSsfbY7FqHbtJP1J94qxGc=
 cloud.google.com/go/securesourcemanager v1.1.1 h1:raOxRsR507ALLlc5yG79LK7O2TuDbD7o7IyHwyCoYAE=
