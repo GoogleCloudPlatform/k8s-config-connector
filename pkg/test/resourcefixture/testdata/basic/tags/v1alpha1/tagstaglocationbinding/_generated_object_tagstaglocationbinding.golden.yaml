@@ -16,7 +16,7 @@ spec:
   location: us
   parentRef:
     external: //storage.googleapis.com/projects/_/buckets/storagebucket-sample-${uniqueId}
-  resourceID: tagBindings/%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Fstoragebucket-sample-${uniqueId}/tagValues/1757942307179002725
+  resourceID: tagBindings/%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Fstoragebucket-sample-${uniqueId}/tagValues/${tagValueID}
   tagValueRef:
     name: tagstagvalue-${uniqueId}
 status:
@@ -26,5 +26,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  name: tagBindings/%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Fstoragebucket-sample-${uniqueId}/tagValues/1757942307179002725
+  name: tagBindings/%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Fstoragebucket-sample-${uniqueId}/tagValues/${tagValueID}
   observedGeneration: 2

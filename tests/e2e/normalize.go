@@ -588,6 +588,12 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, resourceID, "${membershipID}")
 				})
+
+			case schema.GroupVersionKind{Group: "tags.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "TagsLocationTagBinding"}:
+				tokens := strings.Split(resourceID, "/")
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, tokens[len(tokens)-1], "${tagValueID}")
+				})
 			}
 		}
 
