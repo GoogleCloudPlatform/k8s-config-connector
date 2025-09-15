@@ -16,8 +16,8 @@ package sql
 
 import (
 	"context"
+	"errors"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	api "google.golang.org/api/sqladmin/v1beta4"
@@ -60,14 +60,14 @@ func (m *gcpClient) sqlUsersClient() *api.UsersService {
 
 // NewGCPOperationError builds an error from a GCP operation error.
 func NewGCPOperationError(opErr *api.OperationErrors) error {
-	var errs []string
+	var errs []error
 	if opErr != nil {
 		for _, err := range opErr.Errors {
-			errs = append(errs, fmt.Sprintf("code=%q, message=%q", err.Code, err.Message))
+			errs = append(errs, fmt.Errorf("code=%q, message=%q", err.Code, err.Message))
 		}
 	}
 	if len(errs) == 0 {
-		return fmt.Errorf("gcp operation failed with unknown error")
+		return fmt.Errorf("gcp operation failed with unknown error, raw error: %+v", opErr)
 	}
-	return fmt.Errorf("gcp operation failed: %s", strings.Join(errs, "; "))
+	return fmt.Errorf("gcp operation failed: %w", errors.Join(errs...))
 }

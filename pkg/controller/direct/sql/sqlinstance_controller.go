@@ -234,27 +234,35 @@ func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured
 	log.V(2).Info("instance created", "op", op, "instance", created)
 
 	if maintenanceVersion != "" {
-		newMaintDb := &api.DatabaseInstance{
-			MaintenanceVersion: maintenanceVersion,
-		}
-
-		op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newMaintDb).Context(ctx).Do()
+		updated, err := a.updateMaintenanceVersion(ctx, maintenanceVersion, log)
 		if err != nil {
-			return nil, fmt.Errorf("patching SQLInstance %s maintenanceVersion failed: %w", a.resourceID, err)
-		}
-		if err := a.pollForLROCompletion(ctx, op, "maintenanceVersion patch"); err != nil {
 			return nil, err
 		}
-
-		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
-		if err != nil {
-			return nil, fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
-		}
 		created = updated
-		log.V(2).Info("instance maintenanceVersion updated", "op", op, "instance", updated)
 	}
 
 	return created, nil
+}
+
+func (a *sqlInstanceAdapter) updateMaintenanceVersion(ctx context.Context, maintenanceVersion string, log klog.Logger) (*api.DatabaseInstance, error) {
+	newMaintDb := &api.DatabaseInstance{
+		MaintenanceVersion: maintenanceVersion,
+	}
+
+	op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newMaintDb).Context(ctx).Do()
+	if err != nil {
+		return nil, fmt.Errorf("patching SQLInstance %s maintenanceVersion failed: %w", a.resourceID, err)
+	}
+	if err := a.pollForLROCompletion(ctx, op, "maintenanceVersion patch"); err != nil {
+		return nil, err
+	}
+
+	updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
+	if err != nil {
+		return nil, fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
+	}
+	log.V(2).Info("instance maintenanceVersion updated", "op", op, "instance", updated)
+	return updated, nil
 }
 
 func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -360,30 +368,16 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 	// we also need to handle maintenanceVersion updates separately ...
 	if a.desired.Spec.MaintenanceVersion != nil && *a.desired.Spec.MaintenanceVersion != a.actual.MaintenanceVersion {
-		newMaintDb := &api.DatabaseInstance{
-			MaintenanceVersion: direct.ValueOf(a.desired.Spec.MaintenanceVersion),
-		}
-
 		{
 			report := &structuredreporting.Diff{}
 			report.AddField(".maintenanceVersion", a.actual.MaintenanceVersion, a.desired.Spec.MaintenanceVersion)
 			structuredreporting.ReportDiff(ctx, report)
 		}
-
-		op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newMaintDb).Context(ctx).Do()
+		updated, err := a.updateMaintenanceVersion(ctx, *a.desired.Spec.MaintenanceVersion, log)
 		if err != nil {
-			return fmt.Errorf("patching SQLInstance %s maintenanceVersion failed: %w", a.resourceID, err)
-		}
-		if err := a.pollForLROCompletion(ctx, op, "maintenanceVersion patch"); err != nil {
 			return err
 		}
-
-		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
-		if err != nil {
-			return fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
-		}
-
-		log.V(2).Info("instance maintenanceVersion updated", "op", op, "instance", updated)
+		a.actual = updated
 	}
 
 	// Finally, update rest of the fields
@@ -482,6 +476,7 @@ func (a *sqlInstanceAdapter) pollForLROCompletion(ctx context.Context, op *api.O
 
 		if op.Status == "DONE" {
 			if op.Error != nil {
+				log.V(2).Info("LRO finished with error", "op", op)
 				return NewGCPOperationError(op.Error)
 			}
 			break
@@ -535,7 +530,7 @@ func (a *sqlInstanceAdapter) updateStatus(u *unstructured.Unstructured, gcpObj *
 func hashString(s string) string {
 	h := sha256.New()
 	h.Write([]byte(s))
-	return hex.EncodeToString(h.Sum(nil))
+	return hex.EncodeToString(h.Sum(nil))[:16]
 }
 
 func hashSpec(spec *krm.SQLInstanceSpec) (string, error) {
