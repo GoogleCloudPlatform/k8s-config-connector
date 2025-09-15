@@ -73,16 +73,13 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
-  "generation": "1757517654581455161",
   "iamConfiguration": {
     "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2025-12-09T15:20:54.951Z"
+      "enabled": false
     },
     "publicAccessPrevention": "inherited",
     "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2025-12-09T15:20:54.951Z"
+      "enabled": true
     }
   },
   "id": "000000000000000000000",
@@ -130,23 +127,20 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: {now+-1m}
+Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
-  "generation": "1757517654581455161",
   "iamConfiguration": {
     "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2025-12-09T15:20:54.951Z"
+      "enabled": false
     },
     "publicAccessPrevention": "inherited",
     "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2025-12-09T15:20:54.951Z"
+      "enabled": true
     }
   },
   "id": "000000000000000000000",
@@ -392,6 +386,7 @@ X-Xss-Protection: 0
 
 {
   "done": true,
+  "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagBinding",
     "name": "tagBindings/%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Fstoragebucket-sample-${uniqueId}/tagValues/${tagValueID}",
@@ -445,6 +440,7 @@ X-Xss-Protection: 0
 
 {
   "done": true,
+  "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
@@ -634,16 +630,13 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
-  "generation": "1757517654581455161",
   "iamConfiguration": {
     "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2025-12-09T15:20:54.951Z"
+      "enabled": false
     },
     "publicAccessPrevention": "inherited",
     "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2025-12-09T15:20:54.951Z"
+      "enabled": true
     }
   },
   "id": "000000000000000000000",
@@ -697,7 +690,11 @@ Vary: Origin
 Vary: X-Origin
 
 {
-  "kind": "storage#objects"
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
 }
 
 ---
