@@ -16,9 +16,17 @@
 // krm.group: asset.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.cloud.asset.v1
+// resource: AssetFeed:Feed
 // resource: AssetSavedQuery:SavedQuery
 
 package v1beta1
+
+// +kcc:proto=google.cloud.asset.v1.FeedOutputConfig
+type FeedOutputConfig struct {
+	// Destination on Pub/Sub.
+	// +kcc:proto:field=google.cloud.asset.v1.FeedOutputConfig.pubsub_destination
+	PubsubDestination *PubsubDestination `json:"pubsubDestination,omitempty"`
+}
 
 // +kcc:proto=google.cloud.asset.v1.IamPolicyAnalysisQuery.AccessSelector
 type IAMPolicyAnalysisQuery_AccessSelector struct {
@@ -159,4 +167,28 @@ type SavedQuery_QueryContent struct {
 	//  RPC.
 	// +kcc:proto:field=google.cloud.asset.v1.SavedQuery.QueryContent.iam_policy_analysis_query
 	IAMPolicyAnalysisQuery *IAMPolicyAnalysisQuery `json:"iamPolicyAnalysisQuery,omitempty"`
+}
+
+// +kcc:proto=google.type.Expr
+type Expr struct {
+	// Textual representation of an expression in Common Expression Language
+	//  syntax.
+	// +kcc:proto:field=google.type.Expr.expression
+	Expression *string `json:"expression,omitempty"`
+
+	// Optional. Title for the expression, i.e. a short string describing
+	//  its purpose. This can be used e.g. in UIs which allow to enter the
+	//  expression.
+	// +kcc:proto:field=google.type.Expr.title
+	Title *string `json:"title,omitempty"`
+
+	// Optional. Description of the expression. This is a longer text which
+	//  describes the expression, e.g. when hovered over it in a UI.
+	// +kcc:proto:field=google.type.Expr.description
+	Description *string `json:"description,omitempty"`
+
+	// Optional. String indicating the location of the expression for error
+	//  reporting, e.g. a file name and a position in the file.
+	// +kcc:proto:field=google.type.Expr.location
+	Location *string `json:"location,omitempty"`
 }

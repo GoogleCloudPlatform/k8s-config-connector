@@ -38,7 +38,7 @@
 | apphub.cnrm.cloud.google.com                  | AppHubDiscoveredService                         | True         | False       | False  | Direct     |
 | apphub.cnrm.cloud.google.com                  | AppHubDiscoveredWorkload                        | True         | False       | False  | Direct     |
 | artifactregistry.cnrm.cloud.google.com        | ArtifactRegistryRepository                      | False        | True        | False  | Terraform  |
-| asset.cnrm.cloud.google.com                   | AssetFeed                                       | True         | False       | False  | Direct     |
+| asset.cnrm.cloud.google.com                   | AssetFeed                                       | True         | True        | False  | Direct     |
 | asset.cnrm.cloud.google.com                   | AssetSavedQuery                                 | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupPlanAssociation                   | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupPlan                              | True         | False       | False  | Direct     |
