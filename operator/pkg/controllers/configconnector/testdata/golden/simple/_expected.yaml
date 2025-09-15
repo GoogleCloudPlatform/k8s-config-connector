@@ -169,6 +169,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: apiquotapreferences.cloudquota.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: apphubapplications.apphub.cnrm.cloud.google.com
 spec: (removed)
 ---
@@ -185,6 +193,14 @@ status:
     plural: ""
   conditions: []
   storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: assetsavedqueries.asset.cnrm.cloud.google.com
+spec: (removed)
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1651,12 +1667,6 @@ metadata:
   labels: (removed)
   name: firestoreindexes.firestore.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2515,6 +2525,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: pubsubsnapshots.pubsub.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: pubsubsubscriptions.pubsub.cnrm.cloud.google.com
 spec: (removed)
 status:
@@ -3033,6 +3051,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: vmwareengineexternaladdresses.vmwareengine.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: vpcaccessconnectors.vpcaccess.cnrm.cloud.google.com
 spec: (removed)
 status:
@@ -3381,6 +3407,18 @@ rules:
   - delete
 - apiGroups:
   - bigtable.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - billing.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -4947,6 +4985,14 @@ rules:
   - watch
 - apiGroups:
   - bigtable.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - billing.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
