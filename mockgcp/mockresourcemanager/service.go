@@ -17,6 +17,7 @@ package mockresourcemanager
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
@@ -112,5 +113,13 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		response.Header().Del("Cache-Control")
 	}
 
-	return mux, nil
+	// Terraform incorrectly puts a / on the end of the list URL
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		u := r.URL
+		u.Path = strings.TrimSuffix(u.Path, "/")
+		r.URL = u
+		mux.ServeHTTP(w, r)
+	})
+	return handler, nil
+
 }
