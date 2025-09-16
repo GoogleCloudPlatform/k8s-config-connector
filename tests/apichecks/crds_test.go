@@ -905,7 +905,7 @@ func TestSpecShouldNotContainEtag(t *testing.T) {
 
 	want := strings.Join(errs, "\n")
 
-	test.CompareGoldenFile(t, "testdata/exceptions/spec_dilike_etag.txt", want)
+	test.CompareGoldenFile(t, "testdata/exceptions/spec_dislike_etag.txt", want)
 }
 
 // isValidPlural checks if a string is a valid pluralization of another string
