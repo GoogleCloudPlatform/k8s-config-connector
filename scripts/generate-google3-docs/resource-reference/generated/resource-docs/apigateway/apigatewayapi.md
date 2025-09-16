@@ -102,7 +102,7 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">map (key: string, value: string)</code></p>
-            <p>{% verbatim %}Optional. Resource labels to represent user-provided metadata. Refer to Google Cloud on labels for more details. https://cloud.google.com/compute/docs/labeling-resources{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. Resource labels to represent user-provided metadata. For more information, see the {{compute_name_short}} documentation: https://cloud.google.com/compute/docs/labeling-resources{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
