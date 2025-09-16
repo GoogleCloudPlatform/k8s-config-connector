@@ -289,7 +289,7 @@
 | iam.cnrm.cloud.google.com                     | IAMWorkloadIdentityPool                         | False        | True        | False  | DCL        |
 | iap.cnrm.cloud.google.com                     | IAPBrand                                        | False        | True        | False  | DCL        |
 | iap.cnrm.cloud.google.com                     | IAPIdentityAwareProxyClient                     | False        | True        | False  | DCL        |
-| iap.cnrm.cloud.google.com                     | IAPSettings                                     | True         | True        | False  | Direct     |
+| iap.cnrm.cloud.google.com                     | IAPSettings                                     | False        | True        | False  | Direct     |
 | identityplatform.cnrm.cloud.google.com        | IdentityPlatformConfig                          | False        | True        | False  | DCL        |
 | identityplatform.cnrm.cloud.google.com        | IdentityPlatformDefaultSupportedIDPConfig       | True         | False       | False  | Terraform  |
 | identityplatform.cnrm.cloud.google.com        | IdentityPlatformInboundSAMLConfig               | True         | False       | False  | Terraform  |
