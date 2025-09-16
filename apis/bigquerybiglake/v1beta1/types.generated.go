@@ -14,13 +14,13 @@
 
 // +generated:types
 // krm.group: bigquerybiglake.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: google.cloud.bigquery.biglake.v1
 // resource: BigLakeTable:Table
 // resource: BigLakeCatalog:Catalog
 // resource: BigLakeDatabase:Database
 
-package v1alpha1
+package v1beta1
 
 // +kcc:proto=google.cloud.bigquery.biglake.v1.HiveDatabaseOptions
 type HiveDatabaseOptions struct {
