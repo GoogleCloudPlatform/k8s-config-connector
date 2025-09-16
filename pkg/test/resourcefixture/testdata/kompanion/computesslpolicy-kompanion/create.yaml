@@ -1,0 +1,8 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSSLPolicy
+metadata:
+  name: computesslpolicy-kompanion-${uniqueId}
+spec:
+  description: SSL Policy for test-ilb-multiregion
+  minTlsVersion: TLS_1_2
+  profile: MODERN
