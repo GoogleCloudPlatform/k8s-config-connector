@@ -226,6 +226,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateLogicalView
 
 {
   "logicalView": {
+    "deletionProtection": true,
     "query": "SELECT 1 AS value"
   },
   "logicalViewId": "lv-${uniqueId}",
@@ -264,6 +265,7 @@ OK
   "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
+    "deletionProtection": true,
     "etag": "abcdef0123A=",
     "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
     "query": "SELECT 1 AS value"
@@ -281,6 +283,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetLogicalView
 OK
 
 {
+  "deletionProtection": true,
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
   "query": "SELECT 1 AS value"
@@ -288,40 +291,6 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateLogicalView
-
-{
-  "logicalView": {
-    "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
-    "query": "SELECT 1 AS value"
-  },
-  "updateMask": "query"
-}
-
-OK
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "originalRequest": {
-      "logicalView": {},
-      "updateMask": ""
-    },
-    "startTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}/locations/us-central1-a/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
-    "etag": "abcdef0123A=",
-    "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
-    "query": "SELECT 1 AS value"
-  }
-}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetLogicalView
 
 {
@@ -331,6 +300,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetLogicalView
 OK
 
 {
+  "deletionProtection": true,
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
   "query": "SELECT 1 AS value"
@@ -345,7 +315,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateLogicalView
     "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
     "query": "SELECT 2 AS new_value"
   },
-  "updateMask": "query"
+  "updateMask": "query,deletionProtection"
 }
 
 OK

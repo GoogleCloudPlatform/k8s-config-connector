@@ -17,7 +17,6 @@ package bigtable
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"slices"
 	"strings"
 
@@ -150,17 +149,12 @@ func (a *LogicalViewAdapter) Find(ctx context.Context) (bool, error) {
 func (a *LogicalViewAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating LogicalView", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	resource := BigtableLogicalViewSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
+	spec := a.desired.Spec
 
 	gcpDeletionProtection := gcp.None
-	if desired.Spec.DeletionProtection != nil {
-		if *desired.Spec.DeletionProtection {
+	if spec.DeletionProtection != nil {
+		if *spec.DeletionProtection {
 			gcpDeletionProtection = gcp.Protected
 		} else {
 			gcpDeletionProtection = gcp.Unprotected
@@ -169,7 +163,7 @@ func (a *LogicalViewAdapter) Create(ctx context.Context, createOp *directbase.Cr
 
 	logicalViewInfo := &gcp.LogicalViewInfo{
 		LogicalViewID:      a.id.ID(),
-		Query:              resource.Query,
+		Query:              *spec.Query,
 		DeletionProtection: gcpDeletionProtection,
 	}
 
@@ -202,21 +196,16 @@ func (a *LogicalViewAdapter) Create(ctx context.Context, createOp *directbase.Cr
 func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating LogicalView", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	desiredPb := BigtableLogicalViewSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
+	spec := a.desired.Spec
 
 	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(a.desired.Spec.Query, a.actual.Query) {
+	if (spec.Query != nil) && (*spec.Query != a.actual.Query) {
 		updateMask.Paths = append(updateMask.Paths, "query")
 	}
 
-	if desiredPb.DeletionProtection {
+	if (spec.DeletionProtection != nil) && (*spec.DeletionProtection != a.actual.DeletionProtection) {
 		updateMask.Paths = append(updateMask.Paths, "deletion_protection")
-		log.V(1).Info("Added deletion protection bit")
 	}
 
 	if len(updateMask.Paths) == 0 {
@@ -226,10 +215,10 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 		desiredlogicalview := gcp.LogicalViewInfo{
 			LogicalViewID: a.id.ID(),
-			Query:         desiredPb.Query,
+			Query:         *spec.Query,
 		}
 		if slices.Contains(updateMask.Paths, "deletion_protection") {
-			log.V(1).Info("Adding deletion protection bit in the object itself")
+			// Convert bool deletion protection to gcp deletion protection enum.
 			gcpDeletionProtection := gcp.None
 			if a.desired.Spec.DeletionProtection != nil {
 				if *a.desired.Spec.DeletionProtection {
