@@ -62,7 +62,7 @@ import (
 
 const controllerName = "iampolicy-controller"
 
-var logger = log.Log.WithName(controllerName)
+var logger = log.Log.WithName(controllerName).WithValues("controllerType", "legacy/handrolled")
 
 // Add creates a new IAM Policy Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
 // and start it when the Manager is started.
