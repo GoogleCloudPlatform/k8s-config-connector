@@ -232,13 +232,8 @@ func (a *authorizationPolicyAdapter) Update(ctx context.Context, updateOp *direc
 	}
 	log.V(2).Info("diff", "diff", diff)
 
-	status := &krm.NetworkSecurityAuthorizationPolicyStatus{}
-
-	if len(diff) == 0 {
-		log.V(2).Info("no update needed")
-		status.CreateTime = direct.StringTimestamp_FromProto(mapCtx, a.actual.GetCreateTime())
-		status.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, a.actual.GetUpdateTime())
-	} else {
+	latest := a.actual
+	if len(diff) > 0 {
 		req := &networksecuritypb.UpdateAuthorizationPolicyRequest{
 			AuthorizationPolicy: desired,
 			UpdateMask:          &fieldmaskpb.FieldMask{Paths: sets.List(diff)},
@@ -255,15 +250,19 @@ func (a *authorizationPolicyAdapter) Update(ctx context.Context, updateOp *direc
 		if err != nil {
 			return fmt.Errorf("waiting for update of networksecurity authorizationpolicy %s: %w", a.id.String(), err)
 		}
-
+		latest = updated
 		log.V(2).Info("successfully updated networksecurity authorizationpolicy in gcp", "name", a.id)
-
-		status.CreateTime = direct.StringTimestamp_FromProto(mapCtx, updated.GetCreateTime())
-		status.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, updated.GetUpdateTime())
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
-		}
+	} else {
+		log.V(2).Info("no update needed")
 	}
+
+	status := &krm.NetworkSecurityAuthorizationPolicyStatus{}
+	status.CreateTime = direct.StringTimestamp_FromProto(mapCtx, latest.GetCreateTime())
+	status.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, latest.GetUpdateTime())
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
 	status.ExternalRef = direct.PtrTo(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
