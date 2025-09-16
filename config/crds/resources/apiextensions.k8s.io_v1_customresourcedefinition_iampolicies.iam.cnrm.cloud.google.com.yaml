@@ -177,6 +177,9 @@ spec:
                 required:
                 - kind
                 type: object
+                x-kubernetes-validations:
+                - message: resourceRef is immutable
+                  rule: self == oldSelf
             required:
             - resourceRef
             type: object

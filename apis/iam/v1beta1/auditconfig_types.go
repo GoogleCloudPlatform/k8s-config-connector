@@ -26,6 +26,7 @@ import (
 type IAMAuditConfigSpec struct {
 	// Immutable. Required. The GCP resource to set the IAMAuditConfig on
 	// (e.g. project).
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="resourceRef is immutable"
 	ResourceReference ResourceReference `json:"resourceRef"`
 
 	// Immutable. Required. The service for which to enable Data Access
@@ -35,6 +36,7 @@ type IAMAuditConfigSpec struct {
 	// for that service: the 'logTypes' specified in each 'auditLogConfig'
 	// are enabled, and the 'exemptedMembers' in each 'auditLogConfig' are
 	// exempted.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="service is immutable"
 	Service string `json:"service"`
 	// Required. The configuration for logging of each type of permission.
 	AuditLogConfigs []AuditLogConfig `json:"auditLogConfigs"`
