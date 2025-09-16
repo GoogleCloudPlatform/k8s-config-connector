@@ -28,7 +28,7 @@
 | apigee.cnrm.cloud.google.com                  | ApigeeSyncAuthorization                         | True         | False       | False  | Terraform  |
 | apikeys.cnrm.cloud.google.com                 | APIKeysKey                                      | True         | False       | False  | Terraform  |
 | cloudquota.cnrm.cloud.google.com              | APIQuotaAdjusterSettings                        | True         | True        | False  | Direct     |
-| cloudquota.cnrm.cloud.google.com              | APIQuotaPreference                              | True         | False       | False  | Direct     |
+| cloudquota.cnrm.cloud.google.com              | APIQuotaPreference                              | False        | True        | False  | Direct     |
 | appengine.cnrm.cloud.google.com               | AppEngineDomainMapping                          | True         | False       | False  | Terraform  |
 | appengine.cnrm.cloud.google.com               | AppEngineFirewallRule                           | True         | False       | False  | Terraform  |
 | appengine.cnrm.cloud.google.com               | AppEngineFlexibleAppVersion                     | True         | False       | False  | Terraform  |
@@ -38,7 +38,7 @@
 | apphub.cnrm.cloud.google.com                  | AppHubDiscoveredService                         | True         | False       | False  | Direct     |
 | apphub.cnrm.cloud.google.com                  | AppHubDiscoveredWorkload                        | True         | False       | False  | Direct     |
 | artifactregistry.cnrm.cloud.google.com        | ArtifactRegistryRepository                      | False        | True        | False  | Terraform  |
-| asset.cnrm.cloud.google.com                   | AssetFeed                                       | True         | False       | False  | Direct     |
+| asset.cnrm.cloud.google.com                   | AssetFeed                                       | True         | True        | False  | Direct     |
 | asset.cnrm.cloud.google.com                   | AssetSavedQuery                                 | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupPlanAssociation                   | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupPlan                              | True         | False       | False  | Direct     |
@@ -277,6 +277,7 @@
 | iam.cnrm.cloud.google.com                     | IAMAccessBoundaryPolicy                         | False        | True        | False  | Terraform  |
 | iam.cnrm.cloud.google.com                     | IAMAuditConfig                                  | False        | True        | False  | Direct     |
 | iam.cnrm.cloud.google.com                     | IAMCustomRole                                   | False        | True        | False  | Terraform  |
+| iam.cnrm.cloud.google.com                     | IAMDenyPolicy                                   | True         | False       | False  | Direct     |
 | iam.cnrm.cloud.google.com                     | IAMPartialPolicy                                | False        | True        | False  | Direct     |
 | iam.cnrm.cloud.google.com                     | IAMPolicy                                       | False        | True        | False  | Direct     |
 | iam.cnrm.cloud.google.com                     | IAMPolicyMember                                 | False        | True        | False  | Direct     |

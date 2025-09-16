@@ -382,15 +382,19 @@ func SecondsString_ToProto(mapCtx *MapContext, in *string, fieldName string) *du
 	out := &durationpb.Duration{Seconds: seconds}
 	return out
 }
-func Int64Value_FromProto(mapCtx *MapContext, ts *wrapperspb.Int64Value) int64 {
-	if ts == nil {
-		return 0
+func Int64Value_FromProto(mapCtx *MapContext, in *wrapperspb.Int64Value) *int64 {
+	if in == nil {
+		return nil
 	}
-
-	return ts.GetValue()
+	out := in.GetValue()
+	return &out
 }
-func Int64Value_ToProto(mapCtx *MapContext, s int64) *wrapperspb.Int64Value {
-	return wrapperspb.Int64(s)
+func Int64Value_ToProto(mapCtx *MapContext, in *int64) *wrapperspb.Int64Value {
+	if in == nil {
+		return nil
+	}
+	out := wrapperspb.Int64(*in)
+	return out
 }
 
 func Float32ToString(mapCtx *MapContext, in float32) string {

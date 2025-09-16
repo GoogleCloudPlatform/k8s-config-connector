@@ -64,6 +64,9 @@ spec:
         - --prometheus-scrape-endpoint=:8888
         command:
         - /configconnector/manager
+        env:
+        - name: GOMEMLIMIT
+          value: 460MiB
         image: foobar.local/controller:{{stable.latest}}
         imagePullPolicy: Always
         name: manager

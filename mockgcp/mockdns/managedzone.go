@@ -16,6 +16,7 @@ package mockdns
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"time"
 
@@ -80,6 +81,44 @@ func (s *managedZonesService) CreateManagedZone(ctx context.Context, req *pb.Cre
 	}
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
+	}
+
+	// Create an automatic NS record for the zone itself.
+	{
+		ns := &pb.ResourceRecordSet{
+			Name:    obj.DnsName,
+			Rrdatas: obj.NameServers,
+			Ttl:     PtrTo(int32(21600)),
+			Type:    PtrTo("NS"),
+		}
+		_, err := s.resourceRecordSetsService.CreateResourceRecordSet(ctx, &pb.CreateResourceRecordSetRequest{
+			Project:           PtrTo(name.Project.ID),
+			ManagedZone:       PtrTo(name.Name),
+			ResourceRecordSet: ns,
+		})
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	// Create an automatic SOA record for the zone itself.
+	{
+		soa := &pb.ResourceRecordSet{
+			Name: obj.DnsName,
+			Rrdatas: []string{
+				fmt.Sprintf("ns-cloud-c1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"),
+			},
+			Ttl:  PtrTo(int32(21600)),
+			Type: PtrTo("SOA"),
+		}
+		_, err := s.resourceRecordSetsService.CreateResourceRecordSet(ctx, &pb.CreateResourceRecordSetRequest{
+			Project:           PtrTo(name.Project.ID),
+			ManagedZone:       PtrTo(name.Name),
+			ResourceRecordSet: soa,
+		})
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return obj, nil

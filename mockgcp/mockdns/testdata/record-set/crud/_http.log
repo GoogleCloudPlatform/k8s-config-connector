@@ -1,0 +1,235 @@
+POST https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "description": "a test zone for record-sets",
+  "dnsName": "test-${uniqueId}.example.com.",
+  "name": "test-zone-${uniqueId}",
+  "visibility": "public"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cloudLoggingConfig": {
+    "kind": "dns#managedZoneCloudLoggingConfig"
+  },
+  "creationTime": "2024-04-01T12:34:56.123456Z",
+  "description": "a test zone for record-sets",
+  "dnsName": "test-${uniqueId}.example.com.",
+  "id": "000000000000000000000",
+  "kind": "dns#managedZone",
+  "name": "test-zone-${uniqueId}",
+  "nameServers": [
+    "ns-cloud-a1.googledomains.com.",
+    "ns-cloud-a2.googledomains.com.",
+    "ns-cloud-a3.googledomains.com.",
+    "ns-cloud-a4.googledomains.com."
+  ],
+  "visibility": "public"
+}
+
+---
+
+POST https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/test-zone-${uniqueId}/rrsets?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "kind": "dns#resourceRecordSet",
+  "name": "www.test-${uniqueId}.example.com.",
+  "rrdatas": [
+    "1.2.3.4"
+  ],
+  "ttl": 300,
+  "type": "A"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "kind": "dns#resourceRecordSet",
+  "name": "www.test-${uniqueId}.example.com.",
+  "rrdatas": [
+    "1.2.3.4"
+  ],
+  "ttl": 300,
+  "type": "A"
+}
+
+---
+
+GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/test-zone-${uniqueId}/rrsets/www.test-${uniqueId}.example.com./A?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "kind": "dns#resourceRecordSet",
+  "name": "www.test-${uniqueId}.example.com.",
+  "rrdatas": [
+    "1.2.3.4"
+  ],
+  "ttl": 300,
+  "type": "A"
+}
+
+---
+
+PATCH https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/test-zone-${uniqueId}/rrsets/www.test-${uniqueId}.example.com./A?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "kind": "dns#resourceRecordSet",
+  "name": "www.test-${uniqueId}.example.com.",
+  "rrdatas": [
+    "5.6.7.8"
+  ],
+  "ttl": 600,
+  "type": "A"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "kind": "dns#resourceRecordSet",
+  "name": "www.test-${uniqueId}.example.com.",
+  "rrdatas": [
+    "5.6.7.8"
+  ],
+  "ttl": 600,
+  "type": "A"
+}
+
+---
+
+GET https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/test-zone-${uniqueId}/rrsets?alt=json&maxResults=100
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "kind": "dns#resourceRecordSetsListResponse",
+  "rrsets": [
+    {
+      "kind": "dns#resourceRecordSet",
+      "name": "test-${uniqueId}.example.com.",
+      "rrdatas": [
+        "ns-cloud-c1.googledomains.com.",
+        "ns-cloud-c2.googledomains.com.",
+        "ns-cloud-c3.googledomains.com.",
+        "ns-cloud-c4.googledomains.com."
+      ],
+      "ttl": 21600,
+      "type": "NS"
+    },
+    {
+      "kind": "dns#resourceRecordSet",
+      "name": "test-${uniqueId}.example.com.",
+      "rrdatas": [
+        "ns-cloud-c1.googledomains.com. cloud-dns-hostmaster.google.com. 1 21600 3600 259200 300"
+      ],
+      "ttl": 21600,
+      "type": "SOA"
+    },
+    {
+      "kind": "dns#resourceRecordSet",
+      "name": "www.test-${uniqueId}.example.com.",
+      "rrdatas": [
+        "5.6.7.8"
+      ],
+      "ttl": 600,
+      "type": "A"
+    }
+  ]
+}
+
+---
+
+DELETE https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/test-zone-${uniqueId}/rrsets/www.test-${uniqueId}.example.com./A?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+DELETE https://dns.googleapis.com/dns/v1/projects/${projectId}/managedZones/test-zone-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

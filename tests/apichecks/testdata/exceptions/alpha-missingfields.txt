@@ -110,12 +110,6 @@
 [missing_field] crd=apikeyskeys.apikeys.cnrm.cloud.google.com version=v1alpha1: field ".spec.restrictions.browserKeyRestrictions.allowedReferrers[]" is not set in unstructured objects
 [missing_field] crd=apikeyskeys.apikeys.cnrm.cloud.google.com version=v1alpha1: field ".spec.restrictions.iosKeyRestrictions.allowedBundleIds[]" is not set in unstructured objects
 [missing_field] crd=apikeyskeys.apikeys.cnrm.cloud.google.com version=v1alpha1: field ".spec.restrictions.serverKeyRestrictions.allowedIps[]" is not set in unstructured objects
-[missing_field] crd=apiquotapreferences.cloudquota.cnrm.cloud.google.com version=v1alpha1: field ".spec.contactEmail" is not set in unstructured objects
-[missing_field] crd=apiquotapreferences.cloudquota.cnrm.cloud.google.com version=v1alpha1: field ".spec.dimensions" is not set in unstructured objects
-[missing_field] crd=apiquotapreferences.cloudquota.cnrm.cloud.google.com version=v1alpha1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=apiquotapreferences.cloudquota.cnrm.cloud.google.com version=v1alpha1: field ".spec.justification" is not set in unstructured objects
-[missing_field] crd=apiquotapreferences.cloudquota.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=apiquotapreferences.cloudquota.cnrm.cloud.google.com version=v1alpha1: field ".spec.quotaConfig.annotations" is not set in unstructured objects
 [missing_field] crd=appenginedomainmappings.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.overrideStrategy" is not set in unstructured objects
 [missing_field] crd=appenginedomainmappings.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.project" is not set in unstructured objects
 [missing_field] crd=appenginedomainmappings.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.sslSettings.certificateId" is not set in unstructured objects
@@ -274,8 +268,6 @@
 [missing_field] crd=apphubdiscoveredservices.apphub.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apphubdiscoveredworkloads.apphub.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=apphubdiscoveredworkloads.apphub.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=assetfeeds.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=assetfeeds.asset.cnrm.cloud.google.com version=v1alpha1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=backupdrbackupplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" is not set in unstructured objects
 [missing_field] crd=backupdrbackupplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=backupdrbackupvaults.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.annotations" is not set in unstructured objects
@@ -1800,6 +1792,16 @@
 [missing_field] crd=healthcarehl7v2stores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.parserConfig.schema" is not set in unstructured objects
 [missing_field] crd=healthcarehl7v2stores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.parserConfig.segmentTerminator" is not set in unstructured objects
 [missing_field] crd=healthcarehl7v2stores.healthcare.cnrm.cloud.google.com version=v1alpha1: field ".spec.parserConfig.version" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.denialCondition.description" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.denialCondition.expression" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.denialCondition.location" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.denialCondition.title" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.deniedPermissions[]" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.deniedPrincipals[]" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.exceptionPermissions[]" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].denyRule.exceptionPrincipals[]" is not set in unstructured objects
+[missing_field] crd=iamdenypolicies.iam.cnrm.cloud.google.com version=v1alpha1: field ".spec.rules[].description" is not set in unstructured objects
 [missing_field] crd=identityplatforminboundsamlconfigs.identityplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.enabled" is not set in unstructured objects
 [missing_field] crd=identityplatforminboundsamlconfigs.identityplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.idpConfig.idpCertificates[].x509Certificate" is not set in unstructured objects
 [missing_field] crd=identityplatforminboundsamlconfigs.identityplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.idpConfig.idpEntityId" is not set in unstructured objects

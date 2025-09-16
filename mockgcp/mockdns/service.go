@@ -40,6 +40,9 @@ type MockService struct {
 	projects projects.ProjectStore
 
 	operations *dnsOperations
+
+	managedZonesService       *managedZonesService
+	resourceRecordSetsService *resourceRecordSetsService
 }
 
 // New creates a dnsService.
@@ -49,6 +52,8 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		projects:   env.Projects,
 		operations: newDNSOperationsService(storage),
 	}
+	s.resourceRecordSetsService = &resourceRecordSetsService{MockService: s}
+	s.managedZonesService = &managedZonesService{MockService: s}
 	return s
 }
 
@@ -57,13 +62,15 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterManagedZonesServerServer(grpcServer, &managedZonesService{MockService: s})
+	pb.RegisterManagedZonesServerServer(grpcServer, s.managedZonesService)
 	pb.RegisterManagedZoneOperationsServerServer(grpcServer, s.operations)
+	pb.RegisterResourceRecordSetsServerServer(grpcServer, s.resourceRecordSetsService)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterManagedZonesServerHandler,
+		pb.RegisterResourceRecordSetsServerHandler,
 		pb.RegisterManagedZoneOperationsServerHandler,
 	)
 

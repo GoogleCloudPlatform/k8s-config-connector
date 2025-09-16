@@ -97,6 +97,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: apigatewayapis.apigateway.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: apigeeendpointattachments.apigee.cnrm.cloud.google.com
 spec: (removed)
 ---
@@ -153,6 +161,30 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: apiquotaadjustersettings.cloudquota.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: apiquotapreferences.cloudquota.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: apphubapplications.apphub.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com
 spec: (removed)
 status:
@@ -161,6 +193,22 @@ status:
     plural: ""
   conditions: []
   storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: assetsavedqueries.asset.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: backupdrbackupplanassociations.backupdr.cnrm.cloud.google.com
+spec: (removed)
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -215,6 +263,14 @@ status:
     plural: ""
   conditions: []
   storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: bigqueryreservationreservations.bigqueryreservation.cnrm.cloud.google.com
+spec: (removed)
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1611,12 +1667,6 @@ metadata:
   labels: (removed)
   name: firestoreindexes.firestore.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1727,12 +1777,6 @@ metadata:
   labels: (removed)
   name: iampolicymembers.iam.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: null
-  storedVersions: null
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1937,6 +1981,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: kmsimportjobs.kms.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: kmskeyhandles.kms.cnrm.cloud.google.com
 spec: (removed)
 ---
@@ -2047,6 +2099,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: metastorebackups.metastore.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: monitoringalertpolicies.monitoring.cnrm.cloud.google.com
 spec: (removed)
 status:
@@ -2113,12 +2173,6 @@ metadata:
   labels: (removed)
   name: monitoringnotificationchannels.monitoring.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2471,6 +2525,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: pubsubsnapshots.pubsub.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: pubsubsubscriptions.pubsub.cnrm.cloud.google.com
 spec: (removed)
 status:
@@ -2709,6 +2771,14 @@ status:
     plural: ""
   conditions: []
   storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: spannerbackupschedules.spanner.cnrm.cloud.google.com
+spec: (removed)
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2974,6 +3044,14 @@ metadata:
   annotations: (removed)
   labels: (removed)
   name: vertexaimetadatastores.vertexai.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: vmwareengineexternaladdresses.vmwareengine.cnrm.cloud.google.com
 spec: (removed)
 ---
 apiVersion: apiextensions.k8s.io/v1
@@ -3329,6 +3407,18 @@ rules:
   - delete
 - apiGroups:
   - bigtable.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - billing.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -4714,6 +4804,12 @@ rules:
   verbs:
   - create
   - patch
+- apiGroups:
+  - core.cnrm.cloud.google.com
+  resources:
+  - configconnectorcontexts
+  verbs:
+  - get
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -4889,6 +4985,14 @@ rules:
   - watch
 - apiGroups:
   - bigtable.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - billing.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

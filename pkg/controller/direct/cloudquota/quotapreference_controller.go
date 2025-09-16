@@ -16,7 +16,7 @@
 // proto.service: google.api.cloudquotas.v1beta.CloudQuotas
 // proto.message: google.api.cloudquotas.v1beta.QuotaPreference
 // crd.type: APIQuotaPreference
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package cloudquota
 
@@ -27,7 +27,7 @@ import (
 
 	gcp "cloud.google.com/go/cloudquotas/apiv1beta"
 	pb "cloud.google.com/go/cloudquotas/apiv1beta/cloudquotaspb"
-	cloudquotav1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudquota/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudquota/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -41,7 +41,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(cloudquotav1alpha1.APIQuotaPreferenceGVK, NewQuotaPreferenceModel)
+	registry.RegisterModel(krm.APIQuotaPreferenceGVK, NewQuotaPreferenceModel)
 }
 
 func NewQuotaPreferenceModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -55,12 +55,12 @@ type apiQuotaPreferenceModel struct {
 }
 
 func (m *apiQuotaPreferenceModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	obj := &cloudquotav1alpha1.APIQuotaPreference{}
+	obj := &krm.APIQuotaPreference{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := cloudquotav1alpha1.NewQuotaPreferenceIdentity(ctx, reader, obj)
+	id, err := krm.NewQuotaPreferenceIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -99,8 +99,8 @@ func (m *apiQuotaPreferenceModel) AdapterForURL(ctx context.Context, url string)
 
 type apiQuotaPreferenceAdapter struct {
 	gcpClient *gcp.Client
-	id        *cloudquotav1alpha1.QuotaPreferenceIdentity
-	desired   *cloudquotav1alpha1.APIQuotaPreference
+	id        *krm.QuotaPreferenceIdentity
+	desired   *krm.APIQuotaPreference
 	actual    *pb.QuotaPreference
 	reader    client.Reader
 }
@@ -153,7 +153,7 @@ func (a *apiQuotaPreferenceAdapter) Create(ctx context.Context, createOp *direct
 	}
 	log.V(2).Info("successfully created cloudquotas quotapreference", "name", a.id)
 
-	status := &cloudquotav1alpha1.APIQuotaPreferenceStatus{}
+	status := &krm.APIQuotaPreferenceStatus{}
 	status.ObservedState = APIQuotaPreferenceObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -209,7 +209,7 @@ func (a *apiQuotaPreferenceAdapter) Update(ctx context.Context, updateOp *direct
 		log.V(2).Info("successfully updated cloudquotas quotapreference", "name", a.id)
 	}
 
-	status := &cloudquotav1alpha1.APIQuotaPreferenceStatus{}
+	status := &krm.APIQuotaPreferenceStatus{}
 	status.ObservedState = APIQuotaPreferenceObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -225,14 +225,14 @@ func (a *apiQuotaPreferenceAdapter) Export(ctx context.Context) (*unstructured.U
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &cloudquotav1alpha1.APIQuotaPreference{}
+	obj := &krm.APIQuotaPreference{}
 	mapCtx := &direct.MapContext{}
 	obj.Spec = direct.ValueOf(APIQuotaPreferenceSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
 
-	parentIdentity, resourceID, err := cloudquotav1alpha1.ParseQuotaPreferenceExternal(a.actual.Name)
+	parentIdentity, resourceID, err := krm.ParseQuotaPreferenceExternal(a.actual.Name)
 	if err != nil {
 		return nil, fmt.Errorf("parsing parent from name %q: %w", a.actual.Name, err)
 	}
@@ -252,7 +252,7 @@ func (a *apiQuotaPreferenceAdapter) Export(ctx context.Context) (*unstructured.U
 	}
 
 	u.SetName(resourceID) // Use the server-generated ID as the K8s name
-	u.SetGroupVersionKind(cloudquotav1alpha1.APIQuotaPreferenceGVK)
+	u.SetGroupVersionKind(krm.APIQuotaPreferenceGVK)
 	u.Object = uObj
 	return u, nil
 }

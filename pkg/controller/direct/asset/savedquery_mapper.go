@@ -16,7 +16,6 @@ package asset
 
 import (
 	pb "cloud.google.com/go/asset/apiv1/assetpb"
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1beta1"
 	pubsubkrmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -37,11 +36,11 @@ func AssetSavedQueryStatus_FromProto(mapCtx *direct.MapContext, in *pb.SavedQuer
 	return out
 }
 
-func PubsubDestination_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PubsubDestination) *krmv1alpha1.PubsubDestination {
+func PubsubDestination_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PubsubDestination) *krm.PubsubDestination {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.PubsubDestination{}
+	out := &krm.PubsubDestination{}
 	if in.GetTopic() != "" {
 		out.TopicRef = &pubsubkrmv1beta1.PubSubTopicRef{External: in.GetTopic()}
 	}
