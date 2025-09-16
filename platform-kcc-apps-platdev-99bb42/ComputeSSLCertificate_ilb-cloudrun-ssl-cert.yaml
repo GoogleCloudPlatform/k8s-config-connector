@@ -1,0 +1,129 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+Object:
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeSSLCertificate
+  metadata:
+    annotations:
+      cnrm.cloud.google.com/management-conflict-prevention-policy: none
+      cnrm.cloud.google.com/observed-secret-versions: '{"ilbtest-cert-secret":"1835985124"}'
+      cnrm.cloud.google.com/project-id: anz-x-apps-platdev-99bb42
+      cnrm.cloud.google.com/state-into-spec: absent
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"compute.cnrm.cloud.google.com/v1beta1","kind":"ComputeSSLCertificate","metadata":{"annotations":{},"labels":{"ci_group":"platform"},"name":"ilb-cloudrun-ssl-cert","namespace":"platform-kcc-apps-platdev-99bb42"},"spec":{"certificate":{"valueFrom":{"secretKeyRef":{"key":"tls.crt","name":"ilbtest-cert-secret"}}},"description":"ilbtest compute SSL certificate","location":"australia-southeast1","privateKey":{"valueFrom":{"secretKeyRef":{"key":"tls.key","name":"ilbtest-cert-secret"}}}}}
+    creationTimestamp: "2025-04-29T00:30:54Z"
+    finalizers:
+    - cnrm.cloud.google.com/finalizer
+    - cnrm.cloud.google.com/deletion-defender
+    generation: 2
+    labels:
+      ci_group: platform
+      x.anz.com/asset: platform
+    managedFields:
+    - apiVersion: compute.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:kubectl.kubernetes.io/last-applied-configuration: {}
+          f:labels:
+            .: {}
+            f:ci_group: {}
+        f:spec:
+          .: {}
+          f:certificate:
+            .: {}
+            f:valueFrom:
+              .: {}
+              f:secretKeyRef:
+                .: {}
+                f:key: {}
+                f:name: {}
+          f:description: {}
+          f:location: {}
+          f:privateKey:
+            .: {}
+            f:valueFrom:
+              .: {}
+              f:secretKeyRef:
+                .: {}
+                f:key: {}
+                f:name: {}
+      manager: kubectl-client-side-apply
+      operation: Update
+      subresource: status
+      time: "2025-04-29T00:30:54Z"
+    - apiVersion: compute.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:cnrm.cloud.google.com/observed-secret-versions: {}
+            f:cnrm.cloud.google.com/state-into-spec: {}
+          f:finalizers:
+            .: {}
+            v:"cnrm.cloud.google.com/deletion-defender": {}
+            v:"cnrm.cloud.google.com/finalizer": {}
+        f:spec:
+          f:resourceID: {}
+      manager: cnrm-controller-manager
+      operation: Update
+      time: "2025-04-29T00:31:07Z"
+    - apiVersion: compute.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:status:
+          .: {}
+          f:certificateId: {}
+          f:conditions: {}
+          f:creationTimestamp: {}
+          f:expireTime: {}
+          f:observedGeneration: {}
+          f:selfLink: {}
+      manager: cnrm-controller-manager
+      operation: Update
+      subresource: status
+      time: "2025-05-13T03:48:00Z"
+    name: ilb-cloudrun-ssl-cert
+    namespace: platform-kcc-apps-platdev-99bb42
+    resourceVersion: "1862492517"
+    uid: 13fc931f-6235-4925-81c1-16d976bcc721
+  spec:
+    certificate:
+      valueFrom:
+        secretKeyRef:
+          key: tls.crt
+          name: ilbtest-cert-secret
+    description: ilbtest compute SSL certificate
+    location: australia-southeast1
+    privateKey:
+      valueFrom:
+        secretKeyRef:
+          key: tls.key
+          name: ilbtest-cert-secret
+    resourceID: ilb-cloudrun-ssl-cert
+  status:
+    certificateId: 2695367859937181000
+    conditions:
+    - lastTransitionTime: "2025-05-13T03:47:56Z"
+      message: The resource is up to date
+      reason: UpToDate
+      status: "True"
+      type: Ready
+    creationTimestamp: "2025-05-12T20:47:45.980-07:00"
+    expireTime: "2025-07-27T17:30:54.000-07:00"
+    observedGeneration: 2
+    selfLink: https://www.googleapis.com/compute/v1/projects/anz-x-apps-platdev-99bb42/regions/australia-southeast1/sslCertificates/ilb-cloudrun-ssl-cert

@@ -187,14 +187,14 @@ spec:
                     description: Optional. If specified, settings apply to the service
                     properties:
                       external:
-                        description: 'Format: projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}'
+                        description: 'Format: projects/{projects_id}/iap_web/appengine-{app_id}/services/{service_id}'
                         type: string
                     type: object
                   versionRef:
                     description: Optional. If specified, settings apply to the version
                     properties:
                       external:
-                        description: 'Format: projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}/version/{version_id}'
+                        description: 'Format: projects/{projects_id}/iap_web/appengine-{app_id}/services/{service_id}/versions/{version_id}'
                         type: string
                     type: object
                 required:

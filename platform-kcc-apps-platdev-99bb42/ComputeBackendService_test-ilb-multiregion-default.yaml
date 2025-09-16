@@ -1,0 +1,130 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+Object:
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeBackendService
+  metadata:
+    annotations:
+      cnrm.cloud.google.com/management-conflict-prevention-policy: none
+      cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
+      cnrm.cloud.google.com/observed-secret-versions: '{}'
+      cnrm.cloud.google.com/project-id: anz-x-apps-platdev-99bb42
+      cnrm.cloud.google.com/state-into-spec: absent
+      utils.platform.x.anz/owner: '{"apiVersion":"netoperator.platform.x.anz/v1alpha1","kind":"InternalLoadBalancer","name":"test-ilb-multiregion","namespace":"platform-kcc-apps-platdev-99bb42"}'
+    creationTimestamp: "2025-05-21T05:35:45Z"
+    finalizers:
+    - cnrm.cloud.google.com/finalizer
+    - cnrm.cloud.google.com/deletion-defender
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: netoperator
+      ci_group: platform
+      managed-by: netoperator
+      netoperator.platform.x.anz/controller: internalloadbalancer
+      x.anz.com/asset: platform
+    managedFields:
+    - apiVersion: compute.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:cnrm.cloud.google.com/project-id: {}
+            f:utils.platform.x.anz/owner: {}
+          f:labels:
+            .: {}
+            f:app.kubernetes.io/managed-by: {}
+            f:managed-by: {}
+            f:netoperator.platform.x.anz/controller: {}
+          f:ownerReferences:
+            .: {}
+            k:{"uid":"c3720208-d158-4f07-9b15-369b12a20443"}: {}
+        f:spec:
+          .: {}
+          f:connectionDrainingTimeoutSec: {}
+          f:description: {}
+          f:loadBalancingScheme: {}
+          f:location: {}
+          f:portName: {}
+          f:protocol: {}
+          f:resourceID: {}
+          f:sessionAffinity: {}
+          f:timeoutSec: {}
+      manager: ___2netop_main
+      operation: Update
+      time: "2025-05-21T05:35:45Z"
+    - apiVersion: compute.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:cnrm.cloud.google.com/mutable-but-unreadable-fields: {}
+            f:cnrm.cloud.google.com/observed-secret-versions: {}
+            f:cnrm.cloud.google.com/state-into-spec: {}
+          f:finalizers:
+            .: {}
+            v:"cnrm.cloud.google.com/deletion-defender": {}
+            v:"cnrm.cloud.google.com/finalizer": {}
+      manager: cnrm-controller-manager
+      operation: Update
+      time: "2025-05-21T05:36:09Z"
+    - apiVersion: compute.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:status:
+          .: {}
+          f:conditions: {}
+          f:creationTimestamp: {}
+          f:fingerprint: {}
+          f:generatedId: {}
+          f:observedGeneration: {}
+          f:selfLink: {}
+      manager: cnrm-controller-manager
+      operation: Update
+      subresource: status
+      time: "2025-05-21T05:36:09Z"
+    name: test-ilb-multiregion-default
+    namespace: platform-kcc-apps-platdev-99bb42
+    ownerReferences:
+    - apiVersion: netoperator.platform.x.anz/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: InternalLoadBalancer
+      name: test-ilb-multiregion
+      uid: c3720208-d158-4f07-9b15-369b12a20443
+    resourceVersion: "1877428100"
+    uid: a885fe6f-c37f-47f9-acf9-f8fee1834f0e
+  spec:
+    connectionDrainingTimeoutSec: 0
+    description: Default Backend Service for test-ilb-multiregion
+    loadBalancingScheme: INTERNAL_MANAGED
+    location: global
+    portName: http
+    protocol: HTTPS
+    resourceID: test-ilb-multiregion-default
+    sessionAffinity: NONE
+    timeoutSec: 30
+  status:
+    conditions:
+    - lastTransitionTime: "2025-05-21T05:36:09Z"
+      message: The resource is up to date
+      reason: UpToDate
+      status: "True"
+      type: Ready
+    creationTimestamp: "2025-05-20T22:35:47.070-07:00"
+    fingerprint: 6ZfAeKktaWk=
+    generatedId: 3481404586579777500
+    observedGeneration: 1
+    selfLink: https://www.googleapis.com/compute/v1/projects/anz-x-apps-platdev-99bb42/global/backendServices/test-ilb-multiregion-default
