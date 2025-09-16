@@ -1,0 +1,13 @@
+[spec_etag] crd=aiplatformmodels.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
+[spec_etag] crd=backupdrbackupplans.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
+[spec_etag] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
+[spec_etag] crd=biglaketables.bigquerybiglake.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
+[spec_etag] crd=bigtableauthorizedviews.bigtable.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
+[spec_etag] crd=clouddeploydeliverypipelines.clouddeploy.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
+[spec_etag] crd=dataplexentrygroups.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
+[spec_etag] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dryRunSpec.etag" contains etag
+[spec_etag] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
+[spec_etag] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.etag" contains etag
+[spec_etag] crd=spannerinstanceconfigs.spanner.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
+[spec_etag] crd=vertexaifeaturestores.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
+[spec_etag] crd=vmwareenginenetworks.vmwareengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.etag" contains etag
