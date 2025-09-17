@@ -6,9 +6,7 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
   name: tagslocationtagbindings.tags.cnrm.cloud.google.com
 spec:
   group: tags.cnrm.cloud.google.com
@@ -16,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: TagsLocationTagBinding
+    listKind: TagsLocationTagBindingList
     plural: tagslocationtagbindings
     shortNames:
     - gcptagslocationtagbinding
@@ -43,45 +42,57 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: TagsLocationTagBinding is the Schema for the TagsLocationTagBinding
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: TagsLocationTagBindingSpec defines the desired state of TagsLocationTagBinding
             properties:
               location:
-                description: |-
-                  Immutable. The geographic location where the transfer config should reside.
-                  Examples: US, EU, asia-northeast1. The default value is US.
+                description: Immutable. The location of the target resource.
                 type: string
+                x-kubernetes-validations:
+                - message: the field is immutable
+                  rule: self == oldSelf
               parentRef:
+                description: The full resource name of the resource the TagValue is
+                  bound to. Only `external` field is supported to configure the reference
+                  for now.
                 oneOf:
                 - not:
                     required:
                     - external
                   required:
                   - name
+                  - kind
                 - not:
                     anyOf:
                     - required:
                       - name
                     - required:
                       - namespace
+                    - required:
+                      - kind
                   required:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: string of the format `//cloudresourcemanager.googleapis.com/projects/{{value}}`,
-                      where {{value}} is the `number` field of a `Project` resource.'
+                    description: The external name of the referenced resource
+                    type: string
+                  kind:
+                    description: Kind of the referent.
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -96,24 +107,31 @@ spec:
                   resource.
                 type: string
               tagValueRef:
+                description: Immutable. The TagValue of the TagBinding. Must be of
+                  the form tagValues/456.
                 oneOf:
                 - not:
                     required:
                     - external
                   required:
                   - name
+                  - kind
                 - not:
                     anyOf:
                     - required:
                       - name
                     - required:
                       - namespace
+                    - required:
+                      - kind
                   required:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: string of the format `tagValues/{{value}}`,
-                      where {{value}} is the `name` field of a `TagsTagValue` resource.'
+                    description: The external name of the referenced resource
+                    type: string
+                  kind:
+                    description: Kind of the referent.
                     type: string
                   name:
                     description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
@@ -122,16 +140,21 @@ spec:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
+                x-kubernetes-validations:
+                - message: the field is immutable
+                  rule: self == oldSelf
             required:
             - location
             - parentRef
             - tagValueRef
             type: object
           status:
+            description: TagsLocationTagBindingStatus defines the config connector
+              machine state of TagsLocationTagBinding
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -155,9 +178,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              name:
-                description: 'The generated id for the TagBinding. This is a string
-                  of the form: ''tagBindings/{full-resource-name}/{tag-value-name}''.'
+              externalRef:
+                description: A unique specifier for the TagsLocationTagBinding resource
+                  in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -165,7 +188,12 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
             type: object
         required:
         - spec
@@ -174,9 +202,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
