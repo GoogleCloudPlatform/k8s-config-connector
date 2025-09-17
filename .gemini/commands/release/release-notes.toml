@@ -1,0 +1,12 @@
+# In: ~/.gemini/commands/release/release-notes.toml
+# Invoked via: /release:release-notes
+# Gemini custom command docs can be found at https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/commands.md#toml-file-format-v1
+
+
+description = "Generates release notes for a given milestone."
+
+prompt = """
+First ask the user which version that they would like to add release notes.
+Then create a file under @docs/releasenotes, please following the naming convention in this directory "release-${major.minior}.md"
+Finally write a release notes for ${version} following the template @docs/releasenotes/template.md     
+"""
