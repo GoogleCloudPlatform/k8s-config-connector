@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package targettcpproxy
+package compute
 
 import (
 	"context"
@@ -21,8 +21,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
-
-	"google.golang.org/api/option"
 
 	gcp "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
@@ -65,32 +63,6 @@ type targetTCPProxyAdapter struct {
 
 var _ directbase.Adapter = &targetTCPProxyAdapter{}
 
-func (m *targetTCPProxyModel) client(ctx context.Context) (*gcp.TargetTcpProxiesClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-	gcpClient, err := gcp.NewTargetTcpProxiesRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building TargetTcpProxy client: %w", err)
-	}
-	return gcpClient, err
-}
-
-func (m *targetTCPProxyModel) regionalClient(ctx context.Context) (*gcp.RegionTargetTcpProxiesClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-	gcpClient, err := gcp.NewRegionTargetTcpProxiesRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building TargetTcpProxy client: %w", err)
-	}
-	return gcpClient, err
-}
-
 func (m *targetTCPProxyModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.ComputeTargetTCPProxy{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
@@ -120,19 +92,23 @@ func (m *targetTCPProxyModel) AdapterForObject(ctx context.Context, reader clien
 		obj.Spec.ProxyHeader = direct.PtrTo("NONE")
 	}
 
+	gcpClient, err := newGCPClient(m.config)
+	if err != nil {
+		return nil, fmt.Errorf("building gcp client: %w", err)
+	}
 	// Get GCP client
 	if location == "global" {
-		gcpClient, err := m.client(ctx)
+		targetTcpProxiesClient, err := gcpClient.newTargetTcpProxiesClient(ctx)
 		if err != nil {
-			return nil, fmt.Errorf("building gcp client: %w", err)
+			return nil, err
 		}
-		targetTCPProxyAdapter.targetTcpProxiesClient = gcpClient
+		targetTCPProxyAdapter.targetTcpProxiesClient = targetTcpProxiesClient
 	} else {
-		gcpClient, err := m.regionalClient(ctx)
+		regionalTargetTcpProxiesClient, err := gcpClient.newRegionalTargetTcpProxiesClient(ctx)
 		if err != nil {
-			return nil, fmt.Errorf("building gcp client: %w", err)
+			return nil, err
 		}
-		targetTCPProxyAdapter.regionalTargetTcpProxiesClient = gcpClient
+		targetTCPProxyAdapter.regionalTargetTcpProxiesClient = regionalTargetTcpProxiesClient
 	}
 	return targetTCPProxyAdapter, nil
 }
