@@ -17,12 +17,15 @@ limitations under the License.
 package writer
 
 import (
+	"context"
 	"crypto/tls"
 	"crypto/x509"
 	"encoding/pem"
 	"errors"
+	"fmt"
 	"time"
 
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook/cert/generator"
@@ -42,7 +45,7 @@ const (
 // CertWriter provides method to handle webhooks.
 type CertWriter interface {
 	// EnsureCert provisions the cert for the webhookClientConfig.
-	EnsureCert(dnsName string) (*generator.Artifacts, bool, error)
+	EnsureCert(ctx context.Context, dnsName string) (*generator.Artifacts, bool, error)
 	// Inject injects the necessary information given the objects.
 	// It supports MutatingWebhookConfiguration and ValidatingWebhookConfiguration.
 	Inject(objs ...client.Object) error
@@ -50,7 +53,7 @@ type CertWriter interface {
 
 // handleCommon ensures the given webhook has a proper certificate.
 // It uses the given certReadWriter to read and (or) write the certificate.
-func handleCommon(dnsName string, ch certReadWriter) (*generator.Artifacts, bool, error) {
+func handleCommon(ctx context.Context, dnsName string, ch certReadWriter) (*generator.Artifacts, bool, error) {
 	if len(dnsName) == 0 {
 		return nil, false, errors.New("dnsName should not be empty")
 	}
@@ -64,7 +67,7 @@ func handleCommon(dnsName string, ch certReadWriter) (*generator.Artifacts, bool
 	}
 
 	// Recreate the cert if it's invalid.
-	valid := validCert(certs, dnsName)
+	valid := validCert(ctx, certs, dnsName)
 	if !valid {
 		log.Info("cert is invalid or expiring, regenerating a new one")
 		certs, err = ch.overwrite()
@@ -107,28 +110,35 @@ type certReadWriter interface {
 // validCert verifies if the certificate is valid, including
 // additional verifications to ensure compatibility with Kubernetes
 // and it's default HTTP client.
-func validCert(certs *generator.Artifacts, dnsName string) bool {
+func validCert(ctx context.Context, certs *generator.Artifacts, dnsName string) bool {
+	log := klog.FromContext(ctx)
+
 	if certs == nil {
+		log.Error(fmt.Errorf("nil certs"), "certs is nil")
 		return false
 	}
 
 	// Verify key and cert are valid pair
 	_, err := tls.X509KeyPair(certs.Cert, certs.Key)
 	if err != nil {
+		log.Error(err, "failed to load key pair")
 		return false
 	}
 
 	// Verify cert is good for desired DNS name and signed by CA and will be valid for desired period of time.
 	pool := x509.NewCertPool()
 	if !pool.AppendCertsFromPEM(certs.CACert) {
+		log.Error(fmt.Errorf("invalid CA Cert"), "failed to load CA cert")
 		return false
 	}
 	block, _ := pem.Decode([]byte(certs.Cert))
 	if block == nil {
+		log.Error(fmt.Errorf("invalid Cert"), "failed to decode cert")
 		return false
 	}
 	cert, err := x509.ParseCertificate(block.Bytes)
 	if err != nil {
+		log.Error(err, "failed to parse cert")
 		return false
 	}
 	ops := x509.VerifyOptions{
@@ -138,9 +148,14 @@ func validCert(certs *generator.Artifacts, dnsName string) bool {
 	}
 	_, err = cert.Verify(ops)
 	if err != nil {
+		log.Error(err, "failed to verify cert")
 		return false
 	}
-	return DoesCertificateWorkWithK8sAPIClient(cert)
+	if !DoesCertificateWorkWithK8sAPIClient(cert) {
+		log.Error(fmt.Errorf("invalid Cert"), "cert is not valid for Kubernetes API clients")
+		return false
+	}
+	return true
 }
 
 // DoesCertificateWorkWithK8sAPIClient returns false if the certificate

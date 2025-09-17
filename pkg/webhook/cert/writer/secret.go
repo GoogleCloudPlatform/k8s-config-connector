@@ -78,10 +78,10 @@ func NewSecretCertWriter(ops SecretCertWriterOptions) (CertWriter, error) {
 }
 
 // EnsureCert provisions certificates for a webhookClientConfig by writing the certificates to a k8s secret.
-func (s *secretCertWriter) EnsureCert(dnsName string) (*generator.Artifacts, bool, error) {
+func (s *secretCertWriter) EnsureCert(ctx context.Context, dnsName string) (*generator.Artifacts, bool, error) {
 	// Create or refresh the certs based on clientConfig
 	s.dnsName = dnsName
-	return handleCommon(s.dnsName, s)
+	return handleCommon(ctx, s.dnsName, s)
 }
 
 var _ certReadWriter = &secretCertWriter{}

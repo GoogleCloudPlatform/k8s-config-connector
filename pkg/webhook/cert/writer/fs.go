@@ -17,6 +17,7 @@ limitations under the License.
 package writer
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -73,10 +74,10 @@ func NewFSCertWriter(ops FSCertWriterOptions) (CertWriter, error) {
 }
 
 // EnsureCert provisions certificates for a webhookClientConfig by writing the certificates in the filesystem.
-func (f *fsCertWriter) EnsureCert(dnsName string) (*generator.Artifacts, bool, error) {
+func (f *fsCertWriter) EnsureCert(ctx context.Context, dnsName string) (*generator.Artifacts, bool, error) {
 	// create or refresh cert and write it to fs
 	f.dnsName = dnsName
-	return handleCommon(f.dnsName, f)
+	return handleCommon(ctx, f.dnsName, f)
 }
 
 func (f *fsCertWriter) write() (*generator.Artifacts, error) {
