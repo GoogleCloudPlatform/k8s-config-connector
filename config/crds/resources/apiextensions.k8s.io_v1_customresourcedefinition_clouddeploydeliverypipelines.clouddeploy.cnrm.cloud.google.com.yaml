@@ -120,8 +120,9 @@ spec:
                   a `DeliveryPipeline`.
                 properties:
                   stages:
-                    description: Each stage specifies configuration for a `Target`.
-                      The ordering of this list defines the promotion flow.
+                    description: Optional. Each stage specifies configuration for
+                      a `Target`. The ordering of this list defines the promotion
+                      flow.
                     items:
                       properties:
                         deployParameters:
@@ -146,8 +147,8 @@ spec:
                             type: object
                           type: array
                         profiles:
-                          description: Skaffold profiles to use when rendering the
-                            manifest for this stage's `Target`.
+                          description: Optional. Skaffold profiles to use when rendering
+                            the manifest for this stage's `Target`.
                           items:
                             type: string
                           type: array
@@ -156,12 +157,12 @@ spec:
                             to this stage.
                           properties:
                             canary:
-                              description: Canary deployment strategy provides progressive
-                                percentage based deployments to a Target.
+                              description: Optional. Canary deployment strategy provides
+                                progressive percentage based deployments to a Target.
                               properties:
                                 canaryDeployment:
-                                  description: Configures the progressive based deployment
-                                    for a Target.
+                                  description: Optional. Configures the progressive
+                                    based deployment for a Target.
                                   properties:
                                     percentages:
                                       description: Required. The percentage based
@@ -203,15 +204,16 @@ spec:
                                           type: array
                                       type: object
                                     verify:
-                                      description: Whether to run verify tests after
-                                        each percentage deployment.
+                                      description: Optional. Whether to run verify
+                                        tests after each percentage deployment via
+                                        `skaffold verify`.
                                       type: boolean
                                   type: object
                                 customCanaryDeployment:
-                                  description: Configures the progressive based deployment
-                                    for a Target, but allows customizing at the phase
-                                    level where a phase represents each of the percentage
-                                    deployments.
+                                  description: Optional. Configures the progressive
+                                    based deployment for a Target, but allows customizing
+                                    at the phase level where a phase represents each
+                                    of the percentage deployments.
                                   properties:
                                     phaseConfigs:
                                       description: Required. Configuration for each
@@ -265,17 +267,18 @@ spec:
                                                 type: array
                                             type: object
                                           profiles:
-                                            description: Skaffold profiles to use
-                                              when rendering the manifest for this
-                                              phase. These are in addition to the
-                                              profiles list specified in the `DeliveryPipeline`
+                                            description: Optional. Skaffold profiles
+                                              to use when rendering the manifest for
+                                              this phase. These are in addition to
+                                              the profiles list specified in the `DeliveryPipeline`
                                               stage.
                                             items:
                                               type: string
                                             type: array
                                           verify:
-                                            description: Whether to run verify tests
-                                              after the deployment.
+                                            description: Optional. Whether to run
+                                              verify tests after the deployment via
+                                              `skaffold verify`.
                                             type: boolean
                                         type: object
                                       type: array
@@ -287,15 +290,15 @@ spec:
                                     traffic to enable a progressive deployment.
                                   properties:
                                     cloudRun:
-                                      description: Cloud Run runtime configuration.
+                                      description: Optional. Cloud Run runtime configuration.
                                       properties:
                                         automaticTrafficControl:
-                                          description: Whether Cloud Deploy should
-                                            update the traffic stanza in a Cloud Run
-                                            Service on the user's behalf to facilitate
-                                            traffic splitting. This is required to
-                                            be true for CanaryDeployments, but optional
-                                            for CustomCanaryDeployments.
+                                          description: Optional. Whether Cloud Deploy
+                                            should update the traffic stanza in a
+                                            Cloud Run Service on the user's behalf
+                                            to facilitate traffic splitting. This
+                                            is required to be true for CanaryDeployments,
+                                            but optional for CustomCanaryDeployments.
                                           type: boolean
                                         canaryRevisionTags:
                                           description: Optional. A list of tags that
@@ -320,11 +323,11 @@ spec:
                                           type: array
                                       type: object
                                     kubernetes:
-                                      description: Kubernetes runtime configuration.
+                                      description: Optional. Kubernetes runtime configuration.
                                       properties:
                                         gatewayServiceMesh:
-                                          description: Kubernetes Gateway API service
-                                            mesh configuration.
+                                          description: Optional. Kubernetes Gateway
+                                            API service mesh configuration.
                                           properties:
                                             deployment:
                                               description: Required. Name of the Kubernetes
@@ -398,8 +401,8 @@ spec:
                                               type: string
                                           type: object
                                         serviceNetworking:
-                                          description: Kubernetes Service networking
-                                            configuration.
+                                          description: Optional. Kubernetes Service
+                                            networking configuration.
                                           properties:
                                             deployment:
                                               description: Required. Name of the Kubernetes
@@ -430,13 +433,14 @@ spec:
                                   type: object
                               type: object
                             standard:
-                              description: Standard deployment strategy executes a
-                                single deploy and allows verifying the deployment.
+                              description: Optional. Standard deployment strategy
+                                executes a single deploy and allows verifying the
+                                deployment.
                               properties:
                                 postdeploy:
                                   description: Optional. Configuration for the postdeploy
-                                    job. If this is not configured, postdeploy job
-                                    will not be present.
+                                    job. If this is not configured, the postdeploy
+                                    job will not be present.
                                   properties:
                                     actions:
                                       description: Optional. A sequence of Skaffold
@@ -448,8 +452,8 @@ spec:
                                   type: object
                                 predeploy:
                                   description: Optional. Configuration for the predeploy
-                                    job. If this is not configured, predeploy job
-                                    will not be present.
+                                    job. If this is not configured, the predeploy
+                                    job will not be present.
                                   properties:
                                     actions:
                                       description: Optional. A sequence of Skaffold
@@ -460,15 +464,16 @@ spec:
                                       type: array
                                   type: object
                                 verify:
-                                  description: Whether to verify a deployment.
+                                  description: Optional. Whether to verify a deployment
+                                    via `skaffold verify`.
                                   type: boolean
                               type: object
                           type: object
                         targetID:
-                          description: The target_id to which this stage points. This
-                            field refers exclusively to the last segment of a target
-                            name. For example, this field would just be `my-target`
-                            (rather than `projects/project/locations/location/targets/my-target`).
+                          description: Optional. The target_id to which this stage
+                            points. This field refers exclusively to the last segment
+                            of a target name. For example, this field would just be
+                            `my-target` (rather than `projects/project/locations/location/targets/my-target`).
                             The location of the `Target` is inferred to be the same
                             as the location of the `DeliveryPipeline` that contains
                             this `Stage`.

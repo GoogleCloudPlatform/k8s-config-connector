@@ -140,3 +140,21 @@ type CloudDeployDeliveryPipelineList struct {
 func init() {
 	SchemeBuilder.Register(&CloudDeployDeliveryPipeline{}, &CloudDeployDeliveryPipelineList{})
 }
+
+// +kcc:proto=google.cloud.deploy.v1.KubernetesConfig.GatewayServiceMesh.RouteDestinations
+type KubernetesConfig_GatewayServiceMesh_RouteDestinations struct {
+	// Required. The clusters where the Gateway API HTTPRoute resource will be
+	//  deployed to. Valid entries include the associated entities IDs
+	//  configured in the Target resource and "@self" to include the Target
+	//  cluster.
+	// +kcc:proto:field=google.cloud.deploy.v1.KubernetesConfig.GatewayServiceMesh.RouteDestinations.destination_ids
+	DestinationIDs []string `json:"destinationIDs,omitempty"`
+
+	// Optional. Whether to propagate the Kubernetes Service to the route
+	//  destination clusters. The Service will always be deployed to the Target
+	//  cluster even if the HTTPRoute is not. This option may be used to
+	//  facilitate successful DNS lookup in the route destination clusters. Can
+	//  only be set to true if destinations are specified.
+	// +kcc:proto:field=google.cloud.deploy.v1.KubernetesConfig.GatewayServiceMesh.RouteDestinations.propagate_service
+	PropagateService *bool `json:"propagateService,omitempty"`
+}
