@@ -56,13 +56,10 @@ type BigLakeTableSpec struct {
 	// +optional
 	HiveOptions *HiveTableOptions `json:"hiveOptions,omitempty"`
 
-	// The checksum of a table object computed by the server based on the value of
-	//  other fields. It may be sent on update requests to ensure the client has an
-	//  up-to-date value before proceeding. It is only checked for update table
-	//  operations.
+	// NOTYET: not supported in Config Connector reconciliation
+	// Output only. The etag for this table.
 	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Table.etag
-	// +optional
-	Etag *string `json:"etag,omitempty"`
+	// Etag *string `json:"etag,omitempty"`
 }
 
 // BigLakeTableStatus defines the config connector machine state of BigLakeTable

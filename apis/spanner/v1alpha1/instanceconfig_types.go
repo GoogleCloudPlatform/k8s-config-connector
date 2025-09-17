@@ -80,6 +80,7 @@ type SpannerInstanceConfigSpec struct {
 	// +kcc:proto:field=google.spanner.admin.instance.v1.InstanceConfig.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
+	// NOTYET: not supported in Config Connector reconciliation
 	// etag is used for optimistic concurrency control as a way
 	//  to help prevent simultaneous updates of a instance configuration from
 	//  overwriting each other. It is strongly suggested that systems make use of
@@ -92,7 +93,7 @@ type SpannerInstanceConfigSpec struct {
 	//  configuration, then the existing instance configuration is overwritten
 	//  blindly.
 	// +kcc:proto:field=google.spanner.admin.instance.v1.InstanceConfig.etag
-	Etag *string `json:"etag,omitempty"`
+	// Etag *string `json:"etag,omitempty"`
 
 	// Allowed values of the "default_leader" schema option for databases in
 	//  instances that use this instance configuration.

@@ -36,6 +36,7 @@ type AlternatePolicySpec struct {
 
 // +kcc:proto=google.cloud.orgpolicy.v2.PolicySpec
 type PolicySpec struct {
+	// NOTYET: not supported in Config Connector reconciliation
 	// An opaque tag indicating the current version of the policySpec, used for
 	//  concurrency control.
 	//
@@ -48,7 +49,7 @@ type PolicySpec struct {
 	//  When the policy is returned from a `GetEffectivePolicy` request, the
 	//  `etag` will be unset.
 	// +kcc:proto:field=google.cloud.orgpolicy.v2.PolicySpec.etag
-	Etag *string `json:"etag,omitempty"`
+	// Etag *string `json:"etag,omitempty"`
 
 	// In policies for boolean constraints, the following requirements apply:
 	//

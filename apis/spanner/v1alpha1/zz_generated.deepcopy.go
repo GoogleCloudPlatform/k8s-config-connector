@@ -745,11 +745,6 @@ func (in *SpannerInstanceConfigSpec) DeepCopyInto(out *SpannerInstanceConfigSpec
 			(*out)[key] = val
 		}
 	}
-	if in.Etag != nil {
-		in, out := &in.Etag, &out.Etag
-		*out = new(string)
-		**out = **in
-	}
 	if in.LeaderOptions != nil {
 		in, out := &in.LeaderOptions, &out.LeaderOptions
 		*out = make([]string, len(*in))

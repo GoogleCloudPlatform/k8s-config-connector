@@ -57,12 +57,13 @@ type OrgPolicyPolicySpec struct {
 	// +kcc:proto:field=google.cloud.orgpolicy.v2.Policy.dry_run_spec
 	DryRunSpec *PolicySpec `json:"dryRunSpec,omitempty"`
 
+	// NOTYET: not supported in Config Connector reconciliation
 	// Optional. An opaque tag indicating the current state of the policy, used
 	//  for concurrency control. This 'etag' is computed by the server based on the
 	//  value of other fields, and may be sent on update and delete requests to
 	//  ensure the client has an up-to-date value before proceeding.
 	// +kcc:proto:field=google.cloud.orgpolicy.v2.Policy.etag
-	Etag *string `json:"etag,omitempty"`
+	// Etag *string `json:"etag,omitempty"`
 }
 
 // OrgPolicyPolicyStatus defines the config connector machine state of OrgPolicyPolicy

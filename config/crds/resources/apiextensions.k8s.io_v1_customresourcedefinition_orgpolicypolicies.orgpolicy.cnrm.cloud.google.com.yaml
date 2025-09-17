@@ -64,20 +64,6 @@ spec:
                   how the policy would have impacted the existing and future resources
                   if it's enforced.
                 properties:
-                  etag:
-                    description: |-
-                      An opaque tag indicating the current version of the policySpec, used for
-                       concurrency control.
-
-                       This field is ignored if used in a `CreatePolicy` request.
-
-                       When the policy is returned from either a `GetPolicy` or a
-                       `ListPolicies` request, this `etag` indicates the version of the
-                       current policySpec to use when executing a read-modify-write loop.
-
-                       When the policy is returned from a `GetEffectivePolicy` request, the
-                       `etag` will be unset.
-                    type: string
                   inheritFromParent:
                     description: |-
                       Determines the inheritance behavior for this policy.
@@ -172,13 +158,6 @@ spec:
                       type: object
                     type: array
                 type: object
-              etag:
-                description: Optional. An opaque tag indicating the current state
-                  of the policy, used for concurrency control. This 'etag' is computed
-                  by the server based on the value of other fields, and may be sent
-                  on update and delete requests to ensure the client has an up-to-date
-                  value before proceeding.
-                type: string
               folderRef:
                 description: Immutable. The Folder that this resource belongs to.
                   One and only one of 'projectRef', 'folderRef', or 'organizationRef'
@@ -266,20 +245,6 @@ spec:
               spec:
                 description: Basic information about the Organization Policy.
                 properties:
-                  etag:
-                    description: |-
-                      An opaque tag indicating the current version of the policySpec, used for
-                       concurrency control.
-
-                       This field is ignored if used in a `CreatePolicy` request.
-
-                       When the policy is returned from either a `GetPolicy` or a
-                       `ListPolicies` request, this `etag` indicates the version of the
-                       current policySpec to use when executing a read-modify-write loop.
-
-                       When the policy is returned from a `GetEffectivePolicy` request, the
-                       `etag` will be unset.
-                    type: string
                   inheritFromParent:
                     description: |-
                       Determines the inheritance behavior for this policy.
