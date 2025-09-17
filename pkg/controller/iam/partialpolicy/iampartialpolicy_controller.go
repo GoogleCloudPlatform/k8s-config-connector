@@ -287,7 +287,7 @@ func (r *reconcileContext) doReconcile(pp *iamv1beta1.IAMPartialPolicy) (requeue
 	k8s.EnsureFinalizers(pp, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName)
 
 	resolver := IAMMemberIdentityResolver{Iamclient: r.Reconciler.iamClient, Ctx: r.Ctx}
-	desiredPartialPolicy, err := ComputePartialPolicyWithMergedBindings(pp, iamPolicy, &resolver)
+	desiredPartialPolicy, err := ComputePartialPolicyWithMergedBindings(pp, iamPolicy, &resolver, "legacy")
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(pp))
@@ -340,7 +340,7 @@ func (r *reconcileContext) finalizeDeletion(pp *iamv1beta1.IAMPartialPolicy) (re
 		}
 		// Compute the remaining bindings to set, i.e. pruning last applied bindings (bindings managed by KCC)
 		// from all the existing bindings from the underlying IAM Policy.
-		desiredPartialPolicy := ComputePartialPolicyWithRemainingBindings(pp, iamPolicy)
+		desiredPartialPolicy := ComputePartialPolicyWithRemainingBindings(pp, iamPolicy, "legacy")
 		desiredPolicy := toDesiredPolicy(desiredPartialPolicy, iamPolicy)
 		if _, err = r.Reconciler.iamClient.SetPolicy(r.Ctx, desiredPolicy); err != nil {
 			if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {

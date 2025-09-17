@@ -99,6 +99,12 @@ type IAMPartialPolicyStatus struct {
 	LastAppliedBindings []IAMPolicyBinding `json:"lastAppliedBindings,omitempty"`
 	// AllBindings surfaces all IAM bindings for the referenced resource.
 	AllBindings []IAMPolicyBinding `json:"allBindings,omitempty"`
+	// LastDirectControllerActuation is the timestamp when the direct controller last actuated this resource.
+	// +optional
+	LastDirectControllerActuation string `json:"lastDirectControllerActuation,omitempty"`
+	// LastLegacyControllerActuation is the timestamp when the legacy controller last actuated this resource.
+	// +optional
+	LastLegacyControllerActuation string `json:"lastLegacyControllerActuation,omitempty"`
 }
 
 // +genclient
