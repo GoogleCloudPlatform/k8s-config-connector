@@ -234,7 +234,7 @@ func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured
 	log.V(2).Info("instance created", "op", op, "instance", created)
 
 	if maintenanceVersion != "" {
-		updated, err := a.updateMaintenanceVersion(ctx, maintenanceVersion, log)
+		updated, err := a.updateMaintenanceVersion(ctx, maintenanceVersion)
 		if err != nil {
 			return nil, err
 		}
@@ -244,7 +244,8 @@ func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured
 	return created, nil
 }
 
-func (a *sqlInstanceAdapter) updateMaintenanceVersion(ctx context.Context, maintenanceVersion string, log klog.Logger) (*api.DatabaseInstance, error) {
+func (a *sqlInstanceAdapter) updateMaintenanceVersion(ctx context.Context, maintenanceVersion string) (*api.DatabaseInstance, error) {
+	log := klog.FromContext(ctx)
 	newMaintDb := &api.DatabaseInstance{
 		MaintenanceVersion: maintenanceVersion,
 	}
@@ -373,7 +374,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 			report.AddField(".maintenanceVersion", a.actual.MaintenanceVersion, a.desired.Spec.MaintenanceVersion)
 			structuredreporting.ReportDiff(ctx, report)
 		}
-		updated, err := a.updateMaintenanceVersion(ctx, *a.desired.Spec.MaintenanceVersion, log)
+		updated, err := a.updateMaintenanceVersion(ctx, *a.desired.Spec.MaintenanceVersion)
 		if err != nil {
 			return err
 		}
