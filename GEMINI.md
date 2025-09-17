@@ -61,6 +61,36 @@ Direct controllers can be found under `pkg/controller/direct`.
 The controller will have a file name ending in `_controller.go`.
 The controller will call `RegisterModel` using a KRM containing the resource name and ending in GVK.
 
+# Resource Status
+
+Config Connector updates the "status" field to reflect the current state of the resource. To check if a resource is ready, 
+inspect its "status.condition":
+
+1. Ready: The resource is successfully reconciled when "status.condition.status" is set to "True" and "status.condition.reason" is "UpToDate".
+2. Not Ready: (todo)
+3. Error: If "status.condition.status" is "False", the resource is not ready. the "message" and "reason" fields under "status.condition"
+will provide additional information.
+
+on the resource's status.
+
+# Resource References
+
+In Config Connector, a resource reference is a mechanism for defining dependencies between resources within Kubernetes configuration. 
+This simplifies management by allowing one resource to point to other resources, which Config Connector then resolves its dependencies
+automatically. 
+
+To specify resource references in the primary resource's yaml configuration Spec, the reference field's name is the
+referenced resource's short name followed by "Ref" suffix. For example:
+The reference to a PubSubTopic is "topicRef"; The reference to a StorageBucket is "bucketRef".
+
+There are three primary ways to reference to another resource:
+
+1. Use the "name" field to point to another Config Connector managed resource located in the same Kubernetes namespace.
+2. Use both "name" and "namespace" fields to point to another Config Connector managed resource located in a different Kubernetes namespace.
+3. use the "external" field to point to a pre-existing Google Cloud resource not managed by Config Connector.
+
+
+
 # Options
 
 We have an emerging pattern for configuring options.  The "state-into-spec" option was an early option to demonstrate the pattern.
@@ -84,9 +114,9 @@ We use a lot of golden testing.  We have a set of test fixtures rooted in `pkg/t
 but we have not been 100% consistent on this.
 
 Within a test directory, we typically have `create.yaml` which describes the primary resource that we are testing.  We have `update.yaml`, which describes an
-update to make to that primary resource.  We often have `dependencies.yaml`, which are other resources that we create in order to perform the test.  We
-create the resources in `dependencies.yaml`, then the resource in `create.yaml`, then we run `update.yaml`.  We expect the resources to become "ready"
-at each step of the test.
+update to make to that primary resource. If the primary resource's configuration contains reference fields, we need a `dependencies.yaml`, which contains 
+all dependency resources that are referenced by the primary resource. We create the resources in `dependencies.yaml`, then the resource in `create.yaml`, 
+then we run `update.yaml`. We expect the resources to become "ready" at each step of the test.
 
 We capture the logs from the HTTP (and GRPC) traffic to GCP APIs.  This is compared against the "golden traffic" in the `_http.log` file.  We do
 perform some normalization to remove volatile values, such as timestamps, server-generated identifiers and complicated hashes.
