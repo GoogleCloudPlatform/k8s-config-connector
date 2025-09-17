@@ -279,26 +279,42 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if err != nil {
 		return err
 	}
+
+	updated := a.actual
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.External)
-		return nil
+	} else {
+		fqn := a.id.External
+		req := &pb.UpdateConnectionRequest{
+			Name:       fqn,
+			Connection: connection,
+			UpdateMask: &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
+		}
+		updated, err = a.gcpClient.UpdateConnection(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating Connection %s: %w", fqn, err)
+		}
+		log.V(2).Info("successfully updated Connection", "name", fqn)
 	}
-	fqn := a.id.External
-	req := &pb.UpdateConnectionRequest{
-		Name:       fqn,
-		Connection: connection,
-		UpdateMask: &fieldmaskpb.FieldMask{Paths: sets.List(paths)},
-	}
-	updated, err := a.gcpClient.UpdateConnection(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating Connection %s: %w", fqn, err)
-	}
-	log.V(2).Info("successfully updated Connection", "name", fqn)
 
 	status := &krm.BigQueryConnectionConnectionStatus{}
 	status.ObservedState = BigQueryConnectionConnectionStatusObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
+	}
+	if a.desired.Status.ExternalRef == nil {
+		// If it is the first reconciliation after switching to direct controller,
+		// or is an acquisition with update, then fill out the ExternalRef.
+		parent, err := a.id.Parent()
+		if err != nil {
+			return err
+		}
+		connectionID, _, err := a.id.ConnectionID()
+		if err != nil {
+			return err
+		}
+		externalRef := parent + "/connections/" + connectionID
+		status.ExternalRef = &externalRef
 	}
 	return setStatus(u, status)
 }
