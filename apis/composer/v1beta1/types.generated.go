@@ -12,7 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+// +generated:types
+// krm.group: composer.cnrm.cloud.google.com
+// krm.version: v1beta1
+// proto.service: google.cloud.orchestration.airflow.service.v1
+// resource: ComposerEnvironment:Environment
+
+package v1beta1
 
 // +kcc:proto=google.cloud.orchestration.airflow.service.v1.AirflowMetadataRetentionPolicyConfig
 type AirflowMetadataRetentionPolicyConfig struct {
@@ -150,7 +156,7 @@ type MaintenanceWindow struct {
 
 // +kcc:proto=google.cloud.orchestration.airflow.service.v1.MasterAuthorizedNetworksConfig
 type MasterAuthorizedNetworksConfig struct {
-	// Whether or not master authorized networks feature is enabled.
+	// Optional. Whether or not master authorized networks feature is enabled.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.MasterAuthorizedNetworksConfig.enabled
 	Enabled *bool `json:"enabled,omitempty"`
 
@@ -173,7 +179,7 @@ type MasterAuthorizedNetworksConfig_CIDRBlock struct {
 
 // +kcc:proto=google.cloud.orchestration.airflow.service.v1.NetworkingConfig
 type NetworkingConfig struct {
-	// Optional. Indicates the user requested specifc connection type between
+	// Optional. Indicates the user requested specific connection type between
 	//  Tenant and Customer projects. You cannot set networking connection type in
 	//  public IP environment.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.NetworkingConfig.connection_type
@@ -333,7 +339,7 @@ type SoftwareConfig struct {
 	//  If unspecified, the field defaults to `PLUGINS_ENABLED`.
 	//
 	//  This field is supported for Cloud Composer environments in versions
-	//  composer-3.*.*-airflow-*.*.* and newer.
+	//  composer-3-airflow-*.*.*-build.* and newer.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.SoftwareConfig.web_server_plugins_mode
 	WebServerPluginsMode *string `json:"webServerPluginsMode,omitempty"`
 }
@@ -404,12 +410,12 @@ type WorkloadsConfig struct {
 	// Optional. Resources used by Airflow DAG processors.
 	//
 	//  This field is supported for Cloud Composer environments in versions
-	//  composer-3.*.*-airflow-*.*.* and newer.
+	//  composer-3-airflow-*.*.*-build.* and newer.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.WorkloadsConfig.dag_processor
 	DagProcessor *WorkloadsConfig_DagProcessorResource `json:"dagProcessor,omitempty"`
 }
 
-// +kcc:proto=google.cloud.orchestration.airflow.service.v1.PrivateClusterConfig
+// +kcc:observedstate:proto=google.cloud.orchestration.airflow.service.v1.PrivateClusterConfig
 type PrivateClusterConfigObservedState struct {
 	// Output only. The IP range in CIDR notation to use for the hosted master
 	//  network. This range is used for assigning internal IP addresses to the GKE
