@@ -1,0 +1,95 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+Object:
+  apiVersion: dns.cnrm.cloud.google.com/v1beta1
+  kind: DNSRecordSet
+  metadata:
+    annotations:
+      cnrm.cloud.google.com/management-conflict-prevention-policy: none
+      cnrm.cloud.google.com/project-id: anz-x-apps-platdev-99bb42
+      cnrm.cloud.google.com/state-into-spec: absent
+      utils.platform.x.anz/owners: '[{"apiVersion":"netoperator.platform.x.anz/v1alpha1","kind":"DNSRecord","name":"chaosmonkey-ilb-failing-route-0","namespace":"platform-kcc-apps-platdev-99bb42"}]'
+    creationTimestamp: "2025-05-23T02:01:40Z"
+    finalizers:
+    - cnrm.cloud.google.com/finalizer
+    - cnrm.cloud.google.com/deletion-defender
+    generation: 6
+    labels:
+      app.kubernetes.io/managed-by: netoperator
+      ci_group: platform
+      managed-by: netoperator
+      netoperator.platform.x.anz/controller: dnsrecord
+      x.anz.com/asset: platform
+    managedFields:
+    - apiVersion: dns.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:cnrm.cloud.google.com/state-into-spec: {}
+          f:finalizers:
+            .: {}
+            v:"cnrm.cloud.google.com/deletion-defender": {}
+            v:"cnrm.cloud.google.com/finalizer": {}
+      manager: cnrm-controller-manager
+      operation: Update
+      time: "2025-05-23T02:01:46Z"
+    - apiVersion: dns.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:spec:
+          f:routingPolicy:
+            f:geo: {}
+      manager: main
+      operation: Update
+      subresource: status
+      time: "2025-05-23T02:02:09Z"
+    - apiVersion: dns.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:status:
+          .: {}
+          f:conditions: {}
+          f:observedGeneration: {}
+      manager: cnrm-controller-manager
+      operation: Update
+      subresource: status
+      time: "2025-05-23T02:02:13Z"
+    name: chaosmonkey.cloudnetworks.x.gcpnp.anz-a
+    namespace: platform-kcc-apps-platdev-99bb42
+    resourceVersion: "1880860339"
+    uid: 9acea000-da0c-4c7d-aae1-4f8fdffa4e86
+  spec:
+    managedZoneRef:
+      external: anz-x-apps-platdev-cloudnetworks-x
+    name: chaosmonkey.cloudnetworks.x.gcpnp.anz.
+    routingPolicy:
+      geo:
+      - location: australia-southeast1
+        rrdatasRefs:
+        - external: 10.165.151.117
+      - location: australia-southeast2
+        rrdatasRefs:
+        - external: 10.165.151.52
+    ttl: 300
+    type: A
+  status:
+    conditions:
+    - lastTransitionTime: "2025-05-23T02:02:13Z"
+      message: The resource is up to date
+      reason: UpToDate
+      status: "True"
+      type: Ready
+    observedGeneration: 6
