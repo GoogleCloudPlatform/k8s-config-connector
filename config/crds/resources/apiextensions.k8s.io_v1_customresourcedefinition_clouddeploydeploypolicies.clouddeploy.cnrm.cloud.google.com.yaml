@@ -111,7 +111,7 @@ spec:
                 items:
                   properties:
                     rolloutRestriction:
-                      description: Rollout restrictions.
+                      description: Optional. Rollout restrictions.
                       properties:
                         actions:
                           description: Optional. Rollout actions to be restricted
@@ -341,8 +341,8 @@ spec:
                       properties:
                         id:
                           description: |-
-                            ID of the `DeliveryPipeline`. The value of this field could be one of the
-                             following:
+                            Optional. ID of the `DeliveryPipeline`. The value of this field could be
+                             one of the following:
 
                              * The last segment of a pipeline name
                              * "*", all delivery pipelines in a location
@@ -358,7 +358,7 @@ spec:
                       properties:
                         id:
                           description: |-
-                            ID of the `Target`. The value of this field could be one of the
+                            Optional. ID of the `Target`. The value of this field could be one of the
                              following:
 
                              * The last segment of a target name
