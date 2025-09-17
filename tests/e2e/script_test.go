@@ -546,6 +546,46 @@ func touchObject(h *create.Harness, obj *unstructured.Unstructured) {
 	}
 }
 
+// touchMetadataLabels sets a new metadata label that forces a re-reconciliation
+func touchMetadataLabels(h *create.Harness, obj *unstructured.Unstructured) {
+	existing := &unstructured.Unstructured{}
+	{
+		existing.SetGroupVersionKind(obj.GroupVersionKind())
+		existing.SetName(obj.GetName())
+		existing.SetNamespace(obj.GetNamespace())
+
+		key := types.NamespacedName{
+			Namespace: obj.GetNamespace(),
+			Name:      obj.GetName(),
+		}
+		if err := h.GetClient().Get(h.Ctx, key, existing); err != nil {
+			h.Fatalf("error getting object %v: %v", key, err)
+		}
+	}
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(obj.GroupVersionKind())
+	u.SetName(obj.GetName())
+	u.SetNamespace(obj.GetNamespace())
+
+	// Set a metadata label that should not be sent to GCP
+	labels := existing.GetLabels()
+	if labels == nil {
+		labels = make(map[string]string)
+	}
+
+	oldLabel := labels["configsync.gke.io/declared-version"]
+	if oldLabel == "" {
+		labels["configsync.gke.io/declared-version"] = "v1beta1"
+	}
+
+	u.SetLabels(labels)
+
+	if err := h.GetClient().Patch(h.Ctx, u, client.Apply, client.FieldOwner("kcc-test-metadata-labels")); err != nil {
+		h.Fatalf("error doing metadata labels touch (setting label): %v", err)
+	}
+}
+
 func setAnnotation(h *create.Harness, obj *unstructured.Unstructured, k, v string) {
 	patch := &unstructured.Unstructured{}
 	patch.SetGroupVersionKind(obj.GroupVersionKind())
