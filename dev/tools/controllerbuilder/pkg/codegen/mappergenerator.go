@@ -221,7 +221,6 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 
 	return nil
 }
-
 func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string, pair *typePair) {
 	klog.V(2).InfoS("writeMapFunctionsForPair", "pair.Proto.FullName", pair.Proto.FullName(), "pair.KRMType.Name", pair.KRMType.Name)
 	msg := pair.Proto
@@ -304,6 +303,82 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 							fmt.Fprintf(out, "\t// (near miss): %q vs %q\n", krmFieldName, k)
 						}
 					}
+				}
+				continue
+			}
+
+			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]")
+			isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
+
+			if isProtoFieldSlice && !isKRMFieldSlice && !protoField.IsMap() { // proto slice -> krm single
+				var fromProtoElemFunc string
+				switch protoField.Kind() {
+				case protoreflect.MessageKind:
+					krmElemTypeName := strings.TrimPrefix(krmField.Type, "*")
+					fromProtoElemFunc = krmElemTypeName + versionSpecifier + "_FromProto"
+					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+						fromProtoElemFunc = krmFromProtoFunctionName(protoField, krmField.Name)
+					}
+				case protoreflect.EnumKind:
+					fromProtoElemFunc = "direct. "
+				}
+
+				fmt.Fprintf(out, "\tif len(in.%s) > 0 {\n", protoAccessor)
+				if fromProtoElemFunc != "" {
+					fmt.Fprintf(out, "\t\tout.%s = %s(mapCtx, in.%s[0])\n", krmFieldName, fromProtoElemFunc, protoAccessor)
+				} else {
+					if protoField.Kind() == protoreflect.BytesKind {
+						fmt.Fprintf(out, "\t\tout.%s = in.%s[0]\n", krmFieldName, protoAccessor)
+					} else {
+						fmt.Fprintf(out, "\t\tout.%s = direct.LazyPtr(in.%s[0])\n", krmFieldName, protoAccessor)
+					}
+				}
+				fmt.Fprintf(out, "\t}\n")
+				continue
+			}
+
+			if !isProtoFieldSlice && isKRMFieldSlice { // proto single -> krm slice
+				krmSliceElemType := strings.TrimPrefix(krmField.Type, "[]")
+
+				switch protoField.Kind() {
+				case protoreflect.MessageKind:
+					krmElemTypeName := strings.TrimPrefix(krmSliceElemType, "*")
+					functionName := krmElemTypeName + versionSpecifier + "_FromProto"
+					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+						functionName = krmFromProtoFunctionName(protoField, krmField.Name)
+					}
+					fmt.Fprintf(out, "\tif v := in.%s; v != nil {\n", protoAccessor)
+					if strings.HasPrefix(krmSliceElemType, "*") {
+						fmt.Fprintf(out, "\t\tout.%s = []*%s.%s{%s(mapCtx, v)}\n", krmFieldName, krmImportName, strings.TrimPrefix(krmSliceElemType, "*"), functionName)
+					} else {
+						fmt.Fprintf(out, "\t\tout.%s = []%s.%s{%s(mapCtx, v)}\n", krmFieldName, krmImportName, krmSliceElemType, functionName)
+					}
+					fmt.Fprintf(out, "\t}\n")
+
+				case protoreflect.EnumKind:
+					functionName := "direct.Enum_FromProto"
+					fmt.Fprintf(out, "\tout.%s = []%s.%s{%s(mapCtx, in.%s)}\n", krmFieldName, krmImportName, krmSliceElemType, functionName, protoAccessor)
+
+				case protoreflect.StringKind,
+					protoreflect.FloatKind,
+					protoreflect.DoubleKind,
+					protoreflect.BoolKind,
+					protoreflect.Int64Kind,
+					protoreflect.Int32Kind,
+					protoreflect.Uint32Kind,
+					protoreflect.Uint64Kind,
+					protoreflect.Fixed64Kind,
+					protoreflect.BytesKind:
+					if protoIsPointerInGo(protoField) {
+						fmt.Fprintf(out, "\tif v := in.%s; v != nil {\n", protoFieldName)
+						fmt.Fprintf(out, "\t\tout.%s = []%s.%s{v}\n", krmFieldName, krmImportName, krmSliceElemType)
+						fmt.Fprintf(out, "\t}\n")
+					} else {
+						fmt.Fprintf(out, "\tout.%s = []%s.%s{direct.LazyPtr(in.%s)}\n", krmFieldName, krmImportName, krmSliceElemType, protoAccessor)
+					}
+
+				default:
+					klog.Fatalf("unhandled kind %q for field %v", protoField.Kind(), protoField)
 				}
 				continue
 			}
@@ -421,7 +496,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				protoreflect.Int32Kind,
 				protoreflect.Uint32Kind,
 				protoreflect.Uint64Kind,
-				protoreflect.Fixed64Kind:
+				protoreflect.Fixed64Kind,
+				protoreflect.BytesKind:
 				if protoIsPointerInGo(protoField) {
 					fmt.Fprintf(out, "\tout.%s = in.%s\n",
 						krmFieldName,
@@ -433,12 +509,6 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						protoAccessor,
 					)
 				}
-
-			case protoreflect.BytesKind:
-				fmt.Fprintf(out, "\tout.%s = in.%s\n",
-					krmFieldName,
-					protoAccessor,
-				)
 
 			default:
 				klog.Fatalf("unhandled kind %q for field %v", protoField.Kind(), protoField)
@@ -466,7 +536,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				// Support refs
 				if krmFieldRef := goFields[krmFieldName+"Ref"]; krmFieldRef != nil {
 					fmt.Fprintf(out, "\tif in.%s != nil {\n", krmFieldRef.Name)
-					fmt.Fprintf(out, "\t\tout.%v = in.%v.External\n", protoFieldName, krmFieldRef.Name)
+					fmt.Fprintf(out, "\t\tout.%s = in.%s.External\n", protoFieldName, krmFieldRef.Name)
 					fmt.Fprintf(out, "\t}\n")
 					continue
 				}
@@ -478,7 +548,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 								out.{protoFieldName} = append(out.{protoFieldName}, v[i].External)
 							}
 						}
-					`
+						`
 
 					s := template
 					s = strings.ReplaceAll(s, "{protoFieldName}", protoFieldName)
@@ -497,6 +567,93 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						}
 					}
 				}
+				continue
+			}
+
+			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]")
+			isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
+
+			if !isProtoFieldSlice && isKRMFieldSlice { // proto single <- krm slice
+				krmElemType := strings.TrimPrefix(krmField.Type, "[]")
+				krmElemTypeName := strings.TrimPrefix(krmElemType, "*")
+
+				fmt.Fprintf(out, "\tif len(in.%s) > 0 && in.%s[0] != nil {\n", krmFieldName, krmFieldName)
+
+				switch protoField.Kind() {
+				case protoreflect.MessageKind:
+					functionName := krmElemTypeName + versionSpecifier + "_ToProto"
+					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+						functionName = krmToProtoFunctionName(protoField, krmField.Name)
+					}
+					fmt.Fprintf(out, "\t\tout.%s = %s(mapCtx, in.%s[0])\n", protoFieldName, functionName, krmFieldName)
+
+				case protoreflect.EnumKind:
+					protoTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
+					functionName := "direct.Enum_ToProto"
+					fmt.Fprintf(out, "\t\tout.%s = %s[%s](mapCtx, *in.%s[0])\n", protoFieldName, functionName, protoTypeName, krmFieldName)
+
+				case protoreflect.StringKind,
+					protoreflect.FloatKind,
+					protoreflect.DoubleKind,
+					protoreflect.BoolKind,
+					protoreflect.Int64Kind,
+					protoreflect.Int32Kind,
+					protoreflect.Uint32Kind,
+					protoreflect.Uint64Kind,
+					protoreflect.Fixed64Kind,
+					protoreflect.BytesKind:
+					if protoIsPointerInGo(protoField) {
+						fmt.Fprintf(out, "\t\tout.%s = in.%s[0]\n", protoFieldName, krmFieldName)
+					} else {
+						fmt.Fprintf(out, "\t\tout.%s = direct.ValueOf(in.%s[0])\n", protoFieldName, krmFieldName)
+					}
+
+				default:
+					klog.Fatalf("unhandled kind %q for field %v", protoField.Kind(), protoField)
+				}
+				fmt.Fprintf(out, "\t}\n")
+				continue
+			}
+
+			if isProtoFieldSlice && !isKRMFieldSlice && !protoField.IsMap() { // proto slice <- krm single
+				var toProtoElemFunc string
+				krmElemTypeName := strings.TrimPrefix(krmField.Type, "*")
+
+				var protoSliceElemType string
+
+				switch protoField.Kind() {
+				case protoreflect.MessageKind:
+					functionName := krmElemTypeName + versionSpecifier + "_ToProto"
+					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+						functionName = krmToProtoFunctionName(protoField, krmField.Name)
+					}
+					toProtoElemFunc = functionName
+					protoSliceElemType = "*pb." + protoNameForType(protoField.Message())
+
+				case protoreflect.EnumKind:
+					protoTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
+					toProtoElemFunc = fmt.Sprintf("direct.Enum_ToProto[%s]", protoTypeName)
+					protoSliceElemType = "pb." + protoNameForEnum(protoField.Enum())
+
+				default:
+					protoSliceElemType = goTypeForProtoKind(protoField.Kind())
+				}
+
+				fmt.Fprintf(out, "\tif v := in.%s; v != nil {\n", krmFieldName)
+				if toProtoElemFunc != "" {
+					if protoField.Kind() == protoreflect.EnumKind {
+						fmt.Fprintf(out, "\t\tout.%s = []%s{%s(mapCtx, *v)}\n", protoFieldName, protoSliceElemType, toProtoElemFunc)
+					} else {
+						fmt.Fprintf(out, "\t\tout.%s = []%s{%s(mapCtx, v)}\n", protoFieldName, protoSliceElemType, toProtoElemFunc)
+					}
+				} else {
+					if protoField.Kind() == protoreflect.BytesKind {
+						fmt.Fprintf(out, "\t\tout.%s = [][]byte{in.%s}\n", protoFieldName, krmFieldName)
+					} else {
+						fmt.Fprintf(out, "\t\tout.%s = []%s{direct.ValueOf(in.%s)}\n", protoFieldName, protoSliceElemType, krmFieldName)
+					}
+				}
+				fmt.Fprintf(out, "\t}\n")
 				continue
 			}
 
@@ -772,16 +929,22 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 func protoNameForType(msg protoreflect.MessageDescriptor) string {
 	fullName := string(msg.FullName())
-	fullName = strings.TrimPrefix(fullName, string(msg.ParentFile().FullName()))
-	fullName = strings.TrimPrefix(fullName, ".")
+	namespace := string(msg.ParentFile().Package())
+	if namespace != "" {
+		namespace = namespace + "."
+	}
+	fullName = strings.TrimPrefix(fullName, namespace)
 	fullName = strings.ReplaceAll(fullName, ".", "_")
 	return fullName
 }
 
 func protoNameForEnum(msg protoreflect.EnumDescriptor) string {
 	fullName := string(msg.FullName())
-	fullName = strings.TrimPrefix(fullName, string(msg.ParentFile().FullName()))
-	fullName = strings.TrimPrefix(fullName, ".")
+	namespace := string(msg.ParentFile().Package())
+	if namespace != "" {
+		namespace = namespace + "."
+	}
+	fullName = strings.TrimPrefix(fullName, namespace)
 	fullName = strings.ReplaceAll(fullName, ".", "_")
 	return fullName
 }
