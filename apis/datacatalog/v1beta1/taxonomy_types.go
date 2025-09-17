@@ -22,6 +22,7 @@ import (
 
 var DataCatalogTaxonomyGVK = GroupVersion.WithKind("DataCatalogTaxonomy")
 
+// +kcc:proto=google.cloud.datacatalog.v1.Taxonomy
 type DataCatalogTaxonomySpec struct {
 	/* A list of policy types that are activated for this taxonomy. If not set,
 	defaults to an empty list. Possible values: ["POLICY_TYPE_UNSPECIFIED", "FINE_GRAINED_ACCESS_CONTROL"]. */

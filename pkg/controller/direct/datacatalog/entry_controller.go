@@ -146,7 +146,7 @@ func (a *entryAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	log.V(2).Info("creating datacatalog entry", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := DataCatalogEntrySpec_ToProto(mapCtx, &a.desired.Spec)
+	desired := DataCatalogEntrySpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -163,7 +163,7 @@ func (a *entryAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	log.V(2).Info("successfully created datacatalog entry in gcp", "name", a.id)
 
 	status := &krm.DataCatalogEntryStatus{}
-	status.ObservedState = DataCatalogEntryObservedState_FromProto(mapCtx, created)
+	status.ObservedState = DataCatalogEntryObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -176,7 +176,7 @@ func (a *entryAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	log.V(2).Info("updating datacatalog entry", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := DataCatalogEntrySpec_ToProto(mapCtx, &a.desired.Spec)
+	desired := DataCatalogEntrySpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
 	// Removed err variable from assignment above as function now returns 1 value
 	if mapCtx.Err() != nil { // Check mapCtx error immediately after call
 		return mapCtx.Err()
@@ -247,7 +247,7 @@ func (a *entryAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	}
 
 	status := &krm.DataCatalogEntryStatus{}
-	status.ObservedState = DataCatalogEntryObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = DataCatalogEntryObservedState_v1alpha1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -262,7 +262,7 @@ func (a *entryAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 
 	obj := &krm.DataCatalogEntry{}
 	mapCtx := &direct.MapContext{}
-	specProto := DataCatalogEntrySpec_FromProto(mapCtx, a.actual) // Renamed to avoid conflict if 'spec' name is used later
+	specProto := DataCatalogEntrySpec_v1alpha1_FromProto(mapCtx, a.actual) // Renamed to avoid conflict if 'spec' name is used later
 	obj.Spec = direct.ValueOf(specProto)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()

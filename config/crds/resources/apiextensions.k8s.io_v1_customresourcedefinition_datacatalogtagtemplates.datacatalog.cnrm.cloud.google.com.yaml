@@ -89,6 +89,9 @@ spec:
                     name:
                       description: |-
                         Identifier. The resource name of the tag template field in URL format.
+                         Example:
+
+                         `projects/{PROJECT_ID}/locations/{LOCATION}/tagTemplates/{TAG_TEMPLATE}/fields/{FIELD}`
 
                          Note: The tag template field itself might not be stored in the location
                          specified in its name.
@@ -136,8 +139,6 @@ spec:
                                        (_), dashes (-), spaces ( ), and can't start or end with spaces. The
                                        maximum length is 200 characters.
                                     type: string
-                                required:
-                                - displayName
                                 type: object
                               type: array
                           type: object
@@ -145,8 +146,6 @@ spec:
                           description: Primitive types, such as string, boolean, etc.
                           type: string
                       type: object
-                  required:
-                  - type
                   type: object
                 description: Fields used to create a Tag
                 type: object

@@ -141,7 +141,7 @@ spec:
                   only for entries with the `TABLE` or `EXPLORE` type.
                 properties:
                   databaseViewSpec:
-                    description: Spec what aplies to tables that are actually views.
+                    description: Spec what applies to tables that are actually views.
                       Not set for "real" tables.
                     properties:
                       baseTable:
@@ -297,7 +297,7 @@ spec:
                       Required. Patterns to identify a set of files in Google Cloud Storage.
 
                        For more information, see [Wildcard Names]
-                       (https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames).
+                       (https://cloud.google.com/storage/docs/wildcards).
 
                        Note: Currently, bucket wildcards are not supported.
 
@@ -326,8 +326,6 @@ spec:
                     items:
                       type: string
                     type: array
-                required:
-                - filePatterns
                 type: object
               labels:
                 additionalProperties:
@@ -521,8 +519,6 @@ spec:
                               description: Required. The type of a field element.
                                 See [ColumnSchema.type][google.cloud.datacatalog.v1.ColumnSchema.type].
                               type: string
-                          required:
-                          - type
                           type: object
                         subcolumns:
                           description: Optional. Schema of sub-columns. A column can
@@ -917,8 +913,8 @@ spec:
                     description: FeatureonlineStore spec for Vertex AI Feature Store.
                     properties:
                       storageType:
-                        description: Output only. Type of underelaying storage for
-                          the FeatureOnlineStore.
+                        description: Output only. Type of underlying storage for the
+                          FeatureOnlineStore.
                         type: string
                     type: object
                   gcsFilesetSpec:
@@ -934,8 +930,6 @@ spec:
                             filePath:
                               description: 'Required. Full file path. Example: `gs://bucket_name/a/b.txt`.'
                               type: string
-                          required:
-                          - filePath
                           type: object
                         type: array
                     type: object

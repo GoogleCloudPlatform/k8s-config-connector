@@ -75,6 +75,7 @@ type DataCatalogTagTemplateStatus struct {
 	ObservedState *DataCatalogTagTemplateObservedState `json:"observedState,omitempty"`
 }
 
+// +kcc:spec:proto=google.cloud.datacatalog.v1.TagTemplate
 type DataCatalogTagTemplateObservedState struct {
 	// Optional. Transfer status of the TagTemplate
 	// +kcc:proto:field=google.cloud.datacatalog.v1.TagTemplate.dataplex_transfer_status
