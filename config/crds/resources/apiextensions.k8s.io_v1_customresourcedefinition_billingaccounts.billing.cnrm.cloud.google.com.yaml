@@ -76,7 +76,7 @@ spec:
                   `My Billing Account`. This name is displayed in the Google Cloud
                   Console.
                 type: string
-              parent:
+              parentRef:
                 description: Optional. The billing account's parent resource.
                 oneOf:
                 - not:

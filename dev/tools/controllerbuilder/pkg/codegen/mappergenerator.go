@@ -264,6 +264,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					if len(tokens) > 1 {
 						alias := v.getGoImportAlias(krmFieldRef.GoPackage)
 						qualifiedTypeName = alias + "." + tokens[1]
+					} else if len(tokens) == 1 {
+						// In same package
+						alias := v.getGoImportAlias(pair.KRMType.GoPackage)
+						qualifiedTypeName = alias + "." + tokens[0]
 					}
 					fmt.Fprintf(out, "\t\tout.%v = &%v{External: in.%v}\n", krmFieldRef.Name, qualifiedTypeName, protoAccessor)
 					fmt.Fprintf(out, "\t}\n")
@@ -285,6 +289,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						alias := v.getGoImportAlias(krmFieldRefs.GoPackage)
 						klog.Infof("getGetImportAlias(%q) => %q", krmFieldRefs.GoPackage, alias)
 						qualifiedTypeName = alias + "." + tokens[1]
+					} else if len(tokens) == 1 {
+						// In same package
+						alias := v.getGoImportAlias(pair.KRMType.GoPackage)
+						qualifiedTypeName = alias + "." + tokens[0]
 					}
 
 					s := template
