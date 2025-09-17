@@ -37,7 +37,6 @@ func spannerInstanceConfigFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".replicas")
 	f.SpecFields.Insert(".base_config")
 	f.SpecFields.Insert(".labels")
-	f.SpecFields.Insert(".etag")
 	f.SpecFields.Insert(".leader_options")
 
 	f.StatusFields.Insert(".config_type")
@@ -49,6 +48,7 @@ func spannerInstanceConfigFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".storage_limit_per_processing_unit")
 
 	f.UnimplementedFields.Insert(".name") // special field
+	f.Unimplemented_Etag()
 
 	return f
 }
