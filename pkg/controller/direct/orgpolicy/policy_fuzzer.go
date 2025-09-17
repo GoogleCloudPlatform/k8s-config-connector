@@ -35,7 +35,6 @@ func orgPolicyPolicyFuzzer() fuzztesting.KRMFuzzer {
 
 	f.SpecFields.Insert(".spec")
 	f.SpecFields.Insert(".dry_run_spec")
-	f.SpecFields.Insert(".etag")
 
 	f.StatusFields.Insert(".spec.update_time")
 	f.StatusFields.Insert(".dry_run_spec.update_time")
@@ -47,6 +46,7 @@ func orgPolicyPolicyFuzzer() fuzztesting.KRMFuzzer {
 
 	// New fields we could potentially implement
 	f.UnimplementedFields.Insert(".dry_run_spec.rules[].enforce")
+	f.Unimplemented_Etag()
 
 	return f
 }
