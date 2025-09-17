@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package targettcpproxy
+package compute
 
 import (
 	"context"
@@ -21,8 +21,6 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
-
-	"google.golang.org/api/option"
 
 	gcp "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
@@ -36,8 +34,6 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-const ctrlName = "firewallpolicyrule-controller"
 
 func init() {
 	registry.RegisterModel(krm.ComputeTargetTCPProxyGVK, NewTargetTCPProxyModel)
@@ -64,32 +60,6 @@ type targetTCPProxyAdapter struct {
 }
 
 var _ directbase.Adapter = &targetTCPProxyAdapter{}
-
-func (m *targetTCPProxyModel) client(ctx context.Context) (*gcp.TargetTcpProxiesClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-	gcpClient, err := gcp.NewTargetTcpProxiesRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building TargetTcpProxy client: %w", err)
-	}
-	return gcpClient, err
-}
-
-func (m *targetTCPProxyModel) regionalClient(ctx context.Context) (*gcp.RegionTargetTcpProxiesClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-	gcpClient, err := gcp.NewRegionTargetTcpProxiesRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building TargetTcpProxy client: %w", err)
-	}
-	return gcpClient, err
-}
 
 func (m *targetTCPProxyModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.ComputeTargetTCPProxy{}
@@ -120,19 +90,23 @@ func (m *targetTCPProxyModel) AdapterForObject(ctx context.Context, reader clien
 		obj.Spec.ProxyHeader = direct.PtrTo("NONE")
 	}
 
+	gcpClient, err := newGCPClient(m.config)
+	if err != nil {
+		return nil, fmt.Errorf("building gcp client: %w", err)
+	}
 	// Get GCP client
 	if location == "global" {
-		gcpClient, err := m.client(ctx)
+		targetTcpProxiesClient, err := gcpClient.newTargetTcpProxiesClient(ctx)
 		if err != nil {
-			return nil, fmt.Errorf("building gcp client: %w", err)
+			return nil, err
 		}
-		targetTCPProxyAdapter.targetTcpProxiesClient = gcpClient
+		targetTCPProxyAdapter.targetTcpProxiesClient = targetTcpProxiesClient
 	} else {
-		gcpClient, err := m.regionalClient(ctx)
+		regionalTargetTcpProxiesClient, err := gcpClient.newRegionalTargetTcpProxiesClient(ctx)
 		if err != nil {
-			return nil, fmt.Errorf("building gcp client: %w", err)
+			return nil, err
 		}
-		targetTCPProxyAdapter.regionalTargetTcpProxiesClient = gcpClient
+		targetTCPProxyAdapter.regionalTargetTcpProxiesClient = regionalTargetTcpProxiesClient
 	}
 	return targetTCPProxyAdapter, nil
 }
@@ -160,7 +134,7 @@ func (a *targetTCPProxyAdapter) Find(ctx context.Context) (bool, error) {
 func (a *targetTCPProxyAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	var err error
 
-	err = resolveDependencies(ctx, a.reader, a.desired)
+	err = resolveTargetTcpProxyRefs(ctx, a.reader, a.desired)
 	if err != nil {
 		return err
 	}
@@ -226,12 +200,12 @@ func (a *targetTCPProxyAdapter) Create(ctx context.Context, createOp *directbase
 func (a *targetTCPProxyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	var err error
 
-	err = resolveDependencies(ctx, a.reader, a.desired)
+	err = resolveTargetTcpProxyRefs(ctx, a.reader, a.desired)
 	if err != nil {
 		return err
 	}
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("updating ComputeTargetTCPProxy", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
@@ -408,17 +382,4 @@ func (a *targetTCPProxyAdapter) get(ctx context.Context) (*computepb.TargetTcpPr
 		}
 		return a.regionalTargetTcpProxiesClient.Get(ctx, getReq)
 	}
-}
-
-func resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.ComputeTargetTCPProxy) error {
-	// Get backend service
-	if obj.Spec.BackendServiceRef != nil {
-		normalizedExternal, err := obj.Spec.BackendServiceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-		if err != nil {
-			return err
-
-		}
-		obj.Spec.BackendServiceRef.External = normalizedExternal
-	}
-	return nil
 }
