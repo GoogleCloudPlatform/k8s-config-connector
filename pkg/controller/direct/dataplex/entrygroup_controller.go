@@ -236,7 +236,6 @@ func (a *entryGroupAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 
 	req := &pb.DeleteEntryGroupRequest{
 		Name: a.id.String(),
-		Etag: direct.ValueOf(a.desired.Spec.Etag), // Use etag from spec if provided for concurrency control
 	}
 	op, err := a.gcpClient.DeleteEntryGroup(ctx, req)
 	if err != nil {

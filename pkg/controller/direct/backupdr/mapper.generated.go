@@ -101,7 +101,6 @@ func BackupDRManagementServerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, 
 	out.Labels = in.Labels
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.Networks = direct.Slice_FromProto(mapCtx, in.Networks, NetworkConfig_v1alpha1_FromProto)
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	// MISSING: OAUTH2ClientID
 	// MISSING: WorkforceIdentityBasedOAUTH2ClientID
 	// MISSING: BaProxyURI
@@ -119,7 +118,6 @@ func BackupDRManagementServerSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	out.Labels = in.Labels
 	out.Type = direct.Enum_ToProto[pb.ManagementServer_InstanceType](mapCtx, in.Type)
 	out.Networks = direct.Slice_ToProto(mapCtx, in.Networks, NetworkConfig_v1alpha1_ToProto)
-	out.Etag = direct.ValueOf(in.Etag)
 	// MISSING: OAUTH2ClientID
 	// MISSING: WorkforceIdentityBasedOAUTH2ClientID
 	// MISSING: BaProxyURI

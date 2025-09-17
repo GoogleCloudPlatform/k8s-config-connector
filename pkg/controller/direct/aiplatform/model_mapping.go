@@ -86,7 +86,6 @@ func AIPlatformModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm
 	out.ContainerSpec = ModelContainerSpec_FromProto(mapCtx, in.GetContainerSpec())
 	out.ArtifactURI = direct.LazyPtr(in.GetArtifactUri())
 	out.ExplanationSpec = ExplanationSpec_FromProto(mapCtx, in.GetExplanationSpec())
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Labels = in.Labels
 	out.DataStats = Model_DataStats_FromProto(mapCtx, in.GetDataStats())
 	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
@@ -109,7 +108,6 @@ func AIPlatformModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformMo
 	out.ContainerSpec = ModelContainerSpec_ToProto(mapCtx, in.ContainerSpec)
 	out.ArtifactUri = direct.ValueOf(in.ArtifactURI)
 	out.ExplanationSpec = ExplanationSpec_ToProto(mapCtx, in.ExplanationSpec)
-	out.Etag = direct.ValueOf(in.Etag)
 	out.Labels = in.Labels
 	out.DataStats = Model_DataStats_ToProto(mapCtx, in.DataStats)
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
