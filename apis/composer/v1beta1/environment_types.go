@@ -257,7 +257,7 @@ type EnvironmentConfig struct {
 type EnvironmentConfigObservedState struct {
 	// Output only. The Kubernetes Engine cluster used to run this environment.
 	// +kcc:proto:field=google.cloud.orchestration.airflow.service.v1.EnvironmentConfig.gke_cluster
-	GkeCluster *string `json:"gkeCluster,omitempty"`
+	GKECluster *string `json:"gkeCluster,omitempty"`
 
 	// Output only. The Cloud Storage prefix of the DAGs for this environment.
 	//  Although Cloud Storage objects reside in a flat namespace, a hierarchical

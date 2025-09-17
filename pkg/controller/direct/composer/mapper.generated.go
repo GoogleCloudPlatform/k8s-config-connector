@@ -225,8 +225,7 @@ func EnvironmentConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.EnvironmentConfigObservedState{}
-	// MISSING: GKECluster
-	// (near miss): "GKECluster" vs "GkeCluster"
+	out.GKECluster = direct.LazyPtr(in.GetGkeCluster())
 	out.DagGCSPrefix = direct.LazyPtr(in.GetDagGcsPrefix())
 	// MISSING: NodeCount
 	// MISSING: SoftwareConfig
@@ -252,8 +251,7 @@ func EnvironmentConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.E
 		return nil
 	}
 	out := &pb.EnvironmentConfig{}
-	// MISSING: GKECluster
-	// (near miss): "GKECluster" vs "GkeCluster"
+	out.GkeCluster = direct.ValueOf(in.GKECluster)
 	out.DagGcsPrefix = direct.ValueOf(in.DagGCSPrefix)
 	// MISSING: NodeCount
 	// MISSING: SoftwareConfig
