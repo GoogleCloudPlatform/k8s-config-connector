@@ -26,8 +26,9 @@ import (
 // TagBindingIdentity defines the resource reference to TagsLocationTagBinding, which "External" field
 // holds the GCP identifier for the KRM object.
 type TagsLocationTagBindingIdentity struct {
-	parent *TagsLocationTagBindingParent
-	id     string
+	parent   *TagsLocationTagBindingParent
+	location string
+	id       string
 }
 
 func (i *TagsLocationTagBindingIdentity) String() string {
@@ -38,12 +39,20 @@ func (i *TagsLocationTagBindingIdentity) ID() string {
 	return i.id
 }
 
+func (i *TagsLocationTagBindingIdentity) Location() string {
+	return i.location
+}
+
 type TagsLocationTagBindingParent struct {
 	parentResource string
 }
 
-func (i *TagsLocationTagBindingIdentity) Parent() string {
-	return i.parent.parentResource
+func (i *TagsLocationTagBindingIdentity) Parent() *TagsLocationTagBindingParent {
+	return i.parent
+}
+
+func (p *TagsLocationTagBindingParent) String() string {
+	return p.parentResource
 }
 
 // New builds a TagsLocationTagBindingIdentity from the Config Connector TagsLocationTagBinding object.
@@ -62,6 +71,12 @@ func NewTagsLocationTagBindingIdentity(ctx context.Context, reader client.Reader
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
+	// Get desired Location
+	location := common.ValueOf(obj.Spec.Location)
+	if location == "" {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
@@ -78,12 +93,16 @@ func NewTagsLocationTagBindingIdentity(ctx context.Context, reader client.Reader
 			return nil, fmt.Errorf("cannot reset `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
 		}
+		if resourceID == "" {
+			resourceID = actualResourceID
+		}
 	}
 	return &TagsLocationTagBindingIdentity{
 		parent: &TagsLocationTagBindingParent{
 			parentResource: parent,
 		},
-		id: resourceID,
+		location: location,
+		id:       resourceID,
 	}, nil
 }
 

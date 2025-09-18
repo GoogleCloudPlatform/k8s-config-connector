@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	refv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -33,7 +34,7 @@ type TagsLocationTagBindingSpec struct {
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
 	// Immutable. The TagValue of the TagBinding. Must be of the form tagValues/456.
 	// +required
-	TagValueRef *refv1alpha1.ResourceRef `json:"tagValueRef"`
+	TagValueRef *refv1beta1.TagValueRef `json:"tagValueRef"`
 
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
 	// Immutable. The location of the target resource.

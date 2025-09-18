@@ -115,29 +115,24 @@ spec:
                     - external
                   required:
                   - name
-                  - kind
                 - not:
                     anyOf:
                     - required:
                       - name
                     - required:
                       - namespace
-                    - required:
-                      - kind
                   required:
                   - external
                 properties:
                   external:
-                    description: The external name of the referenced resource
-                    type: string
-                  kind:
-                    description: Kind of the referent.
+                    description: The SQLInstance selfLink, when not managed by Config
+                      Connector.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `SQLInstance` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `SQLInstance` resource.
                     type: string
                 type: object
                 x-kubernetes-validations:
