@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -93,7 +94,7 @@ type VpcPeeringConfig struct {
 	// Required. Fully qualified name of the VPC that Database Migration Service
 	//  will peer to.
 	// +kcc:proto:field=google.cloud.clouddms.v1.VpcPeeringConfig.vpc_name
-	VpcNameRef *refs.ComputeNetworkRef `json:"vpcNameRef,omitempty"`
+	VpcNameRef *computev1beta1.ComputeNetworkRef `json:"vpcNameRef,omitempty"`
 
 	// Required. A free subnet for peering. (CIDR of /29)
 	// +kcc:proto:field=google.cloud.clouddms.v1.VpcPeeringConfig.subnet
