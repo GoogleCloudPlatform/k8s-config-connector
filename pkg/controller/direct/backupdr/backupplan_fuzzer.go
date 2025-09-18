@@ -37,7 +37,6 @@ func backupDRBackupPlanFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".backup_rules")
 	f.SpecFields.Insert(".resource_type")
-	f.SpecFields.Insert(".etag")
 	f.SpecFields.Insert(".backup_vault")
 
 	f.StatusFields.Insert(".create_time")
@@ -46,6 +45,7 @@ func backupDRBackupPlanFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".backup_vault_service_account")
 
 	f.UnimplementedFields.Insert(".name") // special field
+	f.Unimplemented_Etag()
 
 	return f
 }

@@ -665,11 +665,6 @@ func (in *DeliveryPipelineSpec) DeepCopyInto(out *DeliveryPipelineSpec) {
 		*out = new(SerialPipeline)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.Etag != nil {
-		in, out := &in.Etag, &out.Etag
-		*out = new(string)
-		**out = **in
-	}
 	if in.Suspended != nil {
 		in, out := &in.Suspended, &out.Suspended
 		*out = new(bool)

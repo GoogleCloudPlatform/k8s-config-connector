@@ -63,12 +63,6 @@ spec:
               description:
                 description: User-provided description for this VMware Engine network.
                 type: string
-              etag:
-                description: Checksum that may be sent on update and delete requests
-                  to ensure that the user-provided value is up to date before the
-                  server processes a request. The server computes checksums based
-                  on the value of other fields in the request.
-                type: string
               location:
                 description: Immutable.
                 type: string

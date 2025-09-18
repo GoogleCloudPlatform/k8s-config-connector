@@ -98,10 +98,10 @@ type BackupDRManagementServerSpec struct {
 	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.networks
 	Networks []NetworkConfig `json:"networks,omitempty"`
 
-	// Optional. Server specified ETag for the ManagementServer resource to
-	//  prevent simultaneous updates from overwiting each other.
+	// NOTYET: not supported in Config Connector reconciliation
+	// Optional. Etag for a resource.
 	// +kcc:proto:field=google.cloud.backupdr.v1.ManagementServer.etag
-	Etag *string `json:"etag,omitempty"`
+	// Etag *string `json:"etag,omitempty"`
 }
 
 // BackupDRManagementServerStatus defines the config connector machine state of BackupDRManagementServer

@@ -117,12 +117,6 @@ spec:
                     description: The namespace of a BigLakeDatabase resource.
                     type: string
                 type: object
-              etag:
-                description: The checksum of a table object computed by the server
-                  based on the value of other fields. It may be sent on update requests
-                  to ensure the client has an up-to-date value before proceeding.
-                  It is only checked for update table operations.
-                type: string
               hiveOptions:
                 description: Options of a Hive table.
                 properties:

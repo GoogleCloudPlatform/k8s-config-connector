@@ -50,11 +50,12 @@ type DataplexEntryGroupSpec struct {
 	// +kcc:proto:field=google.cloud.dataplex.v1.EntryGroup.labels
 	Labels map[string]string `json:"labels,omitempty"`
 
-	// This checksum is computed by the service, and might be sent on update and
-	//  delete requests to ensure the client has an up-to-date value before
-	//  proceeding.
+	// NOTYET: not supported in Config Connector reconciliation
+	// This checksum is computed by the server based on the value of other
+	//  fields, and may be sent on update and delete requests to ensure the
+	//  client has an up-to-date value before proceeding.
 	// +kcc:proto:field=google.cloud.dataplex.v1.EntryGroup.etag
-	Etag *string `json:"etag,omitempty"`
+	// Etag *string `json:"etag,omitempty"`
 }
 
 // DataplexEntryGroupStatus defines the config connector machine state of DataplexEntryGroup

@@ -60,11 +60,10 @@ type DeliveryPipelineSpec struct {
 	// +kcc:proto:field=google.cloud.deploy.v1.DeliveryPipeline.serial_pipeline
 	SerialPipeline *SerialPipeline `json:"serialPipeline,omitempty"`
 
-	// This checksum is computed by the server based on the value of other
-	//  fields, and may be sent on update and delete requests to ensure the
-	//  client has an up-to-date value before proceeding.
+	// NOTYET: not supported in Config Connector reconciliation
+	// Optional. The weak etag of the `DeliveryPipeline` resource.
 	// +kcc:proto:field=google.cloud.deploy.v1.DeliveryPipeline.etag
-	Etag *string `json:"etag,omitempty"`
+	// Etag *string `json:"etag,omitempty"`
 
 	// When suspended, no new releases or rollouts can be created,
 	//  but in-progress ones will complete.

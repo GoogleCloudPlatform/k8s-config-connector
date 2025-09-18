@@ -70,11 +70,6 @@ spec:
                 description: Description of the `DeliveryPipeline`. Max length is
                   255 characters.
                 type: string
-              etag:
-                description: This checksum is computed by the server based on the
-                  value of other fields, and may be sent on update and delete requests
-                  to ensure the client has an up-to-date value before proceeding.
-                type: string
               location:
                 description: Immutable. The location where the DeliveryPipeline should
                   reside.

@@ -52,7 +52,6 @@ func VertexAIFeaturestoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.Featur
 	}
 	out := &krm.VertexAIFeaturestoreSpec{}
 	// MISSING: Name
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.Labels = in.Labels
 	out.OnlineServingConfig = Featurestore_OnlineServingConfig_FromProto(mapCtx, in.GetOnlineServingConfig())
 	out.OnlineStorageTTLDays = direct.LazyPtr(in.GetOnlineStorageTtlDays())
@@ -67,7 +66,6 @@ func VertexAIFeaturestoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexA
 	}
 	out := &pb.Featurestore{}
 	// MISSING: Name
-	out.Etag = direct.ValueOf(in.Etag)
 	out.Labels = in.Labels
 	out.OnlineServingConfig = Featurestore_OnlineServingConfig_ToProto(mapCtx, in.OnlineServingConfig)
 	out.OnlineStorageTtlDays = direct.ValueOf(in.OnlineStorageTTLDays)

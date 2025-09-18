@@ -54,7 +54,6 @@ func DataplexEntryGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntryGro
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Labels = in.Labels
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
 func DataplexEntryGroupSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.DataplexEntryGroupSpec) *pb.EntryGroup {
@@ -65,6 +64,5 @@ func DataplexEntryGroupSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.D
 	out.Description = direct.ValueOf(in.Description)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Labels = in.Labels
-	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }

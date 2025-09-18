@@ -244,6 +244,7 @@ func DeliveryPipelineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.D
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.Condition = PipelineCondition_FromProto(mapCtx, in.GetCondition())
+	// MISSING: Etag
 	return out
 }
 func DeliveryPipelineObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DeliveryPipelineObservedState) *pb.DeliveryPipeline {
@@ -257,6 +258,7 @@ func DeliveryPipelineObservedState_ToProto(mapCtx *direct.MapContext, in *krm.De
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.Condition = PipelineCondition_ToProto(mapCtx, in.Condition)
+	// MISSING: Etag
 	return out
 }
 func DeliveryPipelineSpec_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPipeline) *krm.DeliveryPipelineSpec {
@@ -269,7 +271,7 @@ func DeliveryPipelineSpec_FromProto(mapCtx *direct.MapContext, in *pb.DeliveryPi
 	out.Annotations = in.Annotations
 	// MISSING: Labels
 	out.SerialPipeline = SerialPipeline_FromProto(mapCtx, in.GetSerialPipeline())
-	out.Etag = direct.LazyPtr(in.GetEtag())
+	// MISSING: Etag
 	out.Suspended = direct.LazyPtr(in.GetSuspended())
 	return out
 }
@@ -285,7 +287,7 @@ func DeliveryPipelineSpec_ToProto(mapCtx *direct.MapContext, in *krm.DeliveryPip
 	if oneof := SerialPipeline_ToProto(mapCtx, in.SerialPipeline); oneof != nil {
 		out.Pipeline = &pb.DeliveryPipeline_SerialPipeline{SerialPipeline: oneof}
 	}
-	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: Etag
 	out.Suspended = direct.ValueOf(in.Suspended)
 	return out
 }
