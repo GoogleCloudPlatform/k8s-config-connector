@@ -37,7 +37,6 @@ func backupDRManagementServerFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".type")
 	f.SpecFields.Insert(".networks")
-	f.SpecFields.Insert(".etag")
 
 	f.StatusFields.Insert(".management_uri")
 	f.StatusFields.Insert(".workforce_identity_based_management_uri")
@@ -51,6 +50,7 @@ func backupDRManagementServerFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".name") // special field
 	f.UnimplementedFields.Insert(".satisfies_pzs")
 	f.UnimplementedFields.Insert(".satisfies_pzi")
+	f.Unimplemented_Etag()
 
 	return f
 }
