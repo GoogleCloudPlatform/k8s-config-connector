@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -130,7 +130,7 @@ func (a *TableAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := BigLakeTableSpec_ToProto(mapCtx, &desired.Spec)
+	resource := BigLakeTableSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -147,7 +147,7 @@ func (a *TableAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	log.V(2).Info("successfully created Table", "name", a.id)
 
 	status := &krm.BigLakeTableStatus{}
-	status.ObservedState = BigLakeTableObservedState_FromProto(mapCtx, created)
+	status.ObservedState = BigLakeTableObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -161,7 +161,7 @@ func (a *TableAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	log.V(2).Info("updating Table", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := BigLakeTableSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desiredPb := BigLakeTableSpec_v1beta1_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -194,7 +194,7 @@ func (a *TableAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	log.V(2).Info("successfully updated Table", "name", a.id)
 
 	status := &krm.BigLakeTableStatus{}
-	status.ObservedState = BigLakeTableObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = BigLakeTableObservedState_v1beta1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -210,7 +210,7 @@ func (a *TableAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 
 	obj := &krm.BigLakeTable{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(BigLakeTableSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(BigLakeTableSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
