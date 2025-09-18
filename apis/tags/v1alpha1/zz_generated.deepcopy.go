@@ -19,6 +19,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	apisk8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -208,7 +209,7 @@ func (in *TagsLocationTagBindingSpec) DeepCopyInto(out *TagsLocationTagBindingSp
 	}
 	if in.TagValueRef != nil {
 		in, out := &in.TagValueRef, &out.TagValueRef
-		*out = new(k8sv1alpha1.ResourceRef)
+		*out = new(v1beta1.TagValueRef)
 		**out = **in
 	}
 	if in.Location != nil {

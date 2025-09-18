@@ -16,6 +16,7 @@ package resourcemanager
 
 import (
 	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -47,7 +48,7 @@ func TagsLocationTagBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagB
 		out.ParentRef = &v1alpha1.ResourceRef{External: in.GetParent()}
 	}
 	if in.GetTagValue() != "" {
-		out.TagValueRef = &v1alpha1.ResourceRef{External: in.GetTagValue()}
+		out.TagValueRef = &refv1beta1.TagValueRef{External: in.GetTagValue()}
 	}
 	// MISSING: TagValueNamespacedName
 	return out

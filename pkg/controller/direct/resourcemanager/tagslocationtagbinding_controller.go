@@ -17,33 +17,28 @@ package resourcemanager
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	gcp "cloud.google.com/go/resourcemanager/apiv3"
 	tagspb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	"google.golang.org/api/option"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 func init() {
-	registry.RegisterModel(krm.TagsLocationTagBindingGVK, NewTagBindingModel)
+	registry.RegisterModel(krm.TagsLocationTagBindingGVK, NewTagsLocationTagBindingModel)
 }
 
-func NewTagBindingModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+func NewTagsLocationTagBindingModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
 	return &modelTagsLocationTagBinding{config: *config}, nil
 }
 
@@ -53,15 +48,17 @@ type modelTagsLocationTagBinding struct {
 	config config.ControllerConfig
 }
 
-func (m *modelTagsLocationTagBinding) client(ctx context.Context) (*gcp.Client, error) {
+func (m *modelTagsLocationTagBinding) client(ctx context.Context, location string) (*gcp.TagBindingsClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
+	endpoint := fmt.Sprintf("https://%s-cloudresourcemanager.googleapis.com", location)
+	opts = append(opts, option.WithEndpoint(endpoint))
+	gcpClient, err := gcp.NewTagBindingsRESTClient(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building TagBinding client: %w", err)
+		return nil, fmt.Errorf("building TagBinding client with endpoint: %s, %w", endpoint, err)
 	}
 	return gcpClient, err
 }
@@ -72,17 +69,17 @@ func (m *modelTagsLocationTagBinding) AdapterForObject(ctx context.Context, read
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewTagBindingIdentity(ctx, reader, obj)
+	id, err := krm.NewTagsLocationTagBindingIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
 
 	// Get tags GCP client
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx, id.Location())
 	if err != nil {
 		return nil, err
 	}
-	return &TagBindingAdapter{
+	return &TagsLocationTagBindingAdapter{
 		id:        id,
 		gcpClient: gcpClient,
 		desired:   obj,
@@ -94,40 +91,49 @@ func (m *modelTagsLocationTagBinding) AdapterForURL(ctx context.Context, url str
 	return nil, nil
 }
 
-type TagBindingAdapter struct {
-	id        *krm.TagBindingIdentity
-	gcpClient *gcp.Client
+type TagsLocationTagBindingAdapter struct {
+	id        *krm.TagsLocationTagBindingIdentity
+	gcpClient *gcp.TagBindingsClient
 	desired   *krm.TagsLocationTagBinding
 	actual    *tagspb.TagBinding
 }
 
-var _ directbase.Adapter = &TagBindingAdapter{}
+var _ directbase.Adapter = &TagsLocationTagBindingAdapter{}
 
 // Find retrieves the GCP resource.
 // Return true means the object is found. This triggers Adapter `Update` call.
 // Return false means the object is not found. This triggers Adapter `Create` call.
 // Return a non-nil error requeues the requests.
-func (a *TagBindingAdapter) Find(ctx context.Context) (bool, error) {
+func (a *TagsLocationTagBindingAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting TagBinding", "name", a.id)
 
-	req := &tagspb.GetTagBindingRequest{Name: a.id.String()}
-	tagbindingpb, err := a.gcpClient.GetTagBinding(ctx, req)
-	if err != nil {
-		if direct.IsNotFound(err) {
-			return false, nil
-		}
-		return false, fmt.Errorf("getting TagBinding %q: %w", a.id, err)
+	req := &tagspb.ListTagBindingsRequest{Parent: a.id.Parent().String()}
+	tagsIterator := a.gcpClient.ListTagBindings(ctx, req)
+	if tagsIterator == nil {
+		fmt.Printf("not found any TagsLocationtagbindings for the resource, %q\n", a.id.Parent().String())
+		return false, nil
 	}
 
-	a.actual = tagbindingpb
-	return true, nil
+	// There is no more items when error is iterator.Done.
+	var err error
+	var tagbindingpb *tagspb.TagBinding
+	for tagbindingpb, err = tagsIterator.Next(); err == nil; {
+		if tagbindingpb.Name == a.id.String() {
+			a.actual = tagbindingpb
+			return true, nil
+		}
+		tagbindingpb, err = tagsIterator.Next()
+	}
+
+	return false, fmt.Errorf("getting TagsLocationTagBinding %q: %w", a.id, err)
+
 }
 
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
-func (a *TagBindingAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+func (a *TagsLocationTagBindingAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating TagBinding", "name", a.id)
+	log.V(2).Info("creating New TagsLocationTagBinding", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -138,94 +144,68 @@ func (a *TagBindingAdapter) Create(ctx context.Context, createOp *directbase.Cre
 
 	// TODO(contributor): Complete the gcp "CREATE" or "INSERT" request.
 	req := &tagspb.CreateTagBindingRequest{
-		Parent:     a.id.Parent().String(),
 		TagBinding: resource,
 	}
 	op, err := a.gcpClient.CreateTagBinding(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating TagBinding %s: %w", a.id, err)
+		return fmt.Errorf("creating TagsLocationTagBinding %s: %w", a.id, err)
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("TagBinding %s waiting creation: %w", a.id, err)
+		return fmt.Errorf("TagsLocationTagBinding %s waiting creation: %w", a.id, err)
 	}
-	log.V(2).Info("successfully created TagBinding", "name", a.id)
+	log.V(2).Info("successfully created TagsLocationTagBinding", "name", a.id)
 
 	status := &krm.TagsLocationTagBindingStatus{}
 	status.ObservedState = TagsLocationTagBindingObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
+
+	status.ExternalRef = direct.LazyPtr(created.GetName())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
-func (a *TagBindingAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+func (a *TagsLocationTagBindingAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating TagBinding", "name", a.id)
-	mapCtx := &direct.MapContext{}
+	log.V(2).Info("updating TagsLocationTagBinding", "name", a.id)
+	// mapCtx := &direct.MapContext{}
 
-	desiredPb := TagsLocationTagBindingSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
+	/* 	desiredPb := TagsLocationTagBindingSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	   	if mapCtx.Err() != nil {
+	   		return mapCtx.Err()
+	   	} */
 
-	paths := make(sets.Set[string])
-	// Option 1: This option is good for proto that has `field_mask` for output-only, immutable, required/optional.
-	// TODO(contributor): If choosing this option, remove the "Option 2" code.
-	{
-		var err error
-		paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
-		if err != nil {
-			return err
-		}
-	}
+	// paths := make(sets.Set[string])
+	/* 	// Option 1: This option is good for proto that has `field_mask` for output-only, immutable, required/optional.
+	   	// TODO(contributor): If choosing this option, remove the "Option 2" code.
+	   	{
+	   		var err error
+	   		paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	   		if err != nil {
+	   			return err
+	   		}
+	   	} */
 
 	// Option 2: manually add all mutable fields.
 	// TODO(contributor): If choosing this option, remove the "Option 1" code.
-	{
+	/* 	{
 		if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
 			paths = paths.Insert("display_name")
 		}
-	}
-
-	updated := a.actual
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
-	} else {
-		log.V(2).Info("fields need update", "name", a.id, "paths", paths)
-		updateMask := &fieldmaskpb.FieldMask{
-			Paths: sets.List(paths),
-		}
-
-		// TODO(contributor): Complete the gcp "UPDATE" or "PATCH" request.
-		req := &tagspb.UpdateTagBindingRequest{
-			Name:       a.id.String(),
-			UpdateMask: updateMask,
-			TagBinding: desiredPb,
-		}
-		op, err := a.gcpClient.UpdateTagBinding(ctx, req)
-		if err != nil {
-			return fmt.Errorf("updating TagBinding %s: %w", a.id, err)
-		}
-		updated, err = op.Wait(ctx)
-		if err != nil {
-			return fmt.Errorf("TagBinding %s waiting update: %w", a.id, err)
-		}
-		log.V(2).Info("successfully updated TagBinding", "name", a.id)
-	}
+	} */
 
 	status := &krm.TagsLocationTagBindingStatus{}
-	status.ObservedState = TagsLocationTagBindingObservedState_FromProto(mapCtx, updated)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
+	/* 	status.ObservedState = TagsLocationTagBindingObservedState_FromProto(mapCtx, updated)
+	   	if mapCtx.Err() != nil {
+	   		return mapCtx.Err()
+	   	} */
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
-func (a *TagBindingAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+func (a *TagsLocationTagBindingAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
@@ -237,8 +217,8 @@ func (a *TagBindingAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	// obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
+	// obj.Spec.Location = a.id.Parent().Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
@@ -252,25 +232,25 @@ func (a *TagBindingAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 }
 
 // Delete the resource from GCP service when the corresponding Config Connector resource is deleted.
-func (a *TagBindingAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+func (a *TagsLocationTagBindingAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting TagBinding", "name", a.id)
+	log.V(2).Info("deleting TagsLocationTagBinding", "name", a.id)
 
 	req := &tagspb.DeleteTagBindingRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteTagBinding(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent TagBinding, assuming it was already deleted", "name", a.id)
+			log.V(2).Info("skipping delete for non-existent TagsLocationTagBinding, assuming it was already deleted", "name", a.id)
 			return true, nil
 		}
-		return false, fmt.Errorf("deleting TagBinding %s: %w", a.id, err)
+		return false, fmt.Errorf("deleting TagsLocationTagBinding %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted TagBinding", "name", a.id)
+	log.V(2).Info("successfully deleted TagsLocationTagBinding", "name", a.id)
 
 	err = op.Wait(ctx)
 	if err != nil {
-		return false, fmt.Errorf("waiting delete TagBinding %s: %w", a.id, err)
+		return false, fmt.Errorf("waiting delete TagsLocationTagBinding %s: %w", a.id, err)
 	}
 	return true, nil
 }

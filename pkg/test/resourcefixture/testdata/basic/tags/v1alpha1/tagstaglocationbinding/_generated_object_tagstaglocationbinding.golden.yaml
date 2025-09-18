@@ -26,5 +26,4 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  name: tagBindings/%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Fstoragebucket-sample-${uniqueId}/tagValues/${tagValueID}
   observedGeneration: 2
