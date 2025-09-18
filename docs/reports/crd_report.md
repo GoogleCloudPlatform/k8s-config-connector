@@ -101,7 +101,7 @@
 | cloudscheduler.cnrm.cloud.google.com          | CloudSchedulerJob                               | False        | True        | False  | DCL        |
 | colab.cnrm.cloud.google.com                   | ColabRuntime                                    | True         | False       | False  | Direct     |
 | colab.cnrm.cloud.google.com                   | ColabRuntimeTemplate                            | True         | False       | False  | Direct     |
-| composer.cnrm.cloud.google.com                | ComposerEnvironment                             | True         | False       | False  | Direct     |
+| composer.cnrm.cloud.google.com                | ComposerEnvironment                             | True         | True        | False  | Direct     |
 | compute.cnrm.cloud.google.com                 | ComputeAddress                                  | False        | True        | False  | Terraform  |
 | compute.cnrm.cloud.google.com                 | ComputeAutoscaler                               | True         | False       | False  | Terraform  |
 | compute.cnrm.cloud.google.com                 | ComputeBackendBucket                            | False        | True        | False  | Terraform  |
