@@ -515,6 +515,68 @@ func ResourceRequirements_ToProto(mapCtx *direct.MapContext, in *krm.ResourceReq
 	// MISSING: StartupCPUBoost
 	return out
 }
+func RunJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.RunJobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RunJobObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	// MISSING: Generation
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	out.Creator = direct.LazyPtr(in.GetCreator())
+	out.LastModifier = direct.LazyPtr(in.GetLastModifier())
+	// MISSING: ObservedGeneration
+	if v := in.GetTerminalCondition(); v != nil {
+		out.TerminalCondition = []*krm.Condition{Condition_FromProto(mapCtx, v)}
+	}
+	// MISSING: Conditions
+	out.ExecutionCount = direct.LazyPtr(in.GetExecutionCount())
+	if v := in.GetLatestCreatedExecution(); v != nil {
+		out.LatestCreatedExecution = []*krm.ExecutionReference{ExecutionReference_FromProto(mapCtx, v)}
+	}
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	// MISSING: SatisfiesPzs
+	// MISSING: StartExecutionToken
+	// MISSING: RunExecutionToken
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func RunJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.RunJobObservedState) *pb.Job {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Job{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	// MISSING: Generation
+	// MISSING: Labels
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
+	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	out.Creator = direct.ValueOf(in.Creator)
+	out.LastModifier = direct.ValueOf(in.LastModifier)
+	// MISSING: ObservedGeneration
+	if len(in.TerminalCondition) > 0 && in.TerminalCondition[0] != nil {
+		out.TerminalCondition = Condition_ToProto(mapCtx, in.TerminalCondition[0])
+	}
+	// MISSING: Conditions
+	out.ExecutionCount = direct.ValueOf(in.ExecutionCount)
+	if len(in.LatestCreatedExecution) > 0 && in.LatestCreatedExecution[0] != nil {
+		out.LatestCreatedExecution = ExecutionReference_ToProto(mapCtx, in.LatestCreatedExecution[0])
+	}
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	// MISSING: SatisfiesPzs
+	// MISSING: StartExecutionToken
+	// MISSING: RunExecutionToken
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
 func RunJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.RunJobSpec {
 	if in == nil {
 		return nil
