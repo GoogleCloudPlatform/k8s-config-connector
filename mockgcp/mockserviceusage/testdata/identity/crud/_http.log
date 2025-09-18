@@ -17,10 +17,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
-  },
   "name": "operations/${operationID}"
 }
 
@@ -44,8 +40,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.protobuf.Empty",
-    "value": {}
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   },
   "name": "operations/${operationID}",
   "response": {
@@ -79,7 +74,7 @@ X-Xss-Protection: 0
   "done": true,
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
+    "@type": "type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity",
     "email": "service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com",
     "uniqueId": "12345678"
   }
