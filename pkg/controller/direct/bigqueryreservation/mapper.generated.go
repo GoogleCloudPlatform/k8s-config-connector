@@ -55,28 +55,6 @@ func BigQueryReservationAssignmentObservedState_ToProto(mapCtx *direct.MapContex
 	// MISSING: EnableGeminiInBigquery
 	return out
 }
-func BigQueryReservationReservationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.BigQueryReservationReservationSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigQueryReservationReservationSpec{}
-	// MISSING: Name
-	out.SlotCapacity = direct.LazyPtr(in.GetSlotCapacity())
-	out.IgnoreIdleSlots = direct.LazyPtr(in.GetIgnoreIdleSlots())
-	out.Autoscale = AutoscaleSpec_FromProto(mapCtx, in.GetAutoscale())
-	out.Concurrency = direct.LazyPtr(in.GetConcurrency())
-	// MISSING: CreationTime
-	// MISSING: UpdateTime
-	// MISSING: MultiRegionAuxiliary
-	out.Edition = direct.Enum_FromProto(mapCtx, in.GetEdition())
-	// MISSING: PrimaryLocation
-	// MISSING: SecondaryLocation
-	// MISSING: OriginalPrimaryLocation
-	// MISSING: MaxSlots
-	// MISSING: ScalingMode
-	// MISSING: ReplicationStatus
-	return out
-}
 func Reservation_ReplicationStatus_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_ReplicationStatus) *krm.Reservation_ReplicationStatus {
 	if in == nil {
 		return nil

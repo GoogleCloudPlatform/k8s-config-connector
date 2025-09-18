@@ -35,9 +35,6 @@ func BigQueryReservationReservationSpec_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: UpdateTime
 	// MISSING: MultiRegionAuxiliary
 	out.Edition = direct.Enum_ToProto[pb.Edition](mapCtx, in.Edition)
-	// MISSING: PrimaryLocation
-	// MISSING: SecondaryLocation
-	// MISSING: OriginalPrimaryLocation
 	// MISSING: MaxSlots
 	// MISSING: ScalingMode
 	// MISSING: ReplicationStatus
@@ -56,9 +53,6 @@ func BigQueryReservationReservationObservedState_ToProto(mapCtx *direct.MapConte
 	// MISSING: CreationTime
 	// MISSING: UpdateTime
 	// MISSING: MultiRegionAuxiliary
-	// MISSING: PrimaryLocation
-	// MISSING: SecondaryLocation
-	// MISSING: OriginalPrimaryLocation
 	// MISSING: MaxSlots
 	// MISSING: ScalingMode
 	// MISSING: ReplicationStatus
@@ -156,5 +150,35 @@ func Status_FromProto(mapCtx *direct.MapContext, in *statuspb.Status) *krm.Statu
 	out.Message = direct.LazyPtr(in.GetMessage())
 	// NOTYET
 	// out.Details
+	return out
+}
+
+func BigQueryReservationReservationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.BigQueryReservationReservationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryReservationReservationSpec{}
+	// MISSING: Name
+	out.SlotCapacity = direct.LazyPtr(in.GetSlotCapacity())
+	out.IgnoreIdleSlots = direct.LazyPtr(in.GetIgnoreIdleSlots())
+	out.Autoscale = AutoscaleSpec_FromProto(mapCtx, in.GetAutoscale())
+	out.Concurrency = direct.LazyPtr(in.GetConcurrency())
+	// MISSING: CreationTime
+	// MISSING: UpdateTime
+	// MISSING: MultiRegionAuxiliary
+	out.Edition = direct.Enum_FromProto(mapCtx, in.GetEdition())
+
+	out.FailOver = FailoverSpec_FromProto(mapCtx, in)
+	// MISSING: MaxSlots
+	// MISSING: ScalingMode
+	// MISSING: ReplicationStatus
+	return out
+}
+func FailoverSpec_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.FailoverSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FailoverSpec{}
+	out.SecondaryLocation = &in.SecondaryLocation
 	return out
 }

@@ -57,10 +57,9 @@ func BigqueryReservationAssignmentSpec_Assignee_FromProto(mapCtx *direct.MapCont
 }
 
 func BigQueryReservationAssignmentSpec_Assignee_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationAssignmentSpec) string {
-	if in == nil {
+	if in == nil || in.Assignee == nil {
 		return ""
 	}
-
 	if in.Assignee.ProjectRef != nil {
 		return "projects/" + in.Assignee.ProjectRef.External
 	}
