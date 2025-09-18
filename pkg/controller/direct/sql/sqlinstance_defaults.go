@@ -18,105 +18,163 @@ import (
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sql/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	api "google.golang.org/api/sqladmin/v1beta4"
 )
 
+const DefaultToGCPFieldsAnnotation = "cnrm.cloud.google.com/default-to-gcp-fields"
+
 func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance, actual *api.DatabaseInstance) {
-	if in.Spec.InstanceType == nil {
-		// GCP default InstanceType is CLOUD_SQL_INSTANCE.
-		out.InstanceType = "CLOUD_SQL_INSTANCE"
+	fieldsToDefault := make(map[string]bool)
+	if actual != nil {
+		if fieldsValue, ok := in.GetAnnotations()[DefaultToGCPFieldsAnnotation]; ok && fieldsValue != "" {
+			fields := strings.Split(fieldsValue, ",")
+			for _, field := range fields {
+				fieldsToDefault[strings.TrimSpace(field)] = true
+			}
+		}
 	}
-	if in.Spec.MaintenanceVersion == nil && actual != nil {
-		// If desired maintenanceVersion is not specified, assume user wants the actual.
-		out.MaintenanceVersion = actual.MaintenanceVersion
+
+	if in.Spec.DatabaseVersion == nil {
+		if fieldsToDefault["databaseVersion"] {
+			out.DatabaseVersion = actual.DatabaseVersion
+		}
+	}
+	if in.Spec.InstanceType == nil {
+		if fieldsToDefault["instanceType"] {
+			out.InstanceType = actual.InstanceType
+		}
+	}
+	if in.Spec.MaintenanceVersion == nil {
+		if fieldsToDefault["maintenanceVersion"] {
+			out.MaintenanceVersion = actual.MaintenanceVersion
+		}
+	}
+	if in.Spec.MasterInstanceRef == nil {
+		if fieldsToDefault["masterInstanceName"] {
+			out.MasterInstanceName = actual.MasterInstanceName
+		}
+	}
+	if in.Spec.Region == nil {
+		if fieldsToDefault["region"] {
+			out.Region = actual.Region
+		}
+	}
+
+	// Settings
+	if out.Settings == nil {
+		out.Settings = &api.Settings{}
 	}
 	if in.Spec.Settings.ActivationPolicy == nil {
-		// GCP default ActivationPolicy is ALWAYS.
-		out.Settings.ActivationPolicy = "ALWAYS"
+		if fieldsToDefault["settings.activationPolicy"] {
+			out.Settings.ActivationPolicy = actual.Settings.ActivationPolicy
+		}
 	}
 	if in.Spec.Settings.AuthorizedGaeApplications == nil {
 		// For some reason, GCP API uses empty slice instead of nil.
 		out.Settings.AuthorizedGaeApplications = make([]string, 0)
 	}
 	if in.Spec.Settings.AvailabilityType == nil {
-		// GCP default AvailailbilityType is ZONAL.
-		out.Settings.AvailabilityType = "ZONAL"
+		if fieldsToDefault["settings.availabilityType"] {
+			out.Settings.AvailabilityType = actual.Settings.AvailabilityType
+		}
 	}
-	if in.Spec.Settings.BackupConfiguration == nil && actual != nil && !actual.Settings.BackupConfiguration.Enabled {
-		// If desired backupConfiguration is not specified and actual is disabled, use the actual.
+	if in.Spec.Settings.BackupConfiguration == nil && actual != nil && actual.Settings.BackupConfiguration != nil && !actual.Settings.BackupConfiguration.Enabled {
 		out.Settings.BackupConfiguration = actual.Settings.BackupConfiguration
 	}
 	if in.Spec.Settings.BackupConfiguration != nil {
 		if in.Spec.Settings.BackupConfiguration.BackupRetentionSettings != nil && in.Spec.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit == nil {
-			// GCP default retentionUnit is COUNT.
-			out.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit = "COUNT"
+			if fieldsToDefault["settings.backupConfiguration.backupRetentionSettings.retentionUnit"] {
+				// default to gcp as user specified
+				out.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit = actual.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit
+			}
+		}
+	}
+	if in.Spec.Settings.Collation == nil {
+		if fieldsToDefault["settings.collation"] {
+			out.Settings.Collation = actual.Settings.Collation
 		}
 	}
 	if in.Spec.Settings.ConnectorEnforcement == nil {
-		// GCP default ConnectorEnforcement is NOT_REQUIRED.
-		out.Settings.ConnectorEnforcement = "NOT_REQUIRED"
+		if fieldsToDefault["settings.connectorEnforcement"] {
+			out.Settings.ConnectorEnforcement = actual.Settings.ConnectorEnforcement
+		}
+	}
+	if in.Spec.Settings.CrashSafeReplication == nil {
+		if fieldsToDefault["settings.crashSafeReplication"] {
+			out.Settings.CrashSafeReplicationEnabled = actual.Settings.CrashSafeReplicationEnabled
+		}
+	}
+	if in.Spec.Settings.DiskAutoresize == nil {
+		if fieldsToDefault["settings.diskAutoresize"] {
+			out.Settings.StorageAutoResize = actual.Settings.StorageAutoResize
+		}
+	}
+	if in.Spec.Settings.DiskAutoresizeLimit == nil {
+		if fieldsToDefault["settings.diskAutoresizeLimit"] {
+			out.Settings.StorageAutoResizeLimit = actual.Settings.StorageAutoResizeLimit
+		}
+	}
+	if in.Spec.Settings.DiskSize == nil {
+		if fieldsToDefault["settings.diskSize"] {
+			out.Settings.DataDiskSizeGb = actual.Settings.DataDiskSizeGb
+		} else if actual != nil && out.Settings.StorageAutoResize != nil && *out.Settings.StorageAutoResize {
+			out.Settings.DataDiskSizeGb = actual.Settings.DataDiskSizeGb
+		}
 	}
 	if in.Spec.Settings.DiskType == nil {
-		// GCP default DiskType is PD_SSD.
-		out.Settings.DataDiskType = "PD_SSD"
+		if fieldsToDefault["settings.diskType"] {
+			out.Settings.DataDiskType = actual.Settings.DataDiskType
+		}
+	}
+	if in.Spec.Settings.DeletionProtectionEnabled == nil {
+		if fieldsToDefault["settings.deletionProtectionEnabled"] {
+			out.Settings.DeletionProtectionEnabled = actual.Settings.DeletionProtectionEnabled
+		}
 	}
 	if in.Spec.Settings.Edition == nil {
-		// GCP default Edition is ENTERPRISE.
-		out.Settings.Edition = "ENTERPRISE"
-	}
-	if in.Spec.Settings.IpConfiguration == nil {
-		// GCP default IpConfiguration.
-		out.Settings.IpConfiguration = &api.IpConfiguration{
-			Ipv4Enabled: true,
-			SslMode:     "ALLOW_UNENCRYPTED_AND_ENCRYPTED",
+		if fieldsToDefault["settings.edition"] {
+			out.Settings.Edition = actual.Settings.Edition
 		}
 	}
 	if in.Spec.Settings.IpConfiguration != nil {
 		if in.Spec.Settings.IpConfiguration.Ipv4Enabled == nil {
-			// GCP default IpConfiguration.Ipv4Enabled is true.
-			out.Settings.IpConfiguration.Ipv4Enabled = true
+			if fieldsToDefault["settings.ipConfiguration.ipv4Enabled"] {
+				out.Settings.IpConfiguration.Ipv4Enabled = actual.Settings.IpConfiguration.Ipv4Enabled
+			}
 		}
 		if in.Spec.Settings.IpConfiguration.SslMode == nil {
-			if out.Settings.IpConfiguration.RequireSsl {
-				if strings.HasPrefix(out.DatabaseVersion, "MYSQL") || strings.HasPrefix(out.DatabaseVersion, "POSTGRES") {
-					// If RequireSsl is true, and db version is MySQL or Postgres,
-					// GCP default SslMode is TRUSTED_CLIENT_CERTIFICATE_REQUIRED.
-					out.Settings.IpConfiguration.SslMode = "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
-				} else {
-					// Otherwise, if RequireSsl is true and db version is SQLSERVER,
-					// GCP default SslMode is ENCRYPTED_ONLY.
-					out.Settings.IpConfiguration.SslMode = "ENCRYPTED_ONLY"
-				}
-			} else {
-				// If RequireSsl is false, GCP default IpConfiguration.SslMode is ALLOW_UNENCRYPTED_AND_ENCRYPTED.
-				out.Settings.IpConfiguration.SslMode = "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
+			if fieldsToDefault["settings.ipConfiguration.sslMode"] {
+				out.Settings.IpConfiguration.SslMode = actual.Settings.IpConfiguration.SslMode
 			}
 		}
 	}
-	if in.Spec.Settings.LocationPreference == nil && actual != nil {
-		// Use GCP specified locationPreference.
-		out.Settings.LocationPreference = actual.Settings.LocationPreference
+	if in.Spec.Settings.LocationPreference == nil {
+		if fieldsToDefault["settings.locationPreference"] && actual != nil {
+			out.Settings.LocationPreference = actual.Settings.LocationPreference
+		}
 	}
 	if in.Spec.Settings.PricingPlan == nil {
-		// GCP default PricingPlan is PER_USE.
-		out.Settings.PricingPlan = "PER_USE"
+		if fieldsToDefault["settings.pricingPlan"] {
+			out.Settings.PricingPlan = actual.Settings.PricingPlan
+		}
 	}
 	if in.Spec.Settings.ReplicationType == nil {
-		// GCP default ReplicationType is SYNCHRONOUS.
-		out.Settings.ReplicationType = "SYNCHRONOUS"
+		if fieldsToDefault["settings.replicationType"] {
+			out.Settings.ReplicationType = actual.Settings.ReplicationType
+		}
 	}
-	if in.Spec.Settings.DiskAutoresize == nil {
-		// GCP default StorageAutoResize is true.
-		out.Settings.StorageAutoResize = direct.PtrTo(true)
+	if in.Spec.Settings.Tier == "" {
+		if fieldsToDefault["settings.tier"] {
+			out.Settings.Tier = actual.Settings.Tier
+		}
 	}
-	if in.Spec.Settings.DiskSize == nil && actual != nil && *out.Settings.StorageAutoResize {
-		// If desired DiskSize is not specified and StorageAutoResize is enabled, use the actual disk size.
-		// Note: This must be set AFTER setting the default value for StorageAutoResize.
-		out.Settings.DataDiskSizeGb = actual.Settings.DataDiskSizeGb
+	if in.Spec.Settings.TimeZone == nil {
+		if fieldsToDefault["settings.timeZone"] {
+			out.Settings.TimeZone = actual.Settings.TimeZone
+		}
 	}
+
 	if actual != nil {
-		// GCP API requires we set the current settings version, otherwise update will fail.
 		out.Settings.SettingsVersion = actual.Settings.SettingsVersion
 	}
 }
