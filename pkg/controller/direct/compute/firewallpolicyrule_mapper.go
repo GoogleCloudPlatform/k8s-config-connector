@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package firewallpolicyrule
+package compute
 
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -34,9 +35,9 @@ func ComputeFirewallPolicyRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.F
 	out.Priority = int64(in.GetPriority())
 	// MISSING: RuleName
 	// MISSING: SecurityProfileGroup
-	out.TargetResources = ComputeFirewallPolicyRuleSpec_TargetResources_FromProto(mapCtx, in.TargetResources)
+	out.TargetResources = FirewallPolicyRuleSpec_TargetResources_FromProto(mapCtx, in.TargetResources)
 	// MISSING: TargetSecureTags
-	out.TargetServiceAccounts = ComputeFirewallPolicyRuleSpec_TargetServiceAccounts_FromProto(mapCtx, in.TargetServiceAccounts)
+	out.TargetServiceAccounts = FirewallPolicyRuleSpec_TargetServiceAccounts_FromProto(mapCtx, in.TargetServiceAccounts)
 	// MISSING: TlsInspect
 	return out
 }
@@ -54,8 +55,8 @@ func ComputeFirewallPolicyRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.Co
 	out.Priority = direct.LazyPtr(int32(in.Priority))
 	// MISSING: RuleName
 	// MISSING: SecurityProfileGroup
-	out.TargetResources = ComputeFirewallPolicyRuleSpec_TargetResources_ToProto(mapCtx, in.TargetResources)
-	out.TargetServiceAccounts = ComputeFirewallPolicyRuleSpec_TargetServiceAccounts_ToProto(mapCtx, in.TargetServiceAccounts)
+	out.TargetResources = FirewallPolicyRuleSpec_TargetResources_ToProto(mapCtx, in.TargetResources)
+	out.TargetServiceAccounts = FirewallPolicyRuleSpec_TargetServiceAccounts_ToProto(mapCtx, in.TargetServiceAccounts)
 	// MISSING: TlsInspect
 	return out
 }
@@ -124,5 +125,76 @@ func FirewallpolicyruleMatch_ToProto(mapCtx *direct.MapContext, in *krm.Firewall
 	out.SrcRegionCodes = in.SrcRegionCodes
 	// MISSING: SrcSecureTags
 	out.SrcThreatIntelligences = in.SrcThreatIntelligences
+	return out
+}
+
+func FirewallPolicyRuleSpec_TargetResources_ToProto(mapCtx *direct.MapContext, in []*refs.ComputeNetworkRef) []string {
+	if in == nil {
+		return nil
+	}
+	var out []string
+	for _, i := range in {
+		if i == nil {
+			continue
+		}
+		if i.External == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", i.Name)
+		}
+		out = append(out, i.External)
+	}
+	return out
+}
+
+func FirewallPolicyRuleSpec_TargetServiceAccounts_ToProto(mapCtx *direct.MapContext, in []*refs.IAMServiceAccountRef) []string {
+	if in == nil {
+		return nil
+	}
+	var out []string
+	for _, i := range in {
+		if i == nil {
+			continue
+		}
+		if i.External == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", i.Name)
+		}
+		out = append(out, i.External)
+	}
+	return out
+}
+
+func FirewallPolicyRuleSpec_TargetResources_FromProto(mapCtx *direct.MapContext, in []string) []*refs.ComputeNetworkRef {
+	if in == nil {
+		return nil
+	}
+	var out []*refs.ComputeNetworkRef
+	for _, i := range in {
+		out = append(out, &refs.ComputeNetworkRef{
+			External: i,
+		})
+	}
+	return out
+}
+
+func FirewallPolicyRuleSpec_TargetServiceAccounts_FromProto(mapCtx *direct.MapContext, in []string) []*refs.IAMServiceAccountRef {
+	if in == nil {
+		return nil
+	}
+	var out []*refs.IAMServiceAccountRef
+	for _, i := range in {
+		out = append(out, &refs.IAMServiceAccountRef{
+			External: i,
+		})
+	}
+	return out
+}
+
+func ComputeFirewallPolicyRuleStatus_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallPolicyRuleStatus) *pb.FirewallPolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicyRule{}
+	out.Kind = in.Kind
+	out.RuleTupleCount = direct.PtrInt64ToPtrInt32(in.RuleTupleCount)
+	// MISSING: TargetSecureTags
 	return out
 }
