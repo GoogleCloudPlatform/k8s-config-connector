@@ -70,7 +70,7 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/artifactregistry/artifactregistryrepository.md">ArtifactRegistryRepository</a></td>
 </tr>
 <tr>
-  <td><a href="https://cloud.google.com/app-hub/docs/">{{apphub_name}}</a></td>
+  <td><a href="https://cloud.google.com/app-hub/docs/">{{app_hub_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/apphub/apphubapplication.md">AppHubApplication</a></td>
 </tr>
 <tr>
