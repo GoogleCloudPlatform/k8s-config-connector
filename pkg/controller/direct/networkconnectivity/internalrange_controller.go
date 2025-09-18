@@ -69,7 +69,7 @@ func (m *internalRangeModel) AdapterForObject(ctx context.Context, reader client
 
 	// normalize reference fields
 	if obj.Spec.NetworkRef != nil {
-		if err := obj.Spec.NetworkRef.Normalize(ctx, reader, obj); err != nil {
+		if _, err := obj.Spec.NetworkRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
 			return nil, err
 		}
 	}
