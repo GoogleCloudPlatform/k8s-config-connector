@@ -17,7 +17,6 @@ package bigtable
 import (
 	"context"
 	"fmt"
-	"slices"
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
@@ -149,23 +148,8 @@ func (a *LogicalViewAdapter) Find(ctx context.Context) (bool, error) {
 func (a *LogicalViewAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating LogicalView", "name", a.id)
-
-	spec := a.desired.Spec
-
-	gcpDeletionProtection := gcp.None
-	if spec.DeletionProtection != nil {
-		if *spec.DeletionProtection {
-			gcpDeletionProtection = gcp.Protected
-		} else {
-			gcpDeletionProtection = gcp.Unprotected
-		}
-	}
-
-	logicalViewInfo := &gcp.LogicalViewInfo{
-		LogicalViewID:      a.id.ID(),
-		Query:              *spec.Query,
-		DeletionProtection: gcpDeletionProtection,
-	}
+	mapCtx := &direct.MapContext{}
+	logicalViewInfo := BigtableLogicalViewSpec_ToLogicalViewInfo(mapCtx, &a.desired.Spec, a.id)
 
 	err := a.gcpClient.CreateLogicalView(ctx, a.id.ParentInstanceIdString(), logicalViewInfo)
 	if err != nil {
@@ -213,28 +197,14 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	} else {
 		log.V(2).Info("fields need update", "name", a.id, "paths", updateMask.Paths)
 
-		desiredlogicalview := gcp.LogicalViewInfo{
-			LogicalViewID: a.id.ID(),
-			Query:         *spec.Query,
-		}
-		if slices.Contains(updateMask.Paths, "deletion_protection") {
-			// Convert bool deletion protection to gcp deletion protection enum.
-			gcpDeletionProtection := gcp.None
-			if a.desired.Spec.DeletionProtection != nil {
-				if *a.desired.Spec.DeletionProtection {
-					gcpDeletionProtection = gcp.Protected
-				} else {
-					gcpDeletionProtection = gcp.Unprotected
-				}
-			}
-			desiredlogicalview.DeletionProtection = gcpDeletionProtection
-		}
+		mapCtx := &direct.MapContext{}
+		desiredlogicalview := BigtableLogicalViewSpec_ToLogicalViewInfo(mapCtx, &a.desired.Spec, a.id)
 
 		log.V(1).Info("Updating logical view with desired logical view", desiredlogicalview)
 
-		err := a.gcpClient.UpdateLogicalView(ctx, a.id.ParentInstanceIdString(), desiredlogicalview)
+		err := a.gcpClient.UpdateLogicalView(ctx, a.id.ParentInstanceIdString(), *desiredlogicalview)
 		if err != nil {
-			return fmt.Errorf("updating LogicalView %s: %w", a.id, err)
+			return fmt.Errorf("updating L`ogicalView %s: %w", a.id, err)
 		}
 		log.V(2).Info("successfully updated LogicalView", "name", a.id)
 		status := &krm.BigtableLogicalViewStatus{}

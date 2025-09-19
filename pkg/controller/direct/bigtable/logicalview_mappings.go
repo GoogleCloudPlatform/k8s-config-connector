@@ -20,6 +20,7 @@
 package bigtable
 
 import (
+	gcp "cloud.google.com/go/bigtable"
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -48,6 +49,29 @@ func BigtableLogicalViewSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.
 
 	if in.DeletionProtection != nil {
 		out.DeletionProtection = *in.DeletionProtection
+	}
+	return out
+}
+
+func BigtableLogicalViewSpec_ToLogicalViewInfo(mapCtx *direct.MapContext, in *krmv1alpha1.BigtableLogicalViewSpec, identity *krmv1alpha1.LogicalViewIdentity) *gcp.LogicalViewInfo {
+	if in == nil {
+		return nil
+	}
+	if identity == nil {
+		return nil
+	}
+	gcpDeletionProtection := gcp.Unprotected
+	if in.DeletionProtection != nil {
+		if *in.DeletionProtection {
+			gcpDeletionProtection = gcp.Protected
+		} else {
+			gcpDeletionProtection = gcp.Unprotected
+		}
+	}
+	out := &gcp.LogicalViewInfo{
+		LogicalViewID: identity.ID(),
+		Query: *in.Query,
+		DeletionProtection : gcpDeletionProtection,
 	}
 	return out
 }
