@@ -12,14 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1alpha1
+apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1beta1
 kind: BigQueryReservationAssignment
 metadata:
   name: bqassignment-${uniqueId}
 spec:
   assignee: 
-    projectRef:
-      external: ${projectId}
+    organizationRef:
+      # external: ${TEST_ORG_ID}
+      external: organizations/${organizationID}
   reservationRef:
-    external: "projects/${projectId}/locations/us-west2/reservations/none"
+    name: bigqueryreservationreservation-${uniqueId}
   jobType: QUERY

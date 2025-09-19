@@ -21,7 +21,6 @@ package bigqueryreservation
 
 import (
 	pb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
-	krmbigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -35,17 +34,17 @@ func AutoscaleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Autoscale
 	// MISSING: MaxSlots
 	return out
 }
-func BigQueryReservationAssignmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krmbigqueryreservationv1alpha1.BigQueryReservationAssignmentObservedState {
+func BigQueryReservationAssignmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.BigQueryReservationAssignmentObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigqueryreservationv1alpha1.BigQueryReservationAssignmentObservedState{}
+	out := &krm.BigQueryReservationAssignmentObservedState{}
 	// MISSING: Name
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	// MISSING: EnableGeminiInBigquery
 	return out
 }
-func BigQueryReservationAssignmentObservedState_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1alpha1.BigQueryReservationAssignmentObservedState) *pb.Assignment {
+func BigQueryReservationAssignmentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationAssignmentObservedState) *pb.Assignment {
 	if in == nil {
 		return nil
 	}

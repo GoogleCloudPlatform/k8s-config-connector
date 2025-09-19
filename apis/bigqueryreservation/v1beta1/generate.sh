@@ -24,7 +24,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.cloud.bigquery.reservation.v1 \
     --api-version "bigqueryreservation.cnrm.cloud.google.com/v1beta1" \
-    --resource BigQueryReservationReservation:Reservation
+    --resource BigQueryReservationReservation:Reservation \
+    --resource BigQueryReservationAssignment:Assignment
 
 go run . generate-mapper \
     --service google.cloud.bigquery.reservation.v1 \

@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	"context"
 	"fmt"
 	"strings"
 
-	reservationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -75,7 +74,7 @@ func NewAssignmentIdentity(ctx context.Context, reader client.Reader, obj *BigQu
 		}
 	}
 
-	reservationParent, reservationID, err := reservationv1beta1.ParseReservationExternal(name)
+	reservationParent, reservationID, err := ParseReservationExternal(name)
 	if err != nil {
 		return nil, err
 	}

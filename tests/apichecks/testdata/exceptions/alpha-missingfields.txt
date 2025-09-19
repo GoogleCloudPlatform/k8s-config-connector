@@ -408,7 +408,6 @@
 [missing_field] crd=bigquerydatasetaccesses.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.view.datasetId" is not set in unstructured objects
 [missing_field] crd=bigquerydatasetaccesses.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.view.projectId" is not set in unstructured objects
 [missing_field] crd=bigquerydatasetaccesses.bigquery.cnrm.cloud.google.com version=v1alpha1: field ".spec.view.tableId" is not set in unstructured objects
-[missing_field] crd=bigqueryreservationassignments.bigqueryreservation.cnrm.cloud.google.com version=v1alpha1: field ".spec.assignee.folderRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=bigqueryreservationcapacitycommitments.bigqueryreservation.cnrm.cloud.google.com version=v1alpha1: field ".spec.enforceSingleAdminProjectPerOrg" is not set in unstructured objects
 [missing_field] crd=bigqueryreservationcapacitycommitments.bigqueryreservation.cnrm.cloud.google.com version=v1alpha1: field ".spec.renewalPlan" is not set in unstructured objects
 [missing_field] crd=bigtableauthorizedviews.bigtable.cnrm.cloud.google.com version=v1alpha1: field ".spec.deletionProtection" is not set in unstructured objects
