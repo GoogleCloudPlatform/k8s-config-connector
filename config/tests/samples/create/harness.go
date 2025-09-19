@@ -903,6 +903,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableInstance"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableTable"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableLogicalView"}:
+			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableMaterializedView"}:
 			case schema.GroupKind{Group: "bigtable.cnrm.cloud.google.com", Kind: "BigtableGCPolicy"}:
 
 			case schema.GroupKind{Group: "cloudfunctions.cnrm.cloud.google.com", Kind: "CloudFunctionsFunction"}:
