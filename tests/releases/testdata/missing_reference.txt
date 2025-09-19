@@ -2,6 +2,7 @@ asset.cnrm.cloud.google.com/v1beta1, Kind=AssetFeed
 asset.cnrm.cloud.google.com/v1beta1, Kind=AssetSavedQuery
 bigquery.cnrm.cloud.google.com/v1beta1, Kind=BigQueryRoutine
 bigqueryreservation.cnrm.cloud.google.com/v1beta1, Kind=BigQueryReservationReservation
+clouddeploy.cnrm.cloud.google.com/v1beta1, Kind=CloudDeployDeliveryPipeline
 cloudquota.cnrm.cloud.google.com/v1beta1, Kind=APIQuotaPreference
 composer.cnrm.cloud.google.com/v1beta1, Kind=ComposerEnvironment
 datacatalog.cnrm.cloud.google.com/v1beta1, Kind=DataCatalogPolicyTag

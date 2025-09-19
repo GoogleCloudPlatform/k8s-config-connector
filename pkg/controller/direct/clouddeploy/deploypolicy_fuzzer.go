@@ -29,8 +29,8 @@ func init() {
 
 func deployDeployPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.DeployPolicy{},
-		DeployPolicySpec_v1alpha1_FromProto, DeployPolicySpec_v1alpha1_ToProto,
-		DeployPolicyObservedState_v1alpha1_FromProto, DeployPolicyObservedState_v1alpha1_ToProto,
+		DeployPolicySpec_FromProto, DeployPolicySpec_ToProto,
+		DeployPolicyObservedState_FromProto, DeployPolicyObservedState_ToProto,
 	)
 
 	f.SpecFields.Insert(".description")

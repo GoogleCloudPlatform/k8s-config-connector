@@ -27,7 +27,6 @@ go run . generate-types \
   --resource CloudDeployDeliveryPipeline:DeliveryPipeline
 
 go run . generate-mapper \
-  --multiversion \
   --service google.cloud.deploy.v1 \
   --api-version clouddeploy.cnrm.cloud.google.com/v1beta1
 

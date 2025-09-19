@@ -29,8 +29,8 @@ func init() {
 
 func customTargetTypeFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.CustomTargetType{},
-		CustomTargetTypeSpec_v1alpha1_FromProto, CustomTargetTypeSpec_v1alpha1_ToProto,
-		CustomTargetTypeObservedState_v1alpha1_FromProto, CustomTargetTypeObservedState_v1alpha1_ToProto,
+		CustomTargetTypeSpec_FromProto, CustomTargetTypeSpec_ToProto,
+		CustomTargetTypeObservedState_FromProto, CustomTargetTypeObservedState_ToProto,
 	)
 
 	f.SpecFields.Insert(".description")
