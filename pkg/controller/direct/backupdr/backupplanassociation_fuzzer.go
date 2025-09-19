@@ -45,8 +45,11 @@ func backupDRBackupPlanAssociationFuzzer() fuzztesting.KRMFuzzer {
 
 	f.UnimplementedFields.Insert(".name")
 
-	// the conversion of `spec.resource` relies on correctly setting `.spec.resourceType` to a magic string "compute.googleapis.com/Instance"
-	f.UnimplementedFields.Insert(".resource")
+	f.Unimplemented_NotYetTriaged(".backup_plan_revision_name")
+	f.Unimplemented_NotYetTriaged(".backup_plan_revision_id")
+	f.Unimplemented_NotYetTriaged(".backup_plan_revision_name")
+	f.Unimplemented_NotYetTriaged(".cloud_sql_instance_backup_plan_association_properties")
+	f.Unimplemented_NotYetTriaged(".resource_properties")
 
 	return f
 }

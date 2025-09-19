@@ -45,6 +45,7 @@ func backupDRBackupPlanFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".backup_vault_service_account")
 
 	f.UnimplementedFields.Insert(".name") // special field
+	f.UnimplementedFields.Insert(".supported_resource_types")
 	f.Unimplemented_Etag()
 
 	return f
