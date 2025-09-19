@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"sort"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
@@ -39,6 +40,8 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -306,14 +309,68 @@ type WebhookManifest struct {
 	OtherObjects []client.Object
 }
 
-func (m *WebhookManifest) ToYAML() (string, error) {
-	var allObjs []client.Object
-	allObjs = append(allObjs, m.Service)
-	allObjs = append(allObjs, m.OtherObjects...)
+// Normalize sorts the webhook manifest slices so that it is reproducible.
+func (m *WebhookManifest) Normalize() {
+	for _, obj := range m.OtherObjects {
+		switch obj := obj.(type) {
+		case *admissionregistration.MutatingWebhookConfiguration:
+			obj.Webhooks = normalizeMutatingWebhooks(obj.Webhooks)
+		case *admissionregistration.ValidatingWebhookConfiguration:
+			obj.Webhooks = normalizeValidatingWebhooks(obj.Webhooks)
+		default:
+			// only MutatingWebhookConfiguration and ValidatingWebhookConfiguration need normalization
+			continue
+		}
+	}
+}
 
+// normalizeMutatingWebhooks sorts the mutating webhooks so that they are reproducible.
+func normalizeMutatingWebhooks(webhooks []admissionregistration.MutatingWebhook) []admissionregistration.MutatingWebhook {
+	sort.Slice(webhooks, func(i, j int) bool {
+		return webhooks[i].Name < webhooks[j].Name
+	})
+
+	for _, webhook := range webhooks {
+		normalizeWebhookRules(webhook.Rules)
+	}
+
+	return webhooks
+}
+
+// normalizeValidatingWebhooks sorts the validating webhooks so that they are reproducible.
+func normalizeValidatingWebhooks(webhooks []admissionregistration.ValidatingWebhook) []admissionregistration.ValidatingWebhook {
+	sort.Slice(webhooks, func(i, j int) bool {
+		return webhooks[i].Name < webhooks[j].Name
+	})
+
+	for _, webhook := range webhooks {
+		normalizeWebhookRules(webhook.Rules)
+	}
+
+	return webhooks
+}
+
+// normalizeWebhookRules sorts the rules in a webhook so that they are reproducible.
+func normalizeWebhookRules(rules []admissionregistration.RuleWithOperations) {
+	for _, rule := range rules {
+		rule.APIGroups = sort.StringSlice(rule.APIGroups)
+		rule.APIVersions = sort.StringSlice(rule.APIVersions)
+		rule.Resources = sort.StringSlice(rule.Resources)
+	}
+
+	sortKey := func(r admissionregistration.RuleWithOperations) string {
+		return strings.Join(r.APIGroups, ",") + "|" + strings.Join(r.APIVersions, ",") + "|" + strings.Join(r.Resources, ",")
+	}
+	sort.Slice(rules, func(i, j int) bool {
+		return sortKey(rules[i]) < sortKey(rules[j])
+	})
+}
+
+// ObjectsToYAML converts a list of client.Objects to a YAML string.
+func ObjectsToYAML(objects []*unstructured.Unstructured) (string, error) {
 	var buffer strings.Builder
 
-	for i, obj := range allObjs {
+	for i, obj := range objects {
 		if i != 0 {
 			buffer.WriteString("\n---\n")
 		}
@@ -327,6 +384,56 @@ func (m *WebhookManifest) ToYAML() (string, error) {
 	return buffer.String(), nil
 }
 
+// ToYAML converts the webhook manifest to a YAML string.
+func (m *WebhookManifest) ToYAML() (string, error) {
+	allObjects, err := m.ToUnstructured()
+	if err != nil {
+		return "", err
+	}
+
+	return ObjectsToYAML(allObjects)
+}
+
+// ToUnstructured converts the webhook manifest to a list of unstructured objects.
+// It also performs some cleanup on the objects to make them suitable for applying to kube.
+func (m *WebhookManifest) ToUnstructured() ([]*unstructured.Unstructured, error) {
+	var allObjs []client.Object
+	allObjs = append(allObjs, m.Service)
+	allObjs = append(allObjs, m.OtherObjects...)
+
+	var out []*unstructured.Unstructured
+
+	for _, obj := range allObjs {
+		u, ok := obj.(*unstructured.Unstructured)
+		if !ok {
+			m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+			if err != nil {
+				return nil, fmt.Errorf("error converting object to unstructured: %w", err)
+			}
+			u = &unstructured.Unstructured{Object: m}
+		}
+
+		// Ensure the GVK is set on the unstructured object.
+		if u.GroupVersionKind().Empty() {
+			switch obj.(type) {
+			case *corev1.Service:
+				u.SetGroupVersionKind(corev1.SchemeGroupVersion.WithKind("Service"))
+			default:
+				return nil, fmt.Errorf("object has no GroupVersionKind set: %+v", obj)
+			}
+		}
+
+		// Remove some fields that should not be set in the manifest.
+		unstructured.RemoveNestedField(u.Object, "metadata", "creationTimestamp")
+		unstructured.RemoveNestedField(u.Object, "status")
+
+		out = append(out, u)
+	}
+
+	return out, nil
+}
+
+// GenerateWebhookManifests generates the WebhookManifest for a webhook (but does not apply it)
 func BuildWebhookManifest(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName string, webhookConfigs []Config) (*WebhookManifest, error) {
 	validatingWebhookCfg, mutatingWebhookCfg := GenerateWebhookManifests(
 		validatingWebhookConfigurationName,
@@ -348,10 +455,12 @@ func BuildWebhookManifest(validatingWebhookConfigurationName, mutatingWebhookCon
 			k8s.KCCSystemLabel:    "true",
 		})
 
-	return &WebhookManifest{
+	m := &WebhookManifest{
 		Service:      svc,
 		OtherObjects: manifests,
-	}, nil
+	}
+	m.Normalize()
+	return m, nil
 }
 
 func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName string,
