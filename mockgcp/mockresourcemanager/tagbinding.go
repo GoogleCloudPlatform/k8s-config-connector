@@ -71,6 +71,7 @@ func (s *TagBindingsServer) CreateTagBinding(ctx context.Context, req *pb.Create
 	}
 
 	obj.Name = fmt.Sprintf("tagBindings/%s/tagValues/%s", url.PathEscape(obj.Parent), strings.TrimPrefix(tagValue.Name, "tagValues/"))
+	fmt.Printf("+++++++ Create TagBinding name:+++++++++++++ %s", obj.Name)
 
 	fqn := obj.Name
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -85,37 +86,24 @@ func (s *TagBindingsServer) DeleteTagBinding(ctx context.Context, req *pb.Delete
 
 	name := req.GetName()
 
-	// The name is of the form `tagBindings/{parent}/tagValues/{tag_value}`
-	// The parent part of the name has been URL-decoded by the framework, so slashes are represented as `/` not `%2F`.
-	// We need to parse this carefully, re-encode the parent, and then look it up.
-	if !strings.HasPrefix(name, "tagBindings/") {
-		return nil, status.Errorf(codes.InvalidArgument, "invalid name, expected prefix 'tagBindings/': %q", name)
-	}
-	// This gives us "{parent}/tagValues/{tag_value}"
-	suffix := strings.TrimPrefix(name, "tagBindings/")
-
-	parts := strings.Split(suffix, "/tagValues/")
-	if len(parts) != 2 {
-		return nil, status.Errorf(codes.InvalidArgument, "invalid name, expected '/tagValues/' separator: %q", name)
-	}
-
-	parent := parts[0]
-	tagValueID := parts[1]
-
-	// We need to normalize the parent to match the key used during creation.
-	// For projects, this turns the project ID into a project number.
-	// For other resources, it should be a pass-through.
-	if strings.Contains(parent, "//cloudresourcemanager.googleapis.com/projects/") {
-		normalizedParent, err := s.normalizeParent(ctx, parent)
-		if err != nil {
-			return nil, err
+	tokens := strings.Split(name, "/")
+	if len(tokens) == 4 && tokens[0] == "tagBindings" && tokens[2] == "tagValues" {
+		// We need to normalize the parent to match the key used during creation.
+		// For projects, this turns the project ID into a project number.
+		// For other resources, it should be a pass-through.
+		if strings.Contains(name, "//cloudresourcemanager.googleapis.com/projects/") {
+			parent, err := url.PathUnescape(tokens[1])
+			if err != nil {
+				return nil, status.Errorf(codes.InvalidArgument, "invalid name %q", name)
+			}
+			normalizedParent, err := s.normalizeParent(ctx, parent)
+			if err != nil {
+				return nil, err
+			}
+			tokens[1] = url.PathEscape(normalizedParent)
+			name = strings.Join(tokens, "/")
 		}
-		parent = normalizedParent
 	}
-
-	// Reconstruct the name with the *escaped* normalized parent to find it in storage.
-	// This is the critical step to match the format used in CreateTagBinding.
-	name = fmt.Sprintf("tagBindings/%s/tagValues/%s", url.PathEscape(parent), tagValueID)
 
 	if err := s.storage.Delete(ctx, name, deleted); err != nil {
 		return nil, err
