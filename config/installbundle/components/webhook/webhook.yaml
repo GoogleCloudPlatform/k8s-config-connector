@@ -33,6 +33,7 @@ spec:
       labels:
         cnrm.cloud.google.com/component: cnrm-webhook-manager
       annotations:
+        cnrm.cloud.google.com/inject-ca:  cnrm-validating-webhook.cnrm-system
         cnrm.cloud.google.com/certificate-revision: "replaced-by-operator" # This will be replaced by the operator, to force a rolling-update of the pods during CA rotation
     spec:
       serviceAccountName: webhook-manager
@@ -48,6 +49,8 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
+          - name: WEBHOOK_CERT_DIR
+            value: /tls
         name: webhook
         ports:
         # Port used for readiness probe
@@ -73,5 +76,13 @@ spec:
             port: 23232
           initialDelaySeconds: 7
           periodSeconds: 3
+        volumeMounts:
+        - mountPath: /tls
+          name: tls
+          readOnly: true
+      volumes:
+      - name: tls
+        secret:
+          secretName: webhook-cert-cnrm-validating-webhook
       enableServiceLinks: false
       terminationGracePeriodSeconds: 10

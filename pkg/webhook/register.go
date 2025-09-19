@@ -454,49 +454,56 @@ func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationNa
 	webhookConfigs []Config, mgr manager.Manager, nocacheClient client.Client) error {
 	ctx := context.TODO()
 
-	manifest, err := BuildWebhookManifest(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName, webhookConfigs)
-	if err != nil {
-		return fmt.Errorf("error building webhook manifests: %w", err)
-	}
-
-	writerOpts := writer.SecretCertWriterOptions{
-		Client: nocacheClient,
-		Secret: &types.NamespacedName{
-			Name:      formatSecretName(serviceName),
-			Namespace: k8s.SystemNamespace,
-		},
-	}
-	certWriter, err := writer.NewSecretCertWriter(writerOpts)
-	if err != nil {
-		return fmt.Errorf("error creating secret cert writer: %w", err)
-	}
-	certClient, err := certclient.New(certclient.Options{
-		WebhookManifests: manifest.OtherObjects,
-		Service:          manifest.Service,
-		KubeClient:       nocacheClient,
-		CertWriter:       certWriter,
-	})
-	if err != nil {
-		return fmt.Errorf("error creating cert client: %w", err)
-	}
-	// Do an initial call so we can guarantee the webhook configuration resources are
-	// registered in the API server before marking this container as ready.
-	if err := certClient.RefreshCertsAndInstall(ctx); err != nil {
-		return fmt.Errorf("error refreshing certs and installing manifests: %w", err)
-	}
-	if err := mgr.Add(certClient); err != nil {
-		return fmt.Errorf("error registering cert client with manager: %w", err)
-	}
-	if err := persistCertificatesToDisk(certWriter, manifest.Service); err != nil {
-		return err
-	}
-	// Set up the HTTP server
-	s := webhook.NewServer(webhook.Options{
-		CertDir:  certDir,
+	webhookOptions := webhook.Options{
+		CertDir:  defaultCertDir,
 		CertName: writer.ServerCertName,
 		KeyName:  writer.ServerKeyName,
 		Port:     ServicePort,
-	})
+	}
+
+	if os.Getenv("WEBHOOK_CERT_DIR") != "" {
+		webhookOptions.CertDir = os.Getenv("WEBHOOK_CERT_DIR")
+	} else {
+		manifest, err := BuildWebhookManifest(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName, webhookConfigs)
+		if err != nil {
+			return fmt.Errorf("error building webhook manifests: %w", err)
+		}
+
+		writerOpts := writer.SecretCertWriterOptions{
+			Client: nocacheClient,
+			Secret: &types.NamespacedName{
+				Name:      formatSecretName(serviceName),
+				Namespace: k8s.SystemNamespace,
+			},
+		}
+		certWriter, err := writer.NewSecretCertWriter(writerOpts)
+		if err != nil {
+			return fmt.Errorf("error creating secret cert writer: %w", err)
+		}
+		certClient, err := certclient.New(certclient.Options{
+			WebhookManifests: manifest.OtherObjects,
+			Service:          manifest.Service,
+			KubeClient:       nocacheClient,
+			CertWriter:       certWriter,
+		})
+		if err != nil {
+			return fmt.Errorf("error creating cert client: %w", err)
+		}
+		// Do an initial call so we can guarantee the webhook configuration resources are
+		// registered in the API server before marking this container as ready.
+		if err := certClient.RefreshCertsAndInstall(ctx); err != nil {
+			return fmt.Errorf("error refreshing certs and installing manifests: %w", err)
+		}
+		if err := mgr.Add(certClient); err != nil {
+			return fmt.Errorf("error registering cert client with manager: %w", err)
+		}
+		if err := persistCertificatesToDisk(certWriter, manifest.Service); err != nil {
+			return err
+		}
+	}
+
+	// Set up the HTTP server
+	s := webhook.NewServer(webhookOptions)
 	for _, whCfg := range webhookConfigs {
 		handler := whCfg.HandlerFunc(mgr)
 		s.Register(whCfg.Path, &admission.Webhook{Handler: handler})
@@ -522,7 +529,7 @@ func persistCertificatesToDisk(certWriter writer.CertWriter, svc *corev1.Service
 		return fmt.Errorf("error ensuring certificate: %w", err)
 	}
 
-	return writeCertificates(artifacts, certDir, writer.ServerCertName, writer.ServerKeyName)
+	return writeCertificates(artifacts, defaultCertDir, writer.ServerCertName, writer.ServerKeyName)
 }
 
 func writeCertificates(artifacts *generator.Artifacts, dir, certName, keyName string) error {

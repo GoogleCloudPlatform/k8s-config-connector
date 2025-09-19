@@ -26,6 +26,6 @@ const (
 	// Since the TargetPort is effectively being used as a public port,
 	// standardizing public ports removes ambiguity.
 	ServicePort    = 443
-	certDir        = "/tmp/cert"
+	defaultCertDir = "/tmp/cert"
 	certSecretName = "cnrm-webhook-cert"
 )
