@@ -146,7 +146,7 @@ func LogsPanel_ResourceNames_FromProto(mapCtx *direct.MapContext, in []string) [
 				External: v,
 			})
 		} else {
-			mapCtx.Errorf("resourceName %q was not recognized", v)
+			mapCtx.Errorf("logsPanel resourceName %q was not recognized", v)
 		}
 	}
 	return out
