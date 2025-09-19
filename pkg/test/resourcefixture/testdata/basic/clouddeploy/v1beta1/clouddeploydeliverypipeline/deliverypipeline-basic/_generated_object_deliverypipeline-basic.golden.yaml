@@ -1,4 +1,4 @@
-apiVersion: clouddeploy.cnrm.cloud.google.com/v1alpha1
+apiVersion: clouddeploy.cnrm.cloud.google.com/v1beta1
 kind: CloudDeployDeliveryPipeline
 metadata:
   finalizers:

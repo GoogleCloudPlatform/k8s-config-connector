@@ -87,7 +87,7 @@
 | cloudasset.cnrm.cloud.google.com              | CloudAssetProjectFeed                           | True         | False       | False  | Terraform  |
 | cloudbuild.cnrm.cloud.google.com              | CloudBuildTrigger                               | False        | True        | False  | Terraform  |
 | cloudbuild.cnrm.cloud.google.com              | CloudBuildWorkerPool                            | True         | True        | False  | Direct     |
-| clouddeploy.cnrm.cloud.google.com             | CloudDeployDeliveryPipeline                     | True         | False       | False  | Direct     |
+| clouddeploy.cnrm.cloud.google.com             | CloudDeployDeliveryPipeline                     | True         | True        | False  | Direct     |
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployDeployPolicy                         | True         | False       | False  | Direct     |
 | clouddms.cnrm.cloud.google.com                | CloudDMSConversionWorkspace                     | True         | False       | False  | Direct     |
 | clouddms.cnrm.cloud.google.com                | CloudDMSPrivateConnection                       | True         | False       | False  | Direct     |
