@@ -92,6 +92,10 @@ type Experiments struct {
 	// resource kind within this namespace, overriding the system default.
 	// +optional
 	ControllerOverrides map[string]k8scontrollertype.ReconcilerType `json:"controllerOverrides,omitempty"`
+
+	// ResourceNameLabelMetrics enables metrics reporting with resource name labels.
+	// +optional
+	ResourceNameLabelMetrics *bool `json:"resourceNameLabelMetrics,omitempty"`
 }
 
 type StateIntoSpecValue string

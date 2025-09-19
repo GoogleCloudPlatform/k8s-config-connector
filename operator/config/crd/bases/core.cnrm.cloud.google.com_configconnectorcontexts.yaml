@@ -74,6 +74,10 @@ spec:
                       ControllerOverrides allows specifying which controller to use for a given
                       resource kind within this namespace, overriding the system default.
                     type: object
+                  resourceNameLabelMetrics:
+                    description: ResourceNameLabelMetrics enables metrics reporting
+                      with resource name labels.
+                    type: boolean
                 type: object
               googleServiceAccount:
                 description: |-
