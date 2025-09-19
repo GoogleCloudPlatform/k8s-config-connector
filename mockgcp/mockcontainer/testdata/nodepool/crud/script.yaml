@@ -1,0 +1,20 @@
+# This is a script for testing gcloud container node-pools commands.
+# It creates a cluster, then a node-pool, describes it, lists node-pools, deletes the node-pool, and finally deletes the cluster.
+
+# Create a GKE cluster as a dependency
+- exec: gcloud container clusters create test-cluster-${uniqueId} --project=${projectId} --zone=us-central1-a --node-locations=us-central1-a --quiet
+
+# Create the node pool
+- exec: gcloud container node-pools create test-nodepool-${uniqueId} --cluster=test-cluster-${uniqueId} --project=${projectId} --zone=us-central1-a
+
+# Describe the node pool
+- exec: gcloud container node-pools describe test-nodepool-${uniqueId} --cluster=test-cluster-${uniqueId} --project=${projectId} --zone=us-central1-a
+
+# List node pools
+- exec: gcloud container node-pools list --cluster=test-cluster-${uniqueId} --project=${projectId} --zone=us-central1-a
+
+# Delete the node pool
+- exec: gcloud container node-pools delete test-nodepool-${uniqueId} --cluster=test-cluster-${uniqueId} --project=${projectId} --zone=us-central1-a --quiet
+
+# Delete the GKE cluster
+- exec: gcloud container clusters delete test-cluster-${uniqueId} --project=${projectId} --zone=us-central1-a --quiet
