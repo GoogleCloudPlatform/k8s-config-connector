@@ -52,13 +52,13 @@ func (s *NetworkSecurityServer) CreateAuthorizationPolicy(ctx context.Context, r
 	now := time.Now()
 	lroMetadata := &pb.OperationMetadata{
 		CreateTime:            timestamppb.New(now),
-		EndTime:               timestamppb.New(now),
 		RequestedCancellation: false,
 		Target:                name,
 		Verb:                  "create",
 		ApiVersion:            "v1beta1",
 	}
 	return s.operations.StartLRO(ctx, req.Parent, lroMetadata, func() (protoreflect.ProtoMessage, error) {
+		lroMetadata.EndTime = timestamppb.New(time.Now())
 		result := proto.Clone(obj).(*pb.AuthorizationPolicy)
 		return result, nil
 	})
@@ -115,13 +115,13 @@ func (s *NetworkSecurityServer) UpdateAuthorizationPolicy(ctx context.Context, r
 	now := time.Now()
 	lroMetadata := &pb.OperationMetadata{
 		CreateTime:            timestamppb.New(now),
-		EndTime:               timestamppb.New(now),
 		RequestedCancellation: false,
 		Target:                name.String(),
 		Verb:                  "update",
 		ApiVersion:            "v1beta1",
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (protoreflect.ProtoMessage, error) {
+		lroMetadata.EndTime = timestamppb.New(time.Now())
 		result := proto.Clone(updated).(*pb.AuthorizationPolicy)
 		return result, nil
 	})
@@ -139,7 +139,6 @@ func (s *NetworkSecurityServer) DeleteAuthorizationPolicy(ctx context.Context, r
 	now := time.Now()
 	lroMetadata := &pb.OperationMetadata{
 		CreateTime:            timestamppb.New(now),
-		EndTime:               timestamppb.New(now),
 		RequestedCancellation: false,
 		Target:                name.String(),
 		Verb:                  "delete",
@@ -147,6 +146,7 @@ func (s *NetworkSecurityServer) DeleteAuthorizationPolicy(ctx context.Context, r
 	}
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (protoreflect.ProtoMessage, error) {
+		lroMetadata.EndTime = timestamppb.New(time.Now())
 		return &emptypb.Empty{}, nil
 	})
 }
