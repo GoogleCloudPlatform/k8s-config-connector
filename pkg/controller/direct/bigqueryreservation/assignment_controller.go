@@ -163,7 +163,7 @@ func (a *AssignmentAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	assignment := BigqueryReservationAssignmentSpec_ToProto(mapCtx, &desired.Spec)
+	assignment := BigQueryReservationAssignmentSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -181,7 +181,7 @@ func (a *AssignmentAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	log.V(2).Info("successfully created Assignment", "name", a.id.String())
 
 	status := &krm.BigQueryReservationAssignmentStatus{}
-	status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, created)
+	status.ObservedState = BigQueryReservationAssignmentObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -213,7 +213,7 @@ func (a *AssignmentAdapter) moveAssignment(ctx context.Context, updateOp *direct
 	// Rebuild the externalRef
 	status.ExternalRef = direct.LazyPtr(updated.GetName())
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = BigQueryReservationAssignmentObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -227,7 +227,7 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 	log.V(2).Info("updating assignment", "name", a.id.String())
 
 	mapCtx := &direct.MapContext{}
-	desiredPb := BigqueryReservationAssignmentSpec_ToProto(mapCtx, desiredSpec)
+	desiredPb := BigQueryReservationAssignmentSpec_ToProto(mapCtx, desiredSpec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -239,7 +239,7 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		status := &krm.BigQueryReservationAssignmentStatus{}
-		status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, a.actual)
+		status.ObservedState = BigQueryReservationAssignmentObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -261,7 +261,7 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 	log.V(2).Info("successfully updated assignment", "name", a.id.String())
 
 	status := &krm.BigQueryReservationAssignmentStatus{}
-	status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = BigQueryReservationAssignmentObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -299,7 +299,7 @@ func (a *AssignmentAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 
 	obj := &krm.BigQueryReservationAssignment{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(BigqueryReservationAssignmentSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(BigQueryReservationAssignmentSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
