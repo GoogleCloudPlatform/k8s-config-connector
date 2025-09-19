@@ -133,7 +133,7 @@ func (a *ProcessorVersionAdapter) Create(ctx context.Context, createOp *directba
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := DocumentAIProcessorVersionSpec_ToProto(mapCtx, &desired.Spec)
+	resource := DocumentAIProcessorVersionSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -164,7 +164,7 @@ func (a *ProcessorVersionAdapter) Create(ctx context.Context, createOp *directba
 	log.V(2).Info("successfully created ProcessorVersion", "name", a.id)
 
 	status := &krm.DocumentAIProcessorVersionStatus{}
-	status.ObservedState = DocumentAIProcessorVersionObservedState_FromProto(mapCtx, created)
+	status.ObservedState = DocumentAIProcessorVersionObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -179,7 +179,7 @@ func (a *ProcessorVersionAdapter) Update(ctx context.Context, updateOp *directba
 	mapCtx := &direct.MapContext{}
 	updated := a.actual
 	status := &krm.DocumentAIProcessorVersionStatus{}
-	status.ObservedState = DocumentAIProcessorVersionObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = DocumentAIProcessorVersionObservedState_v1alpha1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -197,7 +197,7 @@ func (a *ProcessorVersionAdapter) Export(ctx context.Context) (*unstructured.Uns
 
 	obj := &krm.DocumentAIProcessorVersion{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(DocumentAIProcessorVersionSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(DocumentAIProcessorVersionSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
