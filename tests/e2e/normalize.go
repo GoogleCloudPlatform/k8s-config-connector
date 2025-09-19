@@ -706,6 +706,10 @@ func (o *objectWalker) ReplaceStringValue(oldValue string, newValue string) {
 	})
 }
 
+func (o *objectWalker) TransformString(fn func(path string, oldValue string) string) {
+	o.stringTransforms = append(o.stringTransforms, fn)
+}
+
 func (o *objectWalker) RemovePath(path string) {
 	o.removePaths.Insert(path)
 }

@@ -16,6 +16,7 @@ package mockcontainer
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"google.golang.org/grpc/codes"
@@ -26,6 +27,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 func (s *ClusterManagerV1) GetNodePool(ctx context.Context, req *pb.GetNodePoolRequest) (*pb.NodePool, error) {
@@ -42,6 +44,24 @@ func (s *ClusterManagerV1) GetNodePool(ctx context.Context, req *pb.GetNodePoolR
 	}
 
 	return obj, nil
+}
+
+func (s *ClusterManagerV1) ListNodePools(ctx context.Context, req *pb.ListNodePoolsRequest) (*pb.ListNodePoolsResponse, error) {
+	response := &pb.ListNodePoolsResponse{}
+
+	prefix := req.GetParent() + "/nodePools/"
+	modelKind := (&pb.NodePool{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, modelKind, storage.ListOptions{
+		Prefix: prefix,
+	}, func(obj proto.Message) error {
+		model := obj.(*pb.NodePool)
+		response.NodePools = append(response.NodePools, model)
+
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return response, nil
 }
 
 func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNodePoolRequest) (*pb.Operation, error) {
@@ -61,11 +81,12 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 
 	obj := proto.Clone(req.NodePool).(*pb.NodePool)
 
-	obj.SelfLink = buildSelfLink(ctx, fqn)
-
 	if err := s.populateNodePoolDefaults(cluster, obj); err != nil {
 		return nil, err
 	}
+
+	obj.SelfLink = name.SelfLink(ctx)
+	obj.Etag = computeEtag(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -74,7 +95,7 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 	op := &pb.Operation{
 		Zone:          name.Location,
 		OperationType: pb.Operation_CREATE_NODE_POOL,
-		TargetLink:    obj.SelfLink,
+		TargetLink:    name.TargetLink(ctx),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil
@@ -87,6 +108,10 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(cluster *pb.Cluster, obj *pb
 		obj.Version = cluster.CurrentNodeVersion
 	}
 
+	if obj.Autoscaling == nil {
+		obj.Autoscaling = &pb.NodePoolAutoscaling{}
+	}
+
 	if obj.Config == nil {
 		obj.Config = &pb.NodeConfig{}
 	}
@@ -96,6 +121,18 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(cluster *pb.Cluster, obj *pb
 
 	if obj.InitialNodeCount == 0 {
 		obj.InitialNodeCount = 1
+	}
+
+	if len(obj.Locations) == 0 {
+		obj.Locations = cluster.Locations
+	}
+
+	if obj.InstanceGroupUrls == nil {
+		zone := obj.Locations[0]
+		nodePoolName := "gke-" + cluster.Name + "-hash1-" + obj.Name + "-hash2-grp"
+		obj.InstanceGroupUrls = append(obj.InstanceGroupUrls,
+			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/${projectId}/zones/%s/instanceGroupManagers/%s", zone, nodePoolName),
+		)
 	}
 
 	if obj.Management == nil {
@@ -111,35 +148,11 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(cluster *pb.Cluster, obj *pb
 		}
 	}
 
-	// TODO: Fix NetworkConfig behavior.
-	// Real log:
-	//      "networkConfig": {
-	//        "podIpv4CidrBlock": "10.108.0.0/14",
-	//        "podRange": "gke-containercluster-${uniqueId}-pods-4e499d58",
-	//        "subnetwork": "projects/${projectId}/regions/us-east1/subnetworks/default"
-	//      },
-	// Mock log:
-	//     "networkConfig": {
-	//        "enablePrivateNodes": false,
-	//        "podIpv4CidrBlock": "10.92.0.0/14",
-	//        "podIpv4RangeUtilization": 0.001,
-	//        "podRange": "default-pool-pods-12345678"
-	//      },
 	if obj.NetworkConfig == nil {
 		obj.NetworkConfig = &pb.NodeNetworkConfig{}
 	}
-	if obj.NetworkConfig.EnablePrivateNodes == nil {
-		obj.NetworkConfig.EnablePrivateNodes = PtrTo(false)
-	}
-	if obj.NetworkConfig.PodIpv4CidrBlock == "" {
-		obj.NetworkConfig.PodIpv4CidrBlock = "10.92.0.0/14"
-	}
-	if obj.NetworkConfig.PodIpv4RangeUtilization == 0 {
-		obj.NetworkConfig.PodIpv4RangeUtilization = 0.001
-	}
-	if obj.NetworkConfig.PodRange == "" {
-		obj.NetworkConfig.PodRange = obj.Name + "-pods-12345678"
-	}
+
+	s.populateNetworkConfigDefaults(cluster, obj.NetworkConfig)
 
 	if obj.PodIpv4CidrSize == 0 {
 		obj.PodIpv4CidrSize = 24
@@ -147,16 +160,46 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(cluster *pb.Cluster, obj *pb
 
 	if obj.UpgradeSettings == nil {
 		obj.UpgradeSettings = &pb.NodePool_UpgradeSettings{
-			MaxSurge:       1,
 			MaxUnavailable: 0,
-			Strategy:       PtrTo(pb.NodePoolUpdateStrategy_SURGE),
 		}
+	}
+	if obj.UpgradeSettings.Strategy == nil {
+		obj.UpgradeSettings.Strategy = PtrTo(pb.NodePoolUpdateStrategy_SURGE)
+	}
+	if obj.UpgradeSettings.MaxSurge == 0 {
+		obj.UpgradeSettings.MaxSurge = 1
 	}
 
 	return nil
 }
 
+func (s *ClusterManagerV1) populateNetworkConfigDefaults(cluster *pb.Cluster, obj *pb.NodeNetworkConfig) {
+	if obj.PodIpv4CidrBlock == "" {
+		obj.PodIpv4CidrBlock = "10.92.0.0/14"
+	}
+	if obj.PodIpv4RangeUtilization == 0 {
+		obj.PodIpv4RangeUtilization = 0.14
+	}
+
+	if obj.PodRange == "" {
+		obj.PodRange = "gke-" + cluster.Name + "-pods-12345678"
+	}
+
+	if obj.Subnetwork == "" {
+		obj.Subnetwork = cluster.NetworkConfig.Subnetwork
+	}
+}
+
 func (s *ClusterManagerV1) populateNodeConfig(obj *pb.NodeConfig) error {
+	if obj.BootDisk == nil {
+		obj.BootDisk = &pb.BootDisk{}
+	}
+	if obj.BootDisk.DiskType == "" {
+		obj.BootDisk.DiskType = "pd-balanced"
+	}
+	if obj.BootDisk.SizeGb == 0 {
+		obj.BootDisk.SizeGb = 100
+	}
 	if obj.DiskSizeGb == 0 {
 		obj.DiskSizeGb = 100
 	}
@@ -164,10 +207,25 @@ func (s *ClusterManagerV1) populateNodeConfig(obj *pb.NodeConfig) error {
 		obj.DiskType = "pd-balanced"
 	}
 
+	if obj.EffectiveCgroupMode == pb.NodeConfig_EFFECTIVE_CGROUP_MODE_UNSPECIFIED {
+		obj.EffectiveCgroupMode = pb.NodeConfig_EFFECTIVE_CGROUP_MODE_V2
+	}
+
 	if obj.ImageType == "" {
 		obj.ImageType = "COS_CONTAINERD"
 	}
 
+	if obj.KubeletConfig == nil {
+		obj.KubeletConfig = &pb.NodeKubeletConfig{}
+	}
+
+	if obj.KubeletConfig.InsecureKubeletReadonlyPortEnabled == nil {
+		obj.KubeletConfig.InsecureKubeletReadonlyPortEnabled = PtrTo(false)
+	}
+
+	if obj.KubeletConfig.MaxParallelImagePulls == 0 {
+		obj.KubeletConfig.MaxParallelImagePulls = 2
+	}
 	if obj.MachineType == "" {
 		obj.MachineType = "e2-medium"
 	}
@@ -189,6 +247,13 @@ func (s *ClusterManagerV1) populateNodeConfig(obj *pb.NodeConfig) error {
 			"https://www.googleapis.com/auth/servicecontrol",
 			"https://www.googleapis.com/auth/trace.append",
 		}
+	}
+
+	if obj.ResourceLabels == nil {
+		obj.ResourceLabels = make(map[string]string)
+	}
+	if obj.ResourceLabels["goog-gke-node-pool-provisioning-model"] == "" {
+		obj.ResourceLabels["goog-gke-node-pool-provisioning-model"] = "on-demand"
 	}
 
 	if obj.ServiceAccount == "" {
@@ -305,7 +370,7 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 
 	op := &pb.Operation{
 		Zone:       name.Location,
-		TargetLink: obj.SelfLink,
+		TargetLink: name.TargetLink(ctx),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil
@@ -328,7 +393,7 @@ func (s *ClusterManagerV1) DeleteNodePool(ctx context.Context, req *pb.DeleteNod
 	op := &pb.Operation{
 		Zone:          name.Location,
 		OperationType: pb.Operation_DELETE_NODE_POOL,
-		TargetLink:    oldObj.SelfLink,
+		TargetLink:    name.TargetLink(ctx),
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return oldObj, nil
@@ -344,6 +409,26 @@ type nodePoolName struct {
 
 func (n *nodePoolName) String() string {
 	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/clusters/" + n.Cluster + "/nodePools/" + n.NodePool
+}
+
+func (n *nodePoolName) SelfLink(ctx context.Context) string {
+	version := getAPIVersion(ctx)
+	prefix := "https://container.googleapis.com/" + version + "/"
+
+	if isZone(n.Location) {
+		return prefix + fmt.Sprintf("projects/%s/zones/%s/clusters/%s/nodePools/%s", n.Project.ID, n.Location, n.Cluster, n.NodePool)
+	}
+	return prefix + fmt.Sprintf("projects/%s/locations/%s/clusters/%s/nodePools/%s", n.Project.ID, n.Location, n.Cluster, n.NodePool)
+}
+
+func (n *nodePoolName) TargetLink(ctx context.Context) string {
+	version := getAPIVersion(ctx)
+	prefix := "https://container.googleapis.com/" + version + "/"
+
+	if isZone(n.Location) {
+		return prefix + fmt.Sprintf("projects/%d/zones/%s/clusters/%s/nodePools/%s", n.Project.Number, n.Location, n.Cluster, n.NodePool)
+	}
+	return prefix + fmt.Sprintf("projects/%d/locations/%s/clusters/%s/nodePools/%s", n.Project.Number, n.Location, n.Cluster, n.NodePool)
 }
 
 func (n *nodePoolName) ClusterName() *clusterName {
