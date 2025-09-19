@@ -523,9 +523,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: location=us-central1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -547,12 +548,13 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs?alt=json&jobId=${jobID}
+POST https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs?%24alt=json%3Benum-encoding%3Dint&jobId=${jobID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: location=us-central1
 
 {
-  "launchStage": "GA",
+  "launchStage": 4,
   "template": {
     "template": {
       "containers": [
@@ -560,10 +562,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
           "image": "us-docker.pkg.dev/cloudrun/container/hello"
         }
       ],
-      "maxRetries": 3,
       "vpcAccess": {
         "connector": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
-        "egress": "ALL_TRAFFIC"
+        "egress": 1
       }
     }
   }
@@ -588,7 +589,7 @@ X-Xss-Protection: 0
     "generation": "1",
     "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
-    "launchStage": "GA",
+    "launchStage": 4,
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
     "template": {
       "taskCount": 1,
@@ -604,19 +605,19 @@ X-Xss-Protection: 0
             }
           }
         ],
-        "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+        "executionEnvironment": 2,
         "maxRetries": 3,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
         "timeout": "600s",
         "vpcAccess": {
           "connector": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
-          "egress": "ALL_TRAFFIC"
+          "egress": 1
         }
       }
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
-      "state": "CONDITION_SUCCEEDED",
+      "state": 4,
       "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -626,9 +627,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -730,9 +732,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: location=us-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -751,7 +754,7 @@ X-Xss-Protection: 0
   "generation": "1",
   "lastModifier": "test@google.com",
   "latestCreatedExecution": {},
-  "launchStage": "GA",
+  "launchStage": 4,
   "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
   "template": {
     "taskCount": 1,
@@ -767,19 +770,19 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "executionEnvironment": 2,
       "maxRetries": 3,
       "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
       "timeout": "600s",
       "vpcAccess": {
         "connector": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
-        "egress": "ALL_TRAFFIC"
+        "egress": 1
       }
     }
   },
   "terminalCondition": {
     "lastTransitionTime": "2025-01-01T00:00:00Z",
-    "state": "CONDITION_SUCCEEDED",
+    "state": 4,
     "type": "Ready"
   },
   "uid": "111111111111111111111",
@@ -788,33 +791,24 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
+PATCH https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: location=us-central1
 
 {
-  "launchStage": "GA",
+  "launchStage": 4,
+  "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
   "template": {
-    "taskCount": 1,
     "template": {
       "containers": [
         {
-          "image": "us-docker.pkg.dev/cloudrun/container/hello",
-          "resources": {
-            "limits": {
-              "cpu": "1000m",
-              "memory": "512Mi"
-            }
-          }
+          "image": "us-docker.pkg.dev/cloudrun/container/hello"
         }
       ],
-      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
-      "maxRetries": 3,
-      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
-      "timeout": "600s",
       "vpcAccess": {
         "connector": "projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}",
-        "egress": "PRIVATE_RANGES_ONLY"
+        "egress": 2
       }
     }
   }
@@ -839,7 +833,7 @@ X-Xss-Protection: 0
     "generation": "1",
     "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
-    "launchStage": "GA",
+    "launchStage": 4,
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
     "template": {
       "taskCount": 1,
@@ -855,19 +849,19 @@ X-Xss-Protection: 0
             }
           }
         ],
-        "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+        "executionEnvironment": 2,
         "maxRetries": 3,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
         "timeout": "600s",
         "vpcAccess": {
           "connector": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
-          "egress": "ALL_TRAFFIC"
+          "egress": 1
         }
       }
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
-      "state": "CONDITION_SUCCEEDED",
+      "state": 4,
       "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -877,9 +871,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -981,9 +976,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: location=us-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1002,7 +998,7 @@ X-Xss-Protection: 0
   "generation": "1",
   "lastModifier": "test@google.com",
   "latestCreatedExecution": {},
-  "launchStage": "GA",
+  "launchStage": 4,
   "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
   "template": {
     "taskCount": 1,
@@ -1018,19 +1014,19 @@ X-Xss-Protection: 0
           }
         }
       ],
-      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "executionEnvironment": 2,
       "maxRetries": 3,
       "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
       "timeout": "600s",
       "vpcAccess": {
         "connector": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
-        "egress": "ALL_TRAFFIC"
+        "egress": 1
       }
     }
   },
   "terminalCondition": {
     "lastTransitionTime": "2025-01-01T00:00:00Z",
-    "state": "CONDITION_SUCCEEDED",
+    "state": 4,
     "type": "Ready"
   },
   "uid": "111111111111111111111",
@@ -1039,9 +1035,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?alt=json
+DELETE https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: location=us-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1062,7 +1059,7 @@ X-Xss-Protection: 0
     "generation": "1",
     "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
-    "launchStage": "GA",
+    "launchStage": 4,
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
     "template": {
       "taskCount": 1,
@@ -1078,19 +1075,19 @@ X-Xss-Protection: 0
             }
           }
         ],
-        "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+        "executionEnvironment": 2,
         "maxRetries": 3,
         "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
         "timeout": "600s",
         "vpcAccess": {
           "connector": "projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}",
-          "egress": "ALL_TRAFFIC"
+          "egress": 1
         }
       }
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
-      "state": "CONDITION_SUCCEEDED",
+      "state": 4,
       "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -1100,9 +1097,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
