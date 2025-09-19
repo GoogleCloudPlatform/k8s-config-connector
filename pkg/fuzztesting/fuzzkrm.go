@@ -60,6 +60,14 @@ type KRMTypedFuzzer[ProtoT proto.Message, SpecType any, StatusType any] struct {
 	UnimplementedFields sets.Set[string]
 	SpecFields          sets.Set[string]
 	StatusFields        sets.Set[string]
+
+	// MutateBeforeRoundtrip is used to change the generated proto to be valid,
+	// where the round-tripping performs some validation
+	MutateBeforeRoundtrip func(v ProtoT) error
+
+	// CompareOptions is used to set options for cmp.Diff, typically to ignore
+	// fields we set in MutateBeforeRoundtrip
+	CompareOptions []cmp.Option
 }
 
 // SpecField marks the specified fieldPath as round-tripping to/from the Spec
@@ -127,6 +135,8 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzSpec(t *testing.T, se
 	fuzzer := NewFuzzTest(f.ProtoType, f.SpecFromProto, f.SpecToProto)
 	fuzzer.IgnoreFields = f.StatusFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
+	fuzzer.MutateBeforeRoundtrip = f.MutateBeforeRoundtrip
+	fuzzer.CompareOptions = f.CompareOptions
 	fuzzer.Fuzz(t, seed)
 }
 
@@ -134,6 +144,8 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzStatus(t *testing.T, 
 	fuzzer := NewFuzzTest(f.ProtoType, f.StatusFromProto, f.StatusToProto)
 	fuzzer.IgnoreFields = f.SpecFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
+	fuzzer.MutateBeforeRoundtrip = f.MutateBeforeRoundtrip
+	fuzzer.CompareOptions = f.CompareOptions
 	fuzzer.Fuzz(t, seed)
 }
 
@@ -166,6 +178,14 @@ type FuzzTest[ProtoT proto.Message, KRMType any] struct {
 
 	UnimplementedFields sets.Set[string]
 	IgnoreFields        sets.Set[string]
+
+	// MutateBeforeRoundtrip is used to change the generated proto to be valid,
+	// where the round-tripping performs some validation
+	MutateBeforeRoundtrip func(v ProtoT) error
+
+	// CompareOptions is used to set options for cmp.Diff, typically to ignore
+	// fields we set in MutateBeforeRoundtrip
+	CompareOptions []cmp.Option
 }
 
 func NewFuzzTest[ProtoT proto.Message, KRMType any](protoType ProtoT, fromProto func(ctx *direct.MapContext, in ProtoT) *KRMType, toProto func(ctx *direct.MapContext, in *KRMType) ProtoT) *FuzzTest[ProtoT, KRMType] {
@@ -194,6 +214,12 @@ func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 	}
 	fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
 
+	if f.MutateBeforeRoundtrip != nil {
+		if err := f.MutateBeforeRoundtrip(p1); err != nil {
+			t.Fatalf("error replacing fields with MutateBeforeRoundtrip: %v", err)
+		}
+	}
+
 	ctx := &direct.MapContext{}
 	krm := f.FromProto(ctx, p1)
 	if ctx.Err() != nil {
@@ -205,7 +231,11 @@ func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 		t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
 	}
 
-	if diff := cmp.Diff(p1, p2, protocmp.Transform()); diff != "" {
+	cmpOptions := []cmp.Option{
+		protocmp.Transform(),
+	}
+	cmpOptions = append(cmpOptions, f.CompareOptions...)
+	if diff := cmp.Diff(p1, p2, cmpOptions...); diff != "" {
 		t.Logf("p1 = %v", prototext.Format(p1))
 		t.Logf("p2 = %v", prototext.Format(p2))
 		t.Errorf("roundtrip failed for KRM %T; diff:\n%s", krm, diff)
