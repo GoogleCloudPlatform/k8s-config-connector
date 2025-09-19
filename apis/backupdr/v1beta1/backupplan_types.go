@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -27,7 +28,7 @@ type BackupDRBackupPlanSpec struct {
 	// The BackupDRBackupPlan name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	Parent `json:",inline"`
+	v1alpha1.Parent `json:",inline"`
 
 	// Optional. The description of the `BackupPlan` resource.
 	//
@@ -65,14 +66,14 @@ type BackupDRBackupPlanSpec struct {
 	//  location for backups.
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.backup_vault
 	// +required
-	BackupVaultRef *BackupVaultRef `json:"backupVaultRef,omitempty"`
+	BackupVaultRef *v1alpha1.BackupVaultRef `json:"backupVaultRef,omitempty"`
 }
 
 // BackupDRBackupPlanStatus defines the config connector machine state of BackupDRBackupPlan
 type BackupDRBackupPlanStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
@@ -115,13 +116,16 @@ type BackupDRBackupPlanObservedState struct {
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:storageversion
 // +kubebuilder:resource:categories=gcp,shortName=gcpbackupdrbackupplan;gcpbackupdrbackupplans
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
+// +kubebuilder:storageversion
 
 // BackupDRBackupPlan is the Schema for the BackupDRBackupPlan API
 // +k8s:openapi-gen=true
