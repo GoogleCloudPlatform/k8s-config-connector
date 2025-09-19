@@ -15,6 +15,7 @@
 package writer_test
 
 import (
+	"context"
 	"testing"
 
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
@@ -29,6 +30,8 @@ import (
 var mgr manager.Manager
 
 func TestSecretCertWriter(t *testing.T) {
+	ctx := context.TODO()
+
 	namespaceName := "my-namespace"
 	testcontroller.EnsureNamespaceExistsT(t, mgr.GetClient(), namespaceName)
 	opts := writer.SecretCertWriterOptions{
@@ -42,7 +45,7 @@ func TestSecretCertWriter(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error creating secret writer: %v", err)
 	}
-	artifacts1, changed, err := secretWriter.EnsureCert("localhost")
+	artifacts1, changed, err := secretWriter.EnsureCert(ctx, "localhost")
 	if err != nil {
 		t.Fatalf("error ensuring certificate: %v", err)
 	}
@@ -52,7 +55,7 @@ func TestSecretCertWriter(t *testing.T) {
 	if artifacts1 == nil {
 		t.Fatalf("unexpected nil value for artifacts")
 	}
-	artifacts2, changed, err := secretWriter.EnsureCert("localhost")
+	artifacts2, changed, err := secretWriter.EnsureCert(ctx, "localhost")
 	if changed {
 		t.Fatalf("unexpected value for changed: got '%v', want '%v'", changed, false)
 	}

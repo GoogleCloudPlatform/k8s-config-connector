@@ -313,7 +313,7 @@ func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationNa
 	if err := mgr.Add(certClient); err != nil {
 		return fmt.Errorf("error registering cert client with manager: %w", err)
 	}
-	if err := persistCertificatesToDisk(certWriter, svc); err != nil {
+	if err := persistCertificatesToDisk(ctx, certWriter, svc); err != nil {
 		return err
 	}
 	// Set up the HTTP server
@@ -341,9 +341,9 @@ func formatSecretName(serviceName string) string {
 
 // the webhook.Server requires the certificates to be present on the local filesystem so fetch them from the API
 // server and persist them to disk
-func persistCertificatesToDisk(certWriter writer.CertWriter, svc *corev1.Service) error {
+func persistCertificatesToDisk(ctx context.Context, certWriter writer.CertWriter, svc *corev1.Service) error {
 	dnsName := getDNSNameForService(svc)
-	artifacts, _, err := certWriter.EnsureCert(dnsName)
+	artifacts, _, err := certWriter.EnsureCert(ctx, dnsName)
 	if err != nil {
 		return fmt.Errorf("error ensuring certificate: %w", err)
 	}

@@ -18,6 +18,7 @@ package provisioner
 
 import (
 	"bytes"
+	"context"
 	"errors"
 	"fmt"
 	"net"
@@ -53,7 +54,7 @@ type Options struct {
 // It ensures the cert and CA are valid and not expiring.
 // It updates the CABundle in the webhookClientConfig if necessary.
 // It inject the WebhookClientConfig into options.Objects.
-func (cp *Provisioner) Provision(options Options) (bool, error) {
+func (cp *Provisioner) Provision(ctx context.Context, options Options) (bool, error) {
 	if cp.CertWriter == nil {
 		return false, errors.New("CertWriter need to be set")
 	}
@@ -63,7 +64,7 @@ func (cp *Provisioner) Provision(options Options) (bool, error) {
 		return false, err
 	}
 
-	certs, changed, err := cp.CertWriter.EnsureCert(dnsName)
+	certs, changed, err := cp.CertWriter.EnsureCert(ctx, dnsName)
 	if err != nil {
 		return false, err
 	}

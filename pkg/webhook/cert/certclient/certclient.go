@@ -84,7 +84,7 @@ func certWriterFromOptsOrNew(opts Options) (writer.CertWriter, error) {
 }
 
 func (c *CertClient) RefreshCertsAndInstall(ctx context.Context) error {
-	_, err := c.provisioner.Provision(provisioner.Options{
+	_, err := c.provisioner.Provision(ctx, provisioner.Options{
 		ClientConfig: &admissionregistration.WebhookClientConfig{
 			CABundle: []byte{},
 			Service: &admissionregistration.ServiceReference{
