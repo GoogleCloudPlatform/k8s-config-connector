@@ -112,7 +112,7 @@ type ComputeFirewallPolicyRuleSpec struct {
 	Priority int64 `json:"priority"`
 
 	// +optional
-	TargetResources []*refs.ComputeNetworkRef `json:"targetResources,omitempty"`
+	TargetResources []*ComputeNetworkRef `json:"targetResources,omitempty"`
 
 	// +optional
 	TargetServiceAccounts []*refs.IAMServiceAccountRef `json:"targetServiceAccounts,omitempty"`

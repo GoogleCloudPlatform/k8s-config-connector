@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	compute "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	container "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	run "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1alpha1"
@@ -134,7 +134,7 @@ type Endpoint struct {
 
 	// A Compute Engine instance URI.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.instance
-	ComputeInstanceRef *compute.InstanceRef `json:"computeInstanceRef,omitempty"`
+	ComputeInstanceRef *computev1beta1.InstanceRef `json:"computeInstanceRef,omitempty"`
 
 	// TODO: Should be reference.
 
@@ -195,7 +195,7 @@ type Endpoint struct {
 
 	// A Compute Engine network URI.
 	// +kcc:proto:field=google.cloud.networkmanagement.v1.Endpoint.network
-	ComputeNetworkRef *refsv1beta1.ComputeNetworkRef `json:"computeNetworkRef,omitempty"`
+	ComputeNetworkRef *computev1beta1.ComputeNetworkRef `json:"computeNetworkRef,omitempty"`
 
 	// Type of the network where the endpoint is located.
 	//  Applicable only to source endpoint, as destination network type can be
