@@ -20,6 +20,7 @@ import (
 
 	gcp "cloud.google.com/go/resourcemanager/apiv3"
 	tagspb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
+	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -83,6 +84,7 @@ func (m *modelTagsLocationTagBinding) AdapterForObject(ctx context.Context, read
 		id:        id,
 		gcpClient: gcpClient,
 		desired:   obj,
+		reader:    reader,
 	}, nil
 }
 
@@ -96,6 +98,7 @@ type TagsLocationTagBindingAdapter struct {
 	gcpClient *gcp.TagBindingsClient
 	desired   *krm.TagsLocationTagBinding
 	actual    *tagspb.TagBinding
+	reader    client.Reader
 }
 
 var _ directbase.Adapter = &TagsLocationTagBindingAdapter{}
@@ -137,6 +140,11 @@ func (a *TagsLocationTagBindingAdapter) Create(ctx context.Context, createOp *di
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
+	if tagRef, err := refv1beta1.ResolveSTagValueRef(ctx, a.reader, desired, desired.Spec.TagValueRef); err != nil {
+		return err
+	} else {
+		desired.Spec.TagValueRef.External = tagRef.String()
+	}
 	resource := TagsLocationTagBindingSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -170,31 +178,6 @@ func (a *TagsLocationTagBindingAdapter) Create(ctx context.Context, createOp *di
 func (a *TagsLocationTagBindingAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating TagsLocationTagBinding", "name", a.id)
-	// mapCtx := &direct.MapContext{}
-
-	/* 	desiredPb := TagsLocationTagBindingSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	   	if mapCtx.Err() != nil {
-	   		return mapCtx.Err()
-	   	} */
-
-	// paths := make(sets.Set[string])
-	/* 	// Option 1: This option is good for proto that has `field_mask` for output-only, immutable, required/optional.
-	   	// TODO(contributor): If choosing this option, remove the "Option 2" code.
-	   	{
-	   		var err error
-	   		paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
-	   		if err != nil {
-	   			return err
-	   		}
-	   	} */
-
-	// Option 2: manually add all mutable fields.
-	// TODO(contributor): If choosing this option, remove the "Option 1" code.
-	/* 	{
-		if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
-			paths = paths.Insert("display_name")
-		}
-	} */
 
 	status := &krm.TagsLocationTagBindingStatus{}
 	/* 	status.ObservedState = TagsLocationTagBindingObservedState_FromProto(mapCtx, updated)

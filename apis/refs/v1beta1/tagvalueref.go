@@ -40,7 +40,7 @@ type TagValue struct {
 }
 
 func (s *TagValue) String() string {
-	return "`tagKeys/" + s.value
+	return "tagValues/" + s.value
 }
 
 func ResolveSTagValueRef(ctx context.Context, reader client.Reader, obj client.Object, ref *TagValueRef) (*TagValue, error) {
@@ -89,7 +89,7 @@ func ResolveSTagValueRef(ctx context.Context, reader client.Reader, obj client.O
 
 	resourceID, _, err := unstructured.NestedString(tagvalue.Object, "spec", "resourceID")
 	if err != nil {
-		return nil, fmt.Errorf("reading spec.resourceID from SQLInstance %s/%s: %w", tagvalue.GetNamespace(), tagvalue.GetName(), err)
+		return nil, fmt.Errorf("reading spec.resourceID from TagValue %s/%s: %w", tagvalue.GetNamespace(), tagvalue.GetName(), err)
 	}
 	if resourceID == "" {
 		resourceID = tagvalue.GetName()

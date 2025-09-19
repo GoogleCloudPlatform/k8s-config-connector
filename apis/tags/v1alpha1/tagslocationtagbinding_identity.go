@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
@@ -107,13 +108,25 @@ func NewTagsLocationTagBindingIdentity(ctx context.Context, reader client.Reader
 }
 
 func ParseTagsLocationTagBindingExternal(external string) (parent *TagsLocationTagBindingParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 4 || tokens[0] != "tagBindings" || tokens[3] != "tagValues" {
+	if !strings.HasPrefix(external, "tagBindings/") {
+		return nil, "", fmt.Errorf("invalid format of TagsLocationTagsLocationTagBinding external=%q, expected prefix 'tagBindings/'", external)
+	}
+	// This gives us "{parent}/tagValues/{tag_value}"
+	suffix := strings.TrimPrefix(external, "tagBindings/")
+
+	tokens := strings.Split(suffix, "/tagValues/")
+	if len(tokens) != 2 {
 		return nil, "", fmt.Errorf("format of TagsLocationTagsLocationTagBinding external=%q was not known (use tagBindings/{{ResourceName}}/tagValues/{{tagValue}}", external)
 	}
 
+	// The parent part of the externalRef has been URL-encoded by the framework, so slashes are represented as `%2F` not `/`.
+	// We need re-endcode the parent. Then do the look up
+	parentResource, err := url.PathUnescape(tokens[0])
+	if err != nil {
+		return nil, "", err
+	}
 	parent = &TagsLocationTagBindingParent{
-		parentResource: tokens[1],
+		parentResource: parentResource,
 	}
 
 	resourceID = external
