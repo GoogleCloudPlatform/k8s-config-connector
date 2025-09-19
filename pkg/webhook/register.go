@@ -33,6 +33,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook/cert/certclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook/cert/generator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook/cert/writer"
+	"sigs.k8s.io/yaml"
 
 	admissionregistration "k8s.io/api/admissionregistration/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -66,6 +67,20 @@ func RegisterCommonWebhooks(mgr manager.Manager, nocacheClient client.Client) er
 		whCfgs,
 		mgr,
 		nocacheClient,
+	)
+}
+
+func BuildCommonWebhooks() (*WebhookManifest, error) {
+	whCfgs, err := GetCommonWebhookConfigs()
+	if err != nil {
+		return nil, fmt.Errorf("error getting common webhook configs: %w", err)
+	}
+	return BuildWebhookManifest(
+		ValidatingWebhookConfigurationName,
+		MutatingWebhookConfigurationName,
+		CommonWebhookServiceName,
+		"cnrm-webhook-manager",
+		whCfgs,
 	)
 }
 
@@ -222,7 +237,7 @@ func getResourcesForImmutableValidation(allGVKs []schema.GroupVersionKind) []sch
 	return resourcesToValidate
 }
 
-func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client.Client) error {
+func buildAbandonOnUninstallWebhookConfigs() []Config {
 	whCfgs := []Config{
 		{
 			Name:        "abandon-on-uninstall.cnrm.cloud.google.com",
@@ -251,26 +266,67 @@ func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client
 			SideEffects: admissionregistration.SideEffectClassNoneOnDryRun,
 		},
 	}
+	return whCfgs
+}
+
+func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client.Client) error {
+	webhookConfigs := buildAbandonOnUninstallWebhookConfigs()
+
 	return register(
 		"abandon-on-uninstall.cnrm.cloud.google.com",
 		"",
 		"abandon-on-uninstall",
 		"cnrm-deletiondefender",
-		whCfgs,
+		webhookConfigs,
 		mgr,
 		nocacheClient,
 	)
 }
 
-func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName string,
-	whCfgs []Config, mgr manager.Manager, nocacheClient client.Client) error {
-	ctx := context.TODO()
+func BuildAbandonOnUninstallWebhookManifest() (*WebhookManifest, error) {
+	webhookConfigs := buildAbandonOnUninstallWebhookConfigs()
 
+	return BuildWebhookManifest(
+		"abandon-on-uninstall.cnrm.cloud.google.com",
+		"",
+		"abandon-on-uninstall",
+		"cnrm-deletiondefender",
+		webhookConfigs,
+	)
+}
+
+type WebhookManifest struct {
+	Service      *corev1.Service
+	OtherObjects []client.Object
+}
+
+func (m *WebhookManifest) ToYAML() (string, error) {
+	var allObjs []client.Object
+	allObjs = append(allObjs, m.Service)
+	allObjs = append(allObjs, m.OtherObjects...)
+
+	var buffer strings.Builder
+
+	for i, obj := range allObjs {
+		if i != 0 {
+			buffer.WriteString("\n---\n")
+		}
+		v, err := yaml.Marshal(obj)
+		if err != nil {
+			return "", fmt.Errorf("error converting object to yaml: %w", err)
+		}
+		buffer.WriteString(string(v))
+	}
+
+	return buffer.String(), nil
+}
+
+func BuildWebhookManifest(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName string, webhookConfigs []Config) (*WebhookManifest, error) {
 	validatingWebhookCfg, mutatingWebhookCfg := GenerateWebhookManifests(
 		validatingWebhookConfigurationName,
 		mutatingWebhookConfigurationName,
 		serviceName,
-		whCfgs,
+		webhookConfigs,
 	)
 	manifests := make([]client.Object, 0)
 	if validatingWebhookCfg != nil {
@@ -285,6 +341,22 @@ func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationNa
 			k8s.KCCComponentLabel: componentName,
 			k8s.KCCSystemLabel:    "true",
 		})
+
+	return &WebhookManifest{
+		Service:      svc,
+		OtherObjects: manifests,
+	}, nil
+}
+
+func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName string,
+	webhookConfigs []Config, mgr manager.Manager, nocacheClient client.Client) error {
+	ctx := context.TODO()
+
+	manifest, err := BuildWebhookManifest(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName, webhookConfigs)
+	if err != nil {
+		return fmt.Errorf("error building webhook manifests: %w", err)
+	}
+
 	writerOpts := writer.SecretCertWriterOptions{
 		Client: nocacheClient,
 		Secret: &types.NamespacedName{
@@ -297,8 +369,8 @@ func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationNa
 		return fmt.Errorf("error creating secret cert writer: %w", err)
 	}
 	certClient, err := certclient.New(certclient.Options{
-		WebhookManifests: manifests,
-		Service:          svc,
+		WebhookManifests: manifest.OtherObjects,
+		Service:          manifest.Service,
 		KubeClient:       nocacheClient,
 		CertWriter:       certWriter,
 	})
@@ -313,7 +385,7 @@ func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationNa
 	if err := mgr.Add(certClient); err != nil {
 		return fmt.Errorf("error registering cert client with manager: %w", err)
 	}
-	if err := persistCertificatesToDisk(certWriter, svc); err != nil {
+	if err := persistCertificatesToDisk(certWriter, manifest.Service); err != nil {
 		return err
 	}
 	// Set up the HTTP server
@@ -323,7 +395,7 @@ func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationNa
 		KeyName:  writer.ServerKeyName,
 		Port:     ServicePort,
 	})
-	for _, whCfg := range whCfgs {
+	for _, whCfg := range webhookConfigs {
 		handler := whCfg.HandlerFunc(mgr)
 		s.Register(whCfg.Path, &admission.Webhook{Handler: handler})
 	}
