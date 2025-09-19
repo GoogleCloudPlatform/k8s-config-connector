@@ -17,6 +17,8 @@ kind: ValidatingWebhookConfiguration
 metadata:
   labels:
     cnrm.cloud.google.com/system: "true"
+  annotations:
+    cnrm.cloud.google.com/inject-ca:  abandon-on-uninstall.cnrm-system
   name: abandon-on-uninstall.cnrm.cloud.google.com
 webhooks:
 - admissionReviewVersions:
