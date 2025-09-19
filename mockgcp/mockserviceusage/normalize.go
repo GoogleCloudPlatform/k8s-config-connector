@@ -21,7 +21,9 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	// No-op for now
+	// Skip service config
+	replacements.RemovePath(".response.services[].config")
+	replacements.RemovePath(".response.service.config")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
