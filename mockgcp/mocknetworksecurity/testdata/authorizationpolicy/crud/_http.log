@@ -81,7 +81,6 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
     "apiVersion": "v1beta1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/global/authorizationPolicies/test-${uniqueId}",
     "verb": "create"
   },
@@ -235,7 +234,6 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
     "apiVersion": "v1beta1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/global/authorizationPolicies/test-${uniqueId}",
     "verb": "delete"
   },
