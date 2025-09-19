@@ -1,0 +1,30 @@
+apiVersion: clouddeploy.cnrm.cloud.google.com/v1beta1
+kind: CloudDeployDeliveryPipeline
+metadata:
+  name: clouddeploydeliverypipeline-full-${uniqueId}
+  annotations:
+    key1: "value1"
+    key2: "value2"
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: "Updated full delivery pipeline"
+  suspended: true
+  serialPipeline:
+    stages:
+      - targetID: "my-fake-target"
+        profiles:
+          - "profile1"
+          - "profile2"
+        strategy:
+          canary:
+            runtimeConfig:
+              kubernetes:
+                serviceNetworking:
+                  service: "my-service"
+                  deployment: "my-deployment"
+            canaryDeployment:
+              percentages:
+                - 50
+              verify: false

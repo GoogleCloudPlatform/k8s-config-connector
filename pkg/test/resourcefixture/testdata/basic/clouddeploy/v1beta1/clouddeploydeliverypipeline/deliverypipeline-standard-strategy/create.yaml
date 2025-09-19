@@ -1,0 +1,26 @@
+apiVersion: clouddeploy.cnrm.cloud.google.com/v1beta1
+kind: CloudDeployDeliveryPipeline
+metadata:
+  name: clouddeploydeliverypipeline-full-${uniqueId}
+  annotations:
+    key1: "value1"
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: "Full delivery pipeline"
+  suspended: false
+  serialPipeline:
+    stages:
+      - targetID: "my-fake-target"
+        profiles:
+          - "profile1"
+        strategy:
+          standard:
+            verify: true
+            predeploy:
+              actions:
+                - "predeploy-action"
+            postdeploy:
+              actions:
+                - "postdeploy-action"
