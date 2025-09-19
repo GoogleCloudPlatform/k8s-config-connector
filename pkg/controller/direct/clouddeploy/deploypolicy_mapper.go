@@ -21,7 +21,7 @@ import (
 	timeofdaypb "google.golang.org/genproto/googleapis/type/timeofday"
 )
 
-func Date_FromProto(mapCtx *direct.MapContext, in *datepb.Date) *krm.Date {
+func Date_v1alpha1_FromProto(mapCtx *direct.MapContext, in *datepb.Date) *krm.Date {
 	if in == nil {
 		return nil
 	}
@@ -31,7 +31,7 @@ func Date_FromProto(mapCtx *direct.MapContext, in *datepb.Date) *krm.Date {
 	out.Day = direct.LazyPtr(in.GetDay())
 	return out
 }
-func Date_ToProto(mapCtx *direct.MapContext, in *krm.Date) *datepb.Date {
+func Date_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Date) *datepb.Date {
 	if in == nil {
 		return nil
 	}
@@ -42,7 +42,7 @@ func Date_ToProto(mapCtx *direct.MapContext, in *krm.Date) *datepb.Date {
 	return out
 }
 
-func TimeOfDay_FromProto(mapCtx *direct.MapContext, in *timeofdaypb.TimeOfDay) *krm.TimeOfDay {
+func TimeOfDay_v1alpha1_FromProto(mapCtx *direct.MapContext, in *timeofdaypb.TimeOfDay) *krm.TimeOfDay {
 	if in == nil {
 		return nil
 	}
@@ -53,7 +53,7 @@ func TimeOfDay_FromProto(mapCtx *direct.MapContext, in *timeofdaypb.TimeOfDay) *
 	out.Nanos = direct.LazyPtr(in.GetNanos())
 	return out
 }
-func TimeOfDay_ToProto(mapCtx *direct.MapContext, in *krm.TimeOfDay) *timeofdaypb.TimeOfDay {
+func TimeOfDay_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.TimeOfDay) *timeofdaypb.TimeOfDay {
 	if in == nil {
 		return nil
 	}

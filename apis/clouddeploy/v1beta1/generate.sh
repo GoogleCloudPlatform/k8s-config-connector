@@ -23,13 +23,13 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 go run . generate-types \
   --service google.cloud.deploy.v1 \
-  --api-version clouddeploy.cnrm.cloud.google.com/v1alpha1  \
-  --resource DeployCustomTargetType:CustomTargetType \
-  --resource CloudDeployDeployPolicy:DeployPolicy
+  --api-version clouddeploy.cnrm.cloud.google.com/v1beta1  \
+  --resource CloudDeployDeliveryPipeline:DeliveryPipeline
 
 go run . generate-mapper \
+  --multiversion \
   --service google.cloud.deploy.v1 \
-  --api-version clouddeploy.cnrm.cloud.google.com/v1alpha1
+  --api-version clouddeploy.cnrm.cloud.google.com/v1beta1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
