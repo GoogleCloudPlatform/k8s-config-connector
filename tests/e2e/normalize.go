@@ -363,6 +363,19 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		return s
 	})
 
+	// // Specific to TagsLocationTagBinding
+	{
+		externalRef, _, _ := unstructured.NestedString(u.Object, "status", "externalRef")
+		if externalRef != "" {
+			tokens := strings.Split(externalRef, "/")
+			if len(tokens) == 4 && tokens[0] == "tagBindings" && tokens[2] == "tagValues" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, tokens[len(tokens)-1], "${tagValueID}")
+				})
+			}
+		}
+	}
+
 	// Specific to NetworkManagement
 	visitor.replacePaths[".status.observedState.reachabilityDetails.verifyTime"] = "2025-01-01T12:34:56.123456Z"
 	visitor.replacePaths[".status.observedState.reachabilityDetails.traces[].endpointInfo.sourcePort"] = "12345"
@@ -587,6 +600,12 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 			case schema.GroupVersionKind{Group: "cloudidentity.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CloudIdentityMembership"}:
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, resourceID, "${membershipID}")
+				})
+
+			case schema.GroupVersionKind{Group: "tags.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "TagsLocationTagBinding"}:
+				tokens := strings.Split(resourceID, "/")
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, tokens[len(tokens)-1], "${tagValueID}")
 				})
 			}
 		}

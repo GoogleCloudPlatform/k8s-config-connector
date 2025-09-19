@@ -2386,14 +2386,6 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	},
 	{
 		Group:   "tags.cnrm.cloud.google.com",
-		Version: "v1alpha1",
-		Kind:    "TagsLocationTagBinding",
-	}: {
-		Terraform: true,
-		DCL:       false,
-	},
-	{
-		Group:   "tags.cnrm.cloud.google.com",
 		Version: "v1beta1",
 		Kind:    "TagsTagBinding",
 	}: {
