@@ -12,10 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -29,7 +28,7 @@ type BigQueryReservationAssignmentSpec struct {
 	// The name of reservation to create a new assignment in,
 	//  or to move the assignment to.
 	// +required
-	ReservationRef *v1beta1.ReservationRef `json:"reservationRef,omitempty"`
+	ReservationRef *ReservationRef `json:"reservationRef,omitempty"`
 
 	// +kubebuilder:validation:XValidation:rule="self != null && has(self.projectRef) != has(self.folderRef) != has(self.organizationRef)",message="Exactly one of orojectRef or folderRef or organizationRef must be specified."
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="assignee field is immutable"
@@ -81,12 +80,12 @@ type BigQueryReservationAssignmentObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpbigqueryreservationassignment;gcpbigqueryreservationassignments
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
-
+// +kubebuilder:storageversion
 // BigQueryReservationAssignment is the Schema for the BigQueryReservationAssignment API
 // +k8s:openapi-gen=true
 type BigQueryReservationAssignment struct {
