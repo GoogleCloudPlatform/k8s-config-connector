@@ -24,3 +24,5 @@ bin
 *~
 log
 
+# credential
+keyfile.json
