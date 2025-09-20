@@ -59,16 +59,12 @@ var (
 // RegisterCommonWebhooks registers the common webhooks in kube and the provided manager.
 func RegisterCommonWebhooks(mgr manager.Manager, nocacheClient client.Client) error {
 	fmt.Println("starting up webhooks")
-	whCfgs, err := GetCommonWebhookConfigs()
+	manifest, err := BuildCommonWebhooks()
 	if err != nil {
-		return fmt.Errorf("error getting common webhook configs: %w", err)
+		return fmt.Errorf("error building common webhooks: %w", err)
 	}
 	return register(
-		ValidatingWebhookConfigurationName,
-		MutatingWebhookConfigurationName,
-		CommonWebhookServiceName,
-		"cnrm-webhook-manager",
-		whCfgs,
+		manifest,
 		mgr,
 		nocacheClient,
 	)
@@ -277,14 +273,13 @@ func buildAbandonOnUninstallWebhookConfigs() []Config {
 
 // RegisterAbandonOnUninstallWebhook registers the abandon-on-uninstall webhook in kube and with the provided manager.
 func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client.Client) error {
-	webhookConfigs := buildAbandonOnUninstallWebhookConfigs()
+	manifest, err := BuildAbandonOnUninstallWebhookManifest()
+	if err != nil {
+		return fmt.Errorf("error building webhook manifests: %w", err)
+	}
 
 	return register(
-		"abandon-on-uninstall.cnrm.cloud.google.com",
-		"",
-		"abandon-on-uninstall",
-		"cnrm-deletiondefender",
-		webhookConfigs,
+		manifest,
 		mgr,
 		nocacheClient,
 	)
@@ -307,6 +302,8 @@ func BuildAbandonOnUninstallWebhookManifest() (*WebhookManifest, error) {
 type WebhookManifest struct {
 	Service      *corev1.Service
 	OtherObjects []client.Object
+
+	WebhookConfigs []Config
 }
 
 // Normalize sorts the webhook manifest slices so that it is reproducible.
@@ -456,21 +453,19 @@ func BuildWebhookManifest(validatingWebhookConfigurationName, mutatingWebhookCon
 		})
 
 	m := &WebhookManifest{
-		Service:      svc,
-		OtherObjects: manifests,
+		Service:        svc,
+		OtherObjects:   manifests,
+		WebhookConfigs: webhookConfigs,
 	}
 	m.Normalize()
 	return m, nil
 }
 
-func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName string,
-	webhookConfigs []Config, mgr manager.Manager, nocacheClient client.Client) error {
+func register(manifest *WebhookManifest, mgr manager.Manager, nocacheClient client.Client) error {
 	ctx := context.TODO()
 
-	manifest, err := BuildWebhookManifest(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName, webhookConfigs)
-	if err != nil {
-		return fmt.Errorf("error building webhook manifests: %w", err)
-	}
+	serviceName := manifest.Service.Name
+	webhookConfigs := manifest.WebhookConfigs
 
 	writerOpts := writer.SecretCertWriterOptions{
 		Client: nocacheClient,
