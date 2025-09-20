@@ -15,37 +15,75 @@
 package webhook
 
 import (
+	"os"
+	"os/exec"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
-func TestCommonWebhookManifest(t *testing.T) {
-	webhookManifest, err := BuildCommonWebhooks()
+func TestWebhookManifests(t *testing.T) {
+	commonManifest, err := BuildCommonWebhooks()
 	if err != nil {
 		t.Fatalf("error building common webhooks: %v", err)
 	}
 
-	got, err := webhookManifest.ToYAML()
-	if err != nil {
-		t.Fatalf("error converting manifest to yaml: %v", err)
-	}
-
-	p := filepath.Join("testdata", "webhooks", "common", "manifest.yaml")
-	test.CompareGoldenFile(t, p, got)
-}
-
-func TestAbandonOnUninstallWebhookManifest(t *testing.T) {
-	webhookManifest, err := BuildAbandonOnUninstallWebhookManifest()
+	abandonOnUninstallManifest, err := BuildAbandonOnUninstallWebhookManifest()
 	if err != nil {
 		t.Fatalf("error building abandon on uninstall webhook manifest: %v", err)
 	}
 
-	got, err := webhookManifest.ToYAML()
-	if err != nil {
-		t.Fatalf("error converting manifest to yaml: %v", err)
+	var allObjects []*unstructured.Unstructured
+	{
+		objects, err := commonManifest.ToUnstructured()
+		if err != nil {
+			t.Fatalf("error converting common manifest to unstructured: %v", err)
+		}
+		allObjects = append(allObjects, objects...)
 	}
-	p := filepath.Join("testdata", "webhooks", "abandon-on-uninstall", "manifest.yaml")
-	test.CompareGoldenFile(t, p, got)
+	{
+		objects, err := abandonOnUninstallManifest.ToUnstructured()
+		if err != nil {
+			t.Fatalf("error converting abandon on uninstall manifest to unstructured: %v", err)
+		}
+		allObjects = append(allObjects, objects...)
+	}
+
+	repoRoot := repoRoot(t)
+
+	version := ""
+	{
+		b, err := os.ReadFile(filepath.Join(repoRoot, "version", "VERSION"))
+		if err != nil {
+			t.Fatalf("error reading version file: %v", err)
+		}
+		version = string(b)
+		version = strings.TrimSpace(version)
+	}
+
+	got, err := ObjectsToYAML(allObjects)
+	if err != nil {
+		t.Fatalf("error from ObjectsToYAML: %v", err)
+	}
+
+	for _, channels := range []string{"channels", "autopilot-channels"} {
+		for _, version := range []string{version} {
+			p := filepath.Join(repoRoot, "operator", channels, "packages", "configconnector", version, "webhooks.yaml")
+
+			test.CompareGoldenFile(t, p, got)
+		}
+	}
+}
+
+func repoRoot(t *testing.T) string {
+	cmd := exec.Command("git", "rev-parse", "--show-toplevel")
+	output, err := cmd.Output()
+	if err != nil {
+		t.Fatalf("error getting repo root: %v", err)
+	}
+	repoRoot := strings.TrimSpace(string(output))
+	return repoRoot
 }
