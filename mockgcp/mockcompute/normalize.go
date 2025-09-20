@@ -53,9 +53,6 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		replacements.ReplacePath(prefix+".fingerprint", PlaceholderFingerprint)
 		replacements.ReplacePath(prefix+".id", PlaceholderID)
 	}
-
-	// Routes
-	// replacements.ReplacePath(".items[].id", PlaceholderID)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
