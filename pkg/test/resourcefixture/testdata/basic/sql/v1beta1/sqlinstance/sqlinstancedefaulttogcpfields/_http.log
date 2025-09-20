@@ -1,4 +1,4 @@
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-direct-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-default-gcp-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -34,10 +34,14 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 {
   "databaseVersion": "POSTGRES_15",
   "kind": "sql#instance",
-  "name": "sqlinstance-activationpolicy-direct-${uniqueId}",
+  "name": "sqlinstance-default-gcp-${uniqueId}",
   "region": "us-central1",
   "settings": {
-    "activationPolicy": "ALWAYS",
+    "dataDiskSizeGb": "10",
+    "dataDiskType": "PD_SSD",
+    "ipConfiguration": {
+      "ipv4Enabled": true
+    },
     "kind": "sql#settings",
     "locationPreference": {
       "kind": "sql#locationPreference",
@@ -68,8 +72,8 @@ X-Xss-Protection: 0
   "operationType": "CREATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "sqlinstance-activationpolicy-direct-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-direct-${uniqueId}",
+  "targetId": "sqlinstance-default-gcp-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-default-gcp-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -98,15 +102,15 @@ X-Xss-Protection: 0
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "sqlinstance-activationpolicy-direct-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-direct-${uniqueId}",
+  "targetId": "sqlinstance-default-gcp-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-default-gcp-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-direct-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-default-gcp-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -121,7 +125,7 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlinstance-activationpolicy-direct-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-default-gcp-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseInstalledVersion": "POSTGRES_15_7",
   "databaseVersion": "POSTGRES_15",
@@ -147,23 +151,22 @@ X-Xss-Protection: 0
   ],
   "kind": "sql#instance",
   "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
-  "name": "sqlinstance-activationpolicy-direct-${uniqueId}",
+  "name": "sqlinstance-default-gcp-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-direct-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-default-gcp-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlinstance-activationpolicy-direct-${uniqueId}",
+    "instance": "sqlinstance-default-gcp-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
-    "activationPolicy": "ALWAYS",
     "authorizedGaeApplications": [],
     "backupConfiguration": {
       "backupRetentionSettings": {
@@ -215,7 +218,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-direct-${uniqueId}/users?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-default-gcp-${uniqueId}/users?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -233,7 +236,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
-      "instance": "sqlinstance-activationpolicy-direct-${uniqueId}",
+      "instance": "sqlinstance-default-gcp-${uniqueId}",
       "kind": "sql#user",
       "name": "postgres",
       "passwordPolicy": {
@@ -247,7 +250,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-direct-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-default-gcp-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -262,7 +265,7 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlinstance-activationpolicy-direct-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-default-gcp-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseInstalledVersion": "POSTGRES_15_7",
   "databaseVersion": "POSTGRES_15",
@@ -288,23 +291,22 @@ X-Xss-Protection: 0
   ],
   "kind": "sql#instance",
   "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
-  "name": "sqlinstance-activationpolicy-direct-${uniqueId}",
+  "name": "sqlinstance-default-gcp-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-direct-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-default-gcp-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlinstance-activationpolicy-direct-${uniqueId}",
+    "instance": "sqlinstance-default-gcp-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
-    "activationPolicy": "ALWAYS",
     "authorizedGaeApplications": [],
     "backupConfiguration": {
       "backupRetentionSettings": {
@@ -356,17 +358,16 @@ X-Xss-Protection: 0
 
 ---
 
-PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-direct-${uniqueId}?alt=json&prettyPrint=false
+PUT https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-default-gcp-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "databaseVersion": "POSTGRES_15",
   "kind": "sql#instance",
-  "name": "sqlinstance-activationpolicy-direct-${uniqueId}",
+  "name": "sqlinstance-default-gcp-${uniqueId}",
   "region": "us-central1",
   "settings": {
-    "activationPolicy": "NEVER",
     "backupConfiguration": {
       "backupRetentionSettings": {
         "retainedBackups": 7,
@@ -376,6 +377,12 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
+    },
+    "dataDiskSizeGb": "11",
+    "dataDiskType": "PD_SSD",
+    "ipConfiguration": {
+      "ipv4Enabled": true,
+      "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
     "locationPreference": {
@@ -408,8 +415,8 @@ X-Xss-Protection: 0
   "operationType": "UPDATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "sqlinstance-activationpolicy-direct-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-direct-${uniqueId}",
+  "targetId": "sqlinstance-default-gcp-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-default-gcp-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -438,15 +445,15 @@ X-Xss-Protection: 0
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "sqlinstance-activationpolicy-direct-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-direct-${uniqueId}",
+  "targetId": "sqlinstance-default-gcp-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-default-gcp-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-direct-${uniqueId}?alt=json&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-default-gcp-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -461,7 +468,7 @@ X-Xss-Protection: 0
 
 {
   "backendType": "SECOND_GEN",
-  "connectionName": "${projectId}:us-central1:sqlinstance-activationpolicy-direct-${uniqueId}",
+  "connectionName": "${projectId}:us-central1:sqlinstance-default-gcp-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseInstalledVersion": "POSTGRES_15_7",
   "databaseVersion": "POSTGRES_15",
@@ -486,23 +493,22 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "name": "sqlinstance-activationpolicy-direct-${uniqueId}",
+  "name": "sqlinstance-default-gcp-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
-  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-direct-${uniqueId}",
+  "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-default-gcp-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
     "certSerialNumber": "0",
     "commonName": "common-name",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "expirationTime": "2024-04-01T12:34:56.123456Z",
-    "instance": "sqlinstance-activationpolicy-direct-${uniqueId}",
+    "instance": "sqlinstance-default-gcp-${uniqueId}",
     "kind": "sql#sslCert",
     "sha1Fingerprint": "12345678"
   },
   "serviceAccountEmailAddress": "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com",
   "settings": {
-    "activationPolicy": "NEVER",
     "authorizedGaeApplications": [],
     "backupConfiguration": {
       "backupRetentionSettings": {
@@ -517,7 +523,7 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
-    "dataDiskSizeGb": "10",
+    "dataDiskSizeGb": "11",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
     "ipConfiguration": {
@@ -555,7 +561,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-direct-${uniqueId}?alt=json&prettyPrint=false
+DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-default-gcp-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -575,8 +581,8 @@ X-Xss-Protection: 0
   "operationType": "DELETE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "sqlinstance-activationpolicy-direct-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-direct-${uniqueId}",
+  "targetId": "sqlinstance-default-gcp-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-default-gcp-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -605,8 +611,8 @@ X-Xss-Protection: 0
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "sqlinstance-activationpolicy-direct-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-direct-${uniqueId}",
+  "targetId": "sqlinstance-default-gcp-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-default-gcp-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
