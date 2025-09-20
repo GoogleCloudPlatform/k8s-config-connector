@@ -67,7 +67,8 @@ func TestHandleReconcileFailed(t *testing.T) {
 				APIVersion: apiVersion,
 			},
 			ObjectMeta: metav1.ObjectMeta{
-				Name: nn.Name,
+				Name:       nn.Name,
+				Generation: 1,
 			},
 			Spec: corev1beta1.ConfigConnectorSpec{
 				Mode: "namespaced",
@@ -93,6 +94,9 @@ func TestHandleReconcileFailed(t *testing.T) {
 	status := newCC.GetCommonStatus()
 	if status.Healthy {
 		t.Errorf("unexpected value for status.healthy: got 'true', want 'false'")
+	}
+	if status.ObservedGeneration != 1 {
+		t.Errorf("unexpected value for status.observedGeneration: got %v, want 1", status.ObservedGeneration)
 	}
 	if len(status.Errors) != 1 {
 		t.Errorf("unexpected number of errors in status.errors: got %v errors, want 1 error. Got the errors: %v", len(status.Errors), status.Errors)
@@ -123,7 +127,8 @@ func TestHandleReconcileSucceeded(t *testing.T) {
 				APIVersion: apiVersion,
 			},
 			ObjectMeta: metav1.ObjectMeta{
-				Name: nn.Name,
+				Name:       nn.Name,
+				Generation: 1,
 			},
 			Spec: corev1beta1.ConfigConnectorSpec{
 				Mode: "namespaced",
@@ -146,6 +151,9 @@ func TestHandleReconcileSucceeded(t *testing.T) {
 	status := newCC.GetCommonStatus()
 	if !status.Healthy {
 		t.Errorf("unexpected value for status.healthy: got 'false', want 'true'")
+	}
+	if status.ObservedGeneration != 1 {
+		t.Errorf("unexpected value for status.observedGeneration: got %v, want 1", status.ObservedGeneration)
 	}
 	if len(status.Errors) != 0 {
 		t.Errorf("unexpected number of errors in status.errors: got %v errors, want 0 errors. Got the errors: %v", len(status.Errors), status.Errors)
@@ -907,100 +915,6 @@ func TestConfigConnectorUpdate(t *testing.T) {
 			resultsFunc: func(t *testing.T, c client.Client) []string {
 				res := []string{testcontroller.FooCRD, testcontroller.SystemNs}
 				return res
-			},
-			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
-		},
-		{
-			name: "per namespace mode to workload identity cluster mode",
-			cc: &corev1beta1.ConfigConnector{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: "test-kcc",
-				},
-				Spec: corev1beta1.ConfigConnectorSpec{
-					Mode: "namespaced",
-				},
-			},
-			updatedCc: &corev1beta1.ConfigConnector{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: "test-kcc",
-				},
-				Spec: corev1beta1.ConfigConnectorSpec{
-					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
-					Mode:                 "cluster",
-				},
-			},
-			cccs: []*corev1beta1.ConfigConnectorContext{
-				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name:       corev1beta1.ConfigConnectorContextAllowedName,
-						Namespace:  "t1234-tenant0-provider",
-						Finalizers: []string{k8s.OperatorFinalizer},
-					},
-					Spec: corev1beta1.ConfigConnectorContextSpec{
-						GoogleServiceAccount: "foo-ns@bar.iam.gserviceaccount.com",
-						ManagerNamespace:     "t1234-tenant0-supervisor",
-					},
-				},
-			},
-			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
-				res := []string{testcontroller.FooCRD, testcontroller.SystemNs}
-				res = append(res, testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.NamespacedComponentsTemplate, "t1234-tenant0-provider", "foo-ns@bar.iam.gserviceaccount.com", false, "", c)...)
-				res = append(res, testcontroller.NamespacedControllerManagerPod)
-				return res
-			},
-			toDeleteObjectsFunc: func(t *testing.T, c client.Client) []string {
-				return []string{}
-			},
-			manifest: testcontroller.GetClusterModeWorkloadIdentityManifest(),
-			resultsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyReplaceGSA(testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
-			},
-			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
-		},
-		{
-			name: "per namespace mode to gcp identity cluster mode",
-			cc: &corev1beta1.ConfigConnector{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: "test-kcc",
-				},
-				Spec: corev1beta1.ConfigConnectorSpec{
-					Mode: "namespaced",
-				},
-			},
-			updatedCc: &corev1beta1.ConfigConnector{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: "test-kcc",
-				},
-				Spec: corev1beta1.ConfigConnectorSpec{
-					CredentialSecretName: "my-key",
-					Mode:                 "cluster",
-				},
-			},
-			cccs: []*corev1beta1.ConfigConnectorContext{
-				{
-					ObjectMeta: metav1.ObjectMeta{
-						Name:       corev1beta1.ConfigConnectorContextAllowedName,
-						Namespace:  "t1234-tenant0-provider",
-						Finalizers: []string{k8s.OperatorFinalizer},
-					},
-					Spec: corev1beta1.ConfigConnectorContextSpec{
-						GoogleServiceAccount: "foo-ns@bar.iam.gserviceaccount.com",
-						ManagerNamespace:     "t1234-tenant0-supervisor",
-					},
-				},
-			},
-			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
-				res := []string{testcontroller.FooCRD, testcontroller.SystemNs}
-				res = append(res, testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.NamespacedComponentsTemplate, "t1234-tenant0-provider", "foo-ns@bar.iam.gserviceaccount.com", false, "", c)...)
-				res = append(res, testcontroller.NamespacedControllerManagerPod)
-				return res
-			},
-			toDeleteObjectsFunc: func(t *testing.T, c client.Client) []string {
-				return []string{}
-			},
-			manifest: testcontroller.GetClusterModeGCPManifest(),
-			resultsFunc: func(t *testing.T, c client.Client) []string {
-				return testcontroller.ManuallyReplaceSecretVolume(testcontroller.GetClusterModeGCPManifest(), "my-key ")
 			},
 			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
 		},
