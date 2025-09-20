@@ -19,8 +19,9 @@ import (
 	"os"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kompanion/cmd/export"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kompanion/cmd/summary"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kompanion/cmd/lint"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kompanion/cmd/preview"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kompanion/cmd/summary"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/kompanion/pkg/version"
 	"github.com/spf13/cobra"
 )
@@ -34,6 +35,7 @@ func BuildRootCommand() *cobra.Command {
 	rootCmd.AddCommand(export.BuildExportCmd())
 	rootCmd.AddCommand(summary.BuildSummaryCmd())
 	rootCmd.AddCommand(lint.BuildLintCmd())
+	rootCmd.AddCommand(preview.BuildPreviewCmd())
 
 	rootCmd.Version = version.GetVersion()
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
