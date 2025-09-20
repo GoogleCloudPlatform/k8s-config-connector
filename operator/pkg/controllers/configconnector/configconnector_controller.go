@@ -136,6 +136,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 		declarative.WithObjectTransform(r.handleConfigConnectorLifecycle()),
 		declarative.WithObjectTransform(r.installV1Beta1CRDsOnly()),
 		declarative.WithObjectTransform(r.applyCustomizations()),
+		declarative.WithObjectTransform(r.injectWebhookCertificates(r.client)),
 		declarative.WithStatus(&declarative.StatusBuilder{
 			PreflightImpl: preflight,
 		}),
