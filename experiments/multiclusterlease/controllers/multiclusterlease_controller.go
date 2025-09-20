@@ -24,6 +24,7 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/predicate"
 
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multiclusterlease/api/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/experiments/multiclusterlease/pkg/leaderelection"
@@ -81,6 +82,8 @@ func (r *MultiClusterLeaseReconciler) Reconcile(ctx context.Context, req ctrl.Re
 
 	// TODO: validate MCL
 
+	// log.Info("debug", "spec", mcl.Spec, "status", mcl.Status)
+
 	// Handle deletion
 	if !mcl.GetDeletionTimestamp().IsZero() {
 		return r.handleDeletion(ctx, &mcl)
@@ -92,7 +95,7 @@ func (r *MultiClusterLeaseReconciler) Reconcile(ctx context.Context, req ctrl.Re
 	}
 
 	// Get or create the LeaderElector for this lease
-	leaderElector, err := r.getOrCreateLeaderElector(req.NamespacedName.String(), &mcl)
+	leaderElector, err := r.getOrCreateLeaderElector(req.NamespacedName.String())
 	if err != nil {
 		log.Error(err, "failed to get or create leaderelector")
 		return ctrl.Result{}, err
@@ -106,7 +109,7 @@ func (r *MultiClusterLeaseReconciler) Reconcile(ctx context.Context, req ctrl.Re
 	identity := *mcl.Spec.HolderIdentity
 
 	// Try to acquire or renew the lease in GCS
-	leaseInfo, err := leaderElector.AcquireOrRenew(ctx, identity)
+	leaseInfo, err := leaderElector.AcquireOrRenew(ctx, &mcl, identity)
 	if err != nil {
 		log.Error(err, "failed to acquire or renew lease",
 			"candidate", identity,
@@ -271,7 +274,7 @@ func (r *MultiClusterLeaseReconciler) calculateRequeueAfter(mcl *v1alpha1.MultiC
 }
 
 // getOrCreateLeaderElector gets an existing LeaderElector for the given lease or creates a new one
-func (r *MultiClusterLeaseReconciler) getOrCreateLeaderElector(key string, lease *v1alpha1.MultiClusterLease) (*leaderelection.LeaderElector, error) {
+func (r *MultiClusterLeaseReconciler) getOrCreateLeaderElector(key string) (*leaderelection.LeaderElector, error) {
 	r.leaderElectorsMutex.Lock()
 	defer r.leaderElectorsMutex.Unlock()
 
@@ -284,7 +287,7 @@ func (r *MultiClusterLeaseReconciler) getOrCreateLeaderElector(key string, lease
 	}
 
 	// Create a new LeaderElector
-	le := leaderelection.NewLeaderElector(r.GCSClient, r.BucketName, key, lease)
+	le := leaderelection.NewLeaderElector(r.GCSClient, r.BucketName, key)
 	r.leaderElectors[key] = le
 	return le, nil
 }
@@ -292,7 +295,6 @@ func (r *MultiClusterLeaseReconciler) getOrCreateLeaderElector(key string, lease
 func (r *MultiClusterLeaseReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&v1alpha1.MultiClusterLease{}).
+		WithEventFilter(predicate.GenerationChangedPredicate{}).
 		Complete(r)
-
-	// TODO: add a predicate to filter out status updates
 }
