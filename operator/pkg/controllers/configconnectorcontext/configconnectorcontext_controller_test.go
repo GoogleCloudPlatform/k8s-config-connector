@@ -1128,7 +1128,7 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 			expectedCustomizationCRStatus: customizev1beta1.NamespacedControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy:            true,
-					ObservedGeneration: 0,
+					ObservedGeneration: 1,
 				},
 			},
 		},
@@ -1141,7 +1141,7 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy:            false,
 					Errors:             []string{testcontroller.ErrNonExistingController},
-					ObservedGeneration: 0,
+					ObservedGeneration: 1,
 				},
 			},
 		},
@@ -1154,7 +1154,7 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy:            false,
 					Errors:             []string{testcontroller.ErrNonExistingContainer},
-					ObservedGeneration: 0,
+					ObservedGeneration: 1,
 				},
 			},
 		},

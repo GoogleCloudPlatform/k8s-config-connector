@@ -29,8 +29,27 @@ import (
 var (
 	ControllerResourceCRForControllerManagerResources = &customizev1beta1.ControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:       "cnrm-controller-manager",
-			Generation: 1,
+			Name: "cnrm-controller-manager",
+		},
+		Spec: customizev1beta1.ControllerResourceSpec{
+			Containers: []customizev1beta1.ContainerResourceSpec{
+				{
+					Name: "manager",
+					Resources: customizev1beta1.ResourceRequirements{
+						Limits: corev1.ResourceList{
+							corev1.ResourceCPU: resource.MustParse("400m"),
+						},
+						Requests: corev1.ResourceList{
+							corev1.ResourceMemory: resource.MustParse("512Mi"),
+						},
+					},
+				},
+			},
+		},
+	}
+	ControllerResourceCRForObservedControllerManagerResources = &customizev1beta1.ControllerResource{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: "cnrm-controller-manager",
 		},
 		Spec: customizev1beta1.ControllerResourceSpec{
 			Containers: []customizev1beta1.ContainerResourceSpec{
@@ -50,8 +69,7 @@ var (
 	}
 	ControllerResourceCRForControllerManagerReplicas = &customizev1beta1.ControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:       "cnrm-controller-manager",
-			Generation: 1,
+			Name: "cnrm-controller-manager",
 		},
 		Spec: customizev1beta1.ControllerResourceSpec{
 			Replicas: proto.Int64(int64(4)),
@@ -68,8 +86,7 @@ var (
 	}
 	ControllerResourceCRForWebhookManagerResourcesAndReplicas = &customizev1beta1.ControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:       "cnrm-webhook-manager",
-			Generation: 1,
+			Name: "cnrm-webhook-manager",
 		},
 		Spec: customizev1beta1.ControllerResourceSpec{
 			Replicas: proto.Int64(int64(4)),
@@ -90,8 +107,7 @@ var (
 	}
 	ControllerResourceCRForWebhookManagerWithLargeReplicas = &customizev1beta1.ControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:       "cnrm-webhook-manager",
-			Generation: 1,
+			Name: "cnrm-webhook-manager",
 		},
 		Spec: customizev1beta1.ControllerResourceSpec{
 			Replicas: proto.Int64(int64(30)), // this value is larger than the default value of "maxReplicas" of HPA in KCC's manifests
@@ -112,9 +128,8 @@ var (
 	}
 	NamespacedControllerResourceCRForControllerManagerResources = &customizev1beta1.NamespacedControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:       "cnrm-controller-manager",
-			Namespace:  "foo-ns",
-			Generation: 1,
+			Name:      "cnrm-controller-manager",
+			Namespace: "foo-ns",
 		},
 		Spec: customizev1beta1.NamespacedControllerResourceSpec{
 			Containers: []customizev1beta1.ContainerResourceSpec{
@@ -134,9 +149,8 @@ var (
 	}
 	NamespacedControllerReconcilerCR = &customizev1beta1.NamespacedControllerReconciler{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:       "cnrm-controller-manager",
-			Namespace:  "foo-ns",
-			Generation: 1,
+			Name:      "cnrm-controller-manager",
+			Namespace: "foo-ns",
 		},
 		Spec: customizev1beta1.NamespacedControllerReconcilerSpec{
 			RateLimit: &customizev1beta1.RateLimit{
@@ -147,8 +161,7 @@ var (
 	}
 	ControllerReconcilerCR = &customizev1beta1.ControllerReconciler{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:       "cnrm-controller-manager",
-			Generation: 1,
+			Name: "cnrm-controller-manager",
 		},
 		Spec: customizev1beta1.ControllerReconcilerSpec{
 			RateLimit: &customizev1beta1.RateLimit{
@@ -163,8 +176,7 @@ var (
 	nonExistingControllerName                    = "controller-does-not-exist"
 	ControllerResourceCRForNonExistingController = &customizev1beta1.ControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:       nonExistingControllerName,
-			Generation: 1,
+			Name: nonExistingControllerName,
 		},
 		Spec: customizev1beta1.ControllerResourceSpec{
 			Containers: []customizev1beta1.ContainerResourceSpec{},
@@ -172,9 +184,8 @@ var (
 	}
 	NamespacedControllerResourceCRForNonExistingController = &customizev1beta1.NamespacedControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:       nonExistingControllerName,
-			Namespace:  "foo-ns",
-			Generation: 1,
+			Name:      nonExistingControllerName,
+			Namespace: "foo-ns",
 		},
 		Spec: customizev1beta1.NamespacedControllerResourceSpec{
 			Containers: []customizev1beta1.ContainerResourceSpec{},
@@ -187,8 +198,7 @@ var (
 	nonExistingContainerName                    = "recorder" // there is no "recorder" container in "cnrm-controller-manager".
 	ControllerResourceCRForNonExistingContainer = &customizev1beta1.ControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:       "cnrm-controller-manager",
-			Generation: 1,
+			Name: "cnrm-controller-manager",
 		},
 		Spec: customizev1beta1.ControllerResourceSpec{
 			Containers: []customizev1beta1.ContainerResourceSpec{
@@ -200,9 +210,8 @@ var (
 	}
 	NamespacedControllerResourceCRForNonExistingContainer = &customizev1beta1.NamespacedControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:       "cnrm-controller-manager",
-			Namespace:  "foo-ns",
-			Generation: 1,
+			Name:      "cnrm-controller-manager",
+			Namespace: "foo-ns",
 		},
 		Spec: customizev1beta1.NamespacedControllerResourceSpec{
 			Containers: []customizev1beta1.ContainerResourceSpec{
@@ -218,8 +227,7 @@ var (
 var (
 	ControllerResourceCRForDuplicatedContainer = &customizev1beta1.ControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:       "cnrm-controller-manager",
-			Generation: 1,
+			Name: "cnrm-controller-manager",
 		},
 		Spec: customizev1beta1.ControllerResourceSpec{
 			Containers: []customizev1beta1.ContainerResourceSpec{
@@ -241,9 +249,8 @@ var (
 var (
 	NamespacedControllerResourceCRWrongNamespace = &customizev1beta1.NamespacedControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:       "cnrm-controller-manager",
-			Namespace:  "does-not-match",
-			Generation: 1,
+			Name:      "cnrm-controller-manager",
+			Namespace: "does-not-match",
 		},
 		Spec: customizev1beta1.NamespacedControllerResourceSpec{
 			Containers: []customizev1beta1.ContainerResourceSpec{
@@ -263,9 +270,8 @@ var (
 	}
 	NamespacedControllerReconcilerCRWrongNamespace = &customizev1beta1.NamespacedControllerReconciler{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:       "cnrm-controller-manager",
-			Namespace:  "does-not-match",
-			Generation: 1,
+			Name:      "cnrm-controller-manager",
+			Namespace: "does-not-match",
 		},
 		Spec: customizev1beta1.NamespacedControllerReconcilerSpec{
 			RateLimit: &customizev1beta1.RateLimit{
@@ -279,8 +285,7 @@ var (
 var (
 	ValidatingWebhookCRForDuplicatedWebhook = &customizev1beta1.ValidatingWebhookConfigurationCustomization{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:       "validating-webhook",
-			Generation: 1,
+			Name: "validating-webhook",
 		},
 		Spec: customizev1beta1.WebhookConfigurationCustomizationSpec{
 			Webhooks: []customizev1beta1.WebhookCustomizationSpec{
@@ -298,8 +303,7 @@ var (
 	}
 	MutatingWebhookCRForDuplicatedWebhook = &customizev1beta1.MutatingWebhookConfigurationCustomization{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:       "mutating-webhook",
-			Generation: 1,
+			Name: "mutating-webhook",
 		},
 		Spec: customizev1beta1.WebhookConfigurationCustomizationSpec{
 			Webhooks: []customizev1beta1.WebhookCustomizationSpec{
@@ -323,9 +327,8 @@ var (
 	unsupportedControllerName                                = "cnrm-webhook-manager" // a valid KCC controller but its rate limit customization is not currently supported.
 	NamespacedControllerReconcilerCRForUnsupportedController = &customizev1beta1.NamespacedControllerReconciler{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:       unsupportedControllerName,
-			Namespace:  "foo-ns",
-			Generation: 1,
+			Name:      unsupportedControllerName,
+			Namespace: "foo-ns",
 		},
 		Spec: customizev1beta1.NamespacedControllerReconcilerSpec{
 			RateLimit: &customizev1beta1.RateLimit{
@@ -336,8 +339,7 @@ var (
 	}
 	ControllerReconcilerCRForUnsupportedController = &customizev1beta1.ControllerReconciler{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:       unsupportedControllerName,
-			Generation: 1,
+			Name: unsupportedControllerName,
 		},
 		Spec: customizev1beta1.ControllerReconcilerSpec{
 			RateLimit: &customizev1beta1.RateLimit{
