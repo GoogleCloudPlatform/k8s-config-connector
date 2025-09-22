@@ -71,7 +71,6 @@ func (s *TagBindingsServer) CreateTagBinding(ctx context.Context, req *pb.Create
 	}
 
 	obj.Name = fmt.Sprintf("tagBindings/%s/tagValues/%s", url.PathEscape(obj.Parent), strings.TrimPrefix(tagValue.Name, "tagValues/"))
-	fmt.Printf("+++++++ Create TagBinding name:+++++++++++++ %s", obj.Name)
 
 	fqn := obj.Name
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
