@@ -582,8 +582,9 @@ func (r *Reconciler) handleApplyNamespacedControllerResourceFailed(ctx context.C
 		return nil
 	}
 	cr.Status.CommonStatus = v1alpha1.CommonStatus{
-		Healthy: false,
-		Errors:  []string{msg},
+		Healthy:            false,
+		Errors:             []string{msg},
+		ObservedGeneration: cr.Generation,
 	}
 	return r.updateNamespacedControllerResourceStatus(ctx, cr)
 }
@@ -601,8 +602,9 @@ func (r *Reconciler) handleApplyNamespacedControllerResourceSucceeded(ctx contex
 		return nil
 	}
 	cr.SetCommonStatus(v1alpha1.CommonStatus{
-		Healthy: true,
-		Errors:  []string{},
+		Healthy:            true,
+		Errors:             []string{},
+		ObservedGeneration: cr.Generation,
 	})
 	return r.updateNamespacedControllerResourceStatus(ctx, cr)
 }
