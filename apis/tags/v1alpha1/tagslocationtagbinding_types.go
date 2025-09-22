@@ -37,9 +37,9 @@ type TagsLocationTagBindingSpec struct {
 	TagValueRef *refv1beta1.TagValueRef `json:"tagValueRef"`
 
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
-	// Immutable. The location of the target resource.
-	// +required
-	Location *string `json:"location"`
+	// Immutable. Optional. Examples: US, EU, asia-northeast1. The default value is US.
+	Location *string `json:"location,omitempty"`
+
 	// Immutable. Optional.
 	// The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`

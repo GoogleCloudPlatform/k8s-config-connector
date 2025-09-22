@@ -75,7 +75,7 @@ func NewTagsLocationTagBindingIdentity(ctx context.Context, reader client.Reader
 	// Get desired Location
 	location := common.ValueOf(obj.Spec.Location)
 	if location == "" {
-		return nil, fmt.Errorf("cannot resolve location")
+		location = "us"
 	}
 
 	// Use approved External

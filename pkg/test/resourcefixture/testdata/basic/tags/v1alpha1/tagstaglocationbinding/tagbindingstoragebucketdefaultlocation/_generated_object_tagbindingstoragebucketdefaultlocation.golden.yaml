@@ -1,0 +1,26 @@
+apiVersion: tags.cnrm.cloud.google.com/v1alpha1
+kind: TagsLocationTagBinding
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: locationtagbinding-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  parentRef:
+    external: //storage.googleapis.com/projects/_/buckets/storagebucket-sample-${uniqueId}
+  tagValueRef:
+    name: tagstagvalue-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: tagBindings/%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Fstoragebucket-sample-${uniqueId}/tagValues/${tagValueID}
+  observedGeneration: 1
+  observedState: {}

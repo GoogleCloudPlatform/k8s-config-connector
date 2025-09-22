@@ -61,7 +61,8 @@ spec:
             description: TagsLocationTagBindingSpec defines the desired state of TagsLocationTagBinding
             properties:
               location:
-                description: Immutable. The location of the target resource.
+                description: 'Immutable. Optional. Examples: US, EU, asia-northeast1.
+                  The default value is US.'
                 type: string
                 x-kubernetes-validations:
                 - message: the field is immutable
@@ -139,7 +140,6 @@ spec:
                 - message: the field is immutable
                   rule: self == oldSelf
             required:
-            - location
             - parentRef
             - tagValueRef
             type: object
