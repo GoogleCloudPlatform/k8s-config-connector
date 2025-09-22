@@ -669,16 +669,18 @@ func (r *Reconciler) applyControllerResourceCR(ctx context.Context, cr *customiz
 
 func (r *Reconciler) handleApplyControllerResourceCRFailed(ctx context.Context, cr *customizev1beta1.ControllerResource, msg string) error {
 	cr.Status.CommonStatus = v1alpha1.CommonStatus{
-		Healthy: false,
-		Errors:  []string{msg},
+		Healthy:            false,
+		Errors:             []string{msg},
+		ObservedGeneration: cr.GetGeneration(),
 	}
 	return r.updateControllerResourceStatus(ctx, cr)
 }
 
 func (r *Reconciler) handleApplyControllerResourceCRSucceeded(ctx context.Context, cr *customizev1beta1.ControllerResource) error {
 	cr.SetCommonStatus(v1alpha1.CommonStatus{
-		Healthy: true,
-		Errors:  []string{},
+		Healthy:            true,
+		Errors:             []string{},
+		ObservedGeneration: cr.GetGeneration(),
 	})
 	return r.updateControllerResourceStatus(ctx, cr)
 }
