@@ -55,6 +55,10 @@ type NamespacedControllerResourceList struct {
 	Items           []NamespacedControllerResource `json:"items"`
 }
 
+func (c *NamespacedControllerResource) GetCommonStatus() addonv1alpha1.CommonStatus {
+	return c.Status.CommonStatus
+}
+
 func (c *NamespacedControllerResource) SetCommonStatus(s addonv1alpha1.CommonStatus) {
 	c.Status.CommonStatus = s
 }
