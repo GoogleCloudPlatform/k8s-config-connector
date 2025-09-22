@@ -1371,6 +1371,18 @@ func TestApplyCustomizations(t *testing.T) {
 			},
 		},
 		{
+			name:                         "customize the resources for cnrm-controller-manager and check observedGeneration",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForControllerManagerResources,
+			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedControllerManager,
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            true,
+					ObservedGeneration: 1,
+				},
+			},
+		},
+		{
 			name:                         "customize the resources and replica for cnrm-webhook-manager",
 			manifests:                    testcontroller.ClusterModeComponents,
 			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForWebhookManagerResourcesAndReplicas,
@@ -1504,8 +1516,12 @@ func TestApplyCustomizations(t *testing.T) {
 				t.Fatalf("unexpected error: %v", err)
 			}
 			gotStatus := updatedCR.Status
-			if !reflect.DeepEqual(gotStatus, tc.expectedCustomizationCRStatus) {
-				t.Fatalf("unexpected diff: %v", cmp.Diff(gotStatus, tc.expectedCustomizationCRStatus))
+			expectedStatus := tc.expectedCustomizationCRStatus
+			if expectedStatus.ObservedGeneration != 0 {
+				expectedStatus.ObservedGeneration = updatedCR.Generation
+			}
+			if !reflect.DeepEqual(gotStatus, expectedStatus) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(gotStatus, expectedStatus))
 			}
 		})
 	}
