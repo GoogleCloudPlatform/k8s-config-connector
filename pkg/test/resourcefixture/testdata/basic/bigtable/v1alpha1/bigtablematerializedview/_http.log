@@ -217,7 +217,7 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
   "view": "SCHEMA_VIEW"
 }
 
-error: rpc error: code = NotFound desc = Not found: projects/${projectId}/instances/mvdep${uniqueId}/tables/test-table
+error: rpc error: code = NotFound desc = Table not found: projects/${projectId}/instances/mvdep${uniqueId}/tables/test-table
 
 {}
 
@@ -310,7 +310,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetMaterializedView
   "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = Failed to read: projects/{${projectNumber}}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}
+error: rpc error: code = NotFound desc = projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId} not found
 
 {}
 
@@ -332,7 +332,14 @@ OK
 {
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateMaterializedViewMetadata",
-    "originalRequest": {},
+    "originalRequest": {
+      "materializedView": {
+        "deletionProtection": true,
+        "query": "SELECT _key, COUNT(*) as count from test-table group by _key;"
+      },
+      "materializedViewId": "mv-${uniqueId}",
+      "parent": "projects/${projectId}/instances/mvdep${uniqueId}"
+    },
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}/locations/us-west1-a/operations/${operationID}"
@@ -353,7 +360,14 @@ OK
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateMaterializedViewMetadata",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "originalRequest": {},
+    "originalRequest": {
+      "materializedView": {
+        "deletionProtection": true,
+        "query": "SELECT _key, COUNT(*) as count from test-table group by _key;"
+      },
+      "materializedViewId": "mv-${uniqueId}",
+      "parent": "projects/${projectId}/instances/mvdep${uniqueId}"
+    },
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}/locations/us-west1-a/operations/${operationID}",
@@ -415,35 +429,16 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateMaterializedView
 OK
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateMaterializedViewMetadata",
-    "originalRequest": {
-      "materializedView": {},
-      "updateMask": ""
-    },
-    "startTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}/locations/us-west1-a/operations/${operationID}"
-}
-
----
-
-GRPC /google.longrunning.Operations/GetOperation
-
-{
-  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}/locations/us-west1-a/operations/${operationID}"
-}
-
-OK
-
-{
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateMaterializedViewMetadata",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "originalRequest": {
-      "materializedView": {},
-      "updateMask": ""
+      "materializedView": {
+        "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}",
+        "query": "SELECT _key, COUNT(*) as count from test-table group by _key;"
+      },
+      "updateMask": "query,deletionProtection"
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
