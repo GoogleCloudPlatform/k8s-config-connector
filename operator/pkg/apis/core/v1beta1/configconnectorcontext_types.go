@@ -90,6 +90,8 @@ type ConfigConnectorContextSpec struct {
 type Experiments struct {
 	// ControllerOverrides allows specifying which controller to use for a given
 	// resource kind within this namespace, overriding the system default.
+	// The format for the entries should follow the format as Kind.group :
+	// e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: direct
 	// +optional
 	ControllerOverrides map[string]k8scontrollertype.ReconcilerType `json:"controllerOverrides,omitempty"`
 }
