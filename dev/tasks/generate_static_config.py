@@ -73,11 +73,8 @@ def main():
             supported_controllers.add('k8s.ReconcilerTypeDirect')
         if is_dcl_resource:
             supported_controllers.add('k8s.ReconcilerTypeDCL')
-
-        # Add Terraform support if not a DCL-only resource.
-        if not is_dcl_resource or has_direct_controller or is_tf_resource:
-            if kind not in ('IAMPolicy', 'IAMPartialPolicy', 'IAMPolicyMember', 'IAMAuditConfig'):
-                supported_controllers.add('k8s.ReconcilerTypeTerraform')
+        if is_tf_resource:
+            supported_controllers.add('k8s.ReconcilerTypeTerraform')
 
         # Determine default controller
         if kind in ('IAMPolicy', 'IAMPartialPolicy', 'IAMPolicyMember', 'IAMAuditConfig'):
