@@ -83,25 +83,11 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 		return nil, err
 	}
 
-	metadata := &pb.OperationMetadata{
-		ApiVersion: "v1beta",
-		CreateTime: timestamppb.New(now),
-		Target:     fqn,
-		Verb:       "create",
-	}
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
-		metadata.EndTime = timestamppb.Now()
+	updatedObj := proto.Clone(obj).(*pb.Instance)
+	updatedObj.CreateTime = nil
+	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
 
-		obj.State = pb.Instance_ACTIVE
-
-		if err := r.storage.Update(ctx, fqn, obj); err != nil {
-			return nil, err
-		}
-
-		retObj := proto.Clone(obj).(*pb.Instance)
-		return retObj, nil
-	})
+	return r.operations.DoneLRO(ctx, prefix, nil, updatedObj)
 }
 
 func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb.Instance) error {
@@ -286,7 +272,7 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 	})
 }
 
-func (r *instanceServer) DeleteCluster(ctx context.Context, req *pb.DeleteInstanceRequest) (*longrunning.Operation, error) {
+func (r *instanceServer) DeleteInstance(ctx context.Context, req *pb.DeleteInstanceRequest) (*longrunning.Operation, error) {
 	name, err := r.parseInstanceName(req.Name)
 	if err != nil {
 		return nil, err
@@ -333,15 +319,15 @@ type instanceName struct {
 }
 
 func (n *instanceName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/clusters/" + n.Name
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/instances/" + n.Name
 }
 
-// parseClusterName parses a string into an clusterName.
-// The expected form is `projects/*/locations/*/clusters/*`.
+// parseInstanceName parses a string into an instance name.
+// The expected form is `projects/*/locations/*/instances/*`.
 func (r *instanceServer) parseInstanceName(name string) (*instanceName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "clusters" {
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "instances" {
 		project, err := r.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
