@@ -183,7 +183,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	}
 	uObj.SetNamespace(memberPolicy.GetNamespace())
 	uObj.SetName(memberPolicy.GetName())
-	uObj.SetGroupVersionKind(iamv1beta1.IAMPolicyGVK)
+	uObj.SetGroupVersionKind(iamv1beta1.IAMPolicyMemberGVK)
 	structuredreporting.ReportReconcileStart(ctx, uObj)
 	defer structuredreporting.ReportReconcileEnd(ctx, uObj, result, err)
 	requeue, err := reconcileContext.doReconcile(&memberPolicy)
