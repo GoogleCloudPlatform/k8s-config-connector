@@ -80,10 +80,9 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
     "apiVersion": "v1beta1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
     "verb": "create"
   },
@@ -109,7 +108,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
     "apiVersion": "v1beta1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
@@ -118,7 +117,7 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.AuthorizationPolicy",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.AuthorizationPolicy",
     "action": "ALLOW",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "A full authorization policy for testing",
@@ -282,10 +281,9 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
     "apiVersion": "v1beta1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
     "verb": "update"
   },
@@ -311,7 +309,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
     "apiVersion": "v1beta1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
@@ -320,7 +318,7 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.AuthorizationPolicy",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.AuthorizationPolicy",
     "action": "DENY",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "A full authorization policy for testing - updated",
@@ -443,10 +441,9 @@ X-Xss-Protection: 0
 
 {
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
     "apiVersion": "v1beta1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-full-${uniqueId}",
     "verb": "delete"
   },
@@ -472,7 +469,7 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1beta1.OperationMetadata",
     "apiVersion": "v1beta1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
