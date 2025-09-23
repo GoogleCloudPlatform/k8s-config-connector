@@ -1,6 +1,7 @@
-GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}?alt=json
+GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FauthorizationPolicies%2Fnetworksecurityauthorizationpolicy-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -22,19 +23,19 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies?alt=json&authorizationPolicyId=networksecurityauthorizationpolicy-${uniqueId}
+POST https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies?%24alt=json%3Benum-encoding%3Dint&authorizationPolicyId=networksecurityauthorizationpolicy-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
 
 {
-  "action": "ALLOW",
+  "action": 1,
   "description": "Test Authorization Policy",
   "labels": {
     "cnrm-test": "true",
     "key-one": "value-one",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/*/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}",
   "rules": [
     {
       "destinations": [
@@ -113,9 +114,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FauthorizationPolicies%2Fnetworksecurityauthorizationpolicy-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -128,101 +130,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
-    "apiVersion": "v1beta1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}",
-    "verb": "create"
-  },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.AuthorizationPolicy",
-    "action": "ALLOW",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "Test Authorization Policy",
-    "labels": {
-      "cnrm-test": "true",
-      "key-one": "value-one",
-      "managed-by-cnrm": "true"
-    },
-    "name": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}",
-    "rules": [
-      {
-        "destinations": [
-          {
-            "hosts": [
-              "demo-service"
-            ],
-            "methods": [
-              "POST"
-            ],
-            "ports": [
-              8080
-            ]
-          }
-        ],
-        "sources": [
-          {
-            "ipBlocks": [
-              "1.2.3.4"
-            ],
-            "principals": [
-              "*"
-            ]
-          }
-        ]
-      },
-      {
-        "destinations": [
-          {
-            "hosts": [
-              "test-service"
-            ],
-            "methods": [
-              "GET"
-            ],
-            "ports": [
-              8081
-            ]
-          }
-        ],
-        "sources": [
-          {
-            "ipBlocks": [
-              "1.2.3.5"
-            ],
-            "principals": [
-              "foo"
-            ]
-          }
-        ]
-      }
-    ],
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  }
-}
-
----
-
-GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "action": "ALLOW",
+  "action": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Test Authorization Policy",
   "labels": {
@@ -288,18 +196,20 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}?alt=json
+PATCH https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=rules
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: authorization_policy.name=projects%2F${projectId}%2Flocations%2Fglobal%2FauthorizationPolicies%2Fnetworksecurityauthorizationpolicy-${uniqueId}
 
 {
-  "action": "ALLOW",
+  "action": 1,
   "description": "Test Authorization Policy",
   "labels": {
     "cnrm-test": "true",
     "key-one": "value-one",
     "managed-by-cnrm": "true"
   },
+  "name": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}",
   "rules": [
     {
       "destinations": [
@@ -382,9 +292,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FauthorizationPolicies%2Fnetworksecurityauthorizationpolicy-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -397,105 +308,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
-    "apiVersion": "v1beta1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}",
-    "verb": "update"
-  },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.AuthorizationPolicy",
-    "action": "ALLOW",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "Test Authorization Policy",
-    "labels": {
-      "cnrm-test": "true",
-      "key-one": "value-one",
-      "managed-by-cnrm": "true"
-    },
-    "name": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}",
-    "rules": [
-      {
-        "destinations": [
-          {
-            "hosts": [
-              "localhost"
-            ],
-            "ports": [
-              80
-            ]
-          },
-          {
-            "hosts": [
-              "localhost"
-            ],
-            "ports": [
-              8080
-            ]
-          }
-        ],
-        "sources": [
-          {
-            "ipBlocks": [
-              "1.2.3.4"
-            ]
-          }
-        ]
-      },
-      {
-        "destinations": [
-          {
-            "hosts": [
-              "test-service-2",
-              "test-service"
-            ],
-            "methods": [
-              "GET"
-            ],
-            "ports": [
-              8081
-            ]
-          }
-        ],
-        "sources": [
-          {
-            "ipBlocks": [
-              "1.2.3.5"
-            ],
-            "principals": [
-              "foo",
-              "*"
-            ]
-          }
-        ]
-      }
-    ],
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  }
-}
-
----
-
-GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "action": "ALLOW",
+  "action": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Test Authorization Policy",
   "labels": {
@@ -565,9 +378,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}?alt=json
+DELETE https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FauthorizationPolicies%2Fnetworksecurityauthorizationpolicy-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -593,41 +407,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
-    "apiVersion": "v1beta1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}",
-    "verb": "delete"
-  },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
-}
-
----
-
-GET https://networksecurity.googleapis.com/v1beta1/projects/${projectId}/locations/global/authorizationPolicies/networksecurityauthorizationpolicy-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FauthorizationPolicies%2Fnetworksecurityauthorizationpolicy-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
