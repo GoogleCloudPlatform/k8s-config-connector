@@ -21,6 +21,7 @@ package compute
 
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
+	krmcomputev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -107,6 +108,86 @@ func ForwardingruleServiceDirectoryRegistrations_ToProto(mapCtx *direct.MapConte
 	// MISSING: ServiceDirectoryRegion
 	return out
 }
+func Interconnect_FromProto(mapCtx *direct.MapContext, in *pb.Interconnect) *krmcomputev1alpha1.Interconnect {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.Interconnect{}
+	// MISSING: AaiEnabled
+	out.AdminEnabled = in.AdminEnabled
+	// MISSING: ApplicationAwareInterconnect
+	out.AvailableFeatures = in.AvailableFeatures
+	out.CircuitInfos = direct.Slice_FromProto(mapCtx, in.CircuitInfos, InterconnectCircuitInfo_FromProto)
+	out.CreationTimestamp = in.CreationTimestamp
+	out.CustomerName = in.CustomerName
+	out.Description = in.Description
+	out.ExpectedOutages = direct.Slice_FromProto(mapCtx, in.ExpectedOutages, InterconnectOutageNotification_FromProto)
+	out.GoogleIPAddress = in.GoogleIpAddress
+	out.GoogleReferenceID = in.GoogleReferenceId
+	out.ID = in.Id
+	out.InterconnectAttachments = in.InterconnectAttachments
+	// MISSING: InterconnectGroups
+	out.InterconnectType = in.InterconnectType
+	out.Kind = in.Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	out.Labels = in.Labels
+	out.LinkType = in.LinkType
+	out.Location = in.Location
+	out.Macsec = InterconnectMacsec_FromProto(mapCtx, in.GetMacsec())
+	out.MacsecEnabled = in.MacsecEnabled
+	out.Name = in.Name
+	out.NocContactEmail = in.NocContactEmail
+	out.OperationalStatus = in.OperationalStatus
+	out.PeerIPAddress = in.PeerIpAddress
+	out.ProvisionedLinkCount = in.ProvisionedLinkCount
+	out.RemoteLocation = in.RemoteLocation
+	out.RequestedFeatures = in.RequestedFeatures
+	out.RequestedLinkCount = in.RequestedLinkCount
+	out.SatisfiesPzs = in.SatisfiesPzs
+	out.SelfLink = in.SelfLink
+	out.State = in.State
+	return out
+}
+func Interconnect_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.Interconnect) *pb.Interconnect {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Interconnect{}
+	// MISSING: AaiEnabled
+	out.AdminEnabled = in.AdminEnabled
+	// MISSING: ApplicationAwareInterconnect
+	out.AvailableFeatures = in.AvailableFeatures
+	out.CircuitInfos = direct.Slice_ToProto(mapCtx, in.CircuitInfos, InterconnectCircuitInfo_ToProto)
+	out.CreationTimestamp = in.CreationTimestamp
+	out.CustomerName = in.CustomerName
+	out.Description = in.Description
+	out.ExpectedOutages = direct.Slice_ToProto(mapCtx, in.ExpectedOutages, InterconnectOutageNotification_ToProto)
+	out.GoogleIpAddress = in.GoogleIPAddress
+	out.GoogleReferenceId = in.GoogleReferenceID
+	out.Id = in.ID
+	out.InterconnectAttachments = in.InterconnectAttachments
+	// MISSING: InterconnectGroups
+	out.InterconnectType = in.InterconnectType
+	out.Kind = in.Kind
+	out.LabelFingerprint = in.LabelFingerprint
+	out.Labels = in.Labels
+	out.LinkType = in.LinkType
+	out.Location = in.Location
+	out.Macsec = InterconnectMacsec_ToProto(mapCtx, in.Macsec)
+	out.MacsecEnabled = in.MacsecEnabled
+	out.Name = in.Name
+	out.NocContactEmail = in.NocContactEmail
+	out.OperationalStatus = in.OperationalStatus
+	out.PeerIpAddress = in.PeerIPAddress
+	out.ProvisionedLinkCount = in.ProvisionedLinkCount
+	out.RemoteLocation = in.RemoteLocation
+	out.RequestedFeatures = in.RequestedFeatures
+	out.RequestedLinkCount = in.RequestedLinkCount
+	out.SatisfiesPzs = in.SatisfiesPzs
+	out.SelfLink = in.SelfLink
+	out.State = in.State
+	return out
+}
 func MetadataFilter_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFilter) *krm.MetadataFilter {
 	if in == nil {
 		return nil
@@ -141,5 +222,83 @@ func MetadataFilterLabelMatch_ToProto(mapCtx *direct.MapContext, in *krm.Metadat
 	out := &pb.MetadataFilterLabelMatch{}
 	out.Name = in.Name
 	out.Value = in.Value
+	return out
+}
+func NetworkAttachment_FromProto(mapCtx *direct.MapContext, in *pb.NetworkAttachment) *krmcomputev1alpha1.NetworkAttachment {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.NetworkAttachment{}
+	out.ConnectionEndpoints = direct.Slice_FromProto(mapCtx, in.ConnectionEndpoints, NetworkAttachmentConnectedEndpoint_FromProto)
+	out.ConnectionPreference = in.ConnectionPreference
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	out.ID = in.Id
+	out.Kind = in.Kind
+	out.Name = in.Name
+	out.Network = in.Network
+	out.ProducerAcceptLists = in.ProducerAcceptLists
+	out.ProducerRejectLists = in.ProducerRejectLists
+	out.Region = in.Region
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
+	out.Subnetworks = in.Subnetworks
+	return out
+}
+func NetworkAttachment_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.NetworkAttachment) *pb.NetworkAttachment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkAttachment{}
+	out.ConnectionEndpoints = direct.Slice_ToProto(mapCtx, in.ConnectionEndpoints, NetworkAttachmentConnectedEndpoint_ToProto)
+	out.ConnectionPreference = in.ConnectionPreference
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	out.Id = in.ID
+	out.Kind = in.Kind
+	out.Name = in.Name
+	out.Network = in.Network
+	out.ProducerAcceptLists = in.ProducerAcceptLists
+	out.ProducerRejectLists = in.ProducerRejectLists
+	out.Region = in.Region
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
+	out.Subnetworks = in.Subnetworks
+	return out
+}
+func NetworkEdgeSecurityService_FromProto(mapCtx *direct.MapContext, in *pb.NetworkEdgeSecurityService) *krmcomputev1alpha1.NetworkEdgeSecurityService {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.NetworkEdgeSecurityService{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	out.ID = in.Id
+	out.Kind = in.Kind
+	out.Name = in.Name
+	out.Region = in.Region
+	out.SecurityPolicy = in.SecurityPolicy
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithID = in.SelfLinkWithId
+	return out
+}
+func NetworkEdgeSecurityService_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.NetworkEdgeSecurityService) *pb.NetworkEdgeSecurityService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NetworkEdgeSecurityService{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.Description = in.Description
+	out.Fingerprint = in.Fingerprint
+	out.Id = in.ID
+	out.Kind = in.Kind
+	out.Name = in.Name
+	out.Region = in.Region
+	out.SecurityPolicy = in.SecurityPolicy
+	out.SelfLink = in.SelfLink
+	out.SelfLinkWithId = in.SelfLinkWithID
 	return out
 }
