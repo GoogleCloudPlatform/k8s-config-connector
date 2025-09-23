@@ -39,11 +39,10 @@ type BigtableAuthorizedViewSpec struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.subset_view
 	SubsetView *AuthorizedView_SubsetView `json:"subsetView,omitempty"`
 
-	// The etag for this AuthorizedView.
-	//  If this is provided on update, it must match the server's etag. The server
-	//  returns ABORTED error on a mismatched etag.
+	// NOTYET: not supported in Config Connector reconciliation
+	// The etag for this `AuthorizedView` resource.
 	// +kcc:proto:field=google.bigtable.admin.v2.AuthorizedView.etag
-	Etag *string `json:"etag,omitempty"`
+	// Etag *string `json:"etag,omitempty"`
 
 	// Set to true to make the AuthorizedView protected against deletion.
 	//  The parent Table and containing Instance cannot be deleted if an

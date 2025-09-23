@@ -231,11 +231,6 @@ spec:
                    is a backup plan that performs a daily backup at 6pm and retains data for 3
                    months". The description must be at most 2048 characters.
                 type: string
-              etag:
-                description: Optional. `etag` is returned from the service in the
-                  response. As a user of the service, you may provide an etag value
-                  in this field to prevent stale resources.
-                type: string
               labels:
                 additionalProperties:
                   type: string

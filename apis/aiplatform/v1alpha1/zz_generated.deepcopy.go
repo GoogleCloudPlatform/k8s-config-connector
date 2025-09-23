@@ -238,11 +238,6 @@ func (in *AIPlatformModelSpec) DeepCopyInto(out *AIPlatformModelSpec) {
 		*out = new(ExplanationSpec)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.Etag != nil {
-		in, out := &in.Etag, &out.Etag
-		*out = new(string)
-		**out = **in
-	}
 	if in.Labels != nil {
 		in, out := &in.Labels, &out.Labels
 		*out = make(map[string]string, len(*in))

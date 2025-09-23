@@ -38,6 +38,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -63,7 +64,7 @@ import (
 
 const controllerName = "iampolicymember-controller"
 
-var logger = log.Log.WithName(controllerName)
+var logger = log.Log.WithName(controllerName).WithValues("controllerType", "legacy/handrolled")
 
 // Add creates a new IAM Policy Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
 // and start it when the Manager is started.
@@ -175,6 +176,16 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 		Ctx:            ctx,
 		NamespacedName: request.NamespacedName,
 	}
+	uObj := &unstructured.Unstructured{}
+	uObj.Object, err = runtime.DefaultUnstructuredConverter.ToUnstructured(&memberPolicy)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+	uObj.SetNamespace(memberPolicy.GetNamespace())
+	uObj.SetName(memberPolicy.GetName())
+	uObj.SetGroupVersionKind(iamv1beta1.IAMPolicyGVK)
+	structuredreporting.ReportReconcileStart(ctx, uObj)
+	defer structuredreporting.ReportReconcileEnd(ctx, uObj, result, err)
 	requeue, err := reconcileContext.doReconcile(&memberPolicy)
 	if err != nil {
 		return reconcile.Result{}, err

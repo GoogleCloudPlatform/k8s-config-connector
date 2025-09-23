@@ -337,11 +337,6 @@ func (in *BigtableAuthorizedViewSpec) DeepCopyInto(out *BigtableAuthorizedViewSp
 		*out = new(AuthorizedView_SubsetView)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.Etag != nil {
-		in, out := &in.Etag, &out.Etag
-		*out = new(string)
-		**out = **in
-	}
 	if in.DeletionProtection != nil {
 		in, out := &in.DeletionProtection, &out.DeletionProtection
 		*out = new(bool)

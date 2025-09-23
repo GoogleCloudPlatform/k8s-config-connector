@@ -37,7 +37,6 @@ func featurestoreFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".satisfies_pzi") // NOTYET
 	f.UnimplementedFields.Insert(".satisfies_pzs") // NOTYET
 
-	f.SpecFields.Insert(".etag")
 	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".online_serving_config")
 	f.SpecFields.Insert(".online_storage_ttl_days")
@@ -46,6 +45,8 @@ func featurestoreFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
 	f.StatusFields.Insert(".state")
+
+	f.Unimplemented_Etag()
 
 	return f
 }

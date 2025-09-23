@@ -190,7 +190,6 @@ func VMwareEngineNetworkSpec_FromProto(mapCtx *direct.MapContext, in *pb.VmwareE
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	// MISSING: Uid
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
 func VMwareEngineNetworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.VMwareEngineNetworkSpec) *pb.VmwareEngineNetwork {
@@ -202,7 +201,6 @@ func VMwareEngineNetworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.VMwareEn
 	out.Description = direct.ValueOf(in.Description)
 	out.Type = direct.Enum_ToProto[pb.VmwareEngineNetwork_Type](mapCtx, in.Type)
 	// MISSING: Uid
-	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
 func VMwareEnginePrivateCloudSpec_FromProto(mapCtx *direct.MapContext, in *pb.PrivateCloud) *krm.VMwareEnginePrivateCloudSpec {

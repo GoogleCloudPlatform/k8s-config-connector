@@ -95,7 +95,7 @@ func GetCommonWebhookConfigs() ([]Config, error) {
 			HandlerFunc:   NewRequestLoggingHandler(NewImmutableFieldsValidatorHandler(smLoader, dclSchemaLoader, serviceMetadataLoader), "immutable fields validation"),
 			FailurePolicy: admissionregistration.Fail,
 			Rules: getRulesForOperationTypes(
-				allResourcesRules,
+				getRulesFromResources(getResourcesForImmutableValidation(allGVKs)),
 				admissionregistration.Update,
 			),
 			SideEffects: admissionregistration.SideEffectClassNone,
@@ -198,6 +198,28 @@ func GetCommonWebhookConfigs() ([]Config, error) {
 		},
 	}
 	return whCfgs, nil
+}
+
+func getResourcesForImmutableValidation(allGVKs []schema.GroupVersionKind) []schema.GroupVersionKind {
+	// These IAM kinds have CEL validation for immutable fields and should be exempt from the webhook.
+	iamKindsWithCELValidation := map[string]bool{
+		"IAMAuditConfig":   true,
+		"IAMPartialPolicy": true,
+		"IAMPolicy":        true,
+		"IAMPolicyMember":  true,
+	}
+
+	var resourcesToValidate []schema.GroupVersionKind
+	for _, gvk := range allGVKs {
+		if gvk.Group == "iam.cnrm.cloud.google.com" {
+			if iamKindsWithCELValidation[gvk.Kind] {
+				// This IAM resource has its own validation, so the webhook should ignore it.
+				continue
+			}
+		}
+		resourcesToValidate = append(resourcesToValidate, gvk)
+	}
+	return resourcesToValidate
 }
 
 func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client.Client) error {

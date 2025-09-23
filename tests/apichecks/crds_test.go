@@ -868,6 +868,46 @@ func TestMultiVersionCRDNoDiff(t *testing.T) {
 	}
 }
 
+// TestSpecShouldNotContainEtag checks for fields in spec that contain 'etag'.
+// Etag is a server-generated value and should not be in the spec.
+func TestSpecShouldNotContainEtag(t *testing.T) {
+	t.Log("Running TestSpecShouldNotContainEtag")
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+
+				// Only consider spec
+				if !strings.HasPrefix(fieldPath, ".spec.") {
+					return
+				}
+
+				// Get the field name from the path
+				parts := strings.Split(fieldPath, ".")
+				fieldName := parts[len(parts)-1]
+				fieldName = strings.TrimSuffix(fieldName, "[]")
+
+				// Check for etag
+				if strings.ToLower(fieldName) == "etag" {
+					errs = append(errs, fmt.Sprintf("[spec_etag] crd=%s version=%v: field %q contains etag", crd.Name, version.Name, fieldPath))
+				}
+			})
+		}
+	}
+
+	sort.Strings(errs)
+
+	want := strings.Join(errs, "\n")
+
+	test.CompareGoldenFile(t, "testdata/exceptions/spec_dislike_etag.txt", want)
+}
+
 // isValidPlural checks if a string is a valid pluralization of another string
 func isValidPlural(singular, plural string) bool {
 	// Special cases for words that are already plural or don't follow standard rules

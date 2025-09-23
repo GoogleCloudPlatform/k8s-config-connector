@@ -17,10 +17,14 @@ limitations under the License.
 package generator
 
 import (
+	"context"
 	"crypto/tls"
 	"crypto/x509"
 	"encoding/pem"
+	"fmt"
 	"time"
+
+	"k8s.io/klog/v2"
 )
 
 // ValidCACert think cert and key are valid if they meet the following requirements:
@@ -29,26 +33,33 @@ import (
 // - cert is for dnsName
 // - cert won't expire before time
 func ValidCACert(key, cert, caCert []byte, dnsName string, time time.Time) bool {
+	ctx := context.TODO()
+	log := klog.FromContext(ctx)
 	if len(key) == 0 || len(cert) == 0 || len(caCert) == 0 {
+		log.Error(fmt.Errorf("empty key, cert or caCert"), "key, cert or caCert is empty")
 		return false
 	}
 	// Verify key and cert are valid pair
 	_, err := tls.X509KeyPair(cert, key)
 	if err != nil {
+		log.Error(err, "failed to parse key pair")
 		return false
 	}
 
 	// Verify cert is valid for at least 1 year.
 	pool := x509.NewCertPool()
 	if !pool.AppendCertsFromPEM(caCert) {
+		log.Error(fmt.Errorf("failed to parse caCert"), "failed to append caCert to pool")
 		return false
 	}
 	block, _ := pem.Decode([]byte(cert))
 	if block == nil {
+		log.Error(fmt.Errorf("failed to decode cert"), "failed to decode cert")
 		return false
 	}
 	c, err := x509.ParseCertificate(block.Bytes)
 	if err != nil {
+		log.Error(err, "failed to parse cert")
 		return false
 	}
 	ops := x509.VerifyOptions{
@@ -57,5 +68,8 @@ func ValidCACert(key, cert, caCert []byte, dnsName string, time time.Time) bool 
 		CurrentTime: time,
 	}
 	_, err = c.Verify(ops)
+	if err != nil {
+		log.Error(err, "failed to verify cert")
+	}
 	return err == nil
 }

@@ -151,11 +151,6 @@ func (in *BackupDRBackupPlanSpec) DeepCopyInto(out *BackupDRBackupPlanSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.Etag != nil {
-		in, out := &in.Etag, &out.Etag
-		*out = new(string)
-		**out = **in
-	}
 	if in.BackupVaultRef != nil {
 		in, out := &in.BackupVaultRef, &out.BackupVaultRef
 		*out = new(BackupVaultRef)
@@ -568,11 +563,6 @@ func (in *BackupDRManagementServerSpec) DeepCopyInto(out *BackupDRManagementServ
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
-	}
-	if in.Etag != nil {
-		in, out := &in.Etag, &out.Etag
-		*out = new(string)
-		**out = **in
 	}
 }
 

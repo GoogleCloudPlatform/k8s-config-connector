@@ -24,7 +24,9 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.cloud.bigquery.biglake.v1 \
     --api-version "bigquerybiglake.cnrm.cloud.google.com/v1alpha1" \
-    --resource BigLakeTable:Table
+    --resource BigLakeTable:Table \
+    --resource BigLakeCatalog:Catalog \
+    --resource BigLakeDatabase:Database
 
 go run . generate-mapper \
     --service google.cloud.bigquery.biglake.v1 \

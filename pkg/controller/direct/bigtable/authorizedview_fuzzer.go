@@ -33,11 +33,11 @@ func bigtableAuthorizedViewFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.SpecFields.Insert(".subset_view")
-	f.SpecFields.Insert(".etag")
 	f.SpecFields.Insert(".deletion_protection")
 
 	f.UnimplementedFields.Insert(".name") // special field
 	f.UnimplementedFields.Insert(".subset_view.family_subsets")
+	f.Unimplemented_Etag()
 
 	return f
 }

@@ -129,7 +129,7 @@ func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	desiredPb := BigqueryReservationReservationSpec_ToProto(mapCtx, &desired.Spec)
+	desiredPb := BigQueryReservationReservationSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -146,7 +146,7 @@ func (a *ReservationAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	log.V(2).Info("successfully created Reservation", "name", created.Name)
 
 	status := &krm.BigQueryReservationReservationStatus{}
-	status.ObservedState = BigqueryReservationReservationObservedState_FromProto(mapCtx, created)
+	status.ObservedState = BigQueryReservationReservationObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -161,7 +161,7 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	mapCtx := &direct.MapContext{}
 
 	desiredSpec := &a.desired.DeepCopy().Spec
-	desiredPb := BigqueryReservationReservationSpec_ToProto(mapCtx, desiredSpec)
+	desiredPb := BigQueryReservationReservationSpec_ToProto(mapCtx, desiredSpec)
 	desiredPb.Name = a.id.String()
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -209,7 +209,7 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		status := &krm.BigQueryReservationReservationStatus{}
-		status.ObservedState = BigqueryReservationReservationObservedState_FromProto(mapCtx, a.actual)
+		status.ObservedState = BigQueryReservationReservationObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -230,7 +230,7 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log.V(2).Info("successfully updated Reservation", "name", updated.Name)
 
 	status := &krm.BigQueryReservationReservationStatus{}
-	status.ObservedState = BigqueryReservationReservationObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = BigQueryReservationReservationObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -246,7 +246,7 @@ func (a *ReservationAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 	obj := &krm.BigQueryReservationReservation{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(BigqueryReservationReservationSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(BigQueryReservationReservationSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

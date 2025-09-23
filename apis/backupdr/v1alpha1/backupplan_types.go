@@ -54,11 +54,12 @@ type BackupDRBackupPlanSpec struct {
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.resource_type
 	ResourceType *string `json:"resourceType,omitempty"`
 
+	// NOTYET: not supported in Config Connector reconciliation
 	// Optional. `etag` is returned from the service in the response. As a user of
 	//  the service, you may provide an etag value in this field to prevent stale
 	//  resources.
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.etag
-	Etag *string `json:"etag,omitempty"`
+	// Etag *string `json:"etag,omitempty"`
 
 	// Required. Resource name of backup vault which will be used as storage
 	//  location for backups.

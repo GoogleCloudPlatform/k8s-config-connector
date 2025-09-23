@@ -64,7 +64,6 @@ func BigtableAuthorizedViewSpec_FromProto(mapCtx *direct.MapContext, in *pb.Auth
 	out := &krm.BigtableAuthorizedViewSpec{}
 	// MISSING: Name
 	out.SubsetView = AuthorizedView_SubsetView_FromProto(mapCtx, in.GetSubsetView())
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	out.DeletionProtection = direct.LazyPtr(in.GetDeletionProtection())
 	return out
 }
@@ -77,7 +76,6 @@ func BigtableAuthorizedViewSpec_ToProto(mapCtx *direct.MapContext, in *krm.Bigta
 	if oneof := AuthorizedView_SubsetView_ToProto(mapCtx, in.SubsetView); oneof != nil {
 		out.AuthorizedView = &pb.AuthorizedView_SubsetView_{SubsetView: oneof}
 	}
-	out.Etag = direct.ValueOf(in.Etag)
 	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
 	return out
 }

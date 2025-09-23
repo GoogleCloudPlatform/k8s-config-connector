@@ -37,12 +37,14 @@ func vmwareEngineNetworkFuzzer() fuzztesting.KRMFuzzer {
 
 	f.SpecFields.Insert(".type")
 	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".etag")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
 	f.StatusFields.Insert(".vpc_networks")
 	f.StatusFields.Insert(".state")
 	f.StatusFields.Insert(".uid")
+
+	f.Unimplemented_Etag()
+
 	return f
 }

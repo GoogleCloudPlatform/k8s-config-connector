@@ -16,7 +16,7 @@ package composer
 
 import (
 	pb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
 	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"

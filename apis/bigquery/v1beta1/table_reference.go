@@ -22,6 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -71,9 +72,29 @@ func (r *TableRef) NormalizedExternal(ctx context.Context, reader client.Reader,
 		return "", fmt.Errorf("reading referenced %s %s: %w", BigQueryTableGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+	actualExternalRef, found, err := unstructured.NestedString(u.Object, "status", "externalRef")
 	if err != nil {
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	}
+	// For non-direct resources, there's no status.externalRef
+	if !found {
+		// Get resourceID
+		tableID, err := refsv1beta1.GetResourceID(u)
+		if err != nil {
+			return "", err
+		}
+		// Resolve parent
+		obj := &BigQueryTable{}
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+			return "", fmt.Errorf("error converting to %T: %w", obj, err)
+		}
+		datasetRef := obj.Spec.DatasetRef
+		datasetExternal, err := datasetRef.NormalizedExternal(ctx, reader, otherNamespace)
+		if err != nil {
+			return "", err
+		}
+		r.External = fmt.Sprintf("%s/tables/%s", datasetExternal, tableID)
+		return r.External, nil
 	}
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)

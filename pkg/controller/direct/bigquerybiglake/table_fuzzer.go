@@ -35,7 +35,6 @@ func bigLakeTableFuzzer() fuzztesting.KRMFuzzer {
 
 	f.SpecFields.Insert(".type")
 	f.SpecFields.Insert(".hive_options")
-	f.SpecFields.Insert(".etag")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
@@ -43,6 +42,7 @@ func bigLakeTableFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".expire_time")
 
 	f.UnimplementedFields.Insert(".name")
+	f.Unimplemented_Etag()
 
 	return f
 }
