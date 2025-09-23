@@ -25,6 +25,7 @@ go run . generate-types \
   --service google.cloud.compute.v1 \
   --api-version compute.cnrm.cloud.google.com/v1beta1  \
   --resource ComputeFirewallPolicyRule:FirewallPolicyRule \
+  --resource ComputeForwardingRule:ForwardingRule \
   --resource ComputeTargetTcpProxy:TargetTcpProxy
 
 cd ${REPO_ROOT}
