@@ -87,7 +87,7 @@ func (s *ServiceUsageV1) EnableService(ctx context.Context, req *pb.EnableServic
 		Service: service,
 	}
 	if !changed {
-		return s.operations.DoneLRO(ctx, lroPrefix, nil, response)
+		return s.operations.DoneLRO(ctx, lroPrefix, &emptypb.Empty{}, response)
 	} else {
 		return s.operations.StartLRO(ctx, lroPrefix, &emptypb.Empty{}, func() (proto.Message, error) {
 			return response, nil
@@ -141,7 +141,7 @@ func (s *ServiceUsageV1) BatchEnableServices(ctx context.Context, req *pb.BatchE
 			}
 		}
 
-		metadata.ResourceNames = append(metadata.ResourceNames, fmt.Sprintf("services/%s/projectSettings/%d", name.ServiceName, name.Project.Number))
+		// metadata.ResourceNames = append(metadata.ResourceNames, fmt.Sprintf("services/%s/projectSettings/%d", name.ServiceName, name.Project.Number))
 		response.Services = append(response.Services, service)
 	}
 
