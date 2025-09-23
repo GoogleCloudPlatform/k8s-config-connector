@@ -32,10 +32,6 @@ spec:
   zoneDistributionConfig:
     mode: SINGLE_ZONE
     zone: us-central1-b
-  persistenceConfig:
-    mode: AOF
-    aofConfig:
-      appendFsync: EVERY_SEC
   deletionProtectionEnabled: false
   endpoints:
   - connections:
