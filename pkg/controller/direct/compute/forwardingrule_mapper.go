@@ -52,7 +52,7 @@ func ComputeForwardingRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.Forwa
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
 	out.LoadBalancingScheme = in.LoadBalancingScheme
-	out.MetadataFilters = direct.Slice_FromProto(mapCtx, in.MetadataFilters, ForwardingruleMetadataFilters_FromProto)
+	out.MetadataFilters = direct.Slice_FromProto(mapCtx, in.MetadataFilters, MetadataFilter_FromProto)
 	// MISSING: Name
 	out.NetworkRef = ComputeForwardingRuleSpec_NetworkRef_FromProto(mapCtx, in.GetNetwork())
 	out.NetworkTier = in.NetworkTier
@@ -94,7 +94,7 @@ func ComputeForwardingRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
 	out.LoadBalancingScheme = in.LoadBalancingScheme
-	out.MetadataFilters = direct.Slice_ToProto(mapCtx, in.MetadataFilters, ForwardingruleMetadataFilters_ToProto)
+	out.MetadataFilters = direct.Slice_ToProto(mapCtx, in.MetadataFilters, MetadataFilter_ToProto)
 	// MISSING: Name
 	out.Network = ComputeForwardingRuleSpec_NetworkRef_ToProto(mapCtx, in.NetworkRef)
 	out.NetworkTier = in.NetworkTier
@@ -141,7 +141,7 @@ func ComputeForwardingRuleStatus_ToProto(mapCtx *direct.MapContext, in *krm.Comp
 	out.ServiceName = in.ServiceName
 	return out
 }
-func ForwardingruleFilterLabels_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFilterLabelMatch) *krm.MetadataFilterLabelMatch {
+func MetadataFilterLabelMatch_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFilterLabelMatch) *krm.MetadataFilterLabelMatch {
 	if in == nil {
 		return nil
 	}
@@ -150,7 +150,7 @@ func ForwardingruleFilterLabels_FromProto(mapCtx *direct.MapContext, in *pb.Meta
 	out.Value = in.GetValue()
 	return out
 }
-func ForwardingruleFilterLabels_ToProto(mapCtx *direct.MapContext, in *krm.MetadataFilterLabelMatch) *pb.MetadataFilterLabelMatch {
+func MetadataFilterLabelMatch_ToProto(mapCtx *direct.MapContext, in *krm.MetadataFilterLabelMatch) *pb.MetadataFilterLabelMatch {
 	if in == nil {
 		return nil
 	}
@@ -159,21 +159,21 @@ func ForwardingruleFilterLabels_ToProto(mapCtx *direct.MapContext, in *krm.Metad
 	out.Value = direct.LazyPtr(in.Value)
 	return out
 }
-func ForwardingruleMetadataFilters_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFilter) *krm.MetadataFilter {
+func MetadataFilter_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFilter) *krm.MetadataFilter {
 	if in == nil {
 		return nil
 	}
 	out := &krm.MetadataFilter{}
-	out.FilterLabels = direct.Slice_FromProto(mapCtx, in.FilterLabels, ForwardingruleFilterLabels_FromProto)
+	out.FilterLabels = direct.Slice_FromProto(mapCtx, in.FilterLabels, MetadataFilterLabelMatch_FromProto)
 	out.FilterMatchCriteria = in.GetFilterMatchCriteria()
 	return out
 }
-func ForwardingruleMetadataFilters_ToProto(mapCtx *direct.MapContext, in *krm.MetadataFilter) *pb.MetadataFilter {
+func MetadataFilter_ToProto(mapCtx *direct.MapContext, in *krm.MetadataFilter) *pb.MetadataFilter {
 	if in == nil {
 		return nil
 	}
 	out := &pb.MetadataFilter{}
-	out.FilterLabels = direct.Slice_ToProto(mapCtx, in.FilterLabels, ForwardingruleFilterLabels_ToProto)
+	out.FilterLabels = direct.Slice_ToProto(mapCtx, in.FilterLabels, MetadataFilterLabelMatch_ToProto)
 	out.FilterMatchCriteria = direct.LazyPtr(in.FilterMatchCriteria)
 	return out
 }

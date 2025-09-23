@@ -31,7 +31,7 @@ func ComputeFirewallPolicyRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.F
 	out.Direction = in.GetDirection()
 	out.Disabled = in.Disabled
 	out.EnableLogging = in.EnableLogging
-	out.Match = FirewallpolicyruleMatch_FromProto(mapCtx, in.Match)
+	out.Match = FirewallPolicyRuleMatcher_FromProto(mapCtx, in.Match)
 	out.Priority = int64(in.GetPriority())
 	// MISSING: RuleName
 	// MISSING: SecurityProfileGroup
@@ -51,7 +51,7 @@ func ComputeFirewallPolicyRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.Co
 	out.Direction = direct.LazyPtr(in.Direction)
 	out.Disabled = in.Disabled
 	out.EnableLogging = in.EnableLogging
-	out.Match = FirewallpolicyruleMatch_ToProto(mapCtx, in.Match)
+	out.Match = FirewallPolicyRuleMatcher_ToProto(mapCtx, in.Match)
 	out.Priority = direct.LazyPtr(int32(in.Priority))
 	// MISSING: RuleName
 	// MISSING: SecurityProfileGroup
@@ -71,7 +71,7 @@ func ComputeFirewallPolicyRuleStatus_FromProto(mapCtx *direct.MapContext, in *pb
 	return out
 }
 
-func FirewallpolicyruleLayer4Configs_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcherLayer4Config) *krm.FirewallPolicyRuleMatcherLayer4Config {
+func FirewallPolicyRuleMatcherLayer4Config_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcherLayer4Config) *krm.FirewallPolicyRuleMatcherLayer4Config {
 	if in == nil {
 		return nil
 	}
@@ -80,51 +80,13 @@ func FirewallpolicyruleLayer4Configs_FromProto(mapCtx *direct.MapContext, in *pb
 	out.Ports = in.Ports
 	return out
 }
-func FirewallpolicyruleLayer4Configs_ToProto(mapCtx *direct.MapContext, in *krm.FirewallPolicyRuleMatcherLayer4Config) *pb.FirewallPolicyRuleMatcherLayer4Config {
+func FirewallPolicyRuleMatcherLayer4Config_ToProto(mapCtx *direct.MapContext, in *krm.FirewallPolicyRuleMatcherLayer4Config) *pb.FirewallPolicyRuleMatcherLayer4Config {
 	if in == nil {
 		return nil
 	}
 	out := &pb.FirewallPolicyRuleMatcherLayer4Config{}
 	out.IpProtocol = direct.LazyPtr(in.IPProtocol)
 	out.Ports = in.Ports
-	return out
-}
-func FirewallpolicyruleMatch_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcher) *krm.FirewallPolicyRuleMatcher {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FirewallPolicyRuleMatcher{}
-	out.DestAddressGroups = in.DestAddressGroups
-	out.DestFqdns = in.DestFqdns
-	out.DestIPRanges = in.DestIpRanges
-	out.DestRegionCodes = in.DestRegionCodes
-	out.DestThreatIntelligences = in.DestThreatIntelligences
-	out.Layer4Configs = direct.Slice_FromProto(mapCtx, in.Layer4Configs, FirewallpolicyruleLayer4Configs_FromProto)
-	out.SrcAddressGroups = in.SrcAddressGroups
-	out.SrcFqdns = in.SrcFqdns
-	out.SrcIPRanges = in.SrcIpRanges
-	out.SrcRegionCodes = in.SrcRegionCodes
-	// MISSING: SrcSecureTags
-	out.SrcThreatIntelligences = in.SrcThreatIntelligences
-	return out
-}
-func FirewallpolicyruleMatch_ToProto(mapCtx *direct.MapContext, in *krm.FirewallPolicyRuleMatcher) *pb.FirewallPolicyRuleMatcher {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FirewallPolicyRuleMatcher{}
-	out.DestAddressGroups = in.DestAddressGroups
-	out.DestFqdns = in.DestFqdns
-	out.DestIpRanges = in.DestIPRanges
-	out.DestRegionCodes = in.DestRegionCodes
-	out.DestThreatIntelligences = in.DestThreatIntelligences
-	out.Layer4Configs = direct.Slice_ToProto(mapCtx, in.Layer4Configs, FirewallpolicyruleLayer4Configs_ToProto)
-	out.SrcAddressGroups = in.SrcAddressGroups
-	out.SrcFqdns = in.SrcFqdns
-	out.SrcIpRanges = in.SrcIPRanges
-	out.SrcRegionCodes = in.SrcRegionCodes
-	// MISSING: SrcSecureTags
-	out.SrcThreatIntelligences = in.SrcThreatIntelligences
 	return out
 }
 
