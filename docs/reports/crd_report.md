@@ -61,7 +61,7 @@
 | bigquery.cnrm.cloud.google.com                | BigQueryDataset                                 | False        | True        | False  | Terraform  |
 | bigquerydatatransfer.cnrm.cloud.google.com    | BigQueryDataTransferConfig                      | True         | True        | False  | Direct     |
 | bigquery.cnrm.cloud.google.com                | BigQueryJob                                     | False        | True        | False  | Terraform  |
-| bigqueryreservation.cnrm.cloud.google.com     | BigQueryReservationAssignment                   | True         | False       | False  | Direct     |
+| bigqueryreservation.cnrm.cloud.google.com     | BigQueryReservationAssignment                   | True         | True        | False  | Direct     |
 | bigqueryreservation.cnrm.cloud.google.com     | BigQueryReservationCapacityCommitment           | True         | False       | False  | Terraform  |
 | bigqueryreservation.cnrm.cloud.google.com     | BigQueryReservationReservation                  | True         | True        | False  | Direct     |
 | bigquery.cnrm.cloud.google.com                | BigQueryRoutine                                 | False        | True        | False  | Terraform  |

@@ -17,6 +17,7 @@
 // krm.version: v1beta1
 // proto.service: google.cloud.bigquery.reservation.v1
 // resource: BigQueryReservationReservation:Reservation
+// resource: BigQueryReservationAssignment:Assignment
 
 package v1beta1
 
