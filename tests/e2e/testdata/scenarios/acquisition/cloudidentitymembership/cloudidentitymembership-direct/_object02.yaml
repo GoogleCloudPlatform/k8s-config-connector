@@ -25,6 +25,7 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
+  externalRef: groups/${groupID}/memberships/${membershipID}
   observedGeneration: 1
   type: USER
   updateTime: "1970-01-01T00:00:00Z"
