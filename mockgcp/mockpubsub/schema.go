@@ -48,7 +48,7 @@ func (s *schemaService) CreateSchema(ctx context.Context, req *pb.CreateSchemaRe
 	obj.RevisionId = fmt.Sprintf("r%d", now.Unix())
 	obj.RevisionCreateTime = timestamppb.New(now)
 	s.populateDefaultsForSchema(name, obj)
-	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+	if err := s.schemas.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 	return obj, nil
@@ -65,7 +65,7 @@ func (s *schemaService) GetSchema(ctx context.Context, req *pb.GetSchemaRequest)
 	}
 	fqn := name.String()
 	obj := &pb.Schema{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+	if err := s.schemas.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource not found (resource=%s).", name.String())
 		}
@@ -84,11 +84,9 @@ func (s *schemaService) ListSchemas(ctx context.Context, req *pb.ListSchemasRequ
 
 	var schemas []*pb.Schema
 
-	schemaKind := (&pb.Schema{}).ProtoReflect().Descriptor()
-	if err := s.storage.List(ctx, schemaKind, storage.ListOptions{}, func(obj proto.Message) error {
-		schema := obj.(*pb.Schema)
-		if strings.HasPrefix(schema.GetName(), findPrefix) {
-			schemas = append(schemas, schema)
+	if err := s.schemas.List(ctx, storage.ListOptions{}, func(obj *pb.Schema) error {
+		if strings.HasPrefix(obj.GetName(), findPrefix) {
+			schemas = append(schemas, obj)
 		}
 		return nil
 	}); err != nil {
@@ -107,7 +105,7 @@ func (s *schemaService) DeleteSchema(ctx context.Context, req *pb.DeleteSchemaRe
 	}
 	fqn := name.String()
 	deletedObj := &pb.Schema{}
-	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
+	if err := s.schemas.Delete(ctx, fqn, deletedObj); err != nil {
 		return nil, err
 	}
 	return &empty.Empty{}, nil
