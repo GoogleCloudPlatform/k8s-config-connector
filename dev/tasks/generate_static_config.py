@@ -28,10 +28,24 @@ def find_direct_controller_kinds(repo_root):
     for filepath in glob.glob(os.path.join(controller_dir, '**', '*_controller.go'), recursive=True):
         with open(filepath, 'r') as f:
             content = f.read()
-            # Look for RegisterModel(krm.<Kind>GVK, ...)
-            matches = re.findall(r'RegisterModel\((?:krm|krmv1beta1)\.(\w+)GVK', content)
-            for match in matches:
-                direct_controller_kinds.add(match)
+
+        # Heuristic: Find the main object's kind from its instantiation.
+        # e.g. obj := &krm.MyKind{}
+        matches = re.findall(r':=\s*&krm\.(\w+)\{', content)
+        if matches:
+            direct_controller_kinds.add(matches[0])
+            continue
+
+        matches = re.findall(r':=\s*&krmv1beta1\.(\w+)\{', content)
+        if matches:
+            direct_controller_kinds.add(matches[0])
+            continue
+
+        # Fallback to original logic.
+        matches = re.findall(r'RegisterModel\((?:krm|krmv1beta1)\.(\w+)GVK', content)
+        for match in matches:
+            direct_controller_kinds.add(match)
+            
     return direct_controller_kinds
 
 def main():
@@ -80,6 +94,9 @@ def main():
         if kind in ('IAMPolicy', 'IAMPartialPolicy', 'IAMPolicyMember', 'IAMAuditConfig'):
             default_controller = f'k8s.ReconcilerType{kind}'
             supported_controllers = {default_controller}
+        elif not supported_controllers:
+            print(f"Skipping resource {group}/{kind} as no controller was found.")
+            continue
         elif is_dcl_resource:
             default_controller = 'k8s.ReconcilerTypeDCL'
         elif is_tf_resource:
@@ -87,10 +104,9 @@ def main():
         elif has_direct_controller:
             default_controller = 'k8s.ReconcilerTypeDirect'
         else:
-            default_controller = 'k8s.ReconcilerTypeTerraform' # Fallback
-        
-        if not supported_controllers:
-            supported_controllers.add(default_controller)
+            # Should be unreachable
+            print(f"Skipping resource {group}/{kind} due to unexpected error in logic.")
+            continue
 
         resources.append({
             'Group': group,
