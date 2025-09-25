@@ -82,7 +82,7 @@ func (s *MockService) GetProjectStore() projects.ProjectStore {
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{"cloudresourcemanager.googleapis.com"}
+	return []string{"cloudresourcemanager.googleapis.com", "{region}-cloudresourcemanager.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
