@@ -87,7 +87,22 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 	updatedObj.CreateTime = nil
 	prefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
 
-	return r.operations.DoneLRO(ctx, prefix, nil, updatedObj)
+	metadata := &pb.OperationMetadata{
+		ApiVersion: "v1beta",
+		CreateTime: timestamppb.New(now),
+		Target:     fqn,
+		Verb:       "create",
+	}
+
+	return r.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.Now()
+
+		retObj := proto.Clone(obj).(*pb.Instance)
+		// pscConfigs is not included in the response
+		retObj.PscAutoConnections = nil
+		retObj.State = pb.Instance_ACTIVE
+		return retObj, nil
+	})
 }
 
 func (s *instanceServer) populateDefaultsForInstance(name *instanceName, obj *pb.Instance) error {

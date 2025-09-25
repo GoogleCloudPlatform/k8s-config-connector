@@ -34,7 +34,6 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -220,35 +219,35 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		desiredPb.PersistenceConfig.RdbConfig = nil
 	}
 
-	paths := make(sets.Set[string])
+	var paths []string
 
 	// If replica count is unset, the field become unmanaged.
 	if a.desired.Spec.ReplicaCount != nil && !reflect.DeepEqual(desiredPb.ReplicaCount, a.actual.ReplicaCount) {
-		paths.Insert("replica_count")
+		paths = append(paths, "replica_count")
 	}
 	if a.desired.Spec.ShardCount != nil && !reflect.DeepEqual(desiredPb.ShardCount, a.actual.ShardCount) {
-		paths.Insert("shard_count")
+		paths = append(paths, "shard_count")
 	}
 	if a.desired.Spec.DeletionProtectionEnabled != nil && !reflect.DeepEqual(desiredPb.DeletionProtectionEnabled, a.actual.DeletionProtectionEnabled) {
-		paths.Insert("deletion_protection_enabled")
+		paths = append(paths, "deletion_protection_enabled")
 	}
 	if a.desired.Spec.PersistenceConfig != nil && !reflect.DeepEqual(desiredPb.PersistenceConfig, a.actual.PersistenceConfig) {
-		paths.Insert("persistence_config")
+		paths = append(paths, "persistence_config")
 	}
 	if a.desired.Spec.EngineConfigs != nil && !reflect.DeepEqual(desiredPb.EngineConfigs, a.actual.EngineConfigs) {
-		paths.Insert("engine_configs")
+		paths = append(paths, "engine_configs")
 	}
 	if a.desired.Spec.Endpoints != nil && !reflect.DeepEqual(desiredPb.Endpoints, a.actual.Endpoints) {
-		paths.Insert("endpoints")
+		paths = append(paths, "endpoints")
 	}
 	if a.desired.Spec.Labels != nil && !reflect.DeepEqual(desiredPb.Labels, a.actual.Labels) {
-		paths.Insert("labels")
+		paths = append(paths, "labels")
 	}
 	if a.desired.Spec.EngineVersion != nil && !reflect.DeepEqual(desiredPb.EngineVersion, a.actual.EngineVersion) {
-		paths.Insert("engine_version")
+		paths = append(paths, "engine_version")
 	}
 	if a.desired.Spec.NodeType != nil && !reflect.DeepEqual(desiredPb.NodeType, a.actual.NodeType) {
-		paths.Insert("node_type")
+		paths = append(paths, "node_type")
 	}
 
 	updated := a.actual
@@ -256,7 +255,7 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		log.V(2).Info("no field needs update", "name", a.id)
 	} else {
 		log.V(2).Info("fields need update", "name", a.id, "paths", paths)
-		for _, path := range paths.UnsortedList() {
+		for _, path := range paths {
 			updateMask := &fieldmaskpb.FieldMask{
 				Paths: []string{path},
 			}
