@@ -1,6 +1,5 @@
 approvers:
   - cheftako
-  - jingyih
   - justinsb
   - maqiuyujoyce
   - yuwenma
@@ -11,10 +10,11 @@ reviewers:
   - cheftako
   - gemmahou
   - jasonvigil
-  - jingyih
   - justinsb
   - maqiuyujoyce
   - yuwenma
   - xiaoweim
 emeritus:
   - diviner524
+  - jingyih
+
