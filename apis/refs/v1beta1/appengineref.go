@@ -29,16 +29,16 @@ type AppEngineApplicationRef struct {
 }
 
 type AppEngineServiceRef struct {
-	// Format: projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}
+	// Format: projects/{projects_id}/iap_web/appengine-{app_id}/services/{service_id}
 	External string `json:"external,omitempty"`
 }
 
 type AppEngineVersionRef struct {
-	// Format: projects/{projects_id}/iap_web/appengine-{app_id}/service/{service_id}/version/{version_id}
+	// Format: projects/{projects_id}/iap_web/appengine-{app_id}/services/{service_id}/versions/{version_id}
 	External string `json:"external,omitempty"`
 }
 
-func ResolveAppEngineApplicationID(ctx context.Context, reader client.Reader, otherNamespace string, ref *AppEngineApplicationRef) (string, error) {
+func ResolveAppEngineApplicationExternal(ctx context.Context, reader client.Reader, otherNamespace string, ref *AppEngineApplicationRef) (string, error) {
 	if ref == nil {
 		return "", nil
 	}
@@ -50,7 +50,7 @@ func ResolveAppEngineApplicationID(ctx context.Context, reader client.Reader, ot
 	return "", fmt.Errorf("invalid AppEngineApplicationRef: must specify external")
 }
 
-func ResolveAppEngineServiceID(ctx context.Context, reader client.Reader, otherNamespace string, ref *AppEngineServiceRef) (string, error) {
+func ResolveAppEngineServiceExternal(ctx context.Context, reader client.Reader, otherNamespace string, ref *AppEngineServiceRef) (string, error) {
 	if ref == nil {
 		return "", nil
 	}
@@ -62,7 +62,7 @@ func ResolveAppEngineServiceID(ctx context.Context, reader client.Reader, otherN
 	return "", fmt.Errorf("invalid AppEngineServiceRef: must specify external")
 }
 
-func ResolveAppEngineVersionID(ctx context.Context, reader client.Reader, otherNamespace string, ref *AppEngineVersionRef) (string, error) {
+func ResolveAppEngineVersionExternal(ctx context.Context, reader client.Reader, otherNamespace string, ref *AppEngineVersionRef) (string, error) {
 	if ref == nil {
 		return "", nil
 	}

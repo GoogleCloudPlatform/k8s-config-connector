@@ -1,0 +1,113 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+Object:
+  apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+  kind: CertificateManagerCertificate
+  metadata:
+    annotations:
+      cnrm.cloud.google.com/management-conflict-prevention-policy: none
+      cnrm.cloud.google.com/observed-secret-versions: '{}'
+      cnrm.cloud.google.com/state-into-spec: absent
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"certificatemanager.cnrm.cloud.google.com/v1beta1","kind":"CertificateManagerCertificate","metadata":{"annotations":{},"labels":{"ci_group":"platform","x.anz.com/asset":"platform"},"name":"kcc-test-cas-cert-2","namespace":"platform-kcc-apps-platdev-99bb42"},"spec":{"description":"sample managed certificate for kcc","location":"global","managed":{"domains":["*.cloudnetworks.x.gcpnp.anz","test.cloudnetworks.x.gcpnp.anz","test2.cloudnetworks.x.gcpnp.anz"],"issuanceConfigRef":{"external":"projects/anz-x-apps-platdev-99bb42/locations/global/certificateIssuanceConfigs/my-test-ic"}},"projectRef":{"external":"anz-x-apps-platdev-99bb42"},"resourceID":"kcc-test-cas-cert-2","scope":"ALL_REGIONS"}}
+    creationTimestamp: "2025-05-22T04:45:41Z"
+    finalizers:
+    - cnrm.cloud.google.com/finalizer
+    - cnrm.cloud.google.com/deletion-defender
+    generation: 1
+    labels:
+      ci_group: platform
+      x.anz.com/asset: platform
+    managedFields:
+    - apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:kubectl.kubernetes.io/last-applied-configuration: {}
+          f:labels:
+            .: {}
+            f:ci_group: {}
+            f:x.anz.com/asset: {}
+        f:spec:
+          .: {}
+          f:description: {}
+          f:location: {}
+          f:managed:
+            .: {}
+            f:domains: {}
+            f:issuanceConfigRef:
+              .: {}
+              f:external: {}
+          f:projectRef:
+            .: {}
+            f:external: {}
+          f:resourceID: {}
+          f:scope: {}
+      manager: kubectl-client-side-apply
+      operation: Update
+      time: "2025-05-22T04:45:41Z"
+    - apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:cnrm.cloud.google.com/observed-secret-versions: {}
+            f:cnrm.cloud.google.com/state-into-spec: {}
+          f:finalizers:
+            .: {}
+            v:"cnrm.cloud.google.com/deletion-defender": {}
+            v:"cnrm.cloud.google.com/finalizer": {}
+      manager: cnrm-controller-manager
+      operation: Update
+      time: "2025-05-22T04:45:58Z"
+    - apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:status:
+          .: {}
+          f:conditions: {}
+          f:observedGeneration: {}
+      manager: cnrm-controller-manager
+      operation: Update
+      subresource: status
+      time: "2025-05-22T04:45:58Z"
+    name: kcc-test-cas-cert-2
+    namespace: platform-kcc-apps-platdev-99bb42
+    resourceVersion: "1879226714"
+    uid: 72ef2953-21a2-4a6d-987f-90f609ccbb61
+  spec:
+    description: sample managed certificate for kcc
+    location: global
+    managed:
+      domains:
+      - '*.cloudnetworks.x.gcpnp.anz'
+      - test.cloudnetworks.x.gcpnp.anz
+      - test2.cloudnetworks.x.gcpnp.anz
+      issuanceConfigRef:
+        external: projects/anz-x-apps-platdev-99bb42/locations/global/certificateIssuanceConfigs/my-test-ic
+    projectRef:
+      external: anz-x-apps-platdev-99bb42
+    resourceID: kcc-test-cas-cert-2
+    scope: ALL_REGIONS
+  status:
+    conditions:
+    - lastTransitionTime: "2025-05-22T04:45:58Z"
+      message: The resource is up to date
+      reason: UpToDate
+      status: "True"
+      type: Ready
+    observedGeneration: 1
