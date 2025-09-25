@@ -55,16 +55,21 @@ func (s *TagBindingsServer) CreateTagBinding(ctx context.Context, req *pb.Create
 		return nil, err
 	}
 
-	obj := &pb.TagBinding{}
+	obj := proto.Clone(req.TagBinding).(*pb.TagBinding)
 	obj.TagValue = tagValue.Name
 	obj.TagValueNamespacedName = tagValue.NamespacedName
 
-	normalizedParent, err := s.normalizeParent(ctx, req.GetTagBinding().GetParent())
-	if err != nil {
-		return nil, err
+	parent := req.GetTagBinding().GetParent()
+	obj.Parent = parent
+	if strings.Contains(parent, "//cloudresourcemanager.googleapis.com/projects/") {
+		normalizedParent, err := s.normalizeParent(ctx, parent)
+		if err != nil {
+			return nil, err
+		}
+		obj.Parent = normalizedParent
 	}
-	obj.Parent = normalizedParent
-	obj.Name = fmt.Sprintf("tagBindings/%s/tagValues/%s", url.PathEscape(normalizedParent), strings.TrimPrefix(tagValue.Name, "tagValues/"))
+
+	obj.Name = fmt.Sprintf("tagBindings/%s/tagValues/%s", url.PathEscape(obj.Parent), strings.TrimPrefix(tagValue.Name, "tagValues/"))
 
 	fqn := obj.Name
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -81,18 +86,22 @@ func (s *TagBindingsServer) DeleteTagBinding(ctx context.Context, req *pb.Delete
 
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 4 && tokens[0] == "tagBindings" && tokens[2] == "tagValues" {
-		// Normalize the parent
-		parent, err := url.PathUnescape(tokens[1])
-		if err != nil {
-			return nil, status.Errorf(codes.InvalidArgument, "invalid name %q", name)
+		// We need to normalize the parent to match the key used during creation.
+		// For projects, this turns the project ID into a project number.
+		// For other resources, it should be a pass-through.
+		if strings.Contains(name, "//cloudresourcemanager.googleapis.com/projects/") {
+			parent, err := url.PathUnescape(tokens[1])
+			if err != nil {
+				return nil, status.Errorf(codes.InvalidArgument, "invalid name %q", name)
+			}
+			normalizedParent, err := s.normalizeParent(ctx, parent)
+			if err != nil {
+				return nil, err
+			}
+			tokens[1] = url.PathEscape(normalizedParent)
+			name = strings.Join(tokens, "/")
 		}
-		normalizedParent, err := s.normalizeParent(ctx, parent)
-		if err != nil {
-			return nil, err
-		}
-		tokens[1] = url.PathEscape(normalizedParent)
 	}
-	name = strings.Join(tokens, "/")
 
 	if err := s.storage.Delete(ctx, name, deleted); err != nil {
 		return nil, err
@@ -102,9 +111,13 @@ func (s *TagBindingsServer) DeleteTagBinding(ctx context.Context, req *pb.Delete
 }
 
 func (s *TagBindingsServer) ListTagBindings(ctx context.Context, req *pb.ListTagBindingsRequest) (*pb.ListTagBindingsResponse, error) {
-	findParent, err := s.normalizeParent(ctx, req.GetParent())
-	if err != nil {
-		return nil, err
+	var err error
+	findParent := req.GetParent()
+	if strings.Contains(req.GetParent(), "//cloudresourcemanager.googleapis.com/projects/") {
+		findParent, err = s.normalizeParent(ctx, req.GetParent())
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	var bindings []*pb.TagBinding
