@@ -1,0 +1,18 @@
+# Test for `gcloud bigtable materialized-views`
+# Create resources
+- exec: gcloud bigtable instances create test-instance-${uniqueId} --display-name=test-instance --cluster-config=id=test-cluster-${uniqueId},zone=us-west1-a
+- exec: gcloud bigtable tables create test-table --instance=test-instance-${uniqueId} --column-families="family1,family2"
+
+- exec: gcloud bigtable materialized-views create test-materialized-view-${uniqueId} --instance=test-instance-${uniqueId} --query="SELECT _key, COUNT(*) as count from test-table group by _key;" --deletion-protection=true
+- exec: gcloud bigtable materialized-views describe test-materialized-view-${uniqueId} --instance=test-instance-${uniqueId}
+
+# Change deletion protection
+- exec: gcloud bigtable materialized-views update test-materialized-view-${uniqueId} --instance=test-instance-${uniqueId} --deletion-protection=false
+- exec: gcloud bigtable materialized-views describe test-materialized-view-${uniqueId} --instance=test-instance-${uniqueId}
+
+- exec: gcloud bigtable materialized-views list --instance=test-instance-${uniqueId}
+
+# Delete resources
+- exec: gcloud bigtable materialized-views delete test-materialized-view-${uniqueId} --instance=test-instance-${uniqueId} --quiet
+- exec: gcloud bigtable tables delete test-table --instance=test-instance-${uniqueId} --quiet
+- exec: gcloud bigtable instances delete test-instance-${uniqueId} --quiet

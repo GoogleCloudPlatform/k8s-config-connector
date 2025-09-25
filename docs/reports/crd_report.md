@@ -73,6 +73,7 @@
 | bigtable.cnrm.cloud.google.com                | BigtableGCPolicy                                | False        | True        | False  | Terraform  |
 | bigtable.cnrm.cloud.google.com                | BigtableInstance                                | False        | True        | False  | Terraform  |
 | bigtable.cnrm.cloud.google.com                | BigtableLogicalView                             | True         | False       | False  | Direct     |
+| bigtable.cnrm.cloud.google.com                | BigtableMaterializedView                        | True         | False       | False  | Direct     |
 | bigtable.cnrm.cloud.google.com                | BigtableTable                                   | False        | True        | False  | Terraform  |
 | billing.cnrm.cloud.google.com                 | BillingAccount                                  | True         | False       | False  | Direct     |
 | billingbudgets.cnrm.cloud.google.com          | BillingBudgetsBudget                            | False        | True        | False  | DCL        |
