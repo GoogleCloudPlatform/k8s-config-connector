@@ -32,6 +32,11 @@ spec:
   zoneDistributionConfig:
     mode: SINGLE_ZONE
     zone: us-central1-b
+  persistenceConfig:
+    mode: RDB
+    rdbConfig:
+      rdbSnapshotPeriod: ONE_HOUR
+      rdbSnapshotStartTime: 2029-10-02T15:01:23Z
   deletionProtectionEnabled: false
   endpoints:
   - connections:
