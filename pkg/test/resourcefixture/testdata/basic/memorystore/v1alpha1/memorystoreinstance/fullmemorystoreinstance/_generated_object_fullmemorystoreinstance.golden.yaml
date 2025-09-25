@@ -53,26 +53,13 @@ status:
     status: "True"
     type: Ready
   externalRef: projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}
-  observedGeneration: 1
+  observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
     endpoints:
     - connections:
-      - pscAutoConnection:
-          connectionType: CONNECTION_TYPE_DISCOVERY
-          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-425fe823-9c16-489c-a58b-0bba78ee1ddf
-          ipAddress: 10.128.0.2
-          port: 6379
-          pscConnectionID: "139073064150237186"
-          serviceAttachment: projects/364540529657/regions/us-central1/serviceAttachments/gcp-memorystore-auto-ncd97f23ae250e7c-psc-sa
-      - pscAutoConnection:
-          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-e08987d1-e0eb-4fbb-ad35-981585f2314f
-          ipAddress: 10.128.0.3
-          port: 6379
-          pscConnectionID: "139073064150237187"
-          serviceAttachment: projects/364540529657/regions/us-central1/serviceAttachments/gcp-memorystore-auto-ncd97f23ae250e7c-psc-sa-2
+      - pscAutoConnection: {}
     nodeConfig:
       sizeGB: 6.5
-    state: ACTIVE
+    state: CREATING
     uid: 0123456789abcdef
-    updateTime: "1970-01-01T00:00:00Z"
