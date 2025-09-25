@@ -24,36 +24,36 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// CustomTargetTypeIdentity defines the resource reference to CloudDeployCustomTargetType, which "External" field
+// TargetIdentity defines the resource reference to CloudDeployTarget, which "External" field
 // holds the GCP identifier for the KRM object.
-type CustomTargetTypeIdentity struct {
-	parent *CustomTargetTypeParent
+type TargetIdentity struct {
+	parent *TargetParent
 	id     string
 }
 
-func (i *CustomTargetTypeIdentity) String() string {
-	return i.parent.String() + "/customTargetTypes/" + i.id
+func (i *TargetIdentity) String() string {
+	return i.parent.String() + "/targets/" + i.id
 }
 
-func (i *CustomTargetTypeIdentity) ID() string {
+func (i *TargetIdentity) ID() string {
 	return i.id
 }
 
-func (i *CustomTargetTypeIdentity) Parent() *CustomTargetTypeParent {
+func (i *TargetIdentity) Parent() *TargetParent {
 	return i.parent
 }
 
-type CustomTargetTypeParent struct {
+type TargetParent struct {
 	ProjectID string
 	Location  string
 }
 
-func (p *CustomTargetTypeParent) String() string {
+func (p *TargetParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-// New builds a CustomTargetTypeIdentity from the Config Connector CustomTargetType object.
-func NewCustomTargetTypeIdentity(ctx context.Context, reader client.Reader, obj *CloudDeployCustomTargetType) (*CustomTargetTypeIdentity, error) {
+// New builds a TargetIdentity from the Config Connector Target object.
+func NewTargetIdentity(ctx context.Context, reader client.Reader, obj *CloudDeployTarget) (*TargetIdentity, error) {
 
 	// Get Parent
 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
@@ -79,36 +79,36 @@ func NewCustomTargetTypeIdentity(ctx context.Context, reader client.Reader, obj 
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseCustomTargetTypeExternal(externalRef)
+		actualParent, actualResourceID, err := ParseTargetExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
 		if actualParent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		if actualParent.Location != *location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, *location)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualResourceID)
 		}
 	}
-	return &CustomTargetTypeIdentity{
-		parent: &CustomTargetTypeParent{
+	return &TargetIdentity{
+		parent: &TargetParent{
 			ProjectID: projectID,
-			Location:  location,
+			Location:  *location,
 		},
 		id: resourceID,
 	}, nil
 }
 
-func ParseCustomTargetTypeExternal(external string) (parent *CustomTargetTypeParent, resourceID string, err error) {
+func ParseTargetExternal(external string) (parent *TargetParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "customTargetTypes" {
-		return nil, "", fmt.Errorf("format of CloudDeployCustomTargetType external=%q was not known (use projects/{{projectID}}/locations/{{location}}/customTargetTypes/{{customtargettypeID}})", external)
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "targets" {
+		return nil, "", fmt.Errorf("format of CloudDeployTarget external=%q was not known (use projects/{{projectID}}/locations/{{location}}/targets/{{targetID}})", external)
 	}
-	parent = &CustomTargetTypeParent{
+	parent = &TargetParent{
 		ProjectID: tokens[1],
 		Location:  tokens[3],
 	}

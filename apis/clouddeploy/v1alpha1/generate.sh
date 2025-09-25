@@ -24,8 +24,9 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.deploy.v1 \
   --api-version clouddeploy.cnrm.cloud.google.com/v1alpha1  \
-  --resource DeployCustomTargetType:CustomTargetType \
-  --resource CloudDeployDeployPolicy:DeployPolicy
+  --resource CloudDeployCustomTargetType:CustomTargetType \
+  --resource CloudDeployDeployPolicy:DeployPolicy \
+  --resource CloudDeployTarget:Target
 
 go run . generate-mapper \
   --service google.cloud.deploy.v1 \
