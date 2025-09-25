@@ -1,0 +1,73 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# 00: Create a SQLInstance with instanceType CLOUD_SQL_INSTANCE
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-${uniqueId}
+spec:
+  databaseVersion: POSTGRES_15
+  region: us-central1
+  settings:
+    tier: db-g1-small
+  instanceType: CLOUD_SQL_INSTANCE
+  resourceID: sqlinstance-${uniqueId}
+---
+# 01: Add the unmanaged annotation for instanceType and attempt to change it to READ_REPLICA_INSTANCE.
+# No change is expected in GCP as the field is unmanaged.
+# NOTE: mockgcp will error out if we attempt to modify instanceType at this point as it's immutable once set.
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/unmanaged: "spec.instanceType"
+spec:
+  databaseVersion: POSTGRES_15
+  region: us-central1
+  settings:
+    tier: db-g1-small
+  instanceType: READ_REPLICA_INSTANCE
+  resourceID: sqlinstance-${uniqueId}
+---
+# 02: Remove the unmanaged annotation and attempt to change instanceType to READ_REPLICA_INSTANCE.
+# This should result in an error as instanceType is immutable.
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/unmanaged-fields: "" # Remove the annotation
+spec:
+  databaseVersion: POSTGRES_15
+  region: us-central1
+  settings:
+    tier: db-g1-small
+  instanceType: READ_REPLICA_INSTANCE
+  resourceID: sqlinstance-${uniqueId}
+---
+# 03:
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-${uniqueId}
+spec:
+  databaseVersion: POSTGRES_15
+  region: us-central1
+  settings:
+    tier: db-g1-small
+  instanceType: READ_REPLICA_INSTANCE
+  resourceID: sqlinstance-${uniqueId}
+TEST: TOUCH
