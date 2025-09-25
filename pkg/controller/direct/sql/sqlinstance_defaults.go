@@ -23,7 +23,16 @@ import (
 )
 
 func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance, actual *api.DatabaseInstance, unmanagedFields []string) {
-	if in.Spec.InstanceType == nil {
+	isInstanceTypeUnmanaged := false
+	for _, field := range unmanagedFields {
+		if field == "spec.instanceType" {
+			isInstanceTypeUnmanaged = true
+			break
+		}
+	}
+	if isInstanceTypeUnmanaged {
+		out.InstanceType = actual.InstanceType
+	} else if in.Spec.InstanceType == nil {
 		// GCP default InstanceType is CLOUD_SQL_INSTANCE.
 		out.InstanceType = "CLOUD_SQL_INSTANCE"
 	}
