@@ -300,7 +300,7 @@ func (r *instanceServer) DeleteInstance(ctx context.Context, req *pb.DeleteInsta
 	}
 
 	metadata := &pb.OperationMetadata{
-		ApiVersion: "v1",
+		ApiVersion: "v1beta",
 		CreateTime: timestamppb.New(now),
 		Target:     fqn,
 		Verb:       "delete",

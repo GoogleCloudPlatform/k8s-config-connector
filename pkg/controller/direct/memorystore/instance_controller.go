@@ -77,7 +77,7 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, reader client.Read
 		return nil, err
 	}
 
-	err = normalize(ctx, reader, obj)
+	err = resolveReferences(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +94,7 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, reader client.Read
 	}, nil
 }
 
-func normalize(ctx context.Context, reader client.Reader, obj *krm.MemorystoreInstance) error {
+func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.MemorystoreInstance) error {
 	for _, endpoint := range obj.Spec.Endpoints {
 		for _, connection := range endpoint.Connections {
 			if connection.PscAutoConnection != nil {
@@ -207,6 +207,17 @@ func (a *InstanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	desiredPb := MemorystoreInstanceSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
+	}
+
+	// Mask out some fields in the persistenceConfig, to accommodate KRM "discriminated union" semantics
+	switch desiredPb.GetPersistenceConfig().GetMode() {
+	case memorystorepb.PersistenceConfig_DISABLED:
+		desiredPb.PersistenceConfig.AofConfig = nil
+		desiredPb.PersistenceConfig.RdbConfig = nil
+	case memorystorepb.PersistenceConfig_RDB:
+		desiredPb.PersistenceConfig.AofConfig = nil
+	case memorystorepb.PersistenceConfig_AOF:
+		desiredPb.PersistenceConfig.RdbConfig = nil
 	}
 
 	paths := make(sets.Set[string])

@@ -25,26 +25,6 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".satisfiesPzi", "true")
 	replacements.ReplacePath(".response.pscAttachmentDetails[].serviceAttachment", "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment")
 	replacements.ReplacePath(".response.satisfiesPzi", "true")
-
-	// 	visitor.ReplacePath(".response.pscConnections[].address", "10.11.12.13")
-	// 	visitor.ReplacePath(".discoveryEndpoints[].address", "10.11.12.13")
-	// 	visitor.ReplacePath(".response.discoveryEndpoints[].address", "10.11.12.13")
-	// }
-
-	// // Specific to Memorystore
-	// {
-	// 	visitor.ReplacePath(".response.pscAttachmentDetails[].serviceAttachment", "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment")
-	// 	visitor.ReplacePath(".response.endpoints[].connections[].pscAutoConnection.forwardingRule", "https://www.googleapis.com/compute/v1/projects/project-tp/regions/us-central1/forwardingRules/sca-auto-fr-sample")
-	// 	visitor.ReplacePath(".response.endpoints[].connections[].pscAutoConnection.ipAddress", "10.11.12.13")
-	// 	visitor.ReplacePath(".response.endpoints[].connections[].pscAutoConnection.serviceAttachment", "projects/1234567890/regions/us-central1/serviceAttachments/sampleServiceAttachment")
-	// 	visitor.ReplacePath(".response.satisfiesPzi", "true")
-	// }
-
-	// // Specific to ServiceConnectionPolicy
-	// {
-	// 	visitor.ReplacePath(".response.pscConnections[].consumerAddress", "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/addresses/sca-auto-addr-f4949b71-c18b-49b1-ab5c-991b7badec5e")
-	// 	visitor.ReplacePath(".response.pscConnections[].consumerForwardingRule", "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-8f3463ea-1df2-4c48-bcfc-9dc8eb6e8b01")
-	// }
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
