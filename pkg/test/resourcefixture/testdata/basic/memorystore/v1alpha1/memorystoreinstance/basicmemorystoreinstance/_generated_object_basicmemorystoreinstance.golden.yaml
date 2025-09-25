@@ -27,5 +27,6 @@ status:
     createTime: "1970-01-01T00:00:00Z"
     nodeConfig:
       sizeGB: 13
-    state: CREATING
+    state: ACTIVE
     uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
