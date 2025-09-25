@@ -157,6 +157,8 @@ func init() {
 	SchemeBuilder.Register(&CloudDeployTarget{}, &CloudDeployTargetList{})
 }
 
+// Moved here since auto-generator creates this type as GkeCluster, which causes
+// issues down the line in both zz_generated.deepcopy and the mapper
 // +kcc:proto=google.cloud.deploy.v1.GkeCluster
 type GKECluster struct {
 	// Optional. Information specifying a GKE Cluster. Format is
