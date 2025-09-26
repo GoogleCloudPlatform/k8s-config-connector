@@ -33,30 +33,32 @@ var (
 type ComputeTargetTCPProxySpec struct {
 	// A reference to the ComputeBackendService resource.
 	// +required
+	// +kcc:proto:field=google.cloud.compute.v1.TargetTcpProxy.service
 	BackendServiceRef *ComputeBackendServiceRef `json:"backendServiceRef"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Description is immutable"
-	// Immutable. An optional description of this resource.
+	// Immutable. An optional description of this resource. Provide this property when you create the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetTcpProxy.description
 	Description *string `json:"description,omitempty"`
 
 	// The geographical location of the ComputeTargetTCPProxy.
 	// Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)
 	Location *string `json:"location,omitempty"`
 
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="ProxyBind is immutable"
-	// Immutable. This field only applies when the forwarding rule that references
-	// this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED.
+	// Immutable. This field only applies when the forwarding rule that references this target proxy has a loadBalancingScheme set to INTERNAL_SELF_MANAGED. When this field is set to true, Envoy proxies set up inbound traffic interception and bind to the IP address and port specified in the forwarding rule. This is generally useful when using Traffic Director to configure Envoy as a gateway or middle proxy (in other words, not a sidecar proxy). The Envoy proxy listens for inbound requests and handles requests when it receives them. The default is false.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetTcpProxy.proxy_bind
 	ProxyBind *bool `json:"proxyBind,omitempty"`
 
-	// Specifies the type of proxy header to append before sending data to
-	// the backend. Default value: "NONE" Possible values: ["NONE", "PROXY_V1"].
+	// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
+	// Check the ProxyHeader enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetTcpProxy.proxy_header
 	ProxyHeader *string `json:"proxyHeader,omitempty"`
 
-	// The ComputeTargetTCPProxy name. If not given, the metadata.name will be used.
+	// Immutable. The ComputeTargetTCPProxy name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
 // ComputeTargetTCPProxyStatus defines the config connector machine state of ComputeTargetTCPProxy
+// +kcc:status:proto=google.cloud.compute.v1.TargetTcpProxy
 type ComputeTargetTCPProxyStatus struct {
 	// Conditions represent the latest available observations of the object's current state.
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -67,13 +69,16 @@ type ComputeTargetTCPProxyStatus struct {
 	// A unique specifier for the ComputeTargetTCPProxy resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// Creation timestamp in RFC3339 text format.
+	// [Output Only] Creation timestamp in RFC3339 text format.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetTcpProxy.creation_timestamp
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
 
-	// The unique identifier for the resource.
+	// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetTcpProxy.id
 	ProxyId *int64 `json:"proxyId,omitempty"`
 
-	// The SelfLink for the resource.
+	// [Output Only] Server-defined URL for the resource.
+	// +kcc:proto:field=google.cloud.compute.v1.TargetTcpProxy.self_link
 	SelfLink *string `json:"selfLink,omitempty"`
 }
 
