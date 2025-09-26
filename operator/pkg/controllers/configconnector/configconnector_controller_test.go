@@ -1349,96 +1349,15 @@ func TestApplyFailsForDuplicatedWebhook(t *testing.T) {
 	}
 }
 
-func TestApplyCustomizations(t *testing.T) {
+func TestNamespaceScopedApplyCustomizations(t *testing.T) {
 	tests := []struct {
 		name                          string
 		manifests                     []string
-		clusterScopedCustomizationCR  *customizev1beta1.ControllerResource
 		namespacedCustomizationCR     *customizev1beta1.NamespacedControllerResource
 		expectedManifests             []string
 		expectedCustomizationCRStatus customizev1beta1.ControllerResourceStatus
 		skipCheckingCRStatus          bool
 	}{
-		{
-			name:                         "customize the resources for cnrm-controller-manager",
-			manifests:                    testcontroller.ClusterModeComponents,
-			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForControllerManagerResources,
-			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedControllerManager,
-			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: true,
-				},
-			},
-		},
-		{
-			name:                         "customize the resources and replica for cnrm-webhook-manager",
-			manifests:                    testcontroller.ClusterModeComponents,
-			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForWebhookManagerResourcesAndReplicas,
-			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedWebhookManager,
-			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: true,
-				},
-			},
-		},
-		{
-			name:                         "customize for a non-existing controller fails",
-			manifests:                    testcontroller.ClusterModeComponents,
-			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForNonExistingController,
-			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
-			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: false,
-					Errors:  []string{testcontroller.ErrNonExistingController},
-				},
-			},
-		},
-		{
-			name:                         "customize for the same container multiple times in the CR fails",
-			manifests:                    testcontroller.ClusterModeComponents,
-			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForDuplicatedContainer,
-			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
-			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: false,
-					Errors:  []string{testcontroller.ErrDuplicatedContainer},
-				},
-			},
-		},
-		{
-			name:                         "customize for a non-existing container in a valid controller fails",
-			manifests:                    testcontroller.ClusterModeComponents,
-			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForNonExistingContainer,
-			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
-			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: false,
-					Errors:  []string{testcontroller.ErrNonExistingContainer},
-				},
-			},
-		},
-		{
-			name:                         "customize the replicas for cnrm-controller-manager has no effect",
-			manifests:                    testcontroller.ClusterModeComponents,
-			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForControllerManagerReplicas,
-			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
-			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: true,
-				},
-			},
-		},
-		{
-			name:                         "customize the replicas for cnrm-webhook-manager to a value large than the maxReplicas of HPA",
-			manifests:                    testcontroller.ClusterModeComponents,
-			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForWebhookManagerWithLargeReplicas,
-			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedWebhookManagerWithLargeReplicas,
-			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: true,
-				},
-			},
-		},
 		{
 			name:                      "namespaced customization CR has no effect",
 			manifests:                 testcontroller.ClusterModeComponents,
@@ -1456,18 +1375,10 @@ func TestApplyCustomizations(t *testing.T) {
 			mgr, stop := testmain.StartTestManagerFromNewTestEnv()
 			defer stop()
 			c := mgr.GetClient()
-			if tc.clusterScopedCustomizationCR != nil {
-				cr := tc.clusterScopedCustomizationCR
-				if err := c.Create(ctx, cr); err != nil {
-					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
-				}
-			}
-			if tc.namespacedCustomizationCR != nil {
-				cr := tc.namespacedCustomizationCR
-				testcontroller.EnsureNamespaceExists(c, cr.Namespace)
-				if err := c.Create(ctx, cr); err != nil {
-					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
-				}
+			cr := tc.namespacedCustomizationCR
+			testcontroller.EnsureNamespaceExists(c, cr.Namespace)
+			if err := c.Create(ctx, cr); err != nil {
+				t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
 			}
 			manifests := testcontroller.ParseObjects(ctx, t, tc.manifests)
 			r := newConfigConnectorReconciler(c)
@@ -1500,12 +1411,182 @@ func TestApplyCustomizations(t *testing.T) {
 				return
 			}
 			updatedCR := &customizev1beta1.ControllerResource{}
-			if err := c.Get(ctx, types.NamespacedName{Namespace: tc.clusterScopedCustomizationCR.Namespace, Name: tc.clusterScopedCustomizationCR.Name}, updatedCR); err != nil {
+			if err := c.Get(ctx, types.NamespacedName{Namespace: tc.namespacedCustomizationCR.Namespace, Name: tc.namespacedCustomizationCR.Name}, updatedCR); err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
 			gotStatus := updatedCR.Status
-			if !reflect.DeepEqual(gotStatus, tc.expectedCustomizationCRStatus) {
-				t.Fatalf("unexpected diff: %v", cmp.Diff(gotStatus, tc.expectedCustomizationCRStatus))
+			expectedStatus := tc.expectedCustomizationCRStatus
+			if expectedStatus.ObservedGeneration != 0 {
+				expectedStatus.ObservedGeneration = updatedCR.Generation
+			}
+			if !reflect.DeepEqual(gotStatus, expectedStatus) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(gotStatus, expectedStatus))
+			}
+		})
+	}
+}
+
+func TestClusterScopedApplyCustomizations(t *testing.T) {
+	tests := []struct {
+		name                          string
+		manifests                     []string
+		clusterScopedCustomizationCR  *customizev1beta1.ControllerResource
+		expectedManifests             []string
+		expectedCustomizationCRStatus customizev1beta1.ControllerResourceStatus
+		skipCheckingCRStatus          bool
+	}{
+		{
+			name:                         "customize the resources for cnrm-controller-manager",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForControllerManagerResources,
+			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedControllerManager,
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            true,
+					ObservedGeneration: 1,
+				},
+			},
+		},
+		{
+			name:                         "customize the resources for cnrm-controller-manager and check observedGeneration",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForObservedControllerManagerResources,
+			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedControllerManager,
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            true,
+					ObservedGeneration: 1,
+				},
+			},
+		},
+		{
+			name:                         "customize the resources and replica for cnrm-webhook-manager",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForWebhookManagerResourcesAndReplicas,
+			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedWebhookManager,
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            true,
+					ObservedGeneration: 1,
+				},
+			},
+		},
+		{
+			name:                         "customize for a non-existing controller fails",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForNonExistingController,
+			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            false,
+					Errors:             []string{testcontroller.ErrNonExistingController},
+					ObservedGeneration: 1,
+				},
+			},
+		},
+		{
+			name:                         "customize for the same container multiple times in the CR fails",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForDuplicatedContainer,
+			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            false,
+					Errors:             []string{testcontroller.ErrDuplicatedContainer},
+					ObservedGeneration: 1,
+				},
+			},
+		},
+		{
+			name:                         "customize for a non-existing container in a valid controller fails",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForNonExistingContainer,
+			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            false,
+					Errors:             []string{testcontroller.ErrNonExistingContainer},
+					ObservedGeneration: 1,
+				},
+			},
+		},
+		{
+			name:                         "customize the replicas for cnrm-controller-manager has no effect",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForControllerManagerReplicas,
+			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            true,
+					ObservedGeneration: 1,
+				},
+			},
+		},
+		{
+			name:                         "customize the replicas for cnrm-webhook-manager to a value large than the maxReplicas of HPA",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForWebhookManagerWithLargeReplicas,
+			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedWebhookManagerWithLargeReplicas,
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            true,
+					ObservedGeneration: 1,
+				},
+			},
+		},
+	}
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			// test setup
+			ctx := context.TODO()
+			mgr, stop := testmain.StartTestManagerFromNewTestEnv()
+			defer stop()
+			c := mgr.GetClient()
+			cr := tc.clusterScopedCustomizationCR
+			if err := c.Create(ctx, cr); err != nil {
+				t.Fatalf("error for test(%s) creating %v %v: %v", tc.name, cr.Kind, cr.Name, err)
+			}
+
+			manifests := testcontroller.ParseObjects(ctx, t, tc.manifests)
+			r := newConfigConnectorReconciler(c)
+
+			// run the test function
+			fn := r.applyCustomizations()
+			if err := fn(ctx, nil, manifests); err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			// check the resulting manifests
+			gotJSON, err := manifests.JSONManifest()
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			expectedManifests := testcontroller.ParseObjects(ctx, t, tc.expectedManifests)
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			expectedJSON, err := expectedManifests.JSONManifest()
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if !reflect.DeepEqual(gotJSON, expectedJSON) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(gotJSON, expectedJSON))
+			}
+
+			// check the status of cluster-scoped customization CR
+			if tc.skipCheckingCRStatus {
+				return
+			}
+			updatedCR := tc.clusterScopedCustomizationCR
+			if err := c.Get(ctx, types.NamespacedName{Name: tc.clusterScopedCustomizationCR.Name}, updatedCR); err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			gotStatus := updatedCR.Status
+			expectedStatus := tc.expectedCustomizationCRStatus
+			if !reflect.DeepEqual(gotStatus, expectedStatus) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(gotStatus, expectedStatus))
 			}
 		})
 	}

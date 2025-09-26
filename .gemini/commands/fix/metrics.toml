@@ -1,19 +1,19 @@
 # In: ~/.gemini/commands/generate/types.toml
-# This command will be invoked via: /fix:metrics
+# This command will be invoked via: /fix:metrics ControllerResource
 
 description = "Asks the model to fix metrics with observed generation."
 
 prompt = """
 You are a golang, Kubernetes Declarative Pattern (KDP) and Config Connector (KCC) expert.
-Please fix the bug where KCC is not setting the status.observedGeneration field on the ConfigConnectorContext resource.
+Please fix the bug where KCC is not setting the status.observedGeneration field on the {{args}} resource.
 The field was added to KCC in https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4480
-The field was added to KDP in https://github.com/kubernetes-sigs/kubebuilder-declarative-pattern/pull/414
 The field structure can be found at https://github.com/kubernetes-sigs/kubebuilder-declarative-pattern/blob/master/pkg/patterns/addon/pkg/apis/v1alpha1/common_types.go#L46
 I would expect KCC to update the status using a method under https://github.com/kubernetes-sigs/kubebuilder-declarative-pattern/tree/master/pkg/patterns/addon/pkg/status
+An instance of this bug was fixed in GoogleCloudPlatform/k8s-config-connector in PR 5012.
 
 Then make a plan before creating a fix.
 Please make sure the modified code compiles.
-Please add tests as appropriate.
+Please add a similar test to the one found in PR 5012.
 Prioritize Correctness: Always prioritize security, scalability, and maintainability in your implementations.
 
 Your response should include:
