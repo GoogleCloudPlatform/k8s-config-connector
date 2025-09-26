@@ -182,6 +182,13 @@ func TestE2EScript(t *testing.T) {
 						continue
 					}
 
+					// CheckMetrics verifies that transport metrics are being emitted correctly
+					if obj.GroupVersionKind().Kind == "CheckMetrics" {
+						CheckTransportMetrics(t, h)
+						captureHTTPLogEvents(false)
+						continue
+					}
+
 					// Try to delete this object as part of cleanup
 					objectsToDelete = append(objectsToDelete, obj)
 
