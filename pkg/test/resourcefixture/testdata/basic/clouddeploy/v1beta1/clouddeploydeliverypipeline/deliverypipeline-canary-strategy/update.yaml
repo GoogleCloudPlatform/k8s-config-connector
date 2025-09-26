@@ -1,0 +1,35 @@
+apiVersion: clouddeploy.cnrm.cloud.google.com/v1beta1
+kind: CloudDeployDeliveryPipeline
+metadata:
+  name: clouddeploydeliverypipeline-full-2-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-east1
+  serialPipeline:
+    stages:
+      - targetID: "my-fake-target-2"
+        deployParameters:
+          - values:
+              key1: "value2"
+            matchTargetLabels:
+              label1: "val2"
+        strategy:
+          canary:
+            customCanaryDeployment:
+              phaseConfigs:
+                - phaseID: "phase2"
+                  percentage: 100
+                  profiles: ["profile2"]
+            runtimeConfig:
+              kubernetes:
+                gatewayServiceMesh:
+                  httpRoute: "my-http-route"
+                  service: "my-service"
+                  deployment: "my-deployment"
+                  podSelectorLabel: "app=my-app"
+                  routeUpdateWaitTime: "60s"
+                  stableCutbackDuration: "30s"
+                  routeDestinations:
+                    destinationIDs: ["dest1"]
+                    propagateService: true
