@@ -1,5 +1,6 @@
 asset.cnrm.cloud.google.com/v1beta1, Kind=AssetFeed
 asset.cnrm.cloud.google.com/v1beta1, Kind=AssetSavedQuery
+backupdr.cnrm.cloud.google.com/v1beta1, Kind=BackupDRBackupPlan
 bigquery.cnrm.cloud.google.com/v1beta1, Kind=BigQueryRoutine
 bigqueryreservation.cnrm.cloud.google.com/v1beta1, Kind=BigQueryReservationAssignment
 bigqueryreservation.cnrm.cloud.google.com/v1beta1, Kind=BigQueryReservationReservation
