@@ -47,6 +47,9 @@ type NormalizingVisitor interface {
 	// ReplacePath replaces values at the given path with newValue
 	ReplacePath(path string, newValue any)
 
+	// TransformString replaces strings at the given path by applying the given function
+	TransformString(fn func(path string, oldValue string) string)
+
 	// RemovePath removes values at the given path
 	RemovePath(path string)
 
