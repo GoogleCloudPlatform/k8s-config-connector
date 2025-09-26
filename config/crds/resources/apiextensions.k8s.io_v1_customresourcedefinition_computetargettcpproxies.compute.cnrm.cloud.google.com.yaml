@@ -92,10 +92,8 @@ spec:
                 type: object
               description:
                 description: Immutable. An optional description of this resource.
+                  Provide this property when you create the resource.
                 type: string
-                x-kubernetes-validations:
-                - message: Description is immutable
-                  rule: self == oldSelf
               location:
                 description: 'The geographical location of the ComputeTargetTCPProxy.
                   Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/)'
@@ -103,19 +101,22 @@ spec:
               proxyBind:
                 description: Immutable. This field only applies when the forwarding
                   rule that references this target proxy has a loadBalancingScheme
-                  set to INTERNAL_SELF_MANAGED.
+                  set to INTERNAL_SELF_MANAGED. When this field is set to true, Envoy
+                  proxies set up inbound traffic interception and bind to the IP address
+                  and port specified in the forwarding rule. This is generally useful
+                  when using Traffic Director to configure Envoy as a gateway or middle
+                  proxy (in other words, not a sidecar proxy). The Envoy proxy listens
+                  for inbound requests and handles requests when it receives them.
+                  The default is false.
                 type: boolean
-                x-kubernetes-validations:
-                - message: ProxyBind is immutable
-                  rule: self == oldSelf
               proxyHeader:
-                description: 'Specifies the type of proxy header to append before
-                  sending data to the backend. Default value: "NONE" Possible values:
-                  ["NONE", "PROXY_V1"].'
+                description: Specifies the type of proxy header to append before sending
+                  data to the backend, either NONE or PROXY_V1. The default is NONE.
+                  Check the ProxyHeader enum for the list of possible values.
                 type: string
               resourceID:
-                description: The ComputeTargetTCPProxy name. If not given, the metadata.name
-                  will be used.
+                description: Immutable. The ComputeTargetTCPProxy name. If not given,
+                  the metadata.name will be used.
                 type: string
             required:
             - backendServiceRef
@@ -151,7 +152,7 @@ spec:
                   type: object
                 type: array
               creationTimestamp:
-                description: Creation timestamp in RFC3339 text format.
+                description: '[Output Only] Creation timestamp in RFC3339 text format.'
                 type: string
               externalRef:
                 description: A unique specifier for the ComputeTargetTCPProxy resource
@@ -166,11 +167,12 @@ spec:
                 format: int64
                 type: integer
               proxyId:
-                description: The unique identifier for the resource.
+                description: '[Output Only] The unique identifier for the resource.
+                  This identifier is defined by the server.'
                 format: int64
                 type: integer
               selfLink:
-                description: The SelfLink for the resource.
+                description: '[Output Only] Server-defined URL for the resource.'
                 type: string
             type: object
         required:

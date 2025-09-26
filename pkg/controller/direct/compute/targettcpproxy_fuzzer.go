@@ -16,7 +16,7 @@
 // proto.message: google.cloud.compute.v1.TargetTcpProxy
 // api.group: compute.cnrm.cloud.google.com
 
-package targettcpproxy
+package compute
 
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
