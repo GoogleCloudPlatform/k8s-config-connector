@@ -552,8 +552,12 @@ func setAnnotation(h *create.Harness, obj *unstructured.Unstructured, k, v strin
 	patch.SetGroupVersionKind(obj.GroupVersionKind())
 	patch.SetNamespace(obj.GetNamespace())
 	patch.SetName(obj.GetName())
-	annotations := map[string]string{
+	newAnnotations := map[string]string{
 		k: v,
+	}
+	annotations := patch.GetAnnotations()
+	for key, value := range newAnnotations {
+		annotations[key] = value
 	}
 	patch.SetAnnotations(annotations)
 
