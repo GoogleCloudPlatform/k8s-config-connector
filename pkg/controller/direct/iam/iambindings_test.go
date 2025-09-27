@@ -880,12 +880,29 @@ func TestComputePartialPolicyWithMergedBindings(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			resolver := mockIdentityResolver{}
-			res, err := iam.ComputePartialPolicyWithMergedBindings(tc.partialPolicy, tc.livePolicy, &resolver)
+			res, err := iam.ComputePartialPolicyWithMergedBindings(tc.partialPolicy, tc.livePolicy, &resolver, "test")
 			if err != nil {
 				t.Fatalf("error when computing partial policy with merged bindings: %v", err)
 			}
-			if !reflect.DeepEqual(res, tc.mergedPolicy) {
-				t.Fatalf("unexpected merged policy diff (-want +got): \n%v", cmp.Diff(tc.mergedPolicy, res))
+			// Compare everything except timestamp fields since they contain dynamic values
+			expected := tc.mergedPolicy.DeepCopy()
+			actual := res.DeepCopy()
+			expected.Status.LastDirectControllerActuation = ""
+			expected.Status.LastLegacyControllerActuation = ""
+			actual.Status.LastDirectControllerActuation = ""
+			actual.Status.LastLegacyControllerActuation = ""
+
+			if !reflect.DeepEqual(actual, expected) {
+				t.Fatalf("unexpected merged policy diff (-want +got): \n%v", cmp.Diff(expected, actual))
+			}
+
+			// Verify that the appropriate timestamp field was set correctly
+			// Since we're using "test" as controller type, it should set LastLegacyControllerActuation
+			if res.Status.LastLegacyControllerActuation == "" {
+				t.Fatalf("expected LastLegacyControllerActuation to be set for 'test' controller type")
+			}
+			if res.Status.LastDirectControllerActuation != "" {
+				t.Fatalf("expected LastDirectControllerActuation to be empty for 'test' controller type")
 			}
 		})
 	}
@@ -1099,9 +1116,26 @@ func TestComputePartialPolicyWithRemainingBindings(t *testing.T) {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			res := iam.ComputePartialPolicyWithRemainingBindings(tc.partialPolicy, tc.livePolicy)
-			if !reflect.DeepEqual(res, tc.remaining) {
-				t.Fatalf("unexpected merged policy diff (-want +got): \n%v", cmp.Diff(tc.remaining, res))
+			res := iam.ComputePartialPolicyWithRemainingBindings(tc.partialPolicy, tc.livePolicy, "test")
+			// Compare everything except timestamp fields since they contain dynamic values
+			expected := tc.remaining.DeepCopy()
+			actual := res.DeepCopy()
+			expected.Status.LastDirectControllerActuation = ""
+			expected.Status.LastLegacyControllerActuation = ""
+			actual.Status.LastDirectControllerActuation = ""
+			actual.Status.LastLegacyControllerActuation = ""
+
+			if !reflect.DeepEqual(actual, expected) {
+				t.Fatalf("unexpected remaining policy diff (-want +got): \n%v", cmp.Diff(expected, actual))
+			}
+
+			// Verify that the appropriate timestamp field was set correctly
+			// Since we're using "test" as controller type, it should set LastLegacyControllerActuation
+			if res.Status.LastLegacyControllerActuation == "" {
+				t.Fatalf("expected LastLegacyControllerActuation to be set for 'test' controller type")
+			}
+			if res.Status.LastDirectControllerActuation != "" {
+				t.Fatalf("expected LastDirectControllerActuation to be empty for 'test' controller type")
 			}
 		})
 	}
