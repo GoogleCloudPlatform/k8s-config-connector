@@ -23,6 +23,8 @@ import (
 	"fmt"
 	"strconv"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+
 	pb "cloud.google.com/go/metastore/apiv1/metastorepb"
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -362,7 +364,7 @@ func MetastoreServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Service) *
 	// MISSING: Name
 	out.Labels = in.Labels
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.Port = direct.LazyPtr(in.GetPort())
 	out.Tier = direct.Enum_FromProto(mapCtx, in.GetTier())
