@@ -78,7 +78,7 @@ func (r *FirewallPolicyRuleRef) NormalizedExternal(ctx context.Context, reader c
 		return "", fmt.Errorf("reading status.externalRef: %w", err)
 	}
 	if actualExternalRef == "" {
-		return "", fmt.Errorf("ComputeFirewallPolicyRule is not ready yet")
+		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
 	r.External = actualExternalRef
 	return r.External, nil
