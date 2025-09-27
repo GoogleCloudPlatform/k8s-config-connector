@@ -40,7 +40,7 @@ func IAMPolicySpec_ToProto(_ *direct.MapContext, in *krm.IAMPolicySpec) *iampb.P
 		// Default to version 3, which supports conditions.
 		// IAM Server should downgrade to supported versions
 		Version: 3,
-		//Etag: spec.Etag, NOT YET
+		Etag:    []byte(in.Etag),
 	}
 
 	// Map Bindings
