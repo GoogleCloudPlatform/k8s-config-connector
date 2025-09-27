@@ -768,6 +768,16 @@ spec:
                       type: string
                   type: object
                 type: array
+              lastAppliedGCPHash:
+                description: LastAppliedGCPHash is a hash of the GCP resource state
+                  that was observed after the last successful reconciliation. This
+                  is used for fast-path drift detection.
+                type: string
+              lastAppliedSpecHash:
+                description: LastAppliedSpecHash is a hash of the spec that was last
+                  successfully applied. This is used by the controller to detect if
+                  the user's desired state has changed.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.

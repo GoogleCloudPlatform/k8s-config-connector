@@ -2,7 +2,7 @@ apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance
 metadata:
   annotations:
-    alpha.cnrm.cloud.google.com/reconciler: direct
+    cnrm.cloud.google.com/default-to-gcp-fields: settings.diskAutoresizeLimit,settings.ipConfiguration.sslMode
     cnrm.cloud.google.com/project-id: ${projectId}
   finalizers:
   - cnrm.cloud.google.com/finalizer
@@ -10,13 +10,16 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: sqlinstance-activationpolicy-direct-${uniqueId}
+  name: sqlinstance-default-gcp-${uniqueId}
   namespace: ${uniqueId}
 spec:
   databaseVersion: POSTGRES_15
   region: us-central1
   settings:
-    activationPolicy: NEVER
+    diskSize: 11
+    diskType: PD_SSD
+    ipConfiguration:
+      ipv4Enabled: true
     locationPreference:
       zone: us-central1-a
     tier: db-custom-1-3840
@@ -27,15 +30,13 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  connectionName: ${projectId}:us-central1:sqlinstance-activationpolicy-direct-${uniqueId}
+  connectionName: ${projectId}:us-central1:sqlinstance-default-gcp-${uniqueId}
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
-  lastAppliedGCPHash: 681630318f13708201423604e7e0b839f0f8143e67f721d85160a2cfd6a2bac0
-  lastAppliedSpecHash: f82d80e39e3360ad846b45dddde8dba93fc3aa843eb09197c6d74197669ed686
   observedGeneration: 2
   publicIpAddress: 10.1.2.3
-  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-activationpolicy-direct-${uniqueId}
+  selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-default-gcp-${uniqueId}
   serverCaCert:
     cert: |
       -----BEGIN CERTIFICATE-----
