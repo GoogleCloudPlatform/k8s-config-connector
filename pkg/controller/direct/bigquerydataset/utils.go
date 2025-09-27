@@ -17,6 +17,8 @@ package bigquerydataset
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
+	"sort"
 
 	bigquery "cloud.google.com/go/bigquery"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -89,6 +91,7 @@ func cloneBigQueryDatasetMetadate(in *bigquery.DatasetMetadata) *bigquery.Datase
 					ProjectID: access.Dataset.Dataset.ProjectID,
 					DatasetID: access.Dataset.Dataset.DatasetID,
 				},
+				TargetTypes: append([]string{}, access.Dataset.TargetTypes...),
 			}
 		}
 		acccessList = append(acccessList, curAccess)
@@ -129,4 +132,45 @@ func cloneBigQueryDatasetMetadate(in *bigquery.DatasetMetadata) *bigquery.Datase
 	out.ETag = in.ETag
 	out.FullID = in.FullID
 	return out
+}
+
+func foundDiffDatasetAccessEntry(a1, a2 []*bigquery.AccessEntry) bool {
+	if len(a1) != len(a2) {
+		return true
+	}
+	sortAccessEntries(a1)
+	sortAccessEntries(a2)
+	for i := range a1 {
+		if a1[i].EntityType != bigquery.RoutineEntity && a1[i].EntityType != bigquery.ViewEntity && a1[i].EntityType != bigquery.DatasetEntity {
+			if !reflect.DeepEqual(a1[i], a2[i]) {
+				return true
+			}
+			continue
+		}
+		if reflect.DeepEqual(a1[i].View, a2[i].View) {
+			return true
+		}
+		if reflect.DeepEqual(a1[i].Routine, a2[i].Routine) {
+			return true
+		}
+		if reflect.DeepEqual(a1[i].Dataset, a2[i].Dataset) {
+			return true
+		}
+	}
+	return false
+}
+
+func sortAccessEntries(entries []*bigquery.AccessEntry) {
+	if entries == nil {
+		return
+	}
+	sort.Slice(entries, func(i, j int) bool {
+		if entries[i].Role != entries[j].Role {
+			return entries[i].Role < entries[j].Role
+		}
+		if entries[i].EntityType != entries[j].EntityType {
+			return entries[i].EntityType < entries[j].EntityType
+		}
+		return entries[i].Entity < entries[j].Entity
+	})
 }
