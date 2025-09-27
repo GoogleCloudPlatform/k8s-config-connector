@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+
+# This script cherry-picks (merged) PRs from the main branch to a release branch,
+# and then sends a github PR for the changes.
+#
+# It assumes that the gh CLI is installed and authenticated.
+#
+# Usage: dev/tasks/cherry-pick <release-branch> <pr-number>
+
+import os
+import subprocess
+import sys
+import tempfile
+import json
+
+def run(cmd):
+    print(f"Running command: {' '.join(cmd)}")
+    return subprocess.run(cmd, check=True, capture_output=True, text=True)
+
+
+def main():
+    if len(sys.argv) != 3:
+        print("Usage: dev/tasks/cherry-pick <release-branch> <pr-number>")
+        sys.exit(1)
+    release_branch = sys.argv[1]
+    pr_number = sys.argv[2]
+
+    repo_root = run(["git", "rev-parse", "--show-toplevel"]).stdout.strip()
+    os.chdir(repo_root)
+
+    # Get the PR info
+    pr_info_results = run(["gh", "pr", "view", pr_number, "--json", "commits,title,body"])
+    pr_info = json.loads(pr_info_results.stdout)
+
+    pr_title = f"cherry-pick: {release_branch}: {pr_info['title']}"
+    pr_body = "Cherry picking PR #" + pr_number + "\n\n" + pr_info['body']
+
+    branch_name = f"cherry-pick-{pr_number}-{release_branch}"
+    github_username = run(["gh", "api", "user", "-q", ".login"]).stdout.strip()
+    user_fork = f"https://github.com/{github_username}/k8s-config-connector"
+
+    # Create a temporary worktree
+    with tempfile.TemporaryDirectory() as tmpdir:
+        run(["git", "worktree", "add", "-b", branch_name, tmpdir, release_branch])
+        os.chdir(tmpdir)
+
+        # Cherry-pick the commits
+        for commit in pr_info['commits']:
+            run(["git", "cherry-pick", commit['oid']])
+
+        # Push the new branch
+        run(["git", "push", user_fork, f"{branch_name}:refs/heads/{branch_name}"])
+
+        # Create the PR
+        pr_output = run(["gh", "pr", "create", "--title", pr_title, "--body", pr_body, "--base", release_branch, "--head", f"{github_username}:{branch_name}"]).stdout.strip()
+        print(f"Created PR for cherry-pick: {pr_output}")
+
+        # Remove the worktree
+        os.chdir(repo_root)
+        run(["git", "worktree", "remove", tmpdir, "--force"])
+
+if __name__ == "__main__":
+    main()
