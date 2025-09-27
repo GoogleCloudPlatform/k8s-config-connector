@@ -1,0 +1,35 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computeurlmap-kompanion-default-${uniqueId}
+spec:
+  description: Default Backend Service for computeurlmap-kompanion
+  loadBalancingScheme: INTERNAL_MANAGED
+  location: global
+  protocol: HTTPS
+  sessionAffinity: NONE
+  timeoutSec: 30
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computeurlmap-kompanion-chaosmonkey-${uniqueId}
+spec:
+  description: Chaosmonkey Backend Service for computeurlmap-kompanion
+  loadBalancingScheme: INTERNAL_MANAGED
+  location: global
+  protocol: HTTPS
+  sessionAffinity: NONE
+  timeoutSec: 30
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: computeurlmap-kompanion-chaosmonkeymulti-${uniqueId}
+spec:
+  description: Chaosmonkeymulti Backend Service for computeurlmap-kompanion
+  loadBalancingScheme: INTERNAL_MANAGED
+  location: global
+  protocol: HTTPS
+  sessionAffinity: NONE
+  timeoutSec: 30
