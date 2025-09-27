@@ -555,6 +555,10 @@ func setAnnotation(h *create.Harness, obj *unstructured.Unstructured, k, v strin
 	annotations := map[string]string{
 		k: v,
 	}
+	existingAnnotations := patch.GetAnnotations()
+	for ek, ev := range existingAnnotations {
+		annotations[ek] = ev
+	}
 	patch.SetAnnotations(annotations)
 
 	if err := h.GetClient().Patch(h.Ctx, removeTestFields(patch), client.Apply, client.FieldOwner("kcc-tests-setannotation"), client.ForceOwnership); err != nil {
