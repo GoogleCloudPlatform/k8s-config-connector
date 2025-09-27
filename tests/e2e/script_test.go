@@ -316,6 +316,7 @@ func TestE2EScript(t *testing.T) {
 
 					case "ABANDON-AND-REACQUIRE-WITH-GENERATED-ID":
 						existing := readObject(h, obj.GroupVersionKind(), obj.GetNamespace(), obj.GetName())
+						// Get the server generated id from spec.resourceID(legacy) or status.externalRef(direct)
 						resourceID, _, _ := unstructured.NestedString(existing.Object, "spec", "resourceID")
 						if resourceID == "" {
 							externalRef, _, _ := unstructured.NestedString(existing.Object, "status", "externalRef")
@@ -325,9 +326,14 @@ func TestE2EScript(t *testing.T) {
 							tokens := strings.Split(externalRef, "/")
 							resourceID = tokens[len(tokens)-1]
 						}
-						setAnnotation(h, obj, "cnrm.cloud.google.com/deletion-policy", "abandon")
+
+						// Abandon the original resource (without spec.resourceID set)
 						deleteObj := obj.DeepCopy()
+						unstructured.RemoveNestedField(deleteObj.Object, "spec", "resourceID")
+						setAnnotation(h, deleteObj, "cnrm.cloud.google.com/deletion-policy", "abandon")
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{deleteObj}})
+
+						// Replace placeholder in configuration yaml with the server generated id
 						configuredID, _, _ := unstructured.NestedString(obj.Object, "spec", "resourceID")
 						if configuredID == "" {
 							h.Fatalf("object does not have resourceID configured: %v", obj)

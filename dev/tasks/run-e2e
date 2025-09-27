@@ -39,8 +39,7 @@ flaky_tests=(
   "TestE2EScript/scenarios/gkehubfeaturemembership"
   # https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/4624
   "TestE2EScript/scenarios/iam/iampartialpolicy"
-  "TestE2EScript/scenarios/acquisition/cloudidentitygroup/cloudidentitygroup-direct"
-  "TestE2EScript/scenarios/acquisition/cloudidentitymembership/cloudidentitymembership-direct"
+
   "TestE2EScript/scenarios/acquisition/bigqueryconnectionconnection"
 )
 
