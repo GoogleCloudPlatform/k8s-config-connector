@@ -204,7 +204,7 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 	}
 	uObj.SetNamespace(policy.GetNamespace())
 	uObj.SetName(policy.GetName())
-	uObj.SetGroupVersionKind(iamv1beta1.IAMPolicyGVK)
+	uObj.SetGroupVersionKind(iamv1beta1.IAMPartialPolicyGVK)
 	structuredreporting.ReportReconcileStart(ctx, uObj)
 	defer structuredreporting.ReportReconcileEnd(ctx, uObj, result, err)
 	requeue, err := runCtx.doReconcile(policy)
