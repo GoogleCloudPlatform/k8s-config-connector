@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,12 +15,18 @@
 apiVersion: networkconnectivity.cnrm.cloud.google.com/v1alpha1
 kind: NetworkConnectivityInternalRange
 metadata:
-  name: networkconnectivityinternalrange-minimal-${uniqueId}
+  name: networkconnectivityinternalrange-full-ipcidrrange-${uniqueId}
+  labels:
+    foo: baz
 spec:
   projectRef:
     external: ${projectId}
   networkRef:
     name: computenetwork-${uniqueId}
   location: global
-  prefixLength: 24
-  description: "Updated description"
+  ipCIDRRange: 10.0.100.0/24
+  description: "Full test of all API fields with ipCIDRRange - updated"
+  peering: FOR_PEER
+  usage: EXTERNAL_TO_VPC
+  targetCIDRRange:
+  - 10.0.0.0/16
