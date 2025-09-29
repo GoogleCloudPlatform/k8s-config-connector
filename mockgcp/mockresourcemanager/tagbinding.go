@@ -89,11 +89,11 @@ func (s *TagBindingsServer) DeleteTagBinding(ctx context.Context, req *pb.Delete
 		// We need to normalize the parent to match the key used during creation.
 		// For projects, this turns the project ID into a project number.
 		// For other resources, it should be a pass-through.
-		if strings.Contains(name, "//cloudresourcemanager.googleapis.com/projects/") {
-			parent, err := url.PathUnescape(tokens[1])
-			if err != nil {
-				return nil, status.Errorf(codes.InvalidArgument, "invalid name %q", name)
-			}
+		parent, err := url.PathUnescape(tokens[1])
+		if err != nil {
+			return nil, status.Errorf(codes.InvalidArgument, "invalid name %q", name)
+		}
+		if strings.Contains(parent, "//cloudresourcemanager.googleapis.com/projects/") {
 			normalizedParent, err := s.normalizeParent(ctx, parent)
 			if err != nil {
 				return nil, err
