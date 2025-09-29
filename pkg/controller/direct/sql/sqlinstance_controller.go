@@ -111,7 +111,7 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, kube client.Rea
 		unmanagedFields := strings.Split(unmanaged, ",")
 		for _, field := range unmanagedFields {
 			if field != unmanageEditionAnnotationValue {
-				return nil, fmt.Errorf("unmanaging field `%s` is not supported", field)
+				return nil, fmt.Errorf("unmanaging field `%s` is not supported, supported fields are: %s", field, unmanageEditionAnnotationValue)
 			}
 		}
 		adapter.unmanagedFields = unmanagedFields
