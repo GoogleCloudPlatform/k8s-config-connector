@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"strings"
 	"text/tabwriter"
 )
 
@@ -74,7 +75,6 @@ func ParseEventInfo(info *objectInfo) (bool, []string) {
 	for _, event := range info.events {
 		switch event.eventType {
 		case EventTypeDiff:
-			good = false
 			report = append(report, "KRM diff detected:")
 			if event.diff != nil && event.diff.Fields != nil {
 				diffFields := []string{}
@@ -92,6 +92,10 @@ func ParseEventInfo(info *objectInfo) (bool, []string) {
 			// Ignore kubeaction for now. Mostly status update.
 
 		case EventTypeGCPAction:
+			// The method is POST but it is actually a read-only call.
+			if strings.Contains(event.gcpAction.url, "getIamPolicy") {
+				continue
+			}
 			good = false
 			report = append(report, "GCP action detected:")
 			report = append(report, fmt.Sprintf("  Method: %s", event.gcpAction.method))

@@ -334,6 +334,7 @@ func (r *Recorder) DoneReconciling() bool {
 
 // TODO: Implement concurrent worker by GVRs.
 func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config) error {
+	klog.Infof("Preloading the list of resources to reconcile")
 	// Make a copy of config to increase QPS and burst.
 	// This would not effect the config for the Manager.
 	config = rest.CopyConfig(config)
