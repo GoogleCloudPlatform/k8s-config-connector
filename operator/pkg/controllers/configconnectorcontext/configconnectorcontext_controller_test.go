@@ -1127,7 +1127,8 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 			expectedManifests:         testcontroller.NamespacedComponentsWithCustomizedControllerManager,
 			expectedCustomizationCRStatus: customizev1beta1.NamespacedControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: true,
+					Healthy:            true,
+					ObservedGeneration: 1,
 				},
 			},
 		},
@@ -1138,8 +1139,9 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 			expectedManifests:         testcontroller.NamespacedComponents, // same as the input manifests
 			expectedCustomizationCRStatus: customizev1beta1.NamespacedControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: false,
-					Errors:  []string{testcontroller.ErrNonExistingController},
+					Healthy:            false,
+					Errors:             []string{testcontroller.ErrNonExistingController},
+					ObservedGeneration: 1,
 				},
 			},
 		},
@@ -1150,8 +1152,9 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 			expectedManifests:         testcontroller.NamespacedComponents, // same as the input manifests
 			expectedCustomizationCRStatus: customizev1beta1.NamespacedControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: false,
-					Errors:  []string{testcontroller.ErrNonExistingContainer},
+					Healthy:            false,
+					Errors:             []string{testcontroller.ErrNonExistingContainer},
+					ObservedGeneration: 1,
 				},
 			},
 		},
@@ -1168,7 +1171,25 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 			namespacedCustomizationCR: testcontroller.NamespacedControllerResourceCRWrongNamespace,
 			expectedManifests:         testcontroller.NamespacedComponents, // same as the input manifests
 			expectedCustomizationCRStatus: customizev1beta1.NamespacedControllerResourceStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{}, // no update to status because it is not in the same namespace as the CCC reconciler.
+				CommonStatus: addonv1alpha1.CommonStatus{
+					ObservedGeneration: 0,
+				}, // no update to status because it is not in the same namespace as the CCC reconciler.
+			},
+		},
+		{
+			name:      "observedGeneration is correctly set in status",
+			manifests: testcontroller.NamespacedComponents,
+			namespacedCustomizationCR: func() *customizev1beta1.NamespacedControllerResource {
+				cr := testcontroller.NamespacedControllerResourceCRForControllerManagerResources.DeepCopy()
+				cr.Generation = 1
+				return cr
+			}(),
+			expectedManifests: testcontroller.NamespacedComponentsWithCustomizedControllerManager,
+			expectedCustomizationCRStatus: customizev1beta1.NamespacedControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            true,
+					ObservedGeneration: 1,
+				},
 			},
 		},
 	}

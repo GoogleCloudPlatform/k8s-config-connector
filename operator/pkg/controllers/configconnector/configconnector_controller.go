@@ -16,6 +16,7 @@ package configconnector
 
 import (
 	"context"
+	goerrors "errors"
 	"fmt"
 	"strings"
 	"time"
@@ -609,22 +610,23 @@ func (r *Reconciler) selectCRDsByVersion(m *manifest.Objects, version string) er
 // applyCustomizations fetches and applies all cluster-scoped customization CRDs.
 func (r *Reconciler) applyCustomizations() declarative.ObjectTransform {
 	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
+		var result error = nil
 		if err := r.fetchAndApplyAllControllerResourceCRs(ctx, m); err != nil {
 			r.log.Error(err, "error applying all controller resource customization CRs")
 			// Don't fail entire reconciliation if we cannot apply controller resource customization CRs.
-			// return err
+			result = goerrors.Join(result, err)
 		}
 		if err := r.fetchAndApplyAllWebhookConfigurationCustomizationCRs(ctx); err != nil {
 			r.log.Error(err, "error applying all webhook configuration customization CRs")
 			// Don't fail entire reconciliation if we cannot apply webhook configuration customization CRs.
-			// return err
+			result = goerrors.Join(result, err)
 		}
 		if err := r.fetchAndApplyAllControllerReconcilers(ctx, m); err != nil {
 			r.log.Error(err, "error applying all controller reconciler customization CRs")
 			// Don't fail entire reconciliation if we cannot apply controller reconciler customization CRs.
-			// return err
+			result = goerrors.Join(result, err)
 		}
-		return nil
+		return result
 	}
 }
 
@@ -668,18 +670,20 @@ func (r *Reconciler) applyControllerResourceCR(ctx context.Context, cr *customiz
 }
 
 func (r *Reconciler) handleApplyControllerResourceCRFailed(ctx context.Context, cr *customizev1beta1.ControllerResource, msg string) error {
-	cr.Status.CommonStatus = v1alpha1.CommonStatus{
-		Healthy: false,
-		Errors:  []string{msg},
-	}
+	status := cr.GetCommonStatus()
+	status.Healthy = false
+	status.Errors = []string{msg}
+	status.ObservedGeneration = cr.Generation
+	cr.SetCommonStatus(status)
 	return r.updateControllerResourceStatus(ctx, cr)
 }
 
 func (r *Reconciler) handleApplyControllerResourceCRSucceeded(ctx context.Context, cr *customizev1beta1.ControllerResource) error {
-	cr.SetCommonStatus(v1alpha1.CommonStatus{
-		Healthy: true,
-		Errors:  []string{},
-	})
+	status := cr.GetCommonStatus()
+	status.Healthy = true
+	status.Errors = []string{}
+	status.ObservedGeneration = cr.Generation
+	cr.SetCommonStatus(status)
 	return r.updateControllerResourceStatus(ctx, cr)
 }
 
