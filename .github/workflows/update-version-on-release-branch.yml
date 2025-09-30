@@ -1,0 +1,43 @@
+name: Update Version on Release Branch
+
+on:
+  create
+
+jobs:
+  update-version:
+    if: github.ref_type == 'branch' && startsWith(github.ref_name, 'release-')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Update version
+        id: update_version
+        run: |
+          # Extract version from branch name (e.g., release-1.135.0 -> 1.135.0)
+          branch_name=${{ github.ref_name }}
+          version_string=$(echo "$branch_name" | sed 's/release-//')
+
+          # Split into major, minor
+          major=$(echo "$version_string" | cut -d. -f1)
+          minor=$(echo "$version_string" | cut -d. -f2)
+
+          # Increment minor version
+          next_minor=$((minor + 1))
+
+          # Construct new version
+          new_version="${major}.${next_minor}.0-beta.1"
+          echo "new_version=${new_version}" >> $GITHUB_OUTPUT
+
+          echo "Updating version/VERSION to $new_version"
+          echo "$new_version" > version/VERSION
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update version to ${{ steps.update_version.outputs.new_version }}"
+          branch: ${{ github.ref_name }}
