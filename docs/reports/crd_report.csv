@@ -335,6 +335,7 @@ networkconnectivity.cnrm.cloud.google.com,NetworkConnectivityInternalRange,True,
 networkconnectivity.cnrm.cloud.google.com,NetworkConnectivityServiceConnectionPolicy,True,False,False,Direct
 networkconnectivity.cnrm.cloud.google.com,NetworkConnectivitySpoke,False,True,False,DCL
 networkmanagement.cnrm.cloud.google.com,NetworkManagementConnectivityTest,True,False,False,Direct
+networksecurity.cnrm.cloud.google.com,NetworkSecurityAddressGroup,True,False,False,Direct
 networksecurity.cnrm.cloud.google.com,NetworkSecurityAuthorizationPolicy,False,True,False,DCL
 networksecurity.cnrm.cloud.google.com,NetworkSecurityClientTLSPolicy,False,True,False,DCL
 networksecurity.cnrm.cloud.google.com,NetworkSecurityServerTLSPolicy,False,True,False,DCL
