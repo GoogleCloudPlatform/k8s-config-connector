@@ -565,6 +565,10 @@ type SQLInstanceStatus struct {
 	/* The service account email address assigned to the instance. */
 	// +optional
 	ServiceAccountEmailAddress *string `json:"serviceAccountEmailAddress,omitempty"`
+
+	/* LastModifiedCookie is a value used by the controller to detect if the resource is out of sync. */
+	// +optional
+	LastModifiedCookie *string `json:"lastModifiedCookie,omitempty"`
 }
 
 // +genclient
