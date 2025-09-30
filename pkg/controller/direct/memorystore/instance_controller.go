@@ -76,8 +76,7 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, reader client.Read
 		return nil, err
 	}
 
-	err = resolveReferences(ctx, reader, obj)
-	if err != nil {
+	if err := resolveReferences(ctx, reader, obj); err != nil {
 		return nil, err
 	}
 
@@ -116,8 +115,7 @@ func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.Memor
 						return err
 					}
 				}
-				err := refs.ResolveComputeServiceAttachment(ctx, reader, obj.GetNamespace(), userConnection.ServiceAttachmentRef)
-				if err != nil {
+				if err := refs.ResolveComputeServiceAttachment(ctx, reader, obj.GetNamespace(), userConnection.ServiceAttachmentRef); err != nil {
 					return err
 				}
 			}
