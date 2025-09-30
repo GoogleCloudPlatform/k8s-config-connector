@@ -47,7 +47,7 @@ kind: SQLInstance
 metadata:
   name: sqlinstance-${uniqueId}
   annotations:
-    cnrm.cloud.google.com/unmanaged: "spec.settings.edition"
+    cnrm.cloud.google.com/unmanaged: "spec.settings.edition,spec.settings.edition"
 spec:
   databaseVersion: POSTGRES_15
   region: us-central1
