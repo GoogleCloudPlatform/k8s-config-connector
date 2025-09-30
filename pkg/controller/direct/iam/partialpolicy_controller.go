@@ -196,9 +196,6 @@ func (a *IAMPartialPolicyAdapter) Create(ctx context.Context, createOp *directba
 		livePolicyForMerge = &krm.IAMPolicy{}
 	} else {
 		livePolicyForMerge = ToIAMPolicySkeleton(a.desired)
-
-		// this is not the PartialPolicy etag on GCP but the etag on the IAMPolicy on GCP
-		livePolicyForMerge.Spec.Etag = string(a.actualReferencedResourcePolicy.Etag)
 	}
 
 	resolver := IAMMemberIdentityResolver{IAMClient: a.iamClient, Ctx: ctx}
