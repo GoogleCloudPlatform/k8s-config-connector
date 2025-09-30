@@ -217,7 +217,7 @@ spec:
                           - external
                         properties:
                           external:
-                            description: A reference to an externally managed BigQueryDataset
+                            description: A reference to an externally-managed BigQueryDataset
                               resource. Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".
                             type: string
                           name:
@@ -270,7 +270,7 @@ spec:
                                 - external
                               properties:
                                 external:
-                                  description: A reference to an externally managed
+                                  description: A reference to an externally-managed
                                     BigQueryTable resource. Should be in the format
                                     "projects/{{projectID}}/datasets/{{datasetsID}}/tables/{{tableID}}".
                                   type: string
@@ -544,7 +544,7 @@ spec:
                           - external
                         properties:
                           external:
-                            description: A reference to an externally managed BigQueryDataset
+                            description: A reference to an externally-managed BigQueryDataset
                               resource. Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".
                             type: string
                           name:
@@ -597,7 +597,7 @@ spec:
                                 - external
                               properties:
                                 external:
-                                  description: A reference to an externally managed
+                                  description: A reference to an externally-managed
                                     BigQueryTable resource. Should be in the format
                                     "projects/{{projectID}}/datasets/{{datasetsID}}/tables/{{tableID}}".
                                   type: string
