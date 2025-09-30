@@ -3,7 +3,7 @@ kind: SQLInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
-    cnrm.cloud.google.com/unmanaged: spec.settings.edition
+    cnrm.cloud.google.com/unmanaged: spec.settings.edition,spec.settings.edition
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
