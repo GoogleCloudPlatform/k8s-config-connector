@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.135.0
+    cnrm.cloud.google.com/version: 1.136.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -112,6 +112,9 @@ spec:
                 required:
                 - kind
                 type: object
+                x-kubernetes-validations:
+                - message: resourceRef is immutable
+                  rule: self == oldSelf
               service:
                 description: 'Immutable. Required. The service for which to enable
                   Data Access audit logs. The special value ''allServices'' covers
@@ -121,6 +124,9 @@ spec:
                   in each ''auditLogConfig'' are enabled, and the ''exemptedMembers''
                   in each ''auditLogConfig'' are exempted.'
                 type: string
+                x-kubernetes-validations:
+                - message: service is immutable
+                  rule: self == oldSelf
             required:
             - auditLogConfigs
             - resourceRef

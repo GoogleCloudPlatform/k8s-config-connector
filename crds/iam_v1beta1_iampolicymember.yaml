@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.135.0
+    cnrm.cloud.google.com/version: 1.136.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -90,10 +90,16 @@ spec:
                 - expression
                 - title
                 type: object
+                x-kubernetes-validations:
+                - message: condition is immutable
+                  rule: self == oldSelf
               member:
                 description: Immutable. The IAM identity to be bound to the role.
                   Exactly one of 'member' or 'memberFrom' must be used.
                 type: string
+                x-kubernetes-validations:
+                - message: member is immutable
+                  rule: self == oldSelf
               memberFrom:
                 description: Immutable. The IAM identity to be bound to the role.
                   Exactly one of 'member' or 'memberFrom' must be used, and only one
@@ -179,6 +185,9 @@ spec:
                     - name
                     type: object
                 type: object
+                x-kubernetes-validations:
+                - message: memberFrom is immutable
+                  rule: self == oldSelf
               resourceRef:
                 description: Immutable. Required. The GCP resource to set the IAM
                   policy on (e.g. organization, project...)
@@ -223,11 +232,17 @@ spec:
                 required:
                 - kind
                 type: object
+                x-kubernetes-validations:
+                - message: resourceRef is immutable
+                  rule: self == oldSelf
               role:
                 description: Immutable. Required. The role for which the Member will
                   be bound.
                 pattern: ^((projects|organizations)/[^/]+/)?roles/[\w_\.]+$
                 type: string
+                x-kubernetes-validations:
+                - message: role is immutable
+                  rule: self == oldSelf
             required:
             - resourceRef
             - role

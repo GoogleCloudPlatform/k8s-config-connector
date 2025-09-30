@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.135.0
+    cnrm.cloud.google.com/version: 1.136.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -112,10 +112,6 @@ spec:
                 required:
                 - kmsKeyRef
                 type: object
-              etag:
-                description: Optional. Used to perform consistent read-modify-write
-                  updates. If not set, a blind "overwrite" update happens.
-                type: string
               labels:
                 additionalProperties:
                   type: string
