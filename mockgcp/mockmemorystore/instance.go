@@ -100,7 +100,8 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 		retObj := proto.Clone(obj).(*pb.Instance)
 		// pscConfigs is not included in the response
 		retObj.PscAutoConnections = nil
-		retObj.State = pb.Instance_ACTIVE
+		retObj.State = pb.Instance_UPDATING
+		retObj.UpdateTime = timestamppb.New(time.Now())
 		return retObj, nil
 	})
 }
