@@ -45,11 +45,13 @@ import (
 
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"golang.org/x/sync/semaphore"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	crcontroller "sigs.k8s.io/controller-runtime/pkg/controller"
+	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	crlog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
@@ -115,18 +117,20 @@ func add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc, opt
 	}
 
 	r := &ReconcileRegistration{
-		Client:            mgr.GetClient(),
-		provider:          rd.TFProvider,
-		smLoader:          rd.TFLoader,
-		dclConfig:         rd.DCLConfig,
-		dclConverter:      rd.DCLConverter,
-		mgr:               mgr,
-		controllers:       make(map[string]map[string]controllerContext),
-		registrationFunc:  regFunc,
-		defaulters:        rd.Defaulters,
-		jitterGenerator:   rd.JitterGen,
-		dependencyTracker: rd.DependencyTracker,
-		reconcilers:       make(map[schema.GroupVersionKind]*parent.Reconcilers),
+		Client:                     mgr.GetClient(),
+		provider:                   rd.TFProvider,
+		smLoader:                   rd.TFLoader,
+		dclConfig:                  rd.DCLConfig,
+		dclConverter:               rd.DCLConverter,
+		mgr:                        mgr,
+		controllers:                make(map[string]map[string]controllerContext),
+		registrationFunc:           regFunc,
+		defaulters:                 rd.Defaulters,
+		jitterGenerator:            rd.JitterGen,
+		dependencyTracker:          rd.DependencyTracker,
+		reconcilers:                make(map[schema.GroupVersionKind]*parent.Reconcilers),
+		immediateReconcileRequests: make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize),
+		resourceWatcherRoutines:    semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines),
 	}
 	c, err := crcontroller.New(opts.ControllerName, mgr,
 		crcontroller.Options{
@@ -158,6 +162,9 @@ type ReconcileRegistration struct {
 	jitterGenerator   jitter.Generator
 	dependencyTracker *gcpwatch.DependencyTracker
 	reconcilers       map[schema.GroupVersionKind]*parent.Reconcilers
+
+	immediateReconcileRequests chan event.GenericEvent
+	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
 
 	mu sync.Mutex
 }
@@ -262,11 +269,6 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 		if err := policy.Add(r.mgr, &cds); err != nil {
 			return nil, err
 		}
-	// slowly moving over decision making for routing outside of this control block.
-	// case "IAMPartialPolicy":
-	// 	if err := partialpolicy.Add(r.mgr, &cds); err != nil {
-	// 		return nil, err
-	// 	}
 	case "IAMPolicyMember":
 		if err := policymember.Add(r.mgr, &cds); err != nil {
 			return nil, err
@@ -295,9 +297,13 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 			for _, reconcilerType := range config.SupportedControllers {
 				switch reconcilerType {
 				case k8s.ReconcilerTypeIAMPartialPolicy:
-					reconcilers.PartialPolicy, err = partialpolicy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, nil, nil, r.defaulters, r.jitterGenerator, cds.DependencyTracker)
+					reconciler, err := partialpolicy.NewReconciler(r.mgr, r.provider, r.smLoader, r.dclConverter, r.dclConfig, nil, nil, r.defaulters, r.jitterGenerator, cds.DependencyTracker)
 					if err != nil {
 						return nil, err
+					}
+					reconcilers.Custom = &parent.CustomReconciler{
+						Type:       k8s.ReconcilerTypeIAMPartialPolicy,
+						Reconciler: reconciler,
 					}
 				case k8s.ReconcilerTypeTerraform:
 					reconcilers.TF, err = tf.NewReconciler(r.mgr, crd, r.provider, r.smLoader, nil, nil, r.defaulters, r.jitterGenerator)
