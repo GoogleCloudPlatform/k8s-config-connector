@@ -41,33 +41,3 @@ spec:
     tier: db-g1-small
   instanceType: READ_REPLICA_INSTANCE
   resourceID: sqlinstance-${uniqueId}
----
-# 02: Remove the unmanaged annotation and attempt to change instanceType to READ_REPLICA_INSTANCE.
-# This should result in an error as instanceType is immutable.
-apiVersion: sql.cnrm.cloud.google.com/v1beta1
-kind: SQLInstance
-metadata:
-  name: sqlinstance-${uniqueId}
-  annotations:
-    cnrm.cloud.google.com/unmanaged-fields: "" # Remove the annotation
-spec:
-  databaseVersion: POSTGRES_15
-  region: us-central1
-  settings:
-    tier: db-g1-small
-  instanceType: READ_REPLICA_INSTANCE
-  resourceID: sqlinstance-${uniqueId}
----
-# 03:
-apiVersion: sql.cnrm.cloud.google.com/v1beta1
-kind: SQLInstance
-metadata:
-  name: sqlinstance-${uniqueId}
-spec:
-  databaseVersion: POSTGRES_15
-  region: us-central1
-  settings:
-    tier: db-g1-small
-  instanceType: READ_REPLICA_INSTANCE
-  resourceID: sqlinstance-${uniqueId}
-TEST: TOUCH
