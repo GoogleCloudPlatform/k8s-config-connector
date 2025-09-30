@@ -34,7 +34,6 @@ func backupDRBackupPlanAssociationFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.SpecFields.Insert(".resource_type")
-	f.SpecFields.Insert(".resource")
 	f.SpecFields.Insert(".backup_plan")
 
 	f.StatusFields.Insert(".create_time")
@@ -44,6 +43,7 @@ func backupDRBackupPlanAssociationFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".data_source")
 
 	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".resource") // special field, the value has to be a URL represending ComputeInstance.
 
 	f.Unimplemented_NotYetTriaged(".backup_plan_revision_name")
 	f.Unimplemented_NotYetTriaged(".backup_plan_revision_id")
