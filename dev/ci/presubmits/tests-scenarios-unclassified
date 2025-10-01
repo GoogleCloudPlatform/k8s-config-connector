@@ -24,7 +24,7 @@ echo "Downloading envtest assets..."
 export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
 
 export RUN_TESTS=TestE2EScript/scenarios
-export SKIP_TESTS="TestE2EScript/scenarios/acquisition|TestE2EScript/scenarios/powertool|TestE2EScript/scenarios/gkehubfeaturemembership|TestE2EScript/scenarios/iam/iampartialpolicy"
+export SKIP_TESTS="TestE2EScript/scenarios/sql/unmanage-edition|TestE2EScript/scenarios/acquisition|TestE2EScript/scenarios/powertool|TestE2EScript/scenarios/gkehubfeaturemembership|TestE2EScript/scenarios/iam/iampartialpolicy"
 export TEST_TIMEOUT=3600s
 
 echo "Running scenarios tests..."

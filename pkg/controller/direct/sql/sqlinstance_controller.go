@@ -37,7 +37,10 @@ import (
 	"github.com/googleapis/gax-go/v2"
 )
 
-const ctrlName = "sqlinstance-controller"
+const (
+	ctrlName                       = "sqlinstance-controller"
+	unmanageEditionAnnotationValue = "spec.settings.edition"
+)
 
 func init() {
 	registry.RegisterModel(krm.SQLInstanceGVK, newSQLInstanceModel)
@@ -63,6 +66,7 @@ type sqlInstanceAdapter struct {
 	sqlOperationsClient *api.OperationsService
 	sqlInstancesClient  *api.InstancesService
 	sqlUsersClient      *api.UsersService
+	unmanagedFields     []string
 }
 
 var _ directbase.Adapter = &sqlInstanceAdapter{}
@@ -93,14 +97,26 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, kube client.Rea
 		return nil, err
 	}
 
-	return &sqlInstanceAdapter{
+	adapter := &sqlInstanceAdapter{
 		projectID:           projectID,
 		resourceID:          resourceID,
 		desired:             obj.DeepCopy(),
 		sqlOperationsClient: gcpClient.sqlOperationsClient(),
 		sqlInstancesClient:  gcpClient.sqlInstancesClient(),
 		sqlUsersClient:      gcpClient.sqlUsersClient(),
-	}, nil
+	}
+
+	unmanaged, ok := obj.GetAnnotations()["cnrm.cloud.google.com/unmanaged"]
+	if ok && unmanaged != "" {
+		unmanagedFields := strings.Split(unmanaged, ",")
+		for _, field := range unmanagedFields {
+			if field != unmanageEditionAnnotationValue {
+				return nil, fmt.Errorf("unmanaging field `%s` is not supported, supported fields are: %s", field, unmanageEditionAnnotationValue)
+			}
+		}
+		adapter.unmanagedFields = unmanagedFields
+	}
+	return adapter, nil
 }
 
 func (m *sqlInstanceModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
@@ -207,7 +223,7 @@ func (a *sqlInstanceAdapter) cloneInstance(ctx context.Context, u *unstructured.
 }
 
 func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured.Unstructured, log klog.Logger) error {
-	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual)
+	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual, a.unmanagedFields)
 	if err != nil {
 		return err
 	}
@@ -261,6 +277,14 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating SQLInstance", "desired", a.desired)
 
+	isEditionUnmanaged := false
+	for _, field := range a.unmanagedFields {
+		if field == unmanageEditionAnnotationValue {
+			isEditionUnmanaged = true
+			break
+		}
+	}
+
 	// First, handle database version updates
 	if a.desired.Spec.DatabaseVersion != nil && *a.desired.Spec.DatabaseVersion != a.actual.DatabaseVersion {
 		newVersionDb := &api.DatabaseInstance{
@@ -292,39 +316,46 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	// Next, handle database edition updates
-	if a.desired.Spec.Settings.Edition != nil && *a.desired.Spec.Settings.Edition != a.actual.Settings.Edition {
-		newEditionDb := &api.DatabaseInstance{
-			Settings: &api.Settings{
-				Edition: direct.ValueOf(a.desired.Spec.Settings.Edition),
-				// ENTERPRISE_PLUS edition has limitations on the allowable set of tiers that can be used. Therefore, when
-				// modifying the edition, we should also allow modifications to the tier at the same time, so that the
-				// user can update from an invalid tier to a valid tier (when going from ENTERPRISE -> ENTERPRISE_PLUS).
-				Tier: a.desired.Spec.Settings.Tier,
-			},
+	if !isEditionUnmanaged {
+		desiredEdition := "ENTERPRISE" // Default value
+		if a.desired.Spec.Settings.Edition != nil {
+			desiredEdition = *a.desired.Spec.Settings.Edition
 		}
 
-		{
-			report := &structuredreporting.Diff{}
-			report.AddField(".settings.edition", a.actual.Settings.Edition, a.desired.Spec.Settings)
-			structuredreporting.ReportDiff(ctx, report)
-		}
+		if desiredEdition != a.actual.Settings.Edition {
+			newEditionDb := &api.DatabaseInstance{
+				Settings: &api.Settings{
+					Edition: direct.ValueOf(&desiredEdition),
+					// ENTERPRISE_PLUS edition has limitations on the allowable set of tiers that can be used. Therefore, when
+					// modifying the edition, we should also allow modifications to the tier at the same time, so that the
+					// user can update from an invalid tier to a valid tier (when going from ENTERPRISE -> ENTERPRISE_PLUS).
+					Tier: a.desired.Spec.Settings.Tier,
+				},
+			}
 
-		op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newEditionDb).Context(ctx).Do()
-		if err != nil {
-			return fmt.Errorf("patching SQLInstance %s edition failed: %w", a.resourceID, err)
-		}
-		if err := a.pollForLROCompletion(ctx, op, "edition patch"); err != nil {
-			return err
-		}
+			{
+				report := &structuredreporting.Diff{}
+				report.AddField(".settings.edition", a.actual.Settings.Edition, desiredEdition)
+				structuredreporting.ReportDiff(ctx, report)
+			}
 
-		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
-		if err != nil {
-			return fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
+			op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newEditionDb).Context(ctx).Do()
+			if err != nil {
+				return fmt.Errorf("patching SQLInstance %s edition failed: %w", a.resourceID, err)
+			}
+			if err := a.pollForLROCompletion(ctx, op, "edition patch"); err != nil {
+				return err
+			}
+
+			updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
+			if err != nil {
+				return fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
+			}
+
+			log.V(2).Info("instance edition updated", "op", op, "instance", updated)
+
+			a.actual = updated
 		}
-
-		log.V(2).Info("instance edition updated", "op", op, "instance", updated)
-
-		a.actual = updated
 	}
 
 	// we also need to handle maintenanceVersion updates separately ...
@@ -356,7 +387,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	// Finally, update rest of the fields
-	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual)
+	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual, a.unmanagedFields)
 	if err != nil {
 		return err
 	}
