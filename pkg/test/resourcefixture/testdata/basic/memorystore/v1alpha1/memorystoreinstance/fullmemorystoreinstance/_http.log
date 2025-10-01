@@ -867,9 +867,10 @@ X-Xss-Protection: 0
     },
     "replicaCount": 1,
     "shardCount": 6,
-    "state": "CREATING",
+    "state": "ACTIVE",
     "transitEncryptionMode": "SERVER_AUTHENTICATION",
     "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
     "zoneDistributionConfig": {
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
@@ -1016,9 +1017,10 @@ X-Xss-Protection: 0
     },
     "replicaCount": 1,
     "shardCount": 12,
-    "state": "CREATING",
+    "state": "ACTIVE",
     "transitEncryptionMode": "SERVER_AUTHENTICATION",
     "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
     "zoneDistributionConfig": {
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
@@ -1165,9 +1167,10 @@ X-Xss-Protection: 0
     },
     "replicaCount": 1,
     "shardCount": 12,
-    "state": "CREATING",
+    "state": "ACTIVE",
     "transitEncryptionMode": "SERVER_AUTHENTICATION",
     "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
     "zoneDistributionConfig": {
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
@@ -1315,9 +1318,10 @@ X-Xss-Protection: 0
     },
     "replicaCount": 1,
     "shardCount": 12,
-    "state": "CREATING",
+    "state": "ACTIVE",
     "transitEncryptionMode": "SERVER_AUTHENTICATION",
     "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
     "zoneDistributionConfig": {
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
@@ -1466,9 +1470,10 @@ X-Xss-Protection: 0
     },
     "replicaCount": 1,
     "shardCount": 12,
-    "state": "CREATING",
+    "state": "ACTIVE",
     "transitEncryptionMode": "SERVER_AUTHENTICATION",
     "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
     "zoneDistributionConfig": {
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
@@ -1617,9 +1622,10 @@ X-Xss-Protection: 0
     },
     "replicaCount": 1,
     "shardCount": 12,
-    "state": "CREATING",
+    "state": "ACTIVE",
     "transitEncryptionMode": "SERVER_AUTHENTICATION",
     "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
     "zoneDistributionConfig": {
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
@@ -1769,9 +1775,10 @@ X-Xss-Protection: 0
     },
     "replicaCount": 1,
     "shardCount": 12,
-    "state": "CREATING",
+    "state": "ACTIVE",
     "transitEncryptionMode": "SERVER_AUTHENTICATION",
     "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
     "zoneDistributionConfig": {
       "mode": "SINGLE_ZONE",
       "zone": "us-central1-b"
@@ -1837,7 +1844,7 @@ X-Xss-Protection: 0
   },
   "replicaCount": 1,
   "shardCount": 12,
-  "state": 1,
+  "state": 3,
   "transitEncryptionMode": 2,
   "uid": "111111111111111111111",
   "zoneDistributionConfig": {

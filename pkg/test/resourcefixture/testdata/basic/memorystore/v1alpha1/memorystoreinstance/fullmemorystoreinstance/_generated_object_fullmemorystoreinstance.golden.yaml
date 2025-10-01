@@ -61,5 +61,6 @@ status:
       - pscAutoConnection: {}
     nodeConfig:
       sizeGB: 6.5
-    state: CREATING
+    state: ACTIVE
     uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
