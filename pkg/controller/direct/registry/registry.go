@@ -124,9 +124,9 @@ func IsIAMDirect(groupKind schema.GroupKind) bool {
 	switch groupKind {
 	case schema.GroupKind{Group: "privateca.cnrm.cloud.google.com", Kind: "PrivateCACAPool"}:
 		return true
-	case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
-		// https://cloud.google.com/run/docs/reference/iam/roles
-		return true
+		// case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
+		// 	// https://cloud.google.com/run/docs/reference/iam/roles
+		// 	return true
 	}
 	return false
 }
