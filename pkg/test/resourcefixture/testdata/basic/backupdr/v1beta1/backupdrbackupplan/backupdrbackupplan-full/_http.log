@@ -195,6 +195,11 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
   ],
   "backupVault": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
   "description": "A full backup plan for testing.",
+  "labels": {
+    "cnrm-test": "true",
+    "key1": "value1",
+    "managed-by-cnrm": "true"
+  },
   "resourceType": "compute.googleapis.com/Instance"
 }
 
@@ -318,6 +323,11 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "A full backup plan for testing.",
     "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true",
+      "key1": "value1",
+      "managed-by-cnrm": "true"
+    },
     "name": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}",
     "resourceType": "compute.googleapis.com/Instance",
     "state": "ACTIVE",
@@ -412,6 +422,11 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A full backup plan for testing.",
   "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "key1": "value1",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}",
   "resourceType": "compute.googleapis.com/Instance",
   "state": 2,
