@@ -179,6 +179,17 @@ func (a *JobAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
+
+	specHash, err := common.HashSpec(&a.desired.Spec)
+	if err != nil {
+		return fmt.Errorf("calculating spec hash: %w", err)
+	}
+	gcpHash, err := common.HashProto(created)
+	if err != nil {
+		return fmt.Errorf("calculating gcp hash: %w", err)
+	}
+	status.LastModifiedCookie = direct.LazyPtr(fmt.Sprintf("%s/%s", specHash, gcpHash))
+
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -186,6 +197,33 @@ func (a *JobAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 func (a *JobAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Job", "name", a.id)
+
+	specHash, err := common.HashSpec(&a.desired.Spec)
+	if err != nil {
+		return fmt.Errorf("calculating spec hash: %w", err)
+	}
+	gcpHash, err := common.HashProto(a.actual)
+	if err != nil {
+		return fmt.Errorf("calculating gcp hash: %w", err)
+	}
+	cookie := fmt.Sprintf("%s/%s", specHash, gcpHash)
+
+	if a.desired.Status.LastModifiedCookie != nil {
+		if *a.desired.Status.LastModifiedCookie == cookie {
+			log.V(2).Info("resource is up to date", "name", a.id)
+			// Fast path: Update status with observed state and return.
+			// The status update is important to update conditions and observedGeneration.
+			status := &krm.RunJobStatus{}
+			mapCtx := &direct.MapContext{}
+			status.ObservedState = RunJobObservedState_FromProto(mapCtx, a.actual)
+			if mapCtx.Err() != nil {
+				return mapCtx.Err()
+			}
+			status.LastModifiedCookie = a.desired.Status.LastModifiedCookie // Preserve cookie
+			return updateOp.UpdateStatus(ctx, status, nil)
+		}
+	}
+
 	mapCtx := &direct.MapContext{}
 
 	desiredPb := RunJobSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
@@ -224,6 +262,13 @@ func (a *JobAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+
+	newGCPHash, err := common.HashProto(updated)
+	if err != nil {
+		return fmt.Errorf("calculating new gcp hash: %w", err)
+	}
+	status.LastModifiedCookie = direct.LazyPtr(fmt.Sprintf("%s/%s", specHash, newGCPHash))
+
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 

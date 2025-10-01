@@ -915,6 +915,11 @@ func (in *RunJobStatus) DeepCopyInto(out *RunJobStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.LastModifiedCookie != nil {
+		in, out := &in.LastModifiedCookie, &out.LastModifiedCookie
+		*out = new(string)
+		**out = **in
+	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration
 		*out = new(int64)
