@@ -327,9 +327,12 @@ func TestE2EScript(t *testing.T) {
 							resourceID = tokens[len(tokens)-1]
 						}
 
-						// Abandon the original resource (without spec.resourceID set)
-						deleteObj := obj.DeepCopy()
-						unstructured.RemoveNestedField(deleteObj.Object, "spec", "resourceID")
+						// Abandon the original resource
+						deleteObj := &unstructured.Unstructured{}
+						deleteObj.SetGroupVersionKind(existing.GroupVersionKind())
+						deleteObj.SetNamespace(existing.GetNamespace())
+						deleteObj.SetName(existing.GetName())
+						deleteObj.SetAnnotations(existing.GetAnnotations())
 						setAnnotation(h, deleteObj, "cnrm.cloud.google.com/deletion-policy", "abandon")
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{deleteObj}})
 
@@ -558,13 +561,12 @@ func setAnnotation(h *create.Harness, obj *unstructured.Unstructured, k, v strin
 	patch.SetGroupVersionKind(obj.GroupVersionKind())
 	patch.SetNamespace(obj.GetNamespace())
 	patch.SetName(obj.GetName())
-	newAnnotations := map[string]string{
-		k: v,
-	}
+
 	annotations := patch.GetAnnotations()
-	for key, value := range newAnnotations {
-		annotations[key] = value
+	if annotations == nil {
+		annotations = make(map[string]string)
 	}
+	annotations[k] = v
 	patch.SetAnnotations(annotations)
 
 	if err := h.GetClient().Patch(h.Ctx, removeTestFields(patch), client.Apply, client.FieldOwner("kcc-tests-setannotation"), client.ForceOwnership); err != nil {
