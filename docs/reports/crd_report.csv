@@ -172,7 +172,7 @@ compute.cnrm.cloud.google.com,ComputeTargetHTTPSProxy,False,True,False,Terraform
 compute.cnrm.cloud.google.com,ComputeTargetInstance,False,True,False,Terraform
 compute.cnrm.cloud.google.com,ComputeTargetPool,False,True,False,Terraform
 compute.cnrm.cloud.google.com,ComputeTargetSSLProxy,False,True,False,Terraform
-compute.cnrm.cloud.google.com,ComputeTargetTCPProxy,False,True,False,Terraform
+compute.cnrm.cloud.google.com,ComputeTargetTCPProxy,False,True,False,Direct
 compute.cnrm.cloud.google.com,ComputeTargetVPNGateway,False,True,False,Terraform
 compute.cnrm.cloud.google.com,ComputeURLMap,False,True,False,Terraform
 compute.cnrm.cloud.google.com,ComputeVPNGateway,False,True,False,Terraform
