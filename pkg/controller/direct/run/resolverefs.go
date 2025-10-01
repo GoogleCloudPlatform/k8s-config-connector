@@ -74,10 +74,10 @@ func ResolveRunJobRefs(ctx context.Context, kube client.Reader, desired *krm.Run
 						// 2. SecertVersion must be in the short version.
 						if sm.SecretRef == nil {
 							sm.SecretRef = &secretmanagerv1beta1.SecretRef{
-								External: strings.Split(fullSecretVersionExternal, "/versions")[0],
+								External: strings.Split(fullSecretVersionExternal, "/versions/")[0],
 							}
 						}
-						sm.VersionRef.External = strings.Split(sm.VersionRef.External, "versions/")[1]
+						sm.VersionRef.External = strings.Split(sm.VersionRef.External, "/versions/")[1]
 					}
 				}
 			}
