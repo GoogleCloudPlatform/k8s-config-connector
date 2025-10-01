@@ -3,21 +3,12 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+Content-Type: application/json
 
 {
-  "error": {
-    "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/functions/cloudfunctionsfunction-${uniqueId}' was not found",
-    "status": "NOT_FOUND"
-  }
+  "code": 5,
+  "details": [],
+  "message": "cloudFunction \"projects/${projectId}/locations/us-central1/functions/cloudfunctionsfunction-${uniqueId}\" not found"
 }
 
 ---
@@ -41,95 +32,13 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 }
 
 200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1",
-    "target": "projects/${projectId}/locations/us-central1/functions/cloudfunctionsfunction-${uniqueId}",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "name": "operations/${operationID}"
-}
-
----
-
-GET https://cloudfunctions.googleapis.com/v1/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+Grpc-Metadata-Content-Type: application/grpc
 
 {
   "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1",
-    "buildId": "97fa758b-0326-431a-aaf3-b187a8c7ee12",
-    "buildName": "projects/${projectNumber}/locations/us-central1/builds/97fa758b-0326-431a-aaf3-b187a8c7ee12",
-    "request": {
-      "@type": "type.googleapis.com/google.cloud.functions.v1.CloudFunction",
-      "entryPoint": "helloGET",
-      "httpsTrigger": {
-        "securityLevel": "SECURE_OPTIONAL"
-      },
-      "labels": {
-        "cnrm-test": "true",
-        "managed-by-cnrm": "true"
-      },
-      "name": "projects/${projectId}/locations/us-central1/functions/cloudfunctionsfunction-${uniqueId}",
-      "runtime": "nodejs20",
-      "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-      "updateTime": "1970-01-01T00:00:00Z"
-    },
-    "sourceToken": "95119e88-5c5f-40db-b447-b49652b4f9da",
-    "target": "projects/${projectId}/locations/us-central1/functions/cloudfunctionsfunction-${uniqueId}",
-    "type": "CREATE_FUNCTION",
-    "updateTime": "2024-04-01T12:34:56.123456Z",
-    "versionId": "1"
-  },
-  "name": "operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.functions.v1.CloudFunction",
-    "automaticUpdatePolicy": {},
-    "availableMemoryMb": 256,
-    "buildId": "97fa758b-0326-431a-aaf3-b187a8c7ee12",
-    "buildName": "projects/${projectNumber}/locations/us-central1/builds/97fa758b-0326-431a-aaf3-b187a8c7ee12",
-    "dockerRegistry": "ARTIFACT_REGISTRY",
-    "entryPoint": "helloGET",
-    "httpsTrigger": {
-      "securityLevel": "SECURE_OPTIONAL",
-      "url": "https://us-central1-${projectId}.cloudfunctions.net/cloudfunctionsfunction-${uniqueId}"
-    },
-    "ingressSettings": "ALLOW_ALL",
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
-    "name": "projects/${projectId}/locations/us-central1/functions/cloudfunctionsfunction-${uniqueId}",
-    "runtime": "nodejs20",
-    "satisfiesPzi": true,
-    "serviceAccountEmail": "${projectId}@appspot.gserviceaccount.com",
-    "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-    "status": "ACTIVE",
-    "timeout": "60s",
-    "updateTime": "2024-04-01T12:34:56.123456Z",
-    "versionId": "1"
-  }
+  "metadata": null,
+  "name": "operations/${operationID}"
 }
 
 ---
@@ -139,40 +48,47 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
 
 {
-  "automaticUpdatePolicy": {},
-  "availableMemoryMb": 256,
-  "buildId": "97fa758b-0326-431a-aaf3-b187a8c7ee12",
-  "buildName": "projects/${projectNumber}/locations/us-central1/builds/97fa758b-0326-431a-aaf3-b187a8c7ee12",
-  "dockerRegistry": "ARTIFACT_REGISTRY",
+  "availableMemoryMb": 0,
+  "buildEnvironmentVariables": {},
+  "buildId": "",
+  "buildName": "",
+  "buildServiceAccount": "",
+  "buildWorkerPool": "",
+  "description": "",
+  "dockerRegistry": "DOCKER_REGISTRY_UNSPECIFIED",
+  "dockerRepository": "",
   "entryPoint": "helloGET",
+  "environmentVariables": {},
   "httpsTrigger": {
     "securityLevel": "SECURE_OPTIONAL",
-    "url": "https://us-central1-${projectId}.cloudfunctions.net/cloudfunctionsfunction-${uniqueId}"
+    "url": ""
   },
-  "ingressSettings": "ALLOW_ALL",
+  "ingressSettings": "INGRESS_SETTINGS_UNSPECIFIED",
+  "kmsKeyName": "",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "maxInstances": 0,
+  "minInstances": 0,
   "name": "projects/${projectId}/locations/us-central1/functions/cloudfunctionsfunction-${uniqueId}",
+  "network": "",
   "runtime": "nodejs20",
-  "satisfiesPzi": true,
-  "serviceAccountEmail": "${projectId}@appspot.gserviceaccount.com",
+  "secretEnvironmentVariables": [],
+  "secretVolumes": [],
+  "serviceAccountEmail": "",
   "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-  "status": "ACTIVE",
-  "timeout": "60s",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "versionId": "1"
+  "sourceToken": "",
+  "status": "CLOUD_FUNCTION_STATUS_UNSPECIFIED",
+  "timeout": null,
+  "updateTime": null,
+  "versionId": "0",
+  "vpcConnector": "",
+  "vpcConnectorEgressSettings": "VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED"
 }
 
 ---
@@ -379,40 +295,47 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
 
 {
-  "automaticUpdatePolicy": {},
-  "availableMemoryMb": 256,
-  "buildId": "97fa758b-0326-431a-aaf3-b187a8c7ee12",
-  "buildName": "projects/${projectNumber}/locations/us-central1/builds/97fa758b-0326-431a-aaf3-b187a8c7ee12",
-  "dockerRegistry": "ARTIFACT_REGISTRY",
+  "availableMemoryMb": 0,
+  "buildEnvironmentVariables": {},
+  "buildId": "",
+  "buildName": "",
+  "buildServiceAccount": "",
+  "buildWorkerPool": "",
+  "description": "",
+  "dockerRegistry": "DOCKER_REGISTRY_UNSPECIFIED",
+  "dockerRepository": "",
   "entryPoint": "helloGET",
+  "environmentVariables": {},
   "httpsTrigger": {
     "securityLevel": "SECURE_OPTIONAL",
-    "url": "https://us-central1-${projectId}.cloudfunctions.net/cloudfunctionsfunction-${uniqueId}"
+    "url": ""
   },
-  "ingressSettings": "ALLOW_ALL",
+  "ingressSettings": "INGRESS_SETTINGS_UNSPECIFIED",
+  "kmsKeyName": "",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
+  "maxInstances": 0,
+  "minInstances": 0,
   "name": "projects/${projectId}/locations/us-central1/functions/cloudfunctionsfunction-${uniqueId}",
+  "network": "",
   "runtime": "nodejs20",
-  "satisfiesPzi": true,
-  "serviceAccountEmail": "${projectId}@appspot.gserviceaccount.com",
+  "secretEnvironmentVariables": [],
+  "secretVolumes": [],
+  "serviceAccountEmail": "",
   "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip",
-  "status": "ACTIVE",
-  "timeout": "60s",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "versionId": "1"
+  "sourceToken": "",
+  "status": "CLOUD_FUNCTION_STATUS_UNSPECIFIED",
+  "timeout": null,
+  "updateTime": null,
+  "versionId": "0",
+  "vpcConnector": "",
+  "vpcConnectorEgressSettings": "VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED"
 }
 
 ---
@@ -422,54 +345,12 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1",
-    "target": "projects/${projectId}/locations/us-central1/functions/cloudfunctionsfunction-${uniqueId}",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "name": "operations/${operationID}"
-}
-
----
-
-GET https://cloudfunctions.googleapis.com/v1/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+Grpc-Metadata-Content-Type: application/grpc
 
 {
   "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1",
-    "request": {
-      "@type": "type.googleapis.com/google.cloud.functions.v1.CloudFunction",
-      "httpsTrigger": {},
-      "name": "projects/${projectId}/locations/us-central1/functions/cloudfunctionsfunction-${uniqueId}",
-      "updateTime": "1970-01-01T00:00:00Z"
-    },
-    "target": "projects/${projectId}/locations/us-central1/functions/cloudfunctionsfunction-${uniqueId}",
-    "type": "DELETE_FUNCTION",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  },
+  "metadata": null,
   "name": "operations/${operationID}"
 }
 
@@ -480,19 +361,10 @@ Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+Content-Type: application/json
 
 {
-  "error": {
-    "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/functions/cloudfunctionsfunction-${uniqueId}' was not found",
-    "status": "NOT_FOUND"
-  }
+  "code": 5,
+  "details": [],
+  "message": "cloudFunction \"projects/${projectId}/locations/us-central1/functions/cloudfunctionsfunction-${uniqueId}\" not found"
 }
