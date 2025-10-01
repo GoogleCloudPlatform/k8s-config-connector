@@ -27,7 +27,10 @@ metadata:
   name: cloudfunctionsfunction-1-${uniqueId}
 spec:
   region: "us-west2"
-  runtime: "nodejs10"
+  # This field needs to be updated to a supported 1st gen version per the service team
+  # support schedule: https://cloud.google.com/functions/docs/runtime-support#support_schedule
+  # Deprecated runtime version will cause googleapis error
+  runtime: "nodejs20"
   availableMemoryMb: 128
   sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
   timeout: "60s"
@@ -45,7 +48,10 @@ metadata:
   name: cloudfunctionsfunction-2-${uniqueId}
 spec:
   region: "us-west2"
-  runtime: "nodejs10"
+  # This field needs to be updated to a supported 1st gen version per the service team
+  # support schedule: https://cloud.google.com/functions/docs/runtime-support#support_schedule
+  # Deprecated runtime version will cause googleapis error
+  runtime: "nodejs20"
   availableMemoryMb: 128
   sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
   timeout: "60s"
