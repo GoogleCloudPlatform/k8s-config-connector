@@ -1,0 +1,110 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package common
+
+import (
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
+
+	"google.golang.org/genproto/googleapis/api/annotations"
+	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
+)
+
+// HashProto calculates a hash of a proto message.
+// We use this to detect changes to the GCP resource.
+func HashProto(pb proto.Message) (string, error) {
+	// We normalize the proto by clearing output-only fields etc
+	// We do this on a copy
+	pb = proto.Clone(pb)
+	NormalizeProto(pb)
+
+	// We use a deterministic json marshaler.
+	// We use UseEnumNumbers to ensure that enums are marshaled to their numeric value,
+	// as some APIs (e.g. Run) can return enums as strings ("GA") in some contexts
+	// and as numbers (4) in others. Using the numeric value gives us a stable hash.
+	j, err := protojson.MarshalOptions{UseEnumNumbers: true}.Marshal(pb)
+	if err != nil {
+		return "", fmt.Errorf("cannot json marshal proto: %w", err)
+	}
+
+	h := sha256.Sum256(j)
+	return hex.EncodeToString(h[:]), nil
+}
+
+// NormalizeProto clears fields that are not significant for comparison.
+// It modifies the passed-in proto.
+func NormalizeProto(pb proto.Message) {
+	// TODO: Should we also clear fields like `uid` and `name`?
+	// The problem is that they are not consistently marked as output-only.
+
+	// We clear fields that are known to be volatile
+	volatileFieldNames := []string{"etag", "update_time", "updated_time"}
+
+	// We also clear fields that are marked as output-only
+	// We do this by walking the fields and checking for `field_behavior: OUTPUT_ONLY`
+	// We build a field mask and then use that to clear the fields.
+	var paths []string
+	pb.ProtoReflect().Range(func(fd protoreflect.FieldDescriptor, v protoreflect.Value) bool {
+		options := fd.Options()
+		if options != nil {
+			if proto.HasExtension(options, annotations.E_FieldBehavior) {
+				fieldBehavior := proto.GetExtension(options, annotations.E_FieldBehavior).([]annotations.FieldBehavior)
+				for _, b := range fieldBehavior {
+					if b == annotations.FieldBehavior_OUTPUT_ONLY {
+						paths = append(paths, string(fd.Name()))
+					}
+				}
+			}
+		}
+		for _, fieldName := range volatileFieldNames {
+			if string(fd.Name()) == fieldName {
+				paths = append(paths, string(fd.Name()))
+			}
+		}
+		return true
+	})
+
+	if len(paths) > 0 {
+		fm, err := fieldmaskpb.New(pb, paths...)
+		if err != nil {
+			// This should not happen
+			panic(fmt.Sprintf("error creating fieldmask: %v", err))
+		}
+		fm.Normalize()
+		if !fm.IsValid(pb) {
+			// This should not happen
+			panic(fmt.Sprintf("invalid fieldmask %v for %T", fm, pb))
+		}
+		clearFields(pb.ProtoReflect(), fm.GetPaths())
+	}
+}
+
+// clearFields clears the given fields from the message.
+func clearFields(m protoreflect.Message, paths []string) {
+	for _, path := range paths {
+		// Note: We don't support nested fields yet
+		fd := m.Descriptor().Fields().ByName(protoreflect.Name(path))
+		if fd == nil {
+			// This should not happen
+			panic(fmt.Sprintf("field %q not found in %v", path, m.Descriptor().FullName()))
+		}
+		m.Clear(fd)
+	}
+}
