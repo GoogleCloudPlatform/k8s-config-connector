@@ -1,0 +1,41 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSSLPolicy
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: computesslpolicy-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  minTlsVersion: TLS_1_0
+  profile: MODERN
+  resourceID: computesslpolicy-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  creationTimestamp: "1970-01-01T00:00:00Z"
+  enabledFeatures:
+  - TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA
+  - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+  - TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA
+  - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+  - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+  - TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA
+  - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+  - TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
+  - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+  - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+  fingerprint: abcdef0123A=
+  observedGeneration: 3
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/computesslpolicy-${uniqueId}
