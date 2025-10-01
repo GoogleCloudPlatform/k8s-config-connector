@@ -19,6 +19,7 @@ on:
     branches:
       - master
       - 'release-*'
+      - xiaoweim/experimental-release
     paths:
       - 'version/VERSION'
 
@@ -40,4 +41,4 @@ jobs:
           git config --global user.name "GitHub Actions Release Tagger"
       - name: "Run tag script"
         run: |
-          ./dev/tasks/auto-tag-on-version-update.sh
+          echo "creating tag"
