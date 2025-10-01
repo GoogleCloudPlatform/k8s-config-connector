@@ -25,9 +25,16 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.cloud.documentai.v1 \
     --api-version documentai.cnrm.cloud.google.com/v1alpha1 \
-    --resource DocumentAI:Processor \
-    --resource DocumentAI:ProcessorVersion
+    --resource DocumentAIProcessor:Processor \
+    --resource DocumentAIProcessorVersion:ProcessorVersion
 
 go run . generate-mapper \
+    --multiversion \
     --service google.cloud.documentai.v1 \
     --api-version documentai.cnrm.cloud.google.com/v1alpha1
+
+
+cd ${REPO_ROOT}
+dev/tasks/generate-crds
+
+go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w pkg/controller/direct/documentai/

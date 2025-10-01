@@ -217,22 +217,9 @@ spec:
                               items:
                                 type: string
                               type: array
-                            description:
-                              description: The description of the entity type. Could
-                                be used to provide more information about the entity
-                                type for model calls.
-                              type: string
                             displayName:
                               description: User defined name for the type.
                               type: string
-                            entityTypeMetadata:
-                              description: Metadata for the entity type.
-                              properties:
-                                inactive:
-                                  description: Whether the entity type should be considered
-                                    inactive.
-                                  type: boolean
-                              type: object
                             enumValues:
                               description: If specified, lists all the possible values
                                 for this entity.  This should not be more than a handful
@@ -269,13 +256,12 @@ spec:
                                 of an entity.
                               items:
                                 properties:
-                                  description:
-                                    description: The description of the property.
-                                      Could be used to provide more information about
-                                      the property for model calls.
-                                    type: string
                                   displayName:
                                     description: User defined name for the property.
+                                    type: string
+                                  method:
+                                    description: Specifies how the entity's value
+                                      is obtained.
                                     type: string
                                   name:
                                     description: The name of the property.  Follows
@@ -285,32 +271,6 @@ spec:
                                     description: Occurrence type limits the number
                                       of instances an entity type appears in the document.
                                     type: string
-                                  propertyMetadata:
-                                    description: Any additional metadata about the
-                                      property can be added here.
-                                    properties:
-                                      fieldExtractionMetadata:
-                                        description: Field extraction metadata on
-                                          the property.
-                                        properties:
-                                          summaryOptions:
-                                            description: Summary options config.
-                                            properties:
-                                              format:
-                                                description: The format the summary
-                                                  should be in.
-                                                type: string
-                                              length:
-                                                description: How long the summary
-                                                  should be.
-                                                type: string
-                                            type: object
-                                        type: object
-                                      inactive:
-                                        description: Whether the property should be
-                                          considered as "inactive".
-                                        type: boolean
-                                    type: object
                                   valueType:
                                     description: A reference to the value type of
                                       the property.  This type is subject to the same
