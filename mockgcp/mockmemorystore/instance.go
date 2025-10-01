@@ -100,8 +100,7 @@ func (r *instanceServer) CreateInstance(ctx context.Context, req *pb.CreateInsta
 		retObj := proto.Clone(obj).(*pb.Instance)
 		// pscConfigs is not included in the response
 		retObj.PscAutoConnections = nil
-		retObj.State = pb.Instance_UPDATING
-		retObj.UpdateTime = timestamppb.New(time.Now())
+		retObj.State = pb.Instance_ACTIVE
 		return retObj, nil
 	})
 }
@@ -218,6 +217,7 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 	if err := r.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+	obj.State = pb.Instance_UPDATING
 
 	// Required. Mask of fields to update. At least one path must be supplied in
 	// this field. The elements of the repeated paths field may only include these
@@ -284,6 +284,8 @@ func (r *instanceServer) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 		retObj := proto.Clone(obj).(*pb.Instance)
 		// pscConfigs is not included in the response
 		retObj.PscAutoConnections = nil
+		retObj.State = pb.Instance_ACTIVE
+		retObj.UpdateTime = timestamppb.New(time.Now())
 		return retObj, nil
 	})
 }
