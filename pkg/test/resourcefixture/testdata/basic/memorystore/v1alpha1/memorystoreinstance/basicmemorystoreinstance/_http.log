@@ -226,9 +226,10 @@ X-Xss-Protection: 0
     },
     "replicaCount": 0,
     "shardCount": 10,
-    "state": "CREATING",
+    "state": "ACTIVE",
     "transitEncryptionMode": "TRANSIT_ENCRYPTION_DISABLED",
     "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
     "zoneDistributionConfig": {
       "mode": "MULTI_ZONE"
     }
@@ -268,7 +269,7 @@ X-Xss-Protection: 0
   },
   "replicaCount": 0,
   "shardCount": 10,
-  "state": 1,
+  "state": 3,
   "transitEncryptionMode": 1,
   "uid": "111111111111111111111",
   "zoneDistributionConfig": {
