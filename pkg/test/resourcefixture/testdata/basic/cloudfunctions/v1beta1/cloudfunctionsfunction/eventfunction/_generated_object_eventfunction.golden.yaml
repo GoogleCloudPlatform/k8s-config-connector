@@ -34,7 +34,10 @@ spec:
     external: projects/${projectId}
   region: us-west2
   resourceID: cloudfunctionsfunction-${uniqueId}
-  runtime: nodejs10
+  # This field needs to be updated per the service team
+  # support schedule: https://cloud.google.com/functions/docs/runtime-support#support_schedule
+  # Deprecated runtime version will cause googleapis error
+  runtime: nodejs20
   serviceAccountRef:
     external: ${projectId}@appspot.gserviceaccount.com
   sourceRepository:
