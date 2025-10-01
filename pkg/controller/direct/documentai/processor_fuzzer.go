@@ -36,7 +36,6 @@ func DocumentAIProcessorFuzzer() fuzztesting.KRMFuzzer {
 
 	f.SpecFields.Insert(".type")
 	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".kms_key_name")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".state")
@@ -44,7 +43,9 @@ func DocumentAIProcessorFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".process_endpoint")
 	f.StatusFields.Insert(".default_processor_version")
 
+	f.UnimplementedFields.Insert(".kms_key_name")
 	f.UnimplementedFields.Insert(".satisfies_pzi")
+	f.UnimplementedFields.Insert(".satisfies_pzs")
 
 	return f
 }
