@@ -24,7 +24,6 @@ import (
 	_ "net/http/pprof" // Needed to allow pprof server to accept requests
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
-	controllermetrics "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
@@ -64,7 +63,6 @@ func main() {
 		rateLimitBurst           int
 	)
 	flag.StringVar(&prometheusScrapeEndpoint, "prometheus-scrape-endpoint", ":8888", "configure the Prometheus scrape endpoint; :8888 as default")
-	flag.BoolVar(&controllermetrics.ResourceNameLabel, "resource-name-label", false, "option to enable the resource name label on some Prometheus metrics; false by default")
 	flag.BoolVar(&userProjectOverride, "user-project-override", false, "option to use the resource project for preconditions, quota, and billing, instead of the project the credentials belong to; false by default")
 	flag.StringVar(&billingProject, "billing-project", "", "project to use for preconditions, quota, and billing if --user-project-override is enabled; empty by default; if this is left empty but --user-project-override is enabled, the resource's project will be used")
 	flag.StringVar(&scopedNamespace, "scoped-namespace", "", "scope controllers to only watch resources in the specified namespace; if unspecified, controllers will run in cluster scope")
@@ -113,14 +111,8 @@ func main() {
 
 	// Register controller OpenCensus views
 	logger.Info("Registering controller OpenCensus views.")
-	if controllermetrics.ResourceNameLabel {
-		if err = metrics.RegisterControllerOpenCensusViewsWithResourceNameLabel(); err != nil {
-			logging.Fatal(err, "error registering controller OpenCensus views with resource name label.")
-		}
-	} else {
-		if err = metrics.RegisterControllerOpenCensusViews(); err != nil {
-			logging.Fatal(err, "error registering controller OpenCensus views.")
-		}
+	if err = metrics.RegisterControllerOpenCensusViewsWithResourceNameLabel(); err != nil {
+		logging.Fatal(err, "error registering controller OpenCensus views with resource name label.")
 	}
 
 	// Register the Prometheus exporter
