@@ -12,69 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package forwardingrule
+package compute
 
 import (
 	"context"
 	"fmt"
 
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeNetworkRef) (*refs.ComputeNetworkRef, error) {
-	if ref == nil {
-		return nil, nil
-	}
-
-	if ref.External != "" {
-		if ref.Name != "" {
-			return nil, fmt.Errorf("cannot specify both name and external on reference")
-		}
-		return ref, nil
-	}
-
-	if ref.Name == "" {
-		return nil, fmt.Errorf("must specify either name or external on reference")
-	}
-
-	key := types.NamespacedName{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
-	}
-
-	computeNetwork, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ComputeNetwork",
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	resourceID, err := refs.GetResourceID(computeNetwork)
-	if err != nil {
-		return nil, err
-	}
-
-	projectID, err := refs.ResolveProjectID(ctx, reader, computeNetwork)
-	if err != nil {
-		return nil, err
-	}
-
-	// convert to format `projects/<projectID>/global/networks/<network>`
-	return &refs.ComputeNetworkRef{
-		External: fmt.Sprintf("projects/%s/global/networks/%s", projectID, resourceID)}, nil
-}
 
 func ResolveComputeSubnetwork(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeSubnetworkRef) (*refs.ComputeSubnetworkRef, error) {
 	if ref == nil {
@@ -477,15 +428,118 @@ func ResolveComputeTargetVPNGateway(ctx context.Context, reader client.Reader, s
 		External: selfLink}, nil
 }
 
-func resolveResourceName(ctx context.Context, reader client.Reader, key client.ObjectKey, gvk schema.GroupVersionKind) (*unstructured.Unstructured, error) {
-	resource := &unstructured.Unstructured{}
-	resource.SetGroupVersionKind(gvk)
-	if err := reader.Get(ctx, key, resource); err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, k8s.NewReferenceNotFoundError(resource.GroupVersionKind(), key)
+func resolveForwardingRuleRefs(ctx context.Context, reader client.Reader, obj *krm.ComputeForwardingRule) error {
+	// Get network
+	if obj.Spec.NetworkRef != nil {
+		networkRef, err := ResolveComputeNetwork(ctx, reader, obj, obj.Spec.NetworkRef)
+		if err != nil {
+			return err
+
 		}
-		return nil, fmt.Errorf("error reading referenced %v %v: %w", gvk.Kind, key, err)
+		obj.Spec.NetworkRef.External = networkRef.External
 	}
 
-	return resource, nil
+	// Get subnetwork
+	if obj.Spec.SubnetworkRef != nil {
+		subnetworkRef, err := ResolveComputeSubnetwork(ctx, reader, obj, obj.Spec.SubnetworkRef)
+		if err != nil {
+			return err
+
+		}
+		obj.Spec.SubnetworkRef.External = subnetworkRef.External
+	}
+
+	// Get backend service
+	if obj.Spec.BackendServiceRef != nil {
+		normalizedExternal, err := obj.Spec.BackendServiceRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+		if err != nil {
+			return err
+
+		}
+		obj.Spec.BackendServiceRef.External = normalizedExternal
+	}
+
+	// Get ip address, ip address is optional
+	if obj.Spec.IpAddress != nil && obj.Spec.IpAddress.AddressRef != nil {
+		computeAddressRef, err := ResolveComputeAddress(ctx, reader, obj, obj.Spec.IpAddress.AddressRef)
+		if err != nil {
+			return err
+
+		}
+		obj.Spec.IpAddress.AddressRef.External = computeAddressRef.External
+	}
+
+	// Get target, target is optional
+	if obj.Spec.Target != nil {
+		// Get target ServiceAttachment
+		if obj.Spec.Target.ServiceAttachmentRef != nil {
+			serviceAttachmentRef, err := ResolveComputeServiceAttachment(ctx, reader, obj, obj.Spec.Target.ServiceAttachmentRef)
+			if err != nil {
+				return err
+
+			}
+			obj.Spec.Target.ServiceAttachmentRef.External = serviceAttachmentRef.External
+		}
+
+		// Get target ComputeTargetGRPCProxyRef
+		if obj.Spec.Target.TargetGRPCProxyRef != nil {
+			targetGRPCProxyRef, err := ResolveComputeTargetGrpcProxy(ctx, reader, obj, obj.Spec.Target.TargetGRPCProxyRef)
+			if err != nil {
+				return err
+
+			}
+			obj.Spec.Target.TargetGRPCProxyRef.External = targetGRPCProxyRef.External
+		}
+
+		// Get target ComputeTargetHTTPProxy
+		if obj.Spec.Target.TargetHTTPProxyRef != nil {
+			targetHTTPProxyRef, err := ResolveComputeTargetHTTPProxy(ctx, reader, obj, obj.Spec.Target.TargetHTTPProxyRef)
+			if err != nil {
+				return err
+
+			}
+			obj.Spec.Target.TargetHTTPProxyRef.External = targetHTTPProxyRef.External
+		}
+
+		// Get target ComputeTargetHTTPSProxy
+		if obj.Spec.Target.TargetHTTPSProxyRef != nil {
+			targetHTTPSProxyRef, err := ResolveComputeTargetHTTPSProxy(ctx, reader, obj, obj.Spec.Target.TargetHTTPSProxyRef)
+			if err != nil {
+				return err
+
+			}
+			obj.Spec.Target.TargetHTTPSProxyRef.External = targetHTTPSProxyRef.External
+		}
+
+		// Get target TargetVPNGateway
+		if obj.Spec.Target.TargetVPNGatewayRef != nil {
+			targetVPNGatewayRef, err := ResolveComputeTargetVPNGateway(ctx, reader, obj, obj.Spec.Target.TargetVPNGatewayRef)
+			if err != nil {
+				return err
+
+			}
+			obj.Spec.Target.TargetVPNGatewayRef.External = targetVPNGatewayRef.External
+		}
+
+		// Get target SSLProxy
+		if obj.Spec.Target.TargetSSLProxyRef != nil {
+			targetSSLProxyRef, err := ResolveComputeTargetSSLProxy(ctx, reader, obj, obj.Spec.Target.TargetSSLProxyRef)
+			if err != nil {
+				return err
+
+			}
+			obj.Spec.Target.TargetSSLProxyRef.External = targetSSLProxyRef.External
+		}
+
+		// Get target TCPProxy
+		if obj.Spec.Target.TargetTCPProxyRef != nil {
+			targetTCPProxyRef, err := ResolveComputeTargetTCPProxy(ctx, reader, obj, obj.Spec.Target.TargetTCPProxyRef)
+			if err != nil {
+				return err
+
+			}
+			obj.Spec.Target.TargetTCPProxyRef.External = targetTCPProxyRef.External
+		}
+	}
+	return nil
 }
