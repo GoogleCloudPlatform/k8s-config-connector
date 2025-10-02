@@ -492,6 +492,9 @@ func executeCommand(opts *RunnerOptions, cfg CommandConfig) (ExecResults, error)
 			for _, arg := range cfg.Args {
 				if arg == "--yolo" {
 					cmd.Args = append(cmd.Args, "--sandbox")
+					if opts != nil && opts.sandboxImage != "" {
+						cmd.Args = append(cmd.Args, opts.sandboxImage)
+					}
 					break
 				}
 			}
