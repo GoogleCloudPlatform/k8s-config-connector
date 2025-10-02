@@ -19,6 +19,7 @@ on:
     branches:
       - master
       - 'release-*'
+      - xiaoweim/experimental-release
     paths:
       - 'version/VERSION'
 
