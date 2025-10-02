@@ -39,6 +39,32 @@ func newGCPClient(config *config.ControllerConfig) (*gcpClient, error) {
 	return gcpClient, nil
 }
 
+func (m *gcpClient) newGlobalForwardingRuleClient(ctx context.Context) (*compute.GlobalForwardingRulesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	client, err := compute.NewGlobalForwardingRulesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building global compute ForwardingRule client: %w", err)
+
+	}
+	return client, err
+}
+
+func (m *gcpClient) forwardingRuleClient(ctx context.Context) (*compute.ForwardingRulesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewForwardingRulesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building ComputeForwardingRule client: %w", err)
+	}
+	return client, err
+}
+
 func (m *gcpClient) newNetworkEdgeSecurityServicesClient(ctx context.Context) (*compute.NetworkEdgeSecurityServicesClient, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
