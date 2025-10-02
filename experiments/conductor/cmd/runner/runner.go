@@ -145,6 +145,8 @@ func BuildRunnerCmd() *cobra.Command {
 		"", "", "Option to handle uncommitted local changes before switching to a different branch, available values: 'CLEANUP', 'COMMIT', 'FAIL'.")
 	cmd.Flags().StringVarP(&opts.testDirSuffix, testDirSuffixFlag,
 		"", "", "Suffix of the test to generate/run/fix for each branch")
+	cmd.Flags().BoolVarP(&opts.noSandbox, "no-sandbox",
+		"", false, "Disable sandboxing for generative commands")
 
 	return cmd
 }
@@ -169,6 +171,7 @@ type RunnerOptions struct {
 	controllerFilter  string // Filter the metadata for 1 type of controller. (Eg terraform-v1beta1)
 	handleLocalChange string // Option to handle uncommitted local changes before switching to a different branch
 	testDirSuffix     string // Suffix for test directory
+	noSandbox         bool   // Disable sandboxing for generative commands
 }
 
 func (opts *RunnerOptions) validateAndDefaultFlags() error {
