@@ -16,7 +16,7 @@
 // proto.message: google.cloud.compute.v1.FirewallPolicyRule
 // api.group: compute.cnrm.cloud.google.com
 
-package firewallpolicyrule
+package compute
 
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"

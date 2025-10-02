@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package firewallpolicyrule
+package compute
 
 import (
 	"context"
@@ -36,8 +36,6 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-const ctrlName = "firewallpolicyrule-controller"
 
 func init() {
 	registry.RegisterModel(krm.ComputeFirewallPolicyRuleGVK, NewFirewallPolicyRuleModel)
@@ -128,7 +126,7 @@ func (a *firewallPolicyRuleAdapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *firewallPolicyRuleAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	err := resolveDependencies(ctx, a.reader, a.desired)
+	err := resolveFirewallPolicyRuleRefs(ctx, a.reader, a.desired)
 	if err != nil {
 		return err
 	}
@@ -180,7 +178,7 @@ func (a *firewallPolicyRuleAdapter) Create(ctx context.Context, createOp *direct
 func (a *firewallPolicyRuleAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	var err error
 
-	err = resolveDependencies(ctx, a.reader, a.desired)
+	err = resolveFirewallPolicyRuleRefs(ctx, a.reader, a.desired)
 	if err != nil {
 		return err
 	}
