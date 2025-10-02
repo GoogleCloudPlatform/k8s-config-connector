@@ -1,0 +1,40 @@
+# In: ~/.gemini/commands/generate/kompaniontest.toml
+# This command will be invoked via: /generate:kompaniontest "kompanion-report-path"
+
+description = "Asks the model to generate fixtures tests from the given kompanion report"
+
+prompt = """
+You are an expert Google Cloud Config Connector (KCC) developer.
+
+You are familiar with KCC resource CRDs, dependencies, and the structure of its test fixtures.
+
+Please use the example test cases in "pkg/test/resourcefixture/testdata/basic", generate new test cases
+to improve field coverage using the data in the yaml files in {{args}}.
+
+Follow the below steps to perform the test generation:
+
+1. Identify untested fields in existing test cases: For resource YAML in {{args}}, use the data in
+"tests/apichecks/testdata/exceptions/missingfields.txt" to identify if any listed missing fields that are present in
+the given YAML. Exclude resources that are not ready or in error state.
+
+2. Generate create.yaml: For each resource that contains one or more untested fields(missing fields are fields that
+listed in missingfields.txt), generate a "create.yaml" using the data in the resource YAML. The "create.yaml" should
+contain those untested fields. Please be aware that there may be no untested fields covered by the given resource YAML.
+
+Additional rules when generating create.yaml:
+2.1 Do not add metadata.namespace in the test YAML, as all test cases are running in the default namespace.
+2.2 Ensure the generated metadata.name is with a maximum length of 63 characters.
+2.3 Similar to the "basic" and "full" test cases, the generated test case name should be "{resource-kind-lowercase}-kompanion".
+2.4 Generate tests under a new folder "pkg/test/resourcefixture/testdata/kompanion".
+
+3. Handle Dependencies: If the primary or dependency resource has reference field, and it references to another resource via "name"
+and optional "namespace", find the referenced resource by the name and namespace within the given YAML,
+generate a "dependencies.yaml" for the referenced resource using the data. If it references to another resource via
+"external", don't created the referenced resource, keep the external value.
+
+4. Remove sensitive data: Replace sensitive information, i.e. customer name, project id, email, password, etc with placeholders.
+Use ${uniqueId} and ${projectId} when needed.
+
+After finishing test generation, run command "hack/compare-mocks fixtures/{test-case-name}" to get mockGCP logs for the
+all generated test cases. It's possible that the GroupKind is not supported by mockGCP yet, if so, skip the test.
+"""

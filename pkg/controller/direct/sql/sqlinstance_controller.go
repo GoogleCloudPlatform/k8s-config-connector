@@ -38,8 +38,9 @@ import (
 )
 
 const (
-	ctrlName                       = "sqlinstance-controller"
-	unmanageEditionAnnotationValue = "spec.settings.edition"
+	ctrlName                            = "sqlinstance-controller"
+	unmanageEditionAnnotationValue      = "spec.settings.edition"
+	unmanageInstanceTypeAnnotationValue = "spec.instanceType"
 )
 
 func init() {
@@ -110,8 +111,8 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, kube client.Rea
 	if ok && unmanaged != "" {
 		unmanagedFields := strings.Split(unmanaged, ",")
 		for _, field := range unmanagedFields {
-			if field != unmanageEditionAnnotationValue {
-				return nil, fmt.Errorf("unmanaging field `%s` is not supported, supported fields are: %s", field, unmanageEditionAnnotationValue)
+			if field != unmanageEditionAnnotationValue && field != unmanageInstanceTypeAnnotationValue {
+				return nil, fmt.Errorf("unmanaging field `%s` is not supported, supported fields are: %s", field, []string{unmanageEditionAnnotationValue, unmanageInstanceTypeAnnotationValue})
 			}
 		}
 		adapter.unmanagedFields = unmanagedFields

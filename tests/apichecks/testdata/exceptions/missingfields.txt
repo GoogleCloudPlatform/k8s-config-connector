@@ -103,6 +103,7 @@
 [missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1beta1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1beta1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=assetsavedqueries.asset.cnrm.cloud.google.com version=v1beta1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=backupdrbackupplans.backupdr.cnrm.cloud.google.com version=v1beta1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=bigqueryanalyticshublistings.bigqueryanalyticshub.cnrm.cloud.google.com version=v1beta1: field ".spec.source.bigQueryDatasetSource.selectedResources[].tableRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudSpanner.useServerlessAnalytics" is not set in unstructured objects
 [missing_field] crd=bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com version=v1beta1: field ".spec.spark.metastoreService.metastoreServiceRef" is not set; neither 'external' nor 'name' are set
@@ -217,7 +218,6 @@
 [missing_field] crd=certificatemanagercertificates.certificatemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.managed.authorizationAttemptInfo[].domain" is not set in unstructured objects
 [missing_field] crd=certificatemanagercertificates.certificatemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.managed.authorizationAttemptInfo[].failureReason" is not set in unstructured objects
 [missing_field] crd=certificatemanagercertificates.certificatemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.managed.authorizationAttemptInfo[].state" is not set in unstructured objects
-[missing_field] crd=certificatemanagercertificates.certificatemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.managed.issuanceConfigRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=certificatemanagercertificates.certificatemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.managed.provisioningIssue[].details" is not set in unstructured objects
 [missing_field] crd=certificatemanagercertificates.certificatemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.managed.provisioningIssue[].reason" is not set in unstructured objects
 [missing_field] crd=certificatemanagercertificates.certificatemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.managed.state" is not set in unstructured objects
@@ -443,11 +443,9 @@
 [missing_field] crd=computebackendbuckets.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.customResponseHeaders[]" is not set in unstructured objects
 [missing_field] crd=computebackendbuckets.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.edgeSecurityPolicy" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.affinityCookieTtlSec" is not set in unstructured objects
-[missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.backend[].balancingMode" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.backend[].capacityScaler" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.backend[].description" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.backend[].failover" is not set in unstructured objects
-[missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.backend[].group.networkEndpointGroupRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.backend[].maxConnections" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.backend[].maxConnectionsPerEndpoint" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.backend[].maxConnectionsPerInstance" is not set in unstructured objects
@@ -480,7 +478,6 @@
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.circuitBreakers.maxRequestsPerConnection" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.circuitBreakers.maxRetries" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.compressionMode" is not set in unstructured objects
-[missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.connectionDrainingTimeoutSec" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.connectionTrackingPolicy.connectionPersistenceOnUnhealthyBackends" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.connectionTrackingPolicy.enableStrongAffinity" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.connectionTrackingPolicy.idleTimeoutSec" is not set in unstructured objects
@@ -493,7 +490,6 @@
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.consistentHash.minimumRingSize" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.customRequestHeaders[]" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.customResponseHeaders[]" is not set in unstructured objects
-[missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.edgeSecurityPolicyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.enableCdn" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.failoverPolicy.disableConnectionDrainOnFailover" is not set in unstructured objects
@@ -513,17 +509,10 @@
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.outlierDetection.consecutiveGatewayFailure" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.outlierDetection.enforcingConsecutiveErrors" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.outlierDetection.enforcingConsecutiveGatewayFailure" is not set in unstructured objects
-[missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.outlierDetection.enforcingSuccessRate" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.outlierDetection.interval.nanos" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.outlierDetection.interval.seconds" is not set in unstructured objects
-[missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.outlierDetection.maxEjectionPercent" is not set in unstructured objects
-[missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.outlierDetection.successRateMinimumHosts" is not set in unstructured objects
-[missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.outlierDetection.successRateRequestVolume" is not set in unstructured objects
-[missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.outlierDetection.successRateStdevFactor" is not set in unstructured objects
-[missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.portName" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.securityPolicy" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.securityPolicyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sessionAffinity" is not set in unstructured objects
 [missing_field] crd=computebackendservices.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.subsetting.policy" is not set in unstructured objects
 [missing_field] crd=computedisks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.asyncPrimaryDisk.diskRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computedisks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.diskEncryptionKey.kmsKeyRef" is not set; neither 'external' nor 'name' are set
@@ -848,7 +837,6 @@
 [missing_field] crd=computeregionnetworkendpointgroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudFunction.urlMask" is not set in unstructured objects
 [missing_field] crd=computeregionnetworkendpointgroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudRun.tag" is not set in unstructured objects
 [missing_field] crd=computeregionnetworkendpointgroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.cloudRun.urlMask" is not set in unstructured objects
-[missing_field] crd=computeregionnetworkendpointgroups.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.specificReservation.inUseCount" is not set in unstructured objects
 [missing_field] crd=computereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.specificReservation.instanceProperties.guestAccelerators[].acceleratorCount" is not set in unstructured objects
 [missing_field] crd=computereservations.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.specificReservation.instanceProperties.guestAccelerators[].acceleratorType" is not set in unstructured objects
@@ -976,7 +964,6 @@
 [missing_field] crd=computesnapshots.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceDiskEncryptionKey.rawKey.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computesnapshots.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.storageLocations[]" is not set in unstructured objects
 [missing_field] crd=computesslpolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.customFeatures[]" is not set in unstructured objects
-[missing_field] crd=computesslpolicies.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.ipv6AccessType" is not set in unstructured objects
 [missing_field] crd=computesubnetworks.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.logConfig.aggregationInterval" is not set in unstructured objects
@@ -1060,7 +1047,6 @@
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.headerAction.responseHeadersToAdd[].headerValue" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.headerAction.responseHeadersToAdd[].replace" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.headerAction.responseHeadersToRemove[]" is not set in unstructured objects
-[missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.hostRule[].description" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].defaultRouteAction.corsPolicy.allowCredentials" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].defaultRouteAction.corsPolicy.allowHeaders[]" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].defaultRouteAction.corsPolicy.allowMethods[]" is not set in unstructured objects
@@ -1141,13 +1127,11 @@
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].matchRules[].metadataFilters[].filterLabels[].value" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].matchRules[].metadataFilters[].filterMatchCriteria" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].matchRules[].pathTemplateMatch" is not set in unstructured objects
-[missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].matchRules[].prefixMatch" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].matchRules[].queryParameterMatches[].exactMatch" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].matchRules[].queryParameterMatches[].name" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].matchRules[].queryParameterMatches[].presentMatch" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].matchRules[].queryParameterMatches[].regexMatch" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].matchRules[].regexMatch" is not set in unstructured objects
-[missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].priority" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].routeAction.corsPolicy.allowCredentials" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].routeAction.corsPolicy.allowHeaders[]" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].routeAction.corsPolicy.allowMethods[]" is not set in unstructured objects
@@ -1171,7 +1155,6 @@
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].routeAction.urlRewrite.hostRewrite" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].routeAction.urlRewrite.pathPrefixRewrite" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].routeAction.urlRewrite.pathTemplateRewrite" is not set in unstructured objects
-[missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].routeAction.weightedBackendServices[].backendServiceRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].routeAction.weightedBackendServices[].headerAction.requestHeadersToAdd[].headerName" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].routeAction.weightedBackendServices[].headerAction.requestHeadersToAdd[].headerValue" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].routeAction.weightedBackendServices[].headerAction.requestHeadersToAdd[].replace" is not set in unstructured objects
@@ -1180,7 +1163,6 @@
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].routeAction.weightedBackendServices[].headerAction.responseHeadersToAdd[].headerValue" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].routeAction.weightedBackendServices[].headerAction.responseHeadersToAdd[].replace" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].routeAction.weightedBackendServices[].headerAction.responseHeadersToRemove[]" is not set in unstructured objects
-[missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].routeAction.weightedBackendServices[].weight" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].service" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].urlRedirect.hostRedirect" is not set in unstructured objects
 [missing_field] crd=computeurlmaps.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.pathMatcher[].routeRules[].urlRedirect.httpsRedirect" is not set in unstructured objects

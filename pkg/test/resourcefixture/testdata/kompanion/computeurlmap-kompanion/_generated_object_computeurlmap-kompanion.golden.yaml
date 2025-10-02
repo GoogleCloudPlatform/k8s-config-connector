@@ -1,0 +1,77 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: computeurlmap-kompanion-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  defaultService:
+    backendServiceRef:
+      name: computeurlmap-kompanion-default-${uniqueId}
+  hostRule:
+  - description: Host rule for chaosmonkey.cloudnetworks.x.gcpnp.anz
+    hosts:
+    - chaosmonkey.cloudnetworks.x.gcpnp.anz
+    - chaosmonkey.cloudnetworks.x.gcpnp.anz:*
+    pathMatcher: chaosmonkey-cloudnetworks-x-gcpnp-anz
+  - description: Host rule for chaosmonkeymulti.cloudnetworks.x.gcpnp.anz
+    hosts:
+    - chaosmonkeymulti.cloudnetworks.x.gcpnp.anz
+    - chaosmonkeymulti.cloudnetworks.x.gcpnp.anz:*
+    pathMatcher: chaosmonkeymulti-cloudnetworks-x-gcpnp-anz
+  - hosts:
+    - svc.gcp.anz
+    pathMatcher: computeurlmap-kompanion-default
+  location: global
+  pathMatcher:
+  - defaultService:
+      backendServiceRef:
+        name: computeurlmap-kompanion-chaosmonkey-${uniqueId}
+    name: chaosmonkey-cloudnetworks-x-gcpnp-anz
+    routeRules:
+    - matchRules:
+      - prefixMatch: /status/*
+      priority: 1
+      routeAction:
+        weightedBackendServices:
+        - backendServiceRef:
+            name: computeurlmap-kompanion-chaosmonkey-${uniqueId}
+          weight: 500
+  - defaultService:
+      backendServiceRef:
+        name: computeurlmap-kompanion-chaosmonkeymulti-${uniqueId}
+    name: chaosmonkeymulti-cloudnetworks-x-gcpnp-anz
+    routeRules:
+    - matchRules:
+      - prefixMatch: /helloworld
+      priority: 1
+      routeAction:
+        weightedBackendServices:
+        - backendServiceRef:
+            name: computeurlmap-kompanion-chaosmonkeymulti-${uniqueId}
+          weight: 500
+  - defaultService:
+      backendServiceRef:
+        name: computeurlmap-kompanion-default-${uniqueId}
+    name: computeurlmap-kompanion-default
+  resourceID: computeurlmap-kompanion-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  creationTimestamp: "1970-01-01T00:00:00Z"
+  mapId: 1111111111111111
+  observedGeneration: 2
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-kompanion-${uniqueId}

@@ -29,8 +29,8 @@ func init() {
 
 func backupDRBackupPlanFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.BackupPlan{},
-		BackupDRBackupPlanSpec_v1alpha1_FromProto, BackupDRBackupPlanSpec_v1alpha1_ToProto,
-		BackupDRBackupPlanObservedState_v1alpha1_FromProto, BackupDRBackupPlanObservedState_v1alpha1_ToProto,
+		BackupDRBackupPlanSpec_v1beta1_FromProto, BackupDRBackupPlanSpec_v1beta1_ToProto,
+		BackupDRBackupPlanObservedState_v1beta1_FromProto, BackupDRBackupPlanObservedState_v1beta1_ToProto,
 	)
 
 	f.SpecFields.Insert(".description")
@@ -45,6 +45,10 @@ func backupDRBackupPlanFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".backup_vault_service_account")
 
 	f.UnimplementedFields.Insert(".name") // special field
+	f.UnimplementedFields.Insert(".log_retention_days")
+	f.UnimplementedFields.Insert(".revision_id")
+	f.UnimplementedFields.Insert(".revision_name")
+	f.UnimplementedFields.Insert(".supported_resource_types")
 	f.Unimplemented_Etag()
 
 	return f
