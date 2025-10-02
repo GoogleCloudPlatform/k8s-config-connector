@@ -58,19 +58,7 @@ status:
     createTime: "1970-01-01T00:00:00Z"
     endpoints:
     - connections:
-      - pscAutoConnection:
-          connectionType: CONNECTION_TYPE_DISCOVERY
-          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-31741225-8c9a-4969-9df9-937fe42e2651
-          ipAddress: 10.128.0.2
-          port: 6379
-          pscConnectionID: "63479556681498626"
-          serviceAttachment: projects/666146234039/regions/us-central1/serviceAttachments/gcp-memorystore-auto-hfb1bd8e2e087266-psc-sa
-      - pscAutoConnection:
-          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-c7c11d44-528d-450b-8952-2c9fda5f149f
-          ipAddress: 10.128.0.3
-          port: 6379
-          pscConnectionID: "63479556681498627"
-          serviceAttachment: projects/666146234039/regions/us-central1/serviceAttachments/gcp-memorystore-auto-hfb1bd8e2e087266-psc-sa-2
+      - pscAutoConnection: {}
     nodeConfig:
       sizeGB: 6.5
     state: ACTIVE
