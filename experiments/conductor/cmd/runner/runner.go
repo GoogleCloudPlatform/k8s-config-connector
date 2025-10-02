@@ -147,6 +147,8 @@ func BuildRunnerCmd() *cobra.Command {
 		"", "", "Suffix of the test to generate/run/fix for each branch")
 	cmd.Flags().BoolVarP(&opts.noSandbox, "no-sandbox",
 		"", false, "Disable sandboxing for generative commands")
+	cmd.Flags().StringVarP(&opts.sandboxImage, "sandbox-image",
+		"", "", "Sandbox image for generative commands")
 
 	return cmd
 }
@@ -172,6 +174,7 @@ type RunnerOptions struct {
 	handleLocalChange string // Option to handle uncommitted local changes before switching to a different branch
 	testDirSuffix     string // Suffix for test directory
 	noSandbox         bool   // Disable sandboxing for generative commands
+	sandboxImage      string // Sandbox image for generative commands
 }
 
 func (opts *RunnerOptions) validateAndDefaultFlags() error {
