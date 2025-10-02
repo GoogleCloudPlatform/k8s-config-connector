@@ -16,10 +16,10 @@ apiVersion: bigtable.cnrm.cloud.google.com/v1alpha1
 kind: BigtableMaterializedView
 metadata:
   name: mv-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/ignore-warnings: "true"
 spec:
   instanceRef:
     name: mvdep${uniqueId}
-  tableRef:
-    name: mvdep${uniqueId}
-  query: "SELECT * FROM mvdep${uniqueId}"
-  deletionProtection: false
+  query: "SELECT _key, COUNT(*) as count from test-table group by _key;"
+  deletionProtection: true
