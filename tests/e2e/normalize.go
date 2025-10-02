@@ -90,6 +90,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.oauth2ClientID"] = "888888888888888888888"
 	visitor.replacePaths[".status.observedState.deleteLockExpireTime"] = "1970-01-01T00:00:00Z"
 
+	// Specific to FutureReservation
+	visitor.replacePaths[".spec.timeWindow.startTime"] = "2025-12-01T07:00:00Z"
+	visitor.replacePaths[".spec.timeWindow.endTime"] = "2025-12-31T07:00:00Z"
+	visitor.replacePaths[".status.existingMatchingUsageInfo.timestamp"] = "2025-08-04T04:26:32.088Z"
+
 	// Apigee
 	visitor.replacePaths[".status.expiresAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
 	visitor.replacePaths[".status.createdAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
@@ -489,6 +494,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 				if typeName == "networkEdgeSecurityServices" {
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 						return strings.ReplaceAll(s, id, "${networkEdgeSecurityServiceID}")
+					})
+				}
+				if typeName == "futureReservations" {
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, id, "${futureReservationID}")
 					})
 				}
 			}

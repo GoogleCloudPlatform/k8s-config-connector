@@ -367,6 +367,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/compute/computeregionnetworkendpointgroup.md
   - title: "ComputeReservation"
     path: /config-connector/docs/reference/resource-docs/compute/computereservation.md
+  - title: "ComputeFutureReservation"
+    path: /config-connector/docs/reference/resource-docs/compute/computefuturereservation.md
   - title: "ComputeResourcePolicy"
     path: /config-connector/docs/reference/resource-docs/compute/computeresourcepolicy.md
   - title: "ComputeRoute"

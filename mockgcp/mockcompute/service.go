@@ -27,6 +27,7 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	pbv1beta "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1beta"
 )
 
 func init() {
@@ -117,6 +118,9 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterInstancesServer(grpcServer, &InstancesV1{MockService: s})
 
 	pb.RegisterZonesServer(grpcServer, &ZonesV1{MockService: s})
+
+	pbv1beta.RegisterFutureReservationsServer(grpcServer, &FutureReservationsV1beta{MockService: s})
+	pbv1beta.RegisterZoneOperationsServer(grpcServer, &ZoneOperationsV1Beta{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -269,6 +273,14 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		return nil, err
 	}
 
+	if err := pbv1beta.RegisterFutureReservationsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pbv1beta.RegisterZoneOperationsHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
 	// Returns slightly non-standard errors
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
 		// Does not return status (at least for 404)
@@ -285,16 +297,33 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	// as that makes it easier to move KCC to newer API versions.
 	// So far, it seems that all of beta is a direct mapping to v1 - though
 	// I'm sure eventually we'll find something that needs special handling.
+	// Resources that have actual beta implementations can be added to
+	// the skipRewriteResources slice below to skip re-writing them to v1.
+	skipRewriteResources := []string{"futureReservations", "operations"}
+
 	rewriteBetaToV1 := func(w http.ResponseWriter, r *http.Request) {
 		u := r.URL
 		if strings.HasPrefix(u.Path, "/compute/beta/") {
-			u2 := *u
-			u2.Path = "/compute/v1/" + strings.TrimPrefix(u.Path, "/compute/beta/")
-			r = httpmux.RewriteRequest(r, &u2)
+			// Rewrite to v1 if its not a skip resource
+			if !isSkipResource(u.Path, skipRewriteResources) {
+				u2 := *u
+				u2.Path = "/compute/v1/" + strings.TrimPrefix(u.Path, "/compute/beta/")
+				r = httpmux.RewriteRequest(r, &u2)
+			}
 		}
 
 		mux.ServeHTTP(w, r)
 	}
 
 	return http.HandlerFunc(rewriteBetaToV1), nil
+}
+
+// Helper to check if path contains any of the given skip resources
+func isSkipResource(path string, resources []string) bool {
+	for _, resource := range resources {
+		if strings.Contains(path, "/"+resource) {
+			return true
+		}
+	}
+	return false
 }
