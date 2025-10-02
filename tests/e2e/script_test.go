@@ -35,9 +35,11 @@ import (
 	kccyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/yaml"
 
 	"github.com/google/go-cmp/cmp"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
@@ -289,7 +291,12 @@ func TestE2EScript(t *testing.T) {
 						}
 
 					case "ABANDON":
+						prePatchObj := readObject(h, obj.GroupVersionKind(), obj.GetNamespace(), obj.GetName())
+						prePatchRV := prePatchObj.GetResourceVersion()
+
 						setAnnotation(h, obj, "cnrm.cloud.google.com/deletion-policy", "abandon")
+						waitForReconciliationAfterPatch(h, obj, prePatchRV)
+
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}})
 						// continue to export the resource
 						shouldGetKubeObject = false
@@ -586,6 +593,45 @@ func readObject(h *create.Harness, gvk schema.GroupVersionKind, namespace, name 
 		h.Fatalf("error reading object %v %v on resource: %v", gvk, key, err)
 	}
 	return obj
+}
+
+// waitForReconciliationAfterPatch waits for a reconciliation to complete after an object has been patched.
+// It does this by waiting for the resourceVersion to change twice: once from the user's patch,
+// and a second time from the controller's status update during reconciliation.
+func waitForReconciliationAfterPatch(h *create.Harness, obj *unstructured.Unstructured, prePatchRV string) {
+	key := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
+
+	// First, wait for the resourceVersion to change, indicating our patch has landed.
+	var rvAfterPatch string
+	if err := wait.PollImmediate(200*time.Millisecond, 5*time.Second, func() (bool, error) {
+		current := &unstructured.Unstructured{}
+		current.SetGroupVersionKind(obj.GroupVersionKind())
+		if err := h.GetClient().Get(h.Ctx, key, current); err != nil {
+			return false, nil // retry
+		}
+		if current.GetResourceVersion() != prePatchRV {
+			rvAfterPatch = current.GetResourceVersion()
+			return true, nil
+		}
+		return false, nil
+	}); err != nil {
+		h.Fatalf("error waiting for patch to be applied (resourceVersion to change from %s): %v", prePatchRV, err)
+	}
+
+	// Now, wait for the controller to reconcile, indicated by another change in resourceVersion.
+	if err := wait.Poll(200*time.Millisecond, 5*time.Second, func() (bool, error) {
+		current := &unstructured.Unstructured{}
+		current.SetGroupVersionKind(obj.GroupVersionKind())
+		if err := h.GetClient().Get(h.Ctx, key, current); err != nil {
+			if apierrors.IsNotFound(err) {
+				return false, fmt.Errorf("object was deleted unexpectedly while waiting for reconciliation")
+			}
+			return false, nil // retry other errors
+		}
+		return current.GetResourceVersion() != rvAfterPatch, nil
+	}); err != nil {
+		h.T.Logf("warning: timed out waiting for controller to reconcile patch; test may be flaky: %v", err)
+	}
 }
 
 func findScripts(t *testing.T, rootDir string) []string {
