@@ -487,6 +487,15 @@ func executeCommand(opts *RunnerOptions, cfg CommandConfig) (ExecResults, error)
 
 		ctx, cancel := context.WithTimeout(context.Background(), cfg.Timeout)
 		cmd := exec.CommandContext(ctx, cfg.Cmd, cfg.Args...)
+		if cfg.Cmd == "gemini" &&
+			(opts == nil || opts != nil && !opts.noSandbox) {
+			for _, arg := range cfg.Args {
+				if arg == "--yolo" {
+					cmd.Args = append(cmd.Args, "--sandbox")
+					break
+				}
+			}
+		}
 		cmd.Dir = cfg.WorkDir
 
 		var outBuf, errBuf strings.Builder
