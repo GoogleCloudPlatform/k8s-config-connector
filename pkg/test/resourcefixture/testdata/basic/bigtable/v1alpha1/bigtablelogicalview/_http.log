@@ -19,12 +19,6 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateInstance
       "encryptionConfig": {},
       "location": "projects/${projectId}/locations/us-central1-a",
       "serveNodes": 3
-    },
-    "cluster2-${uniqueId}": {
-      "defaultStorageType": "SSD",
-      "encryptionConfig": {},
-      "location": "projects/${projectId}/locations/us-west1-a",
-      "serveNodes": 3
     }
   },
   "instance": {
@@ -49,11 +43,6 @@ OK
         "cluster1-${uniqueId}": {
           "defaultStorageType": "SSD",
           "location": "projects/${projectId}/locations/us-central1-a",
-          "serveNodes": 3
-        },
-        "cluster2-${uniqueId}": {
-          "defaultStorageType": "SSD",
-          "location": "projects/${projectId}/locations/us-west1-a",
           "serveNodes": 3
         }
       },
@@ -93,11 +82,6 @@ OK
         "cluster1-${uniqueId}": {
           "defaultStorageType": "SSD",
           "location": "projects/${projectId}/locations/us-central1-a",
-          "serveNodes": 3
-        },
-        "cluster2-${uniqueId}": {
-          "defaultStorageType": "SSD",
-          "location": "projects/${projectId}/locations/us-west1-a",
           "serveNodes": 3
         }
       },
@@ -172,13 +156,6 @@ OK
       "name": "projects/${projectId}/instances/lvdep${uniqueId}/clusters/cluster1-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
-    },
-    {
-      "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-west1-a",
-      "name": "projects/${projectId}/instances/lvdep${uniqueId}/clusters/cluster2-${uniqueId}",
-      "serveNodes": 3,
-      "state": "READY"
     }
   ]
 }
@@ -227,13 +204,6 @@ OK
       "name": "projects/${projectId}/instances/lvdep${uniqueId}/clusters/cluster1-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
-    },
-    {
-      "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-west1-a",
-      "name": "projects/${projectId}/instances/lvdep${uniqueId}/clusters/cluster2-${uniqueId}",
-      "serveNodes": 3,
-      "state": "READY"
     }
   ]
 }
@@ -256,6 +226,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateLogicalView
 
 {
   "logicalView": {
+    "deletionProtection": true,
     "query": "SELECT 1 AS value"
   },
   "logicalViewId": "lv-${uniqueId}",
@@ -272,6 +243,7 @@ OK
   "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
+    "deletionProtection": true,
     "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
     "query": "SELECT 1 AS value"
   }
@@ -288,39 +260,13 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetLogicalView
 OK
 
 {
+  "deletionProtection": true,
   "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
   "query": "SELECT 1 AS value"
 }
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateLogicalView
-
-{
-  "logicalView": {
-    "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
-    "query": "SELECT 1 AS value"
-  },
-  "updateMask": "query"
-}
-
-OK
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata"
-  },
-  "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}/locations/us-central1-a/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
-    "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
-    "query": "SELECT 1 AS value"
-  }
-}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetLogicalView
 
 {
@@ -330,6 +276,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetLogicalView
 OK
 
 {
+  "deletionProtection": true,
   "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
   "query": "SELECT 1 AS value"
 }
@@ -343,7 +290,7 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateLogicalView
     "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
     "query": "SELECT 2 AS new_value"
   },
-  "updateMask": "query"
+  "updateMask": "query,deletionProtection"
 }
 
 OK
@@ -445,13 +392,6 @@ OK
       "defaultStorageType": "SSD",
       "location": "projects/${projectId}/locations/us-central1-a",
       "name": "projects/${projectId}/instances/lvdep${uniqueId}/clusters/cluster1-${uniqueId}",
-      "serveNodes": 3,
-      "state": "READY"
-    },
-    {
-      "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-west1-a",
-      "name": "projects/${projectId}/instances/lvdep${uniqueId}/clusters/cluster2-${uniqueId}",
       "serveNodes": 3,
       "state": "READY"
     }
