@@ -41,4 +41,4 @@ jobs:
           git config --global user.name "GitHub Actions Release Tagger"
       - name: "Run tag script"
         run: |
-          echo "creating tag"
+          ./dev/tasks/auto-tag-on-version-update.sh
