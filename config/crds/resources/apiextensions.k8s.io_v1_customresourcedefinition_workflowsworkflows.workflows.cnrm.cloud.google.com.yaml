@@ -99,15 +99,6 @@ spec:
                     description: The `namespace` of a `KMSCryptoKey` resource.
                     type: string
                 type: object
-              labels:
-                additionalProperties:
-                  type: string
-                description: Labels associated with this workflow. Labels can contain
-                  at most 64 entries. Keys and values can be no longer than 63 characters
-                  and can only contain lowercase letters, numeric characters, underscores,
-                  and dashes. Label keys must start with a letter. International characters
-                  are allowed.
-                type: object
               location:
                 description: Immutable.
                 type: string

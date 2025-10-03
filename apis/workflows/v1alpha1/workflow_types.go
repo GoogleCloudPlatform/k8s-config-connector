@@ -54,7 +54,7 @@ type WorkflowsWorkflowSpec struct {
 	// than 63 characters and can only contain lowercase letters, numeric
 	// characters, underscores, and dashes. Label keys must start with a letter.
 	// International characters are allowed.
-	Labels map[string]string `json:"labels,omitempty"`
+	// Labels map[string]string `json:"labels,omitempty"`
 
 	// The service account associated with the latest workflow version.
 	// This service account represents the identity of the workflow and determines
