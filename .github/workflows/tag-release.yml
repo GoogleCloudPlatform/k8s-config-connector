@@ -25,7 +25,7 @@ on:
 jobs:
   tag-release:
     # This job only runs for the GoogleCloudPlatform/k8s-config-connector repository.
-    if: github.repository == 'GoogleCloudPlatform/k8s-config-connector'
+    if: ${{ github.repository == 'GoogleCloudPlatform/k8s-config-connector' }}
     runs-on: ubuntu-24.04
     permissions:
       contents: write
