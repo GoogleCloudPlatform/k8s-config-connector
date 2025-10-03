@@ -1,0 +1,4 @@
+{
+  "name": "{{_dataset2}}",
+  "project": "{{ref:bigquery.serviceusage.service.json:project}}"
+}

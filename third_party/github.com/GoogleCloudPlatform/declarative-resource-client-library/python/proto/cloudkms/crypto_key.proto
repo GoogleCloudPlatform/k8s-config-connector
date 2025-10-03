@@ -1,0 +1,196 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum CloudkmsCryptoKeyPrimaryStateEnum {
+  CloudkmsCryptoKeyPrimaryStateEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudkmsCryptoKeyPrimaryStateEnumCRYPTO_KEY_VERSION_STATE_UNSPECIFIED = 1;
+  CloudkmsCryptoKeyPrimaryStateEnumPENDING_GENERATION = 2;
+  CloudkmsCryptoKeyPrimaryStateEnumENABLED = 3;
+  CloudkmsCryptoKeyPrimaryStateEnumDISABLED = 4;
+  CloudkmsCryptoKeyPrimaryStateEnumDESTROYED = 5;
+  CloudkmsCryptoKeyPrimaryStateEnumDESTROY_SCHEDULED = 6;
+  CloudkmsCryptoKeyPrimaryStateEnumPENDING_IMPORT = 7;
+  CloudkmsCryptoKeyPrimaryStateEnumIMPORT_FAILED = 8;
+}
+
+enum CloudkmsCryptoKeyPrimaryProtectionLevelEnum {
+  CloudkmsCryptoKeyPrimaryProtectionLevelEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudkmsCryptoKeyPrimaryProtectionLevelEnumPROTECTION_LEVEL_UNSPECIFIED = 1;
+  CloudkmsCryptoKeyPrimaryProtectionLevelEnumSOFTWARE = 2;
+  CloudkmsCryptoKeyPrimaryProtectionLevelEnumHSM = 3;
+  CloudkmsCryptoKeyPrimaryProtectionLevelEnumEXTERNAL = 4;
+  CloudkmsCryptoKeyPrimaryProtectionLevelEnumEXTERNAL_VPC = 5;
+}
+
+enum CloudkmsCryptoKeyPrimaryAlgorithmEnum {
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumCRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED = 1;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumGOOGLE_SYMMETRIC_ENCRYPTION = 2;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumRSA_SIGN_PSS_2048_SHA256 = 3;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumRSA_SIGN_PSS_3072_SHA256 = 4;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumRSA_SIGN_PSS_4096_SHA256 = 5;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumRSA_SIGN_PSS_4096_SHA512 = 6;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumRSA_SIGN_PKCS1_2048_SHA256 = 7;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumRSA_SIGN_PKCS1_3072_SHA256 = 8;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumRSA_SIGN_PKCS1_4096_SHA256 = 9;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumRSA_SIGN_PKCS1_4096_SHA512 = 10;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumRSA_DECRYPT_OAEP_2048_SHA256 = 11;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumRSA_DECRYPT_OAEP_3072_SHA256 = 12;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumRSA_DECRYPT_OAEP_4096_SHA256 = 13;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumRSA_DECRYPT_OAEP_4096_SHA512 = 14;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumEC_SIGN_P256_SHA256 = 15;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumEC_SIGN_P384_SHA384 = 16;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumEC_SIGN_SECP256K1_SHA256 = 17;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumHMAC_SHA256 = 18;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnumEXTERNAL_SYMMETRIC_ENCRYPTION = 19;
+}
+
+enum CloudkmsCryptoKeyPrimaryAttestationFormatEnum {
+  CloudkmsCryptoKeyPrimaryAttestationFormatEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudkmsCryptoKeyPrimaryAttestationFormatEnumATTESTATION_FORMAT_UNSPECIFIED = 1;
+  CloudkmsCryptoKeyPrimaryAttestationFormatEnumCAVIUM_V1_COMPRESSED = 2;
+  CloudkmsCryptoKeyPrimaryAttestationFormatEnumCAVIUM_V2_COMPRESSED = 3;
+}
+
+enum CloudkmsCryptoKeyPurposeEnum {
+  CloudkmsCryptoKeyPurposeEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudkmsCryptoKeyPurposeEnumCRYPTO_KEY_PURPOSE_UNSPECIFIED = 1;
+  CloudkmsCryptoKeyPurposeEnumENCRYPT_DECRYPT = 2;
+  CloudkmsCryptoKeyPurposeEnumASYMMETRIC_SIGN = 3;
+  CloudkmsCryptoKeyPurposeEnumASYMMETRIC_DECRYPT = 4;
+  CloudkmsCryptoKeyPurposeEnumMAC = 5;
+}
+
+enum CloudkmsCryptoKeyVersionTemplateProtectionLevelEnum {
+  CloudkmsCryptoKeyVersionTemplateProtectionLevelEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudkmsCryptoKeyVersionTemplateProtectionLevelEnumPROTECTION_LEVEL_UNSPECIFIED = 1;
+  CloudkmsCryptoKeyVersionTemplateProtectionLevelEnumSOFTWARE = 2;
+  CloudkmsCryptoKeyVersionTemplateProtectionLevelEnumHSM = 3;
+  CloudkmsCryptoKeyVersionTemplateProtectionLevelEnumEXTERNAL = 4;
+  CloudkmsCryptoKeyVersionTemplateProtectionLevelEnumEXTERNAL_VPC = 5;
+}
+
+enum CloudkmsCryptoKeyVersionTemplateAlgorithmEnum {
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumCRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED = 1;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumGOOGLE_SYMMETRIC_ENCRYPTION = 2;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumRSA_SIGN_PSS_2048_SHA256 = 3;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumRSA_SIGN_PSS_3072_SHA256 = 4;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumRSA_SIGN_PSS_4096_SHA256 = 5;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumRSA_SIGN_PSS_4096_SHA512 = 6;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumRSA_SIGN_PKCS1_2048_SHA256 = 7;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumRSA_SIGN_PKCS1_3072_SHA256 = 8;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumRSA_SIGN_PKCS1_4096_SHA256 = 9;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumRSA_SIGN_PKCS1_4096_SHA512 = 10;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumRSA_DECRYPT_OAEP_2048_SHA256 = 11;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumRSA_DECRYPT_OAEP_3072_SHA256 = 12;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumRSA_DECRYPT_OAEP_4096_SHA256 = 13;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumRSA_DECRYPT_OAEP_4096_SHA512 = 14;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumEC_SIGN_P256_SHA256 = 15;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumEC_SIGN_P384_SHA384 = 16;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumEC_SIGN_SECP256K1_SHA256 = 17;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumHMAC_SHA256 = 18;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnumEXTERNAL_SYMMETRIC_ENCRYPTION = 19;
+}
+
+message CloudkmsCryptoKey {
+  string name = 1;
+  CloudkmsCryptoKeyPrimary primary = 2;
+  CloudkmsCryptoKeyPurposeEnum purpose = 3;
+  string create_time = 4;
+  string next_rotation_time = 5;
+  string rotation_period = 6;
+  CloudkmsCryptoKeyVersionTemplate version_template = 7;
+  map<string, string> labels = 8;
+  bool import_only = 9;
+  string destroy_scheduled_duration = 10;
+  string project = 11;
+  string location = 12;
+  string key_ring = 13;
+}
+
+message CloudkmsCryptoKeyPrimary {
+  string name = 1;
+  CloudkmsCryptoKeyPrimaryStateEnum state = 2;
+  CloudkmsCryptoKeyPrimaryProtectionLevelEnum protection_level = 3;
+  CloudkmsCryptoKeyPrimaryAlgorithmEnum algorithm = 4;
+  CloudkmsCryptoKeyPrimaryAttestation attestation = 5;
+  string create_time = 6;
+  string generate_time = 7;
+  string destroy_time = 8;
+  string destroy_event_time = 9;
+  string import_job = 10;
+  string import_time = 11;
+  string import_failure_reason = 12;
+  CloudkmsCryptoKeyPrimaryExternalProtectionLevelOptions external_protection_level_options = 13;
+  bool reimport_eligible = 14;
+}
+
+message CloudkmsCryptoKeyPrimaryAttestation {
+  CloudkmsCryptoKeyPrimaryAttestationFormatEnum format = 1;
+  string content = 2;
+  CloudkmsCryptoKeyPrimaryAttestationCertChains cert_chains = 3;
+}
+
+message CloudkmsCryptoKeyPrimaryAttestationCertChains {
+  repeated string cavium_certs = 1;
+  repeated string google_card_certs = 2;
+  repeated string google_partition_certs = 3;
+}
+
+message CloudkmsCryptoKeyPrimaryExternalProtectionLevelOptions {
+  string external_key_uri = 1;
+}
+
+message CloudkmsCryptoKeyVersionTemplate {
+  CloudkmsCryptoKeyVersionTemplateProtectionLevelEnum protection_level = 1;
+  CloudkmsCryptoKeyVersionTemplateAlgorithmEnum algorithm = 2;
+}
+
+message ApplyCloudkmsCryptoKeyRequest {
+  CloudkmsCryptoKey resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteCloudkmsCryptoKeyRequest {
+  string service_account_file = 1;
+  CloudkmsCryptoKey resource = 2;
+}
+
+message ListCloudkmsCryptoKeyRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string KeyRing = 4;
+}
+
+message ListCloudkmsCryptoKeyResponse {
+  repeated CloudkmsCryptoKey items = 1;
+}
+
+service CloudkmsCryptoKeyService {
+  rpc ApplyCloudkmsCryptoKey(ApplyCloudkmsCryptoKeyRequest) returns (CloudkmsCryptoKey);
+  rpc DeleteCloudkmsCryptoKey(DeleteCloudkmsCryptoKeyRequest) returns (google.protobuf.Empty);
+  rpc ListCloudkmsCryptoKey(ListCloudkmsCryptoKeyRequest) returns (ListCloudkmsCryptoKeyResponse);
+}

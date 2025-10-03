@@ -1,0 +1,160 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum CloudschedulerBetaJobAppEngineHttpTargetHttpMethodEnum {
+  CloudschedulerBetaJobAppEngineHttpTargetHttpMethodEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudschedulerBetaJobAppEngineHttpTargetHttpMethodEnumHTTP_METHOD_UNSPECIFIED = 1;
+  CloudschedulerBetaJobAppEngineHttpTargetHttpMethodEnumPOST = 2;
+  CloudschedulerBetaJobAppEngineHttpTargetHttpMethodEnumGET = 3;
+  CloudschedulerBetaJobAppEngineHttpTargetHttpMethodEnumHEAD = 4;
+  CloudschedulerBetaJobAppEngineHttpTargetHttpMethodEnumPUT = 5;
+  CloudschedulerBetaJobAppEngineHttpTargetHttpMethodEnumDELETE = 6;
+  CloudschedulerBetaJobAppEngineHttpTargetHttpMethodEnumPATCH = 7;
+  CloudschedulerBetaJobAppEngineHttpTargetHttpMethodEnumOPTIONS = 8;
+}
+
+enum CloudschedulerBetaJobHttpTargetHttpMethodEnum {
+  CloudschedulerBetaJobHttpTargetHttpMethodEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudschedulerBetaJobHttpTargetHttpMethodEnumHTTP_METHOD_UNSPECIFIED = 1;
+  CloudschedulerBetaJobHttpTargetHttpMethodEnumPOST = 2;
+  CloudschedulerBetaJobHttpTargetHttpMethodEnumGET = 3;
+  CloudschedulerBetaJobHttpTargetHttpMethodEnumHEAD = 4;
+  CloudschedulerBetaJobHttpTargetHttpMethodEnumPUT = 5;
+  CloudschedulerBetaJobHttpTargetHttpMethodEnumDELETE = 6;
+  CloudschedulerBetaJobHttpTargetHttpMethodEnumPATCH = 7;
+  CloudschedulerBetaJobHttpTargetHttpMethodEnumOPTIONS = 8;
+}
+
+enum CloudschedulerBetaJobStateEnum {
+  CloudschedulerBetaJobStateEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudschedulerBetaJobStateEnumSTATE_UNSPECIFIED = 1;
+  CloudschedulerBetaJobStateEnumENABLED = 2;
+  CloudschedulerBetaJobStateEnumPAUSED = 3;
+  CloudschedulerBetaJobStateEnumDISABLED = 4;
+  CloudschedulerBetaJobStateEnumUPDATE_FAILED = 5;
+}
+
+message CloudschedulerBetaJob {
+  string name = 1;
+  string description = 2;
+  CloudschedulerBetaJobPubsubTarget pubsub_target = 3;
+  CloudschedulerBetaJobAppEngineHttpTarget app_engine_http_target = 4;
+  CloudschedulerBetaJobHttpTarget http_target = 5;
+  string schedule = 6;
+  string time_zone = 7;
+  string user_update_time = 8;
+  CloudschedulerBetaJobStateEnum state = 9;
+  CloudschedulerBetaJobStatus status = 10;
+  string schedule_time = 11;
+  string last_attempt_time = 12;
+  CloudschedulerBetaJobRetryConfig retry_config = 13;
+  string attempt_deadline = 14;
+  string project = 15;
+  string location = 16;
+}
+
+message CloudschedulerBetaJobPubsubTarget {
+  string topic_name = 1;
+  string data = 2;
+  map<string, string> attributes = 3;
+}
+
+message CloudschedulerBetaJobAppEngineHttpTarget {
+  CloudschedulerBetaJobAppEngineHttpTargetHttpMethodEnum http_method = 1;
+  CloudschedulerBetaJobAppEngineHttpTargetAppEngineRouting app_engine_routing = 2;
+  string relative_uri = 3;
+  map<string, string> headers = 4;
+  string body = 5;
+}
+
+message CloudschedulerBetaJobAppEngineHttpTargetAppEngineRouting {
+  string service = 1;
+  string version = 2;
+  string instance = 3;
+  string host = 4;
+}
+
+message CloudschedulerBetaJobHttpTarget {
+  string uri = 1;
+  CloudschedulerBetaJobHttpTargetHttpMethodEnum http_method = 2;
+  map<string, string> headers = 3;
+  string body = 4;
+  CloudschedulerBetaJobHttpTargetOAuthToken oauth_token = 5;
+  CloudschedulerBetaJobHttpTargetOidcToken oidc_token = 6;
+}
+
+message CloudschedulerBetaJobHttpTargetOAuthToken {
+  string service_account_email = 1;
+  string scope = 2;
+}
+
+message CloudschedulerBetaJobHttpTargetOidcToken {
+  string service_account_email = 1;
+  string audience = 2;
+}
+
+message CloudschedulerBetaJobStatus {
+  int64 code = 1;
+  string message = 2;
+  repeated CloudschedulerBetaJobStatusDetails details = 3;
+}
+
+message CloudschedulerBetaJobStatusDetails {
+  string type_url = 1;
+  string value = 2;
+}
+
+message CloudschedulerBetaJobRetryConfig {
+  int64 retry_count = 1;
+  string max_retry_duration = 2;
+  string min_backoff_duration = 3;
+  string max_backoff_duration = 4;
+  int64 max_doublings = 5;
+}
+
+message ApplyCloudschedulerBetaJobRequest {
+  CloudschedulerBetaJob resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteCloudschedulerBetaJobRequest {
+  string service_account_file = 1;
+  CloudschedulerBetaJob resource = 2;
+}
+
+message ListCloudschedulerBetaJobRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListCloudschedulerBetaJobResponse {
+  repeated CloudschedulerBetaJob items = 1;
+}
+
+service CloudschedulerBetaJobService {
+  rpc ApplyCloudschedulerBetaJob(ApplyCloudschedulerBetaJobRequest) returns (CloudschedulerBetaJob);
+  rpc DeleteCloudschedulerBetaJob(DeleteCloudschedulerBetaJobRequest) returns (google.protobuf.Empty);
+  rpc ListCloudschedulerBetaJob(ListCloudschedulerBetaJobRequest) returns (ListCloudschedulerBetaJobResponse);
+}

@@ -1,0 +1,10 @@
+{
+  "name": "{{pool}}",
+  "parent": "organizations/{{org_id}}",
+  "location": "global",
+  "displayName": "Display name",
+  "description": "A sample workforce pool.",
+  "state": "ACTIVE",
+  "disabled": false,
+  "sessionDuration": "7200s"
+}

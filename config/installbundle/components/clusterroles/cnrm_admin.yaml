@@ -20,6 +20,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - aiplatform.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - alloydb.cnrm.cloud.google.com
   resources:
   - '*'
@@ -80,7 +92,55 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - apphub.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - artifactregistry.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - asset.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - backupdr.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - batch.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -117,6 +177,18 @@ rules:
   - delete
 - apiGroups:
   - bigqueryanalyticshub.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - bigquerybiglake.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -188,6 +260,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - billing.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - billingbudgets.cnrm.cloud.google.com
   resources:
   - '*'
@@ -237,6 +321,30 @@ rules:
   - delete
 - apiGroups:
   - cloudbuild.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - clouddeploy.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - clouddms.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -308,6 +416,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - cloudquota.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - cloudscheduler.cnrm.cloud.google.com
   resources:
   - '*'
@@ -321,6 +441,30 @@ rules:
   - delete
 - apiGroups:
   - cloudtasks.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - colab.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - composer.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -440,6 +584,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - dataplex.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - dataproc.cnrm.cloud.google.com
   resources:
   - '*'
@@ -501,6 +657,18 @@ rules:
   - delete
 - apiGroups:
   - dialogflowcx.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - discoveryengine.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -764,7 +932,43 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - managedkafka.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - memcache.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - memorystore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - metastore.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -789,6 +993,18 @@ rules:
   - delete
 - apiGroups:
   - monitoring.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - netapp.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -908,6 +1124,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - privilegedaccessmanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - pubsub.cnrm.cloud.google.com
   resources:
   - '*'
@@ -992,6 +1220,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - securesourcemanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - securitycenter.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1053,6 +1293,18 @@ rules:
   - delete
 - apiGroups:
   - spanner.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - speech.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -1136,7 +1388,31 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - vmwareengine.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - vpcaccess.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - workflowexecutions.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

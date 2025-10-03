@@ -88,9 +88,6 @@
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
@@ -706,7 +703,7 @@ spec:
   family: ubuntu-custom
   licenses: ["https://compute.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx"]
   rawDisk:
-    source: "https://storage.googleapis.com/bosh-gce-raw-stemcells/bosh-stemcell-97.98-google-kvm-ubuntu-xenial-go_agent-raw-1557960142.tar.gz"
+    source: "https://storage.googleapis.com/config-connector-computeimage-raw/computeimage-raw.tar.gz"
     containerType: "TAR"
     sha1: 819b7e9c17423f4539f09687eaa13687afa2fe32
 ```

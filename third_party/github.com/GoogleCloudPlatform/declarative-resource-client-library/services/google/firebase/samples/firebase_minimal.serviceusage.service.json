@@ -1,0 +1,5 @@
+{
+  "name": "firebase.googleapis.com",
+  "project": "{{ref:minimal.cloudresourcemanager.project.json:name}}",
+  "state": "ENABLED"
+}

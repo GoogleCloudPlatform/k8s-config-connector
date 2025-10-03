@@ -17,16 +17,24 @@ package tfprovider
 import (
 	"context"
 	"fmt"
+	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/version"
 	"k8s.io/klog/v2"
 
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/provider"
 	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
+
+func init() {
+	fwtransport.KCCVersion = version.GetVersion()
+}
 
 // Config holds additional configuration for the google TF provider
 type Config struct {
@@ -52,6 +60,9 @@ type Config struct {
 	// but UserProjectOverride is set to true, then the TF provider uses the resource's project.
 	// https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference#billing_project
 	BillingProject string
+
+	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
+	EnableMetricsTransport bool
 }
 
 var DefaultConfig = NewConfig()
@@ -81,6 +92,18 @@ func NewConfig() Config {
 
 // New builds a new tfschema.Provider for the google provider.
 func New(ctx context.Context, config Config) (*tfschema.Provider, error) {
+
+	if config.EnableMetricsTransport {
+		transport_tpg.DefaultHTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+			inner.Transport = transport.NewMetricsTransport(inner.Transport)
+			return inner
+		}
+		transport_tpg.OAuth2HTTPClientTransformer = func(ctx context.Context, inner *http.Client) *http.Client {
+			inner.Transport = transport.NewMetricsTransport(inner.Transport)
+			return inner
+		}
+	}
+
 	googleProvider := provider.Provider()
 	cfgMap := map[string]interface{}{}
 	if config.GCPAccessToken != "" {

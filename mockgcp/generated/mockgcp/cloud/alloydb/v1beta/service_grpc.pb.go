@@ -32,6 +32,15 @@ type AlloyDBAdminClient interface {
 	CreateCluster(ctx context.Context, in *CreateClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Updates the parameters of a single Cluster.
 	UpdateCluster(ctx context.Context, in *UpdateClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Exports data from the cluster.
+	// Imperative only.
+	ExportCluster(ctx context.Context, in *ExportClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Imports data to the cluster.
+	// Imperative only.
+	ImportCluster(ctx context.Context, in *ImportClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Upgrades a single Cluster.
+	// Imperative only.
+	UpgradeCluster(ctx context.Context, in *UpgradeClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Deletes a single Cluster.
 	DeleteCluster(ctx context.Context, in *DeleteClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Promotes a SECONDARY cluster. This turns down replication
@@ -39,6 +48,10 @@ type AlloyDBAdminClient interface {
 	// into its own standalone cluster.
 	// Imperative only.
 	PromoteCluster(ctx context.Context, in *PromoteClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Switches the roles of PRIMARY and SECONDARY clusters without any data loss.
+	// This promotes the SECONDARY cluster to PRIMARY and sets up the original
+	// PRIMARY cluster to replicate from this newly promoted cluster.
+	SwitchoverCluster(ctx context.Context, in *SwitchoverClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Creates a new Cluster in a given project and location, with a volume
 	// restored from the provided source, either a backup ID or a point-in-time
 	// and a source cluster.
@@ -79,6 +92,8 @@ type AlloyDBAdminClient interface {
 	// Restart an Instance in a cluster.
 	// Imperative only.
 	RestartInstance(ctx context.Context, in *RestartInstanceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Executes a SQL statement in a database inside an AlloyDB instance.
+	ExecuteSql(ctx context.Context, in *ExecuteSqlRequest, opts ...grpc.CallOption) (*ExecuteSqlResponse, error)
 	// Lists Backups in a given project and location.
 	ListBackups(ctx context.Context, in *ListBackupsRequest, opts ...grpc.CallOption) (*ListBackupsResponse, error)
 	// Gets details of a single Backup.
@@ -157,6 +172,33 @@ func (c *alloyDBAdminClient) UpdateCluster(ctx context.Context, in *UpdateCluste
 	return out, nil
 }
 
+func (c *alloyDBAdminClient) ExportCluster(ctx context.Context, in *ExportClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/ExportCluster", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *alloyDBAdminClient) ImportCluster(ctx context.Context, in *ImportClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/ImportCluster", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *alloyDBAdminClient) UpgradeCluster(ctx context.Context, in *UpgradeClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/UpgradeCluster", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *alloyDBAdminClient) DeleteCluster(ctx context.Context, in *DeleteClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/DeleteCluster", in, out, opts...)
@@ -169,6 +211,15 @@ func (c *alloyDBAdminClient) DeleteCluster(ctx context.Context, in *DeleteCluste
 func (c *alloyDBAdminClient) PromoteCluster(ctx context.Context, in *PromoteClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/PromoteCluster", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *alloyDBAdminClient) SwitchoverCluster(ctx context.Context, in *SwitchoverClusterRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/SwitchoverCluster", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -277,6 +328,15 @@ func (c *alloyDBAdminClient) InjectFault(ctx context.Context, in *InjectFaultReq
 func (c *alloyDBAdminClient) RestartInstance(ctx context.Context, in *RestartInstanceRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/RestartInstance", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *alloyDBAdminClient) ExecuteSql(ctx context.Context, in *ExecuteSqlRequest, opts ...grpc.CallOption) (*ExecuteSqlResponse, error) {
+	out := new(ExecuteSqlResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/ExecuteSql", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -421,6 +481,15 @@ type AlloyDBAdminServer interface {
 	CreateCluster(context.Context, *CreateClusterRequest) (*longrunningpb.Operation, error)
 	// Updates the parameters of a single Cluster.
 	UpdateCluster(context.Context, *UpdateClusterRequest) (*longrunningpb.Operation, error)
+	// Exports data from the cluster.
+	// Imperative only.
+	ExportCluster(context.Context, *ExportClusterRequest) (*longrunningpb.Operation, error)
+	// Imports data to the cluster.
+	// Imperative only.
+	ImportCluster(context.Context, *ImportClusterRequest) (*longrunningpb.Operation, error)
+	// Upgrades a single Cluster.
+	// Imperative only.
+	UpgradeCluster(context.Context, *UpgradeClusterRequest) (*longrunningpb.Operation, error)
 	// Deletes a single Cluster.
 	DeleteCluster(context.Context, *DeleteClusterRequest) (*longrunningpb.Operation, error)
 	// Promotes a SECONDARY cluster. This turns down replication
@@ -428,6 +497,10 @@ type AlloyDBAdminServer interface {
 	// into its own standalone cluster.
 	// Imperative only.
 	PromoteCluster(context.Context, *PromoteClusterRequest) (*longrunningpb.Operation, error)
+	// Switches the roles of PRIMARY and SECONDARY clusters without any data loss.
+	// This promotes the SECONDARY cluster to PRIMARY and sets up the original
+	// PRIMARY cluster to replicate from this newly promoted cluster.
+	SwitchoverCluster(context.Context, *SwitchoverClusterRequest) (*longrunningpb.Operation, error)
 	// Creates a new Cluster in a given project and location, with a volume
 	// restored from the provided source, either a backup ID or a point-in-time
 	// and a source cluster.
@@ -468,6 +541,8 @@ type AlloyDBAdminServer interface {
 	// Restart an Instance in a cluster.
 	// Imperative only.
 	RestartInstance(context.Context, *RestartInstanceRequest) (*longrunningpb.Operation, error)
+	// Executes a SQL statement in a database inside an AlloyDB instance.
+	ExecuteSql(context.Context, *ExecuteSqlRequest) (*ExecuteSqlResponse, error)
 	// Lists Backups in a given project and location.
 	ListBackups(context.Context, *ListBackupsRequest) (*ListBackupsResponse, error)
 	// Gets details of a single Backup.
@@ -519,11 +594,23 @@ func (UnimplementedAlloyDBAdminServer) CreateCluster(context.Context, *CreateClu
 func (UnimplementedAlloyDBAdminServer) UpdateCluster(context.Context, *UpdateClusterRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateCluster not implemented")
 }
+func (UnimplementedAlloyDBAdminServer) ExportCluster(context.Context, *ExportClusterRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExportCluster not implemented")
+}
+func (UnimplementedAlloyDBAdminServer) ImportCluster(context.Context, *ImportClusterRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ImportCluster not implemented")
+}
+func (UnimplementedAlloyDBAdminServer) UpgradeCluster(context.Context, *UpgradeClusterRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpgradeCluster not implemented")
+}
 func (UnimplementedAlloyDBAdminServer) DeleteCluster(context.Context, *DeleteClusterRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCluster not implemented")
 }
 func (UnimplementedAlloyDBAdminServer) PromoteCluster(context.Context, *PromoteClusterRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PromoteCluster not implemented")
+}
+func (UnimplementedAlloyDBAdminServer) SwitchoverCluster(context.Context, *SwitchoverClusterRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SwitchoverCluster not implemented")
 }
 func (UnimplementedAlloyDBAdminServer) RestoreCluster(context.Context, *RestoreClusterRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RestoreCluster not implemented")
@@ -560,6 +647,9 @@ func (UnimplementedAlloyDBAdminServer) InjectFault(context.Context, *InjectFault
 }
 func (UnimplementedAlloyDBAdminServer) RestartInstance(context.Context, *RestartInstanceRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RestartInstance not implemented")
+}
+func (UnimplementedAlloyDBAdminServer) ExecuteSql(context.Context, *ExecuteSqlRequest) (*ExecuteSqlResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ExecuteSql not implemented")
 }
 func (UnimplementedAlloyDBAdminServer) ListBackups(context.Context, *ListBackupsRequest) (*ListBackupsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListBackups not implemented")
@@ -688,6 +778,60 @@ func _AlloyDBAdmin_UpdateCluster_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AlloyDBAdmin_ExportCluster_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExportClusterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AlloyDBAdminServer).ExportCluster(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/ExportCluster",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AlloyDBAdminServer).ExportCluster(ctx, req.(*ExportClusterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AlloyDBAdmin_ImportCluster_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ImportClusterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AlloyDBAdminServer).ImportCluster(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/ImportCluster",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AlloyDBAdminServer).ImportCluster(ctx, req.(*ImportClusterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AlloyDBAdmin_UpgradeCluster_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpgradeClusterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AlloyDBAdminServer).UpgradeCluster(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/UpgradeCluster",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AlloyDBAdminServer).UpgradeCluster(ctx, req.(*UpgradeClusterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AlloyDBAdmin_DeleteCluster_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteClusterRequest)
 	if err := dec(in); err != nil {
@@ -720,6 +864,24 @@ func _AlloyDBAdmin_PromoteCluster_Handler(srv interface{}, ctx context.Context, 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AlloyDBAdminServer).PromoteCluster(ctx, req.(*PromoteClusterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AlloyDBAdmin_SwitchoverCluster_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SwitchoverClusterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AlloyDBAdminServer).SwitchoverCluster(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/SwitchoverCluster",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AlloyDBAdminServer).SwitchoverCluster(ctx, req.(*SwitchoverClusterRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -936,6 +1098,24 @@ func _AlloyDBAdmin_RestartInstance_Handler(srv interface{}, ctx context.Context,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AlloyDBAdminServer).RestartInstance(ctx, req.(*RestartInstanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AlloyDBAdmin_ExecuteSql_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExecuteSqlRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AlloyDBAdminServer).ExecuteSql(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.alloydb.v1beta.AlloyDBAdmin/ExecuteSql",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AlloyDBAdminServer).ExecuteSql(ctx, req.(*ExecuteSqlRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1216,12 +1396,28 @@ var AlloyDBAdmin_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AlloyDBAdmin_UpdateCluster_Handler,
 		},
 		{
+			MethodName: "ExportCluster",
+			Handler:    _AlloyDBAdmin_ExportCluster_Handler,
+		},
+		{
+			MethodName: "ImportCluster",
+			Handler:    _AlloyDBAdmin_ImportCluster_Handler,
+		},
+		{
+			MethodName: "UpgradeCluster",
+			Handler:    _AlloyDBAdmin_UpgradeCluster_Handler,
+		},
+		{
 			MethodName: "DeleteCluster",
 			Handler:    _AlloyDBAdmin_DeleteCluster_Handler,
 		},
 		{
 			MethodName: "PromoteCluster",
 			Handler:    _AlloyDBAdmin_PromoteCluster_Handler,
+		},
+		{
+			MethodName: "SwitchoverCluster",
+			Handler:    _AlloyDBAdmin_SwitchoverCluster_Handler,
 		},
 		{
 			MethodName: "RestoreCluster",
@@ -1270,6 +1466,10 @@ var AlloyDBAdmin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RestartInstance",
 			Handler:    _AlloyDBAdmin_RestartInstance_Handler,
+		},
+		{
+			MethodName: "ExecuteSql",
+			Handler:    _AlloyDBAdmin_ExecuteSql_Handler,
 		},
 		{
 			MethodName: "ListBackups",

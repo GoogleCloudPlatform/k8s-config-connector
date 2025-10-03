@@ -42,8 +42,8 @@ type FieldDescription struct {
 	AdditionalProperties []FieldDescription
 }
 
-func GetSpecDescription(crd *apiextensions.CustomResourceDefinition) FieldDescription {
-	crdDesc := getCRDFieldDescription(crd)
+func GetSpecDescription(crd *apiextensions.CustomResourceDefinition, version string) FieldDescription {
+	crdDesc := getCRDFieldDescription(crd, version)
 	spec, ok := getChildFieldDesc(crdDesc, "spec")
 	if !ok {
 		// this occurs when a CRD has an empty spec, such as ComputeSharedVPCHostProject
@@ -56,9 +56,9 @@ func GetSpecDescription(crd *apiextensions.CustomResourceDefinition) FieldDescri
 	return *spec
 }
 
-func GetStatusDescription(crd *apiextensions.CustomResourceDefinition) (FieldDescription, error) {
+func GetStatusDescription(crd *apiextensions.CustomResourceDefinition, version string) (FieldDescription, error) {
 	statusPropertyName := "status"
-	crdDesc := getCRDFieldDescription(crd)
+	crdDesc := getCRDFieldDescription(crd, version)
 	status, ok := getChildFieldDesc(crdDesc, statusPropertyName)
 	if !ok {
 		return FieldDescription{}, fmt.Errorf("unexpected missing '%v' on crd '%v'", statusPropertyName, crd.Spec.Names.Kind)
@@ -75,13 +75,13 @@ func getChildFieldDesc(description FieldDescription, childName string) (*FieldDe
 	return nil, false
 }
 
-func getCRDFieldDescription(crd *apiextensions.CustomResourceDefinition) FieldDescription {
+func getCRDFieldDescription(crd *apiextensions.CustomResourceDefinition, version string) FieldDescription {
 	customResourceDesc := FieldDescription{
 		Type:             "object",
 		RequirementLevel: RequiredRequirementLevel,
 	}
-	schema := k8s.GetOpenAPIV3SchemaFromCRD(crd)
-	return propsToDescription(*schema, customResourceDesc, "", true)
+	crdVersionDefinition := k8s.GetCRDVersionDefinition(crd, version)
+	return propsToDescription(*crdVersionDefinition.Schema.OpenAPIV3Schema, customResourceDesc, "", true)
 }
 
 func propsToDescription(props apiextensions.JSONSchemaProps, parent FieldDescription, name string, required bool) FieldDescription {
@@ -93,8 +93,17 @@ func propsToDescription(props apiextensions.JSONSchemaProps, parent FieldDescrip
 	case "boolean", "integer", "string", "number":
 		return newFieldDescription(props, parent, name, required)
 	default:
+		if props.XPreserveUnknownFields != nil && *props.XPreserveUnknownFields {
+			return schemalessToDescription(props, parent, name, required)
+		}
 		panic(fmt.Sprintf("unhandled type: %v", props.Type))
 	}
+}
+
+func schemalessToDescription(props apiextensions.JSONSchemaProps, parent FieldDescription, name string, required bool) FieldDescription {
+	fd := newFieldDescription(props, parent, name, required)
+	fd.Type = "schemaless"
+	return fd
 }
 
 func sliceToDescriptions(props apiextensions.JSONSchemaProps, parent FieldDescription, name string, required bool) FieldDescription {

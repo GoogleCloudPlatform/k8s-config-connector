@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+cd ${REPO_ROOT}
+
+if ! command -v gcloud; then
+  echo "gcloud not found; installing (assuming we are running in a container)"
+  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
+  echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+  sudo apt-get update && sudo apt-get install --yes google-cloud-cli
+fi
+
+echo "Downloading go modules"
+go mod download
+
+echo "Downloading envtest assets..."
+export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
+
+echo "Building binaries"
+go build ./cmd/...
+
+echo "Prebuilding e2e tests"
+go test -c -o ${REPO_ROOT}/.build/tests-e2e ./tests/e2e 
+
+cd mockgcp
+go test -c -o ${REPO_ROOT}/.build/mockgcp-tests ./mockgcptests
+

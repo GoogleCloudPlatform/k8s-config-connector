@@ -1,0 +1,19 @@
+{
+  "name": "{{router}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "network": "{{ref:basic.network.json:selfLink}}",
+  "bgp": {
+    "asn": 64515,
+    "advertiseMode": "CUSTOM",
+    "advertisedGroups": ["ALL_SUBNETS"],
+    "advertisedIpRanges": [
+      {
+        "range": "1.2.3.4"
+      },
+      {
+        "range": "6.7.0.0/16"
+      }
+    ]
+  }
+}

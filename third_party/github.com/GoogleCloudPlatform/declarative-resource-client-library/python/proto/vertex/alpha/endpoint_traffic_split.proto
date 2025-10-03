@@ -1,0 +1,61 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+message VertexAlphaEndpointTrafficSplit {
+  string endpoint = 1;
+  string project = 2;
+  string location = 3;
+  string etag = 4;
+  repeated VertexAlphaEndpointTrafficSplitTrafficSplit traffic_split = 5;
+}
+
+message VertexAlphaEndpointTrafficSplitTrafficSplit {
+  string deployed_model_id = 1;
+  int64 traffic_percentage = 2;
+}
+
+message ApplyVertexAlphaEndpointTrafficSplitRequest {
+  VertexAlphaEndpointTrafficSplit resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteVertexAlphaEndpointTrafficSplitRequest {
+  string service_account_file = 1;
+  VertexAlphaEndpointTrafficSplit resource = 2;
+}
+
+message ListVertexAlphaEndpointTrafficSplitRequest {
+  string service_account_file = 1;
+  string Location = 2;
+}
+
+message ListVertexAlphaEndpointTrafficSplitResponse {
+  repeated VertexAlphaEndpointTrafficSplit items = 1;
+}
+
+service VertexAlphaEndpointTrafficSplitService {
+  rpc ApplyVertexAlphaEndpointTrafficSplit(ApplyVertexAlphaEndpointTrafficSplitRequest) returns (VertexAlphaEndpointTrafficSplit);
+  rpc DeleteVertexAlphaEndpointTrafficSplit(DeleteVertexAlphaEndpointTrafficSplitRequest) returns (google.protobuf.Empty);
+  rpc ListVertexAlphaEndpointTrafficSplit(ListVertexAlphaEndpointTrafficSplitRequest) returns (ListVertexAlphaEndpointTrafficSplitResponse);
+}

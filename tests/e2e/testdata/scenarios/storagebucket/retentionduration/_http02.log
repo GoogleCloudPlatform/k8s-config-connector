@@ -1,0 +1,258 @@
+GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Expires: {now+0m}
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": [
+      {
+        "action": {
+          "type": "Delete"
+        },
+        "condition": {
+          "age": 7
+        }
+      }
+    ]
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "1",
+  "name": "bucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "0"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z",
+  "versioning": {
+    "enabled": true
+  }
+}
+
+---
+
+PATCH https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "versioning": {
+    "enabled": false
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "acl": [
+    {
+      "bucket": "bucket-${uniqueId}",
+      "entity": "project-owners-${projectNumber}",
+      "etag": "abcdef0123A",
+      "id": "bucket-${uniqueId}/project-owners-${projectNumber}",
+      "kind": "storage#bucketAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "owners"
+      },
+      "role": "OWNER",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}/acl/project-owners-${projectNumber}"
+    },
+    {
+      "bucket": "bucket-${uniqueId}",
+      "entity": "project-editors-${projectNumber}",
+      "etag": "abcdef0123A",
+      "id": "bucket-${uniqueId}/project-editors-${projectNumber}",
+      "kind": "storage#bucketAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "editors"
+      },
+      "role": "OWNER",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}/acl/project-editors-${projectNumber}"
+    },
+    {
+      "bucket": "bucket-${uniqueId}",
+      "entity": "project-viewers-${projectNumber}",
+      "etag": "abcdef0123A",
+      "id": "bucket-${uniqueId}/project-viewers-${projectNumber}",
+      "kind": "storage#bucketAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "viewers"
+      },
+      "role": "READER",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}/acl/project-viewers-${projectNumber}"
+    }
+  ],
+  "defaultObjectAcl": [
+    {
+      "entity": "project-owners-${projectNumber}",
+      "etag": "abcdef0123A=",
+      "kind": "storage#objectAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "owners"
+      },
+      "role": "OWNER"
+    },
+    {
+      "entity": "project-editors-${projectNumber}",
+      "etag": "abcdef0123A=",
+      "kind": "storage#objectAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "editors"
+      },
+      "role": "OWNER"
+    },
+    {
+      "entity": "project-viewers-${projectNumber}",
+      "etag": "abcdef0123A=",
+      "kind": "storage#objectAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "viewers"
+      },
+      "role": "READER"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": [
+      {
+        "action": {
+          "type": "Delete"
+        },
+        "condition": {
+          "age": 7
+        }
+      }
+    ]
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "2",
+  "name": "bucket-${uniqueId}",
+  "owner": {
+    "entity": "project-owners-${projectNumber}"
+  },
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "0"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z",
+  "versioning": {
+    "enabled": false
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Expires: {now+0m}
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": [
+      {
+        "action": {
+          "type": "Delete"
+        },
+        "condition": {
+          "age": 7
+        }
+      }
+    ]
+  },
+  "location": "US",
+  "locationType": "multi-region",
+  "metageneration": "2",
+  "name": "bucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "rpo": "DEFAULT",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "0"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z",
+  "versioning": {
+    "enabled": false
+  }
+}

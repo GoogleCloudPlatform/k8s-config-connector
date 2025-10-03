@@ -1,0 +1,18 @@
+{
+  "name": "{{name}}",
+  "project": "{{ref:dataproc.serviceusage.service.json:project}}",
+  "location": "{{region}}",
+  "workerConfig": {
+    "maxInstances": 2
+  },
+  "secondaryWorkerConfig": {
+    "maxInstances": 2
+  },
+  "basicAlgorithm": {
+    "yarnConfig": {
+      "gracefulDecommissionTimeout": "30s",
+      "scaleUpFactor": 0.5,
+      "scaleDownFactor": 0.5
+    }
+  }
+}

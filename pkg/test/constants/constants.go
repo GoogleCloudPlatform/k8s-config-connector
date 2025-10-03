@@ -30,11 +30,14 @@ var TestNameRegexesToSkip = []string{
 	// TODO(b/220357089): re-enable eventfunction test in long-running CRUD test suite.
 	".*(eventfunction).*",
 	// TODO(b/215781076): re-enable gke hub tests in long-running CRUD test suite.
-	".*(gkehubfeaturemembership|mcifeature).*",
+	".*(mcifeature).*",
 	// TODO(b/228525841): re-enable streamingdataflowjobupdateparameters test.
 	".*(streamingdataflowjobupdateparameters).*",
 	// TODO(b/267510222): re-enable calendarbudget test when test GCP org configconnector.net is allowlisted.
 	".*(calendarbudget).*",
+	// Creating Remote Control Plane Clusters is no longer supported.
+	// Need to allowlist test project to bypass this: b/359316882.
+	".*(edgecontainercluster).*",
 	// Edge Network tests require a mocked GCP API.
 	".*(edgenetwork).*",
 	// Edge container node pool tests require a mocked GCP API.
@@ -43,6 +46,13 @@ var TestNameRegexesToSkip = []string{
 	".*(edgecontainervpnconnection).*",
 	// Disable due to b/315013168, covered by mocked GCP test.
 	".*(containerattachedcluster).*",
+	// Disable due to TF bug https://github.com/hashicorp/terraform-provider-google/issues/16255.
+	// We can't specify labels in the create operation, that causes AssertLabelsMatchAndHaveManagedLabel check to fail.
+	".*(regionalforwardingrulepsc).*",
+	// This test only works with direct controller. Re-enable it when we turn on direct ComputeForwardingRule.
+	".*(globalforwardingrulepscgoogleapis).*",
+	// TODO: b/391704025 - Disable until PrivateCACertificateAuthority automatically enables itself.
+	".*(securesourcemanagerinstanceprivate).*",
 }
 
 // TestNameRegexToSkipForTestCRUD is similar to
@@ -61,6 +71,9 @@ var TestNameRegexToSkipForTestCRUD = []string{
 	// The test cases are selected by GetFilteredSetCover(). After orgrole
 	// test is disabled, projectrole test is selected to test IAMRole resource.
 	".*orgrole.*",
+	// Creating Remote Control Plane Clusters is no longer supported.
+	// Need to allowlist test project to bypass this: b/359316882
+	".*(edgecontainercluster).*",
 	// Edge Network tests require a mocked GCP API.
 	".*(edgenetwork).*",
 	// Edge container node pool tests require a mocked GCP API.
@@ -69,4 +82,7 @@ var TestNameRegexToSkipForTestCRUD = []string{
 	".*(edgecontainervpnconnection).*",
 	// Disable due to b/315013168, covered by mocked GCP test.
 	".*(containerattachedcluster).*",
+	// Disable due to TF bug https://github.com/hashicorp/terraform-provider-google/issues/16255.
+	// We can't specify labels in the create operation, that causes AssertLabelsMatchAndHaveManagedLabel check to fail.
+	".*(privateserviceconnectforwardingrule).*",
 }

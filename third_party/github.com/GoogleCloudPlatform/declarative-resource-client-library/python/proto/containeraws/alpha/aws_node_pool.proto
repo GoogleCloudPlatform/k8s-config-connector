@@ -1,0 +1,127 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ContainerawsAlphaAwsNodePoolConfigRootVolumeVolumeTypeEnum {
+  ContainerawsAlphaAwsNodePoolConfigRootVolumeVolumeTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerawsAlphaAwsNodePoolConfigRootVolumeVolumeTypeEnumVOLUME_TYPE_UNSPECIFIED = 1;
+  ContainerawsAlphaAwsNodePoolConfigRootVolumeVolumeTypeEnumGP2 = 2;
+  ContainerawsAlphaAwsNodePoolConfigRootVolumeVolumeTypeEnumGP3 = 3;
+}
+
+enum ContainerawsAlphaAwsNodePoolConfigTaintsEffectEnum {
+  ContainerawsAlphaAwsNodePoolConfigTaintsEffectEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerawsAlphaAwsNodePoolConfigTaintsEffectEnumEFFECT_UNSPECIFIED = 1;
+  ContainerawsAlphaAwsNodePoolConfigTaintsEffectEnumNO_SCHEDULE = 2;
+  ContainerawsAlphaAwsNodePoolConfigTaintsEffectEnumPREFER_NO_SCHEDULE = 3;
+  ContainerawsAlphaAwsNodePoolConfigTaintsEffectEnumNO_EXECUTE = 4;
+}
+
+enum ContainerawsAlphaAwsNodePoolStateEnum {
+  ContainerawsAlphaAwsNodePoolStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerawsAlphaAwsNodePoolStateEnumSTATE_UNSPECIFIED = 1;
+  ContainerawsAlphaAwsNodePoolStateEnumPROVISIONING = 2;
+  ContainerawsAlphaAwsNodePoolStateEnumRUNNING = 3;
+  ContainerawsAlphaAwsNodePoolStateEnumRECONCILING = 4;
+  ContainerawsAlphaAwsNodePoolStateEnumSTOPPING = 5;
+  ContainerawsAlphaAwsNodePoolStateEnumERROR = 6;
+  ContainerawsAlphaAwsNodePoolStateEnumDEGRADED = 7;
+}
+
+message ContainerawsAlphaAwsNodePool {
+  string name = 1;
+  string version = 2;
+  ContainerawsAlphaAwsNodePoolConfig config = 3;
+  ContainerawsAlphaAwsNodePoolAutoscaling autoscaling = 4;
+  string subnet_id = 5;
+  ContainerawsAlphaAwsNodePoolStateEnum state = 6;
+  string uid = 7;
+  bool reconciling = 8;
+  string create_time = 9;
+  string update_time = 10;
+  string etag = 11;
+  map<string, string> annotations = 12;
+  ContainerawsAlphaAwsNodePoolMaxPodsConstraint max_pods_constraint = 13;
+  string project = 14;
+  string location = 15;
+  string aws_cluster = 16;
+}
+
+message ContainerawsAlphaAwsNodePoolConfig {
+  string instance_type = 1;
+  ContainerawsAlphaAwsNodePoolConfigRootVolume root_volume = 2;
+  repeated ContainerawsAlphaAwsNodePoolConfigTaints taints = 3;
+  map<string, string> labels = 4;
+  map<string, string> tags = 5;
+  string iam_instance_profile = 6;
+  ContainerawsAlphaAwsNodePoolConfigSshConfig ssh_config = 7;
+  repeated string security_group_ids = 8;
+}
+
+message ContainerawsAlphaAwsNodePoolConfigRootVolume {
+  int64 size_gib = 1;
+  ContainerawsAlphaAwsNodePoolConfigRootVolumeVolumeTypeEnum volume_type = 2;
+  int64 iops = 3;
+  string kms_key_arn = 4;
+}
+
+message ContainerawsAlphaAwsNodePoolConfigTaints {
+  string key = 1;
+  string value = 2;
+  ContainerawsAlphaAwsNodePoolConfigTaintsEffectEnum effect = 3;
+}
+
+message ContainerawsAlphaAwsNodePoolConfigSshConfig {
+  string ec2_key_pair = 1;
+}
+
+message ContainerawsAlphaAwsNodePoolAutoscaling {
+  int64 min_node_count = 1;
+  int64 max_node_count = 2;
+}
+
+message ContainerawsAlphaAwsNodePoolMaxPodsConstraint {
+  int64 max_pods_per_node = 1;
+}
+
+message ApplyContainerawsAlphaAwsNodePoolRequest {
+  ContainerawsAlphaAwsNodePool resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteContainerawsAlphaAwsNodePoolRequest {
+  string service_account_file = 1;
+  ContainerawsAlphaAwsNodePool resource = 2;
+}
+
+message ListContainerawsAlphaAwsNodePoolRequest {
+  string service_account_file = 1;
+	ContainerawsAlphaAwsNodePool resource = 2;
+}
+
+message ListContainerawsAlphaAwsNodePoolResponse {
+  repeated ContainerawsAlphaAwsNodePool items = 1;
+}
+
+service ContainerawsAlphaAwsNodePoolService {
+  rpc ApplyContainerawsAlphaAwsNodePool(ApplyContainerawsAlphaAwsNodePoolRequest) returns (ContainerawsAlphaAwsNodePool);
+  rpc DeleteContainerawsAlphaAwsNodePool(DeleteContainerawsAlphaAwsNodePoolRequest) returns (google.protobuf.Empty);
+  rpc ListContainerawsAlphaAwsNodePool(ListContainerawsAlphaAwsNodePoolRequest) returns (ListContainerawsAlphaAwsNodePoolResponse);
+}

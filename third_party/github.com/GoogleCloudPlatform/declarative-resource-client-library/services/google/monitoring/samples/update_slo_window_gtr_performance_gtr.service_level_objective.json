@@ -1,0 +1,26 @@
+{
+  "name": "{{name}}",
+  "project": "{{project}}",
+  "goal": 0.8,
+  "displayName": "{{displayname}}",
+  "calendarPeriod": "WEEK",
+
+  "userLabels":{
+    "test1":"value2"
+  },
+  "service":"{{ref:basic.service.json:name}}",
+  "serviceLevelIndicator":{
+    "windowsBased":{
+      "windowPeriod": "120s",
+      "goodTotalRatioThreshold":{
+        "threshold": 0.8,
+        "performance":{
+          "goodTotalRatio": {
+            "goodServiceFilter": "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" ",
+            "badServiceFilter": "metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+          }
+        }
+      }
+    }
+  }
+}

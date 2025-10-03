@@ -1,0 +1,13 @@
+{
+  "name": "{{steering_rule}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "IPAddress": "{{ref:basic.address.json:selfLink}}",
+  "backendService": "{{ref:regional_external.backend_service.json:selfLink}}",
+  "networkTier": "PREMIUM",
+  "description": "A test steering forwarding rule",
+  "IPProtocol": "TCP",
+  "loadBalancingScheme": "EXTERNAL",
+  "portRange": "80-81",
+  "sourceIpRanges": ["34.121.88.0/24", "35.187.239.137"]
+}

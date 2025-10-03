@@ -1,0 +1,387 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigqueryconnection.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigqueryconnection.googleapis.com/v1/projects/example-project/locations/us-central1/connections/bigqueryconnectionconnection-16lgsjsr99mio?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 221.703598ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 115
+        transfer_encoding: []
+        trailer: {}
+        host: bigqueryconnection.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"cloudResource":{},"description":"test connection for cloud resource","friendlyName":"cloud-resource-connection"}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigqueryconnection.googleapis.com/v1/projects/example-project/locations/us-central1/connections?alt=json&connectionId=bigqueryconnectionconnection-16lgsjsr99mio
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/123456789/locations/us-central1/connections/bigqueryconnectionconnection-16lgsjsr99mio",
+              "friendlyName": "cloud-resource-connection",
+              "description": "test connection for cloud resource",
+              "creationTime": "1721723897514",
+              "lastModifiedTime": "1721723897514",
+              "cloudResource": {
+                "serviceAccountId": "bqcx-123456789-8ztv@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 443.684686ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigqueryconnection.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigqueryconnection.googleapis.com/v1/projects/example-project/locations/us-central1/connections/bigqueryconnectionconnection-16lgsjsr99mio?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/123456789/locations/us-central1/connections/bigqueryconnectionconnection-16lgsjsr99mio",
+              "friendlyName": "cloud-resource-connection",
+              "description": "test connection for cloud resource",
+              "creationTime": "1721723897514",
+              "lastModifiedTime": "1721723897514",
+              "cloudResource": {
+                "serviceAccountId": "bqcx-123456789-8ztv@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 117.918206ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigqueryconnection.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigqueryconnection.googleapis.com/v1/projects/example-project/locations/us-central1/connections/bigqueryconnectionconnection-16lgsjsr99mio?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/123456789/locations/us-central1/connections/bigqueryconnectionconnection-16lgsjsr99mio",
+              "friendlyName": "cloud-resource-connection",
+              "description": "test connection for cloud resource",
+              "creationTime": "1721723897514",
+              "lastModifiedTime": "1721723897514",
+              "cloudResource": {
+                "serviceAccountId": "bqcx-123456789-8ztv@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 134.723431ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigqueryconnection.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigqueryconnection.googleapis.com/v1/projects/example-project/locations/us-central1/connections/bigqueryconnectionconnection-16lgsjsr99mio?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/123456789/locations/us-central1/connections/bigqueryconnectionconnection-16lgsjsr99mio",
+              "friendlyName": "cloud-resource-connection",
+              "description": "test connection for cloud resource",
+              "creationTime": "1721723897514",
+              "lastModifiedTime": "1721723897514",
+              "cloudResource": {
+                "serviceAccountId": "bqcx-123456789-8ztv@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 103.359811ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 216
+        transfer_encoding: []
+        trailer: {}
+        host: bigqueryconnection.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"cloudResource":{"serviceAccountId":"bqcx-123456789-8ztv@gcp-sa-bigquery-condel.iam.gserviceaccount.com"},"description":"updated connection for cloud resource","friendlyName":"cloud-resource-connection-updated"}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigqueryconnection.googleapis.com/v1/projects/example-project/locations/us-central1/connections/bigqueryconnectionconnection-16lgsjsr99mio?alt=json&updateMask=friendlyName%2Cdescription
+        method: PATCH
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/123456789/locations/us-central1/connections/bigqueryconnectionconnection-16lgsjsr99mio",
+              "friendlyName": "cloud-resource-connection-updated",
+              "description": "updated connection for cloud resource",
+              "creationTime": "1721723897514",
+              "lastModifiedTime": "1721723899176",
+              "cloudResource": {
+                "serviceAccountId": "bqcx-123456789-8ztv@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 164.14318ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigqueryconnection.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigqueryconnection.googleapis.com/v1/projects/example-project/locations/us-central1/connections/bigqueryconnectionconnection-16lgsjsr99mio?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/123456789/locations/us-central1/connections/bigqueryconnectionconnection-16lgsjsr99mio",
+              "friendlyName": "cloud-resource-connection-updated",
+              "description": "updated connection for cloud resource",
+              "creationTime": "1721723897514",
+              "lastModifiedTime": "1721723899176",
+              "cloudResource": {
+                "serviceAccountId": "bqcx-123456789-8ztv@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 53.261226ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigqueryconnection.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigqueryconnection.googleapis.com/v1/projects/example-project/locations/us-central1/connections/bigqueryconnectionconnection-16lgsjsr99mio?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/123456789/locations/us-central1/connections/bigqueryconnectionconnection-16lgsjsr99mio",
+              "friendlyName": "cloud-resource-connection-updated",
+              "description": "updated connection for cloud resource",
+              "creationTime": "1721723897514",
+              "lastModifiedTime": "1721723899176",
+              "cloudResource": {
+                "serviceAccountId": "bqcx-123456789-8ztv@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 78.071554ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: bigqueryconnection.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://bigqueryconnection.googleapis.com/v1/projects/example-project/locations/us-central1/connections/bigqueryconnectionconnection-16lgsjsr99mio?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {}
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 409.673925ms

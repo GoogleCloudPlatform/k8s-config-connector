@@ -63,7 +63,7 @@ spec:
                   description: |-
                     URLs to certificate manager certificate resources that are used to authenticate connections between users and the load balancer.
                     Currently, you may specify up to 15 certificates. Certificate manager certificates do not apply when the load balancing scheme is set to INTERNAL_SELF_MANAGED.
-                    sslCertificates and certificateManagerCertificates fields can not be defined together.
+                    sslCertificates and certificateManagerCertificates fields cannot be defined together.
                   oneOf:
                   - not:
                       required:
@@ -80,7 +80,7 @@ spec:
                     - external
                   properties:
                     external:
-                      description: 'Allowed value: string of the format `projects/{{project}}/locations/{{location}}/certificates/{{value}}`,
+                      description: 'Allowed value: string of the format `projects/{{project}}/locations/global/certificates/{{value}}`,
                         where {{value}} is the `name` field of a `CertificateManagerCertificate`
                         resource.'
                       type: string
@@ -96,7 +96,10 @@ spec:
                 description: |-
                   A reference to the CertificateMap resource uri that identifies a
                   certificate map associated with the given target proxy. This field
-                  can only be set for global target proxies.
+                  can only be set for global target proxies. This field is only supported
+                  for EXTERNAL and EXTERNAL_MANAGED load balancing schemes.
+                  For INTERNAL_MANAGED, use certificateManagerCertificates instead.
+                  sslCertificates and certificateMap fields cannot be defined together.
                 oneOf:
                 - not:
                     required:
@@ -113,7 +116,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: string of the format `//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificateMaps/{{value}}`,
+                    description: 'Allowed value: string of the format `//certificatemanager.googleapis.com/projects/{{project}}/locations/global/certificateMaps/{{value}}`,
                       where {{value}} is the `name` field of a `CertificateManagerCertificateMap`
                       resource.'
                     type: string

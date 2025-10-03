@@ -16,12 +16,18 @@ package mockgkemulticloud
 
 import (
 	"context"
+	"fmt"
+	"strings"
+	"time"
 
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkemulticloud/v1"
 )
 
@@ -40,6 +46,9 @@ func (s *GKEMulticloudV1) GetAttachedCluster(ctx context.Context, req *pb.GetAtt
 
 	obj := &pb.AttachedCluster{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "cluster not found")
+		}
 		return nil, err
 	}
 
@@ -53,16 +62,50 @@ func (s *GKEMulticloudV1) CreateAttachedCluster(ctx context.Context, req *pb.Cre
 		return nil, err
 	}
 
+	now := time.Now()
 	fqn := name.String()
 
 	obj := proto.Clone(req.AttachedCluster).(*pb.AttachedCluster)
 	obj.Name = fqn
 
+	if obj.GetBinaryAuthorization() == nil {
+		obj.BinaryAuthorization = &pb.BinaryAuthorization{
+			EvaluationMode: pb.BinaryAuthorization_DISABLED,
+		}
+	}
+	if obj.GetMonitoringConfig() == nil {
+		obj.MonitoringConfig = &pb.MonitoringConfig{
+			ManagedPrometheusConfig: &pb.ManagedPrometheusConfig{},
+		}
+	}
+	obj.Fleet.Membership = obj.Fleet.Project + "/locations/global/memberships/" + req.AttachedClusterId
+	obj.CreateTime = timestamppb.New(now)
+	obj.UpdateTime = timestamppb.New(now)
+	obj.Etag = fields.ComputeWeakEtag(obj)
+	ver, err := trimPlatformVersion(req.GetAttachedCluster().GetPlatformVersion())
+	if err != nil {
+		return nil, err
+	}
+	obj.KubernetesVersion = ver
+	obj.State = pb.AttachedCluster_RUNNING
+	obj.Uid = "111111111111111111111"
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	opMetadata := &pb.OperationMetadata{
+		CreateTime:            timestamppb.New(now),
+		Verb:                  "create",
+		RequestedCancellation: false,
+		Target:                fqn,
+	}
+	opPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	return s.operations.StartLRO(ctx, opPrefix, opMetadata, func() (proto.Message, error) {
+		opMetadata.EndTime = timestamppb.Now()
+		obj.State = pb.AttachedCluster_RUNNING
+		return obj, nil
+	})
 }
 
 func (s *GKEMulticloudV1) UpdateAttachedCluster(ctx context.Context, req *pb.UpdateAttachedClusterRequest) (*longrunning.Operation, error) {
@@ -71,6 +114,7 @@ func (s *GKEMulticloudV1) UpdateAttachedCluster(ctx context.Context, req *pb.Upd
 		return nil, err
 	}
 
+	now := time.Now()
 	fqn := name.String()
 	obj := &pb.AttachedCluster{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
@@ -81,12 +125,13 @@ func (s *GKEMulticloudV1) UpdateAttachedCluster(ctx context.Context, req *pb.Upd
 	// fields from
 	// [AttachedCluster][mockgcp.cloud.gkemulticloud.v1.AttachedCluster]:
 	//
-	//   - `description`.
 	//   - `annotations`.
-	//   - `platform_version`.
 	//   - `authorization.admin_users`.
+	//   - `binary_authorization.evaluation_mode`.
+	//   - `description`.
 	//   - `logging_config.component_config.enable_components`.
 	//   - `monitoring_config.managed_prometheus_config.enabled`.
+	//   - `platform_version`.
 
 	paths := req.GetUpdateMask().GetPaths()
 	if len(paths) == 0 {
@@ -96,8 +141,25 @@ func (s *GKEMulticloudV1) UpdateAttachedCluster(ctx context.Context, req *pb.Upd
 	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		switch path {
+		case "annotations":
+			obj.Annotations = req.GetAttachedCluster().GetAnnotations()
+		case "authorization.admin_users":
+			obj.Authorization.AdminUsers = req.GetAttachedCluster().GetAuthorization().GetAdminUsers()
+		case "binary_authorization.evaluation_mode":
+			obj.BinaryAuthorization.EvaluationMode = req.GetAttachedCluster().GetBinaryAuthorization().GetEvaluationMode()
 		case "description":
 			obj.Description = req.GetAttachedCluster().GetDescription()
+		case "logging_config.component_config.enable_components":
+			obj.LoggingConfig.ComponentConfig.EnableComponents = req.GetAttachedCluster().GetLoggingConfig().GetComponentConfig().GetEnableComponents()
+		case "monitoring_config.managed_prometheus_config.enabled":
+			obj.MonitoringConfig = req.GetAttachedCluster().GetMonitoringConfig()
+		case "platformVersion":
+			ver, err := trimPlatformVersion(req.GetAttachedCluster().GetPlatformVersion())
+			if err != nil {
+				return nil, err
+			}
+			obj.KubernetesVersion = ver
+			obj.PlatformVersion = req.GetAttachedCluster().GetPlatformVersion()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
@@ -106,7 +168,17 @@ func (s *GKEMulticloudV1) UpdateAttachedCluster(ctx context.Context, req *pb.Upd
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	return s.operations.NewLRO(ctx)
+	opMetadata := &pb.OperationMetadata{
+		CreateTime:            timestamppb.New(now),
+		Verb:                  "update",
+		RequestedCancellation: false,
+		Target:                fqn,
+	}
+	opPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	return s.operations.StartLRO(ctx, opPrefix, opMetadata, func() (proto.Message, error) {
+		opMetadata.EndTime = timestamppb.Now()
+		return obj, nil
+	})
 }
 
 func (s *GKEMulticloudV1) DeleteAttachedCluster(ctx context.Context, req *pb.DeleteAttachedClusterRequest) (*longrunning.Operation, error) {
@@ -115,6 +187,7 @@ func (s *GKEMulticloudV1) DeleteAttachedCluster(ctx context.Context, req *pb.Del
 		return nil, err
 	}
 
+	now := time.Now()
 	fqn := name.String()
 
 	oldObj := &pb.AttachedCluster{}
@@ -122,5 +195,23 @@ func (s *GKEMulticloudV1) DeleteAttachedCluster(ctx context.Context, req *pb.Del
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	opMetadata := &pb.OperationMetadata{
+		CreateTime:            timestamppb.New(now),
+		Verb:                  "delete",
+		RequestedCancellation: false,
+		Target:                fqn,
+	}
+	opPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	return s.operations.StartLRO(ctx, opPrefix, opMetadata, func() (proto.Message, error) {
+		opMetadata.EndTime = timestamppb.Now()
+		return &emptypb.Empty{}, nil
+	})
+}
+
+func trimPlatformVersion(platformVersion string) (string, error) {
+	tokens := strings.Split(platformVersion, ".")
+	if len(tokens) < 2 {
+		return "", status.Errorf(codes.InvalidArgument, "platform_version %q is not valid", platformVersion)
+	}
+	return tokens[0] + "." + tokens[1], nil
 }

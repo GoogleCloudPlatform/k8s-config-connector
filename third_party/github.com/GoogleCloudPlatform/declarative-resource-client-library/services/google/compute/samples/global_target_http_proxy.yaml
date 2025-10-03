@@ -1,0 +1,45 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+name: global_target_http_proxy
+description: An example of a global compute target http proxy.
+type: target_http_proxy
+versions:
+- ga
+- beta
+resource: samples/global.target_http_proxy.json
+dependencies:
+- samples/first_global.url_map.json
+- samples/second_global.url_map.json
+- samples/basic.backend_bucket.json
+- samples/basic.storage.bucket.json
+updates:
+- resource: samples/update_global.target_http_proxy.json
+  dependencies:
+  - samples/first_global.url_map.json
+  - samples/second_global.url_map.json
+  - samples/basic.backend_bucket.json
+  - samples/basic.storage.bucket.json
+variables:
+- name: backend
+  type: resource_name
+- name: bucket
+  type: resource_name
+- name: map1
+  type: resource_name
+- name: map2
+  type: resource_name
+- name: project
+  type: project
+- name: proxy
+  type: resource_name

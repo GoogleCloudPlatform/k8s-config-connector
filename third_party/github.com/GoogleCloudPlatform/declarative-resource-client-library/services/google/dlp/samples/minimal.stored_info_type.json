@@ -1,0 +1,6 @@
+{
+  "parent": "projects/{{project}}/locations/{{region}}",
+  "regex": {
+    "pattern": ".*"
+  }
+}

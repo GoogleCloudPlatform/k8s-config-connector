@@ -1,0 +1,458 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeBetaUrlMapDefaultUrlRedirectRedirectResponseCodeEnum {
+  ComputeBetaUrlMapDefaultUrlRedirectRedirectResponseCodeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaUrlMapDefaultUrlRedirectRedirectResponseCodeEnumMOVED_PERMANENTLY_DEFAULT = 1;
+  ComputeBetaUrlMapDefaultUrlRedirectRedirectResponseCodeEnumFOUND = 2;
+  ComputeBetaUrlMapDefaultUrlRedirectRedirectResponseCodeEnumSEE_OTHER = 3;
+  ComputeBetaUrlMapDefaultUrlRedirectRedirectResponseCodeEnumTEMPORARY_REDIRECT = 4;
+  ComputeBetaUrlMapDefaultUrlRedirectRedirectResponseCodeEnumPERMANENT_REDIRECT = 5;
+}
+
+enum ComputeBetaUrlMapPathMatcherDefaultUrlRedirectRedirectResponseCodeEnum {
+  ComputeBetaUrlMapPathMatcherDefaultUrlRedirectRedirectResponseCodeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaUrlMapPathMatcherDefaultUrlRedirectRedirectResponseCodeEnumMOVED_PERMANENTLY_DEFAULT = 1;
+  ComputeBetaUrlMapPathMatcherDefaultUrlRedirectRedirectResponseCodeEnumFOUND = 2;
+  ComputeBetaUrlMapPathMatcherDefaultUrlRedirectRedirectResponseCodeEnumSEE_OTHER = 3;
+  ComputeBetaUrlMapPathMatcherDefaultUrlRedirectRedirectResponseCodeEnumTEMPORARY_REDIRECT = 4;
+  ComputeBetaUrlMapPathMatcherDefaultUrlRedirectRedirectResponseCodeEnumPERMANENT_REDIRECT = 5;
+}
+
+enum ComputeBetaUrlMapPathMatcherPathRuleUrlRedirectRedirectResponseCodeEnum {
+  ComputeBetaUrlMapPathMatcherPathRuleUrlRedirectRedirectResponseCodeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaUrlMapPathMatcherPathRuleUrlRedirectRedirectResponseCodeEnumMOVED_PERMANENTLY_DEFAULT = 1;
+  ComputeBetaUrlMapPathMatcherPathRuleUrlRedirectRedirectResponseCodeEnumFOUND = 2;
+  ComputeBetaUrlMapPathMatcherPathRuleUrlRedirectRedirectResponseCodeEnumSEE_OTHER = 3;
+  ComputeBetaUrlMapPathMatcherPathRuleUrlRedirectRedirectResponseCodeEnumTEMPORARY_REDIRECT = 4;
+  ComputeBetaUrlMapPathMatcherPathRuleUrlRedirectRedirectResponseCodeEnumPERMANENT_REDIRECT = 5;
+}
+
+enum ComputeBetaUrlMapPathMatcherRouteRuleMatchRuleMetadataFilterFilterMatchCriteriaEnum {
+  ComputeBetaUrlMapPathMatcherRouteRuleMatchRuleMetadataFilterFilterMatchCriteriaEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaUrlMapPathMatcherRouteRuleMatchRuleMetadataFilterFilterMatchCriteriaEnumNOT_SET = 1;
+  ComputeBetaUrlMapPathMatcherRouteRuleMatchRuleMetadataFilterFilterMatchCriteriaEnumMATCH_ALL = 2;
+  ComputeBetaUrlMapPathMatcherRouteRuleMatchRuleMetadataFilterFilterMatchCriteriaEnumMATCH_ANY = 3;
+}
+
+enum ComputeBetaUrlMapPathMatcherRouteRuleUrlRedirectRedirectResponseCodeEnum {
+  ComputeBetaUrlMapPathMatcherRouteRuleUrlRedirectRedirectResponseCodeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaUrlMapPathMatcherRouteRuleUrlRedirectRedirectResponseCodeEnumMOVED_PERMANENTLY_DEFAULT = 1;
+  ComputeBetaUrlMapPathMatcherRouteRuleUrlRedirectRedirectResponseCodeEnumFOUND = 2;
+  ComputeBetaUrlMapPathMatcherRouteRuleUrlRedirectRedirectResponseCodeEnumSEE_OTHER = 3;
+  ComputeBetaUrlMapPathMatcherRouteRuleUrlRedirectRedirectResponseCodeEnumTEMPORARY_REDIRECT = 4;
+  ComputeBetaUrlMapPathMatcherRouteRuleUrlRedirectRedirectResponseCodeEnumPERMANENT_REDIRECT = 5;
+}
+
+message ComputeBetaUrlMap {
+  ComputeBetaUrlMapDefaultRouteAction default_route_action = 1;
+  string default_service = 2;
+  ComputeBetaUrlMapDefaultUrlRedirect default_url_redirect = 3;
+  string description = 4;
+  string self_link = 5;
+  ComputeBetaUrlMapHeaderAction header_action = 6;
+  repeated ComputeBetaUrlMapHostRule host_rule = 7;
+  string name = 8;
+  repeated ComputeBetaUrlMapPathMatcher path_matcher = 9;
+  string region = 10;
+  repeated ComputeBetaUrlMapTest test = 11;
+  string project = 12;
+}
+
+message ComputeBetaUrlMapDefaultRouteAction {
+  repeated ComputeBetaUrlMapDefaultRouteActionWeightedBackendService weighted_backend_service = 1;
+  ComputeBetaUrlMapDefaultRouteActionUrlRewrite url_rewrite = 2;
+  ComputeBetaUrlMapDefaultRouteActionTimeout timeout = 3;
+  ComputeBetaUrlMapDefaultRouteActionRetryPolicy retry_policy = 4;
+  ComputeBetaUrlMapDefaultRouteActionRequestMirrorPolicy request_mirror_policy = 5;
+  ComputeBetaUrlMapDefaultRouteActionCorsPolicy cors_policy = 6;
+  ComputeBetaUrlMapDefaultRouteActionFaultInjectionPolicy fault_injection_policy = 7;
+}
+
+message ComputeBetaUrlMapDefaultRouteActionWeightedBackendService {
+  string backend_service = 1;
+  int64 weight = 2;
+  ComputeBetaUrlMapHeaderAction header_action = 3;
+}
+
+message ComputeBetaUrlMapHeaderAction {
+  repeated string request_headers_to_remove = 1;
+  repeated ComputeBetaUrlMapHeaderActionRequestHeadersToAdd request_headers_to_add = 2;
+  repeated string response_headers_to_remove = 3;
+  repeated ComputeBetaUrlMapHeaderActionResponseHeadersToAdd response_headers_to_add = 4;
+}
+
+message ComputeBetaUrlMapHeaderActionRequestHeadersToAdd {
+  string header_name = 1;
+  string header_value = 2;
+  bool replace = 3;
+}
+
+message ComputeBetaUrlMapHeaderActionResponseHeadersToAdd {
+  string header_name = 1;
+  string header_value = 2;
+  bool replace = 3;
+}
+
+message ComputeBetaUrlMapDefaultRouteActionUrlRewrite {
+  string path_prefix_rewrite = 1;
+  string host_rewrite = 2;
+}
+
+message ComputeBetaUrlMapDefaultRouteActionTimeout {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ComputeBetaUrlMapDefaultRouteActionRetryPolicy {
+  repeated string retry_condition = 1;
+  int64 num_retries = 2;
+  ComputeBetaUrlMapDefaultRouteActionRetryPolicyPerTryTimeout per_try_timeout = 3;
+}
+
+message ComputeBetaUrlMapDefaultRouteActionRetryPolicyPerTryTimeout {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ComputeBetaUrlMapDefaultRouteActionRequestMirrorPolicy {
+  string backend_service = 1;
+}
+
+message ComputeBetaUrlMapDefaultRouteActionCorsPolicy {
+  repeated string allow_origin = 1;
+  repeated string allow_origin_regex = 2;
+  repeated string allow_method = 3;
+  repeated string allow_header = 4;
+  repeated string expose_header = 5;
+  int64 max_age = 6;
+  bool allow_credentials = 7;
+  bool disabled = 8;
+}
+
+message ComputeBetaUrlMapDefaultRouteActionFaultInjectionPolicy {
+  ComputeBetaUrlMapDefaultRouteActionFaultInjectionPolicyDelay delay = 1;
+  ComputeBetaUrlMapDefaultRouteActionFaultInjectionPolicyAbort abort = 2;
+}
+
+message ComputeBetaUrlMapDefaultRouteActionFaultInjectionPolicyDelay {
+  ComputeBetaUrlMapDefaultRouteActionFaultInjectionPolicyDelayFixedDelay fixed_delay = 1;
+  double percentage = 2;
+}
+
+message ComputeBetaUrlMapDefaultRouteActionFaultInjectionPolicyDelayFixedDelay {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ComputeBetaUrlMapDefaultRouteActionFaultInjectionPolicyAbort {
+  int64 http_status = 1;
+  double percentage = 2;
+}
+
+message ComputeBetaUrlMapDefaultUrlRedirect {
+  string host_redirect = 1;
+  string path_redirect = 2;
+  string prefix_redirect = 3;
+  ComputeBetaUrlMapDefaultUrlRedirectRedirectResponseCodeEnum redirect_response_code = 4;
+  bool https_redirect = 5;
+  bool strip_query = 6;
+}
+
+message ComputeBetaUrlMapHostRule {
+  string description = 1;
+  repeated string host = 2;
+  string path_matcher = 3;
+}
+
+message ComputeBetaUrlMapPathMatcher {
+  string name = 1;
+  string description = 2;
+  string default_service = 3;
+  ComputeBetaUrlMapDefaultRouteAction default_route_action = 4;
+  ComputeBetaUrlMapPathMatcherDefaultUrlRedirect default_url_redirect = 5;
+  repeated ComputeBetaUrlMapPathMatcherPathRule path_rule = 6;
+  repeated ComputeBetaUrlMapPathMatcherRouteRule route_rule = 7;
+  ComputeBetaUrlMapHeaderAction header_action = 8;
+}
+
+message ComputeBetaUrlMapPathMatcherDefaultUrlRedirect {
+  string host_redirect = 1;
+  string path_redirect = 2;
+  string prefix_redirect = 3;
+  ComputeBetaUrlMapPathMatcherDefaultUrlRedirectRedirectResponseCodeEnum redirect_response_code = 4;
+  bool https_redirect = 5;
+  bool strip_query = 6;
+}
+
+message ComputeBetaUrlMapPathMatcherPathRule {
+  string backend_service = 1;
+  ComputeBetaUrlMapPathMatcherPathRuleRouteAction route_action = 2;
+  ComputeBetaUrlMapPathMatcherPathRuleUrlRedirect url_redirect = 3;
+  repeated string path = 4;
+}
+
+message ComputeBetaUrlMapPathMatcherPathRuleRouteAction {
+  repeated ComputeBetaUrlMapPathMatcherPathRuleRouteActionWeightedBackendService weighted_backend_service = 1;
+  ComputeBetaUrlMapPathMatcherPathRuleRouteActionUrlRewrite url_rewrite = 2;
+  ComputeBetaUrlMapPathMatcherPathRuleRouteActionTimeout timeout = 3;
+  ComputeBetaUrlMapPathMatcherPathRuleRouteActionRetryPolicy retry_policy = 4;
+  ComputeBetaUrlMapPathMatcherPathRuleRouteActionRequestMirrorPolicy request_mirror_policy = 5;
+  ComputeBetaUrlMapPathMatcherPathRuleRouteActionCorsPolicy cors_policy = 6;
+  ComputeBetaUrlMapPathMatcherPathRuleRouteActionFaultInjectionPolicy fault_injection_policy = 7;
+}
+
+message ComputeBetaUrlMapPathMatcherPathRuleRouteActionWeightedBackendService {
+  string backend_service = 1;
+  int64 weight = 2;
+  ComputeBetaUrlMapHeaderAction header_action = 3;
+}
+
+message ComputeBetaUrlMapPathMatcherPathRuleRouteActionUrlRewrite {
+  string path_prefix_rewrite = 1;
+  string host_rewrite = 2;
+}
+
+message ComputeBetaUrlMapPathMatcherPathRuleRouteActionTimeout {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ComputeBetaUrlMapPathMatcherPathRuleRouteActionRetryPolicy {
+  repeated string retry_condition = 1;
+  int64 num_retries = 2;
+  ComputeBetaUrlMapPathMatcherPathRuleRouteActionRetryPolicyPerTryTimeout per_try_timeout = 3;
+}
+
+message ComputeBetaUrlMapPathMatcherPathRuleRouteActionRetryPolicyPerTryTimeout {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ComputeBetaUrlMapPathMatcherPathRuleRouteActionRequestMirrorPolicy {
+  string backend_service = 1;
+}
+
+message ComputeBetaUrlMapPathMatcherPathRuleRouteActionCorsPolicy {
+  repeated string allow_origin = 1;
+  repeated string allow_origin_regex = 2;
+  repeated string allow_method = 3;
+  repeated string allow_header = 4;
+  repeated string expose_header = 5;
+  int64 max_age = 6;
+  bool allow_credentials = 7;
+  bool disabled = 8;
+}
+
+message ComputeBetaUrlMapPathMatcherPathRuleRouteActionFaultInjectionPolicy {
+  ComputeBetaUrlMapPathMatcherPathRuleRouteActionFaultInjectionPolicyDelay delay = 1;
+  ComputeBetaUrlMapPathMatcherPathRuleRouteActionFaultInjectionPolicyAbort abort = 2;
+}
+
+message ComputeBetaUrlMapPathMatcherPathRuleRouteActionFaultInjectionPolicyDelay {
+  ComputeBetaUrlMapPathMatcherPathRuleRouteActionFaultInjectionPolicyDelayFixedDelay fixed_delay = 1;
+  double percentage = 2;
+}
+
+message ComputeBetaUrlMapPathMatcherPathRuleRouteActionFaultInjectionPolicyDelayFixedDelay {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ComputeBetaUrlMapPathMatcherPathRuleRouteActionFaultInjectionPolicyAbort {
+  int64 http_status = 1;
+  double percentage = 2;
+}
+
+message ComputeBetaUrlMapPathMatcherPathRuleUrlRedirect {
+  string host_redirect = 1;
+  string path_redirect = 2;
+  string prefix_redirect = 3;
+  ComputeBetaUrlMapPathMatcherPathRuleUrlRedirectRedirectResponseCodeEnum redirect_response_code = 4;
+  bool https_redirect = 5;
+  bool strip_query = 6;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRule {
+  int64 priority = 1;
+  string description = 2;
+  repeated ComputeBetaUrlMapPathMatcherRouteRuleMatchRule match_rule = 3;
+  string backend_service = 4;
+  ComputeBetaUrlMapPathMatcherRouteRuleRouteAction route_action = 5;
+  ComputeBetaUrlMapPathMatcherRouteRuleUrlRedirect url_redirect = 6;
+  ComputeBetaUrlMapHeaderAction header_action = 7;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleMatchRule {
+  string prefix_match = 1;
+  string full_path_match = 2;
+  string regex_match = 3;
+  bool ignore_case = 4;
+  repeated ComputeBetaUrlMapPathMatcherRouteRuleMatchRuleHeaderMatch header_match = 5;
+  repeated ComputeBetaUrlMapPathMatcherRouteRuleMatchRuleQueryParameterMatch query_parameter_match = 6;
+  repeated ComputeBetaUrlMapPathMatcherRouteRuleMatchRuleMetadataFilter metadata_filter = 7;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleMatchRuleHeaderMatch {
+  string header_name = 1;
+  string exact_match = 2;
+  string regex_match = 3;
+  ComputeBetaUrlMapPathMatcherRouteRuleMatchRuleHeaderMatchRangeMatch range_match = 4;
+  bool present_match = 5;
+  string prefix_match = 6;
+  string suffix_match = 7;
+  bool invert_match = 8;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleMatchRuleHeaderMatchRangeMatch {
+  int64 range_start = 1;
+  int64 range_end = 2;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleMatchRuleQueryParameterMatch {
+  string name = 1;
+  bool present_match = 2;
+  string exact_match = 3;
+  string regex_match = 4;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleMatchRuleMetadataFilter {
+  ComputeBetaUrlMapPathMatcherRouteRuleMatchRuleMetadataFilterFilterMatchCriteriaEnum filter_match_criteria = 1;
+  repeated ComputeBetaUrlMapPathMatcherRouteRuleMatchRuleMetadataFilterFilterLabel filter_label = 2;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleMatchRuleMetadataFilterFilterLabel {
+  string name = 1;
+  string value = 2;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleRouteAction {
+  repeated ComputeBetaUrlMapPathMatcherRouteRuleRouteActionWeightedBackendService weighted_backend_service = 1;
+  ComputeBetaUrlMapPathMatcherRouteRuleRouteActionUrlRewrite url_rewrite = 2;
+  ComputeBetaUrlMapPathMatcherRouteRuleRouteActionTimeout timeout = 3;
+  ComputeBetaUrlMapPathMatcherRouteRuleRouteActionRetryPolicy retry_policy = 4;
+  ComputeBetaUrlMapPathMatcherRouteRuleRouteActionRequestMirrorPolicy request_mirror_policy = 5;
+  ComputeBetaUrlMapPathMatcherRouteRuleRouteActionCorsPolicy cors_policy = 6;
+  ComputeBetaUrlMapPathMatcherRouteRuleRouteActionFaultInjectionPolicy fault_injection_policy = 7;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleRouteActionWeightedBackendService {
+  string backend_service = 1;
+  int64 weight = 2;
+  ComputeBetaUrlMapHeaderAction header_action = 3;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleRouteActionUrlRewrite {
+  string path_prefix_rewrite = 1;
+  string host_rewrite = 2;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleRouteActionTimeout {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleRouteActionRetryPolicy {
+  repeated string retry_condition = 1;
+  int64 num_retries = 2;
+  ComputeBetaUrlMapPathMatcherRouteRuleRouteActionRetryPolicyPerTryTimeout per_try_timeout = 3;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleRouteActionRetryPolicyPerTryTimeout {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleRouteActionRequestMirrorPolicy {
+  string backend_service = 1;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleRouteActionCorsPolicy {
+  repeated string allow_origin = 1;
+  repeated string allow_origin_regex = 2;
+  repeated string allow_method = 3;
+  repeated string allow_header = 4;
+  repeated string expose_header = 5;
+  int64 max_age = 6;
+  bool allow_credentials = 7;
+  bool disabled = 8;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleRouteActionFaultInjectionPolicy {
+  ComputeBetaUrlMapPathMatcherRouteRuleRouteActionFaultInjectionPolicyDelay delay = 1;
+  ComputeBetaUrlMapPathMatcherRouteRuleRouteActionFaultInjectionPolicyAbort abort = 2;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleRouteActionFaultInjectionPolicyDelay {
+  ComputeBetaUrlMapPathMatcherRouteRuleRouteActionFaultInjectionPolicyDelayFixedDelay fixed_delay = 1;
+  double percentage = 2;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleRouteActionFaultInjectionPolicyDelayFixedDelay {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleRouteActionFaultInjectionPolicyAbort {
+  int64 http_status = 1;
+  double percentage = 2;
+}
+
+message ComputeBetaUrlMapPathMatcherRouteRuleUrlRedirect {
+  string host_redirect = 1;
+  string path_redirect = 2;
+  string prefix_redirect = 3;
+  ComputeBetaUrlMapPathMatcherRouteRuleUrlRedirectRedirectResponseCodeEnum redirect_response_code = 4;
+  bool https_redirect = 5;
+  bool strip_query = 6;
+}
+
+message ComputeBetaUrlMapTest {
+  string description = 1;
+  string host = 2;
+  string path = 3;
+  string expected_backend_service = 4;
+}
+
+message ApplyComputeBetaUrlMapRequest {
+  ComputeBetaUrlMap resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaUrlMapRequest {
+  string service_account_file = 1;
+  ComputeBetaUrlMap resource = 2;
+}
+
+message ListComputeBetaUrlMapRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListComputeBetaUrlMapResponse {
+  repeated ComputeBetaUrlMap items = 1;
+}
+
+service ComputeBetaUrlMapService {
+  rpc ApplyComputeBetaUrlMap(ApplyComputeBetaUrlMapRequest) returns (ComputeBetaUrlMap);
+  rpc DeleteComputeBetaUrlMap(DeleteComputeBetaUrlMapRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaUrlMap(ListComputeBetaUrlMapRequest) returns (ListComputeBetaUrlMapResponse);
+}

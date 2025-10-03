@@ -36,3 +36,5 @@ spec:
       method: ["GET", "HEAD", "DELETE"]
       maxAgeSeconds: 3600
   uniformBucketLevelAccess: true
+  softDeletePolicy:
+    retentionDurationSeconds: 604800

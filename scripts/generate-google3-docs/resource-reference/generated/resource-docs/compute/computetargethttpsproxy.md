@@ -70,9 +70,6 @@
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
@@ -138,7 +135,7 @@ urlMapRef:
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}URLs to certificate manager certificate resources that are used to authenticate connections between users and the load balancer.
 Currently, you may specify up to 15 certificates. Certificate manager certificates do not apply when the load balancing scheme is set to INTERNAL_SELF_MANAGED.
-sslCertificates and certificateManagerCertificates fields can not be defined together.{% endverbatim %}</p>
+sslCertificates and certificateManagerCertificates fields cannot be defined together.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -148,7 +145,7 @@ sslCertificates and certificateManagerCertificates fields can not be defined tog
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `projects/{{project}}/locations/{{location}}/certificates/{{value}}`, where {{value}} is the `name` field of a `CertificateManagerCertificate` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: string of the format `projects/{{project}}/locations/global/certificates/{{value}}`, where {{value}} is the `name` field of a `CertificateManagerCertificate` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -180,7 +177,10 @@ sslCertificates and certificateManagerCertificates fields can not be defined tog
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}A reference to the CertificateMap resource uri that identifies a
 certificate map associated with the given target proxy. This field
-can only be set for global target proxies.{% endverbatim %}</p>
+can only be set for global target proxies. This field is only supported
+for EXTERNAL and EXTERNAL_MANAGED load balancing schemes.
+For INTERNAL_MANAGED, use certificateManagerCertificates instead.
+sslCertificates and certificateMap fields cannot be defined together.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -190,7 +190,7 @@ can only be set for global target proxies.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: string of the format `//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificateMaps/{{value}}`, where {{value}} is the `name` field of a `CertificateManagerCertificateMap` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: string of the format `//certificatemanager.googleapis.com/projects/{{project}}/locations/global/certificateMaps/{{value}}`, where {{value}} is the `name` field of a `CertificateManagerCertificateMap` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

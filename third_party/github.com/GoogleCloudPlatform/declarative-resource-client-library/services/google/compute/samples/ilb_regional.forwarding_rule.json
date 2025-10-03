@@ -1,0 +1,14 @@
+{
+  "name": "{{rule}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "backendService": "{{ref:ilb_regional.backend_service.json:selfLink}}",
+  "networkTier": "PREMIUM",
+  "ipProtocol": "TCP",
+  "description": "A test forwarding rule",
+  "loadBalancingScheme": "INTERNAL",
+  "allPorts": true,
+  "allowGlobalAccess": true,
+  "network": "{{ref:basic.network.json:selfLink}}",
+  "subnetwork": "{{ref:basic.subnetwork.json:selfLink}}"
+}

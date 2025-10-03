@@ -17,9 +17,9 @@ kind: IAMPolicyMember
 metadata:
   name: policy-least-privilege
 spec:
-  member: serviceAccount:[SA_NAME]@[PROJECT_ID].iam.gserviceaccount.com
-  role: roles/container.nodeServiceAccount
+  member: serviceAccount:SA_NAME@PROJECT_ID.iam.gserviceaccount.com
+  role: roles/container.defaultNodeServiceAccount
   resourceRef:
     kind: Project
-    name: [PROJECT_ID]
+    name: PROJECT_ID
 # [END configconnector_hardening_your_cluster_policy_least_privilege]

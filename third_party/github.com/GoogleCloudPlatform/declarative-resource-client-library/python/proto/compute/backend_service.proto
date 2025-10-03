@@ -1,0 +1,273 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeBackendServiceBackendsBalancingModeEnum {
+  ComputeBackendServiceBackendsBalancingModeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBackendServiceBackendsBalancingModeEnumUTILIZATION = 1;
+  ComputeBackendServiceBackendsBalancingModeEnumRATE = 2;
+  ComputeBackendServiceBackendsBalancingModeEnumCONNECTION = 3;
+}
+
+enum ComputeBackendServiceProtocolEnum {
+  ComputeBackendServiceProtocolEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBackendServiceProtocolEnumHTTP = 1;
+  ComputeBackendServiceProtocolEnumHTTPS = 2;
+  ComputeBackendServiceProtocolEnumHTTP2 = 3;
+  ComputeBackendServiceProtocolEnumTCP = 4;
+  ComputeBackendServiceProtocolEnumSSL = 5;
+  ComputeBackendServiceProtocolEnumUDP = 6;
+  ComputeBackendServiceProtocolEnumGRPC = 7;
+  ComputeBackendServiceProtocolEnumALL = 8;
+  ComputeBackendServiceProtocolEnumUNSPECIFIED = 9;
+}
+
+enum ComputeBackendServiceSessionAffinityEnum {
+  ComputeBackendServiceSessionAffinityEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBackendServiceSessionAffinityEnumNONE = 1;
+  ComputeBackendServiceSessionAffinityEnumCLIENT_IP = 2;
+  ComputeBackendServiceSessionAffinityEnumCLIENT_IP_PROTO = 3;
+  ComputeBackendServiceSessionAffinityEnumGENERATED_COOKIE = 4;
+  ComputeBackendServiceSessionAffinityEnumCLIENT_IP_PORT_PROTO = 5;
+  ComputeBackendServiceSessionAffinityEnumHTTP_COOKIE = 6;
+  ComputeBackendServiceSessionAffinityEnumHEADER_FIELD = 7;
+  ComputeBackendServiceSessionAffinityEnumCLIENT_IP_NO_DESTINATION = 8;
+}
+
+enum ComputeBackendServiceLoadBalancingSchemeEnum {
+  ComputeBackendServiceLoadBalancingSchemeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBackendServiceLoadBalancingSchemeEnumINVALID_LOAD_BALANCING_SCHEME = 1;
+  ComputeBackendServiceLoadBalancingSchemeEnumINTERNAL = 2;
+  ComputeBackendServiceLoadBalancingSchemeEnumINTERNAL_MANAGED = 3;
+  ComputeBackendServiceLoadBalancingSchemeEnumINTERNAL_SELF_MANAGED = 4;
+  ComputeBackendServiceLoadBalancingSchemeEnumEXTERNAL = 5;
+  ComputeBackendServiceLoadBalancingSchemeEnumEXTERNAL_MANAGED = 6;
+}
+
+enum ComputeBackendServiceCdnPolicyCacheModeEnum {
+  ComputeBackendServiceCdnPolicyCacheModeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBackendServiceCdnPolicyCacheModeEnumINVALID_CACHE_MODE = 1;
+  ComputeBackendServiceCdnPolicyCacheModeEnumUSE_ORIGIN_HEADERS = 2;
+  ComputeBackendServiceCdnPolicyCacheModeEnumFORCE_CACHE_ALL = 3;
+  ComputeBackendServiceCdnPolicyCacheModeEnumCACHE_ALL_STATIC = 4;
+}
+
+enum ComputeBackendServiceLocalityLbPolicyEnum {
+  ComputeBackendServiceLocalityLbPolicyEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBackendServiceLocalityLbPolicyEnumINVALID_LB_POLICY = 1;
+  ComputeBackendServiceLocalityLbPolicyEnumROUND_ROBIN = 2;
+  ComputeBackendServiceLocalityLbPolicyEnumLEAST_REQUEST = 3;
+  ComputeBackendServiceLocalityLbPolicyEnumRING_HASH = 4;
+  ComputeBackendServiceLocalityLbPolicyEnumRANDOM = 5;
+  ComputeBackendServiceLocalityLbPolicyEnumORIGINAL_DESTINATION = 6;
+  ComputeBackendServiceLocalityLbPolicyEnumMAGLEV = 7;
+}
+
+message ComputeBackendService {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string self_link = 4;
+  string self_link_with_id = 5;
+  repeated ComputeBackendServiceBackends backends = 6;
+  repeated string health_checks = 7;
+  int64 timeout_sec = 8;
+  int64 port = 9;
+  ComputeBackendServiceProtocolEnum protocol = 10;
+  string fingerprint = 11;
+  string port_name = 12;
+  bool enable_cdn = 13;
+  ComputeBackendServiceSessionAffinityEnum session_affinity = 14;
+  int64 affinity_cookie_ttl_sec = 15;
+  string location = 16;
+  ComputeBackendServiceFailoverPolicy failover_policy = 17;
+  ComputeBackendServiceLoadBalancingSchemeEnum load_balancing_scheme = 18;
+  ComputeBackendServiceConnectionDraining connection_draining = 19;
+  ComputeBackendServiceIap iap = 20;
+  ComputeBackendServiceCdnPolicy cdn_policy = 21;
+  repeated string custom_request_headers = 22;
+  repeated string custom_response_headers = 23;
+  string security_policy = 24;
+  ComputeBackendServiceLogConfig log_config = 25;
+  ComputeBackendServiceSecuritySettings security_settings = 26;
+  ComputeBackendServiceLocalityLbPolicyEnum locality_lb_policy = 27;
+  ComputeBackendServiceConsistentHash consistent_hash = 28;
+  ComputeBackendServiceCircuitBreakers circuit_breakers = 29;
+  ComputeBackendServiceOutlierDetection outlier_detection = 30;
+  string network = 31;
+  ComputeBackendServiceMaxStreamDuration max_stream_duration = 32;
+  string project = 33;
+}
+
+message ComputeBackendServiceBackends {
+  string description = 1;
+  string group = 2;
+  ComputeBackendServiceBackendsBalancingModeEnum balancing_mode = 3;
+  double max_utilization = 4;
+  int64 max_rate = 5;
+  double max_rate_per_instance = 6;
+  double max_rate_per_endpoint = 7;
+  int64 max_connections = 8;
+  int64 max_connections_per_instance = 9;
+  int64 max_connections_per_endpoint = 10;
+  double capacity_scaler = 11;
+  bool failover = 12;
+}
+
+message ComputeBackendServiceFailoverPolicy {
+  bool disable_connection_drain_on_failover = 1;
+  bool drop_traffic_if_unhealthy = 2;
+  double failover_ratio = 3;
+}
+
+message ComputeBackendServiceConnectionDraining {
+  int64 draining_timeout_sec = 1;
+}
+
+message ComputeBackendServiceIap {
+  bool enabled = 1;
+  string oauth2_client_id = 2;
+  string oauth2_client_secret = 3;
+  string oauth2_client_secret_sha256 = 4;
+}
+
+message ComputeBackendServiceCdnPolicy {
+  ComputeBackendServiceCdnPolicyCacheKeyPolicy cache_key_policy = 1;
+  repeated string signed_url_key_names = 2;
+  int64 signed_url_cache_max_age_sec = 3;
+  bool request_coalescing = 4;
+  ComputeBackendServiceCdnPolicyCacheModeEnum cache_mode = 5;
+  int64 default_ttl = 6;
+  int64 max_ttl = 7;
+  int64 client_ttl = 8;
+  bool negative_caching = 9;
+  repeated ComputeBackendServiceCdnPolicyNegativeCachingPolicy negative_caching_policy = 10;
+  repeated ComputeBackendServiceCdnPolicyBypassCacheOnRequestHeaders bypass_cache_on_request_headers = 11;
+  int64 serve_while_stale = 12;
+}
+
+message ComputeBackendServiceCdnPolicyCacheKeyPolicy {
+  bool include_protocol = 1;
+  bool include_host = 2;
+  bool include_query_string = 3;
+  repeated string query_string_whitelist = 4;
+  repeated string query_string_blacklist = 5;
+  repeated string include_http_headers = 6;
+  repeated string include_named_cookies = 7;
+}
+
+message ComputeBackendServiceCdnPolicyNegativeCachingPolicy {
+  int64 code = 1;
+  int64 ttl = 2;
+}
+
+message ComputeBackendServiceCdnPolicyBypassCacheOnRequestHeaders {
+  string header_name = 1;
+}
+
+message ComputeBackendServiceLogConfig {
+  bool enable = 1;
+  double sample_rate = 2;
+}
+
+message ComputeBackendServiceSecuritySettings {
+  string client_tls_policy = 1;
+  repeated string subject_alt_names = 2;
+}
+
+message ComputeBackendServiceConsistentHash {
+  ComputeBackendServiceConsistentHashHttpCookie http_cookie = 1;
+  string http_header_name = 2;
+  int64 minimum_ring_size = 3;
+}
+
+message ComputeBackendServiceConsistentHashHttpCookie {
+  string name = 1;
+  string path = 2;
+  ComputeBackendServiceConsistentHashHttpCookieTtl ttl = 3;
+}
+
+message ComputeBackendServiceConsistentHashHttpCookieTtl {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ComputeBackendServiceCircuitBreakers {
+  int64 max_requests_per_connection = 1;
+  int64 max_connections = 2;
+  int64 max_pending_requests = 3;
+  int64 max_requests = 4;
+  int64 max_retries = 5;
+}
+
+message ComputeBackendServiceOutlierDetection {
+  int64 consecutive_errors = 1;
+  ComputeBackendServiceOutlierDetectionInterval interval = 2;
+  ComputeBackendServiceOutlierDetectionBaseEjectionTime base_ejection_time = 3;
+  int64 max_ejection_percent = 4;
+  int64 enforcing_consecutive_errors = 5;
+  int64 enforcing_success_rate = 6;
+  int64 success_rate_minimum_hosts = 7;
+  int64 success_rate_request_volume = 8;
+  int64 success_rate_stdev_factor = 9;
+  int64 consecutive_gateway_failure = 10;
+  int64 enforcing_consecutive_gateway_failure = 11;
+}
+
+message ComputeBackendServiceOutlierDetectionInterval {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ComputeBackendServiceOutlierDetectionBaseEjectionTime {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ComputeBackendServiceMaxStreamDuration {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ApplyComputeBackendServiceRequest {
+  ComputeBackendService resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBackendServiceRequest {
+  string service_account_file = 1;
+  ComputeBackendService resource = 2;
+}
+
+message ListComputeBackendServiceRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComputeBackendServiceResponse {
+  repeated ComputeBackendService items = 1;
+}
+
+service ComputeBackendServiceService {
+  rpc ApplyComputeBackendService(ApplyComputeBackendServiceRequest) returns (ComputeBackendService);
+  rpc DeleteComputeBackendService(DeleteComputeBackendServiceRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBackendService(ListComputeBackendServiceRequest) returns (ListComputeBackendServiceResponse);
+}

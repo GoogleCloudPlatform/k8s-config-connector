@@ -1,0 +1,13 @@
+{
+  "name": "{{resource_name}}",
+  "project": "{{project}}",
+  "description": "An updated test Gateway",
+  "type": "OPEN_MESH",
+  "ports": [81],
+  "location": "global",
+  "scope": "{{resource_name}}",
+  "labels": {
+    "foo1": "bar1"
+  },
+  "serverTlsPolicy": "projects/{{project}}/locations/global/serverTlsPolicies/{{ref:basichttpgateway2.networksecurity.server_tls_policy.json:name}}"
+}

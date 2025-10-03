@@ -1,0 +1,79 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum StorageObjectAccessControlProjectTeamTeamEnum {
+  StorageObjectAccessControlProjectTeamTeamEnumNO_VALUE_DO_NOT_USE = 0;
+  StorageObjectAccessControlProjectTeamTeamEnumeditors = 1;
+  StorageObjectAccessControlProjectTeamTeamEnumowners = 2;
+  StorageObjectAccessControlProjectTeamTeamEnumviewers = 3;
+}
+
+enum StorageObjectAccessControlRoleEnum {
+  StorageObjectAccessControlRoleEnumNO_VALUE_DO_NOT_USE = 0;
+  StorageObjectAccessControlRoleEnumOWNER = 1;
+  StorageObjectAccessControlRoleEnumREADER = 2;
+}
+
+message StorageObjectAccessControl {
+  string project = 1;
+  string bucket = 2;
+  string domain = 3;
+  string email = 4;
+  string entity = 5;
+  string entity_id = 6;
+  StorageObjectAccessControlProjectTeam project_team = 7;
+  StorageObjectAccessControlRoleEnum role = 8;
+  string id = 9;
+  string object = 10;
+  int64 generation = 11;
+}
+
+message StorageObjectAccessControlProjectTeam {
+  string project_number = 1;
+  StorageObjectAccessControlProjectTeamTeamEnum team = 2;
+}
+
+message ApplyStorageObjectAccessControlRequest {
+  StorageObjectAccessControl resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteStorageObjectAccessControlRequest {
+  string service_account_file = 1;
+  StorageObjectAccessControl resource = 2;
+}
+
+message ListStorageObjectAccessControlRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Bucket = 3;
+  string Object = 4;
+}
+
+message ListStorageObjectAccessControlResponse {
+  repeated StorageObjectAccessControl items = 1;
+}
+
+service StorageObjectAccessControlService {
+  rpc ApplyStorageObjectAccessControl(ApplyStorageObjectAccessControlRequest) returns (StorageObjectAccessControl);
+  rpc DeleteStorageObjectAccessControl(DeleteStorageObjectAccessControlRequest) returns (google.protobuf.Empty);
+  rpc ListStorageObjectAccessControl(ListStorageObjectAccessControlRequest) returns (ListStorageObjectAccessControlResponse);
+}

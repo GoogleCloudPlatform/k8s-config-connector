@@ -17,8 +17,8 @@ package iamclient
 import (
 	"fmt"
 
+	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
-	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/externalonlygvks"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -28,7 +28,7 @@ import (
 // ExternalOnlyType is a KCC resource type that KCC does not support as a
 // core resource, but does support referencing externally in IAM.
 type ExternalOnlyType struct {
-	// UnstuctHandler is a function that fills in the external field information
+	// UnstructHandler is a function that fills in the external field information
 	// from the given reference into the given unstructured object.
 	UnstructHandler func(ref iamv1beta1.ResourceReference, u *unstructured.Unstructured) *unstructured.Unstructured
 

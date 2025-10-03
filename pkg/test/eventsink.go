@@ -16,6 +16,7 @@ package test
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -70,6 +71,10 @@ func (s *MemoryEventSink) AddHTTPEvent(ctx context.Context, entry *LogEntry) { /
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
+	// HACK: Filter oauth events
+	if strings.Contains(entry.Request.URL, "oauth2.googleapis.com") {
+		return
+	}
 	s.HTTPEvents = append(s.HTTPEvents, entry)
 }
 
@@ -90,12 +95,26 @@ func (s *LogEntries) PrettifyJSON(mutators ...JSONMutator) {
 	}
 }
 
+func (s *LogEntries) RemoveHTTPRequestHeader(key string) {
+	for _, entry := range *s {
+		entry.Request.RemoveHeader(key)
+	}
+}
+
 func (s *LogEntries) RemoveHTTPResponseHeader(key string) {
 	for _, entry := range *s {
 		entry.Response.RemoveHeader(key)
 	}
 }
 
+func (s *LogEntries) ReplaceRequestQueryParameter(key string, value string) {
+	for _, entry := range *s {
+		entry.Request.ReplaceQueryParameter(key, value)
+	}
+}
+
+// KeepIf returns a new LogEntries with only the entries that satisfy the predicate.
+// (where the predicate function returns true)
 func (s LogEntries) KeepIf(pred func(e *LogEntry) bool) LogEntries {
 	var keep LogEntries
 	for _, entry := range s {
@@ -135,7 +154,13 @@ func (r *DirectoryEventSink) AddHTTPEvent(ctx context.Context, entry *LogEntry) 
 func (r *DirectoryEventSink) writeToFile(p string, entry *LogEntry) error {
 	b, err := yaml.Marshal(entry)
 	if err != nil {
-		return fmt.Errorf("failed to marshal data: %w", err)
+		klog.Warningf("failed to marshal data as yaml in DirectoryEventSink: %v", err)
+		// As a special fallback, write it in JSON so we can try to understand what is going wrong here
+		b, err = json.MarshalIndent(entry, "", "  ")
+		if err != nil {
+			return fmt.Errorf("failed to marshal entry %+v as JSON or YAML: %w", entry, err)
+		}
+		// return fmt.Errorf("failed to marshal data: %w", err)
 	}
 
 	// Just in case we are writing to the same file concurrently

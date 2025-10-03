@@ -1,0 +1,5 @@
+{
+  "role": "roles/dataproc.admin",
+  "members": ["serviceAccount:{{service_account}}"],
+  "resource": "{{ref:basic.cluster.json:__resource__}}"
+}

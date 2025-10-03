@@ -22,35 +22,38 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/logger"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	"golang.org/x/oauth2/google"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/klog/v2"
 )
 
 var nonretryable = dcl.Retryability{Retryable: false}
 
 type Options struct {
-	controller.Config
+	config.ControllerConfig
 }
 
-func New(ctx context.Context, opt Options) (*dcl.Config, error) {
+func newConfigAndClient(ctx context.Context, opt Options) (*dcl.Config, *http.Client, error) {
 	if opt.UserAgent == "" {
-		opt.UserAgent = gcp.KCCUserAgent
+		opt.UserAgent = gcp.KCCUserAgent()
 	}
 
 	if opt.HTTPClient == nil {
 		httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
 		if err != nil {
-			return nil, fmt.Errorf("error creating the http client to be used by DCL: %w", err)
+			return nil, nil, fmt.Errorf("error creating the http client to be used by DCL: %w", err)
 		}
 		opt.HTTPClient = httpClient
+	}
+
+	if opt.EnableMetricsTransport {
+		opt.HTTPClient.Transport = transport.NewMetricsTransport(opt.HTTPClient.Transport)
 	}
 
 	configOptions := []dcl.ConfigOption{
@@ -77,12 +80,26 @@ func New(ctx context.Context, opt Options) (*dcl.Config, error) {
 		configOptions = append(configOptions, dcl.WithBillingProject(opt.BillingProject))
 	}
 	dclConfig := dcl.NewConfig(configOptions...)
+	return dclConfig, opt.HTTPClient, nil
+}
+
+func New(ctx context.Context, opt Options) (*dcl.Config, error) {
+	dclConfig, _, err := newConfigAndClient(ctx, opt)
+	if err != nil {
+		return nil, err
+	}
+
 	return dclConfig, nil
 }
 
 // NewForIntegrationTest creates a dcl.Config for use in integration tests.
 // Deprecated: Prefer using a harness.
 func NewForIntegrationTest() *dcl.Config {
+	dclConfig, _ := NewConfigAndClientForIntegrationTest()
+	return dclConfig
+}
+
+func NewConfigAndClientForIntegrationTest() (*dcl.Config, *http.Client) {
 	ctx := context.TODO()
 	eventSinks := test.EventSinksFromContext(ctx)
 
@@ -108,11 +125,11 @@ func NewForIntegrationTest() *dcl.Config {
 		opt.HTTPClient = &http.Client{Transport: t}
 	}
 
-	config, err := New(ctx, opt)
+	config, httpClient, err := newConfigAndClient(ctx, opt)
 	if err != nil {
 		klog.Fatalf("error from NewForIntegrationTest: %v", err)
 	}
-	return config
+	return config, httpClient
 }
 
 func CopyAndModifyForKind(dclConfig *dcl.Config, kind string) *dcl.Config {
@@ -121,16 +138,4 @@ func CopyAndModifyForKind(dclConfig *dcl.Config, kind string) *dcl.Config {
 		return dclConfig.Clone(dcl.WithTimeout(timeout))
 	}
 	return dclConfig.Clone()
-}
-
-// SetUserAgentWithBlueprintAttribution returns a new DCL Config with the user agent containing the blueprint attribution
-// if the resource has the blueprint attribution annotation. Otherwise, the existing DCL Config is unmodified and returned.
-func SetUserAgentWithBlueprintAttribution(dclConfig *dcl.Config, resource metav1.Object) *dcl.Config {
-	bp, found := k8s.GetAnnotation(k8s.BlueprintAttributionAnnotation, resource)
-	if !found {
-		return dclConfig
-	}
-	userAgentWithBlueprintAttribution := fmt.Sprintf("%v blueprints/%v", gcp.KCCUserAgent, bp)
-	newConfig := dclConfig.Clone(dcl.WithUserAgent(userAgentWithBlueprintAttribution))
-	return newConfig
 }

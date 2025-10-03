@@ -1,0 +1,82 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum IamAlphaWorkloadIdentityPoolProviderStateEnum {
+  IamAlphaWorkloadIdentityPoolProviderStateEnumNO_VALUE_DO_NOT_USE = 0;
+  IamAlphaWorkloadIdentityPoolProviderStateEnumSTATE_UNSPECIFIED = 1;
+  IamAlphaWorkloadIdentityPoolProviderStateEnumACTIVE = 2;
+  IamAlphaWorkloadIdentityPoolProviderStateEnumDELETED = 3;
+}
+
+message IamAlphaWorkloadIdentityPoolProvider {
+  string name = 1;
+  string display_name = 2;
+  string description = 3;
+  IamAlphaWorkloadIdentityPoolProviderStateEnum state = 4;
+  bool disabled = 5;
+  map<string, string> attribute_mapping = 6;
+  string attribute_condition = 7;
+  IamAlphaWorkloadIdentityPoolProviderAws aws = 8;
+  IamAlphaWorkloadIdentityPoolProviderOidc oidc = 9;
+  string project = 10;
+  string location = 11;
+  string workload_identity_pool = 12;
+}
+
+message IamAlphaWorkloadIdentityPoolProviderAws {
+  string account_id = 1;
+  repeated string sts_uri = 2;
+}
+
+message IamAlphaWorkloadIdentityPoolProviderOidc {
+  string issuer_uri = 1;
+  repeated string allowed_audiences = 2;
+}
+
+message ApplyIamAlphaWorkloadIdentityPoolProviderRequest {
+  IamAlphaWorkloadIdentityPoolProvider resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteIamAlphaWorkloadIdentityPoolProviderRequest {
+  string service_account_file = 1;
+  IamAlphaWorkloadIdentityPoolProvider resource = 2;
+}
+
+message ListIamAlphaWorkloadIdentityPoolProviderRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string WorkloadIdentityPool = 4;
+}
+
+message ListIamAlphaWorkloadIdentityPoolProviderResponse {
+  repeated IamAlphaWorkloadIdentityPoolProvider items = 1;
+}
+
+service IamAlphaWorkloadIdentityPoolProviderService {
+  rpc ApplyIamAlphaWorkloadIdentityPoolProvider(ApplyIamAlphaWorkloadIdentityPoolProviderRequest) returns (IamAlphaWorkloadIdentityPoolProvider);
+  rpc DeleteIamAlphaWorkloadIdentityPoolProvider(DeleteIamAlphaWorkloadIdentityPoolProviderRequest) returns (google.protobuf.Empty);
+  rpc ListIamAlphaWorkloadIdentityPoolProvider(ListIamAlphaWorkloadIdentityPoolProviderRequest) returns (ListIamAlphaWorkloadIdentityPoolProviderResponse);
+}

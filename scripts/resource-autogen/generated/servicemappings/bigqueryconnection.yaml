@@ -35,6 +35,15 @@ spec:
       idTemplate: "projects/{{project}}/locations/{{location}}/connections/{{connection_id}}"
       idTemplateCanBeUsedToMatchResourceName: false
       resourceAvailableInAssetInventory: false
+      ignoredFields:
+        # TODO: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/2149
+        - cloud_sql
+        - cloud_spanner
+        # TODO: https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/2340
+        - aws
+        - azure
+      observedFields:
+        - cloud_resource.service_account_id
       metadataMapping:
         name: connection_id
       resourceID:

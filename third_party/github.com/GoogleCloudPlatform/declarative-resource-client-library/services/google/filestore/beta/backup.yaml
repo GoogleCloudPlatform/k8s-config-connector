@@ -1,0 +1,189 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: Filestore/Backup
+  description: The Filestore Backup resource
+  x-dcl-struct-name: Backup
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a Backup
+    parameters:
+    - name: backup
+      required: true
+      description: A full instance of a Backup
+  apply:
+    description: The function used to apply information about a Backup
+    parameters:
+    - name: backup
+      required: true
+      description: A full instance of a Backup
+  delete:
+    description: The function used to delete a Backup
+    parameters:
+    - name: backup
+      required: true
+      description: A full instance of a Backup
+  deleteAll:
+    description: The function used to delete all Backup
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many Backup
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Backup:
+      title: Backup
+      x-dcl-id: projects/{{project}}/locations/{{location}}/backups/{{name}}
+      x-dcl-parent-container: project
+      x-dcl-labels: labels
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - sourceInstance
+      - sourceFileShare
+      - project
+      - location
+      properties:
+        capacityGb:
+          type: integer
+          format: int64
+          x-dcl-go-name: CapacityGb
+          readOnly: true
+          description: Output only. Capacity of the source file share when the backup
+            was created.
+          x-kubernetes-immutable: true
+        createTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: CreateTime
+          readOnly: true
+          description: Output only. The time when the backup was created.
+          x-kubernetes-immutable: true
+        description:
+          type: string
+          x-dcl-go-name: Description
+          description: A description of the backup with 2048 characters or less. Requests
+            with longer descriptions will be rejected.
+        downloadBytes:
+          type: integer
+          format: int64
+          x-dcl-go-name: DownloadBytes
+          readOnly: true
+          description: Output only. Amount of bytes that will be downloaded if the
+            backup is restored. This may be different than storage bytes, since sequential
+            backups of the same disk will share storage.
+          x-kubernetes-immutable: true
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: Labels
+          description: Resource labels to represent user provided metadata.
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location for the resource
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: The resource name of the backup.
+          x-kubernetes-immutable: true
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        sourceFileShare:
+          type: string
+          x-dcl-go-name: SourceFileShare
+          description: Name of the file share in the source Cloud Filestore instance
+            that the backup is created from.
+          x-kubernetes-immutable: true
+        sourceInstance:
+          type: string
+          x-dcl-go-name: SourceInstance
+          description: The resource name of the source Cloud Filestore instance, in
+            the format projects/{project_number}/locations/{location_id}/instances/{instance_id},
+            used to create this backup.
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Filestore/Instance
+            field: name
+        sourceInstanceTier:
+          type: string
+          x-dcl-go-name: SourceInstanceTier
+          x-dcl-go-type: BackupSourceInstanceTierEnum
+          readOnly: true
+          description: 'Output only. The service tier of the source Cloud Filestore
+            instance that this backup is created from. Possible values: TIER_UNSPECIFIED,
+            STANDARD, PREMIUM, BASIC_HDD, BASIC_SSD, HIGH_SCALE_SSD'
+          x-kubernetes-immutable: true
+          enum:
+          - TIER_UNSPECIFIED
+          - STANDARD
+          - PREMIUM
+          - BASIC_HDD
+          - BASIC_SSD
+          - HIGH_SCALE_SSD
+        state:
+          type: string
+          x-dcl-go-name: State
+          x-dcl-go-type: BackupStateEnum
+          readOnly: true
+          description: 'Output only. The backup state. Possible values: STATE_UNSPECIFIED,
+            CREATING, READY, REPAIRING, DELETING, ERROR, RESTORING'
+          x-kubernetes-immutable: true
+          enum:
+          - STATE_UNSPECIFIED
+          - CREATING
+          - READY
+          - REPAIRING
+          - DELETING
+          - ERROR
+          - RESTORING
+        storageBytes:
+          type: integer
+          format: int64
+          x-dcl-go-name: StorageBytes
+          readOnly: true
+          description: Output only. The size of the storage used by the backup. As
+            backups share storage, this number is expected to change with backup creation/deletion.
+          x-kubernetes-immutable: true

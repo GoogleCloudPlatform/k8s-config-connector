@@ -1,0 +1,15 @@
+{
+  "name": "{{subscription}}",
+  "project": "{{project}}",
+  "ackDeadlineSeconds": 20,
+  "labels": {
+    "foo": "bar"
+  },
+  "topic": "projects/{{project}}/topics/{{ref:basic.topic.json:name}}",
+  "pushConfig":{
+    "pushEndpoint": "https://example.com/push",
+    "attributes": {
+      "x-goog-version": "v1"
+    }
+  }
+}

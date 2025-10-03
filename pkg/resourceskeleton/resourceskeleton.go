@@ -63,7 +63,8 @@ func NewFromURI(uri string, smLoader *servicemappingloader.ServiceMappingLoader,
 	if err != nil {
 		return nil, fmt.Errorf("error parsing '%v' as url: %w", uri, err)
 	}
-	sm, rc, err := uri2.GetServiceMappingAndResourceConfig(smLoader, parsedURL.Host, parsedURL.Path)
+	canonicalHost := trimRegionPrefix(parsedURL.Host) // e.g. "us-central1-aiplatform.googleapis.com" -> "aiplatform.googleapis.com"
+	sm, rc, err := uri2.GetServiceMappingAndResourceConfig(smLoader, canonicalHost, parsedURL.Path)
 	if err != nil {
 		return nil, fmt.Errorf("error getting service mapping and resource config for url '%v': %w", uri, err)
 	}
@@ -92,7 +93,7 @@ func NewFromAsset(a *asset.Asset, smLoader *servicemappingloader.ServiceMappingL
 	name := trimServiceHostName(a, sm)
 	importID, err := convertAssetNameToImportID(rc, name)
 	if err != nil {
-		return nil, fmt.Errorf("error coverting cloud asset inventory name '%v' to resource id: %w", name, err)
+		return nil, fmt.Errorf("error converting cloud asset inventory name '%v' to resource id: %w", name, err)
 	}
 	state, err := krmtotf.ImportState(context.Background(), importID, &tfInfo, tfProvider)
 	if err != nil {
@@ -214,7 +215,7 @@ type iamCustomRoleID struct {
 func parseIAMCustomRoleID(id string) (*iamCustomRoleID, error) {
 	partitions := strings.Split(id, "/")
 	if len(partitions) != 4 {
-		return nil, fmt.Errorf("expected 4 partitions split by '/' for for '%v'", id)
+		return nil, fmt.Errorf("expected 4 partitions split by '/' for '%v'", id)
 	}
 	value := iamCustomRoleID{
 		parentID: partitions[1],
@@ -229,4 +230,10 @@ func parseIAMCustomRoleID(id string) (*iamCustomRoleID, error) {
 		return nil, fmt.Errorf("expected 'projects' or 'organizations' for first partition, got '%v'", partitions[0])
 	}
 	return &value, nil
+}
+
+func trimRegionPrefix(host string) string {
+	// e.g. "us-central1-aiplatform.googleapis.com" -> "aiplatform.googleapis.com"
+	parts := strings.Split(host, "-")
+	return parts[len(parts)-1]
 }

@@ -1,0 +1,4 @@
+{
+  "exclude_update_coverage": ["dryRunSpec.rules.enforce", "dryRunSpec.rules.denyAll"],
+  "exclude_create_coverage": ["dryRunSpec.rules.enforce", "dryRunSpec.rules.denyAll"] 
+}

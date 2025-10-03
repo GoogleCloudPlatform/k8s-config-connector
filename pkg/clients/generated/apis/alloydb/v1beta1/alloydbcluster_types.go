@@ -104,6 +104,20 @@ type ClusterInitialUser struct {
 	User *string `json:"user,omitempty"`
 }
 
+type ClusterMaintenanceUpdatePolicy struct {
+	/* Preferred windows to perform maintenance. Currently limited to 1. */
+	// +optional
+	MaintenanceWindows []ClusterMaintenanceWindows `json:"maintenanceWindows,omitempty"`
+}
+
+type ClusterMaintenanceWindows struct {
+	/* Preferred day of the week for maintenance, e.g. MONDAY, TUESDAY, etc. Possible values: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]. */
+	Day string `json:"day"`
+
+	/* Preferred time to start the maintenance operation on the specified day. Maintenance will start within 1 hour of this time. */
+	StartTime ClusterStartTime `json:"startTime"`
+}
+
 type ClusterNetworkConfig struct {
 	/* The name of the allocated IP range for the private IP AlloyDB cluster. For example: "google-managed-services-default".
 	If set, the instance IPs for this cluster will be created in the allocated range. */
@@ -150,6 +164,23 @@ type ClusterSecondaryConfig struct {
 	/* Name of the primary cluster must be in the format
 	'projects/{project}/locations/{location}/clusters/{cluster_id}' */
 	PrimaryClusterNameRef v1alpha1.ResourceRef `json:"primaryClusterNameRef"`
+}
+
+type ClusterStartTime struct {
+	/* Hours of day in 24 hour format. Should be from 0 to 23. */
+	Hours int64 `json:"hours"`
+
+	/* Minutes of hour of day. Currently, only the value 0 is supported. */
+	// +optional
+	Minutes *int64 `json:"minutes,omitempty"`
+
+	/* Fractions of seconds in nanoseconds. Currently, only the value 0 is supported. */
+	// +optional
+	Nanos *int64 `json:"nanos,omitempty"`
+
+	/* Seconds of minutes of the time. Currently, only the value 0 is supported. */
+	// +optional
+	Seconds *int64 `json:"seconds,omitempty"`
 }
 
 type ClusterStartTimes struct {
@@ -227,6 +258,10 @@ type AlloyDBClusterSpec struct {
 
 	/* Immutable. The location where the alloydb cluster should reside. */
 	Location string `json:"location"`
+
+	/* MaintenanceUpdatePolicy defines the policy for system updates. */
+	// +optional
+	MaintenanceUpdatePolicy *ClusterMaintenanceUpdatePolicy `json:"maintenanceUpdatePolicy,omitempty"`
 
 	/* Metadata related to network configuration. */
 	// +optional
@@ -306,6 +341,12 @@ type ClusterMigrationSourceStatus struct {
 	SourceType *string `json:"sourceType,omitempty"`
 }
 
+type ClusterObservedStateStatus struct {
+	/* The type of cluster. If not set, defaults to PRIMARY. Default value: "PRIMARY" Possible values: ["PRIMARY", "SECONDARY"]. */
+	// +optional
+	ClusterType *string `json:"clusterType,omitempty"`
+}
+
 type AlloyDBClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AlloyDBCluster's current state. */
@@ -337,6 +378,10 @@ type AlloyDBClusterStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *ClusterObservedStateStatus `json:"observedState,omitempty"`
 
 	/* The system-generated UID of the resource. */
 	// +optional

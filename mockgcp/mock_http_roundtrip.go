@@ -15,17 +15,11 @@
 package mockgcp
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
-	"io"
-	"io/ioutil"
-	"log"
 	"net"
 	"net/http"
-	"strings"
-	"testing"
+	"regexp"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -33,61 +27,82 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/workflows"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockaiplatform"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockalloydb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/interceptor"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapigee"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapikeys"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockartifactregistry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapphub"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockasset"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigquery"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbilling"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigqueryanalyticshub"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigquerybiglake"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigqueryconnection"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigquerydatatransfer"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigqueryreservation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcertificatemanager"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudbuild"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockclouddeploy"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockclouddms"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudfunctions"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudidentity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudquota"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudtasks"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcomposer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcontainer"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcontaineranalysis"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataform"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataplex"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdatastream"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdocumentai"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgecontainer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgenetwork"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockessentialcontacts"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockeventarc"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirestore"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkebackup"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkehub"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkemulticloud"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockiam"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocklogging"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmonitoring"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockkms"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmetastore"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmodelarmor"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetapp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkconnectivity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkmanagement"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockpubsub"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknotebooks"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivilegedaccessmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockpubsublite"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockrecaptchaenterprise"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockredis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockresourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecretmanager"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecuresourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockservicenetworking"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockserviceusage"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksql"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockstorage"
+	mockspanner "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockspanner/admin"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockspeech"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvmwareengine"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvpcaccess"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkflows"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkstations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
-type mockRoundTripper struct {
-	grpcConnection *grpc.ClientConn
-	grpcListener   net.Listener
+type Interface interface {
+	// We support HTTP requests
+	http.RoundTripper
 
-	hosts map[string]http.Handler
+	// NewGRPCConnection returns a grpc connection to our mock implementation
+	NewGRPCConnection(ctx context.Context) *grpc.ClientConn
 
-	iamPolicies *mockIAMPolicies
+	// Run starts the grpc service, until ctx is closed
+	Run(ctx context.Context) error
+
+	// We can dispatch test commands
+	SupportsTestCommands
 }
 
-// MockService is the interface implemented by all services
-type MockService interface {
-	// Register initializes the service, normally registering the GRPC service.
-	Register(grpcServer *grpc.Server)
-
-	// NewHTTPMux creates an HTTP mux for serving http traffic
-	NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error)
-
-	// ExpectedHost is the hostname we serve on e.g. foo.googleapis.com
-	ExpectedHost() string
-}
-
-func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.Storage) *mockRoundTripper {
-	ctx := context.Background()
-
+func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage storage.Storage) (Interface, error) {
 	mockRoundTripper := &mockRoundTripper{}
 	mockHTTPClient := &http.Client{
 		Transport: mockRoundTripper,
@@ -98,7 +113,7 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 
 	workflowEngine, err := workflows.NewEngine(mockHTTPClient)
 	if err != nil {
-		t.Fatalf("building workflow engine: %v", err)
+		return nil, fmt.Errorf("building workflow engine: %w", err)
 	}
 	env.Workflows = workflowEngine
 
@@ -106,60 +121,95 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	env.Projects = resourcemanagerService.GetProjectStore()
 
 	var serverOpts []grpc.ServerOption
+	serverOpts = append(serverOpts, grpc.UnaryInterceptor(interceptor.LabelValidationInterceptor))
 	server := grpc.NewServer(serverOpts...)
 
-	mockRoundTripper.hosts = make(map[string]http.Handler)
-
-	var services []MockService
+	var services []mockgcpregistry.MockService
 
 	services = append(services, resourcemanagerService)
-	services = append(services, mockaiplatform.New(env, storage))
+
+	registeredServices, err := mockgcpregistry.BuildAllServices(env, storage)
+	if err != nil {
+		return nil, err
+	}
+	mockRoundTripper.registeredServices = registeredServices
+
+	for _, service := range registeredServices.Services {
+		services = append(services, service)
+	}
+
+	services = append(services, mockasset.New(env, storage))
 	services = append(services, mockapikeys.New(env, storage))
+	services = append(services, mockmetastore.New(env, storage))
 	services = append(services, mockbigquery.New(env, storage))
-	services = append(services, mockbilling.New(env, storage))
+	services = append(services, mockcloudidentity.New(env, storage))
 	services = append(services, mockcontainer.New(env, storage))
 	services = append(services, mockcertificatemanager.New(env, storage))
-	services = append(services, mockcompute.New(env, storage))
+	services = append(services, mockedgecontainer.New(env, storage))
+	services = append(services, mockfirestore.New(env, storage))
 	services = append(services, mockgkemulticloud.New(env, storage))
-	services = append(services, mockiam.New(env, storage))
-	services = append(services, mocklogging.New(env, storage))
+	services = append(services, mockmodelarmor.New(env, storage))
+	services = append(services, mocknetworkmanagement.New(env, storage))
+	services = append(services, mockclouddeploy.New(env, storage))
 	services = append(services, mocksecretmanager.New(env, storage))
-	services = append(services, mockprivateca.New(env, storage))
-	services = append(services, mockmonitoring.New(env, storage))
+	services = append(services, mockspanner.New(env, storage))
 	services = append(services, mockpubsublite.New(env, storage))
-	services = append(services, mocknetworkservices.New(env, storage))
-	services = append(services, mockpubsub.New(env, storage))
+	services = append(services, mocknetworkconnectivity.New(env, storage))
+	services = append(services, mocknotebooks.New(env, storage))
+	services = append(services, mockprivilegedaccessmanager.New(env, storage))
 	services = append(services, mockredis.New(env, storage))
+	services = append(services, mocksecuresourcemanager.New(env, storage))
 	services = append(services, mockservicenetworking.New(env, storage))
-	services = append(services, mockserviceusage.New(env, storage))
-	services = append(services, mocksql.New(env, storage))
-	services = append(services, mockstorage.New(env, storage))
 	services = append(services, mockcloudfunctions.New(env, storage))
 	services = append(services, mockedgenetwork.New(env, storage))
-	services = append(services, mockedgecontainer.New(env, storage))
-	services = append(services, mockartifactregistry.New(env, storage))
 	services = append(services, mockgkehub.New(env, storage))
-	services = append(services, mockalloydb.New(env, storage))
+
+	services = append(services, mockcloudbuild.New(env, storage))
+	services = append(services, mockcontaineranalysis.New(env, storage))
+	services = append(services, mockdataform.New(env, storage))
+	services = append(services, mockbigqueryconnection.New(env, storage))
+
+	services = append(services, mockworkstations.New(env, storage))
+	services = append(services, mockbigquerydatatransfer.New(env, storage))
+	services = append(services, mockbigqueryanalyticshub.New(env, storage))
+	services = append(services, mockvpcaccess.New(env, storage))
+	services = append(services, mockapigee.New(env, storage))
+	services = append(services, mockbigqueryreservation.New(env, storage))
+	services = append(services, mockworkflows.New(env, storage))
+	services = append(services, mockcomposer.New(env, storage))
+	services = append(services, mockdocumentai.New(env, storage))
+	services = append(services, mockapphub.New(env, storage))
+	services = append(services, mockcloudquota.New(env, storage))
+	services = append(services, mockdatastream.New(env, storage))
+	services = append(services, mockessentialcontacts.New(env, storage))
+	services = append(services, mockeventarc.New(env, storage))
+
+	services = append(services, mockcloudtasks.New(env, storage))
+
+	services = append(services, mockbatch.New(env, storage))
+
+	services = append(services, mockbigquerybiglake.New(env, storage))
+	services = append(services, mocknetapp.New(env, storage))
+	services = append(services, mockdataplex.New(env, storage))
+	services = append(services, mockclouddms.New(env, storage))
+	services = append(services, mockvmwareengine.New(env, storage))
+	services = append(services, mockkms.New(env, storage))
+	services = append(services, mockgkebackup.New(env, storage))
+	services = append(services, mockrecaptchaenterprise.New(env, storage))
+	services = append(services, mocknetworkservices.New(env, storage))
+	services = append(services, mockspeech.New(env, storage))
 
 	for _, service := range services {
 		service.Register(server)
 	}
 
+	mockRoundTripper.server = server
+
 	listener, err := net.Listen("tcp", "localhost:0")
 	if err != nil {
-		t.Fatalf("net.Listen failed: %v", err)
+		return nil, fmt.Errorf("net.Listen failed: %w", err)
 	}
 	mockRoundTripper.grpcListener = listener
-
-	go func() {
-		if err := server.Serve(listener); err != nil {
-			t.Errorf("error from grpc server: %v", err)
-		}
-	}()
-
-	t.Cleanup(func() {
-		server.Stop()
-	})
 
 	endpoint := listener.Addr().String()
 
@@ -167,209 +217,27 @@ func NewMockRoundTripper(t *testing.T, k8sClient client.Client, storage storage.
 	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	conn, err := grpc.DialContext(ctx, endpoint, opts...)
 	if err != nil {
-		t.Fatalf("error dialing grpc endpoint %q: %v", endpoint, err)
+		return nil, fmt.Errorf("error dialing grpc endpoint %q: %v", endpoint, err)
 	}
 	mockRoundTripper.grpcConnection = conn
 
 	for _, service := range services {
 		mux, err := service.NewHTTPMux(ctx, conn)
 		if err != nil {
-			t.Fatalf("error building mux: %v", err)
+			return nil, fmt.Errorf("error building mux: %v", err)
 		}
-		mockRoundTripper.hosts[service.ExpectedHost()] = mux
+		var hostRegexes []*regexp.Regexp
+		for _, host := range service.ExpectedHosts() {
+			hostRegexes = append(hostRegexes, toHostRegex(host))
+		}
+		mockRoundTripper.services = append(mockRoundTripper.services, registeredService{
+			impl:        service,
+			hostRegexes: hostRegexes,
+			handler:     mux,
+		})
 	}
 
 	mockRoundTripper.iamPolicies = newMockIAMPolicies()
 
-	return mockRoundTripper
-}
-
-func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {
-	if req.Body != nil {
-		var requestBody bytes.Buffer
-		if _, err := io.Copy(&requestBody, req.Body); err != nil {
-			return fmt.Errorf("error reading request body: %w", err)
-		}
-
-		s := requestBody.String()
-
-		s, err := m.modifyUpdateMask(s)
-		if err != nil {
-			return err
-		}
-
-		req.Body = io.NopCloser(strings.NewReader(s))
-	}
-	return nil
-}
-
-// modifyUpdateMask fixes up the updateMask parameter, which is a proto FieldMask.
-// Technically, when transported over JSON it should be passed as json fields (displayName),
-// and when transported over proto is should be passed as proto fields (display_name).
-// However, because GCP APIs seem to accept display_name or displayName over JSON.
-// If we don't map display_name => displayName, the proto validation will reject it.
-// e.g. https://github.com/grpc-ecosystem/grpc-gateway/issues/2239
-func (m *mockRoundTripper) modifyUpdateMask(s string) (string, error) {
-	if len(s) == 0 {
-		return "", nil
-	}
-
-	o := make(map[string]any)
-	if err := json.Unmarshal([]byte(s), &o); err != nil {
-		return "", fmt.Errorf("parsing json: %w", err)
-	}
-
-	for k, v := range o {
-		switch k {
-		case "updateMask":
-			vString := v.(string)
-			tokens := strings.Split(vString, ",")
-			for i, token := range tokens {
-				switch token {
-				case "display_name":
-					tokens[i] = "displayName"
-				}
-			}
-			o[k] = strings.Join(tokens, ",")
-		}
-	}
-	b, err := json.Marshal(o)
-	if err != nil {
-		return "", fmt.Errorf("building json: %w", err)
-	}
-	return string(b), nil
-}
-
-// roundTripIAMPolicy serves the IAM policy verbs (e.g. :getIamPolicy)
-// These are implemented on most resources, and rather than mock them
-// per-resource, we implement them once here.
-func (m *mockRoundTripper) roundTripIAMPolicy(req *http.Request) (*http.Response, error) {
-	requestPath := req.URL.Path
-
-	lastColon := strings.LastIndex(requestPath, ":")
-	verb := requestPath[lastColon+1:]
-
-	requestPath = strings.TrimSuffix(requestPath, ":"+verb)
-
-	switch verb {
-	case "getIamPolicy":
-		if req.Method == "GET" || req.Method == "POST" {
-			resourcePath := req.URL.Host + requestPath
-			return m.iamPolicies.serveGetIAMPolicy(resourcePath)
-		} else {
-			response := &http.Response{
-				StatusCode: http.StatusMethodNotAllowed,
-				Status:     "method not supported",
-				Body:       io.NopCloser(strings.NewReader("{}")),
-			}
-			return response, nil
-		}
-
-	case "setIamPolicy":
-		if req.Method == "POST" {
-			resourcePath := req.URL.Host + requestPath
-			return m.iamPolicies.serveSetIAMPolicy(resourcePath, req)
-		} else {
-			response := &http.Response{
-				StatusCode: http.StatusMethodNotAllowed,
-				Status:     "method not supported",
-				Body:       io.NopCloser(strings.NewReader("{}")),
-			}
-			return response, nil
-		}
-
-	default:
-		return &http.Response{
-			StatusCode: http.StatusNotFound,
-			Status:     "not found",
-			Body:       io.NopCloser(strings.NewReader("{}")),
-		}, nil
-	}
-}
-
-func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
-	log.Printf("request: %v %v", req.Method, req.URL)
-
-	requestPath := req.URL.Path
-	if strings.HasSuffix(requestPath, ":getIamPolicy") || strings.HasSuffix(requestPath, ":setIamPolicy") {
-		return m.roundTripIAMPolicy(req)
-	}
-
-	mux := m.hosts[req.Host]
-	if mux != nil {
-		if err := m.prefilterRequest(req); err != nil {
-			return nil, err
-		}
-
-		var body bytes.Buffer
-		w := &bufferedResponseWriter{body: &body, header: make(http.Header)}
-		mux.ServeHTTP(w, req)
-		response := &http.Response{}
-		response.Body = ioutil.NopCloser(&body)
-		response.Header = w.header
-		if w.statusCode == 0 {
-			w.statusCode = 200
-		}
-		response.Status = fmt.Sprintf("%d %s", w.statusCode, http.StatusText(w.statusCode))
-		response.StatusCode = w.statusCode
-		return response, nil
-	}
-
-	request := fmt.Sprintf("%s %s", req.Method, req.URL)
-	body := make(map[string]interface{})
-
-	response := &http.Response{
-		StatusCode: 403,
-		Status:     "mockRoundTripper injecting fake response",
-	}
-
-	if request == "GET https://openidconnect.googleapis.com/v1/userinfo?alt=json" {
-		body["email"] = "test@example.com"
-		response.StatusCode = 200
-	} else {
-		log.Printf("host name %q not known.  "+
-			"Please verify the ExpectedHost in service.go and retry.", req.Host)
-	}
-
-	if body != nil {
-		j, err := json.Marshal(body)
-		if err != nil {
-			panic("json.Marshal failed")
-		}
-
-		log.Printf("response: %d %s", response.StatusCode, string(j))
-
-		response.Body = ioutil.NopCloser(bytes.NewReader(j))
-	} else {
-		log.Printf("response: %d %s", response.StatusCode, "-")
-	}
-
-	return response, nil
-}
-
-// bufferedResponseWriter implements http.ResponseWriter and stores the response.
-type bufferedResponseWriter struct {
-	statusCode int
-	body       io.Writer
-	header     http.Header
-}
-
-var _ http.ResponseWriter = &bufferedResponseWriter{}
-
-// Header implements http.ResponseWriter
-func (w *bufferedResponseWriter) Header() http.Header {
-	return w.header
-}
-
-// Write implements http.ResponseWriter
-func (w *bufferedResponseWriter) Write(b []byte) (int, error) {
-	if w.statusCode == 0 {
-		w.statusCode = 200
-	}
-	return w.body.Write(b)
-}
-
-// WriteHeader implements http.ResponseWriter
-func (w *bufferedResponseWriter) WriteHeader(statusCode int) {
-	w.statusCode = statusCode
+	return mockRoundTripper, nil
 }

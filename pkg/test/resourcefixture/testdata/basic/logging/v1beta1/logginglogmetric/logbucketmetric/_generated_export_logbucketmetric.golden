@@ -1,0 +1,38 @@
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogMetric
+metadata:
+  name: logginglogmetric-${uniqueId}
+spec:
+  bucketOptions:
+    linearBuckets:
+      numFiniteBuckets: 4
+      offset: 0.5
+      width: 2.5
+  description: An updated sample log metric
+  disabled: true
+  filter: resource.type=gae_app AND severity>=ERROR
+  labelExtractors:
+    hasMass: REGEXP_EXTRACT(jsonPayload.request, ".*([1-9]).*")
+    mass: EXTRACT(jsonPayload.request)
+    sku: EXTRACT(jsonPayload.id)
+  loggingLogBucketRef:
+    external: projects/${projectId}/locations/global/buckets/my-bucket-${uniqueId}
+  metricDescriptor:
+    displayName: updated-sample-descriptor
+    labels:
+    - description: whether the item has a mass
+      key: hasMass
+      valueType: BOOL
+    - description: amount of matter
+      key: mass
+      valueType: STRING
+    - description: identifying number for item
+      key: sku
+      valueType: INT64
+    launchStage: ""
+    metricKind: DELTA
+    unit: s
+    valueType: DISTRIBUTION
+  projectRef:
+    external: ${projectId}
+  valueExtractor: EXTRACT(jsonPayload.response)

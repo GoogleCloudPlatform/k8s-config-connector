@@ -21,9 +21,9 @@ import (
 	"reflect"
 	"time"
 
+	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
-	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	condition "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	kontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
@@ -37,8 +37,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -51,36 +53,37 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/rest"
+	"k8s.io/client-go/util/workqueue"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
-	klog "sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
-	"sigs.k8s.io/controller-runtime/pkg/ratelimiter"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
 )
 
 const controllerName = "iampartialpolicy-controller"
 
-var logger = klog.Log.WithName(controllerName)
+var logger = log.Log.WithName(controllerName).WithValues("controllerType", "legacy/handrolled")
 
 // Add creates a new IAM Partial Policy Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
 // and start it when the Manager is started.
 func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 	if deps.JitterGen == nil {
 		var dclML metadata.ServiceMetadataLoader
-		if deps.DclConverter != nil {
-			dclML = deps.DclConverter.MetadataLoader
+		if deps.DCLConverter != nil {
+			dclML = deps.DCLConverter.MetadataLoader
 		}
-		deps.JitterGen = jitter.NewDefaultGenerator(deps.TfLoader, dclML)
+		deps.JitterGen = jitter.NewDefaultGenerator(deps.TFLoader, dclML)
 	}
 
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
-	reconciler, err := NewReconciler(mgr, deps.TfProvider, deps.TfLoader, deps.DclConverter, deps.DclConfig, immediateReconcileRequests, resourceWatcherRoutines, deps.Defaulters, deps.JitterGen)
+	reconciler, err := NewReconciler(mgr, deps.TFProvider, deps.TFLoader, deps.DCLConverter, deps.DCLConfig, immediateReconcileRequests, resourceWatcherRoutines, deps.Defaulters, deps.JitterGen, deps.DependencyTracker)
 	if err != nil {
 		return err
 	}
@@ -88,7 +91,7 @@ func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 }
 
 // NewReconciler returns a new reconcile.Reconciler.
-func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, converter *conversion.Converter, dclConfig *mmdcl.Config, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, defaulters []k8s.Defaulter, jg jitter.Generator) (*ReconcileIAMPartialPolicy, error) {
+func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *servicemappingloader.ServiceMappingLoader, converter *conversion.Converter, dclConfig *mmdcl.Config, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted, defaulters []k8s.Defaulter, jg jitter.Generator, dependencyTracker *gcpwatch.DependencyTracker) (*ReconcileIAMPartialPolicy, error) {
 	r := ReconcileIAMPartialPolicy{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
 			mgr.GetClient(),
@@ -107,6 +110,10 @@ func NewReconciler(mgr manager.Manager, provider *tfschema.Provider, smLoader *s
 		requeueRateLimiter: kccratelimiter.RequeueRateLimiter(),
 		jitterGen:          jg,
 	}
+
+	if r.immediateReconcileRequests != nil && dependencyTracker != nil {
+		r.driftTracker = dependencyTracker.RegisterController(controllerName, r.immediateReconcileRequests)
+	}
 	return &r, nil
 }
 
@@ -116,8 +123,11 @@ func add(mgr manager.Manager, r *ReconcileIAMPartialPolicy) error {
 	_, err := builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
-		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: kccratelimiter.NewRateLimiter()}).
-		WatchesRawSource(&source.Channel{Source: r.immediateReconcileRequests}, &handler.EnqueueRequestForObject{}).
+		WithOptions(controller.Options{
+			MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles,
+			RateLimiter:             kccratelimiter.NewRateLimiter(),
+		}).
+		WatchesRawSource(source.TypedChannel(r.immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
 		Build(r)
 	if err != nil {
@@ -142,17 +152,22 @@ type ReconcileIAMPartialPolicy struct {
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
 
 	// rate limit requeues (periodic re-reconciliation), so we don't use the whole rate limit on re-reconciles
-	requeueRateLimiter ratelimiter.RateLimiter
+	requeueRateLimiter workqueue.TypedRateLimiter[reconcile.Request]
 	jitterGen          jitter.Generator
+	driftTracker       *gcpwatch.ControllerRegistration
 }
 
 type reconcileContext struct {
 	Reconciler     *ReconcileIAMPartialPolicy
 	Ctx            context.Context
 	NamespacedName types.NamespacedName
+
+	objRef *iamv1beta1.IAMPolicy
 }
 
 func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request reconcile.Request) (result reconcile.Result, err error) {
+	log := klog.FromContext(ctx)
+
 	logger.Info("Running reconcile", "resource", request.NamespacedName)
 	startTime := time.Now()
 	ctx, cancel := context.WithTimeout(ctx, k8s.ReconcileDeadline)
@@ -182,6 +197,16 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 		Ctx:            ctx,
 		NamespacedName: request.NamespacedName,
 	}
+	uObj := &unstructured.Unstructured{}
+	uObj.Object, err = runtime.DefaultUnstructuredConverter.ToUnstructured(policy)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+	uObj.SetNamespace(policy.GetNamespace())
+	uObj.SetName(policy.GetName())
+	uObj.SetGroupVersionKind(iamv1beta1.IAMPartialPolicyGVK)
+	structuredreporting.ReportReconcileStart(ctx, uObj)
+	defer structuredreporting.ReportReconcileEnd(ctx, uObj, result, err)
 	requeue, err := runCtx.doReconcile(policy)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -189,6 +214,14 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 	if requeue {
 		return reconcile.Result{Requeue: true}, nil
 	}
+
+	// if we can, we will use the GCP watch method to prompt reconcile events via the immediateReconcile channel
+	if r.driftTracker != nil && runCtx.objRef != nil && r.driftTracker.Add(ctx, policy, runCtx.objRef.Spec.Etag) {
+		log.V(2).Info("using gcp watcher instead of periodic requeue", "resource", request.NamespacedName)
+		return reconcile.Result{}, nil
+	}
+
+	// otherwise we use the naive 10 minute + jiiter reconciliation for drift detection
 	jitteredPeriod, err := r.jitterGen.JitteredReenqueue(iamv1beta1.IAMPolicyGVK, policy)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -200,9 +233,19 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 }
 
 func (r *ReconcileIAMPartialPolicy) handleDefaults(ctx context.Context, pp *iamv1beta1.IAMPartialPolicy) error {
+	changeCount := 0
 	for _, defaulter := range r.defaulters {
-		if _, err := defaulter.ApplyDefaults(ctx, pp); err != nil {
+		changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeIAMPartialPolicy, pp)
+		if err != nil {
 			return err
+		}
+		if changed {
+			changeCount++
+		}
+	}
+	if changeCount > 0 {
+		if err := r.Update(ctx, pp); err != nil {
+			return fmt.Errorf("applying update after setting defaults: %w", err)
 		}
 	}
 	return nil
@@ -244,6 +287,14 @@ func (r *reconcileContext) doReconcile(pp *iamv1beta1.IAMPartialPolicy) (requeue
 		}
 		return false, r.handleUpdateFailed(pp, err)
 	}
+
+	if r.objRef != nil {
+		if k8s.GetNamespacedName(r.objRef) != k8s.GetNamespacedName(iamPolicy) {
+			logger.Error(fmt.Errorf("object reference changed"), "old", r.objRef, "new", iamPolicy)
+		}
+	}
+	r.objRef = iamPolicy.DeepCopy()
+
 	k8s.EnsureFinalizers(pp, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName)
 
 	resolver := IAMMemberIdentityResolver{Iamclient: r.Reconciler.iamClient, Ctx: r.Ctx}
@@ -398,7 +449,7 @@ func (r *reconcileContext) handleUnresolvableDeps(policy *iamv1beta1.IAMPartialP
 		ctx, cancel := context.WithTimeout(context.TODO(), timeoutPeriod)
 		defer cancel()
 		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
-		if err := watcher.WaitForResourceToBeReady(ctx, refNN, refGVK); err != nil {
+		if err := watcher.WaitForResourceToBeReadyOrDeleted(ctx, refNN, refGVK); err != nil {
 			logger.Error(err, "error while waiting for resource's reference to be ready")
 			return
 		}

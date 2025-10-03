@@ -1,0 +1,107 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+message DlpStoredInfoType {
+  string name = 1;
+  string display_name = 2;
+  string description = 3;
+  DlpStoredInfoTypeLargeCustomDictionary large_custom_dictionary = 4;
+  DlpStoredInfoTypeDictionary dictionary = 5;
+  DlpStoredInfoTypeRegex regex = 6;
+  string parent = 7;
+  string location = 8;
+}
+
+message DlpStoredInfoTypeLargeCustomDictionary {
+  DlpStoredInfoTypeLargeCustomDictionaryOutputPath output_path = 1;
+  DlpStoredInfoTypeLargeCustomDictionaryCloudStorageFileSet cloud_storage_file_set = 2;
+  DlpStoredInfoTypeLargeCustomDictionaryBigQueryField big_query_field = 3;
+}
+
+message DlpStoredInfoTypeLargeCustomDictionaryOutputPath {
+  string path = 1;
+}
+
+message DlpStoredInfoTypeLargeCustomDictionaryCloudStorageFileSet {
+  string url = 1;
+}
+
+message DlpStoredInfoTypeLargeCustomDictionaryBigQueryField {
+  DlpStoredInfoTypeLargeCustomDictionaryBigQueryFieldTable table = 1;
+  DlpStoredInfoTypeLargeCustomDictionaryBigQueryFieldField field = 2;
+}
+
+message DlpStoredInfoTypeLargeCustomDictionaryBigQueryFieldTable {
+  string project_id = 1;
+  string dataset_id = 2;
+  string table_id = 3;
+}
+
+message DlpStoredInfoTypeLargeCustomDictionaryBigQueryFieldField {
+  string name = 1;
+}
+
+message DlpStoredInfoTypeDictionary {
+  DlpStoredInfoTypeDictionaryWordList word_list = 1;
+  DlpStoredInfoTypeDictionaryCloudStoragePath cloud_storage_path = 2;
+}
+
+message DlpStoredInfoTypeDictionaryWordList {
+  repeated string words = 1;
+}
+
+message DlpStoredInfoTypeDictionaryCloudStoragePath {
+  string path = 1;
+}
+
+message DlpStoredInfoTypeRegex {
+  string pattern = 1;
+  repeated int64 group_indexes = 2;
+}
+
+message ApplyDlpStoredInfoTypeRequest {
+  DlpStoredInfoType resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteDlpStoredInfoTypeRequest {
+  string service_account_file = 1;
+  DlpStoredInfoType resource = 2;
+}
+
+message ListDlpStoredInfoTypeRequest {
+  string service_account_file = 1;
+  string Location = 2;
+  string Parent = 3;
+}
+
+message ListDlpStoredInfoTypeResponse {
+  repeated DlpStoredInfoType items = 1;
+}
+
+service DlpStoredInfoTypeService {
+  rpc ApplyDlpStoredInfoType(ApplyDlpStoredInfoTypeRequest) returns (DlpStoredInfoType);
+  rpc DeleteDlpStoredInfoType(DeleteDlpStoredInfoTypeRequest) returns (google.protobuf.Empty);
+  rpc ListDlpStoredInfoType(ListDlpStoredInfoTypeRequest) returns (ListDlpStoredInfoTypeResponse);
+}

@@ -1,26 +1,10 @@
-# Copyright 2024 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: logging.cnrm.cloud.google.com/v1beta1
 kind: LoggingLogMetric
 metadata:
-  annotations:
-    cnrm.cloud.google.com/management-conflict-prevention-policy: none
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: logginglogmetric-${uniqueId}
@@ -28,38 +12,42 @@ metadata:
 spec:
   bucketOptions:
     linearBuckets:
-      numFiniteBuckets: 3
-      offset: 1.5
-      width: 3.5
-  description: A sample log metric
-  disabled: false
-  filter: resource.type=gae_app AND severity<=ERROR
+      numFiniteBuckets: 4
+      offset: 0.5
+      width: 2.5
+  description: An updated sample log metric
+  disabled: true
+  filter: resource.type=gae_app AND severity>=ERROR
   labelExtractors:
+    hasMass: REGEXP_EXTRACT(jsonPayload.request, ".*([1-9]).*")
     mass: EXTRACT(jsonPayload.request)
     sku: EXTRACT(jsonPayload.id)
   loggingLogBucketRef:
     kind: LoggingLogBucket
     name: logginglogbucket-dep-${uniqueId}
   metricDescriptor:
-    displayName: sample-descriptor
+    displayName: updated-sample-descriptor
     labels:
     - description: amount of matter
       key: mass
       valueType: STRING
+    - description: whether the item has a mass
+      key: hasMass
+      valueType: BOOL
     - description: identifying number for item
       key: sku
       valueType: INT64
-    launchStage: UNIMPLEMENTED
+    launchStage: PRELAUNCH
     metadata:
-      ingestDelay: 2s
-      samplePeriod: 5s
+      ingestDelay: 3.5s
+      samplePeriod: 3.5s
     metricKind: DELTA
-    unit: bit
+    unit: s
     valueType: DISTRIBUTION
   projectRef:
     external: projects/${projectId}
   resourceID: logginglogmetric-${uniqueId}
-  valueExtractor: EXTRACT(jsonPayload.request)
+  valueExtractor: EXTRACT(jsonPayload.response)
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -69,8 +57,8 @@ status:
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
   metricDescriptor:
-    description: A sample log metric
+    description: An updated sample log metric
     name: projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}
     type: logging.googleapis.com/user/logginglogmetric-${uniqueId}
-  observedGeneration: 2
+  observedGeneration: 3
   updateTime: "1970-01-01T00:00:00Z"

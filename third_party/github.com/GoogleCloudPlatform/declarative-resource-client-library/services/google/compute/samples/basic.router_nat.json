@@ -1,0 +1,12 @@
+{
+  "name": "{{nat}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "router": "projects/{{project}}/regions/{{location}}/routers/{{ref:basic.router.json:name}}",
+  "logConfig": {
+    "enable": true,
+    "filter": "ERRORS_ONLY"
+  },
+  "sourceSubnetworkIpRangesToNat": "ALL_SUBNETWORKS_ALL_IP_RANGES",
+  "natIpAllocateOption": "AUTO_ONLY"
+}

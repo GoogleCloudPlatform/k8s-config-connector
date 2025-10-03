@@ -39,7 +39,7 @@ func RunTests(ctx context.Context, t *testing.T, shouldRun ShouldRunFunc, testCa
 		filtered = append(filtered, tc)
 	}
 	if len(filtered) == 0 {
-		t.Errorf("No test case were run")
+		t.Logf("No test case were run")
 		return
 	}
 

@@ -1,0 +1,403 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum SqlBetaInstanceBackendTypeEnum {
+  SqlBetaInstanceBackendTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  SqlBetaInstanceBackendTypeEnumSQL_BACKEND_TYPE_UNSPECIFIED = 1;
+  SqlBetaInstanceBackendTypeEnumFIRST_GEN = 2;
+  SqlBetaInstanceBackendTypeEnumSECOND_GEN = 3;
+  SqlBetaInstanceBackendTypeEnumEXTERNAL = 4;
+}
+
+enum SqlBetaInstanceDatabaseVersionEnum {
+  SqlBetaInstanceDatabaseVersionEnumNO_VALUE_DO_NOT_USE = 0;
+  SqlBetaInstanceDatabaseVersionEnumSQL_DATABASE_VERSION_UNSPECIFIED = 1;
+  SqlBetaInstanceDatabaseVersionEnumMYSQL_5_6 = 2;
+  SqlBetaInstanceDatabaseVersionEnumMYSQL_5_7 = 3;
+  SqlBetaInstanceDatabaseVersionEnumMYSQL_8_0 = 4;
+  SqlBetaInstanceDatabaseVersionEnumSQLSERVER_2017_STANDARD = 5;
+  SqlBetaInstanceDatabaseVersionEnumSQLSERVER_2017_ENTERPRISE = 6;
+  SqlBetaInstanceDatabaseVersionEnumSQLSERVER_2017_EXPRESS = 7;
+  SqlBetaInstanceDatabaseVersionEnumSQLSERVER_2017_WEB = 8;
+  SqlBetaInstanceDatabaseVersionEnumPOSTGRES_9_6 = 9;
+  SqlBetaInstanceDatabaseVersionEnumPOSTGRES_10 = 10;
+  SqlBetaInstanceDatabaseVersionEnumPOSTGRES_11 = 11;
+  SqlBetaInstanceDatabaseVersionEnumPOSTGRES_12 = 12;
+}
+
+enum SqlBetaInstanceInstanceTypeEnum {
+  SqlBetaInstanceInstanceTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  SqlBetaInstanceInstanceTypeEnumSQL_INSTANCE_TYPE_UNSPECIFIED = 1;
+  SqlBetaInstanceInstanceTypeEnumCLOUD_SQL_INSTANCE = 2;
+  SqlBetaInstanceInstanceTypeEnumON_PREMISES_INSTANCE = 3;
+  SqlBetaInstanceInstanceTypeEnumREAD_REPLICA_INSTANCE = 4;
+  SqlBetaInstanceInstanceTypeEnumREAD_REPLICA_POOL_INSTANCE = 5;
+}
+
+enum SqlBetaInstanceIPAddressesTypeEnum {
+  SqlBetaInstanceIPAddressesTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  SqlBetaInstanceIPAddressesTypeEnumSQL_IP_ADDRESS_TYPE_UNSPECIFIED = 1;
+  SqlBetaInstanceIPAddressesTypeEnumPRIMARY = 2;
+  SqlBetaInstanceIPAddressesTypeEnumOUTGOING = 3;
+  SqlBetaInstanceIPAddressesTypeEnumPRIVATE = 4;
+  SqlBetaInstanceIPAddressesTypeEnumMIGRATED_1ST_GEN = 5;
+}
+
+enum SqlBetaInstanceSettingsAvailabilityTypeEnum {
+  SqlBetaInstanceSettingsAvailabilityTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  SqlBetaInstanceSettingsAvailabilityTypeEnumSQL_AVAILABILITY_TYPE_UNSPECIFIED = 1;
+  SqlBetaInstanceSettingsAvailabilityTypeEnumZONAL = 2;
+  SqlBetaInstanceSettingsAvailabilityTypeEnumREGIONAL = 3;
+}
+
+enum SqlBetaInstanceSettingsPricingPlanEnum {
+  SqlBetaInstanceSettingsPricingPlanEnumNO_VALUE_DO_NOT_USE = 0;
+  SqlBetaInstanceSettingsPricingPlanEnumSQL_PRICING_PLAN_UNSPECIFIED = 1;
+  SqlBetaInstanceSettingsPricingPlanEnumPACKAGE = 2;
+  SqlBetaInstanceSettingsPricingPlanEnumPER_USE = 3;
+}
+
+enum SqlBetaInstanceSettingsReplicationTypeEnum {
+  SqlBetaInstanceSettingsReplicationTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  SqlBetaInstanceSettingsReplicationTypeEnumSQL_REPLICATION_TYPE_UNSPECIFIED = 1;
+  SqlBetaInstanceSettingsReplicationTypeEnumSYNCHRONOUS = 2;
+  SqlBetaInstanceSettingsReplicationTypeEnumASYNCHRONOUS = 3;
+}
+
+enum SqlBetaInstanceSettingsActivationPolicyEnum {
+  SqlBetaInstanceSettingsActivationPolicyEnumNO_VALUE_DO_NOT_USE = 0;
+  SqlBetaInstanceSettingsActivationPolicyEnumSQL_ACTIVATION_POLICY_UNSPECIFIED = 1;
+  SqlBetaInstanceSettingsActivationPolicyEnumALWAYS = 2;
+  SqlBetaInstanceSettingsActivationPolicyEnumNEVER = 3;
+  SqlBetaInstanceSettingsActivationPolicyEnumON_DEMAND = 4;
+}
+
+enum SqlBetaInstanceSettingsDataDiskTypeEnum {
+  SqlBetaInstanceSettingsDataDiskTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  SqlBetaInstanceSettingsDataDiskTypeEnumSQL_DATA_DISK_TYPE_UNSPECIFIED = 1;
+  SqlBetaInstanceSettingsDataDiskTypeEnumPD_SSD = 2;
+  SqlBetaInstanceSettingsDataDiskTypeEnumPD_HDD = 3;
+  SqlBetaInstanceSettingsDataDiskTypeEnumOBSOLETE_LOCAL_SSD = 4;
+}
+
+enum SqlBetaInstanceSettingsMaintenanceWindowUpdateTrackEnum {
+  SqlBetaInstanceSettingsMaintenanceWindowUpdateTrackEnumNO_VALUE_DO_NOT_USE = 0;
+  SqlBetaInstanceSettingsMaintenanceWindowUpdateTrackEnumSQL_UPDATE_TRACK_UNSPECIFIED = 1;
+  SqlBetaInstanceSettingsMaintenanceWindowUpdateTrackEnumcanary = 2;
+  SqlBetaInstanceSettingsMaintenanceWindowUpdateTrackEnumstable = 3;
+}
+
+enum SqlBetaInstanceSettingsBackupConfigurationBackupRetentionSettingsRetentionUnitEnum {
+  SqlBetaInstanceSettingsBackupConfigurationBackupRetentionSettingsRetentionUnitEnumNO_VALUE_DO_NOT_USE = 0;
+  SqlBetaInstanceSettingsBackupConfigurationBackupRetentionSettingsRetentionUnitEnumRETENTION_UNIT_UNSPECIFIED = 1;
+  SqlBetaInstanceSettingsBackupConfigurationBackupRetentionSettingsRetentionUnitEnumCOUNT = 2;
+}
+
+message SqlBetaInstance {
+  SqlBetaInstanceBackendTypeEnum backend_type = 1;
+  string connection_name = 2;
+  SqlBetaInstanceDatabaseVersionEnum database_version = 3;
+  string etag = 4;
+  string gce_zone = 5;
+  SqlBetaInstanceInstanceTypeEnum instance_type = 6;
+  string master_instance_name = 7;
+  SqlBetaInstanceMaxDiskSize max_disk_size = 8;
+  string name = 9;
+  string project = 10;
+  string region = 11;
+  string root_password = 12;
+  SqlBetaInstanceCurrentDiskSize current_disk_size = 13;
+  SqlBetaInstanceDiskEncryptionConfiguration disk_encryption_configuration = 14;
+  SqlBetaInstanceFailoverReplica failover_replica = 15;
+  repeated SqlBetaInstanceIPAddresses ip_addresses = 16;
+  SqlBetaInstanceMasterInstance master_instance = 17;
+  SqlBetaInstanceReplicaConfiguration replica_configuration = 18;
+  SqlBetaInstanceScheduledMaintenance scheduled_maintenance = 19;
+  SqlBetaInstanceSettings settings = 20;
+  string state = 21;
+  repeated SqlBetaInstanceReplicaInstances replica_instances = 22;
+  SqlBetaInstanceServerCaCert server_ca_cert = 23;
+  string ipv6_address = 24;
+  string service_account_email_address = 25;
+  SqlBetaInstanceOnPremisesConfiguration on_premises_configuration = 26;
+  repeated string suspension_reason = 27;
+  SqlBetaInstanceDiskEncryptionStatus disk_encryption_status = 28;
+  string instance_uid = 29;
+}
+
+message SqlBetaInstanceMaxDiskSize {
+  int64 value = 1;
+}
+
+message SqlBetaInstanceCurrentDiskSize {
+  int64 value = 1;
+}
+
+message SqlBetaInstanceDiskEncryptionConfiguration {
+  string kms_key_name = 1;
+  string kind = 2;
+}
+
+message SqlBetaInstanceFailoverReplica {
+  string name = 1;
+  bool available = 2;
+  SqlBetaInstanceFailoverReplicaFailoverInstance failover_instance = 3;
+}
+
+message SqlBetaInstanceFailoverReplicaFailoverInstance {
+  string name = 1;
+  string region = 2;
+}
+
+message SqlBetaInstanceIPAddresses {
+  SqlBetaInstanceIPAddressesTypeEnum type = 1;
+  string ip_address = 2;
+  SqlBetaInstanceIPAddressesTimeToRetire time_to_retire = 3;
+}
+
+message SqlBetaInstanceIPAddressesTimeToRetire {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message SqlBetaInstanceMasterInstance {
+  string name = 1;
+  string region = 2;
+}
+
+message SqlBetaInstanceReplicaConfiguration {
+  string kind = 1;
+  SqlBetaInstanceReplicaConfigurationMysqlReplicaConfiguration mysql_replica_configuration = 2;
+  bool failover_target = 3;
+  SqlBetaInstanceReplicaConfigurationReplicaPoolConfiguration replica_pool_configuration = 4;
+}
+
+message SqlBetaInstanceReplicaConfigurationMysqlReplicaConfiguration {
+  string dump_file_path = 1;
+  string username = 2;
+  string password = 3;
+  int64 connect_retry_interval = 4;
+  SqlBetaInstanceReplicaConfigurationMysqlReplicaConfigurationMasterHeartbeatPeriod master_heartbeat_period = 5;
+  string ca_certificate = 6;
+  string client_certificate = 7;
+  string client_key = 8;
+  string ssl_cipher = 9;
+  bool verify_server_certificate = 10;
+  string kind = 11;
+}
+
+message SqlBetaInstanceReplicaConfigurationMysqlReplicaConfigurationMasterHeartbeatPeriod {
+  int64 value = 1;
+}
+
+message SqlBetaInstanceReplicaConfigurationReplicaPoolConfiguration {
+  string kind = 1;
+  SqlBetaInstanceReplicaConfigurationReplicaPoolConfigurationStaticPoolConfiguration static_pool_configuration = 2;
+  SqlBetaInstanceReplicaConfigurationReplicaPoolConfigurationAutoscalingPoolConfiguration autoscaling_pool_configuration = 3;
+  int64 replica_count = 4;
+  bool expose_replica_ip = 5;
+}
+
+message SqlBetaInstanceReplicaConfigurationReplicaPoolConfigurationStaticPoolConfiguration {
+  string kind = 1;
+  int64 replica_count = 2;
+  bool expose_replica_ip = 3;
+}
+
+message SqlBetaInstanceReplicaConfigurationReplicaPoolConfigurationAutoscalingPoolConfiguration {
+  string kind = 1;
+  int64 min_replica_count = 2;
+  int64 max_replica_count = 3;
+  double target_cpu_util = 4;
+}
+
+message SqlBetaInstanceScheduledMaintenance {
+  SqlBetaInstanceScheduledMaintenanceStartTime start_time = 1;
+  bool can_defer = 2;
+  bool can_reschedule = 3;
+}
+
+message SqlBetaInstanceScheduledMaintenanceStartTime {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message SqlBetaInstanceSettings {
+  repeated string authorized_gae_applications = 1;
+  string tier = 2;
+  string kind = 3;
+  SqlBetaInstanceSettingsAvailabilityTypeEnum availability_type = 4;
+  SqlBetaInstanceSettingsPricingPlanEnum pricing_plan = 5;
+  SqlBetaInstanceSettingsReplicationTypeEnum replication_type = 6;
+  SqlBetaInstanceSettingsActivationPolicyEnum activation_policy = 7;
+  bool storage_auto_resize = 8;
+  SqlBetaInstanceSettingsDataDiskTypeEnum data_disk_type = 9;
+  bool database_replication_enabled = 10;
+  bool crash_safe_replication_enabled = 11;
+  SqlBetaInstanceSettingsSettingsVersion settings_version = 12;
+  map<string, string> user_labels = 13;
+  SqlBetaInstanceSettingsStorageAutoResizeLimit storage_auto_resize_limit = 14;
+  SqlBetaInstanceSettingsIPConfiguration ip_configuration = 15;
+  SqlBetaInstanceSettingsLocationPreference location_preference = 16;
+  repeated SqlBetaInstanceSettingsDatabaseFlags database_flags = 17;
+  SqlBetaInstanceSettingsMaintenanceWindow maintenance_window = 18;
+  SqlBetaInstanceSettingsBackupConfiguration backup_configuration = 19;
+  SqlBetaInstanceSettingsDataDiskSizeGb data_disk_size_gb = 20;
+  SqlBetaInstanceSettingsActiveDirectoryConfig active_directory_config = 21;
+  string collation = 22;
+  repeated SqlBetaInstanceSettingsDenyMaintenancePeriods deny_maintenance_periods = 23;
+  SqlBetaInstanceSettingsInsightsConfig insights_config = 24;
+}
+
+message SqlBetaInstanceSettingsSettingsVersion {
+  int64 value = 1;
+}
+
+message SqlBetaInstanceSettingsStorageAutoResizeLimit {
+  int64 value = 1;
+}
+
+message SqlBetaInstanceSettingsIPConfiguration {
+  bool ipv4_enabled = 1;
+  string private_network = 2;
+  bool require_ssl = 3;
+  repeated SqlBetaInstanceSettingsIPConfigurationAuthorizedNetworks authorized_networks = 4;
+}
+
+message SqlBetaInstanceSettingsIPConfigurationAuthorizedNetworks {
+  string value = 1;
+  string expiration_time = 2;
+  string name = 3;
+  string kind = 4;
+}
+
+message SqlBetaInstanceSettingsLocationPreference {
+  string zone = 1;
+  string kind = 2;
+}
+
+message SqlBetaInstanceSettingsDatabaseFlags {
+  string name = 1;
+  string value = 2;
+}
+
+message SqlBetaInstanceSettingsMaintenanceWindow {
+  int64 hour = 1;
+  int64 day = 2;
+  SqlBetaInstanceSettingsMaintenanceWindowUpdateTrackEnum update_track = 3;
+  string kind = 4;
+}
+
+message SqlBetaInstanceSettingsBackupConfiguration {
+  string start_time = 1;
+  bool enabled = 2;
+  string kind = 3;
+  bool binary_log_enabled = 4;
+  string location = 5;
+  SqlBetaInstanceSettingsBackupConfigurationBackupRetentionSettings backup_retention_settings = 6;
+  int64 transaction_log_retention_days = 7;
+}
+
+message SqlBetaInstanceSettingsBackupConfigurationBackupRetentionSettings {
+  SqlBetaInstanceSettingsBackupConfigurationBackupRetentionSettingsRetentionUnitEnum retention_unit = 1;
+  int64 retained_backups = 2;
+}
+
+message SqlBetaInstanceSettingsDataDiskSizeGb {
+  int64 value = 1;
+}
+
+message SqlBetaInstanceSettingsActiveDirectoryConfig {
+  string kind = 1;
+  string domain = 2;
+}
+
+message SqlBetaInstanceSettingsDenyMaintenancePeriods {
+  string start_date = 1;
+  string end_date = 2;
+  string time = 3;
+}
+
+message SqlBetaInstanceSettingsInsightsConfig {
+  bool query_insights_enabled = 1;
+  bool record_client_address = 2;
+  bool record_application_tags = 3;
+  int64 query_string_length = 4;
+}
+
+message SqlBetaInstanceReplicaInstances {
+  string name = 1;
+  string region = 2;
+}
+
+message SqlBetaInstanceServerCaCert {
+  string kind = 1;
+  string cert_serial_number = 2;
+  string cert = 3;
+  string create_time = 4;
+  string common_name = 5;
+  string expiration_time = 6;
+  string sha1_fingerprint = 7;
+  string instance = 8;
+}
+
+message SqlBetaInstanceOnPremisesConfiguration {
+  string host_port = 1;
+  string kind = 2;
+  string username = 3;
+  string password = 4;
+  string ca_certificate = 5;
+  string client_certificate = 6;
+  string client_key = 7;
+  string dump_file_path = 8;
+  string database = 9;
+  repeated string replicated_databases = 10;
+}
+
+message SqlBetaInstanceDiskEncryptionStatus {
+  string kms_key_version_name = 1;
+  string kind = 2;
+}
+
+message ApplySqlBetaInstanceRequest {
+  SqlBetaInstance resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteSqlBetaInstanceRequest {
+  string service_account_file = 1;
+  SqlBetaInstance resource = 2;
+}
+
+message ListSqlBetaInstanceRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListSqlBetaInstanceResponse {
+  repeated SqlBetaInstance items = 1;
+}
+
+service SqlBetaInstanceService {
+  rpc ApplySqlBetaInstance(ApplySqlBetaInstanceRequest) returns (SqlBetaInstance);
+  rpc DeleteSqlBetaInstance(DeleteSqlBetaInstanceRequest) returns (google.protobuf.Empty);
+  rpc ListSqlBetaInstance(ListSqlBetaInstanceRequest) returns (ListSqlBetaInstanceResponse);
+}

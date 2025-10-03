@@ -17,6 +17,7 @@ package preflight
 import (
 	"context"
 	"fmt"
+	"regexp"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
@@ -52,5 +53,21 @@ func (c *ConfigConnectorContextChecker) Preflight(_ context.Context, o declarati
 		return fmt.Errorf("spec.billingProject must be set if spec.requestProjectPolicy is set to %v", k8s.BillingProjectPolicy)
 	}
 
+	if err := validateGSAFormat(ccc.Spec.GoogleServiceAccount); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validateGSAFormat(gsa string) error {
+	if gsa == "" { // GoogleServiceAccount is a required field. We do not need to fail here.
+		return nil
+	}
+	validGSAPattern := `^[A-Za-z0-9._%+\-]+@[a-z0-9.\-]+\.gserviceaccount.com$`
+	emailRegex := regexp.MustCompile(validGSAPattern)
+	if !emailRegex.MatchString(gsa) {
+		return fmt.Errorf("invalid GoogleServiceAccount format for %q", gsa)
+	}
 	return nil
 }

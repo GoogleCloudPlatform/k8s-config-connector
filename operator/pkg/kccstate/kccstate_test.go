@@ -27,7 +27,6 @@ import (
 	"k8s.io/client-go/kubernetes/scheme"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/main"
 )
@@ -52,7 +51,7 @@ func TestFetchLiveKCCState(t *testing.T) {
 			name: "fetch live KCC state in cluster mode",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					Mode: "cluster",
@@ -63,7 +62,7 @@ func TestFetchLiveKCCState(t *testing.T) {
 			name: "fetch live KCC state in namespaced mode",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					Mode: "namespaced",
@@ -71,7 +70,7 @@ func TestFetchLiveKCCState(t *testing.T) {
 			},
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 			},
@@ -81,7 +80,7 @@ func TestFetchLiveKCCState(t *testing.T) {
 			name: "ccc not found in namespaced mode",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					Mode: "namespaced",
@@ -100,7 +99,7 @@ func TestFetchLiveKCCState(t *testing.T) {
 			name: "no cc",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 			},

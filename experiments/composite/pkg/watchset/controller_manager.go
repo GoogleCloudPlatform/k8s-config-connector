@@ -39,7 +39,7 @@ type ControllerManager struct {
 
 func (w *Manager) NewControllerManager(controller controller.Controller) (*ControllerManager, error) {
 	events := make(chan event.GenericEvent)
-	if err := controller.Watch(&source.Channel{Source: events}, &handler.EnqueueRequestForObject{}); err != nil {
+	if err := controller.Watch(source.TypedChannel(events, &handler.EnqueueRequestForObject{})); err != nil {
 		return nil, err
 	}
 

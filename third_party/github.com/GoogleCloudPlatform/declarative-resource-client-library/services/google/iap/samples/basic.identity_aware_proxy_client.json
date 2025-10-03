@@ -1,0 +1,5 @@
+{
+  "project": "{{ref:basic.cloudresourcemanager.project.json:name}}",
+  "brand": "{{ref:basic.brand.json:name}}",
+  "displayName": "Basic IAP Client"
+}

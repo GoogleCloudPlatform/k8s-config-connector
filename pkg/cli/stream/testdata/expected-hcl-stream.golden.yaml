@@ -15,13 +15,23 @@
 resource "google_bigquery_dataset" "bigquerydatasetsamplec99k2khjhfu8dfrt53mr" {
   dataset_id                 = "bigquerydatasetsamplec99k2khjhfu8dfrt53mr"
   delete_contents_on_destroy = false
-  project                    = "cli-test-project"
+
+  labels = {
+    managed-by-cnrm = "true"
+  }
+
+  project = "cli-test-project"
 }
 # terraform import google_bigquery_dataset.bigquerydatasetsamplec99k2khjhfu8dfrt53mr projects/cli-test-project/datasets/bigquerydatasetsamplec99k2khjhfu8dfrt53mr
 resource "google_bigquery_dataset" "bigquerydatasetivs17e1s13s9ro2k9n1j" {
   dataset_id                 = "bigquerydatasetivs17e1s13s9ro2k9n1j"
   delete_contents_on_destroy = false
-  project                    = "cli-test-project"
+
+  labels = {
+    managed-by-cnrm = "true"
+  }
+
+  project = "cli-test-project"
 }
 # terraform import google_bigquery_dataset.bigquerydatasetivs17e1s13s9ro2k9n1j projects/cli-test-project/datasets/bigquerydatasetivs17e1s13s9ro2k9n1j
 resource "google_kms_key_ring" "key_ring_4dln90vis0b1c6f1jja9" {
@@ -31,18 +41,31 @@ resource "google_kms_key_ring" "key_ring_4dln90vis0b1c6f1jja9" {
 }
 # terraform import google_kms_key_ring.key_ring_4dln90vis0b1c6f1jja9 projects/cli-test-project/locations/us-central1/keyRings/key-ring-4dln90vis0b1c6f1jja9
 resource "google_compute_address" "computeaddress_1j26msq4eebfv63n6sil" {
+  labels = {
+    managed-by-cnrm = "true"
+  }
+
   name    = "computeaddress-1j26msq4eebfv63n6sil"
   project = "cli-test-project"
   region  = "us-central1"
 }
 # terraform import google_compute_address.computeaddress_1j26msq4eebfv63n6sil projects/cli-test-project/regions/us-central1/addresses/computeaddress-1j26msq4eebfv63n6sil
 resource "google_sql_database_instance" "sqluser_dep_7olc12tp9tdancsggr6s" {
-  name     = "sqluser-dep-7olc12tp9tdancsggr6s"
-  project  = "cli-test-project"
-  settings = {}
+  name    = "sqluser-dep-7olc12tp9tdancsggr6s"
+  project = "cli-test-project"
+
+  settings {
+    user_labels = {
+      managed-by-cnrm = "true"
+    }
+  }
 }
 # terraform import google_sql_database_instance.sqluser_dep_7olc12tp9tdancsggr6s projects/cli-test-project/instances/sqluser-dep-7olc12tp9tdancsggr6s
 resource "google_compute_address" "computeaddress_asdbgmb8o9mo6s075qp3" {
+  labels = {
+    managed-by-cnrm = "true"
+  }
+
   name    = "computeaddress-asdbgmb8o9mo6s075qp3"
   project = "cli-test-project"
   region  = "us-central1"
@@ -54,30 +77,51 @@ resource "google_compute_backend_service" "computebackendservice_8034p172pirpg3b
 }
 # terraform import google_compute_backend_service.computebackendservice_8034p172pirpg3bg31te projects/cli-test-project/global/backendServices/computebackendservice-8034p172pirpg3bg31te
 resource "google_sql_database_instance" "sqlinstance_sample_iocjd2jpebp9brf46rob" {
-  name     = "sqlinstance-sample-iocjd2jpebp9brf46rob"
-  project  = "cli-test-project"
-  settings = {}
+  name    = "sqlinstance-sample-iocjd2jpebp9brf46rob"
+  project = "cli-test-project"
+
+  settings {
+    user_labels = {
+      managed-by-cnrm = "true"
+    }
+  }
 }
 # terraform import google_sql_database_instance.sqlinstance_sample_iocjd2jpebp9brf46rob projects/cli-test-project/instances/sqlinstance-sample-iocjd2jpebp9brf46rob
 resource "google_compute_disk" "computedisk_39kl1g908j6npdp7pa9f" {
+  labels = {
+    managed-by-cnrm = "true"
+  }
+
   name    = "computedisk-39kl1g908j6npdp7pa9f"
   project = "cli-test-project"
   zone    = "us-central1-a"
 }
 # terraform import google_compute_disk.computedisk_39kl1g908j6npdp7pa9f projects/cli-test-project/zones/us-central1-a/disks/computedisk-39kl1g908j6npdp7pa9f
 resource "google_compute_disk" "computedisk_hiiupq1q4ujch81bj4g9" {
+  labels = {
+    managed-by-cnrm = "true"
+  }
+
   name    = "computedisk-hiiupq1q4ujch81bj4g9"
   project = "cli-test-project"
   zone    = "us-central1-a"
 }
 # terraform import google_compute_disk.computedisk_hiiupq1q4ujch81bj4g9 projects/cli-test-project/zones/us-central1-a/disks/computedisk-hiiupq1q4ujch81bj4g9
 resource "google_compute_forwarding_rule" "computeforwardingrule1_1j26msq4eebfv63n6sil" {
+  labels = {
+    managed-by-cnrm = "true"
+  }
+
   name    = "computeforwardingrule1-1j26msq4eebfv63n6sil"
   project = "cli-test-project"
   region  = "us-central1"
 }
 # terraform import google_compute_forwarding_rule.computeforwardingrule1_1j26msq4eebfv63n6sil projects/cli-test-project/regions/us-central1/forwardingRules/computeforwardingrule1-1j26msq4eebfv63n6sil
 resource "google_compute_global_forwarding_rule" "computeglobalforwardingrule_8034p172pirpg3bg31te" {
+  labels = {
+    managed-by-cnrm = "true"
+  }
+
   name    = "computeglobalforwardingrule-8034p172pirpg3bg31te"
   project = "cli-test-project"
 }
@@ -118,7 +162,12 @@ resource "google_compute_subnetwork" "default" {
 # terraform import google_compute_subnetwork.default projects/cli-test-project/regions/northamerica-northeast1/subnetworks/default
 resource "google_storage_bucket" "storagebucket_sample_696uso65hngc4js48ic9" {
   force_destroy = false
-  name          = "storagebucket-sample-696uso65hngc4js48ic9"
-  project       = "project-id-1"
+
+  labels = {
+    managed-by-cnrm = "true"
+  }
+
+  name    = "storagebucket-sample-696uso65hngc4js48ic9"
+  project = "project-id-1"
 }
 # terraform import google_storage_bucket.storagebucket_sample_696uso65hngc4js48ic9 storagebucket-sample-696uso65hngc4js48ic9

@@ -78,20 +78,6 @@
 ## Custom Resource Definition Properties
 
 
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
-</tbody>
-</table>
-
 
 ### Spec
 #### Schema
@@ -2425,12 +2411,12 @@ spec:
         secret:
           secretRef:
             name: runservice-dep-secret
-            defaultMode: 292 # 0444
-            items:
-              - versionRef:
-                  name: runservice-dep-secret
-                  path: "my-secret"
-                  mode: 256 # 0400
+          defaultMode: 292 # 0444
+          items:
+            - versionRef:
+                name: runservice-dep-secret
+                path: "my-secret"
+                mode: 256 # 0400
 ---
 # Replace ${PROJECT_ID?} and ${PROJECT_NUMBER?} below with your desired project
 # ID and project number.
@@ -2501,7 +2487,7 @@ spec:
       name: runservice-dep-serviceaccount
 ```
 
-### Run Service Vpcaccess
+### Run Service VPCAccess
 ```yaml
 # Copyright 2022 Google LLC
 #

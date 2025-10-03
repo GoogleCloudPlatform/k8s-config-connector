@@ -102,9 +102,6 @@ must have `roles/billing.user` on the {{billing_name}} account, and the
     <tr>
         <td><code>cnrm.cloud.google.com/auto-create-network</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 

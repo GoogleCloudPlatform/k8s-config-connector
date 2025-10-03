@@ -1,0 +1,143 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: IdentityToolkit/TenantOAuthIdpConfig
+  description: The IdentityToolkit TenantOAuthIdpConfig resource
+  x-dcl-struct-name: TenantOAuthIdpConfig
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a TenantOAuthIdpConfig
+    parameters:
+    - name: tenantOAuthIdpConfig
+      required: true
+      description: A full instance of a TenantOAuthIdpConfig
+  apply:
+    description: The function used to apply information about a TenantOAuthIdpConfig
+    parameters:
+    - name: tenantOAuthIdpConfig
+      required: true
+      description: A full instance of a TenantOAuthIdpConfig
+  delete:
+    description: The function used to delete a TenantOAuthIdpConfig
+    parameters:
+    - name: tenantOAuthIdpConfig
+      required: true
+      description: A full instance of a TenantOAuthIdpConfig
+  deleteAll:
+    description: The function used to delete all TenantOAuthIdpConfig
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: tenant
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many TenantOAuthIdpConfig
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: tenant
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    TenantOAuthIdpConfig:
+      title: TenantOAuthIdpConfig
+      x-dcl-id: projects/{{project}}/tenants/{{tenant}}/oauthIdpConfigs/{{name}}
+      x-dcl-parent-container: project
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - project
+      - tenant
+      properties:
+        clientId:
+          type: string
+          x-dcl-go-name: ClientId
+          description: The client id of an OAuth client.
+        clientSecret:
+          type: string
+          x-dcl-go-name: ClientSecret
+          description: The client secret of the OAuth client, to enable OIDC code
+            flow.
+          x-dcl-sensitive: true
+        displayName:
+          type: string
+          x-dcl-go-name: DisplayName
+          description: The config's display name set by developers.
+        enabled:
+          type: boolean
+          x-dcl-go-name: Enabled
+          description: True if allows the user to sign in with the provider.
+        issuer:
+          type: string
+          x-dcl-go-name: Issuer
+          description: For OIDC Idps, the issuer identifier.
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: The name of the Config resource
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        responseType:
+          type: object
+          x-dcl-go-name: ResponseType
+          x-dcl-go-type: TenantOAuthIdpConfigResponseType
+          description: 'The multiple response type to request for in the OAuth authorization
+            flow. This can possibly be a combination of set bits (e.g.: {id\_token,
+            token}).'
+          x-dcl-server-default: true
+          properties:
+            code:
+              type: boolean
+              x-dcl-go-name: Code
+              description: If true, authorization code is returned from IdP's authorization
+                endpoint.
+            idToken:
+              type: boolean
+              x-dcl-go-name: IdToken
+              description: If true, ID token is returned from IdP's authorization
+                endpoint.
+            token:
+              type: boolean
+              x-dcl-go-name: Token
+              description: If true, access token is returned from IdP's authorization
+                endpoint.
+        tenant:
+          type: string
+          x-dcl-go-name: Tenant
+          description: The tenant for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Identitytoolkit/Tenant
+            field: name
+            parent: true

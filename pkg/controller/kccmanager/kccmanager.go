@@ -18,10 +18,15 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
+	"strconv"
+	"time"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
@@ -29,15 +34,22 @@ import (
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
+	"golang.org/x/oauth2"
+	"google.golang.org/grpc"
 
 	corev1 "k8s.io/api/core/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+
+	// Register direct controllers
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
 type Config struct {
@@ -54,9 +66,12 @@ type Config struct {
 	// but UserProjectOverride is set to true, resource project will be used.
 	BillingProject string
 
-	// HTTPClient is the http client to use for DCL.
+	// HTTPClient is the http client to use by KCC.
 	// Currently only used in tests.
 	HTTPClient *http.Client
+
+	// GRPCUnaryClientInterceptor is the GRPC interceptor for use in tests.
+	GRPCUnaryClientInterceptor grpc.UnaryClientInterceptor
 
 	// GCPAccessToken allows configuration of a static access token for accessing GCP.
 	// Currently only used in tests.
@@ -69,6 +84,13 @@ type Config struct {
 	// StateIntoSpecUserOverride is an optional field. If specified, it is used
 	// as the default value for 'state-into-spec' annotation if unset.
 	StateIntoSpecUserOverride *string
+
+	// UseCache is true if we should use the informer cache
+	// Currently only used in preview
+	UseCache bool
+
+	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
+	EnableMetricsTransport bool
 }
 
 // Creates a new controller-runtime manager.Manager and starts all of the KCC controllers pointed at the
@@ -77,8 +99,8 @@ type Config struct {
 //
 // This serves as the entry point for the in-cluster main and the Borg service main. Any changes made should be done
 // with care.
-func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.Manager, error) {
-	opts := config.ManagerOptions
+func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Manager, error) {
+	opts := cfg.ManagerOptions
 	if opts.Scheme == nil {
 		// By default, controller-runtime uses the Kubernetes client-go scheme, this can create concurrency bugs as the
 		// the calls to AddToScheme(..) will modify the internal maps
@@ -92,17 +114,20 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 	}
 
 	// only cache CC and CCC resources
-	nocache.OnlyCacheCCAndCCC(&opts)
+	if !cfg.UseCache {
+		nocache.OnlyCacheCCAndCCC(&opts)
+	}
+
 	mgr, err := manager.New(restConfig, opts)
 	if err != nil {
 		return nil, fmt.Errorf("error creating new manager: %w", err)
 	}
-
 	// Bootstrap the Google Terraform provider
 	tfCfg := tfprovider.NewConfig()
-	tfCfg.UserProjectOverride = config.UserProjectOverride
-	tfCfg.BillingProject = config.BillingProject
-	tfCfg.GCPAccessToken = config.GCPAccessToken
+	tfCfg.UserProjectOverride = cfg.UserProjectOverride
+	tfCfg.BillingProject = cfg.BillingProject
+	tfCfg.GCPAccessToken = cfg.GCPAccessToken
+	tfCfg.EnableMetricsTransport = cfg.EnableMetricsTransport
 
 	provider, err := tfprovider.New(ctx, tfCfg)
 	if err != nil {
@@ -121,34 +146,76 @@ func New(ctx context.Context, restConfig *rest.Config, config Config) (manager.M
 	dclConverter := dclconversion.New(dclSchemaLoader, serviceMetadataLoader)
 
 	dclOptions := clientconfig.Options{}
-	dclOptions.UserProjectOverride = config.UserProjectOverride
-	dclOptions.BillingProject = config.BillingProject
-	dclOptions.HTTPClient = config.HTTPClient
-	dclOptions.UserAgent = gcp.KCCUserAgent
+	dclOptions.UserProjectOverride = cfg.UserProjectOverride
+	dclOptions.BillingProject = cfg.BillingProject
+	dclOptions.HTTPClient = cfg.HTTPClient
+	dclOptions.UserAgent = gcp.KCCUserAgent()
+	dclOptions.EnableMetricsTransport = cfg.EnableMetricsTransport
 
 	dclConfig, err := clientconfig.New(ctx, dclOptions)
 	if err != nil {
 		return nil, fmt.Errorf("error creating a DCL client config: %w", err)
 	}
 
-	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter(mgr.GetClient())
-	controllerConfig := &controller.Config{
-		UserProjectOverride: config.UserProjectOverride,
-		BillingProject:      config.BillingProject,
-		HTTPClient:          config.HTTPClient,
-		UserAgent:           gcp.KCCUserAgent,
+	stateIntoSpecDefaulter := stateintospec.NewStateIntoSpecDefaulter(mgr.GetClient())
+
+	controllerConfig := &config.ControllerConfig{
+		UserProjectOverride:        cfg.UserProjectOverride,
+		BillingProject:             cfg.BillingProject,
+		HTTPClient:                 cfg.HTTPClient,
+		GRPCUnaryClientInterceptor: cfg.GRPCUnaryClientInterceptor,
+		UserAgent:                  gcp.KCCUserAgent(),
+		EnableMetricsTransport:     cfg.EnableMetricsTransport,
 	}
+
+	if cfg.GCPAccessToken != "" {
+		controllerConfig.GCPTokenSource = oauth2.StaticTokenSource(&oauth2.Token{AccessToken: cfg.GCPAccessToken})
+	}
+
+	if err := controllerConfig.Init(ctx); err != nil {
+		return nil, err
+	}
+
+	// Initialize direct controllers
+	if err := registry.Init(ctx, controllerConfig); err != nil {
+		return nil, err
+	}
+
 	rd := controller.Deps{
-		TfProvider:   provider,
-		TfLoader:     smLoader,
-		DclConfig:    dclConfig,
-		DclConverter: dclConverter,
-		Defaulters:   []k8s.Defaulter{stateIntoSpecDefaulter},
+		TFProvider:   provider,
+		TFLoader:     smLoader,
+		DCLConfig:    dclConfig,
+		DCLConverter: dclConverter,
+		Defaulters: []k8s.Defaulter{
+			stateIntoSpecDefaulter,
+		},
 	}
+
+	fetcher, err := gcpwatch.NewIAMFetcher(ctx, controllerConfig)
+	if err != nil {
+		return nil, fmt.Errorf("creating resource fetcher: %w", err)
+	}
+	rd.DependencyTracker = gcpwatch.NewDependencyTracker(fetcher)
+
+	pollInterval := gcpwatch.DefaultPollInterval
+	if interval := os.Getenv("TEST_DEPENDENCY_TRACKER_POLL_INTERVAL"); interval != "" {
+		intInterval, err := strconv.Atoi(interval)
+		if err != nil {
+			return nil, fmt.Errorf("parsing TEST_DEPENDENCY_TRACKER_POLL_INTERVAL: %w", err)
+		}
+		pollInterval = time.Duration(intInterval) * time.Second
+	}
+	go func() {
+		rd.DependencyTracker.PollForever(ctx, &gcpwatch.PollConfig{
+			InitialDelay: gcpwatch.DefaultInitialDelay,
+			MinInterval:  gcpwatch.DefaultMinInterval,
+			PollInterval: pollInterval,
+		})
+	}()
+
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
-	if err := registration.Add(mgr, &rd,
-		registration.RegisterDefaultController(controllerConfig)); err != nil {
+	if err := registration.AddDefaultControllers(ctx, mgr, &rd, controllerConfig); err != nil {
 		return nil, fmt.Errorf("error adding registration controller: %w", err)
 	}
 	return mgr, nil

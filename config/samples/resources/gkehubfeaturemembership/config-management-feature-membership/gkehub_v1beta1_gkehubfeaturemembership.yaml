@@ -20,6 +20,8 @@ spec:
   projectRef:
     name: gkehubfeaturemembership-dep-acm
   location: global
+  # membershipLocation needs to be explicitly set here because the dependent membership is regional.
+  membershipLocation: us-central1
   membershipRef:
     name: gkehubfeaturemembership-dep-acm
   featureRef:
@@ -28,21 +30,7 @@ spec:
     configSync:
       sourceFormat: unstructured
       git:
-        syncRepo: "https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit"
-        syncBranch: "master"
-        policyDir: "config-connector"
-        syncWaitSecs: "20"
-        syncRev: "HEAD"
+        syncRepo: "https://github.com/GoogleCloudPlatform/anthos-config-management-samples"
+        syncBranch: "main"
+        policyDir: "config-sync-quickstart/multirepo/root"
         secretType: "none"
-    policyController:
-      enabled: true
-      exemptableNamespaces:
-        - "test-namespace"
-      referentialRulesEnabled: true
-      logDeniesEnabled: true
-      templateLibraryInstalled: true
-      auditIntervalSeconds: "20"
-    hierarchyController:
-      enabled: true
-      enablePodTreeLabels: true
-      enableHierarchicalResourceQuota: true

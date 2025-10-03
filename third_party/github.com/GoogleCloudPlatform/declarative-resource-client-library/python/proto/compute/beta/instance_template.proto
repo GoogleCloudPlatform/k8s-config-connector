@@ -1,0 +1,214 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeBetaInstanceTemplatePropertiesDisksInterfaceEnum {
+  ComputeBetaInstanceTemplatePropertiesDisksInterfaceEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInstanceTemplatePropertiesDisksInterfaceEnumSCSI = 1;
+  ComputeBetaInstanceTemplatePropertiesDisksInterfaceEnumNVME = 2;
+}
+
+enum ComputeBetaInstanceTemplatePropertiesDisksModeEnum {
+  ComputeBetaInstanceTemplatePropertiesDisksModeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInstanceTemplatePropertiesDisksModeEnumREAD_WRITE = 1;
+  ComputeBetaInstanceTemplatePropertiesDisksModeEnumREAD_ONLY = 2;
+}
+
+enum ComputeBetaInstanceTemplatePropertiesDisksTypeEnum {
+  ComputeBetaInstanceTemplatePropertiesDisksTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInstanceTemplatePropertiesDisksTypeEnumSCRATCH = 1;
+  ComputeBetaInstanceTemplatePropertiesDisksTypeEnumPERSISTENT = 2;
+}
+
+enum ComputeBetaInstanceTemplatePropertiesNetworkInterfacesAccessConfigsTypeEnum {
+  ComputeBetaInstanceTemplatePropertiesNetworkInterfacesAccessConfigsTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInstanceTemplatePropertiesNetworkInterfacesAccessConfigsTypeEnumONE_TO_ONE_NAT = 1;
+}
+
+enum ComputeBetaInstanceTemplatePropertiesNetworkInterfacesAccessConfigsNetworkTierEnum {
+  ComputeBetaInstanceTemplatePropertiesNetworkInterfacesAccessConfigsNetworkTierEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInstanceTemplatePropertiesNetworkInterfacesAccessConfigsNetworkTierEnumPREMIUM = 1;
+  ComputeBetaInstanceTemplatePropertiesNetworkInterfacesAccessConfigsNetworkTierEnumSTANDARD = 2;
+}
+
+enum ComputeBetaInstanceTemplatePropertiesSchedulingNodeAffinitiesOperatorEnum {
+  ComputeBetaInstanceTemplatePropertiesSchedulingNodeAffinitiesOperatorEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaInstanceTemplatePropertiesSchedulingNodeAffinitiesOperatorEnumIN = 1;
+  ComputeBetaInstanceTemplatePropertiesSchedulingNodeAffinitiesOperatorEnumNOT_IN = 2;
+}
+
+message ComputeBetaInstanceTemplate {
+  string creation_timestamp = 1;
+  string description = 2;
+  int64 id = 3;
+  string self_link = 4;
+  string name = 5;
+  ComputeBetaInstanceTemplateProperties properties = 6;
+  string project = 7;
+}
+
+message ComputeBetaInstanceTemplateProperties {
+  bool can_ip_forward = 1;
+  string description = 2;
+  repeated ComputeBetaInstanceTemplatePropertiesDisks disks = 3;
+  map<string, string> labels = 4;
+  string machine_type = 5;
+  string min_cpu_platform = 6;
+  map<string, string> metadata = 7;
+  ComputeBetaInstanceTemplatePropertiesReservationAffinity reservation_affinity = 8;
+  repeated ComputeBetaInstanceTemplatePropertiesGuestAccelerators guest_accelerators = 9;
+  repeated ComputeBetaInstanceTemplatePropertiesNetworkInterfaces network_interfaces = 10;
+  ComputeBetaInstanceTemplatePropertiesShieldedInstanceConfig shielded_instance_config = 11;
+  ComputeBetaInstanceTemplatePropertiesScheduling scheduling = 12;
+  repeated ComputeBetaInstanceTemplatePropertiesServiceAccounts service_accounts = 13;
+  repeated string tags = 14;
+}
+
+message ComputeBetaInstanceTemplatePropertiesDisks {
+  bool auto_delete = 1;
+  bool boot = 2;
+  string device_name = 3;
+  ComputeBetaInstanceTemplatePropertiesDisksDiskEncryptionKey disk_encryption_key = 4;
+  int64 index = 5;
+  ComputeBetaInstanceTemplatePropertiesDisksInitializeParams initialize_params = 6;
+  repeated ComputeBetaInstanceTemplatePropertiesDisksGuestOSFeatures guest_os_features = 7;
+  ComputeBetaInstanceTemplatePropertiesDisksInterfaceEnum interface = 8;
+  ComputeBetaInstanceTemplatePropertiesDisksModeEnum mode = 9;
+  string source = 10;
+  ComputeBetaInstanceTemplatePropertiesDisksTypeEnum type = 11;
+}
+
+message ComputeBetaInstanceTemplatePropertiesDisksDiskEncryptionKey {
+  string raw_key = 1;
+  string rsa_encrypted_key = 2;
+  string sha256 = 3;
+}
+
+message ComputeBetaInstanceTemplatePropertiesDisksInitializeParams {
+  string disk_name = 1;
+  int64 disk_size_gb = 2;
+  string disk_type = 3;
+  string source_image = 4;
+  map<string, string> labels = 5;
+  string source_snapshot = 6;
+  ComputeBetaInstanceTemplatePropertiesDisksInitializeParamsSourceSnapshotEncryptionKey source_snapshot_encryption_key = 7;
+  string description = 8;
+  repeated string resource_policies = 9;
+  string on_update_action = 10;
+  ComputeBetaInstanceTemplatePropertiesDisksInitializeParamsSourceImageEncryptionKey source_image_encryption_key = 11;
+}
+
+message ComputeBetaInstanceTemplatePropertiesDisksInitializeParamsSourceSnapshotEncryptionKey {
+  string raw_key = 1;
+  string sha256 = 2;
+  string kms_key_name = 3;
+}
+
+message ComputeBetaInstanceTemplatePropertiesDisksInitializeParamsSourceImageEncryptionKey {
+  string raw_key = 1;
+  string sha256 = 2;
+  string kms_key_name = 3;
+}
+
+message ComputeBetaInstanceTemplatePropertiesDisksGuestOSFeatures {
+  string type = 1;
+}
+
+message ComputeBetaInstanceTemplatePropertiesReservationAffinity {
+  string key = 1;
+  repeated string value = 2;
+}
+
+message ComputeBetaInstanceTemplatePropertiesGuestAccelerators {
+  int64 accelerator_count = 1;
+  string accelerator_type = 2;
+}
+
+message ComputeBetaInstanceTemplatePropertiesNetworkInterfaces {
+  repeated ComputeBetaInstanceTemplatePropertiesNetworkInterfacesAccessConfigs access_configs = 1;
+  repeated ComputeBetaInstanceTemplatePropertiesNetworkInterfacesAliasIPRanges alias_ip_ranges = 2;
+  string name = 3;
+  string network = 4;
+  string network_ip = 5;
+  string subnetwork = 6;
+}
+
+message ComputeBetaInstanceTemplatePropertiesNetworkInterfacesAccessConfigs {
+  string name = 1;
+  string nat_ip = 2;
+  ComputeBetaInstanceTemplatePropertiesNetworkInterfacesAccessConfigsTypeEnum type = 3;
+  bool set_public_ptr = 4;
+  string public_ptr_domain_name = 5;
+  ComputeBetaInstanceTemplatePropertiesNetworkInterfacesAccessConfigsNetworkTierEnum network_tier = 6;
+}
+
+message ComputeBetaInstanceTemplatePropertiesNetworkInterfacesAliasIPRanges {
+  string ip_cidr_range = 1;
+  string subnetwork_range_name = 2;
+}
+
+message ComputeBetaInstanceTemplatePropertiesShieldedInstanceConfig {
+  bool enable_secure_boot = 1;
+  bool enable_vtpm = 2;
+  bool enable_integrity_monitoring = 3;
+}
+
+message ComputeBetaInstanceTemplatePropertiesScheduling {
+  bool automatic_restart = 1;
+  string on_host_maintenance = 2;
+  bool preemptible = 3;
+  repeated ComputeBetaInstanceTemplatePropertiesSchedulingNodeAffinities node_affinities = 4;
+}
+
+message ComputeBetaInstanceTemplatePropertiesSchedulingNodeAffinities {
+  string key = 1;
+  ComputeBetaInstanceTemplatePropertiesSchedulingNodeAffinitiesOperatorEnum operator = 2;
+  repeated string values = 3;
+}
+
+message ComputeBetaInstanceTemplatePropertiesServiceAccounts {
+  string email = 1;
+  repeated string scopes = 2;
+}
+
+message ApplyComputeBetaInstanceTemplateRequest {
+  ComputeBetaInstanceTemplate resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaInstanceTemplateRequest {
+  string service_account_file = 1;
+  ComputeBetaInstanceTemplate resource = 2;
+}
+
+message ListComputeBetaInstanceTemplateRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListComputeBetaInstanceTemplateResponse {
+  repeated ComputeBetaInstanceTemplate items = 1;
+}
+
+service ComputeBetaInstanceTemplateService {
+  rpc ApplyComputeBetaInstanceTemplate(ApplyComputeBetaInstanceTemplateRequest) returns (ComputeBetaInstanceTemplate);
+  rpc DeleteComputeBetaInstanceTemplate(DeleteComputeBetaInstanceTemplateRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaInstanceTemplate(ListComputeBetaInstanceTemplateRequest) returns (ListComputeBetaInstanceTemplateResponse);
+}

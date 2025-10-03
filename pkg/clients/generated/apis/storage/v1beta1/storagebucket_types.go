@@ -149,6 +149,12 @@ type BucketRetentionPolicy struct {
 	RetentionPeriod int64 `json:"retentionPeriod"`
 }
 
+type BucketSoftDeletePolicy struct {
+	/* The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800. */
+	// +optional
+	RetentionDurationSeconds *int64 `json:"retentionDurationSeconds,omitempty"`
+}
+
 type BucketVersioning struct {
 	/* While set to true, versioning is fully enabled for this bucket. */
 	Enabled bool `json:"enabled"`
@@ -218,6 +224,10 @@ type StorageBucketSpec struct {
 	// +optional
 	RetentionPolicy *BucketRetentionPolicy `json:"retentionPolicy,omitempty"`
 
+	/* The bucket's soft delete policy, which defines the period of time that soft-deleted objects will be retained, and cannot be permanently deleted. If it is not provided, by default Google Cloud Storage sets this to default soft delete policy. */
+	// +optional
+	SoftDeletePolicy *BucketSoftDeletePolicy `json:"softDeletePolicy,omitempty"`
+
 	/* The Storage Class of the new bucket. Supported values include: STANDARD, MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE. */
 	// +optional
 	StorageClass *string `json:"storageClass,omitempty"`
@@ -235,6 +245,22 @@ type StorageBucketSpec struct {
 	Website *BucketWebsite `json:"website,omitempty"`
 }
 
+type BucketObservedStateStatus struct {
+	/* The bucket's soft delete policy, which defines the period of time that soft-deleted objects will be retained, and cannot be permanently deleted. If it is not provided, by default Google Cloud Storage sets this to default soft delete policy. */
+	// +optional
+	SoftDeletePolicy *BucketSoftDeletePolicyStatus `json:"softDeletePolicy,omitempty"`
+}
+
+type BucketSoftDeletePolicyStatus struct {
+	/* Server-determined value that indicates the time from which the policy, or one with a greater retention, was effective. This value is in RFC 3339 format. */
+	// +optional
+	EffectiveTime *string `json:"effectiveTime,omitempty"`
+
+	/* The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800. */
+	// +optional
+	RetentionDurationSeconds *int64 `json:"retentionDurationSeconds,omitempty"`
+}
+
 type StorageBucketStatus struct {
 	/* Conditions represent the latest available observations of the
 	   StorageBucket's current state. */
@@ -242,6 +268,10 @@ type StorageBucketStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* The observed state of the underlying GCP resource. */
+	// +optional
+	ObservedState *BucketObservedStateStatus `json:"observedState,omitempty"`
 
 	/* The URI of the created resource. */
 	// +optional

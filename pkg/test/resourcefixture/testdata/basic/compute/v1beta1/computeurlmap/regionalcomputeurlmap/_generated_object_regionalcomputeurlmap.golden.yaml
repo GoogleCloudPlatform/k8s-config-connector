@@ -1,0 +1,106 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: computeurlmap-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  defaultService:
+    backendServiceRef:
+      name: computebackendservice-${uniqueId}
+  description: updated regional URLMap
+  hostRule:
+  - hosts:
+    - mysite.com
+    pathMatcher: allpaths
+  location: us-central1
+  pathMatcher:
+  - defaultService:
+      backendServiceRef:
+        name: computebackendservice-${uniqueId}
+    name: allpaths
+    pathRule:
+    - paths:
+      - /home
+      routeAction:
+        corsPolicy:
+          allowCredentials: true
+          allowHeaders:
+          - Allowed content
+          allowMethods:
+          - GET
+          allowOrigins:
+          - Allowed origin
+          disabled: false
+          exposeHeaders:
+          - Exposed header
+          maxAge: 30
+        faultInjectionPolicy:
+          abort:
+            httpStatus: 234
+            percentage: 5.6
+          delay:
+            fixedDelay:
+              nanos: 50000
+              seconds: "0"
+            percentage: 7.8
+        requestMirrorPolicy:
+          backendServiceRef:
+            name: computebackendservice-${uniqueId}
+        retryPolicy:
+          numRetries: 4
+          perTryTimeout:
+            seconds: "30"
+          retryConditions:
+          - 5xx
+          - deadline-exceeded
+        timeout:
+          nanos: 750000000
+          seconds: "20"
+        urlRewrite:
+          hostRewrite: A replacement header
+          pathPrefixRewrite: A replacement path
+        weightedBackendServices:
+        - backendServiceRef:
+            name: computebackendservice-${uniqueId}
+          headerAction:
+            requestHeadersToAdd:
+            - headerName: AddMe
+              headerValue: MyValue
+              replace: true
+            requestHeadersToRemove:
+            - RemoveMe
+            responseHeadersToAdd:
+            - headerName: AddMe
+              headerValue: MyValue
+              replace: false
+            responseHeadersToRemove:
+            - RemoveMe
+          weight: 400
+  resourceID: computeurlmap-${uniqueId}
+  test:
+  - host: hi.com
+    path: /home
+    service:
+      backendServiceRef:
+        name: computebackendservice-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  creationTimestamp: "1970-01-01T00:00:00Z"
+  mapId: 1111111111111111
+  observedGeneration: 3
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/computeurlmap-${uniqueId}

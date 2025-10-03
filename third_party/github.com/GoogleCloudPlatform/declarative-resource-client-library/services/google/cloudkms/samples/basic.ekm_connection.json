@@ -1,0 +1,25 @@
+{
+  "name": "{{connection}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "serviceResolvers": [
+    {
+      "serviceDirectoryService": "projects/{{project}}/locations/{{region}}/namespaces/{{ref:basic.servicedirectory.namespace.json:name}}/services/{{ref:basic.servicedirectory.service.json:name}}",
+      "hostname": "test",
+      "endpointFilter": "address=test",
+      "serverCertificates": [
+        {
+          "rawDer": "MIIDGjCCAgICCQDQoAnIuigKvTANBgkqhkiG9w0BAQsFADBOMQswCQYDVQQGEwJVUzELMAkGA1UECAwCTlkxCzAJBgNVBAcMAk5ZMQ4wDAYDVQQKDAV0eWxpdTEVMBMGA1UEAwwMZWttX2hvc3RuYW1lMCAXDTIyMDUxMzE3MzMyM1oYDzMwMDIwNzE1MTczMzIzWjBOMQswCQYDVQQGEwJVUzELMAkGA1UECAwCTlkxCzAJBgNVBAcMAk5ZMQ4wDAYDVQQKDAV0eWxpdTEVMBMGA1UEAwwMZWttX2hvc3RuYW1lMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzTiuXQwtqqJjxOfqAEMC6+cDG7zSXr8m/vuyGHvM8BWqbGNe1wZUFh2oUvhpA3V0kHORylmiW2KC0Fvw5mNjfP1Ylf6MNlh1rgd6i+1jb1QC7Rh+1Sxb4wRdRWPxVbWcb/iWvmL5nMj/nyLatjtO6GltYV8KtwzME+ncQgwOpfqPEib7fbNBrYaT+z8BMa89Zd8hWJ5DBt5OgPhi320b/xYvO6mzau0FMCHEQjtxa8MmxRKqv27kWQqc2V43A1DpWT2kw3ZTDg5cmUv3r1Jd+DcCKZuZzVpcDVeZOxWGiTZGCoRVHGgvqNRmxLkuDis4i/cO7mlIVHGxVop+DMOmrwIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQC8JQqvd5bW78RRwR2yE/9rdNxxskdM2fb/uUNzK4I1oEunrSmYne17PkRh+kHc1wI6BQnv0E+AqJPm6JVWiW8mri3PISfskkP8cAd8jT+q/XbXgc5ufkOeY6n0YwI6yY5SYlHCQ8MButtnTSqPSkUKlLpoaVwelh9sbZZfBUlc02kjt0Jj+SEjGJ/4xlM/RjYI8KVgm8HOH/19g/wpZUJFEvNFv4zcStgHsrCqMeHrY7MUV4cGZd4t3MvLHU+yYtBR3vHcKu6lll4x1udqVblUKZQfRC2p5Zi1GwN2PcOvEobxfPbCycDwQwDHFKHPgOaS5voZzK7SU3FODfAP6UrB",
+          "parsed": true,
+          "issuer": "CN=ekm_hostname,O=tyliu,L=NY,ST=NY,C=US",
+          "subject": "CN=ekm_hostname,O=tyliu,L=NY,ST=NY,C=US",
+          "notBeforeTime": "2022-05-13T17:33:23Z",
+          "notAfterTime": "3002-07-15T17:33:23Z",
+          "serialNumber": "D0A009C8BA280ABD",
+          "sha256Fingerprint": "F57CCE5DF1D805D011676EE846E02A59A093584F66E964CDA4C6D1C6987606B9"
+        }
+      ]
+    }
+  ]
+}
+

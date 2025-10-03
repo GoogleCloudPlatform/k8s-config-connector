@@ -1,0 +1,126 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum GkemulticloudAlphaAzureClusterStateEnum {
+  GkemulticloudAlphaAzureClusterStateEnumNO_VALUE_DO_NOT_USE = 0;
+  GkemulticloudAlphaAzureClusterStateEnumSTATE_UNSPECIFIED = 1;
+  GkemulticloudAlphaAzureClusterStateEnumPROVISIONING = 2;
+  GkemulticloudAlphaAzureClusterStateEnumRUNNING = 3;
+  GkemulticloudAlphaAzureClusterStateEnumRECONCILING = 4;
+  GkemulticloudAlphaAzureClusterStateEnumSTOPPING = 5;
+  GkemulticloudAlphaAzureClusterStateEnumERROR = 6;
+  GkemulticloudAlphaAzureClusterStateEnumDEGRADED = 7;
+}
+
+message GkemulticloudAlphaAzureCluster {
+  string name = 1;
+  string description = 2;
+  string azure_region = 3;
+  string resource_group_id = 4;
+  string azure_client = 5;
+  GkemulticloudAlphaAzureClusterNetworking networking = 6;
+  GkemulticloudAlphaAzureClusterControlPlane control_plane = 7;
+  GkemulticloudAlphaAzureClusterAuthorization authorization = 8;
+  GkemulticloudAlphaAzureClusterStateEnum state = 9;
+  string endpoint = 10;
+  string uid = 11;
+  bool reconciling = 12;
+  string create_time = 13;
+  string update_time = 14;
+  string etag = 15;
+  map<string, string> annotations = 16;
+  GkemulticloudAlphaAzureClusterWorkloadIdentityConfig workload_identity_config = 17;
+  string project = 18;
+  string location = 19;
+}
+
+message GkemulticloudAlphaAzureClusterNetworking {
+  string virtual_network_id = 1;
+  repeated string pod_address_cidr_blocks = 2;
+  repeated string service_address_cidr_blocks = 3;
+}
+
+message GkemulticloudAlphaAzureClusterControlPlane {
+  string version = 1;
+  string subnet_id = 2;
+  string vm_size = 3;
+  GkemulticloudAlphaAzureClusterControlPlaneSshConfig ssh_config = 4;
+  GkemulticloudAlphaAzureClusterControlPlaneRootVolume root_volume = 5;
+  GkemulticloudAlphaAzureClusterControlPlaneMainVolume main_volume = 6;
+  GkemulticloudAlphaAzureClusterControlPlaneDatabaseEncryption database_encryption = 7;
+  map<string, string> tags = 8;
+}
+
+message GkemulticloudAlphaAzureClusterControlPlaneSshConfig {
+  string authorized_key = 1;
+}
+
+message GkemulticloudAlphaAzureClusterControlPlaneRootVolume {
+  int64 size_gib = 1;
+}
+
+message GkemulticloudAlphaAzureClusterControlPlaneMainVolume {
+  int64 size_gib = 1;
+}
+
+message GkemulticloudAlphaAzureClusterControlPlaneDatabaseEncryption {
+  string resource_group_id = 1;
+  string kms_key_identifier = 2;
+}
+
+message GkemulticloudAlphaAzureClusterAuthorization {
+  repeated GkemulticloudAlphaAzureClusterAuthorizationAdminUsers admin_users = 1;
+}
+
+message GkemulticloudAlphaAzureClusterAuthorizationAdminUsers {
+  string username = 1;
+}
+
+message GkemulticloudAlphaAzureClusterWorkloadIdentityConfig {
+  string issuer_uri = 1;
+  string workload_pool = 2;
+  string identity_provider = 3;
+}
+
+message ApplyGkemulticloudAlphaAzureClusterRequest {
+  GkemulticloudAlphaAzureCluster resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteGkemulticloudAlphaAzureClusterRequest {
+  string service_account_file = 1;
+  GkemulticloudAlphaAzureCluster resource = 2;
+}
+
+message ListGkemulticloudAlphaAzureClusterRequest {
+  string service_account_file = 1;
+	GkemulticloudAlphaAzureCluster resource = 2;
+}
+
+message ListGkemulticloudAlphaAzureClusterResponse {
+  repeated GkemulticloudAlphaAzureCluster items = 1;
+}
+
+service GkemulticloudAlphaAzureClusterService {
+  rpc ApplyGkemulticloudAlphaAzureCluster(ApplyGkemulticloudAlphaAzureClusterRequest) returns (GkemulticloudAlphaAzureCluster);
+  rpc DeleteGkemulticloudAlphaAzureCluster(DeleteGkemulticloudAlphaAzureClusterRequest) returns (google.protobuf.Empty);
+  rpc ListGkemulticloudAlphaAzureCluster(ListGkemulticloudAlphaAzureClusterRequest) returns (ListGkemulticloudAlphaAzureClusterResponse);
+}

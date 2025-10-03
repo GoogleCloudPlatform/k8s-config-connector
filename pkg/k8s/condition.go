@@ -25,13 +25,13 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func NewCustomReadyCondition(status v1.ConditionStatus, rs, msg string) v1alpha1.Condition {
+func NewCustomReadyCondition(status v1.ConditionStatus, reason, message string) v1alpha1.Condition {
 	return v1alpha1.Condition{
 		LastTransitionTime: metav1.Now().Format(time.RFC3339),
 		Type:               v1alpha1.ReadyConditionType,
 		Status:             status,
-		Reason:             rs,
-		Message:            msg,
+		Reason:             reason,
+		Message:            message,
 	}
 }
 

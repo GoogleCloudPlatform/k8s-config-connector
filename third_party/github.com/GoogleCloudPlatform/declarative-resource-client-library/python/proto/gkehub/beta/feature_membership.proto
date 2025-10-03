@@ -1,0 +1,199 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum GkehubBetaFeatureMembershipMeshManagementEnum {
+  GkehubBetaFeatureMembershipMeshManagementEnumNO_VALUE_DO_NOT_USE = 0;
+  GkehubBetaFeatureMembershipMeshManagementEnumMANAGEMENT_UNSPECIFIED = 1;
+  GkehubBetaFeatureMembershipMeshManagementEnumMANAGEMENT_AUTOMATIC = 2;
+  GkehubBetaFeatureMembershipMeshManagementEnumMANAGEMENT_MANUAL = 3;
+}
+
+enum GkehubBetaFeatureMembershipMeshControlPlaneEnum {
+  GkehubBetaFeatureMembershipMeshControlPlaneEnumNO_VALUE_DO_NOT_USE = 0;
+  GkehubBetaFeatureMembershipMeshControlPlaneEnumCONTROL_PLANE_MANAGEMENT_UNSPECIFIED = 1;
+  GkehubBetaFeatureMembershipMeshControlPlaneEnumAUTOMATIC = 2;
+  GkehubBetaFeatureMembershipMeshControlPlaneEnumMANUAL = 3;
+}
+
+enum GkehubBetaFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum {
+  GkehubBetaFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnumNO_VALUE_DO_NOT_USE = 0;
+  GkehubBetaFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnumMONITORING_BACKEND_UNSPECIFIED = 1;
+  GkehubBetaFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnumPROMETHEUS = 2;
+  GkehubBetaFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnumCLOUD_MONITORING = 3;
+}
+
+enum GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigInstallSpecEnum {
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigInstallSpecEnumNO_VALUE_DO_NOT_USE = 0;
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigInstallSpecEnumINSTALL_SPEC_UNSPECIFIED = 1;
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigInstallSpecEnumINSTALL_SPEC_NOT_INSTALLED = 2;
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigInstallSpecEnumINSTALL_SPEC_ENABLED = 3;
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigInstallSpecEnumINSTALL_SPEC_SUSPENDED = 4;
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigInstallSpecEnumINSTALL_SPEC_DETACHED = 5;
+}
+
+enum GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigMonitoringBackendsEnum {
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigMonitoringBackendsEnumNO_VALUE_DO_NOT_USE = 0;
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigMonitoringBackendsEnumMONITORING_BACKEND_UNSPECIFIED = 1;
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigMonitoringBackendsEnumPROMETHEUS = 2;
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigMonitoringBackendsEnumCLOUD_MONITORING = 3;
+}
+
+enum GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigPolicyContentTemplateLibraryInstallationEnum {
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigPolicyContentTemplateLibraryInstallationEnumNO_VALUE_DO_NOT_USE = 0;
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigPolicyContentTemplateLibraryInstallationEnumINSTALLATION_UNSPECIFIED = 1;
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigPolicyContentTemplateLibraryInstallationEnumNOT_INSTALLED = 2;
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigPolicyContentTemplateLibraryInstallationEnumALL = 3;
+}
+
+message GkehubBetaFeatureMembership {
+  GkehubBetaFeatureMembershipMesh mesh = 1;
+  GkehubBetaFeatureMembershipConfigmanagement configmanagement = 2;
+  GkehubBetaFeatureMembershipPolicycontroller policycontroller = 3;
+  string project = 4;
+  string location = 5;
+  string feature = 6;
+  string membership = 7;
+  string membership_location = 8;
+}
+
+message GkehubBetaFeatureMembershipMesh {
+  GkehubBetaFeatureMembershipMeshManagementEnum management = 1;
+  GkehubBetaFeatureMembershipMeshControlPlaneEnum control_plane = 2;
+}
+
+message GkehubBetaFeatureMembershipConfigmanagement {
+  GkehubBetaFeatureMembershipConfigmanagementConfigSync config_sync = 1;
+  GkehubBetaFeatureMembershipConfigmanagementPolicyController policy_controller = 2;
+  GkehubBetaFeatureMembershipConfigmanagementBinauthz binauthz = 3;
+  GkehubBetaFeatureMembershipConfigmanagementHierarchyController hierarchy_controller = 4;
+  string version = 5;
+}
+
+message GkehubBetaFeatureMembershipConfigmanagementConfigSync {
+  GkehubBetaFeatureMembershipConfigmanagementConfigSyncGit git = 1;
+  string source_format = 2;
+  bool prevent_drift = 3;
+  string metrics_gcp_service_account_email = 4;
+  GkehubBetaFeatureMembershipConfigmanagementConfigSyncOci oci = 5;
+}
+
+message GkehubBetaFeatureMembershipConfigmanagementConfigSyncGit {
+  string sync_repo = 1;
+  string sync_branch = 2;
+  string policy_dir = 3;
+  string sync_wait_secs = 4;
+  string sync_rev = 5;
+  string secret_type = 6;
+  string https_proxy = 7;
+  string gcp_service_account_email = 8;
+}
+
+message GkehubBetaFeatureMembershipConfigmanagementConfigSyncOci {
+  string sync_repo = 1;
+  string policy_dir = 2;
+  string sync_wait_secs = 3;
+  string secret_type = 4;
+  string gcp_service_account_email = 5;
+}
+
+message GkehubBetaFeatureMembershipConfigmanagementPolicyController {
+  bool enabled = 1;
+  repeated string exemptable_namespaces = 2;
+  bool referential_rules_enabled = 3;
+  bool log_denies_enabled = 4;
+  bool mutation_enabled = 5;
+  GkehubBetaFeatureMembershipConfigmanagementPolicyControllerMonitoring monitoring = 6;
+  bool template_library_installed = 7;
+  string audit_interval_seconds = 8;
+}
+
+message GkehubBetaFeatureMembershipConfigmanagementPolicyControllerMonitoring {
+  repeated GkehubBetaFeatureMembershipConfigmanagementPolicyControllerMonitoringBackendsEnum backends = 1;
+}
+
+message GkehubBetaFeatureMembershipConfigmanagementBinauthz {
+  bool enabled = 1;
+}
+
+message GkehubBetaFeatureMembershipConfigmanagementHierarchyController {
+  bool enabled = 1;
+  bool enable_pod_tree_labels = 2;
+  bool enable_hierarchical_resource_quota = 3;
+}
+
+message GkehubBetaFeatureMembershipPolicycontroller {
+  string version = 1;
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfig policy_controller_hub_config = 2;
+}
+
+message GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfig {
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigInstallSpecEnum install_spec = 1;
+  repeated string exemptable_namespaces = 2;
+  bool referential_rules_enabled = 3;
+  bool log_denies_enabled = 4;
+  bool mutation_enabled = 5;
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigMonitoring monitoring = 6;
+  int64 audit_interval_seconds = 7;
+  int64 constraint_violation_limit = 8;
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigPolicyContent policy_content = 9;
+}
+
+message GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigMonitoring {
+  repeated GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigMonitoringBackendsEnum backends = 1;
+}
+
+message GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigPolicyContent {
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigPolicyContentTemplateLibrary template_library = 1;
+}
+
+message GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigPolicyContentTemplateLibrary {
+  GkehubBetaFeatureMembershipPolicycontrollerPolicyControllerHubConfigPolicyContentTemplateLibraryInstallationEnum installation = 1;
+}
+
+message ApplyGkehubBetaFeatureMembershipRequest {
+  GkehubBetaFeatureMembership resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteGkehubBetaFeatureMembershipRequest {
+  string service_account_file = 1;
+  GkehubBetaFeatureMembership resource = 2;
+}
+
+message ListGkehubBetaFeatureMembershipRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string Feature = 4;
+}
+
+message ListGkehubBetaFeatureMembershipResponse {
+  repeated GkehubBetaFeatureMembership items = 1;
+}
+
+service GkehubBetaFeatureMembershipService {
+  rpc ApplyGkehubBetaFeatureMembership(ApplyGkehubBetaFeatureMembershipRequest) returns (GkehubBetaFeatureMembership);
+  rpc DeleteGkehubBetaFeatureMembership(DeleteGkehubBetaFeatureMembershipRequest) returns (google.protobuf.Empty);
+  rpc ListGkehubBetaFeatureMembership(ListGkehubBetaFeatureMembershipRequest) returns (ListGkehubBetaFeatureMembershipResponse);
+}

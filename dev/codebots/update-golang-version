@@ -1,0 +1,202 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+import subprocess
+import json
+import urllib.request
+import re
+import glob
+from pathlib import Path
+
+
+def run_command(cmd, cwd=None, check=True):
+    """Run a shell command and return the result."""
+    print(f"Running: {' '.join(cmd) if isinstance(cmd, list) else cmd}")
+    if isinstance(cmd, str):
+        cmd = cmd.split()
+    result = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, check=check)
+    return result
+
+
+def get_repo_root():
+    """Get the repository root directory."""
+    result = run_command(["git", "rev-parse", "--show-toplevel"])
+    return result.stdout.strip()
+
+
+def get_latest_go_version():
+    """Fetch the latest stable Go version from the Go website."""
+    # If this fails with a certificate error, you may need to `/Applications/Python\ 3.12/Install\ Certificates.command`
+    with urllib.request.urlopen("https://go.dev/dl/?mode=json") as response:
+        data = json.loads(response.read())
+
+    # Find the first stable version
+    for version_info in data:
+        if version_info.get("stable", False):
+            return version_info["version"]
+
+    raise Exception("No stable Go version found")
+
+
+def find_files_by_pattern(repo_root, patterns):
+    """Find files matching given patterns using git ls-files."""
+    cmd = ["git", "ls-files"] + patterns
+    result = run_command(cmd, cwd=repo_root)
+    return [f for f in result.stdout.strip().split('\n') if f.strip()]
+
+
+def update_go_mod_files(repo_root, go_toolchain):
+    """Update all go.mod files with the new toolchain."""
+    patterns = ["go.mod", "**/go.mod"]
+    go_mod_files = find_files_by_pattern(repo_root, patterns)
+
+    for go_mod_file in go_mod_files:
+        if not go_mod_file:
+            continue
+
+        full_path = os.path.join(repo_root, go_mod_file)
+        dir_path = os.path.dirname(full_path)
+
+        print(f"Updating {go_mod_file} to toolchain {go_toolchain}")
+        run_command(["go", "mod", "edit", f"-toolchain={go_toolchain}"], cwd=dir_path)
+
+def update_go_work_files(repo_root, go_toolchain):
+    """Update all go.work files with the new toolchain."""
+    patterns = ["go.work", "**/go.work"]
+    go_work_files = find_files_by_pattern(repo_root, patterns)
+
+    for go_work_file in go_work_files:
+        if not go_work_file:
+            continue
+
+        full_path = os.path.join(repo_root, go_work_file)
+        dir_path = os.path.dirname(full_path)
+
+        print(f"Updating {go_work_file} to toolchain {go_toolchain}")
+        run_command(["go", "work", "edit", f"-toolchain={go_toolchain}"], cwd=dir_path)
+
+
+def update_dockerfile(file_path, go_version):
+    """Update a single Dockerfile with the new Go version."""
+    with open(file_path, 'r') as f:
+        content = f.read()
+
+    # Replace FROM golang:X.Y.Z with FROM golang:NEW_VERSION
+    pattern = r'FROM golang:[0-9]+\.[0-9]+(?:\.[0-9]+)?'
+    replacement = f'FROM golang:{go_version}'
+    new_content = re.sub(pattern, replacement, content)
+
+    if content != new_content:
+        with open(file_path, 'w') as f:
+            f.write(new_content)
+        print(f"Updated Dockerfile {file_path}")
+    else:
+        print(f"No changes needed in {file_path}")
+
+
+def update_dockerfiles(repo_root, go_version):
+    """Update all Dockerfile files with the new Go version."""
+    patterns = ["Dockerfile*", "**/Dockerfile*"]
+    dockerfile_paths = find_files_by_pattern(repo_root, patterns)
+
+    for dockerfile_path in dockerfile_paths:
+        if not dockerfile_path:
+            continue
+
+        full_path = os.path.join(repo_root, dockerfile_path)
+        print(f"Updating Dockerfile {dockerfile_path} to go image {go_version}")
+        update_dockerfile(full_path, go_version)
+
+
+def update_golang_setup_script(repo_root, go_version):
+    """Update the golang setup script with the new Go version."""
+    script_path = os.path.join(repo_root, "scripts/environment-setup/golang-setup.sh")
+
+    if not os.path.exists(script_path):
+        print(f"Warning: {script_path} does not exist")
+        return
+
+    with open(script_path, 'r') as f:
+        content = f.read()
+
+    # Replace GO_VERSION="X.Y.Z" with GO_VERSION="NEW_VERSION"
+    pattern = r'^GO_VERSION=.*$'
+    replacement = f'GO_VERSION="{go_version}"'
+    new_content = re.sub(pattern, replacement, content, flags=re.MULTILINE)
+
+    if content != new_content:
+        with open(script_path, 'w') as f:
+            f.write(new_content)
+        print(f"Updated scripts/environment-setup/golang-setup.sh to go version {go_version}")
+    else:
+        print("No changes needed in golang-setup.sh")
+
+
+def checkout_third_party(repo_root):
+    """Restore third_party directory to avoid unintended changes."""
+    try:
+        run_command(["git", "checkout", "--", "third_party/"], cwd=repo_root)
+        print("Restored third_party/ directory")
+    except subprocess.CalledProcessError:
+        print("No third_party/ changes to restore")
+
+
+def commit_changes(repo_root, go_version):
+    """Commit changes if any exist."""
+    try:
+        # Check if there are changes
+        run_command(["git", "diff", "--quiet"], cwd=repo_root)
+        print("No changes to commit")
+        return False
+    except subprocess.CalledProcessError:
+        # There are changes, commit them
+        run_command(["git", "add", "."], cwd=repo_root)
+        commit_message = f"codebot: update go to {go_version}"
+        run_command(["git", "commit", "-m", commit_message], cwd=repo_root)
+        print(f"Committed changes with message: {commit_message}")
+        return True
+
+
+def main():
+    # Get repository root
+    repo_root = get_repo_root()
+    os.chdir(repo_root)
+    print(f"Working in repository: {repo_root}")
+
+    # Get latest Go version
+    go_toolchain = get_latest_go_version()
+    print(f"GO_TOOLCHAIN={go_toolchain}")
+
+    # Create new branch
+    branch_name = f"codebot-update-golang-version-{go_toolchain}"
+    run_command(["git", "switch", "--force-create", branch_name], cwd=repo_root)
+    print(f"Created and switched to branch: {branch_name}")
+
+    # Extract version number (remove 'go' prefix)
+    go_version = go_toolchain[2:] if go_toolchain.startswith('go') else go_toolchain
+    print(f"GO_VERSION={go_version}")
+
+    # Update go.mod files
+    update_go_mod_files(repo_root, go_toolchain)
+    # Update go.work files
+    update_go_work_files(repo_root, go_toolchain)
+
+    # Update Dockerfiles
+    update_dockerfiles(repo_root, go_version)
+
+    # Update golang setup script
+    update_golang_setup_script(repo_root, go_version)
+
+    # Restore third_party directory
+    checkout_third_party(repo_root)
+
+    # Commit changes
+    if commit_changes(repo_root, go_version):
+        print("Successfully updated Go version and committed changes")
+    else:
+        print("No changes were made")
+
+
+if __name__ == "__main__":
+    main()

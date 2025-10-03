@@ -12,13 +12,14 @@ insertText: |
     description: \${6:BigQuery Sample Table}
     datasetRef:
       name: \${7:bigquerytabledep}
-    friendlyName: \${8:bigquerytable-sample}
+    requirePartitionFilter: \${8:true}
+    friendlyName: \${9:bigquerytable-sample}
     externalDataConfiguration:
-      autodetect: \${9:true}
-      compression: \${10:NONE}
-      ignoreUnknownValues: \${11:false}
-      maxBadRecords: \${12:10}
-      sourceFormat: \${13:CSV}
+      autodetect: \${10:true}
+      compression: \${11:NONE}
+      ignoreUnknownValues: \${12:false}
+      maxBadRecords: \${13:10}
+      sourceFormat: \${14:CSV}
       sourceUris:
-      - \${14:gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt}
-      - \${15:gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20180201_01_T2/LC08_L1GT_044034_20130330_20180201_01_T2_ANG.txt}
+      - \${15:gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt}
+      - \${16:gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20180201_01_T2/LC08_L1GT_044034_20130330_20180201_01_T2_ANG.txt}

@@ -1,0 +1,165 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ContainerNodePoolConfigSandboxConfigTypeEnum {
+  ContainerNodePoolConfigSandboxConfigTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerNodePoolConfigSandboxConfigTypeEnumGVISOR = 1;
+}
+
+enum ContainerNodePoolConfigReservationAffinityConsumeReservationTypeEnum {
+  ContainerNodePoolConfigReservationAffinityConsumeReservationTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerNodePoolConfigReservationAffinityConsumeReservationTypeEnumNO_RESERVATION = 1;
+  ContainerNodePoolConfigReservationAffinityConsumeReservationTypeEnumANY_RESERVATION = 2;
+  ContainerNodePoolConfigReservationAffinityConsumeReservationTypeEnumSPECIFIC_RESERVATION = 3;
+}
+
+enum ContainerNodePoolConditionsCodeEnum {
+  ContainerNodePoolConditionsCodeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerNodePoolConditionsCodeEnumUNKNOWN = 1;
+  ContainerNodePoolConditionsCodeEnumGCE_STOCKOUT = 2;
+  ContainerNodePoolConditionsCodeEnumGKE_SERVICE_ACCOUNT_DELETED = 3;
+  ContainerNodePoolConditionsCodeEnumGCE_QUOTA_EXCEEDED = 4;
+  ContainerNodePoolConditionsCodeEnumSET_BY_OPERATOR = 5;
+}
+
+message ContainerNodePool {
+  string name = 1;
+  ContainerNodePoolConfig config = 2;
+  int64 node_count = 3;
+  string version = 4;
+  string status = 5;
+  string status_message = 6;
+  repeated string locations = 7;
+  ContainerNodePoolAutoscaling autoscaling = 8;
+  ContainerNodePoolManagement management = 9;
+  ContainerNodePoolMaxPodsConstraint max_pods_constraint = 10;
+  repeated ContainerNodePoolConditions conditions = 11;
+  int64 pod_ipv4_cidr_size = 12;
+  ContainerNodePoolUpgradeSettings upgrade_settings = 13;
+  string cluster = 14;
+  string project = 15;
+  string location = 16;
+}
+
+message ContainerNodePoolConfig {
+  string machine_type = 1;
+  int64 disk_size_gb = 2;
+  repeated string oauth_scopes = 3;
+  string service_account = 4;
+  map<string, string> metadata = 5;
+  string image_type = 6;
+  map<string, string> labels = 7;
+  int64 local_ssd_count = 8;
+  repeated string tags = 9;
+  bool preemptible = 10;
+  repeated ContainerNodePoolConfigAccelerators accelerators = 11;
+  string disk_type = 12;
+  string min_cpu_platform = 13;
+  repeated ContainerNodePoolConfigTaints taints = 14;
+  ContainerNodePoolConfigSandboxConfig sandbox_config = 15;
+  ContainerNodePoolConfigReservationAffinity reservation_affinity = 16;
+  ContainerNodePoolConfigShieldedInstanceConfig shielded_instance_config = 17;
+}
+
+message ContainerNodePoolConfigAccelerators {
+  int64 accelerator_count = 1;
+  string accelerator_type = 2;
+}
+
+message ContainerNodePoolConfigTaints {
+  string key = 1;
+  string value = 2;
+  string effect = 3;
+}
+
+message ContainerNodePoolConfigSandboxConfig {
+  ContainerNodePoolConfigSandboxConfigTypeEnum type = 1;
+}
+
+message ContainerNodePoolConfigReservationAffinity {
+  ContainerNodePoolConfigReservationAffinityConsumeReservationTypeEnum consume_reservation_type = 1;
+  string key = 2;
+  repeated string values = 3;
+}
+
+message ContainerNodePoolConfigShieldedInstanceConfig {
+  bool enable_secure_boot = 1;
+  bool enable_integrity_monitoring = 2;
+}
+
+message ContainerNodePoolAutoscaling {
+  bool enabled = 1;
+  int64 min_node_count = 2;
+  int64 max_node_count = 3;
+  bool autoprovisioned = 4;
+}
+
+message ContainerNodePoolManagement {
+  bool auto_upgrade = 1;
+  bool auto_repair = 2;
+  ContainerNodePoolManagementUpgradeOptions upgrade_options = 3;
+}
+
+message ContainerNodePoolManagementUpgradeOptions {
+  string auto_upgrade_start_time = 1;
+  string description = 2;
+}
+
+message ContainerNodePoolMaxPodsConstraint {
+  int64 max_pods_per_node = 1;
+}
+
+message ContainerNodePoolConditions {
+  ContainerNodePoolConditionsCodeEnum code = 1;
+  string message = 2;
+}
+
+message ContainerNodePoolUpgradeSettings {
+  int64 max_surge = 1;
+  int64 max_unavailable = 2;
+}
+
+message ApplyContainerNodePoolRequest {
+  ContainerNodePool resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteContainerNodePoolRequest {
+  string service_account_file = 1;
+  ContainerNodePool resource = 2;
+}
+
+message ListContainerNodePoolRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string Cluster = 4;
+}
+
+message ListContainerNodePoolResponse {
+  repeated ContainerNodePool items = 1;
+}
+
+service ContainerNodePoolService {
+  rpc ApplyContainerNodePool(ApplyContainerNodePoolRequest) returns (ContainerNodePool);
+  rpc DeleteContainerNodePool(DeleteContainerNodePoolRequest) returns (google.protobuf.Empty);
+  rpc ListContainerNodePool(ListContainerNodePoolRequest) returns (ListContainerNodePoolResponse);
+}

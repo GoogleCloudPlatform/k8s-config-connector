@@ -42,9 +42,19 @@ func main() {
 func run(ctx context.Context) error {
 	klog.InitFlags(nil)
 
+	var opt protogen.ConvertOptions
+	opt.NormalizeLRO = true
+
 	protoVersion := 3
 	flag.IntVar(&protoVersion, "proto-version", protoVersion, "use proto version (2 or 3)")
+	protoPackage := ""
+	flag.StringVar(&protoPackage, "proto-package", protoPackage, "protobuf package to generate")
+	flag.BoolVar(&opt.NormalizeLRO, "normalize-lro", opt.NormalizeLRO, "normalize long-running operations to our standard LRO")
 	flag.Parse()
+
+	if protoPackage == "" {
+		return fmt.Errorf("must specify --proto-package")
+	}
 
 	p := flag.Args()[0]
 	b, err := os.ReadFile(p)
@@ -55,10 +65,10 @@ func run(ctx context.Context) error {
 	decoder := json.NewDecoder(bytes.NewReader(b))
 	decoder.DisallowUnknownFields()
 	if err := decoder.Decode(doc); err != nil {
-		return fmt.Errorf("parsing json %q: %w", p, err)
+		return fmt.Errorf("parsing json %q (with DisallowUnknownFields): %w", p, err)
 	}
 
-	c := protogen.NewOpenAPIConverter(doc)
+	c := protogen.NewOpenAPIConverter(protoPackage, doc, opt)
 	fileDescriptor, err := c.Convert(ctx)
 	if err != nil {
 		return fmt.Errorf("convert failed: %w", err)
@@ -82,6 +92,7 @@ func run(ctx context.Context) error {
 
 	files.RangeFiles(func(file protoreflect.FileDescriptor) bool {
 		pw := protogen.NewProtoWriter(os.Stdout)
+		pw.SetComments(&c.Comments)
 		pw.SetProtoVersion(protoVersion)
 		pw.WriteFile(file)
 		if err := pw.Error(); err != nil {

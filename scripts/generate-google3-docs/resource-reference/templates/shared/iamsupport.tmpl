@@ -6,7 +6,7 @@
 {{ if.IAM.IsDCLBased}}
 <tr>
     <td>IAMPolicy/IAMPartialPolicy Supports Conditions</td>
-    <td>Yes</td>
+    {{ if.IAM.SupportsConditions}}<td>Yes</td>{{else}}<td>No</td>{{end}}
 </tr>
 <tr>
     <td>IAMPolicyMember Supports Conditions</td>

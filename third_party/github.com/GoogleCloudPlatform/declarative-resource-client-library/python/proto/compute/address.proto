@@ -1,0 +1,101 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeAddressStatusEnum {
+  ComputeAddressStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAddressStatusEnumPENDING = 1;
+  ComputeAddressStatusEnumRUNNING = 2;
+  ComputeAddressStatusEnumDONE = 3;
+}
+
+enum ComputeAddressNetworkTierEnum {
+  ComputeAddressNetworkTierEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAddressNetworkTierEnumPREMIUM = 1;
+  ComputeAddressNetworkTierEnumSTANDARD = 2;
+}
+
+enum ComputeAddressIPVersionEnum {
+  ComputeAddressIPVersionEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAddressIPVersionEnumIPV4 = 1;
+  ComputeAddressIPVersionEnumIPV6 = 2;
+}
+
+enum ComputeAddressAddressTypeEnum {
+  ComputeAddressAddressTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAddressAddressTypeEnumINTERNAL = 1;
+  ComputeAddressAddressTypeEnumEXTERNAL = 2;
+}
+
+enum ComputeAddressPurposeEnum {
+  ComputeAddressPurposeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAddressPurposeEnumGCE_ENDPOINT = 1;
+  ComputeAddressPurposeEnumDNS_RESOLVER = 2;
+  ComputeAddressPurposeEnumVPC_PEERING = 3;
+  ComputeAddressPurposeEnumNAT_AUTO = 4;
+}
+
+message ComputeAddress {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string address = 4;
+  int64 prefix_length = 5;
+  ComputeAddressStatusEnum status = 6;
+  string region = 7;
+  string self_link = 8;
+  ComputeAddressNetworkTierEnum network_tier = 9;
+  ComputeAddressIPVersionEnum ip_version = 10;
+  ComputeAddressAddressTypeEnum address_type = 11;
+  ComputeAddressPurposeEnum purpose = 12;
+  string subnetwork = 13;
+  string network = 14;
+  string project = 15;
+  string creation_timestamp = 16;
+  repeated string users = 17;
+  string label_fingerprint = 18;
+  string location = 19;
+}
+
+message ApplyComputeAddressRequest {
+  ComputeAddress resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeAddressRequest {
+  string service_account_file = 1;
+  ComputeAddress resource = 2;
+}
+
+message ListComputeAddressRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComputeAddressResponse {
+  repeated ComputeAddress items = 1;
+}
+
+service ComputeAddressService {
+  rpc ApplyComputeAddress(ApplyComputeAddressRequest) returns (ComputeAddress);
+  rpc DeleteComputeAddress(DeleteComputeAddressRequest) returns (google.protobuf.Empty);
+  rpc ListComputeAddress(ListComputeAddressRequest) returns (ListComputeAddressResponse);
+}

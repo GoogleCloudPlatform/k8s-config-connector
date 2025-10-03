@@ -25,6 +25,3 @@ spec:
     template:
       containers:
       - image: "us-docker.pkg.dev/cloudrun/container/hello"
-  lifecycle:
-    ignore_changes:
-    - launch_stage

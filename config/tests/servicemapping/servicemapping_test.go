@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 	tfresource "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/resource"
@@ -47,6 +48,14 @@ func TestIDTemplateCanBeUsedToMatchResourceNameShouldHaveValue(t *testing.T) {
 	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
 	for _, sm := range serviceMappings {
 		for _, rc := range sm.Spec.Resources {
+			// TODO: Remove the test file after all the resources are migrated to direct.
+			// The 'Direct' indicator is necessary during the migration so
+			// that Config Connector uses direct approach to generate CRDs
+			// but still allow TF-based controller to reconcile the resource.
+			// After the migration is completed, no service mapping should be left.
+			if rc.Direct {
+				continue
+			}
 			if rc.IDTemplateCanBeUsedToMatchResourceName == nil {
 				t.Fatalf("resource config '%v' is missing required field 'IDTemplateCanBeUsedToMatchResourceName'",
 					rc.Name)
@@ -96,6 +105,45 @@ func TestServiceHostName(t *testing.T) {
 	}
 }
 
+func TestDirectResourceConfigsForMigrationOnly(t *testing.T) {
+	smLoader := testservicemappingloader.New(t)
+	var allDirectRCs []string
+	gvks := k8s.SortGVKsByKind(supportedgvks.BasedOnAllServiceMappings(smLoader))
+	for _, gvk := range gvks {
+		rcs, err := smLoader.GetResourceConfigs(gvk)
+		if err != nil {
+			t.Fatalf("error getting resource config for gvk %+v", gvk)
+		}
+		if len(rcs) == 0 {
+			t.Errorf("no resource config for gvk %+v but there should be at least one", gvk)
+		}
+		directCount := 0
+		var directRCs []string
+		for _, rc := range rcs {
+			if rc.Direct {
+				directCount++
+
+				// Only a Kind that is still TF-based can have `direct: true` in
+				// its resource config(s).
+				if !supportedgvks.IsTFBasedByGVK(gvk) {
+					t.Errorf("gvk %+v (resource config %v) is set to direct but it is not in direct migration", gvk, rc.Name)
+				}
+				directRCs = append(directRCs, fmt.Sprintf("gvk=%+v, resourceConfigName=%v", gvk, rc.Name))
+			}
+		}
+		if directCount == len(rcs) {
+			allDirectRCs = append(allDirectRCs, directRCs...)
+		} else if directCount == 0 {
+			continue
+		} else {
+			t.Errorf("%v out of %v resource configs mapping to gvk %+v is/are direct, but all should be direct or none should be direct", directCount, len(rcs), gvk)
+		}
+	}
+
+	want := strings.Join(allDirectRCs, "\n")
+	test.CompareGoldenFile(t, "testdata/resourcesindirectmigration.txt", want)
+}
+
 func TestIAMPolicyMappings(t *testing.T) {
 	t.Parallel()
 	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
@@ -105,6 +153,14 @@ func TestIAMPolicyMappings(t *testing.T) {
 			// TODO (b/221463073): disable ComputeBackendService until
 			// ComputeRegionBackendService gets IAM support.
 			if rc.Kind == "ComputeBackendService" {
+				continue
+			}
+			// TODO: Remove the test file after all the resources are migrated to direct.
+			// The 'Direct' indicator is necessary during the migration so
+			// that Config Connector uses direct approach to generate CRDs
+			// but still allow TF-based controller to reconcile the resource.
+			// After the migration is completed, no service mapping should be left.
+			if rc.Direct { // Do not check for direct resource
 				continue
 			}
 			t.Run(rc.Kind, func(t *testing.T) {
@@ -235,6 +291,11 @@ func TestTerraformFieldsAreInResourceSchema(t *testing.T) {
 				}
 				for _, f := range rc.IgnoredFields {
 					fields = append(fields, f)
+				}
+				if rc.IgnoredOutputOnlySpecFields != nil {
+					for _, o := range *rc.IgnoredOutputOnlySpecFields {
+						fields = append(fields, o)
+					}
 				}
 				for _, c := range rc.Containers {
 					fields = append(fields, c.TFField)
@@ -601,7 +662,12 @@ func TestMustHaveIDTemplateOrServerGeneratedId(t *testing.T) {
 }
 
 func assertIDTemplateOrServerGeneratedID(t *testing.T, rc v1alpha1.ResourceConfig) {
-	if rc.IDTemplate == "" && rc.ServerGeneratedIDField == "" {
+	// TODO: Remove the test file after all the resources are migrated to direct.
+	// The 'Direct' indicator is necessary during the migration so
+	// that Config Connector uses direct approach to generate CRDs
+	// but still allow TF-based controller to reconcile the resource.
+	// After the migration is completed, no service mapping should be left.
+	if !rc.Direct && rc.IDTemplate == "" && rc.ServerGeneratedIDField == "" {
 		t.Fatalf("resource kind '%v' with name '%v' has neither id template or server generated ID defined: at least one must be present", rc.Kind, rc.Name)
 	}
 }
@@ -1216,7 +1282,7 @@ func TestV1alpha1ToV1beta1IsSetForManuallyConfiguredAndAllowlistedResources(t *t
 			if r.AutoGenerated && isV1alpha1ToV1beta1 {
 				t.Errorf("resource config %v is auto-generated "+
 					"and allowlisted, but has `v1alpha1ToV1beta1: true`: "+
-					"`v1alpha1ToV1beta1` should be usnet", r.Name)
+					"`v1alpha1ToV1beta1` should be unset", r.Name)
 				continue
 			}
 			if !r.AutoGenerated {
@@ -1259,6 +1325,17 @@ func TestStorageVersionIsSetAndValidIFFV1alpha1ToV1beta1IsSet(t *testing.T) {
 				continue
 			}
 			if isV1alpha1ToV1beta1 {
+				// If this is a direct resource, the storage version is defined
+				// in the kubebuilder tooling.
+				//
+				// TODO: Remove the test file after all the resources are migrated to direct.
+				// The 'Direct' indicator is necessary during the migration so
+				// that Config Connector uses direct approach to generate CRDs
+				// but still allow TF-based controller to reconcile the resource.
+				// After the migration is completed, no service mapping should be left.
+				if r.Direct {
+					continue
+				}
 				if hasStorageVersion {
 					t.Errorf("Resource config %v has `v1alpha1ToV1beta1: "+
 						"true` but doesn't have a valid `storageVersion`: "+
@@ -1429,5 +1506,44 @@ func assertReferencedResourcesNotAlpha(t *testing.T, rc *v1alpha1.ResourceConfig
 				}
 			}
 		}
+	}
+}
+
+func TestIgnoredOutputOnlySpecFields(t *testing.T) {
+	t.Parallel()
+	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
+	provider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
+	for _, sm := range serviceMappings {
+		sm := sm
+		t.Run(sm.Name, func(t *testing.T) {
+			t.Parallel()
+			for _, rc := range sm.Spec.Resources {
+				tfResource := provider.ResourcesMap[rc.Name]
+				rc := rc
+				t.Run(rc.Kind, func(t *testing.T) {
+					t.Parallel()
+					if rc.IgnoredOutputOnlySpecFields == nil {
+						return
+					}
+					if len(*rc.IgnoredOutputOnlySpecFields) == 0 {
+						t.Errorf("kind %v has an empty IgnoredOutputOnlySpecFields slice", rc.Kind)
+						return
+					}
+					for _, f := range *rc.IgnoredOutputOnlySpecFields {
+						if f == "" {
+							t.Errorf("kind %v has an empty value in IgnoredOutputOnlySpecFields slice", rc.Kind)
+							return
+						}
+						fieldSchema, err := tfresource.GetTFSchemaForField(tfResource, f)
+						if err != nil {
+							t.Errorf("error getting TF schema for output-only spec field %v in kind %v", f, rc.Kind)
+						}
+						if tfresource.IsConfigurableField(fieldSchema) {
+							t.Errorf("output-only spec field %v in kind %v is configurable", f, rc.Kind)
+						}
+					}
+				})
+			}
+		})
 	}
 }

@@ -1,0 +1,66 @@
+{
+  "project": "{{project}}",
+  "name": "{{template_name}}",
+  "location": "{{region}}",
+  "placement": {
+    "managedCluster": {
+      "clusterName": "my-cluster",
+      "labels": {
+        "environment": "env"
+      },
+      "config": {
+        "initializationActions": [],
+        "gceClusterConfig": {
+          "zone": "us-centra1-a",
+          "tags": ["foo", "bar"],
+          "subnetwork": "{{ref:basic.compute.subnetwork.json:selfLink}}",
+          "serviceAccountScopes": ["https://www.googleapis.com/auth/cloud-platform"],
+          "internalIpOnly": true,
+          "metadata": {}
+        },
+        "masterConfig": {
+          "numInstances": 1,
+          "machineType": "n1-standard-1",
+          "diskConfig": {
+            "bootDiskType": "pd-ssd",
+            "bootDiskSizeGb": 15
+          }
+        },
+        "workerConfig": {
+          "numInstances": 3,
+          "machineType": "n1-standard-2",
+          "diskConfig": {
+            "bootDiskSizeGb": 10,
+            "numLocalSsds": 2
+          },
+          "instanceNames": []
+        },
+        "secondaryWorkerConfig": {
+          "numInstances": 0
+        },
+        "softwareConfig": {
+          "imageVersion": "2.0.27-debian10",
+          "properties": {
+            "dataproc:dataproc.allow.zero.workers": "true"
+          },
+          "optionalComponents": []
+        }
+      }
+    }
+  },
+  "jobs": [
+    {
+      "stepId": "someJob",
+      "sparkJob": {
+        "mainClass": "SomeClass"
+      }
+    },
+    {
+      "stepId": "otherJob",
+      "prerequisiteStepIds": ["someJob"],
+      "prestoJob": {
+        "queryFileUri": "someuri"
+      }
+    }
+  ]
+}

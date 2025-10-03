@@ -1,0 +1,152 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ContainerawsAlphaAwsClusterControlPlaneRootVolumeVolumeTypeEnum {
+  ContainerawsAlphaAwsClusterControlPlaneRootVolumeVolumeTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerawsAlphaAwsClusterControlPlaneRootVolumeVolumeTypeEnumVOLUME_TYPE_UNSPECIFIED = 1;
+  ContainerawsAlphaAwsClusterControlPlaneRootVolumeVolumeTypeEnumGP2 = 2;
+  ContainerawsAlphaAwsClusterControlPlaneRootVolumeVolumeTypeEnumGP3 = 3;
+}
+
+enum ContainerawsAlphaAwsClusterControlPlaneMainVolumeVolumeTypeEnum {
+  ContainerawsAlphaAwsClusterControlPlaneMainVolumeVolumeTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerawsAlphaAwsClusterControlPlaneMainVolumeVolumeTypeEnumVOLUME_TYPE_UNSPECIFIED = 1;
+  ContainerawsAlphaAwsClusterControlPlaneMainVolumeVolumeTypeEnumGP2 = 2;
+  ContainerawsAlphaAwsClusterControlPlaneMainVolumeVolumeTypeEnumGP3 = 3;
+}
+
+enum ContainerawsAlphaAwsClusterStateEnum {
+  ContainerawsAlphaAwsClusterStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerawsAlphaAwsClusterStateEnumSTATE_UNSPECIFIED = 1;
+  ContainerawsAlphaAwsClusterStateEnumPROVISIONING = 2;
+  ContainerawsAlphaAwsClusterStateEnumRUNNING = 3;
+  ContainerawsAlphaAwsClusterStateEnumRECONCILING = 4;
+  ContainerawsAlphaAwsClusterStateEnumSTOPPING = 5;
+  ContainerawsAlphaAwsClusterStateEnumERROR = 6;
+  ContainerawsAlphaAwsClusterStateEnumDEGRADED = 7;
+}
+
+message ContainerawsAlphaAwsCluster {
+  string name = 1;
+  string description = 2;
+  ContainerawsAlphaAwsClusterNetworking networking = 3;
+  string aws_region = 4;
+  ContainerawsAlphaAwsClusterControlPlane control_plane = 5;
+  ContainerawsAlphaAwsClusterAuthorization authorization = 6;
+  ContainerawsAlphaAwsClusterStateEnum state = 7;
+  string endpoint = 8;
+  string uid = 9;
+  bool reconciling = 10;
+  string create_time = 11;
+  string update_time = 12;
+  string etag = 13;
+  map<string, string> annotations = 14;
+  ContainerawsAlphaAwsClusterWorkloadIdentityConfig workload_identity_config = 15;
+  string project = 16;
+  string location = 17;
+}
+
+message ContainerawsAlphaAwsClusterNetworking {
+  string vpc_id = 1;
+  repeated string pod_address_cidr_blocks = 2;
+  repeated string service_address_cidr_blocks = 3;
+  repeated string service_load_balancer_subnet_ids = 4;
+}
+
+message ContainerawsAlphaAwsClusterControlPlane {
+  string version = 1;
+  string instance_type = 2;
+  ContainerawsAlphaAwsClusterControlPlaneSshConfig ssh_config = 3;
+  repeated string subnet_ids = 4;
+  repeated string security_group_ids = 5;
+  string iam_instance_profile = 6;
+  ContainerawsAlphaAwsClusterControlPlaneRootVolume root_volume = 7;
+  ContainerawsAlphaAwsClusterControlPlaneMainVolume main_volume = 8;
+  ContainerawsAlphaAwsClusterControlPlaneDatabaseEncryption database_encryption = 9;
+  map<string, string> tags = 10;
+  ContainerawsAlphaAwsClusterControlPlaneAwsServicesAuthentication aws_services_authentication = 11;
+}
+
+message ContainerawsAlphaAwsClusterControlPlaneSshConfig {
+  string ec2_key_pair = 1;
+}
+
+message ContainerawsAlphaAwsClusterControlPlaneRootVolume {
+  int64 size_gib = 1;
+  ContainerawsAlphaAwsClusterControlPlaneRootVolumeVolumeTypeEnum volume_type = 2;
+  int64 iops = 3;
+  string kms_key_arn = 4;
+}
+
+message ContainerawsAlphaAwsClusterControlPlaneMainVolume {
+  int64 size_gib = 1;
+  ContainerawsAlphaAwsClusterControlPlaneMainVolumeVolumeTypeEnum volume_type = 2;
+  int64 iops = 3;
+  string kms_key_arn = 4;
+}
+
+message ContainerawsAlphaAwsClusterControlPlaneDatabaseEncryption {
+  string kms_key_arn = 1;
+}
+
+message ContainerawsAlphaAwsClusterControlPlaneAwsServicesAuthentication {
+  string role_arn = 1;
+  string role_session_name = 2;
+}
+
+message ContainerawsAlphaAwsClusterAuthorization {
+  repeated ContainerawsAlphaAwsClusterAuthorizationAdminUsers admin_users = 1;
+}
+
+message ContainerawsAlphaAwsClusterAuthorizationAdminUsers {
+  string username = 1;
+}
+
+message ContainerawsAlphaAwsClusterWorkloadIdentityConfig {
+  string issuer_uri = 1;
+  string workload_pool = 2;
+  string identity_provider = 3;
+}
+
+message ApplyContainerawsAlphaAwsClusterRequest {
+  ContainerawsAlphaAwsCluster resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteContainerawsAlphaAwsClusterRequest {
+  string service_account_file = 1;
+  ContainerawsAlphaAwsCluster resource = 2;
+}
+
+message ListContainerawsAlphaAwsClusterRequest {
+  string service_account_file = 1;
+	ContainerawsAlphaAwsCluster resource = 2;
+}
+
+message ListContainerawsAlphaAwsClusterResponse {
+  repeated ContainerawsAlphaAwsCluster items = 1;
+}
+
+service ContainerawsAlphaAwsClusterService {
+  rpc ApplyContainerawsAlphaAwsCluster(ApplyContainerawsAlphaAwsClusterRequest) returns (ContainerawsAlphaAwsCluster);
+  rpc DeleteContainerawsAlphaAwsCluster(DeleteContainerawsAlphaAwsClusterRequest) returns (google.protobuf.Empty);
+  rpc ListContainerawsAlphaAwsCluster(ListContainerawsAlphaAwsClusterRequest) returns (ListContainerawsAlphaAwsClusterResponse);
+}

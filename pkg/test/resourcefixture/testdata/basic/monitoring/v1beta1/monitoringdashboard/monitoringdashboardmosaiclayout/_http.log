@@ -1,0 +1,674 @@
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "combiner": "AND_WITH_MATCHING_RESOURCE",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project",
+              "resource.label.instance_id",
+              "resource.label.zone"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.9,
+        "trigger": {
+          "count": 1
+        }
+      },
+      "displayName": "Very high CPU usage"
+    }
+  ],
+  "displayName": "Test Alert Policy",
+  "enabled": true,
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "combiner": "AND_WITH_MATCHING_RESOURCE",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project",
+              "resource.label.instance_id",
+              "resource.label.zone"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.9,
+        "trigger": {
+          "count": 1
+        }
+      },
+      "displayName": "Very high CPU usage",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test Alert Policy",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "combiner": "AND_WITH_MATCHING_RESOURCE",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project",
+              "resource.label.instance_id",
+              "resource.label.zone"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.9,
+        "trigger": {
+          "count": 1
+        }
+      },
+      "displayName": "Very high CPU usage",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test Alert Policy",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboardmosaiclayout-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboardmosaiclayout-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+
+{
+  "displayName": "monitoringdashboard-mosaiclayout",
+  "mosaicLayout": {
+    "columns": 12,
+    "tiles": [
+      {
+        "height": 1,
+        "widget": {
+          "id": "singleViewGroupWidget1",
+          "singleViewGroup": {},
+          "title": "SingleViewGroup Widget"
+        },
+        "width": 12
+      },
+      {
+        "height": 1,
+        "widget": {
+          "sectionHeader": {
+            "dividerBelow": true,
+            "subtitle": "Example SectionHeader"
+          },
+          "title": "SectionHeader Widget"
+        },
+        "width": 12,
+        "yPos": 1
+      },
+      {
+        "height": 1,
+        "widget": {
+          "collapsibleGroup": {
+            "collapsed": true
+          },
+          "title": "CollapsibleGroup Widget"
+        },
+        "width": 12,
+        "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "text": {
+            "content": "CollapsibleGroup content"
+          }
+        },
+        "width": 12,
+        "yPos": 2
+      }
+    ]
+  },
+  "name": "projects/${projectId}/dashboards/monitoringdashboardmosaiclayout-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "monitoringdashboard-mosaiclayout",
+  "etag": "abcdef0123A=",
+  "mosaicLayout": {
+    "columns": 12,
+    "tiles": [
+      {
+        "height": 1,
+        "widget": {
+          "id": "singleViewGroupWidget1",
+          "singleViewGroup": {},
+          "title": "SingleViewGroup Widget"
+        },
+        "width": 12
+      },
+      {
+        "height": 1,
+        "widget": {
+          "sectionHeader": {
+            "dividerBelow": true,
+            "subtitle": "Example SectionHeader"
+          },
+          "title": "SectionHeader Widget"
+        },
+        "width": 12,
+        "yPos": 1
+      },
+      {
+        "height": 1,
+        "widget": {
+          "collapsibleGroup": {
+            "collapsed": true
+          },
+          "title": "CollapsibleGroup Widget"
+        },
+        "width": 12,
+        "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "text": {
+            "content": "CollapsibleGroup content",
+            "format": 1,
+            "style": {}
+          }
+        },
+        "width": 12,
+        "yPos": 2
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboardmosaiclayout-${uniqueId}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboardmosaiclayout-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboardmosaiclayout-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "monitoringdashboard-mosaiclayout",
+  "etag": "abcdef0123A=",
+  "mosaicLayout": {
+    "columns": 12,
+    "tiles": [
+      {
+        "height": 1,
+        "widget": {
+          "id": "singleViewGroupWidget1",
+          "singleViewGroup": {},
+          "title": "SingleViewGroup Widget"
+        },
+        "width": 12
+      },
+      {
+        "height": 1,
+        "widget": {
+          "sectionHeader": {
+            "dividerBelow": true,
+            "subtitle": "Example SectionHeader"
+          },
+          "title": "SectionHeader Widget"
+        },
+        "width": 12,
+        "yPos": 1
+      },
+      {
+        "height": 1,
+        "widget": {
+          "collapsibleGroup": {
+            "collapsed": true
+          },
+          "title": "CollapsibleGroup Widget"
+        },
+        "width": 12,
+        "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "text": {
+            "content": "CollapsibleGroup content",
+            "format": 1,
+            "style": {}
+          }
+        },
+        "width": 12,
+        "yPos": 2
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboardmosaiclayout-${uniqueId}"
+}
+
+---
+
+PATCH https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboardmosaiclayout-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboardmosaiclayout-${uniqueId}
+
+{
+  "displayName": "monitoringdashboard-mosaiclayout",
+  "etag": "abcdef0123A=",
+  "mosaicLayout": {
+    "columns": 12,
+    "tiles": [
+      {
+        "height": 1,
+        "widget": {
+          "id": "singleViewGroupWidget1",
+          "singleViewGroup": {},
+          "title": "SingleViewGroup Widget"
+        },
+        "width": 12
+      },
+      {
+        "height": 1,
+        "widget": {
+          "sectionHeader": {
+            "dividerBelow": true,
+            "subtitle": "Example SectionHeader"
+          },
+          "title": "SectionHeader Widget"
+        },
+        "width": 12,
+        "yPos": 1
+      },
+      {
+        "height": 1,
+        "widget": {
+          "collapsibleGroup": {
+            "collapsed": true
+          },
+          "title": "CollapsibleGroup Widget"
+        },
+        "width": 12,
+        "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "text": {
+            "content": "CollapsibleGroup content"
+          }
+        },
+        "width": 12,
+        "yPos": 2
+      }
+    ]
+  },
+  "name": "projects/${projectId}/dashboards/monitoringdashboardmosaiclayout-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "monitoringdashboard-mosaiclayout",
+  "etag": "abcdef0123A=",
+  "mosaicLayout": {
+    "columns": 12,
+    "tiles": [
+      {
+        "height": 1,
+        "widget": {
+          "id": "singleViewGroupWidget1",
+          "singleViewGroup": {},
+          "title": "SingleViewGroup Widget"
+        },
+        "width": 12
+      },
+      {
+        "height": 1,
+        "widget": {
+          "sectionHeader": {
+            "dividerBelow": true,
+            "subtitle": "Example SectionHeader"
+          },
+          "title": "SectionHeader Widget"
+        },
+        "width": 12,
+        "yPos": 1
+      },
+      {
+        "height": 1,
+        "widget": {
+          "collapsibleGroup": {
+            "collapsed": true
+          },
+          "title": "CollapsibleGroup Widget"
+        },
+        "width": 12,
+        "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "text": {
+            "content": "CollapsibleGroup content",
+            "format": 1,
+            "style": {}
+          }
+        },
+        "width": 12,
+        "yPos": 2
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboardmosaiclayout-${uniqueId}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboardmosaiclayout-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboardmosaiclayout-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "monitoringdashboard-mosaiclayout",
+  "etag": "abcdef0123A=",
+  "mosaicLayout": {
+    "columns": 12,
+    "tiles": [
+      {
+        "height": 1,
+        "widget": {
+          "id": "singleViewGroupWidget1",
+          "singleViewGroup": {},
+          "title": "SingleViewGroup Widget"
+        },
+        "width": 12
+      },
+      {
+        "height": 1,
+        "widget": {
+          "sectionHeader": {
+            "dividerBelow": true,
+            "subtitle": "Example SectionHeader"
+          },
+          "title": "SectionHeader Widget"
+        },
+        "width": 12,
+        "yPos": 1
+      },
+      {
+        "height": 1,
+        "widget": {
+          "collapsibleGroup": {
+            "collapsed": true
+          },
+          "title": "CollapsibleGroup Widget"
+        },
+        "width": 12,
+        "yPos": 2
+      },
+      {
+        "height": 1,
+        "widget": {
+          "text": {
+            "content": "CollapsibleGroup content",
+            "format": 1,
+            "style": {}
+          }
+        },
+        "width": 12,
+        "yPos": 2
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/dashboards/monitoringdashboardmosaiclayout-${uniqueId}"
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboardmosaiclayout-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboardmosaiclayout-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "combiner": "AND_WITH_MATCHING_RESOURCE",
+  "conditions": [
+    {
+      "conditionThreshold": {
+        "aggregations": [
+          {
+            "alignmentPeriod": "60s",
+            "crossSeriesReducer": "REDUCE_MEAN",
+            "groupByFields": [
+              "project",
+              "resource.label.instance_id",
+              "resource.label.zone"
+            ],
+            "perSeriesAligner": "ALIGN_MAX"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "duration": "900s",
+        "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+        "thresholdValue": 0.9,
+        "trigger": {
+          "count": 1
+        }
+      },
+      "displayName": "Very high CPU usage",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test Alert Policy",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

@@ -88,9 +88,6 @@
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
@@ -866,7 +863,7 @@ observedGeneration: integer
 
 ## Sample YAML(s)
 
-### Basic Pubsub Subscription
+### Basic PubSub Subscription
 ```yaml
 # Copyright 2020 Google LLC
 #
@@ -909,7 +906,7 @@ metadata:
   name: pubsubsubscription-dep2-basic
 ```
 
-### BigQuery Pubsub Subscription
+### BigQuery PubSub Subscription
 ```yaml
 # Copyright 2022 Google LLC
 #
@@ -950,6 +947,7 @@ metadata:
     cnrm.cloud.google.com/project-id: ${PROJECT_ID?}
 spec:
   resourceID: pubsubsubscriptiondepbigquery
+  location: us-central1
 ---
 # Replace ${PROJECT_ID?} below with your desired project ID.
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1

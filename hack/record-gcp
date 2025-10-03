@@ -1,13 +1,62 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-set -e
-set -x
+set -o errexit
+set -o nounset
+set -o pipefail
 
 export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
 
 rm -rf $(pwd)/artifactz/realgcp
 
-RUN_TESTS=TestAllInSeries/$1
+# Run the tests specified on the command line
+if [[ $1 =~ TestE2EScript.* ]]; then
+  # Prefix looks good
+  RUN_TESTS=$1
+elif [[ $1 =~ TestAllInSeries.* ]]; then
+  # Prefix looks good
+  RUN_TESTS=$1
+else
+  RUN_TESTS=TestAllInSeries/$1
+fi
+export RUN_TESTS
+
+if [[ -z "${GCP_PROJECT_ID:-}" ]]; then
+  GCP_PROJECT_ID=$(gcloud config get-value project)
+fi
+echo "Using project: ${GCP_PROJECT_ID}"
+
+TEST_FOLDER_ID=$(gcloud projects describe ${GCP_PROJECT_ID} --format='value(parent.id)')
+export TEST_FOLDER_ID
+
+TEST_ORG_ID=$(gcloud projects get-ancestors ${GCP_PROJECT_ID} | grep organization | cut -f1 -d ' ')
+export TEST_ORG_ID
+
+if [[ -z "${TEST_BILLING_ACCOUNT_ID:-}" ]]; then
+  TEST_BILLING_ACCOUNT_ID=$(gcloud billing projects describe ${GCP_PROJECT_ID} --format='value(billingAccountName)' | cut -f2 -d/)
+fi
+
+export TEST_BILLING_ACCOUNT_ID
+echo "TEST_BILLING_ACCOUNT_ID=${TEST_BILLING_ACCOUNT_ID}"
+
+# Set timeout from env var, default to 7200s if not set
+if [[ -z "${E2E_TEST_TIMEOUT:-}" ]]; then
+  E2E_TEST_TIMEOUT="7200s"
+fi
+echo "Using test timeout: ${E2E_TEST_TIMEOUT}"
+
 
 # Run e2e tests against real gcp, capturing output
 ARTIFACTS=$(pwd)/artifactz/realgcp \
@@ -17,4 +66,4 @@ GOLDEN_REQUEST_CHECKS=1 \
 GOLDEN_OBJECT_CHECKS=1 \
 WRITE_GOLDEN_OUTPUT=1 \
 RUN_E2E=1 \
- go test ./tests/e2e -timeout 3600s -v -run $RUN_TESTS
+ go test ./tests/e2e -timeout ${E2E_TEST_TIMEOUT} -v -run $RUN_TESTS

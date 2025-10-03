@@ -21,7 +21,7 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 FILE=${1:-}
-[[ -z "${FILE:-}" ]] && { echo "Error: file not specified"; exit 1; }
+[[ -z "${FILE:-}" ]] && { echo "Error: file not specified" >&2; exit 1; }
 
 LICENSE_HEADER=${REPO_ROOT}/scripts/license-header.yaml
 

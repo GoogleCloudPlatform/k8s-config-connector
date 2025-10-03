@@ -1,0 +1,57 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ServiceusageServiceStateEnum {
+  ServiceusageServiceStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ServiceusageServiceStateEnumDISABLED = 1;
+  ServiceusageServiceStateEnumENABLED = 2;
+}
+
+message ServiceusageService {
+  string name = 1;
+  ServiceusageServiceStateEnum state = 2;
+  string project = 3;
+}
+
+message ApplyServiceusageServiceRequest {
+  ServiceusageService resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteServiceusageServiceRequest {
+  string service_account_file = 1;
+  ServiceusageService resource = 2;
+}
+
+message ListServiceusageServiceRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListServiceusageServiceResponse {
+  repeated ServiceusageService items = 1;
+}
+
+service ServiceusageServiceService {
+  rpc ApplyServiceusageService(ApplyServiceusageServiceRequest) returns (ServiceusageService);
+  rpc DeleteServiceusageService(DeleteServiceusageServiceRequest) returns (google.protobuf.Empty);
+  rpc ListServiceusageService(ListServiceusageServiceRequest) returns (ListServiceusageServiceResponse);
+}

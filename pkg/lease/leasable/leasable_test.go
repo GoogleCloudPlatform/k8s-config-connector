@@ -122,7 +122,7 @@ func TestDCLSchemaSupportsLeasing(t *testing.T) {
 			t.Parallel()
 			res, err := DCLSchemaSupportsLeasing(tc.schema)
 			if err != nil {
-				t.Fatalf("unexpcted error: %v", err)
+				t.Fatalf("unexpected error: %v", err)
 			}
 			if res != tc.expected {
 				t.Fatalf("expect to get %v, but got %v", tc.expected, res)

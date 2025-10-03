@@ -96,7 +96,6 @@ func ResourceStorageBucket() *schema.Resource {
 			"location": {
 				Type:     schema.TypeString,
 				Required: true,
-				ForceNew: true,
 				StateFunc: func(s interface{}) string {
 					return strings.ToUpper(s.(string))
 				},
@@ -420,13 +419,12 @@ func ResourceStorageBucket() *schema.Resource {
 						"data_locations": {
 							Type:     schema.TypeSet,
 							Required: true,
-							ForceNew: true,
 							MaxItems: 2,
 							MinItems: 2,
 							Elem: &schema.Schema{
 								Type: schema.TypeString,
 							},
-							Description: `The list of individual regions that comprise a dual-region bucket. See the docs for a list of acceptable regions. Note: If any of the data_locations changes, it will recreate the bucket.`,
+							Description: `The list of individual regions that comprise a dual-region bucket. See the docs for a list of acceptable regions.`,
 						},
 					},
 				},
@@ -437,6 +435,28 @@ func ResourceStorageBucket() *schema.Resource {
 				Optional:    true,
 				Computed:    true,
 				Description: `Prevents public access to a bucket.`,
+			},
+			"soft_delete_policy": {
+				Type:        schema.TypeList,
+				MaxItems:    1,
+				Optional:    true,
+				Computed:    true,
+				Description: `The bucket's soft delete policy, which defines the period of time that soft-deleted objects will be retained, and cannot be permanently deleted. If it is not provided, by default Google Cloud Storage sets this to default soft delete policy`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"retention_duration_seconds": {
+							Type:        schema.TypeInt,
+							Default:     604800,
+							Optional:    true,
+							Description: `The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800.`,
+						},
+						"effective_time": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: `Server-determined value that indicates the time from which the policy, or one with a greater retention, was effective. This value is in RFC 3339 format.`,
+						},
+					},
+				},
 			},
 		},
 		UseJSONNumber: true,
@@ -561,6 +581,10 @@ func resourceStorageBucketCreate(d *schema.ResourceData, meta interface{}) error
 
 	if v, ok := d.GetOk("custom_placement_config"); ok {
 		sb.CustomPlacementConfig = expandBucketCustomPlacementConfig(v.([]interface{}))
+	}
+
+	if v, ok := d.GetOk("soft_delete_policy"); ok {
+		sb.SoftDeletePolicy = expandBucketSoftDeletePolicy(v.([]interface{}))
 	}
 
 	var res *storage.Bucket
@@ -720,6 +744,12 @@ func resourceStorageBucketUpdate(d *schema.ResourceData, meta interface{}) error
 
 	if d.HasChange("uniform_bucket_level_access") || d.HasChange("public_access_prevention") {
 		sb.IamConfiguration = expandIamConfiguration(d)
+	}
+
+	if d.HasChange("soft_delete_policy") {
+		if v, ok := d.GetOk("soft_delete_policy"); ok {
+			sb.SoftDeletePolicy = expandBucketSoftDeletePolicy(v.([]interface{}))
+		}
 	}
 
 	res, err := config.NewStorageClient(userAgent).Buckets.Patch(d.Get("name").(string), sb).Do()
@@ -1081,6 +1111,32 @@ func flattenBucketRetentionPolicy(bucketRetentionPolicy *storage.BucketRetention
 
 	bucketRetentionPolicies = append(bucketRetentionPolicies, retentionPolicy)
 	return bucketRetentionPolicies
+}
+
+func expandBucketSoftDeletePolicy(configured interface{}) *storage.BucketSoftDeletePolicy {
+	configuredSoftDeletePolicies := configured.([]interface{})
+	if len(configuredSoftDeletePolicies) == 0 {
+		return nil
+	}
+	configuredSoftDeletePolicy := configuredSoftDeletePolicies[0].(map[string]interface{})
+	softDeletePolicy := &storage.BucketSoftDeletePolicy{
+		RetentionDurationSeconds: int64(configuredSoftDeletePolicy["retention_duration_seconds"].(int)),
+	}
+	softDeletePolicy.ForceSendFields = append(softDeletePolicy.ForceSendFields, "RetentionDurationSeconds")
+	return softDeletePolicy
+}
+
+func flattenBucketSoftDeletePolicy(softDeletePolicy *storage.BucketSoftDeletePolicy) []map[string]interface{} {
+	policies := make([]map[string]interface{}, 0, 1)
+	if softDeletePolicy == nil {
+		return policies
+	}
+	policy := map[string]interface{}{
+		"retention_duration_seconds": softDeletePolicy.RetentionDurationSeconds,
+		"effective_time":             softDeletePolicy.EffectiveTime,
+	}
+	policies = append(policies, policy)
+	return policies
 }
 
 func expandBucketVersioning(configured interface{}) *storage.BucketVersioning {
@@ -1459,6 +1515,14 @@ func resourceGCSBucketLifecycleRuleConditionHash(v interface{}) int {
 		buf.WriteString(fmt.Sprintf("%s-", v.(string)))
 	}
 
+	if v, ok := m["custom_time_before"]; ok {
+		buf.WriteString(fmt.Sprintf("%s-", v.(string)))
+	}
+
+	if v, ok := m["noncurrent_time_before"]; ok {
+		buf.WriteString(fmt.Sprintf("%s-", v.(string)))
+	}
+
 	withStateV, withStateOk := m["with_state"]
 	if withStateOk {
 		switch withStateV.(string) {
@@ -1598,6 +1662,9 @@ func setStorageBucket(d *schema.ResourceData, config *transport_tpg.Config, res 
 	}
 	if err := d.Set("custom_placement_config", flattenBucketCustomPlacementConfig(res.CustomPlacementConfig)); err != nil {
 		return fmt.Errorf("Error setting custom_placement_config: %s", err)
+	}
+	if err := d.Set("soft_delete_policy", flattenBucketSoftDeletePolicy(res.SoftDeletePolicy)); err != nil {
+		return fmt.Errorf("Error setting soft_delete_policy: %s", err)
 	}
 
 	if res.IamConfiguration != nil && res.IamConfiguration.UniformBucketLevelAccess != nil {

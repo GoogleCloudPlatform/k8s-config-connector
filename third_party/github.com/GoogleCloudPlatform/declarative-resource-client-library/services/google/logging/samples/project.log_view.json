@@ -1,0 +1,8 @@
+{
+  "name": "{{view}}",
+  "parent": "projects/{{ref:project.cloudbilling.project_billing_info.json:name}}",
+  "location": "global",
+  "bucket": "projects/{{ref:project.cloudbilling.project_billing_info.json:name}}/locations/global/buckets/{{ref:project.log_bucket.json:name}}",
+  "description": "A project-level log view",
+  "filter": "SOURCE(\"projects/myproject\") AND resource.type = \"gce_instance\" AND LOG_ID(\"stdout\")"
+}

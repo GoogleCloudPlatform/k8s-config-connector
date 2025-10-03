@@ -32,6 +32,6 @@ spec:
   - subnetworkRef:
       name: default
     networkIp: "10.128.0.9"
-    accessConfigs:
+    accessConfig:
     - networkTier: "PREMIUM"
   canIpForward: true

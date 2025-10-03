@@ -1,0 +1,506 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsFileTypesEnum {
+  DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsFileTypesEnumNO_VALUE_DO_NOT_USE = 0;
+  DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsFileTypesEnumFILE_TYPE_UNSPECIFIED = 1;
+  DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsFileTypesEnumBINARY_FILE = 2;
+  DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsFileTypesEnumTEXT_FILE = 3;
+  DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsFileTypesEnumIMAGE = 4;
+  DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsFileTypesEnumWORD = 5;
+  DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsFileTypesEnumPDF = 6;
+  DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsFileTypesEnumAVRO = 7;
+  DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsFileTypesEnumCSV = 8;
+  DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsFileTypesEnumTSV = 9;
+}
+
+enum DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsSampleMethodEnum {
+  DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsSampleMethodEnumNO_VALUE_DO_NOT_USE = 0;
+  DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsSampleMethodEnumSAMPLE_METHOD_UNSPECIFIED = 1;
+  DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsSampleMethodEnumTOP = 2;
+  DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsSampleMethodEnumRANDOM_START = 3;
+}
+
+enum DlpJobTriggerInspectJobStorageConfigBigQueryOptionsSampleMethodEnum {
+  DlpJobTriggerInspectJobStorageConfigBigQueryOptionsSampleMethodEnumNO_VALUE_DO_NOT_USE = 0;
+  DlpJobTriggerInspectJobStorageConfigBigQueryOptionsSampleMethodEnumSAMPLE_METHOD_UNSPECIFIED = 1;
+  DlpJobTriggerInspectJobStorageConfigBigQueryOptionsSampleMethodEnumTOP = 2;
+  DlpJobTriggerInspectJobStorageConfigBigQueryOptionsSampleMethodEnumRANDOM_START = 3;
+}
+
+enum DlpJobTriggerInspectJobInspectConfigMinLikelihoodEnum {
+  DlpJobTriggerInspectJobInspectConfigMinLikelihoodEnumNO_VALUE_DO_NOT_USE = 0;
+  DlpJobTriggerInspectJobInspectConfigMinLikelihoodEnumLIKELIHOOD_UNSPECIFIED = 1;
+  DlpJobTriggerInspectJobInspectConfigMinLikelihoodEnumVERY_UNLIKELY = 2;
+  DlpJobTriggerInspectJobInspectConfigMinLikelihoodEnumUNLIKELY = 3;
+  DlpJobTriggerInspectJobInspectConfigMinLikelihoodEnumPOSSIBLE = 4;
+  DlpJobTriggerInspectJobInspectConfigMinLikelihoodEnumLIKELY = 5;
+  DlpJobTriggerInspectJobInspectConfigMinLikelihoodEnumVERY_LIKELY = 6;
+}
+
+enum DlpJobTriggerInspectJobInspectConfigCustomInfoTypesLikelihoodEnum {
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesLikelihoodEnumNO_VALUE_DO_NOT_USE = 0;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesLikelihoodEnumLIKELIHOOD_UNSPECIFIED = 1;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesLikelihoodEnumVERY_UNLIKELY = 2;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesLikelihoodEnumUNLIKELY = 3;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesLikelihoodEnumPOSSIBLE = 4;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesLikelihoodEnumLIKELY = 5;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesLikelihoodEnumVERY_LIKELY = 6;
+}
+
+enum DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnum {
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumNO_VALUE_DO_NOT_USE = 0;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumLIKELIHOOD_UNSPECIFIED = 1;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumVERY_UNLIKELY = 2;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumUNLIKELY = 3;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumPOSSIBLE = 4;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumLIKELY = 5;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumVERY_LIKELY = 6;
+}
+
+enum DlpJobTriggerInspectJobInspectConfigCustomInfoTypesExclusionTypeEnum {
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesExclusionTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesExclusionTypeEnumEXCLUSION_TYPE_UNSPECIFIED = 1;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesExclusionTypeEnumEXCLUSION_TYPE_EXCLUDE = 2;
+}
+
+enum DlpJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnum {
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumNO_VALUE_DO_NOT_USE = 0;
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumLIKELIHOOD_UNSPECIFIED = 1;
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumVERY_UNLIKELY = 2;
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumUNLIKELY = 3;
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumPOSSIBLE = 4;
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumLIKELY = 5;
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumVERY_LIKELY = 6;
+}
+
+enum DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleMatchingTypeEnum {
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleMatchingTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleMatchingTypeEnumMATCHING_TYPE_UNSPECIFIED = 1;
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleMatchingTypeEnumMATCHING_TYPE_FULL_MATCH = 2;
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleMatchingTypeEnumMATCHING_TYPE_PARTIAL_MATCH = 3;
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleMatchingTypeEnumMATCHING_TYPE_INVERSE_MATCH = 4;
+}
+
+enum DlpJobTriggerInspectJobActionsSaveFindingsOutputConfigOutputSchemaEnum {
+  DlpJobTriggerInspectJobActionsSaveFindingsOutputConfigOutputSchemaEnumNO_VALUE_DO_NOT_USE = 0;
+  DlpJobTriggerInspectJobActionsSaveFindingsOutputConfigOutputSchemaEnumOUTPUT_SCHEMA_UNSPECIFIED = 1;
+  DlpJobTriggerInspectJobActionsSaveFindingsOutputConfigOutputSchemaEnumBASIC_COLUMNS = 2;
+  DlpJobTriggerInspectJobActionsSaveFindingsOutputConfigOutputSchemaEnumGCS_COLUMNS = 3;
+  DlpJobTriggerInspectJobActionsSaveFindingsOutputConfigOutputSchemaEnumDATASTORE_COLUMNS = 4;
+  DlpJobTriggerInspectJobActionsSaveFindingsOutputConfigOutputSchemaEnumBIG_QUERY_COLUMNS = 5;
+  DlpJobTriggerInspectJobActionsSaveFindingsOutputConfigOutputSchemaEnumALL_COLUMNS = 6;
+}
+
+enum DlpJobTriggerStatusEnum {
+  DlpJobTriggerStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  DlpJobTriggerStatusEnumSTATUS_UNSPECIFIED = 1;
+  DlpJobTriggerStatusEnumHEALTHY = 2;
+  DlpJobTriggerStatusEnumPAUSED = 3;
+  DlpJobTriggerStatusEnumCANCELLED = 4;
+}
+
+message DlpJobTrigger {
+  string name = 1;
+  string display_name = 2;
+  string description = 3;
+  DlpJobTriggerInspectJob inspect_job = 4;
+  repeated DlpJobTriggerTriggers triggers = 5;
+  repeated DlpJobTriggerErrors errors = 6;
+  string create_time = 7;
+  string update_time = 8;
+  string last_run_time = 9;
+  DlpJobTriggerStatusEnum status = 10;
+  string location_id = 11;
+  string parent = 12;
+  string location = 13;
+}
+
+message DlpJobTriggerInspectJob {
+  DlpJobTriggerInspectJobStorageConfig storage_config = 1;
+  DlpJobTriggerInspectJobInspectConfig inspect_config = 2;
+  string inspect_template_name = 3;
+  repeated DlpJobTriggerInspectJobActions actions = 4;
+}
+
+message DlpJobTriggerInspectJobStorageConfig {
+  DlpJobTriggerInspectJobStorageConfigDatastoreOptions datastore_options = 1;
+  DlpJobTriggerInspectJobStorageConfigCloudStorageOptions cloud_storage_options = 2;
+  DlpJobTriggerInspectJobStorageConfigBigQueryOptions big_query_options = 3;
+  DlpJobTriggerInspectJobStorageConfigHybridOptions hybrid_options = 4;
+  DlpJobTriggerInspectJobStorageConfigTimespanConfig timespan_config = 5;
+}
+
+message DlpJobTriggerInspectJobStorageConfigDatastoreOptions {
+  DlpJobTriggerInspectJobStorageConfigDatastoreOptionsPartitionId partition_id = 1;
+  DlpJobTriggerInspectJobStorageConfigDatastoreOptionsKind kind = 2;
+}
+
+message DlpJobTriggerInspectJobStorageConfigDatastoreOptionsPartitionId {
+  string project_id = 1;
+  string namespace_id = 2;
+}
+
+message DlpJobTriggerInspectJobStorageConfigDatastoreOptionsKind {
+  string name = 1;
+}
+
+message DlpJobTriggerInspectJobStorageConfigCloudStorageOptions {
+  DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSet file_set = 1;
+  int64 bytes_limit_per_file = 2;
+  int64 bytes_limit_per_file_percent = 3;
+  repeated DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsFileTypesEnum file_types = 4;
+  DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsSampleMethodEnum sample_method = 5;
+  int64 files_limit_percent = 6;
+}
+
+message DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSet {
+  string url = 1;
+  DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetRegexFileSet regex_file_set = 2;
+}
+
+message DlpJobTriggerInspectJobStorageConfigCloudStorageOptionsFileSetRegexFileSet {
+  string bucket_name = 1;
+  repeated string include_regex = 2;
+  repeated string exclude_regex = 3;
+}
+
+message DlpJobTriggerInspectJobStorageConfigBigQueryOptions {
+  DlpJobTriggerInspectJobStorageConfigBigQueryOptionsTableReference table_reference = 1;
+  repeated DlpJobTriggerInspectJobStorageConfigBigQueryOptionsIdentifyingFields identifying_fields = 2;
+  int64 rows_limit = 3;
+  int64 rows_limit_percent = 4;
+  DlpJobTriggerInspectJobStorageConfigBigQueryOptionsSampleMethodEnum sample_method = 5;
+  repeated DlpJobTriggerInspectJobStorageConfigBigQueryOptionsExcludedFields excluded_fields = 6;
+  repeated DlpJobTriggerInspectJobStorageConfigBigQueryOptionsIncludedFields included_fields = 7;
+}
+
+message DlpJobTriggerInspectJobStorageConfigBigQueryOptionsTableReference {
+  string project_id = 1;
+  string dataset_id = 2;
+  string table_id = 3;
+}
+
+message DlpJobTriggerInspectJobStorageConfigBigQueryOptionsIdentifyingFields {
+  string name = 1;
+}
+
+message DlpJobTriggerInspectJobStorageConfigBigQueryOptionsExcludedFields {
+  string name = 1;
+}
+
+message DlpJobTriggerInspectJobStorageConfigBigQueryOptionsIncludedFields {
+  string name = 1;
+}
+
+message DlpJobTriggerInspectJobStorageConfigHybridOptions {
+  string description = 1;
+  repeated string required_finding_label_keys = 2;
+  map<string, string> labels = 3;
+  DlpJobTriggerInspectJobStorageConfigHybridOptionsTableOptions table_options = 4;
+}
+
+message DlpJobTriggerInspectJobStorageConfigHybridOptionsTableOptions {
+  repeated DlpJobTriggerInspectJobStorageConfigHybridOptionsTableOptionsIdentifyingFields identifying_fields = 1;
+}
+
+message DlpJobTriggerInspectJobStorageConfigHybridOptionsTableOptionsIdentifyingFields {
+  string name = 1;
+}
+
+message DlpJobTriggerInspectJobStorageConfigTimespanConfig {
+  string start_time = 1;
+  string end_time = 2;
+  DlpJobTriggerInspectJobStorageConfigTimespanConfigTimestampField timestamp_field = 3;
+  bool enable_auto_population_of_timespan_config = 4;
+}
+
+message DlpJobTriggerInspectJobStorageConfigTimespanConfigTimestampField {
+  string name = 1;
+}
+
+message DlpJobTriggerInspectJobInspectConfig {
+  repeated DlpJobTriggerInspectJobInspectConfigInfoTypes info_types = 1;
+  DlpJobTriggerInspectJobInspectConfigMinLikelihoodEnum min_likelihood = 2;
+  DlpJobTriggerInspectJobInspectConfigLimits limits = 3;
+  bool include_quote = 4;
+  bool exclude_info_types = 5;
+  repeated DlpJobTriggerInspectJobInspectConfigCustomInfoTypes custom_info_types = 6;
+  repeated DlpJobTriggerInspectJobInspectConfigRuleSet rule_set = 7;
+}
+
+message DlpJobTriggerInspectJobInspectConfigInfoTypes {
+  string name = 1;
+}
+
+message DlpJobTriggerInspectJobInspectConfigLimits {
+  int64 max_findings_per_item = 1;
+  int64 max_findings_per_request = 2;
+  repeated DlpJobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoType max_findings_per_info_type = 3;
+}
+
+message DlpJobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoType {
+  DlpJobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTypeInfoType info_type = 1;
+  int64 max_findings = 2;
+}
+
+message DlpJobTriggerInspectJobInspectConfigLimitsMaxFindingsPerInfoTypeInfoType {
+  string name = 1;
+  string version = 2;
+}
+
+message DlpJobTriggerInspectJobInspectConfigCustomInfoTypes {
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesInfoType info_type = 1;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesLikelihoodEnum likelihood = 2;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDictionary dictionary = 3;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesRegex regex = 4;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesSurrogateType surrogate_type = 5;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesStoredType stored_type = 6;
+  repeated DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRules detection_rules = 7;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesExclusionTypeEnum exclusion_type = 8;
+}
+
+message DlpJobTriggerInspectJobInspectConfigCustomInfoTypesInfoType {
+  string name = 1;
+  string version = 2;
+}
+
+message DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDictionary {
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryWordList word_list = 1;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryCloudStoragePath cloud_storage_path = 2;
+}
+
+message DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryWordList {
+  repeated string words = 1;
+}
+
+message DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDictionaryCloudStoragePath {
+  string path = 1;
+}
+
+message DlpJobTriggerInspectJobInspectConfigCustomInfoTypesRegex {
+  string pattern = 1;
+  repeated int64 group_indexes = 2;
+}
+
+message DlpJobTriggerInspectJobInspectConfigCustomInfoTypesSurrogateType {
+}
+
+message DlpJobTriggerInspectJobInspectConfigCustomInfoTypesStoredType {
+  string name = 1;
+  string create_time = 2;
+}
+
+message DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRules {
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRule hotword_rule = 1;
+}
+
+message DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRule {
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleHotwordRegex hotword_regex = 1;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleProximity proximity = 2;
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustment likelihood_adjustment = 3;
+}
+
+message DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleHotwordRegex {
+  string pattern = 1;
+  repeated int64 group_indexes = 2;
+}
+
+message DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleProximity {
+  int64 window_before = 1;
+  int64 window_after = 2;
+}
+
+message DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustment {
+  DlpJobTriggerInspectJobInspectConfigCustomInfoTypesDetectionRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnum fixed_likelihood = 1;
+  int64 relative_likelihood = 2;
+}
+
+message DlpJobTriggerInspectJobInspectConfigRuleSet {
+  repeated DlpJobTriggerInspectJobInspectConfigRuleSetInfoTypes info_types = 1;
+  repeated DlpJobTriggerInspectJobInspectConfigRuleSetRules rules = 2;
+}
+
+message DlpJobTriggerInspectJobInspectConfigRuleSetInfoTypes {
+  string name = 1;
+  string version = 2;
+}
+
+message DlpJobTriggerInspectJobInspectConfigRuleSetRules {
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRule hotword_rule = 1;
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRule exclusion_rule = 2;
+}
+
+message DlpJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRule {
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleHotwordRegex hotword_regex = 1;
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleProximity proximity = 2;
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustment likelihood_adjustment = 3;
+}
+
+message DlpJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleHotwordRegex {
+  string pattern = 1;
+  repeated int64 group_indexes = 2;
+}
+
+message DlpJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleProximity {
+  int64 window_before = 1;
+  int64 window_after = 2;
+}
+
+message DlpJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustment {
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnum fixed_likelihood = 1;
+  int64 relative_likelihood = 2;
+}
+
+message DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRule {
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionary dictionary = 1;
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleRegex regex = 2;
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypes exclude_info_types = 3;
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleMatchingTypeEnum matching_type = 4;
+}
+
+message DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionary {
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryWordList word_list = 1;
+  DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePath cloud_storage_path = 2;
+}
+
+message DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryWordList {
+  repeated string words = 1;
+}
+
+message DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePath {
+  string path = 1;
+}
+
+message DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleRegex {
+  string pattern = 1;
+  repeated int64 group_indexes = 2;
+}
+
+message DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypes {
+  repeated DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypes info_types = 1;
+}
+
+message DlpJobTriggerInspectJobInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypes {
+  string name = 1;
+  string version = 2;
+}
+
+message DlpJobTriggerInspectJobActions {
+  DlpJobTriggerInspectJobActionsSaveFindings save_findings = 1;
+  DlpJobTriggerInspectJobActionsPubSub pub_sub = 2;
+  DlpJobTriggerInspectJobActionsPublishSummaryToCscc publish_summary_to_cscc = 3;
+  DlpJobTriggerInspectJobActionsPublishFindingsToCloudDataCatalog publish_findings_to_cloud_data_catalog = 4;
+  DlpJobTriggerInspectJobActionsJobNotificationEmails job_notification_emails = 5;
+  DlpJobTriggerInspectJobActionsPublishToStackdriver publish_to_stackdriver = 6;
+}
+
+message DlpJobTriggerInspectJobActionsSaveFindings {
+  DlpJobTriggerInspectJobActionsSaveFindingsOutputConfig output_config = 1;
+}
+
+message DlpJobTriggerInspectJobActionsSaveFindingsOutputConfig {
+  DlpJobTriggerInspectJobActionsSaveFindingsOutputConfigTable table = 1;
+  DlpJobTriggerInspectJobActionsSaveFindingsOutputConfigDlpStorage dlp_storage = 2;
+  DlpJobTriggerInspectJobActionsSaveFindingsOutputConfigOutputSchemaEnum output_schema = 3;
+}
+
+message DlpJobTriggerInspectJobActionsSaveFindingsOutputConfigTable {
+  string project_id = 1;
+  string dataset_id = 2;
+  string table_id = 3;
+}
+
+message DlpJobTriggerInspectJobActionsSaveFindingsOutputConfigDlpStorage {
+}
+
+message DlpJobTriggerInspectJobActionsPubSub {
+  string topic = 1;
+}
+
+message DlpJobTriggerInspectJobActionsPublishSummaryToCscc {
+}
+
+message DlpJobTriggerInspectJobActionsPublishFindingsToCloudDataCatalog {
+}
+
+message DlpJobTriggerInspectJobActionsJobNotificationEmails {
+}
+
+message DlpJobTriggerInspectJobActionsPublishToStackdriver {
+}
+
+message DlpJobTriggerTriggers {
+  DlpJobTriggerTriggersSchedule schedule = 1;
+  DlpJobTriggerTriggersManual manual = 2;
+}
+
+message DlpJobTriggerTriggersSchedule {
+  string recurrence_period_duration = 1;
+}
+
+message DlpJobTriggerTriggersManual {
+}
+
+message DlpJobTriggerErrors {
+  DlpJobTriggerErrorsDetails details = 1;
+  repeated string timestamps = 2;
+}
+
+message DlpJobTriggerErrorsDetails {
+  int64 code = 1;
+  string message = 2;
+  repeated DlpJobTriggerErrorsDetailsDetails details = 3;
+}
+
+message DlpJobTriggerErrorsDetailsDetails {
+  string type_url = 1;
+  string value = 2;
+}
+
+message ApplyDlpJobTriggerRequest {
+  DlpJobTrigger resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteDlpJobTriggerRequest {
+  string service_account_file = 1;
+  DlpJobTrigger resource = 2;
+}
+
+message ListDlpJobTriggerRequest {
+  string service_account_file = 1;
+  string Location = 2;
+  string Parent = 3;
+}
+
+message ListDlpJobTriggerResponse {
+  repeated DlpJobTrigger items = 1;
+}
+
+service DlpJobTriggerService {
+  rpc ApplyDlpJobTrigger(ApplyDlpJobTriggerRequest) returns (DlpJobTrigger);
+  rpc DeleteDlpJobTrigger(DeleteDlpJobTriggerRequest) returns (google.protobuf.Empty);
+  rpc ListDlpJobTrigger(ListDlpJobTriggerRequest) returns (ListDlpJobTriggerResponse);
+}

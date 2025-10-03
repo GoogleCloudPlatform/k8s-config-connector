@@ -27,22 +27,25 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
+	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leaser"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/managementconflict"
+	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	tfresource "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/resource"
 	"github.com/go-logr/logr"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+
 	"golang.org/x/sync/semaphore"
 	corev1 "k8s.io/api/core/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -54,13 +57,16 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
-	klog "sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
+
+	tpgconfig "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
 )
 
-var logger = klog.Log
+var logger = log.Log
 
 type Reconciler struct {
 	lifecyclehandler.LifecycleHandler
@@ -74,6 +80,7 @@ type Reconciler struct {
 	smLoader        *servicemappingloader.ServiceMappingLoader
 	logger          logr.Logger
 	jitterGenerator jitter.Generator
+	controllerName  string
 	// Fields used for triggering reconciliations when dependencies are ready
 	immediateReconcileRequests chan event.GenericEvent
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
@@ -95,12 +102,17 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, provi
 			"apiVersion": apiVersion,
 		},
 	}
+	predicateList := []predicate.Predicate{kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
 	_, err = builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
-		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
-		WatchesRawSource(&source.Channel{Source: immediateReconcileRequests}, &handler.EnqueueRequestForObject{}).
-		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
+		WithOptions(controller.Options{
+			MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles,
+			RateLimiter:             ratelimiter.NewRateLimiter(),
+		}).
+		WatchesRawSource(
+			source.TypedChannel(immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
+		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicateList...)).
 		Build(r)
 	if err != nil {
 		return nil, fmt.Errorf("error creating new controller: %w", err)
@@ -146,14 +158,20 @@ func NewReconciler(mgr manager.Manager,
 		},
 		provider:                   p,
 		smLoader:                   smLoader,
-		logger:                     logger.WithName(controllerName),
+		logger:                     logger.WithName(controllerName).WithValues("controllerType", "terraform"),
 		immediateReconcileRequests: immediateReconcileRequests,
 		resourceWatcherRoutines:    resourceWatcherRoutines,
 		jitterGenerator:            jitterGenerator,
+		controllerName:             controllerName,
 	}, nil
 }
 
-func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res reconcile.Result, err error) {
+func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (reconcile.Result, error) {
+	return r.DoReconcile(ctx, req)
+}
+
+func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (res reconcile.Result, err error) {
+
 	r.schemaRefMu.RLock()
 	defer r.schemaRefMu.RUnlock()
 	r.logger.Info("starting reconcile", "resource", req.NamespacedName)
@@ -172,6 +190,10 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 		}
 		return reconcile.Result{}, err
 	}
+
+	structuredreporting.ReportReconcileStart(ctx, u)
+	defer structuredreporting.ReportReconcileEnd(ctx, u, res, err)
+
 	skip, err := resourceactuation.ShouldSkip(u)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -189,12 +211,14 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("error triggering Server-Side Apply (SSA) metadata: %w", err)
 	}
+
+	if err := r.handleDefaults(ctx, u); err != nil {
+		return reconcile.Result{}, fmt.Errorf("error handling default values for resource '%v': %w", k8s.GetNamespacedName(u), err)
+	}
+
 	resource, err := krmtotf.NewResource(u, sm, r.provider)
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("could not parse resource %s: %w", req.NamespacedName.String(), err)
-	}
-	if err := r.handleDefaults(ctx, resource); err != nil {
-		return reconcile.Result{}, fmt.Errorf("error handling default values for resource '%v': %w", k8s.GetNamespacedName(resource), err)
 	}
 	if err := r.applyChangesForBackwardsCompatibility(ctx, resource); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error applying changes to resource '%v' for backwards compatibility: %w", k8s.GetNamespacedName(resource), err)
@@ -232,7 +256,14 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if err := resourceoverrides.Handler.PreActuationTransform(&resource.Resource); err != nil {
 		return reconcile.Result{}, r.HandlePreActuationTransformFailed(ctx, &resource.Resource, fmt.Errorf("error applying pre-actuation transformation to resource '%v': %w", req.NamespacedName.String(), err))
 	}
-	requeue, err := r.sync(ctx, resource)
+
+	meta, err := cloneAndChangeContext(ctx, r.provider.Meta(), r.controllerName)
+	if err != nil {
+		log.FromContext(ctx).Error(err, "error cloning and changing context; metrics may not show up")
+		meta = r.provider.Meta()
+	}
+
+	requeue, err := r.sync(ctx, resource, meta)
 	if err != nil {
 		return reconcile.Result{}, err
 	}
@@ -247,7 +278,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	return reconcile.Result{RequeueAfter: jitteredPeriod}, nil
 }
 
-func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (requeue bool, err error) {
+func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource, tfProviderMeta interface{}) (requeue bool, err error) {
 	// isolate any panics to only this function
 	defer execution.RecoverWithInternalError(&err)
 	if !krmResource.GetDeletionTimestamp().IsZero() {
@@ -302,7 +333,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 			return false, err
 		}
 		r.logger.Info("deleting underlying resource", "resource", k8s.GetNamespacedName(krmResource))
-		if _, err := krmResource.TFResource.Apply(ctx, liveState, &terraform.InstanceDiff{Destroy: true}, r.provider.Meta()); err != nil {
+		if _, err := krmResource.TFResource.Apply(ctx, liveState, &terraform.InstanceDiff{Destroy: true}, tfProviderMeta); err != nil {
 			return false, r.HandleDeleteFailed(ctx, &krmResource.Resource, fmt.Errorf("error deleting resource: %v", err))
 		}
 		return false, r.handleDeleted(ctx, krmResource)
@@ -331,7 +362,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 			fmt.Errorf("underlying resource no longer exists and can't be recreated without creating a brand new resource"))
 	}
 	config, secretVersions, err := krmtotf.KRMResourceToTFResourceConfigFull(
-		krmResource, r, r.smLoader, liveState, r.schemaRef.JSONSchema, true, label.GetDefaultLabels(),
+		krmResource, r, r.smLoader, liveState, r.schemaRef.JSONSchema, true,
 	)
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
@@ -344,7 +375,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 	if err := resourceoverrides.Handler.PreTerraformApply(ctx, krmResource.GroupVersionKind(), &operations.PreTerraformApply{KRMResource: krmResource, TerraformConfig: config, LiveState: liveState}); err != nil {
 		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error applying pre-apply transformation to resource: %w", err))
 	}
-	diff, err := krmResource.TFResource.Diff(ctx, liveState, config, r.provider.Meta())
+	diff, err := krmResource.TFResource.Diff(ctx, liveState, config, tfProviderMeta)
 	if err != nil {
 		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error calculating diff: %w", err))
 	}
@@ -359,6 +390,29 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 		r.logger.Info("underlying resource already up to date", "resource", k8s.GetNamespacedName(krmResource))
 		return false, r.handleUpToDate(ctx, krmResource, liveState, secretVersions)
 	}
+
+	// Report diff to structured-reporting subsystem
+	{
+		report := &structuredreporting.Diff{}
+		u, err := krmResource.MarshalAsUnstructured()
+		if err != nil {
+			log := log.FromContext(ctx)
+			log.Error(err, "error reporting diff")
+		}
+		report.Object = u
+		if diff != nil {
+			for k, attr := range diff.Attributes {
+				report.Fields = append(report.Fields, structuredreporting.DiffField{
+					ID:  k,
+					Old: attr.Old,
+					New: attr.New,
+				})
+			}
+		}
+		report.IsNewObject = liveState.Empty()
+		structuredreporting.ReportDiff(ctx, report)
+	}
+
 	r.logger.Info("creating/updating underlying resource", "resource", k8s.GetNamespacedName(krmResource))
 	if err := r.HandleUpdating(ctx, &krmResource.Resource); err != nil {
 		return false, err
@@ -371,7 +425,7 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource) (r
 			d.RequiresNew = false
 		}
 	}
-	newState, diagnostics := krmResource.TFResource.Apply(ctx, liveState, diff, r.provider.Meta())
+	newState, diagnostics := krmResource.TFResource.Apply(ctx, liveState, diff, tfProviderMeta)
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
 		r.logger.Error(err, "error applying desired state", "resource", krmResource.GetNamespacedName())
 		return false, r.HandleUpdateFailed(ctx, &krmResource.Resource, fmt.Errorf("error applying desired state: %w", err))
@@ -422,7 +476,7 @@ func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.R
 		ctx, cancel := context.WithTimeout(ctx, timeoutPeriod)
 		defer cancel()
 		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
-		if err := watcher.WaitForResourceToBeReady(ctx, refNN, refGVK); err != nil {
+		if err := watcher.WaitForResourceToBeReadyOrDeleted(ctx, refNN, refGVK); err != nil {
 			logger.Error(err, "error while waiting for resource's reference to be ready")
 			return
 		}
@@ -448,10 +502,20 @@ func (r *Reconciler) enqueueForImmediateReconciliation(resourceNN types.Namespac
 	r.immediateReconcileRequests <- genEvent
 }
 
-func (r *Reconciler) handleDefaults(ctx context.Context, resource *krmtotf.Resource) error {
+func (r *Reconciler) handleDefaults(ctx context.Context, u *unstructured.Unstructured) error {
+	changeCount := 0
 	for _, defaulter := range r.defaulters {
-		if _, err := defaulter.ApplyDefaults(ctx, resource); err != nil {
+		changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeTerraform, u)
+		if err != nil {
 			return err
+		}
+		if changed {
+			changeCount++
+		}
+	}
+	if changeCount > 0 {
+		if err := r.Update(ctx, u); err != nil {
+			return fmt.Errorf("applying update after setting defaults: %w", err)
 		}
 	}
 	return nil
@@ -463,7 +527,7 @@ func (r *Reconciler) applyChangesForBackwardsCompatibility(ctx context.Context, 
 	// Ensure the resource has a management-conflict-prevention-policy
 	// annotation. This is done to be backwards compatible with resources
 	// created before the webhook for defaulting the annotation was added.
-	if err := k8s.EnsureManagementConflictPreventionAnnotationForTFBasedResource(ctx, r.Client, resource, &rc, r.provider.ResourcesMap); err != nil {
+	if err := managementconflict.EnsureManagementConflictPreventionAnnotationForTFBasedResource(ctx, r.Client, resource, &rc, r.provider.ResourcesMap); err != nil {
 		return fmt.Errorf("error ensuring resource '%v' has a management conflict policy: %w", k8s.GetNamespacedName(resource), err)
 	}
 
@@ -477,11 +541,11 @@ func (r *Reconciler) applyChangesForBackwardsCompatibility(ctx context.Context, 
 }
 
 func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, krmResource *krmtotf.Resource, liveState *terraform.InstanceState) error {
-	conflictPolicy, err := k8s.GetManagementConflictPreventionAnnotationValue(krmResource)
+	conflictPolicy, err := managementconflict.GetManagementConflictPreventionPolicy(krmResource)
 	if err != nil {
 		return err
 	}
-	if conflictPolicy != k8s.ManagementConflictPreventionPolicyResource {
+	if conflictPolicy != managementconflict.ManagementConflictPreventionPolicyResource {
 		return nil
 	}
 	ok, err := r.resourceLeaser.IsLeasable(krmResource)
@@ -489,8 +553,7 @@ func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, krmReso
 		return err
 	}
 	if !ok {
-		return fmt.Errorf("kind '%v' does not support usage of %v of '%v'", krmResource.GroupVersionKind(),
-			k8s.ManagementConflictPreventionPolicyAnnotation, conflictPolicy)
+		return managementconflict.NewLeasingNotSupportedByKindError(krmResource.GroupVersionKind())
 	}
 	// Use SoftObtain instead of Obtain so that obtaining the lease ONLY changes the 'labels' value on the local krmResource and does not write the results
 	// to GCP. The reason to do that is to reduce the number of writes to GCP and therefore improve performance and reduce errors.
@@ -588,4 +651,29 @@ func updateMutableButUnreadableFieldsAnnotationFor(resource *krmtotf.Resource) e
 func updateObservedSecretVersionsAnnotationFor(resource *krmtotf.Resource, secretVersions map[string]string) error {
 	hasSensitiveFields := tfresource.TFResourceHasSensitiveFields(resource.TFResource)
 	return k8s.UpdateOrRemoveObservedSecretVersionsAnnotation(&resource.Resource, secretVersions, hasSensitiveFields)
+}
+
+// This is needed because the terraform provider framework does not provide a way to pass context to the provider functions.
+// The context is instead stored in the meta object.
+// We need to pass a context with the controller name to the metrics transport, so that the metrics can be labeled with the controller name.
+func cloneAndChangeContext(ctx context.Context, meta interface{}, controllerName string) (interface{}, error) {
+	baseConfig, ok := meta.(*tpgconfig.Config)
+	if !ok {
+		return nil, fmt.Errorf("meta is not of type *tpgconfig.Config")
+	}
+	metaC := *baseConfig
+
+	if baseConfig.ImpersonateServiceAccountDelegates != nil {
+		metaC.ImpersonateServiceAccountDelegates = make([]string, len(baseConfig.ImpersonateServiceAccountDelegates))
+		copy(metaC.ImpersonateServiceAccountDelegates, baseConfig.ImpersonateServiceAccountDelegates)
+	}
+
+	if baseConfig.Scopes != nil {
+		metaC.Scopes = make([]string, len(baseConfig.Scopes))
+		copy(metaC.Scopes, baseConfig.Scopes)
+	}
+
+	// This is the one field we are intentionally changing.
+	metaC.Context = metricstransport.WithControllerName(ctx, controllerName) // for metrics transport
+	return &metaC, nil
 }

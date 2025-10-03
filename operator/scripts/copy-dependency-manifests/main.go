@@ -22,7 +22,6 @@ import (
 	"path"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	cnrmmanifest "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/manifest"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/util/paths"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/scripts/utils"
@@ -42,7 +41,9 @@ func main() {
 }
 
 func run() error {
-	manifests, err := loadManifests()
+	channelName := "stable"
+
+	manifests, err := loadManifests(channelName)
 	if err != nil {
 		return err
 	}
@@ -93,7 +94,7 @@ func writeManifestObjectToFile(object *manifest.Object, outputPath string) error
 	return nil
 }
 
-func loadManifests() ([]*manifest.Object, error) {
+func loadManifests(channelName string) ([]*manifest.Object, error) {
 	ctx := context.Background()
 	cc := &corev1beta1.ConfigConnector{
 		Spec: corev1beta1.ConfigConnectorSpec{
@@ -102,16 +103,16 @@ func loadManifests() ([]*manifest.Object, error) {
 	}
 	operatorSrcRoot := paths.GetOperatorSrcRootOrLogFatal()
 	r := cnrmmanifest.NewLocalRepository(path.Join(operatorSrcRoot, "channels"))
-	channel, err := r.LoadChannel(ctx, k8s.StableChannel)
+	channel, err := r.LoadChannel(ctx, channelName)
 	if err != nil {
-		return nil, fmt.Errorf("error loading %v channel: %w", k8s.StableChannel, err)
+		return nil, fmt.Errorf("error loading %v channel: %w", channelName, err)
 	}
 	version, err := channel.Latest(ctx, cc.ComponentName())
 	if err != nil {
 		return nil, fmt.Errorf("error resolving the version to deploy: %w", err)
 	}
 	if version == nil {
-		return nil, fmt.Errorf("could not find the latest version in channel %v", k8s.StableChannel)
+		return nil, fmt.Errorf("could not find the latest version in channel %v", channelName)
 	}
 	manifestStrs, err := r.LoadManifest(ctx, cc.ComponentName(), version.Version, cc)
 	if err != nil {

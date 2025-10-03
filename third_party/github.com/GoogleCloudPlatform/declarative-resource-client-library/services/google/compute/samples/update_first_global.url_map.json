@@ -1,0 +1,22 @@
+{
+  "name": "{{map1}}",
+  "project": "{{project}}",
+  "description": "An updated sample url map",
+  "hostRule": [
+    {
+      "description": "A new description",
+      "host": [
+        "www.example.com"
+      ],
+      "pathMatcher": "example"
+    }
+  ],
+  "pathMatcher": [
+    {
+      "name": "example",
+      "description": "a path matcher for the only host rule",
+      "defaultService": "{{ref:basic.backend_bucket.json:selfLink}}"
+    }
+  ],
+  "defaultService": "{{ref:basic.backend_bucket.json:selfLink}}"
+}

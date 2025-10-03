@@ -1,0 +1,99 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum NetworkconnectivityAlphaSpokeStateEnum {
+  NetworkconnectivityAlphaSpokeStateEnumNO_VALUE_DO_NOT_USE = 0;
+  NetworkconnectivityAlphaSpokeStateEnumSTATE_UNSPECIFIED = 1;
+  NetworkconnectivityAlphaSpokeStateEnumCREATING = 2;
+  NetworkconnectivityAlphaSpokeStateEnumACTIVE = 3;
+  NetworkconnectivityAlphaSpokeStateEnumDELETING = 4;
+}
+
+message NetworkconnectivityAlphaSpoke {
+  string name = 1;
+  string create_time = 2;
+  string update_time = 3;
+  map<string, string> labels = 4;
+  string description = 5;
+  string hub = 6;
+  NetworkconnectivityAlphaSpokeLinkedVpnTunnels linked_vpn_tunnels = 7;
+  NetworkconnectivityAlphaSpokeLinkedInterconnectAttachments linked_interconnect_attachments = 8;
+  NetworkconnectivityAlphaSpokeLinkedRouterApplianceInstances linked_router_appliance_instances = 9;
+  NetworkconnectivityAlphaSpokeLinkedVPCNetwork linked_vpc_network = 10;
+  string unique_id = 11;
+  NetworkconnectivityAlphaSpokeStateEnum state = 12;
+  string project = 13;
+  string location = 14;
+}
+
+message NetworkconnectivityAlphaSpokeLinkedVpnTunnels {
+  repeated string uris = 1;
+  bool site_to_site_data_transfer = 2;
+}
+
+message NetworkconnectivityAlphaSpokeLinkedInterconnectAttachments {
+  repeated string uris = 1;
+  bool site_to_site_data_transfer = 2;
+}
+
+message NetworkconnectivityAlphaSpokeLinkedRouterApplianceInstances {
+  repeated NetworkconnectivityAlphaSpokeLinkedRouterApplianceInstancesInstances instances = 1;
+  bool site_to_site_data_transfer = 2;
+}
+
+message NetworkconnectivityAlphaSpokeLinkedRouterApplianceInstancesInstances {
+  string virtual_machine = 1;
+  string ip_address = 2;
+}
+
+message NetworkconnectivityAlphaSpokeLinkedVPCNetwork {
+  string uri = 1;
+  repeated string exclude_export_ranges = 2;
+}
+
+message ApplyNetworkconnectivityAlphaSpokeRequest {
+  NetworkconnectivityAlphaSpoke resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteNetworkconnectivityAlphaSpokeRequest {
+  string service_account_file = 1;
+  NetworkconnectivityAlphaSpoke resource = 2;
+}
+
+message ListNetworkconnectivityAlphaSpokeRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListNetworkconnectivityAlphaSpokeResponse {
+  repeated NetworkconnectivityAlphaSpoke items = 1;
+}
+
+service NetworkconnectivityAlphaSpokeService {
+  rpc ApplyNetworkconnectivityAlphaSpoke(ApplyNetworkconnectivityAlphaSpokeRequest) returns (NetworkconnectivityAlphaSpoke);
+  rpc DeleteNetworkconnectivityAlphaSpoke(DeleteNetworkconnectivityAlphaSpokeRequest) returns (google.protobuf.Empty);
+  rpc ListNetworkconnectivityAlphaSpoke(ListNetworkconnectivityAlphaSpokeRequest) returns (ListNetworkconnectivityAlphaSpokeResponse);
+}

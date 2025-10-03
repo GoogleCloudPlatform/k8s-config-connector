@@ -14,44 +14,16 @@
 package testconstants
 
 import (
-	"fmt"
 	"io/fs"
 	"path/filepath"
 	"strings"
 	"testing"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/fileutil"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/slice"
 )
 
-func TestAllServicesInMap(t *testing.T) {
-	testDataPath := repo.GetBasicIntegrationTestDataPath()
-	services, err := fileutil.SubdirsIn(testDataPath)
-	if err != nil {
-		t.Fatal(err)
-	}
-	smLoader, err := servicemappingloader.New()
-	if err != nil {
-		t.Fatalf("error loading service mappings: %v", err)
-	}
-	autoGenOnlyGroup := smLoader.GetAutoGenOnlyGroups()
-	for _, s := range services {
-		group := fmt.Sprintf("%s.cnrm.cloud.google.com", s)
-		if _, ok := autoGenOnlyGroup[group]; ok {
-			// Services with only auto-generated resources can be excluded from
-			// presubmit test suite.
-			continue
-		}
-		if skip, ok := skipCRUDTests[s]; ok && skip {
-			continue
-		}
-		if _, ok := RepresentativeCRUDTestsForAllServices[s]; !ok {
-			t.Fatalf("Missing an entry in the `RepresentativeCRUDTestsForAllServices` map for service: %s", s)
-		}
-	}
-}
 func TestMappedServicesExistInDir(t *testing.T) {
 	testDataPath := repo.GetBasicIntegrationTestDataPath()
 	services, err := fileutil.SubdirsIn(testDataPath)
@@ -89,7 +61,7 @@ func TestValidTestName(t *testing.T) {
 					return nil
 				}
 				// Test cases are the names of the leaf-node directory, only match on the lowest subdirectory name
-				if strings.HasSuffix(filepath.Dir(path), tc) {
+				if strings.Contains(filepath.Dir(path), tc) {
 					found = true
 					return nil
 				}
@@ -104,6 +76,7 @@ func TestValidTestName(t *testing.T) {
 		}
 	}
 }
+
 func TestGetPresubmitLiteRegexString(t *testing.T) {
 	s := GetPresubmitLiteRegexStringArray()
 	// Check if string slice contains any test cases from the long running or

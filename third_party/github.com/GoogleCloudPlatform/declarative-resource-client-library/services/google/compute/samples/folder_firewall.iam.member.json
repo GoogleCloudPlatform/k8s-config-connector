@@ -1,0 +1,5 @@
+{
+  "role": "roles/compute.orgFirewallPolicyAdmin",
+  "member": "serviceAccount:{{test_service_account}}",
+  "resource": "{{ref:basic.cloudresourcemanager.folder.json:__resource__}}"
+}

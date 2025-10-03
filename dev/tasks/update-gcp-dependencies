@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+cd ${REPO_ROOT}
+
+# Newer client libraries
+for dep in $(grep cloud.google.com/go go.mod | awk '{print $1}'); do
+  dev/tasks/update-dependency ${dep}
+done
+for dep in $(grep cloud.google.com/go mockgcp/go.mod | awk '{print $1}'); do
+  dev/tasks/update-dependency ${dep}
+done
+
+# Older client libraries
+dev/tasks/update-dependency google.golang.org/api
+
+# Ensure everything in go.work is synced up
+cd ${REPO_ROOT}
+go work sync
+# Hack to update go.work.sum
+make ready-pr

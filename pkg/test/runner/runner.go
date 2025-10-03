@@ -16,6 +16,7 @@ package testrunner
 
 import (
 	"context"
+	"net/http"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
@@ -57,6 +58,7 @@ type SystemContext struct {
 	TFProvider   *schema.Provider
 	DCLConfig    *mmdcl.Config
 	DCLConverter *dclconversion.Converter
+	HttpClient   *http.Client
 }
 
 type ShouldRunFunc func(fixture resourcefixture.ResourceFixture, mgr manager.Manager) bool
@@ -77,7 +79,19 @@ func RunAllWithObjectCreated(ctx context.Context, t *testing.T, mgr manager.Mana
 
 func RunAllWithDependenciesCreatedButNotObject(ctx context.Context, t *testing.T, mgr manager.Manager, shouldRunFunc ShouldRunFunc, testCaseFunc TestCaseFunc) {
 	testFunc := func(ctx context.Context, t *testing.T, testContext TestContext, sysContext SystemContext) {
-		dependencyCleanup := sysContext.Reconciler.CreateAndReconcile(ctx, testContext.DependencyUnstructs, testreconciler.CleanupPolicyAlways)
+		cleanupFuncs := make([]func(), 0, len(testContext.DependencyUnstructs))
+		for _, u := range testContext.DependencyUnstructs {
+			if err := sysContext.Manager.GetClient().Create(ctx, u); err != nil {
+				t.Fatalf("error creating dependecy '%v' for resource '%v/%v': %v", u.GetKind(), testContext.CreateUnstruct.GetName(), testContext.CreateUnstruct.GetKind(), err)
+			}
+			cleanupFuncs = append(cleanupFuncs, sysContext.Reconciler.BuildCleanupFunc(ctx, u, testreconciler.CleanupPolicyAlways))
+			sysContext.Reconciler.Reconcile(ctx, u, testreconciler.ExpectedSuccessfulReconcileResultFor(sysContext.Reconciler, u), nil)
+		}
+		dependencyCleanup := func() {
+			for i := len(cleanupFuncs) - 1; i >= 0; i-- {
+				cleanupFuncs[i]()
+			}
+		}
 		defer dependencyCleanup()
 		testCaseFunc(ctx, t, testContext, sysContext)
 	}
@@ -146,8 +160,8 @@ func bytesToUnstructured(t *testing.T, bytes []byte, testID string, project test
 func newSystemContext(ctx context.Context, t *testing.T, mgr manager.Manager) SystemContext {
 	smLoader := testservicemappingloader.New(t)
 	tfProvider := tfprovider.NewOrLogFatalWithContext(ctx, tfprovider.DefaultConfig)
-	dclConfig := clientconfig.NewForIntegrationTest()
-	reconciler := testreconciler.NewForDCLAndTFTestReconciler(t, mgr, tfProvider, dclConfig)
+	dclConfig, httpClient := clientconfig.NewConfigAndClientForIntegrationTest()
+	reconciler := testreconciler.NewTestReconciler(t, mgr, tfProvider, dclConfig, httpClient)
 	serviceMetadataLoader := dclmetadata.New()
 	dclSchemaLoader, err := dclschemaloader.New()
 	if err != nil {
@@ -161,6 +175,7 @@ func newSystemContext(ctx context.Context, t *testing.T, mgr manager.Manager) Sy
 		TFProvider:   tfProvider,
 		DCLConfig:    dclConfig,
 		DCLConverter: dclConverter,
+		HttpClient:   httpClient,
 	}
 }
 

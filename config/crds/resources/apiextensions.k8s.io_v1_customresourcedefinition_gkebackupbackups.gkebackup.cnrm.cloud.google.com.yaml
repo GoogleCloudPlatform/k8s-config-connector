@@ -1,0 +1,358 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: gkebackupbackups.gkebackup.cnrm.cloud.google.com
+spec:
+  group: gkebackup.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: GKEBackupBackup
+    listKind: GKEBackupBackupList
+    plural: gkebackupbackups
+    shortNames:
+    - gcpgkebackupbackup
+    - gcpgkebackupbackups
+    singular: gkebackupbackup
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: GKEBackupBackup is the Schema for the GKEBackupBackup API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: GKEBackupBackupSpec defines the desired state of GKEBackupBackup
+            properties:
+              backupPlanRef:
+                description: Required. The BackupPlan from which this Backup is created.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed GKEBackupBackupPlan
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/backupPlans/{{backupplanID}}".
+                    type: string
+                  name:
+                    description: The name of a GKEBackupBackupPlan resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a GKEBackupBackupPlan resource.
+                    type: string
+                type: object
+              deleteLockDays:
+                description: |-
+                  Optional. Minimum age for this Backup (in days). If this field is set to a
+                   non-zero value, the Backup will be "locked" against deletion (either manual
+                   or automatic deletion) for the number of days provided (measured from the
+                   creation time of the Backup).  MUST be an integer value between 0-90
+                   (inclusive).
+
+                   Defaults to parent BackupPlan's
+                   [backup_delete_lock_days][google.cloud.gkebackup.v1.BackupPlan.RetentionPolicy.backup_delete_lock_days]
+                   setting and may only be increased
+                   (either at creation time or in a subsequent update).
+                format: int32
+                type: integer
+              description:
+                description: Optional. User specified descriptive string for this
+                  Backup.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. A set of custom labels supplied by user.
+                type: object
+              resourceID:
+                description: The GKEBackupBackup name. If not given, the metadata.name
+                  will be used.
+                type: string
+              retainDays:
+                description: |-
+                  Optional. The age (in days) after which this Backup will be automatically
+                   deleted. Must be an integer value >= 0:
+
+                   - If 0, no automatic deletion will occur for this Backup.
+                   - If not 0, this must be >=
+                   [delete_lock_days][google.cloud.gkebackup.v1.Backup.delete_lock_days] and
+                   <= 365.
+
+                   Once a Backup is created, this value may only be increased.
+
+                   Defaults to the parent BackupPlan's
+                   [backup_retain_days][google.cloud.gkebackup.v1.BackupPlan.RetentionPolicy.backup_retain_days]
+                   value.
+                format: int32
+                type: integer
+            required:
+            - backupPlanRef
+            type: object
+          status:
+            description: GKEBackupBackupStatus defines the config connector machine
+              state of GKEBackupBackup
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the GKEBackupBackup resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  allNamespaces:
+                    description: Output only. If True, all namespaces were included
+                      in the Backup.
+                    type: boolean
+                  clusterMetadata:
+                    description: Output only. Information about the GKE cluster from
+                      which this Backup was created.
+                    properties:
+                      anthosVersion:
+                        description: Output only. Anthos version
+                        type: string
+                      backupCRDVersions:
+                        additionalProperties:
+                          type: string
+                        description: Output only. A list of the Backup for GKE CRD
+                          versions found in the cluster.
+                        type: object
+                      cluster:
+                        description: |-
+                          Output only. The source cluster from which this Backup was created.
+                           Valid formats:
+
+                             - `projects/*/locations/*/clusters/*`
+                             - `projects/*/zones/*/clusters/*`
+
+                           This is inherited from the parent BackupPlan's
+                           [cluster][google.cloud.gkebackup.v1.BackupPlan.cluster] field.
+                        type: string
+                      gkeVersion:
+                        description: Output only. GKE version
+                        type: string
+                      k8sVersion:
+                        description: Output only. The Kubernetes server version of
+                          the source cluster.
+                        type: string
+                    type: object
+                  completeTime:
+                    description: Output only. Completion time of the Backup
+                    type: string
+                  configBackupSizeBytes:
+                    description: Output only. The size of the config backup in bytes.
+                    format: int64
+                    type: integer
+                  containsSecrets:
+                    description: Output only. Whether or not the Backup contains Kubernetes
+                      Secrets. Controlled by the parent BackupPlan's [include_secrets][google.cloud.gkebackup.v1.BackupPlan.BackupConfig.include_secrets]
+                      value.
+                    type: boolean
+                  containsVolumeData:
+                    description: Output only. Whether or not the Backup contains volume
+                      data.  Controlled by the parent BackupPlan's [include_volume_data][google.cloud.gkebackup.v1.BackupPlan.BackupConfig.include_volume_data]
+                      value.
+                    type: boolean
+                  createTime:
+                    description: Output only. The timestamp when this Backup resource
+                      was created.
+                    type: string
+                  deleteLockExpireTime:
+                    description: Output only. The time at which an existing delete
+                      lock will expire for this backup (calculated from create_time
+                      + [delete_lock_days][google.cloud.gkebackup.v1.Backup.delete_lock_days]).
+                    type: string
+                  encryptionKey:
+                    description: Output only. The customer managed encryption key
+                      that was used to encrypt the Backup's artifacts.  Inherited
+                      from the parent BackupPlan's [encryption_key][google.cloud.gkebackup.v1.BackupPlan.BackupConfig.encryption_key]
+                      value.
+                    properties:
+                      gcpKMSEncryptionKey:
+                        description: 'Optional. Google Cloud KMS encryption key. Format:
+                          `projects/*/locations/*/keyRings/*/cryptoKeys/*`'
+                        type: string
+                    type: object
+                  etag:
+                    description: 'Output only. `etag` is used for optimistic concurrency
+                      control as a way to help prevent simultaneous updates of a backup
+                      from overwriting each other. It is strongly suggested that systems
+                      make use of the `etag` in the read-modify-write cycle to perform
+                      backup updates in order to avoid race conditions: An `etag`
+                      is returned in the response to `GetBackup`, and systems are
+                      expected to put that etag in the request to `UpdateBackup` or
+                      `DeleteBackup` to ensure that their change will be applied to
+                      the same version of the resource.'
+                    type: string
+                  manual:
+                    description: Output only. This flag indicates whether this Backup
+                      resource was created manually by a user or via a schedule in
+                      the BackupPlan. A value of True means that the Backup was created
+                      manually.
+                    type: boolean
+                  permissiveMode:
+                    description: |-
+                      Output only. If false, Backup will fail when Backup for GKE detects
+                       Kubernetes configuration that is non-standard or
+                       requires additional setup to restore.
+
+                       Inherited from the parent BackupPlan's
+                       [permissive_mode][google.cloud.gkebackup.v1.BackupPlan.BackupConfig.permissive_mode]
+                       value.
+                    type: boolean
+                  podCount:
+                    description: Output only. The total number of Kubernetes Pods
+                      contained in the Backup.
+                    format: int32
+                    type: integer
+                  resourceCount:
+                    description: Output only. The total number of Kubernetes resources
+                      included in the Backup.
+                    format: int32
+                    type: integer
+                  retainExpireTime:
+                    description: Output only. The time at which this Backup will be
+                      automatically deleted (calculated from create_time + [retain_days][google.cloud.gkebackup.v1.Backup.retain_days]).
+                    type: string
+                  selectedApplications:
+                    description: Output only. If set, the list of ProtectedApplications
+                      whose resources were included in the Backup.
+                    properties:
+                      namespacedNames:
+                        description: Optional. A list of namespaced Kubernetes resources.
+                        items:
+                          properties:
+                            name:
+                              description: Optional. The name of the Kubernetes resource.
+                              type: string
+                            namespace:
+                              description: Optional. The Namespace of the Kubernetes
+                                resource.
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                  selectedNamespaces:
+                    description: Output only. If set, the list of namespaces that
+                      were included in the Backup.
+                    properties:
+                      namespaces:
+                        description: Optional. A list of Kubernetes Namespaces
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  sizeBytes:
+                    description: Output only. The total size of the Backup in bytes
+                      = config backup size + sum(volume backup sizes)
+                    format: int64
+                    type: integer
+                  state:
+                    description: Output only. Current state of the Backup
+                    type: string
+                  stateReason:
+                    description: Output only. Human-readable description of why the
+                      backup is in the current `state`.
+                    type: string
+                  uid:
+                    description: Output only. Server generated global unique identifier
+                      of [UUID4](https://en.wikipedia.org/wiki/Universally_unique_identifier)
+                    type: string
+                  updateTime:
+                    description: Output only. The timestamp when this Backup resource
+                      was last updated.
+                    type: string
+                  volumeCount:
+                    description: Output only. The total number of volume backups contained
+                      in the Backup.
+                    format: int32
+                    type: integer
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

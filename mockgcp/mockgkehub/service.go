@@ -12,18 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:mockgcp-service
+// http.host: gkehub.googleapis.com
+// proto.service: google.cloud.gkehub.v1beta.GkeHub
+// proto.service: google.cloud.gkehub.v1beta1.GkeHubMembershipService
+
 package mockgkehub
 
 import (
 	"context"
 	"net/http"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta"
+	v1betapb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta"
+	v1beta1pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/gkehub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -34,7 +40,8 @@ type MockService struct {
 
 	operations *operations.Operations
 
-	v1 *GKEHubFeature
+	v1beta  *GKEHubFeature
+	v1beta1 *GKEHubMembership
 }
 
 // New creates a MockService.
@@ -44,24 +51,29 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 		storage:         storage,
 		operations:      operations.NewOperationsService(storage),
 	}
-	s.v1 = &GKEHubFeature{MockService: s}
+	s.v1beta = &GKEHubFeature{MockService: s}
+	s.v1beta1 = &GKEHubMembership{MockService: s}
 	return s
 }
 
-func (s *MockService) ExpectedHost() string {
-	return "gkehub.googleapis.com"
+func (s *MockService) ExpectedHosts() []string {
+	return []string{"gkehub.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterGkeHubServer(grpcServer, s.v1)
+	v1betapb.RegisterGkeHubServer(grpcServer, s.v1beta)
+	v1beta1pb.RegisterGkeHubMembershipServiceServer(grpcServer, s.v1beta1)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux := runtime.NewServeMux()
-
-	if err := pb.RegisterGkeHubHandler(ctx, mux, conn); err != nil {
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{}, v1betapb.RegisterGkeHubHandler, v1beta1pb.RegisterGkeHubMembershipServiceHandler, s.operations.RegisterOperationsPath("/v1beta/{prefix=**}/operations/{name}"), s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"))
+	if err != nil {
 		return nil, err
 	}
-
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Errors = nil
+		}
+	}
 	return mux, nil
 }

@@ -1,0 +1,86 @@
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
+    cnrm.cloud.google.com/observed-secret-versions: (removed)
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+    label-one: value-two
+  name: cluster-sample-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  clusterAutoscaling:
+    autoProvisioningDefaults:
+      bootDiskKMSKeyRef:
+        name: kmscryptokey-${uniqueId}
+    autoscalingProfile: BALANCED
+    enabled: true
+    resourceLimits:
+    - maximum: 100
+      minimum: 10
+      resourceType: cpu
+    - maximum: 1000
+      minimum: 100
+      resourceType: memory
+  initialNodeCount: 1
+  ipAllocationPolicy:
+    clusterIpv4CidrBlock: /20
+    servicesIpv4CidrBlock: /20
+  location: us-central1-a
+  loggingConfig:
+    enableComponents:
+    - SYSTEM_COMPONENTS
+    - WORKLOADS
+  loggingService: none
+  monitoringConfig:
+    enableComponents:
+    - SYSTEM_COMPONENTS
+    - APISERVER
+    managedPrometheus:
+      enabled: true
+  monitoringService: none
+  networkRef:
+    name: computenetwork-${uniqueId}
+  nodeConfig:
+    linuxNodeConfig:
+      cgroupMode: CGROUP_MODE_UNSPECIFIED
+      sysctls:
+        net.core.somaxconn: "4096"
+  notificationConfig:
+    pubsub:
+      enabled: true
+      topicRef:
+        name: pubsubtopic-${uniqueId}
+  resourceID: cluster-sample-${uniqueId}
+  subnetworkRef:
+    name: computesubnetwork-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  endpoint: 1.23.456.78
+  labelFingerprint: abcdef0123A=
+  masterVersion: 1.30.5-gke.1014001
+  observedGeneration: 3
+  observedState:
+    controlPlaneEndpointsConfig:
+      dnsEndpointConfig:
+        endpoint: gke-12345trewq-${projectNumber}.us-central1-a.gke.goog
+    masterAuth:
+      clusterCaCertificate: 1234567890abcdefghijklmn
+    privateClusterConfig:
+      privateEndpoint: 10.128.0.2
+      publicEndpoint: 8.8.8.8
+  selfLink: https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}
+  servicesIpv4Cidr: 34.118.224.0/20

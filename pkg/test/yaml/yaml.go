@@ -21,7 +21,7 @@ import (
 
 	cnrmyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/yaml"
 
-	"github.com/ghodss/yaml"
+	"github.com/ghodss/yaml" //nolint:depguard
 	"github.com/google/go-cmp/cmp"
 )
 

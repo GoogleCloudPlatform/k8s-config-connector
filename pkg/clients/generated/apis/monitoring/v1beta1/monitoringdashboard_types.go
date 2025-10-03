@@ -36,30 +36,44 @@ import (
 )
 
 type DashboardAggregation struct {
-	/* The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.  The value must be at least 60 seconds. If a per-series aligner other than `ALIGN_NONE` is specified, this field is required or an error is returned. If no per-series aligner is specified, or the aligner `ALIGN_NONE` is specified, then this field is ignored. */
+	/* The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data. */
 	// +optional
 	AlignmentPeriod *string `json:"alignmentPeriod,omitempty"`
 
-	/* The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.  Not all reducer operations can be applied to all time series. The valid choices depend on the `metric_kind` and the `value_type` of the original time series. Reduction can yield a time series with a different `metric_kind` or `value_type` than the input time series.  Time series data must first be aligned (see `per_series_aligner`) in order to perform cross-time series reduction. If `cross_series_reducer` is specified, then `per_series_aligner` must be specified, and must not be `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an error is returned. Possible values: REDUCE_NONE, REDUCE_MEAN, REDUCE_MIN, REDUCE_MAX, REDUCE_SUM, REDUCE_STDDEV, REDUCE_COUNT, REDUCE_COUNT_TRUE, REDUCE_COUNT_FALSE, REDUCE_FRACTION_TRUE, REDUCE_PERCENTILE_99, REDUCE_PERCENTILE_95, REDUCE_PERCENTILE_50, REDUCE_PERCENTILE_05, REDUCE_FRACTION_LESS_THAN, REDUCE_MAKE_DISTRIBUTION */
+	/* The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series. */
 	// +optional
 	CrossSeriesReducer *string `json:"crossSeriesReducer,omitempty"`
 
-	/* The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored. */
+	/* The set of fields to preserve when `cross_series_reducer` is specified. */
 	// +optional
 	GroupByFields []string `json:"groupByFields,omitempty"`
 
-	/* An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.  Not all alignment operations may be applied to all time series. The valid choices depend on the `metric_kind` and `value_type` of the original time series. Alignment can change the `metric_kind` or the `value_type` of the time series.  Time series data must be aligned in order to perform cross-time series reduction. If `cross_series_reducer` is specified, then `per_series_aligner` must be specified and not equal to `ALIGN_NONE` and `alignment_period` must be specified; otherwise, an error is returned. */
+	/* An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period. */
 	// +optional
 	PerSeriesAligner *string `json:"perSeriesAligner,omitempty"`
+}
+
+type DashboardAlertChart struct {
+	/* Required. A reference to the MonitoringAlertPolicy. */
+	AlertPolicyRef v1alpha1.ResourceRef `json:"alertPolicyRef"`
 }
 
 type DashboardBlank struct {
 }
 
+type DashboardBlankView struct {
+}
+
 type DashboardChartOptions struct {
-	/* The chart mode. Possible values: MODE_UNSPECIFIED, COLOR, X_RAY, STATS */
+	/* The chart mode. */
 	// +optional
 	Mode *string `json:"mode,omitempty"`
+}
+
+type DashboardCollapsibleGroup struct {
+	/* The collapsed state of the widget on first page load. */
+	// +optional
+	Collapsed *bool `json:"collapsed,omitempty"`
 }
 
 type DashboardColumnLayout struct {
@@ -68,8 +82,16 @@ type DashboardColumnLayout struct {
 	Columns []DashboardColumns `json:"columns,omitempty"`
 }
 
+type DashboardColumnSettings struct {
+	/* Required. The id of the column. */
+	Column string `json:"column"`
+
+	/* Required. Whether the column should be visible on page load. */
+	Visible bool `json:"visible"`
+}
+
 type DashboardColumns struct {
-	/* The relative weight of this column. The column weight is used to adjust the width of columns on the screen (relative to peers). Greater the weight, greater the width of the column on the screen. If omitted, a value of 1 is used while rendering. */
+	/* The relative weight of this column. The column weight is used to adjust the width of columns on the screen (relative to peers). */
 	// +optional
 	Weight *int64 `json:"weight,omitempty"`
 
@@ -78,30 +100,65 @@ type DashboardColumns struct {
 	Widgets []DashboardWidgets `json:"widgets,omitempty"`
 }
 
+type DashboardDashboardFilters struct {
+	/* The specified filter type */
+	// +optional
+	FilterType *string `json:"filterType,omitempty"`
+
+	/* Required. The key for the label */
+	LabelKey string `json:"labelKey"`
+
+	/* A variable-length string value. */
+	// +optional
+	StringValue *string `json:"stringValue,omitempty"`
+
+	/* The placeholder text that can be referenced in a filter string or MQL query. If omitted, the dashboard filter will be applied to all relevant widgets in the dashboard. */
+	// +optional
+	TemplateVariable *string `json:"templateVariable,omitempty"`
+}
+
 type DashboardDataSets struct {
-	/* A template string for naming `TimeSeries` in the resulting data set. This should be a string with interpolations of the form `${label_name}`, which will resolve to the label's value. */
+	/* A template string for naming `TimeSeries` in the resulting data set. */
 	// +optional
 	LegendTemplate *string `json:"legendTemplate,omitempty"`
 
-	/* Optional. The lower bound on data point frequency for this data set, implemented by specifying the minimum alignment period to use in a time series query For example, if the data is published once every 10 minutes, the `min_alignment_period` should be at least 10 minutes. It would not make sense to fetch and align data at one minute intervals. */
+	/* Optional. The lower bound on data point frequency for this data set. */
 	// +optional
 	MinAlignmentPeriod *string `json:"minAlignmentPeriod,omitempty"`
 
-	/* How this data should be plotted on the chart. Possible values: PLOT_TYPE_UNSPECIFIED, LINE, STACKED_AREA, STACKED_BAR, HEATMAP */
+	/* How this data should be plotted on the chart. */
 	// +optional
 	PlotType *string `json:"plotType,omitempty"`
 
-	/* Required. Fields for querying time series data from the Stackdriver metrics API. */
+	/* Optional. The target axis to use for plotting the metric. */
+	// +optional
+	TargetAxis *string `json:"targetAxis,omitempty"`
+
+	/* Fields for querying time series data from the Stackdriver metrics API. */
 	TimeSeriesQuery DashboardTimeSeriesQuery `json:"timeSeriesQuery"`
 }
 
 type DashboardDenominator struct {
-	/* By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data. */
+	/* By default, the raw time series data is returned. */
 	// +optional
 	Aggregation *DashboardAggregation `json:"aggregation,omitempty"`
 
-	/* Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query. */
+	/* The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query. */
 	Filter string `json:"filter"`
+}
+
+type DashboardErrorReportingPanel struct {
+	/* The projects from which to gather errors. */
+	// +optional
+	ProjectRefs []DashboardProjectRefs `json:"projectRefs,omitempty"`
+
+	/* An identifier of the service, such as the name of the executable, job, or Google App Engine service name. This field is expected to have a low number of values that are relatively stable over time, as opposed to `version`, which can be changed whenever new code is deployed. */
+	// +optional
+	Services []string `json:"services,omitempty"`
+
+	/* Represents the source code version that the developer provided, which could represent a version label or a Git SHA-1 hash, for example. For App Engine standard environment, the version is set to the version of the app. */
+	// +optional
+	Versions []string `json:"versions,omitempty"`
 }
 
 type DashboardGaugeView struct {
@@ -124,17 +181,38 @@ type DashboardGridLayout struct {
 	Widgets []DashboardWidgets `json:"widgets,omitempty"`
 }
 
+type DashboardIncidentList struct {
+	/* Optional. The monitored resource for which incidents are listed. */
+	// +optional
+	MonitoredResources []DashboardMonitoredResources `json:"monitoredResources,omitempty"`
+
+	/* Optional. A list of alert policies to filter the incident list by. */
+	// +optional
+	PolicyRefs []v1alpha1.ResourceRef `json:"policyRefs,omitempty"`
+}
+
 type DashboardLogsPanel struct {
-	/* A filter that chooses which log entries to return. See [Advanced Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries). Only log entries that match the filter are returned. An empty filter matches all log entries. */
+	/* A filter that chooses which log entries to return.  See [Advanced Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries). */
 	// +optional
 	Filter *string `json:"filter,omitempty"`
 
+	/* The names of logging resources to collect logs for. */
 	// +optional
-	ResourceNames []v1alpha1.ResourceRef `json:"resourceNames,omitempty"`
+	ResourceNames []DashboardResourceNames `json:"resourceNames,omitempty"`
+}
+
+type DashboardMonitoredResources struct {
+	/* Required. Values for all of the labels listed in the associated monitored resource descriptor. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
+	/* Required. The monitored resource type. This field must match the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object. */
+	// +optional
+	Type *string `json:"type,omitempty"`
 }
 
 type DashboardMosaicLayout struct {
-	/* The number of columns in the mosaic grid. */
+	/* The number of columns in the mosaic grid. The number of columns must be between 1 and 12, inclusive. */
 	// +optional
 	Columns *DashboardColumns `json:"columns,omitempty"`
 
@@ -144,26 +222,74 @@ type DashboardMosaicLayout struct {
 }
 
 type DashboardNumerator struct {
-	/* By default, the raw time series data is returned. Use this field to combine multiple time series for different views of the data. */
+	/* By default, the raw time series data is returned. */
 	// +optional
 	Aggregation *DashboardAggregation `json:"aggregation,omitempty"`
 
-	/* Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query. */
+	/* The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters) that identifies the metric types, resources, and projects to query. */
 	Filter string `json:"filter"`
 }
 
 type DashboardPickTimeSeriesFilter struct {
-	/* How to use the ranking to select time series that pass through the filter. Possible values: DIRECTION_UNSPECIFIED, TOP, BOTTOM */
+	/* How to use the ranking to select time series that pass through the filter. */
 	// +optional
 	Direction *string `json:"direction,omitempty"`
 
 	/* How many time series to allow to pass through the filter. */
 	// +optional
-	NumTimeSeries *int64 `json:"numTimeSeries,omitempty"`
+	NumTimeSeries *int32 `json:"numTimeSeries,omitempty"`
 
-	/* `ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series. Possible values: METHOD_UNSPECIFIED, METHOD_MEAN, METHOD_MAX, METHOD_MIN, METHOD_SUM, METHOD_LATEST */
+	/* `ranking_method` is applied to each time series independently to produce the value which will be used to compare the time series to other time series. */
 	// +optional
 	RankingMethod *string `json:"rankingMethod,omitempty"`
+}
+
+type DashboardPieChart struct {
+	/* Required. Indicates the visualization type for the PieChart. */
+	ChartType string `json:"chartType"`
+
+	/* Required. The queries for the chart's data. */
+	DataSets []DashboardDataSets `json:"dataSets"`
+
+	/* Optional. Indicates whether or not the pie chart should show slices' labels */
+	// +optional
+	ShowLabels *bool `json:"showLabels,omitempty"`
+}
+
+type DashboardProjectRefs struct {
+	/* The `projectID` field of a project, when not managed by Config Connector. */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* The kind of the Project resource; optional but must be `Project` if provided. */
+	// +optional
+	Kind *string `json:"kind,omitempty"`
+
+	/* The `name` field of a `Project` resource. */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* The `namespace` field of a `Project` resource. */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+type DashboardResourceNames struct {
+	/* The external name of the referenced resource */
+	// +optional
+	External *string `json:"external,omitempty"`
+
+	/* Kind of the referent. */
+	// +optional
+	Kind *string `json:"kind,omitempty"`
+
+	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
 }
 
 type DashboardRowLayout struct {
@@ -173,7 +299,7 @@ type DashboardRowLayout struct {
 }
 
 type DashboardRows struct {
-	/* The relative weight of this row. The row weight is used to adjust the height of rows on the screen (relative to peers). Greater the weight, greater the height of the row on the screen. If omitted, a value of 1 is used while rendering. */
+	/* The relative weight of this row. The row weight is used to adjust the height of rows on the screen (relative to peers). */
 	// +optional
 	Weight *int64 `json:"weight,omitempty"`
 
@@ -183,6 +309,10 @@ type DashboardRows struct {
 }
 
 type DashboardScorecard struct {
+	/* Will cause the `Scorecard` to show only the value, with no indicator to its value relative to its thresholds. */
+	// +optional
+	BlankView *DashboardBlankView `json:"blankView,omitempty"`
+
 	/* Will cause the scorecard to show a gauge chart. */
 	// +optional
 	GaugeView *DashboardGaugeView `json:"gaugeView,omitempty"`
@@ -191,7 +321,7 @@ type DashboardScorecard struct {
 	// +optional
 	SparkChartView *DashboardSparkChartView `json:"sparkChartView,omitempty"`
 
-	/* The thresholds used to determine the state of the scorecard given the time series' current value. For an actual value x, the scorecard is in a danger state if x is less than or equal to a danger threshold that triggers below, or greater than or equal to a danger threshold that triggers above. Similarly, if x is above/below a warning threshold that triggers above/below, then the scorecard is in a warning state - unless x also puts it in a danger state. (Danger trumps warning.)  As an example, consider a scorecard with the following four thresholds: {   value: 90,   category: 'DANGER',   trigger: 'ABOVE', },: {   value: 70,   category: 'WARNING',   trigger: 'ABOVE', }, {   value: 10,   category: 'DANGER',   trigger: 'BELOW', }, {   value: 20,   category: 'WARNING',   trigger: 'BELOW', }  Then: values less than or equal to 10 would put the scorecard in a DANGER state, values greater than 10 but less than or equal to 20 a WARNING state, values strictly between 20 and 70 an OK state, values greater than or equal to 70 but less than 90 a WARNING state, and values greater than or equal to 90 a DANGER state. */
+	/* The thresholds used to determine the state of the scorecard given the time series' current value. */
 	// +optional
 	Thresholds []DashboardThresholds `json:"thresholds,omitempty"`
 
@@ -200,30 +330,79 @@ type DashboardScorecard struct {
 }
 
 type DashboardSecondaryAggregation struct {
-	/* The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data.  The value must be at least 60 seconds. If a per-series aligner other than `ALIGN_NONE` is specified, this field is required or an error is returned. If no per-series aligner is specified, or the aligner `ALIGN_NONE` is specified, then this field is ignored. */
+	/* The `alignment_period` specifies a time interval, in seconds, that is used to divide the data in all the [time series][google.monitoring.v3.TimeSeries] into consistent blocks of time. This will be done before the per-series aligner can be applied to the data. */
 	// +optional
 	AlignmentPeriod *string `json:"alignmentPeriod,omitempty"`
 
-	/* The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series.  Not all reducer operations can be applied to all time series. The valid choices depend on the `metric_kind` and the `value_type` of the original time series. Reduction can yield a time series with a different `metric_kind` or `value_type` than the input time series.  Time series data must first be aligned (see `per_series_aligner`) in order to perform cross-time series reduction. If `cross_series_reducer` is specified, then `per_series_aligner` must be specified, and must not be `ALIGN_NONE`. An `alignment_period` must also be specified; otherwise, an error is returned. Possible values: REDUCE_NONE, REDUCE_MEAN, REDUCE_MIN, REDUCE_MAX, REDUCE_SUM, REDUCE_STDDEV, REDUCE_COUNT, REDUCE_COUNT_TRUE, REDUCE_COUNT_FALSE, REDUCE_FRACTION_TRUE, REDUCE_PERCENTILE_99, REDUCE_PERCENTILE_95, REDUCE_PERCENTILE_50, REDUCE_PERCENTILE_05, REDUCE_FRACTION_LESS_THAN, REDUCE_MAKE_DISTRIBUTION */
+	/* The reduction operation to be used to combine time series into a single time series, where the value of each data point in the resulting series is a function of all the already aligned values in the input time series. */
 	// +optional
 	CrossSeriesReducer *string `json:"crossSeriesReducer,omitempty"`
 
-	/* The set of fields to preserve when `cross_series_reducer` is specified. The `group_by_fields` determine how the time series are partitioned into subsets prior to applying the aggregation operation. Each subset contains time series that have the same value for each of the grouping fields. Each individual time series is a member of exactly one subset. The `cross_series_reducer` is applied to each subset of time series. It is not possible to reduce across different resource types, so this field implicitly contains `resource.type`.  Fields not specified in `group_by_fields` are aggregated away.  If `group_by_fields` is not specified and all the time series have the same resource type, then the time series are aggregated into a single output time series. If `cross_series_reducer` is not defined, this field is ignored. */
+	/* The set of fields to preserve when `cross_series_reducer` is specified. */
 	// +optional
 	GroupByFields []string `json:"groupByFields,omitempty"`
 
-	/* An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period.  Not all alignment operations may be applied to all time series. The valid choices depend on the `metric_kind` and `value_type` of the original time series. Alignment can change the `metric_kind` or the `value_type` of the time series.  Time series data must be aligned in order to perform cross-time series reduction. If `cross_series_reducer` is specified, then `per_series_aligner` must be specified and not equal to `ALIGN_NONE` and `alignment_period` must be specified; otherwise, an error is returned. */
+	/* An `Aligner` describes how to bring the data points in a single time series into temporal alignment. Except for `ALIGN_NONE`, all alignments cause all the data points in an `alignment_period` to be mathematically grouped together, resulting in a single data point for each `alignment_period` with end timestamp at the end of the period. */
 	// +optional
 	PerSeriesAligner *string `json:"perSeriesAligner,omitempty"`
 }
 
+type DashboardSectionHeader struct {
+	/* Whether to insert a divider below the section in the table of contents */
+	// +optional
+	DividerBelow *bool `json:"dividerBelow,omitempty"`
+
+	/* The subtitle of the section */
+	// +optional
+	Subtitle *string `json:"subtitle,omitempty"`
+}
+
+type DashboardSingleViewGroup struct {
+}
+
 type DashboardSparkChartView struct {
-	/* The lower bound on data point frequency in the chart implemented by specifying the minimum alignment period to use in a time series query. For example, if the data is published once every 10 minutes it would not make sense to fetch and align data at one minute intervals. This field is optional and exists only as a hint. */
+	/* The lower bound on data point frequency in the chart implemented by specifying the minimum alignment period to use in a time series query. */
 	// +optional
 	MinAlignmentPeriod *string `json:"minAlignmentPeriod,omitempty"`
 
-	/* Required. The type of sparkchart to show in this chartView. Possible values: SPARK_CHART_TYPE_UNSPECIFIED, SPARK_LINE, SPARK_BAR */
+	/* Required. The type of sparkchart to show in this chartView. */
 	SparkChartType string `json:"sparkChartType"`
+}
+
+type DashboardStyle struct {
+	/* The background color as a hex string. "#RRGGBB" or "#RGB" */
+	// +optional
+	BackgroundColor *string `json:"backgroundColor,omitempty"`
+
+	/* Font sizes for both the title and content. The title will still be larger relative to the content. */
+	// +optional
+	FontSize *string `json:"fontSize,omitempty"`
+
+	/* The horizontal alignment of both the title and content */
+	// +optional
+	HorizontalAlignment *string `json:"horizontalAlignment,omitempty"`
+
+	/* The amount of padding around the widget */
+	// +optional
+	Padding *string `json:"padding,omitempty"`
+
+	/* The pointer location for this widget (also sometimes called a "tail") */
+	// +optional
+	PointerLocation *string `json:"pointerLocation,omitempty"`
+
+	/* The text color as a hex string. "#RRGGBB" or "#RGB" */
+	// +optional
+	TextColor *string `json:"textColor,omitempty"`
+
+	/* The vertical alignment of both the title and content */
+	// +optional
+	VerticalAlignment *string `json:"verticalAlignment,omitempty"`
+}
+
+type DashboardTableDisplayOptions struct {
+	/* Optional. This field is unused and has been replaced by TimeSeriesTable.column_settings */
+	// +optional
+	ShownColumns []string `json:"shownColumns,omitempty"`
 }
 
 type DashboardText struct {
@@ -231,17 +410,21 @@ type DashboardText struct {
 	// +optional
 	Content *string `json:"content,omitempty"`
 
-	/* How the text content is formatted. Possible values: FORMAT_UNSPECIFIED, MARKDOWN, RAW */
+	/* How the text content is formatted. */
 	// +optional
 	Format *string `json:"format,omitempty"`
+
+	/* How the text is styled */
+	// +optional
+	Style *DashboardStyle `json:"style,omitempty"`
 }
 
 type DashboardThresholds struct {
-	/* The state color for this threshold. Color is not allowed in a XyChart. Possible values: COLOR_UNSPECIFIED, GREY, BLUE, GREEN, YELLOW, ORANGE, RED */
+	/* The state color for this threshold. Color is not allowed in a XyChart. */
 	// +optional
 	Color *string `json:"color,omitempty"`
 
-	/* The direction for the current threshold. Direction is not allowed in a XyChart. Possible values: DIRECTION_UNSPECIFIED, ABOVE, BELOW */
+	/* The direction for the current threshold. Direction is not allowed in a XyChart. */
 	// +optional
 	Direction *string `json:"direction,omitempty"`
 
@@ -249,31 +432,35 @@ type DashboardThresholds struct {
 	// +optional
 	Label *string `json:"label,omitempty"`
 
+	/* The target axis to use for plotting the threshold. Target axis is not allowed in a Scorecard. */
+	// +optional
+	TargetAxis *string `json:"targetAxis,omitempty"`
+
 	/* The value of the threshold. The value should be defined in the native scale of the metric. */
 	// +optional
 	Value *float64 `json:"value,omitempty"`
 }
 
 type DashboardTiles struct {
-	/* The height of the tile, measured in grid squares. */
+	/* The height of the tile, measured in grid blocks. Tiles must have a minimum height of 1. */
 	// +optional
-	Height *int64 `json:"height,omitempty"`
+	Height *int32 `json:"height,omitempty"`
 
-	/* The informational widget contained in the tile. */
+	/* The informational widget contained in the tile. For example an `XyChart`. */
 	// +optional
 	Widget *DashboardWidget `json:"widget,omitempty"`
 
-	/* The width of the tile, measured in grid squares. */
+	/* The width of the tile, measured in grid blocks. Tiles must have a minimum width of 1. */
 	// +optional
-	Width *int64 `json:"width,omitempty"`
+	Width *int32 `json:"width,omitempty"`
 
-	/* The zero-indexed position of the tile in grid squares relative to the left edge of the grid. */
+	/* The zero-indexed position of the tile in grid blocks relative to the left edge of the grid. Tiles must be contained within the specified number of columns. `x_pos` cannot be negative. */
 	// +optional
-	XPos *int64 `json:"xPos,omitempty"`
+	XPos *int32 `json:"xPos,omitempty"`
 
-	/* The zero-indexed position of the tile in grid squares relative to the top edge of the grid. */
+	/* The zero-indexed position of the tile in grid blocks relative to the top edge of the grid. `y_pos` cannot be negative. */
 	// +optional
-	YPos *int64 `json:"yPos,omitempty"`
+	YPos *int32 `json:"yPos,omitempty"`
 }
 
 type DashboardTimeSeriesFilter struct {
@@ -312,6 +499,14 @@ type DashboardTimeSeriesFilterRatio struct {
 }
 
 type DashboardTimeSeriesQuery struct {
+	/* Optional. If set, Cloud Monitoring will treat the full query duration as the alignment period so that there will be only 1 output value. */
+	// +optional
+	OutputFullDuration *bool `json:"outputFullDuration,omitempty"`
+
+	/* A query used to fetch time series with PromQL. */
+	// +optional
+	PrometheusQuery *string `json:"prometheusQuery,omitempty"`
+
 	/* Filter parameters to fetch time series. */
 	// +optional
 	TimeSeriesFilter *DashboardTimeSeriesFilter `json:"timeSeriesFilter,omitempty"`
@@ -320,7 +515,7 @@ type DashboardTimeSeriesQuery struct {
 	// +optional
 	TimeSeriesFilterRatio *DashboardTimeSeriesFilterRatio `json:"timeSeriesFilterRatio,omitempty"`
 
-	/* A query used to fetch time series. */
+	/* A query used to fetch time series with MQL. */
 	// +optional
 	TimeSeriesQueryLanguage *string `json:"timeSeriesQueryLanguage,omitempty"`
 
@@ -329,21 +524,71 @@ type DashboardTimeSeriesQuery struct {
 	UnitOverride *string `json:"unitOverride,omitempty"`
 }
 
+type DashboardTimeSeriesTable struct {
+	/* Optional. The list of the persistent column settings for the table. */
+	// +optional
+	ColumnSettings []DashboardColumnSettings `json:"columnSettings,omitempty"`
+
+	/* Required. The data displayed in this table. */
+	DataSets []DashboardDataSets `json:"dataSets"`
+
+	/* Optional. Store rendering strategy */
+	// +optional
+	MetricVisualization *string `json:"metricVisualization,omitempty"`
+}
+
 type DashboardWidget struct {
+	/* A chart of alert policy data. */
+	// +optional
+	AlertChart *DashboardAlertChart `json:"alertChart,omitempty"`
+
 	/* A blank space. */
 	// +optional
 	Blank *DashboardBlank `json:"blank,omitempty"`
 
+	/* A widget that groups the other widgets. All widgets that are within the area spanned by the grouping widget are considered member widgets. */
+	// +optional
+	CollapsibleGroup *DashboardCollapsibleGroup `json:"collapsibleGroup,omitempty"`
+
+	/* A widget that displays a list of error groups. */
+	// +optional
+	ErrorReportingPanel *DashboardErrorReportingPanel `json:"errorReportingPanel,omitempty"`
+
+	/* Optional. The widget id. Ids may be made up of alphanumerics, dashes and underscores. Widget ids are optional. */
+	// +optional
+	Id *string `json:"id,omitempty"`
+
+	/* A widget that shows list of incidents. */
+	// +optional
+	IncidentList *DashboardIncidentList `json:"incidentList,omitempty"`
+
+	/* A widget that shows a stream of logs. */
 	// +optional
 	LogsPanel *DashboardLogsPanel `json:"logsPanel,omitempty"`
+
+	/* A widget that displays timeseries data as a pie chart. */
+	// +optional
+	PieChart *DashboardPieChart `json:"pieChart,omitempty"`
 
 	/* A scorecard summarizing time series data. */
 	// +optional
 	Scorecard *DashboardScorecard `json:"scorecard,omitempty"`
 
+	/* A widget that defines a section header for easier navigation of the dashboard. */
+	// +optional
+	SectionHeader *DashboardSectionHeader `json:"sectionHeader,omitempty"`
+
+	/* A widget that groups the other widgets by using a dropdown menu. */
+	// +optional
+	SingleViewGroup *DashboardSingleViewGroup `json:"singleViewGroup,omitempty"`
+
 	/* A raw string or markdown displaying textual content. */
 	// +optional
 	Text *DashboardText `json:"text,omitempty"`
+
+	/* A widget that displays time series data in a tabular format. */
+	// +optional
+	TimeSeriesTable *DashboardTimeSeriesTable `json:"timeSeriesTable,omitempty"`
 
 	/* Optional. The title of the widget. */
 	// +optional
@@ -355,20 +600,57 @@ type DashboardWidget struct {
 }
 
 type DashboardWidgets struct {
+	/* A chart of alert policy data. */
+	// +optional
+	AlertChart *DashboardAlertChart `json:"alertChart,omitempty"`
+
 	/* A blank space. */
 	// +optional
 	Blank *DashboardBlank `json:"blank,omitempty"`
 
+	/* A widget that groups the other widgets. All widgets that are within the area spanned by the grouping widget are considered member widgets. */
+	// +optional
+	CollapsibleGroup *DashboardCollapsibleGroup `json:"collapsibleGroup,omitempty"`
+
+	/* A widget that displays a list of error groups. */
+	// +optional
+	ErrorReportingPanel *DashboardErrorReportingPanel `json:"errorReportingPanel,omitempty"`
+
+	/* Optional. The widget id. Ids may be made up of alphanumerics, dashes and underscores. Widget ids are optional. */
+	// +optional
+	Id *string `json:"id,omitempty"`
+
+	/* A widget that shows list of incidents. */
+	// +optional
+	IncidentList *DashboardIncidentList `json:"incidentList,omitempty"`
+
+	/* A widget that shows a stream of logs. */
 	// +optional
 	LogsPanel *DashboardLogsPanel `json:"logsPanel,omitempty"`
+
+	/* A widget that displays timeseries data as a pie chart. */
+	// +optional
+	PieChart *DashboardPieChart `json:"pieChart,omitempty"`
 
 	/* A scorecard summarizing time series data. */
 	// +optional
 	Scorecard *DashboardScorecard `json:"scorecard,omitempty"`
 
+	/* A widget that defines a section header for easier navigation of the dashboard. */
+	// +optional
+	SectionHeader *DashboardSectionHeader `json:"sectionHeader,omitempty"`
+
+	/* A widget that groups the other widgets by using a dropdown menu. */
+	// +optional
+	SingleViewGroup *DashboardSingleViewGroup `json:"singleViewGroup,omitempty"`
+
 	/* A raw string or markdown displaying textual content. */
 	// +optional
 	Text *DashboardText `json:"text,omitempty"`
+
+	/* A widget that displays time series data in a tabular format. */
+	// +optional
+	TimeSeriesTable *DashboardTimeSeriesTable `json:"timeSeriesTable,omitempty"`
 
 	/* Optional. The title of the widget. */
 	// +optional
@@ -384,7 +666,7 @@ type DashboardXAxis struct {
 	// +optional
 	Label *string `json:"label,omitempty"`
 
-	/* The axis scale. By default, a linear scale is used. Possible values: SCALE_UNSPECIFIED, LINEAR, LOG10 */
+	/* The axis scale. By default, a linear scale is used. */
 	// +optional
 	Scale *string `json:"scale,omitempty"`
 }
@@ -401,17 +683,31 @@ type DashboardXyChart struct {
 	// +optional
 	Thresholds []DashboardThresholds `json:"thresholds,omitempty"`
 
-	/* The duration used to display a comparison chart. A comparison chart simultaneously shows values from two similar-length time periods (e.g., week-over-week metrics). The duration must be positive, and it can only be applied to charts with data sets of LINE plot type. */
+	/* The duration used to display a comparison chart. */
 	// +optional
 	TimeshiftDuration *string `json:"timeshiftDuration,omitempty"`
 
-	/* The properties applied to the X axis. */
+	/* The properties applied to the x-axis. */
 	// +optional
 	XAxis *DashboardXAxis `json:"xAxis,omitempty"`
 
-	/* The properties applied to the Y axis. */
+	/* The properties applied to the y2-axis. */
+	// +optional
+	Y2Axis *DashboardY2Axis `json:"y2Axis,omitempty"`
+
+	/* The properties applied to the y-axis. */
 	// +optional
 	YAxis *DashboardYAxis `json:"yAxis,omitempty"`
+}
+
+type DashboardY2Axis struct {
+	/* The label of the axis. */
+	// +optional
+	Label *string `json:"label,omitempty"`
+
+	/* The axis scale. By default, a linear scale is used. */
+	// +optional
+	Scale *string `json:"scale,omitempty"`
 }
 
 type DashboardYAxis struct {
@@ -419,7 +715,7 @@ type DashboardYAxis struct {
 	// +optional
 	Label *string `json:"label,omitempty"`
 
-	/* The axis scale. By default, a linear scale is used. Possible values: SCALE_UNSPECIFIED, LINEAR, LOG10 */
+	/* The axis scale. By default, a linear scale is used. */
 	// +optional
 	Scale *string `json:"scale,omitempty"`
 }
@@ -429,6 +725,10 @@ type MonitoringDashboardSpec struct {
 	// +optional
 	ColumnLayout *DashboardColumnLayout `json:"columnLayout,omitempty"`
 
+	/* Filters to reduce the amount of data charted based on the filter criteria. */
+	// +optional
+	DashboardFilters []DashboardDashboardFilters `json:"dashboardFilters,omitempty"`
+
 	/* Required. The mutable, human-readable name. */
 	DisplayName string `json:"displayName"`
 
@@ -436,14 +736,14 @@ type MonitoringDashboardSpec struct {
 	// +optional
 	GridLayout *DashboardGridLayout `json:"gridLayout,omitempty"`
 
-	/* The content is arranged as a grid of tiles, with each content widget occupying one or more tiles. */
+	/* The content is arranged as a grid of tiles, with each content widget occupying one or more grid blocks. */
 	// +optional
 	MosaicLayout *DashboardMosaicLayout `json:"mosaicLayout,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -456,7 +756,7 @@ type MonitoringDashboardStatus struct {
 	/* Conditions represent the latest available observations of the
 	   MonitoringDashboard's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* \`etag\` is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other. An \`etag\` is returned in the response to \`GetDashboard\`, and users are expected to put that etag in the request to \`UpdateDashboard\` to ensure that their change will be applied to the same version of the Dashboard configuration. The field should not be passed during dashboard creation. */
+	/* \`etag\` is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other. */
 	// +optional
 	Etag *string `json:"etag,omitempty"`
 
@@ -469,7 +769,7 @@ type MonitoringDashboardStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpmonitoringdashboard;gcpmonitoringdashboards
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

@@ -45,17 +45,19 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	return s
 }
 
-func (s *MockService) ExpectedHost() string {
-	return "servicenetworking.googleapis.com"
+func (s *MockService) ExpectedHosts() []string {
+	return []string{"servicenetworking.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterServicesConnectionsServerServer(grpcServer, &connectionsV1{MockService: s})
+	pb.RegisterServicesProjectsGlobalNetworksPeeredDnsDomainsServerServer(grpcServer, &peeredDnsDomainsServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterServicesConnectionsServerHandler,
+		pb.RegisterServicesProjectsGlobalNetworksPeeredDnsDomainsServerHandler,
 		s.operations.RegisterOperationsPath("/v1/operations/{name}"),
 	)
 	if err != nil {

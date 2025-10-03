@@ -1,0 +1,37 @@
+{
+  "name": "{{assignment}}",
+  "project": "{{project}}",
+  "location": "{{zone}}",
+  "osPolicies": [
+    {
+      "id": "policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "deb-local-path-to-gcs",
+              "pkg": {
+                "desiredState": "INSTALLED",
+                "deb": {
+                  "source": {
+                    "localPath": "$HOME/package.deb"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "instanceFilter": {
+    "all": true
+  },
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 1
+    },
+    "minWaitDuration": "3.5s"
+  }
+}

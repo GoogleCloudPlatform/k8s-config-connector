@@ -1,0 +1,96 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeBetaReservationSpecificReservationInstancePropertiesLocalSsdsInterfaceEnum {
+  ComputeBetaReservationSpecificReservationInstancePropertiesLocalSsdsInterfaceEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaReservationSpecificReservationInstancePropertiesLocalSsdsInterfaceEnumSCSI = 1;
+  ComputeBetaReservationSpecificReservationInstancePropertiesLocalSsdsInterfaceEnumNVME = 2;
+  ComputeBetaReservationSpecificReservationInstancePropertiesLocalSsdsInterfaceEnumNVDIMM = 3;
+}
+
+enum ComputeBetaReservationStatusEnum {
+  ComputeBetaReservationStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaReservationStatusEnumPENDING = 1;
+  ComputeBetaReservationStatusEnumRUNNING = 2;
+  ComputeBetaReservationStatusEnumDONE = 3;
+}
+
+message ComputeBetaReservation {
+  int64 id = 1;
+  string self_link = 2;
+  string zone = 3;
+  string description = 4;
+  string name = 5;
+  ComputeBetaReservationSpecificReservation specific_reservation = 6;
+  string commitment = 7;
+  bool specific_reservation_required = 8;
+  ComputeBetaReservationStatusEnum status = 9;
+  string project = 10;
+}
+
+message ComputeBetaReservationSpecificReservation {
+  ComputeBetaReservationSpecificReservationInstanceProperties instance_properties = 1;
+  int64 count = 2;
+  int64 in_use_count = 3;
+}
+
+message ComputeBetaReservationSpecificReservationInstanceProperties {
+  string machine_type = 1;
+  repeated ComputeBetaReservationSpecificReservationInstancePropertiesGuestAccelerators guest_accelerators = 2;
+  string min_cpu_platform = 3;
+  repeated ComputeBetaReservationSpecificReservationInstancePropertiesLocalSsds local_ssds = 4;
+}
+
+message ComputeBetaReservationSpecificReservationInstancePropertiesGuestAccelerators {
+  string accelerator_type = 1;
+  int64 accelerator_count = 2;
+}
+
+message ComputeBetaReservationSpecificReservationInstancePropertiesLocalSsds {
+  int64 disk_size_gb = 1;
+  ComputeBetaReservationSpecificReservationInstancePropertiesLocalSsdsInterfaceEnum interface = 2;
+}
+
+message ApplyComputeBetaReservationRequest {
+  ComputeBetaReservation resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaReservationRequest {
+  string service_account_file = 1;
+  ComputeBetaReservation resource = 2;
+}
+
+message ListComputeBetaReservationRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Zone = 3;
+}
+
+message ListComputeBetaReservationResponse {
+  repeated ComputeBetaReservation items = 1;
+}
+
+service ComputeBetaReservationService {
+  rpc ApplyComputeBetaReservation(ApplyComputeBetaReservationRequest) returns (ComputeBetaReservation);
+  rpc DeleteComputeBetaReservation(DeleteComputeBetaReservationRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaReservation(ListComputeBetaReservationRequest) returns (ListComputeBetaReservationResponse);
+}

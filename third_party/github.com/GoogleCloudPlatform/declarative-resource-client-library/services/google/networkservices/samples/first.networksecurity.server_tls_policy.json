@@ -1,0 +1,6 @@
+{
+  "name": "{{server1}}",
+  "project": "{{project}}",
+  "location": "global",
+  "allowOpen": true
+}

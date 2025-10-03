@@ -14,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-provider-google-beta/version"
 
+	"github.com/hashicorp/terraform-provider-google-beta/google-beta/fwtransport"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/accessapproval"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/accesscontextmanager"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/services/activedirectory"
@@ -1960,6 +1961,8 @@ func ProviderConfigure(ctx context.Context, d *schema.ResourceData, p *schema.Pr
 		ua := config.UserAgent
 		config.UserAgent = fmt.Sprintf("%s %s", ua, ext)
 	}
+
+	config.UserAgent = fwtransport.CompileUserAgentString(ctx, "", "", version.ProviderVersion)
 
 	if v, ok := d.GetOk("request_timeout"); ok {
 		var err error

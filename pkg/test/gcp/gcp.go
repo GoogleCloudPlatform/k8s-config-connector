@@ -55,35 +55,37 @@ var (
 	TestFolderID                            = EnvVar{Key: "TEST_FOLDER_ID"}
 	TestFolder2ID                           = EnvVar{Key: "TEST_FOLDER_2_ID"}
 	TestOrgID                               = EnvVar{Key: "TEST_ORG_ID"}
+	IsolatedTestOrgName                     = EnvVar{Key: "ISOLATED_TEST_ORG_NAME"}
 	TestDependentOrgProjectID               = EnvVar{Key: "TEST_DEPENDENT_ORG_PROJECT_ID"}
+	TestDependentFolderProjectID            = EnvVar{Key: "TEST_DEPENDENT_FOLDER_PROJECT_ID"}
+	TestDependentNoNetworkProjectID         = EnvVar{Key: "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID"} // A dependent project with default network disabled
 	TestBillingAccountID                    = EnvVar{Key: "TEST_BILLING_ACCOUNT_ID"}
 	IAMIntegrationTestsOrganizationID       = EnvVar{Key: "IAM_INTEGRATION_TESTS_ORGANIZATION_ID"}
 	IAMIntegrationTestsBillingAccountID     = EnvVar{Key: "IAM_INTEGRATION_TESTS_BILLING_ACCOUNT_ID"}
 	TestBillingAccountIDForBillingResources = EnvVar{Key: "BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES"}
 	TestAttachedClusterName                 = EnvVar{Key: "TEST_ATTACHED_CLUSTER_NAME"}
 	TestKCCAttachedClusterProject           = EnvVar{Key: "KCC_ATTACHED_CLUSTER_TEST_PROJECT"}
+	TestKCCAttachedClusterPlatformVersion   = EnvVar{Key: "ATTACHED_CLUSTER_PLATFORM_VERSION"}
 	FirestoreTestProject                    = EnvVar{Key: "FIRESTORE_TEST_PROJECT"}
 	IdentityPlatformTestProject             = EnvVar{Key: "IDENTITY_PLATFORM_TEST_PROJECT"}
 	RecaptchaEnterpriseTestProject          = EnvVar{Key: "RECAPTCHA_ENTERPRISE_TEST_PROJECT"}
-	TestDependentNoNetworkProjectID         = EnvVar{Key: "TEST_DEPENDENT_NO_NETWORK_PROJECT_ID"} // A dependent project with default network disabled
 	TestKCCVertexAIIndexBucket              = EnvVar{Key: "KCC_VERTEX_AI_INDEX_TEST_BUCKET"}
 	TestKCCVertexAIIndexDataURI             = EnvVar{Key: "KCC_VERTEX_AI_INDEX_TEST_DATA_URI"}
+	TestGroupEmail                          = EnvVar{Key: "KCC_ENG_GROUP_EMAIL"}
+	TestInterconnectID                      = EnvVar{Key: "TEST_INTERCONNECT"}
 )
 
 const (
-	TestDependentFolder2ProjectID = "TEST_DEPENDENT_FOLDER_2_PROJECT_ID"
-	TestDependentFolderProjectID  = "TEST_DEPENDENT_FOLDER_PROJECT_ID"
-	IsolatedTestOrgName           = "ISOLATED_TEST_ORG_NAME"
-	CloudFunctionsTestProject     = "CLOUD_FUNCTIONS_TEST_PROJECT"
-	InterconnectTestProject       = "INTERCONNECT_TEST_PROJECT"
-	HighCPUQuotaTestProject       = "HIGH_CPU_QUOTA_TEST_PROJECT"
-	DLPTestBucket                 = "DLP_TEST_BUCKET"
+	TestDependentFolder2ProjectID             = "TEST_DEPENDENT_FOLDER_2_PROJECT_ID"
+	CloudFunctionsTestProject                 = "CLOUD_FUNCTIONS_TEST_PROJECT"
+	InterconnectTestProject                   = "INTERCONNECT_TEST_PROJECT"
+	HighCPUQuotaTestProject                   = "HIGH_CPU_QUOTA_TEST_PROJECT"
+	DLPTestBucket                             = "DLP_TEST_BUCKET"
+	TestDependentOrgProjectIDWithoutQuotation = "TEST_DEPENDENT_ORG_PROJECT_ID_WITHOUT_QUOTATION"
 )
 
 var (
 	testDependentFolder2ProjectID = os.Getenv(TestDependentFolder2ProjectID)
-	testDependentFolderProjectID  = os.Getenv(TestDependentFolderProjectID)
-	isolatedTestOrgName           = os.Getenv(IsolatedTestOrgName)
 	cloudFunctionsTestProject     = os.Getenv(CloudFunctionsTestProject)
 	interconnectTestProject       = os.Getenv(InterconnectTestProject)
 	highCPUQuotaTestProject       = os.Getenv(HighCPUQuotaTestProject)
@@ -93,10 +95,16 @@ var (
 // GetDefaultProjectID returns the ID of user's configured default GCP project.
 func GetDefaultProjectID(t *testing.T) string {
 	t.Helper()
-	projectID, err := gcp.GetDefaultProjectID()
-	if err != nil {
-		t.Fatalf("error retrieving gcloud sdk credentials: %v", err)
+
+	projectID := os.Getenv("GCP_PROJECT_ID")
+	if projectID == "" {
+		s, err := gcp.GetDefaultProjectID()
+		if err != nil {
+			t.Fatalf("error getting default project: %v", err)
+		}
+		projectID = s
 	}
+
 	return projectID
 }
 
@@ -110,10 +118,8 @@ func GetDefaultProject(t *testing.T) GCPProject {
 	t.Helper()
 	ctx := context.TODO()
 
-	projectID, err := gcp.GetDefaultProjectID()
-	if err != nil {
-		t.Fatalf("error getting default project: %v", err)
-	}
+	projectID := GetDefaultProjectID(t)
+
 	projectNumber, err := GetProjectNumber(ctx, projectID)
 	if err != nil {
 		t.Fatalf("error getting project number for %q: %v", projectID, err)
@@ -121,8 +127,18 @@ func GetDefaultProject(t *testing.T) GCPProject {
 	return GCPProject{ProjectID: projectID, ProjectNumber: projectNumber}
 }
 
+// NewCloudResourceManagerClient returns a GCP Cloud Resource Manager service.
+func NewCloudResourceManagerClient(ctx context.Context) (*cloudresourcemanager.Service, error) {
+	client, err := cloudresourcemanager.NewService(ctx)
+	if err != nil {
+		return nil, err
+	}
+	client.UserAgent = gcp.KCCUserAgent()
+	return client, nil
+}
+
 func GetProjectNumber(ctx context.Context, projectID string) (int64, error) {
-	client, err := gcp.NewCloudResourceManagerClient(ctx)
+	client, err := NewCloudResourceManagerClient(ctx)
 	if err != nil {
 		return 0, fmt.Errorf("error creating resource manager client: %w", err)
 	}
@@ -157,16 +173,8 @@ func FindDefaultServiceAccount() (string, error) {
 	return rawCreds["client_email"], nil
 }
 
-func GetDependentFolderProjectID(_ *testing.T) string {
-	return testDependentFolderProjectID
-}
-
 func GetDependentFolder2ProjectID(_ *testing.T) string {
 	return testDependentFolder2ProjectID
-}
-
-func GetIsolatedTestOrgName(_ *testing.T) string {
-	return isolatedTestOrgName
 }
 
 func GetCloudFunctionsTestProject(_ *testing.T) string {
@@ -229,15 +237,6 @@ func NewStorageClient(t *testing.T) *storage.Service {
 	return client
 }
 
-func NewResourceManagerClient(t *testing.T) *cloudresourcemanager.Service {
-	t.Helper()
-	client, err := gcp.NewCloudResourceManagerClient(context.TODO())
-	if err != nil {
-		t.Fatalf("error creating cloud resource manager client: %v", err)
-	}
-	return client
-}
-
 func NewIAMClient(t *testing.T) *iam.Service {
 	t.Helper()
 	client, err := gcp.NewIAMClient(context.TODO())
@@ -271,6 +270,11 @@ func ResourceSupportsDeletion(resourceKind string) bool {
 		"ResourceManagerPolicy",
 		"SecretManagerSecretVersion":
 		return false
+
+	case "IAPSettings":
+		// IAPSettings does not have a delete method. IAPSettings controller deletes the resource by resetting all the IAP configuration on the resource.
+		return false
+
 	default:
 		return true
 	}

@@ -1,0 +1,5 @@
+{
+  "name": "{{pool}}",
+  "parent": "organizations/{{org_id}}",
+  "location": "global"
+}

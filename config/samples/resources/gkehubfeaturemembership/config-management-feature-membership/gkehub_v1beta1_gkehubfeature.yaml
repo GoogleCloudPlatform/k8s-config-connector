@@ -16,6 +16,8 @@ apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
 kind: GKEHubFeature
 metadata:
   name: gkehubfeaturemembership-dep-acm
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
 spec:
   projectRef:
     name: gkehubfeaturemembership-dep-acm

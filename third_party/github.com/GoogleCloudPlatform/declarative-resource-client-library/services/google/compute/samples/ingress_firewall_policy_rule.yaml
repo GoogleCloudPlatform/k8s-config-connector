@@ -1,0 +1,52 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+name: ingress_firewall_policy_rule
+description: An example of a compute firewall policy rule for a folder
+type: firewall_policy_rule
+versions:
+- ga
+resource: samples/ingress.firewall_policy_rule.json
+dependencies:
+- samples/folder.firewall_policy_association.json
+- samples/basic.networksecurity.address_group.json
+- samples/folder.firewall_policy.json
+- samples/folder_firewall.iam.member.json
+- samples/folder_compute.iam.member.json
+- samples/first_folder.network.json
+- samples/second_folder.network.json
+- samples/compute.serviceusage.service.json
+- samples/first.cloudbilling.project_billing_info.json
+- samples/basic.cloudresourcemanager.folder.json
+- samples/first.cloudresourcemanager.project.json
+updates:
+- resource: samples/update_ingress.firewall_policy_rule.json
+  dependencies:
+  - samples/update_folder.firewall_policy.json
+variables:
+- name: association
+  type: resource_name
+- name: billing_account
+  type: billing_account
+- name: folder
+  type: resource_name
+- name: id1
+  type: resource_name
+- name: network_name
+  type: resource_name
+- name: org_id
+  type: org_id
+- name: policy
+  type: resource_name
+- name: test_service_account
+  type: test_service_account

@@ -25,6 +25,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leaser"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/managementconflict"
 	testreconciler "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller/reconciler"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
@@ -89,7 +90,7 @@ func TestAll(t *testing.T) {
 		// then the namespace will have a lease on the resource. That would interfere with the results of this test as we want to
 		// obtain and release the lease for our 'owners' that we generate below. For that reason, we set the conflict policy to
 		// 'none' and create and reconcile the resource below.
-		k8s.SetAnnotation(k8s.ManagementConflictPreventionPolicyFullyQualifiedAnnotation, k8s.ManagementConflictPreventionPolicyNone, testContext.CreateUnstruct)
+		k8s.SetAnnotation(managementconflict.FullyQualifiedAnnotation, managementconflict.ManagementConflictPreventionPolicyNone, testContext.CreateUnstruct)
 		if err := systemContext.Manager.GetClient().Create(ctx, testContext.CreateUnstruct); err != nil {
 			t.Fatalf("error creating resource: %v", err)
 		}

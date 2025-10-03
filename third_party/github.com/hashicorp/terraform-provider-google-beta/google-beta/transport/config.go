@@ -596,6 +596,8 @@ var DefaultHTTPClientTransformer func(ctx context.Context, inner *http.Client) *
 // This is very handy in tests, for example.
 var OAuth2HTTPClientTransformer func(ctx context.Context, inner *http.Client) *http.Client = nil
 
+var GRPCUnaryClientInterceptor grpc.UnaryClientInterceptor
+
 func HandleSDKDefaults(d *schema.ResourceData) error {
 	if d.Get("impersonate_service_account") == "" {
 		d.Set("impersonate_service_account", MultiEnvDefault([]string{

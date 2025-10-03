@@ -15,14 +15,17 @@ GCP, vcr logs are created based on the actual API calls and saved under each
 test folder, e.g.
 pkg/test/resourcefixture/testdata/basic/serviceusage/v1beta1/service/_vcr_cassettes.
 
-Example command: `E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=vcr
-VCR_MODE=record go test -timeout 3600s -v ./tests/e2e -run
-TestAllInSeries/fixtures/^service$`
+Example command:
+```
+E2E_KUBE_TARGET=envtest RUN_E2E=1 E2E_GCP_TARGET=vcr \
+  VCR_MODE=record go test -timeout 3600s -v ./tests/e2e \
+  -run TestAllInSeries/fixtures/^service$
+```
 
 Test name `service` is a common substring that can be used by many tests, regex
 `^service$` ensures that only the specified test will run.
 
-Three files will be generated: tf.yaml, dcl.yaml and oauth.yaml. Requests from
+Three files will be generated: tf.yaml, nontf.yaml and oauth.yaml. Requests from
 different http clients will be saved into different files.
 
 ## Replay Mode

@@ -21,9 +21,10 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	testutil "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -34,10 +35,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/provider"
 	"github.com/nasa9084/go-openapi"
+	admissionv1 "k8s.io/api/admission/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	k8sschema "k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
+	"sigs.k8s.io/yaml"
 )
 
 func TestChangesOnImmutableFields(t *testing.T) {
@@ -2161,7 +2165,7 @@ var TestCases = []TestCase{
 		},
 		ExpectedResult: []string{"ipAddress"},
 	},
-	// (TODO:maqiuyu): Add a test case for resourceID once supported.
+	// TODO(maqiuyu): Add a test case for resourceID once supported.
 }
 
 func TestUpdateIAMPolicy(t *testing.T) {
@@ -2179,25 +2183,25 @@ func TestUpdateIAMPolicy(t *testing.T) {
 			},
 		},
 	}
-	oldPolicyUnstructred := newUnstructuredFromObject(t, &policy)
+	oldPolicyUnstructured := newUnstructuredFromObject(t, &policy)
 	newPolicyUnstructured := newUnstructuredFromObject(t, &policy)
-	assertHandleIAMPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, true)
+	assertHandleIAMPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, true)
 	copyPolicy := policy
 	copyPolicy.Spec.ResourceReference.Kind = "new-resource-reference-kind"
 	newPolicyUnstructured = newUnstructuredFromObject(t, &copyPolicy)
-	assertHandleIAMPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, false)
+	assertHandleIAMPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, false)
 	copyPolicy = policy
 	copyPolicy.Spec.ResourceReference.Namespace = "new-resource-reference-namespace"
 	newPolicyUnstructured = newUnstructuredFromObject(t, &copyPolicy)
-	assertHandleIAMPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, false)
+	assertHandleIAMPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, false)
 	copyPolicy = policy
 	copyPolicy.Spec.ResourceReference.Name = "new-resource-reference-name"
 	newPolicyUnstructured = newUnstructuredFromObject(t, &copyPolicy)
-	assertHandleIAMPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, false)
+	assertHandleIAMPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, false)
 	copyPolicy = policy
 	copyPolicy.Spec.ResourceReference.APIVersion = "new-resource-reference-apiversion"
 	newPolicyUnstructured = newUnstructuredFromObject(t, &copyPolicy)
-	assertHandleIAMPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, false)
+	assertHandleIAMPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, false)
 }
 
 func assertHandleIAMPolicy(t *testing.T, old *unstructured.Unstructured, new *unstructured.Unstructured, expectedAllowedValue bool) {
@@ -2225,25 +2229,25 @@ func TestUpdateIAMPartialPolicy(t *testing.T) {
 			},
 		},
 	}
-	oldPolicyUnstructred := newUnstructuredFromObject(t, &policy)
+	oldPolicyUnstructured := newUnstructuredFromObject(t, &policy)
 	newPolicyUnstructured := newUnstructuredFromObject(t, &policy)
-	assertHandleIAMPartialPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, true)
+	assertHandleIAMPartialPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, true)
 	copyPolicy := policy
 	copyPolicy.Spec.ResourceReference.Kind = "new-resource-reference-kind"
 	newPolicyUnstructured = newUnstructuredFromObject(t, &copyPolicy)
-	assertHandleIAMPartialPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, false)
+	assertHandleIAMPartialPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, false)
 	copyPolicy = policy
 	copyPolicy.Spec.ResourceReference.Namespace = "new-resource-reference-namespace"
 	newPolicyUnstructured = newUnstructuredFromObject(t, &copyPolicy)
-	assertHandleIAMPartialPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, false)
+	assertHandleIAMPartialPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, false)
 	copyPolicy = policy
 	copyPolicy.Spec.ResourceReference.Name = "new-resource-reference-name"
 	newPolicyUnstructured = newUnstructuredFromObject(t, &copyPolicy)
-	assertHandleIAMPartialPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, false)
+	assertHandleIAMPartialPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, false)
 	copyPolicy = policy
 	copyPolicy.Spec.ResourceReference.APIVersion = "new-resource-reference-apiversion"
 	newPolicyUnstructured = newUnstructuredFromObject(t, &copyPolicy)
-	assertHandleIAMPartialPolicy(t, oldPolicyUnstructred, newPolicyUnstructured, false)
+	assertHandleIAMPartialPolicy(t, oldPolicyUnstructured, newPolicyUnstructured, false)
 }
 
 func assertHandleIAMPartialPolicy(t *testing.T, old *unstructured.Unstructured, new *unstructured.Unstructured, expectedAllowedValue bool) {
@@ -2273,33 +2277,33 @@ func TestUpdateIAMPolicyMember(t *testing.T) {
 			},
 		},
 	}
-	oldPolicyMemberUnstructred := newUnstructuredFromObject(t, &policyMember)
+	oldPolicyMemberUnstructured := newUnstructuredFromObject(t, &policyMember)
 	newPolicyMemberUnstructured := newUnstructuredFromObject(t, &policyMember)
-	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructred, newPolicyMemberUnstructured, true)
+	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructured, newPolicyMemberUnstructured, true)
 	copyPolicyMember := policyMember
 	copyPolicyMember.Spec.Member = "new-member"
 	newPolicyMemberUnstructured = newUnstructuredFromObject(t, &copyPolicyMember)
-	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructred, newPolicyMemberUnstructured, false)
+	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructured, newPolicyMemberUnstructured, false)
 	copyPolicyMember = policyMember
 	copyPolicyMember.Spec.Role = "new-role"
 	newPolicyMemberUnstructured = newUnstructuredFromObject(t, &copyPolicyMember)
-	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructred, newPolicyMemberUnstructured, false)
+	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructured, newPolicyMemberUnstructured, false)
 	copyPolicyMember = policyMember
 	copyPolicyMember.Spec.ResourceReference.Kind = "new-resource-reference-kind"
 	newPolicyMemberUnstructured = newUnstructuredFromObject(t, &copyPolicyMember)
-	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructred, newPolicyMemberUnstructured, false)
+	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructured, newPolicyMemberUnstructured, false)
 	copyPolicyMember = policyMember
 	copyPolicyMember.Spec.ResourceReference.Namespace = "new-resource-reference-namespace"
 	newPolicyMemberUnstructured = newUnstructuredFromObject(t, &copyPolicyMember)
-	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructred, newPolicyMemberUnstructured, false)
+	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructured, newPolicyMemberUnstructured, false)
 	copyPolicyMember = policyMember
 	copyPolicyMember.Spec.ResourceReference.Name = "new-resource-reference-name"
 	newPolicyMemberUnstructured = newUnstructuredFromObject(t, &copyPolicyMember)
-	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructred, newPolicyMemberUnstructured, false)
+	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructured, newPolicyMemberUnstructured, false)
 	copyPolicyMember = policyMember
 	copyPolicyMember.Spec.ResourceReference.APIVersion = "new-resource-reference-apiversion"
 	newPolicyMemberUnstructured = newUnstructuredFromObject(t, &copyPolicyMember)
-	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructred, newPolicyMemberUnstructured, false)
+	assertHandleIAMPolicyMember(t, oldPolicyMemberUnstructured, newPolicyMemberUnstructured, false)
 }
 
 func assertHandleIAMPolicyMember(t *testing.T, old *unstructured.Unstructured, new *unstructured.Unstructured, expectedAllowedValue bool) {
@@ -2393,4 +2397,207 @@ func getSpecFromUnstructed(t *testing.T, u *unstructured.Unstructured) map[strin
 		t.Fatalf("unexpected false value for 'ok' when retrieving spec from '%v'", u.Object)
 	}
 	return spec
+}
+
+func TestUpdateLogLoggingMetric(t *testing.T) {
+	tests := []struct {
+		name     string
+		spec     map[string]interface{}
+		oldSpec  map[string]interface{}
+		response admission.Response
+	}{
+		{
+			name: "change on a mutable field",
+			spec: map[string]interface{}{
+				"description": "An updated sample log metric",
+				"projectRef": map[string]interface{}{
+					"external": "projects/test-project",
+				},
+			},
+			oldSpec: map[string]interface{}{
+				"description": "A sample log metric",
+				"projectRef": map[string]interface{}{
+					"external": "projects/test-project",
+				},
+			},
+			response: allowedResponse,
+		},
+		{
+			name: "changes on a mutable field and an immutable field",
+			spec: map[string]interface{}{
+				"description": "An updated sample log metric",
+				"metricDescriptor": map[string]interface{}{
+					"metricKind": "DELTA",
+					"valueType":  "DISTRIBUTION",
+				},
+				"projectRef": map[string]interface{}{
+					"external": "projects/test-project",
+				},
+			},
+			oldSpec: map[string]interface{}{
+				"description": "A sample log metric",
+				"metricDescriptor": map[string]interface{}{
+					"metricKind": "CUMULATIVE",
+					"valueType":  "DISTRIBUTION",
+				},
+				"projectRef": map[string]interface{}{
+					"external": "projects/test-project",
+				},
+			},
+			response: admission.Errored(http.StatusForbidden,
+				k8s.NewImmutableFieldsMutationError([]string{"metricDescriptor.metricKind"})),
+		},
+		{
+			name: "changes on multiple immutable fields",
+			spec: map[string]interface{}{
+				"description": "An updated sample log metric",
+				"metricDescriptor": map[string]interface{}{
+					"metricKind": "DELTA",
+					"valueType":  "INT64",
+				},
+				"projectRef": map[string]interface{}{
+					"external": "projects/test-project-update",
+				},
+			},
+			oldSpec: map[string]interface{}{
+				"description": "A sample log metric",
+				"metricDescriptor": map[string]interface{}{
+					"metricKind": "CUMULATIVE",
+					"valueType":  "DISTRIBUTION",
+				},
+				"projectRef": map[string]interface{}{
+					"external": "projects/test-project",
+				},
+			},
+			response: admission.Errored(http.StatusForbidden,
+				k8s.NewImmutableFieldsMutationError([]string{"metricDescriptor.metricKind", "metricDescriptor.valueType", "projectRef"})),
+		},
+	}
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			actual := validateImmutableFieldsForLoggingLogMetricResource(tc.oldSpec, tc.spec)
+			if !testutil.Equals(t, actual, tc.response) {
+				t.Fatalf("got: %v, but want: %v", actual, tc.response)
+			}
+		})
+	}
+}
+
+func TestUpdateGKEHubFeatureMembership(t *testing.T) {
+	tests := []struct {
+		name     string
+		spec     map[string]interface{}
+		oldSpec  map[string]interface{}
+		response admission.Response
+	}{
+		{
+			name: "no change on an immutable field",
+			spec: map[string]interface{}{
+				"description": "An updated sample",
+				"projectRef": map[string]interface{}{
+					"external": "projects/test-project",
+				},
+			},
+			oldSpec: map[string]interface{}{
+				"description": "A sample",
+				"projectRef": map[string]interface{}{
+					"external": "projects/test-project",
+				},
+			},
+			response: allowedResponse,
+		},
+		{
+			name: "changes on a immutable field",
+			spec: map[string]interface{}{
+				"description": "An updated sample",
+				"featureRef": map[string]interface{}{
+					"external": "projects/test-project/locations/test-location/features/test-feature-updated",
+				},
+			},
+			oldSpec: map[string]interface{}{
+				"description": "A sample",
+				"featureRef": map[string]interface{}{
+					"external": "projects/test-project/locations/test-location/features/test-feature",
+				},
+			},
+			response: admission.Errored(http.StatusForbidden,
+				k8s.NewImmutableFieldsMutationError([]string{"featureRef"})),
+		},
+		{
+			name: "changes on multiple immutable fields",
+			spec: map[string]interface{}{
+				"description": "An updated sample",
+				"featureRef": map[string]interface{}{
+					"external": "projects/test-project/locations/test-location/features/test-feature-updated",
+				},
+				"membershipRef": map[string]interface{}{
+					"external": "projects/test-project/locations/test-location/memberships/test-membership-updated",
+				},
+				"location":           "test-location-updated",
+				"membershipLocation": "test-membership-location-updated",
+				"projectRef": map[string]interface{}{
+					"external": "projects/test-project-updated",
+				},
+			},
+			oldSpec: map[string]interface{}{
+				"description": "A sample",
+				"featureRef": map[string]interface{}{
+					"external": "projects/test-project/locations/test-location/features/test-feature",
+				},
+				"membershipRef": map[string]interface{}{
+					"external": "projects/test-project/locations/test-location/memberships/test-membership",
+				},
+				"location":           "test-location",
+				"membershipLocation": "test-membership-location",
+				"projectRef": map[string]interface{}{
+					"external": "projects/test-project",
+				},
+			},
+			response: admission.Errored(http.StatusForbidden,
+				k8s.NewImmutableFieldsMutationError([]string{"featureRef", "location", "projectRef", "membershipLocation", "membershipRef"})),
+		},
+	}
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			actual := validateImmutableFieldsForGKEHubFeatureMembershipResource(tc.oldSpec, tc.spec)
+			if !testutil.Equals(t, actual, tc.response) {
+				t.Fatalf("got: %v, but want: %v", actual, tc.response)
+			}
+		})
+	}
+}
+
+func TestDirectResourcesAlwaysAllowed(t *testing.T) {
+	directGVKs := supportedgvks.DirectResources()
+	for gvk := range directGVKs {
+		v := immutableFieldsValidatorHandler{}
+		unstruct := &unstructured.Unstructured{
+			Object: map[string]interface{}{
+				"kind":       gvk.Kind,
+				"apiVersion": fmt.Sprintf("%s", gvk.GroupVersion()),
+			},
+		}
+
+		yamlData, err := yaml.Marshal(unstruct)
+		if err != nil {
+			t.Fatalf("Error marshaling YAML: %v", err)
+		}
+		req := admission.Request{
+			AdmissionRequest: admissionv1.AdmissionRequest{
+				Object: runtime.RawExtension{
+					Raw: yamlData,
+				},
+				OldObject: runtime.RawExtension{
+					Raw: yamlData,
+				},
+			},
+		}
+
+		response := v.Handle(nil, req)
+		if response.Allowed != true {
+			t.Fatalf("unexpected value for Allowed: got '%v', want 'true'", response.Allowed)
+		}
+	}
 }

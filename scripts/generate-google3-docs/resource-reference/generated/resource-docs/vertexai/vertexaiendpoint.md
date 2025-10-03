@@ -59,20 +59,6 @@
 ## Custom Resource Definition Properties
 
 
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
-</tbody>
-</table>
-
 
 ### Spec
 #### Schema
@@ -389,7 +375,7 @@ observedState:
 
 ## Sample YAML(s)
 
-### Vertexai Endpoint Encryptionkey
+### VertexAI Endpoint Encryptionkey
 ```yaml
 # Copyright 2024 Google LLC
 #
@@ -467,7 +453,7 @@ spec:
   resourceID: aiplatform.googleapis.com
 ```
 
-### Vertexai Endpoint Network
+### VertexAI Endpoint Network
 ```yaml
 # Copyright 2024 Google LLC
 #

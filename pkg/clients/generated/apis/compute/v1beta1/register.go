@@ -167,6 +167,12 @@ var (
 		Kind:    reflect.TypeOf(ComputeInterconnectAttachment{}).Name(),
 	}
 
+	ComputeManagedSSLCertificateGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(ComputeManagedSSLCertificate{}).Name(),
+	}
+
 	ComputeNetworkGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

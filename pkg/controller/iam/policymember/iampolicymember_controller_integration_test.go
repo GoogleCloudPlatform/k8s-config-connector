@@ -21,11 +21,12 @@ import (
 	"context"
 	"errors"
 	"log"
+	"regexp"
 	"strings"
 	"testing"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/policymember"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/clientconfig"
@@ -41,11 +42,13 @@ import (
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/teststatus"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
@@ -187,7 +190,7 @@ func testPolicyMemberCreateDelete(ctx context.Context, t *testing.T, mgr manager
 	if err != nil {
 		t.Fatalf("error marshalling object %v as unstructured: %v", k8sPolicyMember, err)
 	}
-	reconciler.ReconcileObjectMeta(ctx, k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, testreconciler.ExpectedSuccessfulReconcileResultFor(reconciler, u), nil)
+	reconcileIAMPolicyMember(ctx, t, reconciler, k8sPolicyMember, testreconciler.ExpectedSuccessfulReconcileResultFor(reconciler, u), nil)
 	gcpPolicyMember, err := iamClient.GetPolicyMember(ctx, k8sPolicyMember)
 	if err != nil {
 		t.Fatalf("unexpected error getting policy member: %v", err)
@@ -201,18 +204,18 @@ func testPolicyMemberCreateDelete(ctx context.Context, t *testing.T, mgr manager
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sPolicyMember), k8sPolicyMember); err != nil {
 		t.Fatalf("unexpected error getting resource: %v", err)
 	}
-	testcontroller.AssertReadyCondition(t, k8sPolicyMember, preReconcileGeneration)
+	teststatus.AssertReadyCondition(t, k8sPolicyMember, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, v1beta1.IAMPolicyMemberGVK.Kind, &k8sPolicyMember.ObjectMeta, k8s.UpToDate)
 	if err := kubeClient.Delete(ctx, k8sPolicyMember); err != nil {
 		t.Fatalf("error deleting policy member: %v", err)
 	}
 	assertObservedGenerationEquals(t, k8sPolicyMember, preReconcileGeneration)
-	reconciler.ReconcileObjectMeta(ctx, k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, testreconciler.ExpectedRequeueReconcileStruct, nil)
+	reconcileIAMPolicyMember(ctx, t, reconciler, k8sPolicyMember, testreconciler.ExpectedRequeueReconcileStruct, nil)
 	if _, err := iamClient.GetPolicyMember(ctx, k8sPolicyMember); err != nil {
 		t.Fatalf("expected policy member to exist in GCP, but got error: %v", err)
 	}
 	testk8s.RemoveDeletionDefenderFinalizer(t, k8sPolicyMember, v1beta1.IAMPolicyMemberGVK, kubeClient)
-	reconciler.ReconcileObjectMeta(ctx, k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, testreconciler.ExpectedSuccessfulReconcileResultFor(reconciler, u), nil)
+	reconcileIAMPolicyMember(ctx, t, reconciler, k8sPolicyMember, testreconciler.ExpectedSuccessfulReconcileResultFor(reconciler, u), nil)
 	gcpPolicyMember, err = iamClient.GetPolicyMember(ctx, k8sPolicyMember)
 	if !errors.Is(err, kcciamclient.ErrNotFound) {
 		t.Fatalf("unexpected error value: got '%v', want '%v'", err, kcciamclient.ErrNotFound)
@@ -232,7 +235,7 @@ func testReconcileResourceLevelDeleteParentFirst(ctx context.Context, t *testing
 		t.Fatalf("error creating k8sPolicy: %v", err)
 	}
 	reconciler := testreconciler.New(t, mgr, tfprovider.NewOrLogFatal(tfprovider.DefaultConfig))
-	reconciler.ReconcileObjectMeta(ctx, k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMPolicyMember(ctx, t, reconciler, k8sPolicyMember, expectedReconcileResult, nil)
 
 	// First, delete the parent resource of the IAM Policy.
 	log.Printf("Deleting the parent of the IAM Policy Member first %v: %v/%v\n", refResource.GetKind(), refResource.GetNamespace(), refResource.GetName())
@@ -248,7 +251,7 @@ func testReconcileResourceLevelDeleteParentFirst(ctx context.Context, t *testing
 	if err := kubeClient.Delete(ctx, k8sPolicyMember); err != nil {
 		t.Fatalf("error deleting k8sPolicyMember: %v", err)
 	}
-	reconciler.ReconcileObjectMeta(ctx, k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMPolicyMember(ctx, t, reconciler, k8sPolicyMember, expectedReconcileResult, nil)
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sPolicyMember), k8sPolicyMember); err == nil || !apierrors.IsNotFound(err) {
 		t.Fatalf("unexpected error value: %v", err)
 	}
@@ -281,14 +284,14 @@ func testReconcileResourceLevelAcquire(ctx context.Context, t *testing.T, mgr ma
 		t.Fatalf("error creating k8sPolicy: %v", err)
 	}
 	preReconcileGeneration := k8sPolicyMember.GetGeneration()
-	reconciler.ReconcileObjectMeta(ctx, k8sPolicyMember.ObjectMeta, v1beta1.IAMPolicyMemberGVK.Kind, expectedReconcileResult, nil)
+	reconcileIAMPolicyMember(ctx, t, reconciler, k8sPolicyMember, expectedReconcileResult, nil)
 	if _, err := iamClient.GetPolicyMember(ctx, k8sPolicyMember); err != nil {
 		t.Fatalf("unexpected error getting policy member: %v", err)
 	}
 	if err := kubeClient.Get(ctx, k8s.GetNamespacedName(k8sPolicyMember), k8sPolicyMember); err != nil {
 		t.Fatalf("unexpected error getting k8s resource: %v", err)
 	}
-	testcontroller.AssertReadyCondition(t, k8sPolicyMember, preReconcileGeneration)
+	teststatus.AssertReadyCondition(t, k8sPolicyMember, preReconcileGeneration)
 	testcontroller.AssertEventRecordedForObjectMetaAndKind(t, kubeClient, v1beta1.IAMPolicyMemberGVK.Kind, &k8sPolicyMember.ObjectMeta, k8s.UpToDate)
 	assertObservedGenerationEquals(t, k8sPolicyMember, preReconcileGeneration)
 }
@@ -315,6 +318,16 @@ func newIAMPolicyMemberFixture(t *testing.T, refResource *unstructured.Unstructu
 			ResourceReference: resourceRef,
 		},
 	}
+}
+
+func reconcileIAMPolicyMember(ctx context.Context, t *testing.T, reconciler *testreconciler.TestReconciler, policyMember *v1beta1.IAMPolicyMember, expectedResult reconcile.Result, expectedErrorRegex *regexp.Regexp) {
+	kcciamclient.SetGVK(policyMember)
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(policyMember)
+	if err != nil {
+		t.Fatalf("error converting to unstructured: %v", err)
+	}
+	u := &unstructured.Unstructured{Object: uObj}
+	reconciler.Reconcile(ctx, u, expectedResult, expectedErrorRegex)
 }
 
 func name(t *testing.T) string {

@@ -1,0 +1,212 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeBetaImageGuestOSFeatureTypeEnum {
+  ComputeBetaImageGuestOSFeatureTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaImageGuestOSFeatureTypeEnumFEATURE_TYPE_UNSPECIFIED = 1;
+  ComputeBetaImageGuestOSFeatureTypeEnumVIRTIO_SCSI_MULTIQUEUE = 2;
+  ComputeBetaImageGuestOSFeatureTypeEnumWINDOWS = 3;
+  ComputeBetaImageGuestOSFeatureTypeEnumMULTI_IP_SUBNET = 4;
+  ComputeBetaImageGuestOSFeatureTypeEnumUEFI_COMPATIBLE = 5;
+  ComputeBetaImageGuestOSFeatureTypeEnumSECURE_BOOT = 6;
+  ComputeBetaImageGuestOSFeatureTypeEnumSEV_CAPABLE = 7;
+}
+
+enum ComputeBetaImageRawDiskContainerTypeEnum {
+  ComputeBetaImageRawDiskContainerTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaImageRawDiskContainerTypeEnumTAR = 1;
+}
+
+enum ComputeBetaImageShieldedInstanceInitialStatePkFileTypeEnum {
+  ComputeBetaImageShieldedInstanceInitialStatePkFileTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaImageShieldedInstanceInitialStatePkFileTypeEnumUNDEFINED = 1;
+  ComputeBetaImageShieldedInstanceInitialStatePkFileTypeEnumBIN = 2;
+  ComputeBetaImageShieldedInstanceInitialStatePkFileTypeEnumX509 = 3;
+}
+
+enum ComputeBetaImageShieldedInstanceInitialStateKekFileTypeEnum {
+  ComputeBetaImageShieldedInstanceInitialStateKekFileTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaImageShieldedInstanceInitialStateKekFileTypeEnumUNDEFINED = 1;
+  ComputeBetaImageShieldedInstanceInitialStateKekFileTypeEnumBIN = 2;
+  ComputeBetaImageShieldedInstanceInitialStateKekFileTypeEnumX509 = 3;
+}
+
+enum ComputeBetaImageShieldedInstanceInitialStateDbFileTypeEnum {
+  ComputeBetaImageShieldedInstanceInitialStateDbFileTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaImageShieldedInstanceInitialStateDbFileTypeEnumUNDEFINED = 1;
+  ComputeBetaImageShieldedInstanceInitialStateDbFileTypeEnumBIN = 2;
+  ComputeBetaImageShieldedInstanceInitialStateDbFileTypeEnumX509 = 3;
+}
+
+enum ComputeBetaImageShieldedInstanceInitialStateDbxFileTypeEnum {
+  ComputeBetaImageShieldedInstanceInitialStateDbxFileTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaImageShieldedInstanceInitialStateDbxFileTypeEnumUNDEFINED = 1;
+  ComputeBetaImageShieldedInstanceInitialStateDbxFileTypeEnumBIN = 2;
+  ComputeBetaImageShieldedInstanceInitialStateDbxFileTypeEnumX509 = 3;
+}
+
+enum ComputeBetaImageSourceTypeEnum {
+  ComputeBetaImageSourceTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaImageSourceTypeEnumRAW = 1;
+}
+
+enum ComputeBetaImageStatusEnum {
+  ComputeBetaImageStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaImageStatusEnumPENDING = 1;
+  ComputeBetaImageStatusEnumREADY = 2;
+  ComputeBetaImageStatusEnumFAILED = 3;
+  ComputeBetaImageStatusEnumDELETING = 4;
+}
+
+enum ComputeBetaImageDeprecatedStateEnum {
+  ComputeBetaImageDeprecatedStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaImageDeprecatedStateEnumDEPRECATED = 1;
+  ComputeBetaImageDeprecatedStateEnumOBSOLETE = 2;
+  ComputeBetaImageDeprecatedStateEnumDELETED = 3;
+  ComputeBetaImageDeprecatedStateEnumACTIVE = 4;
+}
+
+message ComputeBetaImage {
+  int64 archive_size_bytes = 1;
+  string description = 2;
+  int64 disk_size_gb = 3;
+  string family = 4;
+  repeated ComputeBetaImageGuestOSFeature guest_os_feature = 5;
+  ComputeBetaImageImageEncryptionKey image_encryption_key = 6;
+  map<string, string> labels = 7;
+  repeated string license = 8;
+  string name = 9;
+  ComputeBetaImageRawDisk raw_disk = 10;
+  ComputeBetaImageShieldedInstanceInitialState shielded_instance_initial_state = 11;
+  string self_link = 12;
+  string source_disk = 13;
+  ComputeBetaImageSourceDiskEncryptionKey source_disk_encryption_key = 14;
+  string source_disk_id = 15;
+  string source_image = 16;
+  ComputeBetaImageSourceImageEncryptionKey source_image_encryption_key = 17;
+  string source_image_id = 18;
+  string source_snapshot = 19;
+  ComputeBetaImageSourceSnapshotEncryptionKey source_snapshot_encryption_key = 20;
+  string source_snapshot_id = 21;
+  ComputeBetaImageSourceTypeEnum source_type = 22;
+  ComputeBetaImageStatusEnum status = 23;
+  repeated string storage_location = 24;
+  ComputeBetaImageDeprecated deprecated = 25;
+  string project = 26;
+}
+
+message ComputeBetaImageGuestOSFeature {
+  ComputeBetaImageGuestOSFeatureTypeEnum type = 1;
+}
+
+message ComputeBetaImageImageEncryptionKey {
+  string raw_key = 1;
+  string kms_key_name = 2;
+  string sha256 = 3;
+  string kms_key_service_account = 4;
+}
+
+message ComputeBetaImageRawDisk {
+  string source = 1;
+  string sha1_checksum = 2;
+  ComputeBetaImageRawDiskContainerTypeEnum container_type = 3;
+}
+
+message ComputeBetaImageShieldedInstanceInitialState {
+  ComputeBetaImageShieldedInstanceInitialStatePk pk = 1;
+  repeated ComputeBetaImageShieldedInstanceInitialStateKek kek = 2;
+  repeated ComputeBetaImageShieldedInstanceInitialStateDb db = 3;
+  repeated ComputeBetaImageShieldedInstanceInitialStateDbx dbx = 4;
+}
+
+message ComputeBetaImageShieldedInstanceInitialStatePk {
+  string content = 1;
+  ComputeBetaImageShieldedInstanceInitialStatePkFileTypeEnum file_type = 2;
+}
+
+message ComputeBetaImageShieldedInstanceInitialStateKek {
+  string content = 1;
+  ComputeBetaImageShieldedInstanceInitialStateKekFileTypeEnum file_type = 2;
+}
+
+message ComputeBetaImageShieldedInstanceInitialStateDb {
+  string content = 1;
+  ComputeBetaImageShieldedInstanceInitialStateDbFileTypeEnum file_type = 2;
+}
+
+message ComputeBetaImageShieldedInstanceInitialStateDbx {
+  string content = 1;
+  ComputeBetaImageShieldedInstanceInitialStateDbxFileTypeEnum file_type = 2;
+}
+
+message ComputeBetaImageSourceDiskEncryptionKey {
+  string raw_key = 1;
+  string kms_key_name = 2;
+  string sha256 = 3;
+  string kms_key_service_account = 4;
+}
+
+message ComputeBetaImageSourceImageEncryptionKey {
+  string raw_key = 1;
+  string kms_key_name = 2;
+  string sha256 = 3;
+  string kms_key_service_account = 4;
+}
+
+message ComputeBetaImageSourceSnapshotEncryptionKey {
+  string raw_key = 1;
+  string kms_key_name = 2;
+  string sha256 = 3;
+  string kms_key_service_account = 4;
+}
+
+message ComputeBetaImageDeprecated {
+  ComputeBetaImageDeprecatedStateEnum state = 1;
+  string replacement = 2;
+  string deprecated = 3;
+  string obsolete = 4;
+  string deleted = 5;
+}
+
+message ApplyComputeBetaImageRequest {
+  ComputeBetaImage resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaImageRequest {
+  string service_account_file = 1;
+  ComputeBetaImage resource = 2;
+}
+
+message ListComputeBetaImageRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListComputeBetaImageResponse {
+  repeated ComputeBetaImage items = 1;
+}
+
+service ComputeBetaImageService {
+  rpc ApplyComputeBetaImage(ApplyComputeBetaImageRequest) returns (ComputeBetaImage);
+  rpc DeleteComputeBetaImage(DeleteComputeBetaImageRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaImage(ListComputeBetaImageRequest) returns (ListComputeBetaImageResponse);
+}

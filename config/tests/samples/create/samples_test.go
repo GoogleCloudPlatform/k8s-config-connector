@@ -26,15 +26,18 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
 
 	"golang.org/x/sync/semaphore"
-	klog "sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
+
+	// Register direct controllers
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 func init() {
@@ -42,6 +45,7 @@ func init() {
 	// regexes to be used to match test names. The "test name" in this case
 	// corresponds to the directory name of the sample YAMLs.
 	flag.StringVar(&runTestsRegex, "run-tests", "", "run only the tests whose names match the given regex")
+	flag.StringVar(&skipTestsRegex, "skip-tests", "", "skip the tests whose names match the given regex, even those that match the run-tests regex")
 	// cleanup-resources allows you to disable the cleanup of resources created during testing. This can be useful for debugging test failures.
 	// The default value is true.
 	//
@@ -52,12 +56,13 @@ func init() {
 
 var (
 	runTestsRegex    string
+	skipTestsRegex   string
 	cleanupResources bool
 	mgr              manager.Manager
 	// this manager is only used to get the rest.Config from the test framework
 	unusedManager manager.Manager
 
-	logger = klog.Log
+	logger = log.Log
 )
 
 var testDisabledList = map[string]bool{
@@ -230,12 +235,34 @@ var testDisabledList = map[string]bool{
 }
 
 func TestAll(t *testing.T) {
+	ctx, ctxCancel := context.WithCancel(signals.SetupSignalHandler())
+	t.Cleanup(func() {
+		ctxCancel()
+	})
+
 	project := testgcp.GetDefaultProject(t)
 
-	setup()
-	samples := LoadMatchingSamples(t, regexp.MustCompile(runTestsRegex), project)
+	setup(ctx)
+	// When runTestsRegex is unset, we run all the samples.
+	matchedSamples := LoadMatchingSamples(t, regexp.MustCompile(runTestsRegex), project)
+	// When skipTestsRegex is unset, we don't skip any sample.
+	var skippedSamples []SampleKey
+	if skipTestsRegex != "" {
+		skippedSamples = ListMatchingSamples(t, regexp.MustCompile(skipTestsRegex))
+	}
+
+	var samples []Sample
+	skippedMap := make(map[string]bool)
+	for _, skipped := range skippedSamples {
+		skippedMap[skipped.Name] = true
+	}
+	for _, sample := range matchedSamples {
+		if _, exists := skippedMap[sample.Name]; !exists {
+			samples = append(samples, sample)
+		}
+	}
 	if len(samples) == 0 {
-		t.Fatalf("No tests to run for pattern %s", runTestsRegex)
+		t.Fatalf("No tests to run for -run-tests=%s, -skip-tests=%s", runTestsRegex, skipTestsRegex)
 	}
 
 	// Sort the samples in descending order by number of resources. This is an attempt to start the samples that use
@@ -261,15 +288,13 @@ func TestAll(t *testing.T) {
 		t.Run(s.Name, func(t *testing.T) {
 			t.Parallel()
 
-			ctx := context.TODO()
-
 			h := NewHarnessWithManager(ctx, t, mgr)
 			SetupNamespacesAndApplyDefaults(h, s.Resources, project)
 
 			networkCount := int64(networksInSampleCount(s))
 			if networkCount > 0 {
 				logger.Info("Acquiring network semaphore for test...", "testName", s.Name)
-				if err := sem.Acquire(context.TODO(), networkCount); err != nil {
+				if err := sem.Acquire(ctx, networkCount); err != nil {
 					t.Fatalf("error acquiring semaphore: %v", err)
 				}
 				logger.Info("Acquired network semaphore for test", "testName", s.Name)
@@ -280,21 +305,20 @@ func TestAll(t *testing.T) {
 	}
 }
 
-func setup() {
-	ctx := context.TODO()
+func setup(ctx context.Context) {
 	flag.Parse()
 	var err error
-	mgr, err = kccmanager.New(ctx, unusedManager.GetConfig(), kccmanager.Config{StateIntoSpecDefaultValue: k8s.StateIntoSpecDefaultValueV1Beta1})
+	mgr, err = kccmanager.New(ctx, unusedManager.GetConfig(), kccmanager.Config{StateIntoSpecDefaultValue: stateintospec.StateIntoSpecDefaultValueV1Beta1})
 	if err != nil {
 		logging.Fatal(err, "error creating new manager")
 	}
 	// Register the deletion defender controller
-	if err := registration.Add(mgr, &controller.Deps{}, registration.RegisterDeletionDefenderController); err != nil {
+	if err := registration.AddDeletionDefender(mgr, &controller.Deps{}); err != nil {
 		logging.Fatal(err, "error adding registration controller for deletion defender controllers")
 	}
 	// start the manager, Start(...) is a blocking operation so it needs to be done asynchronously
 	go func() {
-		if err := mgr.Start(signals.SetupSignalHandler()); err != nil {
+		if err := mgr.Start(ctx); err != nil {
 			logging.Fatal(err, "error starting manager")
 		}
 	}()

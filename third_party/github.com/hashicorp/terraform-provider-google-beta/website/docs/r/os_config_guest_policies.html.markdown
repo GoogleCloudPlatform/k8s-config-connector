@@ -464,7 +464,7 @@ The following arguments are supported:
 
 * `id` -
   (Required)
-  Id of the artifact, which the installation and update steps of this recipe can reference.
+  ID of the artifact, which the installation and update steps of this recipe can reference.
   Artifacts in a recipe cannot have the same id.
 
 * `allow_insecure` -

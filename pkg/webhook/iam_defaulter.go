@@ -113,7 +113,10 @@ func defaultAPIVersionForIAMResourceRef(obj *unstructured.Unstructured,
 func apiVersionForKind(kind string,
 	smLoader *servicemappingloader.ServiceMappingLoader,
 	serviceMetadataLoader metadata.ServiceMetadataLoader) (string, error) {
-	gvk, ok := gvks.GVKForKind(kind, smLoader, serviceMetadataLoader)
+	gvk, ok, err := gvks.GVKForKind(kind, smLoader, serviceMetadataLoader)
+	if err != nil {
+		return "", fmt.Errorf("error finding a GroupVersionKind for kind '%v': %w", kind, err)
+	}
 	if !ok {
 		return "", fmt.Errorf("couldn't find a GroupVersionKind for kind '%v'", kind)
 	}

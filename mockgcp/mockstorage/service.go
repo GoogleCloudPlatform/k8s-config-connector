@@ -17,16 +17,25 @@ package mockstorage
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
+
+	// Note we use "real" protos (not mockgcp) ones as it's GRPC API.
+	grpcpb "cloud.google.com/go/storage/control/apiv2/controlpb"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
+
+func init() {
+	mockgcpregistry.Register(New)
+}
 
 // MockService represents a mocked storage service.
 type MockService struct {
@@ -36,7 +45,7 @@ type MockService struct {
 }
 
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
@@ -45,19 +54,28 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	return s
 }
 
-func (s *MockService) ExpectedHost() string {
-	return "storage.googleapis.com"
+func (s *MockService) ExpectedHosts() []string {
+	return []string{"storage.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterBucketsServerServer(grpcServer, &buckets{MockService: s})
 	pb.RegisterObjectsServerServer(grpcServer, &objects{MockService: s})
+	pb.RegisterFoldersServerServer(grpcServer, &folder{MockService: s})
+	pb.RegisterNotificationsServerServer(grpcServer, &notifications{MockService: s})
+	pb.RegisterManagedFoldersServerServer(grpcServer, &managedFolders{MockService: s})
+	grpcpb.RegisterStorageControlServer(grpcServer, &StorageControlService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterBucketsServerHandler,
-		pb.RegisterObjectsServerHandler)
+		pb.RegisterObjectsServerHandler,
+		pb.RegisterNotificationsServerHandler,
+		pb.RegisterFoldersServerHandler,
+		pb.RegisterManagedFoldersServerHandler,
+		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -100,14 +118,16 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
 		if error.Code == http.StatusNotFound {
-			error.Status = ""
-			error.Message = "The specified bucket does not exist."
-			error.Errors = []httpmux.ErrorResponseDetails{
-				{
-					Domain:  "global",
-					Reason:  "notFound",
-					Message: "The specified bucket does not exist.",
-				},
+			if strings.HasPrefix(error.Message, "bucket") {
+				error.Status = ""
+				error.Message = "The specified bucket does not exist."
+				error.Errors = []httpmux.ErrorResponseDetails{
+					{
+						Domain:  "global",
+						Reason:  "notFound",
+						Message: "The specified bucket does not exist.",
+					},
+				}
 			}
 			return
 		}

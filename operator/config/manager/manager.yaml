@@ -63,6 +63,9 @@ spec:
         image: operator:latest
         imagePullPolicy: Always
         name: manager
+        env:
+        - name: GOMEMLIMIT
+          value: 900MiB # Set to ~90% of the 1Gi limit
         resources:
           limits:
             memory: 1Gi

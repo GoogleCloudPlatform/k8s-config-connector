@@ -1,0 +1,11 @@
+{
+  "name": "projects/{{ref:basic.cloudresourcemanager.project.json:name}}/policies/iam.disableServiceAccountKeyUpload",
+  "parent": "projects/{{ref:basic.cloudresourcemanager.project.json:name}}",
+  "spec": {
+    "rules": [
+      {
+        "enforce": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "project": "{{ref:gkehub.serviceusage.service.json:project}}",
+  "location": "global",
+  "feature": "projects/{{ref:acm.feature.json:project}}/locations/{{ref:acm.feature.json:location}}/features/{{ref:acm.feature.json:name}}",
+  "membership": "{{ref:first.membership.json:name}}",
+  "membershipLocation": "global",
+  "configmanagement": {
+    "configSync": {
+      "git": {
+        "syncRepo": "https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit",
+        "syncBranch": "master",
+        "policyDir": "config-connector",
+        "syncWaitSecs": "20",
+        "syncRev": "HEAD",
+        "secretType": "gcpserviceaccount",
+        "httpsProxy": "https://sample-proxy.com",
+        "gcpServiceAccountEmail": "{{ref:first.iam.service_account.json:email}}"
+      },
+      "metricsGcpServiceAccountEmail": "{{ref:first.iam.service_account.json:email}}",
+      "sourceFormat": "hierarchy",
+      "preventDrift": true
+    },
+    "policyController": {
+      "enabled": true,
+      "exemptableNamespaces": ["sample-namespace"],
+      "referentialRulesEnabled": true,
+      "logDeniesEnabled": true,
+      "mutationEnabled": true,
+      "monitoring": {
+        "backends": ["PROMETHEUS","CLOUD_MONITORING"]
+      },
+      "templateLibraryInstalled": true,
+      "auditIntervalSeconds": "10"
+    },
+    "binauthz": {
+      "enabled": false
+    },
+    "hierarchyController": {
+      "enabled": true,
+      "enablePodTreeLabels": true,
+      "enableHierarchicalResourceQuota": true
+    }
+  }
+}

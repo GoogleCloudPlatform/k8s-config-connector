@@ -29,9 +29,9 @@ spec:
       value: alloydb-pg
   location: europe-west9
   networkRef:
-    external: projects/shubhsahu-terraform/global/networks/computenetwork-${uniqueId}
+    external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
   projectRef:
-    external: shubhsahu-terraform
+    external: ${projectId}
   resourceID: alloydbcluster${uniqueId}
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1

@@ -1,0 +1,35 @@
+{
+  "name": "{{name}}",
+  "project": "run-v2-deploy-e2e",
+  "location": "{{region}}",
+  "launchStage": "BETA",
+  "template": {
+    "template": {
+      "volumes": [ {
+        "name": "cloudsql",
+        "cloudSqlInstance": {
+          "instances": ["careful-yew-216722:us-central1:testing-v2"]
+        }
+      } ],
+      "containers": [ {
+        "image": "gcr.io/run-intro/screenshot:latest",
+        "env": [ {
+          "name": "FOO",
+          "value": "bar"
+        }, {
+          "name": "latestdclsecret",
+          "valueSource": {
+            "secretKeyRef" : {
+              "secret": "dclsecret",
+              "version": "1"
+            }
+          }
+        } ],
+        "volumeMounts": [ {
+          "name" : "cloudsql",
+          "mountPath": "/cloudsql"
+        } ]
+      } ]
+    }
+  }
+}

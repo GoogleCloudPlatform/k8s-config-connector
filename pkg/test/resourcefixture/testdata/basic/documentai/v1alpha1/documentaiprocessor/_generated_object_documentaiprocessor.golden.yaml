@@ -1,0 +1,41 @@
+apiVersion: documentai.cnrm.cloud.google.com/v1alpha1
+kind: DocumentAIProcessor
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: documentaiprocessor-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: test-processor-${uniqueId}
+  location: us
+  projectRef:
+    external: ${projectId}
+  type: OCR_PROCESSOR
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectNumber}/locations/us/processors/${processorID}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    defaultProcessorVersion: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}
+    name: projects/${projectNumber}/locations/us/processors/${processorID}
+    processEndpoint: https://us-documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/${processorID}:process
+    processorVersionAliases:
+    - alias: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/pretrained
+      processorVersion: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}
+    - alias: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/pretrained-next
+      processorVersion: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}
+    - alias: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/rc
+      processorVersion: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}
+    - alias: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/stable
+      processorVersion: projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}
+    state: ENABLED

@@ -80,9 +80,6 @@ Note: DataflowFlexTemplateJob resources  cannot be updated.
     <tr>
         <td><code>cnrm.cloud.google.com/skip-wait-on-job-termination</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
@@ -138,7 +135,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}List of experiments that should be used by the job. An example value is ["enable_stackdriver_agent_metrics"].{% endverbatim %}</p>
+            <p>{% verbatim %}Additional experiment flags for the job.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -158,7 +155,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The algorithm to use for autoscaling.{% endverbatim %}</p>
+            <p>{% verbatim %}The algorithm to use for autoscaling{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -168,7 +165,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Cloud Storage path to a file with json serialized ContainerSpec as content.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -178,7 +175,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. Indicates if the job should use the streaming engine feature.{% endverbatim %}</p>
+            <p>{% verbatim %}Whether to enable Streaming Engine for the job.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -188,7 +185,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The configuration for VM IPs. Options are "WORKER_IP_PUBLIC" or "WORKER_IP_PRIVATE".{% endverbatim %}</p>
+            <p>{% verbatim %}Configuration for VM IPs.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -198,7 +195,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The name for the Cloud KMS key for the job.{% endverbatim %}</p>
+            <p>{% verbatim %}The Cloud KMS key for the job.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -208,7 +205,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -218,7 +215,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -228,7 +225,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -248,7 +245,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The machine type to use for the job.{% endverbatim %}</p>
+            <p>{% verbatim %}The machine type to use for the job. Defaults to the value from the template if not specified.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -258,7 +255,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. The maximum number of Google Compute Engine instances to be made available to your pipeline during execution, from 1 to 1000.{% endverbatim %}</p>
+            <p>{% verbatim %}The maximum number of Google Compute Engine instances to be made available to your pipeline during execution, from 1 to 1000.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -268,7 +265,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Network to which VMs will be assigned.  If empty or unspecified, the service will use the network "default".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -278,7 +275,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed Compute Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -288,7 +285,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -298,7 +295,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeNetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -308,7 +305,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>{% verbatim %}Immutable. The initial number of Google Compute Engine instances for the job.{% endverbatim %}</p>
+            <p>{% verbatim %}The initial number of Google Compute Engine instances for the job.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -318,7 +315,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The parameters for FlexTemplate. Ex. {"num_workers":"5"}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -348,7 +345,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The email address of the service account to run the job as.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -358,7 +355,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -388,7 +385,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The Cloud Storage path to use for staging files. Must be a valid Cloud Storage URL, beginning with gs://.{% endverbatim %}</p>
+            <p>{% verbatim %}The Cloud Storage path for staging local files. Must be a valid Cloud Storage URL, beginning with `gs://`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -398,7 +395,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Subnetwork to which VMs will be assigned, if desired. You can specify a subnetwork using either a complete URL or an abbreviated path. Expected to be of the form "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK" or "regions/REGION/subnetworks/SUBNETWORK". If the subnetwork is located in a Shared VPC network, you must use the complete URL.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -408,7 +405,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The ComputeSubnetwork selflink of form "projects/{{project}}/regions/{{region}}/subnetworks/{{name}}", when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -418,7 +415,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -428,7 +425,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `ComputeSubnetwork` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -438,7 +435,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The Cloud Storage path to use for temporary files. Must be a valid Cloud Storage URL, beginning with gs://.{% endverbatim %}</p>
+            <p>{% verbatim %}The Cloud Storage path to use for temporary files. Must be a valid Cloud Storage URL, beginning with `gs://`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -448,7 +445,7 @@ transformNameMapping: {}
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Only applicable when updating a pipeline. Map of transform name prefixes of the job to be replaced with the corresponding name prefixes of the new job.{% endverbatim %}</p>
+            <p>{% verbatim %}Map of transform name prefixes of the job to be replaced with the corresponding name prefixes of the new job. Only applicable when updating a pipeline.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -482,7 +479,7 @@ type: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -545,14 +542,24 @@ type: string
         <td><code>state</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The current state of the job.
+
+ Jobs are created in the `JOB_STATE_STOPPED` state unless otherwise
+ specified.
+
+ A job in the `JOB_STATE_RUNNING` state may asynchronously enter a
+ terminal state. After a job has reached a terminal state, no
+ further state updates may be made.
+
+ This field may be mutated by the Cloud Dataflow service;
+ callers cannot mutate it.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>type</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The type of this job, selected from the JobType enum.{% endverbatim %}</p>
+            <p>{% verbatim %}The type of Cloud Dataflow job.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -642,6 +649,8 @@ apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
 metadata:
   name: dataflowflextemplatejobdepstreaming
+spec:
+  location: us-central1
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable

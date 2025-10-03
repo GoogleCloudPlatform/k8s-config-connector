@@ -1,0 +1,32 @@
+{
+  "name": "{{instance_name}}",
+  "project": "{{project}}",
+  "location": "{{zone}}",
+  "description": "Test instance",
+  "tier": "STANDARD",
+  "labels": {
+    "foo": "bar"
+  },
+  "fileShares": [
+    {
+      "capacityGb": 1024,
+      "name": "my_share",
+      "nfsExportOptions": [
+        {
+          "ipRanges": ["171.217.14.238"],
+          "accessMode": "READ_ONLY",
+          "squashMode": "ROOT_SQUASH",
+          "anonUid": 65533,
+          "anonGid": 65533
+        }
+      ]
+    }
+  ],
+  "networks": [
+    {
+      "network": "projects/{{project}}/global/networks/default",
+      "modes": ["MODE_IPV4"],
+      "reservedIPRange": "10.{{random_int}}.{{random_int}}.0/29"
+    }
+  ]
+}

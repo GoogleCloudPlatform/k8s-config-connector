@@ -1,0 +1,100 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum GkemulticloudAzureNodePoolStateEnum {
+  GkemulticloudAzureNodePoolStateEnumNO_VALUE_DO_NOT_USE = 0;
+  GkemulticloudAzureNodePoolStateEnumSTATE_UNSPECIFIED = 1;
+  GkemulticloudAzureNodePoolStateEnumPROVISIONING = 2;
+  GkemulticloudAzureNodePoolStateEnumRUNNING = 3;
+  GkemulticloudAzureNodePoolStateEnumRECONCILING = 4;
+  GkemulticloudAzureNodePoolStateEnumSTOPPING = 5;
+  GkemulticloudAzureNodePoolStateEnumERROR = 6;
+  GkemulticloudAzureNodePoolStateEnumDEGRADED = 7;
+}
+
+message GkemulticloudAzureNodePool {
+  string name = 1;
+  string version = 2;
+  GkemulticloudAzureNodePoolConfig config = 3;
+  string subnet_id = 4;
+  GkemulticloudAzureNodePoolAutoscaling autoscaling = 5;
+  GkemulticloudAzureNodePoolStateEnum state = 6;
+  string uid = 7;
+  bool reconciling = 8;
+  string create_time = 9;
+  string update_time = 10;
+  string etag = 11;
+  map<string, string> annotations = 12;
+  GkemulticloudAzureNodePoolMaxPodsConstraint max_pods_constraint = 13;
+  string azure_availability_zone = 14;
+  string project = 15;
+  string location = 16;
+  string azure_cluster = 17;
+}
+
+message GkemulticloudAzureNodePoolConfig {
+  string vm_size = 1;
+  GkemulticloudAzureNodePoolConfigRootVolume root_volume = 2;
+  map<string, string> tags = 3;
+  GkemulticloudAzureNodePoolConfigSshConfig ssh_config = 4;
+}
+
+message GkemulticloudAzureNodePoolConfigRootVolume {
+  int64 size_gib = 1;
+}
+
+message GkemulticloudAzureNodePoolConfigSshConfig {
+  string authorized_key = 1;
+}
+
+message GkemulticloudAzureNodePoolAutoscaling {
+  int64 min_node_count = 1;
+  int64 max_node_count = 2;
+}
+
+message GkemulticloudAzureNodePoolMaxPodsConstraint {
+  int64 max_pods_per_node = 1;
+}
+
+message ApplyGkemulticloudAzureNodePoolRequest {
+  GkemulticloudAzureNodePool resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteGkemulticloudAzureNodePoolRequest {
+  string service_account_file = 1;
+  GkemulticloudAzureNodePool resource = 2;
+}
+
+message ListGkemulticloudAzureNodePoolRequest {
+  string service_account_file = 1;
+	GkemulticloudAzureNodePool resource = 2;
+}
+
+message ListGkemulticloudAzureNodePoolResponse {
+  repeated GkemulticloudAzureNodePool items = 1;
+}
+
+service GkemulticloudAzureNodePoolService {
+  rpc ApplyGkemulticloudAzureNodePool(ApplyGkemulticloudAzureNodePoolRequest) returns (GkemulticloudAzureNodePool);
+  rpc DeleteGkemulticloudAzureNodePool(DeleteGkemulticloudAzureNodePoolRequest) returns (google.protobuf.Empty);
+  rpc ListGkemulticloudAzureNodePool(ListGkemulticloudAzureNodePoolRequest) returns (ListGkemulticloudAzureNodePoolResponse);
+}

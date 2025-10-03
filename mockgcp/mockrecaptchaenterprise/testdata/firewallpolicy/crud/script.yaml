@@ -1,0 +1,5 @@
+# Ensure the gcloud endpoint for recaptchaenterprise is set to https://public-preview-recaptchaenterprise.googleapis.com/
+- exec: gcloud recaptcha firewall-policies create --path=/testpath/* --condition="true" --actions=allow --description="test policy ${uniqueId}"
+# - pre: export POLICY_ID=$(gcloud recaptcha firewall-policies list --filter="DESCRIPTION=\"test policy ${uniqueId}\"" --format="value(POLICY_ID)")
+- exec: gcloud recaptcha firewall-policies describe $(gcloud recaptcha firewall-policies list --filter="DESCRIPTION=\"test policy ${uniqueId}\"" --format="value(POLICY_ID)")
+- exec: gcloud recaptcha firewall-policies delete $(gcloud recaptcha firewall-policies list --filter="DESCRIPTION=\"test policy ${uniqueId}\"" --format="value(POLICY_ID)") --quiet

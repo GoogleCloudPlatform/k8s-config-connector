@@ -1,0 +1,16 @@
+{
+  "name": "{{cloud}}",
+  "project": "{{project}}",
+  "location": "{{zone}}",
+  "networkConfig": {
+    "managementCidr": "192.168.30.0/24"
+  },
+  "managementCluster": {
+    "clusterId": "{{management}}",
+    "nodeTypeConfigs": {
+      "standard-72": {
+        "nodeCount": 3
+      }
+    }
+  }
+}

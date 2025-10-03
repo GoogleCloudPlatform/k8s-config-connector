@@ -656,10 +656,12 @@ type SqlInstancesServiceClient interface {
 	// Partially updates settings of a Cloud SQL instance by merging the request
 	// with the current configuration. This method supports patch semantics.
 	Patch(ctx context.Context, in *SqlInstancesPatchRequest, opts ...grpc.CallOption) (*Operation, error)
-	// Promotes the read replica instance to be a stand-alone Cloud SQL instance.
+	// Promotes the read replica instance to be an independent Cloud SQL
+	// primary instance.
 	// Using this operation might cause your instance to restart.
 	PromoteReplica(ctx context.Context, in *SqlInstancesPromoteReplicaRequest, opts ...grpc.CallOption) (*Operation, error)
-	// Switches over from the primary instance to a replica instance.
+	// Switches over from the primary instance to the designated DR replica
+	// instance.
 	Switchover(ctx context.Context, in *SqlInstancesSwitchoverRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Deletes all client certificates and generates a new server SSL certificate
 	// for the instance.
@@ -701,6 +703,10 @@ type SqlInstancesServiceClient interface {
 	ResetReplicaSize(ctx context.Context, in *SqlInstancesResetReplicaSizeRequest, opts ...grpc.CallOption) (*Operation, error)
 	// Get Latest Recovery Time for a given instance.
 	GetLatestRecoveryTime(ctx context.Context, in *SqlInstancesGetLatestRecoveryTimeRequest, opts ...grpc.CallOption) (*SqlInstancesGetLatestRecoveryTimeResponse, error)
+	// Acquire a lease for the setup of SQL Server Reporting Services (SSRS).
+	AcquireSsrsLease(ctx context.Context, in *SqlInstancesAcquireSsrsLeaseRequest, opts ...grpc.CallOption) (*SqlInstancesAcquireSsrsLeaseResponse, error)
+	// Release a lease for the setup of SQL Server Reporting Services (SSRS).
+	ReleaseSsrsLease(ctx context.Context, in *SqlInstancesReleaseSsrsLeaseRequest, opts ...grpc.CallOption) (*SqlInstancesReleaseSsrsLeaseResponse, error)
 }
 
 type sqlInstancesServiceClient struct {
@@ -999,6 +1005,24 @@ func (c *sqlInstancesServiceClient) GetLatestRecoveryTime(ctx context.Context, i
 	return out, nil
 }
 
+func (c *sqlInstancesServiceClient) AcquireSsrsLease(ctx context.Context, in *SqlInstancesAcquireSsrsLeaseRequest, opts ...grpc.CallOption) (*SqlInstancesAcquireSsrsLeaseResponse, error) {
+	out := new(SqlInstancesAcquireSsrsLeaseResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/AcquireSsrsLease", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sqlInstancesServiceClient) ReleaseSsrsLease(ctx context.Context, in *SqlInstancesReleaseSsrsLeaseRequest, opts ...grpc.CallOption) (*SqlInstancesReleaseSsrsLeaseResponse, error) {
+	out := new(SqlInstancesReleaseSsrsLeaseResponse)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/ReleaseSsrsLease", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SqlInstancesServiceServer is the server API for SqlInstancesService service.
 // All implementations must embed UnimplementedSqlInstancesServiceServer
 // for forward compatibility
@@ -1052,10 +1076,12 @@ type SqlInstancesServiceServer interface {
 	// Partially updates settings of a Cloud SQL instance by merging the request
 	// with the current configuration. This method supports patch semantics.
 	Patch(context.Context, *SqlInstancesPatchRequest) (*Operation, error)
-	// Promotes the read replica instance to be a stand-alone Cloud SQL instance.
+	// Promotes the read replica instance to be an independent Cloud SQL
+	// primary instance.
 	// Using this operation might cause your instance to restart.
 	PromoteReplica(context.Context, *SqlInstancesPromoteReplicaRequest) (*Operation, error)
-	// Switches over from the primary instance to a replica instance.
+	// Switches over from the primary instance to the designated DR replica
+	// instance.
 	Switchover(context.Context, *SqlInstancesSwitchoverRequest) (*Operation, error)
 	// Deletes all client certificates and generates a new server SSL certificate
 	// for the instance.
@@ -1097,6 +1123,10 @@ type SqlInstancesServiceServer interface {
 	ResetReplicaSize(context.Context, *SqlInstancesResetReplicaSizeRequest) (*Operation, error)
 	// Get Latest Recovery Time for a given instance.
 	GetLatestRecoveryTime(context.Context, *SqlInstancesGetLatestRecoveryTimeRequest) (*SqlInstancesGetLatestRecoveryTimeResponse, error)
+	// Acquire a lease for the setup of SQL Server Reporting Services (SSRS).
+	AcquireSsrsLease(context.Context, *SqlInstancesAcquireSsrsLeaseRequest) (*SqlInstancesAcquireSsrsLeaseResponse, error)
+	// Release a lease for the setup of SQL Server Reporting Services (SSRS).
+	ReleaseSsrsLease(context.Context, *SqlInstancesReleaseSsrsLeaseRequest) (*SqlInstancesReleaseSsrsLeaseResponse, error)
 	mustEmbedUnimplementedSqlInstancesServiceServer()
 }
 
@@ -1199,6 +1229,12 @@ func (UnimplementedSqlInstancesServiceServer) ResetReplicaSize(context.Context, 
 }
 func (UnimplementedSqlInstancesServiceServer) GetLatestRecoveryTime(context.Context, *SqlInstancesGetLatestRecoveryTimeRequest) (*SqlInstancesGetLatestRecoveryTimeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLatestRecoveryTime not implemented")
+}
+func (UnimplementedSqlInstancesServiceServer) AcquireSsrsLease(context.Context, *SqlInstancesAcquireSsrsLeaseRequest) (*SqlInstancesAcquireSsrsLeaseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AcquireSsrsLease not implemented")
+}
+func (UnimplementedSqlInstancesServiceServer) ReleaseSsrsLease(context.Context, *SqlInstancesReleaseSsrsLeaseRequest) (*SqlInstancesReleaseSsrsLeaseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReleaseSsrsLease not implemented")
 }
 func (UnimplementedSqlInstancesServiceServer) mustEmbedUnimplementedSqlInstancesServiceServer() {}
 
@@ -1789,6 +1825,42 @@ func _SqlInstancesService_GetLatestRecoveryTime_Handler(srv interface{}, ctx con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SqlInstancesService_AcquireSsrsLease_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SqlInstancesAcquireSsrsLeaseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SqlInstancesServiceServer).AcquireSsrsLease(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/AcquireSsrsLease",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SqlInstancesServiceServer).AcquireSsrsLease(ctx, req.(*SqlInstancesAcquireSsrsLeaseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SqlInstancesService_ReleaseSsrsLease_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SqlInstancesReleaseSsrsLeaseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SqlInstancesServiceServer).ReleaseSsrsLease(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.sql.v1beta4.SqlInstancesService/ReleaseSsrsLease",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SqlInstancesServiceServer).ReleaseSsrsLease(ctx, req.(*SqlInstancesReleaseSsrsLeaseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SqlInstancesService_ServiceDesc is the grpc.ServiceDesc for SqlInstancesService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1923,6 +1995,14 @@ var SqlInstancesService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetLatestRecoveryTime",
 			Handler:    _SqlInstancesService_GetLatestRecoveryTime_Handler,
+		},
+		{
+			MethodName: "AcquireSsrsLease",
+			Handler:    _SqlInstancesService_AcquireSsrsLease_Handler,
+		},
+		{
+			MethodName: "ReleaseSsrsLease",
+			Handler:    _SqlInstancesService_ReleaseSsrsLease_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

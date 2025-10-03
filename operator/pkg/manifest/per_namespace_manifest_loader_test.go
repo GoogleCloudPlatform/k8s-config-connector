@@ -21,7 +21,6 @@ import (
 	"testing"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/manifest"
 
 	"github.com/google/go-cmp/cmp"
@@ -42,7 +41,7 @@ func TestManifestLoader_ResolveNamespacedComponents(t *testing.T) {
 			name: "resolve namespaced component",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorContextAllowedName,
+					Name: corev1beta1.ConfigConnectorContextAllowedName,
 				},
 			},
 			result: map[string]string{manifestPath: namespacedComponentsOnly},

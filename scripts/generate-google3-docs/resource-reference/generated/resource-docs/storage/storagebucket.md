@@ -97,9 +97,6 @@ the objects within a storage bucket before issuing the delete command.
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
@@ -156,6 +153,8 @@ resourceID: string
 retentionPolicy:
   isLocked: boolean
   retentionPeriod: integer
+softDeletePolicy:
+  retentionDurationSeconds: integer
 storageClass: string
 uniformBucketLevelAccess: boolean
 versioning:
@@ -310,7 +309,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %}Immutable. The list of individual regions that comprise a dual-region bucket. See the docs for a list of acceptable regions. Note: If any of the data_locations changes, it will recreate the bucket.{% endverbatim %}</p>
+            <p>{% verbatim %}The list of individual regions that comprise a dual-region bucket. See the docs for a list of acceptable regions.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -591,7 +590,7 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The Google Cloud Storage location.{% endverbatim %}</p>
+            <p>{% verbatim %}The Google Cloud Storage location.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -686,6 +685,26 @@ Enables Bucket PolicyOnly access to a bucket.{% endverbatim %}</p>
     </tr>
     <tr>
         <td>
+            <p><code>softDeletePolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The bucket's soft delete policy, which defines the period of time that soft-deleted objects will be retained, and cannot be permanently deleted. If it is not provided, by default Google Cloud Storage sets this to default soft delete policy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>softDeletePolicy.retentionDurationSeconds</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>storageClass</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -771,6 +790,10 @@ conditions:
   status: string
   type: string
 observedGeneration: integer
+observedState:
+  softDeletePolicy:
+    effectiveTime: string
+    retentionDurationSeconds: integer
 selfLink: string
 url: string
 ```
@@ -839,6 +862,34 @@ url: string
         </td>
     </tr>
     <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The observed state of the underlying GCP resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.softDeletePolicy</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The bucket's soft delete policy, which defines the period of time that soft-deleted objects will be retained, and cannot be permanently deleted. If it is not provided, by default Google Cloud Storage sets this to default soft delete policy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.softDeletePolicy.effectiveTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Server-determined value that indicates the time from which the policy, or one with a greater retention, was effective. This value is in RFC 3339 format.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.softDeletePolicy.retentionDurationSeconds</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}The duration in seconds that soft-deleted objects in the bucket will be retained and cannot be permanently deleted. Default value is 604800.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>selfLink</code></td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -897,6 +948,8 @@ spec:
       method: ["GET", "HEAD", "DELETE"]
       maxAgeSeconds: 3600
   uniformBucketLevelAccess: true
+  softDeletePolicy:
+    retentionDurationSeconds: 604800
 ```
 
 

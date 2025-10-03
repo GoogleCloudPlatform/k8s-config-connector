@@ -1,0 +1,122 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum DataplexAlphaZoneStateEnum {
+  DataplexAlphaZoneStateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataplexAlphaZoneStateEnumSTATE_UNSPECIFIED = 1;
+  DataplexAlphaZoneStateEnumACTIVE = 2;
+  DataplexAlphaZoneStateEnumCREATING = 3;
+  DataplexAlphaZoneStateEnumDELETING = 4;
+  DataplexAlphaZoneStateEnumACTION_REQUIRED = 5;
+}
+
+enum DataplexAlphaZoneTypeEnum {
+  DataplexAlphaZoneTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  DataplexAlphaZoneTypeEnumTYPE_UNSPECIFIED = 1;
+  DataplexAlphaZoneTypeEnumRAW = 2;
+  DataplexAlphaZoneTypeEnumCURATED = 3;
+}
+
+enum DataplexAlphaZoneResourceSpecLocationTypeEnum {
+  DataplexAlphaZoneResourceSpecLocationTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  DataplexAlphaZoneResourceSpecLocationTypeEnumLOCATION_TYPE_UNSPECIFIED = 1;
+  DataplexAlphaZoneResourceSpecLocationTypeEnumSINGLE_REGION = 2;
+  DataplexAlphaZoneResourceSpecLocationTypeEnumMULTI_REGION = 3;
+}
+
+message DataplexAlphaZone {
+  string name = 1;
+  string display_name = 2;
+  string uid = 3;
+  string create_time = 4;
+  string update_time = 5;
+  map<string, string> labels = 6;
+  string description = 7;
+  DataplexAlphaZoneStateEnum state = 8;
+  DataplexAlphaZoneTypeEnum type = 9;
+  DataplexAlphaZoneDiscoverySpec discovery_spec = 10;
+  DataplexAlphaZoneResourceSpec resource_spec = 11;
+  DataplexAlphaZoneAssetStatus asset_status = 12;
+  string project = 13;
+  string location = 14;
+  string lake = 15;
+}
+
+message DataplexAlphaZoneDiscoverySpec {
+  bool enabled = 1;
+  repeated string include_patterns = 2;
+  repeated string exclude_patterns = 3;
+  DataplexAlphaZoneDiscoverySpecCsvOptions csv_options = 4;
+  DataplexAlphaZoneDiscoverySpecJsonOptions json_options = 5;
+  string schedule = 6;
+}
+
+message DataplexAlphaZoneDiscoverySpecCsvOptions {
+  int64 header_rows = 1;
+  string delimiter = 2;
+  string encoding = 3;
+  bool disable_type_inference = 4;
+}
+
+message DataplexAlphaZoneDiscoverySpecJsonOptions {
+  string encoding = 1;
+  bool disable_type_inference = 2;
+}
+
+message DataplexAlphaZoneResourceSpec {
+  DataplexAlphaZoneResourceSpecLocationTypeEnum location_type = 1;
+}
+
+message DataplexAlphaZoneAssetStatus {
+  string update_time = 1;
+  int64 active_assets = 2;
+  int64 security_policy_applying_assets = 3;
+}
+
+message ApplyDataplexAlphaZoneRequest {
+  DataplexAlphaZone resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteDataplexAlphaZoneRequest {
+  string service_account_file = 1;
+  DataplexAlphaZone resource = 2;
+}
+
+message ListDataplexAlphaZoneRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string Lake = 4;
+}
+
+message ListDataplexAlphaZoneResponse {
+  repeated DataplexAlphaZone items = 1;
+}
+
+service DataplexAlphaZoneService {
+  rpc ApplyDataplexAlphaZone(ApplyDataplexAlphaZoneRequest) returns (DataplexAlphaZone);
+  rpc DeleteDataplexAlphaZone(DeleteDataplexAlphaZoneRequest) returns (google.protobuf.Empty);
+  rpc ListDataplexAlphaZone(ListDataplexAlphaZoneRequest) returns (ListDataplexAlphaZoneResponse);
+}

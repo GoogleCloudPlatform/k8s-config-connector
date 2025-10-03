@@ -23,12 +23,15 @@ import (
 	"regexp"
 	"strings"
 
+	"k8s.io/apimachinery/pkg/runtime/schema"
+
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl"
 	dclextension "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/extension"
 	dclcontainer "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/extension/container"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -36,7 +39,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/pathslice"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/typeutil"
 
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-provider-google-beta/google-beta/provider"
 	"github.com/nasa9084/go-openapi"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -55,7 +58,7 @@ var (
 
 type immutableFieldsValidatorHandler struct {
 	smLoader              *servicemappingloader.ServiceMappingLoader
-	tfResourceMap         map[string]*schema.Resource
+	tfResourceMap         map[string]*tfschema.Resource
 	dclSchemaLoader       dclschemaloader.DCLSchemaLoader
 	serviceMetadataLoader dclmetadata.ServiceMetadataLoader
 }
@@ -112,6 +115,19 @@ func (a *immutableFieldsValidatorHandler) Handle(_ context.Context, req admissio
 
 	if err := validateImmutableStateIntoSpecAnnotation(obj, oldObj); err != nil {
 		return admission.Errored(http.StatusForbidden, err)
+	}
+
+	gk := oldObj.GroupVersionKind().GroupKind()
+	switch gk {
+	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
+		return validateImmutableFieldsForLoggingLogMetricResource(oldSpec, spec)
+	case schema.GroupKind{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubFeatureMembership"}:
+		return validateImmutableFieldsForGKEHubFeatureMembershipResource(oldSpec, spec)
+	}
+
+	isDirect := supportedgvks.IsDirectByGVK(obj.GroupVersionKind())
+	if isDirect {
+		return allowedResponse
 	}
 
 	if dclmetadata.IsDCLBasedResourceKind(obj.GroupVersionKind(), a.serviceMetadataLoader) {
@@ -278,7 +294,7 @@ func getQualifiedFieldName(prefix string, fieldName string) string {
 	return qualifiedName
 }
 
-func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstructured, spec, oldSpec map[string]interface{}, smLoader *servicemappingloader.ServiceMappingLoader, tfResourceMap map[string]*schema.Resource) admission.Response {
+func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstructured, spec, oldSpec map[string]interface{}, smLoader *servicemappingloader.ServiceMappingLoader, tfResourceMap map[string]*tfschema.Resource) admission.Response {
 	rc, err := smLoader.GetResourceConfig(obj)
 	if err != nil {
 		return admission.Errored(http.StatusBadRequest,
@@ -317,6 +333,56 @@ func validateImmutableFieldsForTFBasedResource(obj, oldObj *unstructured.Unstruc
 			k8s.NewImmutableFieldsMutationError(res))
 	}
 
+	return allowedResponse
+}
+
+func isImmutableFieldModified(oldSpec, newSpec map[string]interface{}, field string) bool {
+	tokens := strings.Split(field, ".")
+	oldVal, ok1, err1 := unstructured.NestedFieldCopy(oldSpec, tokens...)
+	newVal, ok2, err2 := unstructured.NestedFieldCopy(newSpec, tokens...)
+	if oldVal == nil && newVal == nil {
+		return false
+	}
+	if !ok1 || err1 != nil {
+		return true
+	}
+	if !ok2 || err2 != nil {
+		return true
+	}
+	return !reflect.DeepEqual(oldVal, newVal)
+}
+
+func validateImmutableFieldsForGKEHubFeatureMembershipResource(oldSpec, spec map[string]interface{}) admission.Response {
+	ImmutableFields := []string{"featureRef", "location", "projectRef", "membershipLocation", "membershipRef"}
+	var res []string
+	for _, field := range ImmutableFields {
+		if isImmutableFieldModified(oldSpec, spec, field) {
+			res = append(res, field)
+		}
+	}
+	if len(res) != 0 {
+		return admission.Errored(http.StatusForbidden,
+			k8s.NewImmutableFieldsMutationError(res))
+	}
+	return allowedResponse
+}
+
+func validateImmutableFieldsForLoggingLogMetricResource(oldSpec, spec map[string]interface{}) admission.Response {
+	if isResourceIDModified(oldSpec, spec) {
+		return admission.Errored(http.StatusForbidden,
+			k8s.NewImmutableFieldsMutationError([]string{k8s.ResourceIDFieldPath}))
+	}
+	ImmutableFields := []string{"metricDescriptor.metricKind", "metricDescriptor.valueType", "projectRef"}
+	var res []string
+	for _, field := range ImmutableFields {
+		if isImmutableFieldModified(oldSpec, spec, field) {
+			res = append(res, field)
+		}
+	}
+	if len(res) != 0 {
+		return admission.Errored(http.StatusForbidden,
+			k8s.NewImmutableFieldsMutationError(res))
+	}
 	return allowedResponse
 }
 
@@ -457,7 +523,7 @@ func findChangesOnImmutableLocationField(obj map[string]interface{}, oldObj map[
 }
 
 // TODO: get rid of list.List by changing the function to return a []string recursively
-func compareAndFindChangesOnImmutableFields(obj map[string]interface{}, oldObj map[string]interface{}, schemaMap map[string]*schema.Schema, prefix string, resourceConfig *corekccv1alpha1.ResourceConfig, ignoredFields map[string]bool, fields *list.List) {
+func compareAndFindChangesOnImmutableFields(obj map[string]interface{}, oldObj map[string]interface{}, schemaMap map[string]*tfschema.Schema, prefix string, resourceConfig *corekccv1alpha1.ResourceConfig, ignoredFields map[string]bool, fields *list.List) {
 	for k, s := range schemaMap {
 		qualifiedName := getQualifiedFieldName(prefix, k)
 		if ignoredFields[qualifiedName] {
@@ -490,21 +556,21 @@ func compareAndFindChangesOnImmutableFields(obj map[string]interface{}, oldObj m
 		switch s.Type {
 		// TODO: terraform schema doc says that TypeMap only support Elem to be a *Schema with a Type that is one of the primitives
 		// Is there any edge cases to handle?
-		case schema.TypeBool, schema.TypeFloat, schema.TypeString, schema.TypeInt, schema.TypeMap:
+		case tfschema.TypeBool, tfschema.TypeFloat, tfschema.TypeString, tfschema.TypeInt, tfschema.TypeMap:
 			if s.ForceNew && !reflect.DeepEqual(v1, v2) {
 				fields.PushBack(qualifiedName)
 			}
-		case schema.TypeList, schema.TypeSet:
+		case tfschema.TypeList, tfschema.TypeSet:
 			switch s.Elem.(type) {
-			case *schema.Schema:
+			case *tfschema.Schema:
 				// it's a list of primitives
 				if s.ForceNew && !reflect.DeepEqual(v1, v2) {
 					fields.PushBack(qualifiedName)
 				}
-			case *schema.Resource:
+			case *tfschema.Resource:
 				if s.MaxItems == 1 {
 					// A list with MaxItems == 1 is actually a nested object due to limitations with TF schemas.
-					tfObjSchemaMap := s.Elem.(*schema.Resource).Schema
+					tfObjSchemaMap := s.Elem.(*tfschema.Resource).Schema
 					var o1 map[string]interface{}
 					var o2 map[string]interface{}
 					if v1 != nil {

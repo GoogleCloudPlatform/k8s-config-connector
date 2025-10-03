@@ -1,6 +1,36 @@
-POST https://compute.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/nodeTemplates?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "nodeTemplate \"projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "nodeTemplate \"projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}\" not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "cpuOvercommitType": "NONE",
@@ -19,32 +49,46 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
 }
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "name": "${operationId}",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationId}",
-  "status": "DONE",
-  "warnings": []
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "accelerators": [],
   "cpuOvercommitType": "NONE",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
-  "disks": [],
   "id": "000000000000000000000",
   "kind": "compute#nodetemplate",
   "name": "computenodetemplate-${uniqueId}",
@@ -58,86 +102,32 @@ Grpc-Metadata-Content-Type: application/grpc
     "memory": "any"
   },
   "region": "projects/${projectId}/global/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "accelerators": [],
-  "cpuOvercommitType": "NONE",
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
-  "disks": [],
   "id": "000000000000000000000",
-  "kind": "compute#nodetemplate",
-  "name": "computenodetemplate-${uniqueId}",
-  "nodeAffinityLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true",
-    "memory_guarantee": "false"
-  },
-  "nodeTypeFlexibility": {
-    "cpus": "96",
-    "memory": "any"
-  },
-  "region": "projects/${projectId}/global/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}"
-}
-
----
-
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-
-{
-  "accelerators": [],
-  "cpuOvercommitType": "NONE",
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
-  "disks": [],
-  "id": "000000000000000000000",
-  "kind": "compute#nodetemplate",
-  "name": "computenodetemplate-${uniqueId}",
-  "nodeAffinityLabels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true",
-    "memory_guarantee": "false"
-  },
-  "nodeTypeFlexibility": {
-    "cpus": "96",
-    "memory": "any"
-  },
-  "region": "projects/${projectId}/global/regions/us-central1",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}"
-}
-
----
-
-DELETE https://compute.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/nodeTemplates/computenodetemplate-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/dev
-
-200 OK
-Content-Type: application/json
-Grpc-Metadata-Content-Type: application/grpc
-
-{
-  "name": "${operationId}",
-  "selfLink": "https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationId}",
-  "status": "DONE",
-  "warnings": []
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
 }

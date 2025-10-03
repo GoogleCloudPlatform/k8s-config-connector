@@ -1,0 +1,26 @@
+{
+  "billingAccount": "{{billing_account_for_budgets}}",
+  "budgetFilter": {
+    "creditTypes": ["DISCOUNT"],
+    "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+    "customPeriod": {
+      "startDate": {
+        "year": 2140,
+        "month": 1,
+        "day": 1
+      },
+      "endDate": {
+        "year": 2312,
+        "month": 3,
+        "day": 14
+      }
+    }
+  },
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "units": 9000000,
+      "nanos": 0
+    }
+  }
+}

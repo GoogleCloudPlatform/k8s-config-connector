@@ -1,0 +1,86 @@
+// Copyright 2023 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeRouteWarningCodeEnum {
+  ComputeRouteWarningCodeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeRouteWarningCodeEnumBAD_REQUEST = 1;
+  ComputeRouteWarningCodeEnumFORBIDDEN = 2;
+  ComputeRouteWarningCodeEnumNOT_FOUND = 3;
+  ComputeRouteWarningCodeEnumCONFLICT = 4;
+  ComputeRouteWarningCodeEnumGONE = 5;
+  ComputeRouteWarningCodeEnumPRECONDITION_FAILED = 6;
+  ComputeRouteWarningCodeEnumINTERNAL_ERROR = 7;
+  ComputeRouteWarningCodeEnumSERVICE_UNAVAILABLE = 8;
+}
+
+message ComputeRoute {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string network = 4;
+  repeated string tag = 5;
+  string dest_range = 6;
+  int64 priority = 7;
+  string next_hop_instance = 8;
+  string next_hop_ip = 9;
+  string next_hop_network = 10;
+  string next_hop_gateway = 11;
+  string next_hop_peering = 12;
+  string next_hop_ilb = 13;
+  repeated ComputeRouteWarning warning = 14;
+  string next_hop_vpn_tunnel = 15;
+  string self_link = 16;
+  string project = 17;
+}
+
+message ComputeRouteWarning {
+  ComputeRouteWarningCodeEnum code = 1;
+  string message = 2;
+  map<string, string> data = 3;
+}
+
+message ApplyComputeRouteRequest {
+  ComputeRoute resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeRouteRequest {
+  string service_account_file = 1;
+  ComputeRoute resource = 2;
+}
+
+message ListComputeRouteRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListComputeRouteResponse {
+  repeated ComputeRoute items = 1;
+}
+
+service ComputeRouteService {
+  rpc ApplyComputeRoute(ApplyComputeRouteRequest) returns (ComputeRoute);
+  rpc DeleteComputeRoute(DeleteComputeRouteRequest) returns (google.protobuf.Empty);
+  rpc ListComputeRoute(ListComputeRouteRequest) returns (ListComputeRouteResponse);
+}

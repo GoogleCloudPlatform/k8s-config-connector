@@ -44,10 +44,6 @@ func GetServiceMappingsPathOrLogFatal() string {
 	return absPath
 }
 
-func GetDCLSchemasPathOrLogFatal() string {
-	return filepath.Join(GetRootOrLogFatal(), "temp-vendor/github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google")
-}
-
 func GetServiceAccountCRDPath() string {
 	return filepath.Join(GetCRDsPath(), "apiextensions.k8s.io_v1_customresourcedefinition_iamserviceaccounts.iam.cnrm.cloud.google.com.yaml")
 }
@@ -98,6 +94,10 @@ func GetTypesGeneratedApisPath() string {
 
 func GetBasicIntegrationTestDataPath() string {
 	return filepath.Join(GetRootOrLogFatal(), "pkg", "test", "resourcefixture", "testdata", "basic")
+}
+
+func GetIntegrationTestDataPath() string {
+	return filepath.Join(GetRootOrLogFatal(), "pkg", "test", "resourcefixture", "testdata")
 }
 
 func GetTypesTemplatePath() string {

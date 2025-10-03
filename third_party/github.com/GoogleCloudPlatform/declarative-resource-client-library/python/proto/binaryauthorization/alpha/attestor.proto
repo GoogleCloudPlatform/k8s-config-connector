@@ -1,0 +1,93 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySignatureAlgorithmEnum {
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySignatureAlgorithmEnumNO_VALUE_DO_NOT_USE = 0;
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySignatureAlgorithmEnumSIGNATURE_ALGORITHM_UNSPECIFIED = 1;
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySignatureAlgorithmEnumRSA_PSS_2048_SHA256 = 2;
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySignatureAlgorithmEnumRSA_PSS_3072_SHA256 = 3;
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySignatureAlgorithmEnumRSA_PSS_4096_SHA256 = 4;
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySignatureAlgorithmEnumRSA_PSS_4096_SHA512 = 5;
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySignatureAlgorithmEnumRSA_SIGN_PKCS1_2048_SHA256 = 6;
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySignatureAlgorithmEnumRSA_SIGN_PKCS1_3072_SHA256 = 7;
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySignatureAlgorithmEnumRSA_SIGN_PKCS1_4096_SHA256 = 8;
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySignatureAlgorithmEnumRSA_SIGN_PKCS1_4096_SHA512 = 9;
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySignatureAlgorithmEnumECDSA_P256_SHA256 = 10;
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySignatureAlgorithmEnumEC_SIGN_P256_SHA256 = 11;
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySignatureAlgorithmEnumECDSA_P384_SHA384 = 12;
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySignatureAlgorithmEnumEC_SIGN_P384_SHA384 = 13;
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySignatureAlgorithmEnumECDSA_P521_SHA512 = 14;
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySignatureAlgorithmEnumEC_SIGN_P521_SHA512 = 15;
+}
+
+message BinaryauthorizationAlphaAttestor {
+  string name = 1;
+  string description = 2;
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNote user_owned_drydock_note = 3;
+  string update_time = 4;
+  string project = 5;
+}
+
+message BinaryauthorizationAlphaAttestorUserOwnedDrydockNote {
+  string note_reference = 1;
+  repeated BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeys public_keys = 2;
+  string delegation_service_account_email = 3;
+}
+
+message BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeys {
+  string comment = 1;
+  string id = 2;
+  string ascii_armored_pgp_public_key = 3;
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKey pkix_public_key = 4;
+}
+
+message BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKey {
+  string public_key_pem = 1;
+  BinaryauthorizationAlphaAttestorUserOwnedDrydockNotePublicKeysPkixPublicKeySignatureAlgorithmEnum signature_algorithm = 2;
+}
+
+message ApplyBinaryauthorizationAlphaAttestorRequest {
+  BinaryauthorizationAlphaAttestor resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteBinaryauthorizationAlphaAttestorRequest {
+  string service_account_file = 1;
+  BinaryauthorizationAlphaAttestor resource = 2;
+}
+
+message ListBinaryauthorizationAlphaAttestorRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListBinaryauthorizationAlphaAttestorResponse {
+  repeated BinaryauthorizationAlphaAttestor items = 1;
+}
+
+service BinaryauthorizationAlphaAttestorService {
+  rpc ApplyBinaryauthorizationAlphaAttestor(ApplyBinaryauthorizationAlphaAttestorRequest) returns (BinaryauthorizationAlphaAttestor);
+  rpc DeleteBinaryauthorizationAlphaAttestor(DeleteBinaryauthorizationAlphaAttestorRequest) returns (google.protobuf.Empty);
+  rpc ListBinaryauthorizationAlphaAttestor(ListBinaryauthorizationAlphaAttestorRequest) returns (ListBinaryauthorizationAlphaAttestorResponse);
+}

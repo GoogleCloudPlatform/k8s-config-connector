@@ -29,4 +29,31 @@ func init() {
 		//   has value DESTROY_SCHEDULED in field crypto_key_version.state., failedPrecondition
 		SkipDriftDetection: true,
 	}
+	resourceContextMap["kmsautokeyconfig"] = ResourceContext{
+		ResourceKind: "KMSAutokeyConfig",
+		// The AutokeyConfig resource does not support delete operation.
+		SkipDriftDetection: true,
+		SkipDelete:         true,
+	}
+	resourceContextMap["kmskeyhandle-with-id"] = ResourceContext{
+		ResourceKind: "KMSKeyHandle",
+		// The KMSKeyHandle resource does not support update and delete operation.
+		SkipDriftDetection: true,
+		SkipUpdate:         true,
+		SkipDelete:         true,
+	}
+	resourceContextMap["kmskeyhandle-without-id"] = ResourceContext{
+		ResourceKind: "KMSKeyHandle",
+		// The KMSKeyHandle resource does not support update and delete operation.
+		SkipDriftDetection: true,
+		SkipUpdate:         true,
+		SkipDelete:         true,
+	}
+	resourceContextMap["basickmsimportjob"] = ResourceContext{
+		ResourceKind: "KMSImportJob",
+		// The KMSImportJob resource does not support update and delete operation.
+		SkipDriftDetection: true,
+		SkipUpdate:         true,
+		SkipDelete:         true,
+	}
 }

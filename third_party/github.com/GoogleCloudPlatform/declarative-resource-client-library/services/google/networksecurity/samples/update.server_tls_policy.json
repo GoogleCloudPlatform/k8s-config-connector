@@ -1,0 +1,11 @@
+{
+  "name": "{{policy}}",
+  "project": "{{project}}",
+  "location": "global",
+  "allowOpen": false,
+  "serverCertificate": {
+    "certificateProviderInstance": {
+      "pluginInstance": "google_cloud_private_spiffe"
+    }
+  }
+}

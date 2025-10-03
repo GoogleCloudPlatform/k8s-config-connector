@@ -192,7 +192,6 @@ func GetServiceMappings() ([]v1alpha1.ServiceMapping, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error listing servicemappings: %w", err)
 	}
-
 	autoGenSMMap, err := autogenloader.GetServiceMappingMap()
 	if err != nil {
 		return nil, fmt.Errorf("error getting auto-generated service mappings: %w", err)
@@ -251,7 +250,7 @@ func fileToServiceMapping(key string) (*v1alpha1.ServiceMapping, error) {
 func parseServiceMapping(b []byte) (*v1alpha1.ServiceMapping, error) {
 	var sm v1alpha1.ServiceMapping
 	if err := yaml.UnmarshalStrict(b, &sm); err != nil {
-		return nil, fmt.Errorf("error unmarshaling byte to service mapping: %w", err)
+		return nil, fmt.Errorf("error unmarshalling byte to service mapping: %w", err)
 	}
 	return &sm, nil
 }

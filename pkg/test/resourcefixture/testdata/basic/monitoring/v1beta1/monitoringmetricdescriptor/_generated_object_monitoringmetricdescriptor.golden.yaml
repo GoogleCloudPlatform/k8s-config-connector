@@ -1,0 +1,66 @@
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringMetricDescriptor
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/mutable-but-unreadable-fields: '{}'
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: monitoringmetricdescriptor-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Tracks a combination of estimates of trade volume for a given resource,
+    in $USD per hour.
+  displayName: Trading Volume Estimate
+  labels:
+  - description: True if the estimation system is stable.
+    key: system_stable
+    valueType: BOOL
+  - description: A description of the condition the market system is in.
+    key: condition_summary
+    valueType: STRING
+  launchStage: BETA
+  metadata:
+    ingestDelay: 1000s
+    samplePeriod: 100s
+  metricKind: GAUGE
+  projectRef:
+    external: projects/${projectId}
+  type: custom.googleapis.com/market/measurements/volume
+  unit: '{USD}/h'
+  valueType: DISTRIBUTION
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  monitoredResourceTypes:
+  - aws_ec2_instance
+  - aws_lambda_function
+  - aws_sqs_queue
+  - baremetalsolution.googleapis.com/Instance
+  - cloud_composer_environment
+  - cloud_composer_workflow
+  - cloud_dataproc_batch
+  - dataflow_job
+  - gae_instance
+  - gce_instance
+  - generic_node
+  - generic_task
+  - gke_container
+  - global
+  - k8s_cluster
+  - k8s_container
+  - k8s_node
+  - k8s_pod
+  - k8s_service
+  - prometheus_target
+  observedGeneration: 1
+  selfLink: projects/${projectId}/metricDescriptors/custom.googleapis.com/market/measurements/volume

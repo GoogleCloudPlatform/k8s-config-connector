@@ -1,0 +1,67 @@
+{
+  "name": "{{resource_name}}",
+  "description": "An updated test GrpcRoute",
+  "meshes": ["projects/{{project}}/locations/global/meshes/{{ref:basicgrpc2.networkservices.mesh.json:name}}"],
+  "gateways": ["projects/{{project}}/locations/global/gateways/{{ref:basicgrpc2.networkservices.gateway.json:name}}"],
+  "project": "{{project}}",
+  "location": "global",
+  "hostnames": ["test1", "test2", "newhost"],
+  "labels": {
+    "bar": "baz"
+  },
+  "rules": [
+    {
+      "matches": [
+        {
+          "method": {
+            "type": "REGULAR_EXPRESSION",
+            "grpcService": "helloworld.Greeter2",
+            "grpcMethod": "SayHello2",
+            "caseSensitive": true
+          },
+          "headers": [
+            {
+              "type": "REGULAR_EXPRESSION",
+              "key": "bar",
+              "value": "foo"
+            }
+          ]
+        }
+      ],
+      "action": {
+        "destinations": [
+          {
+            "serviceName": "projects/{{project}}/locations/global/backendServices/{{ref:basicgrpc2.compute.backend_service.json:name}}",
+            "weight": 100
+          }
+        ],
+        "faultInjectionPolicy": {
+          "abort": {
+            "httpStatus": 502,
+            "percentage": 2
+          },
+          "delay": {
+            "fixedDelay": "11s",
+            "percentage": 3
+          }
+        },
+        "retryPolicy": {
+          "numRetries": 4,
+          "retryConditions": [
+            "refused-stream"
+          ]
+        },
+        "timeout": "40s"
+      }
+    },
+    {
+      "action": {
+        "destinations": [
+          {
+            "serviceName": "projects/{{project}}/locations/global/backendServices/{{ref:basicgrpc.compute.backend_service.json:name}}"
+          }
+        ]
+      }
+    }
+  ]
+}

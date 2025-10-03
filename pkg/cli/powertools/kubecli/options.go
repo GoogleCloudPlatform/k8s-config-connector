@@ -20,8 +20,17 @@ import (
 )
 
 type ClusterOptions struct {
+	// Path to the kubeconfig file to use for CLI requests.
+	Kubeconfig string
+
 	// Impersonate is the configuration that RESTClient will use for impersonation.
 	Impersonate *rest.ImpersonationConfig
+
+	// ImpersonateUser is the user name to impersonate
+	ImpersonateUser string
+
+	// Group to impersonate for the operation, this flag can be repeated to specify multiple groups.
+	ImpersonateGroups []string
 }
 
 func (o *ClusterOptions) PopulateDefaults() {
@@ -29,6 +38,9 @@ func (o *ClusterOptions) PopulateDefaults() {
 }
 
 func (o *ClusterOptions) AddFlags(cmd *cobra.Command) {
+	cmd.Flags().StringVar(&o.Kubeconfig, "kubeconfig", o.Kubeconfig, "Path to the kubeconfig file to use for CLI requests.")
+	cmd.Flags().StringVar(&o.ImpersonateUser, "as", o.ImpersonateUser, "Username to impersonate for the operation. User could be a regular user or a service account in a namespace.")
+	cmd.Flags().StringSliceVar(&o.ImpersonateGroups, "as-group", o.ImpersonateGroups, "Group to impersonate for the operation, this flag can be repeated to specify multiple groups.")
 }
 
 type ObjectOptions struct {
@@ -45,6 +57,7 @@ func (o *ObjectOptions) PopulateDefaults() {
 }
 
 func (o *ObjectOptions) AddFlags(cmd *cobra.Command) {
-	// cmd.Flags().StringVar(&o.Name, "name", o.Name, "Name of the object to change")
+	cmd.Flags().StringVar(&o.Kind, "kind", o.Kind, "Kind of the object to change")
+	cmd.Flags().StringVar(&o.Name, "name", o.Name, "Name of the object to change")
 	cmd.Flags().StringVarP(&o.Namespace, "namespace", "n", o.Namespace, "Namespace of the object")
 }

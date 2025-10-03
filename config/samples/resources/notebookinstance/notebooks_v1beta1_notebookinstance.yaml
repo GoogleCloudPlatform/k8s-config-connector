@@ -1,0 +1,67 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: notebooks.cnrm.cloud.google.com/v1alpha1
+kind: NotebookInstance
+metadata:
+  name: notebookinstance-sample-shielded
+spec:
+  projectRef:
+    external: projects/${PROJECT_ID?}
+  zone: us-central1-a
+  machineType: n1-standard-1
+  containerImage:
+    repository: gcr.io/deeplearning-platform-release/base-cpu
+  instanceOwners: 
+    - ${PROJECT_NUMBER?}-compute@developer.gserviceaccount.com
+  kmsKeyRef:
+    external: "projects/${PROJECT_ID?}/locations/us-central1/keyRings/notebookinstance-dep-shielded/cryptoKeys/notebookinstance-dep-shielded"
+  installGpuDriver: true
+  bootDiskType: PD_SSD
+  bootDiskSizeGB: 100
+  dataDiskType: PD_SSD
+  dataDiskSizeGB: 200
+  noRemoveDataDisk: true
+  diskEncryption: GMEK
+  shieldedInstanceConfig:
+    enableSecureBoot: true
+    enableVTPM: true
+    enableIntegrityMonitoring: true
+  postStartupScript: gs://config-connector-samples/notebooks/notebook-instance.sh
+  noPublicIP: true
+  noProxyAccess: true
+  networkRef:
+    name: notebookinstance-dep-shielded
+  subnetRef:
+    name: notebookinstance-dep1-shielded
+  nicType: UNSPECIFIED_NIC_TYPE
+  serviceAccountRef:
+    name: notebookinstance-dep-shielded
+  serviceAccountScopes:
+    - https://www.googleapis.com/auth/devstorage.read_only
+    - https://www.googleapis.com/auth/logging.write
+    - https://www.googleapis.com/auth/monitoring.write
+    - https://www.googleapis.com/auth/service.management.readonly
+    - https://www.googleapis.com/auth/servicecontrol
+    - https://www.googleapis.com/auth/trace.append
+  labels:
+    environment: development
+    team: config-connector
+  metadata:
+    enable-os-config: "true"
+  tags:
+    - tag1
+    - tag2
+  reservationAffinity:
+    consumeReservationType: TYPE_UNSPECIFIED

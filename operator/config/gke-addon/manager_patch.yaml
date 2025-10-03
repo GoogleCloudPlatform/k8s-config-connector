@@ -30,3 +30,6 @@
     postStart:
       exec:
         command: ["./gke_addon_poststart"]
+- op: add
+  path: /spec/template/spec/containers/0/securityContext/readOnlyRootFilesystem
+  value: true

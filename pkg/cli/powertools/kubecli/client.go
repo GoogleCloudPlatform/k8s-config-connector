@@ -30,6 +30,7 @@ import (
 	"k8s.io/client-go/discovery"
 	diskcached "k8s.io/client-go/discovery/cached/disk"
 	"k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/homedir"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
@@ -41,9 +42,19 @@ type Client struct {
 }
 
 func NewClient(ctx context.Context, options ClusterOptions) (*Client, error) {
-	restConfig, err := config.GetConfig()
-	if err != nil {
-		return nil, fmt.Errorf("getting kubernetes configuration: %w", err)
+	var restConfig *rest.Config
+	if options.Kubeconfig != "" {
+		rc, err := clientcmd.BuildConfigFromFlags("", options.Kubeconfig)
+		if err != nil {
+			return nil, fmt.Errorf("loading kubernetes configuration from %q: %w", options.Kubeconfig, err)
+		}
+		restConfig = rc
+	} else {
+		rc, err := config.GetConfig()
+		if err != nil {
+			return nil, fmt.Errorf("getting kubernetes configuration: %w", err)
+		}
+		restConfig = rc
 	}
 
 	if options.Impersonate != nil {
@@ -123,15 +134,15 @@ func getDefaultCacheDir() string {
 
 func (c *Client) GetObject(ctx context.Context, options ObjectOptions) (*unstructured.Unstructured, error) {
 	if options.Kind == "" {
-		return nil, fmt.Errorf("must specify object kind to target")
+		return nil, fmt.Errorf("must specify object kind to target (use --kind flag)")
 	}
 
 	if options.Name == "" {
-		return nil, fmt.Errorf("must specify object name to target")
+		return nil, fmt.Errorf("must specify object name to target (use --name flag)")
 	}
 
 	if options.Namespace == "" {
-		return nil, fmt.Errorf("must specify object namespace to target")
+		return nil, fmt.Errorf("must specify object namespace to target (use --namespace flag)")
 	}
 
 	resources, err := c.DiscoveryClient.ServerPreferredResources()

@@ -1,0 +1,363 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum PrivatecaCertificateAuthorityTypeEnum {
+  PrivatecaCertificateAuthorityTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  PrivatecaCertificateAuthorityTypeEnumSELF_SIGNED = 1;
+  PrivatecaCertificateAuthorityTypeEnumSUBORDINATE = 2;
+}
+
+enum PrivatecaCertificateAuthorityConfigPublicKeyFormatEnum {
+  PrivatecaCertificateAuthorityConfigPublicKeyFormatEnumNO_VALUE_DO_NOT_USE = 0;
+  PrivatecaCertificateAuthorityConfigPublicKeyFormatEnumPEM = 1;
+}
+
+enum PrivatecaCertificateAuthorityKeySpecAlgorithmEnum {
+  PrivatecaCertificateAuthorityKeySpecAlgorithmEnumNO_VALUE_DO_NOT_USE = 0;
+  PrivatecaCertificateAuthorityKeySpecAlgorithmEnumRSA_PSS_2048_SHA256 = 1;
+  PrivatecaCertificateAuthorityKeySpecAlgorithmEnumRSA_PSS_3072_SHA256 = 2;
+  PrivatecaCertificateAuthorityKeySpecAlgorithmEnumRSA_PSS_4096_SHA256 = 3;
+  PrivatecaCertificateAuthorityKeySpecAlgorithmEnumRSA_PKCS1_2048_SHA256 = 4;
+  PrivatecaCertificateAuthorityKeySpecAlgorithmEnumRSA_PKCS1_3072_SHA256 = 5;
+  PrivatecaCertificateAuthorityKeySpecAlgorithmEnumRSA_PKCS1_4096_SHA256 = 6;
+  PrivatecaCertificateAuthorityKeySpecAlgorithmEnumEC_P256_SHA256 = 7;
+  PrivatecaCertificateAuthorityKeySpecAlgorithmEnumEC_P384_SHA384 = 8;
+}
+
+enum PrivatecaCertificateAuthorityTierEnum {
+  PrivatecaCertificateAuthorityTierEnumNO_VALUE_DO_NOT_USE = 0;
+  PrivatecaCertificateAuthorityTierEnumENTERPRISE = 1;
+  PrivatecaCertificateAuthorityTierEnumDEVOPS = 2;
+}
+
+enum PrivatecaCertificateAuthorityStateEnum {
+  PrivatecaCertificateAuthorityStateEnumNO_VALUE_DO_NOT_USE = 0;
+  PrivatecaCertificateAuthorityStateEnumENABLED = 1;
+  PrivatecaCertificateAuthorityStateEnumDISABLED = 2;
+  PrivatecaCertificateAuthorityStateEnumSTAGED = 3;
+  PrivatecaCertificateAuthorityStateEnumAWAITING_USER_ACTIVATION = 4;
+  PrivatecaCertificateAuthorityStateEnumDELETED = 5;
+}
+
+enum PrivatecaCertificateAuthorityCaCertificateDescriptionsPublicKeyFormatEnum {
+  PrivatecaCertificateAuthorityCaCertificateDescriptionsPublicKeyFormatEnumNO_VALUE_DO_NOT_USE = 0;
+  PrivatecaCertificateAuthorityCaCertificateDescriptionsPublicKeyFormatEnumPEM = 1;
+}
+
+message PrivatecaCertificateAuthority {
+  string name = 1;
+  PrivatecaCertificateAuthorityTypeEnum type = 2;
+  PrivatecaCertificateAuthorityConfig config = 3;
+  string lifetime = 4;
+  PrivatecaCertificateAuthorityKeySpec key_spec = 5;
+  PrivatecaCertificateAuthoritySubordinateConfig subordinate_config = 6;
+  PrivatecaCertificateAuthorityTierEnum tier = 7;
+  PrivatecaCertificateAuthorityStateEnum state = 8;
+  repeated string pem_ca_certificates = 9;
+  repeated PrivatecaCertificateAuthorityCaCertificateDescriptions ca_certificate_descriptions = 10;
+  string gcs_bucket = 11;
+  PrivatecaCertificateAuthorityAccessUrls access_urls = 12;
+  string create_time = 13;
+  string update_time = 14;
+  string delete_time = 15;
+  string expire_time = 16;
+  map<string, string> labels = 17;
+  string project = 18;
+  string location = 19;
+  string ca_pool = 20;
+}
+
+message PrivatecaCertificateAuthorityConfig {
+  PrivatecaCertificateAuthorityConfigSubjectConfig subject_config = 1;
+  PrivatecaCertificateAuthorityConfigX509Config x509_config = 2;
+  PrivatecaCertificateAuthorityConfigPublicKey public_key = 3;
+}
+
+message PrivatecaCertificateAuthorityConfigSubjectConfig {
+  PrivatecaCertificateAuthorityConfigSubjectConfigSubject subject = 1;
+  PrivatecaCertificateAuthorityConfigSubjectConfigSubjectAltName subject_alt_name = 2;
+}
+
+message PrivatecaCertificateAuthorityConfigSubjectConfigSubject {
+  string common_name = 1;
+  string country_code = 2;
+  string organization = 3;
+  string organizational_unit = 4;
+  string locality = 5;
+  string province = 6;
+  string street_address = 7;
+  string postal_code = 8;
+}
+
+message PrivatecaCertificateAuthorityConfigSubjectConfigSubjectAltName {
+  repeated string dns_names = 1;
+  repeated string uris = 2;
+  repeated string email_addresses = 3;
+  repeated string ip_addresses = 4;
+  repeated PrivatecaCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSans custom_sans = 5;
+}
+
+message PrivatecaCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSans {
+  PrivatecaCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansObjectId object_id = 1;
+  bool critical = 2;
+  string value = 3;
+}
+
+message PrivatecaCertificateAuthorityConfigSubjectConfigSubjectAltNameCustomSansObjectId {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaCertificateAuthorityConfigX509Config {
+  PrivatecaCertificateAuthorityConfigX509ConfigKeyUsage key_usage = 1;
+  PrivatecaCertificateAuthorityConfigX509ConfigCaOptions ca_options = 2;
+  repeated PrivatecaCertificateAuthorityConfigX509ConfigPolicyIds policy_ids = 3;
+  repeated string aia_ocsp_servers = 4;
+  repeated PrivatecaCertificateAuthorityConfigX509ConfigAdditionalExtensions additional_extensions = 5;
+}
+
+message PrivatecaCertificateAuthorityConfigX509ConfigKeyUsage {
+  PrivatecaCertificateAuthorityConfigX509ConfigKeyUsageBaseKeyUsage base_key_usage = 1;
+  PrivatecaCertificateAuthorityConfigX509ConfigKeyUsageExtendedKeyUsage extended_key_usage = 2;
+  repeated PrivatecaCertificateAuthorityConfigX509ConfigKeyUsageUnknownExtendedKeyUsages unknown_extended_key_usages = 3;
+}
+
+message PrivatecaCertificateAuthorityConfigX509ConfigKeyUsageBaseKeyUsage {
+  bool digital_signature = 1;
+  bool content_commitment = 2;
+  bool key_encipherment = 3;
+  bool data_encipherment = 4;
+  bool key_agreement = 5;
+  bool cert_sign = 6;
+  bool crl_sign = 7;
+  bool encipher_only = 8;
+  bool decipher_only = 9;
+}
+
+message PrivatecaCertificateAuthorityConfigX509ConfigKeyUsageExtendedKeyUsage {
+  bool server_auth = 1;
+  bool client_auth = 2;
+  bool code_signing = 3;
+  bool email_protection = 4;
+  bool time_stamping = 5;
+  bool ocsp_signing = 6;
+}
+
+message PrivatecaCertificateAuthorityConfigX509ConfigKeyUsageUnknownExtendedKeyUsages {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaCertificateAuthorityConfigX509ConfigCaOptions {
+  bool is_ca = 1;
+  int64 max_issuer_path_length = 2;
+  bool zero_max_issuer_path_length = 3;
+}
+
+message PrivatecaCertificateAuthorityConfigX509ConfigPolicyIds {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaCertificateAuthorityConfigX509ConfigAdditionalExtensions {
+  PrivatecaCertificateAuthorityConfigX509ConfigAdditionalExtensionsObjectId object_id = 1;
+  bool critical = 2;
+  string value = 3;
+}
+
+message PrivatecaCertificateAuthorityConfigX509ConfigAdditionalExtensionsObjectId {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaCertificateAuthorityConfigPublicKey {
+  string key = 1;
+  PrivatecaCertificateAuthorityConfigPublicKeyFormatEnum format = 2;
+}
+
+message PrivatecaCertificateAuthorityKeySpec {
+  string cloud_kms_key_version = 1;
+  PrivatecaCertificateAuthorityKeySpecAlgorithmEnum algorithm = 2;
+}
+
+message PrivatecaCertificateAuthoritySubordinateConfig {
+  string certificate_authority = 1;
+  PrivatecaCertificateAuthoritySubordinateConfigPemIssuerChain pem_issuer_chain = 2;
+}
+
+message PrivatecaCertificateAuthoritySubordinateConfigPemIssuerChain {
+  repeated string pem_certificates = 1;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptions {
+  PrivatecaCertificateAuthorityCaCertificateDescriptionsSubjectDescription subject_description = 1;
+  PrivatecaCertificateAuthorityCaCertificateDescriptionsX509Description x509_description = 2;
+  PrivatecaCertificateAuthorityCaCertificateDescriptionsPublicKey public_key = 3;
+  PrivatecaCertificateAuthorityCaCertificateDescriptionsSubjectKeyId subject_key_id = 4;
+  PrivatecaCertificateAuthorityCaCertificateDescriptionsAuthorityKeyId authority_key_id = 5;
+  repeated string crl_distribution_points = 6;
+  repeated string aia_issuing_certificate_urls = 7;
+  PrivatecaCertificateAuthorityCaCertificateDescriptionsCertFingerprint cert_fingerprint = 8;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptionsSubjectDescription {
+  PrivatecaCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubject subject = 1;
+  PrivatecaCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltName subject_alt_name = 2;
+  string hex_serial_number = 3;
+  string lifetime = 4;
+  string not_before_time = 5;
+  string not_after_time = 6;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubject {
+  string common_name = 1;
+  string country_code = 2;
+  string organization = 3;
+  string organizational_unit = 4;
+  string locality = 5;
+  string province = 6;
+  string street_address = 7;
+  string postal_code = 8;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltName {
+  repeated string dns_names = 1;
+  repeated string uris = 2;
+  repeated string email_addresses = 3;
+  repeated string ip_addresses = 4;
+  repeated PrivatecaCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSans custom_sans = 5;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSans {
+  PrivatecaCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSansObjectId object_id = 1;
+  bool critical = 2;
+  string value = 3;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptionsSubjectDescriptionSubjectAltNameCustomSansObjectId {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptionsX509Description {
+  PrivatecaCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsage key_usage = 1;
+  PrivatecaCertificateAuthorityCaCertificateDescriptionsX509DescriptionCaOptions ca_options = 2;
+  repeated PrivatecaCertificateAuthorityCaCertificateDescriptionsX509DescriptionPolicyIds policy_ids = 3;
+  repeated string aia_ocsp_servers = 4;
+  repeated PrivatecaCertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensions additional_extensions = 5;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsage {
+  PrivatecaCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageBaseKeyUsage base_key_usage = 1;
+  PrivatecaCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageExtendedKeyUsage extended_key_usage = 2;
+  repeated PrivatecaCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageUnknownExtendedKeyUsages unknown_extended_key_usages = 3;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageBaseKeyUsage {
+  bool digital_signature = 1;
+  bool content_commitment = 2;
+  bool key_encipherment = 3;
+  bool data_encipherment = 4;
+  bool key_agreement = 5;
+  bool cert_sign = 6;
+  bool crl_sign = 7;
+  bool encipher_only = 8;
+  bool decipher_only = 9;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageExtendedKeyUsage {
+  bool server_auth = 1;
+  bool client_auth = 2;
+  bool code_signing = 3;
+  bool email_protection = 4;
+  bool time_stamping = 5;
+  bool ocsp_signing = 6;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptionsX509DescriptionKeyUsageUnknownExtendedKeyUsages {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptionsX509DescriptionCaOptions {
+  bool is_ca = 1;
+  int64 max_issuer_path_length = 2;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptionsX509DescriptionPolicyIds {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensions {
+  PrivatecaCertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensionsObjectId object_id = 1;
+  bool critical = 2;
+  string value = 3;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptionsX509DescriptionAdditionalExtensionsObjectId {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptionsPublicKey {
+  string key = 1;
+  PrivatecaCertificateAuthorityCaCertificateDescriptionsPublicKeyFormatEnum format = 2;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptionsSubjectKeyId {
+  string key_id = 1;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptionsAuthorityKeyId {
+  string key_id = 1;
+}
+
+message PrivatecaCertificateAuthorityCaCertificateDescriptionsCertFingerprint {
+  string sha256_hash = 1;
+}
+
+message PrivatecaCertificateAuthorityAccessUrls {
+  string ca_certificate_access_url = 1;
+  repeated string crl_access_urls = 2;
+}
+
+message ApplyPrivatecaCertificateAuthorityRequest {
+  PrivatecaCertificateAuthority resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeletePrivatecaCertificateAuthorityRequest {
+  string service_account_file = 1;
+  PrivatecaCertificateAuthority resource = 2;
+}
+
+message ListPrivatecaCertificateAuthorityRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string CaPool = 4;
+}
+
+message ListPrivatecaCertificateAuthorityResponse {
+  repeated PrivatecaCertificateAuthority items = 1;
+}
+
+service PrivatecaCertificateAuthorityService {
+  rpc ApplyPrivatecaCertificateAuthority(ApplyPrivatecaCertificateAuthorityRequest) returns (PrivatecaCertificateAuthority);
+  rpc DeletePrivatecaCertificateAuthority(DeletePrivatecaCertificateAuthorityRequest) returns (google.protobuf.Empty);
+  rpc ListPrivatecaCertificateAuthority(ListPrivatecaCertificateAuthorityRequest) returns (ListPrivatecaCertificateAuthorityResponse);
+}

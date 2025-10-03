@@ -1,0 +1,8 @@
+{
+  "name": "{{pool}}",
+  "project": "{{ref:basic.cloudresourcemanager.project.json:name}}",
+  "location": "global",
+  "displayName": "updated-sample-pool",
+  "description": "An updated sample workload identity pool",
+  "disabled": true
+}

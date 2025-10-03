@@ -17,6 +17,7 @@ package mocksecretmanager
 import (
 	"context"
 	"fmt"
+	"hash/crc32"
 	"strconv"
 	"strings"
 
@@ -94,6 +95,7 @@ func (s *SecretsV1) AddSecretVersion(ctx context.Context, req *pb.AddSecretVersi
 	secretVersionObj.Name = secretVersionName.String()
 	secretVersionObj.CreateTime = timestamppb.Now()
 	secretVersionObj.State = pb.SecretVersion_ENABLED
+	secretVersionObj.Etag = computeEtag(secretVersionObj)
 
 	// TODO: Copy from secret
 	if secretVersionObj.ReplicationStatus == nil {
@@ -220,6 +222,10 @@ func (s *SecretsV1) AccessSecretVersion(ctx context.Context, req *pb.AccessSecre
 		response.Payload = &pb.SecretPayload{
 			Data: data,
 		}
+
+		crcTable := crc32.MakeTable(crc32.Castagnoli)
+		dataCrc32c := int64(crc32.Checksum(response.Payload.Data, crcTable))
+		response.Payload.DataCrc32C = &dataCrc32c
 	}
 
 	return response, nil
@@ -286,9 +292,12 @@ func (s *SecretsV1) DestroySecretVersion(ctx context.Context, req *pb.DestroySec
 		return nil, err
 	}
 
+	now := timestamppb.Now()
 	// TODO: Delete the kube secret
 
 	secretVersion.State = pb.SecretVersion_DESTROYED
+	secretVersion.DestroyTime = now
+
 	fqn := secretVersion.Name
 	if err := s.storage.Update(ctx, fqn, secretVersion); err != nil {
 		return nil, err
@@ -315,7 +324,7 @@ func (n *secretVersionName) String() string {
 func (s *MockService) parseSecretVersionName(name string) (*secretVersionName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "secrets" && tokens[4] == "versions" {
-		project, err := s.Projects.GetProjectByNumber(tokens[1])
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}

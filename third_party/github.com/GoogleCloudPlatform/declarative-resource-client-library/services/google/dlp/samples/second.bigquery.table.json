@@ -1,0 +1,17 @@
+{
+  "name": "{{_table2}}",
+  "project": "{{ref:bigquery.serviceusage.service.json:project}}",
+  "dataset": "{{ref:second.bigquery.dataset.json:name}}",
+  "schema": {
+    "fields": [
+      {
+        "name": "sample_field",
+        "type": "STRING"
+      },
+      {
+        "name": "new_sample_field",
+        "type": "STRING"
+      }
+    ]
+  }
+}

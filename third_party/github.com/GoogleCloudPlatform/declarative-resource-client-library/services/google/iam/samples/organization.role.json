@@ -1,0 +1,14 @@
+{
+  "name": "organizations/{{org_id}}/roles/{{_role}}",
+  "parent": "organizations/{{org_id}}",
+  "includedPermissions": [
+    "iam.roles.create",
+    "iam.roles.delete",
+    "iam.roles.get",
+    "iam.roles.list",
+    "iam.roles.undelete",
+    "iam.roles.update"
+  ],
+  "title": "Test Role",
+  "description": "A sample IAM role for an organization"
+}

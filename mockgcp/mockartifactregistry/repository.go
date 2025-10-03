@@ -16,11 +16,14 @@ package mockartifactregistry
 
 import (
 	"context"
+	"fmt"
+	"time"
 
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/devtools/artifactregistry/v1"
@@ -41,6 +44,9 @@ func (s *ArtifactRegistryV1) GetRepository(ctx context.Context, req *pb.GetRepos
 
 	obj := &pb.Repository{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Requested entity was not found.")
+		}
 		return nil, err
 	}
 
@@ -62,12 +68,41 @@ func (s *ArtifactRegistryV1) CreateRepository(ctx context.Context, req *pb.Creat
 	now := timestamppb.Now()
 	obj.CreateTime = now
 	obj.UpdateTime = now
-
+	if err := s.populateDefaults(ctx, obj); err != nil {
+		return nil, err
+	}
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	lroMetadata := &pb.OperationMetadata{}
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		retObj := proto.Clone(obj).(*pb.Repository)
+		retObj.CreateTime = nil
+		retObj.UpdateTime = nil
+		return retObj, nil
+	})
+}
+
+func (s *ArtifactRegistryV1) populateDefaults(ctx context.Context, obj *pb.Repository) error {
+	now := time.Now()
+
+	if obj.Mode == pb.Repository_MODE_UNSPECIFIED {
+		obj.Mode = pb.Repository_STANDARD_REPOSITORY
+	}
+
+	if obj.VulnerabilityScanningConfig == nil {
+		obj.VulnerabilityScanningConfig = &pb.Repository_VulnerabilityScanningConfig{
+			EnablementState:       pb.Repository_VulnerabilityScanningConfig_SCANNING_DISABLED,
+			EnablementStateReason: "API containerscanning.googleapis.com is not enabled.",
+			LastEnableTime:        timestamppb.New(now),
+		}
+	}
+
+	obj.SatisfiesPzi = true
+
+	return nil
 }
 
 func (s *ArtifactRegistryV1) UpdateRepository(ctx context.Context, req *pb.UpdateRepositoryRequest) (*pb.Repository, error) {
@@ -95,7 +130,7 @@ func (s *ArtifactRegistryV1) UpdateRepository(ctx context.Context, req *pb.Updat
 		case "labels":
 			obj.Labels = req.Repository.GetLabels()
 		default:
-			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}
 	}
 
@@ -119,5 +154,9 @@ func (s *ArtifactRegistryV1) DeleteRepository(ctx context.Context, req *pb.Delet
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	lroMetadata := &pb.OperationMetadata{}
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		return &emptypb.Empty{}, nil
+	})
 }

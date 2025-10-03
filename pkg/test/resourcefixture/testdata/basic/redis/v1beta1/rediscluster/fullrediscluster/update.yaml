@@ -1,0 +1,42 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: redis.cnrm.cloud.google.com/v1beta1
+kind: RedisCluster
+metadata:
+  name: rediscluster-${uniqueId}
+spec:
+  shardCount: 6
+  pscConfigs:
+  - networkRef:
+      external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  replicaCount: 1
+  nodeType: REDIS_STANDARD_SMALL
+  transitEncryptionMode: TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION
+  authorizationMode: AUTH_MODE_IAM_AUTH
+  redisConfigs:
+    maxmemory-policy: volatile-ttl
+    maxclients: '10'
+  zoneDistributionConfig:
+    mode: SINGLE_ZONE
+    zone: us-central1-b
+  persistenceConfig:
+    mode: RDB
+    rdbConfig:
+      rdbSnapshotPeriod: ONE_HOUR
+      rdbSnapshotStartTime: 2024-10-02T15:01:23Z
+  deletionProtectionEnabled: false

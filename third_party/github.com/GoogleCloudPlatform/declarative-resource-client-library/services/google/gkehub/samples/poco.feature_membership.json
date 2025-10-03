@@ -1,0 +1,12 @@
+{
+  "project": "{{ref:gkehub.serviceusage.service.json:project}}",
+  "location": "global",
+  "feature": "projects/{{ref:poco.feature.json:project}}/locations/{{ref:poco.feature.json:location}}/features/{{ref:poco.feature.json:name}}",
+  "membership": "{{ref:first.membership.json:name}}",
+  "membershipLocation": "global",
+  "policycontroller": {
+    "policyControllerHubConfig": {
+      "installSpec": "INSTALL_SPEC_ENABLED"
+    }
+  }
+}

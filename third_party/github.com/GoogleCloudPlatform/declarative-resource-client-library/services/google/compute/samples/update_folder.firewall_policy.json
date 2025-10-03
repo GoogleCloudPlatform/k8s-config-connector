@@ -1,0 +1,6 @@
+{
+  "name": "{{ref:folder.firewall_policy.json:name}}",
+  "shortName": "{{ref:folder.firewall_policy.json:shortName}}",
+  "parent": "folders/{{ref:basic.cloudresourcemanager.folder.json:name}}",
+  "description": "Updated sample firewall policy."
+}

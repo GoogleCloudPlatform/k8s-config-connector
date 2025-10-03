@@ -46,7 +46,13 @@ func (s *ClusterManagerV1) GetNodePool(ctx context.Context, req *pb.GetNodePoolR
 
 func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNodePoolRequest) (*pb.Operation, error) {
 	reqName := req.GetParent() + "/nodePools/" + req.GetNodePool().GetName()
+
 	name, err := s.parseNodePoolName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	cluster, err := s.GetCluster(ctx, &pb.GetClusterRequest{Name: req.GetParent()})
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +60,10 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 	fqn := name.String()
 
 	obj := proto.Clone(req.NodePool).(*pb.NodePool)
-	if err := s.populateNodePoolDefaults(obj); err != nil {
+
+	obj.SelfLink = buildSelfLink(ctx, fqn)
+
+	if err := s.populateNodePoolDefaults(cluster, obj); err != nil {
 		return nil, err
 	}
 
@@ -72,58 +81,17 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 	})
 }
 
-func (s *ClusterManagerV1) populateNodePoolDefaults(obj *pb.NodePool) error {
+func (s *ClusterManagerV1) populateNodePoolDefaults(cluster *pb.Cluster, obj *pb.NodePool) error {
 	obj.Status = pb.NodePool_RUNNING
+	if obj.Version == "" {
+		obj.Version = cluster.CurrentNodeVersion
+	}
 
 	if obj.Config == nil {
 		obj.Config = &pb.NodeConfig{}
 	}
-
-	if obj.Config.DiskSizeGb == 0 {
-		obj.Config.DiskSizeGb = 100
-	}
-	if obj.Config.DiskType == "" {
-		obj.Config.DiskType = "pd-balanced"
-	}
-	if obj.Config.ImageType == "" {
-		obj.Config.ImageType = "COS_CONTAINERD"
-	}
-
-	if obj.Config.MachineType == "" {
-		obj.Config.MachineType = "e2-standard-4"
-	}
-
-	if obj.Config.Metadata == nil {
-		obj.Config.Metadata = make(map[string]string)
-	}
-
-	if obj.Config.Metadata["disable-legacy-endpoints"] == "" {
-		obj.Config.Metadata["disable-legacy-endpoints"] = "true"
-	}
-
-	if obj.Config.OauthScopes == nil {
-		obj.Config.OauthScopes = []string{
-			"https://www.googleapis.com/auth/devstorage.read_only",
-			"https://www.googleapis.com/auth/logging.write",
-			"https://www.googleapis.com/auth/monitoring",
-			"https://www.googleapis.com/auth/service.management.readonly",
-			"https://www.googleapis.com/auth/servicecontrol",
-			"https://www.googleapis.com/auth/trace.append",
-		}
-	}
-
-	if obj.Config.ServiceAccount == "" {
-		obj.Config.ServiceAccount = "default"
-	}
-
-	if obj.Config.ShieldedInstanceConfig == nil {
-		obj.Config.ShieldedInstanceConfig = &pb.ShieldedInstanceConfig{
-			EnableIntegrityMonitoring: true,
-		}
-	}
-
-	if obj.Config.WindowsNodeConfig == nil {
-		obj.Config.WindowsNodeConfig = &pb.WindowsNodeConfig{}
+	if err := s.populateNodeConfig(obj.Config); err != nil {
+		return err
 	}
 
 	if obj.InitialNodeCount == 0 {
@@ -143,12 +111,38 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(obj *pb.NodePool) error {
 		}
 	}
 
+	// TODO: Fix NetworkConfig behavior.
+	// Real log:
+	//      "networkConfig": {
+	//        "podIpv4CidrBlock": "10.108.0.0/14",
+	//        "podRange": "gke-containercluster-${uniqueId}-pods-4e499d58",
+	//        "subnetwork": "projects/${projectId}/regions/us-east1/subnetworks/default"
+	//      },
+	// Mock log:
+	//     "networkConfig": {
+	//        "enablePrivateNodes": false,
+	//        "podIpv4CidrBlock": "10.92.0.0/14",
+	//        "podIpv4RangeUtilization": 0.001,
+	//        "podRange": "default-pool-pods-12345678"
+	//      },
 	if obj.NetworkConfig == nil {
 		obj.NetworkConfig = &pb.NodeNetworkConfig{}
 	}
-
 	if obj.NetworkConfig.EnablePrivateNodes == nil {
 		obj.NetworkConfig.EnablePrivateNodes = PtrTo(false)
+	}
+	if obj.NetworkConfig.PodIpv4CidrBlock == "" {
+		obj.NetworkConfig.PodIpv4CidrBlock = "10.92.0.0/14"
+	}
+	if obj.NetworkConfig.PodIpv4RangeUtilization == 0 {
+		obj.NetworkConfig.PodIpv4RangeUtilization = 0.001
+	}
+	if obj.NetworkConfig.PodRange == "" {
+		obj.NetworkConfig.PodRange = obj.Name + "-pods-12345678"
+	}
+
+	if obj.PodIpv4CidrSize == 0 {
+		obj.PodIpv4CidrSize = 24
 	}
 
 	if obj.UpgradeSettings == nil {
@@ -157,6 +151,119 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(obj *pb.NodePool) error {
 			MaxUnavailable: 0,
 			Strategy:       PtrTo(pb.NodePoolUpdateStrategy_SURGE),
 		}
+	}
+
+	return nil
+}
+
+func (s *ClusterManagerV1) populateNodeConfig(obj *pb.NodeConfig) error {
+	if obj.DiskSizeGb == 0 {
+		obj.DiskSizeGb = 100
+	}
+	if obj.DiskType == "" {
+		obj.DiskType = "pd-balanced"
+	}
+
+	if obj.ImageType == "" {
+		obj.ImageType = "COS_CONTAINERD"
+	}
+
+	if obj.MachineType == "" {
+		obj.MachineType = "e2-medium"
+	}
+
+	if obj.Metadata == nil {
+		obj.Metadata = make(map[string]string)
+	}
+
+	if obj.Metadata["disable-legacy-endpoints"] == "" {
+		obj.Metadata["disable-legacy-endpoints"] = "true"
+	}
+
+	if obj.OauthScopes == nil {
+		obj.OauthScopes = []string{
+			"https://www.googleapis.com/auth/devstorage.read_only",
+			"https://www.googleapis.com/auth/logging.write",
+			"https://www.googleapis.com/auth/monitoring",
+			"https://www.googleapis.com/auth/service.management.readonly",
+			"https://www.googleapis.com/auth/servicecontrol",
+			"https://www.googleapis.com/auth/trace.append",
+		}
+	}
+
+	if obj.ServiceAccount == "" {
+		obj.ServiceAccount = "default"
+	}
+
+	if obj.ShieldedInstanceConfig == nil {
+		obj.ShieldedInstanceConfig = &pb.ShieldedInstanceConfig{
+			EnableIntegrityMonitoring: true,
+		}
+	}
+
+	if obj.WindowsNodeConfig == nil {
+		obj.WindowsNodeConfig = &pb.WindowsNodeConfig{}
+	}
+
+	return nil
+}
+
+func (s *ClusterManagerV1) populateAutoprovisioningNodePoolDefaults(obj *pb.AutoprovisioningNodePoolDefaults) error {
+
+	if obj.OauthScopes == nil {
+		obj.OauthScopes = []string{
+			"https://www.googleapis.com/auth/userinfo.email",
+			"https://www.googleapis.com/auth/cloud-platform",
+		}
+	} else {
+		// TODO: Reach out to API team to get clarification of the following behavior:
+		// When the input is
+		// "oauthScopes": [
+		//   "https://www.googleapis.com/auth/devstorage.read_only",
+		//   "https://www.googleapis.com/auth/logging.write"
+		// ],
+		// the output becomes
+		// "oauthScopes": [
+		//   "https://www.googleapis.com/auth/devstorage.read_only",
+		//   "https://www.googleapis.com/auth/logging.write",
+		//   "https://www.googleapis.com/auth/monitoring"
+		// ],
+		hasMonitoring := false
+		hasLoggingWrite := false
+		for _, scope := range obj.OauthScopes {
+			if scope == "https://www.googleapis.com/auth/monitoring" {
+				hasMonitoring = true
+			}
+			if scope == "https://www.googleapis.com/auth/logging.write" {
+				hasLoggingWrite = true
+			}
+		}
+		if hasLoggingWrite && !hasMonitoring {
+			obj.OauthScopes = append(obj.OauthScopes, "https://www.googleapis.com/auth/monitoring")
+		}
+	}
+
+	if obj.UpgradeSettings == nil {
+		obj.UpgradeSettings = &pb.NodePool_UpgradeSettings{}
+	}
+	if obj.UpgradeSettings.Strategy == nil {
+		obj.UpgradeSettings.Strategy = PtrTo(pb.NodePoolUpdateStrategy_SURGE)
+	}
+
+	if obj.Management == nil {
+		obj.Management = &pb.NodeManagement{
+			AutoRepair:  true,
+			AutoUpgrade: true,
+		}
+	}
+
+	// According to the proto:
+	//   This field is deprecated, min_cpu_platform should be specified using
+	//   `cloud.google.com/requested-min-cpu-platform` label selector on the pod.
+	//   To unset the min cpu platform field pass "automatic"
+	//   as field value.
+	if obj.MinCpuPlatform == "automatic" {
+		obj.MinCpuPlatform = ""
 	}
 
 	return nil
@@ -180,6 +287,11 @@ func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNod
 
 	update := proto.Clone(req).(*pb.UpdateNodePoolRequest)
 	update.Name = ""
+
+	if update.Taints != nil {
+		obj.Config.Taints = update.GetTaints().Taints
+		update.Taints = nil
+	}
 
 	// TODO: Support more updates!
 

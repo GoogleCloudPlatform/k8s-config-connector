@@ -1,0 +1,1055 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/computehealthcheck-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "healthCheck \"projects/${projectId}/regions/us-central1/healthChecks/computehealthcheck-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "healthCheck \"projects/${projectId}/regions/us-central1/healthChecks/computehealthcheck-${uniqueId}\" not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "checkIntervalSec": 10,
+  "healthyThreshold": 2,
+  "httpHealthCheck": {
+    "port": 80,
+    "proxyHeader": "NONE",
+    "requestPath": "/"
+  },
+  "name": "computehealthcheck-${uniqueId}",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "timeoutSec": 5,
+  "type": "HTTP",
+  "unhealthyThreshold": 2
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/computehealthcheck-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "checkIntervalSec": 10,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "healthyThreshold": 2,
+  "httpHealthCheck": {
+    "port": 80,
+    "proxyHeader": "NONE",
+    "requestPath": "/"
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#healthCheck",
+  "name": "computehealthcheck-${uniqueId}",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/computehealthcheck-${uniqueId}",
+  "timeoutSec": 5,
+  "type": "HTTP",
+  "unhealthyThreshold": 2
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "connectionDraining": {
+    "drainingTimeoutSec": 0
+  },
+  "healthChecks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/computehealthcheck-${uniqueId}"
+  ],
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "loadBalancingScheme": "INTERNAL_MANAGED",
+  "name": "computebackendservice-${uniqueId}",
+  "protocol": "HTTP",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "timeoutSec": 10
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "connectionDraining": {
+    "drainingTimeoutSec": 0
+  },
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "healthChecks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/computehealthcheck-${uniqueId}"
+  ],
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#backendService",
+  "loadBalancingScheme": "INTERNAL_MANAGED",
+  "name": "computebackendservice-${uniqueId}",
+  "protocol": "HTTP",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+  "timeoutSec": 10
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/computeurlmap-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/regions/us-central1/urlMaps/computeurlmap-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/regions/us-central1/urlMaps/computeurlmap-${uniqueId}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+  "description": "test regional URLMap",
+  "hostRules": [
+    {
+      "hosts": [
+        "mysite.com"
+      ],
+      "pathMatcher": "allpaths"
+    }
+  ],
+  "name": "computeurlmap-${uniqueId}",
+  "pathMatchers": [
+    {
+      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+      "name": "allpaths",
+      "pathRules": [
+        {
+          "paths": [
+            "/home"
+          ],
+          "routeAction": {
+            "corsPolicy": {
+              "allowCredentials": true,
+              "allowHeaders": [
+                "Allowed content"
+              ],
+              "allowMethods": [
+                "GET"
+              ],
+              "allowOrigins": [
+                "Allowed origin"
+              ],
+              "exposeHeaders": [
+                "Exposed header"
+              ],
+              "maxAge": 30
+            },
+            "faultInjectionPolicy": {
+              "abort": {
+                "httpStatus": 234,
+                "percentage": 5.6
+              },
+              "delay": {
+                "fixedDelay": {
+                  "nanos": 50000,
+                  "seconds": "0"
+                },
+                "percentage": 7.8
+              }
+            },
+            "requestMirrorPolicy": {
+              "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+            },
+            "retryPolicy": {
+              "numRetries": 4,
+              "perTryTimeout": {
+                "seconds": "30"
+              },
+              "retryConditions": [
+                "5xx",
+                "deadline-exceeded"
+              ]
+            },
+            "timeout": {
+              "nanos": 750000000,
+              "seconds": "20"
+            },
+            "urlRewrite": {
+              "hostRewrite": "A replacement header",
+              "pathPrefixRewrite": "A replacement path"
+            },
+            "weightedBackendServices": [
+              {
+                "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+                "headerAction": {
+                  "requestHeadersToAdd": [
+                    {
+                      "headerName": "AddMe",
+                      "headerValue": "MyValue",
+                      "replace": true
+                    }
+                  ],
+                  "requestHeadersToRemove": [
+                    "RemoveMe"
+                  ],
+                  "responseHeadersToAdd": [
+                    {
+                      "headerName": "AddMe",
+                      "headerValue": "MyValue"
+                    }
+                  ],
+                  "responseHeadersToRemove": [
+                    "RemoveMe"
+                  ]
+                },
+                "weight": 400
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "tests": [
+    {
+      "host": "hi.com",
+      "path": "/home",
+      "service": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/computeurlmap-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+  "description": "test regional URLMap",
+  "hostRules": [
+    {
+      "hosts": [
+        "mysite.com"
+      ],
+      "pathMatcher": "allpaths"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#urlMap",
+  "name": "computeurlmap-${uniqueId}",
+  "pathMatchers": [
+    {
+      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+      "name": "allpaths",
+      "pathRules": [
+        {
+          "paths": [
+            "/home"
+          ],
+          "routeAction": {
+            "corsPolicy": {
+              "allowCredentials": true,
+              "allowHeaders": [
+                "Allowed content"
+              ],
+              "allowMethods": [
+                "GET"
+              ],
+              "allowOrigins": [
+                "Allowed origin"
+              ],
+              "exposeHeaders": [
+                "Exposed header"
+              ],
+              "maxAge": 30
+            },
+            "faultInjectionPolicy": {
+              "abort": {
+                "httpStatus": 234,
+                "percentage": 5.6
+              },
+              "delay": {
+                "fixedDelay": {
+                  "nanos": 50000,
+                  "seconds": "0"
+                },
+                "percentage": 7.8
+              }
+            },
+            "requestMirrorPolicy": {
+              "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+            },
+            "retryPolicy": {
+              "numRetries": 4,
+              "perTryTimeout": {
+                "seconds": "30"
+              },
+              "retryConditions": [
+                "5xx",
+                "deadline-exceeded"
+              ]
+            },
+            "timeout": {
+              "nanos": 750000000,
+              "seconds": "20"
+            },
+            "urlRewrite": {
+              "hostRewrite": "A replacement header",
+              "pathPrefixRewrite": "A replacement path"
+            },
+            "weightedBackendServices": [
+              {
+                "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+                "headerAction": {
+                  "requestHeadersToAdd": [
+                    {
+                      "headerName": "AddMe",
+                      "headerValue": "MyValue",
+                      "replace": true
+                    }
+                  ],
+                  "requestHeadersToRemove": [
+                    "RemoveMe"
+                  ],
+                  "responseHeadersToAdd": [
+                    {
+                      "headerName": "AddMe",
+                      "headerValue": "MyValue"
+                    }
+                  ],
+                  "responseHeadersToRemove": [
+                    "RemoveMe"
+                  ]
+                },
+                "weight": 400
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/computeurlmap-${uniqueId}",
+  "tests": [
+    {
+      "host": "hi.com",
+      "path": "/home",
+      "service": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+    }
+  ]
+}
+
+---
+
+PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/computeurlmap-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+  "description": "updated regional URLMap",
+  "hostRules": [
+    {
+      "hosts": [
+        "mysite.com"
+      ],
+      "pathMatcher": "allpaths"
+    }
+  ],
+  "name": "computeurlmap-${uniqueId}",
+  "pathMatchers": [
+    {
+      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+      "name": "allpaths",
+      "pathRules": [
+        {
+          "paths": [
+            "/home"
+          ],
+          "routeAction": {
+            "corsPolicy": {
+              "allowCredentials": true,
+              "allowHeaders": [
+                "Allowed content"
+              ],
+              "allowMethods": [
+                "GET"
+              ],
+              "allowOrigins": [
+                "Allowed origin"
+              ],
+              "exposeHeaders": [
+                "Exposed header"
+              ],
+              "maxAge": 30
+            },
+            "faultInjectionPolicy": {
+              "abort": {
+                "httpStatus": 234,
+                "percentage": 5.6
+              },
+              "delay": {
+                "fixedDelay": {
+                  "nanos": 50000,
+                  "seconds": "0"
+                },
+                "percentage": 7.8
+              }
+            },
+            "requestMirrorPolicy": {
+              "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+            },
+            "retryPolicy": {
+              "numRetries": 4,
+              "perTryTimeout": {
+                "seconds": "30"
+              },
+              "retryConditions": [
+                "5xx",
+                "deadline-exceeded"
+              ]
+            },
+            "timeout": {
+              "nanos": 750000000,
+              "seconds": "20"
+            },
+            "urlRewrite": {
+              "hostRewrite": "A replacement header",
+              "pathPrefixRewrite": "A replacement path"
+            },
+            "weightedBackendServices": [
+              {
+                "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+                "headerAction": {
+                  "requestHeadersToAdd": [
+                    {
+                      "headerName": "AddMe",
+                      "headerValue": "MyValue",
+                      "replace": true
+                    }
+                  ],
+                  "requestHeadersToRemove": [
+                    "RemoveMe"
+                  ],
+                  "responseHeadersToAdd": [
+                    {
+                      "headerName": "AddMe",
+                      "headerValue": "MyValue"
+                    }
+                  ],
+                  "responseHeadersToRemove": [
+                    "RemoveMe"
+                  ]
+                },
+                "weight": 400
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "tests": [
+    {
+      "host": "hi.com",
+      "path": "/home",
+      "service": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/computeurlmap-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "defaultService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+  "description": "updated regional URLMap",
+  "hostRules": [
+    {
+      "hosts": [
+        "mysite.com"
+      ],
+      "pathMatcher": "allpaths"
+    },
+    {
+      "hosts": [
+        "mysite.com"
+      ],
+      "pathMatcher": "allpaths"
+    }
+  ],
+  "id": "000000000000000000000",
+  "kind": "compute#urlMap",
+  "name": "computeurlmap-${uniqueId}",
+  "pathMatchers": [
+    {
+      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+      "name": "allpaths",
+      "pathRules": [
+        {
+          "paths": [
+            "/home"
+          ],
+          "routeAction": {
+            "corsPolicy": {
+              "allowCredentials": true,
+              "allowHeaders": [
+                "Allowed content"
+              ],
+              "allowMethods": [
+                "GET"
+              ],
+              "allowOrigins": [
+                "Allowed origin"
+              ],
+              "exposeHeaders": [
+                "Exposed header"
+              ],
+              "maxAge": 30
+            },
+            "faultInjectionPolicy": {
+              "abort": {
+                "httpStatus": 234,
+                "percentage": 5.6
+              },
+              "delay": {
+                "fixedDelay": {
+                  "nanos": 50000,
+                  "seconds": "0"
+                },
+                "percentage": 7.8
+              }
+            },
+            "requestMirrorPolicy": {
+              "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+            },
+            "retryPolicy": {
+              "numRetries": 4,
+              "perTryTimeout": {
+                "seconds": "30"
+              },
+              "retryConditions": [
+                "5xx",
+                "deadline-exceeded"
+              ]
+            },
+            "timeout": {
+              "nanos": 750000000,
+              "seconds": "20"
+            },
+            "urlRewrite": {
+              "hostRewrite": "A replacement header",
+              "pathPrefixRewrite": "A replacement path"
+            },
+            "weightedBackendServices": [
+              {
+                "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+                "headerAction": {
+                  "requestHeadersToAdd": [
+                    {
+                      "headerName": "AddMe",
+                      "headerValue": "MyValue",
+                      "replace": true
+                    }
+                  ],
+                  "requestHeadersToRemove": [
+                    "RemoveMe"
+                  ],
+                  "responseHeadersToAdd": [
+                    {
+                      "headerName": "AddMe",
+                      "headerValue": "MyValue"
+                    }
+                  ],
+                  "responseHeadersToRemove": [
+                    "RemoveMe"
+                  ]
+                },
+                "weight": 400
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "defaultService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+      "name": "allpaths",
+      "pathRules": [
+        {
+          "paths": [
+            "/home"
+          ],
+          "routeAction": {
+            "corsPolicy": {
+              "allowCredentials": true,
+              "allowHeaders": [
+                "Allowed content"
+              ],
+              "allowMethods": [
+                "GET"
+              ],
+              "allowOrigins": [
+                "Allowed origin"
+              ],
+              "exposeHeaders": [
+                "Exposed header"
+              ],
+              "maxAge": 30
+            },
+            "faultInjectionPolicy": {
+              "abort": {
+                "httpStatus": 234,
+                "percentage": 5.6
+              },
+              "delay": {
+                "fixedDelay": {
+                  "nanos": 50000,
+                  "seconds": "0"
+                },
+                "percentage": 7.8
+              }
+            },
+            "requestMirrorPolicy": {
+              "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+            },
+            "retryPolicy": {
+              "numRetries": 4,
+              "perTryTimeout": {
+                "seconds": "30"
+              },
+              "retryConditions": [
+                "5xx",
+                "deadline-exceeded"
+              ]
+            },
+            "timeout": {
+              "nanos": 750000000,
+              "seconds": "20"
+            },
+            "urlRewrite": {
+              "hostRewrite": "A replacement header",
+              "pathPrefixRewrite": "A replacement path"
+            },
+            "weightedBackendServices": [
+              {
+                "backendService": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+                "headerAction": {
+                  "requestHeadersToAdd": [
+                    {
+                      "headerName": "AddMe",
+                      "headerValue": "MyValue",
+                      "replace": true
+                    }
+                  ],
+                  "requestHeadersToRemove": [
+                    "RemoveMe"
+                  ],
+                  "responseHeadersToAdd": [
+                    {
+                      "headerName": "AddMe",
+                      "headerValue": "MyValue"
+                    }
+                  ],
+                  "responseHeadersToRemove": [
+                    "RemoveMe"
+                  ]
+                },
+                "weight": 400
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/computeurlmap-${uniqueId}",
+  "tests": [
+    {
+      "host": "hi.com",
+      "path": "/home",
+      "service": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+    },
+    {
+      "host": "hi.com",
+      "path": "/home",
+      "service": "projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}"
+    }
+  ]
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/computeurlmap-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "connectionDraining": {
+    "drainingTimeoutSec": 0
+  },
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "healthChecks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/computehealthcheck-${uniqueId}"
+  ],
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#backendService",
+  "loadBalancingScheme": "INTERNAL_MANAGED",
+  "name": "computebackendservice-${uniqueId}",
+  "protocol": "HTTP",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}",
+  "timeoutSec": 10
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/computebackendservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/computehealthcheck-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "checkIntervalSec": 10,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "healthyThreshold": 2,
+  "httpHealthCheck": {
+    "port": 80,
+    "proxyHeader": "NONE",
+    "requestPath": "/"
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#healthCheck",
+  "name": "computehealthcheck-${uniqueId}",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/computehealthcheck-${uniqueId}",
+  "timeoutSec": 5,
+  "type": "HTTP",
+  "unhealthyThreshold": 2
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/healthChecks/computehealthcheck-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}

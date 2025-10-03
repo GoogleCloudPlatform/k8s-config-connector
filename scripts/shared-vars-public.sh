@@ -40,7 +40,10 @@ SUPPORTED_SERVICES=(
   apikeys.googleapis.com
   appengine.googleapis.com
   artifactregistry.googleapis.com
+  backupdr.googleapis.com
   bigquery.googleapis.com
+  bigqueryconnection.googleapis.com
+  bigquerydatatransfer.googleapis.com
   bigtableadmin.googleapis.com
   billingbudgets.googleapis.com
   binaryauthorization.googleapis.com
@@ -52,6 +55,7 @@ SUPPORTED_SERVICES=(
   cloudfunctions.googleapis.com
   cloudkms.googleapis.com
   cloudresourcemanager.googleapis.com
+  cloudquotas.googleapis.com
   cloudscheduler.googleapis.com
   compute.googleapis.com
   connectgateway.googleapis.com
@@ -61,46 +65,114 @@ SUPPORTED_SERVICES=(
   dataflow.googleapis.com
   datafusion.googleapis.com
   dataproc.googleapis.com
+  datastream.googleapis.com
+  discoveryengine.googleapis.com
   dlp.googleapis.com
   dns.googleapis.com
   edgenetwork.googleapis.com
   edgecontainer.googleapis.com
   eventarc.googleapis.com
   file.googleapis.com
+  firestore.googleapis.com
+  gkebackup.googleapis.com
   gkeconnect.googleapis.com
   gkehub.googleapis.com
   gkemulticloud.googleapis.com
   iap.googleapis.com
   iam.googleapis.com
   identitytoolkit.googleapis.com
+  ids.googleapis.com
   krmapihosting.googleapis.com
   logging.googleapis.com
+  managedkafka.googleapis.com
   monitoring.googleapis.com
   memcache.googleapis.com
   networkconnectivity.googleapis.com
   networksecurity.googleapis.com
   networkservices.googleapis.com
+  notebooks.googleapis.com
   osconfig.googleapis.com
   opsconfigmonitoring.googleapis.com
   privateca.googleapis.com
+  privilegedaccessmanager.googleapis.com
   pubsub.googleapis.com
   pubsublite.googleapis.com
   recaptchaenterprise.googleapis.com
   redis.googleapis.com
   run.googleapis.com
   secretmanager.googleapis.com
+  securesourcemanager.googleapis.com
   servicedirectory.googleapis.com
   servicenetworking.googleapis.com
   serviceusage.googleapis.com
   sourcerepo.googleapis.com
   stackdriver.googleapis.com
   spanner.googleapis.com
+  speech.googleapis.com
   sqladmin.googleapis.com
   storagetransfer.googleapis.com
   vpcaccess.googleapis.com
+  vmwareengine.googleapis.com
+  workstations.googleapis.com
+  storage.googleapis.com
 )
 
 # Regex used to match long running tests cases (10m+ runtime). Any new
 # long-running tests should be added to this regex in alphabetical order.
-LONG_RUNNING_CRUD_TESTS_REGEX="basicalloydbbackup|basicalloydbinstance|basicalloydbsecondarycluster|basicalloydbsecondaryinstance|cidrconnector|configcontrollerinstance|containercluster|containernodepool|databasealloydbuser|datafusioninstance|edgecontainercluster|filestorebackup|filestoreinstance|fullalloydbbackup|fullalloydbcluster|gkehubmembership|iamalloydbuser|readalloydbinstance|restorebackupalloydbcluster|zonalalloydbinstance|memcacheinstance|redisinstance|removedefaultnodepool|subnetconnector|vertexaidatasetencryptionkey|vertexaiendpointencryptionkey"
+LONG_RUNNING_CRUD_TESTS_REGEX="basicalloydbbackup|\
+basicalloydbinstance|\
+basicalloydbsecondarycluster|\
+basicalloydbsecondaryinstance|\
+cidrconnector|\
+cloudidsendpoint|\
+configcontrollerinstance|\
+containercluster|\
+containernodepool|\
+databasealloydbuser|\
+datafusioninstance|\
+filestorebackup|\
+filestoreinstance|\
+fullalloydbbackup|\
+fullalloydbcluster|\
+gkehubfeaturemembership|\
+gkehubmembership|\
+iamalloydbuser|\
+memcacheinstance|\
+postgresinstance|\
+readalloydbinstance|\
+redisinstance|\
+removedefaultnodepool|\
+restorebackupalloydbcluster|\
+securesourcemanagerinstancebasic|\
+securesourcemanagerinstancecmek|\
+securesourcemanagerrepositorybasic|\
+securesourcemanagerrepositoryfull|\
+sqlinstanceencryptionkey|\
+storageanywherecache-base|\
+storageanywherecache-full|\
+subnetconnector|\
+vertexaidatasetencryptionkey|\
+vertexaiendpointencryptionkey|\
+vmwareengineexternalaccessrule|\
+vmwareengineexternaladdress|\
+vmwareengineprivatecloud|\
+zonalalloydbinstance"
 
+# Regex used to match long running samples tests cases (10m+ runtime). Any new
+# long-running samples tests should be added to this regex in alphabetical order.
+LONG_RUNNING_SAMPLES_TESTS_REGEX="autopilot-cluster|\
+autopilot-config-controller-instance|\
+basic-node-pool|\
+cloudidsendpoint|\
+datafusioninstance|\
+gkehubmembership|\
+managedkafkacluster-basic|\
+managedkafkacluster-cmek|\
+managedkafkatopic|\
+mysql-sql-instance|\
+private-ip-instance|\
+rediscluster|\
+securesourcemanagerinstance-cmek|\
+securesourcemanagerrepository|\
+sqlsslcert|\
+storageanywherecache"

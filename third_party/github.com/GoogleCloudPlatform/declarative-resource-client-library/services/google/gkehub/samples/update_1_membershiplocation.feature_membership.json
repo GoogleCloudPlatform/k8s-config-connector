@@ -1,0 +1,11 @@
+{
+  "project": "{{ref:gkehub.serviceusage.service.json:project}}",
+  "location": "global",
+  "feature": "projects/{{ref:mesh.feature.json:project}}/locations/{{ref:mesh.feature.json:location}}/features/{{ref:mesh.feature.json:name}}",
+  "membership": "{{ref:membershiplocation.membership.json:name}}",
+  "membershipLocation": "us-central1",
+  "mesh": {
+    "management": "MANAGEMENT_MANUAL",
+    "controlPlane": "MANUAL"
+  }
+}

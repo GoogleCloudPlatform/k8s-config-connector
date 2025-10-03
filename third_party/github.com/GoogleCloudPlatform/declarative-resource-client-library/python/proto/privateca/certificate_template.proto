@@ -1,0 +1,152 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum PrivatecaCertificateTemplatePassthroughExtensionsKnownExtensionsEnum {
+  PrivatecaCertificateTemplatePassthroughExtensionsKnownExtensionsEnumNO_VALUE_DO_NOT_USE = 0;
+  PrivatecaCertificateTemplatePassthroughExtensionsKnownExtensionsEnumKNOWN_CERTIFICATE_EXTENSION_UNSPECIFIED = 1;
+  PrivatecaCertificateTemplatePassthroughExtensionsKnownExtensionsEnumBASE_KEY_USAGE = 2;
+  PrivatecaCertificateTemplatePassthroughExtensionsKnownExtensionsEnumEXTENDED_KEY_USAGE = 3;
+  PrivatecaCertificateTemplatePassthroughExtensionsKnownExtensionsEnumCA_OPTIONS = 4;
+  PrivatecaCertificateTemplatePassthroughExtensionsKnownExtensionsEnumPOLICY_IDS = 5;
+  PrivatecaCertificateTemplatePassthroughExtensionsKnownExtensionsEnumAIA_OCSP_SERVERS = 6;
+}
+
+message PrivatecaCertificateTemplate {
+  string name = 1;
+  PrivatecaCertificateTemplatePredefinedValues predefined_values = 2;
+  PrivatecaCertificateTemplateIdentityConstraints identity_constraints = 3;
+  PrivatecaCertificateTemplatePassthroughExtensions passthrough_extensions = 4;
+  string description = 5;
+  string create_time = 6;
+  string update_time = 7;
+  map<string, string> labels = 8;
+  string project = 9;
+  string location = 10;
+}
+
+message PrivatecaCertificateTemplatePredefinedValues {
+  PrivatecaCertificateTemplatePredefinedValuesKeyUsage key_usage = 1;
+  PrivatecaCertificateTemplatePredefinedValuesCaOptions ca_options = 2;
+  repeated PrivatecaCertificateTemplatePredefinedValuesPolicyIds policy_ids = 3;
+  repeated string aia_ocsp_servers = 4;
+  repeated PrivatecaCertificateTemplatePredefinedValuesAdditionalExtensions additional_extensions = 5;
+}
+
+message PrivatecaCertificateTemplatePredefinedValuesKeyUsage {
+  PrivatecaCertificateTemplatePredefinedValuesKeyUsageBaseKeyUsage base_key_usage = 1;
+  PrivatecaCertificateTemplatePredefinedValuesKeyUsageExtendedKeyUsage extended_key_usage = 2;
+  repeated PrivatecaCertificateTemplatePredefinedValuesKeyUsageUnknownExtendedKeyUsages unknown_extended_key_usages = 3;
+}
+
+message PrivatecaCertificateTemplatePredefinedValuesKeyUsageBaseKeyUsage {
+  bool digital_signature = 1;
+  bool content_commitment = 2;
+  bool key_encipherment = 3;
+  bool data_encipherment = 4;
+  bool key_agreement = 5;
+  bool cert_sign = 6;
+  bool crl_sign = 7;
+  bool encipher_only = 8;
+  bool decipher_only = 9;
+}
+
+message PrivatecaCertificateTemplatePredefinedValuesKeyUsageExtendedKeyUsage {
+  bool server_auth = 1;
+  bool client_auth = 2;
+  bool code_signing = 3;
+  bool email_protection = 4;
+  bool time_stamping = 5;
+  bool ocsp_signing = 6;
+}
+
+message PrivatecaCertificateTemplatePredefinedValuesKeyUsageUnknownExtendedKeyUsages {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaCertificateTemplatePredefinedValuesCaOptions {
+  bool is_ca = 1;
+  int64 max_issuer_path_length = 2;
+}
+
+message PrivatecaCertificateTemplatePredefinedValuesPolicyIds {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaCertificateTemplatePredefinedValuesAdditionalExtensions {
+  PrivatecaCertificateTemplatePredefinedValuesAdditionalExtensionsObjectId object_id = 1;
+  bool critical = 2;
+  string value = 3;
+}
+
+message PrivatecaCertificateTemplatePredefinedValuesAdditionalExtensionsObjectId {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaCertificateTemplateIdentityConstraints {
+  PrivatecaCertificateTemplateIdentityConstraintsCelExpression cel_expression = 1;
+  bool allow_subject_passthrough = 2;
+  bool allow_subject_alt_names_passthrough = 3;
+}
+
+message PrivatecaCertificateTemplateIdentityConstraintsCelExpression {
+  string expression = 1;
+  string title = 2;
+  string description = 3;
+  string location = 4;
+}
+
+message PrivatecaCertificateTemplatePassthroughExtensions {
+  repeated PrivatecaCertificateTemplatePassthroughExtensionsKnownExtensionsEnum known_extensions = 1;
+  repeated PrivatecaCertificateTemplatePassthroughExtensionsAdditionalExtensions additional_extensions = 2;
+}
+
+message PrivatecaCertificateTemplatePassthroughExtensionsAdditionalExtensions {
+  repeated int64 object_id_path = 1;
+}
+
+message ApplyPrivatecaCertificateTemplateRequest {
+  PrivatecaCertificateTemplate resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeletePrivatecaCertificateTemplateRequest {
+  string service_account_file = 1;
+  PrivatecaCertificateTemplate resource = 2;
+}
+
+message ListPrivatecaCertificateTemplateRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListPrivatecaCertificateTemplateResponse {
+  repeated PrivatecaCertificateTemplate items = 1;
+}
+
+service PrivatecaCertificateTemplateService {
+  rpc ApplyPrivatecaCertificateTemplate(ApplyPrivatecaCertificateTemplateRequest) returns (PrivatecaCertificateTemplate);
+  rpc DeletePrivatecaCertificateTemplate(DeletePrivatecaCertificateTemplateRequest) returns (google.protobuf.Empty);
+  rpc ListPrivatecaCertificateTemplate(ListPrivatecaCertificateTemplateRequest) returns (ListPrivatecaCertificateTemplateResponse);
+}

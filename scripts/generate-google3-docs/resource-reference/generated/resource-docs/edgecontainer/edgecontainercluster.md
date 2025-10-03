@@ -59,20 +59,6 @@
 ## Custom Resource Definition Properties
 
 
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
-</tbody>
-</table>
-
 
 ### Spec
 #### Schema
@@ -1070,7 +1056,7 @@ if the cluster does not have any worker nodes.{% endverbatim %}</p>
 
 ## Sample YAML(s)
 
-### Edgecontainercluster Local Control Plane
+### EdgeContainerCluster Local Control Plane
 ```yaml
 # Copyright 2023 Google LLC
 #
@@ -1120,7 +1106,7 @@ spec:
     - ${EXTERNAL_LOAD_BALANCER_IPV4_CIDR?}
 ```
 
-### Edgecontainercluster Remote Control Plane
+### EdgeContainerCluster Remote Control Plane
 ```yaml
 # Copyright 2023 Google LLC
 #

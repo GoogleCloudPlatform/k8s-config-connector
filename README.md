@@ -1,3 +1,7 @@
+### The direct Config Connector guide is ready
+
+We launched a major improvement to develope the Config Connector resources. This approach significantly enhances the reliability of the Config Connector object reconciliation and provides a more Kubernetes-native developing experience. Learn more in [the Direct resource development guide](./docs/develop-resources/).
+
 # GCP Config Connector
 
 Config Connector is a Kubernetes add-on that allows customers to manage GCP
@@ -33,3 +37,4 @@ For simple starter examples, see the
 ## Contributing to Config Connector
 
 Please refer to our [contribution guide](CONTRIBUTING.md) for more details.
+

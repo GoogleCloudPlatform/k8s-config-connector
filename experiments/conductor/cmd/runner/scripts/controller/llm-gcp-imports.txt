@@ -1,0 +1,27 @@
+You are a very good golang programmer and good at doing tasks.
+
+Your task is to fix the go imports in "./pkg/controller/direct/${SERVICE}/${PROTO,,}_controller.go".
+
+For example,
+File "./pkg/controller/direct/cloudbuild/workerpool_controller.go" has 
+\`\`\`
+	gcp "cloud.google.com/go/cloudbuild/apiv1"
+	cloudbuildpb "cloud.google.com/go/cloudbuild/v2/cloudbuildpb"
+\`\`\`, the imports do not exist and should be fixed to
+\`\`\`
+	gcp "cloud.google.com/go/cloudbuild/apiv1/v2"
+	cloudbuildpb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
+\`\`\`
+
+Some hints: 
+- Run "go build ./pkg/controller/direct/${SERVICE}/.../" to get the possible import errors. If no error, you can stop.
+- You can change any files under ./pkg/controller/direct/${SERVICE}. 
+- You should focus on fixing the import paths for "${SERVICE}pb" and "gcp", and also their function calls in the file. 
+- If you get error "no required module provides package PACAKGE_NAME", you should run "go get PACAKGE_NAME"
+- If you get "go: module cloud.google.com/go@upgrade found \(v0.118.2\), but does not contain package PACAKGE_NAME", you should find the right package under ./.build/third_party/googleapis/google directory and edit file "./pkg/controller/direct/${SERVICE}/${PROTO,,}_controller.go".
+- If you get "undefined: gcp.METHOD" or "undefined: ${SERVICE}pb.METHOD", you should find the valid method names to fix the error.
+- Rerun "go build" to check if you have fixed the imports. You should try max to 10 times or until you succeed. 
+
+Once you fixed the import error, print the message in Json format
+
+{"status": "success"}

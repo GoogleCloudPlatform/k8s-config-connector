@@ -1,0 +1,226 @@
+GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/CreateEntryType
+
+{
+  "entryType": {
+    "description": "Initial description"
+  },
+  "entryTypeId": "dataplexentrytype-minimal-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.EntryType",
+    "authorization": {},
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Initial description",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "authorization": {},
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial description",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/UpdateEntryType
+
+{
+  "entryType": {
+    "description": "Updated description",
+    "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}"
+  },
+  "updateMask": "description"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.EntryType",
+    "authorization": {},
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated description",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "authorization": {},
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/GetEntryType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "authorization": {},
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.dataplex.v1.CatalogService/DeleteEntryType
+
+{
+  "name": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.dataplex.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

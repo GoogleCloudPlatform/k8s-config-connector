@@ -1,0 +1,10 @@
+{
+  "name": "{{deployment}}",
+  "project": "{{project}}",
+  "instanceFilter": {
+    "zones": ["{{zone}}"]
+  },
+  "oneTimeSchedule": {
+    "executeTime": "2140-10-02T15:01:24Z"
+  }
+}

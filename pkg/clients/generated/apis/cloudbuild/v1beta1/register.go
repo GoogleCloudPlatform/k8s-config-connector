@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(CloudBuildTrigger{}).Name(),
 	}
 
+	CloudBuildWorkerPoolGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(CloudBuildWorkerPool{}).Name(),
+	}
+
 	cloudbuildAPIVersion = SchemeGroupVersion.String()
 )

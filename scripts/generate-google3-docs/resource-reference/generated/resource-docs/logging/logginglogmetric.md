@@ -7,6 +7,15 @@
 
 
 
+Caution: After
+[v1.118.1](https://github.com/GoogleCloudPlatform/k8s-config-connector/releases/tag/v1.118.1),
+`cnrm.cloud.google.com/state-into-spec` annotation is no longer used during
+LoggingLogMetric resource reconciliation, and [externally-managed
+fields](/config-connector/docs/concepts/managing-fields-externally) in the
+existing LoggingLogMetric resources are considered managed, i.e. the Kubernetes
+object is the source of truth for the underlying {{gcp_name_short}}
+resource.
+
 <table>
 <thead>
 <tr>
@@ -63,20 +72,6 @@
 
 ## Custom Resource Definition Properties
 
-
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
-</tbody>
-</table>
 
 
 ### Spec
@@ -300,12 +295,7 @@ valueExtractor: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The reference to the Log Bucket that owns
-the Log Metric. Only Log Buckets in projects are supported. The
-bucket has to be in the same project as the metric. For
-example:projects/my-project/locations/global/buckets/my-bucket
-If empty, then the Log Metric is considered a non-Bucket Log Metric.
-Only `external` field is supported to configure the reference.{% endverbatim %}</p>
+            <p>{% verbatim %}The reference to the Log Bucket that owns the Log Metric. Only Log Buckets in projects are supported. The bucket has to be in the same project as the metric. For example:projects/my-project/locations/global/buckets/my-bucket If empty, then the Log Metric is considered a non-Bucket Log Metric. Only `external` field is supported to configure the reference for now.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -505,7 +495,7 @@ Only `external` field is supported to configure the reference.{% endverbatim %}<
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The external name of the referenced resource{% endverbatim %}</p>
+            <p>{% verbatim %}The `projectID` field of a project, when not managed by Config Connector.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -515,7 +505,7 @@ Only `external` field is supported to configure the reference.{% endverbatim %}<
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Kind of the referent.{% endverbatim %}</p>
+            <p>{% verbatim %}The kind of the Project resource; optional but must be `Project` if provided.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -525,7 +515,7 @@ Only `external` field is supported to configure the reference.{% endverbatim %}<
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -535,7 +525,7 @@ Only `external` field is supported to configure the reference.{% endverbatim %}<
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` field of a `Project` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -594,8 +584,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observations of the
-LoggingLogMetric's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the LoggingLogMetric's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -623,8 +612,7 @@ LoggingLogMetric's current state.{% endverbatim %}</p>
         <td><code>conditions[].reason</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last
-transition.{% endverbatim %}</p>
+            <p>{% verbatim %}Unique, one-word, CamelCase reason for the condition's last transition.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

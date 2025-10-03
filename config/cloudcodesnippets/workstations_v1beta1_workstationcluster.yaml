@@ -1,0 +1,15 @@
+label: Config Connector WorkstationCluster
+markdownDescription: Creates yaml for a WorkstationCluster resource
+insertText: |
+  apiVersion: workstations.cnrm.cloud.google.com/v1beta1
+  kind: WorkstationCluster
+  metadata:
+    name: \${1:workstationcluster-name}
+  spec:
+    projectRef:
+      external: \${2:projects/[PROJECT_NUMBER1]}
+    location: \${3:us-west1}
+    networkRef:
+      name: \${4:computenetwork-dep}
+    subnetworkRef:
+      name: \${5:computesubnetwork-dep}

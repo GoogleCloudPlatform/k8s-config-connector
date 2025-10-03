@@ -17,16 +17,22 @@ package supportedgvks_test
 import (
 	"testing"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+
+	// Ensure built-in types are registered.
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 func TestAllIncludesIAMResource(t *testing.T) {
-	allResources := supportedgvks.All(testservicemappingloader.New(t), dclmetadata.New())
+	allResources, err := supportedgvks.All(testservicemappingloader.New(t), dclmetadata.New())
+	if err != nil {
+		t.Fatalf("error loading all supported GVKs: %v", err)
+	}
 	iamResources := []schema.GroupVersionKind{
 		v1beta1.IAMAuditConfigGVK,
 		v1beta1.IAMPolicyGVK,

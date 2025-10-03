@@ -1,0 +1,11 @@
+## TODO: skip this test
+## gcloud behaviour depends on version
+## The presubmits test gcloud version has inconsistent behaviour with the number of get requests
+## This is causing the test to fail. 
+## Gemma tried fixing extra GET requests in: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4229
+## But sometimes the extra GET is not called by gcloud causing http log diff
+## We dont have a good solution for gcloud calling the extra GET requests
+## So we are skipping the test for now
+
+- exec: gcloud eventarc google-channels describe --location=us-central1
+- exec: gcloud eventarc google-channels update --location=us-central1 --clear-crypto-key

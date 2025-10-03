@@ -1,0 +1,15 @@
+{
+  "organization": "{{org_id}}",
+  "location": "{{region}}",
+  "displayName": "{{display}}",
+  "complianceRegime": "FEDRAMP_MODERATE",
+  "billingAccount": "billingAccounts/{{billing_account}}",
+  "labels": {
+    "label-one": "value-one"
+  },
+  "resourceSettings": [
+    {
+      "resourceType": "CONSUMER_PROJECT"
+    }
+  ]
+}

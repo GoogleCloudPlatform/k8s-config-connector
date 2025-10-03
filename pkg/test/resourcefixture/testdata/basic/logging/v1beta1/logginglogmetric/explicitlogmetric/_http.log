@@ -1,9 +1,7 @@
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -23,59 +21,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
+POST https://logging.googleapis.com/v2/projects/${projectId}/metrics?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-404 Not Found
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Metric logginglogmetric-${uniqueId} does not exist.",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-404 Not Found
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Metric logginglogmetric-${uniqueId} does not exist.",
-    "status": "NOT_FOUND"
-  }
-}
-
----
-
-POST https://logging.googleapis.com/v2/projects/${projectId}/metrics?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "bucketOptions": {
@@ -96,7 +44,6 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -121,6 +68,7 @@ X-Xss-Protection: 0
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
@@ -130,12 +78,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -160,6 +106,7 @@ X-Xss-Protection: 0
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
@@ -169,12 +116,31 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
+PUT https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "bucketOptions": {
+    "explicitBuckets": {
+      "bounds": [
+        1.5,
+        4.5
+      ]
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "valueType": "DISTRIBUTION"
+  },
+  "name": "logginglogmetric-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "valueExtractor": "EXTRACT(jsonPayload.response)"
+}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -199,6 +165,7 @@ X-Xss-Protection: 0
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
@@ -208,12 +175,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -238,6 +203,7 @@ X-Xss-Protection: 0
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
@@ -247,243 +213,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
+PUT https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "explicitBuckets": {
-      "bounds": [
-        1.5,
-        4.5
-      ]
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "metricDescriptor": {
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.response)"
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "explicitBuckets": {
-      "bounds": [
-        1.5,
-        4.5
-      ]
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "metricDescriptor": {
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.response)"
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "explicitBuckets": {
-      "bounds": [
-        1.5,
-        4.5
-      ]
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "metricDescriptor": {
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.response)"
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "explicitBuckets": {
-      "bounds": [
-        1.5,
-        4.5
-      ]
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "metricDescriptor": {
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.response)"
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "explicitBuckets": {
-      "bounds": [
-        1.5,
-        4.5
-      ]
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "metricDescriptor": {
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.response)"
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "explicitBuckets": {
-      "bounds": [
-        1.5,
-        4.5
-      ]
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
-  "metricDescriptor": {
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.response)"
-}
-
----
-
-PUT https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "bucketOptions": {
@@ -494,17 +226,18 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
       ]
     }
   },
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003e=ERROR",
   "metricDescriptor": {
-    "labels": [],
     "metricKind": "DELTA",
     "valueType": "DISTRIBUTION"
   },
+  "name": "logginglogmetric-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
   "valueExtractor": "EXTRACT(jsonPayload.response)"
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -529,6 +262,7 @@ X-Xss-Protection: 0
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
@@ -538,12 +272,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -568,6 +300,7 @@ X-Xss-Protection: 0
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
     "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
     "valueType": "DISTRIBUTION"
   },
   "name": "logginglogmetric-${uniqueId}",
@@ -577,90 +310,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+DELETE https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "explicitBuckets": {
-      "bounds": [
-        2.5,
-        5
-      ]
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "filter": "resource.type=gae_app AND severity\u003e=ERROR",
-  "metricDescriptor": {
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.response)"
-}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bucketOptions": {
-    "explicitBuckets": {
-      "bounds": [
-        2.5,
-        5
-      ]
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "filter": "resource.type=gae_app AND severity\u003e=ERROR",
-  "metricDescriptor": {
-    "metricKind": "DELTA",
-    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
-    "valueType": "DISTRIBUTION"
-  },
-  "name": "logginglogmetric-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "valueExtractor": "EXTRACT(jsonPayload.response)"
-}
-
----
-
-DELETE https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -671,28 +324,3 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {}
-
----
-
-GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
-
-404 Not Found
-Cache-Control: private
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Metric logginglogmetric-${uniqueId} does not exist",
-    "status": "NOT_FOUND"
-  }
-}

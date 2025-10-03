@@ -102,7 +102,7 @@ func TestToTypeConfig(t *testing.T) {
 			res, err := dcl.ToTypeConfig(tc.dclRefExtensionElem, smLoader)
 			if tc.hasError {
 				if err == nil {
-					t.Fatalf("got nil, but expect to get an error on converting to TypeConifg")
+					t.Fatalf("got nil, but expect to get an error on converting to TypeConfig")
 				}
 				return
 			}

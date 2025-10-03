@@ -1,0 +1,4 @@
+{
+  "parent": "tagKeys/{{ref:first.cloudresourcemanager.tag_key.json:name}}",
+  "shortName": "{{tag_value1}}"
+}

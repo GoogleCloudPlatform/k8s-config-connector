@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+if [[ -z "${PARENT_FOLDER_ID:-}" ]]; then
+  echo "PARENT_FOLDER_ID is not set; cannot create project"
+  exit 1
+fi
+
+if [[ -z "${BILLING_ACCOUNT_ID:-}" ]]; then
+  echo "BILLING_ACCOUNT_ID is not set; will not create project"
+  exit 1
+fi
+
+# If we have a ServiceAccountKey provided to us in the GOOGLE_APPLICATION_CREDENTIALS,
+# tell gcloud to use it
+if [[ -n "${GOOGLE_APPLICATION_CREDENTIALS:-}" ]]; then
+  echo "Activating service-account in gcloud (GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS})"
+  gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+fi
+
+# Create a project for this test run (with a hopefully unique name)
+GCP_PROJECT_ID=kcctest-$(date +%Y%m%d)-$(openssl rand -hex 4)
+if [[ -n "${PARENT_FOLDER_ID:-}" ]]; then
+  echo "Creating test project ${GCP_PROJECT_ID} in folder ${PARENT_FOLDER_ID}"
+  gcloud projects create "${GCP_PROJECT_ID}" --labels="cnrm-test=true" --folder "${PARENT_FOLDER_ID}"
+fi
+
+# Associate the project to our billing account
+echo "Linking project ${GCP_PROJECT_ID} to billing account ${BILLING_ACCOUNT_ID}"
+gcloud beta billing projects link --billing-account=${BILLING_ACCOUNT_ID} "${GCP_PROJECT_ID}"
+
+# Tell gcloud to use this project by default
+echo "Setting default project to ${GCP_PROJECT_ID}"
+gcloud config set project "${GCP_PROJECT_ID}"
+
+gcloud services enable \
+  apigee.googleapis.com \
+  bigquery.googleapis.com \
+  cloudbuild.googleapis.com \
+  cloudkms.googleapis.com \
+  compute.googleapis.com \
+  dataflow.googleapis.com \
+  discoveryengine.googleapis.com \
+  firestore.googleapis.com \
+  logging.googleapis.com \
+  memcache.googleapis.com \
+  monitoring.googleapis.com \
+  redis.googleapis.com \
+  secretmanager.googleapis.com \
+  servicenetworking.googleapis.com \
+  serviceusage.googleapis.com \
+  sourcerepo.googleapis.com \
+  sqladmin.googleapis.com \
+  vpcaccess.googleapis.com \
+  workstations.googleapis.com
+
+# Some APIs are behind an allowlist, so we only enable them if we are specifically testing them.
+if [[ "${ONLY_TEST_APIGROUPS:-}" == "securesourcemanager.cnrm.cloud.google.com" ]]; then
+  gcloud services enable securesourcemanager.googleapis.com
+fi

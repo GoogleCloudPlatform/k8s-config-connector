@@ -31,7 +31,8 @@ import (
 )
 
 var (
-	ulog = ctrl.Log.WithName("UpgradeChecker")
+	ulog       = ctrl.Log.WithName("UpgradeChecker")
+	devVersion = semver.MustParse("0.0.0-dev")
 )
 
 // NewUpgradeChecker provides an implementation of declarative.Preflight that
@@ -66,16 +67,16 @@ func (u *UpgradeChecker) Preflight(ctx context.Context, o declarative.Declarativ
 		return nil
 	}
 
-	channel, err := u.repo.LoadChannel(ctx, k8s.StableChannel)
+	channel, err := u.repo.LoadChannel(ctx, manifest.StableChannel)
 	if err != nil {
-		return fmt.Errorf("preflight check failed loading the channel %v: %w", k8s.StableChannel, err)
+		return fmt.Errorf("preflight check failed loading the channel %v: %w", manifest.StableChannel, err)
 	}
-	version, err := channel.Latest(ctx, k8s.ConfigConnectorComponentName)
+	version, err := channel.Latest(ctx, manifest.ConfigConnectorComponentName)
 	if err != nil {
 		return fmt.Errorf("preflight check failed resolving the version to deploy: %w", err)
 	}
 	if version == nil {
-		return fmt.Errorf("could not find the latest version in channel %v", k8s.StableChannel)
+		return fmt.Errorf("could not find the latest version in channel %v", manifest.StableChannel)
 	}
 	versionToDeployRaw := version.Version
 	currentVersion, err := semver.ParseTolerant(currentVersionRaw)
@@ -95,6 +96,10 @@ func (u *UpgradeChecker) Preflight(ctx context.Context, o declarative.Declarativ
 }
 
 func compareMajorOnly(v, w semver.Version) int {
+	if v.Equals(devVersion) {
+		// If we are using a dev controller ignore semver drift.
+		return 0
+	}
 	if v.Major != w.Major {
 		if v.Major > w.Major {
 			return 1

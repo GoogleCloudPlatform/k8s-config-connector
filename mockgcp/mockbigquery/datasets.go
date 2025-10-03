@@ -31,6 +31,8 @@ import (
 	"github.com/golang/protobuf/ptypes/empty"
 )
 
+var defaultMaxTimeTravelHours = int64(168)
+
 type datasetsServer struct {
 	*MockService
 	pb.UnimplementedDatasetsServerServer
@@ -50,6 +52,9 @@ func (s *datasetsServer) GetDataset(ctx context.Context, req *pb.GetDatasetReque
 			return nil, status.Errorf(codes.NotFound, "Not found: Dataset %s:%s", name.Project.ID, name.DatasetID)
 		}
 		return nil, err
+	}
+	if obj.MaxTimeTravelHours == nil {
+		obj.MaxTimeTravelHours = &defaultMaxTimeTravelHours
 	}
 
 	return obj, nil
@@ -168,6 +173,43 @@ func sortAccess(obj *pb.Dataset) {
 }
 
 func (s *datasetsServer) UpdateDataset(ctx context.Context, req *pb.UpdateDatasetRequest) (*pb.Dataset, error) {
+	name, err := s.buildDatasetName(req.GetProjectId(), req.GetDatasetId())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	existing := &pb.Dataset{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		return nil, err
+	}
+
+	now := time.Now()
+
+	updated := req.GetDataset()
+	updated.DatasetReference = existing.DatasetReference
+
+	updated.CreationTime = existing.CreationTime
+	updated.LastModifiedTime = PtrTo(now.UnixMilli())
+	updated.Id = PtrTo(existing.GetDatasetReference().GetProjectId() + ":" + existing.GetDatasetReference().GetDatasetId())
+	updated.Kind = PtrTo("bigquery#dataset")
+	updated.Location = existing.Location
+	updated.Type = existing.Type
+	updated.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
+
+	sortAccess(updated)
+
+	updated.Etag = PtrTo(computeEtag(updated))
+
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+
+	return updated, err
+}
+
+func (s *datasetsServer) PatchDataset(ctx context.Context, req *pb.PatchDatasetRequest) (*pb.Dataset, error) {
 	name, err := s.buildDatasetName(req.GetProjectId(), req.GetDatasetId())
 	if err != nil {
 		return nil, err

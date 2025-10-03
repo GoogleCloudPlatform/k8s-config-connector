@@ -1,0 +1,146 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum BigqueryAlphaRoutineRoutineTypeEnum {
+  BigqueryAlphaRoutineRoutineTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryAlphaRoutineRoutineTypeEnumROUTINE_TYPE_UNSPECIFIED = 1;
+  BigqueryAlphaRoutineRoutineTypeEnumSCALAR_FUNCTION = 2;
+  BigqueryAlphaRoutineRoutineTypeEnumPROCEDURE = 3;
+}
+
+enum BigqueryAlphaRoutineLanguageEnum {
+  BigqueryAlphaRoutineLanguageEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryAlphaRoutineLanguageEnumLANGUAGE_UNSPECIFIED = 1;
+  BigqueryAlphaRoutineLanguageEnumSQL = 2;
+  BigqueryAlphaRoutineLanguageEnumJAVASCRIPT = 3;
+}
+
+enum BigqueryAlphaRoutineArgumentsArgumentKindEnum {
+  BigqueryAlphaRoutineArgumentsArgumentKindEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryAlphaRoutineArgumentsArgumentKindEnumARGUMENT_KIND_UNSPECIFIED = 1;
+  BigqueryAlphaRoutineArgumentsArgumentKindEnumFIXED_TYPE = 2;
+  BigqueryAlphaRoutineArgumentsArgumentKindEnumANY_TYPE = 3;
+}
+
+enum BigqueryAlphaRoutineArgumentsModeEnum {
+  BigqueryAlphaRoutineArgumentsModeEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryAlphaRoutineArgumentsModeEnumMODE_UNSPECIFIED = 1;
+  BigqueryAlphaRoutineArgumentsModeEnumIN = 2;
+  BigqueryAlphaRoutineArgumentsModeEnumOUT = 3;
+  BigqueryAlphaRoutineArgumentsModeEnumINOUT = 4;
+}
+
+enum BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnum {
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnumTYPE_KIND_UNSPECIFIED = 1;
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnumINT64 = 2;
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnumBOOL = 3;
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnumFLOAT64 = 4;
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnumSTRING = 5;
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnumBYTES = 6;
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnumTIMESTAMP = 7;
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnumDATE = 8;
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnumTIME = 9;
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnumDATETIME = 10;
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnumINTERVAL = 11;
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnumGEOGRAPHY = 12;
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnumNUMERIC = 13;
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnumBIGNUMERIC = 14;
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnumJSON = 15;
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnumARRAY = 16;
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnumSTRUCT = 17;
+}
+
+enum BigqueryAlphaRoutineDeterminismLevelEnum {
+  BigqueryAlphaRoutineDeterminismLevelEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryAlphaRoutineDeterminismLevelEnumDETERMINISM_LEVEL_UNSPECIFIED = 1;
+  BigqueryAlphaRoutineDeterminismLevelEnumDETERMINISTIC = 2;
+  BigqueryAlphaRoutineDeterminismLevelEnumNOT_DETERMINISTIC = 3;
+}
+
+message BigqueryAlphaRoutine {
+  string etag = 1;
+  string name = 2;
+  string project = 3;
+  string dataset = 4;
+  BigqueryAlphaRoutineRoutineTypeEnum routine_type = 5;
+  int64 creation_time = 6;
+  int64 last_modified_time = 7;
+  BigqueryAlphaRoutineLanguageEnum language = 8;
+  repeated BigqueryAlphaRoutineArguments arguments = 9;
+  BigqueryAlphaRoutineArgumentsDataType return_type = 10;
+  repeated string imported_libraries = 11;
+  string definition_body = 12;
+  string description = 13;
+  BigqueryAlphaRoutineDeterminismLevelEnum determinism_level = 14;
+  bool strict_mode = 15;
+}
+
+message BigqueryAlphaRoutineArguments {
+  string name = 1;
+  BigqueryAlphaRoutineArgumentsArgumentKindEnum argument_kind = 2;
+  BigqueryAlphaRoutineArgumentsModeEnum mode = 3;
+  BigqueryAlphaRoutineArgumentsDataType data_type = 4;
+}
+
+message BigqueryAlphaRoutineArgumentsDataType {
+  BigqueryAlphaRoutineArgumentsDataTypeTypeKindEnum type_kind = 1;
+  BigqueryAlphaRoutineArgumentsDataType array_element_type = 2;
+  BigqueryAlphaRoutineArgumentsDataTypeStructType struct_type = 3;
+}
+
+message BigqueryAlphaRoutineArgumentsDataTypeStructType {
+  repeated BigqueryAlphaRoutineArgumentsDataTypeStructTypeFields fields = 1;
+}
+
+message BigqueryAlphaRoutineArgumentsDataTypeStructTypeFields {
+  string name = 1;
+  BigqueryAlphaRoutineArgumentsDataType type = 2;
+}
+
+message ApplyBigqueryAlphaRoutineRequest {
+  BigqueryAlphaRoutine resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteBigqueryAlphaRoutineRequest {
+  string service_account_file = 1;
+  BigqueryAlphaRoutine resource = 2;
+}
+
+message ListBigqueryAlphaRoutineRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Dataset = 3;
+}
+
+message ListBigqueryAlphaRoutineResponse {
+  repeated BigqueryAlphaRoutine items = 1;
+}
+
+service BigqueryAlphaRoutineService {
+  rpc ApplyBigqueryAlphaRoutine(ApplyBigqueryAlphaRoutineRequest) returns (BigqueryAlphaRoutine);
+  rpc DeleteBigqueryAlphaRoutine(DeleteBigqueryAlphaRoutineRequest) returns (google.protobuf.Empty);
+  rpc ListBigqueryAlphaRoutine(ListBigqueryAlphaRoutineRequest) returns (ListBigqueryAlphaRoutineResponse);
+}

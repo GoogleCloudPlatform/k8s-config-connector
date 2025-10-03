@@ -4,6 +4,7 @@ package fwtransport
 
 import (
 	"context"
+	_ "embed"
 	"fmt"
 	"os"
 	"strings"
@@ -18,8 +19,11 @@ import (
 
 const uaEnvVar = "TF_APPEND_USER_AGENT"
 
+// KCC Version is included in the UserAgent, and is exported so it can be set by clients.
+var KCCVersion = "dev"
+
 func CompileUserAgentString(ctx context.Context, name, tfVersion, provVersion string) string {
-	ua := fmt.Sprintf("Terraform/%s (+https://www.terraform.io) Terraform-Plugin-SDK/%s %s/%s", tfVersion, "terraform-plugin-framework", name, provVersion)
+	ua := fmt.Sprintf("kcc/%s (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/%s", KCCVersion, KCCVersion)
 
 	if add := os.Getenv(uaEnvVar); add != "" {
 		add = strings.TrimSpace(add)

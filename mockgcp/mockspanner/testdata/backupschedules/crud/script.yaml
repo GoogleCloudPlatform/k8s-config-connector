@@ -1,0 +1,10 @@
+- exec: gcloud spanner instances create test-${uniqueId} --config=regional-us-central1 --description="Test Instance" --nodes=1
+- exec: gcloud spanner databases create testdb-${uniqueId} --instance=test-${uniqueId}
+- exec: gcloud spanner backup-schedules create test-schedule-${uniqueId} --instance=test-${uniqueId} --database=testdb-${uniqueId} --backup-type=full-backup --cron="0 2 * * *" --retention-duration=2w
+- exec: gcloud spanner backup-schedules list --instance=test-${uniqueId} --database=testdb-${uniqueId}
+- exec: gcloud spanner backup-schedules describe test-schedule-${uniqueId} --instance=test-${uniqueId} --database=testdb-${uniqueId}
+- exec: gcloud spanner backup-schedules update test-schedule-${uniqueId} --instance=test-${uniqueId} --database=testdb-${uniqueId} --cron="0 3 * * *"
+- exec: gcloud spanner backup-schedules delete test-schedule-${uniqueId} --instance=test-${uniqueId} --database=testdb-${uniqueId} --quiet
+- exec: gcloud spanner backup-schedules list --instance=test-${uniqueId} --database=testdb-${uniqueId}
+- exec: gcloud spanner databases delete testdb-${uniqueId} --instance=test-${uniqueId} --quiet
+- exec: gcloud spanner instances delete test-${uniqueId} --quiet

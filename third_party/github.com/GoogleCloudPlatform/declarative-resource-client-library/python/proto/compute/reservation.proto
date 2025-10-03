@@ -1,0 +1,96 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeReservationSpecificReservationInstancePropertiesLocalSsdsInterfaceEnum {
+  ComputeReservationSpecificReservationInstancePropertiesLocalSsdsInterfaceEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeReservationSpecificReservationInstancePropertiesLocalSsdsInterfaceEnumSCSI = 1;
+  ComputeReservationSpecificReservationInstancePropertiesLocalSsdsInterfaceEnumNVME = 2;
+  ComputeReservationSpecificReservationInstancePropertiesLocalSsdsInterfaceEnumNVDIMM = 3;
+}
+
+enum ComputeReservationStatusEnum {
+  ComputeReservationStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeReservationStatusEnumPENDING = 1;
+  ComputeReservationStatusEnumRUNNING = 2;
+  ComputeReservationStatusEnumDONE = 3;
+}
+
+message ComputeReservation {
+  int64 id = 1;
+  string self_link = 2;
+  string zone = 3;
+  string description = 4;
+  string name = 5;
+  ComputeReservationSpecificReservation specific_reservation = 6;
+  string commitment = 7;
+  bool specific_reservation_required = 8;
+  ComputeReservationStatusEnum status = 9;
+  string project = 10;
+}
+
+message ComputeReservationSpecificReservation {
+  ComputeReservationSpecificReservationInstanceProperties instance_properties = 1;
+  int64 count = 2;
+  int64 in_use_count = 3;
+}
+
+message ComputeReservationSpecificReservationInstanceProperties {
+  string machine_type = 1;
+  repeated ComputeReservationSpecificReservationInstancePropertiesGuestAccelerators guest_accelerators = 2;
+  string min_cpu_platform = 3;
+  repeated ComputeReservationSpecificReservationInstancePropertiesLocalSsds local_ssds = 4;
+}
+
+message ComputeReservationSpecificReservationInstancePropertiesGuestAccelerators {
+  string accelerator_type = 1;
+  int64 accelerator_count = 2;
+}
+
+message ComputeReservationSpecificReservationInstancePropertiesLocalSsds {
+  int64 disk_size_gb = 1;
+  ComputeReservationSpecificReservationInstancePropertiesLocalSsdsInterfaceEnum interface = 2;
+}
+
+message ApplyComputeReservationRequest {
+  ComputeReservation resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeReservationRequest {
+  string service_account_file = 1;
+  ComputeReservation resource = 2;
+}
+
+message ListComputeReservationRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Zone = 3;
+}
+
+message ListComputeReservationResponse {
+  repeated ComputeReservation items = 1;
+}
+
+service ComputeReservationService {
+  rpc ApplyComputeReservation(ApplyComputeReservationRequest) returns (ComputeReservation);
+  rpc DeleteComputeReservation(DeleteComputeReservationRequest) returns (google.protobuf.Empty);
+  rpc ListComputeReservation(ListComputeReservationRequest) returns (ListComputeReservationResponse);
+}

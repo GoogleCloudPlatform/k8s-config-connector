@@ -14,22 +14,23 @@
 
 # This Dockerfile builds an image containing builds of all the binaries built
 # from source (manager, webhook, etc.)
-FROM golang:1.22.3 AS builder
+FROM golang:1.25.1 AS builder
 
 # Copy in the Go source code
 WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
 COPY apis/   apis/
+COPY dev/metadata/   dev/metadata/
 COPY pkg/    pkg/
 COPY cmd/    cmd/
 COPY config/ config/
 COPY mockgcp/ mockgcp/
 COPY operator/ operator/
 COPY third_party/ third_party/
+COPY version/ version/
 COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
 COPY scripts/resource-autogen scripts/resource-autogen
 COPY go.mod go.mod
 COPY go.sum go.sum
-
 # Build the binaries from source. Note: the "-s -w" flags strip the tables
 # needed for debuggers, but not the line numbers for panics
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o deletiondefender github.com/GoogleCloudPlatform/k8s-config-connector/cmd/deletiondefender

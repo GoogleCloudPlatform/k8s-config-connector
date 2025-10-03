@@ -1,0 +1,5 @@
+ACTION       KIND      NAMESPACE NAME 
+ApplyChanges ConfigMap default   cm1  
+    ConfigMap default/cm1:
+      data:
+        foo: bar1 -> bar2

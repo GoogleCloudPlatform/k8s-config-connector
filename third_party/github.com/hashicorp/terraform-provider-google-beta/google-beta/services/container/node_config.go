@@ -108,6 +108,7 @@ func schemaNodeConfig() *schema.Schema {
 								Type:        schema.TypeList,
 								MaxItems:    1,
 								Optional:    true,
+								Computed:    true,
 								ForceNew:    true,
 								ConfigMode:  schema.SchemaConfigModeAttr,
 								Description: `Configuration for auto installation of GPU driver.`,
@@ -402,34 +403,24 @@ func schemaNodeConfig() *schema.Schema {
 				},
 
 				"taint": {
-					Type:     schema.TypeList,
-					Optional: true,
-					// Computed=true because GKE Sandbox will automatically add taints to nodes that can/cannot run sandboxed pods.
-					Computed: true,
-					ForceNew: true,
-					// Legacy config mode allows explicitly defining an empty taint.
-					// See https://www.terraform.io/docs/configuration/attr-as-blocks.html
-					ConfigMode:       schema.SchemaConfigModeAttr,
-					Description:      `List of Kubernetes taints to be applied to each node.`,
-					DiffSuppressFunc: containerNodePoolTaintSuppress,
+					Type:        schema.TypeList,
+					Optional:    true,
+					Description: `List of Kubernetes taints to be applied to each node.`,
 					Elem: &schema.Resource{
 						Schema: map[string]*schema.Schema{
 							"key": {
 								Type:        schema.TypeString,
 								Required:    true,
-								ForceNew:    true,
 								Description: `Key for taint.`,
 							},
 							"value": {
 								Type:        schema.TypeString,
 								Required:    true,
-								ForceNew:    true,
 								Description: `Value for taint.`,
 							},
 							"effect": {
 								Type:         schema.TypeString,
 								Required:     true,
-								ForceNew:     true,
 								ValidateFunc: validation.StringInSlice([]string{"NO_SCHEDULE", "PREFER_NO_SCHEDULE", "NO_EXECUTE"}, false),
 								Description:  `Effect for taint.`,
 							},
@@ -492,6 +483,7 @@ func schemaNodeConfig() *schema.Schema {
 				"kubelet_config": {
 					Type:        schema.TypeList,
 					Optional:    true,
+					Computed:    true,
 					MaxItems:    1,
 					Description: `Node kubelet configs.`,
 					Elem: &schema.Resource{
@@ -897,8 +889,10 @@ func expandNodeConfig(v interface{}) *container.NodeConfig {
 				Value:  data["value"].(string),
 				Effect: data["effect"].(string),
 			}
+
 			nodeTaints = append(nodeTaints, taint)
 		}
+
 		nc.Taints = nodeTaints
 	}
 
@@ -1117,11 +1111,21 @@ func flattenNodeConfigDefaults(c *container.NodeConfigDefaults) []map[string]int
 	return result
 }
 
-func flattenNodeConfig(c *container.NodeConfig) []map[string]interface{} {
+func flattenNodeConfig(c *container.NodeConfig, v interface{}) []map[string]interface{} {
 	config := make([]map[string]interface{}, 0, 1)
 
 	if c == nil {
 		return config
+	}
+
+	// default to no prior taint state if there are any issues
+	oldTaints := []interface{}{}
+	oldNodeConfigSchemaContainer := v.([]interface{})
+	if len(oldNodeConfigSchemaContainer) != 0 {
+		oldNodeConfigSchema := oldNodeConfigSchemaContainer[0].(map[string]interface{})
+		if vt, ok := oldNodeConfigSchema["taint"]; ok && len(vt.([]interface{})) > 0 {
+			oldTaints = vt.([]interface{})
+		}
 	}
 
 	config = append(config, map[string]interface{}{
@@ -1147,7 +1151,7 @@ func flattenNodeConfig(c *container.NodeConfig) []map[string]interface{} {
 		"spot":                               c.Spot,
 		"min_cpu_platform":                   c.MinCpuPlatform,
 		"shielded_instance_config":           flattenShieldedInstanceConfig(c.ShieldedInstanceConfig),
-		"taint":                              flattenTaints(c.Taints),
+		"taint":                              flattenTaints(c.Taints, oldTaints),
 		"workload_metadata_config":           flattenWorkloadMetadataConfig(c.WorkloadMetadataConfig),
 		"sandbox_config":                     flattenSandboxConfig(c.SandboxConfig),
 		"host_maintenance_policy":            flattenHostMaintenancePolicy(c.HostMaintenancePolicy),
@@ -1287,15 +1291,26 @@ func flattenGKEReservationAffinity(c *container.ReservationAffinity) []map[strin
 	return result
 }
 
-func flattenTaints(c []*container.NodeTaint) []map[string]interface{} {
+// flattenTaints records the set of taints already present in state.
+func flattenTaints(c []*container.NodeTaint, oldTaints []interface{}) []map[string]interface{} {
+	taintKeys := map[string]struct{}{}
+	for _, raw := range oldTaints {
+		data := raw.(map[string]interface{})
+		taintKey := data["key"].(string)
+		taintKeys[taintKey] = struct{}{}
+	}
+
 	result := []map[string]interface{}{}
 	for _, taint := range c {
-		result = append(result, map[string]interface{}{
-			"key":    taint.Key,
-			"value":  taint.Value,
-			"effect": taint.Effect,
-		})
+		if _, ok := taintKeys[taint.Key]; ok {
+			result = append(result, map[string]interface{}{
+				"key":    taint.Key,
+				"value":  taint.Value,
+				"effect": taint.Effect,
+			})
+		}
 	}
+
 	return result
 }
 
@@ -1360,74 +1375,6 @@ func containerNodePoolLabelsSuppress(k, old, new string, d *schema.ResourceData)
 	// If, at this point, the map still has elements, the new configuration
 	// added an additional taint.
 	if len(labels) > 0 {
-		return false
-	}
-
-	return true
-}
-
-func containerNodePoolTaintSuppress(k, old, new string, d *schema.ResourceData) bool {
-	// Node configs are embedded into multiple resources (container cluster and
-	// container node pool) so we determine the node config key dynamically.
-	idx := strings.Index(k, ".taint.")
-	if idx < 0 {
-		return false
-	}
-
-	root := k[:idx]
-
-	// Right now, GKE only applies its own out-of-band labels when you enable
-	// Sandbox. We only need to perform diff suppression in this case;
-	// otherwise, the default Terraform behavior is fine.
-	o, n := d.GetChange(root + ".sandbox_config.0.sandbox_type")
-	if o == nil || n == nil {
-		return false
-	}
-
-	// Pull the entire changeset as a list rather than trying to deal with each
-	// element individually.
-	o, n = d.GetChange(root + ".taint")
-	if o == nil || n == nil {
-		return false
-	}
-
-	type taintType struct {
-		Key, Value, Effect string
-	}
-
-	taintSet := make(map[taintType]struct{})
-
-	// Add all new taints to set.
-	for _, raw := range n.([]interface{}) {
-		data := raw.(map[string]interface{})
-		taint := taintType{
-			Key:    data["key"].(string),
-			Value:  data["value"].(string),
-			Effect: data["effect"].(string),
-		}
-		taintSet[taint] = struct{}{}
-	}
-
-	// Remove all current taints, skipping GKE-managed keys if not present in
-	// the new configuration.
-	for _, raw := range o.([]interface{}) {
-		data := raw.(map[string]interface{})
-		taint := taintType{
-			Key:    data["key"].(string),
-			Value:  data["value"].(string),
-			Effect: data["effect"].(string),
-		}
-		if _, ok := taintSet[taint]; ok {
-			delete(taintSet, taint)
-		} else if !strings.HasPrefix(taint.Key, "sandbox.gke.io/") && taint.Key != "kubernetes.io/arch" {
-			// User-provided taint removed in new configuration.
-			return false
-		}
-	}
-
-	// If, at this point, the set still has elements, the new configuration
-	// added an additional taint.
-	if len(taintSet) > 0 {
 		return false
 	}
 

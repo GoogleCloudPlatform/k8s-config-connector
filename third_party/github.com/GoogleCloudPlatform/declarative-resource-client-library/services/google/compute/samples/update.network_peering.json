@@ -1,0 +1,10 @@
+{
+  "name": "{{peering}}",
+  "network": "projects/{{ref:basic.network.json:project}}/global/networks/{{ref:basic.network.json:name}}",
+  "peerNetwork": "projects/{{project}}/global/networks/default",
+  "exportCustomRoutes": true,
+  "importCustomRoutes": true,
+  "exchangeSubnetRoutes": true,
+  "importSubnetRoutesWithPublicIp": true,
+  "peerMtu": 1024
+}

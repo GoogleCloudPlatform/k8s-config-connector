@@ -1,0 +1,9 @@
+{
+  "name": "{{compute_ihlb_subnetwork2}}",
+  "project": "{{project}}",
+  "region": "{{region}}",
+  "ipCidrRange": "10.4.0.0/16",
+  "network": "{{ref:minimal.network.json:selfLink}}",
+  "purpose": "INTERNAL_HTTPS_LOAD_BALANCER",
+  "role": "ACTIVE"
+}

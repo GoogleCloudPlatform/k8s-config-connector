@@ -1,0 +1,284 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum DataprocJobStatusStateEnum {
+  DataprocJobStatusStateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocJobStatusStateEnumUNKNOWN = 1;
+  DataprocJobStatusStateEnumCREATING = 2;
+  DataprocJobStatusStateEnumRUNNING = 3;
+  DataprocJobStatusStateEnumERROR = 4;
+  DataprocJobStatusStateEnumDELETING = 5;
+  DataprocJobStatusStateEnumUPDATING = 6;
+  DataprocJobStatusStateEnumSTOPPING = 7;
+  DataprocJobStatusStateEnumSTOPPED = 8;
+  DataprocJobStatusStateEnumSTARTING = 9;
+}
+
+enum DataprocJobStatusSubstateEnum {
+  DataprocJobStatusSubstateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocJobStatusSubstateEnumUNSPECIFIED = 1;
+  DataprocJobStatusSubstateEnumUNHEALTHY = 2;
+  DataprocJobStatusSubstateEnumSTALE_STATUS = 3;
+}
+
+enum DataprocJobStatusHistoryStateEnum {
+  DataprocJobStatusHistoryStateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocJobStatusHistoryStateEnumUNKNOWN = 1;
+  DataprocJobStatusHistoryStateEnumCREATING = 2;
+  DataprocJobStatusHistoryStateEnumRUNNING = 3;
+  DataprocJobStatusHistoryStateEnumERROR = 4;
+  DataprocJobStatusHistoryStateEnumDELETING = 5;
+  DataprocJobStatusHistoryStateEnumUPDATING = 6;
+  DataprocJobStatusHistoryStateEnumSTOPPING = 7;
+  DataprocJobStatusHistoryStateEnumSTOPPED = 8;
+  DataprocJobStatusHistoryStateEnumSTARTING = 9;
+}
+
+enum DataprocJobStatusHistorySubstateEnum {
+  DataprocJobStatusHistorySubstateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocJobStatusHistorySubstateEnumUNSPECIFIED = 1;
+  DataprocJobStatusHistorySubstateEnumUNHEALTHY = 2;
+  DataprocJobStatusHistorySubstateEnumSTALE_STATUS = 3;
+}
+
+enum DataprocJobYarnApplicationsStateEnum {
+  DataprocJobYarnApplicationsStateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataprocJobYarnApplicationsStateEnumUNKNOWN = 1;
+  DataprocJobYarnApplicationsStateEnumCREATING = 2;
+  DataprocJobYarnApplicationsStateEnumRUNNING = 3;
+  DataprocJobYarnApplicationsStateEnumERROR = 4;
+  DataprocJobYarnApplicationsStateEnumDELETING = 5;
+  DataprocJobYarnApplicationsStateEnumUPDATING = 6;
+  DataprocJobYarnApplicationsStateEnumSTOPPING = 7;
+  DataprocJobYarnApplicationsStateEnumSTOPPED = 8;
+  DataprocJobYarnApplicationsStateEnumSTARTING = 9;
+}
+
+message DataprocJob {
+  DataprocJobReference reference = 1;
+  DataprocJobPlacement placement = 2;
+  DataprocJobHadoopJob hadoop_job = 3;
+  DataprocJobSparkJob spark_job = 4;
+  DataprocJobPysparkJob pyspark_job = 5;
+  DataprocJobHiveJob hive_job = 6;
+  DataprocJobPigJob pig_job = 7;
+  DataprocJobSparkRJob spark_r_job = 8;
+  DataprocJobSparkSqlJob spark_sql_job = 9;
+  DataprocJobPrestoJob presto_job = 10;
+  DataprocJobStatus status = 11;
+  repeated DataprocJobStatusHistory status_history = 12;
+  repeated DataprocJobYarnApplications yarn_applications = 13;
+  string driver_output_resource_uri = 14;
+  string driver_control_files_uri = 15;
+  map<string, string> labels = 16;
+  DataprocJobScheduling scheduling = 17;
+  string name = 18;
+  bool done = 19;
+  string region = 20;
+  string project = 21;
+}
+
+message DataprocJobReference {
+  string project_id = 1;
+  string job_id = 2;
+}
+
+message DataprocJobPlacement {
+  string cluster_name = 1;
+  string cluster_uuid = 2;
+  map<string, string> cluster_labels = 3;
+}
+
+message DataprocJobHadoopJob {
+  string main_jar_file_uri = 1;
+  string main_class = 2;
+  repeated string args = 3;
+  repeated string jar_file_uris = 4;
+  repeated string file_uris = 5;
+  repeated string archive_uris = 6;
+  map<string, string> properties = 7;
+  DataprocJobHadoopJobLoggingConfig logging_config = 8;
+}
+
+message DataprocJobHadoopJobLoggingConfig {
+  map<string, string> driver_log_levels = 1;
+}
+
+message DataprocJobSparkJob {
+  string main_jar_file_uri = 1;
+  string main_class = 2;
+  repeated string args = 3;
+  repeated string jar_file_uris = 4;
+  repeated string file_uris = 5;
+  repeated string archive_uris = 6;
+  map<string, string> properties = 7;
+  DataprocJobSparkJobLoggingConfig logging_config = 8;
+}
+
+message DataprocJobSparkJobLoggingConfig {
+  map<string, string> driver_log_levels = 1;
+}
+
+message DataprocJobPysparkJob {
+  string main_python_file_uri = 1;
+  repeated string args = 2;
+  repeated string python_file_uris = 3;
+  repeated string jar_file_uris = 4;
+  repeated string file_uris = 5;
+  repeated string archive_uris = 6;
+  map<string, string> properties = 7;
+  DataprocJobPysparkJobLoggingConfig logging_config = 8;
+}
+
+message DataprocJobPysparkJobLoggingConfig {
+  map<string, string> driver_log_levels = 1;
+}
+
+message DataprocJobHiveJob {
+  string query_file_uri = 1;
+  DataprocJobHiveJobQueryList query_list = 2;
+  bool continue_on_failure = 3;
+  map<string, string> script_variables = 4;
+  map<string, string> properties = 5;
+  repeated string jar_file_uris = 6;
+}
+
+message DataprocJobHiveJobQueryList {
+  repeated string queries = 1;
+}
+
+message DataprocJobPigJob {
+  string query_file_uri = 1;
+  DataprocJobPigJobQueryList query_list = 2;
+  bool continue_on_failure = 3;
+  map<string, string> script_variables = 4;
+  map<string, string> properties = 5;
+  repeated string jar_file_uris = 6;
+  DataprocJobPigJobLoggingConfig logging_config = 7;
+}
+
+message DataprocJobPigJobQueryList {
+  repeated string queries = 1;
+}
+
+message DataprocJobPigJobLoggingConfig {
+  map<string, string> driver_log_levels = 1;
+}
+
+message DataprocJobSparkRJob {
+  string main_r_file_uri = 1;
+  repeated string args = 2;
+  repeated string file_uris = 3;
+  repeated string archive_uris = 4;
+  map<string, string> properties = 5;
+  DataprocJobSparkRJobLoggingConfig logging_config = 6;
+}
+
+message DataprocJobSparkRJobLoggingConfig {
+  map<string, string> driver_log_levels = 1;
+}
+
+message DataprocJobSparkSqlJob {
+  string query_file_uri = 1;
+  DataprocJobSparkSqlJobQueryList query_list = 2;
+  map<string, string> script_variables = 3;
+  map<string, string> properties = 4;
+  repeated string jar_file_uris = 5;
+  DataprocJobSparkSqlJobLoggingConfig logging_config = 6;
+}
+
+message DataprocJobSparkSqlJobQueryList {
+  repeated string queries = 1;
+}
+
+message DataprocJobSparkSqlJobLoggingConfig {
+  map<string, string> driver_log_levels = 1;
+}
+
+message DataprocJobPrestoJob {
+  string query_file_uri = 1;
+  DataprocJobPrestoJobQueryList query_list = 2;
+  bool continue_on_failure = 3;
+  string output_format = 4;
+  repeated string client_tags = 5;
+  map<string, string> properties = 6;
+  DataprocJobPrestoJobLoggingConfig logging_config = 7;
+}
+
+message DataprocJobPrestoJobQueryList {
+  repeated string queries = 1;
+}
+
+message DataprocJobPrestoJobLoggingConfig {
+  map<string, string> driver_log_levels = 1;
+}
+
+message DataprocJobStatus {
+  DataprocJobStatusStateEnum state = 1;
+  string details = 2;
+  string state_start_time = 3;
+  DataprocJobStatusSubstateEnum substate = 4;
+}
+
+message DataprocJobStatusHistory {
+  DataprocJobStatusHistoryStateEnum state = 1;
+  string details = 2;
+  string state_start_time = 3;
+  DataprocJobStatusHistorySubstateEnum substate = 4;
+}
+
+message DataprocJobYarnApplications {
+  string name = 1;
+  DataprocJobYarnApplicationsStateEnum state = 2;
+  double progress = 3;
+  string tracking_url = 4;
+}
+
+message DataprocJobScheduling {
+  int64 max_failures_per_hour = 1;
+  int64 max_failures_total = 2;
+}
+
+message ApplyDataprocJobRequest {
+  DataprocJob resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteDataprocJobRequest {
+  string service_account_file = 1;
+  DataprocJob resource = 2;
+}
+
+message ListDataprocJobRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Region = 3;
+}
+
+message ListDataprocJobResponse {
+  repeated DataprocJob items = 1;
+}
+
+service DataprocJobService {
+  rpc ApplyDataprocJob(ApplyDataprocJobRequest) returns (DataprocJob);
+  rpc DeleteDataprocJob(DeleteDataprocJobRequest) returns (google.protobuf.Empty);
+  rpc ListDataprocJob(ListDataprocJobRequest) returns (ListDataprocJobResponse);
+}

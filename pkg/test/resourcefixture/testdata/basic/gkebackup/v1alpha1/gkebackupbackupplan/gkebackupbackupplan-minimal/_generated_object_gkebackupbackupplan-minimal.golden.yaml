@@ -1,0 +1,40 @@
+apiVersion: gkebackup.cnrm.cloud.google.com/v1alpha1
+kind: GKEBackupBackupPlan
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: gkebackupbackupplan-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  backupConfig:
+    allNamespaces: true
+    includeSecrets: true
+    includeVolumeData: true
+  clusterRef:
+    name: containercluster-minimal-${uniqueId}
+  description: Updated description
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/backupPlans/gkebackupbackupplan-minimal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    etag: abcdef123456
+    rpoRiskLevel: 2
+    rpoRiskReason: No schedule is defined. Opt in RPO schedule for better protection.
+    state: READY
+    stateReason: Resource has been created successfully.
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"

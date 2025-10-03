@@ -19,7 +19,7 @@ metadata:
 spec:
   displayName: Default Tenant Location
   folderRef:
-    external: "16031899883"
+    external: ${TEST_FOLDER_ID}
 ---
 apiVersion: cloudfunctions.cnrm.cloud.google.com/v1beta1
 kind: CloudFunctionsFunction

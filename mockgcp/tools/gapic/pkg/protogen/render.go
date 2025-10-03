@@ -33,6 +33,7 @@ type ProtoWriter struct {
 	w            io.Writer
 	errors       []error
 	protoVersion int
+	comments     *Comments
 }
 
 func NewProtoWriter(w io.Writer) *ProtoWriter {
@@ -44,6 +45,17 @@ func NewProtoWriter(w io.Writer) *ProtoWriter {
 
 func (p *ProtoWriter) SetProtoVersion(protoVersion int) {
 	p.protoVersion = protoVersion
+}
+
+func (p *ProtoWriter) SetComments(comments *Comments) {
+	p.comments = comments
+}
+
+func (p *ProtoWriter) getComment(obj protoreflect.FullName) string {
+	if p.comments == nil {
+		return ""
+	}
+	return p.comments.GetComment(string(obj))
 }
 
 func (p *ProtoWriter) Error() error {
@@ -82,6 +94,13 @@ func (p *ProtoWriter) nameForMessageType(md protoreflect.MessageDescriptor) stri
 }
 
 func (p *ProtoWriter) renderField(fd protoreflect.FieldDescriptor) {
+	comment := p.getComment(fd.FullName())
+	if comment != "" {
+		for _, line := range strings.Split(comment, "\n") {
+			p.printf("  // %s\n", line)
+		}
+	}
+
 	var b bytes.Buffer
 	b.WriteString("  ")
 
@@ -97,6 +116,8 @@ func (p *ProtoWriter) renderField(fd protoreflect.FieldDescriptor) {
 		switch fd.MapValue().Kind() {
 		case protoreflect.StringKind:
 			b.WriteString("string")
+		case protoreflect.Int32Kind:
+			b.WriteString("int32")
 		case protoreflect.Int64Kind:
 			b.WriteString("int64")
 		case protoreflect.MessageKind:
@@ -165,6 +186,14 @@ func (p *ProtoWriter) renderField(fd protoreflect.FieldDescriptor) {
 }
 
 func (p *ProtoWriter) renderMessage(msg protoreflect.MessageDescriptor) {
+	p.printf("\n")
+	comment := p.getComment(msg.FullName())
+	if comment != "" {
+		for _, line := range strings.Split(comment, "\n") {
+			p.printf("// %s\n", line)
+		}
+	}
+
 	p.printf("message %s {\n", msg.Name())
 	fields := msg.Fields()
 	for i := 0; i < fields.Len(); i++ {
@@ -176,6 +205,14 @@ func (p *ProtoWriter) renderMessage(msg protoreflect.MessageDescriptor) {
 }
 
 func (p *ProtoWriter) renderMethod(md protoreflect.MethodDescriptor) {
+	p.printf("\n")
+	comment := p.getComment(md.FullName())
+	if comment != "" {
+		for _, line := range strings.Split(comment, "\n") {
+			p.printf("  // %s\n", line)
+		}
+	}
+
 	var b bytes.Buffer
 	b.WriteString("  rpc ")
 
@@ -190,9 +227,9 @@ func (p *ProtoWriter) renderMethod(md protoreflect.MethodDescriptor) {
 
 	options := md.Options()
 	if options != nil {
-		b.WriteString("{\n")
+		b.WriteString(" {\n")
 		proto.RangeExtensions(options, func(xt protoreflect.ExtensionType, v interface{}) bool {
-			b.WriteString(fmt.Sprintf("  option (%s) = {\n", xt.TypeDescriptor().FullName()))
+			b.WriteString(fmt.Sprintf("    option (%s) = {\n", xt.TypeDescriptor().FullName()))
 			formatted, err := prototext.MarshalOptions{Multiline: true}.Marshal(v.(proto.Message))
 			if err != nil {
 				p.errors = append(p.errors, err)
@@ -201,14 +238,17 @@ func (p *ProtoWriter) renderMethod(md protoreflect.MethodDescriptor) {
 				if line == "" {
 					continue
 				}
-				b.WriteString("    ")
+				// Undo the randomization (deliberately) injected by prototext
+				line = strings.Replace(line, ":  ", ": ", 1)
+				// Add indent (MarshalOptions.Indent just doesn't seem to work...)
+				b.WriteString("      ")
 				b.WriteString(line)
 				b.WriteString("\n")
 			}
-			b.WriteString("  };\n")
+			b.WriteString("    };\n")
 			return true
 		})
-		b.WriteString("}\n")
+		b.WriteString("  }")
 	}
 
 	b.WriteString(";\n")
@@ -217,6 +257,7 @@ func (p *ProtoWriter) renderMethod(md protoreflect.MethodDescriptor) {
 }
 
 func (p *ProtoWriter) renderService(msg protoreflect.ServiceDescriptor) {
+	p.printf("\n")
 	p.printf("service %s {\n", msg.Name())
 	methods := msg.Methods()
 	for i := 0; i < methods.Len(); i++ {
@@ -229,7 +270,7 @@ func (p *ProtoWriter) renderService(msg protoreflect.ServiceDescriptor) {
 
 func (p *ProtoWriter) WriteFile(file protoreflect.FileDescriptor) {
 	klog.Infof("file %v", file.Name())
-	p.printf(fmt.Sprintf("syntax = \"proto%d\";\n", p.protoVersion))
+	p.printf("syntax = \"proto%d\";\n", p.protoVersion)
 	p.printf("package %s;\n", file.Package())
 
 	importPaths := []string{

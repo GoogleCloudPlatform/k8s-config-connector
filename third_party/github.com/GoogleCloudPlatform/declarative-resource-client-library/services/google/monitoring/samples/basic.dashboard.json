@@ -1,0 +1,12 @@
+{
+  "name": "{{dashboard}}",
+  "project": "{{project}}",
+  "displayName": "test-dashboard",
+  "columnLayout": {
+    "columns": [
+      {
+        "weight": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+    "displayName": "Very high CPU usage",
+    "combiner": "OR",
+    "conditions": [
+        {
+            "displayName": "CPU usage is extremely high",
+            "conditionThreshold": {
+                "aggregations": [
+                    {
+                        "alignmentPeriod": "60s",
+                        "crossSeriesReducer": "REDUCE_MEAN",
+                        "groupByFields": [
+                            "project"
+                        ],
+                        "perSeriesAligner": "ALIGN_MAX"
+                    }
+                ],
+                "comparison": "COMPARISON_GT",
+                "duration": "900s",
+                "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" AND resource.type=\"gce_instance\"",
+                "thresholdValue": 0.9,
+                "trigger": {
+                    "count": 1
+                }
+            }
+        }
+    ],
+}

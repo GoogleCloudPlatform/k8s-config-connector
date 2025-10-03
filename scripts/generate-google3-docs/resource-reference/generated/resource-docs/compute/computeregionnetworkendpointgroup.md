@@ -70,9 +70,6 @@
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
@@ -517,7 +514,6 @@ metadata:
   name: computeregionnetworkendpointgroup-sample-cloudfunction
 spec:
   region: us-west1
-  defaultPort: 90
   description: A sample regional network endpoint group.
   cloudFunction:
     functionRef:
@@ -561,7 +557,6 @@ metadata:
   name: computeregionnetworkendpointgroup-sample-cloudrun
 spec:
   region: us-west1
-  defaultPort: 90
   description: A sample regional network endpoint group.
   cloudRun:
     serviceRef:

@@ -1,0 +1,9 @@
+{
+  "name": "{{attestation_note}}",
+  "project": "{{project}}",
+  "attestation": {
+    "hint": {
+      "humanReadableName": "Another Attestor Note"
+    }
+  }
+}

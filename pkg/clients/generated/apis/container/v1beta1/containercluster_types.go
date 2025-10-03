@@ -732,7 +732,7 @@ type ClusterNodeConfig struct {
 	// +optional
 	Tags []string `json:"tags,omitempty"`
 
-	/* Immutable. List of Kubernetes taints to be applied to each node. */
+	/* List of Kubernetes taints to be applied to each node. */
 	// +optional
 	Taint []ClusterTaint `json:"taint,omitempty"`
 
@@ -953,13 +953,13 @@ type ClusterStandardRolloutPolicy struct {
 }
 
 type ClusterTaint struct {
-	/* Immutable. Effect for taint. */
+	/* Effect for taint. */
 	Effect string `json:"effect"`
 
-	/* Immutable. Key for taint. */
+	/* Key for taint. */
 	Key string `json:"key"`
 
-	/* Immutable. Value for taint. */
+	/* Value for taint. */
 	Value string `json:"value"`
 }
 
@@ -1274,12 +1274,30 @@ type ClusterMasterAuthStatus struct {
 	/* Base64 encoded public certificate used by clients to authenticate to the cluster endpoint. */
 	// +optional
 	ClientCertificate *string `json:"clientCertificate,omitempty"`
+
+	/* Base64 encoded public certificate that is the root of trust for the cluster. */
+	// +optional
+	ClusterCaCertificate *string `json:"clusterCaCertificate,omitempty"`
 }
 
 type ClusterObservedStateStatus struct {
 	/* DEPRECATED. Basic authentication was removed for GKE cluster versions >= 1.19. The authentication information for accessing the Kubernetes master. Some values in this block are only returned by the API if your service account has permission to get credentials for your GKE cluster. If you see an unexpected diff unsetting your client cert, ensure you have the container.clusters.getCredentials permission. */
 	// +optional
 	MasterAuth *ClusterMasterAuthStatus `json:"masterAuth,omitempty"`
+
+	/* Configuration for private clusters, clusters with private nodes. */
+	// +optional
+	PrivateClusterConfig *ClusterPrivateClusterConfigStatus `json:"privateClusterConfig,omitempty"`
+}
+
+type ClusterPrivateClusterConfigStatus struct {
+	/* The internal IP address of this cluster's master endpoint. */
+	// +optional
+	PrivateEndpoint *string `json:"privateEndpoint,omitempty"`
+
+	/* The external IP address of this cluster's master endpoint. */
+	// +optional
+	PublicEndpoint *string `json:"publicEndpoint,omitempty"`
 }
 
 type ContainerClusterStatus struct {

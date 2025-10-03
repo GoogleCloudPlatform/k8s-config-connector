@@ -53,29 +53,20 @@ func AddCommand(parent *cobra.Command) {
 	options.PopulateDefaults()
 
 	cmd := &cobra.Command{
-		Use:   "force-set-field KIND NAME FIELD.PATH=VALUE",
+		Use:   "force-set-field FIELD.PATH=VALUE",
 		Short: "Sets a field on a KCC object, even immutable fields (experimental)",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := cmd.Context()
 
-			if len(args) >= 1 {
-				options.Kind = args[0]
-			}
-			if len(args) >= 2 {
-				options.Name = args[1]
-			}
-
 			setFields := map[string]string{}
-			if len(args) >= 3 {
-				for i := 2; i < len(args); i++ {
-					tokens := strings.SplitN(args[i], "=", 2)
-					if len(tokens) < 2 {
-						return fmt.Errorf("expected spec.path=value, got %q", args[i])
-					}
-					k := tokens[0]
-					v := tokens[1]
-					setFields[k] = v
+			for i := 0; i < len(args); i++ {
+				tokens := strings.SplitN(args[i], "=", 2)
+				if len(tokens) < 2 {
+					return fmt.Errorf("expected spec.path=value, got %q", args[i])
 				}
+				k := tokens[0]
+				v := tokens[1]
+				setFields[k] = v
 			}
 
 			return Run(ctx, cmd.OutOrStdout(), options, setFields)
@@ -94,13 +85,18 @@ func AddCommand(parent *cobra.Command) {
 func Run(ctx context.Context, out io.Writer, options Options, setFields map[string]string) error {
 	// log := klog.FromContext(ctx)
 
-	// Impersonate the KCC service account, which is allowed to make changes
-	// TODO: Make this configurable - maybe it only works in namespaced mode?
-	options.ClusterOptions.Impersonate = &rest.ImpersonationConfig{
-		UserName: "system:serviceaccount:cnrm-system:cnrm-controller-manager-" + options.Namespace,
-		Groups:   []string{"system:serviceaccounts", "system:serviceaccounts:cnrm-system"},
+	if options.ImpersonateUser == "" {
+		// Impersonate the KCC service account, which is allowed to make changes
+		options.ClusterOptions.Impersonate = &rest.ImpersonationConfig{
+			UserName: "system:serviceaccount:cnrm-system:cnrm-controller-manager-" + options.Namespace,
+			Groups:   []string{"system:serviceaccounts", "system:serviceaccounts:cnrm-system"},
+		}
+	} else {
+		options.ClusterOptions.Impersonate = &rest.ImpersonationConfig{
+			UserName: options.ImpersonateUser,
+			Groups:   options.ImpersonateGroups,
+		}
 	}
-
 	kubeClient, err := kubecli.NewClient(ctx, options.ClusterOptions)
 	if err != nil {
 		return fmt.Errorf("creating client: %w", err)

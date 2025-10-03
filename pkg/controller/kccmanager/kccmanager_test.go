@@ -23,23 +23,25 @@ import (
 	"testing"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
 	testrunner "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/runner"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/teststatus"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/metrics/server"
 )
 
 var (
@@ -57,7 +59,9 @@ func TestSchemeIsUniqueAcrossManagers(t *testing.T) {
 	controllersCfg := kccmanager.Config{
 		ManagerOptions: manager.Options{
 			// disable prometheus metrics as by default, the metrics server binds to the same port in all instances
-			MetricsBindAddress: "0",
+			Metrics: server.Options{
+				BindAddress: "0",
+			},
 		},
 	}
 	schemePtrMap := make(map[*runtime.Scheme]string)
@@ -77,7 +81,7 @@ func TestSchemeIsUniqueAcrossManagers(t *testing.T) {
 
 func TestClusterModeManager(t *testing.T) {
 	ctx := context.TODO()
-	mgr, err := kccmanager.New(ctx, clusterModeManager.GetConfig(), kccmanager.Config{StateIntoSpecDefaultValue: k8s.StateIntoSpecDefaultValueV1Beta1})
+	mgr, err := kccmanager.New(ctx, clusterModeManager.GetConfig(), kccmanager.Config{StateIntoSpecDefaultValue: stateintospec.StateIntoSpecDefaultValueV1Beta1})
 	if err != nil {
 		t.Fatalf("error creating manager: %v", err)
 	}
@@ -107,8 +111,14 @@ func TestNamespacedModeManager(t *testing.T) {
 	controllersCfg1 := kccmanager.Config{
 		ManagerOptions: manager.Options{
 			// disable prometheus metrics as by default, the metrics server binds to the same port in all instances
-			MetricsBindAddress: "0",
-			Namespace:          tstContext1.CreateUnstruct.GetNamespace(),
+			Metrics: server.Options{
+				BindAddress: "0",
+			},
+			Cache: cache.Options{
+				DefaultNamespaces: map[string]cache.Config{
+					tstContext1.CreateUnstruct.GetNamespace(): {},
+				},
+			},
 		},
 	}
 	mgr1, err := kccmanager.New(ctx, namespacedModeManager.GetConfig(), controllersCfg1)
@@ -144,8 +154,14 @@ func TestNamespacedModeManager(t *testing.T) {
 	controllersCfg2 := kccmanager.Config{
 		ManagerOptions: manager.Options{
 			// disable prometheus metrics as by default, the metrics server binds to the same port in all instances
-			MetricsBindAddress: "0",
-			Namespace:          tstContext2.CreateUnstruct.GetNamespace(),
+			Metrics: server.Options{
+				BindAddress: "0",
+			},
+			Cache: cache.Options{
+				DefaultNamespaces: map[string]cache.Config{
+					tstContext2.CreateUnstruct.GetNamespace(): {},
+				},
+			},
 		},
 	}
 	// start controllers for the second namespace and verify that the second resource does reconcile
@@ -190,7 +206,7 @@ func waitForReconcile(t *testing.T, kubeClient client.Client, resource *unstruct
 			klog.Infof("Waiting for 'status' on %v '%v'", u.GetKind(), u.GetName())
 			return false, nil
 		}
-		objectStatus := dynamic.GetObjectStatus(t, &u)
+		objectStatus := teststatus.GetObjectStatus(t, &u)
 		if objectStatus.ObservedGeneration == nil {
 			klog.InfoS("resource does not yet have status.observedGeneration", "kind", u.GetKind(), "name", u.GetName())
 			return false, nil

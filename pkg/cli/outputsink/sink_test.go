@@ -29,7 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 
-	"github.com/ghodss/yaml"
+	"github.com/ghodss/yaml" //nolint:depguard
 	"github.com/google/go-cmp/cmp"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -50,7 +50,7 @@ func TestDirectorySink(t *testing.T) {
 	testCases := []struct {
 		name            string
 		sinkConstructor func(*schema.Provider, string) outputsink.OutputSink
-		// the file that will be read, with results passed in to the sink for testing
+		// the file that will be read, with results passed into the sink for testing
 		testCaseFile string
 		// the yaml file to use to pull unstructured schemas
 		unstructuredFile   string
@@ -73,7 +73,7 @@ func TestDirectorySink(t *testing.T) {
 			sinkConstructor:  outputsink.NewKRMYAMLDirectory,
 			testCaseFile:     "name-with-unicode.yaml",
 			unstructuredFile: "name-with-unicode.yaml",
-			expectedFilePath: "/projects/my-project-id/PubSubTopic/Hello-World-khello-vorld-the-quick-brown-fox-jumped-over-the-lazy-dog_AAAA.yaml",
+			expectedFilePath: "projects/my-project-id/PubSubTopic/Hell_f6_20W_f6rld_20_445_435_43b_43b_43e_20_432_43e_440_43b_434_20the_20_60quick_20brown_20fox_20jumped_20over_20the_20lazy_20dog_AAAA_60_60_60.yaml",
 		},
 		{
 			sinkConstructor:  outputsink.NewHCLDirectory,
@@ -321,7 +321,7 @@ func testParentPathIsFileShouldError(t *testing.T, resourceFormat outputsink.Res
 	output := filepath.Join(f.Name(), "my-file")
 	sink, err := outputsink.New(tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig()), output, resourceFormat)
 	if err == nil {
-		t.Fatalf("exepcted an error, instead got 'nil'")
+		t.Fatalf("expected an error, instead got 'nil'")
 	}
 	expectedMessage := fmt.Sprintf("cannot use output parameter '%v': parent path '%v' exists, but is not a directory",
 		output, f.Name())

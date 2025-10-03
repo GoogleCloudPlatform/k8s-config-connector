@@ -1,0 +1,43 @@
+--- a/v1alpha1
++++ b/v1beta1
+  &v1.JSONSchemaProps{
+  	... // 26 identical fields
+  	AnyOf: nil,
+  	Not:   nil,
+  	Properties: map[string]v1.JSONSchemaProps{
+  		... // 2 identical entries
+  		"metadata": {Type: "object"},
+  		"spec":     {Description: "AppHubApplicationSpec defines the desired state of AppHubApplica"..., Type: "object", Properties: {"attributes": {Description: "Optional. Consumer provided attributes.", Type: "object", Properties: {"businessOwners": {Description: "Optional. Business team that ensures user needs are met and valu"..., Type: "array", Items: &{Schema: &{Type: "object", Properties: {"displayName": {Description: "Optional. Contact's name. Can have a maximum length of 63 charac"..., Type: "string"}, "email": {Description: "Required. Email address of the contacts.", Type: "string"}}}}}, "criticality": {Description: "Optional. User-defined criticality information.", Type: "object", Properties: {"type": {Description: "Required. Criticality Type.", Type: "string", XValidations: {{Rule: "self == oldSelf", Message: "the field is immutable"}}}}}, "developerOwners": {Description: "Optional. Developer team that owns development and coding.", Type: "array", Items: &{Schema: &{Type: "object", Properties: {"displayName": {Description: "Optional. Contact's name. Can have a maximum length of 63 charac"..., Type: "string"}, "email": {Description: "Required. Email address of the contacts.", Type: "string"}}}}}, "environment": {Description: "Optional. User-defined environment information.", Type: "object", Properties: {"type": {Description: "Required. Environment Type.", Type: "string", XValidations: {{Rule: "self == oldSelf", Message: "the field is immutable"}}}}}, ...}}, "description": {Description: "Optional. User-defined description of an Application. Can have a"..., Type: "string"}, "displayName": {Description: "Optional. User-defined name for the Application. Can have a maxi"..., Type: "string"}, "location": {Description: "Required. The location of the application.", Type: "string"}, ...}},
+  		"status": {
+  			... // 26 identical fields
+  			AnyOf: nil,
+  			Not:   nil,
+  			Properties: map[string]v1.JSONSchemaProps{
+  				"conditions": {Description: "Conditions represent the latest available observations of the ob"..., Type: "array", Items: &{Schema: &{Type: "object", Properties: {"lastTransitionTime": {Description: "Last time the condition transitioned from one status to another.", Type: "string"}, "message": {Description: "Human-readable message indicating details about last transition.", Type: "string"}, "reason": {Description: "Unique, one-word, CamelCase reason for the condition's last tran"..., Type: "string"}, "status": {Description: "Status is the status of the condition. Can be True, False, Unknown.", Type: "string"}, ...}}}},
+  				"externalRef": {
+  					ID:     "",
+  					Schema: "",
+  					Ref:    nil,
+  					Description: strings.Join({
+  						"A unique specifier for the AppHubApplication resource in Google ",
+  						"Cloud",
++ 						" ",
+  						".",
+  					}, ""),
+  					Type:   "string",
+  					Format: "",
+  					... // 38 identical fields
+  				},
+  				"observedGeneration": {Description: "ObservedGeneration is the generation of the resource that was mo"..., Type: "integer", Format: "int64"},
+  				"observedState":      {Description: "ObservedState is the state of the resource as most recently obse"..., Type: "object", Properties: {"createTime": {Description: "Output only. Create time.", Type: "string"}, "state": {Description: "Output only. Application state.", Type: "string"}, "uid": {Description: "Output only. A universally unique identifier (in UUID4 format) f"..., Type: "string"}, "updateTime": {Description: "Output only. Update time.", Type: "string"}}},
+  			},
+  			AdditionalProperties: nil,
+  			PatternProperties:    nil,
+  			... // 13 identical fields
+  		},
+  	},
+  	AdditionalProperties: nil,
+  	PatternProperties:    nil,
+  	... // 13 identical fields
+  }
+

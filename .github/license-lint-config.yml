@@ -18,6 +18,7 @@ unrestricted_licenses:
   - BSD-3-Clause
   - BSD-2-Clause
   - 0BSD
+  - CC-BY-3.0
 
 reciprocal_licenses:
   - MPL-2.0
@@ -39,3 +40,5 @@ allowlisted_modules:
   - github.com/google/pprof
   # Apache 2.0: https://github.com/apparentlymart/go-textseg/blob/5b41aa275ccaac4ccaa91729a8ee92e7eac9c728/LICENSE
   - github.com/apparentlymart/go-textseg/v13
+  # Apache 2.0: https://github.com/apparentlymart/go-textseg/tree/72b78f42484ddc3f58858f794da1771fb9559ad0/LICENSE
+  - github.com/apparentlymart/go-textseg/v15

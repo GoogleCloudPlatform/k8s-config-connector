@@ -1,0 +1,38 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+name: kcc_workflow_template
+description: KCC's example of a workflow template
+type: workflow_template
+versions:
+- ga
+- beta
+resource: samples/kcc.workflow_template.json
+dependencies:
+- samples/basic.autoscaling_policy.json
+- samples/basic.cloudresourcemanager.project.json
+- samples/basic.cloudbilling.project_billing_info.json
+- samples/dataproc.serviceusage.service.json
+variables:
+- name: billing_account
+  type: billing_account
+- name: dp
+  type: resource_name
+- name: name
+  type: resource_name
+- name: org_id
+  type: org_id
+- name: region
+  type: region
+- name: template_name
+  type: resource_name

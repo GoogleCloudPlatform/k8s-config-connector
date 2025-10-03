@@ -20,7 +20,7 @@ import (
 	"io"
 	"io/ioutil"
 
-	"github.com/ghodss/yaml"
+	"github.com/ghodss/yaml" //nolint:depguard
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 

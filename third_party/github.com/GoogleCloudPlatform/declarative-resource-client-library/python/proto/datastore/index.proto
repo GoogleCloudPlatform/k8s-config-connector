@@ -1,0 +1,79 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum DatastoreIndexAncestorEnum {
+  DatastoreIndexAncestorEnumNO_VALUE_DO_NOT_USE = 0;
+  DatastoreIndexAncestorEnumNONE = 1;
+  DatastoreIndexAncestorEnumALL_ANCESTORS = 2;
+}
+
+enum DatastoreIndexPropertiesDirectionEnum {
+  DatastoreIndexPropertiesDirectionEnumNO_VALUE_DO_NOT_USE = 0;
+  DatastoreIndexPropertiesDirectionEnumASCENDING = 1;
+  DatastoreIndexPropertiesDirectionEnumDESCENDING = 2;
+}
+
+enum DatastoreIndexStateEnum {
+  DatastoreIndexStateEnumNO_VALUE_DO_NOT_USE = 0;
+  DatastoreIndexStateEnumCREATING = 1;
+  DatastoreIndexStateEnumREADY = 2;
+  DatastoreIndexStateEnumDELETING = 3;
+  DatastoreIndexStateEnumERROR = 4;
+}
+
+message DatastoreIndex {
+  DatastoreIndexAncestorEnum ancestor = 1;
+  string index_id = 2;
+  string kind = 3;
+  string project = 4;
+  repeated DatastoreIndexProperties properties = 5;
+  DatastoreIndexStateEnum state = 6;
+}
+
+message DatastoreIndexProperties {
+  string name = 1;
+  DatastoreIndexPropertiesDirectionEnum direction = 2;
+}
+
+message ApplyDatastoreIndexRequest {
+  DatastoreIndex resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteDatastoreIndexRequest {
+  string service_account_file = 1;
+  DatastoreIndex resource = 2;
+}
+
+message ListDatastoreIndexRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListDatastoreIndexResponse {
+  repeated DatastoreIndex items = 1;
+}
+
+service DatastoreIndexService {
+  rpc ApplyDatastoreIndex(ApplyDatastoreIndexRequest) returns (DatastoreIndex);
+  rpc DeleteDatastoreIndex(DeleteDatastoreIndexRequest) returns (google.protobuf.Empty);
+  rpc ListDatastoreIndex(ListDatastoreIndexRequest) returns (ListDatastoreIndexResponse);
+}

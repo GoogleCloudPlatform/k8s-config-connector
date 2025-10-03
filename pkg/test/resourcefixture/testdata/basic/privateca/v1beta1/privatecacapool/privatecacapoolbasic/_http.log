@@ -1,0 +1,884 @@
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools?alt=json&caPoolId=privatecacapool-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "issuancePolicy": {
+    "allowedIssuanceModes": {
+      "allowConfigBasedIssuance": false,
+      "allowCsrBasedIssuance": true
+    },
+    "allowedKeyTypes": [
+      {
+        "rsa": {
+          "maxModulusSize": 128,
+          "minModulusSize": 64
+        }
+      },
+      {
+        "ellipticCurve": {
+          "signatureAlgorithm": "ECDSA_P384"
+        }
+      }
+    ],
+    "baselineValues": {
+      "additionalExtensions": [
+        {
+          "critical": false,
+          "objectId": {
+            "objectIdPath": [
+              1,
+              7
+            ]
+          },
+          "value": "c3RyaW5nCg=="
+        }
+      ],
+      "aiaOcspServers": [
+        "string"
+      ],
+      "caOptions": {
+        "isCa": false,
+        "maxIssuerPathLength": 7
+      },
+      "keyUsage": {
+        "baseKeyUsage": {
+          "certSign": false,
+          "contentCommitment": false,
+          "crlSign": false,
+          "dataEncipherment": false,
+          "decipherOnly": false,
+          "digitalSignature": false,
+          "encipherOnly": false,
+          "keyAgreement": false,
+          "keyEncipherment": false
+        },
+        "extendedKeyUsage": {
+          "clientAuth": false,
+          "codeSigning": false,
+          "emailProtection": false,
+          "ocspSigning": false,
+          "serverAuth": false,
+          "timeStamping": false
+        },
+        "unknownExtendedKeyUsages": [
+          {
+            "objectIdPath": [
+              1,
+              7
+            ]
+          }
+        ]
+      },
+      "policyIds": [
+        {
+          "objectIdPath": [
+            1,
+            7
+          ]
+        }
+      ]
+    },
+    "identityConstraints": {
+      "allowSubjectAltNamesPassthrough": false,
+      "allowSubjectPassthrough": false,
+      "celExpression": {
+        "description": "Always false",
+        "expression": "false",
+        "location": "devops.ca_pool.json",
+        "title": "Sample expression"
+      }
+    },
+    "maximumLifetime": "43200s",
+    "passthroughExtensions": {
+      "additionalExtensions": [
+        {
+          "objectIdPath": [
+            1,
+            7
+          ]
+        }
+      ],
+      "knownExtensions": [
+        "BASE_KEY_USAGE"
+      ]
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
+  "tier": "ENTERPRISE"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CaPool",
+    "issuancePolicy": {
+      "allowedIssuanceModes": {
+        "allowCsrBasedIssuance": true
+      },
+      "allowedKeyTypes": [
+        {
+          "rsa": {
+            "maxModulusSize": "128",
+            "minModulusSize": "64"
+          }
+        },
+        {
+          "ellipticCurve": {
+            "signatureAlgorithm": "ECDSA_P384"
+          }
+        }
+      ],
+      "baselineValues": {
+        "additionalExtensions": [
+          {
+            "objectId": {
+              "objectIdPath": [
+                1,
+                7
+              ]
+            },
+            "value": "c3RyaW5nCg=="
+          }
+        ],
+        "aiaOcspServers": [
+          "string"
+        ],
+        "caOptions": {
+          "isCa": false,
+          "maxIssuerPathLength": 7
+        },
+        "keyUsage": {
+          "unknownExtendedKeyUsages": [
+            {
+              "objectIdPath": [
+                1,
+                7
+              ]
+            }
+          ]
+        },
+        "policyIds": [
+          {
+            "objectIdPath": [
+              1,
+              7
+            ]
+          }
+        ]
+      },
+      "identityConstraints": {
+        "allowSubjectAltNamesPassthrough": false,
+        "allowSubjectPassthrough": false,
+        "celExpression": {
+          "description": "Always false",
+          "expression": "false",
+          "location": "devops.ca_pool.json",
+          "title": "Sample expression"
+        }
+      },
+      "maximumLifetime": "43200s",
+      "passthroughExtensions": {
+        "additionalExtensions": [
+          {
+            "objectIdPath": [
+              1,
+              7
+            ]
+          }
+        ],
+        "knownExtensions": [
+          "BASE_KEY_USAGE"
+        ]
+      }
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "label-two": "value-two",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
+    "tier": "ENTERPRISE"
+  }
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "issuancePolicy": {
+    "allowedIssuanceModes": {
+      "allowCsrBasedIssuance": true
+    },
+    "allowedKeyTypes": [
+      {
+        "rsa": {
+          "maxModulusSize": "128",
+          "minModulusSize": "64"
+        }
+      },
+      {
+        "ellipticCurve": {
+          "signatureAlgorithm": "ECDSA_P384"
+        }
+      }
+    ],
+    "baselineValues": {
+      "additionalExtensions": [
+        {
+          "objectId": {
+            "objectIdPath": [
+              1,
+              7
+            ]
+          },
+          "value": "c3RyaW5nCg=="
+        }
+      ],
+      "aiaOcspServers": [
+        "string"
+      ],
+      "caOptions": {
+        "isCa": false,
+        "maxIssuerPathLength": 7
+      },
+      "keyUsage": {
+        "unknownExtendedKeyUsages": [
+          {
+            "objectIdPath": [
+              1,
+              7
+            ]
+          }
+        ]
+      },
+      "policyIds": [
+        {
+          "objectIdPath": [
+            1,
+            7
+          ]
+        }
+      ]
+    },
+    "identityConstraints": {
+      "allowSubjectAltNamesPassthrough": false,
+      "allowSubjectPassthrough": false,
+      "celExpression": {
+        "description": "Always false",
+        "expression": "false",
+        "location": "devops.ca_pool.json",
+        "title": "Sample expression"
+      }
+    },
+    "maximumLifetime": "43200s",
+    "passthroughExtensions": {
+      "additionalExtensions": [
+        {
+          "objectIdPath": [
+            1,
+            7
+          ]
+        }
+      ],
+      "knownExtensions": [
+        "BASE_KEY_USAGE"
+      ]
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
+  "tier": "ENTERPRISE"
+}
+
+---
+
+PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json&updateMask=issuancePolicy%2Clabels%2CpublishingOptions
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "issuancePolicy": {
+    "allowedIssuanceModes": {
+      "allowConfigBasedIssuance": true,
+      "allowCsrBasedIssuance": false
+    },
+    "allowedKeyTypes": [
+      {
+        "rsa": {
+          "maxModulusSize": 256,
+          "minModulusSize": 128
+        }
+      },
+      {
+        "ellipticCurve": {
+          "signatureAlgorithm": "ECDSA_P256"
+        }
+      }
+    ],
+    "baselineValues": {
+      "additionalExtensions": [
+        {
+          "critical": true,
+          "objectId": {
+            "objectIdPath": [
+              1,
+              6
+            ]
+          },
+          "value": "bmV3LXN0cmluZwo="
+        }
+      ],
+      "aiaOcspServers": [
+        "new-string"
+      ],
+      "caOptions": {
+        "isCa": true,
+        "maxIssuerPathLength": 6
+      },
+      "keyUsage": {
+        "baseKeyUsage": {
+          "certSign": true,
+          "contentCommitment": true,
+          "crlSign": true,
+          "dataEncipherment": true,
+          "decipherOnly": true,
+          "digitalSignature": true,
+          "encipherOnly": true,
+          "keyAgreement": true,
+          "keyEncipherment": true
+        },
+        "extendedKeyUsage": {
+          "clientAuth": true,
+          "codeSigning": true,
+          "emailProtection": true,
+          "ocspSigning": true,
+          "serverAuth": true,
+          "timeStamping": true
+        },
+        "unknownExtendedKeyUsages": [
+          {
+            "objectIdPath": [
+              1,
+              6
+            ]
+          }
+        ]
+      },
+      "policyIds": [
+        {
+          "objectIdPath": [
+            1,
+            6
+          ]
+        }
+      ]
+    },
+    "identityConstraints": {
+      "allowSubjectAltNamesPassthrough": true,
+      "allowSubjectPassthrough": true,
+      "celExpression": {
+        "description": "Always true",
+        "expression": "true",
+        "location": "update_devops.ca_pool.json",
+        "title": "Updated expression"
+      }
+    },
+    "maximumLifetime": "86400s",
+    "passthroughExtensions": {
+      "additionalExtensions": [
+        {
+          "objectIdPath": [
+            1,
+            6
+          ]
+        }
+      ],
+      "knownExtensions": [
+        "EXTENDED_KEY_USAGE"
+      ]
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
+  "publishingOptions": {
+    "publishCaCert": true,
+    "publishCrl": true
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CaPool",
+    "issuancePolicy": {
+      "allowedIssuanceModes": {
+        "allowConfigBasedIssuance": true
+      },
+      "allowedKeyTypes": [
+        {
+          "rsa": {
+            "maxModulusSize": "256",
+            "minModulusSize": "128"
+          }
+        },
+        {
+          "ellipticCurve": {
+            "signatureAlgorithm": "ECDSA_P256"
+          }
+        }
+      ],
+      "baselineValues": {
+        "additionalExtensions": [
+          {
+            "critical": true,
+            "objectId": {
+              "objectIdPath": [
+                1,
+                6
+              ]
+            },
+            "value": "bmV3LXN0cmluZwo="
+          }
+        ],
+        "aiaOcspServers": [
+          "new-string"
+        ],
+        "caOptions": {
+          "isCa": true,
+          "maxIssuerPathLength": 6
+        },
+        "keyUsage": {
+          "baseKeyUsage": {
+            "certSign": true,
+            "contentCommitment": true,
+            "crlSign": true,
+            "dataEncipherment": true,
+            "decipherOnly": true,
+            "digitalSignature": true,
+            "encipherOnly": true,
+            "keyAgreement": true,
+            "keyEncipherment": true
+          },
+          "extendedKeyUsage": {
+            "clientAuth": true,
+            "codeSigning": true,
+            "emailProtection": true,
+            "ocspSigning": true,
+            "serverAuth": true,
+            "timeStamping": true
+          },
+          "unknownExtendedKeyUsages": [
+            {
+              "objectIdPath": [
+                1,
+                6
+              ]
+            }
+          ]
+        },
+        "policyIds": [
+          {
+            "objectIdPath": [
+              1,
+              6
+            ]
+          }
+        ]
+      },
+      "identityConstraints": {
+        "allowSubjectAltNamesPassthrough": true,
+        "allowSubjectPassthrough": true,
+        "celExpression": {
+          "description": "Always true",
+          "expression": "true",
+          "location": "update_devops.ca_pool.json",
+          "title": "Updated expression"
+        }
+      },
+      "maximumLifetime": "86400s",
+      "passthroughExtensions": {
+        "additionalExtensions": [
+          {
+            "objectIdPath": [
+              1,
+              6
+            ]
+          }
+        ],
+        "knownExtensions": [
+          "EXTENDED_KEY_USAGE"
+        ]
+      }
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "label-two": "value-two",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
+    "publishingOptions": {
+      "publishCaCert": true,
+      "publishCrl": true
+    },
+    "tier": "ENTERPRISE"
+  }
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "issuancePolicy": {
+    "allowedIssuanceModes": {
+      "allowConfigBasedIssuance": true
+    },
+    "allowedKeyTypes": [
+      {
+        "rsa": {
+          "maxModulusSize": "256",
+          "minModulusSize": "128"
+        }
+      },
+      {
+        "ellipticCurve": {
+          "signatureAlgorithm": "ECDSA_P256"
+        }
+      }
+    ],
+    "baselineValues": {
+      "additionalExtensions": [
+        {
+          "critical": true,
+          "objectId": {
+            "objectIdPath": [
+              1,
+              6
+            ]
+          },
+          "value": "bmV3LXN0cmluZwo="
+        }
+      ],
+      "aiaOcspServers": [
+        "new-string"
+      ],
+      "caOptions": {
+        "isCa": true,
+        "maxIssuerPathLength": 6
+      },
+      "keyUsage": {
+        "baseKeyUsage": {
+          "certSign": true,
+          "contentCommitment": true,
+          "crlSign": true,
+          "dataEncipherment": true,
+          "decipherOnly": true,
+          "digitalSignature": true,
+          "encipherOnly": true,
+          "keyAgreement": true,
+          "keyEncipherment": true
+        },
+        "extendedKeyUsage": {
+          "clientAuth": true,
+          "codeSigning": true,
+          "emailProtection": true,
+          "ocspSigning": true,
+          "serverAuth": true,
+          "timeStamping": true
+        },
+        "unknownExtendedKeyUsages": [
+          {
+            "objectIdPath": [
+              1,
+              6
+            ]
+          }
+        ]
+      },
+      "policyIds": [
+        {
+          "objectIdPath": [
+            1,
+            6
+          ]
+        }
+      ]
+    },
+    "identityConstraints": {
+      "allowSubjectAltNamesPassthrough": true,
+      "allowSubjectPassthrough": true,
+      "celExpression": {
+        "description": "Always true",
+        "expression": "true",
+        "location": "update_devops.ca_pool.json",
+        "title": "Updated expression"
+      }
+    },
+    "maximumLifetime": "86400s",
+    "passthroughExtensions": {
+      "additionalExtensions": [
+        {
+          "objectIdPath": [
+            1,
+            6
+          ]
+        }
+      ],
+      "knownExtensions": [
+        "EXTENDED_KEY_USAGE"
+      ]
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "label-two": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
+  "publishingOptions": {
+    "publishCaCert": true,
+    "publishCrl": true
+  },
+  "tier": "ENTERPRISE"
+}
+
+---
+
+DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}

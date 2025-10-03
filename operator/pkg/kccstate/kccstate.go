@@ -32,20 +32,21 @@ import (
 func FetchLiveKCCState(ctx context.Context, c client.Client, resourceNN types.NamespacedName) (v1beta1.ConfigConnector, v1beta1.ConfigConnectorContext, error) {
 	var cc v1beta1.ConfigConnector
 	if err := c.Get(ctx, types.NamespacedName{
-		Name: k8s.ConfigConnectorAllowedName,
+		Name: v1beta1.ConfigConnectorAllowedName,
 	}, &cc); err != nil {
 		if errors.IsNotFound(err) {
-			klog.Infof("%v object is not found", k8s.ConfigConnectorAllowedName)
+			klog.Infof("%v object is not found", v1beta1.ConfigConnectorAllowedName)
 			// if no CC exists, then by definition, KCC cannot be running in namespaced mode;
 			return v1beta1.ConfigConnector{}, v1beta1.ConfigConnectorContext{}, nil
 		}
 		return v1beta1.ConfigConnector{}, v1beta1.ConfigConnectorContext{}, err
 	}
 
-	if cc.Spec.Mode == k8s.NamespacedMode {
+	// Namespaced mode is the default mode for the ConfigConnector object.
+	if cc.Spec.Mode == "" || cc.Spec.Mode == k8s.NamespacedMode {
 		var ccc v1beta1.ConfigConnectorContext
 		if err := c.Get(ctx, types.NamespacedName{
-			Name:      k8s.ConfigConnectorContextAllowedName,
+			Name:      v1beta1.ConfigConnectorContextAllowedName,
 			Namespace: resourceNN.Namespace,
 		}, &ccc); err != nil {
 

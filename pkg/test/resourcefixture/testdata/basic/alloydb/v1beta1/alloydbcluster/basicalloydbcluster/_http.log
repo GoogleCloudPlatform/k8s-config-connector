@@ -1,9 +1,8 @@
-GET https://compute.googleapis.com/compute/beta/projects/${projectId}/global/networks/default?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -19,67 +18,63 @@ X-Xss-Protection: 0
   "description": "Default network for the project",
   "id": "000000000000000000000",
   "kind": "compute#network",
-  "name": "default",
+  "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "routingMode": "REGIONAL"
-  },
-  "selfLink": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/default",
-  "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "subnetworks": [
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-east1/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-west2/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/asia-south2/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/me-central1/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west6/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/southamerica-east1/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west8/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/africa-south1/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-west8/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-north1/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-west3/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-east4/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-east7/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/asia-southeast1/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-west1/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west12/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/asia-northeast1/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/asia-northeast3/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/asia-southeast2/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-west4/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west2/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-central2/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/australia-southeast2/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west4/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west1/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/southamerica-west1/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/asia-northeast2/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/me-central2/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west9/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/northamerica-northeast2/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/me-west1/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-southwest1/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west10/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/asia-east1/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/asia-east2/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/australia-southeast1/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-east5/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/asia-south1/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/northamerica-northeast1/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-south1/subnetworks/default",
-    "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/europe-west3/subnetworks/default"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}"
   ]
 }
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1%2Fclusters%2Falloydbcluster${uniqueId}
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -92,20 +87,20 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}' was not found",
+    "message": "Resource 'projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters?alt=json&clusterId=alloydbcluster${uniqueId}
+POST https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=alloydbcluster${uniqueId}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1
 
 {
-  "clusterType": "PRIMARY",
-  "displayName": "test alloydb cluster",
+  "clusterType": 1,
   "initialUser": {
     "password": "postgres",
     "user": "postgres"
@@ -115,12 +110,11 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
     "managed-by-cnrm": "true"
   },
   "networkConfig": {
-    "network": "projects/${projectId}/global/networks/default"
+    "network": "projects/${projectId}/global/networks/${networkID}"
   }
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -137,20 +131,20 @@ X-Xss-Protection: 0
     "apiVersion": "v1beta",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}",
+    "target": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/southamerica-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/operations/${operationID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1%2Foperations%2F${operationID}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -168,16 +162,16 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}",
+    "target": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/southamerica-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Cluster",
     "automatedBackupPolicy": {
       "backupWindow": "3600s",
       "enabled": false,
-      "location": "us-central1",
+      "location": "southamerica-east1",
       "timeBasedRetention": {
         "retentionPeriod": "1209600s"
       },
@@ -219,18 +213,23 @@ X-Xss-Protection: 0
       ]
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_15",
+    "databaseVersion": "POSTGRES_16",
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
     "geminiConfig": {},
-    "name": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}",
-    "network": "projects/${projectNumber}/global/networks/default",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
+    "network": "projects/${projectNumber}/global/networks/${networkID}",
     "networkConfig": {
-      "network": "projects/${projectNumber}/global/networks/default"
+      "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
     "state": "READY",
+    "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -238,12 +237,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1%2Fclusters%2Falloydbcluster${uniqueId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -257,19 +256,19 @@ X-Xss-Protection: 0
   "automatedBackupPolicy": {
     "backupWindow": "3600s",
     "enabled": false,
-    "location": "us-central1",
+    "location": "southamerica-east1",
     "timeBasedRetention": {
       "retentionPeriod": "1209600s"
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
       ],
       "startTimes": [
         {
@@ -278,7 +277,7 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "clusterType": "PRIMARY",
+  "clusterType": 1,
   "continuousBackupConfig": {
     "enabled": true,
     "recoveryWindowDays": 14
@@ -286,64 +285,64 @@ X-Xss-Protection: 0
   "continuousBackupInfo": {
     "enabledTime": "2024-04-01T12:34:56.123456Z",
     "encryptionInfo": {
-      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+      "encryptionType": 1
     },
     "schedule": [
-      "MONDAY",
-      "TUESDAY",
-      "WEDNESDAY",
-      "THURSDAY",
-      "FRIDAY",
-      "SATURDAY",
-      "SUNDAY"
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "POSTGRES_15",
+  "databaseVersion": 4,
   "encryptionInfo": {
-    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    "encryptionType": 1
   },
   "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}",
-  "network": "projects/${projectNumber}/global/networks/default",
+  "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
+  "network": "projects/${projectNumber}/global/networks/${networkID}",
   "networkConfig": {
-    "network": "projects/${projectNumber}/global/networks/default"
+    "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
-  "state": "READY",
+  "state": 1,
+  "subscriptionType": 1,
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}?alt=json&updateMask=displayName%2CautomatedBackupPolicy
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=initialUser
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1%2Fclusters%2Falloydbcluster${uniqueId}
 
 {
   "automatedBackupPolicy": {
     "backupWindow": "3600s",
-    "labels": {
-      "source": "kcc-test"
-    },
-    "location": "us-central1",
+    "enabled": false,
+    "location": "southamerica-east1",
     "timeBasedRetention": {
       "retentionPeriod": "1209600s"
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
       ],
       "startTimes": [
         {
@@ -352,28 +351,31 @@ User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 t
       ]
     }
   },
-  "clusterType": "PRIMARY",
+  "clusterType": 1,
   "continuousBackupConfig": {
     "enabled": true,
     "recoveryWindowDays": 14
   },
-  "displayName": "test alloydb cluster 2",
+  "databaseVersion": 4,
+  "geminiConfig": {},
   "initialUser": {
-    "password": "postgres",
+    "password": "updated",
     "user": "postgres"
   },
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "network": "projects/${projectNumber}/global/networks/default",
+  "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "networkConfig": {
-    "network": "projects/${projectNumber}/global/networks/default"
-  }
+    "network": "projects/${projectId}/global/networks/${networkID}"
+  },
+  "reconciling": false,
+  "subscriptionType": 1
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -390,20 +392,20 @@ X-Xss-Protection: 0
     "apiVersion": "v1beta",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}",
+    "target": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/southamerica-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/operations/${operationID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1%2Foperations%2F${operationID}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -421,19 +423,16 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}",
+    "target": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/southamerica-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Cluster",
     "automatedBackupPolicy": {
       "backupWindow": "3600s",
       "enabled": false,
-      "labels": {
-        "source": "kcc-test"
-      },
-      "location": "us-central1",
+      "location": "southamerica-east1",
       "timeBasedRetention": {
         "retentionPeriod": "1209600s"
       },
@@ -475,18 +474,23 @@ X-Xss-Protection: 0
       ]
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseVersion": "POSTGRES_15",
+    "databaseVersion": "POSTGRES_16",
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
     "geminiConfig": {},
-    "name": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}",
-    "network": "projects/${projectNumber}/global/networks/default",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
+    "network": "projects/${projectNumber}/global/networks/${networkID}",
     "networkConfig": {
-      "network": "projects/${projectNumber}/global/networks/default"
+      "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
     "state": "READY",
+    "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -494,12 +498,12 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1%2Fclusters%2Falloydbcluster${uniqueId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -513,22 +517,19 @@ X-Xss-Protection: 0
   "automatedBackupPolicy": {
     "backupWindow": "3600s",
     "enabled": false,
-    "labels": {
-      "source": "kcc-test"
-    },
-    "location": "us-central1",
+    "location": "southamerica-east1",
     "timeBasedRetention": {
       "retentionPeriod": "1209600s"
     },
     "weeklySchedule": {
       "daysOfWeek": [
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
       ],
       "startTimes": [
         {
@@ -537,7 +538,7 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "clusterType": "PRIMARY",
+  "clusterType": 1,
   "continuousBackupConfig": {
     "enabled": true,
     "recoveryWindowDays": 14
@@ -545,47 +546,48 @@ X-Xss-Protection: 0
   "continuousBackupInfo": {
     "enabledTime": "2024-04-01T12:34:56.123456Z",
     "encryptionInfo": {
-      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+      "encryptionType": 1
     },
     "schedule": [
-      "MONDAY",
-      "TUESDAY",
-      "WEDNESDAY",
-      "THURSDAY",
-      "FRIDAY",
-      "SATURDAY",
-      "SUNDAY"
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
     ]
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseVersion": "POSTGRES_15",
+  "databaseVersion": 4,
   "encryptionInfo": {
-    "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    "encryptionType": 1
   },
   "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}",
-  "network": "projects/${projectNumber}/global/networks/default",
+  "name": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
+  "network": "projects/${projectNumber}/global/networks/${networkID}",
   "networkConfig": {
-    "network": "projects/${projectNumber}/global/networks/default"
+    "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
-  "state": "READY",
+  "state": 1,
+  "subscriptionType": 1,
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}?alt=json
+DELETE https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1%2Fclusters%2Falloydbcluster${uniqueId}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -602,20 +604,20 @@ X-Xss-Protection: 0
     "apiVersion": "v1beta",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}",
+    "target": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/southamerica-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/southamerica-east1/operations/${operationID}
 Content-Type: application/json
-User-Agent: Terraform/ (+https://www.terraform.io) Terraform-Plugin-SDK/2.10.1 terraform-provider-google-beta/kcc/controller-manager
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fsouthamerica-east1%2Foperations%2F${operationID}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -633,10 +635,10 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/us-central1/clusters/alloydbcluster${uniqueId}",
+    "target": "projects/${projectId}/locations/southamerica-east1/clusters/alloydbcluster${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/southamerica-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }

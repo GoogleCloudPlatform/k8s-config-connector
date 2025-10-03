@@ -1,0 +1,172 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum Cloudbuildv2AlphaConnectionInstallationStateStageEnum {
+  Cloudbuildv2AlphaConnectionInstallationStateStageEnumNO_VALUE_DO_NOT_USE = 0;
+  Cloudbuildv2AlphaConnectionInstallationStateStageEnumSTAGE_UNSPECIFIED = 1;
+  Cloudbuildv2AlphaConnectionInstallationStateStageEnumPENDING_CREATE_APP = 2;
+  Cloudbuildv2AlphaConnectionInstallationStateStageEnumPENDING_USER_OAUTH = 3;
+  Cloudbuildv2AlphaConnectionInstallationStateStageEnumPENDING_INSTALL_APP = 4;
+  Cloudbuildv2AlphaConnectionInstallationStateStageEnumCOMPLETE = 5;
+}
+
+message Cloudbuildv2AlphaConnection {
+  string name = 1;
+  string create_time = 2;
+  string update_time = 3;
+  Cloudbuildv2AlphaConnectionGithubConfig github_config = 4;
+  Cloudbuildv2AlphaConnectionGithubEnterpriseConfig github_enterprise_config = 5;
+  Cloudbuildv2AlphaConnectionGitlabConfig gitlab_config = 6;
+  Cloudbuildv2AlphaConnectionBitbucketDataCenterConfig bitbucket_data_center_config = 7;
+  Cloudbuildv2AlphaConnectionBitbucketCloudConfig bitbucket_cloud_config = 8;
+  Cloudbuildv2AlphaConnectionInstallationState installation_state = 9;
+  bool disabled = 10;
+  bool reconciling = 11;
+  map<string, string> annotations = 12;
+  string etag = 13;
+  string project = 14;
+  string location = 15;
+}
+
+message Cloudbuildv2AlphaConnectionGithubConfig {
+  Cloudbuildv2AlphaConnectionGithubConfigAuthorizerCredential authorizer_credential = 1;
+  int64 app_installation_id = 2;
+}
+
+message Cloudbuildv2AlphaConnectionGithubConfigAuthorizerCredential {
+  string oauth_token_secret_version = 1;
+  string username = 2;
+}
+
+message Cloudbuildv2AlphaConnectionGithubEnterpriseConfig {
+  string host_uri = 1;
+  int64 app_id = 2;
+  string app_slug = 3;
+  string private_key_secret_version = 4;
+  string webhook_secret_secret_version = 5;
+  int64 app_installation_id = 6;
+  Cloudbuildv2AlphaConnectionGithubEnterpriseConfigServiceDirectoryConfig service_directory_config = 7;
+  string ssl_ca = 8;
+}
+
+message Cloudbuildv2AlphaConnectionGithubEnterpriseConfigServiceDirectoryConfig {
+  string service = 1;
+}
+
+message Cloudbuildv2AlphaConnectionGitlabConfig {
+  string host_uri = 1;
+  string webhook_secret_secret_version = 2;
+  Cloudbuildv2AlphaConnectionGitlabConfigReadAuthorizerCredential read_authorizer_credential = 3;
+  Cloudbuildv2AlphaConnectionGitlabConfigAuthorizerCredential authorizer_credential = 4;
+  Cloudbuildv2AlphaConnectionGitlabConfigServiceDirectoryConfig service_directory_config = 5;
+  string ssl_ca = 6;
+  string server_version = 7;
+}
+
+message Cloudbuildv2AlphaConnectionGitlabConfigReadAuthorizerCredential {
+  string user_token_secret_version = 1;
+  string username = 2;
+}
+
+message Cloudbuildv2AlphaConnectionGitlabConfigAuthorizerCredential {
+  string user_token_secret_version = 1;
+  string username = 2;
+}
+
+message Cloudbuildv2AlphaConnectionGitlabConfigServiceDirectoryConfig {
+  string service = 1;
+}
+
+message Cloudbuildv2AlphaConnectionBitbucketDataCenterConfig {
+  string host_uri = 1;
+  string webhook_secret_secret_version = 2;
+  Cloudbuildv2AlphaConnectionBitbucketDataCenterConfigReadAuthorizerCredential read_authorizer_credential = 3;
+  Cloudbuildv2AlphaConnectionBitbucketDataCenterConfigAuthorizerCredential authorizer_credential = 4;
+  Cloudbuildv2AlphaConnectionBitbucketDataCenterConfigServiceDirectoryConfig service_directory_config = 5;
+  string ssl_ca = 6;
+  string server_version = 7;
+}
+
+message Cloudbuildv2AlphaConnectionBitbucketDataCenterConfigReadAuthorizerCredential {
+  string user_token_secret_version = 1;
+  string username = 2;
+}
+
+message Cloudbuildv2AlphaConnectionBitbucketDataCenterConfigAuthorizerCredential {
+  string user_token_secret_version = 1;
+  string username = 2;
+}
+
+message Cloudbuildv2AlphaConnectionBitbucketDataCenterConfigServiceDirectoryConfig {
+  string service = 1;
+}
+
+message Cloudbuildv2AlphaConnectionBitbucketCloudConfig {
+  string workspace = 1;
+  string webhook_secret_secret_version = 2;
+  Cloudbuildv2AlphaConnectionBitbucketCloudConfigReadAuthorizerCredential read_authorizer_credential = 3;
+  Cloudbuildv2AlphaConnectionBitbucketCloudConfigAuthorizerCredential authorizer_credential = 4;
+}
+
+message Cloudbuildv2AlphaConnectionBitbucketCloudConfigReadAuthorizerCredential {
+  string user_token_secret_version = 1;
+  string username = 2;
+}
+
+message Cloudbuildv2AlphaConnectionBitbucketCloudConfigAuthorizerCredential {
+  string user_token_secret_version = 1;
+  string username = 2;
+}
+
+message Cloudbuildv2AlphaConnectionInstallationState {
+  Cloudbuildv2AlphaConnectionInstallationStateStageEnum stage = 1;
+  string message = 2;
+  string action_uri = 3;
+}
+
+message ApplyCloudbuildv2AlphaConnectionRequest {
+  Cloudbuildv2AlphaConnection resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteCloudbuildv2AlphaConnectionRequest {
+  string service_account_file = 1;
+  Cloudbuildv2AlphaConnection resource = 2;
+}
+
+message ListCloudbuildv2AlphaConnectionRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListCloudbuildv2AlphaConnectionResponse {
+  repeated Cloudbuildv2AlphaConnection items = 1;
+}
+
+service Cloudbuildv2AlphaConnectionService {
+  rpc ApplyCloudbuildv2AlphaConnection(ApplyCloudbuildv2AlphaConnectionRequest) returns (Cloudbuildv2AlphaConnection);
+  rpc DeleteCloudbuildv2AlphaConnection(DeleteCloudbuildv2AlphaConnectionRequest) returns (google.protobuf.Empty);
+  rpc ListCloudbuildv2AlphaConnection(ListCloudbuildv2AlphaConnectionRequest) returns (ListCloudbuildv2AlphaConnectionResponse);
+}

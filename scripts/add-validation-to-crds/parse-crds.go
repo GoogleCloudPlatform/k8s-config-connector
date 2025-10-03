@@ -131,24 +131,28 @@ func processFile(ctx context.Context, p string) error {
 }
 
 func addRefsToCRD(crd *apiextensions.CustomResourceDefinition) error {
+	if crd.Spec.Names.Kind == "IAMAuditConfig" {
+		// no refs here
+		return nil
+	}
 	for _, v := range crd.Spec.Versions {
-		if err := addRefsToProps(v.Schema.OpenAPIV3Schema); err != nil {
+		if err := addRefsToProps("", v.Schema.OpenAPIV3Schema); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func addRefsToProps(props *apiextensions.JSONSchemaProps) error {
+func addRefsToProps(fieldPath string, props *apiextensions.JSONSchemaProps) error {
 	// Descend into arrays
 	if props.Items != nil {
 		if props.Items.Schema != nil {
-			if err := addRefsToProps(props.Items.Schema); err != nil {
+			if err := addRefsToProps(fieldPath+"[]", props.Items.Schema); err != nil {
 				return err
 			}
 		}
 		for i := range props.Items.JSONSchemas {
-			if err := addRefsToProps(&props.Items.JSONSchemas[i]); err != nil {
+			if err := addRefsToProps(fieldPath+"[]", &props.Items.JSONSchemas[i]); err != nil {
 				return err
 			}
 		}
@@ -157,13 +161,13 @@ func addRefsToProps(props *apiextensions.JSONSchemaProps) error {
 	// Descend into objects
 	for k := range props.Properties {
 		v := props.Properties[k]
-		if err := addRefsToProps(&v); err != nil {
+		if err := addRefsToProps(fieldPath+"."+k, &v); err != nil {
 			return err
 		}
 		props.Properties[k] = v
 	}
 
-	if err := addValidationToRefs(props); err != nil {
+	if err := addValidationToRefs(fieldPath, props); err != nil {
 		return err
 	}
 	return nil
@@ -206,33 +210,118 @@ oneOf:
   - external
 `
 
-func addValidationToRefs(props *apiextensions.JSONSchemaProps) error {
+const refRuleWithOptionalKind = `
+oneOf:
+- not:
+    required:
+    - external
+  required:
+  - name
+- not:
+    anyOf:
+    - required:
+      - name
+    - required:
+      - namespace
+  required:
+  - external
+`
+
+const resourceRefRuleWithOnlyKind = `
+oneOf:
+  - not:
+      required:
+        - external
+    required:
+      - name
+  - not:
+      anyOf:
+        - required:
+            - name
+        - required:
+            - namespace
+    required:
+      - external
+  - not:
+      anyOf:
+        - required:
+            - name
+        - required:
+            - namespace
+        - required:
+            - apiVersion
+        - required:
+            - external
+`
+
+func addValidationToRefs(fieldPath string, props *apiextensions.JSONSchemaProps) error {
 	// Is this a ref?
 	if props.Type != "object" {
 		return nil
 	}
 
-	fields := sets.New[string]()
-	for k := range props.Properties {
-		fields.Insert(k)
-	}
-	signature := strings.Join(sets.List(fields), ",")
-
 	var ruleYAML string
-	if signature == "apiVersion,external,kind,name,namespace" {
-		ruleYAML = refRuleWithKind
-	} else if signature == "external,kind,name,namespace" {
-		ruleYAML = refRuleWithKind
-	} else if signature == "external,name,namespace" {
-		ruleYAML = refRuleWithoutKind
+	if fieldPath == ".spec.bindings[].members[]" {
+		ruleYAML = `
+oneOf:
+  - required:
+    - member
+  - required:
+    - memberFrom
+`
+	} else if fieldPath == ".spec.bindings[].members[].memberFrom" || fieldPath == ".spec.memberFrom" {
+		ruleYAML = `
+oneOf:
+  - required:
+      - bigQueryConnectionConnectionRef
+  - required:
+      - logSinkRef
+  - required:
+      - serviceAccountRef
+  - required:
+      - serviceIdentityRef
+  - required:
+      - sqlInstanceRef
+`
 	} else {
-		if strings.HasPrefix(signature, "external,") {
-			klog.Warningf("unknown signature %q", signature)
+		fields := sets.New[string]()
+		for k := range props.Properties {
+			fields.Insert(k)
 		}
-		if strings.HasPrefix(signature, "apiVersion,external,") {
-			klog.Warningf("unknown signature %q", signature)
+		signature := strings.Join(sets.List(fields), ",")
+		if strings.HasPrefix(signature, "condition,member,memberFrom") && fieldPath == ".spec" { // IAMPolicyMember
+			ruleYAML = `
+oneOf:
+  - required:
+    - member
+  - required:
+    - memberFrom
+`
+		} else if signature == "apiVersion,external,kind,name,namespace" {
+			// hack for IAMPolicy.spec.resourceRef for backwards compat
+			if fieldPath == ".spec.resourceRef" {
+				ruleYAML = resourceRefRuleWithOnlyKind
+			} else {
+				ruleYAML = refRuleWithKind
+			}
+		} else if signature == "external,kind,name,namespace" {
+			ruleYAML = refRuleWithKind
+			// kind is optional for projectRef (and maybe in future other well-known ref types)
+			// fieldPath is the best mechanism we have today (?)
+			if isProjectPath(fieldPath) {
+				ruleYAML = refRuleWithOptionalKind
+			}
+		} else if signature == "external,name,namespace" {
+			ruleYAML = refRuleWithoutKind
+		} else {
+			if strings.HasPrefix(signature, "external,") {
+				klog.Warningf("unknown signature %q", signature)
+			}
+			if strings.HasPrefix(signature, "apiVersion,external,") {
+				klog.Warningf("unknown signature %q", signature)
+			}
+			return nil
 		}
-		return nil
 	}
 
 	rule := &apiextensions.JSONSchemaProps{}
@@ -242,4 +331,9 @@ func addValidationToRefs(props *apiextensions.JSONSchemaProps) error {
 	props.OneOf = rule.OneOf
 
 	return nil
+}
+
+// isProjectPath checks if the given fieldPath defines a Project reference resource.
+func isProjectPath(fieldPath string) bool {
+	return strings.HasSuffix(fieldPath, ".projectRef") || strings.HasSuffix(fieldPath, ".projectRefs[]") || strings.HasSuffix(fieldPath, ".project") || strings.HasSuffix(fieldPath, ".projects[]")
 }

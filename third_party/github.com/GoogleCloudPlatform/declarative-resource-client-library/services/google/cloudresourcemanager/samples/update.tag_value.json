@@ -1,0 +1,6 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "parent": "tagKeys/{{ref:basic.tag_key.json:name}}",
+  "shortName": "{{ref:__state__:shortName}}",
+  "description": "This TagValue has been updated."
+}

@@ -15,24 +15,30 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/spf13/cobra"
 )
 
-const (
-	versionCommandName = "version"
-)
+type VersionOptions struct {
+}
 
-var (
-	versionCmdDescription = fmt.Sprintf("Print the version of %v", commandName)
-	versionCmd            = &cobra.Command{
-		Use:   versionCommandName,
-		Short: versionCmdDescription,
-		Long:  versionCmdDescription,
-		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println(version)
+func AddVersionCommand(parent *cobra.Command) {
+	var opts VersionOptions
+	versionCmd := &cobra.Command{
+		Use:   "version",
+		Short: "Print the version of config-connector",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return RunVersionCommand(cmd.Context(), opts)
 		},
 		Args: cobra.NoArgs,
 	}
-)
+	parent.AddCommand(versionCmd)
+}
+
+func RunVersionCommand(ctx context.Context, opts VersionOptions) error {
+	fmt.Println(version)
+
+	return nil
+}

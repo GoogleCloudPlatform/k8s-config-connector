@@ -13,17 +13,19 @@
 # limitations under the License.
 
 run:
-  timeout: 5m
-  skip-dirs:
+  timeout: 10m
+issues:
+  exclude-dirs:
     - third_party
     - pkg/clients/generated
     - temp-vendor
+    - dev/tools/proto-to-mapper
 linters:
   disable-all: true
   enable:
+    - depguard
     - errcheck
     - errorlint
-    # - exportloopref
     # - forcetypeassert
     # - gci
     # - gocritic
@@ -58,3 +60,13 @@ linters-settings:
       - shadow
       - testinggoroutine
       - unusedwrite
+  depguard:
+    rules:
+      main:
+        deny:
+          - pkg: "github.com/ghodss/yaml"
+            desc: Use "sigs.k8s.io/yaml"
+          - pkg: "yaml/v2"
+            desc: Use "sigs.k8s.io/yaml"
+          - pkg: "yaml/v3"
+            desc: Use "sigs.k8s.io/yaml"

@@ -1,0 +1,3 @@
+{
+  "project": "{{ref:basic.firebase_project.json:project}}"
+}

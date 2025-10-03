@@ -1,0 +1,6 @@
+{
+  "name": "{{network}}",
+  "project": "{{project}}",
+  "location": "global",
+  "type": "STANDARD"
+}

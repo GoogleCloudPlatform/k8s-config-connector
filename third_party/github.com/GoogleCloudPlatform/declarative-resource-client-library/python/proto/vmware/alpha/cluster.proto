@@ -1,0 +1,72 @@
+// Copyright 2023 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum VmwareAlphaClusterStateEnum {
+  VmwareAlphaClusterStateEnumNO_VALUE_DO_NOT_USE = 0;
+  VmwareAlphaClusterStateEnumSTATE_UNSPECIFIED = 1;
+  VmwareAlphaClusterStateEnumACTIVE = 2;
+  VmwareAlphaClusterStateEnumCREATING = 3;
+  VmwareAlphaClusterStateEnumUPDATING = 4;
+  VmwareAlphaClusterStateEnumDELETING = 5;
+  VmwareAlphaClusterStateEnumREPAIRING = 6;
+}
+
+message VmwareAlphaCluster {
+  string name = 1;
+  string create_time = 2;
+  string update_time = 3;
+  VmwareAlphaClusterStateEnum state = 4;
+  bool management = 5;
+  string uid = 6;
+  string project = 7;
+  string location = 8;
+  string private_cloud = 9;
+}
+
+message ApplyVmwareAlphaClusterRequest {
+  VmwareAlphaCluster resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteVmwareAlphaClusterRequest {
+  string service_account_file = 1;
+  VmwareAlphaCluster resource = 2;
+}
+
+message ListVmwareAlphaClusterRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string PrivateCloud = 4;
+}
+
+message ListVmwareAlphaClusterResponse {
+  repeated VmwareAlphaCluster items = 1;
+}
+
+service VmwareAlphaClusterService {
+  rpc ApplyVmwareAlphaCluster(ApplyVmwareAlphaClusterRequest) returns (VmwareAlphaCluster);
+  rpc DeleteVmwareAlphaCluster(DeleteVmwareAlphaClusterRequest) returns (google.protobuf.Empty);
+  rpc ListVmwareAlphaCluster(ListVmwareAlphaClusterRequest) returns (ListVmwareAlphaClusterResponse);
+}

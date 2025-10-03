@@ -1,0 +1,60 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum AppengineFirewallRuleActionEnum {
+  AppengineFirewallRuleActionEnumNO_VALUE_DO_NOT_USE = 0;
+  AppengineFirewallRuleActionEnumUNSPECIFIED_ACTION = 1;
+  AppengineFirewallRuleActionEnumALLOW = 2;
+  AppengineFirewallRuleActionEnumDENY = 3;
+}
+
+message AppengineFirewallRule {
+  AppengineFirewallRuleActionEnum action = 1;
+  string description = 2;
+  int64 priority = 3;
+  string source_range = 4;
+  string app = 5;
+}
+
+message ApplyAppengineFirewallRuleRequest {
+  AppengineFirewallRule resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteAppengineFirewallRuleRequest {
+  string service_account_file = 1;
+  AppengineFirewallRule resource = 2;
+}
+
+message ListAppengineFirewallRuleRequest {
+  string service_account_file = 1;
+  string App = 2;
+}
+
+message ListAppengineFirewallRuleResponse {
+  repeated AppengineFirewallRule items = 1;
+}
+
+service AppengineFirewallRuleService {
+  rpc ApplyAppengineFirewallRule(ApplyAppengineFirewallRuleRequest) returns (AppengineFirewallRule);
+  rpc DeleteAppengineFirewallRule(DeleteAppengineFirewallRuleRequest) returns (google.protobuf.Empty);
+  rpc ListAppengineFirewallRule(ListAppengineFirewallRuleRequest) returns (ListAppengineFirewallRuleResponse);
+}

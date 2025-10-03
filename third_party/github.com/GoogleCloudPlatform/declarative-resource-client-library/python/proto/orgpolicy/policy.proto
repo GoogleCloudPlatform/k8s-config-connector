@@ -1,0 +1,112 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+message OrgpolicyPolicy {
+  string name = 1;
+  OrgpolicyPolicySpec spec = 2;
+  OrgpolicyPolicyDryRunSpec dry_run_spec = 3;
+  string etag = 4;
+  string parent = 5;
+}
+
+message OrgpolicyPolicySpec {
+  string etag = 1;
+  string update_time = 2;
+  repeated OrgpolicyPolicySpecRules rules = 3;
+  bool inherit_from_parent = 4;
+  bool reset = 5;
+}
+
+message OrgpolicyPolicySpecRules {
+  OrgpolicyPolicySpecRulesValues values = 1;
+  bool allow_all = 2;
+  bool deny_all = 3;
+  bool enforce = 4;
+  OrgpolicyPolicySpecRulesCondition condition = 5;
+}
+
+message OrgpolicyPolicySpecRulesValues {
+  repeated string allowed_values = 1;
+  repeated string denied_values = 2;
+}
+
+message OrgpolicyPolicySpecRulesCondition {
+  string expression = 1;
+  string title = 2;
+  string description = 3;
+  string location = 4;
+}
+
+message OrgpolicyPolicyDryRunSpec {
+  string etag = 1;
+  string update_time = 2;
+  repeated OrgpolicyPolicyDryRunSpecRules rules = 3;
+  bool inherit_from_parent = 4;
+  bool reset = 5;
+}
+
+message OrgpolicyPolicyDryRunSpecRules {
+  OrgpolicyPolicyDryRunSpecRulesValues values = 1;
+  bool allow_all = 2;
+  bool deny_all = 3;
+  bool enforce = 4;
+  OrgpolicyPolicyDryRunSpecRulesCondition condition = 5;
+}
+
+message OrgpolicyPolicyDryRunSpecRulesValues {
+  repeated string allowed_values = 1;
+  repeated string denied_values = 2;
+}
+
+message OrgpolicyPolicyDryRunSpecRulesCondition {
+  string expression = 1;
+  string title = 2;
+  string description = 3;
+  string location = 4;
+}
+
+message ApplyOrgpolicyPolicyRequest {
+  OrgpolicyPolicy resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteOrgpolicyPolicyRequest {
+  string service_account_file = 1;
+  OrgpolicyPolicy resource = 2;
+}
+
+message ListOrgpolicyPolicyRequest {
+  string service_account_file = 1;
+  string Parent = 2;
+}
+
+message ListOrgpolicyPolicyResponse {
+  repeated OrgpolicyPolicy items = 1;
+}
+
+service OrgpolicyPolicyService {
+  rpc ApplyOrgpolicyPolicy(ApplyOrgpolicyPolicyRequest) returns (OrgpolicyPolicy);
+  rpc DeleteOrgpolicyPolicy(DeleteOrgpolicyPolicyRequest) returns (google.protobuf.Empty);
+  rpc ListOrgpolicyPolicy(ListOrgpolicyPolicyRequest) returns (ListOrgpolicyPolicyResponse);
+}

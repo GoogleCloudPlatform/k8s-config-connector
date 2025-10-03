@@ -1,0 +1,30 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dataflow.cnrm.cloud.google.com/v1beta1
+kind: DataflowFlexTemplateJob
+metadata:
+  annotations:
+    cnrm.cloud.google.com/on-delete: "cancel"
+  labels:
+    label-one: "value-two"
+  name: streamingdataflowflextemplatejob2-${uniqueId}
+spec:
+  region: us-central1
+  # This is a public, Google-maintained Dataflow Job flex template of a streaming job
+  # https://cloud.google.com/dataflow/docs/guides/templates/provided/pubsub-topic-subscription-to-text
+  containerSpecGcsPath: gs://dataflow-templates-us-central1/2024-08-06-00_RC00/flex/Cloud_PubSub_to_GCS_Text_Flex
+  parameters:
+    inputSubscription: projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}
+    outputDirectory: gs://bucket-dataflow-output-${uniqueId}/path2

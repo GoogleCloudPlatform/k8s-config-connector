@@ -27,11 +27,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	testjitter "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/jitter"
@@ -42,11 +42,11 @@ import (
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
-	"github.com/ghodss/yaml"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"golang.org/x/sync/semaphore"
 	"google.golang.org/api/iam/v1"
 	v1 "k8s.io/api/core/v1"
+	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/wait"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
@@ -54,6 +54,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
+	"sigs.k8s.io/yaml"
 )
 
 var (
@@ -172,12 +173,26 @@ func verifyGSAKeyRemoved(t *testing.T, iamClient *iam.Service, keyName string) {
 	}
 }
 
+func UnmarshalFileToCRD(t *testing.T, fileName string) *apiextensions.CustomResourceDefinition {
+	t.Helper()
+	bytes, err := os.ReadFile(fileName)
+	if err != nil {
+		t.Fatalf("error reading file '%v': %v", fileName, err)
+	}
+	o := &apiextensions.CustomResourceDefinition{}
+	err = yaml.Unmarshal(bytes, o)
+	if err != nil {
+		t.Fatalf("error unmarshalling bytes to CRD: %v", err)
+	}
+	return o
+}
+
 func newTestReconciler(t *testing.T, mgr manager.Manager, crdPath string, provider *tfschema.Provider) reconcile.Reconciler {
 	crdPath, err := filepath.Abs(crdPath)
 	if err != nil {
 		t.Fatalf("error getting path to CRD: %v", err)
 	}
-	crd := dynamic.UnmarshalFileToCRD(t, crdPath)
+	crd := UnmarshalFileToCRD(t, crdPath)
 	smLoader := testservicemappingloader.New(t)
 	// Set 'immediateReconcileRequests' and 'resourceWatcherRoutines'
 	// to nil to disable reconciler's ability to create asynchronous
@@ -189,7 +204,7 @@ func newTestReconciler(t *testing.T, mgr manager.Manager, crdPath string, provid
 	var immediateReconcileRequests chan event.GenericEvent = nil
 	var resourceWatcherRoutines *semaphore.Weighted = nil
 
-	stateIntoSpecDefaulter := k8s.NewStateIntoSpecDefaulter(mgr.GetClient())
+	stateIntoSpecDefaulter := stateintospec.NewStateIntoSpecDefaulter(mgr.GetClient())
 	reconciler, err := tf.NewReconciler(mgr, crd, provider, smLoader, immediateReconcileRequests, resourceWatcherRoutines, []k8s.Defaulter{stateIntoSpecDefaulter}, &testjitter.TestJitterGenerator{})
 	if err != nil {
 		t.Fatalf("error creating reconciler: %v", err)
@@ -202,7 +217,7 @@ func newSecretGenerator(t *testing.T, mgr manager.Manager, crdPath string) recon
 	if err != nil {
 		t.Fatalf("error getting path to CRD: %v", err)
 	}
-	crd := dynamic.UnmarshalFileToCRD(t, crdPath)
+	crd := UnmarshalFileToCRD(t, crdPath)
 
 	reconciler := newReconciler(mgr, crd, &jitter.SimpleJitterGenerator{})
 	return reconciler

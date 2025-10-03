@@ -1,0 +1,226 @@
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "Sends notifications to indicated webhook URL using HTTP-standard basic authentication. Should be used in conjunction with SSL/TLS to reduce the risk of attackers snooping the credentials.",
+  "displayName": "monitoringnotificationchannel-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "password": "password\n",
+    "url": "http://hooks.example.com/notifications",
+    "username": "admin"
+  },
+  "type": "webhook_basicauth",
+  "userLabels": {
+    "cnrm-test": "true",
+    "key-one": "value-one",
+    "key-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "description": "Sends notifications to indicated webhook URL using HTTP-standard basic authentication. Should be used in conjunction with SSL/TLS to reduce the risk of attackers snooping the credentials.",
+  "displayName": "monitoringnotificationchannel-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "password": "password\n",
+    "url": "http://hooks.example.com/notifications",
+    "username": "admin"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "webhook_basicauth",
+  "userLabels": {
+    "cnrm-test": "true",
+    "key-one": "value-one",
+    "key-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "description": "Sends notifications to indicated webhook URL using HTTP-standard basic authentication. Should be used in conjunction with SSL/TLS to reduce the risk of attackers snooping the credentials.",
+  "displayName": "monitoringnotificationchannel-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "password": "password\n",
+    "url": "http://hooks.example.com/notifications",
+    "username": "admin"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "webhook_basicauth",
+  "userLabels": {
+    "cnrm-test": "true",
+    "key-one": "value-one",
+    "key-two": "value-two",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "Sends notifications to newly indicated webhook URL using HTTP-standard basic authentication. Should be used in conjunction with SSL/TLS to reduce the risk of attackers snooping the credentials.",
+  "displayName": "monitoringnotificationchannel-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "password": "password\n",
+    "url": "http://hooks.example.com/notification",
+    "username": "user"
+  },
+  "type": "webhook_basicauth",
+  "userLabels": {
+    "cnrm-test": "true",
+    "key-one": "value-one",
+    "key-three": "value-three",
+    "key-two": "value-three",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "description": "Sends notifications to indicated webhook URL using HTTP-standard basic authentication. Should be used in conjunction with SSL/TLS to reduce the risk of attackers snooping the credentials.",
+  "displayName": "monitoringnotificationchannel-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "password": "password\n",
+    "url": "http://hooks.example.com/notification",
+    "username": "user"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "webhook_basicauth",
+  "userLabels": {
+    "cnrm-test": "true",
+    "key-one": "value-one",
+    "key-three": "value-three",
+    "key-two": "value-three",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "description": "Sends notifications to indicated webhook URL using HTTP-standard basic authentication. Should be used in conjunction with SSL/TLS to reduce the risk of attackers snooping the credentials.",
+  "displayName": "monitoringnotificationchannel-${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "password": "password\n",
+    "url": "http://hooks.example.com/notification",
+    "username": "user"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "webhook_basicauth",
+  "userLabels": {
+    "cnrm-test": "true",
+    "key-one": "value-one",
+    "key-three": "value-three",
+    "key-two": "value-three",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json&force=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

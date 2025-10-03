@@ -1,0 +1,237 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: dataplexlakes.dataplex.cnrm.cloud.google.com
+spec:
+  group: dataplex.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: DataplexLake
+    listKind: DataplexLakeList
+    plural: dataplexlakes
+    shortNames:
+    - gcpdataplexlake
+    - gcpdataplexlakes
+    singular: dataplexlake
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: DataplexLake is the Schema for the DataplexLake API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DataplexLakeSpec defines the desired state of DataplexLake
+            properties:
+              description:
+                description: Optional. Description of the lake.
+                type: string
+              displayName:
+                description: Optional. User friendly display name.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. User-defined labels for the lake.
+                type: object
+              location:
+                type: string
+              metastore:
+                description: Optional. Settings to manage lake and Dataproc Metastore
+                  service instance association.
+                properties:
+                  serviceRef:
+                    description: 'Optional. A relative reference to the Dataproc Metastore
+                      (https://cloud.google.com/dataproc-metastore/docs) service associated
+                      with the lake: `projects/{project_id}/locations/{location_id}/services/{service_id}`'
+                    properties:
+                      external:
+                        description: A reference to an externally managed DataprocJob
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/services/{{serviceID}}".
+                        type: string
+                    type: object
+                type: object
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The DataplexLake name. If not given, the metadata.name
+                  will be used.
+                type: string
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: DataplexLakeStatus defines the config connector machine state
+              of DataplexLake
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the DataplexLake resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  assetStatus:
+                    description: Output only. Aggregated status of the underlying
+                      assets of the lake.
+                    properties:
+                      activeAssets:
+                        description: Number of active assets.
+                        format: int32
+                        type: integer
+                      securityPolicyApplyingAssets:
+                        description: Number of assets that are in process of updating
+                          the security policy on attached resources.
+                        format: int32
+                        type: integer
+                      updateTime:
+                        description: Last update time of the status.
+                        type: string
+                    type: object
+                  createTime:
+                    description: Output only. The time when the lake was created.
+                    type: string
+                  metastoreStatus:
+                    description: Output only. Metastore status of the lake.
+                    properties:
+                      endpoint:
+                        description: The URI of the endpoint used to access the Metastore
+                          service.
+                        type: string
+                      message:
+                        description: Additional information about the current status.
+                        type: string
+                      state:
+                        description: Current state of association.
+                        type: string
+                      updateTime:
+                        description: Last update time of the metastore status of the
+                          lake.
+                        type: string
+                    type: object
+                  serviceAccount:
+                    description: Output only. Service account associated with this
+                      lake. This service account must be authorized to access or operate
+                      on resources managed by the lake.
+                    type: string
+                  state:
+                    description: Output only. Current state of the lake.
+                    type: string
+                  uid:
+                    description: Output only. System generated globally unique ID
+                      for the lake. This ID will be different if the lake is deleted
+                      and re-created with the same name.
+                    type: string
+                  updateTime:
+                    description: Output only. The time when the lake was last updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

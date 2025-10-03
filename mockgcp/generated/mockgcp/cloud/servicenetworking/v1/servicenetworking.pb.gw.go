@@ -1691,7 +1691,7 @@ func RegisterServicesServerHandlerServer(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesServer/AddSubnetworkService", runtime.WithHTTPPathPattern("/v1/{parent=**}:addSubnetwork"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesServer/AddSubnetworkService", runtime.WithHTTPPathPattern("/v1/{parent=services/*/*/*}:addSubnetwork"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1716,7 +1716,7 @@ func RegisterServicesServerHandlerServer(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesServer/DisableVpcServiceControlsService", runtime.WithHTTPPathPattern("/v1/{parent=**}:disableVpcServiceControls"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesServer/DisableVpcServiceControlsService", runtime.WithHTTPPathPattern("/v1/{parent=services/*}:disableVpcServiceControls"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1741,7 +1741,7 @@ func RegisterServicesServerHandlerServer(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesServer/EnableVpcServiceControlsService", runtime.WithHTTPPathPattern("/v1/{parent=**}:enableVpcServiceControls"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesServer/EnableVpcServiceControlsService", runtime.WithHTTPPathPattern("/v1/{parent=services/*}:enableVpcServiceControls"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1766,7 +1766,7 @@ func RegisterServicesServerHandlerServer(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesServer/SearchRangeService", runtime.WithHTTPPathPattern("/v1/{parent=**}:searchRange"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesServer/SearchRangeService", runtime.WithHTTPPathPattern("/v1/{parent=services/*}:searchRange"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1791,7 +1791,7 @@ func RegisterServicesServerHandlerServer(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesServer/ValidateService", runtime.WithHTTPPathPattern("/v1/{parent=**}:validate"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesServer/ValidateService", runtime.WithHTTPPathPattern("/v1/{parent=services/*}:validate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1825,7 +1825,7 @@ func RegisterServicesConnectionsServerHandlerServer(ctx context.Context, mux *ru
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesConnectionsServer/CreateServicesConnection", runtime.WithHTTPPathPattern("/v1/{parent=**}/connections"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesConnectionsServer/CreateServicesConnection", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/connections"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1850,7 +1850,7 @@ func RegisterServicesConnectionsServerHandlerServer(ctx context.Context, mux *ru
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesConnectionsServer/DeleteConnectionServicesConnection", runtime.WithHTTPPathPattern("/v1/{name=**}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesConnectionsServer/DeleteConnectionServicesConnection", runtime.WithHTTPPathPattern("/v1/{name=services/*/connections/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1875,7 +1875,7 @@ func RegisterServicesConnectionsServerHandlerServer(ctx context.Context, mux *ru
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesConnectionsServer/ListServicesConnections", runtime.WithHTTPPathPattern("/v1/{parent=**}/connections"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesConnectionsServer/ListServicesConnections", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/connections"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1900,7 +1900,7 @@ func RegisterServicesConnectionsServerHandlerServer(ctx context.Context, mux *ru
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesConnectionsServer/PatchServicesConnection", runtime.WithHTTPPathPattern("/v1/{name=**}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesConnectionsServer/PatchServicesConnection", runtime.WithHTTPPathPattern("/v1/{name=services/*/connections/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1934,7 +1934,7 @@ func RegisterServicesDnsRecordSetsServerHandlerServer(ctx context.Context, mux *
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/AddServicesDnsRecordSet", runtime.WithHTTPPathPattern("/v1/{parent=**}/dnsRecordSets:add"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/AddServicesDnsRecordSet", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/dnsRecordSets:add"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1959,7 +1959,7 @@ func RegisterServicesDnsRecordSetsServerHandlerServer(ctx context.Context, mux *
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/GetServicesDnsRecordSet", runtime.WithHTTPPathPattern("/v1/{parent=**}/dnsRecordSets:get"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/GetServicesDnsRecordSet", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/dnsRecordSets:get"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1984,7 +1984,7 @@ func RegisterServicesDnsRecordSetsServerHandlerServer(ctx context.Context, mux *
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/ListServicesDnsRecordSets", runtime.WithHTTPPathPattern("/v1/{parent=**}/dnsRecordSets:list"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/ListServicesDnsRecordSets", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/dnsRecordSets:list"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2009,7 +2009,7 @@ func RegisterServicesDnsRecordSetsServerHandlerServer(ctx context.Context, mux *
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/DeleteServicesDnsRecordSet", runtime.WithHTTPPathPattern("/v1/{parent=**}/dnsRecordSets:remove"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/DeleteServicesDnsRecordSet", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/dnsRecordSets:remove"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2034,7 +2034,7 @@ func RegisterServicesDnsRecordSetsServerHandlerServer(ctx context.Context, mux *
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/UpdateServicesDnsRecordSet", runtime.WithHTTPPathPattern("/v1/{parent=**}/dnsRecordSets:update"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/UpdateServicesDnsRecordSet", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/dnsRecordSets:update"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2068,7 +2068,7 @@ func RegisterServicesDnsZonesServerHandlerServer(ctx context.Context, mux *runti
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesDnsZonesServer/AddServicesDnsZone", runtime.WithHTTPPathPattern("/v1/{parent=**}/dnsZones:add"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsZonesServer/AddServicesDnsZone", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/dnsZones:add"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2093,7 +2093,7 @@ func RegisterServicesDnsZonesServerHandlerServer(ctx context.Context, mux *runti
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesDnsZonesServer/DeleteServicesDnsZone", runtime.WithHTTPPathPattern("/v1/{parent=**}/dnsZones:remove"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsZonesServer/DeleteServicesDnsZone", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/dnsZones:remove"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2127,7 +2127,7 @@ func RegisterServicesProjectsGlobalNetworksServerHandlerServer(ctx context.Conte
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/GetServicesProjectsGlobalNetwork", runtime.WithHTTPPathPattern("/v1/{name=**}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/GetServicesProjectsGlobalNetwork", runtime.WithHTTPPathPattern("/v1/{name=services/*/projects/*/global/networks/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2152,7 +2152,7 @@ func RegisterServicesProjectsGlobalNetworksServerHandlerServer(ctx context.Conte
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/GetVpcServiceControlsServicesProjectsGlobalNetwork", runtime.WithHTTPPathPattern("/v1/{name=**}/vpcServiceControls"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/GetVpcServiceControlsServicesProjectsGlobalNetwork", runtime.WithHTTPPathPattern("/v1/{name=services/*/projects/*/global/networks/*}/vpcServiceControls"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2177,7 +2177,7 @@ func RegisterServicesProjectsGlobalNetworksServerHandlerServer(ctx context.Conte
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/UpdateConsumerConfigServicesProjectsGlobalNetwork", runtime.WithHTTPPathPattern("/v1/{parent=**}:updateConsumerConfig"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/UpdateConsumerConfigServicesProjectsGlobalNetwork", runtime.WithHTTPPathPattern("/v1/{parent=services/*/projects/*/global/networks/*}:updateConsumerConfig"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2211,7 +2211,7 @@ func RegisterServicesProjectsGlobalNetworksDnsZonesServerHandlerServer(ctx conte
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksDnsZonesServer/GetServicesProjectsGlobalNetworksDnsZone", runtime.WithHTTPPathPattern("/v1/{name=**}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksDnsZonesServer/GetServicesProjectsGlobalNetworksDnsZone", runtime.WithHTTPPathPattern("/v1/{name=services/*/projects/*/global/networks/*/dnsZones/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2236,7 +2236,7 @@ func RegisterServicesProjectsGlobalNetworksDnsZonesServerHandlerServer(ctx conte
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksDnsZonesServer/ListServicesProjectsGlobalNetworksDnsZones", runtime.WithHTTPPathPattern("/v1/{parent=**}/dnsZones:list"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksDnsZonesServer/ListServicesProjectsGlobalNetworksDnsZones", runtime.WithHTTPPathPattern("/v1/{parent=services/*/projects/*/global/networks/*}/dnsZones:list"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2270,7 +2270,7 @@ func RegisterServicesProjectsGlobalNetworksPeeredDnsDomainsServerHandlerServer(c
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/CreateServicesProjectsGlobalNetworksPeeredDnsDomain", runtime.WithHTTPPathPattern("/v1/{parent=**}/peeredDnsDomains"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/CreateServicesProjectsGlobalNetworksPeeredDnsDomain", runtime.WithHTTPPathPattern("/v1/{parent=services/*/projects/*/global/networks/*}/peeredDnsDomains"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2295,7 +2295,7 @@ func RegisterServicesProjectsGlobalNetworksPeeredDnsDomainsServerHandlerServer(c
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/DeleteServicesProjectsGlobalNetworksPeeredDnsDomain", runtime.WithHTTPPathPattern("/v1/{name=**}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/DeleteServicesProjectsGlobalNetworksPeeredDnsDomain", runtime.WithHTTPPathPattern("/v1/{name=services/*/projects/*/global/networks/*/peeredDnsDomains/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2320,7 +2320,7 @@ func RegisterServicesProjectsGlobalNetworksPeeredDnsDomainsServerHandlerServer(c
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/ListServicesProjectsGlobalNetworksPeeredDnsDomains", runtime.WithHTTPPathPattern("/v1/{parent=**}/peeredDnsDomains"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/ListServicesProjectsGlobalNetworksPeeredDnsDomains", runtime.WithHTTPPathPattern("/v1/{parent=services/*/projects/*/global/networks/*}/peeredDnsDomains"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2354,7 +2354,7 @@ func RegisterServicesRolesServerHandlerServer(ctx context.Context, mux *runtime.
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesRolesServer/AddServicesRole", runtime.WithHTTPPathPattern("/v1/{parent=**}/roles:add"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesRolesServer/AddServicesRole", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/roles:add"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2418,7 +2418,7 @@ func RegisterServicesServerHandlerClient(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesServer/AddSubnetworkService", runtime.WithHTTPPathPattern("/v1/{parent=**}:addSubnetwork"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesServer/AddSubnetworkService", runtime.WithHTTPPathPattern("/v1/{parent=services/*/*/*}:addSubnetwork"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2440,7 +2440,7 @@ func RegisterServicesServerHandlerClient(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesServer/DisableVpcServiceControlsService", runtime.WithHTTPPathPattern("/v1/{parent=**}:disableVpcServiceControls"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesServer/DisableVpcServiceControlsService", runtime.WithHTTPPathPattern("/v1/{parent=services/*}:disableVpcServiceControls"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2462,7 +2462,7 @@ func RegisterServicesServerHandlerClient(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesServer/EnableVpcServiceControlsService", runtime.WithHTTPPathPattern("/v1/{parent=**}:enableVpcServiceControls"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesServer/EnableVpcServiceControlsService", runtime.WithHTTPPathPattern("/v1/{parent=services/*}:enableVpcServiceControls"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2484,7 +2484,7 @@ func RegisterServicesServerHandlerClient(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesServer/SearchRangeService", runtime.WithHTTPPathPattern("/v1/{parent=**}:searchRange"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesServer/SearchRangeService", runtime.WithHTTPPathPattern("/v1/{parent=services/*}:searchRange"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2506,7 +2506,7 @@ func RegisterServicesServerHandlerClient(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesServer/ValidateService", runtime.WithHTTPPathPattern("/v1/{parent=**}:validate"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesServer/ValidateService", runtime.WithHTTPPathPattern("/v1/{parent=services/*}:validate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2526,15 +2526,15 @@ func RegisterServicesServerHandlerClient(ctx context.Context, mux *runtime.Serve
 }
 
 var (
-	pattern_ServicesServer_AddSubnetworkService_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1}, []string{"v1", "parent"}, "addSubnetwork"))
+	pattern_ServicesServer_AddSubnetworkService_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 1, 0, 1, 0, 4, 4, 5, 2}, []string{"v1", "services", "parent"}, "addSubnetwork"))
 
-	pattern_ServicesServer_DisableVpcServiceControlsService_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1}, []string{"v1", "parent"}, "disableVpcServiceControls"))
+	pattern_ServicesServer_DisableVpcServiceControlsService_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2}, []string{"v1", "services", "parent"}, "disableVpcServiceControls"))
 
-	pattern_ServicesServer_EnableVpcServiceControlsService_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1}, []string{"v1", "parent"}, "enableVpcServiceControls"))
+	pattern_ServicesServer_EnableVpcServiceControlsService_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2}, []string{"v1", "services", "parent"}, "enableVpcServiceControls"))
 
-	pattern_ServicesServer_SearchRangeService_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1}, []string{"v1", "parent"}, "searchRange"))
+	pattern_ServicesServer_SearchRangeService_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2}, []string{"v1", "services", "parent"}, "searchRange"))
 
-	pattern_ServicesServer_ValidateService_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1}, []string{"v1", "parent"}, "validate"))
+	pattern_ServicesServer_ValidateService_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2}, []string{"v1", "services", "parent"}, "validate"))
 )
 
 var (
@@ -2593,7 +2593,7 @@ func RegisterServicesConnectionsServerHandlerClient(ctx context.Context, mux *ru
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesConnectionsServer/CreateServicesConnection", runtime.WithHTTPPathPattern("/v1/{parent=**}/connections"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesConnectionsServer/CreateServicesConnection", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/connections"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2615,7 +2615,7 @@ func RegisterServicesConnectionsServerHandlerClient(ctx context.Context, mux *ru
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesConnectionsServer/DeleteConnectionServicesConnection", runtime.WithHTTPPathPattern("/v1/{name=**}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesConnectionsServer/DeleteConnectionServicesConnection", runtime.WithHTTPPathPattern("/v1/{name=services/*/connections/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2637,7 +2637,7 @@ func RegisterServicesConnectionsServerHandlerClient(ctx context.Context, mux *ru
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesConnectionsServer/ListServicesConnections", runtime.WithHTTPPathPattern("/v1/{parent=**}/connections"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesConnectionsServer/ListServicesConnections", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/connections"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2659,7 +2659,7 @@ func RegisterServicesConnectionsServerHandlerClient(ctx context.Context, mux *ru
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesConnectionsServer/PatchServicesConnection", runtime.WithHTTPPathPattern("/v1/{name=**}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesConnectionsServer/PatchServicesConnection", runtime.WithHTTPPathPattern("/v1/{name=services/*/connections/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2679,13 +2679,13 @@ func RegisterServicesConnectionsServerHandlerClient(ctx context.Context, mux *ru
 }
 
 var (
-	pattern_ServicesConnectionsServer_CreateServicesConnection_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1, 2, 2}, []string{"v1", "parent", "connections"}, ""))
+	pattern_ServicesConnectionsServer_CreateServicesConnection_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "services", "parent", "connections"}, ""))
 
-	pattern_ServicesConnectionsServer_DeleteConnectionServicesConnection_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1}, []string{"v1", "name"}, ""))
+	pattern_ServicesConnectionsServer_DeleteConnectionServicesConnection_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "services", "connections", "name"}, ""))
 
-	pattern_ServicesConnectionsServer_ListServicesConnections_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1, 2, 2}, []string{"v1", "parent", "connections"}, ""))
+	pattern_ServicesConnectionsServer_ListServicesConnections_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "services", "parent", "connections"}, ""))
 
-	pattern_ServicesConnectionsServer_PatchServicesConnection_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1}, []string{"v1", "name"}, ""))
+	pattern_ServicesConnectionsServer_PatchServicesConnection_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 4, 4, 5, 3}, []string{"v1", "services", "connections", "name"}, ""))
 )
 
 var (
@@ -2742,7 +2742,7 @@ func RegisterServicesDnsRecordSetsServerHandlerClient(ctx context.Context, mux *
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/AddServicesDnsRecordSet", runtime.WithHTTPPathPattern("/v1/{parent=**}/dnsRecordSets:add"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/AddServicesDnsRecordSet", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/dnsRecordSets:add"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2764,7 +2764,7 @@ func RegisterServicesDnsRecordSetsServerHandlerClient(ctx context.Context, mux *
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/GetServicesDnsRecordSet", runtime.WithHTTPPathPattern("/v1/{parent=**}/dnsRecordSets:get"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/GetServicesDnsRecordSet", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/dnsRecordSets:get"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2786,7 +2786,7 @@ func RegisterServicesDnsRecordSetsServerHandlerClient(ctx context.Context, mux *
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/ListServicesDnsRecordSets", runtime.WithHTTPPathPattern("/v1/{parent=**}/dnsRecordSets:list"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/ListServicesDnsRecordSets", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/dnsRecordSets:list"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2808,7 +2808,7 @@ func RegisterServicesDnsRecordSetsServerHandlerClient(ctx context.Context, mux *
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/DeleteServicesDnsRecordSet", runtime.WithHTTPPathPattern("/v1/{parent=**}/dnsRecordSets:remove"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/DeleteServicesDnsRecordSet", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/dnsRecordSets:remove"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2830,7 +2830,7 @@ func RegisterServicesDnsRecordSetsServerHandlerClient(ctx context.Context, mux *
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/UpdateServicesDnsRecordSet", runtime.WithHTTPPathPattern("/v1/{parent=**}/dnsRecordSets:update"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsRecordSetsServer/UpdateServicesDnsRecordSet", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/dnsRecordSets:update"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2850,15 +2850,15 @@ func RegisterServicesDnsRecordSetsServerHandlerClient(ctx context.Context, mux *
 }
 
 var (
-	pattern_ServicesDnsRecordSetsServer_AddServicesDnsRecordSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1, 2, 2}, []string{"v1", "parent", "dnsRecordSets"}, "add"))
+	pattern_ServicesDnsRecordSetsServer_AddServicesDnsRecordSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "services", "parent", "dnsRecordSets"}, "add"))
 
-	pattern_ServicesDnsRecordSetsServer_GetServicesDnsRecordSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1, 2, 2}, []string{"v1", "parent", "dnsRecordSets"}, "get"))
+	pattern_ServicesDnsRecordSetsServer_GetServicesDnsRecordSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "services", "parent", "dnsRecordSets"}, "get"))
 
-	pattern_ServicesDnsRecordSetsServer_ListServicesDnsRecordSets_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1, 2, 2}, []string{"v1", "parent", "dnsRecordSets"}, "list"))
+	pattern_ServicesDnsRecordSetsServer_ListServicesDnsRecordSets_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "services", "parent", "dnsRecordSets"}, "list"))
 
-	pattern_ServicesDnsRecordSetsServer_DeleteServicesDnsRecordSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1, 2, 2}, []string{"v1", "parent", "dnsRecordSets"}, "remove"))
+	pattern_ServicesDnsRecordSetsServer_DeleteServicesDnsRecordSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "services", "parent", "dnsRecordSets"}, "remove"))
 
-	pattern_ServicesDnsRecordSetsServer_UpdateServicesDnsRecordSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1, 2, 2}, []string{"v1", "parent", "dnsRecordSets"}, "update"))
+	pattern_ServicesDnsRecordSetsServer_UpdateServicesDnsRecordSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "services", "parent", "dnsRecordSets"}, "update"))
 )
 
 var (
@@ -2917,7 +2917,7 @@ func RegisterServicesDnsZonesServerHandlerClient(ctx context.Context, mux *runti
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesDnsZonesServer/AddServicesDnsZone", runtime.WithHTTPPathPattern("/v1/{parent=**}/dnsZones:add"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsZonesServer/AddServicesDnsZone", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/dnsZones:add"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2939,7 +2939,7 @@ func RegisterServicesDnsZonesServerHandlerClient(ctx context.Context, mux *runti
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesDnsZonesServer/DeleteServicesDnsZone", runtime.WithHTTPPathPattern("/v1/{parent=**}/dnsZones:remove"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesDnsZonesServer/DeleteServicesDnsZone", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/dnsZones:remove"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2959,9 +2959,9 @@ func RegisterServicesDnsZonesServerHandlerClient(ctx context.Context, mux *runti
 }
 
 var (
-	pattern_ServicesDnsZonesServer_AddServicesDnsZone_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1, 2, 2}, []string{"v1", "parent", "dnsZones"}, "add"))
+	pattern_ServicesDnsZonesServer_AddServicesDnsZone_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "services", "parent", "dnsZones"}, "add"))
 
-	pattern_ServicesDnsZonesServer_DeleteServicesDnsZone_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1, 2, 2}, []string{"v1", "parent", "dnsZones"}, "remove"))
+	pattern_ServicesDnsZonesServer_DeleteServicesDnsZone_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "services", "parent", "dnsZones"}, "remove"))
 )
 
 var (
@@ -3014,7 +3014,7 @@ func RegisterServicesProjectsGlobalNetworksServerHandlerClient(ctx context.Conte
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/GetServicesProjectsGlobalNetwork", runtime.WithHTTPPathPattern("/v1/{name=**}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/GetServicesProjectsGlobalNetwork", runtime.WithHTTPPathPattern("/v1/{name=services/*/projects/*/global/networks/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3036,7 +3036,7 @@ func RegisterServicesProjectsGlobalNetworksServerHandlerClient(ctx context.Conte
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/GetVpcServiceControlsServicesProjectsGlobalNetwork", runtime.WithHTTPPathPattern("/v1/{name=**}/vpcServiceControls"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/GetVpcServiceControlsServicesProjectsGlobalNetwork", runtime.WithHTTPPathPattern("/v1/{name=services/*/projects/*/global/networks/*}/vpcServiceControls"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3058,7 +3058,7 @@ func RegisterServicesProjectsGlobalNetworksServerHandlerClient(ctx context.Conte
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/UpdateConsumerConfigServicesProjectsGlobalNetwork", runtime.WithHTTPPathPattern("/v1/{parent=**}:updateConsumerConfig"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksServer/UpdateConsumerConfigServicesProjectsGlobalNetwork", runtime.WithHTTPPathPattern("/v1/{parent=services/*/projects/*/global/networks/*}:updateConsumerConfig"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3078,11 +3078,11 @@ func RegisterServicesProjectsGlobalNetworksServerHandlerClient(ctx context.Conte
 }
 
 var (
-	pattern_ServicesProjectsGlobalNetworksServer_GetServicesProjectsGlobalNetwork_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1}, []string{"v1", "name"}, ""))
+	pattern_ServicesProjectsGlobalNetworksServer_GetServicesProjectsGlobalNetwork_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 2, 4, 1, 0, 4, 7, 5, 5}, []string{"v1", "services", "projects", "global", "networks", "name"}, ""))
 
-	pattern_ServicesProjectsGlobalNetworksServer_GetVpcServiceControlsServicesProjectsGlobalNetwork_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1, 2, 2}, []string{"v1", "name", "vpcServiceControls"}, ""))
+	pattern_ServicesProjectsGlobalNetworksServer_GetVpcServiceControlsServicesProjectsGlobalNetwork_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 2, 4, 1, 0, 4, 7, 5, 5, 2, 6}, []string{"v1", "services", "projects", "global", "networks", "name", "vpcServiceControls"}, ""))
 
-	pattern_ServicesProjectsGlobalNetworksServer_UpdateConsumerConfigServicesProjectsGlobalNetwork_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1}, []string{"v1", "parent"}, "updateConsumerConfig"))
+	pattern_ServicesProjectsGlobalNetworksServer_UpdateConsumerConfigServicesProjectsGlobalNetwork_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 2, 4, 1, 0, 4, 7, 5, 5}, []string{"v1", "services", "projects", "global", "networks", "parent"}, "updateConsumerConfig"))
 )
 
 var (
@@ -3137,7 +3137,7 @@ func RegisterServicesProjectsGlobalNetworksDnsZonesServerHandlerClient(ctx conte
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksDnsZonesServer/GetServicesProjectsGlobalNetworksDnsZone", runtime.WithHTTPPathPattern("/v1/{name=**}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksDnsZonesServer/GetServicesProjectsGlobalNetworksDnsZone", runtime.WithHTTPPathPattern("/v1/{name=services/*/projects/*/global/networks/*/dnsZones/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3159,7 +3159,7 @@ func RegisterServicesProjectsGlobalNetworksDnsZonesServerHandlerClient(ctx conte
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksDnsZonesServer/ListServicesProjectsGlobalNetworksDnsZones", runtime.WithHTTPPathPattern("/v1/{parent=**}/dnsZones:list"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksDnsZonesServer/ListServicesProjectsGlobalNetworksDnsZones", runtime.WithHTTPPathPattern("/v1/{parent=services/*/projects/*/global/networks/*}/dnsZones:list"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3179,9 +3179,9 @@ func RegisterServicesProjectsGlobalNetworksDnsZonesServerHandlerClient(ctx conte
 }
 
 var (
-	pattern_ServicesProjectsGlobalNetworksDnsZonesServer_GetServicesProjectsGlobalNetworksDnsZone_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1}, []string{"v1", "name"}, ""))
+	pattern_ServicesProjectsGlobalNetworksDnsZonesServer_GetServicesProjectsGlobalNetworksDnsZone_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 2, 4, 1, 0, 2, 5, 1, 0, 4, 9, 5, 6}, []string{"v1", "services", "projects", "global", "networks", "dnsZones", "name"}, ""))
 
-	pattern_ServicesProjectsGlobalNetworksDnsZonesServer_ListServicesProjectsGlobalNetworksDnsZones_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1, 2, 2}, []string{"v1", "parent", "dnsZones"}, "list"))
+	pattern_ServicesProjectsGlobalNetworksDnsZonesServer_ListServicesProjectsGlobalNetworksDnsZones_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 2, 4, 1, 0, 4, 7, 5, 5, 2, 6}, []string{"v1", "services", "projects", "global", "networks", "parent", "dnsZones"}, "list"))
 )
 
 var (
@@ -3234,7 +3234,7 @@ func RegisterServicesProjectsGlobalNetworksPeeredDnsDomainsServerHandlerClient(c
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/CreateServicesProjectsGlobalNetworksPeeredDnsDomain", runtime.WithHTTPPathPattern("/v1/{parent=**}/peeredDnsDomains"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/CreateServicesProjectsGlobalNetworksPeeredDnsDomain", runtime.WithHTTPPathPattern("/v1/{parent=services/*/projects/*/global/networks/*}/peeredDnsDomains"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3256,7 +3256,7 @@ func RegisterServicesProjectsGlobalNetworksPeeredDnsDomainsServerHandlerClient(c
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/DeleteServicesProjectsGlobalNetworksPeeredDnsDomain", runtime.WithHTTPPathPattern("/v1/{name=**}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/DeleteServicesProjectsGlobalNetworksPeeredDnsDomain", runtime.WithHTTPPathPattern("/v1/{name=services/*/projects/*/global/networks/*/peeredDnsDomains/*}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3278,7 +3278,7 @@ func RegisterServicesProjectsGlobalNetworksPeeredDnsDomainsServerHandlerClient(c
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/ListServicesProjectsGlobalNetworksPeeredDnsDomains", runtime.WithHTTPPathPattern("/v1/{parent=**}/peeredDnsDomains"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesProjectsGlobalNetworksPeeredDnsDomainsServer/ListServicesProjectsGlobalNetworksPeeredDnsDomains", runtime.WithHTTPPathPattern("/v1/{parent=services/*/projects/*/global/networks/*}/peeredDnsDomains"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3298,11 +3298,11 @@ func RegisterServicesProjectsGlobalNetworksPeeredDnsDomainsServerHandlerClient(c
 }
 
 var (
-	pattern_ServicesProjectsGlobalNetworksPeeredDnsDomainsServer_CreateServicesProjectsGlobalNetworksPeeredDnsDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1, 2, 2}, []string{"v1", "parent", "peeredDnsDomains"}, ""))
+	pattern_ServicesProjectsGlobalNetworksPeeredDnsDomainsServer_CreateServicesProjectsGlobalNetworksPeeredDnsDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 2, 4, 1, 0, 4, 7, 5, 5, 2, 6}, []string{"v1", "services", "projects", "global", "networks", "parent", "peeredDnsDomains"}, ""))
 
-	pattern_ServicesProjectsGlobalNetworksPeeredDnsDomainsServer_DeleteServicesProjectsGlobalNetworksPeeredDnsDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1}, []string{"v1", "name"}, ""))
+	pattern_ServicesProjectsGlobalNetworksPeeredDnsDomainsServer_DeleteServicesProjectsGlobalNetworksPeeredDnsDomain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 2, 4, 1, 0, 2, 5, 1, 0, 4, 9, 5, 6}, []string{"v1", "services", "projects", "global", "networks", "peeredDnsDomains", "name"}, ""))
 
-	pattern_ServicesProjectsGlobalNetworksPeeredDnsDomainsServer_ListServicesProjectsGlobalNetworksPeeredDnsDomains_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1, 2, 2}, []string{"v1", "parent", "peeredDnsDomains"}, ""))
+	pattern_ServicesProjectsGlobalNetworksPeeredDnsDomainsServer_ListServicesProjectsGlobalNetworksPeeredDnsDomains_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 2, 2, 1, 0, 2, 3, 2, 4, 1, 0, 4, 7, 5, 5, 2, 6}, []string{"v1", "services", "projects", "global", "networks", "parent", "peeredDnsDomains"}, ""))
 )
 
 var (
@@ -3357,7 +3357,7 @@ func RegisterServicesRolesServerHandlerClient(ctx context.Context, mux *runtime.
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/google.cloud.servicenetworking.v1.ServicesRolesServer/AddServicesRole", runtime.WithHTTPPathPattern("/v1/{parent=**}/roles:add"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/mockgcp.cloud.servicenetworking.v1.ServicesRolesServer/AddServicesRole", runtime.WithHTTPPathPattern("/v1/{parent=services/*}/roles:add"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3377,7 +3377,7 @@ func RegisterServicesRolesServerHandlerClient(ctx context.Context, mux *runtime.
 }
 
 var (
-	pattern_ServicesRolesServer_AddServicesRole_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 3, 0, 4, 1, 5, 1, 2, 2}, []string{"v1", "parent", "roles"}, "add"))
+	pattern_ServicesRolesServer_AddServicesRole_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 2, 5, 2, 2, 3}, []string{"v1", "services", "parent", "roles"}, "add"))
 )
 
 var (

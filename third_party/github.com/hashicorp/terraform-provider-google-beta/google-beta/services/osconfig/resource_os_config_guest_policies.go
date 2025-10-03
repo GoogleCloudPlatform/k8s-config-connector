@@ -359,7 +359,7 @@ could potentially have conflicting assignments.`,
 									"id": {
 										Type:     schema.TypeString,
 										Required: true,
-										Description: `Id of the artifact, which the installation and update steps of this recipe can reference.
+										Description: `ID of the artifact, which the installation and update steps of this recipe can reference.
 Artifacts in a recipe cannot have the same id.`,
 									},
 									"allow_insecure": {

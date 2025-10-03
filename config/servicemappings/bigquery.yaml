@@ -202,6 +202,8 @@ spec:
         supportsConditions: true
       ignoredFields:
         - deletion_protection
+      directives:
+        - unmanaged
       resourceReferences:
         - key: datasetRef
           tfField: dataset_id

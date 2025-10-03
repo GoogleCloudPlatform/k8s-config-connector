@@ -42,6 +42,9 @@ func (s *GlobalAddressesV1) Get(ctx context.Context, req *pb.GetGlobalAddressReq
 
 	obj := &pb.Address{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -60,17 +63,30 @@ func (s *GlobalAddressesV1) Insert(ctx context.Context, req *pb.InsertGlobalAddr
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetAddressResource()).(*pb.Address)
-	obj.SelfLink = PtrTo("https://compute.googleapis.com/compute/v1/" + name.String())
+	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#address")
-	obj.Address = PtrTo("8.8.8.8")
+	if obj.Address == nil {
+		obj.Address = PtrTo("8.8.8.8")
+	}
+	if obj.LabelFingerprint == nil {
+		obj.LabelFingerprint = PtrTo(computeFingerprint(obj))
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 func (s *GlobalAddressesV1) Delete(ctx context.Context, req *pb.DeleteGlobalAddressRequest) (*pb.Operation, error) {
@@ -88,7 +104,15 @@ func (s *GlobalAddressesV1) Delete(ctx context.Context, req *pb.DeleteGlobalAddr
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
 }
 
 func (s *GlobalAddressesV1) SetLabels(ctx context.Context, req *pb.SetLabelsGlobalAddressRequest) (*pb.Operation, error) {
@@ -119,7 +143,7 @@ type globalAddressName struct {
 }
 
 func (n *globalAddressName) String() string {
-	return "projects/" + n.Project.ID + "/global" + "/networks/" + n.Name
+	return "projects/" + n.Project.ID + "/global" + "/addresses/" + n.Name
 }
 
 // parseGlobalAddressName parses a string into a globalAddressName.

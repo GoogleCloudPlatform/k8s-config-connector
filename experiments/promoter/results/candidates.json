@@ -1,0 +1,506 @@
+[
+  {
+    "kind": "APIQuotaPreference",
+    "service": "cloudquota",
+    "apiPath": "apis/cloudquota/v1alpha1/quotapreference_types.go",
+    "controllerPath": "pkg/controller/direct/cloudquota/quotapreference_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/cloudquota/v1alpha1/apiquotapreference",
+    "apiCoverage": false
+  },
+  {
+    "kind": "AssetFeed",
+    "service": "asset",
+    "apiPath": "apis/asset/v1alpha1/feed_types.go",
+    "controllerPath": "pkg/controller/direct/asset/feed_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/asset/v1alpha1/assetfeed",
+    "apiCoverage": true
+  },
+  {
+    "kind": "AssetSavedQuery",
+    "service": "asset",
+    "apiPath": "apis/asset/v1alpha1/savedquery_types.go",
+    "controllerPath": "pkg/controller/direct/asset/savedquery_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/asset/v1alpha1/assetsavedquery",
+    "apiCoverage": true
+  },
+  {
+    "kind": "BackupDRBackupPlan",
+    "service": "backupdr",
+    "apiPath": "apis/backupdr/v1alpha1/backupplan_types.go",
+    "controllerPath": "pkg/controller/direct/backupdr/backupplan_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/backupdr/v1alpha1/backupdrbackupplan",
+    "apiCoverage": false
+  },
+  {
+    "kind": "BackupDRBackupVault",
+    "service": "backupdr",
+    "apiPath": "apis/backupdr/v1alpha1/backupvault_types.go",
+    "controllerPath": "pkg/controller/direct/backupdr/backupvault_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/backupdr/v1alpha1/backupdrbackupvault",
+    "apiCoverage": false
+  },
+  {
+    "kind": "BackupDRManagementServer",
+    "service": "backupdr",
+    "apiPath": "apis/backupdr/v1alpha1/managementserver_types.go",
+    "controllerPath": "pkg/controller/direct/backupdr/managementserver_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/backupdr/v1alpha1/backupdrmanagementserver",
+    "apiCoverage": false
+  },
+  {
+    "kind": "BatchJob",
+    "service": "batch",
+    "apiPath": "apis/batch/v1alpha1/job_types.go",
+    "controllerPath": "pkg/controller/direct/batch/batchjob_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/batch/v1alpha1/batchjob",
+    "apiCoverage": false
+  },
+  {
+    "kind": "BigLakeTable",
+    "service": "bigquerybiglake",
+    "apiPath": "apis/bigquerybiglake/v1alpha1/table_types.go",
+    "controllerPath": "pkg/controller/direct/bigquerybiglake/table_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/bigquerybiglake/v1alpha1/biglaketable",
+    "apiCoverage": false
+  },
+  {
+    "kind": "BigQueryReservationAssignment",
+    "service": "bigqueryreservation",
+    "apiPath": "apis/bigqueryreservation/v1alpha1/assignment_types.go",
+    "controllerPath": "pkg/controller/direct/bigqueryreservation/assignment_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/bigqueryreservation/v1alpha1/bigqueryreservationassignment",
+    "apiCoverage": false
+  },
+  {
+    "kind": "BigtableLogicalView",
+    "service": "bigtable",
+    "apiPath": "apis/bigtable/v1alpha1/logicalview_types.go",
+    "controllerPath": "pkg/controller/direct/bigtable/logicalview_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/bigtable/v1alpha1/bigtablelogicalview",
+    "apiCoverage": false
+  },
+  {
+    "kind": "CloudDeployDeliveryPipeline",
+    "service": "clouddeploy",
+    "apiPath": "apis/clouddeploy/v1alpha1/deliverypipeline_types.go",
+    "controllerPath": "pkg/controller/direct/clouddeploy/deliverypipeline_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/clouddeploy/v1alpha1/clouddeploydeliverypipeline",
+    "apiCoverage": false
+  },
+  {
+    "kind": "ColabRuntime",
+    "service": "colab",
+    "apiPath": "apis/colab/v1alpha1/runtime_types.go",
+    "controllerPath": "pkg/controller/direct/colab/runtime_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/colab/v1alpha1/colabruntime",
+    "apiCoverage": false
+  },
+  {
+    "kind": "ColabRuntimeTemplate",
+    "service": "colab",
+    "apiPath": "apis/colab/v1alpha1/runtimetemplate_types.go",
+    "controllerPath": "pkg/controller/direct/colab/runtimetemplate_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/colab/v1alpha1/colabruntimetemplate",
+    "apiCoverage": false
+  },
+  {
+    "kind": "ComposerEnvironment",
+    "service": "composer",
+    "apiPath": "apis/composer/v1alpha1/environment_types.go",
+    "controllerPath": "pkg/controller/direct/composer/environment_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/composer/v1alpha1/composerenvironment",
+    "apiCoverage": false
+  },
+  {
+    "kind": "ComputeNetworkAttachment",
+    "service": "compute",
+    "apiPath": "apis/compute/v1alpha1/networkattachment_types.go",
+    "controllerPath": "pkg/controller/direct/compute/networkattachment_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkattachment",
+    "apiCoverage": false
+  },
+  {
+    "kind": "ComputeNetworkEdgeSecurityService",
+    "service": "compute",
+    "apiPath": "apis/compute/v1alpha1/networkedgesecurityservice_types.go",
+    "controllerPath": "pkg/controller/direct/compute/networkedgesecurityservice_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkedgesecurityservice",
+    "apiCoverage": false
+  },
+  {
+    "kind": "DataCatalogEntry",
+    "service": "datacatalog",
+    "apiPath": "apis/datacatalog/v1alpha1/entry_types.go",
+    "controllerPath": "pkg/controller/direct/datacatalog/entry_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/datacatalog/v1alpha1/datacatalogentry",
+    "apiCoverage": false
+  },
+  {
+    "kind": "DataCatalogEntryGroup",
+    "service": "datacatalog",
+    "apiPath": "apis/datacatalog/v1alpha1/entrygroup_types.go",
+    "controllerPath": "pkg/controller/direct/datacatalog/entrygroup_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/datacatalog/v1alpha1/datacatalogentrygroup",
+    "apiCoverage": false
+  },
+  {
+    "kind": "DataCatalogTag",
+    "service": "datacatalog",
+    "apiPath": "apis/datacatalog/v1alpha1/tag_types.go",
+    "controllerPath": "pkg/controller/direct/datacatalog/tag_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/datacatalog/v1alpha1/datacatalogtag",
+    "apiCoverage": false
+  },
+  {
+    "kind": "DataCatalogTagTemplate",
+    "service": "datacatalog",
+    "apiPath": "apis/datacatalog/v1alpha1/tagtemplate_types.go",
+    "controllerPath": "pkg/controller/direct/datacatalog/tagtemplate_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/datacatalog/v1alpha1/datacatalogtagtemplate",
+    "apiCoverage": false
+  },
+  {
+    "kind": "DataplexEntryGroup",
+    "service": "dataplex",
+    "apiPath": "apis/dataplex/v1alpha1/entrygroup_types.go",
+    "controllerPath": "pkg/controller/direct/dataplex/entrygroup_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/dataplex/v1alpha1/dataplexentrygroup",
+    "apiCoverage": false
+  },
+  {
+    "kind": "DataplexEntryType",
+    "service": "dataplex",
+    "apiPath": "apis/dataplex/v1alpha1/entrytype_types.go",
+    "controllerPath": "pkg/controller/direct/dataplex/entrytype_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/dataplex/v1alpha1/dataplexentrytype",
+    "apiCoverage": false
+  },
+  {
+    "kind": "DataplexLake",
+    "service": "dataplex",
+    "apiPath": "apis/dataplex/v1alpha1/lake_types.go",
+    "controllerPath": "pkg/controller/direct/dataplex/dataplexlake_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/dataplex/v1alpha1/dataplexlake",
+    "apiCoverage": false
+  },
+  {
+    "kind": "DataplexTask",
+    "service": "dataplex",
+    "apiPath": "apis/dataplex/v1alpha1/task_types.go",
+    "controllerPath": "pkg/controller/direct/dataplex/task_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/dataplex/v1alpha1/dataplextask",
+    "apiCoverage": false
+  },
+  {
+    "kind": "DataplexZone",
+    "service": "dataplex",
+    "apiPath": "apis/dataplex/v1alpha1/zone_types.go",
+    "controllerPath": "pkg/controller/direct/dataplex/zone_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/dataplex/v1alpha1/dataplexzone",
+    "apiCoverage": false
+  },
+  {
+    "kind": "DataprocBatch",
+    "service": "dataproc",
+    "apiPath": "apis/dataproc/v1alpha1/batch_types.go",
+    "controllerPath": "pkg/controller/direct/dataproc/batch_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/dataproc/v1alpha1/dataprocbatch",
+    "apiCoverage": false
+  },
+  {
+    "kind": "DataprocJob",
+    "service": "dataproc",
+    "apiPath": "apis/dataproc/v1alpha1/job_types.go",
+    "controllerPath": "pkg/controller/direct/dataproc/job_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/dataproc/v1alpha1/dataprocjob",
+    "apiCoverage": false
+  },
+  {
+    "kind": "DatastreamConnectionProfile",
+    "service": "datastream",
+    "apiPath": "apis/datastream/v1alpha1/connectionprofile_types.go",
+    "controllerPath": "pkg/controller/direct/datastream/connectionprofile_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/datastream/v1alpha1/datastreamconnectionprofile",
+    "apiCoverage": false
+  },
+  {
+    "kind": "DatastreamPrivateConnection",
+    "service": "datastream",
+    "apiPath": "apis/datastream/v1alpha1/privateconnection_types.go",
+    "controllerPath": "pkg/controller/direct/datastream/privateconnection_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/datastream/v1alpha1/datastreamprivateconnection",
+    "apiCoverage": false
+  },
+  {
+    "kind": "DatastreamRoute",
+    "service": "datastream",
+    "apiPath": "apis/datastream/v1alpha1/route_types.go",
+    "controllerPath": "pkg/controller/direct/datastream/route_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/datastream/v1alpha1/datastreamroute",
+    "apiCoverage": false
+  },
+  {
+    "kind": "DiscoveryEngineDataStore",
+    "service": "discoveryengine",
+    "apiPath": "apis/discoveryengine/v1alpha1/datastore_types.go",
+    "controllerPath": "pkg/controller/direct/discoveryengine/datastore_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/discoveryengine/v1alpha1/discoveryenginedatastore",
+    "apiCoverage": false
+  },
+  {
+    "kind": "DocumentAIProcessor",
+    "service": "documentai",
+    "apiPath": "apis/documentai/v1alpha1/processor_types.go",
+    "controllerPath": "pkg/controller/direct/documentai/processor_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/documentai/v1alpha1/documentaiprocessor",
+    "apiCoverage": false
+  },
+  {
+    "kind": "DocumentAIProcessorVersion",
+    "service": "documentai",
+    "apiPath": "apis/documentai/v1alpha1/processorversion_types.go",
+    "controllerPath": "pkg/controller/direct/documentai/processorversion_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/documentai/v1alpha1/documentaiprocessorversion",
+    "apiCoverage": false
+  },
+  {
+    "kind": "EssentialContactsContact",
+    "service": "essentialcontacts",
+    "apiPath": "apis/essentialcontacts/v1alpha1/contact_types.go",
+    "controllerPath": "pkg/controller/direct/essentialcontacts/contact_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/essentialcontacts/v1alpha1/essentialcontactscontact",
+    "apiCoverage": false
+  },
+  {
+    "kind": "EventarcChannel",
+    "service": "eventarc",
+    "apiPath": "apis/eventarc/v1alpha1/channel_types.go",
+    "controllerPath": "pkg/controller/direct/eventarc/channel_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/eventarc/v1alpha1/eventarcchannel",
+    "apiCoverage": false
+  },
+  {
+    "kind": "EventarcGoogleChannelConfig",
+    "service": "eventarc",
+    "apiPath": "apis/eventarc/v1alpha1/googlechannelconfig_types.go",
+    "controllerPath": "pkg/controller/direct/eventarc/googlechannelconfig_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/eventarc/v1alpha1/eventarcgooglechannelconfig",
+    "apiCoverage": false
+  },
+  {
+    "kind": "GKEBackupBackup",
+    "service": "gkebackup",
+    "apiPath": "apis/gkebackup/v1alpha1/backup_types.go",
+    "controllerPath": "pkg/controller/direct/gkebackup/backup_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/gkebackup/v1alpha1/gkebackupbackup",
+    "apiCoverage": false
+  },
+  {
+    "kind": "GKEBackupBackupPlan",
+    "service": "gkebackup",
+    "apiPath": "apis/gkebackup/v1alpha1/backupplan_types.go",
+    "controllerPath": "pkg/controller/direct/gkebackup/backupplan_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/gkebackup/v1alpha1/gkebackupbackupplan",
+    "apiCoverage": false
+  },
+  {
+    "kind": "GKEBackupRestore",
+    "service": "gkebackup",
+    "apiPath": "apis/gkebackup/v1alpha1/restore_types.go",
+    "controllerPath": "pkg/controller/direct/gkebackup/restore_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/gkebackup/v1alpha1/gkebackuprestore",
+    "apiCoverage": false
+  },
+  {
+    "kind": "GKEBackupRestorePlan",
+    "service": "gkebackup",
+    "apiPath": "apis/gkebackup/v1alpha1/restoreplan_types.go",
+    "controllerPath": "pkg/controller/direct/gkebackup/restoreplan_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/gkebackup/v1alpha1/gkebackuprestoreplan",
+    "apiCoverage": false
+  },
+  {
+    "kind": "MetastoreFederation",
+    "service": "metastore",
+    "apiPath": "apis/metastore/v1alpha1/federation_types.go",
+    "controllerPath": "pkg/controller/direct/metastore/federation_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/metastore/v1alpha1/metastorefederation",
+    "apiCoverage": true
+  },
+  {
+    "kind": "MetastoreService",
+    "service": "metastore",
+    "apiPath": "apis/metastore/v1alpha1/service_types.go",
+    "controllerPath": "pkg/controller/direct/metastore/service_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/metastore/v1alpha1/metastoreservice",
+    "apiCoverage": false
+  },
+  {
+    "kind": "NetAppBackupPolicy",
+    "service": "netapp",
+    "apiPath": "apis/netapp/v1alpha1/backuppolicy_types.go",
+    "controllerPath": "pkg/controller/direct/netapp/backuppolicy_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/netapp/v1alpha1/netappbackuppolicy",
+    "apiCoverage": false
+  },
+  {
+    "kind": "NetworkConnectivityInternalRange",
+    "service": "networkconnectivity",
+    "apiPath": "apis/networkconnectivity/v1alpha1/internalrange_types.go",
+    "controllerPath": "pkg/controller/direct/networkconnectivity/internalrange_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/networkconnectivity/v1alpha1/networkconnectivityinternalrange",
+    "apiCoverage": false
+  },
+  {
+    "kind": "NetworkManagementConnectivityTest",
+    "service": "networkmanagement",
+    "apiPath": "apis/networkmanagement/v1alpha1/connectivitytest_types.go",
+    "controllerPath": "pkg/controller/direct/networkmanagement/connectivitytest_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/networkmanagement/v1alpha1/networkmanagementconnectivitytest",
+    "apiCoverage": false
+  },
+  {
+    "kind": "NetworkServicesServiceBinding",
+    "service": "networkservices",
+    "apiPath": "apis/networkservices/v1alpha1/servicebinding_types.go",
+    "controllerPath": "pkg/controller/direct/networkservices/servicebinding_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/networkservices/v1alpha1/networkservicesservicebinding",
+    "apiCoverage": false
+  },
+  {
+    "kind": "NotebooksEnvironment",
+    "service": "notebooks",
+    "apiPath": "apis/notebooks/v1alpha1/environment_types.go",
+    "controllerPath": "pkg/controller/direct/notebooks/environment_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/notebooks/v1alpha1/notebooksenvironment",
+    "apiCoverage": false
+  },
+  {
+    "kind": "OrgPolicyCustomConstraint",
+    "service": "orgpolicy",
+    "apiPath": "apis/orgpolicy/v1alpha1/customconstraint_types.go",
+    "controllerPath": "pkg/controller/direct/orgpolicy/customconstraint_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/orgpolicy/v1alpha1/orgpolicycustomconstraint",
+    "apiCoverage": false
+  },
+  {
+    "kind": "OrgPolicyPolicy",
+    "service": "orgpolicy",
+    "apiPath": "apis/orgpolicy/v1alpha1/policy_types.go",
+    "controllerPath": "pkg/controller/direct/orgpolicy/policy_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/orgpolicy/v1alpha1/orgpolicypolicy",
+    "apiCoverage": false
+  },
+  {
+    "kind": "PubSubSnapshot",
+    "service": "pubsub",
+    "apiPath": "apis/pubsub/v1alpha1/snapshot_types.go",
+    "controllerPath": "pkg/controller/direct/pubsub/pubsubsnapshot_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/pubsub/v1alpha1/pubsubsnapshot",
+    "apiCoverage": true
+  },
+  {
+    "kind": "ReCAPTCHAEnterpriseFirewallPolicy",
+    "service": "recaptchaenterprise",
+    "apiPath": "apis/recaptchaenterprise/v1alpha1/firewallpolicy_types.go",
+    "controllerPath": "pkg/controller/direct/recaptchaenterprise/firewallpolicy_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/recaptchaenterprise/v1alpha1/recaptchaenterprisefirewallpolicy",
+    "apiCoverage": false
+  },
+  {
+    "kind": "SpannerBackupSchedule",
+    "service": "spanner",
+    "apiPath": "apis/spanner/v1alpha1/backupschedule_types.go",
+    "controllerPath": "pkg/controller/direct/spanner/backupschedule_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/spanner/v1alpha1/spannerbackupschedule",
+    "apiCoverage": false
+  },
+  {
+    "kind": "SpannerInstanceConfig",
+    "service": "spanner",
+    "apiPath": "apis/spanner/v1alpha1/instanceconfig_types.go",
+    "controllerPath": "pkg/controller/direct/spanner/instanceconfig_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/spanner/v1alpha1/spannerinstanceconfig",
+    "apiCoverage": false
+  },
+  {
+    "kind": "TasksQueue",
+    "service": "cloudtasks",
+    "apiPath": "apis/cloudtasks/v1alpha1/queue_types.go",
+    "controllerPath": "pkg/controller/direct/cloudtasks/queue_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/cloudtasks/v1alpha1/tasksqueue",
+    "apiCoverage": false
+  },
+  {
+    "kind": "VertexAIFeaturestore",
+    "service": "vertexai",
+    "apiPath": "apis/vertexai/v1alpha1/featurestore_types.go",
+    "controllerPath": "pkg/controller/direct/vertexai/featurestore_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/vertexai/v1alpha1/vertexaifeaturestore",
+    "apiCoverage": false
+  },
+  {
+    "kind": "VMwareEngineExternalAccessRule",
+    "service": "vmwareengine",
+    "apiPath": "apis/vmwareengine/v1alpha1/externalaccessrule_types.go",
+    "controllerPath": "pkg/controller/direct/vmwareengine/externalaccessrule_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/vmwareengine/v1alpha1/vmwareengineexternalaccessrule",
+    "apiCoverage": false
+  },
+  {
+    "kind": "VMwareEngineExternalAddress",
+    "service": "vmwareengine",
+    "apiPath": "apis/vmwareengine/v1alpha1/externaladdress_types.go",
+    "controllerPath": "pkg/controller/direct/vmwareengine/externaladdress_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/vmwareengine/v1alpha1/vmwareengineexternaladdress",
+    "apiCoverage": true
+  },
+  {
+    "kind": "VMwareEngineNetworkPeering",
+    "service": "vmwareengine",
+    "apiPath": "apis/vmwareengine/v1alpha1/networkpeering_types.go",
+    "controllerPath": "pkg/controller/direct/vmwareengine/networkpeering_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/vmwareengine/v1alpha1/vmwareenginenetworkpeering",
+    "apiCoverage": false
+  },
+  {
+    "kind": "VMwareEngineNetworkPolicy",
+    "service": "vmwareengine",
+    "apiPath": "apis/vmwareengine/v1alpha1/networkpolicy_types.go",
+    "controllerPath": "pkg/controller/direct/vmwareengine/networkpolicy_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/vmwareengine/v1alpha1/vmwareenginenetworkpolicy",
+    "apiCoverage": false
+  },
+  {
+    "kind": "VMwareEngineNetwork",
+    "service": "vmwareengine",
+    "apiPath": "apis/vmwareengine/v1alpha1/vmwareenginenetwork_types.go",
+    "controllerPath": "pkg/controller/direct/vmwareengine/vmwareenginenetwork_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/vmwareengine/v1alpha1/vmwareenginenetwork",
+    "apiCoverage": false
+  },
+  {
+    "kind": "VMwareEnginePrivateCloud",
+    "service": "vmwareengine",
+    "apiPath": "apis/vmwareengine/v1alpha1/privatecloud_types.go",
+    "controllerPath": "pkg/controller/direct/vmwareengine/privatecloud_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/vmwareengine/v1alpha1/vmwareengineprivatecloud",
+    "apiCoverage": false
+  },
+  {
+    "kind": "WorkflowsExecution",
+    "service": "workflowexecutions",
+    "apiPath": "apis/workflowexecutions/v1alpha1/execution_types.go",
+    "controllerPath": "pkg/controller/direct/workflowexecutions/execution_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/workflowexecutions/v1alpha1/workflowsexecution",
+    "apiCoverage": false
+  },
+  {
+    "kind": "WorkflowsWorkflow",
+    "service": "workflows",
+    "apiPath": "apis/workflows/v1alpha1/workflow_types.go",
+    "controllerPath": "pkg/controller/direct/workflows/workflow_controller.go",
+    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/workflows/v1alpha1/workflowsworkflow",
+    "apiCoverage": false
+  }
+]

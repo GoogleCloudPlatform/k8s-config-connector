@@ -1,0 +1,27 @@
+{
+  "organization": "{{org_id}}",
+  "location": "europe-west9",
+  "displayName": "{{display}}",
+  "complianceRegime": "EU_REGIONS_AND_SUPPORT",
+  "billingAccount": "billingAccounts/{{billing_account}}",
+  "labels": {
+    "label-one": "value-one"
+  },
+  "enableSovereignControls": true,
+  "kmsSettings": {
+    "nextRotationTime": "9999-10-02T15:01:23Z",
+    "rotationPeriod": "10368000s"
+  },
+  "resourceSettings": [
+    {
+      "resourceType": "CONSUMER_FOLDER"
+    },
+    {
+      "resourceType": "ENCRYPTION_KEYS_PROJECT"
+    },
+    {
+      "resourceId": "{{ring}}",
+      "resourceType": "KEYRING"
+    }
+  ]
+}

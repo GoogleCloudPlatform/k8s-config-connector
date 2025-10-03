@@ -1,0 +1,11 @@
+{
+  "name": "{{membership2}}",
+  "project": "{{ref:gkehub.serviceusage.service.json:project}}",
+  "location": "global",
+  "description": "description",
+  "endpoint": {
+    "gkeCluster": {
+      "resourceLink": "{{ref:second.container.cluster.json:selfLink}}"
+    }
+  }
+}

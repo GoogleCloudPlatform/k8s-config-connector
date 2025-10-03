@@ -21,11 +21,10 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 )
 
-type ManagementConflictPreventionPolicy string
-
 // TODO: clean up old conditions used in handcrafted controllers
 const (
 	CNRMGroup                            = "cnrm.cloud.google.com"
+	CNRMTestGroup                        = "test.cnrm.cloud.google.com"
 	APIDomainSuffix                      = ".cnrm.cloud.google.com"
 	SystemNamespace                      = "cnrm-system"
 	ControllerManagerNamePrefix          = "cnrm-controller-manager"
@@ -38,6 +37,8 @@ const (
 	UpToDate                             = "UpToDate"
 	UpToDateMessage                      = "The resource is up to date"
 	Created                              = "Created"
+	Creating                             = "Creating"
+	CreatingMessage                      = "The resource is being created"
 	CreatedMessage                       = "Successfully created"
 	CreateFailed                         = "CreateFailed"
 	CreateFailedMessageTmpl              = "Create call failed: %v"
@@ -72,14 +73,10 @@ const (
 	UnmanagedDetectorFieldManager = "cnrm-unmanaged-detector"
 	SupportsSSAManager            = "supports-ssa"
 
-	// Management conflict prevention policies
-	ManagementConflictPreventionPolicyNone     = "none"
-	ManagementConflictPreventionPolicyResource = "resource"
-
 	// State into spec annotation values
-	StateMergeIntoSpec               = "merge"
-	StateAbsentInSpec                = "absent"
-	StateIntoSpecDefaultValueV1Beta1 = StateMergeIntoSpec
+	StateIntoSpecAnnotation = "cnrm.cloud.google.com/state-into-spec"
+	StateMergeIntoSpec      = "merge"
+	StateAbsentInSpec       = "absent"
 
 	// Core kubernetes constants
 	LastAppliedConfigurationAnnotation = "kubectl.kubernetes.io/last-applied-configuration"
@@ -97,6 +94,12 @@ const (
 
 	KCCAPIVersionV1Beta1  = "v1beta1"
 	KCCAPIVersionV1Alpha1 = "v1alpha1"
+
+	ManagerNamespaceIsolationFlag      = "manager-namespace-isolation"
+	ManagerNamespaceIsolationShared    = "shared"
+	ManagerNamespaceIsolationDedicated = "dedicated"
+
+	ReconcilerTypeAnnotation = "cnrm.cloud.google.com/reconciler"
 )
 
 var (
@@ -113,18 +116,15 @@ var (
 		OrgIDAnnotation,
 	}
 
-	ManagementConflictPreventionPolicyAnnotation               = "management-conflict-prevention-policy"
-	ManagementConflictPreventionPolicyFullyQualifiedAnnotation = FormatAnnotation(ManagementConflictPreventionPolicyAnnotation)
-	ManagementConflictPreventionPolicyValues                   = []string{
-		ManagementConflictPreventionPolicyNone,
-		ManagementConflictPreventionPolicyResource,
-	}
+	// Internal Annotation to force reconciliation
+	InternalForceReconcileAnnotation = CNRMTestGroup + "/reconcile-cookie"
 
 	KCCComponentLabel    = FormatAnnotation("component")
 	KCCSystemLabel       = FormatAnnotation("system")
 	KCCVersionLabel      = FormatAnnotation("version")
 	ScopedNamespaceLabel = FormatAnnotation("scoped-namespace")
 	DCL2CRDLabel         = FormatAnnotation("dcl2crd")
+	TF2CRDLabel          = FormatAnnotation("tf2crd")
 	KCCStabilityLabel    = FormatAnnotation("stability-level")
 
 	MutableButUnreadableFieldsAnnotation = FormatAnnotation("mutable-but-unreadable-fields")
@@ -134,11 +134,8 @@ var (
 
 	BlueprintAttributionAnnotation = FormatAnnotation("blueprint")
 
-	StateIntoSpecAnnotation       = FormatAnnotation("state-into-spec")
-	StateIntoSpecAnnotationValues = []string{
-		StateMergeIntoSpec,
-		StateAbsentInSpec,
-	}
+	AlphaReconcilerAnnotation = "alpha.cnrm.cloud.google.com/reconciler"
+
 	// TODO(kcc-eng): Adjust the timeout back down after b/237398742 is fixed.
 	WebhookTimeoutSeconds = int32(10)
 

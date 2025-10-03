@@ -1,0 +1,250 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum DlpInspectTemplateInspectConfigMinLikelihoodEnum {
+  DlpInspectTemplateInspectConfigMinLikelihoodEnumNO_VALUE_DO_NOT_USE = 0;
+  DlpInspectTemplateInspectConfigMinLikelihoodEnumLIKELIHOOD_UNSPECIFIED = 1;
+  DlpInspectTemplateInspectConfigMinLikelihoodEnumVERY_UNLIKELY = 2;
+  DlpInspectTemplateInspectConfigMinLikelihoodEnumUNLIKELY = 3;
+  DlpInspectTemplateInspectConfigMinLikelihoodEnumPOSSIBLE = 4;
+  DlpInspectTemplateInspectConfigMinLikelihoodEnumLIKELY = 5;
+  DlpInspectTemplateInspectConfigMinLikelihoodEnumVERY_LIKELY = 6;
+}
+
+enum DlpInspectTemplateInspectConfigCustomInfoTypesLikelihoodEnum {
+  DlpInspectTemplateInspectConfigCustomInfoTypesLikelihoodEnumNO_VALUE_DO_NOT_USE = 0;
+  DlpInspectTemplateInspectConfigCustomInfoTypesLikelihoodEnumLIKELIHOOD_UNSPECIFIED = 1;
+  DlpInspectTemplateInspectConfigCustomInfoTypesLikelihoodEnumVERY_UNLIKELY = 2;
+  DlpInspectTemplateInspectConfigCustomInfoTypesLikelihoodEnumUNLIKELY = 3;
+  DlpInspectTemplateInspectConfigCustomInfoTypesLikelihoodEnumPOSSIBLE = 4;
+  DlpInspectTemplateInspectConfigCustomInfoTypesLikelihoodEnumLIKELY = 5;
+  DlpInspectTemplateInspectConfigCustomInfoTypesLikelihoodEnumVERY_LIKELY = 6;
+}
+
+enum DlpInspectTemplateInspectConfigCustomInfoTypesExclusionTypeEnum {
+  DlpInspectTemplateInspectConfigCustomInfoTypesExclusionTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  DlpInspectTemplateInspectConfigCustomInfoTypesExclusionTypeEnumEXCLUSION_TYPE_UNSPECIFIED = 1;
+  DlpInspectTemplateInspectConfigCustomInfoTypesExclusionTypeEnumEXCLUSION_TYPE_EXCLUDE = 2;
+}
+
+enum DlpInspectTemplateInspectConfigContentOptionsEnum {
+  DlpInspectTemplateInspectConfigContentOptionsEnumNO_VALUE_DO_NOT_USE = 0;
+  DlpInspectTemplateInspectConfigContentOptionsEnumCONTENT_UNSPECIFIED = 1;
+  DlpInspectTemplateInspectConfigContentOptionsEnumCONTENT_TEXT = 2;
+  DlpInspectTemplateInspectConfigContentOptionsEnumCONTENT_IMAGE = 3;
+}
+
+enum DlpInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnum {
+  DlpInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumNO_VALUE_DO_NOT_USE = 0;
+  DlpInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumLIKELIHOOD_UNSPECIFIED = 1;
+  DlpInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumVERY_UNLIKELY = 2;
+  DlpInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumUNLIKELY = 3;
+  DlpInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumPOSSIBLE = 4;
+  DlpInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumLIKELY = 5;
+  DlpInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnumVERY_LIKELY = 6;
+}
+
+enum DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleMatchingTypeEnum {
+  DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleMatchingTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleMatchingTypeEnumMATCHING_TYPE_UNSPECIFIED = 1;
+  DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleMatchingTypeEnumMATCHING_TYPE_FULL_MATCH = 2;
+  DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleMatchingTypeEnumMATCHING_TYPE_PARTIAL_MATCH = 3;
+  DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleMatchingTypeEnumMATCHING_TYPE_INVERSE_MATCH = 4;
+}
+
+message DlpInspectTemplate {
+  string name = 1;
+  string display_name = 2;
+  string description = 3;
+  string create_time = 4;
+  string update_time = 5;
+  DlpInspectTemplateInspectConfig inspect_config = 6;
+  string location_id = 7;
+  string parent = 8;
+  string location = 9;
+}
+
+message DlpInspectTemplateInspectConfig {
+  repeated DlpInspectTemplateInspectConfigInfoTypes info_types = 1;
+  DlpInspectTemplateInspectConfigMinLikelihoodEnum min_likelihood = 2;
+  DlpInspectTemplateInspectConfigLimits limits = 3;
+  bool include_quote = 4;
+  bool exclude_info_types = 5;
+  repeated DlpInspectTemplateInspectConfigCustomInfoTypes custom_info_types = 6;
+  repeated DlpInspectTemplateInspectConfigContentOptionsEnum content_options = 7;
+  repeated DlpInspectTemplateInspectConfigRuleSet rule_set = 8;
+}
+
+message DlpInspectTemplateInspectConfigInfoTypes {
+  string name = 1;
+}
+
+message DlpInspectTemplateInspectConfigLimits {
+  int64 max_findings_per_item = 1;
+  int64 max_findings_per_request = 2;
+  repeated DlpInspectTemplateInspectConfigLimitsMaxFindingsPerInfoType max_findings_per_info_type = 3;
+}
+
+message DlpInspectTemplateInspectConfigLimitsMaxFindingsPerInfoType {
+  DlpInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfoType info_type = 1;
+  int64 max_findings = 2;
+}
+
+message DlpInspectTemplateInspectConfigLimitsMaxFindingsPerInfoTypeInfoType {
+  string name = 1;
+}
+
+message DlpInspectTemplateInspectConfigCustomInfoTypes {
+  DlpInspectTemplateInspectConfigCustomInfoTypesInfoType info_type = 1;
+  DlpInspectTemplateInspectConfigCustomInfoTypesLikelihoodEnum likelihood = 2;
+  DlpInspectTemplateInspectConfigCustomInfoTypesDictionary dictionary = 3;
+  DlpInspectTemplateInspectConfigCustomInfoTypesRegex regex = 4;
+  DlpInspectTemplateInspectConfigCustomInfoTypesSurrogateType surrogate_type = 5;
+  DlpInspectTemplateInspectConfigCustomInfoTypesStoredType stored_type = 6;
+  DlpInspectTemplateInspectConfigCustomInfoTypesExclusionTypeEnum exclusion_type = 7;
+}
+
+message DlpInspectTemplateInspectConfigCustomInfoTypesInfoType {
+  string name = 1;
+}
+
+message DlpInspectTemplateInspectConfigCustomInfoTypesDictionary {
+  DlpInspectTemplateInspectConfigCustomInfoTypesDictionaryWordList word_list = 1;
+  DlpInspectTemplateInspectConfigCustomInfoTypesDictionaryCloudStoragePath cloud_storage_path = 2;
+}
+
+message DlpInspectTemplateInspectConfigCustomInfoTypesDictionaryWordList {
+  repeated string words = 1;
+}
+
+message DlpInspectTemplateInspectConfigCustomInfoTypesDictionaryCloudStoragePath {
+  string path = 1;
+}
+
+message DlpInspectTemplateInspectConfigCustomInfoTypesRegex {
+  string pattern = 1;
+  repeated int64 group_indexes = 2;
+}
+
+message DlpInspectTemplateInspectConfigCustomInfoTypesSurrogateType {
+}
+
+message DlpInspectTemplateInspectConfigCustomInfoTypesStoredType {
+  string name = 1;
+  string create_time = 2;
+}
+
+message DlpInspectTemplateInspectConfigRuleSet {
+  repeated DlpInspectTemplateInspectConfigRuleSetInfoTypes info_types = 1;
+  repeated DlpInspectTemplateInspectConfigRuleSetRules rules = 2;
+}
+
+message DlpInspectTemplateInspectConfigRuleSetInfoTypes {
+  string name = 1;
+}
+
+message DlpInspectTemplateInspectConfigRuleSetRules {
+  DlpInspectTemplateInspectConfigRuleSetRulesHotwordRule hotword_rule = 1;
+  DlpInspectTemplateInspectConfigRuleSetRulesExclusionRule exclusion_rule = 2;
+}
+
+message DlpInspectTemplateInspectConfigRuleSetRulesHotwordRule {
+  DlpInspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRegex hotword_regex = 1;
+  DlpInspectTemplateInspectConfigRuleSetRulesHotwordRuleProximity proximity = 2;
+  DlpInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustment likelihood_adjustment = 3;
+}
+
+message DlpInspectTemplateInspectConfigRuleSetRulesHotwordRuleHotwordRegex {
+  string pattern = 1;
+  repeated int64 group_indexes = 2;
+}
+
+message DlpInspectTemplateInspectConfigRuleSetRulesHotwordRuleProximity {
+  int64 window_before = 1;
+  int64 window_after = 2;
+}
+
+message DlpInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustment {
+  DlpInspectTemplateInspectConfigRuleSetRulesHotwordRuleLikelihoodAdjustmentFixedLikelihoodEnum fixed_likelihood = 1;
+  int64 relative_likelihood = 2;
+}
+
+message DlpInspectTemplateInspectConfigRuleSetRulesExclusionRule {
+  DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionary dictionary = 1;
+  DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleRegex regex = 2;
+  DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypes exclude_info_types = 3;
+  DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleMatchingTypeEnum matching_type = 4;
+}
+
+message DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionary {
+  DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryWordList word_list = 1;
+  DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePath cloud_storage_path = 2;
+}
+
+message DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryWordList {
+  repeated string words = 1;
+}
+
+message DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleDictionaryCloudStoragePath {
+  string path = 1;
+}
+
+message DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleRegex {
+  string pattern = 1;
+  repeated int64 group_indexes = 2;
+}
+
+message DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypes {
+  repeated DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypes info_types = 1;
+}
+
+message DlpInspectTemplateInspectConfigRuleSetRulesExclusionRuleExcludeInfoTypesInfoTypes {
+  string name = 1;
+}
+
+message ApplyDlpInspectTemplateRequest {
+  DlpInspectTemplate resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteDlpInspectTemplateRequest {
+  string service_account_file = 1;
+  DlpInspectTemplate resource = 2;
+}
+
+message ListDlpInspectTemplateRequest {
+  string service_account_file = 1;
+  string Location = 2;
+  string Parent = 3;
+}
+
+message ListDlpInspectTemplateResponse {
+  repeated DlpInspectTemplate items = 1;
+}
+
+service DlpInspectTemplateService {
+  rpc ApplyDlpInspectTemplate(ApplyDlpInspectTemplateRequest) returns (DlpInspectTemplate);
+  rpc DeleteDlpInspectTemplate(DeleteDlpInspectTemplateRequest) returns (google.protobuf.Empty);
+  rpc ListDlpInspectTemplate(ListDlpInspectTemplateRequest) returns (ListDlpInspectTemplateResponse);
+}

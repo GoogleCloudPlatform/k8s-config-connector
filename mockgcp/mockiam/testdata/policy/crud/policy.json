@@ -1,0 +1,15 @@
+{
+  "displayName": "Test Deny Policy",
+  "rules": [
+    {
+      "denyRule": {
+        "deniedPrincipals": [
+          "principalSet://goog/public:all"
+        ],
+        "deniedPermissions": [
+          "storage.googleapis.com/objects.get"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum DataplexAlphaAssetStateEnum {
+  DataplexAlphaAssetStateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataplexAlphaAssetStateEnumSTATE_UNSPECIFIED = 1;
+  DataplexAlphaAssetStateEnumACTIVE = 2;
+  DataplexAlphaAssetStateEnumCREATING = 3;
+  DataplexAlphaAssetStateEnumDELETING = 4;
+  DataplexAlphaAssetStateEnumACTION_REQUIRED = 5;
+}
+
+enum DataplexAlphaAssetResourceSpecTypeEnum {
+  DataplexAlphaAssetResourceSpecTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  DataplexAlphaAssetResourceSpecTypeEnumSTORAGE_BUCKET = 1;
+  DataplexAlphaAssetResourceSpecTypeEnumBIGQUERY_DATASET = 2;
+}
+
+enum DataplexAlphaAssetResourceSpecReadAccessModeEnum {
+  DataplexAlphaAssetResourceSpecReadAccessModeEnumNO_VALUE_DO_NOT_USE = 0;
+  DataplexAlphaAssetResourceSpecReadAccessModeEnumDIRECT = 1;
+  DataplexAlphaAssetResourceSpecReadAccessModeEnumMANAGED = 2;
+}
+
+enum DataplexAlphaAssetResourceStatusStateEnum {
+  DataplexAlphaAssetResourceStatusStateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataplexAlphaAssetResourceStatusStateEnumSTATE_UNSPECIFIED = 1;
+  DataplexAlphaAssetResourceStatusStateEnumREADY = 2;
+  DataplexAlphaAssetResourceStatusStateEnumERROR = 3;
+}
+
+enum DataplexAlphaAssetSecurityStatusStateEnum {
+  DataplexAlphaAssetSecurityStatusStateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataplexAlphaAssetSecurityStatusStateEnumSTATE_UNSPECIFIED = 1;
+  DataplexAlphaAssetSecurityStatusStateEnumREADY = 2;
+  DataplexAlphaAssetSecurityStatusStateEnumAPPLYING = 3;
+  DataplexAlphaAssetSecurityStatusStateEnumERROR = 4;
+}
+
+enum DataplexAlphaAssetDiscoveryStatusStateEnum {
+  DataplexAlphaAssetDiscoveryStatusStateEnumNO_VALUE_DO_NOT_USE = 0;
+  DataplexAlphaAssetDiscoveryStatusStateEnumSTATE_UNSPECIFIED = 1;
+  DataplexAlphaAssetDiscoveryStatusStateEnumSCHEDULED = 2;
+  DataplexAlphaAssetDiscoveryStatusStateEnumIN_PROGRESS = 3;
+  DataplexAlphaAssetDiscoveryStatusStateEnumPAUSED = 4;
+  DataplexAlphaAssetDiscoveryStatusStateEnumDISABLED = 5;
+}
+
+message DataplexAlphaAsset {
+  string name = 1;
+  string display_name = 2;
+  string uid = 3;
+  string create_time = 4;
+  string update_time = 5;
+  map<string, string> labels = 6;
+  string description = 7;
+  DataplexAlphaAssetStateEnum state = 8;
+  DataplexAlphaAssetResourceSpec resource_spec = 9;
+  DataplexAlphaAssetResourceStatus resource_status = 10;
+  DataplexAlphaAssetSecurityStatus security_status = 11;
+  DataplexAlphaAssetDiscoverySpec discovery_spec = 12;
+  DataplexAlphaAssetDiscoveryStatus discovery_status = 13;
+  string project = 14;
+  string location = 15;
+  string lake = 16;
+  string dataplex_zone = 17;
+}
+
+message DataplexAlphaAssetResourceSpec {
+  string name = 1;
+  DataplexAlphaAssetResourceSpecTypeEnum type = 2;
+  DataplexAlphaAssetResourceSpecReadAccessModeEnum read_access_mode = 3;
+}
+
+message DataplexAlphaAssetResourceStatus {
+  DataplexAlphaAssetResourceStatusStateEnum state = 1;
+  string message = 2;
+  string update_time = 3;
+}
+
+message DataplexAlphaAssetSecurityStatus {
+  DataplexAlphaAssetSecurityStatusStateEnum state = 1;
+  string message = 2;
+  string update_time = 3;
+}
+
+message DataplexAlphaAssetDiscoverySpec {
+  bool enabled = 1;
+  repeated string include_patterns = 2;
+  repeated string exclude_patterns = 3;
+  DataplexAlphaAssetDiscoverySpecCsvOptions csv_options = 4;
+  DataplexAlphaAssetDiscoverySpecJsonOptions json_options = 5;
+  string schedule = 6;
+}
+
+message DataplexAlphaAssetDiscoverySpecCsvOptions {
+  int64 header_rows = 1;
+  string delimiter = 2;
+  string encoding = 3;
+  bool disable_type_inference = 4;
+}
+
+message DataplexAlphaAssetDiscoverySpecJsonOptions {
+  string encoding = 1;
+  bool disable_type_inference = 2;
+}
+
+message DataplexAlphaAssetDiscoveryStatus {
+  DataplexAlphaAssetDiscoveryStatusStateEnum state = 1;
+  string message = 2;
+  string update_time = 3;
+  string last_run_time = 4;
+  DataplexAlphaAssetDiscoveryStatusStats stats = 5;
+  string last_run_duration = 6;
+}
+
+message DataplexAlphaAssetDiscoveryStatusStats {
+  int64 data_items = 1;
+  int64 data_size = 2;
+  int64 tables = 3;
+  int64 filesets = 4;
+}
+
+message ApplyDataplexAlphaAssetRequest {
+  DataplexAlphaAsset resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteDataplexAlphaAssetRequest {
+  string service_account_file = 1;
+  DataplexAlphaAsset resource = 2;
+}
+
+message ListDataplexAlphaAssetRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string DataplexZone = 4;
+  string Lake = 5;
+}
+
+message ListDataplexAlphaAssetResponse {
+  repeated DataplexAlphaAsset items = 1;
+}
+
+service DataplexAlphaAssetService {
+  rpc ApplyDataplexAlphaAsset(ApplyDataplexAlphaAssetRequest) returns (DataplexAlphaAsset);
+  rpc DeleteDataplexAlphaAsset(DeleteDataplexAlphaAssetRequest) returns (google.protobuf.Empty);
+  rpc ListDataplexAlphaAsset(ListDataplexAlphaAssetRequest) returns (ListDataplexAlphaAssetResponse);
+}

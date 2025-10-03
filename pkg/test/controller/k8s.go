@@ -147,6 +147,7 @@ func WaitForUnstructDeleteToFinish(t *testing.T, kubeClient client.Client, origU
 func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project testgcp.GCPProject) []byte {
 	s := string(b)
 	s = strings.Replace(s, "${uniqueId}", uniqueID, -1)
+	s = strings.Replace(s, "${futureTimestamp}", "2035-01-01T10:00:00Z", -1)
 	s = strings.Replace(s, "${projectId}", project.ProjectID, -1)
 	if strings.Contains(s, "${projectNumber}") {
 		projectNumber := strconv.FormatInt(project.ProjectNumber, 10)
@@ -160,15 +161,16 @@ func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project testgcp.GC
 	s = strings.Replace(s, fmt.Sprintf("organizations/${%s}", testgcp.TestOrgID.Key), fmt.Sprintf("organizations/%s", testgcp.TestOrgID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestOrgID.Key), fmt.Sprintf("\"%s\"", testgcp.TestOrgID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentOrgProjectID.Key), fmt.Sprintf("\"%s\"", testgcp.TestDependentOrgProjectID.Get()), -1)
-	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentOrgProjectID.Key), fmt.Sprintf("projects/%s", testgcp.TestDependentOrgProjectID.Get()), -1)
-	s = strings.Replace(s, fmt.Sprintf("projects/${%s}", testgcp.TestDependentFolderProjectID), fmt.Sprintf("projects/%s", testgcp.GetDependentFolderProjectID(t)), -1)
-	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentFolderProjectID), fmt.Sprintf("\"%s\"", testgcp.GetDependentFolderProjectID(t)), -1)
+	s = strings.Replace(s, fmt.Sprintf("projects/${%s}", testgcp.TestDependentOrgProjectID.Key), fmt.Sprintf("projects/%s", testgcp.TestDependentOrgProjectID.Get()), -1)
+	s = strings.Replace(s, fmt.Sprintf("projects/${%s}", testgcp.TestDependentFolderProjectID.Key), fmt.Sprintf("projects/%s", testgcp.TestDependentFolderProjectID.Get()), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentOrgProjectIDWithoutQuotation), fmt.Sprintf("%s", testgcp.TestDependentOrgProjectID.Get()), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentFolderProjectID.Key), fmt.Sprintf("\"%s\"", testgcp.TestDependentFolderProjectID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("projects/${%s}", testgcp.TestDependentFolder2ProjectID), fmt.Sprintf("projects/%s", testgcp.GetDependentFolder2ProjectID(t)), -1)
 	s = strings.Replace(s, fmt.Sprintf("projects/${%s}", testgcp.TestDependentNoNetworkProjectID.Key), fmt.Sprintf("projects/%s", testgcp.TestDependentNoNetworkProjectID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestDependentNoNetworkProjectID.Key), fmt.Sprintf("\"%s\"", testgcp.TestDependentNoNetworkProjectID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("organizations/${%s}", testgcp.IAMIntegrationTestsOrganizationID.Key), fmt.Sprintf("organizations/%s", testgcp.IAMIntegrationTestsOrganizationID.Get()), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IAMIntegrationTestsOrganizationID.Key), fmt.Sprintf("\"%s\"", testgcp.IAMIntegrationTestsOrganizationID.Get()), -1)
-	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IsolatedTestOrgName), testgcp.GetIsolatedTestOrgName(t), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.IsolatedTestOrgName.Key), testgcp.IsolatedTestOrgName.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestBillingAccountID.Key), testgcp.TestBillingAccountID.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestBillingAccountIDForBillingResources.Key), testgcp.TestBillingAccountIDForBillingResources.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.FirestoreTestProject.Key), testgcp.FirestoreTestProject.Get(), -1)
@@ -179,8 +181,10 @@ func ReplaceTestVars(t *testing.T, b []byte, uniqueID string, project testgcp.GC
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.HighCPUQuotaTestProject), testgcp.GetHighCPUQuotaTestProject(t), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.RecaptchaEnterpriseTestProject.Key), testgcp.RecaptchaEnterpriseTestProject.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCAttachedClusterProject.Key), testgcp.TestKCCAttachedClusterProject.Get(), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCAttachedClusterPlatformVersion.Key), testgcp.TestKCCAttachedClusterPlatformVersion.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCVertexAIIndexBucket.Key), testgcp.TestKCCVertexAIIndexBucket.Get(), -1)
 	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestKCCVertexAIIndexDataURI.Key), testgcp.TestKCCVertexAIIndexDataURI.Get(), -1)
+	s = strings.Replace(s, fmt.Sprintf("${%s}", testgcp.TestInterconnectID.Key), testgcp.TestInterconnectID.Get(), -1)
 	return []byte(s)
 }
 
@@ -195,7 +199,7 @@ func CollectEvents(t *testing.T, config *rest.Config, namespace string, expected
 	listOptions := metav1.ListOptions{}
 	watcher, err := clientSet.CoreV1().Events(namespace).Watch(context.Background(), listOptions)
 	if err != nil {
-		t.Fatalf("errror creating event watch: %v", err)
+		t.Fatalf("error creating event watch: %v", err)
 	}
 	defer watcher.Stop()
 	results := make([]v1.Event, 0)

@@ -15,7 +15,6 @@
 package create
 
 import (
-	"errors"
 	"fmt"
 	"io/fs"
 	"path/filepath"
@@ -28,16 +27,16 @@ import (
 	"time"
 
 	opv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/teststatus"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 
-	"github.com/ghodss/yaml"
+	"github.com/ghodss/yaml" //nolint:depguard
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -46,8 +45,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
+const DefaultWaitForReadyTimeout = 35 * time.Minute
+
 type Sample struct {
 	Name      string
+	APIGroup  string
 	Resources []*unstructured.Unstructured
 }
 
@@ -111,38 +113,55 @@ type CreateDeleteTestOptions struct { //nolint:revive
 	// DeleteInOrder true means that we delete each object and wait for deletion to complete.
 	// This requires that objects be sorted in deletion order.
 	DeleteInOrder bool
+
+	// DoNotUseServerSideApplyForCreate uses a normal create for object creation
+	// Note: we should use server-side apply for both create and update.
+	// If we mix-and-match, we get surprising behaviours e.g. we can't clear a field
+	DoNotUseServerSideApplyForCreate bool
 }
 
 func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	ctx := t.Ctx
 
+	// Note: we should use server-side apply for both create and update.
+	// If we mix-and-match, we get surprising behaviours e.g. we can't clear a field
+
 	// Create and reconcile all resources & dependencies
 	for _, u := range opt.Create {
-		if err := t.GetClient().Create(ctx, u); err != nil {
-			t.Fatalf("error creating resource: %v", err)
+		if opt.DoNotUseServerSideApplyForCreate {
+			t.Log("using legacy create to create object (should ideally use server-side apply)", "GVK", u.GroupVersionKind().String(), "name", u.GetName())
+			if err := t.GetClient().Create(ctx, u); err != nil {
+				t.Fatalf("error creating resource: %v", err)
+			}
+		} else {
+			t.Log("using server-side apply to create object", "GVK", u.GroupVersionKind().String(), "name", u.GetName())
+			if err := t.GetClient().Patch(ctx, u, client.Apply, client.FieldOwner("kcc-tests")); err != nil {
+				t.Fatalf("error creating resource: %v", err)
+			}
 		}
 		if opt.CreateInOrder && !opt.SkipWaitForReady {
-			waitForReadySingleResource(t, u)
+			waitForReadySingleResource(t, u, DefaultWaitForReadyTimeout)
 		}
 	}
 
 	if !opt.CreateInOrder && !opt.SkipWaitForReady {
-		WaitForReady(t, opt.Create...)
+		WaitForReady(t, DefaultWaitForReadyTimeout, opt.Create...)
 	}
 
 	if len(opt.Updates) != 0 {
 		// treat as a patch
 		for _, updateUnstruct := range opt.Updates {
+			t.Logf("using server-side apply to update object")
 			if err := t.GetClient().Patch(ctx, updateUnstruct, client.Apply, client.FieldOwner("kcc-tests"), client.ForceOwnership); err != nil {
 				t.Fatalf("error updating resource: %v", err)
 			}
 			if opt.CreateInOrder && !opt.SkipWaitForReady {
-				waitForReadySingleResource(t, updateUnstruct)
+				waitForReadySingleResource(t, updateUnstruct, DefaultWaitForReadyTimeout)
 			}
 		}
 
 		if !opt.CreateInOrder && !opt.SkipWaitForReady {
-			WaitForReady(t, opt.Updates...)
+			WaitForReady(t, DefaultWaitForReadyTimeout, opt.Updates...)
 		}
 	}
 
@@ -152,20 +171,20 @@ func RunCreateDeleteTest(t *Harness, opt CreateDeleteTestOptions) {
 	}
 }
 
-func WaitForReady(h *Harness, unstructs ...*unstructured.Unstructured) {
+func WaitForReady(h *Harness, timeout time.Duration, unstructs ...*unstructured.Unstructured) {
 	var wg sync.WaitGroup
 	for _, u := range unstructs {
 		u := u
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			waitForReadySingleResource(h, u)
+			waitForReadySingleResource(h, u, timeout)
 		}()
 	}
 	wg.Wait()
 }
 
-func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured) {
+func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured, timeout time.Duration) {
 	logger := log.FromContext(t.Ctx)
 
 	switch u.GroupVersionKind().GroupKind() {
@@ -177,8 +196,12 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured) {
 		return
 	}
 
+	if u.GetKind() == "StorageAnywhereCache" {
+		timeout = 4 * time.Hour
+	}
+
 	name := k8s.GetNamespacedName(u)
-	err := wait.PollImmediate(1*time.Second, 35*time.Minute, func() (done bool, err error) {
+	err := wait.PollImmediate(1*time.Second, timeout, func() (done bool, err error) {
 		done = true
 		logger.V(2).Info("Testing to see if resource is ready", "kind", u.GetKind(), "name", u.GetName())
 		err = t.GetClient().Get(t.Ctx, name, u)
@@ -201,7 +224,7 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured) {
 			logger.Info("resource does not yet have conditions", "kind", u.GetKind(), "name", u.GetName())
 			return false, nil
 		}
-		objectStatus := dynamic.GetObjectStatus(t.T, u)
+		objectStatus := teststatus.GetObjectStatus(t.T, u)
 		if objectStatus.ObservedGeneration == nil {
 			logger.Info("resource does not yet have status.observedGeneration", "kind", u.GetKind(), "name", u.GetName())
 			return false, nil
@@ -226,16 +249,16 @@ func waitForReadySingleResource(t *Harness, u *unstructured.Unstructured) {
 	if err == nil {
 		return
 	}
-	if !errors.Is(err, wait.ErrWaitTimeout) {
-		t.Errorf("error while polling for ready on %v with name '%v': %v", u.GetKind(), u.GetName(), err)
+	if !wait.Interrupted(err) {
+		t.Error(fmt.Errorf("error while polling for ready on %v with name '%v': %w", u.GetKind(), u.GetName(), err))
 		return
 	}
 	baseMsg := fmt.Sprintf("timed out waiting for ready on %v with name '%v'", u.GetKind(), u.GetName())
 	if err := t.GetClient().Get(t.Ctx, name, u); err != nil {
-		t.Errorf("%v, error retrieving final status.conditions: %v", baseMsg, err)
+		t.Error(fmt.Errorf("%v, error retrieving final status.conditions: %w", baseMsg, err))
 		return
 	}
-	objectStatus := dynamic.GetObjectStatus(t.T, u)
+	objectStatus := teststatus.GetObjectStatus(t.T, u)
 	t.Errorf("%v, final status: %+v", baseMsg, objectStatus)
 }
 
@@ -283,7 +306,12 @@ func waitForDeleteToComplete(t *Harness, u *unstructured.Unstructured) {
 	defer log.FromContext(t.Ctx).Info("Done waiting for resource to delete", "kind", u.GetKind(), "name", u.GetName())
 	// Do a best-faith cleanup of the resources. Gives a 30 minute buffer for cleanup, though
 	// resources that can be cleaned up quicker exit earlier.
-	err := wait.PollImmediate(1*time.Second, 30*time.Minute, func() (bool, error) {
+	timeout := 30 * time.Minute
+	if u.GetKind() == "StorageBucket" {
+		timeout = 100 * time.Minute
+	}
+
+	err := wait.PollImmediate(1*time.Second, timeout, func() (bool, error) {
 		if err := t.GetClient().Get(t.Ctx, k8s.GetNamespacedName(u), u); !apierrors.IsNotFound(err) {
 			if t.Ctx.Err() != nil {
 				return false, t.Ctx.Err()
@@ -329,8 +357,10 @@ func LoadSample(t *testing.T, sampleKey SampleKey, project testgcp.GCPProject) S
 // SampleKey contains the metadata for a sample.
 // This lets us defer variable substitution.
 type SampleKey struct {
-	Name  string
-	files []string
+	Name      string
+	SourceDir string
+	APIGroup  string
+	files     []string
 }
 
 func loadSampleOntoUnstructs(t *testing.T, sampleKey SampleKey, project testgcp.GCPProject) Sample {
@@ -345,6 +375,7 @@ func loadSampleOntoUnstructs(t *testing.T, sampleKey SampleKey, project testgcp.
 	s := Sample{
 		Name:      sampleKey.Name,
 		Resources: resources,
+		APIGroup:  sampleKey.APIGroup,
 	}
 	return s
 }
@@ -361,10 +392,33 @@ func ListMatchingSamples(t *testing.T, regex *regexp.Regexp) []SampleKey {
 		if strings.HasSuffix(d.Name(), ".yaml") {
 			sampleName := filepath.Base(filepath.Dir(path))
 			if regex.MatchString(sampleName) {
-				sampleKey := samples[filepath.Dir(path)]
+				sourceDir := filepath.Dir(path)
+				sampleKey := samples[sourceDir]
 				sampleKey.Name = sampleName
-				sampleKey.files = append(sampleKey.files, path)
-				samples[filepath.Dir(path)] = sampleKey
+				sampleKey.SourceDir = sourceDir
+				// The sampleKey.APIGroup can be found from the Kind, the Kind is in the path as config/samples/resources/<KIND>,
+				// Then by iterating the files under the sourceDir, you can find the `apiGroup` value if the `kind` matches <KIND>
+				if sampleKey.APIGroup == "" {
+					b := test.MustReadFile(t, path)
+					yamls := testyaml.SplitYAML(t, b)
+					// The resource kind is part of the path: config/samples/resources/<KIND>/...
+					resourceKind := filepath.Base(filepath.Dir(sourceDir))
+					for _, y := range yamls {
+						var u unstructured.Unstructured
+						if err := yaml.Unmarshal(y, &u); err != nil {
+							continue
+						}
+						if strings.EqualFold(u.GetKind(), resourceKind) {
+							apiVersion := u.GetAPIVersion()
+							parts := strings.Split(apiVersion, "/")
+							if len(parts) == 2 {
+								sampleKey.APIGroup = parts[0]
+							}
+							break
+						}
+					}
+				}
+				samples[sourceDir] = sampleKey
 			}
 		}
 		return nil
@@ -392,8 +446,12 @@ func newSubstitutionVariables(t *testing.T, project testgcp.GCPProject) map[stri
 	subs["${DLP_TEST_BUCKET?}"] = testgcp.GetDLPTestBucket(t)
 	subs["${ATTACHED_CLUSTER_NAME?}"] = testgcp.TestAttachedClusterName.Get()
 	subs["${KCC_ATTACHED_CLUSTER_TEST_PROJECT?}"] = testgcp.TestKCCAttachedClusterProject.Get()
+	subs["${ATTACHED_CLUSTER_PLATFORM_VERSION?}"] = testgcp.TestKCCAttachedClusterPlatformVersion.Get()
 	subs["${KCC_VERTEX_AI_INDEX_TEST_BUCKET?}"] = testgcp.TestKCCVertexAIIndexBucket.Get()
 	subs["${KCC_VERTEX_AI_INDEX_TEST_DATA_URI?}"] = testgcp.TestKCCVertexAIIndexDataURI.Get()
+	// It needs to be a real group email, so decide to use a placeholder here to
+	// avoid exposing internal information.
+	subs["${GROUP_EMAIL?}"] = testgcp.TestGroupEmail.Get()
 	return subs
 }
 
@@ -516,7 +574,7 @@ func updateProjectResourceWithExistingResourceIDs(t *testing.T, unstructs []*uns
 					}
 
 					if projectInFolder {
-						dp = testgcp.GetDependentFolderProjectID(t)
+						dp = testgcp.TestDependentFolderProjectID.Get()
 					} else if projectInOrg {
 						dp = testgcp.TestDependentOrgProjectID.Get()
 					}

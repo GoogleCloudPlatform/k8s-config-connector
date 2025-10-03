@@ -1,0 +1,17 @@
+{
+  "project": "{{ref:gkehub.serviceusage.service.json:project}}",
+  "location": "global",
+  "feature": "projects/{{ref:acm.feature.json:project}}/locations/{{ref:acm.feature.json:location}}/features/{{ref:acm.feature.json:name}}",
+  "membership": "{{ref:first.membership.json:name}}",
+  "membershipLocation": "global",
+  "configmanagement": {
+    "configSync": {
+      "git": {
+        "syncRepo": "https://github.com/GoogleCloudPlatform/magic-modules",
+        "httpsProxy": "",
+        "secretType": "ssh"
+      },
+      "preventDrift": false
+    }
+  }
+}

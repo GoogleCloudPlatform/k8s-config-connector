@@ -21,31 +21,31 @@ import (
 
 	api "cloud.google.com/go/apikeys/apiv2"
 	pb "cloud.google.com/go/apikeys/apiv2/apikeyspb"
-	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/apikeys/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
 	. "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/mappings" //nolint:revive
 )
 
-// AddKeyReconciler creates a new controller and adds it to the Manager.
-// The Manager will set fields on the Controller and start it when the Manager is started.
-func AddKeyReconciler(mgr manager.Manager, config *controller.Config, opts directbase.Deps) error {
-	gvk := krm.APIKeysKeyGVK
+func init() {
+	registry.RegisterModel(krm.APIKeysKeyGVK, newAPIKeysModel)
+}
 
-	return directbase.Add(mgr, gvk, &model{config: *config}, opts)
+func newAPIKeysModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &model{config: *config}, nil
 }
 
 type model struct {
-	config controller.Config
+	config config.ControllerConfig
 }
 
 // model implements the Model interface.
@@ -54,7 +54,7 @@ var _ directbase.Model = &model{}
 var keyMapping = NewMapping(&pb.Key{}, &krm.APIKeysKey{},
 	Spec("displayName"),
 	Spec("restrictions"),
-	Status("uid"),
+	// Status("uid"),
 	Ignore("createTime"),
 	Ignore("updateTime"),
 	Ignore("deleteTime"),
@@ -87,21 +87,10 @@ type adapter struct {
 var _ directbase.Adapter = &adapter{}
 
 func (m *model) client(ctx context.Context) (*api.Client, error) {
-	var opts []option.ClientOption
-	if m.config.UserAgent != "" {
-		opts = append(opts, option.WithUserAgent(m.config.UserAgent))
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
 	}
-	if m.config.HTTPClient != nil {
-		opts = append(opts, option.WithHTTPClient(m.config.HTTPClient))
-	}
-	if m.config.UserProjectOverride && m.config.BillingProject != "" {
-		opts = append(opts, option.WithQuotaProject(m.config.BillingProject))
-	}
-
-	// TODO: support endpoints?
-	// if m.config.Endpoint != "" {
-	// 	opts = append(opts, option.WithEndpoint(m.config.Endpoint))
-	// }
 
 	gcpClient, err := api.NewRESTClient(ctx, opts...)
 	if err != nil {
@@ -129,7 +118,7 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}
 
 	// TODO: Use name or request resourceID to be set on create?
-	keyID := ValueOf(obj.Spec.ResourceID)
+	keyID := direct.ValueOf(obj.Spec.ResourceID)
 	if keyID == "" {
 		return nil, fmt.Errorf("unable to determine resourceID")
 	}
@@ -147,6 +136,10 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 	}, nil
 }
 
+func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	return nil, nil
+}
+
 // Find implements the Adapter interface.
 func (a *adapter) Find(ctx context.Context) (bool, error) {
 	if a.keyID == "" {
@@ -158,7 +151,7 @@ func (a *adapter) Find(ctx context.Context) (bool, error) {
 	}
 	key, err := a.gcp.GetKey(ctx, req)
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			klog.Warningf("key was not found: %v", err)
 			return false, nil
 		}
@@ -175,14 +168,14 @@ func (a *adapter) Find(ctx context.Context) (bool, error) {
 }
 
 // Delete implements the Adapter interface.
-func (a *adapter) Delete(ctx context.Context) (bool, error) {
+func (a *adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	// TODO: Delete via status selfLink?
 	req := &pb.DeleteKeyRequest{
 		Name: a.fullyQualifiedName(),
 	}
 	op, err := a.gcp.DeleteKey(ctx, req)
 	if err != nil {
-		if IsNotFound(err) {
+		if direct.IsNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("deleting key: %w", err)
@@ -211,7 +204,9 @@ func (a *adapter) buildCreateRequest() (*pb.CreateKeyRequest, error) {
 }
 
 // Create implements the Adapter interface.
-func (a *adapter) Create(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	u := createOp.GetUnstructured()
+
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating object", "u", u)
 
@@ -235,7 +230,9 @@ func (a *adapter) Create(ctx context.Context, u *unstructured.Unstructured) erro
 }
 
 // Update implements the Adapter interface.
-func (a *adapter) Update(ctx context.Context, u *unstructured.Unstructured) error {
+func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	// u := Op.GetUnstructured()
+
 	// TODO: Skip updates if no changes
 	// TODO: Where/how do we want to enforce immutability?
 	updateMask := &fieldmaskpb.FieldMask{}
@@ -276,6 +273,30 @@ func (a *adapter) Update(ctx context.Context, u *unstructured.Unstructured) erro
 	}
 	// TODO: update status in u
 	return nil
+}
+
+func (a *adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	if a.actual == nil {
+		return nil, fmt.Errorf("apikeyskey %q not found", a.fullyQualifiedName())
+	}
+
+	spec := direct.LazyPtr(a.actual.Spec)
+	specObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(spec)
+	if err != nil {
+		return nil, fmt.Errorf("error converting apikeyskey spec to unstructured: %w", err)
+	}
+
+	u := &unstructured.Unstructured{
+		Object: make(map[string]interface{}),
+	}
+	u.SetName(a.keyID)
+	u.SetGroupVersionKind(krm.APIKeysKeyGVK)
+	u.SetLabels(a.actual.Labels)
+	if err := unstructured.SetNestedField(u.Object, specObj, "spec"); err != nil {
+		return nil, fmt.Errorf("setting spec: %w", err)
+	}
+
+	return u, nil
 }
 
 func (a *adapter) fullyQualifiedName() string {

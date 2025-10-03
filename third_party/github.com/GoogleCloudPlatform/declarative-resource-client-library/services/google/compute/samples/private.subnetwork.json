@@ -1,0 +1,8 @@
+{
+  "name": "{{compute_private_subnetwork}}",
+  "project": "{{project}}",
+  "region": "{{region}}",
+  "ipCidrRange": "10.4.0.0/16",
+  "network": "{{ref:basic.network.json:selfLink}}",
+  "purpose": "PRIVATE"
+}

@@ -24,6 +24,7 @@ import (
 	"os"
 	"path"
 	pathpkg "path"
+	"path/filepath"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
@@ -36,7 +37,7 @@ import (
 )
 
 var (
-	AssetsDir     = http.Dir(repo.GetDCLSchemasPathOrLogFatal())
+	AssetsDir     = http.Dir(GetDCLSchemasPathOrLogFatal())
 	outputPath    = path.Join(repo.GetCallerPackagePathOrLogFatal(), "../embed/dcl_assets_vfsdata.go")
 	VfsgenOptions = vfsgen.Options{
 		PackageName:  "embed",
@@ -44,6 +45,10 @@ var (
 		Filename:     outputPath,
 	}
 )
+
+func GetDCLSchemasPathOrLogFatal() string {
+	return filepath.Join(repo.GetRootOrLogFatal(), "temp-vendor/github.com/GoogleCloudPlatform/declarative-resource-client-library/services/google")
+}
 
 func main() {
 	loader := metadata.New()

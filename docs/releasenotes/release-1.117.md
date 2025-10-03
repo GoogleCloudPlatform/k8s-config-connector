@@ -1,26 +1,31 @@
 # v1.117.0
 
-** This version is not yet released; this document is gathering release notes for the future release **
+* This release improves our support for VertexAI.
 
-* ...
-
-* Special shout-outs to ... for their
-  contributions to this release.
-TODO: list contributors with `git log v1.114.0... | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`
+* Special shout-outs to @199201shubhamsahu, @acpana, @anhdle-sso, @barney-s,
+  @cheftako, @gemmahou, @jingyih, @justinsb, @katrielt, @maqiuyujoyce,
+  @nicslatts, @xiaoweim, @yuwenma, @zicongmei and @ziyue-101
+  for their contributions to this release.
 
 ## Resources promoted from alpha to beta:
 
-*When resources are promoted from alpha to beta, we (generally) ensure they follow our best practices: use of refs on fields where appropriate,
-output fields from GCP APIs are in `status.observedState`.*
+* `VertexAIDataSet`
+  * Output fields are now in `status.observedState`.
+  * The KMS key is now specified using a reference: `spec.encryptionSpec.kmsKeyNameRef`
 
-* `PlaceholderKind`
+* `VertexAIIndex`
+  * Output fields are now in `status.observedState`.
+  * Note that `isCompleteOverwrite` is currently not supported: it is not
+    obviously compatible with declarative operation.
 
-## New Resources:
-
-* Added support for `PlaceholderKind` (v1beta1) resource.
+* `VertexAIEndpoints`
+  * Output fields are now in `status.observedState`.
+  * The KMS key is now specified using a reference: `spec.encryptionSpec.kmsKeyNameRef`
+  * The network is now specified using a reference: `spec.networkRef`
 
 ## New Fields:
 
-* PlaceholderKind
-  * Added `spec.placeholder` field.
+* ComputeNetwork
+  * The `spec.enableUlaInternalIpv6` field is no longer immutable - it can now
+    be changed without recreating the network.
 

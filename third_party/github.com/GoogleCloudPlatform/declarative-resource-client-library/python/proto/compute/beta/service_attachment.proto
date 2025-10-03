@@ -1,0 +1,98 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeBetaServiceAttachmentConnectionPreferenceEnum {
+  ComputeBetaServiceAttachmentConnectionPreferenceEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaServiceAttachmentConnectionPreferenceEnumCONNECTION_PREFERENCE_UNSPECIFIED = 1;
+  ComputeBetaServiceAttachmentConnectionPreferenceEnumACCEPT_AUTOMATIC = 2;
+  ComputeBetaServiceAttachmentConnectionPreferenceEnumACCEPT_MANUAL = 3;
+}
+
+enum ComputeBetaServiceAttachmentConnectedEndpointsStatusEnum {
+  ComputeBetaServiceAttachmentConnectedEndpointsStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaServiceAttachmentConnectedEndpointsStatusEnumPENDING = 1;
+  ComputeBetaServiceAttachmentConnectedEndpointsStatusEnumRUNNING = 2;
+  ComputeBetaServiceAttachmentConnectedEndpointsStatusEnumDONE = 3;
+}
+
+message ComputeBetaServiceAttachment {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string self_link = 4;
+  string region = 5;
+  string target_service = 6;
+  ComputeBetaServiceAttachmentConnectionPreferenceEnum connection_preference = 7;
+  repeated ComputeBetaServiceAttachmentConnectedEndpoints connected_endpoints = 8;
+  repeated string nat_subnets = 9;
+  bool enable_proxy_protocol = 10;
+  repeated string consumer_reject_lists = 11;
+  repeated ComputeBetaServiceAttachmentConsumerAcceptLists consumer_accept_lists = 12;
+  ComputeBetaServiceAttachmentPscServiceAttachmentId psc_service_attachment_id = 13;
+  string fingerprint = 14;
+  string project = 15;
+  string location = 16;
+}
+
+message ComputeBetaServiceAttachmentConnectedEndpoints {
+  ComputeBetaServiceAttachmentConnectedEndpointsStatusEnum status = 1;
+  int64 psc_connection_id = 2;
+  string endpoint = 3;
+}
+
+message ComputeBetaServiceAttachmentConsumerAcceptLists {
+  string project_id_or_num = 1;
+  int64 connection_limit = 2;
+}
+
+message ComputeBetaServiceAttachmentPscServiceAttachmentId {
+  int64 high = 1;
+  int64 low = 2;
+}
+
+message ApplyComputeBetaServiceAttachmentRequest {
+  ComputeBetaServiceAttachment resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaServiceAttachmentRequest {
+  string service_account_file = 1;
+  ComputeBetaServiceAttachment resource = 2;
+}
+
+message ListComputeBetaServiceAttachmentRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComputeBetaServiceAttachmentResponse {
+  repeated ComputeBetaServiceAttachment items = 1;
+}
+
+service ComputeBetaServiceAttachmentService {
+  rpc ApplyComputeBetaServiceAttachment(ApplyComputeBetaServiceAttachmentRequest) returns (ComputeBetaServiceAttachment);
+  rpc DeleteComputeBetaServiceAttachment(DeleteComputeBetaServiceAttachmentRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaServiceAttachment(ListComputeBetaServiceAttachmentRequest) returns (ListComputeBetaServiceAttachmentResponse);
+}

@@ -31,6 +31,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/slice"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -48,6 +51,8 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
+
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 func TestAllInSeries(t *testing.T) {
@@ -76,15 +81,49 @@ func TestAllInSeries(t *testing.T) {
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
 			t.Run(sampleKey.Name, func(t *testing.T) {
-				ctx := addTestTimeout(ctx, t, subtestTimeout)
+				ctx := addTestTimeout(ctx, t, subtestTimeout, sampleKey.Name)
+				var harnessOptions []create.HarnessOption
 
 				// Quickly load the sample with a dummy project, just to see if we should skip it
 				{
 					dummySample := create.LoadSample(t, sampleKey, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
 					create.MaybeSkip(t, sampleKey.Name, dummySample.Resources)
+
+					group := dummySample.APIGroup
+					skipTestReason := ""
+					if group != "" {
+						if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
+							skippedGroups := strings.Split(s, ",")
+							if slice.StringSliceContains(skippedGroups, group) {
+								skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", sampleKey.Name, group, s)
+							}
+						}
+						if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+							onlyGroups := strings.Split(s, ",")
+							if !slice.StringSliceContains(onlyGroups, group) {
+								skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", sampleKey.Name, group, s)
+							}
+						}
+					} else {
+						if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+							t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_APIGROUPS=%s", s)
+						}
+					}
+
+					if skipTestReason != "" {
+						t.Skip(skipTestReason)
+					}
+
+					// Record the CRDs we will use, for faster testing
+					keepCRDs := map[schema.GroupKind]bool{}
+					for _, obj := range dummySample.Resources {
+						keepCRDs[obj.GroupVersionKind().GroupKind()] = true
+					}
+					harnessOptions = append(harnessOptions, buildCRDFilter(keepCRDs))
+
 				}
 
-				h := create.NewHarness(ctx, t)
+				h := create.NewHarness(ctx, t, harnessOptions...)
 				project := h.Project
 				s := create.LoadSample(t, sampleKey, project)
 
@@ -100,7 +139,10 @@ func TestAllInSeries(t *testing.T) {
 					u.SetAnnotations(annotations)
 				}
 
-				create.RunCreateDeleteTest(h, create.CreateDeleteTestOptions{Create: s.Resources, CleanupResources: true})
+				opt := create.CreateDeleteTestOptions{Create: s.Resources, CleanupResources: true}
+				// samples don't do updates so not using SSA is less problematic
+				opt.DoNotUseServerSideApplyForCreate = true
+				create.RunCreateDeleteTest(h, opt)
 			})
 		}
 	})
@@ -138,17 +180,46 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 	}
 
 	t.Run("fixtures", func(t *testing.T) {
-		fixtures := resourcefixture.Load(t)
+		// Skip newly added iam/iampartialpolicy for now as they run under TestIAM_AllInSeries
+		lightFilter := func(name string, testType resourcefixture.TestType) bool {
+			return !strings.Contains(name, "iam-bigqueryconnectionconnectionref") &&
+				!strings.Contains(name, "iam-logsinkref") &&
+				!strings.Contains(name, "iam-serviceaccountref") &&
+				!strings.Contains(name, "iam-serviceidentityref") &&
+				!strings.Contains(name, "iam-sqlinstanceref")
+		}
+		pathFilter := func(path string) bool {
+			return !strings.Contains(path, "testdata/iam/iampartialpolicy")
+		}
+
+		fixtures := resourcefixture.LoadWithPathFilter(t, pathFilter, lightFilter, nil)
 		for _, fixture := range fixtures {
 			fixture := fixture
+			group := fixture.GVK.Group
+
+			skipTestReason := ""
+
+			if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
+				skippedGroups := strings.Split(s, ",")
+				if slice.StringSliceContains(skippedGroups, group) {
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", fixture.Name, group, s)
+				}
+			}
+			if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+				groups := strings.Split(s, ",")
+				if !slice.StringSliceContains(groups, group) {
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.Name, group, s)
+				}
+			}
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
-
 			t.Run(fixture.Name, func(t *testing.T) {
-				ctx := addTestTimeout(ctx, t, subtestTimeout)
+				if skipTestReason != "" {
+					t.Skip(skipTestReason)
+				}
 
-				uniqueID := testvariable.NewUniqueID()
+				ctx := addTestTimeout(ctx, t, subtestTimeout, fixture.Name)
 
-				loadFixture := func(project testgcp.GCPProject) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
+				loadFixture := func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
 					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
 
 					opt := create.CreateDeleteTestOptions{CleanupResources: true}
@@ -167,24 +238,78 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
 						opt.Updates = append(opt.Updates, u)
 					}
+
+					// We want to use SSA everywhere, but some of our tests are broken by SSA
+					switch group := primaryResource.GetObjectKind().GroupVersionKind().Group; group {
+					case "bigtable.cnrm.cloud.google.com",
+						"orgpolicy.cnrm.cloud.google.com",
+						"gkehub.cnrm.cloud.google.com":
+						// Use SSA
+
+					default:
+						t.Logf("not yet using SSA for create of resources in group %q", group)
+						opt.DoNotUseServerSideApplyForCreate = true
+					}
+
 					return primaryResource, opt
 				}
 
+				runScenario(ctx, t, testPause, fixture, loadFixture)
+			})
+		}
+	})
+
+	// Do a cleanup while we can still handle the error.
+	t.Logf("shutting down manager")
+	cancel()
+}
+
+func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture resourcefixture.ResourceFixture, loadFixture func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions)) {
+	var harnessOptions []create.HarnessOption
+
+	// Extra indentation to avoid merge conflicts
+	{
+		{
+			{
+				uniqueID := testvariable.NewUniqueID()
+
 				// Quickly load the fixture with a dummy project, just to see if we should skip it
 				{
-					_, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
+					_, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789}, uniqueID)
 					create.MaybeSkip(t, fixture.Name, opt.Create)
 					if testPause && containsCCOrCCC(opt.Create) {
 						t.Skipf("test case %q contains ConfigConnector or ConfigConnectorContext object(s): "+
 							"pause test should not run against test cases already contain ConfigConnector "+
 							"or ConfigConnectorContext objects", fixture.Name)
 					}
+
+					// If the test contains "${resourceId}", that means it is an acquisition test, which we don't currently support
+					for _, create := range opt.Create {
+						resourceID, _, err := unstructured.NestedString(create.Object, "spec", "resourceID")
+						if err != nil {
+							j, _ := json.Marshal(create.Object)
+							t.Logf("error reading spec.resourceID, can't check for acquisition test: %v.  object is %v", err, string(j))
+						} else if strings.Contains(resourceID, "${resourceId}") {
+							t.Skipf("test has ${resourceId} placeholder in spec.resource, indicating an acquisition test.  Not currently supported here; skipping")
+						}
+					}
+
+					// Record the CRDs we will use, for faster testing
+					keepCRDs := map[schema.GroupKind]bool{}
+					for _, obj := range opt.Create {
+						keepCRDs[obj.GroupVersionKind().GroupKind()] = true
+					}
+					for _, obj := range opt.Updates {
+						keepCRDs[obj.GroupVersionKind().GroupKind()] = true
+					}
+					harnessOptions = append(harnessOptions, buildCRDFilter(keepCRDs))
 				}
 
 				// Create test harness
 				var h *create.Harness
 				if os.Getenv("E2E_GCP_TARGET") == "vcr" {
-					h = create.NewHarnessWithOptions(ctx, t, &create.HarnessOptions{VCRPath: fixture.SourceDir})
+					harnessOptions = append(harnessOptions, create.WithVCRPath(fixture.SourceDir))
+					h = create.NewHarness(ctx, t, harnessOptions...)
 					hash := func(s string) uint64 {
 						h := fnv.New64a()
 						h.Write([]byte(s))
@@ -193,22 +318,22 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					uniqueID = strconv.FormatUint(hash(t.Name()), 36)
 					// Stop recording after tests finish and write to cassette
 					t.Cleanup(func() {
-						err := h.VCRRecorderDCL.Stop()
+						err := h.VCRRecorderNonTF.Stop()
 						if err != nil {
-							t.Errorf("[VCR] Failed stop DCL vcr recorder: %v", err)
+							t.Errorf("FAIL: [VCR] Failed stop non TF vcr recorder: %v", err)
 						}
 						err = h.VCRRecorderTF.Stop()
 						if err != nil {
-							t.Errorf("[VCR] Failed stop TF vcr recorder: %v", err)
+							t.Errorf("FAIL: [VCR] Failed stop TF vcr recorder: %v", err)
 						}
 						err = h.VCRRecorderOauth.Stop()
 						if err != nil {
-							t.Errorf("[VCR] Failed stop Oauth vcr recorder: %v", err)
+							t.Errorf("FAIL: [VCR] Failed stop Oauth vcr recorder: %v", err)
 						}
 					})
 					configureVCR(t, h)
 				} else {
-					h = create.NewHarness(ctx, t)
+					h = create.NewHarness(ctx, t, harnessOptions...)
 				}
 				project := h.Project
 
@@ -217,7 +342,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					createPausedCC(ctx, t, h.GetClient())
 				}
 
-				primaryResource, opt := loadFixture(project)
+				primaryResource, opt := loadFixture(project, uniqueID)
 
 				exportResources := []*unstructured.Unstructured{primaryResource}
 
@@ -234,31 +359,33 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 				}
 				create.RunCreateDeleteTest(h, opt)
 
-				if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" {
+				// Get testName from t.Name()
+				// If t.Name() = TestAllInInSeries_fixtures_computenodetemplate
+				// the testName should be computenodetemplate
+				pieces := strings.Split(t.Name(), "/")
+				var testName string
+				if len(pieces) > 0 {
+					testName = pieces[len(pieces)-1]
+				} else {
+					t.Fatalf("FAIL: failed to get test name")
+				}
+				if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+					folderID := h.FolderID()
+
 					for _, obj := range exportResources {
-						// Get testName from t.Name()
-						// If t.Name() = TestAllInInSeries_fixtures_computenodetemplate
-						// the testName should be computenodetemplate
-						pieces := strings.Split(t.Name(), "/")
-						var testName string
-						if len(pieces) > 0 {
-							testName = pieces[len(pieces)-1]
-						} else {
-							t.Errorf("failed to get test name")
-						}
 						// Golden test exported GCP object
-						exportedYAML := exportResource(h, obj)
+						exportedYAML := exportResource(h, obj, &Expectations{})
 						if exportedYAML != "" {
 							exportedObj := &unstructured.Unstructured{}
 							if err := yaml.Unmarshal([]byte(exportedYAML), exportedObj); err != nil {
-								t.Fatalf("error from yaml.Unmarshal: %v", err)
+								t.Fatalf("FAIL: error from yaml.Unmarshal: %v", err)
 							}
-							if err := normalizeObject(exportedObj, project, uniqueID); err != nil {
-								t.Fatalf("error from normalizeObject: %v", err)
+							if err := normalizeKRMObject(t, exportedObj, project, folderID, uniqueID); err != nil {
+								t.Fatalf("FAIL: error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(exportedObj)
 							if err != nil {
-								t.Errorf("failed to convert KRM object to yaml: %v", err)
+								t.Fatalf("FAIL: failed to convert KRM object to yaml: %v", err)
 							}
 
 							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_export_%v.golden", testName))
@@ -269,18 +396,50 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						u.SetGroupVersionKind(obj.GroupVersionKind())
 						id := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
 						if err := h.GetClient().Get(ctx, id, u); err != nil {
-							t.Errorf("failed to get KRM object: %v", err)
+							t.Fatalf("FAIL: failed to get KRM object: %v", err)
 						} else {
-							if err := normalizeObject(u, project, uniqueID); err != nil {
-								t.Fatalf("error from normalizeObject: %v", err)
+							if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
+								t.Fatalf("FAIL: error from normalizeObject: %v", err)
 							}
 							got, err := yaml.Marshal(u)
 							if err != nil {
-								t.Errorf("failed to convert KRM object to yaml: %v", err)
+								t.Fatalf("FAIL: failed to convert KRM object to yaml: %v", err)
 							}
 							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_object_%v.golden.yaml", testName))
 							test.CompareGoldenObject(t, expectedPath, got)
 						}
+					}
+				}
+
+				if ShouldTestRereconiliation(t, testName, primaryResource) {
+					h.Log("Testing re-reconciliation...", "test name", testName, "primary GVK", primaryResource.GroupVersionKind().String())
+					eventsBefore := h.Events.HTTPEvents
+
+					oldGeneration := getGeneration(h, primaryResource)
+					touchObject(h, primaryResource)
+					// Pause to allow re-reconciliation
+					// (annotations don't change the generation, so we can't wait for observedGeneration)
+					time.Sleep(2 * time.Second)
+
+					eventsAfter := h.Events.HTTPEvents
+
+					h.Events.HTTPEvents = eventsBefore
+
+					for i := len(eventsBefore); i < len(eventsAfter); i++ {
+						event := eventsAfter[i]
+						isReadOnly := false
+						switch event.Request.Method {
+						case "GET":
+							isReadOnly = true
+						}
+						if !isReadOnly {
+							t.Errorf("FAIL: unexpected event during re-reconciliation: %v", event)
+						}
+					}
+
+					newGeneration := getGeneration(h, primaryResource)
+					if oldGeneration != newGeneration {
+						t.Errorf("FAIL: re-reconciliation caused generation to change (from %v to %v)", oldGeneration, newGeneration)
 					}
 				}
 
@@ -299,335 +458,25 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					verifyKubeWatches(h)
 				}
 
-				// Verify events against golden file
-				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
+				// Verify HTTP log with static checks
+				verifyUserAgent(h)
+
+				// Verify events against golden file or records events
+				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					events := test.LogEntries(h.Events.HTTPEvents)
 
-					operationIDs := map[string]bool{}
-					networkIDs := map[string]bool{}
-					pathIDs := map[string]string{}
-
-					// Find "easy" operations and resources by looking for fully-qualified methods
-					for _, event := range events {
-						u := event.Request.URL
-						if index := strings.Index(u, "?"); index != -1 {
-							u = u[:index]
-						}
-						tokens := strings.Split(u, "/")
-						n := len(tokens)
-						if n >= 2 {
-							kind := tokens[n-2]
-							id := tokens[n-1]
-							switch kind {
-							case "tensorboards":
-								pathIDs[id] = "${tensorboardID}"
-							case "tagKeys":
-								pathIDs[id] = "${tagKeyID}"
-							case "tagValues":
-								pathIDs[id] = "${tagValueID}"
-							case "datasets":
-								pathIDs[id] = "${datasetID}"
-							case "operations":
-								operationIDs[id] = true
-								pathIDs[id] = "${operationID}"
-							}
-						}
-					}
-
-					for _, event := range events {
-						id := ""
-						body := event.Response.ParseBody()
-						val, ok := body["name"]
-						if ok {
-							s := val.(string)
-							// operation name format: operations/{operationId}
-							if strings.HasPrefix(s, "operations/") {
-								id = strings.TrimPrefix(s, "operations/")
-							}
-							// operation name format: {prefix}/operations/{operationId}
-							if ix := strings.Index(s, "/operations/"); ix != -1 {
-								id = strings.TrimPrefix(s[ix:], "/operations/")
-							}
-							// operation name format: operation-{operationId}
-							if strings.HasPrefix(s, "operation") {
-								id = s
-							}
-						}
-						if id != "" {
-							operationIDs[id] = true
-						}
-					}
-
-					for _, event := range events {
-						id := ""
-						body := event.Response.ParseBody()
-						val, ok := body["selfLinkWithId"]
-						if ok {
-							s := val.(string)
-							// self link name format: {prefix}/networks/{networksId}
-							if ix := strings.Index(s, "/networks/"); ix != -1 {
-								id = strings.TrimPrefix(s[ix:], "/networks/")
-							}
-						}
-						if id != "" {
-							networkIDs[id] = true
-						}
-					}
-
-					for _, event := range events {
-						if !strings.Contains(event.Request.URL, "/operations/${operationID}") {
-							continue
-						}
-						responseBody := event.Response.ParseBody()
-						if responseBody == nil {
-							continue
-						}
-						name, _, _ := unstructured.NestedString(responseBody, "response", "name")
-						if strings.HasPrefix(name, "tagKeys/") {
-							pathIDs[name] = "tagKeys/${tagKeyID}"
-						}
-						if strings.HasPrefix(name, "tagValues/") {
-							pathIDs[name] = "tagValues/${tagValueId}"
-						}
-					}
-
-					// Replace any dynamic IDs that appear in URLs
-					for _, event := range events {
-						url := event.Request.URL
-						for k, v := range pathIDs {
-							url = strings.ReplaceAll(url, "/"+k, "/"+v)
-						}
-						event.Request.URL = url
-					}
-
-					// Remove operation polling requests (ones where the operation is not ready)
-					events = events.KeepIf(func(e *test.LogEntry) bool {
-						if !strings.Contains(e.Request.URL, "/operations/${operationID}") {
-							return true
-						}
-						responseBody := e.Response.ParseBody()
-						if responseBody == nil {
-							return true
-						}
-						if done, _, _ := unstructured.NestedBool(responseBody, "done"); done {
-							return true
-						}
-						// remove if not done - and done can be omitted when false
-						return false
-					})
-
-					jsonMutators := []test.JSONMutator{}
-					addReplacement := func(path string, newValue string) {
-						tokens := strings.Split(path, ".")
-						jsonMutators = append(jsonMutators, func(obj map[string]any) {
-							_, found, _ := unstructured.NestedString(obj, tokens...)
-							if found {
-								if err := unstructured.SetNestedField(obj, newValue, tokens...); err != nil {
-									t.Fatal(err)
-								}
-							}
-						})
-					}
-
-					addSetStringReplacement := func(path string, newValue string) {
-						jsonMutators = append(jsonMutators, func(obj map[string]any) {
-							if err := setStringAtPath(obj, path, newValue); err != nil {
-								t.Fatalf("error from setStringAtPath(%+v): %v", obj, err)
-							}
-						})
-					}
-
-					addReplacement("id", "000000000000000000000")
-					addReplacement("uniqueId", "111111111111111111111")
-					addReplacement("oauth2ClientId", "888888888888888888888")
-
-					addReplacement("etag", "abcdef0123A=")
-					addReplacement("serviceAccount.etag", "abcdef0123A=")
-					addReplacement("response.etag", "abcdef0123A=")
-
-					addReplacement("createTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("insertTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("startTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("response.createTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("creationTimestamp", "2024-04-01T12:34:56.123456Z")
-					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("metadata.genericMetadata.createTime", "2024-04-01T12:34:56.123456Z")
-
-					addReplacement("updateTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("response.updateTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("metadata.genericMetadata.updateTime", "2024-04-01T12:34:56.123456Z")
-
-					// Specific to redis
-					addReplacement("metadata.createTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("response.host", "10.1.2.3")
-					addReplacement("response.reservedIpRange", "10.1.2.0/24")
-					addReplacement("host", "10.1.2.3")
-					addReplacement("reservedIpRange", "10.1.2.0/24")
-					addReplacement("metadata.endTime", "2024-04-01T12:34:56.123456Z")
-
-					// Specific to vertexai
-					addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
-					addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
-					for _, event := range events {
-						responseBody := event.Response.ParseBody()
-						if responseBody == nil {
-							continue
-						}
-						metadataArtifact, _, _ := unstructured.NestedString(responseBody, "metadataArtifact")
-						if metadataArtifact != "" {
-							tokens := strings.Split(metadataArtifact, "/")
-							n := len(tokens)
-							if n >= 2 {
-								kind := tokens[n-2]
-								id := tokens[n-1]
-								switch kind {
-								case "artifacts":
-									pathIDs[id] = "${artifactId}"
-								}
-							}
-						}
-						gcsBucket, _, _ := unstructured.NestedString(responseBody, "metadata", "gcsBucket")
-						if gcsBucket != "" && strings.HasPrefix(gcsBucket, "cloud-ai-platform-") {
-							pathIDs[gcsBucket] = "cloud-ai-platform-${bucketId}"
-						}
-					}
-
-					// Specific to GCS
-					addReplacement("timeCreated", "2024-04-01T12:34:56.123456Z")
-					addReplacement("updated", "2024-04-01T12:34:56.123456Z")
-					addReplacement("softDeletePolicy.effectiveTime", "2024-04-01T12:34:56.123456Z")
-					addSetStringReplacement(".acl[].etag", "abcdef0123A=")
-					addSetStringReplacement(".defaultObjectAcl[].etag", "abcdef0123A=")
-
-					// Specific to AlloyDB
-					addReplacement("uid", "111111111111111111111")
-					addReplacement("response.uid", "111111111111111111111")
-					addReplacement("continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("response.continuousBackupInfo.enabledTime", "2024-04-01T12:34:56.123456Z")
-
-					// Specific to BigQuery
-					addSetStringReplacement(".access[].userByEmail", "user@google.com")
-
-					// Specific to pubsub
-					addReplacement("revisionCreateTime", "2024-04-01T12:34:56.123456Z")
-					addReplacement("revisionId", "revision-id-placeholder")
-
-					// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
-					//
-					//     "response": {
-					// 	-    "@type": "type.googleapis.com/google.protobuf.Empty"
-					// 	+    "@type": "type.googleapis.com/google.protobuf.Empty",
-					// 	+    "value": {}
-					// 	   }
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
-						response := obj["response"]
-						if responseMap, ok := response.(map[string]any); ok {
-							if responseMap["@type"] == "type.googleapis.com/google.protobuf.Empty" {
-								value := responseMap["value"]
-								if valueMap, ok := value.(map[string]any); ok && len(valueMap) == 0 {
-									delete(responseMap, "value")
-								}
-							}
-						}
-					})
-
-					// Remove error details which can contain confidential information
-					jsonMutators = append(jsonMutators, func(obj map[string]any) {
-						response := obj["error"]
-						if responseMap, ok := response.(map[string]any); ok {
-							delete(responseMap, "details")
-						}
-					})
-					addReplacement("creationTime", "123456789")
-					addReplacement("lastModifiedTime", "123456789")
-
-					events.PrettifyJSON(jsonMutators...)
-
-					// Remove headers that just aren't very relevant to testing
-					events.RemoveHTTPResponseHeader("Date")
-					events.RemoveHTTPResponseHeader("Alt-Svc")
-					events.RemoveHTTPResponseHeader("Server-Timing")
-					events.RemoveHTTPResponseHeader("X-Guploader-Uploadid")
-					events.RemoveHTTPResponseHeader("Etag")
-					events.RemoveHTTPResponseHeader("Content-Length") // an artifact of encoding
-
-					// Replace any expires headers with (rounded) relative offsets
-					for _, event := range events {
-						expires := event.Response.Header.Get("Expires")
-						if expires == "" {
-							continue
-						}
-
-						if expires == "Mon, 01 Jan 1990 00:00:00 GMT" {
-							// Magic value meaning no-cache; don't change
-							continue
-						}
-
-						expiresTime, err := time.Parse(http.TimeFormat, expires)
-						if err != nil {
-							t.Fatalf("parsing Expires header %q: %v", expires, err)
-						}
-						now := time.Now()
-						delta := expiresTime.Sub(now)
-						if delta > (55 * time.Minute) {
-							delta = delta.Round(time.Hour)
-							event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vh}", delta.Hours()))
-						} else {
-							delta = delta.Round(time.Minute)
-							event.Response.Header.Set("Expires", fmt.Sprintf("{now+%vm}", delta.Minutes()))
-						}
-					}
-
-					// Remove repeated GET requests (after normalization)
-					{
-						var previous *test.LogEntry
-						events = events.KeepIf(func(e *test.LogEntry) bool {
-							keep := true
-							if e.Request.Method == "GET" && previous != nil {
-								if previous.Request.Method == "GET" && previous.Request.URL == e.Request.URL {
-									if previous.Response.Status == e.Response.Status {
-										if previous.Response.Body == e.Response.Body {
-											keep = false
-										}
-									}
-								}
-							}
-							previous = e
-							return keep
-						})
-					}
-
-					got := events.FormatHTTP()
-					expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
-					normalizers := []func(string) string{}
-					normalizers = append(normalizers, IgnoreComments)
-					normalizers = append(normalizers, ReplaceString(uniqueID, "${uniqueId}"))
-					normalizers = append(normalizers, ReplaceString(project.ProjectID, "${projectId}"))
-					normalizers = append(normalizers, ReplaceString(fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}"))
-					for k, v := range pathIDs {
-						normalizers = append(normalizers, ReplaceString(k, v))
-					}
-					for k := range operationIDs {
-						normalizers = append(normalizers, ReplaceString(k, "${operationID}"))
-					}
-					for k := range networkIDs {
-						normalizers = append(normalizers, ReplaceString(k, "${networkID}"))
-					}
-
+					got, normalizers := LegacyNormalize(t, h, project, uniqueID, events)
 					if testPause {
 						assertNoRequest(t, got, normalizers...)
 					} else {
+						expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
+
 						h.CompareGoldenFile(expectedPath, got, normalizers...)
 					}
 				}
-			})
+			}
 		}
-	})
-
-	// Do a cleanup while we can still handle the error.
-	t.Logf("shutting down manager")
-	cancel()
+	}
 }
 
 // assertNoRequest checks that no POSTs or GETs are made against the cloud provider (GCP). This
@@ -640,11 +489,11 @@ func assertNoRequest(t *testing.T, got string, normalizers ...func(s string) str
 	}
 
 	if strings.Contains(got, "POST") {
-		t.Fatalf("unexpected POST in log: %s", got)
+		t.Fatalf("FAIL: unexpected POST in log: %s", got)
 	}
 
 	if strings.Contains(got, "GET") {
-		t.Fatalf("unexpected GET in log: %s", got)
+		t.Fatalf("FAIL: unexpected GET in log: %s", got)
 	}
 }
 
@@ -663,7 +512,40 @@ func createPausedCC(ctx context.Context, t *testing.T, c client.Client) {
 	cc.Name = "configconnector.core.cnrm.cloud.google.com"
 
 	if err := c.Create(ctx, cc); err != nil {
-		t.Fatalf("error creating CC: %v", err)
+		t.Fatalf("FAIL: error creating CC: %v", err)
+	}
+}
+
+// verifyUserAgent verifies that the user agent is set to the expected KCC user agent for all requests
+func verifyUserAgent(h *create.Harness) {
+	for _, event := range h.Events.HTTPEvents {
+		userAgent := event.Request.Header.Get("User-Agent")
+
+		// We don't capture the user-agent for GRPC
+		if userAgent == "" && event.Request.Method == "GRPC" {
+			continue
+		}
+
+		tokens := strings.Split(userAgent, " ")
+		var keepTokens []string
+		for _, token := range tokens {
+			// We ignore the google-api-go-client/ prefix; it's added by the GCP client library and difficult to remove.
+			if strings.HasPrefix(token, "google-api-go-client/") {
+				continue
+			}
+			// Similarly we ignore the DCL suffix
+			if strings.HasPrefix(token, "DeclarativeClientLib/") {
+				continue
+			}
+			keepTokens = append(keepTokens, token)
+		}
+
+		got := strings.Join(keepTokens, " ")
+		want := gcp.KCCUserAgent()
+		if got != want {
+			h.Logf("request is %+v", event.Request)
+			h.Errorf("FAIL: unexpected user agent for request %v %v.  got %q, expected %q", event.Request.Method, event.Request.URL, got, want)
+		}
 	}
 }
 
@@ -725,11 +607,13 @@ func verifyKubeWatches(h *create.Harness) {
 	}
 
 	// Validate the full watches we do have.
-	// We only expect full watches on Namespaces, CRDs, CCs and CCCs (currently).
+	// We only expect full watches on Namespaces, CRDs, CCs and CCCs (currently)
+	// and K8s Secret.
 	allowedFullWatches := sets.NewString(
 		"/apis/core.cnrm.cloud.google.com/v1beta1/configconnectorcontexts",
 		"/apis/core.cnrm.cloud.google.com/v1beta1/configconnectors",
 		"/apis/apiextensions.k8s.io/v1/customresourcedefinitions",
+		"/api/v1/secrets",
 	)
 	for fullWatch := range fullWatches {
 		if !allowedFullWatches.Has(fullWatch) {
@@ -761,15 +645,27 @@ func isOperationDone(s string) bool {
 }
 
 // addTestTimeout will ensure the test fails if not completed before timeout
-func addTestTimeout(ctx context.Context, t *testing.T, timeout time.Duration) context.Context {
-	ctx, cancel := context.WithTimeout(ctx, timeout)
+func addTestTimeout(ctx context.Context, t *testing.T, timeout time.Duration, name string) context.Context {
 
+	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "real" {
+		// If the target is real, check if SUBTEST_TIMEOUT_E2E is present set
+		// accordingly, or fallback to original timeouts if there's any error.
+
+		if subtestTimeoutE2EStr := os.Getenv("SUBTEST_TIMEOUT_E2E"); subtestTimeoutE2EStr != "" {
+			parsedTimeout, err := time.ParseDuration(subtestTimeoutE2EStr)
+			if err == nil {
+				timeout = parsedTimeout
+			}
+		}
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, timeout)
 	done := false
 	timedOut := false
 	t.Cleanup(func() {
 		done = true
 		if timedOut {
-			t.Fatalf("subtest timeout after %v", timeout)
+			t.Fatalf("FAIL: subtest %s timeout after %v", name, timeout)
 		}
 		cancel()
 	})
@@ -790,16 +686,24 @@ func configureVCR(t *testing.T, h *create.Harness) {
 		// Replace project id and number
 		result := strings.Replace(s, project.ProjectID, "example-project", -1)
 		result = strings.Replace(result, fmt.Sprintf("%d", project.ProjectNumber), "123456789", -1)
-		result = strings.Replace(result, os.Getenv("TEST_ORG_ID"), "123450001", -1)
+		if os.Getenv("TEST_ORG_ID") != "" {
+			result = strings.Replace(result, os.Getenv("TEST_ORG_ID"), "123450001", -1)
+		}
 
-		// Replace user info
-		obj := make(map[string]any)
-		if err := json.Unmarshal([]byte(s), &obj); err == nil {
-			toReplace, _, _ := unstructured.NestedString(obj, "user")
-			if len(toReplace) != 0 {
-				result = strings.Replace(result, toReplace, "user@google.com", -1)
+		addReplacement := func(path string, newValue string) {
+			tokens := strings.Split(path, ".")
+			obj := make(map[string]any)
+			if err := json.Unmarshal([]byte(s), &obj); err == nil {
+				toReplace, found, _ := unstructured.NestedString(obj, tokens...)
+				if found {
+					result = strings.Replace(result, toReplace, newValue, -1)
+				}
 			}
 		}
+		// Replace user info
+		addReplacement("user", "user@google.com")
+		// Replace billing account name
+		addReplacement("billingAccountName", "billingAccounts/123456-777777-000001")
 		return result
 	}
 
@@ -858,7 +762,7 @@ func configureVCR(t *testing.T, h *create.Harness) {
 
 		return nil
 	}
-	h.VCRRecorderDCL.AddHook(hook, recorder.BeforeSaveHook)
+	h.VCRRecorderNonTF.AddHook(hook, recorder.BeforeSaveHook)
 	h.VCRRecorderTF.AddHook(hook, recorder.BeforeSaveHook)
 	h.VCRRecorderOauth.AddHook(hook, recorder.BeforeSaveHook)
 
@@ -874,7 +778,7 @@ func configureVCR(t *testing.T, h *create.Harness) {
 			var err error
 			reqBody, err = io.ReadAll(r.Body)
 			if err != nil {
-				t.Fatal("[VCR] Failed to read request body")
+				t.Fatal("FAIL: [VCR] Failed to read request body")
 			}
 			r.Body.Close()
 			r.Body = ioutil.NopCloser(bytes.NewBuffer(reqBody))
@@ -898,7 +802,7 @@ func configureVCR(t *testing.T, h *create.Harness) {
 		}
 		return true
 	}
-	h.VCRRecorderDCL.SetMatcher(matcher)
+	h.VCRRecorderNonTF.SetMatcher(matcher)
 	h.VCRRecorderTF.SetMatcher(matcher)
 	h.VCRRecorderOauth.SetMatcher(matcher)
 }
@@ -913,4 +817,107 @@ func containsCCOrCCC(resources []*unstructured.Unstructured) bool {
 		}
 	}
 	return false
+}
+
+func buildCRDFilter(keepCRDs map[schema.GroupKind]bool) create.HarnessOption {
+	return create.FilterCRDs(func(gk schema.GroupKind) bool {
+		// Allow core CRDs
+		if gk.Group == "core.cnrm.cloud.google.com" {
+			return true
+		}
+		// Otherwise only allow the specified CRDs
+		return keepCRDs[gk]
+	})
+}
+
+func TestIAM_AllInSeries(t *testing.T) {
+	if os.Getenv("RUN_E2E") == "" {
+		t.Skip("RUN_E2E not set; skipping")
+	}
+
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+	t.Cleanup(func() {
+		cancel()
+	})
+
+	subtestTimeout := time.Hour
+	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
+		subtestTimeout = 1 * time.Minute
+	}
+
+	t.Run("iam-fixtures", func(t *testing.T) {
+		fixtures := resourcefixture.LoadWithPathFilter(t, func(path string) bool {
+			// Only run fixtures under iam/iampartialpolicy
+			return strings.Contains(path, "testdata/iam/iampartialpolicy") &&
+				// todo kcc team: need to implement GetIAM/ SetIAM for mock
+				!strings.Contains(path, "computeimage") &&
+				// todo kcc team: "Failed to get server metadata from context" for some reason
+				!strings.Contains(path, "storagebucket") &&
+				// todo acpana exclude failing tests for now; needs setup validation
+				!strings.Contains(path, "cloudfunctionsfunction") &&
+				!strings.Contains(path, "computedisk") &&
+				!strings.Contains(path, "computeinstance") &&
+				!strings.Contains(path, "computesubnetwork") &&
+				!strings.Contains(path, "dataproccluster") &&
+				!strings.Contains(path, "folder") &&
+				!strings.Contains(path, "iamserviceaccount") &&
+				!strings.Contains(path, "servicedirectoryservice") &&
+				!strings.Contains(path, "spannerdatabase")
+		}, nil, nil)
+		for _, fixture := range fixtures {
+			fixture := fixture
+			group := fixture.GVK.Group
+
+			skipTestReason := ""
+
+			if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
+				skippedGroups := strings.Split(s, ",")
+				if slice.StringSliceContains(skippedGroups, group) {
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", fixture.Name, group, s)
+				}
+			}
+			if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+				groups := strings.Split(s, ",")
+				if !slice.StringSliceContains(groups, group) {
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.Name, group, s)
+				}
+			}
+			t.Run(fixture.Name, func(t *testing.T) {
+				if skipTestReason != "" {
+					t.Skip(skipTestReason)
+				}
+
+				ctx := addTestTimeout(ctx, t, subtestTimeout, fixture.Name)
+
+				loadFixture := func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
+					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
+
+					opt := create.CreateDeleteTestOptions{CleanupResources: true}
+
+					if fixture.Dependencies != nil {
+						dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
+						for _, dependBytes := range dependencyYamls {
+							depUnstruct := bytesToUnstructured(t, dependBytes, uniqueID, project)
+							opt.Create = append(opt.Create, depUnstruct)
+						}
+					}
+
+					opt.Create = append(opt.Create, primaryResource)
+
+					if fixture.Update != nil {
+						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
+						opt.Updates = append(opt.Updates, u)
+					}
+
+					return primaryResource, opt
+				}
+
+				runScenario(ctx, t, false, fixture, loadFixture)
+			})
+		}
+	})
+
+	t.Logf("shutting down manager")
+	cancel()
 }

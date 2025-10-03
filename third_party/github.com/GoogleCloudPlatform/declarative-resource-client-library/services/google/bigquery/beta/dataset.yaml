@@ -1,0 +1,382 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: Bigquery/Dataset
+  description: The Bigquery Dataset resource
+  x-dcl-struct-name: Dataset
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a Dataset
+    parameters:
+    - name: dataset
+      required: true
+      description: A full instance of a Dataset
+  apply:
+    description: The function used to apply information about a Dataset
+    parameters:
+    - name: dataset
+      required: true
+      description: A full instance of a Dataset
+  delete:
+    description: The function used to delete a Dataset
+    parameters:
+    - name: dataset
+      required: true
+      description: A full instance of a Dataset
+  deleteAll:
+    description: The function used to delete all Dataset
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many Dataset
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Dataset:
+      title: Dataset
+      x-dcl-id: projects/{{project}}/datasets/{{name}}
+      x-dcl-parent-container: project
+      x-dcl-labels: labels
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - project
+      properties:
+        access:
+          type: array
+          x-dcl-go-name: Access
+          description: 'Optional. An array of objects that define dataset access for
+            one or more entities. You can set this property when inserting or updating
+            a dataset in order to control who is allowed to access the data. If unspecified
+            at dataset creation time, BigQuery adds default dataset access for the
+            following entities: access.specialGroup: projectReaders; access.role:
+            READER; access.specialGroup: projectWriters; access.role: WRITER; access.specialGroup:
+            projectOwners; access.role: OWNER; access.userByEmail: ; access.role:
+            OWNER;'
+          x-dcl-send-empty: true
+          x-dcl-list-type: set
+          items:
+            type: object
+            x-dcl-go-type: DatasetAccess
+            required:
+            - role
+            properties:
+              domain:
+                type: string
+                x-dcl-go-name: Domain
+                description: 'A domain to grant access to. Any users signed in with
+                  the domain specified will be granted the specified access. Example:
+                  "example.com". Maps to IAM policy member "domain:DOMAIN".'
+                x-dcl-conflicts:
+                - userByEmail
+                - groupByEmail
+                - specialGroup
+                - iamMember
+                - view
+                - routine
+              groupByEmail:
+                type: string
+                x-dcl-go-name: GroupByEmail
+                description: An email address of a Google Group to grant access to.
+                  Maps to IAM policy member "group:GROUP".
+                x-dcl-conflicts:
+                - userByEmail
+                - domain
+                - specialGroup
+                - iamMember
+                - view
+                - routine
+              iamMember:
+                type: string
+                x-dcl-go-name: IamMember
+                description: Some other type of member that appears in the IAM Policy
+                  but isn't a user, group, domain, or special group.
+                x-dcl-conflicts:
+                - userByEmail
+                - groupByEmail
+                - domain
+                - specialGroup
+                - view
+                - routine
+              role:
+                type: string
+                x-dcl-go-name: Role
+                description: 'Required. An IAM role ID that should be granted to the
+                  user, group, or domain specified in this access entry. The following
+                  legacy mappings will be applied: OWNER <=> roles/bigquery.dataOwner
+                  WRITER <=> roles/bigquery.dataEditor READER <=> roles/bigquery.dataViewer
+                  This field will accept any of the above formats, but will return
+                  only the legacy format. For example, if you set this field to "roles/bigquery.dataOwner",
+                  it will be returned back as "OWNER".'
+              routine:
+                type: object
+                x-dcl-go-name: Routine
+                x-dcl-go-type: DatasetAccessRoutine
+                description: A routine from a different dataset to grant access to.
+                  Queries executed against that routine will have read access to views/tables/routines
+                  in this dataset. Only UDF is supported for now. The role field is
+                  not required when this field is set. If that routine is updated
+                  by any user, access to the routine needs to be granted again via
+                  an update operation.
+                x-dcl-conflicts:
+                - userByEmail
+                - groupByEmail
+                - domain
+                - specialGroup
+                - iamMember
+                - view
+                required:
+                - projectId
+                - datasetId
+                - routineId
+                properties:
+                  datasetId:
+                    type: string
+                    x-dcl-go-name: DatasetId
+                    description: Required. The ID of the dataset containing this routine.
+                    x-dcl-references:
+                    - resource: Bigquery/Dataset
+                      field: name
+                  projectId:
+                    type: string
+                    x-dcl-go-name: ProjectId
+                    description: Required. The ID of the project containing this routine.
+                    x-dcl-references:
+                    - resource: Cloudresourcemanager/Project
+                      field: name
+                  routineId:
+                    type: string
+                    x-dcl-go-name: RoutineId
+                    description: Required. The ID of the routine. The ID must contain
+                      only letters (a-z, A-Z), numbers (0-9), or underscores (_).
+                      The maximum length is 256 characters.
+                    x-dcl-references:
+                    - resource: Bigquery/Routine
+                      field: name
+              specialGroup:
+                type: string
+                x-dcl-go-name: SpecialGroup
+                description: 'A special group to grant access to. Possible values
+                  include: projectOwners: Owners of the enclosing project. projectReaders:
+                  Readers of the enclosing project. projectWriters: Writers of the
+                  enclosing project. allAuthenticatedUsers: All authenticated BigQuery
+                  users. Maps to similarly-named IAM members.'
+                x-dcl-conflicts:
+                - userByEmail
+                - groupByEmail
+                - domain
+                - iamMember
+                - view
+                - routine
+              userByEmail:
+                type: string
+                x-dcl-go-name: UserByEmail
+                description: 'An email address of a user to grant access to. For example:
+                  fred@example.com. Maps to IAM policy member "user:EMAIL" or "serviceAccount:EMAIL".'
+                x-dcl-conflicts:
+                - groupByEmail
+                - domain
+                - specialGroup
+                - iamMember
+                - view
+                - routine
+              view:
+                type: object
+                x-dcl-go-name: View
+                x-dcl-go-type: DatasetAccessView
+                description: A view from a different dataset to grant access to. Queries
+                  executed against that view will have read access to views/tables/routines
+                  in this dataset. The role field is not required when this field
+                  is set. If that view is updated by any user, access to the view
+                  needs to be granted again via an update operation.
+                x-dcl-conflicts:
+                - userByEmail
+                - groupByEmail
+                - domain
+                - specialGroup
+                - iamMember
+                - routine
+                required:
+                - projectId
+                - datasetId
+                - tableId
+                properties:
+                  datasetId:
+                    type: string
+                    x-dcl-go-name: DatasetId
+                    description: Required. The ID of the dataset containing this table.
+                    x-dcl-references:
+                    - resource: Bigquery/Dataset
+                      field: name
+                  projectId:
+                    type: string
+                    x-dcl-go-name: ProjectId
+                    description: Required. The ID of the project containing this table.
+                    x-dcl-references:
+                    - resource: Cloudresourcemanager/Project
+                      field: name
+                  tableId:
+                    type: string
+                    x-dcl-go-name: TableId
+                    description: Required. The ID of the table. The ID must contain
+                      only letters (a-z, A-Z), numbers (0-9), or underscores (_).
+                      The maximum length is 1,024 characters. Certain operations allow
+                      suffixing of the table ID with a partition decorator, such as
+                      `sample_table$20190123`.
+                    x-dcl-references:
+                    - resource: Bigquery/Table
+                      field: name
+        creationTime:
+          type: integer
+          format: int64
+          x-dcl-go-name: CreationTime
+          readOnly: true
+          description: Output only. The time when this dataset was created, in milliseconds
+            since the epoch.
+          x-kubernetes-immutable: true
+        defaultEncryptionConfiguration:
+          type: object
+          x-dcl-go-name: DefaultEncryptionConfiguration
+          x-dcl-go-type: DatasetDefaultEncryptionConfiguration
+          description: The default encryption key for all tables in the dataset. Once
+            this property is set, all newly-created partitioned tables in the dataset
+            will have encryption key set to this value, unless table creation request
+            (or query) overrides the key.
+          x-kubernetes-immutable: true
+          properties:
+            kmsKeyName:
+              type: string
+              x-dcl-go-name: KmsKeyName
+              description: Optional. Describes the Cloud KMS encryption key that will
+                be used to protect destination BigQuery table. The BigQuery Service
+                Account associated with your project requires access to this encryption
+                key.
+              x-kubernetes-immutable: true
+              x-dcl-references:
+              - resource: Cloudkms/CryptoKey
+                field: name
+        defaultPartitionExpirationMs:
+          type: string
+          x-dcl-go-name: DefaultPartitionExpirationMs
+          description: This default partition expiration, expressed in milliseconds.
+            When new time-partitioned tables are created in a dataset where this property
+            is set, the table will inherit this value, propagated as the `TimePartitioning.expirationMs`
+            property on the new table. If you set `TimePartitioning.expirationMs`
+            explicitly when creating a table, the `defaultPartitionExpirationMs` of
+            the containing dataset is ignored. When creating a partitioned table,
+            if `defaultPartitionExpirationMs` is set, the `defaultTableExpirationMs`
+            value is ignored and the table will not inherit a table expiration deadline.
+        defaultTableExpirationMs:
+          type: string
+          x-dcl-go-name: DefaultTableExpirationMs
+          description: Optional. The default lifetime of all tables in the dataset,
+            in milliseconds. The minimum lifetime value is 3600000 milliseconds (one
+            hour). To clear an existing default expiration with a PATCH request, set
+            to 0. Once this property is set, all newly-created tables in the dataset
+            will have an expirationTime property set to the creation time plus the
+            value in this property, and changing the value will only affect new tables,
+            not existing ones. When the expirationTime for a given table is reached,
+            that table will be deleted automatically. If a table's expirationTime
+            is modified or removed before the table expires, or if you provide an
+            explicit expirationTime when creating a table, that value takes precedence
+            over the default expiration time indicated by this property.
+        description:
+          type: string
+          x-dcl-go-name: Description
+          description: Optional. A user-friendly description of the dataset.
+        etag:
+          type: string
+          x-dcl-go-name: Etag
+          readOnly: true
+          description: Output only. A hash of the resource.
+          x-kubernetes-immutable: true
+        friendlyName:
+          type: string
+          x-dcl-go-name: FriendlyName
+          description: Optional. A descriptive name for the dataset.
+        id:
+          type: string
+          x-dcl-go-name: Id
+          readOnly: true
+          description: Output only. The fully-qualified unique name of the dataset
+            in the format projectId:datasetId. The dataset name without the project
+            name is given in the datasetId field. When creating a new dataset, leave
+            this field blank, and instead specify the datasetId field.
+          x-kubernetes-immutable: true
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: Labels
+          description: The labels associated with this dataset. You can use these
+            to organize and group your datasets. You can set this property when inserting
+            or updating a dataset. See (/bigquery/docs/creating-managing-labels#creating_and_updating_dataset_labels)
+            for more information.
+        lastModifiedTime:
+          type: integer
+          format: int64
+          x-dcl-go-name: LastModifiedTime
+          readOnly: true
+          description: Output only. The date when this dataset was last modified,
+            in milliseconds since the epoch.
+          x-kubernetes-immutable: true
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The geographic location where the dataset should reside. See
+            https://cloud.google.com/bigquery/docs/locations for supported locations.
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: Required. A unique ID for this dataset, without the project
+            name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores
+            (_). The maximum length is 1,024 characters.
+          x-kubernetes-immutable: true
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The ID of the project containing this dataset.
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        published:
+          type: boolean
+          x-dcl-go-name: Published
+          description: Whether this dataset is visible to all users in public search.
+            This field can only be set to true if READER access is given to allAuthenticatedUsers
+            in the access list. The default value is false.
+          x-kubernetes-immutable: true
+        selfLink:
+          type: string
+          x-dcl-go-name: SelfLink
+          readOnly: true
+          description: Output only. A URL that can be used to access the resource
+            again. You can use this URL in Get or Update requests to the resource.
+          x-kubernetes-immutable: true

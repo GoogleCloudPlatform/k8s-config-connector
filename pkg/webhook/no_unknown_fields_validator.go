@@ -107,6 +107,10 @@ func validateNoUnknownFields(schema *apiextensions.JSONSchemaProps, field interf
 	case "string", "number", "integer", "boolean", "null":
 		return nil
 	default:
+		// If we are dealing with a schemaless field, we don't want to validate the type
+		if schema.XPreserveUnknownFields != nil && *schema.XPreserveUnknownFields {
+			return nil
+		}
 		return fmt.Errorf("unrecognized schema type: %v", schema.Type)
 	}
 	return nil

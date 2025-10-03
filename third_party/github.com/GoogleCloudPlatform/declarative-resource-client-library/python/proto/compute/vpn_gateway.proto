@@ -1,0 +1,63 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+message ComputeVpnGateway {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string region = 4;
+  string network = 5;
+  string self_link = 6;
+  string project = 7;
+  map<string, string> labels = 8;
+  repeated ComputeVpnGatewayVpnInterface vpn_interface = 9;
+}
+
+message ComputeVpnGatewayVpnInterface {
+  int64 id = 1;
+  string ip_address = 2;
+}
+
+message ApplyComputeVpnGatewayRequest {
+  ComputeVpnGateway resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeVpnGatewayRequest {
+  string service_account_file = 1;
+  ComputeVpnGateway resource = 2;
+}
+
+message ListComputeVpnGatewayRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Region = 3;
+}
+
+message ListComputeVpnGatewayResponse {
+  repeated ComputeVpnGateway items = 1;
+}
+
+service ComputeVpnGatewayService {
+  rpc ApplyComputeVpnGateway(ApplyComputeVpnGatewayRequest) returns (ComputeVpnGateway);
+  rpc DeleteComputeVpnGateway(DeleteComputeVpnGatewayRequest) returns (google.protobuf.Empty);
+  rpc ListComputeVpnGateway(ListComputeVpnGatewayRequest) returns (ListComputeVpnGatewayResponse);
+}

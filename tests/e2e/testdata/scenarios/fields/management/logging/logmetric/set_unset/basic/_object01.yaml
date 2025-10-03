@@ -1,0 +1,33 @@
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogMetric
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  name: logginglogmetric-${uniqueId}
+  namespace: ${projectId}
+spec:
+  description: an e2e test
+  disabled: true
+  filter: resource.type=gae_app AND severity<=INFO
+  projectRef:
+    external: projects/${projectId}
+  resourceID: logginglogmetric-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  createTime: "1970-01-01T00:00:00Z"
+  metricDescriptor:
+    description: an e2e test
+    name: projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}
+    type: logging.googleapis.com/user/logginglogmetric-${uniqueId}
+  observedGeneration: 3
+  updateTime: "1970-01-01T00:00:00Z"

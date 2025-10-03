@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+cd ${REPO_ROOT}
+
+dev/ci/presubmits/test-mockgcp || true
+dev/ci/presubmits/scenarios-tests || true
+
+for f in scripts/github-actions/tests-e2e*; do
+  $f || true
+done

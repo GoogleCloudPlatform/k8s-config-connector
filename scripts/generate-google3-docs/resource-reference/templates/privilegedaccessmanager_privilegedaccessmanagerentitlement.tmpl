@@ -1,0 +1,60 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>PrivilegedAccessManager</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/iam/docs/pam-overview">/iam/docs/pam-overview</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>
+<pre>v1.folders.locations.entitlements</pre>
+<pre>v1.organizations.locations.entitlements</pre>
+<pre>v1.projects.locations.entitlements</pre>
+</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td>
+<pre><a href="/iam/docs/reference/pam/rest/v1/folders.locations.entitlements">/logging/docs/reference/v2/rest/v2/folders.exclusions</a></pre>
+<pre><a href="/iam/docs/reference/pam/rest/v1/organizations.locations.entitlements">/logging/docs/reference/v2/rest/v2/organizations.exclusions</a></pre>
+<pre><a href="/iam/docs/reference/pam/rest/v1/projects.locations.entitlements">/logging/docs/reference/v2/rest/v2/projects.exclusions</a></pre>
+</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>privilegedaccessmanager.googleapis.com</td>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+<tr>
+<td>{{"{{product_name_short}}"}} Default Average Reconcile Interval In Seconds</td>
+<td>{{ .DefaultReconcileInterval}}</td>
+</tr>
+</tbody>
+</table>
+
+{{template "resource.tmpl" .}}
+{{template "endnote.tmpl" .}}
+{% endblock %}

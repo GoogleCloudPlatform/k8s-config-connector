@@ -1,0 +1,242 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencyExperienceEnum {
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencyExperienceEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencyExperienceEnumLATENCY_EXPERIENCE_UNSPECIFIED = 1;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencyExperienceEnumDELIGHTING = 2;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencyExperienceEnumSATISFYING = 3;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencyExperienceEnumANNOYING = 4;
+}
+
+enum MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatencyExperienceEnum {
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatencyExperienceEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatencyExperienceEnumLATENCY_EXPERIENCE_UNSPECIFIED = 1;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatencyExperienceEnumDELIGHTING = 2;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatencyExperienceEnumSATISFYING = 3;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatencyExperienceEnumANNOYING = 4;
+}
+
+enum MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatencyExperienceEnum {
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatencyExperienceEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatencyExperienceEnumLATENCY_EXPERIENCE_UNSPECIFIED = 1;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatencyExperienceEnumDELIGHTING = 2;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatencyExperienceEnumSATISFYING = 3;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatencyExperienceEnumANNOYING = 4;
+}
+
+enum MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatencyExperienceEnum {
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatencyExperienceEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatencyExperienceEnumLATENCY_EXPERIENCE_UNSPECIFIED = 1;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatencyExperienceEnumDELIGHTING = 2;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatencyExperienceEnumSATISFYING = 3;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatencyExperienceEnumANNOYING = 4;
+}
+
+enum MonitoringBetaServiceLevelObjectiveCalendarPeriodEnum {
+  MonitoringBetaServiceLevelObjectiveCalendarPeriodEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringBetaServiceLevelObjectiveCalendarPeriodEnumCALENDAR_PERIOD_UNSPECIFIED = 1;
+  MonitoringBetaServiceLevelObjectiveCalendarPeriodEnumDAY = 2;
+  MonitoringBetaServiceLevelObjectiveCalendarPeriodEnumWEEK = 3;
+  MonitoringBetaServiceLevelObjectiveCalendarPeriodEnumFORTNIGHT = 4;
+  MonitoringBetaServiceLevelObjectiveCalendarPeriodEnumMONTH = 5;
+  MonitoringBetaServiceLevelObjectiveCalendarPeriodEnumQUARTER = 6;
+  MonitoringBetaServiceLevelObjectiveCalendarPeriodEnumHALF = 7;
+  MonitoringBetaServiceLevelObjectiveCalendarPeriodEnumYEAR = 8;
+}
+
+message MonitoringBetaServiceLevelObjective {
+  string name = 1;
+  string display_name = 2;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicator service_level_indicator = 3;
+  double goal = 4;
+  string rolling_period = 5;
+  MonitoringBetaServiceLevelObjectiveCalendarPeriodEnum calendar_period = 6;
+  string create_time = 7;
+  string delete_time = 8;
+  bool service_management_owned = 9;
+  map<string, string> user_labels = 10;
+  string project = 11;
+  string service = 12;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicator {
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSli basic_sli = 1;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorRequestBased request_based = 2;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBased windows_based = 3;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSli {
+  repeated string method = 1;
+  repeated string location = 2;
+  repeated string version = 3;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliAvailability availability = 4;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliLatency latency = 5;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationAvailability operation_availability = 6;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatency operation_latency = 7;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliAvailability {
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliLatency {
+  string threshold = 1;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliLatencyExperienceEnum experience = 2;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationAvailability {
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatency {
+  string threshold = 1;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorBasicSliOperationLatencyExperienceEnum experience = 2;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorRequestBased {
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorRequestBasedGoodTotalRatio good_total_ratio = 1;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCut distribution_cut = 2;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorRequestBasedGoodTotalRatio {
+  string good_service_filter = 1;
+  string bad_service_filter = 2;
+  string total_service_filter = 3;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCut {
+  string distribution_filter = 1;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCutRange range = 2;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorRequestBasedDistributionCutRange {
+  double min = 1;
+  double max = 2;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBased {
+  string good_bad_metric_filter = 1;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThreshold good_total_ratio_threshold = 2;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRange metric_mean_in_range = 3;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRange metric_sum_in_range = 4;
+  string window_period = 5;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThreshold {
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformance performance = 1;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformance basic_sli_performance = 2;
+  double threshold = 3;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformance {
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceGoodTotalRatio good_total_ratio = 1;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCut distribution_cut = 2;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceGoodTotalRatio {
+  string good_service_filter = 1;
+  string bad_service_filter = 2;
+  string total_service_filter = 3;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCut {
+  string distribution_filter = 1;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCutRange range = 2;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdPerformanceDistributionCutRange {
+  double min = 1;
+  double max = 2;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformance {
+  repeated string method = 1;
+  repeated string location = 2;
+  repeated string version = 3;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceAvailability availability = 4;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatency latency = 5;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationAvailability operation_availability = 6;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatency operation_latency = 7;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceAvailability {
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatency {
+  string threshold = 1;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceLatencyExperienceEnum experience = 2;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationAvailability {
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatency {
+  string threshold = 1;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedGoodTotalRatioThresholdBasicSliPerformanceOperationLatencyExperienceEnum experience = 2;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRange {
+  string time_series = 1;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRangeRange range = 2;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricMeanInRangeRange {
+  double min = 1;
+  double max = 2;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRange {
+  string time_series = 1;
+  MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRangeRange range = 2;
+}
+
+message MonitoringBetaServiceLevelObjectiveServiceLevelIndicatorWindowsBasedMetricSumInRangeRange {
+  double min = 1;
+  double max = 2;
+}
+
+message ApplyMonitoringBetaServiceLevelObjectiveRequest {
+  MonitoringBetaServiceLevelObjective resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteMonitoringBetaServiceLevelObjectiveRequest {
+  string service_account_file = 1;
+  MonitoringBetaServiceLevelObjective resource = 2;
+}
+
+message ListMonitoringBetaServiceLevelObjectiveRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Service = 3;
+}
+
+message ListMonitoringBetaServiceLevelObjectiveResponse {
+  repeated MonitoringBetaServiceLevelObjective items = 1;
+}
+
+service MonitoringBetaServiceLevelObjectiveService {
+  rpc ApplyMonitoringBetaServiceLevelObjective(ApplyMonitoringBetaServiceLevelObjectiveRequest) returns (MonitoringBetaServiceLevelObjective);
+  rpc DeleteMonitoringBetaServiceLevelObjective(DeleteMonitoringBetaServiceLevelObjectiveRequest) returns (google.protobuf.Empty);
+  rpc ListMonitoringBetaServiceLevelObjective(ListMonitoringBetaServiceLevelObjectiveRequest) returns (ListMonitoringBetaServiceLevelObjectiveResponse);
+}

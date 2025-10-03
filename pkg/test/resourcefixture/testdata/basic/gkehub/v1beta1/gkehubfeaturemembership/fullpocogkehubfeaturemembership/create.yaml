@@ -1,0 +1,75 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubFeatureMembership
+metadata:
+  name: gkehubfeaturemembership-full-poco-${uniqueId}
+spec:
+  projectRef:
+    name: gkehubfm-${uniqueId}
+  location: global
+  membershipLocation: us-west1
+  membershipRef:
+    name: gkehubmembership-full-poco-${uniqueId}
+  featureRef:
+    name: gkehubfeature-full-poco-${uniqueId}
+  policycontroller:
+    policyControllerHubConfig:
+      auditIntervalSeconds: 10
+      constraintViolationLimit: 20
+      exemptableNamespaces:
+      - test-namespace
+      installSpec: "INSTALL_SPEC_ENABLED"
+      logDeniesEnabled: false
+      monitoring:
+        backends:
+        - "PROMETHEUS"
+      mutationEnabled: false
+      policyContent:
+        templateLibrary:
+          installation: "NOT_INSTALLED"
+      referentialRulesEnabled: false
+      deploymentConfigs:
+        admission:
+          podTolerations:
+          - key: foo
+            operator: "Equal"
+            value: "admission"
+            effect: "NoSchedule"
+          podAffinity: ANTI_AFFINITY
+          replicaCount: 1
+          containerResources:
+            limits:
+              cpu: "2"
+              memory: 4000Mi
+            requests:
+              cpu: "1"
+              memory: 2000Mi
+        audit:
+          podTolerations:
+          - key: foo
+            operator: "Equal"
+            value: "audit"
+            effect: "NoSchedule"
+          podAffinity: NO_AFFINITY
+          containerResources:
+            limits:
+              cpu: "1.5"
+              memory: 1000Mi
+            requests:
+              cpu: "0.5"
+              memory: 500Mi
+    version: "1.21.0"
+

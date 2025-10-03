@@ -1,0 +1,4 @@
+{
+  "name": "{{compute_network}}",
+  "project": "{{project}}"
+}

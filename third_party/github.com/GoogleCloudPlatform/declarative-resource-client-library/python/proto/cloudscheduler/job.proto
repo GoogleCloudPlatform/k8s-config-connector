@@ -1,0 +1,160 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum CloudschedulerJobAppEngineHttpTargetHttpMethodEnum {
+  CloudschedulerJobAppEngineHttpTargetHttpMethodEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudschedulerJobAppEngineHttpTargetHttpMethodEnumHTTP_METHOD_UNSPECIFIED = 1;
+  CloudschedulerJobAppEngineHttpTargetHttpMethodEnumPOST = 2;
+  CloudschedulerJobAppEngineHttpTargetHttpMethodEnumGET = 3;
+  CloudschedulerJobAppEngineHttpTargetHttpMethodEnumHEAD = 4;
+  CloudschedulerJobAppEngineHttpTargetHttpMethodEnumPUT = 5;
+  CloudschedulerJobAppEngineHttpTargetHttpMethodEnumDELETE = 6;
+  CloudschedulerJobAppEngineHttpTargetHttpMethodEnumPATCH = 7;
+  CloudschedulerJobAppEngineHttpTargetHttpMethodEnumOPTIONS = 8;
+}
+
+enum CloudschedulerJobHttpTargetHttpMethodEnum {
+  CloudschedulerJobHttpTargetHttpMethodEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudschedulerJobHttpTargetHttpMethodEnumHTTP_METHOD_UNSPECIFIED = 1;
+  CloudschedulerJobHttpTargetHttpMethodEnumPOST = 2;
+  CloudschedulerJobHttpTargetHttpMethodEnumGET = 3;
+  CloudschedulerJobHttpTargetHttpMethodEnumHEAD = 4;
+  CloudschedulerJobHttpTargetHttpMethodEnumPUT = 5;
+  CloudschedulerJobHttpTargetHttpMethodEnumDELETE = 6;
+  CloudschedulerJobHttpTargetHttpMethodEnumPATCH = 7;
+  CloudschedulerJobHttpTargetHttpMethodEnumOPTIONS = 8;
+}
+
+enum CloudschedulerJobStateEnum {
+  CloudschedulerJobStateEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudschedulerJobStateEnumSTATE_UNSPECIFIED = 1;
+  CloudschedulerJobStateEnumENABLED = 2;
+  CloudschedulerJobStateEnumPAUSED = 3;
+  CloudschedulerJobStateEnumDISABLED = 4;
+  CloudschedulerJobStateEnumUPDATE_FAILED = 5;
+}
+
+message CloudschedulerJob {
+  string name = 1;
+  string description = 2;
+  CloudschedulerJobPubsubTarget pubsub_target = 3;
+  CloudschedulerJobAppEngineHttpTarget app_engine_http_target = 4;
+  CloudschedulerJobHttpTarget http_target = 5;
+  string schedule = 6;
+  string time_zone = 7;
+  string user_update_time = 8;
+  CloudschedulerJobStateEnum state = 9;
+  CloudschedulerJobStatus status = 10;
+  string schedule_time = 11;
+  string last_attempt_time = 12;
+  CloudschedulerJobRetryConfig retry_config = 13;
+  string attempt_deadline = 14;
+  string project = 15;
+  string location = 16;
+}
+
+message CloudschedulerJobPubsubTarget {
+  string topic_name = 1;
+  string data = 2;
+  map<string, string> attributes = 3;
+}
+
+message CloudschedulerJobAppEngineHttpTarget {
+  CloudschedulerJobAppEngineHttpTargetHttpMethodEnum http_method = 1;
+  CloudschedulerJobAppEngineHttpTargetAppEngineRouting app_engine_routing = 2;
+  string relative_uri = 3;
+  map<string, string> headers = 4;
+  string body = 5;
+}
+
+message CloudschedulerJobAppEngineHttpTargetAppEngineRouting {
+  string service = 1;
+  string version = 2;
+  string instance = 3;
+  string host = 4;
+}
+
+message CloudschedulerJobHttpTarget {
+  string uri = 1;
+  CloudschedulerJobHttpTargetHttpMethodEnum http_method = 2;
+  map<string, string> headers = 3;
+  string body = 4;
+  CloudschedulerJobHttpTargetOAuthToken oauth_token = 5;
+  CloudschedulerJobHttpTargetOidcToken oidc_token = 6;
+}
+
+message CloudschedulerJobHttpTargetOAuthToken {
+  string service_account_email = 1;
+  string scope = 2;
+}
+
+message CloudschedulerJobHttpTargetOidcToken {
+  string service_account_email = 1;
+  string audience = 2;
+}
+
+message CloudschedulerJobStatus {
+  int64 code = 1;
+  string message = 2;
+  repeated CloudschedulerJobStatusDetails details = 3;
+}
+
+message CloudschedulerJobStatusDetails {
+  string type_url = 1;
+  string value = 2;
+}
+
+message CloudschedulerJobRetryConfig {
+  int64 retry_count = 1;
+  string max_retry_duration = 2;
+  string min_backoff_duration = 3;
+  string max_backoff_duration = 4;
+  int64 max_doublings = 5;
+}
+
+message ApplyCloudschedulerJobRequest {
+  CloudschedulerJob resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteCloudschedulerJobRequest {
+  string service_account_file = 1;
+  CloudschedulerJob resource = 2;
+}
+
+message ListCloudschedulerJobRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListCloudschedulerJobResponse {
+  repeated CloudschedulerJob items = 1;
+}
+
+service CloudschedulerJobService {
+  rpc ApplyCloudschedulerJob(ApplyCloudschedulerJobRequest) returns (CloudschedulerJob);
+  rpc DeleteCloudschedulerJob(DeleteCloudschedulerJobRequest) returns (google.protobuf.Empty);
+  rpc ListCloudschedulerJob(ListCloudschedulerJobRequest) returns (ListCloudschedulerJobResponse);
+}

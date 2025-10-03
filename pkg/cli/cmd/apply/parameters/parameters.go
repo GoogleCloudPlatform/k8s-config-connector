@@ -44,7 +44,7 @@ func Validate(p *Parameters, stdin *os.File) error {
 		}
 	}
 	if valutil.IsDefaultValue(inputFile) {
-		return fmt.Errorf("'%v' parameter can not be empty", InputParam)
+		return fmt.Errorf("'%v' parameter cannot be empty", InputParam)
 	}
 	return nil
 }

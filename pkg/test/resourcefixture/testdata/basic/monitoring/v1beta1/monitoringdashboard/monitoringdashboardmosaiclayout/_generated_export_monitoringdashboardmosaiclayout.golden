@@ -1,0 +1,40 @@
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringDashboard
+metadata:
+  name: monitoringdashboardmosaiclayout-${uniqueId}
+spec:
+  displayName: monitoringdashboard-mosaiclayout
+  mosaicLayout:
+    columns: 12
+    tiles:
+    - height: 1
+      widget:
+        id: singleViewGroupWidget1
+        singleViewGroup: {}
+        title: SingleViewGroup Widget
+      width: 12
+    - height: 1
+      widget:
+        sectionHeader:
+          dividerBelow: true
+          subtitle: Example SectionHeader
+        title: SectionHeader Widget
+      width: 12
+      yPos: 1
+    - height: 1
+      widget:
+        collapsibleGroup:
+          collapsed: true
+        title: CollapsibleGroup Widget
+      width: 12
+      yPos: 2
+    - height: 1
+      widget:
+        text:
+          content: CollapsibleGroup content
+          format: MARKDOWN
+          style: {}
+      width: 12
+      yPos: 2
+  projectRef:
+    external: ${projectId}

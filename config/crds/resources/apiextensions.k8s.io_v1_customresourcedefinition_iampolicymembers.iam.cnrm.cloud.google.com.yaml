@@ -14,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: IAMPolicyMember
+    listKind: IAMPolicyMemberList
     plural: iampolicymembers
     shortNames:
     - gcpiampolicymember
@@ -76,15 +77,23 @@ spec:
                 - expression
                 - title
                 type: object
+                x-kubernetes-validations:
+                - message: condition is immutable
+                  rule: self == oldSelf
               member:
                 description: Immutable. The IAM identity to be bound to the role.
                   Exactly one of 'member' or 'memberFrom' must be used.
                 type: string
+                x-kubernetes-validations:
+                - message: member is immutable
+                  rule: self == oldSelf
               memberFrom:
                 description: Immutable. The IAM identity to be bound to the role.
                   Exactly one of 'member' or 'memberFrom' must be used, and only one
                   subfield within 'memberFrom' can be used.
                 oneOf:
+                - required:
+                  - bigQueryConnectionConnectionRef
                 - required:
                   - logSinkRef
                 - required:
@@ -94,6 +103,31 @@ spec:
                 - required:
                   - sqlInstanceRef
                 properties:
+                  bigQueryConnectionConnectionRef:
+                    description: BigQueryConnectionConnection whose service account
+                      is to be bound to the role. Use the Type field to specifie the
+                      connection type. For "spark" connetion, the service account
+                      is in `status.observedState.spark.serviceAccountID`. For "cloudSQL"
+                      connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`.
+                      For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                      type:
+                        description: Type field specifies the connection type of the
+                          BigQueryConnectionConnection resource, whose service account
+                          is to be bound to the role.
+                        enum:
+                        - spark
+                        - cloudSQL
+                        - cloudResource
+                        type: string
+                    required:
+                    - name
+                    - type
+                    type: object
                   logSinkRef:
                     description: The LoggingLogSink whose writer identity (i.e. its
                       'status.writerIdentity') is to be bound to the role.
@@ -138,9 +172,12 @@ spec:
                     - name
                     type: object
                 type: object
+                x-kubernetes-validations:
+                - message: memberFrom is immutable
+                  rule: self == oldSelf
               resourceRef:
                 description: Immutable. Required. The GCP resource to set the IAM
-                  policy on.
+                  policy on (e.g. organization, project...)
                 oneOf:
                 - not:
                     required:
@@ -167,10 +204,13 @@ spec:
                       - external
                 properties:
                   apiVersion:
+                    description: APIVersion of the referenced resource
                     type: string
                   external:
+                    description: The external name of the referenced resource
                     type: string
                   kind:
+                    description: Kind of the referenced resource
                     type: string
                   name:
                     type: string
@@ -179,11 +219,17 @@ spec:
                 required:
                 - kind
                 type: object
+                x-kubernetes-validations:
+                - message: resourceRef is immutable
+                  rule: self == oldSelf
               role:
                 description: Immutable. Required. The role for which the Member will
                   be bound.
                 pattern: ^((projects|organizations)/[^/]+/)?roles/[\w_\.]+$
                 type: string
+                x-kubernetes-validations:
+                - message: role is immutable
+                  rule: self == oldSelf
             required:
             - resourceRef
             - role
@@ -231,9 +277,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

@@ -18,11 +18,14 @@ import (
 	"time"
 
 	"golang.org/x/time/rate"
+	"k8s.io/client-go/rest"
+	"k8s.io/client-go/util/flowcontrol"
 	"k8s.io/client-go/util/workqueue"
-	"sigs.k8s.io/controller-runtime/pkg/ratelimiter"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
-func NewRateLimiter() ratelimiter.RateLimiter {
+// func NewRateLimiter() ratelimiter.RateLimiter {
+func NewRateLimiter() workqueue.TypedRateLimiter[reconcile.Request] {
 	// This is based on workqueue.DefaultControllerRateLimiter, but with different parameters better suited to KRM reconciliation.
 	// Context is in b/188203307
 
@@ -33,11 +36,10 @@ func NewRateLimiter() ratelimiter.RateLimiter {
 
 	// If we implement b/190097904 we should revisit these values, in particular the max delay could
 	// likely be much higher again.
-
-	return workqueue.NewMaxOfRateLimiter(
-		workqueue.NewItemExponentialFailureRateLimiter(2*time.Second, 120*time.Second),
+	return workqueue.NewTypedMaxOfRateLimiter(
+		workqueue.NewTypedItemExponentialFailureRateLimiter[reconcile.Request](2*time.Second, 120*time.Second),
 		// 10 qps, 100 bucket size.  This is only for retry speed and its only the overall factor (not per item)
-		&workqueue.BucketRateLimiter{Limiter: rate.NewLimiter(rate.Limit(10), 100)},
+		&workqueue.TypedBucketRateLimiter[reconcile.Request]{Limiter: rate.NewLimiter(rate.Limit(10), 100)},
 	)
 }
 
@@ -63,9 +65,22 @@ func NewRateLimiter() ratelimiter.RateLimiter {
 // traffic to 5 qps.  That will hopefully leave enough capacity for
 // more latency sensitive reconciliations, at the expense of a longer
 // delay in re-reconciliation.
-func RequeueRateLimiter() ratelimiter.RateLimiter {
-	return workqueue.NewMaxOfRateLimiter(
-		// 5 qps, 50 bucket size.  This is the overall factor, and must be slower than the NewRateLimiter limit, to leave "room" for new items.
-		&workqueue.BucketRateLimiter{Limiter: rate.NewLimiter(rate.Limit(5), 50)},
+func RequeueRateLimiter() workqueue.TypedRateLimiter[reconcile.Request] {
+	// 5 qps, 50 bucket size.  This is the overall factor, and must be slower than the NewRateLimiter limit, to leave "room" for new items.
+	return workqueue.NewTypedMaxOfRateLimiter(
+		&workqueue.TypedBucketRateLimiter[reconcile.Request]{Limiter: rate.NewLimiter(rate.Limit(5), 50)},
 	)
+}
+
+// SetMasterRateLimiter sets the kubernetes client level rate limiter.
+// This rate limiter is shared among all requests created by the client.
+// If specified, it will override the QPS and Burst fields.
+//
+// By default, this rate limiter uses tokenBucketRateLimiter(20.0, 30).
+// In ConfigConnector, this becomes a bottleneck when re-reconciliate a large amount of ConfigConnector resources.
+//
+// One potential downside of bumping this rate limit is that ConfigConnector could hit GCP service quotes due to the
+// more aggressive GCP requests. For your information, the IAM quota has Read request 6,000 per minute, and Write requests 600 per minute. https://cloud.google.com/iam/quotas
+func SetMasterRateLimiter(restConfig *rest.Config, qps float32, burst int) {
+	restConfig.RateLimiter = flowcontrol.NewTokenBucketRateLimiter(qps, burst)
 }

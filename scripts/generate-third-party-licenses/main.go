@@ -169,8 +169,10 @@ func repoToLicenseURL(repo string, licenseFilename string) string {
 			return fmt.Sprintf("https://github.com/go-yaml/yaml/blob/v3/%v", licensePathInRepo)
 		case "dnaeon/go-vcr.v3":
 			return fmt.Sprintf("https://github.com/dnaeon/go-vcr/blob/v3/%v", licensePathInRepo)
+		case "evanphx/json-patch.v4":
+			return fmt.Sprintf("https://github.com/evanphx/json-patch/blob/master/%v", licensePathInRepo)
 		default:
-			panic(fmt.Sprintf("unhandled domain for repo %v", repo))
+			panic(fmt.Sprintf("unhandled domain for repo domain %v, root %v", domain, repoRoot))
 		}
 	case "go.opencensus.io":
 		return fmt.Sprintf("https://github.com/census-instrumentation/opencensus-go/blob/master/%v", licensePathInRepo)
@@ -179,7 +181,7 @@ func repoToLicenseURL(repo string, licenseFilename string) string {
 	case "go.opentelemetry.io":
 		return fmt.Sprintf("https://github.com/open-telemetry/opentelemetry-go-contrib/blob/main/%v", licensePathInRepo)
 	default:
-		panic(fmt.Sprintf("unhandled domain for repo %v", repo))
+		panic(fmt.Sprintf("unhandled domain %q for repo %q", domain, repo))
 	}
 }
 
@@ -200,6 +202,7 @@ func splitRepo(repo string) (domain string, repoRoot string, subrepoPath string)
 
 var manualLicenseURLMapping = map[string]string{
 	"bitbucket.org/creachadair/stringset":                     "https://bitbucket.org/creachadair/stringset/src/master/LICENSE",
+	"cel.dev/expr":                                            "https://github.com/google/cel-spec/blob/master/LICENSE",
 	"cloud.google.com/go":                                     "https://github.com/googleapis/google-cloud-go/blob/master/LICENSE",
 	"contrib.go.opencensus.io/exporter/prometheus":            "https://github.com/census-ecosystem/opencensus-go-exporter-prometheus/blob/master/LICENSE",
 	"dario.cat/mergo":                                         "https://github.com/darccio/mergo/blob/master/LICENSE",

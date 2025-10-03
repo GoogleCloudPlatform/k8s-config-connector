@@ -182,6 +182,17 @@ func expandFieldTemplate(template string, r *Resource, c client.Client, smLoader
 		if val, exists, _ := unstructured.NestedString(r.GetStatusOrObservedState(), strings.Split(path, ".")...); exists {
 			return val
 		}
+
+		// Special handling to resolve project from DCL-based resource
+		// Only applied to a referenced NetworkSecurityClientTLSPolicy resource
+		// and tested by fixtures/globalcomputebackendservicesecuritysettings test for now
+		if path == "project" && r.Kind == "NetworkSecurityClientTLSPolicy" {
+			dclPath := "projectRef.external"
+			if val, exists, _ := unstructured.NestedString(r.Spec, strings.Split(dclPath, ".")...); exists {
+				return val
+			}
+		}
+
 		if isRequired {
 			resolutionError = fmt.Errorf("unable to resolve missing value: %v", field)
 		}

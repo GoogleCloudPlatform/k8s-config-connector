@@ -15,20 +15,35 @@
 package contexts
 
 func init() {
-	resourceContextMap["mysqlinstance"] = ResourceContext{
-		// SQL instances names are reserved for 1 week after use: https://cloud.google.com/sql/docs/mysql/delete-instance
+	resourceContextMap["sqlinstance-activationpolicy-direct"] = ResourceContext{
+		// The SQL API does not support creating SQLInstances with `activationPolicy: "NEVER"`.
+		// Users must first create, then perform an update to deactivate instances.
 		SkipDriftDetection: true,
 		ResourceKind:       "SQLInstance",
 	}
 
-	resourceContextMap["sqlserverinstance"] = ResourceContext{
-		// SQL instances names are reserved for 1 week after use: https://cloud.google.com/sql/docs/mysql/delete-instance
-		SkipDriftDetection: true,
-		ResourceKind:       "SQLInstance",
+	resourceContextMap["sqlinstance-backupconfiguration-binarylog-direct"] = ResourceContext{
+		// Defaulting behavior of backup configuration requires multiple updates.
+		SkipNoChange: true,
+		ResourceKind: "SQLInstance",
 	}
 
-	resourceContextMap["sqldatabase"] = ResourceContext{
-		ResourceKind: "SQLDatabase",
+	resourceContextMap["sqlinstance-backupconfiguration-pitr-direct"] = ResourceContext{
+		// Defaulting behavior of backup configuration requires multiple updates.
+		SkipNoChange: true,
+		ResourceKind: "SQLInstance",
+	}
+
+	resourceContextMap["sqlinstance-datacacheconfig-direct"] = ResourceContext{
+		// The direct controller requires two updates to set edition: ENTERPRISE_PLUS.
+		SkipNoChange: true,
+		ResourceKind: "SQLInstance",
+	}
+
+	resourceContextMap["sqlinstance-replica-direct"] = ResourceContext{
+		// Defaulting behavior of backup configuration requires multiple updates.
+		SkipNoChange: true,
+		ResourceKind: "SQLInstance",
 	}
 
 	resourceContextMap["sqlsslcert"] = ResourceContext{

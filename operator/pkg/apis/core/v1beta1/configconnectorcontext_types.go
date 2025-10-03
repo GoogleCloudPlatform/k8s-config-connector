@@ -15,7 +15,10 @@
 package v1beta1
 
 import (
+	"runtime/debug"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
+	k8scontrollertype "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/klog/v2"
 	addonv1alpha1 "sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/apis/v1alpha1"
@@ -25,6 +28,11 @@ import (
 
 // ConfigConnectorContextSpec defines the desired state of ConfigConnectorContext
 type ConfigConnectorContextSpec struct {
+	// Version specifies the exact addon version to be deployed, eg 1.2.3
+	// Only limited versions are supported; currently we are only supporting
+	// the operator version and the previous minor version.
+	Version string `json:"version,omitempty"`
+
 	// The Google Service Account to be used by Config Connector to
 	// authenticate with Google Cloud APIs in the associated namespace.
 	GoogleServiceAccount string `json:"googleServiceAccount"`
@@ -62,6 +70,30 @@ type ConfigConnectorContextSpec struct {
 	//+kubebuilder:validation:Enum=Reconciling;Paused
 	//+kubebuilder:validation:Optional
 	Actuation ActuationMode `json:"actuationMode,omitempty"`
+
+	// ManagerNamespace instructs Config Connector to deploy
+	// controller managers and related resources in the namespace
+	// specified as 'ManagerNamespace' instead of standard 'cnrm-system'
+	// The specified manager namespace may exist before the corresponding
+	// ConfigConnectorContext is created.
+	// If the specified namespace does not exist then it will be created
+	// by Config Connector. The field is immutable.
+	//+kubebuilder:validation:Optional
+	//+kubebuilder:validation:XValidation:rule="self == oldSelf",message="ManagerNamespace field is immutable"
+	ManagerNamespace string `json:"managerNamespace,omitempty"`
+
+	Experiments *Experiments `json:"experiments,omitempty"`
+}
+
+// Experiments contains experimental features.
+
+type Experiments struct {
+	// ControllerOverrides allows specifying which controller to use for a given
+	// resource kind within this namespace, overriding the system default.
+	// The format for the entries should follow the format as Kind.group :
+	// e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: direct
+	// +optional
+	ControllerOverrides map[string]k8scontrollertype.ReconcilerType `json:"controllerOverrides,omitempty"`
 }
 
 type StateIntoSpecValue string
@@ -106,16 +138,14 @@ func init() {
 var _ addonv1alpha1.CommonObject = &ConfigConnectorContext{}
 
 func (c *ConfigConnectorContext) ComponentName() string {
-	// This should not be called, but is needed to satisfy the CommonObject interface.
-	// (We only interact with the status fields)
-	klog.Fatalf("ComponentName should not be called	on ConfigConnectorContext")
-	return ""
+	return "configconnectorcontext"
 }
 
 func (c *ConfigConnectorContext) CommonSpec() addonv1alpha1.CommonSpec {
 	// This should not be called, but is needed to satisfy the CommonObject interface.
 	// (We only interact with the status fields)
-	klog.Fatalf("CommonSpec should not be called on ConfigConnectorContext")
+	stacktrace := debug.Stack()
+	klog.Fatalf("CommonSpec should not be called on ConfigConnectorContext stack: %v", string(stacktrace))
 	return addonv1alpha1.CommonSpec{}
 }
 

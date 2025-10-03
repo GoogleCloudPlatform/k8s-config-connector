@@ -1,0 +1,1 @@
+I think somewhere in the code base we change the User-Agent header based on a blueprint annotation.  Can you help me find and remove that functionality?  I think I need to remove the SetUserAgentWithBlueprintAttribution function and any dependencies.

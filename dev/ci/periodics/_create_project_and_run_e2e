@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+export RUN_TESTS=TestAllInSeries/fixtures
+export E2E_GCP_TARGET=real
+
+# We don't want to fail on changes in the http.log,
+# because that happens e.g. whenever there's a new field in the upstream service.
+export ONLY_WARN_ON_GOLDEN_DIFFS=_http.log
+
+EXIT_CODE=0
+
+dev/tasks/create-test-project
+trap dev/tasks/cleanup-test-resources EXIT
+
+# If there doesn't exist a TEST_TIMEOUT from the service, keep it 240m
+if [[ -z "${TEST_TIMEOUT:-}" ]]; then
+  TEST_TIMEOUT=240m
+fi
+echo "Using TEST_TIMEOUT=${TEST_TIMEOUT}"
+
+dev/tasks/run-e2e || EXIT_CODE=$?
+
+if [[ -n "${ARTIFACTS:-}" ]]; then
+  # Capture our source tree, which includes golden output
+  echo "Storing golden output in ${ARTIFACTS}/golden.zip"
+  zip --recurse-paths --quiet "${ARTIFACTS}/golden.zip" apis/ pkg/
+else
+  echo "ARTIFACTS not set, not capturing golden output"
+fi
+
+exit ${EXIT_CODE}

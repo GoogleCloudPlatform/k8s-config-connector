@@ -1,0 +1,26 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "parent": "projects/{{project}}",
+  "triggers": [
+    {
+      "schedule": {
+        "recurrencePeriodDuration": "86400s"
+      }
+    }
+  ],
+  "status": "HEALTHY",
+  "inspectJob": {
+    "storageConfig": {
+      "cloudStorageOptions": {
+        "fileSet": {
+          "regexFileSet": {
+            "bucketName": "aaa-dont-delete-dcl-cloud-functions-testing",
+            "includeRegex": ["[a-z0-9-]+"],
+            "excludeRegex": ["[A-Z0-9-]+"]
+          }
+        },
+        "bytesLimitPerFilePercent": 66
+      }
+    }
+  }
+}

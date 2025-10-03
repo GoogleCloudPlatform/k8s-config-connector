@@ -37,7 +37,7 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 			name: "CCC has spec.billingProject set and spec.requestProjectPolicy set to BILLING_PROJECT",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -53,7 +53,7 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 			name: "CCC has spec.billingProject omitted and spec.requestProjectPolicy set to RESOURCE_PROJECT",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -68,7 +68,7 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 			name: "CCC has spec.billingProject set to empty and spec.requestProjectPolicy set to RESOURCE_PROJECT",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -84,7 +84,7 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 			name: "CCC has spec.billingProject omitted and spec.requestProjectPolicy set to SERVICE_ACCOUNT_PROJECT",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -99,7 +99,7 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 			name: "CCC has spec.billingProject unset and requestProjectPolicy set to BILLING_PROJECT",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -114,7 +114,7 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 			name: "CCC has spec.billingProject set to empty and requestProjectPolicy set to BILLING_PROJECT",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -130,7 +130,7 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 			name: "CCC has spec.billingProject unset and requestProjectPolicy set to RESOURCE_PROJECT",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -146,7 +146,7 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 			name: "CCC has spec.billingProject unset and requestProjectPolicy set to SERVICE_ACCOUNT_PROJECT",
 			ccc: &corev1beta1.ConfigConnectorContext{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      k8s.ConfigConnectorContextAllowedName,
+					Name:      corev1beta1.ConfigConnectorContextAllowedName,
 					Namespace: "foo-ns",
 				},
 				Spec: corev1beta1.ConfigConnectorContextSpec{
@@ -165,6 +165,52 @@ func TestConfigConnectorContextChecker(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			err := checker.Preflight(context.TODO(), tc.ccc)
+			asserts.AssertErrorIsExpected(t, err, tc.err)
+		})
+	}
+}
+
+func TestValidateGSAFormat(t *testing.T) {
+	tests := []struct {
+		name string
+		gsa  string
+		err  error
+	}{
+		{
+			name: "empty",
+			gsa:  "",
+			err:  nil,
+		},
+		{
+			name: "valid GSA format",
+			gsa:  "foo@abc.gserviceaccount.com",
+			err:  nil,
+		},
+		{
+			name: "valid GSA format",
+			gsa:  "foo@abc.def.gserviceaccount.com",
+			err:  nil,
+		},
+		{
+			name: "valid GSA format",
+			gsa:  "foo@abc.def.ghi.gserviceaccount.com",
+			err:  nil,
+		},
+		{
+			name: "invalid GSA format",
+			gsa:  "abc",
+			err:  fmt.Errorf("invalid GoogleServiceAccount format for %q", "abc"),
+		},
+		{
+			name: "invalid GSA format",
+			gsa:  "foo@bar.com",
+			err:  fmt.Errorf("invalid GoogleServiceAccount format for %q", "foo@bar.com"),
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			err := validateGSAFormat(tc.gsa)
 			asserts.AssertErrorIsExpected(t, err, tc.err)
 		})
 	}

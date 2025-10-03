@@ -7,7 +7,8 @@
 
 
 
-Note: Secondary instances should only be created once the associated primary instance is ready and up to date
+Note: Secondary instances should only be created once the associated primary
+instance is ready and up to date.
 
 <table>
 <thead>
@@ -62,20 +63,6 @@ Note: Secondary instances should only be created once the associated primary ins
 ## Custom Resource Definition Properties
 
 
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
-</tbody>
-</table>
-
 
 ### Spec
 #### Schema
@@ -98,6 +85,12 @@ instanceTypeRef:
   namespace: string
 machineConfig:
   cpuCount: integer
+  machineType: string
+networkConfig:
+  authorizedExternalNetworks:
+  - cidrRange: string
+  enableOutboundPublicIp: boolean
+  enablePublicIp: boolean
 readPoolConfig:
   nodeCount: integer
 resourceID: string
@@ -127,12 +120,12 @@ resourceID: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}'Availability type of an Instance. Defaults to REGIONAL for both primary and read instances.
-Note that primary and read instances can have different availability types.
-Only READ_POOL instance supports ZONAL type. Users can't specify the zone for READ_POOL instance.
-Zone is automatically chosen from the list of zones in the region specified.
-Read pool of size 1 can only have zonal availability. Read pools with node count of 2 or more
-can have regional availability (nodes are present in 2 or more zones in a region).' Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].{% endverbatim %}</p>
+            <p>{% verbatim %}Availability type of an Instance. If empty, defaults to REGIONAL for primary instances.
+
+For read pools, availabilityType is always UNSPECIFIED. Instances in the
+read pools are evenly distributed across available zones within the region
+(i.e. read pools with more than one node will have a node in at least two zones).
+Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -142,7 +135,7 @@ can have regional availability (nodes are present in 2 or more zones in a region
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The AlloyDBInstance cluster that this resource belongs to.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -152,7 +145,7 @@ can have regional availability (nodes are present in 2 or more zones in a region
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of an `AlloyDBCluster` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}If provided must be in the format `projects/[projectId]/locations/[location]/clusters/[clusterId]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -162,7 +155,7 @@ can have regional availability (nodes are present in 2 or more zones in a region
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `metadata.name` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -172,7 +165,7 @@ can have regional availability (nodes are present in 2 or more zones in a region
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `metadata.namespace` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -212,8 +205,7 @@ can have regional availability (nodes are present in 2 or more zones in a region
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}We recommend that you use `instanceTypeRef` instead.
-The type of the instance. Possible values: [PRIMARY, READ_POOL, SECONDARY]{% endverbatim %}</p>
+            <p>{% verbatim %}Not recommended. We recommend that you use `instanceTypeRef` instead. The type of the instance. Possible values: [PRIMARY, READ_POOL, SECONDARY]{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -225,6 +217,7 @@ The type of the instance. Possible values: [PRIMARY, READ_POOL, SECONDARY]{% end
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}The type of instance.
 Possible values: ["PRIMARY", "READ_POOL", "SECONDARY"]
+
 For PRIMARY and SECONDARY instances, set the value to refer to the name of the associated cluster.
 This is recommended because the instance type of primary and secondary instances is tied to the cluster type of the associated cluster.
 If the secondary cluster is promoted to primary cluster, then the associated secondary instance also becomes primary instance.
@@ -246,7 +239,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `clusterType` field of an `AlloyDBCluster` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The type of instance. Possible values: ["PRIMARY", "READ_POOL", "SECONDARY"]{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -256,7 +249,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `metadata.name` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -266,7 +259,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `metadata.namespace` field of a `AlloyDBCluster` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -287,6 +280,76 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}The number of CPU's in the VM instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>machineConfig.machineType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Machine type of the VM instance. E.g. "n2-highmem-4", "n2-highmem-8", "c4a-highmem-4-lssd". cpu_count must match the number of vCPUs in the machine type.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Instance level network configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.authorizedExternalNetworks</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Optional. A list of external network authorized to access this instance. This field is only allowed to be set when 'enablePublicIp' is set to true.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.authorizedExternalNetworks[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.authorizedExternalNetworks[].cidrRange</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}CIDR range for one authorzied network of the instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.enableOutboundPublicIp</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. Enabling an outbound public IP address to support a database server sending requests out into the internet.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>networkConfig.enablePublicIp</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Optional. Enabling public ip for the instance. If a user wishes to disable this, please also clear the list of the authorized external networks set on the same instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -316,7 +379,7 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The instanceId of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The instanceId of the resource. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -334,9 +397,13 @@ conditions:
   status: string
   type: string
 createTime: string
+externalRef: string
 ipAddress: string
 name: string
 observedGeneration: integer
+outboundPublicIpAddresses:
+- string
+publicIpAddress: string
 reconciling: boolean
 state: string
 uid: string
@@ -354,7 +421,7 @@ updateTime: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -407,6 +474,13 @@ updateTime: string
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the AlloyDBInstance resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>ipAddress</code></td>
         <td>
             <p><code class="apitype">string</code></p>
@@ -425,6 +499,27 @@ updateTime: string
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>outboundPublicIpAddresses</code></td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>{% verbatim %}The outbound public IP addresses for the instance. This is available ONLY when networkConfig.enableOutboundPublicIp is set to true. These IP addresses are used for outbound connections.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>outboundPublicIpAddresses[]</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>publicIpAddress</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}The public IP addresses for the Instance. This is available ONLY when networkConfig.enablePublicIp is set to true. This is the connection endpoint for an end-user application.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -487,8 +582,15 @@ spec:
     name: alloydbinstance-dep-primary
   databaseFlags:
     enable_google_adaptive_autovacuum: "off"
+    password.enforce_complexity: "on"
   machineConfig:
     cpuCount: 2
+  networkConfig:
+    enablePublicIp: true
+    enableOutboundPublicIp: true
+    authorizedExternalNetworks:
+    - cidrRange: 8.8.8.8/30
+    - cidrRange: 8.8.4.4/30
 ---
 apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
 kind: AlloyDBCluster

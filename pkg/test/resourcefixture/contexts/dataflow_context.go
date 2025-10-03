@@ -33,14 +33,14 @@ func init() {
 
 	resourceContextMap["streamingdataflowjobupdateparameters"] = ResourceContext{
 		ResourceKind: "DataflowJob",
-		// The streamingdataflowjob has been flakey, which seems to be attributed
+		// The streamingdataflowjob has been flaky, which seems to be attributed
 		// to the dataflow jobs themselves. see b/166669646
 		SkipUpdate: true,
 	}
 
 	resourceContextMap["streamingdataflowjobupdatetemplate"] = ResourceContext{
 		ResourceKind: "DataflowJob",
-		// The streamingdataflowjob has been flakey, which seems to be attributed
+		// The streamingdataflowjob has been flaky, which seems to be attributed
 		// to the dataflow jobs themselves. see b/166669646
 		SkipUpdate: true,
 	}

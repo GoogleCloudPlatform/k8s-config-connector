@@ -1,0 +1,58 @@
+apiVersion: vmwareengine.cnrm.cloud.google.com/v1alpha1
+kind: VMwareEnginePrivateCloud
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: vmwareengineprivatecloud-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated description
+  location: us-west2-a
+  managementCluster:
+    clusterID: cluster-1
+    nodeTypeConfigs:
+    - nodeCount: 3
+      nodeTypeID: standard-72
+  networkConfig:
+    managementCIDR: 192.168.30.0/24
+    vmwareEngineNetworkRef:
+      name: vmwareenginenetwork-minimal-${uniqueId}
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    hcx:
+      fqdn: hcx-414861.c8819727.us-west2.gve.goog
+      internalIP: 192.168.30.3
+      state: ACTIVE
+      version: 4.10.3.24447633
+    networkConfig:
+      dnsServerIP: 192.168.30.234
+      managementIPAddressLayoutVersion: 2
+      vmwareEngineNetworkCanonical: projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}
+    nsx:
+      fqdn: nsx-414860.c8819727.us-west2.gve.goog
+      internalIP: 192.168.30.18
+      state: ACTIVE
+      version: 3.2.3.1
+    state: ACTIVE
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
+    vcenter:
+      fqdn: vcsa-359395.c8819727.us-west2.gve.goog
+      internalIP: 192.168.30.2
+      state: ACTIVE
+      version: 7.0.3.23085514

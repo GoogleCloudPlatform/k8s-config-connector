@@ -398,6 +398,12 @@ func ResourceBigQueryTable() *schema.Resource {
 			resourceBigQueryTableSchemaCustomizeDiff,
 		),
 		Schema: map[string]*schema.Schema{
+			"unmanaged": {
+				Type:     schema.TypeString,
+				Optional: true,
+				Default: "",
+				Description: `Collection of fields to ignore during update`,
+			},
 			// TableId: [Required] The ID of the table. The ID must contain only
 			// letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum
 			// length is 1,024 characters.
@@ -902,9 +908,11 @@ func ResourceBigQueryTable() *schema.Resource {
 						// require a partition filter that can be used for partition elimination to be
 						// specified.
 						"require_partition_filter": {
-							Type:        schema.TypeBool,
-							Optional:    true,
-							Description: `If set to true, queries over this table require a partition filter that can be used for partition elimination to be specified.`,
+							Type:          schema.TypeBool,
+							Optional:      true,
+							Description:   `If set to true, queries over this table require a partition filter that can be used for partition elimination to be specified.`,
+							Deprecated:    `This field is deprecated and will be removed in a future major release; please use the top level field with the same name instead.`,
+							ConflictsWith: []string{"require_partition_filter"},
 						},
 					},
 				},
@@ -961,6 +969,16 @@ func ResourceBigQueryTable() *schema.Resource {
 						},
 					},
 				},
+			},
+
+			// RequirePartitionFilter: [Optional] If set to true, queries over this table
+			// require a partition filter that can be used for partition elimination to be
+			// specified.
+			"require_partition_filter": {
+				Type:          schema.TypeBool,
+				Optional:      true,
+				Description:   `If set to true, queries over this table require a partition filter that can be used for partition elimination to be specified.`,
+				ConflictsWith: []string{"time_partitioning.0.require_partition_filter"},
 			},
 
 			// Clustering: [Optional] Specifies column names to use for data clustering.  Up to four
@@ -1281,6 +1299,10 @@ func resourceTable(d *schema.ResourceData, meta interface{}) (*bigquery.Table, e
 		table.RangePartitioning = rangePartitioning
 	}
 
+	if v, ok := d.GetOk("require_partition_filter"); ok {
+		table.RequirePartitionFilter = v.(bool)
+	}
+
 	if v, ok := d.GetOk("clustering"); ok {
 		table.Clustering = &bigquery.Clustering{
 			Fields:          tpgresource.ConvertStringArr(v.([]interface{})),
@@ -1379,6 +1401,13 @@ func resourceBigQueryTableRead(d *schema.ResourceData, meta interface{}) error {
 		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("BigQuery table %q", tableID))
 	}
 
+	// Explicitly set virtual fields to default values if unset
+	if _, ok := d.GetOkExists("unmanaged"); !ok {
+		if err := d.Set("unmanaged", ""); err != nil {
+			return fmt.Errorf("Error setting unmanaged: %s", err)
+		}
+	}
+
 	if err := d.Set("project", project); err != nil {
 		return fmt.Errorf("Error setting project: %s", err)
 	}
@@ -1431,6 +1460,14 @@ func resourceBigQueryTableRead(d *schema.ResourceData, meta interface{}) error {
 		return fmt.Errorf("Error setting type: %s", err)
 	}
 
+	// determine whether the deprecated require_partition_filter field is used
+	use_old_rpf := false
+	if _, ok := d.GetOk("time_partitioning.0.require_partition_filter"); ok {
+		use_old_rpf = true
+	} else if err := d.Set("require_partition_filter", res.RequirePartitionFilter); err != nil {
+		return fmt.Errorf("Error setting require_partition_filter: %s", err)
+	}
+
 	if res.ExternalDataConfiguration != nil {
 		externalDataConfiguration, err := flattenExternalDataConfiguration(res.ExternalDataConfiguration)
 		if err != nil {
@@ -1461,7 +1498,7 @@ func resourceBigQueryTableRead(d *schema.ResourceData, meta interface{}) error {
 	}
 
 	if res.TimePartitioning != nil {
-		if err := d.Set("time_partitioning", flattenTimePartitioning(res.TimePartitioning)); err != nil {
+		if err := d.Set("time_partitioning", flattenTimePartitioning(res.TimePartitioning, use_old_rpf)); err != nil {
 			return err
 		}
 	}
@@ -1540,9 +1577,23 @@ func resourceBigQueryTableUpdate(d *schema.ResourceData, meta interface{}) error
 
 	datasetID := d.Get("dataset_id").(string)
 	tableID := d.Get("table_id").(string)
-
-	if _, err = config.NewBigQueryClient(userAgent).Tables.Update(project, datasetID, tableID, table).Do(); err != nil {
-		return err
+	unmanaged := d.Get("unmanaged").(string)
+	if unmanaged != "" {
+		unmanagedFields := strings.Split(unmanaged, ",")
+		for _, field := range unmanagedFields {
+			// This ability is only intended for spec.schema field for the moment.
+			if field == "spec.schema" {
+				table.Schema = nil
+			}
+		}
+		// Make PATCH call with nil schema to avoid schema being updated.
+		if _, err = config.NewBigQueryClient(userAgent).Tables.Patch(project, datasetID, tableID, table).Do(); err != nil {
+			return err
+		}
+	} else {
+		if _, err = config.NewBigQueryClient(userAgent).Tables.Update(project, datasetID, tableID, table).Do(); err != nil {
+			return err
+		}
 	}
 
 	return resourceBigQueryTableRead(d, meta)
@@ -2059,7 +2110,7 @@ func flattenEncryptionConfiguration(ec *bigquery.EncryptionConfiguration) []map[
 	return []map[string]interface{}{{"kms_key_name": ec.KmsKeyName, "kms_key_version": ""}}
 }
 
-func flattenTimePartitioning(tp *bigquery.TimePartitioning) []map[string]interface{} {
+func flattenTimePartitioning(tp *bigquery.TimePartitioning, use_old_rpf bool) []map[string]interface{} {
 	result := map[string]interface{}{"type": tp.Type}
 
 	if tp.Field != "" {
@@ -2070,7 +2121,7 @@ func flattenTimePartitioning(tp *bigquery.TimePartitioning) []map[string]interfa
 		result["expiration_ms"] = tp.ExpirationMs
 	}
 
-	if tp.RequirePartitionFilter {
+	if tp.RequirePartitionFilter && use_old_rpf {
 		result["require_partition_filter"] = tp.RequirePartitionFilter
 	}
 
@@ -2310,6 +2361,10 @@ func resourceBigQueryTableImport(d *schema.ResourceData, meta interface{}) ([]*s
 		"(?P<dataset_id>[^/]+)/(?P<table_id>[^/]+)",
 	}, d, config); err != nil {
 		return nil, err
+	}
+	// Explicitly set virtual fields to default values on import
+	if err := d.Set("unmanaged", ""); err != nil {
+		return nil, fmt.Errorf("Error setting unmanaged: %s", err)
 	}
 
 	// Explicitly set virtual fields to default values on import

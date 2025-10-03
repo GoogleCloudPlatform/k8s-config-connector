@@ -81,20 +81,6 @@
 ## Custom Resource Definition Properties
 
 
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
-</tbody>
-</table>
-
 
 ### Spec
 #### Schema
@@ -738,7 +724,7 @@ results in a new version of a function being created.{% endverbatim %}</p>
 
 ## Sample YAML(s)
 
-### Eventtrigger With Pubsubtopic
+### Eventtrigger With PubSubTopic
 ```yaml
 # Copyright 2022 Google LLC
 #
@@ -770,7 +756,7 @@ spec:
     # Replace ${PROJECT_ID?} with your project ID
     external: "${PROJECT_ID?}@appspot.gserviceaccount.com"
   # Replace ${REPO_URL?} with your cloud source repository url
-  # Example: https://source.developers.google.com/projects/config-connector-samples/repos/config-connnector-samples/moveable-aliases/main/paths/cloudfunctionsfunction
+  # Example: https://source.developers.google.com/projects/config-connector-samples/repos/config-connector-samples/moveable-aliases/main/paths/cloudfunctionsfunction
   sourceRepository:
     url: "${REPO_URL?}"
   timeout: "60s"
@@ -818,7 +804,7 @@ spec:
     external: "projects/${PROJECT_ID?}"
 ```
 
-### Eventtrigger With Storagebucket
+### Eventtrigger With StorageBucket
 ```yaml
 # Copyright 2022 Google LLC
 #

@@ -1,0 +1,10 @@
+{
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "name": "{{cert}}",
+  "certificateAuthority": "{{ref:basic.certificate_authority.json:name}}",
+  "caPool": "no-delete-test",
+  "lifetime": "860s",
+  "certificateTemplate": "{{ref:basic.certificate_template.json:name}}",
+  "pemCsr": "-----BEGIN CERTIFICATE REQUEST-----\nMIIDETCCAfkCAQAwVDELMAkGA1UEBhMCVVMxDzANBgNVBAoMBkdvb2dsZTETMBEG\nA1UECwwKRW50ZXJwcmlzZTEfMB0GA1UEAwwWc2VydmVyLmVzb2RlbW9hcHAyLmNv\nbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMZThbWkUvD8wxzP/v/t\n918Z0fhDYgSrow75G1kIbUf5Z3qG+l0AyLadIo3SqN3ENQYf2+O1VP9Hk90tyvCS\niGqjXJLCLXdrwLLqHoqFDxwm3bQ0/AlOIpmilS++BdHUew0HfqZq9lJOFPAF3EtL\nLPaE0eRbA2HguHe4q/7jIIr999vYuafCtetrzIBI8ke9+S2VvPPw+ni2KZvmTb1+\nDnIqq7QX/t92Y9RW1UgeXqvc/LbYwnIfSyCpea1IvHILup+eQ/R2aeIgzFrDbuS4\nULrxdJrMu4UXXPJMbw7xSOAdhJoX+uky08bR3pbUbt6wNwwjuDLNLBIdlYZK6seL\nQRsCAwEAAaB4MHYGCSqGSIb3DQEJDjFpMGcwDgYDVR0PAQH/BAQDAgeAMBMGA1Ud\nJQQMMAoGCCsGAQUFBwMBMB0GA1UdDgQWBBQ/ZBWqbeL7spn5xkS9awVgZ5L1ITAh\nBgNVHREEGjAYghZzZXJ2ZXIuZXNvZGVtb2FwcDIuY29tMA0GCSqGSIb3DQEBBQUA\nA4IBAQAJoFccsGUrdoPRuhjvhrtjnj2D8hEAA0bt+numzT5E26Cte7HHRg2Jn2f7\n5qxNunesf86FBjOtg/dr3tKIAPAQ7H6yojq/XFFrKkbDpYodigdxeD4pQ2NaZxPU\n2FJZoGyoxoUMb7wozROTJDRI0hAmkVUtUgta3UHtDuVXLYTwpKCBHqFi6Nshv8jO\nXTHsr7G/a0ky0nnbzYvhilyzZQS7k1F2pQIhzTFZtvwzM9JvpWyzS7I8W8QX5YqG\nbqDgRvIy7MHu0sWjOPvSKtU5ivW+wawEytspDxdEapivIAzY7wvMH27ixm0sfCxN\ntRlgsGSzkSXGk9c4MHDtmGFFfD0U\n-----END CERTIFICATE REQUEST-----"
+}

@@ -14,7 +14,7 @@ insertText: |
     distribution: \${6:[DISTRIBUTION?]}
     oidcConfig:
       issuerUrl: \${7:[ISSUER_URL?]}
-    platformVersion: \${8:[PLATFORM_VERSION?]}
+    platformVersion: \${8:[ATTACHED_CLUSTER_PLATFORM_VERSION?]}
     fleet:
       projectRef:
         name: \${9:containerattachedcluster-dep-basic}

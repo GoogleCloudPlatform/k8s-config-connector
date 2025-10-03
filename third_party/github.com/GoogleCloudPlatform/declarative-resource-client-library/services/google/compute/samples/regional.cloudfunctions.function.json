@@ -1,0 +1,22 @@
+{
+  "name": "{{function}}",
+  "project": "{{project}}",
+  "region": "{{region}}",
+  "runtime": "nodejs20",
+  "description": "Initial Cloud Function for testing",
+  "availableMemoryMb": 128,
+  "sourceArchiveUrl": "gs://aaa-dont-delete-dcl-cloud-functions-testing/http_trigger.zip",
+  "timeout": "60s",
+  "entryPoint": "helloGET",
+  "ingressSettings": "ALLOW_INTERNAL_ONLY",
+  "labels": {
+    "my-label": "my-label-value"
+  },
+  "environmentVariables": {
+    "TEST_ENV_VARIABLE": "test-env-variable-value"
+  },
+  "maxInstances": 10,
+  "httpsTrigger": {
+    "securityLevel": "SECURE_OPTIONAL"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "{{policy}}",
+  "project": "{{project}}",
+  "location": "global",
+  "action": "ALLOW",
+  "description": "Sample authorization policy",
+  "rules": [
+    {
+      "sources": [
+        {
+          "ipBlocks": ["1.2.3.4"]
+        }
+      ],
+      "destinations": [
+        {
+          "hosts": ["localhost"],
+          "ports": [80]
+        },
+        {
+          "hosts": ["localhost"],
+          "ports": [8080]
+        }
+      ]
+    }
+  ]
+}

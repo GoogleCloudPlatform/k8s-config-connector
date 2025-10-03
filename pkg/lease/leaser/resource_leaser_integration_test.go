@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leaser"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/managementconflict"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	testreconciler "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller/reconciler"
 	testkrmtotf "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/krmtotf"
@@ -47,7 +48,7 @@ func TestObtainAndReleaseResourceLease(t *testing.T) {
 	testFunc := func(ctx context.Context, t *testing.T, testContext testrunner.TestContext, systemContext testrunner.SystemContext) {
 		u := testContext.CreateUnstruct
 		// create the resource with a no management conflict policy to prevent the controller from obtaining a lease on the resource
-		k8s.SetAnnotation(k8s.ManagementConflictPreventionPolicyFullyQualifiedAnnotation, k8s.ManagementConflictPreventionPolicyNone, u)
+		k8s.SetAnnotation(managementconflict.FullyQualifiedAnnotation, managementconflict.ManagementConflictPreventionPolicyNone, u)
 		if err := systemContext.Manager.GetClient().Create(ctx, u); err != nil {
 			t.Fatalf("error creating resource: %v", err)
 		}

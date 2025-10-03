@@ -94,6 +94,34 @@ type InstanceBackupRetentionSettings struct {
 	RetentionUnit *string `json:"retentionUnit,omitempty"`
 }
 
+type InstanceBinLogCoordinates struct {
+	/* Name of the binary log file for a Cloud SQL instance. */
+	// +optional
+	BinLogFileName *string `json:"binLogFileName,omitempty"`
+
+	/* Position (offset) within the binary log file. */
+	// +optional
+	BinLogPosition *int64 `json:"binLogPosition,omitempty"`
+}
+
+type InstanceCloneSource struct {
+	/* Binary log coordinates, if specified, identify the position up to which the source instance is cloned. If not specified, the source instance is cloned up to the most recent binary log coordinates. */
+	// +optional
+	BinLogCoordinates *InstanceBinLogCoordinates `json:"binLogCoordinates,omitempty"`
+
+	/* (SQL Server only) Clone only the specified databases from the source instance. Clone all databases if empty. */
+	// +optional
+	DatabaseNames []string `json:"databaseNames,omitempty"`
+
+	/* Timestamp, if specified, identifies the time to which the source instance is cloned. */
+	// +optional
+	PointInTime *string `json:"pointInTime,omitempty"`
+
+	/* The source SQLInstance to clone */
+	// +optional
+	SqlInstanceRef *v1alpha1.ResourceRef `json:"sqlInstanceRef,omitempty"`
+}
+
 type InstanceDataCacheConfig struct {
 	/* Whether data cache is enabled for the instance. */
 	// +optional
@@ -166,6 +194,10 @@ type InstanceIpConfiguration struct {
 
 	// +optional
 	RequireSsl *bool `json:"requireSsl,omitempty"`
+
+	/* Specify how SSL connection should be enforced in DB connections. This field provides more SSL enforcment options compared to requireSsl. To change this field, also set the correspoding value in requireSsl if it has been set. */
+	// +optional
+	SslMode *string `json:"sslMode,omitempty"`
 }
 
 type InstanceLocationPreference struct {
@@ -308,17 +340,11 @@ type InstanceSettings struct {
 	// +optional
 	AdvancedMachineFeatures *InstanceAdvancedMachineFeatures `json:"advancedMachineFeatures,omitempty"`
 
-	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
-	Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
+	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances. Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
 	// +optional
 	AuthorizedGaeApplications []string `json:"authorizedGaeApplications,omitempty"`
 
-	/* The availability type of the Cloud SQL instance, high availability
-	(REGIONAL) or single zone (ZONAL). For all instances, ensure that
-	settings.backup_configuration.enabled is set to true.
-	For MySQL instances, ensure that settings.backup_configuration.binary_log_enabled is set to true.
-	For Postgres instances, ensure that settings.backup_configuration.point_in_time_recovery_enabled
-	is set to true. Defaults to ZONAL. */
+	/* The availability type of the Cloud SQL instance, high availability (REGIONAL) or single zone (ZONAL). For all instances, ensure that settings.backup_configuration.enabled is set to true. For MySQL instances, ensure that settings.backup_configuration.binary_log_enabled is set to true. For Postgres instances, ensure that settings.backup_configuration.point_in_time_recovery_enabled is set to true. Defaults to ZONAL. */
 	// +optional
 	AvailabilityType *string `json:"availabilityType,omitempty"`
 
@@ -333,8 +359,7 @@ type InstanceSettings struct {
 	// +optional
 	ConnectorEnforcement *string `json:"connectorEnforcement,omitempty"`
 
-	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
-	Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
+	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances. Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
 	// +optional
 	CrashSafeReplication *bool `json:"crashSafeReplication,omitempty"`
 
@@ -393,8 +418,7 @@ type InstanceSettings struct {
 	// +optional
 	PricingPlan *string `json:"pricingPlan,omitempty"`
 
-	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances.
-	Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
+	/* DEPRECATED. This property is only applicable to First Generation instances, and First Generation instances are now deprecated. see https://cloud.google.com/sql/docs/mysql/deprecation-notice for information on how to upgrade to Second Generation instances. Specifying this field has no-ops; it's recommended to remove this field from your configuration. */
 	// +optional
 	ReplicationType *string `json:"replicationType,omitempty"`
 
@@ -430,6 +454,10 @@ type InstanceValueFrom struct {
 }
 
 type SQLInstanceSpec struct {
+	/* Create this database as a clone of a source instance. Immutable. */
+	// +optional
+	CloneSource *InstanceCloneSource `json:"cloneSource,omitempty"`
+
 	/* The MySQL, PostgreSQL or SQL Server (beta) version to use. Supported values include MYSQL_5_6, MYSQL_5_7, MYSQL_8_0, POSTGRES_9_6, POSTGRES_10, POSTGRES_11, POSTGRES_12, POSTGRES_13, POSTGRES_14, POSTGRES_15, SQLSERVER_2017_STANDARD, SQLSERVER_2017_ENTERPRISE, SQLSERVER_2017_EXPRESS, SQLSERVER_2017_WEB. Database Version Policies includes an up-to-date reference of supported versions. */
 	// +optional
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`

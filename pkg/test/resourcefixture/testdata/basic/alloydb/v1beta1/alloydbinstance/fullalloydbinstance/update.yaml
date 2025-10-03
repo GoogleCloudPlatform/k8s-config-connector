@@ -26,3 +26,7 @@ spec:
   machineConfig:
     cpuCount: 4
   resourceID: alloydbinstance${uniqueId}
+  networkConfig:
+    enablePublicIp: false
+    enableOutboundPublicIp: false
+    authorizedExternalNetworks: []

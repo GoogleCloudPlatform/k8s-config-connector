@@ -21,11 +21,18 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/dashboard/v1"
+	dashboardpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/dashboard/v1"
+	metricsscopepb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/metricsscope/v1"
+	monitoringpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/v3"
 )
+
+func init() {
+	mockgcpregistry.Register(New)
+}
 
 // MockService represents a mocked apikeys service.
 type MockService struct {
@@ -34,13 +41,8 @@ type MockService struct {
 	operations *operations.Operations
 }
 
-type DashboardsService struct {
-	*MockService
-	pb.UnimplementedDashboardsServiceServer
-}
-
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
@@ -49,17 +51,34 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	return s
 }
 
-func (s *MockService) ExpectedHost() string {
-	return "monitoring.googleapis.com"
+func (s *MockService) ExpectedHosts() []string {
+	return []string{"monitoring.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterDashboardsServiceServer(grpcServer, &DashboardsService{MockService: s})
+	monitoringpb.RegisterAlertPolicyServiceServer(grpcServer, &AlertPolicyService{MockService: s})
+	monitoringpb.RegisterGroupServiceServer(grpcServer, &GroupService{MockService: s})
+	monitoringpb.RegisterMetricServiceServer(grpcServer, &metricService{MockService: s})
+	monitoringpb.RegisterNotificationChannelServiceServer(grpcServer, &NotificationChannelService{MockService: s})
+	monitoringpb.RegisterServiceMonitoringServiceServer(grpcServer, &serviceMonitoringService{MockService: s})
+	monitoringpb.RegisterUptimeCheckServiceServer(grpcServer, &UptimeCheckService{MockService: s})
+
+	dashboardpb.RegisterDashboardsServiceServer(grpcServer, &DashboardsService{MockService: s})
+
+	metricsscopepb.RegisterMetricsScopesServer(grpcServer, &metricsScopeService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb.RegisterDashboardsServiceHandler)
+		monitoringpb.RegisterAlertPolicyServiceHandler,
+		monitoringpb.RegisterGroupServiceHandler,
+		monitoringpb.RegisterMetricServiceHandler,
+		monitoringpb.RegisterNotificationChannelServiceHandler,
+		monitoringpb.RegisterServiceMonitoringServiceHandler,
+		monitoringpb.RegisterUptimeCheckServiceHandler,
+		dashboardpb.RegisterDashboardsServiceHandler,
+		metricsscopepb.RegisterMetricsScopesHandler,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +86,6 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	// Returns slightly non-standard errors
 	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
 		if error.Code == 404 {
-			error.Message = "Requested entity was not found."
 			error.Errors = nil
 		}
 	}

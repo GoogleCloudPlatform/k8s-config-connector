@@ -1,0 +1,6 @@
+{
+  "name": "{{service}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "loadBalancingScheme": "EXTERNAL"
+}

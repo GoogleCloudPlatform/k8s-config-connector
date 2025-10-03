@@ -1,5 +1,0 @@
-regions:
-  - us-east1
-  - us-central1
-name: facadeDB
-serviceAccount: "test@domain.com"

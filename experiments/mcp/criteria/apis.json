@@ -1,0 +1,33 @@
+{
+    "name": "Kubernetes API and Custom Resources",
+    "description": "This topic focuses on interacting with the Kubernetes API, particularly for creating, updating, and managing Custom Resources (CRs) defined by Custom Resource Definitions (CRDs). It covers generating valid YAML manifests, applying them to a cluster, and verifying their status.",
+    "instructions": [
+      "**Analyze the CRD**: Carefully examine the provided Custom Resource Definition (CRD) to understand the resource's schema, including required fields, data types, and validation rules defined in `openAPIV3Schema`.",
+      "**Generate a Complete YAML**: Create a valid YAML manifest for the Custom Resource. Ensure it includes `apiVersion`, `kind`, `metadata`, and a `spec` section that conforms to the CRD's schema. Try to fill in as many content as possible based on the CRD definition",
+      "**Apply User Requirements**: If specific configurations are provided, accurately map them to the correct fields in the YAML manifest. For example, a requirement for `versioning: enabled` should be placed under the `spec` section.",
+      "**ProjectID**: projectID should be set for resources that has spec.projectID field. If not, it should be added to `cnrm.cloud.google.com/project-id` annotation. If you want to apply the resource to a cluster, you can use the value $(gcloud config get core/project). Make sure the projectID is not set to `default` which is a common error",
+      "**Use Valid Placeholders**: For any required fields not specified by the user, use sensible and valid placeholders. For instance, use a placeholder like `example-resource-name` for `metadata.name`, ensuring it complies with Kubernetes naming conventions (RFC 1123).",
+      "**Return Only YAML**: The final output must be only the generated YAML content, without any additional text, comments, or explanations.",
+      "**Idempotency**: If a resource with the same name already exists, the operation should ideally be idempotent, meaning it should not cause an error but ensure the resource's state matches the provided configuration.",
+      "**Validation**: Before applying, validate the generated YAML against the CRD schema. This can be done using `kubectl --dry-run=server` if connected to a cluster, or a local validation tool like `kubeconform` otherwise."
+    ],
+    "examples": [
+      {
+        "scenario": "Create a simple StorageBucket resource",
+        "request": "Create a standard StorageBucket named 'my-project-bucket' with a location set to 'US-CENTRAL1'.",
+        "expected_tool_call": "create_resource(crd_path='path/to/storagebucket_crd.yaml', custom_configs={'metadata.name': 'my-project-bucket', 'spec.location': 'US-CENTRAL1'})"
+      },
+      {
+        "scenario": "Create a resource with a complex spec",
+        "request": "Generate a YAML for a 'MyWebApp' custom resource named 'production-app'. It needs 3 replicas and the container image should be 'my-registry/my-app:1.2.0'.",
+        "expected_tool_call": "create_resource(crd_path='path/to/mywebapp_crd.yaml', custom_configs={'metadata.name': 'production-app', 'spec.replicas': 3, 'spec.image': 'my-registry/my-app:1.2.0'})"
+      }
+    ],
+    "quality_criteria": [
+      "**Schema Compliant**: The generated YAML must be fully compliant with the `openAPIV3Schema` in the CRD.",
+      "**Completeness**: The YAML must include all required fields as defined in the CRD.",
+      "**Correctness**: User-provided configurations must be placed at the correct paths within the YAML structure.",
+      "**Validity**: All values, especially names and labels, must adhere to Kubernetes syntax and naming conventions.",
+      "**Minimalism**: The generated YAML should not include optional fields unless they are explicitly requested or required for a specific configuration."
+    ]
+  }

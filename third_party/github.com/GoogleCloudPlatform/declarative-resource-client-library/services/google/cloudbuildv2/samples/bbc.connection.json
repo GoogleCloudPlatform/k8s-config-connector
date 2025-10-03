@@ -1,0 +1,15 @@
+{
+  "name": "{{connection}}",
+  "bitbucketCloudConfig": {
+    "workspace": "proctor-test",
+    "authorizerCredential": {
+      "userTokenSecretVersion": "projects/407304063574/secrets/bbc-api-token/versions/latest"
+    },
+    "readAuthorizerCredential": {
+      "userTokenSecretVersion": "projects/407304063574/secrets/bbc-read-token/versions/latest"
+    },
+    "webhookSecretSecretVersion":"projects/407304063574/secrets/bbdc-webhook-secret/versions/latest"
+  },
+  "project": "{{project}}",
+  "location": "us-west1"
+}

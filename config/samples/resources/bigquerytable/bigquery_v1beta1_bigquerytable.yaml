@@ -23,6 +23,7 @@ spec:
   description: "BigQuery Sample Table"
   datasetRef:
     name: bigquerytabledep
+  requirePartitionFilter: true
   friendlyName: bigquerytable-sample
   externalDataConfiguration:
     autodetect: true

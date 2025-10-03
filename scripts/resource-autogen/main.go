@@ -224,7 +224,7 @@ func convertTFSamplesToKRMTestdata(tfToGVK map[string]schema.GroupVersionKind, s
 		jsonStruct, err := convertHCLBytesToJSON(b)
 		if err != nil {
 			errToReturn := fmt.Errorf("error converting HCL to JSON for TF sample %s: %w", sf, err)
-			klog.Warningf("Failed sample conversion: %w", errToReturn)
+			klog.Warningf("Failed sample conversion: %v", errToReturn)
 			errs = multierror.Append(errs, errToReturn)
 			continue
 		}
@@ -232,14 +232,19 @@ func convertTFSamplesToKRMTestdata(tfToGVK map[string]schema.GroupVersionKind, s
 		create, dependencies, err := tfSampleToKRMTestData(kind, jsonStruct, tfToGVK, smLoader)
 		if err != nil {
 			errToReturn := fmt.Errorf("error converting TF samples to KRM test data for TF sample %s: %w", sf, err)
-			klog.Warningf("Failed sample conversion: %w", errToReturn)
+			klog.Warningf("Failed sample conversion: %v", errToReturn)
 			errs = multierror.Append(errs, errToReturn)
 			continue
 		}
 
+		// Change 'basic' suffix in sampleName to 'autogen', to avoid name conflict with Direct Controller basic test.
+		// Note: We have not used this script for a while, so I manually updated the names of the existing autogen tests.
+		// I made the change just in case we want to reuse it in the future.
+		sampleName = strings.TrimSuffix(sampleName, "basic") + "autogen"
+
 		if err := insertTestData(create, dependencies, autoGenType, sampleName, generatedSamples); err != nil {
-			errToReturn := fmt.Errorf("error unmarshaling json for TF sample %s: %w", sf, err)
-			klog.Warningf("Failed sample conversion: %w", errToReturn)
+			errToReturn := fmt.Errorf("error unmarshalling json for TF sample %s: %w", sf, err)
+			klog.Warningf("Failed sample conversion: %v", errToReturn)
 			errs = multierror.Append(errs, errToReturn)
 			continue
 		}
@@ -276,7 +281,7 @@ func convertHCLBytesToJSON(raw []byte) (map[string]interface{}, error) {
 	jsonStruct := make(map[string]interface{})
 	err = json.Unmarshal(convertedBytes, &jsonStruct)
 	if err != nil {
-		return nil, fmt.Errorf("error unmarshaling json: %w", err)
+		return nil, fmt.Errorf("error unmarshalling json: %w", err)
 	}
 
 	return jsonStruct, nil
@@ -375,7 +380,7 @@ func tfConfigToKRMConfig(tfConfig interface{}, tfType string, dependencyGraph *s
 
 	name, specs, containerAnnotation, err := cleanupTFFields(tfConfig, tfType, dependencyGraph, rc, tfToGVK)
 	if err != nil {
-		return nil, fmt.Errorf("error cleanning up the TF config: %w", err)
+		return nil, fmt.Errorf("error cleaning up the TF config: %w", err)
 	}
 	// TODO(b/265367038): Handle the samples with multiple resources of the same type.\
 	gvk, ok := tfToGVK[tfType]

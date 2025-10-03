@@ -1,0 +1,34 @@
+{
+  "name": "{{name}}",
+  "project": "run-v2-deploy-e2e",
+  "location": "{{region}}",
+  "launchStage": "BETA",
+  "client": "DCL",
+  "clientVersion": "v1",
+  "labels": {"label-key": "label-value"},
+  "annotations": {"annotation-key": "annotation-value"},
+  "template": {
+    "taskCount": 3,
+    "template": {
+      "timeout": "1800s",
+      "maxRetries": 5,
+      "containers": [ {
+        "image": "gcr.io/run-intro/screenshot:latest",
+        "args": ["www.google.com"],
+        "env": [ {
+          "name": "FOO",
+          "value": "foobar"
+        }, {
+          "name": "oops",
+          "value": "ayayay"
+        } ],
+        "resources": {
+          "limits": {
+            "cpu": "4",
+            "memory": "2Gi"
+          }
+        }
+      } ]
+    }
+  }
+}

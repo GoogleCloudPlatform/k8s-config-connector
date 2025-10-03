@@ -172,6 +172,7 @@ spec:
             kind: NetworkSecurityClientTLSPolicy
             version: v1beta1
             group: networksecurity.cnrm.cloud.google.com
+          valueTemplate: "//networksecurity.googleapis.com/projects/{{project}}/locations/{{location}}/clientTlsPolicies/{{value}}"
           dclBasedResource: true
         - tfField: iap.oauth2_client_id
           description: OAuth2 Client ID for IAP.
@@ -469,6 +470,13 @@ spec:
                 version: v1beta1
                 group: compute.cnrm.cloud.google.com
               targetField: self_link
+            - key: serviceAttachmentRef
+              gvk:
+                kind: ComputeServiceAttachment
+                version: v1beta1
+                group: compute.cnrm.cloud.google.com
+              targetField: self_link
+              dclBasedResource: true
         - tfField: ip_address
           description: |-
             The IP address that this forwarding rule is serving on behalf of.
@@ -1239,6 +1247,29 @@ spec:
       containers:
         - type: project
           tfField: project
+    - name: google_compute_managed_ssl_certificate
+      kind: ComputeManagedSSLCertificate
+      idTemplate: "projects/{{project}}/global/sslCertificates/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      v1alpha1ToV1beta1: true
+      storageVersion: v1alpha1
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
     - name: google_compute_network
       kind: ComputeNetwork
       metadataMapping:
@@ -1606,7 +1637,7 @@ spec:
         targetField: name
       idTemplate: "projects/{{project}}/regions/{{region}}/networkEndpointGroups/{{name}}"
       idTemplateCanBeUsedToMatchResourceName: false
-      # TODO: (b/233123518) Config Connector CLI can not currently support ComputeRegionNetworkEndpointGroup.
+      # TODO: (b/233123518) Config Connector CLI cannot currently support ComputeRegionNetworkEndpointGroup.
       resourceAvailableInAssetInventory: false
       resourceReferences:
       - key: serviceRef
@@ -2441,12 +2472,12 @@ spec:
           description: |-
             URLs to certificate manager certificate resources that are used to authenticate connections between users and the load balancer.
             Currently, you may specify up to 15 certificates. Certificate manager certificates do not apply when the load balancing scheme is set to INTERNAL_SELF_MANAGED.
-            sslCertificates and certificateManagerCertificates fields can not be defined together.
+            sslCertificates and certificateManagerCertificates fields cannot be defined together.
           gvk:
             kind: CertificateManagerCertificate
             version: v1beta1
             group: certificatemanager.cnrm.cloud.google.com
-          valueTemplate: projects/{{project}}/locations/{{location}}/certificates/{{value}}
+          valueTemplate: projects/{{project}}/locations/global/certificates/{{value}}
         - tfField: ssl_certificates
           description: |-
             A list of ComputeSSLCertificate resources that are used to
@@ -2474,12 +2505,15 @@ spec:
           description: |-
             A reference to the CertificateMap resource uri that identifies a
             certificate map associated with the given target proxy. This field
-            can only be set for global target proxies.
+            can only be set for global target proxies. This field is only supported
+            for EXTERNAL and EXTERNAL_MANAGED load balancing schemes.
+            For INTERNAL_MANAGED, use certificateManagerCertificates instead.
+            sslCertificates and certificateMap fields cannot be defined together.
           gvk:
             kind: CertificateManagerCertificateMap
             version: v1beta1
             group: certificatemanager.cnrm.cloud.google.com
-          valueTemplate: "//certificatemanager.googleapis.com/projects/{{project}}/locations/{{location}}/certificateMaps/{{value}}"
+          valueTemplate: "//certificatemanager.googleapis.com/projects/{{project}}/locations/global/certificateMaps/{{value}}"
         - key: serverTlsPolicyRef
           tfField: server_tls_policy
           description: |-

@@ -19,10 +19,14 @@ import (
 	"fmt"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative"
+)
+
+const (
+	ConfigConnectorComponentName = "configconnector"
+	StableChannel                = "stable"
 )
 
 type PerNamespaceManifestLoader struct {
@@ -39,17 +43,27 @@ func NewPerNamespaceManifestLoader(repo Repository) *PerNamespaceManifestLoader 
 }
 
 func (p *PerNamespaceManifestLoader) ResolveManifest(ctx context.Context, o runtime.Object) (map[string]string, error) {
-	_, ok := o.(*corev1beta1.ConfigConnectorContext)
+	ccc, ok := o.(*corev1beta1.ConfigConnectorContext)
 	if !ok {
 		return nil, fmt.Errorf("expected the resource to be a ConfigConnectorContext, but it was not. Object: %v", o)
 	}
 
-	componentName := k8s.ConfigConnectorComponentName
-	channelName := k8s.StableChannel
-	v, err := ResolveVersion(ctx, p.repo, componentName, channelName)
-	if err != nil {
-		return nil, fmt.Errorf("error resolving the version for %v in %v channel: %w", componentName, channelName, err)
+	componentName := ConfigConnectorComponentName
+	channelName := StableChannel
+
+	version := ccc.Spec.Version
+	if version == "" {
+		v, err := ResolveVersion(ctx, p.repo, componentName, channelName)
+		if err != nil {
+			return nil, fmt.Errorf("error resolving the version for %v in %v channel: %w", componentName, channelName, err)
+		}
+		version = v
 	}
 
-	return p.repo.LoadNamespacedComponents(ctx, componentName, v)
+	files, err := p.repo.LoadNamespacedComponents(ctx, componentName, version)
+	if err != nil {
+		return nil, fmt.Errorf("version %q could not be loaded: %w", version, err)
+	}
+
+	return files, nil
 }

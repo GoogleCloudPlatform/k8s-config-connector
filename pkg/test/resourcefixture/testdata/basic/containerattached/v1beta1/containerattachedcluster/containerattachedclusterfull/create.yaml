@@ -1,0 +1,46 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: containerattached.cnrm.cloud.google.com/v1beta1
+kind: ContainerAttachedCluster
+metadata:
+  name: containerattachedcluster-${uniqueId}
+spec:
+  # The resourceID needs to match the name of the eks cluster to be attached
+  resourceID: kcc-attached-cluster-127
+  annotations:
+    key1: "value1"
+    key2: "value2"
+  authorization:
+    adminUsers: ["user@company.com"]
+  binaryAuthorization:
+    evaluationMode: "PROJECT_SINGLETON_POLICY_ENFORCE"
+  location: us-west1
+  projectRef:
+    external: ${KCC_ATTACHED_CLUSTER_TEST_PROJECT}
+  description: "Test attached cluster"
+  distribution: "eks"
+  oidcConfig:
+    issuerUrl: https://oidc.eks.us-west-2.amazonaws.com/id/A115FE1C770C2452C75219524036FC0F
+  platformVersion: 1.27.0-gke.2
+  fleet:
+    projectRef:
+      name: project-${uniqueId}
+  loggingConfig:
+    componentConfig:
+      enableComponents: ["SYSTEM_COMPONENTS"]
+  monitoringConfig:
+    managedPrometheusConfig:
+      enabled: false
+  deletionPolicy: "DELETE_IGNORE_ERRORS"

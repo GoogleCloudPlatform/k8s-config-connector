@@ -15,9 +15,11 @@
 package filteredinputstream
 
 import (
+	"context"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/asset"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	testservicemappingloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemappingloader"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 )
@@ -31,12 +33,17 @@ func TestServiceAccount(t *testing.T) {
 }
 
 func testAssetType(t *testing.T, assetType string, expectedResult bool) {
+	ctx := context.TODO()
+
 	smLoader := testservicemappingloader.New(t)
 	tfProvider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
 	saKeyAsset := asset.Asset{
 		AssetType: assetType,
 	}
-	result := isAssetSupported(smLoader, tfProvider, &saKeyAsset)
+
+	config := &config.ControllerConfig{}
+
+	result := isAssetSupported(ctx, smLoader, tfProvider, config, &saKeyAsset)
 	if result != expectedResult {
 		t.Fatalf("unexpected result for service '%v' asset: got '%v', want '%v'", assetType, result, expectedResult)
 	}

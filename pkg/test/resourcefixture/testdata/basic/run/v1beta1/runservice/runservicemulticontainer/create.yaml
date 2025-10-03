@@ -18,7 +18,7 @@ metadata:
   name: runservice-${uniqueId}
 spec:
   ingress: "INGRESS_TRAFFIC_ALL"
-  launchStage: "BETA"
+  launchStage: "GA"
   location: "us-central1"
   projectRef:
     external: "projects/${projectId}"

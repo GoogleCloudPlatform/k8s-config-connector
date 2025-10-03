@@ -35,10 +35,30 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+type InstanceAuthorizedExternalNetworks struct {
+	/* CIDR range for one authorized network of the instance. */
+	// +optional
+	CidrRange *string `json:"cidrRange,omitempty"`
+}
+
 type InstanceMachineConfig struct {
 	/* The number of CPU's in the VM instance. */
 	// +optional
 	CpuCount *int64 `json:"cpuCount,omitempty"`
+}
+
+type InstanceNetworkConfig struct {
+	/* A list of external networks authorized to access this instance. This field is only allowed to be set when 'enable_public_ip' is set to true. */
+	// +optional
+	AuthorizedExternalNetworks []InstanceAuthorizedExternalNetworks `json:"authorizedExternalNetworks,omitempty"`
+
+	/* Enabling outbound public ip for the instance. */
+	// +optional
+	EnableOutboundPublicIp *bool `json:"enableOutboundPublicIp,omitempty"`
+
+	/* Enabling public ip for the instance. If a user wishes to disable this, please also clear the list of the authorized external networks set on the same instance. */
+	// +optional
+	EnablePublicIp *bool `json:"enablePublicIp,omitempty"`
 }
 
 type InstanceReadPoolConfig struct {
@@ -101,6 +121,10 @@ type AlloyDBInstanceSpec struct {
 	// +optional
 	MachineConfig *InstanceMachineConfig `json:"machineConfig,omitempty"`
 
+	/* Instance level network configuration. */
+	// +optional
+	NetworkConfig *InstanceNetworkConfig `json:"networkConfig,omitempty"`
+
 	/* Read pool specific config. If the instance type is READ_POOL, this configuration must be provided. */
 	// +optional
 	ReadPoolConfig *InstanceReadPoolConfig `json:"readPoolConfig,omitempty"`
@@ -129,6 +153,16 @@ type AlloyDBInstanceStatus struct {
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* The outbound public IP addresses for the instance. This is available ONLY when
+	networkConfig.enableOutboundPublicIp is set to true. These IP addresses are used
+	for outbound connections. */
+	// +optional
+	OutboundPublicIpAddresses []string `json:"outboundPublicIpAddresses,omitempty"`
+
+	/* The public IP addresses for the Instance. This is available ONLY when networkConfig.enablePublicIp is set to true. This is the connection endpoint for an end-user application. */
+	// +optional
+	PublicIpAddress *string `json:"publicIpAddress,omitempty"`
 
 	/* Set to true if the current state of Instance does not match the user's intended state, and the service is actively updating the resource to reconcile them. This can happen due to user-triggered updates or system actions like failover or maintenance. */
 	// +optional

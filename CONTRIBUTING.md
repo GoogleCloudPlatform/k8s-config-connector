@@ -2,7 +2,7 @@
 
 We'd love to accept your patches and contributions to this project. We use this
 GitHub project as our primary source of truth and the main development
-repository for Config Connetor. The source code in this project is also
+repository for Config Connector. The source code in this project is also
 mirrored to internal Google repository for the purposes of releases.
 
 ## Contributor License Agreement
@@ -35,6 +35,15 @@ You need to set up your own DEV environment before contributing to this project.
 
 We follow the typical contribution flow similar to most OSS projects on GitHub.
 
+### Configure Variables
+
+Export the `GITHUB_USERNAME` environment variable which will be used in subsequent
+steps.
+
+```
+export GITHUB_USERNAME=YOUR_USERNAME
+```
+
 ### Fork and pull
 
 We follow the
@@ -64,13 +73,13 @@ summary, you perform the follow steps to get your fork ready:
     https://docs.github.com/en/get-started/quickstart/fork-a-repo#cloning-your-forked-repository
 
     We recommend you to create the local clone under the path
-    `~/go/src/github.com/YOUR_USERNAME`. This will help to avoid a few known
+    `~/go/src/github.com/$GITHUB_USERNAME`. This will help to avoid a few known
     build frictions related to generated code.
 
     ```shell
-    mkdir -p ~/go/src/github.com/YOUR_USERNAME
-    cd ~/go/src/github.com/YOUR_USERNAME
-    git clone https://github.com/YOUR_USERNAME/k8s-config-connector   # If you use ssh key auth, this will be git@github.com:YOUR_USERNAME/k8s-config-connector.git
+    mkdir -p ~/go/src/github.com/$GITHUB_USERNAME
+    cd ~/go/src/github.com/$GITHUB_USERNAME
+    git clone https://github.com/$GITHUB_USERNAME/k8s-config-connector   # If you use ssh key auth, this will be git@github.com:$GITHUB_USERNAME/k8s-config-connector.git
     ```
 
 ### Set up your environment
@@ -96,7 +105,7 @@ repo to quickly set up a local dev environment.
 1.  Change to environment-setup directory.
 
     ```shell
-    cd ~/go/src/github.com/YOUR_USERNAME/k8s-config-connector/scripts/environment-setup
+    cd ~/go/src/github.com/$GITHUB_USERNAME/k8s-config-connector/scripts/environment-setup
     ```
 
 1.  Set up sudoless Docker.
@@ -105,7 +114,7 @@ repo to quickly set up a local dev environment.
     ./docker-setup.sh
     ```
 
-1.  Exit your current session, then SSH back in to the VM. Then run the
+1.  Exit your current session, then SSH back into the VM. Then run the
     following to ensure you have set up sudoless docker correctly:
 
     ```shell
@@ -115,7 +124,7 @@ repo to quickly set up a local dev environment.
 1.  Install Golang.
 
     ```shell
-    cd ~/go/src/github.com/YOUR_USERNAME/k8s-config-connector/scripts/environment-setup
+    cd ~/go/src/github.com/$GITHUB_USERNAME/k8s-config-connector/scripts/environment-setup
     ./golang-setup.sh
     source ~/.profile
     ```
@@ -144,32 +153,54 @@ repo to quickly set up a local dev environment.
 
 1.  Now that you have everything set up, you can build your own images and then
     deploy the Config Connector CRDs and workloads (including controller
-    manager, webhooks, etc...) into your test GKE cluster. Note deploying 300+
-    CRDs into your test cluster can take **a long time** to complete. If you are
-    only testing/fixing issues for a few CRDs. You can instead just apply the
-    CRDs you are going to work on. As an example, we want to deploy CRD
-    `ArtifactRegistryRepositories` because we want to validate creation of this
-    resource in the next step. So we can do:
+    manager, webhooks, etc...) into your test GKE cluster.
 
-    ```shell
-    cd ~/go/src/github.com/YOUR_USERNAME/k8s-config-connector
-    make manifests
-    kubectl apply -f config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com.yaml
-    ```
+    1.  Note deploying 300+ CRDs into your test cluster can take **a long time**
+        to complete. If you are only testing/fixing issues for a few CRDs. You
+        can instead just apply the CRDs you are going to work on. As an example,
+        we want to deploy CRD `ArtifactRegistryRepositories` because we want to
+        validate creation of this resource in the next step. So we can do:
 
-    And then we build/push the locally built images and deploy the workloads
-    using the command below:
+        ```shell
+        cd ~/go/src/github.com/$GITHUB_USERNAME/k8s-config-connector
+        make manifests
+        kubectl apply -f config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com.yaml
+        ```
 
-    ```shell
-    make deploy-controller
-    ```
+    1.  We need to install the following two CRDs as they are hard dependencies
+        to reconcile all the other supported CRDs:
+        ```shell
+        kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectors.yaml
+        kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectorcontexts.yaml
+        ```
+
+    1.  Then we build/push the locally built images and deploy the workloads
+        using the command below:
+
+        ```shell
+        make deploy-controller
+        ```
+
+    1. If you want to install config connector on a brand new GKE cluster, the following command will install all CRDs, locally build, push and deploy all workloads to a standard GKE cluster.
+
+        ```shell
+        make deploy-kcc-standard
+        make install
+        ```
+    
+        For autopilot clusters, please use the following command.
+
+        ```shell
+        make deploy-kcc-autopilot
+        make install
+        ```
 
 ### Validate your environment
 
 The script `gcp-setup.sh` annotates your `default` namespace in the GKE cluster
 with a
 [project-id](https://cloud.google.com/config-connector/docs/how-to/organizing-resources/project-scoped-resources#annotate_namespace_configuration)
-annotation equals to your default GCP project id in gcloud. This enables Config
+annotation equal to your default GCP project id in gcloud. This enables Config
 Connector to create GCP resources in that default GCP project. We can validate
 by creating an Artifact Registry resource through Config Connector.
 
@@ -198,6 +229,11 @@ by creating an Artifact Registry resource through Config Connector.
     cluster is properly functioning and actuating K8s resources onto GCP.
 
 ### Setup Troubleshooting
+
+#### Looking for error logs
+
+You can look for error logs by checking the controller logs following the [troubleshooting](https://cloud.google.com/config-connector/docs/troubleshooting#check-controller-logs).
+
 #### Pods fail to pull image
 When the cluster is created without providing a service account, a Compute Engine service account is created for the cluster. Users must grant the service account permission to pull images from the project registry.
 
@@ -225,7 +261,6 @@ kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconn
 kubectl apply -f operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectorcontexts.yaml
 make deploy-controller && kubectl delete pods --namespace cnrm-system --all
 ```
-
 
 ### Make a Code Change
 
@@ -268,9 +303,63 @@ kubectl --namespace cnrm-system logs cnrm-controller-manager-0
 If you don't want to deploy the controller manager into your dev cluster, you
 can run it locally on your dev machine with the steps below.
 
-1.  `kubectl edit statefulset cnrm-controller-manager -n cnrm-system` and scale
+1.  Get credentials for the cnrm-controller-manager service account.
+
+    First, you need to create a long-lived API token.
+
+    ```shell
+    kubectl -n cnrm-system apply -f - <<EOF
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: cnrm-controller-manager-secret
+      annotations:
+        kubernetes.io/service-account.name: cnrm-controller-manager
+    type: kubernetes.io/service-account-token
+    EOF
+    ```
+
+    Then, create a kubeconfig using the API token.
+
+    ```shell
+    set -o errexit
+
+    kubectx=$(kubectl config current-context)
+    server=$(kubectl config view -o jsonpath="{.clusters[?(@.name==\"${kubectx}\")].cluster.server}")
+    clusterName='cnrm-dev'
+    namespace='cnrm-system'
+    serviceAccount='cnrm-controller-manager'
+    secretName='cnrm-controller-manager-secret'
+    ca=$(kubectl --namespace="$namespace" get secret/"$secretName" -o=jsonpath='{.data.ca\.crt}')
+    token=$(kubectl --namespace="$namespace" get secret/"$secretName" -o=jsonpath='{.data.token}' | base64 --decode)
+
+    cat << EOF >> ~/.kube/cnrm-dev-controller-manager
+    ---
+    apiVersion: v1
+    kind: Config
+    clusters:
+      - name: ${clusterName}
+        cluster:
+          certificate-authority-data: ${ca}
+          server: ${server}
+    contexts:
+      - name: ${serviceAccount}@${clusterName}
+        context:
+          cluster: ${clusterName}
+          namespace: ${namespace}
+          user: ${serviceAccount}
+    users:
+      - name: ${serviceAccount}
+        user:
+          token: ${token}
+    current-context: ${serviceAccount}@${clusterName}
+    EOF
+    ```
+
+2.  `kubectl edit statefulset cnrm-controller-manager -n cnrm-system` and scale
     down the replica to 0.
-2.  Run `make run` and inspect the output logs.
+
+3.  Run `KUBECONFIG=~/.kube/cnrm-dev-controller-manager make run` and inspect the output logs.
 
 #### Test your changes
 
@@ -282,9 +371,9 @@ If you are working on a existing resource, test yaml should exist under
 to make sure the test can still pass. Example command:
 
 ```bash
-   # Export the environment variables needed in the dynamic tests if you haven't done it.
-   TEST_FOLDER_ID=123456789 go test -v -tags=integration ./pkg/controller/dynamic/ -test.run TestCreateNoChangeUpdateDelete -run-tests cloudschedulerjob -timeout 900s
- ```
+# Export the environment variables needed in the dynamic tests if you haven't done it.
+TEST_FOLDER_ID=123456789 go test -v -tags=integration ./pkg/controller/dynamic/ -test.run TestCreateNoChangeUpdateDelete -run-tests cloudschedulerjob -timeout 900s
+```
 Replace `cloudschedulerjob` with your test target.
 
 ### Submit a Pull Request
@@ -297,5 +386,5 @@ you can first validate the change locally:
 make ready-pr
 ```
 
-You can then commit your change and make a pull request. See more details
-[here](https://docs.github.com/en/get-started/quickstart/contributing-to-projects#making-and-pushing-changes).
+You can then commit your change and make a pull request. See [GitHub's contributing
+to projects: making and pushing changes](https://docs.github.com/en/get-started/quickstart/contributing-to-projects#making-and-pushing-changes).

@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Attempt to deploy the version of KCC that is described in the repository
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+if [[ -z "${VERSION:-}" ]]; then
+  echo "VERSION must be set"
+  exit 1
+fi
+
+kustomize build operator/config/default | \
+  sed -e "s@image: operator:.*@image: gcr.io/gke-release/cnrm/operator:${VERSION}@g" | \
+  kubectl apply --server-side -n configconnector-operator-system -f -
+
+echo "Waiting for configconnector-operator statefulset to become ready"
+kubectl wait -n configconnector-operator-system --for=jsonpath='{.status.readyReplicas}'=1 statefulset/configconnector-operator
+
+# Configure in namespace mode, per instructions at https://cloud.google.com/config-connector/docs/how-to/install-namespaced
+echo "Configuring namespace mode"
+cat <<EOF | kubectl apply --server-side -f -
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnector
+metadata:
+  # the name is restricted to ensure that there is only ConfigConnector resource installed in your cluster
+  name: configconnector.core.cnrm.cloud.google.com
+spec:
+  mode: namespaced
+  stateIntoSpec: Absent
+EOF
+
+# Create namespace
+NS=config-control
+echo "Creating namespace ${NS}"
+kubectl create ns ${NS} --dry-run=client -oyaml | kubectl apply --server-side -f -
+
+echo "Creating ConfigConnectorContext in namespace ${NS} (with fake google service account)"
+cat <<EOF | kubectl apply --server-side -f -
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnectorContext
+metadata:
+  # you can only have one ConfigConnectorContext per namespace
+  name: configconnectorcontext.core.cnrm.cloud.google.com
+  namespace: ${NS}
+spec:
+  googleServiceAccount: "fake@fake.iam.gserviceaccount.com"
+  stateIntoSpec: Absent
+EOF
+
+echo "Waiting for KCC bound to namespace ${NS} to become ready"
+# We don't wait, because prom-to-sd is currently crashing
+#kubectl wait -n cnrm-system --for=condition=Ready -l cnrm.cloud.google.com/scoped-namespace=${NS} pod
+
+echo "Creating StorageBucket in namespace ${NS}"
+cat <<EOF | kubectl apply -f -
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: "kcc-test-${NS}"
+  namespace: "${NS}"
+spec:
+  lifecycleRule:
+    - action:
+        type: Delete
+      condition:
+        age: 7
+        withState: ANY
+  versioning:
+    enabled: true
+  uniformBucketLevelAccess: true
+EOF
+
+# Wait for StorageBucket creation attempt
+# We can't kubectl wait, because we currently expect this to fail because we haven't set up IAM permissions
+echo "Sleeping to allow for attempt at StorageBucket creation"
+sleep 5
+kubectl describe storagebucket -n ${NS}

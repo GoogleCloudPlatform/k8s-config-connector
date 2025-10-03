@@ -23,6 +23,37 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
+type membershipName struct {
+	Project     *projects.ProjectData
+	Location    string
+	Memberships string
+}
+
+func (n *membershipName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/memberships/" + n.Memberships
+}
+
+func (s *MockService) parseMembershipName(name string) (*membershipName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "memberships" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &membershipName{
+			Project:     project,
+			Location:    tokens[3],
+			Memberships: tokens[5],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
 type featureName struct {
 	Project  *projects.ProjectData
 	Location string

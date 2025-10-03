@@ -88,9 +88,6 @@
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
@@ -213,7 +210,9 @@ resourceID: string
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Describes the Cloud KMS encryption key that will be used to protect the destination Bigtable
-cluster. The requirements for this key are: 1) The Cloud Bigtable service account associated with the project that contains
+cluster. The requirements for this key are:
+
+1) The Cloud Bigtable service account associated with the project that contains
 this cluster must be granted the cloudkms.cryptoKeyEncrypterDecrypter role on the CMEK key.
 2) Only regional keys can be used and the region of the CMEK key must match the region of the cluster.
 3) All clusters within an instance must use the same CMEK key access to this encryption key.{% endverbatim %}</p>
@@ -226,7 +225,7 @@ this cluster must be granted the cloudkms.cryptoKeyEncrypterDecrypter role on th
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `selfLink` field of a `KMSCryptoKey` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed KMSCryptoKey. Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -236,7 +235,7 @@ this cluster must be granted the cloudkms.cryptoKeyEncrypterDecrypter role on th
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The `name` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -246,7 +245,7 @@ this cluster must be granted the cloudkms.cryptoKeyEncrypterDecrypter role on th
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The `namespace` of a `KMSCryptoKey` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -296,7 +295,7 @@ this cluster must be granted the cloudkms.cryptoKeyEncrypterDecrypter role on th
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The human-readable display name of the Bigtable instance. Defaults to the instance name.{% endverbatim %}</p>
+            <p>{% verbatim %}Required. The descriptive name for this instance as it appears in UIs. Can be changed at any time, but should be kept globally unique to avoid confusion.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -316,7 +315,7 @@ this cluster must be granted the cloudkms.cryptoKeyEncrypterDecrypter role on th
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}The Instance name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -349,7 +348,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

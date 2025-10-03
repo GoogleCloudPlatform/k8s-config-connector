@@ -1,0 +1,14 @@
+{
+  "name": "{{resource_name}}",
+  "location": "{{region}}",
+  "project": "{{project}}",
+  "workerConfig": {
+    "machineType": "e2-standard-4",
+    "diskSizeGb": 120,
+    "noExternalIP": false
+  },
+  "networkConfig": {
+    "peeredNetwork": "projects/{{project}}/global/networks/{{ref:basic.compute.network.json:name}}",
+    "peeredNetworkIPRange": "/28"
+  }
+}

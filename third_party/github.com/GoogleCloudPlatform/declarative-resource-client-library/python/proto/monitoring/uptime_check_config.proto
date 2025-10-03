@@ -1,0 +1,128 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum MonitoringUptimeCheckConfigResourceGroupResourceTypeEnum {
+  MonitoringUptimeCheckConfigResourceGroupResourceTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringUptimeCheckConfigResourceGroupResourceTypeEnumRESOURCE_TYPE_UNSPECIFIED = 1;
+  MonitoringUptimeCheckConfigResourceGroupResourceTypeEnumINSTANCE = 2;
+  MonitoringUptimeCheckConfigResourceGroupResourceTypeEnumAWS_ELB_LOAD_BALANCER = 3;
+}
+
+enum MonitoringUptimeCheckConfigHttpCheckRequestMethodEnum {
+  MonitoringUptimeCheckConfigHttpCheckRequestMethodEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringUptimeCheckConfigHttpCheckRequestMethodEnumMETHOD_UNSPECIFIED = 1;
+  MonitoringUptimeCheckConfigHttpCheckRequestMethodEnumGET = 2;
+  MonitoringUptimeCheckConfigHttpCheckRequestMethodEnumPOST = 3;
+}
+
+enum MonitoringUptimeCheckConfigHttpCheckContentTypeEnum {
+  MonitoringUptimeCheckConfigHttpCheckContentTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringUptimeCheckConfigHttpCheckContentTypeEnumTYPE_UNSPECIFIED = 1;
+  MonitoringUptimeCheckConfigHttpCheckContentTypeEnumURL_ENCODED = 2;
+}
+
+enum MonitoringUptimeCheckConfigContentMatchersMatcherEnum {
+  MonitoringUptimeCheckConfigContentMatchersMatcherEnumNO_VALUE_DO_NOT_USE = 0;
+  MonitoringUptimeCheckConfigContentMatchersMatcherEnumCONTENT_MATCHER_OPTION_UNSPECIFIED = 1;
+  MonitoringUptimeCheckConfigContentMatchersMatcherEnumCONTAINS_STRING = 2;
+  MonitoringUptimeCheckConfigContentMatchersMatcherEnumNOT_CONTAINS_STRING = 3;
+  MonitoringUptimeCheckConfigContentMatchersMatcherEnumMATCHES_REGEX = 4;
+  MonitoringUptimeCheckConfigContentMatchersMatcherEnumNOT_MATCHES_REGEX = 5;
+}
+
+message MonitoringUptimeCheckConfig {
+  string name = 1;
+  string display_name = 2;
+  MonitoringUptimeCheckConfigMonitoredResource monitored_resource = 3;
+  MonitoringUptimeCheckConfigResourceGroup resource_group = 4;
+  MonitoringUptimeCheckConfigHttpCheck http_check = 5;
+  MonitoringUptimeCheckConfigTcpCheck tcp_check = 6;
+  string period = 7;
+  string timeout = 8;
+  repeated MonitoringUptimeCheckConfigContentMatchers content_matchers = 9;
+  repeated string selected_regions = 10;
+  string project = 11;
+}
+
+message MonitoringUptimeCheckConfigMonitoredResource {
+  string type = 1;
+  map<string, string> filter_labels = 2;
+}
+
+message MonitoringUptimeCheckConfigResourceGroup {
+  string group_id = 1;
+  MonitoringUptimeCheckConfigResourceGroupResourceTypeEnum resource_type = 2;
+}
+
+message MonitoringUptimeCheckConfigHttpCheck {
+  MonitoringUptimeCheckConfigHttpCheckRequestMethodEnum request_method = 1;
+  bool use_ssl = 2;
+  string path = 3;
+  int64 port = 4;
+  MonitoringUptimeCheckConfigHttpCheckAuthInfo auth_info = 5;
+  bool mask_headers = 6;
+  map<string, string> headers = 7;
+  MonitoringUptimeCheckConfigHttpCheckContentTypeEnum content_type = 8;
+  bool validate_ssl = 9;
+  string body = 10;
+}
+
+message MonitoringUptimeCheckConfigHttpCheckAuthInfo {
+  string username = 1;
+  string password = 2;
+}
+
+message MonitoringUptimeCheckConfigTcpCheck {
+  int64 port = 1;
+}
+
+message MonitoringUptimeCheckConfigContentMatchers {
+  string content = 1;
+  MonitoringUptimeCheckConfigContentMatchersMatcherEnum matcher = 2;
+}
+
+message ApplyMonitoringUptimeCheckConfigRequest {
+  MonitoringUptimeCheckConfig resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteMonitoringUptimeCheckConfigRequest {
+  string service_account_file = 1;
+  MonitoringUptimeCheckConfig resource = 2;
+}
+
+message ListMonitoringUptimeCheckConfigRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListMonitoringUptimeCheckConfigResponse {
+  repeated MonitoringUptimeCheckConfig items = 1;
+}
+
+service MonitoringUptimeCheckConfigService {
+  rpc ApplyMonitoringUptimeCheckConfig(ApplyMonitoringUptimeCheckConfigRequest) returns (MonitoringUptimeCheckConfig);
+  rpc DeleteMonitoringUptimeCheckConfig(DeleteMonitoringUptimeCheckConfigRequest) returns (google.protobuf.Empty);
+  rpc ListMonitoringUptimeCheckConfig(ListMonitoringUptimeCheckConfigRequest) returns (ListMonitoringUptimeCheckConfigResponse);
+}

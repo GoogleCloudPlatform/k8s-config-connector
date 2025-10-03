@@ -1,0 +1,22 @@
+{
+  "project": "{{project}}",
+  "admissionWhitelistPatterns": [
+    {
+      "namePattern": "gcr.io/samplex*"
+    }
+  ],
+  "clusterAdmissionRules": {
+    "us-west1-a.test-cluster": {
+      "evaluationMode": "REQUIRE_ATTESTATION",
+      "requireAttestationsBy": ["projects/{{ref:basic.attestor.json:project}}/attestors/{{ref:basic.attestor.json:name}}"],
+      "enforcementMode": "ENFORCED_BLOCK_AND_AUDIT_LOG"
+    }
+  },
+  "defaultAdmissionRule": {
+    "evaluationMode": "ALWAYS_ALLOW",
+    "requireAttestationsBy": [],
+    "enforcementMode": "DRYRUN_AUDIT_LOG_ONLY"
+  },
+  "description": "A sample binaryauthorization policy with a cluster admission rule",
+  "globalPolicyEvaluationMode": "ENABLE"
+}

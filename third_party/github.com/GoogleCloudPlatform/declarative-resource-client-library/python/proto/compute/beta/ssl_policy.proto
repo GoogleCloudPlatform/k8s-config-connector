@@ -1,0 +1,84 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeBetaSslPolicyProfileEnum {
+  ComputeBetaSslPolicyProfileEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaSslPolicyProfileEnumCOMPATIBLE = 1;
+  ComputeBetaSslPolicyProfileEnumMODERN = 2;
+  ComputeBetaSslPolicyProfileEnumRESTRICTED = 3;
+  ComputeBetaSslPolicyProfileEnumCUSTOM = 4;
+}
+
+enum ComputeBetaSslPolicyMinTlsVersionEnum {
+  ComputeBetaSslPolicyMinTlsVersionEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaSslPolicyMinTlsVersionEnumTLS_1_0 = 1;
+  ComputeBetaSslPolicyMinTlsVersionEnumTLS_1_1 = 2;
+  ComputeBetaSslPolicyMinTlsVersionEnumTLS_1_2 = 3;
+}
+
+message ComputeBetaSslPolicy {
+  int64 id = 1;
+  string self_link = 2;
+  string name = 3;
+  string description = 4;
+  ComputeBetaSslPolicyProfileEnum profile = 5;
+  ComputeBetaSslPolicyMinTlsVersionEnum min_tls_version = 6;
+  repeated string enabled_feature = 7;
+  repeated string custom_feature = 8;
+  repeated ComputeBetaSslPolicyWarning warning = 9;
+  string project = 10;
+}
+
+message ComputeBetaSslPolicyWarning {
+  string code = 1;
+  string message = 2;
+  repeated ComputeBetaSslPolicyWarningData data = 3;
+}
+
+message ComputeBetaSslPolicyWarningData {
+  string key = 1;
+  string value = 2;
+}
+
+message ApplyComputeBetaSslPolicyRequest {
+  ComputeBetaSslPolicy resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaSslPolicyRequest {
+  string service_account_file = 1;
+  ComputeBetaSslPolicy resource = 2;
+}
+
+message ListComputeBetaSslPolicyRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListComputeBetaSslPolicyResponse {
+  repeated ComputeBetaSslPolicy items = 1;
+}
+
+service ComputeBetaSslPolicyService {
+  rpc ApplyComputeBetaSslPolicy(ApplyComputeBetaSslPolicyRequest) returns (ComputeBetaSslPolicy);
+  rpc DeleteComputeBetaSslPolicy(DeleteComputeBetaSslPolicyRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaSslPolicy(ListComputeBetaSslPolicyRequest) returns (ListComputeBetaSslPolicyResponse);
+}

@@ -1,0 +1,36 @@
+{
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "name": "{{name}}",
+  "labels": {
+    "foo1": "bar2"
+  },
+  "destination": {
+    "cloudRunService": {
+      "service": "projects/{{project}}/locations/{{region}}/services/{{ref:secondservice.run1.service.json:name}}",
+      "region": "{{region}}",
+      "path": "/route/subroute"
+    }
+  },
+  "serviceAccount": "{{service_account}}",
+  "matchingCriteria": [
+    {
+      "attribute": "type",
+      "value": "google.cloud.audit.log.v1.written"
+    },
+    {
+      "attribute": "serviceName",
+      "value": "storage.googleapis.com"
+    },
+    {
+      "attribute": "methodName",
+      "value": "storage.objects.read"
+    },
+    {
+      "attribute": "resourceName",
+      "value": "/projects/_/buckets/bucket-2/objects/*",
+      "operator": ""
+    }
+  ],
+  "eventDataContentType": "application/json"
+}

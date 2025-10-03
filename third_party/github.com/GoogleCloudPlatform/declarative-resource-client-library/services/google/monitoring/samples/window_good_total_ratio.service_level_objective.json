@@ -1,0 +1,29 @@
+{
+  "name": "{{name}}",
+  "project": "{{project}}",
+  "goal": 0.9,
+  "displayName": "{{displayname}}",
+  "calendarPeriod": "DAY",
+
+  "userLabels":{
+    "test1":"value1"
+  },
+  "service":"{{ref:basic.service.json:name}}",
+  "serviceLevelIndicator":{
+    "windowsBased":{
+      "windowPeriod": "60s",
+      "goodTotalRatioThreshold":{
+        "threshold": 0.9,
+        "performance":{
+          "distributionCut": {
+            "distributionFilter": "project = {{project}}\n metric.type=\"serviceruntime.googleapis.com/api/request_latencies\" resource.type=\"api\"  ",
+            "range": {
+              "min": 50,
+              "max": 100
+            }
+          }
+        }
+      }
+    }
+  }
+}

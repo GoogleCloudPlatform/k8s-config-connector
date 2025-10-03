@@ -1,0 +1,303 @@
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/groups?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "displayName": "sample-group",
+  "filter": "resource.metadata.region=europe-west2",
+  "isCluster": true
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "sample-group",
+  "filter": "resource.metadata.region=europe-west2",
+  "isCluster": true,
+  "name": "projects/${projectId}/groups/${groupID}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "sample-group",
+  "filter": "resource.metadata.region=europe-west2",
+  "isCluster": true,
+  "name": "projects/${projectId}/groups/${groupID}"
+}
+
+---
+
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "displayName": "tcp-uptime-check",
+  "period": "60s",
+  "resourceGroup": {
+    "groupId": "${groupID}",
+    "resourceType": "INSTANCE"
+  },
+  "tcpCheck": {
+    "port": 80
+  },
+  "timeout": "30s"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "checkerType": "STATIC_IP_CHECKERS",
+  "displayName": "tcp-uptime-check",
+  "name": "projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}",
+  "period": "60s",
+  "resourceGroup": {
+    "groupId": "${groupID}",
+    "resourceType": "INSTANCE"
+  },
+  "tcpCheck": {
+    "port": 80
+  },
+  "timeout": "30s"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "checkerType": "STATIC_IP_CHECKERS",
+  "displayName": "tcp-uptime-check",
+  "name": "projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}",
+  "period": "60s",
+  "resourceGroup": {
+    "groupId": "${groupID}",
+    "resourceType": "INSTANCE"
+  },
+  "tcpCheck": {
+    "port": 80
+  },
+  "timeout": "30s"
+}
+
+---
+
+PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json&updateMask=displayName%2Ctimeout
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "displayName": "updated-tcp-uptime-check",
+  "name": "projects/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}",
+  "period": "60s",
+  "tcpCheck": {
+    "port": 80
+  },
+  "timeout": "45s"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "checkerType": "STATIC_IP_CHECKERS",
+  "displayName": "updated-tcp-uptime-check",
+  "name": "projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}",
+  "period": "60s",
+  "resourceGroup": {
+    "groupId": "${groupID}",
+    "resourceType": "INSTANCE"
+  },
+  "tcpCheck": {
+    "port": 80
+  },
+  "timeout": "45s"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "checkerType": "STATIC_IP_CHECKERS",
+  "displayName": "updated-tcp-uptime-check",
+  "name": "projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}",
+  "period": "60s",
+  "resourceGroup": {
+    "groupId": "${groupID}",
+    "resourceType": "INSTANCE"
+  },
+  "tcpCheck": {
+    "port": 80
+  },
+  "timeout": "45s"
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Config not found for check ${uptimeCheckConfigID} in project ${projectId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "sample-group",
+  "filter": "resource.metadata.region=europe-west2",
+  "isCluster": true,
+  "name": "projects/${projectId}/groups/${groupID}"
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/groups/${groupID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Could not find group definition for '${groupID}'.",
+    "status": "NOT_FOUND"
+  }
+}

@@ -64,7 +64,7 @@ spec:
       - compute-ro
       - storage-ro
   guestAccelerator:
-    - type: nvidia-tesla-k80
+    - type: nvidia-tesla-t4
       count: 1
   minCpuPlatform: "Intel Skylake"
   shieldedInstanceConfig:

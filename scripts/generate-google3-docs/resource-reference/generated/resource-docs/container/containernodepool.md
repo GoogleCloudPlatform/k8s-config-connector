@@ -70,9 +70,6 @@
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
@@ -1491,7 +1488,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Immutable. List of Kubernetes taints to be applied to each node.{% endverbatim %}</p>
+            <p>{% verbatim %}List of Kubernetes taints to be applied to each node.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1511,7 +1508,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Effect for taint.{% endverbatim %}</p>
+            <p>{% verbatim %}Effect for taint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1521,7 +1518,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Key for taint.{% endverbatim %}</p>
+            <p>{% verbatim %}Key for taint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1531,7 +1528,7 @@ for running workloads on sole tenant nodes.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Value for taint.{% endverbatim %}</p>
+            <p>{% verbatim %}Value for taint.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1967,7 +1964,7 @@ spec:
       - "https://www.googleapis.com/auth/logging.write"
       - "https://www.googleapis.com/auth/monitoring"
     guestAccelerator:
-      - type: "nvidia-tesla-k80"
+      - type: "nvidia-tesla-t4"
         count: 1
     metadata:
       disable-legacy-endpoints: "true"

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+set -x
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+cd ${REPO_ROOT}
+
+git switch --force-create codebot-update-gcp-dependencies
+
+dev/tasks/update-gcp-dependencies
+
+if $(git diff --quiet); then
+  echo "No changes"
+else
+  git add .
+  git commit -m "codebot: update GCP dependencies"
+fi

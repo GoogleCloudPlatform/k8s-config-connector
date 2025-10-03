@@ -21,9 +21,10 @@ spec:
   description: example interconnect attachment description
   region: us-west2
   # Do NOT change the interconnect URL below. This is a specially provisioned test interconnect
-  # for the purpose of KCC integration testing.
-  interconnect: https://www.googleapis.com/compute/v1/projects/${INTERCONNECT_TEST_PROJECT}/global/interconnects/kcc-test-interconnect
+  # for the purpose of Config Connector integration testing.
+  interconnect: https://www.googleapis.com/compute/v1/projects/${INTERCONNECT_TEST_PROJECT}/global/interconnects/${TEST_INTERCONNECT}
   bandwidth: BPS_50M
   adminEnabled: false
+  vlanTag8021q: 1000
   routerRef:
     name: computerouter-${uniqueId}

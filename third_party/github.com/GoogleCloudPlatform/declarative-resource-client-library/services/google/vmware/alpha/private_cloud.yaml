@@ -1,0 +1,316 @@
+# Copyright 2023 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: Vmware/PrivateCloud
+  description: The Vmware PrivateCloud resource
+  x-dcl-struct-name: PrivateCloud
+  x-dcl-has-iam: true
+paths:
+  get:
+    description: The function used to get information about a PrivateCloud
+    parameters:
+    - name: privateCloud
+      required: true
+      description: A full instance of a PrivateCloud
+  apply:
+    description: The function used to apply information about a PrivateCloud
+    parameters:
+    - name: privateCloud
+      required: true
+      description: A full instance of a PrivateCloud
+  delete:
+    description: The function used to delete a PrivateCloud
+    parameters:
+    - name: privateCloud
+      required: true
+      description: A full instance of a PrivateCloud
+  deleteAll:
+    description: The function used to delete all PrivateCloud
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many PrivateCloud
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    PrivateCloud:
+      title: PrivateCloud
+      x-dcl-id: projects/{{project}}/locations/{{location}}/privateClouds/{{name}}
+      x-dcl-uses-state-hint: true
+      x-dcl-parent-container: project
+      x-dcl-has-create: true
+      x-dcl-has-iam: true
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 9600
+      x-dcl-delete-timeout: 7200
+      type: object
+      required:
+      - name
+      - networkConfig
+      - managementCluster
+      - project
+      - location
+      properties:
+        createTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: CreateTime
+          readOnly: true
+          description: Output only. Creation time of this resource.
+          x-kubernetes-immutable: true
+        deleteTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: DeleteTime
+          readOnly: true
+          description: Output only. Time when the resource was scheduled for deletion.
+          x-kubernetes-immutable: true
+        description:
+          type: string
+          x-dcl-go-name: Description
+          description: User-provided description for this private cloud.
+        expireTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: ExpireTime
+          readOnly: true
+          description: Output only. Time when the resource will be irreversibly deleted.
+          x-kubernetes-immutable: true
+        hcx:
+          type: object
+          x-dcl-go-name: Hcx
+          x-dcl-go-type: PrivateCloudHcx
+          readOnly: true
+          description: Output only. HCX appliance.
+          properties:
+            fqdn:
+              type: string
+              x-dcl-go-name: Fqdn
+              description: Fully qualified domain name of the appliance.
+            internalIP:
+              type: string
+              x-dcl-go-name: InternalIP
+              description: Internal IP address of the appliance.
+            state:
+              type: string
+              x-dcl-go-name: State
+              x-dcl-go-type: PrivateCloudHcxStateEnum
+              readOnly: true
+              description: 'Output only. The state of the appliance. Possible values:
+                STATE_UNSPECIFIED, ACTIVE, CREATING'
+              x-kubernetes-immutable: true
+              enum:
+              - STATE_UNSPECIFIED
+              - ACTIVE
+              - CREATING
+            version:
+              type: string
+              x-dcl-go-name: Version
+              description: Version of the appliance.
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Locations/Location
+            field: name
+            parent: true
+        managementCluster:
+          type: object
+          x-dcl-go-name: ManagementCluster
+          x-dcl-go-type: PrivateCloudManagementCluster
+          description: 'Required. Input only. The management cluster for this private
+            cloud. This field is required during creation of the private cloud to
+            provide details for the default cluster. The following fields can''t be
+            changed after private cloud creation: `ManagementCluster.clusterId`, `ManagementCluster.nodeTypeId`.'
+          x-dcl-mutable-unreadable: true
+          required:
+          - clusterId
+          properties:
+            clusterId:
+              type: string
+              x-dcl-go-name: ClusterId
+              description: 'Required. The user-provided identifier of the new `Cluster`.
+                The identifier must meet the following requirements: * Only contains
+                1-63 alphanumeric characters and hyphens * Begins with an alphabetical
+                character * Ends with a non-hyphen character * Not formatted as a
+                UUID * Complies with [RFC 1034](https://datatracker.ietf.org/doc/html/rfc1034)
+                (section 3.5)'
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: 'Output only. The resource name of this private cloud. Resource
+            names are schemeless URIs that follow the conventions in https://cloud.google.com/apis/design/resource_names.
+            For example: `projects/my-project/locations/us-west1-a/privateClouds/my-cloud`'
+          x-kubernetes-immutable: true
+        networkConfig:
+          type: object
+          x-dcl-go-name: NetworkConfig
+          x-dcl-go-type: PrivateCloudNetworkConfig
+          description: Required. Network configuration of the private cloud.
+          required:
+          - managementCidr
+          properties:
+            managementCidr:
+              type: string
+              x-dcl-go-name: ManagementCidr
+              description: Required. Management CIDR used by VMware management appliances.
+            managementIPAddressLayoutVersion:
+              type: integer
+              format: int64
+              x-dcl-go-name: ManagementIPAddressLayoutVersion
+              readOnly: true
+              description: 'Output only. The IP address layout version of the management
+                IP address range. Possible versions include: * `managementIpAddressLayoutVersion=1`:
+                Indicates the legacy IP address layout used by some existing private
+                clouds. This is no longer supported for new private clouds as it does
+                not support all features. * `managementIpAddressLayoutVersion=2`:
+                Indicates the latest IP address layout used by all newly created private
+                clouds. This version supports all current features.'
+            vmwareEngineNetwork:
+              type: string
+              x-dcl-go-name: VmwareEngineNetwork
+              description: 'Optional. The relative resource name of the VMware Engine
+                network attached to the private cloud. Specify the name in the following
+                form: `projects/{project}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}`
+                where `{project}` can either be a project number or a project ID.'
+              x-dcl-references:
+              - resource: Vmwareengine/VmwareEngineNetwork
+                field: name
+            vmwareEngineNetworkCanonical:
+              type: string
+              x-dcl-go-name: VmwareEngineNetworkCanonical
+              readOnly: true
+              description: 'Output only. The canonical name of the VMware Engine network
+                in the form: `projects/{project_number}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}`'
+              x-dcl-references:
+              - resource: Vmwareengine/VmwareEngineNetwork
+                field: name
+        nsx:
+          type: object
+          x-dcl-go-name: Nsx
+          x-dcl-go-type: PrivateCloudNsx
+          readOnly: true
+          description: Output only. NSX appliance.
+          properties:
+            fqdn:
+              type: string
+              x-dcl-go-name: Fqdn
+              description: Fully qualified domain name of the appliance.
+            internalIP:
+              type: string
+              x-dcl-go-name: InternalIP
+              description: Internal IP address of the appliance.
+            state:
+              type: string
+              x-dcl-go-name: State
+              x-dcl-go-type: PrivateCloudNsxStateEnum
+              readOnly: true
+              description: 'Output only. The state of the appliance. Possible values:
+                STATE_UNSPECIFIED, ACTIVE, CREATING'
+              x-kubernetes-immutable: true
+              enum:
+              - STATE_UNSPECIFIED
+              - ACTIVE
+              - CREATING
+            version:
+              type: string
+              x-dcl-go-name: Version
+              description: Version of the appliance.
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        state:
+          type: string
+          x-dcl-go-name: State
+          x-dcl-go-type: PrivateCloudStateEnum
+          readOnly: true
+          description: 'Output only. State of the resource. New values may be added
+            to this enum when appropriate. Possible values: STATE_UNSPECIFIED, ACTIVE,
+            CREATING, UPDATING, FAILED, DELETED, PURGING'
+          x-kubernetes-immutable: true
+          enum:
+          - STATE_UNSPECIFIED
+          - ACTIVE
+          - CREATING
+          - UPDATING
+          - FAILED
+          - DELETED
+          - PURGING
+        uid:
+          type: string
+          x-dcl-go-name: Uid
+          readOnly: true
+          description: Output only. System-generated unique identifier for the resource.
+          x-kubernetes-immutable: true
+        updateTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: UpdateTime
+          readOnly: true
+          description: Output only. Last update time of this resource.
+          x-kubernetes-immutable: true
+        vcenter:
+          type: object
+          x-dcl-go-name: Vcenter
+          x-dcl-go-type: PrivateCloudVcenter
+          readOnly: true
+          description: Output only. Vcenter appliance.
+          properties:
+            fqdn:
+              type: string
+              x-dcl-go-name: Fqdn
+              description: Fully qualified domain name of the appliance.
+            internalIP:
+              type: string
+              x-dcl-go-name: InternalIP
+              description: Internal IP address of the appliance.
+            state:
+              type: string
+              x-dcl-go-name: State
+              x-dcl-go-type: PrivateCloudVcenterStateEnum
+              readOnly: true
+              description: 'Output only. The state of the appliance. Possible values:
+                STATE_UNSPECIFIED, ACTIVE, CREATING'
+              x-kubernetes-immutable: true
+              enum:
+              - STATE_UNSPECIFIED
+              - ACTIVE
+              - CREATING
+            version:
+              type: string
+              x-dcl-go-name: Version
+              description: Version of the appliance.

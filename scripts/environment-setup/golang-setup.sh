@@ -16,16 +16,15 @@
 # Script to set up golang on cloudtop
 set -o errexit
 
-# This will pull the current go version used in the repository
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd ${REPO_ROOT}
-GO_VERSION=`cat go.mod | grep -P -o "(?<=^go ).*"`
+# Automatically updated by dev/codebots/update-golang-version
+GO_VERSION="1.24.6"
+
 sudo apt-get install wget
 wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz
 sudo tar -xvzf go${GO_VERSION}.linux-amd64.tar.gz -C /usr/local
 rm go${GO_VERSION}.linux-amd64.tar.gz
 
-echo PATH=/usr/local/go/bin:$PATH >> ~/.profile
+echo 'PATH=/usr/local/go/bin:$PATH' >> ~/.profile
 source ~/.profile
 go version
 

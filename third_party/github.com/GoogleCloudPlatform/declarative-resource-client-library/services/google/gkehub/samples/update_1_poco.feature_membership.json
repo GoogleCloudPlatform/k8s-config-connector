@@ -1,0 +1,27 @@
+{
+  "project": "{{ref:gkehub.serviceusage.service.json:project}}",
+  "location": "global",
+  "feature": "projects/{{ref:poco.feature.json:project}}/locations/{{ref:poco.feature.json:location}}/features/{{ref:poco.feature.json:name}}",
+  "membership": "{{ref:first.membership.json:name}}",
+  "membershipLocation": "global",
+  "policycontroller": {
+    "version": "1.16.2",
+    "policyControllerHubConfig": {
+      "installSpec": "INSTALL_SPEC_ENABLED",
+      "exemptableNamespaces": ["sample-namespace"],
+      "referentialRulesEnabled": true,
+      "logDeniesEnabled": true,
+      "mutationEnabled": true,
+      "monitoring": {
+        "backends": ["PROMETHEUS","CLOUD_MONITORING"]
+      },
+      "auditIntervalSeconds": 30,
+      "constraintViolationLimit": 30,
+      "policyContent": {
+        "templateLibrary": {
+          "installation": "ALL"
+        }
+      }
+    }
+  }
+}

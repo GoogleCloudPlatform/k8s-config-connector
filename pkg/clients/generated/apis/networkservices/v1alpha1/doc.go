@@ -35,7 +35,4 @@
 // +k8s:defaulter-gen=TypeMeta
 // +groupName=networkservices.cnrm.cloud.google.com
 
-// Generate deepcopy object for networkservices/v1alpha1 API group
-//
-//go:generate go run ../../../../../../scripts/deepcopy-gen/main.go -O zz_generated.deepcopy -i . -h ../../../../../../hack/boilerplate_client_alpha.go.txt
 package v1alpha1

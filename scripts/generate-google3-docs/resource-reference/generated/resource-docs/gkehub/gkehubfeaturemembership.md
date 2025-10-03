@@ -62,20 +62,6 @@ Note: GKE Hub REST documentation is under construction.
 ## Custom Resource Definition Properties
 
 
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
-</tbody>
-</table>
-
 
 ### Spec
 #### Schema
@@ -111,10 +97,12 @@ configmanagement:
       syncWaitSecs: string
     preventDrift: boolean
     sourceFormat: string
+    stopSyncing: boolean
   hierarchyController:
     enableHierarchicalResourceQuota: boolean
     enablePodTreeLabels: boolean
     enabled: boolean
+  management: string
   policyController:
     auditIntervalSeconds: string
     enabled: boolean
@@ -145,6 +133,52 @@ policycontroller:
   policyControllerHubConfig:
     auditIntervalSeconds: integer
     constraintViolationLimit: integer
+    deploymentConfigs:
+      admission:
+        containerResources:
+          limits:
+            cpu: string
+            memory: string
+          requests:
+            cpu: string
+            memory: string
+        podAffinity: string
+        podTolerations:
+        - effect: string
+          key: string
+          operator: string
+          value: string
+        replicaCount: integer
+      audit:
+        containerResources:
+          limits:
+            cpu: string
+            memory: string
+          requests:
+            cpu: string
+            memory: string
+        podAffinity: string
+        podTolerations:
+        - effect: string
+          key: string
+          operator: string
+          value: string
+        replicaCount: integer
+      mutation:
+        containerResources:
+          limits:
+            cpu: string
+            memory: string
+          requests:
+            cpu: string
+            memory: string
+        podAffinity: string
+        podTolerations:
+        - effect: string
+          key: string
+          operator: string
+          value: string
+        replicaCount: integer
     exemptableNamespaces:
     - string
     installSpec: string
@@ -238,9 +272,7 @@ projectRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The GCP Service Account Email used for auth when secretType is gcpServiceAccount.
-
-Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -350,9 +382,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The Email of the Google Cloud Service Account (GSA) used for exporting Config Sync metrics to Cloud Monitoring. The GSA should have the Monitoring Metric Writer(roles/monitoring.metricWriter) IAM role. The Kubernetes ServiceAccount `default` in the namespace `config-management-monitoring` should be bound to the GSA.
-
-Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The Email of the Google Cloud Service Account (GSA) used for exporting Config Sync metrics to Cloud Monitoring. The GSA should have the Monitoring Metric Writer(roles/monitoring.metricWriter) IAM role. The Kubernetes ServiceAccount `default` in the namespace `config-management-monitoring` should be bound to the GSA. Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -402,9 +432,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The GCP Service Account Email used for auth when secret_type is gcpserviceaccount. 
-
-Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The `email` field of an `IAMServiceAccount` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -489,12 +517,22 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
     </tr>
     <tr>
         <td>
+            <p><code>configmanagement.configSync.stopSyncing</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Set to true to stop syncing configurations for a single cluster. This field is only available on clusters using Config Sync auto-upgrades or on Config Sync version 1.20.0 or later. Defaults: false.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>configmanagement.hierarchyController</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Hierarchy Controller configuration for the cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}Hierarchy Controller is no longer available. Use https://github.com/kubernetes-sigs/hierarchical-namespaces instead.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -529,12 +567,22 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
     </tr>
     <tr>
         <td>
+            <p><code>configmanagement.management</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Whether to automatically manage the configmanagement Feature. There are 3 accepted values. MANAGEMENT_UNSPECIFIED means that the mamangement mode is unspecified. MANAGEMENT_AUTOMATIC means that Google manages the Feature for the cluster. MANAGEMENT_MANUAL means that users should manage the Feature for the cluster.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>configmanagement.policyController</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Policy Controller configuration for the cluster.{% endverbatim %}</p>
+            <p>{% verbatim %}**DEPRECATED** Configuring Policy Controller through the configmanagement feature is no longer recommended. Use the policycontroller feature instead.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -604,7 +652,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %} Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export.{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -674,9 +722,7 @@ Allowed value: The `email` field of an `IAMServiceAccount` resource.{% endverbat
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the feature
-
-Allowed value: The Google Cloud resource name of a `GKEHubFeature` resource (format: `projects/{{project}}/locations/{{location}}/features/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the feature. Allowed value: The Google Cloud resource name of a `GKEHubFeature` resource (format: `projects/{{project}}/locations/{{location}}/features/{{name}}`).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -736,9 +782,7 @@ Allowed value: The Google Cloud resource name of a `GKEHubFeature` resource (for
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The name of the membership
-
-Allowed value: The Google Cloud resource name of a `GKEHubMembership` resource (format: `projects/{{project}}/locations/{{location}}/memberships/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}The name of the membership. Allowed value: The Google Cloud resource name of a `GKEHubMembership` resource (format: `projects/{{project}}/locations/{{location}}/memberships/{{name}}`).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -804,7 +848,7 @@ Allowed value: The Google Cloud resource name of a `GKEHubMembership` resource (
     <tr>
         <td>
             <p><code>policycontroller.policyControllerHubConfig</code></p>
-            <p><i>Required*</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
@@ -829,6 +873,496 @@ Allowed value: The Google Cloud resource name of a `GKEHubMembership` resource (
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}The maximum number of audit violations to be stored in a constraint. If not set, the internal default of 20 will be used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Map of deployment configs to deployments (“admission”, “audit”, “mutation”).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Container resource requirements.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.limits</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Limits describes the maximum amount of compute resources allowed for use by the running container.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.limits.cpu</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}CPU requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.limits.memory</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Memory requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.requests</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Requests describes the amount of compute resources reserved for the container by the kube-scheduler.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.requests.cpu</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}CPU requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.containerResources.requests.memory</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Memory requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.podAffinity</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Pod affinity configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.podTolerations</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Pod tolerations of node taints.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.podTolerations[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.podTolerations[].effect</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint effect.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.podTolerations[].key</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint key (not necessarily unique).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.podTolerations[].operator</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint operator.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.podTolerations[].value</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint value.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.admission.replicaCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Pod replica count.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Container resource requirements.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.limits</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Limits describes the maximum amount of compute resources allowed for use by the running container.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.limits.cpu</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}CPU requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.limits.memory</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Memory requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.requests</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Requests describes the amount of compute resources reserved for the container by the kube-scheduler.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.requests.cpu</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}CPU requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.containerResources.requests.memory</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Memory requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.podAffinity</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Pod affinity configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.podTolerations</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Pod tolerations of node taints.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.podTolerations[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.podTolerations[].effect</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint effect.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.podTolerations[].key</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint key (not necessarily unique).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.podTolerations[].operator</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint operator.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.podTolerations[].value</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint value.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.audit.replicaCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Pod replica count.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.containerResources</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Container resource requirements.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.containerResources.limits</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Limits describes the maximum amount of compute resources allowed for use by the running container.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.containerResources.limits.cpu</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}CPU requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.containerResources.limits.memory</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Memory requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.containerResources.requests</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Requests describes the amount of compute resources reserved for the container by the kube-scheduler.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.containerResources.requests.cpu</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}CPU requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.containerResources.requests.memory</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Memory requirement expressed in Kubernetes resource units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.podAffinity</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Pod affinity configuration.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.podTolerations</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Pod tolerations of node taints.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.podTolerations[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.podTolerations[].effect</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint effect.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.podTolerations[].key</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint key (not necessarily unique).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.podTolerations[].operator</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint operator.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.podTolerations[].value</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Matches a taint value.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>policycontroller.policyControllerHubConfig.deploymentConfigs.mutation.replicaCount</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Pod replica count.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -888,7 +1422,7 @@ Allowed value: The Google Cloud resource name of a `GKEHubMembership` resource (
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>{% verbatim %} Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export.{% endverbatim %}</p>
+            <p>{% verbatim %}Specifies the list of backends Policy Controller will export to. Specifying an empty value `[]` disables metrics export.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -978,9 +1512,7 @@ Allowed value: The Google Cloud resource name of a `GKEHubMembership` resource (
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The project of the feature
-
-Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).{% endverbatim %}</p>
+            <p>{% verbatim %}The project of the feature. Allowed value: The Google Cloud resource name of a `Project` resource (format: `projects/{{name}}`).{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1007,8 +1539,6 @@ Allowed value: The Google Cloud resource name of a `Project` resource (format: `
 </table>
 
 
-<p>* Field is required when parent field is specified</p>
-
 
 ### Status
 #### Schema
@@ -1033,7 +1563,7 @@ observedGeneration: integer
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the GKEHubFeatureMembership's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1114,6 +1644,8 @@ spec:
   projectRef:
     name: gkehubfeaturemembership-dep-acm
   location: global
+  # membershipLocation needs to be explicitly set here because the dependent membership is regional.
+  membershipLocation: us-central1
   membershipRef:
     name: gkehubfeaturemembership-dep-acm
   featureRef:
@@ -1122,24 +1654,10 @@ spec:
     configSync:
       sourceFormat: unstructured
       git:
-        syncRepo: "https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit"
-        syncBranch: "master"
-        policyDir: "config-connector"
-        syncWaitSecs: "20"
-        syncRev: "HEAD"
+        syncRepo: "https://github.com/GoogleCloudPlatform/anthos-config-management-samples"
+        syncBranch: "main"
+        policyDir: "config-sync-quickstart/multirepo/root"
         secretType: "none"
-    policyController:
-      enabled: true
-      exemptableNamespaces:
-        - "test-namespace"
-      referentialRulesEnabled: true
-      logDeniesEnabled: true
-      templateLibraryInstalled: true
-      auditIntervalSeconds: "20"
-    hierarchyController:
-      enabled: true
-      enablePodTreeLabels: true
-      enableHierarchicalResourceQuota: true
 ---
 apiVersion: container.cnrm.cloud.google.com/v1beta1
 kind: ContainerCluster
@@ -1158,6 +1676,8 @@ apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
 kind: GKEHubFeature
 metadata:
   name: gkehubfeaturemembership-dep-acm
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
 spec:
   projectRef:
     name: gkehubfeaturemembership-dep-acm
@@ -1173,7 +1693,7 @@ metadata:
     cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-acm
   name: gkehubfeaturemembership-dep-acm
 spec:
-  location: global
+  location: us-central1
   authority:
     # Issuer must contain a link to a valid JWT issuer. Your ContainerCluster is one.
     issuer: https://container.googleapis.com/v1/projects/gkehubfeaturemembership-dep-acm/locations/us-central1-a/clusters/gkehubfeaturemembership-dep-acm
@@ -1201,7 +1721,7 @@ kind: Service
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-acm
-    cnrm.cloud.google.com/disable-dependent-services: "false"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: gkehubfeaturemembership-dep1-acm1
 spec:
   resourceID: container.googleapis.com
@@ -1211,7 +1731,7 @@ kind: Service
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-acm
-    cnrm.cloud.google.com/disable-dependent-services: "false"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: gkehubfeaturemembership-dep2-acm
 spec:
   resourceID: gkehub.googleapis.com
@@ -1221,8 +1741,136 @@ kind: Service
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-acm
-    cnrm.cloud.google.com/disable-dependent-services: "false"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
   name: gkehubfeaturemembership-dep3-acm
+spec:
+  resourceID: anthosconfigmanagement.googleapis.com
+```
+
+### Configsync Auto Upgrade Feature Membership
+```yaml
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubFeatureMembership
+metadata:
+  name: gkehubfeaturemembership-sample-csau
+spec:
+  projectRef:
+    name: gkehubfeaturemembership-dep-csau
+  location: global
+  # membershipLocation needs to be explicitly set here because the dependent membership is regional.
+  membershipLocation: us-central1
+  membershipRef:
+    name: gkehubfeaturemembership-dep-csau
+  featureRef:
+    name: gkehubfeaturemembership-dep-csau
+  configmanagement:
+    configSync:
+      sourceFormat: unstructured
+      git:
+        syncRepo: "https://github.com/GoogleCloudPlatform/anthos-config-management-samples"
+        syncBranch: "main"
+        policyDir: "config-sync-quickstart/multirepo/root"
+        secretType: "none"
+    management: MANAGEMENT_AUTOMATIC
+---
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-csau
+  name: gkehubfeaturemembership-dep-csau
+spec:
+  location: us-central1-a
+  initialNodeCount: 3
+  workloadIdentityConfig:
+    # Workload Identity supports only a single namespace based on your project name.
+    workloadPool: gkehubfeaturemembership-dep-csau.svc.id.goog
+---
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubFeature
+metadata:
+  name: gkehubfeaturemembership-dep-csau
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
+spec:
+  projectRef:
+    name: gkehubfeaturemembership-dep-csau
+  location: global
+  # The resourceID must be "configmanagement" if you want to use Anthos config
+  # management feature.
+  resourceID: configmanagement
+---
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubMembership
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-csau
+  name: gkehubfeaturemembership-dep-csau
+spec:
+  location: us-central1
+  authority:
+    # Issuer must contain a link to a valid JWT issuer. Your ContainerCluster is one.
+    issuer: https://container.googleapis.com/v1/projects/gkehubfeaturemembership-dep-csau/locations/us-central1-a/clusters/gkehubfeaturemembership-dep-csau
+  description: A sample GKE Hub membership
+  endpoint:
+    gkeCluster:
+      resourceRef:
+        name: gkehubfeaturemembership-dep-csau
+---
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  name: gkehubfeaturemembership-dep-csau
+spec:
+  name: Config Connector Sample
+  organizationRef:
+    # Replace "${ORG_ID?}" with the numeric ID for your organization
+    external: "${ORG_ID?}"
+  billingAccountRef:
+    # Replace "${BILLING_ACCOUNT_ID?}" with the numeric ID for your billing account
+    external: "${BILLING_ACCOUNT_ID?}"
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-csau
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: gkehubfeaturemembership-dep1-csau
+spec:
+  resourceID: container.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-csau
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: gkehubfeaturemembership-dep2-csau
+spec:
+  resourceID: gkehub.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-csau
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: gkehubfeaturemembership-dep3-csau
 spec:
   resourceID: anthosconfigmanagement.googleapis.com
 ```

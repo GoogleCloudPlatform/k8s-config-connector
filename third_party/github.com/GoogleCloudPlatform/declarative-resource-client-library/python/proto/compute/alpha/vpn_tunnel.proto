@@ -1,0 +1,92 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeAlphaVpnTunnelStatusEnum {
+  ComputeAlphaVpnTunnelStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaVpnTunnelStatusEnumPROVISIONING = 1;
+  ComputeAlphaVpnTunnelStatusEnumWAITING_FOR_FULL_CONFIG = 2;
+  ComputeAlphaVpnTunnelStatusEnumFIRST_HANDSHAKE = 3;
+  ComputeAlphaVpnTunnelStatusEnumESTABLISHED = 4;
+  ComputeAlphaVpnTunnelStatusEnumNO_INCOMING_PACKETS = 5;
+  ComputeAlphaVpnTunnelStatusEnumAUTHORIZATION_ERROR = 6;
+  ComputeAlphaVpnTunnelStatusEnumNEGOTIATION_FAILURE = 7;
+  ComputeAlphaVpnTunnelStatusEnumDEPROVISIONING = 8;
+  ComputeAlphaVpnTunnelStatusEnumFAILED = 9;
+  ComputeAlphaVpnTunnelStatusEnumREJECTED = 10;
+  ComputeAlphaVpnTunnelStatusEnumALLOCATING_RESOURCES = 11;
+  ComputeAlphaVpnTunnelStatusEnumSTOPPED = 12;
+  ComputeAlphaVpnTunnelStatusEnumPEER_IDENTITY_MISMATCH = 13;
+  ComputeAlphaVpnTunnelStatusEnumTS_NARROWING_NOT_ALLOWED = 14;
+}
+
+message ComputeAlphaVpnTunnel {
+  map<string, string> labels = 1;
+  int64 id = 2;
+  string name = 3;
+  string description = 4;
+  string location = 5;
+  string target_vpn_gateway = 6;
+  string vpn_gateway = 7;
+  int64 vpn_gateway_interface = 8;
+  string peer_external_gateway = 9;
+  int64 peer_external_gateway_interface = 10;
+  string peer_gcp_gateway = 11;
+  string router = 12;
+  string peer_ip = 13;
+  string shared_secret = 14;
+  string shared_secret_hash = 15;
+  ComputeAlphaVpnTunnelStatusEnum status = 16;
+  string self_link = 17;
+  int64 ike_version = 18;
+  string detailed_status = 19;
+  repeated string local_traffic_selector = 20;
+  repeated string remote_traffic_selector = 21;
+  string project = 22;
+}
+
+message ApplyComputeAlphaVpnTunnelRequest {
+  ComputeAlphaVpnTunnel resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeAlphaVpnTunnelRequest {
+  string service_account_file = 1;
+  ComputeAlphaVpnTunnel resource = 2;
+}
+
+message ListComputeAlphaVpnTunnelRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComputeAlphaVpnTunnelResponse {
+  repeated ComputeAlphaVpnTunnel items = 1;
+}
+
+service ComputeAlphaVpnTunnelService {
+  rpc ApplyComputeAlphaVpnTunnel(ApplyComputeAlphaVpnTunnelRequest) returns (ComputeAlphaVpnTunnel);
+  rpc DeleteComputeAlphaVpnTunnel(DeleteComputeAlphaVpnTunnelRequest) returns (google.protobuf.Empty);
+  rpc ListComputeAlphaVpnTunnel(ListComputeAlphaVpnTunnelRequest) returns (ListComputeAlphaVpnTunnelResponse);
+}

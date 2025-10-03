@@ -496,20 +496,6 @@ resources using `IAMPolicy`, `IAMPartialPolicy`, and `IAMPolicyMember` since
 ## Custom Resource Definition Properties
 
 
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
-</tbody>
-</table>
-
 
 ### Spec
 #### Schema
@@ -520,6 +506,10 @@ condition:
   title: string
 member: string
 memberFrom:
+  bigQueryConnectionConnectionRef:
+    name: string
+    namespace: string
+    type: string
   logSinkRef:
     name: string
     namespace: string
@@ -606,6 +596,46 @@ role: string
         <td>
             <p><code class="apitype">object</code></p>
             <p>{% verbatim %}Immutable. The IAM identity to be bound to the role. Exactly one of 'member' or 'memberFrom' must be used, and only one subfield within 'memberFrom' can be used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>memberFrom.bigQueryConnectionConnectionRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}BigQueryConnectionConnection whose service account is to be bound to the role. Use the Type field to specifie the connection type. For "spark" connetion, the service account is in `status.observedState.spark.serviceAccountID`. For "cloudSQL" connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`. For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>memberFrom.bigQueryConnectionConnectionRef.name</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>memberFrom.bigQueryConnectionConnectionRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>memberFrom.bigQueryConnectionConnectionRef.type</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Type field specifies the connection type of the BigQueryConnectionConnection resource, whose service account is to be bound to the role.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -735,7 +765,7 @@ role: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. Required. The GCP resource to set the IAM policy on.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. Required. The GCP resource to set the IAM policy on (e.g. organization, project...){% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -745,7 +775,7 @@ role: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}APIVersion of the referenced resource{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -755,7 +785,7 @@ role: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}The external name of the referenced resource{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -765,7 +795,7 @@ role: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}Kind of the referenced resource{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1061,6 +1091,101 @@ metadata:
   name: iampolicymember-dep-orgrole
 ```
 
+### Policy Member With BigQueryConnectionConnection Reference
+```yaml
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-sample-bqccref
+spec:
+  memberFrom:
+    bigQueryConnectionConnectionRef:
+      type: cloudSQL
+      name: iampolicymember-dep-bqccref
+  role: roles/editor
+  resourceRef:
+    kind: Project
+    # Replace ${PROJECT_ID?} with your project ID
+    external: projects/${PROJECT_ID?}
+---
+apiVersion: bigqueryconnection.cnrm.cloud.google.com/v1beta1
+kind: BigQueryConnectionConnection
+metadata:
+  name: iampolicymember-dep-bqccref
+spec:
+  location: us-central1
+  projectRef:
+    # Replace ${PROJECT_ID?} with your project ID
+    external: ${PROJECT_ID?}
+  cloudSQL:
+    instanceRef:
+      name: iampolicymember-dep-bqccref
+    databaseRef: 
+      name: iampolicymember-dep-bqccref
+    type: "MYSQL"
+    credential:
+      secretRef: 
+        name:  iampolicymember-dep-bqccref
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: iampolicymember-dep-bqccref
+type: kubernetes.io/basic-auth
+stringData:
+  username: iampolicymember-dep-bqccref
+  password: cGFzc3dvcmQ=
+---
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLDatabase
+metadata:
+  name: iampolicymember-dep-bqccref
+spec:
+  charset: utf8
+  instanceRef:
+    name: iampolicymember-dep-bqccref
+---
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: iampolicymember-dep-bqccref
+spec:
+  databaseVersion: MYSQL_5_7
+  region: us-central1
+  settings:
+    locationPreference:
+      zone: us-central1-a
+    tier: db-custom-1-3840
+---
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLUser
+metadata:
+  name: iampolicymember-dep-bqccref
+spec:
+  instanceRef:
+    name: iampolicymember-dep-bqccref
+  host: foo
+  password:
+    valueFrom:
+      secretKeyRef:
+        name: iampolicymember-dep-bqccref
+        key: password
+```
+
 ### Policy Member With Member Reference
 ```yaml
 # Copyright 2020 Google LLC
@@ -1101,7 +1226,7 @@ metadata:
   name: iampolicymember-dep-memberref
 ```
 
-### Pubsub Admin Policy Member
+### PubSub Admin Policy Member
 ```yaml
 # Copyright 2020 Google LLC
 #

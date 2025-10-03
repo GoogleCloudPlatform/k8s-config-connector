@@ -1,0 +1,303 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum RunAlphaServiceIngressEnum {
+  RunAlphaServiceIngressEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaServiceIngressEnumINGRESS_TRAFFIC_UNSPECIFIED = 1;
+  RunAlphaServiceIngressEnumINGRESS_TRAFFIC_ALL = 2;
+  RunAlphaServiceIngressEnumINGRESS_TRAFFIC_INTERNAL_ONLY = 3;
+  RunAlphaServiceIngressEnumINGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER = 4;
+}
+
+enum RunAlphaServiceLaunchStageEnum {
+  RunAlphaServiceLaunchStageEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaServiceLaunchStageEnumLAUNCH_STAGE_UNSPECIFIED = 1;
+  RunAlphaServiceLaunchStageEnumUNIMPLEMENTED = 2;
+  RunAlphaServiceLaunchStageEnumPRELAUNCH = 3;
+  RunAlphaServiceLaunchStageEnumEARLY_ACCESS = 4;
+  RunAlphaServiceLaunchStageEnumALPHA = 5;
+  RunAlphaServiceLaunchStageEnumBETA = 6;
+  RunAlphaServiceLaunchStageEnumGA = 7;
+  RunAlphaServiceLaunchStageEnumDEPRECATED = 8;
+}
+
+enum RunAlphaServiceTemplateVPCAccessEgressEnum {
+  RunAlphaServiceTemplateVPCAccessEgressEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaServiceTemplateVPCAccessEgressEnumVPC_EGRESS_UNSPECIFIED = 1;
+  RunAlphaServiceTemplateVPCAccessEgressEnumALL_TRAFFIC = 2;
+  RunAlphaServiceTemplateVPCAccessEgressEnumPRIVATE_RANGES_ONLY = 3;
+}
+
+enum RunAlphaServiceTemplateExecutionEnvironmentEnum {
+  RunAlphaServiceTemplateExecutionEnvironmentEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaServiceTemplateExecutionEnvironmentEnumEXECUTION_ENVIRONMENT_UNSPECIFIED = 1;
+  RunAlphaServiceTemplateExecutionEnvironmentEnumEXECUTION_ENVIRONMENT_GEN1 = 2;
+  RunAlphaServiceTemplateExecutionEnvironmentEnumEXECUTION_ENVIRONMENT_GEN2 = 3;
+}
+
+enum RunAlphaServiceTrafficTypeEnum {
+  RunAlphaServiceTrafficTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaServiceTrafficTypeEnumTRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED = 1;
+  RunAlphaServiceTrafficTypeEnumTRAFFIC_TARGET_ALLOCATION_TYPE_LATEST = 2;
+  RunAlphaServiceTrafficTypeEnumTRAFFIC_TARGET_ALLOCATION_TYPE_REVISION = 3;
+}
+
+enum RunAlphaServiceTerminalConditionStateEnum {
+  RunAlphaServiceTerminalConditionStateEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaServiceTerminalConditionStateEnumSTATE_UNSPECIFIED = 1;
+  RunAlphaServiceTerminalConditionStateEnumCONDITION_PENDING = 2;
+  RunAlphaServiceTerminalConditionStateEnumCONDITION_RECONCILING = 3;
+  RunAlphaServiceTerminalConditionStateEnumCONDITION_FAILED = 4;
+  RunAlphaServiceTerminalConditionStateEnumCONDITION_SUCCEEDED = 5;
+}
+
+enum RunAlphaServiceTerminalConditionSeverityEnum {
+  RunAlphaServiceTerminalConditionSeverityEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaServiceTerminalConditionSeverityEnumSEVERITY_UNSPECIFIED = 1;
+  RunAlphaServiceTerminalConditionSeverityEnumERROR = 2;
+  RunAlphaServiceTerminalConditionSeverityEnumWARNING = 3;
+  RunAlphaServiceTerminalConditionSeverityEnumINFO = 4;
+}
+
+enum RunAlphaServiceTerminalConditionReasonEnum {
+  RunAlphaServiceTerminalConditionReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaServiceTerminalConditionReasonEnumCOMMON_REASON_UNDEFINED = 1;
+  RunAlphaServiceTerminalConditionReasonEnumUNKNOWN = 2;
+  RunAlphaServiceTerminalConditionReasonEnumREVISION_FAILED = 3;
+  RunAlphaServiceTerminalConditionReasonEnumPROGRESS_DEADLINE_EXCEEDED = 4;
+  RunAlphaServiceTerminalConditionReasonEnumCONTAINER_MISSING = 5;
+  RunAlphaServiceTerminalConditionReasonEnumCONTAINER_PERMISSION_DENIED = 6;
+  RunAlphaServiceTerminalConditionReasonEnumCONTAINER_IMAGE_UNAUTHORIZED = 7;
+  RunAlphaServiceTerminalConditionReasonEnumCONTAINER_IMAGE_AUTHORIZATION_CHECK_FAILED = 8;
+  RunAlphaServiceTerminalConditionReasonEnumENCRYPTION_KEY_PERMISSION_DENIED = 9;
+  RunAlphaServiceTerminalConditionReasonEnumENCRYPTION_KEY_CHECK_FAILED = 10;
+  RunAlphaServiceTerminalConditionReasonEnumSECRETS_ACCESS_CHECK_FAILED = 11;
+  RunAlphaServiceTerminalConditionReasonEnumWAITING_FOR_OPERATION = 12;
+  RunAlphaServiceTerminalConditionReasonEnumIMMEDIATE_RETRY = 13;
+  RunAlphaServiceTerminalConditionReasonEnumPOSTPONED_RETRY = 14;
+  RunAlphaServiceTerminalConditionReasonEnumINTERNAL = 15;
+}
+
+enum RunAlphaServiceTerminalConditionRevisionReasonEnum {
+  RunAlphaServiceTerminalConditionRevisionReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaServiceTerminalConditionRevisionReasonEnumREVISION_REASON_UNDEFINED = 1;
+  RunAlphaServiceTerminalConditionRevisionReasonEnumPENDING = 2;
+  RunAlphaServiceTerminalConditionRevisionReasonEnumRESERVE = 3;
+  RunAlphaServiceTerminalConditionRevisionReasonEnumRETIRED = 4;
+  RunAlphaServiceTerminalConditionRevisionReasonEnumRETIRING = 5;
+  RunAlphaServiceTerminalConditionRevisionReasonEnumRECREATING = 6;
+  RunAlphaServiceTerminalConditionRevisionReasonEnumHEALTH_CHECK_CONTAINER_ERROR = 7;
+  RunAlphaServiceTerminalConditionRevisionReasonEnumCUSTOMIZED_PATH_RESPONSE_PENDING = 8;
+  RunAlphaServiceTerminalConditionRevisionReasonEnumMIN_INSTANCES_NOT_PROVISIONED = 9;
+  RunAlphaServiceTerminalConditionRevisionReasonEnumACTIVE_REVISION_LIMIT_REACHED = 10;
+  RunAlphaServiceTerminalConditionRevisionReasonEnumNO_DEPLOYMENT = 11;
+}
+
+enum RunAlphaServiceTerminalConditionJobReasonEnum {
+  RunAlphaServiceTerminalConditionJobReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaServiceTerminalConditionJobReasonEnumJOB_REASON_UNDEFINED = 1;
+  RunAlphaServiceTerminalConditionJobReasonEnumJOB_STATUS_SERVICE_POLLING_ERROR = 2;
+}
+
+enum RunAlphaServiceTrafficStatusesTypeEnum {
+  RunAlphaServiceTrafficStatusesTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  RunAlphaServiceTrafficStatusesTypeEnumTRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED = 1;
+  RunAlphaServiceTrafficStatusesTypeEnumTRAFFIC_TARGET_ALLOCATION_TYPE_LATEST = 2;
+  RunAlphaServiceTrafficStatusesTypeEnumTRAFFIC_TARGET_ALLOCATION_TYPE_REVISION = 3;
+}
+
+message RunAlphaService {
+  string name = 1;
+  string description = 2;
+  string uid = 3;
+  int64 generation = 4;
+  map<string, string> labels = 5;
+  map<string, string> annotations = 6;
+  string create_time = 7;
+  string update_time = 8;
+  string delete_time = 9;
+  string expire_time = 10;
+  string creator = 11;
+  string last_modifier = 12;
+  string client = 13;
+  string client_version = 14;
+  RunAlphaServiceIngressEnum ingress = 15;
+  RunAlphaServiceLaunchStageEnum launch_stage = 16;
+  RunAlphaServiceBinaryAuthorization binary_authorization = 17;
+  RunAlphaServiceTemplate template = 18;
+  repeated RunAlphaServiceTraffic traffic = 19;
+  RunAlphaServiceTerminalCondition terminal_condition = 20;
+  string latest_ready_revision = 21;
+  string latest_created_revision = 22;
+  repeated RunAlphaServiceTrafficStatuses traffic_statuses = 23;
+  string uri = 24;
+  bool reconciling = 25;
+  string etag = 26;
+  string project = 27;
+  string location = 28;
+}
+
+message RunAlphaServiceBinaryAuthorization {
+  bool use_default = 1;
+  string breakglass_justification = 2;
+}
+
+message RunAlphaServiceTemplate {
+  string revision = 1;
+  map<string, string> labels = 2;
+  map<string, string> annotations = 3;
+  RunAlphaServiceTemplateScaling scaling = 4;
+  RunAlphaServiceTemplateVPCAccess vpc_access = 5;
+  int64 container_concurrency = 6;
+  string timeout = 7;
+  string service_account = 8;
+  repeated RunAlphaServiceTemplateContainers containers = 9;
+  repeated RunAlphaServiceTemplateVolumes volumes = 10;
+  RunAlphaServiceTemplateExecutionEnvironmentEnum execution_environment = 11;
+}
+
+message RunAlphaServiceTemplateScaling {
+  int64 min_instance_count = 1;
+  int64 max_instance_count = 2;
+}
+
+message RunAlphaServiceTemplateVPCAccess {
+  string connector = 1;
+  RunAlphaServiceTemplateVPCAccessEgressEnum egress = 2;
+}
+
+message RunAlphaServiceTemplateContainers {
+  string name = 1;
+  string image = 2;
+  repeated string command = 3;
+  repeated string args = 4;
+  repeated RunAlphaServiceTemplateContainersEnv env = 5;
+  RunAlphaServiceTemplateContainersResources resources = 6;
+  repeated RunAlphaServiceTemplateContainersPorts ports = 7;
+  repeated RunAlphaServiceTemplateContainersVolumeMounts volume_mounts = 8;
+}
+
+message RunAlphaServiceTemplateContainersEnv {
+  string name = 1;
+  string value = 2;
+  RunAlphaServiceTemplateContainersEnvValueSource value_source = 3;
+}
+
+message RunAlphaServiceTemplateContainersEnvValueSource {
+  RunAlphaServiceTemplateContainersEnvValueSourceSecretKeyRef secret_key_ref = 1;
+}
+
+message RunAlphaServiceTemplateContainersEnvValueSourceSecretKeyRef {
+  string secret = 1;
+  string version = 2;
+}
+
+message RunAlphaServiceTemplateContainersResources {
+  map<string, string> limits = 1;
+  bool cpu_idle = 2;
+}
+
+message RunAlphaServiceTemplateContainersPorts {
+  string name = 1;
+  int64 container_port = 2;
+}
+
+message RunAlphaServiceTemplateContainersVolumeMounts {
+  string name = 1;
+  string mount_path = 2;
+}
+
+message RunAlphaServiceTemplateVolumes {
+  string name = 1;
+  RunAlphaServiceTemplateVolumesSecret secret = 2;
+  RunAlphaServiceTemplateVolumesCloudSqlInstance cloud_sql_instance = 3;
+}
+
+message RunAlphaServiceTemplateVolumesSecret {
+  string secret = 1;
+  repeated RunAlphaServiceTemplateVolumesSecretItems items = 2;
+  int64 default_mode = 3;
+}
+
+message RunAlphaServiceTemplateVolumesSecretItems {
+  string path = 1;
+  string version = 2;
+  int64 mode = 3;
+}
+
+message RunAlphaServiceTemplateVolumesCloudSqlInstance {
+  repeated string instances = 1;
+}
+
+message RunAlphaServiceTraffic {
+  RunAlphaServiceTrafficTypeEnum type = 1;
+  string revision = 2;
+  int64 percent = 3;
+  string tag = 4;
+}
+
+message RunAlphaServiceTerminalCondition {
+  string type = 1;
+  RunAlphaServiceTerminalConditionStateEnum state = 2;
+  string message = 3;
+  string last_transition_time = 4;
+  RunAlphaServiceTerminalConditionSeverityEnum severity = 5;
+  RunAlphaServiceTerminalConditionReasonEnum reason = 6;
+  RunAlphaServiceTerminalConditionRevisionReasonEnum revision_reason = 7;
+  RunAlphaServiceTerminalConditionJobReasonEnum job_reason = 8;
+}
+
+message RunAlphaServiceTrafficStatuses {
+  RunAlphaServiceTrafficStatusesTypeEnum type = 1;
+  string revision = 2;
+  int64 percent = 3;
+  string tag = 4;
+  string uri = 5;
+}
+
+message ApplyRunAlphaServiceRequest {
+  RunAlphaService resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteRunAlphaServiceRequest {
+  string service_account_file = 1;
+  RunAlphaService resource = 2;
+}
+
+message ListRunAlphaServiceRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListRunAlphaServiceResponse {
+  repeated RunAlphaService items = 1;
+}
+
+service RunAlphaServiceService {
+  rpc ApplyRunAlphaService(ApplyRunAlphaServiceRequest) returns (RunAlphaService);
+  rpc DeleteRunAlphaService(DeleteRunAlphaServiceRequest) returns (google.protobuf.Empty);
+  rpc ListRunAlphaService(ListRunAlphaServiceRequest) returns (ListRunAlphaServiceResponse);
+}

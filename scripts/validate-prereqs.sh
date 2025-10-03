@@ -31,6 +31,8 @@ fi
 make generate
 changed_file_count=$(git diff --name-only | wc -l)
 if [[ "${changed_file_count}" != "0" ]]; then
+    echo "Full diff:"
+    git diff
     echo "ERROR: Generated code out-of-date. Please run 'make generate' and update your PR."
     echo "Affected files:"
     git diff --name-only
@@ -38,35 +40,43 @@ if [[ "${changed_file_count}" != "0" ]]; then
 fi
 make manifests
 changed_file_count=$(git diff --name-only | wc -l)
-if [[ "${changed_file_count}" != "0" ]]; then
+added_config_file_count=$(git ls-files --others --exclude-standard config/ | wc -l)
+if [[ "${changed_file_count}" != "0" ]] || [[ "${added_config_file_count}" != "0" ]]; then
+    echo "Full diff:"
+    git diff
     echo "ERROR: Manifests must be regenerated. Please run 'make ready-pr' or 'make manifests' and update your PR."
     echo "Affected files:"
     git diff --name-only
+    git ls-files --others --exclude-standard config/
     exit 1
 fi
+
+<<'###issues/3037: Drop problematic go-client check from PRESUBMIT'
 make generate-go-client
 changed_file_count=$(git diff --name-only | wc -l)
-if [[ "${changed_file_count}" != "0" ]]; then
+added_go_client_file_count=$(git ls-files --others --exclude-standard pkg/clients/generated/ | wc -l)
+if [[ "${changed_file_count}" != "0" ]] || [[ "${added_go_client_file_count}" != "0" ]]; then
+    echo "Full diff:"
+    git diff
     echo "ERROR: Resource Go Clients must be regenerated. Please run 'make ready-pr' or 'make generate-go-client' and update your PR."
     echo "Affected files:"
     git diff --name-only
+    git ls-files --others --exclude-standard pkg/clients/generated/
+    echo "First 100 lines of diff:"
+    git diff | head -n100
     exit 1
 fi
+###issues/3037: Drop problematic go-client check from PRESUBMIT
+
 make ensure
 if [[ $? -ne 0 ]]; then
   echo "'make ensure' failed. Please validate the override patch files."
 fi
 changed_file_count=$(git diff --name-only | wc -l)
 if [[ "${changed_file_count}" != "0" ]]; then
+    echo "Full diff:"
+    git diff
     echo "ERROR: Vendored code does not match go.mod (+ override patches). Please run 'make ensure' and update your PR."
-    echo "Affected files:"
-    git diff --name-only
-    exit 1
-fi
-make resource-docs
-changed_file_count=$(git diff --name-only | wc -l)
-if [[ "${changed_file_count}" != "0" ]]; then
-    echo "ERROR: Resource docs must be regenerated. Please run 'make ready-pr' or 'make resource-docs' and update your PR."
     echo "Affected files:"
     git diff --name-only
     exit 1

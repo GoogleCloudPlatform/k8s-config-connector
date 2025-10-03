@@ -6,6 +6,15 @@
 {% block body %}
 {{template "alphadisclaimer.tmpl" .}}
 
+Caution: After
+[v1.118.1](https://github.com/GoogleCloudPlatform/k8s-config-connector/releases/tag/v1.118.1),
+`cnrm.cloud.google.com/state-into-spec` annotation is no longer used during
+{{.Kind}} resource reconciliation, and [externally-managed
+fields](/config-connector/docs/concepts/managing-fields-externally) in the
+existing {{.Kind}} resources are considered managed, i.e. the Kubernetes
+object is the source of truth for the underlying {{"{{gcp_name_short}}"}}
+resource.
+
 <table>
 <thead>
 <tr>

@@ -1,0 +1,65 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum PubsubliteSubscriptionDeliveryConfigDeliveryRequirementEnum {
+  PubsubliteSubscriptionDeliveryConfigDeliveryRequirementEnumNO_VALUE_DO_NOT_USE = 0;
+  PubsubliteSubscriptionDeliveryConfigDeliveryRequirementEnumDELIVERY_REQUIREMENT_UNSPECIFIED = 1;
+  PubsubliteSubscriptionDeliveryConfigDeliveryRequirementEnumDELIVER_IMMEDIATELY = 2;
+  PubsubliteSubscriptionDeliveryConfigDeliveryRequirementEnumDELIVER_AFTER_STORED = 3;
+}
+
+message PubsubliteSubscription {
+  string name = 1;
+  string topic = 2;
+  PubsubliteSubscriptionDeliveryConfig delivery_config = 3;
+  string project = 4;
+  string location = 5;
+}
+
+message PubsubliteSubscriptionDeliveryConfig {
+  PubsubliteSubscriptionDeliveryConfigDeliveryRequirementEnum delivery_requirement = 1;
+}
+
+message ApplyPubsubliteSubscriptionRequest {
+  PubsubliteSubscription resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeletePubsubliteSubscriptionRequest {
+  string service_account_file = 1;
+  PubsubliteSubscription resource = 2;
+}
+
+message ListPubsubliteSubscriptionRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListPubsubliteSubscriptionResponse {
+  repeated PubsubliteSubscription items = 1;
+}
+
+service PubsubliteSubscriptionService {
+  rpc ApplyPubsubliteSubscription(ApplyPubsubliteSubscriptionRequest) returns (PubsubliteSubscription);
+  rpc DeletePubsubliteSubscription(DeletePubsubliteSubscriptionRequest) returns (google.protobuf.Empty);
+  rpc ListPubsubliteSubscription(ListPubsubliteSubscriptionRequest) returns (ListPubsubliteSubscriptionResponse);
+}

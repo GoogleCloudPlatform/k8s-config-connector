@@ -12,5 +12,12 @@ insertText: |
       name: \${3:alloydbinstance-dep-primary}
     databaseFlags:
       enable_google_adaptive_autovacuum: \${4:off}
+      password.enforce_complexity: \${5:on}
     machineConfig:
-      cpuCount: \${5:2}
+      cpuCount: \${6:2}
+    networkConfig:
+      enablePublicIp: \${7:true}
+      enableOutboundPublicIp: \${8:true}
+      authorizedExternalNetworks:
+      - cidrRange: \${9:8.8.8.8/30}
+      - cidrRange: \${10:8.8.4.4/30}

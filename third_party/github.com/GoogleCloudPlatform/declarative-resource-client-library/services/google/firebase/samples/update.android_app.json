@@ -1,0 +1,7 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "project": "{{ref:basic.firebase_project.json:project}}",
+  "displayName": "new AndroidApp Name",
+  "packageName": "example.android.package",
+  "apiKeyId" : "{{ref:alternate_android.apikeys.key.json:uid}}"
+}

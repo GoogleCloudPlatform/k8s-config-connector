@@ -1,0 +1,18 @@
+{
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "name": "{{name}}",
+  "labels": {
+    "foo1": "bar1"
+  },
+  "destination": {
+    "workflow": "projects/{{project}}/locations/{{region}}/workflows/eventarc-trigger-workflow"
+  },
+  "serviceAccount": "{{service_account}}",
+  "matchingCriteria": [
+    {
+      "attribute": "type",
+      "value": "google.cloud.pubsub.topic.v1.messagePublished"
+    }
+  ]
+}

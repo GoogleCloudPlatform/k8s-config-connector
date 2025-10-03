@@ -69,11 +69,15 @@ type FeaturemembershipConfigmanagement struct {
 	// +optional
 	ConfigSync *FeaturemembershipConfigSync `json:"configSync,omitempty"`
 
-	/* Hierarchy Controller configuration for the cluster. */
+	/* Hierarchy Controller is no longer available. Use https://github.com/kubernetes-sigs/hierarchical-namespaces instead. */
 	// +optional
 	HierarchyController *FeaturemembershipHierarchyController `json:"hierarchyController,omitempty"`
 
-	/* Policy Controller configuration for the cluster. */
+	/* Optional. Whether to automatically manage the configmanagement Feature. There are 3 accepted values. MANAGEMENT_UNSPECIFIED means that the mamangement mode is unspecified. MANAGEMENT_AUTOMATIC means that Google manages the Feature for the cluster. MANAGEMENT_MANUAL means that users should manage the Feature for the cluster. */
+	// +optional
+	Management *string `json:"management,omitempty"`
+
+	/* **DEPRECATED** Configuring Policy Controller through the configmanagement feature is no longer recommended. Use the policycontroller feature instead. */
 	// +optional
 	PolicyController *FeaturemembershipPolicyController `json:"policyController,omitempty"`
 
@@ -302,7 +306,7 @@ type GKEHubFeatureMembershipStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpgkehubfeaturemembership;gcpgkehubfeaturememberships
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/dcl2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

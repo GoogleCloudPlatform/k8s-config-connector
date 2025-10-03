@@ -1,0 +1,21 @@
+label: Config Connector PrivilegedAccessManagerEntitlement
+markdownDescription: Creates yaml for a PrivilegedAccessManagerEntitlement resource
+insertText: |
+  apiVersion: privilegedaccessmanager.cnrm.cloud.google.com/v1beta1
+  kind: PrivilegedAccessManagerEntitlement
+  metadata:
+    name: \${1:privilegedaccessmanagerentitlement-name}
+  spec:
+    projectRef:
+      external: \${2:projects/[PROJECT_ID?]}
+    location: \${3:global}
+    maxRequestDuration: \${4:1800s}
+    privilegedAccess:
+      gcpIAMAccess:
+        roleBindings:
+        - role: \${5:roles/pubsub.admin}
+    requesterJustificationConfig:
+      notMandatory: {}
+    eligibleUsers:
+    - principals:
+      - \${6:serviceAccount:pame-dep-project@[PROJECT_ID?].iam.gserviceaccount.com}

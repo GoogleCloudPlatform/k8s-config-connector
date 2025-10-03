@@ -1,0 +1,7 @@
+{
+  "project": "{{ref:cloudkms.serviceusage.service.json:project}}",
+  "location": "global",
+  "keyRing": "{{ref:basic.key_ring.json:name}}",
+  "cryptoKey": "{{ref:minimal.crypto_key.json:name}}",
+  "state": "ENABLED"
+}

@@ -1,0 +1,17 @@
+{
+  "name": "{{provider}}",
+  "project": "{{ref:basic.cloudresourcemanager.project.json:name}}",
+  "location": "global",
+  "workloadIdentityPool": "{{ref:project.workload_identity_pool.json:name}}",
+  "displayName": "updated-sample-provider",
+  "description": "An updated sample workload identity pool provider using aws",
+  "disabled": true,
+  "attributeMapping": {
+    "google.subject": "false"
+  },
+  "attributeCondition": "false",
+  "aws": {
+    "accountId": "555555555555",
+    "stsUri": ["https://sts.amazonaws.com/new-sample-sts"]
+  }
+}

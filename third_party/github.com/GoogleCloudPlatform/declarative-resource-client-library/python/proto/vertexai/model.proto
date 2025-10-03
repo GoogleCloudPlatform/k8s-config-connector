@@ -1,0 +1,126 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum VertexaiModelSupportedExportFormatsExportableContentsEnum {
+  VertexaiModelSupportedExportFormatsExportableContentsEnumNO_VALUE_DO_NOT_USE = 0;
+  VertexaiModelSupportedExportFormatsExportableContentsEnumEXPORTABLE_CONTENT_UNSPECIFIED = 1;
+  VertexaiModelSupportedExportFormatsExportableContentsEnumARTIFACT = 2;
+  VertexaiModelSupportedExportFormatsExportableContentsEnumIMAGE = 3;
+}
+
+enum VertexaiModelSupportedDeploymentResourcesTypesEnum {
+  VertexaiModelSupportedDeploymentResourcesTypesEnumNO_VALUE_DO_NOT_USE = 0;
+  VertexaiModelSupportedDeploymentResourcesTypesEnumDEPLOYMENT_RESOURCES_TYPE_UNSPECIFIED = 1;
+  VertexaiModelSupportedDeploymentResourcesTypesEnumDEDICATED_RESOURCES = 2;
+  VertexaiModelSupportedDeploymentResourcesTypesEnumAUTOMATIC_RESOURCES = 3;
+}
+
+message VertexaiModel {
+  string name = 1;
+  string version_id = 2;
+  string version_create_time = 3;
+  string version_update_time = 4;
+  string display_name = 5;
+  string description = 6;
+  string version_description = 7;
+  repeated VertexaiModelSupportedExportFormats supported_export_formats = 8;
+  string training_pipeline = 9;
+  VertexaiModelOriginalModelInfo original_model_info = 10;
+  VertexaiModelContainerSpec container_spec = 11;
+  string artifact_uri = 12;
+  repeated VertexaiModelSupportedDeploymentResourcesTypesEnum supported_deployment_resources_types = 13;
+  repeated string supported_input_storage_formats = 14;
+  repeated string supported_output_storage_formats = 15;
+  string create_time = 16;
+  string update_time = 17;
+  repeated VertexaiModelDeployedModels deployed_models = 18;
+  string etag = 19;
+  map<string, string> labels = 20;
+  VertexaiModelEncryptionSpec encryption_spec = 21;
+  string project = 22;
+  string location = 23;
+}
+
+message VertexaiModelSupportedExportFormats {
+  string id = 1;
+  repeated VertexaiModelSupportedExportFormatsExportableContentsEnum exportable_contents = 2;
+}
+
+message VertexaiModelOriginalModelInfo {
+  string model = 1;
+}
+
+message VertexaiModelContainerSpec {
+  string image_uri = 1;
+  repeated string command = 2;
+  repeated string args = 3;
+  repeated VertexaiModelContainerSpecEnv env = 4;
+  repeated VertexaiModelContainerSpecPorts ports = 5;
+  string predict_route = 6;
+  string health_route = 7;
+}
+
+message VertexaiModelContainerSpecEnv {
+  string name = 1;
+  string value = 2;
+}
+
+message VertexaiModelContainerSpecPorts {
+  int64 container_port = 1;
+}
+
+message VertexaiModelDeployedModels {
+  string endpoint = 1;
+  string deployed_model_id = 2;
+}
+
+message VertexaiModelEncryptionSpec {
+  string kms_key_name = 1;
+}
+
+message ApplyVertexaiModelRequest {
+  VertexaiModel resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteVertexaiModelRequest {
+  string service_account_file = 1;
+  VertexaiModel resource = 2;
+}
+
+message ListVertexaiModelRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListVertexaiModelResponse {
+  repeated VertexaiModel items = 1;
+}
+
+service VertexaiModelService {
+  rpc ApplyVertexaiModel(ApplyVertexaiModelRequest) returns (VertexaiModel);
+  rpc DeleteVertexaiModel(DeleteVertexaiModelRequest) returns (google.protobuf.Empty);
+  rpc ListVertexaiModel(ListVertexaiModelRequest) returns (ListVertexaiModelResponse);
+}

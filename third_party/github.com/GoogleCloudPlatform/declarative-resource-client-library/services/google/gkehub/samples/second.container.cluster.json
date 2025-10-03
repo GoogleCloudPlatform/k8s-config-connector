@@ -1,0 +1,5 @@
+{
+  "name": "{{cluster2}}",
+  "project": "{{ref:container.serviceusage.service.json:project}}",
+  "location": "us-central1-a"
+}

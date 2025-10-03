@@ -36,16 +36,10 @@ import (
 )
 
 type SpannerInstanceSpec struct {
-	/* Immutable. The name of the instance's configuration (similar but not
-	quite the same as a region) which defines the geographic placement and
-	replication of your databases in this instance. It determines where your data
-	is stored. Values are typically of the form 'regional-europe-west1' , 'us-central' etc.
-	In order to obtain a valid list please consult the
-	[Configuration section of the docs](https://cloud.google.com/spanner/docs/instances). */
+	/* Immutable. The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance. It determines where your data is stored. Values are typically of the form 'regional-europe-west1' , 'us-central' etc. In order to obtain a valid list please consult the [Configuration section of the docs](https://cloud.google.com/spanner/docs/instances). */
 	Config string `json:"config"`
 
-	/* The descriptive name for this instance as it appears in UIs. Must be
-	unique per project and between 4 and 30 characters in length. */
+	/* The descriptive name for this instance as it appears in UIs. Must be unique per project and between 4 and 30 characters in length. */
 	DisplayName string `json:"displayName"`
 
 	// +optional
@@ -54,7 +48,7 @@ type SpannerInstanceSpec struct {
 	// +optional
 	ProcessingUnits *int64 `json:"processingUnits,omitempty"`
 
-	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	/* Immutable. The SpannerInstance name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
@@ -63,6 +57,10 @@ type SpannerInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SpannerInstance's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* A unique specifier for the SpannerInstance resource in GCP. */
+	// +optional
+	ExternalRef *string `json:"externalRef,omitempty"`
+
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
@@ -76,7 +74,7 @@ type SpannerInstanceStatus struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpspannerinstance;gcpspannerinstances
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"

@@ -15,7 +15,8 @@
 package testmain
 
 import (
-	"io/ioutil"
+	"flag"
+	"io"
 	"log"
 	"os"
 	"testing"
@@ -29,16 +30,40 @@ import (
 	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
 
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 )
 
 func ForIntegrationTests(m *testing.M, mgr *manager.Manager) {
+	if os.Getenv("E2E_GCP_TARGET") != "" {
+		log.Fatalf("dynamic integration tests do not support variable E2E_GCP_TARGET")
+	}
+
 	// Since Terraform logging defers to the Go standard logger,
 	// here we discard everything logged onto the Go standard logger to
 	// disable logging from Terraform Google provider in integration tests.
-	log.SetOutput(ioutil.Discard)
+	log.SetOutput(io.Discard)
+	if err := flag.Set("alsologtostderr", "true"); err != nil {
+		log.Fatalf("error setting alsologtostderr to true: %v", err)
+	}
+	flag.Parse()
+
+	klogFlags := flag.NewFlagSet("klog", flag.ExitOnError)
+	klog.InitFlags(klogFlags)
+
+	// Sync the log and klog flags.
+	flag.CommandLine.VisitAll(func(f1 *flag.Flag) {
+		f2 := klogFlags.Lookup(f1.Name)
+		if f2 != nil {
+			value := f1.Value.String()
+			if err := f2.Value.Set(value); err != nil {
+				log.Fatalf("error setting %v to %v: %v", f2, value, err)
+			}
+		}
+	})
 	TestMain(m, test.IntegrationTestType, nil, mgr)
+	klog.Flush()
 }
 
 func ForUnitTests(m *testing.M, mgr *manager.Manager) {

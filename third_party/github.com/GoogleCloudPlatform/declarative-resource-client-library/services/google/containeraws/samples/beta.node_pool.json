@@ -1,0 +1,58 @@
+{
+  "name": "{{pool}}",
+  "project": "{{project}}",
+  "location": "us-west1",
+  "cluster": "{{ref:minimal.cluster.json:name}}",
+  "version": "1.27.4-gke.1600",
+  "autoscaling": {
+    "minNodeCount": 1,
+    "maxNodeCount": 5
+  },
+  "subnetId": "{{aws_subnet}}",
+  "maxPodsConstraint": {
+    "maxPodsPerNode": 110
+  },
+  "config": {
+    "instanceType": "m5.large",
+    "configEncryption": {
+      "kmsKeyArn": "arn:aws:kms:{{aws_region}}:{{aws_account_id}}:key/{{aws_database_encryption_key}}"
+    },
+    "rootVolume": {
+      "sizeGib": 10,
+      "kmsKeyArn": "arn:aws:kms:{{aws_region}}:{{aws_account_id}}:key/{{aws_volume_encryption_key}}",
+      "volumeType": "GP3",
+      "iops": 3000
+    },
+    "taints": [
+      {
+        "key": "taint-key",
+        "value": "taint-value",
+        "effect": "PREFER_NO_SCHEDULE"
+      }
+    ],
+    "labels": {
+      "label-one": "value-one"
+    },
+    "tags": {
+      "tag-one": "value-one"
+    },
+    "iamInstanceProfile": "{{byo_multicloud_prefix}}-1p-dev-nodepool",
+    "sshConfig": {
+      "ec2KeyPair": "{{byo_multicloud_prefix}}-1p-dev-ssh"
+    },
+    "securityGroupIds": ["{{aws_security_group}}"],
+    "instancePlacement": {
+      "tenancy": "DEDICATED"
+    },
+    "imageType": "ubuntu"
+  },
+  "updateSettings": {
+    "surgeSettings": {
+      "maxSurge": 1,
+      "maxUnavailable": 1
+    }
+  },
+  "annotations": {
+    "label-one": "value-one"
+  }
+}

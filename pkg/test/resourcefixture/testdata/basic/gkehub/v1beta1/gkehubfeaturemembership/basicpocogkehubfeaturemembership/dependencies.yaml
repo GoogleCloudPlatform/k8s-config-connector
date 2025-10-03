@@ -1,0 +1,113 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: gkehubfm-${uniqueId}
+spec:
+  resourceID: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+  name: "Dependent Project"
+  organizationRef:
+    external: ${TEST_ORG_ID}
+  billingAccountRef:
+    external: ${TEST_BILLING_ACCOUNT_ID}
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: container.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: anthos.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    # Abandon the resource to unblock cleanup; Otherwise it fails with error message
+    # "Error waiting for api to disable ... ensure there are no more resources managed
+    # by this service." Likely there is some delay in GKEHub resources clean up.
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: gkehub.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: anthosconfigmanagement.googleapis.com
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: Service
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: anthospolicycontroller.googleapis.com
+---
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+  name: gke-basic-poco-${uniqueId}
+spec:
+  location: us-west1-a
+  initialNodeCount: 1
+  workloadIdentityConfig:
+    workloadPool: ${TEST_DEPENDENT_ORG_PROJECT_ID_WITHOUT_QUOTATION}.svc.id.goog
+---
+# The GKEHubFeature below is used to create/acquire the shared test dependent across mutiple gke hub policycontroller feature test cases. 
+# The manifest should be the same across test cases to avoid racing conditions.
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubFeature
+metadata:
+  name: gkehubfeature-basic-poco-${uniqueId}
+  annotations:
+   # Abondon the feature resource as it is global within a project and we would hit issues when running two tests in parallel.
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    name: gkehubfm-${uniqueId}
+  location: global
+  resourceID: policycontroller
+---
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubMembership
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${TEST_DEPENDENT_ORG_PROJECT_ID}
+  name: gkehubmembership-basic-poco-${uniqueId}
+spec:
+  location: us-west1
+  authority:
+    issuer: https://container.googleapis.com/v1/projects/${TEST_DEPENDENT_ORG_PROJECT_ID_WITHOUT_QUOTATION}/locations/us-west1-a/clusters/gke-basic-poco-${uniqueId}
+  description: A sample GKE Hub membership
+  endpoint:
+    gkeCluster:
+      resourceRef:
+        name: gke-basic-poco-${uniqueId}

@@ -15,13 +15,17 @@
 package parameters
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"regexp"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/commonparams"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/valutil"
+	"golang.org/x/oauth2"
 )
 
 type OnErrorOption string
@@ -61,6 +65,21 @@ type Parameters struct {
 	OAuth2Token             string
 	ResourceFormat          string
 	Verbose                 bool
+}
+
+func (p *Parameters) NewControllerConfig(ctx context.Context) (*config.ControllerConfig, error) {
+	c := &config.ControllerConfig{
+		UserAgent: gcp.KCCUserAgent(),
+	}
+	if p.OAuth2Token != "" {
+		c.GCPTokenSource = oauth2.StaticTokenSource(
+			&oauth2.Token{AccessToken: p.OAuth2Token},
+		)
+	}
+	if err := c.Init(ctx); err != nil {
+		return nil, err
+	}
+	return c, nil
 }
 
 // convenience struct used during validation

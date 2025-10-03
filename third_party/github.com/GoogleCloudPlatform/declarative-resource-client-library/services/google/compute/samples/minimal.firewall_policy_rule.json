@@ -1,0 +1,14 @@
+{
+  "priority": 9000,
+  "firewallPolicy": "{{ref:folder.firewall_policy.json:name}}",
+  "match": {
+    "layer4Configs": [
+      {
+        "ipProtocol": "tcp"
+      }
+    ],
+    "srcIPRanges": ["10.100.0.1/32"]
+  },
+  "action": "deny",
+  "direction": "INGRESS"
+}

@@ -20,15 +20,14 @@ import (
 	"path"
 	"strings"
 
+	iamapi "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
-	iamapi "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/gcpclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceskeleton"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 
-	"github.com/ghodss/yaml"
-	"github.com/gosimple/slug"
+	"github.com/ghodss/yaml" //nolint:depguard
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
@@ -70,7 +69,7 @@ func getIAM(ctx context.Context, u *unstructured.Unstructured, smLoader *service
 		// not all resources support NewFromURI, example: ServiceAccount, for those, fall back to the external value
 		// converted to a legal filename -- this could benefit from the same refactor that would enable not fetching
 		// hierarchal resources again. Example for ServiceAccount: IAMPolicy/ServiceAccount/full-external-path-resource-name.yaml
-		name := slug.Make(fmt.Sprintf("%v-%v", resourceRef.External, u.GetName()))
+		name := MakeSafeFilename(fmt.Sprintf("%v-%v", resourceRef.External, u.GetName()))
 		return path.Join(u.GetKind(), resourceRef.Kind, name), nil
 	}
 	if isHierarchalKind(resourceRef.Kind) {

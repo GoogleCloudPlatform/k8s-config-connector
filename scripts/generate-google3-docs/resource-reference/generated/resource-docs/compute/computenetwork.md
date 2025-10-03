@@ -70,9 +70,6 @@
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
@@ -335,6 +332,8 @@ metadata:
 spec:
   routingMode: REGIONAL
   autoCreateSubnetworks: true
+  # ULA internal ipv6 is not supported for auto mode network
+  enableUlaInternalIpv6: false
 ```
 
 

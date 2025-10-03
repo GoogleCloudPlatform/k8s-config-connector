@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/ghodss/yaml"
+	"github.com/ghodss/yaml" //nolint:depguard
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
@@ -41,7 +41,7 @@ type YAMLStream struct {
 	nextErr            error
 	// true if the consumer of the stream has read at least one non-error result
 	returnedAtLeastOneNonErrorResult bool
-	// true if the end of the stream was reached and the tranmission terminator was returned
+	// true if the end of the stream was reached and the transmission terminator was returned
 	returnedTransmissionTerminator bool
 }
 

@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/slice"
 
@@ -63,15 +64,8 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 	addResourceIDFieldIfSupported(resourceConfig, specJSONSchema)
 	handleHierarchicalReferences(resourceConfig, specJSONSchema)
 
-	if len(specJSONSchema.Properties) > 0 {
-		openAPIV3Schema.Properties["spec"] = *specJSONSchema
-		if len(specJSONSchema.Required) > 0 {
-			openAPIV3Schema.Required = slice.IncludeString(openAPIV3Schema.Required, "spec")
-		}
-	}
-
 	var err error
-	if k8s.OutputOnlyFieldsAreUnderObservedState(kubeschema.GroupVersionKind{
+	if stateintospec.OutputOnlyFieldsAreUnderObservedState(kubeschema.GroupVersionKind{
 		Kind:    resourceConfig.Kind,
 		Version: sm.GetVersionFor(resourceConfig),
 		Group:   sm.Name,
@@ -84,6 +78,15 @@ func GenerateTF2CRD(sm *corekccv1alpha1.ServiceMapping, resourceConfig *corekccv
 		}
 	}
 	addObservedFieldsToObservedState(resourceConfig, specJSONSchema, statusOrObservedStateJSONSchema)
+	removeIgnoredOutputOnlySpecFields(resourceConfig, specJSONSchema)
+
+	if len(specJSONSchema.Properties) > 0 {
+		openAPIV3Schema.Properties["spec"] = *specJSONSchema
+		if len(specJSONSchema.Required) > 0 {
+			openAPIV3Schema.Required = slice.IncludeString(openAPIV3Schema.Required, "spec")
+		}
+	}
+
 	for k, v := range statusOrObservedStateJSONSchema.Properties {
 		openAPIV3Schema.Properties["status"].Properties[k] = v
 	}
@@ -258,6 +261,17 @@ func removeOverwrittenFields(rc *corekccv1alpha1.ResourceConfig, s *apiextension
 		// hierarchical references.
 		for _, c := range rc.Containers {
 			removeField(c.TFField, s)
+		}
+	}
+}
+func removeIgnoredOutputOnlySpecFields(rc *corekccv1alpha1.ResourceConfig, specJSONSchema *apiextensions.JSONSchemaProps) {
+	if rc.IgnoredOutputOnlySpecFields == nil {
+		return
+	}
+	for _, f := range *rc.IgnoredOutputOnlySpecFields {
+		removedInSpec := removeFieldIfExist(f, specJSONSchema)
+		if !removedInSpec {
+			panic(fmt.Errorf("cannot find the output-only spec field %s in spec JSON schema for resource %s", f, rc.Name))
 		}
 	}
 }
@@ -527,10 +541,13 @@ func populateObservedField(observedFieldPath []string, sourceSchema *apiextensio
 			// TODO(b/312581557): Support the use case when the observed field is a subfield under an array.
 			panic(fmt.Errorf("observed fields under an array is not supported"))
 		case "object":
-			objSchema := apiextensions.JSONSchemaProps{
-				Type:        "object",
-				Description: subSchema.Description,
-				Properties:  make(map[string]apiextensions.JSONSchemaProps),
+			objSchema, ok := observedFieldParent.Properties[field]
+			if !ok {
+				objSchema = apiextensions.JSONSchemaProps{
+					Type:        "object",
+					Description: subSchema.Description,
+					Properties:  make(map[string]apiextensions.JSONSchemaProps),
+				}
 			}
 			observedFieldParent.Properties[field] = populateObservedField(observedFieldPath[1:], &subSchema, &objSchema)
 			return *observedFieldParent

@@ -1,0 +1,238 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: Cloudidentity/Membership
+  description: The Cloudidentity Membership resource
+  x-dcl-struct-name: Membership
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a Membership
+    parameters:
+    - name: membership
+      required: true
+      description: A full instance of a Membership
+  apply:
+    description: The function used to apply information about a Membership
+    parameters:
+    - name: membership
+      required: true
+      description: A full instance of a Membership
+  delete:
+    description: The function used to delete a Membership
+    parameters:
+    - name: membership
+      required: true
+      description: A full instance of a Membership
+  deleteAll:
+    description: The function used to delete all Membership
+    parameters:
+    - name: group
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many Membership
+    parameters:
+    - name: group
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Membership:
+      title: Membership
+      x-dcl-id: groups/{{group}}/memberships/{{name}}
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - preferredMemberKey
+      - roles
+      - group
+      properties:
+        createTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: CreateTime
+          readOnly: true
+          description: Output only. The time when the `Membership` was created.
+          x-kubernetes-immutable: true
+        deliverySetting:
+          type: string
+          x-dcl-go-name: DeliverySetting
+          x-dcl-go-type: MembershipDeliverySettingEnum
+          readOnly: true
+          description: 'Output only. Delivery setting associated with the membership.
+            Possible values: DELIVERY_SETTING_UNSPECIFIED, ALL_MAIL, DIGEST, DAILY,
+            NONE, DISABLED'
+          x-kubernetes-immutable: true
+          enum:
+          - DELIVERY_SETTING_UNSPECIFIED
+          - ALL_MAIL
+          - DIGEST
+          - DAILY
+          - NONE
+          - DISABLED
+        displayName:
+          type: object
+          x-dcl-go-name: DisplayName
+          x-dcl-go-type: MembershipDisplayName
+          readOnly: true
+          description: Output only. The display name of this member, if available
+          x-kubernetes-immutable: true
+          properties:
+            familyName:
+              type: string
+              x-dcl-go-name: FamilyName
+              readOnly: true
+              description: Output only. Member's family name
+              x-kubernetes-immutable: true
+            fullName:
+              type: string
+              x-dcl-go-name: FullName
+              readOnly: true
+              description: Output only. Localized UTF-16 full name for the member.
+                Localization is done based on the language in the request and the
+                language of the stored display name.
+              x-kubernetes-immutable: true
+            givenName:
+              type: string
+              x-dcl-go-name: GivenName
+              readOnly: true
+              description: Output only. Member's given name
+              x-kubernetes-immutable: true
+        group:
+          type: string
+          x-dcl-go-name: Group
+          description: The group for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudidentity/Group
+            field: name
+            parent: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: Output only. The [resource name](https://cloud.google.com/apis/design/resource_names)
+            of the `Membership`. Shall be of the form `groups/{group}/memberships/{membership}`.
+          x-dcl-server-generated-parameter: true
+        preferredMemberKey:
+          type: object
+          x-dcl-go-name: PreferredMemberKey
+          x-dcl-go-type: MembershipPreferredMemberKey
+          description: Required. Immutable. The `EntityKey` of the member.
+          x-kubernetes-immutable: true
+          required:
+          - id
+          properties:
+            id:
+              type: string
+              x-dcl-go-name: Id
+              description: The ID of the entity. For Google-managed entities, the
+                `id` must be the email address of a group or user. For external-identity-mapped
+                entities, the `id` must be a string conforming to the Identity Source's
+                requirements. Must be unique within a `namespace`.
+              x-kubernetes-immutable: true
+            namespace:
+              type: string
+              x-dcl-go-name: Namespace
+              description: The namespace in which the entity exists. If not specified,
+                the `EntityKey` represents a Google-managed entity such as a Google
+                user or a Google Group. If specified, the `EntityKey` represents an
+                external-identity-mapped group. The namespace must correspond to an
+                identity source created in Admin Console and must be in the form of
+                `identitysources/{identity_source_id}`.
+              x-kubernetes-immutable: true
+        roles:
+          type: array
+          x-dcl-go-name: Roles
+          description: The `MembershipRole`s that apply to the `Membership`. If unspecified,
+            defaults to a single `MembershipRole` with `name` `MEMBER`. Must not contain
+            duplicate `MembershipRole`s with the same `name`.
+          x-dcl-send-empty: true
+          x-dcl-list-type: set
+          items:
+            type: object
+            x-dcl-go-type: MembershipRoles
+            required:
+            - name
+            properties:
+              expiryDetail:
+                type: object
+                x-dcl-go-name: ExpiryDetail
+                x-dcl-go-type: MembershipRolesExpiryDetail
+                description: The expiry details of the `MembershipRole`. Expiry details
+                  are only supported for `MEMBER` `MembershipRoles`. May be set if
+                  `name` is `MEMBER`. Must not be set if `name` is any other value.
+                x-dcl-send-empty: true
+                properties:
+                  expireTime:
+                    type: string
+                    format: date-time
+                    x-dcl-go-name: ExpireTime
+                    description: The time at which the `MembershipRole` will expire.
+              name:
+                type: string
+                x-dcl-go-name: Name
+              restrictionEvaluations:
+                type: object
+                x-dcl-go-name: RestrictionEvaluations
+                x-dcl-go-type: MembershipRolesRestrictionEvaluations
+                description: Evaluations of restrictions applied to parent group on
+                  this membership.
+                properties:
+                  memberRestrictionEvaluation:
+                    type: object
+                    x-dcl-go-name: MemberRestrictionEvaluation
+                    x-dcl-go-type: MembershipRolesRestrictionEvaluationsMemberRestrictionEvaluation
+                    description: Evaluation of the member restriction applied to this
+                      membership. Empty if the user lacks permission to view the restriction
+                      evaluation.
+                    properties:
+                      state:
+                        type: string
+                        x-dcl-go-name: State
+                        x-dcl-go-type: MembershipRolesRestrictionEvaluationsMemberRestrictionEvaluationStateEnum
+                        readOnly: true
+                        description: 'Output only. The current state of the restriction
+                          Possible values: ENCRYPTION_STATE_UNSPECIFIED, UNSUPPORTED_BY_DEVICE,
+                          ENCRYPTED, NOT_ENCRYPTED'
+                        enum:
+                        - ENCRYPTION_STATE_UNSPECIFIED
+                        - UNSUPPORTED_BY_DEVICE
+                        - ENCRYPTED
+                        - NOT_ENCRYPTED
+        type:
+          type: string
+          x-dcl-go-name: Type
+          x-dcl-go-type: MembershipTypeEnum
+          readOnly: true
+          description: 'Output only. The type of the membership. Possible values:
+            OWNER_TYPE_UNSPECIFIED, OWNER_TYPE_CUSTOMER, OWNER_TYPE_PARTNER'
+          x-kubernetes-immutable: true
+          enum:
+          - OWNER_TYPE_UNSPECIFIED
+          - OWNER_TYPE_CUSTOMER
+          - OWNER_TYPE_PARTNER
+        updateTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: UpdateTime
+          readOnly: true
+          description: Output only. The time when the `Membership` was last updated.
+          x-kubernetes-immutable: true

@@ -1,0 +1,48 @@
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringDashboard
+metadata:
+  name: monitoringdashboard-${uniqueId}
+spec:
+  columnLayout:
+    columns:
+    - weight: 2
+      widgets:
+      - title: Widget 1
+        xyChart:
+          dataSets:
+          - plotType: LINE
+            targetAxis: Y1
+            timeSeriesQuery:
+              timeSeriesFilter:
+                aggregation:
+                  perSeriesAligner: ALIGN_RATE
+                filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
+              unitOverride: "1"
+          timeshiftDuration: 0s
+          yAxis:
+            label: y1Axis
+            scale: LINEAR
+      - text:
+          content: Widget 2
+          format: MARKDOWN
+          style: {}
+      - title: Widget 3
+        xyChart:
+          dataSets:
+          - plotType: LINE
+            targetAxis: Y1
+            timeSeriesQuery:
+              timeSeriesFilter:
+                aggregation:
+                  perSeriesAligner: ALIGN_RATE
+                filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
+              unitOverride: "1"
+          yAxis:
+            label: y1Axis
+            scale: LINEAR
+      - logsPanel:
+          filter: metric.type="agent.googleapis.com/nginx/connections/accepted_count"
+        title: Widget 4
+  displayName: monitoringdashboard-updated
+  projectRef:
+    external: ${projectId}

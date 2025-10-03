@@ -1,0 +1,11 @@
+{
+  "name": "{{name}}",
+  "displayName": "{{displayname}}-update",
+  "project": "{{project}}",
+  "telemetry": {
+    "resourceName": "//storage.googleapis.com/buckets/bucket-id2"
+  },
+  "userLabels":{
+    "test1":"value2"
+  }
+}

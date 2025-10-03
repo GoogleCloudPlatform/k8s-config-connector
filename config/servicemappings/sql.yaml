@@ -43,6 +43,8 @@ spec:
       containers:
         - type: project
           tfField: project
+      mutableButUnreadableFields:
+        - deletion_policy
     - name: google_sql_database_instance
       kind: SQLInstance
       metadataMapping:
@@ -95,6 +97,7 @@ spec:
           tfField: project
       mutableButUnreadableFields:
         - root_password
+        - settings.ip_configuration.ssl_mode
     - name: google_sql_ssl_cert
       kind: SQLSSLCert
       skipImport: true

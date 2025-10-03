@@ -15,25 +15,19 @@
 package lifecyclehandler
 
 import (
+	"context"
 	"errors"
 	"testing"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
-	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
-	testmain "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/main"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
-	"sigs.k8s.io/controller-runtime/pkg/manager"
-)
-
-var (
-	mgr manager.Manager
 )
 
 func TestIsOrphaned(t *testing.T) {
@@ -152,16 +146,20 @@ func TestIsOrphaned(t *testing.T) {
 			isOrphaned:    false,
 		},
 	}
-	c := mgr.GetClient()
+	ctx := context.TODO()
+	h := test.NewKubeHarness(ctx, t)
+	c := h.GetClient()
+
+	h.CreateDummyCRD(schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Test1Foo"})
+	h.CreateDummyCRD(schema.GroupVersionKind{Group: "test1.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "Test1Bar"})
+
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 			testID := testvariable.NewUniqueID()
 			tc.resource.SetNamespace(testID)
-			if err := testcontroller.EnsureNamespaceExists(c, testID); err != nil {
-				t.Fatal(err)
-			}
+			h.EnsureNamespaceExists(testID)
 			if tc.parentObjectName != "" {
 				references := []*unstructured.Unstructured{
 					test.NewBarUnstructured(tc.parentObjectName, testID, corev1.ConditionTrue),
@@ -259,8 +257,4 @@ func Test_reasonForUnresolvableDeps(t *testing.T) {
 			}
 		})
 	}
-}
-
-func TestMain(m *testing.M) {
-	testmain.ForUnitTests(m, &mgr)
 }

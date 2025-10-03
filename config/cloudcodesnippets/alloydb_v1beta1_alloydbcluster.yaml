@@ -6,7 +6,7 @@ insertText: |
   metadata:
     name: \${1:alloydbcluster-name}
   spec:
-    location: \${2:us-east1}
+    location: \${2:asia-south2}
     networkConfig:
       networkRef:
         name: \${3:alloydbcluster-dep-regular}
@@ -20,7 +20,7 @@ insertText: |
       enabled: \${7:true}
       labels:
         source: \${8:kcc}
-      location: \${9:us-east1}
+      location: \${9:asia-south2}
       timeBasedRetention:
         retentionPeriod: \${10:43200s}
       weeklySchedule:
@@ -34,7 +34,15 @@ insertText: |
     encryptionConfig:
       kmsKeyNameRef:
         name: \${16:alloydbcluster-dep-regular}
+    maintenanceUpdatePolicy:
+      maintenanceWindows:
+      - day: \${17:WEDNESDAY}
+        startTime:
+          hours: \${18:12}
+          minutes: \${19:0}
+          seconds: \${20:0}
+          nanos: \${21:0}
     initialUser:
-      user: \${17:postgres}
+      user: \${22:postgres}
       password:
-        value: \${18:postgres}
+        value: \${23:Postgres123}

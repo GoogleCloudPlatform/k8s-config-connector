@@ -1,0 +1,94 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# 00
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  name: gsa-1-${uniqueId}
+---
+# 01
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMServiceAccount
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  name: gsa-2-${uniqueId}
+---
+# 02
+apiVersion: privilegedaccessmanager.cnrm.cloud.google.com/v1beta1
+kind: PrivilegedAccessManagerEntitlement
+metadata:
+  name: privilegedaccessmanagerentitlement-${uniqueId}
+spec:
+  folderRef:
+    external: folders/${TEST_FOLDER_ID}
+  location: global
+  maxRequestDuration: 1800s
+  privilegedAccess:
+    gcpIAMAccess:
+      roleBindings:
+        - role: roles/pubsub.viewer
+          conditionExpression: "request.time > timestamp(\"2019-12-31T12:00:00.000Z\")"
+  requesterJustificationConfig:
+    notMandatory: {}
+  eligibleUsers:
+    - principals:
+        - serviceAccount:gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com
+  additionalNotificationTargets:
+    adminEmailRecipients:
+      - gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com
+    requesterEmailRecipients:
+      - gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com
+      - gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com
+  approvalWorkflow:
+    manualApprovals:
+      requireApproverJustification: false
+---
+# 03: Trigger the reconciliation with no change by setting `spec.resourceID`.
+# This is to verify that when 'spec.approvalWorkflow.manualApprovals.requireApproverJustification'
+# is set to the default value, 'false', and when it is reconciled without any
+# change to the desired state, no diff will be detected.
+# _http03.log should NOT contain a PATCH request.
+apiVersion: privilegedaccessmanager.cnrm.cloud.google.com/v1beta1
+kind: PrivilegedAccessManagerEntitlement
+metadata:
+  name: privilegedaccessmanagerentitlement-${uniqueId}
+spec:
+  folderRef:
+    external: folders/${TEST_FOLDER_ID}
+  location: global
+  maxRequestDuration: 1800s
+  privilegedAccess:
+    gcpIAMAccess:
+      roleBindings:
+        - role: roles/pubsub.viewer
+          conditionExpression: "request.time > timestamp(\"2019-12-31T12:00:00.000Z\")"
+  requesterJustificationConfig:
+    notMandatory: {}
+  eligibleUsers:
+    - principals:
+        - serviceAccount:gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com
+  additionalNotificationTargets:
+    adminEmailRecipients:
+      - gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com
+    requesterEmailRecipients:
+      - gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com
+      - gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com
+  approvalWorkflow:
+    manualApprovals:
+      requireApproverJustification: false
+  resourceID: privilegedaccessmanagerentitlement-${uniqueId}

@@ -36,8 +36,7 @@ import (
 )
 
 type KMSKeyRingSpec struct {
-	/* Immutable. The location for the KeyRing.
-	A full list of valid locations can be found by running 'gcloud kms locations list'. */
+	/* Immutable. The location for the KeyRing. A full list of valid locations can be found by running 'gcloud kms locations list'. */
 	Location string `json:"location"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */

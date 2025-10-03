@@ -28,6 +28,9 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/nasa9084/go-openapi"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+
+	// Register all direct controllers.
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 func TestDCLSchemaToJSONSchema(t *testing.T) {
@@ -1234,7 +1237,10 @@ func TestDCLSchemaToJSONSchema(t *testing.T) {
 	smLoader := servicemappingloader.NewFromServiceMappings(test.FakeServiceMappingsWithHierarchicalResources())
 	serviceMetadataLoader := dclmetadata.NewFromServiceList(testservicemetadataloader.FakeServiceMetadataWithHierarchicalResources())
 	dclSchemaLoader := testdclschemaloader.New(dclSchemaMap())
-	allSupportedGVKs := supportedgvks.All(smLoader, serviceMetadataLoader)
+	allSupportedGVKs, err := supportedgvks.All(smLoader, serviceMetadataLoader)
+	if err != nil {
+		t.Fatalf("error loading all supported GVKs: %v", err)
+	}
 	a := New(serviceMetadataLoader, dclSchemaLoader, allSupportedGVKs)
 	for _, tc := range tests {
 		tc := tc

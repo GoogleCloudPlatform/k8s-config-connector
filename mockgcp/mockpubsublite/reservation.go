@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:mockgcp-support
+// proto.service: google.cloud.pubsublite.v1.AdminService
+// proto.message: google.cloud.pubsublite.v1.Reservation
+
 package mockpubsublite
 
 import (

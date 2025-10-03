@@ -40,6 +40,10 @@ func (e *ReferenceNotReadyError) Error() string {
 	return fmt.Sprintf("reference %v %v is not ready", e.RefResourceGVK.Kind, e.RefResource)
 }
 
+func NewReferenceNotReadyError(refResourceGVK schema.GroupVersionKind, refResource types.NamespacedName) *ReferenceNotReadyError {
+	return &ReferenceNotReadyError{refResourceGVK, refResource}
+}
+
 func NewReferenceNotReadyErrorForResource(r *Resource) *ReferenceNotReadyError {
 	return &ReferenceNotReadyError{
 		r.GroupVersionKind(),
@@ -86,6 +90,8 @@ func IsReferenceNotFoundError(err error) bool {
 	_, ok := AsReferenceNotFoundError(err)
 	return ok
 }
+
+var ErrIAMNotFound = fmt.Errorf("IAM resource does not exist")
 
 type SecretNotFoundError struct {
 	Secret types.NamespacedName

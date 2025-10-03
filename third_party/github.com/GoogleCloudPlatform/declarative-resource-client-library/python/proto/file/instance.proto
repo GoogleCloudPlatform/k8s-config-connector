@@ -1,0 +1,122 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum FileInstanceStateEnum {
+  FileInstanceStateEnumNO_VALUE_DO_NOT_USE = 0;
+  FileInstanceStateEnumSTATE_UNSPECIFIED = 1;
+  FileInstanceStateEnumCREATING = 2;
+  FileInstanceStateEnumREADY = 3;
+  FileInstanceStateEnumREPAIRING = 4;
+  FileInstanceStateEnumDELETING = 5;
+  FileInstanceStateEnumERROR = 6;
+}
+
+enum FileInstanceTierEnum {
+  FileInstanceTierEnumNO_VALUE_DO_NOT_USE = 0;
+  FileInstanceTierEnumTIER_UNSPECIFIED = 1;
+  FileInstanceTierEnumSTANDARD = 2;
+  FileInstanceTierEnumPREMIUM = 3;
+  FileInstanceTierEnumBASIC_HDD = 4;
+  FileInstanceTierEnumBASIC_SSD = 5;
+  FileInstanceTierEnumHIGH_SCALE_SSD = 6;
+}
+
+enum FileInstanceFileSharesNfsExportOptionsAccessModeEnum {
+  FileInstanceFileSharesNfsExportOptionsAccessModeEnumNO_VALUE_DO_NOT_USE = 0;
+  FileInstanceFileSharesNfsExportOptionsAccessModeEnumACCESS_MODE_UNSPECIFIED = 1;
+  FileInstanceFileSharesNfsExportOptionsAccessModeEnumREAD_ONLY = 2;
+  FileInstanceFileSharesNfsExportOptionsAccessModeEnumREAD_WRITE = 3;
+}
+
+enum FileInstanceFileSharesNfsExportOptionsSquashModeEnum {
+  FileInstanceFileSharesNfsExportOptionsSquashModeEnumNO_VALUE_DO_NOT_USE = 0;
+  FileInstanceFileSharesNfsExportOptionsSquashModeEnumSQUASH_MODE_UNSPECIFIED = 1;
+  FileInstanceFileSharesNfsExportOptionsSquashModeEnumNO_ROOT_SQUASH = 2;
+  FileInstanceFileSharesNfsExportOptionsSquashModeEnumROOT_SQUASH = 3;
+}
+
+enum FileInstanceNetworksModesEnum {
+  FileInstanceNetworksModesEnumNO_VALUE_DO_NOT_USE = 0;
+  FileInstanceNetworksModesEnumADDRESS_MODE_UNSPECIFIED = 1;
+  FileInstanceNetworksModesEnumMODE_IPV4 = 2;
+}
+
+message FileInstance {
+  string name = 1;
+  string description = 2;
+  FileInstanceStateEnum state = 3;
+  string status_message = 4;
+  string create_time = 5;
+  FileInstanceTierEnum tier = 6;
+  map<string, string> labels = 7;
+  repeated FileInstanceFileShares file_shares = 8;
+  repeated FileInstanceNetworks networks = 9;
+  string etag = 10;
+  string project = 11;
+  string location = 12;
+}
+
+message FileInstanceFileShares {
+  string name = 1;
+  int64 capacity_gb = 2;
+  string source_backup = 3;
+  repeated FileInstanceFileSharesNfsExportOptions nfs_export_options = 4;
+}
+
+message FileInstanceFileSharesNfsExportOptions {
+  repeated string ip_ranges = 1;
+  FileInstanceFileSharesNfsExportOptionsAccessModeEnum access_mode = 2;
+  FileInstanceFileSharesNfsExportOptionsSquashModeEnum squash_mode = 3;
+  int64 anon_uid = 4;
+  int64 anon_gid = 5;
+}
+
+message FileInstanceNetworks {
+  string network = 1;
+  repeated FileInstanceNetworksModesEnum modes = 2;
+  string reserved_ip_range = 3;
+  repeated string ip_addresses = 4;
+}
+
+message ApplyFileInstanceRequest {
+  FileInstance resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteFileInstanceRequest {
+  string service_account_file = 1;
+  FileInstance resource = 2;
+}
+
+message ListFileInstanceRequest {
+  string service_account_file = 1;
+	FileInstance resource = 2;
+}
+
+message ListFileInstanceResponse {
+  repeated FileInstance items = 1;
+}
+
+service FileInstanceService {
+  rpc ApplyFileInstance(ApplyFileInstanceRequest) returns (FileInstance);
+  rpc DeleteFileInstance(DeleteFileInstanceRequest) returns (google.protobuf.Empty);
+  rpc ListFileInstance(ListFileInstanceRequest) returns (ListFileInstanceResponse);
+}

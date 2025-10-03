@@ -1,0 +1,189 @@
+{
+  "parent": "projects/{{project}}",
+  "location": "{{region}}",
+  "description": "A sample job trigger using cloud storage",
+  "displayName": "sample-trigger",
+  "triggers": [
+    {
+      "schedule": {
+        "recurrencePeriodDuration": "86400s"
+      }
+    }
+  ],
+  "status": "HEALTHY",
+  "inspectJob": {
+    "storageConfig": {
+      "cloudStorageOptions": {
+        "fileSet": {
+          "url": "gs://aaa-dont-delete-dcl-dlp-testing/*"
+        },
+        "bytesLimitPerFile": 1,
+        "fileTypes": ["BINARY_FILE", "TEXT_FILE"],
+        "sampleMethod": "TOP",
+        "filesLimitPercent": 50
+      },
+      "timespanConfig": {
+        "startTime": "2017-01-15T01:30:15.010Z",
+        "endTime": "2018-01-15T01:30:15.010Z",
+        "timestampField": {
+          "name": "sample-field"
+        },
+        "enableAutoPopulationOfTimespanConfig": true
+      }
+    },
+    "inspectConfig": {
+      "infoTypes": [
+        {
+          "name": "AGE"
+        }
+      ],
+      "minLikelihood": "UNLIKELY",
+      "limits": {
+        "maxFindingsPerItem": 3,
+        "maxFindingsPerRequest": 3,
+        "maxFindingsPerInfoType": [
+          {
+            "infoType": {
+              "name": "AGE",
+              "version": "1"
+            },
+            "maxFindings": 3
+          }
+        ]
+      },
+      "includeQuote": true,
+      "excludeInfoTypes": true,
+      "customInfoTypes": [
+        {
+          "infoType": {
+            "name": "PHONE_NUMBER",
+            "version": "1"
+          },
+          "likelihood": "LIKELY",
+          "detectionRules": [
+            {
+              "hotwordRule": {
+                "hotwordRegex": {
+                  "pattern": "([1-3])([0-9]*)",
+                  "groupIndexes": [1, 2]
+                },
+                "proximity": {
+                  "windowBefore": 3,
+                  "windowAfter": 3
+                },
+                "likelihoodAdjustment": {
+                  "fixedLikelihood": "VERY_LIKELY"
+                }
+              }
+            },
+            {
+              "hotwordRule": {
+                "likelihoodAdjustment": {
+                  "relativeLikelihood": -1
+                }
+              }
+            }
+          ],
+          "exclusionType": "EXCLUSION_TYPE_EXCLUDE",
+          "dictionary": {
+            "wordList": {
+              "words": ["one", "two"]
+            }
+          }
+        },
+        {
+          "dictionary": {
+            "cloudStoragePath": {
+              "path": "gs://aaa-dont-delete-dcl-dlp-testing/dictionary-1"
+            }
+          }
+        },
+        {
+          "regex": {
+            "pattern": "([a-e]+)([f-z]*)",
+            "groupIndexes": [1, 2]
+          }
+        },
+        {
+          "storedType": {
+            "name": "projects/{{project}}/locations/global/storedInfoTypes/{{ref:minimal.stored_info_type.json:name}}"
+          }
+        }
+      ],
+      "ruleSet": [
+        {
+          "infoTypes": [
+            {
+              "name": "AGE",
+              "version": "1"
+            }
+          ],
+          "rules": [
+            {
+              "hotwordRule": {
+                "hotwordRegex": {
+                  "pattern": "([1-4])([0-9]*)",
+                  "groupIndexes": [1, 2]
+                },
+                "proximity": {
+                  "windowBefore": 3,
+                  "windowAfter": 3
+                },
+                "likelihoodAdjustment": {
+                  "fixedLikelihood": "VERY_LIKELY"
+                }
+              }
+            },
+            {
+              "hotwordRule": {
+                "likelihoodAdjustment": {
+                  "relativeLikelihood": -1
+                }
+              }
+            },
+            {
+              "exclusionRule": {
+                "matchingType": "MATCHING_TYPE_FULL_MATCH",
+                "dictionary": {
+                  "wordList": {
+                    "words": ["one", "two"]
+                  }
+                }
+              }
+            },
+            {
+              "exclusionRule": {
+                "dictionary": {
+                  "cloudStoragePath": {
+                    "path": "gs://aaa-dont-delete-dcl-dlp-testing/dictionary-2"
+                  }
+                }
+              }
+            },
+            {
+              "exclusionRule": {
+                "regex": {
+                  "pattern": "([+-])([0-9]+)",
+                  "groupIndexes": [1, 2]
+                }
+              }
+            },
+            {
+              "exclusionRule": {
+                "excludeInfoTypes": {
+                  "infoTypes": [
+                    {
+                      "name": "AGE",
+                      "version": "1"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "inspectTemplateName": "{{ref:minimal.inspect_template.json:name}}"
+  }
+}

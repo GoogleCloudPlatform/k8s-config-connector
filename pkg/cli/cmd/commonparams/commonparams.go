@@ -84,7 +84,7 @@ func ValidateIAMFormat(value string) error {
 	return fmt.Errorf("invalid %v value of '%v': must be one of {%v}", IAMFormatParamName, value, strings.Join(iamFormatOptions, ", "))
 }
 
-// Convert from the an IAMPolicyParam supplied on the command line to the stream type
+// Convert from the IAMPolicyParam supplied on the command line to the stream type
 func IAMFormatParamToStreamIAMFormat(iamFormatParam string) (stream.IAMFormat, error) {
 	switch iamFormatParam {
 	case PartialPolicyFormatOption:

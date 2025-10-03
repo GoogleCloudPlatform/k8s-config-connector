@@ -1,0 +1,14 @@
+{
+  "name": "{{connection}}",
+  "gitlabConfig": {
+    "authorizerCredential": {
+      "userTokenSecretVersion": "projects/407304063574/secrets/gitlab-api-pat/versions/latest"
+    },
+    "readAuthorizerCredential": {
+      "userTokenSecretVersion": "projects/407304063574/secrets/gitlab-read-pat/versions/latest"
+    },
+    "webhookSecretSecretVersion":"projects/407304063574/secrets/gle-webhook-secret/versions/latest"
+  },
+  "project": "{{project}}",
+  "location": "us-west1"
+}

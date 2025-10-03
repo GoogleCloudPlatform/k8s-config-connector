@@ -1,0 +1,131 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: NetworkSecurity/AddressGroup
+  description: The NetworkSecurity AddressGroup resource
+  x-dcl-struct-name: AddressGroup
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a AddressGroup
+    parameters:
+    - name: addressGroup
+      required: true
+      description: A full instance of a AddressGroup
+  apply:
+    description: The function used to apply information about a AddressGroup
+    parameters:
+    - name: addressGroup
+      required: true
+      description: A full instance of a AddressGroup
+  delete:
+    description: The function used to delete a AddressGroup
+    parameters:
+    - name: addressGroup
+      required: true
+      description: A full instance of a AddressGroup
+  deleteAll:
+    description: The function used to delete all AddressGroup
+    parameters:
+    - name: location
+      required: true
+      schema:
+        type: string
+    - name: parent
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many AddressGroup
+    parameters:
+    - name: location
+      required: true
+      schema:
+        type: string
+    - name: parent
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    AddressGroup:
+      title: AddressGroup
+      x-dcl-id: '{{parent}}/locations/{{location}}/addressGroups/{{name}}'
+      x-dcl-labels: labels
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - type
+      - capacity
+      - parent
+      - location
+      properties:
+        capacity:
+          type: integer
+          format: int64
+          x-dcl-go-name: Capacity
+          description: Required. Capacity of the Address Group.
+          x-kubernetes-immutable: true
+        description:
+          type: string
+          x-dcl-go-name: Description
+          description: Optional. Free-text description of the resource.
+        items:
+          type: array
+          x-dcl-go-name: Items
+          description: Optional. List of items.
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: string
+            x-dcl-go-type: string
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location for the resource
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: Required. Name of the AddressGroup resource.
+          x-kubernetes-immutable: true
+        parent:
+          type: string
+          x-dcl-go-name: Parent
+          description: The parent of the resource.
+          x-kubernetes-immutable: true
+          x-dcl-forward-slash-allowed: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Organization
+            field: name
+            parent: true
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        type:
+          type: string
+          x-dcl-go-name: Type
+          x-dcl-go-type: AddressGroupTypeEnum
+          description: 'Required. The type of the Address Group. Possible values are
+            "IPv4" or "IPV6". Possible values: TYPE_UNSPECIFIED, IPV4, IPV6'
+          x-kubernetes-immutable: true
+          enum:
+          - TYPE_UNSPECIFIED
+          - IPV4
+          - IPV6

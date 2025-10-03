@@ -27,7 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/scripts/resource-autogen/allowlist"
 	generatedembed "github.com/GoogleCloudPlatform/k8s-config-connector/scripts/resource-autogen/servicemapping/embed/generated"
 
-	"github.com/ghodss/yaml"
+	"github.com/ghodss/yaml" //nolint:depguard
 )
 
 var emptyIAMConfig v1alpha1.IAMConfig
@@ -134,7 +134,7 @@ func readerToServiceMapping(r io.Reader) (*v1alpha1.ServiceMapping, error) {
 	}
 	var sm v1alpha1.ServiceMapping
 	if err := yaml.Unmarshal(bytes, &sm); err != nil {
-		return nil, fmt.Errorf("error unmarshaling byte to service mapping: %w", err)
+		return nil, fmt.Errorf("error unmarshalling byte to service mapping: %w", err)
 	}
 	return &sm, nil
 }

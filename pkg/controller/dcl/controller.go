@@ -27,7 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
+	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceactuation"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
@@ -43,8 +43,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leasable"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/lease/leaser"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/managementconflict"
+	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -64,6 +67,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/predicate"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	"sigs.k8s.io/controller-runtime/pkg/source"
 )
@@ -95,6 +99,8 @@ type Reconciler struct {
 	immediateReconcileRequests chan event.GenericEvent
 	resourceWatcherRoutines    *semaphore.Weighted // Used to cap number of goroutines watching unready dependencies
 	jitterGenerator            jitter.Generator
+
+	controllerName string
 }
 
 func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, converter *conversion.Converter,
@@ -102,6 +108,7 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, conve
 	if jitterGenerator == nil {
 		return nil, fmt.Errorf("jitter generator not initialized")
 	}
+	predicates := []predicate.Predicate{kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
 	kind := crd.Spec.Names.Kind
 	apiVersion := k8s.GetAPIVersionFromCRD(crd)
 	controllerName := fmt.Sprintf("%v-controller", strings.ToLower(kind))
@@ -121,8 +128,8 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, conve
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
-		WatchesRawSource(&source.Channel{Source: immediateReconcileRequests}, &handler.EnqueueRequestForObject{}).
-		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicate.UnderlyingResourceOutOfSyncPredicate{})).
+		WatchesRawSource(source.TypedChannel(immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
+		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicates...)).
 		Build(r)
 	if err != nil {
 		return nil, fmt.Errorf("error creating new controller: %w", err)
@@ -160,17 +167,20 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 		resourceLeaser:             leaser.NewResourceLeaser(nil, nil, mgr.GetClient()),
 		defaulters:                 defaulters,
 		schema:                     dclSchema,
-		logger:                     logger.WithName(controllerName),
+		logger:                     logger.WithName(controllerName).WithValues("controllerType", "dcl"),
 		dclConfig:                  dclclientconfig.CopyAndModifyForKind(dclConfig, gvk.Kind),
 		converter:                  converter,
 		serviceMappingLoader:       serviceMappingLoader,
 		immediateReconcileRequests: immediateReconcileRequests,
 		resourceWatcherRoutines:    resourceWatcherRoutines,
 		jitterGenerator:            jitterGenerator,
+		controllerName:             controllerName,
 	}, nil
 }
 
 func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res reconcile.Result, err error) {
+	ctx = metricstransport.WithControllerName(ctx, r.controllerName)
+
 	r.schemaRefMu.RLock()
 	defer r.schemaRefMu.RUnlock()
 	r.logger.Info("starting reconcile", "resource", req.NamespacedName)
@@ -189,6 +199,8 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 		}
 		return reconcile.Result{}, err
 	}
+	structuredreporting.ReportReconcileStart(ctx, u)
+	defer structuredreporting.ReportReconcileEnd(ctx, u, res, err)
 	skip, err := resourceactuation.ShouldSkip(u)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -202,12 +214,13 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 		return reconcile.Result{}, fmt.Errorf("error triggering Server-Side Apply (SSA) metadata: %w", err)
 	}
 
+	if err := r.handleDefaults(ctx, u); err != nil {
+		return reconcile.Result{}, fmt.Errorf("error handling default values for resource '%v': %w", k8s.GetNamespacedName(u), err)
+	}
+
 	resource, err := dcl.NewResource(u, r.schema)
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("could not parse resource %s: %w", req.NamespacedName.String(), err)
-	}
-	if err := r.handleDefaults(ctx, resource); err != nil {
-		return reconcile.Result{}, fmt.Errorf("error handling default values for resource '%v': %w", k8s.GetNamespacedName(resource), err)
 	}
 	if err := r.applyChangesForBackwardsCompatibility(ctx, resource); err != nil {
 		return reconcile.Result{}, fmt.Errorf("error applying changes to resource '%v' for backwards compatibility: %w", k8s.GetNamespacedName(resource), err)
@@ -264,7 +277,7 @@ func (r *Reconciler) sync(ctx context.Context, resource *dcl.Resource) (requeue 
 	// isolate any panics to only this function
 	defer execution.RecoverWithInternalError(&err)
 
-	dclConfig := dclclientconfig.SetUserAgentWithBlueprintAttribution(r.dclConfig, resource)
+	dclConfig := r.dclConfig
 	if !resource.GetDeletionTimestamp().IsZero() {
 		return r.finalizeResourceDeletion(ctx, resource, dclConfig)
 	}
@@ -403,7 +416,7 @@ func (r *Reconciler) handleUnresolvableDeps(ctx context.Context, resource *k8s.R
 		ctx, cancel := context.WithTimeout(ctx, timeoutPeriod)
 		defer cancel()
 		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
-		if err := watcher.WaitForResourceToBeReady(ctx, refNN, refGVK); err != nil {
+		if err := watcher.WaitForResourceToBeReadyOrDeleted(ctx, refNN, refGVK); err != nil {
 			logger.Error(err, "error while waiting for resource's reference to be ready")
 			return
 		}
@@ -430,11 +443,11 @@ func (r *Reconciler) enqueueForImmediateReconciliation(resourceNN types.Namespac
 }
 
 func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, resource *dcl.Resource, liveLabels map[string]string) error {
-	conflictPolicy, err := k8s.GetManagementConflictPreventionAnnotationValue(resource)
+	conflictPolicy, err := managementconflict.GetManagementConflictPreventionPolicy(resource)
 	if err != nil {
 		return err
 	}
-	if conflictPolicy != k8s.ManagementConflictPreventionPolicyResource {
+	if conflictPolicy != managementconflict.ManagementConflictPreventionPolicyResource {
 		return nil
 	}
 	ok, err := leasable.DCLSchemaSupportsLeasing(resource.Schema)
@@ -442,8 +455,7 @@ func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, resourc
 		return err
 	}
 	if !ok {
-		return fmt.Errorf("kind '%v' does not support usage of %v of '%v'", resource.GroupVersionKind(),
-			k8s.ManagementConflictPreventionPolicyAnnotation, conflictPolicy)
+		return managementconflict.NewLeasingNotSupportedByKindError(resource.GroupVersionKind())
 	}
 	// Use SoftObtain instead of Obtain so that obtaining the lease ONLY changes the 'labels' value on the local krmResource and does not write the results
 	// to GCP. The reason to do that is to reduce the number of writes to GCP and therefore improve performance and reduce errors.
@@ -455,10 +467,20 @@ func (r *Reconciler) obtainResourceLeaseIfNecessary(ctx context.Context, resourc
 	return nil
 }
 
-func (r *Reconciler) handleDefaults(ctx context.Context, resource *dcl.Resource) error {
+func (r *Reconciler) handleDefaults(ctx context.Context, u *unstructured.Unstructured) error {
+	changeCount := 0
 	for _, defaulter := range r.defaulters {
-		if _, err := defaulter.ApplyDefaults(ctx, resource); err != nil {
-			return err
+		changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeDCL, u)
+		if err != nil {
+			return fmt.Errorf("applying defaults: %w", err)
+		}
+		if changed {
+			changeCount++
+		}
+	}
+	if changeCount > 0 {
+		if err := r.Update(ctx, u); err != nil {
+			return fmt.Errorf("applying update after setting defaults: %w", err)
 		}
 	}
 	return nil
@@ -686,7 +708,7 @@ func (r *Reconciler) isOrphaned(_ context.Context, resource *dcl.Resource) (orph
 }
 
 // getStateHint returns a state hint based on the given resource live state. A
-// state hint is a DCL unstructurd object that represents the live state of the
+// state hint is a DCL unstructured object that represents the live state of the
 // resource.
 //
 // This function returns the given live state (if it's not nil) as a DCL

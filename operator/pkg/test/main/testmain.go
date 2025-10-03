@@ -28,6 +28,7 @@ import (
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/metrics/server"
 
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -83,7 +84,9 @@ func StartTestManager(cfg *rest.Config) (manager.Manager, func(), error) {
 		// Prevent manager from binding to a port to serve prometheus metrics
 		// since creating multiple managers for tests will fail if more than
 		// one manager tries to bind to the same port.
-		MetricsBindAddress: "0",
+		Metrics: server.Options{
+			BindAddress: "0",
+		},
 		// Prevent manager from binding to a port to serve health probes since
 		// creating multiple managers for tests will fail if more than one
 		// manager tries to bind to the same port.

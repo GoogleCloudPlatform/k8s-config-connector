@@ -521,7 +521,7 @@ func TestAccComputeInstanceTemplate_guestAccelerator(t *testing.T) {
 				Config: testAccComputeInstanceTemplate_guestAccelerator(acctest.RandString(t, 10), 1),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckComputeInstanceTemplateExists(t, "google_compute_instance_template.foobar", &instanceTemplate),
-					testAccCheckComputeInstanceTemplateHasGuestAccelerator(&instanceTemplate, "nvidia-tesla-k80", 1),
+					testAccCheckComputeInstanceTemplateHasGuestAccelerator(&instanceTemplate, "nvidia-tesla-t4", 1),
 				),
 			},
 			{
@@ -2554,7 +2554,7 @@ resource "google_compute_instance_template" "foobar" {
 
   guest_accelerator {
     count = %d
-    type  = "nvidia-tesla-k80"
+    type  = "nvidia-tesla-t4"
   }
 }
 `, i, count)

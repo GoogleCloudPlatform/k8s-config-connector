@@ -42,7 +42,7 @@ type ErrorResponseDetails struct {
 	Reason  string `json:"reason,omitempty"`
 }
 
-// customErrorHandler wraps errors in an error blockk
+// customErrorHandler wraps errors in an error block
 func (m *ServeMux) customErrorHandler(ctx context.Context, mux *runtime.ServeMux, marshaler runtime.Marshaler, w http.ResponseWriter, r *http.Request, err error) {
 	s := status.Convert(err)
 	// pb := s.Proto()

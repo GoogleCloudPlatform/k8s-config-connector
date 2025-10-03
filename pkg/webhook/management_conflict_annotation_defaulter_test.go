@@ -17,7 +17,7 @@ package webhook
 import (
 	"testing"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/managementconflict"
 	testutil "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testdclschemaloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/dclschemaloader"
 	testservicemetadataloader "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/servicemetadataloader"
@@ -51,7 +51,7 @@ func TestDefaultManagementConflictAnnotationForDCLBasedResources(t *testing.T) {
 					"kind":       "Test1Bar",
 					"metadata": map[string]interface{}{
 						"annotations": map[string]interface{}{
-							k8s.ManagementConflictPreventionPolicyFullyQualifiedAnnotation: "none",
+							managementconflict.FullyQualifiedAnnotation: "none",
 						},
 					},
 				},
@@ -87,7 +87,7 @@ func TestDefaultManagementConflictAnnotationForDCLBasedResources(t *testing.T) {
 					"kind":       "Test1Bar",
 					"metadata": map[string]interface{}{
 						"annotations": map[string]interface{}{
-							k8s.ManagementConflictPreventionPolicyFullyQualifiedAnnotation: "none",
+							managementconflict.FullyQualifiedAnnotation: "none",
 						},
 					},
 				},
@@ -96,7 +96,7 @@ func TestDefaultManagementConflictAnnotationForDCLBasedResources(t *testing.T) {
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-ns",
 					Annotations: map[string]string{
-						k8s.ManagementConflictPreventionPolicyFullyQualifiedAnnotation: "none",
+						managementconflict.FullyQualifiedAnnotation: "none",
 					},
 				},
 			},
@@ -120,7 +120,7 @@ func TestDefaultManagementConflictAnnotationForDCLBasedResources(t *testing.T) {
 					"kind":       "Test1Bar",
 					"metadata": map[string]interface{}{
 						"annotations": map[string]interface{}{
-							k8s.ManagementConflictPreventionPolicyFullyQualifiedAnnotation: "resource",
+							managementconflict.FullyQualifiedAnnotation: "resource",
 						},
 					},
 				},
@@ -131,7 +131,7 @@ func TestDefaultManagementConflictAnnotationForDCLBasedResources(t *testing.T) {
 					"kind":       "Test1Bar",
 					"metadata": map[string]interface{}{
 						"annotations": map[string]interface{}{
-							k8s.ManagementConflictPreventionPolicyFullyQualifiedAnnotation: "resource",
+							managementconflict.FullyQualifiedAnnotation: "resource",
 						},
 					},
 				},
@@ -140,7 +140,7 @@ func TestDefaultManagementConflictAnnotationForDCLBasedResources(t *testing.T) {
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-ns",
 					Annotations: map[string]string{
-						k8s.ManagementConflictPreventionPolicyFullyQualifiedAnnotation: "none",
+						managementconflict.FullyQualifiedAnnotation: "none",
 					},
 				},
 			},
@@ -170,7 +170,7 @@ func TestDefaultManagementConflictAnnotationForDCLBasedResources(t *testing.T) {
 					"kind":       "Test1Bar",
 					"metadata": map[string]interface{}{
 						"annotations": map[string]interface{}{
-							k8s.ManagementConflictPreventionPolicyFullyQualifiedAnnotation: "none",
+							managementconflict.FullyQualifiedAnnotation: "none",
 						},
 					},
 				},
@@ -198,7 +198,7 @@ func TestDefaultManagementConflictAnnotationForDCLBasedResources(t *testing.T) {
 					"kind":       "Test1Bar",
 					"metadata": map[string]interface{}{
 						"annotations": map[string]interface{}{
-							k8s.ManagementConflictPreventionPolicyFullyQualifiedAnnotation: "none",
+							managementconflict.FullyQualifiedAnnotation: "none",
 						},
 					},
 				},
@@ -207,7 +207,7 @@ func TestDefaultManagementConflictAnnotationForDCLBasedResources(t *testing.T) {
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-ns",
 					Annotations: map[string]string{
-						k8s.ManagementConflictPreventionPolicyFullyQualifiedAnnotation: "resource",
+						managementconflict.FullyQualifiedAnnotation: "resource",
 					},
 				},
 			},

@@ -151,3 +151,32 @@ Session.vim
 # always skip vendored files
 /vendor
 .build
+
+# Go workspaces
+go.work.sum
+
+# Log files that are often created by e2e runs / downloads
+e2e.log
+testlogs/
+log
+
+# experiments/conductor
+experiments/conductor/logs
+experiments/conductor/branches.yaml
+
+# failing fuzz output
+pkg/fuzztesting/fuzztests/testdata/fuzz/FuzzAllMappers
+
+# Experimental MCP
+# Let Gemini CLI to ignore env to avoid sensitive data
+.gemini/.env
+# Ignore settings.json till we ship a MCP server.
+.gemini/settings.json
+
+# Ignore pycache
+experiments/mcp/**/__pycache__
+# Ignore python egg files
+experiments/mcp/**/*.egg-info
+
+# MCP eval
+experiments/**/__pycache__/

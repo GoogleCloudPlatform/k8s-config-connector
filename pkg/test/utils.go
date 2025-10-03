@@ -15,6 +15,7 @@
 package test
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -22,6 +23,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/yaml"
 )
 
@@ -65,13 +67,33 @@ func MustReadFile(t *testing.T, p string) []byte {
 	return b
 }
 
+func extractEventsWithURLPrefix(allEvents, urlPrefix string) string {
+	eventStrings := make([]string, 0)
+	events := strings.Split(allEvents, "---")
+	for _, event := range events {
+		processed := strings.TrimSpace(event)
+		for _, m := range []string{"GET", "POST", "PUT", "PATCH", "DELETE"} {
+			processed = strings.TrimPrefix(processed, m)
+			processed = strings.TrimSpace(processed)
+		}
+		if strings.HasPrefix(processed, urlPrefix) {
+			if len(eventStrings) == 0 {
+				event = strings.TrimPrefix(event, "\n\n")
+			}
+			eventStrings = append(eventStrings, event)
+		}
+	}
+	return strings.Join(eventStrings, "---")
+}
+
 // CompareGoldenFile performs a file comparison for a golden test.
-func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s string) string) {
+func CompareGoldenFile(t *testing.T, p, fullGot string, normalizers ...func(s string) string) {
 	writeGoldenOutput := os.Getenv("WRITE_GOLDEN_OUTPUT") != ""
 
 	for _, normalizer := range normalizers {
-		got = normalizer(got)
+		fullGot = normalizer(fullGot)
 	}
+	got := fullGot
 
 	wantBytes, err := os.ReadFile(p)
 	if err != nil {
@@ -79,29 +101,63 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 			// Expected when creating output for the first time;
 			// treat as empty
 			wantBytes = []byte{} // Not strictly needed, but clearer
+		} else if fullGot == "" && os.IsNotExist(err) {
+			// Golden file won't be generated if the result is empty.
+			return
 		} else {
-			t.Fatalf("failed to read golden file %q: %v", p, err)
+			t.Fatalf("FAIL: failed to read golden file %q: %v", p, err)
 		}
 	}
 	want := string(wantBytes)
 	for _, normalizer := range normalizers {
 		want = normalizer(want)
 	}
+	// If urlPrefix is not an empty string, then we should only compare the http
+	// log events that has given URL prefix.
+	urlPrefix := os.Getenv("ONLY_COMPARE_URL_PREFIX")
+	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" && urlPrefix != "" {
+		klog.Infof("only comparing events with URL prefix %q in the http log", urlPrefix)
+
+		want = extractEventsWithURLPrefix(want, urlPrefix)
+		got = extractEventsWithURLPrefix(got, urlPrefix)
+	}
 
 	if want == got {
+		if urlPrefix != "" && writeGoldenOutput {
+			// Write the full http log to the golden file. The current
+			// comparison only covers events with given URL prefix, and the full
+			// http log may have diffs.
+			if err := os.WriteFile(p, []byte(fullGot), 0644); err != nil {
+				t.Fatalf("FAIL: failed to write golden output %s: %v", p, err)
+			}
+			t.Logf("wrote updated golden output to %s", p)
+		}
 		return
 	}
 
+	if diff := cmp.Diff(want, got); diff != "" {
+		onlyWarn := false
+		for _, f := range strings.Split(os.Getenv("ONLY_WARN_ON_GOLDEN_DIFFS"), ",") {
+			if f == filepath.Base(p) {
+				onlyWarn = true
+			}
+		}
+
+		if onlyWarn {
+			t.Logf("found diff in golden output %s, but ONLY_WARN_ON_GOLDEN_DIFFS=%s so will treat as a warning", p, os.Getenv("ONLY_WARN_ON_GOLDEN_DIFFS"))
+			t.Logf("unexpected diff in %s: %s", p, diff)
+		} else {
+			t.Errorf("FAIL: unexpected diff in %s: %s", p, diff)
+		}
+	}
+
 	if writeGoldenOutput {
-		// Write the output to the golden file
-		if err := os.WriteFile(p, []byte(got), 0644); err != nil {
-			t.Fatalf("failed to write golden output %s: %v", p, err)
+		// No matter how we compare the golden files, we should write the entire
+		// http log to the golden file.
+		if err := os.WriteFile(p, []byte(fullGot), 0644); err != nil {
+			t.Fatalf("FAIL: failed to write golden output %s: %v", p, err)
 		}
-		t.Errorf("wrote updated golden output to %s", p)
-	} else {
-		if diff := cmp.Diff(want, got); diff != "" {
-			t.Errorf("unexpected diff in %s: %s", p, diff)
-		}
+		t.Logf("wrote updated golden output to %s", p)
 	}
 }
 
@@ -111,11 +167,11 @@ func CompareGoldenFile(t *testing.T, p string, got string, normalizers ...func(s
 func IgnoreLeadingComments(s string) string {
 	var out []string
 	lines := strings.Split(s, "\n")
-	removing := true
+	removingLeadingLines := true
 	commentBlock := 0
 	for i := 0; i < len(lines); i++ {
 		line := lines[i]
-		if !removing {
+		if !removingLeadingLines {
 			out = append(out, line)
 			continue
 		}
@@ -124,15 +180,21 @@ func IgnoreLeadingComments(s string) string {
 			commentBlock++
 		}
 
+		ignore := false
 		if commentBlock != 0 {
 			// Ignore multi-line c-style comment blocks
+			ignore = true
 		} else if strings.HasPrefix(s, "//") {
 			// ignore single-line c-style comments
+			ignore = true
 		} else if strings.HasPrefix(s, "#") {
 			// ignore comments in yaml
-		} else {
+			ignore = true
+		}
+
+		if !ignore {
 			out = append(out, line)
-			removing = false
+			removingLeadingLines = false
 		}
 
 		if strings.HasSuffix(s, "*/") {
@@ -166,50 +228,27 @@ func CompareGoldenObject(t *testing.T, p string, got []byte) {
 		t.Errorf("Failed parsing file: %s", err)
 	}
 
-	diff := cmp.Diff(postWriteNormalization(wantMap), gotMap)
+	diff := cmp.Diff(wantMap, gotMap)
 	if diff == "" {
 		return
 	}
+
+	t.Errorf("FAIL: unexpected diff in %s: %s", p, diff)
 
 	if writeGoldenOutput {
 		// Write the output to the golden file
 		if err := os.WriteFile(p, []byte(got), 0644); err != nil {
 			t.Fatalf("failed to write golden output %s: %v", p, err)
 		}
-		t.Errorf("wrote updated golden output to %s", p)
-	} else {
-		t.Errorf("unexpected diff in %s: %s", p, diff)
+		t.Logf("wrote updated golden output to %s", p)
 	}
 }
 
-func postWriteNormalization(wantMap map[string]interface{}) map[string]interface{} {
-	if os.Getenv("KCC_USE_DIRECT_RECONCILERS") != "" {
-		metadataMap, ok := wantMap["metadata"].(map[string]interface{})
-		if !ok {
-			panic("metadata is not a map")
-		}
-
-		annotations := metadataMap["annotations"]
-		if annotations == nil {
-			// nothing to normalize
-			return wantMap
-		}
-		annotationsMap, ok := annotations.(map[string]interface{})
-		if !ok {
-			panic("annotations is not a map")
-		}
-
-		// for direct resources, we don't support the state-into-spec annotation
-		if annotationsMap["cnrm.cloud.google.com/state-into-spec"] != "" {
-			delete(annotationsMap, "cnrm.cloud.google.com/state-into-spec")
-		}
-		// we also don't support the mutable but unreadable annotation yet
-		if annotationsMap["cnrm.cloud.google.com/mutable-but-unreadable-fields"] != "" {
-			delete(annotationsMap, "cnrm.cloud.google.com/mutable-but-unreadable-fields")
-		}
-
-		metadataMap["annotations"] = annotationsMap
+func PrettyPrintJSON[T any](t *testing.T, k T) string {
+	encoded, err := json.MarshalIndent(k, "", " ")
+	if err != nil {
+		t.Fatalf("error encoding to json: %v", err)
 	}
 
-	return wantMap
+	return string(encoded)
 }

@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+if [[ -n ${SKIP_GENERATE_CRDS:-} ]]; then
+  echo "SKIP_GENERATE_CRDS is set; skipping generation of CRDs"
+  exit 0
+fi
+
+# Run controller-gen to generate CRDs (including deepcopy)
+cd ${REPO_ROOT}/apis
+go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 \
+  object:headerFile=${REPO_ROOT}/hack/boilerplate.go.txt \
+  crd:crdVersions=v1,allowDangerousTypes=true,ignoreUnexportedFields=true \
+  output:crd:artifacts:config=config/crd/ \
+  paths="./..."
+
+# Add OpenAPI validation to refs
+cd ${REPO_ROOT}
+go run ./scripts/add-validation-to-crds --dir apis/config/crd/
+
+# Apply a few small tweaks to the CRDs
+cd ${REPO_ROOT}
+go run ./scripts/crd-tools set-field spec.preserveUnknownFields=false --dir apis/config/crd/
+go run ./scripts/crd-tools delete-field status --dir apis/config/crd/
+go run ./scripts/crd-tools set-annotation cnrm.cloud.google.com/version=0.0.0-dev --dir apis/config/crd/
+go run ./scripts/crd-tools delete-annotation controller-gen.kubebuilder.io/version --dir apis/config/crd/
+go run ./scripts/crd-tools reflow-descriptions --dir apis/config/crd/
+go run ./scripts/crd-tools backport-alpha --dir apis/config/crd/
+
+# Copy generated CRDs to apis/config/crd/
+# The crds directory is generated only as part of the release (currently)
+
+# excluded_resources are resources that are under development for a direct conversion
+# we don't modify the CRD just yet for those but will in the future
+#excluded_resources=("securesourcemanagerinstance")
+excluded_resources=()
+
+cd ${REPO_ROOT}
+cd apis/config/crd/
+for file in *.yaml; do
+    excluded=false
+
+    for substring in "${excluded_resources[@]}"; do
+        if [[ "$file" == *"$substring"* ]]; then
+            excluded=true
+            break
+        fi
+    done
+    if [ "$excluded" = true ]; then
+        echo "Skipping $file as its CRD conversion is excluded for now"
+        continue
+    fi
+
+    base_name=$(echo "$file" | sed 's/.yaml$//g')
+    domain=$(echo "$base_name" | cut -d'_' -f1)
+    resource=$(echo "$base_name" | cut -d'_' -f2)
+    new_name="apiextensions.k8s.io_v1_customresourcedefinition_${resource}.${domain}.yaml";
+    cp "$file" "${REPO_ROOT}/config/crds/resources/$new_name";
+    #echo "Renamed $file to $new_name"
+done
+
+# clean up apis/config/crd for now
+cd ${REPO_ROOT}
+rm -rf apis/config/crd
+
+# Generated the supported GVKs file
+go run ./scripts/generate-gvks/main.go -output-dir=pkg/gvks/supportedgvks
+
+# Generate the cnrm_admin.yaml and cnrm_viewer.yaml RBAC files
+go run ./scripts/generate-cnrm-cluster-roles/main.go
+
+# controller-gen sometimes leaves empty imports in the api files.
+go run -mod=readonly golang.org/x/tools/cmd/goimports@latest -w apis

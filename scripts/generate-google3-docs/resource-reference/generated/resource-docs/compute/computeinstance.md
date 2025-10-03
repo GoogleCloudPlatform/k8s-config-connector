@@ -91,9 +91,6 @@
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
@@ -885,7 +882,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The accelerator type resource exposed to this instance. E.g. nvidia-tesla-k80.{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The accelerator type resource exposed to this instance. E.g. nvidia-tesla-t4.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

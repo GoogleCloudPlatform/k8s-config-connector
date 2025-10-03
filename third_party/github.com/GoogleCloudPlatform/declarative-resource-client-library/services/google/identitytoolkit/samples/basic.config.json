@@ -1,0 +1,109 @@
+{
+  "project": "{{project}}",
+  "signIn": {
+    "email": {
+      "enabled": true,
+      "passwordRequired": true
+    },
+    "phoneNumber": {
+      "enabled": true,
+      "testPhoneNumbers": {
+        "+1 555-555-5555": "000000"
+      }
+    },
+    "anonymous": {
+      "enabled": true
+    },
+    "allowDuplicateEmails": true
+  },
+  "notification": {
+    "sendEmail": {
+      "method": "CUSTOM_SMTP",
+      "smtp": {
+        "senderEmail": "magic-modules-guitar-testing@system.gserviceaccount.com",
+        "host": "system.gserviceaccount.com",
+        "port": 8080,
+        "username": "sample-username",
+        "password": "sample-password",
+        "securityMode": "SSL"
+      },
+      "resetPasswordTemplate": {
+        "senderLocalPart": "noreply",
+        "subject": "Reset your password for %APP_NAME%",
+        "senderDisplayName": "DCL Team",
+        "body": "\u003cp\u003eHello,\u003c/p\u003e\n\u003cp\u003eFollow this link to reset your %APP_NAME% password for your %EMAIL% account.\u003c/p\u003e\n\u003cp\u003e\u003ca href='%LINK%'\u003e%LINK%\u003c/a\u003e\u003c/p\u003e\n\u003cp\u003eIf you didn’t ask to reset your password, you can ignore this email.\u003c/p\u003e\n\u003cp\u003eThanks,\u003c/p\u003e\n\u003cp\u003eYour %APP_NAME% team\u003c/p\u003e",
+        "bodyFormat": "PLAIN_TEXT",
+        "replyTo": "noreply"
+      },
+      "verifyEmailTemplate": {
+        "senderLocalPart": "noreply",
+        "subject": "Verify your email for %APP_NAME%",
+        "senderDisplayName": "DCL Team",
+        "body": "\u003cp\u003eHello %DISPLAY_NAME%,\u003c/p\u003e\n\u003cp\u003eFollow this link to verify your email address.\u003c/p\u003e\n\u003cp\u003e\u003ca href='%LINK%'\u003e%LINK%\u003c/a\u003e\u003c/p\u003e\n\u003cp\u003eIf you didn’t ask to verify this address, you can ignore this email.\u003c/p\u003e\n\u003cp\u003eThanks,\u003c/p\u003e\n\u003cp\u003eYour %APP_NAME% team\u003c/p\u003e",
+        "bodyFormat": "PLAIN_TEXT",
+        "replyTo": "noreply"
+      },
+      "changeEmailTemplate": {
+        "senderLocalPart": "noreply",
+        "subject": "Your sign-in email was changed for %APP_NAME%",
+        "senderDisplayName": "DCL Team",
+        "body": "\u003cp\u003eHello %DISPLAY_NAME%,\u003c/p\u003e\n\u003cp\u003eYour sign-in email for %APP_NAME% was changed to %NEW_EMAIL%.\u003c/p\u003e\n\u003cp\u003eIf you didn’t ask to change your email, follow this link to reset your sign-in email.\u003c/p\u003e\n\u003cp\u003e\u003ca href='%LINK%'\u003e%LINK%\u003c/a\u003e\u003c/p\u003e\n\u003cp\u003eThanks,\u003c/p\u003e\n\u003cp\u003eYour %APP_NAME% team\u003c/p\u003e",
+        "bodyFormat": "PLAIN_TEXT",
+        "replyTo": "noreply"
+      },
+      "callbackUri": "https://{{project}}.firebaseapp.com/__/auth/action",
+      "dnsInfo": {
+        "useCustomDomain": true
+      },
+      "revertSecondFactorAdditionTemplate": {
+        "senderLocalPart": "noreply",
+        "subject": "You've added 2 step verification to your %APP_NAME% account.",
+        "senderDisplayName": "DCL Team",
+        "body": "<p>Hello %DISPLAY_NAME%,</p>\n<p>Your account in %APP_NAME% has been updated with %SECOND_FACTOR% for 2-step verification.</p>\n<p>If you didn't add this 2-step verification, click the link below to remove it.</p>\n<p><a href='%LINK%'>%LINK%</a></p>\n<p>Thanks,</p>\n<p>Your %APP_NAME% team</p>",
+        "bodyFormat": "PLAIN_TEXT",
+        "replyTo": "noreply"
+      }
+    },
+    "sendSms": {
+      "useDeviceLocale": true
+    },
+    "defaultLocale": "en"
+  },
+  "quota": {
+    "signUpQuotaConfig": {
+      "quota": 1,
+      "startTime": "2022-08-10T00:22:56.247547Z",
+      "quotaDuration": "604800s"
+    }
+  },
+  "monitoring": {
+    "requestLogging": {
+      "enabled": true
+    }
+  },
+  "multiTenant": {
+    "allowTenants": true,
+    "defaultTenantLocation": "organizations/{{org_id}}"
+  },
+  "authorizedDomains": [
+    "localhost",
+    "{{project}}.firebaseapp.com"
+  ],
+  "subtype": "IDENTITY_PLATFORM",
+  "client": {
+    "permissions": {
+      "disabledUserSignup": true,
+      "disabledUserDeletion": true
+    }
+  },
+  "mfa": {
+    "state": "ENABLED"
+  },
+  "blockingFunctions": {
+    "triggers": {
+      "beforeCreate": {
+        "functionUri": "{{ref:first.cloudfunctions.function.json:httpsTrigger.url}}"
+      }
+    }
+  }
+}

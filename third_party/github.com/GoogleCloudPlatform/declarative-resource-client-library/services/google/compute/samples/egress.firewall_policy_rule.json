@@ -1,0 +1,25 @@
+{
+  "priority": 9000,
+  "firewallPolicy": "locations/global/firewallPolicies/{{ref:folder.firewall_policy.json:name}}",
+  "description": "allow-scan-probe",
+  "match": {
+    "layer4Configs": [
+      {
+        "ipProtocol": "tcp",
+        "ports": ["123"]
+      }
+    ],
+    "destFqdns": ["wikipedia.org"],
+    "destRegionCodes": ["US"],
+    "destThreatIntelligences": ["iplist-known-malicious-ips"],
+    "destIPRanges": ["10.100.0.1/32"],
+    "srcAddressGroups": [],
+    "destAddressGroups": ["organizations/{{org_id}}/locations/global/addressGroups/{{ref:basic.networksecurity.address_group.json:name}}"]
+  },
+  "enableLogging" : false,
+  "targetServiceAccounts" : ["261421534184-compute@developer.gserviceaccount.com"],
+  "action": "deny",
+  "direction": "EGRESS",
+  "disabled" : false,
+  "targetResources": ["{{ref:first_folder.network.json:selfLink}}"]
+}

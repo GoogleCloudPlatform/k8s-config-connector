@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.14.0
+    controller-gen.kubebuilder.io/version: v0.16.5
   name: configconnectorcontexts.core.cnrm.cloud.google.com
 spec:
   group: core.cnrm.cloud.google.com
@@ -63,11 +63,38 @@ spec:
                   Specifies the project to use for preconditions, quota and billing.
                   Should only be used when requestProjectPolicy is set to BILLING_PROJECT.
                 type: string
+              experiments:
+                properties:
+                  controllerOverrides:
+                    additionalProperties:
+                      description: ReconcilerType describes the type of reconciler
+                        (controller) being used
+                      type: string
+                    description: |-
+                      ControllerOverrides allows specifying which controller to use for a given
+                      resource kind within this namespace, overriding the system default.
+                      The format for the entries should follow the format as Kind.group :
+                      e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: direct
+                    type: object
+                type: object
               googleServiceAccount:
                 description: |-
                   The Google Service Account to be used by Config Connector to
                   authenticate with Google Cloud APIs in the associated namespace.
                 type: string
+              managerNamespace:
+                description: |-
+                  ManagerNamespace instructs Config Connector to deploy
+                  controller managers and related resources in the namespace
+                  specified as 'ManagerNamespace' instead of standard 'cnrm-system'
+                  The specified manager namespace may exist before the corresponding
+                  ConfigConnectorContext is created.
+                  If the specified namespace does not exist then it will be created
+                  by Config Connector. The field is immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: ManagerNamespace field is immutable
+                  rule: self == oldSelf
               requestProjectPolicy:
                 description: |-
                   Specifies which project to use for preconditions, quota, and billing for
@@ -97,6 +124,12 @@ spec:
                 - Absent
                 - Merge
                 type: string
+              version:
+                description: |-
+                  Version specifies the exact addon version to be deployed, eg 1.2.3
+                  Only limited versions are supported; currently we are only supporting
+                  the operator version and the previous minor version.
+                type: string
             required:
             - googleServiceAccount
             type: object
@@ -110,10 +143,15 @@ spec:
                 type: array
               healthy:
                 type: boolean
+              observedGeneration:
+                default: 0
+                format: int64
+                type: integer
               phase:
                 type: string
             required:
             - healthy
+            - observedGeneration
             type: object
         required:
         - spec

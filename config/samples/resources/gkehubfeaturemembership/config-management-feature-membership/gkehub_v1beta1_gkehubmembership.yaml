@@ -19,7 +19,7 @@ metadata:
     cnrm.cloud.google.com/project-id: gkehubfeaturemembership-dep-acm
   name: gkehubfeaturemembership-dep-acm
 spec:
-  location: global
+  location: us-central1
   authority:
     # Issuer must contain a link to a valid JWT issuer. Your ContainerCluster is one.
     issuer: https://container.googleapis.com/v1/projects/gkehubfeaturemembership-dep-acm/locations/us-central1-a/clusters/gkehubfeaturemembership-dep-acm

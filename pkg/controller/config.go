@@ -15,39 +15,22 @@
 package controller
 
 import (
-	"net/http"
-
 	"github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-type Config struct {
-	UserAgent string
-
-	// UserProjectOverride provides the option to use the resource project for preconditions, quota, and billing,
-	// instead of the project the credentials belong to; false by default
-	UserProjectOverride bool
-
-	// BillingProject is the project used by the TF provider and DCL client to determine preconditions,
-	// quota, and billing if UserProjectOverride is set to true. If this field is empty,
-	// but UserProjectOverride is set to true, resource project will be used.
-	BillingProject string
-
-	// HTTPClient allows us to specify the HTTP client to use with DCL.
-	// This is particularly useful in mocks/tests.
-	HTTPClient *http.Client
-}
-
 // Common controller dependencies.
 type Deps struct {
-	TfProvider   *tfschema.Provider
-	TfLoader     *servicemappingloader.ServiceMappingLoader
-	DclConfig    *dcl.Config
-	DclConverter *conversion.Converter
-	Defaulters   []k8s.Defaulter
-	JitterGen    jitter.Generator
+	TFProvider        *tfschema.Provider
+	TFLoader          *servicemappingloader.ServiceMappingLoader
+	DCLConfig         *dcl.Config
+	DCLConverter      *conversion.Converter
+	Defaulters        []k8s.Defaulter
+	JitterGen         jitter.Generator
+	DependencyTracker *gcpwatch.DependencyTracker
 }

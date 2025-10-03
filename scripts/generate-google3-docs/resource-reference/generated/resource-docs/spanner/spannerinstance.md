@@ -91,9 +91,6 @@
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
@@ -101,8 +98,21 @@
 ### Spec
 #### Schema
 ```yaml
+autoscalingConfig:
+  autoscalingLimits:
+    maxNodes: integer
+    maxProcessingUnits: integer
+    minNodes: integer
+    minProcessingUnits: integer
+  autoscalingTargets:
+    highPriorityCpuUtilizationPercent: integer
+    storageUtilizationPercent: integer
 config: string
+defaultBackupScheduleType: string
 displayName: string
+edition: string
+labels:
+  string: string
 numNodes: integer
 processingUnits: integer
 resourceID: string
@@ -117,17 +127,121 @@ resourceID: string
 <tbody>
     <tr>
         <td>
+            <p><code>autoscalingConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Optional. The autoscaling configuration. Autoscaling is enabled if this field is set. When autoscaling is enabled, node_count and processing_units are treated as OUTPUT_ONLY fields and reflect the current compute capacity allocated to the instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>autoscalingConfig.autoscalingLimits</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Required. Autoscaling limits for an instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>autoscalingConfig.autoscalingLimits.maxNodes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Maximum number of nodes allocated to the instance. If set, this number should be greater than or equal to min_nodes.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>autoscalingConfig.autoscalingLimits.maxProcessingUnits</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Maximum number of processing units allocated to the instance. If set, this number should be multiples of 1000 and be greater than or equal to min_processing_units.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>autoscalingConfig.autoscalingLimits.minNodes</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Minimum number of nodes allocated to the instance. If set, this number should be greater than or equal to 1.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>autoscalingConfig.autoscalingLimits.minProcessingUnits</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Minimum number of processing units allocated to the instance. If set, this number should be multiples of 1000.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>autoscalingConfig.autoscalingTargets</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Required. The autoscaling targets for an instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>autoscalingConfig.autoscalingTargets.highPriorityCpuUtilizationPercent</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Required. The target high priority cpu utilization percentage that the autoscaler should be trying to achieve for the instance. This number is on a scale from 0 (no utilization) to 100 (full utilization). The valid range is [10, 90] inclusive.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>autoscalingConfig.autoscalingTargets.storageUtilizationPercent</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}Required. The target storage utilization percentage that the autoscaler should be trying to achieve for the instance. This number is on a scale from 0 (no utilization) to 100 (full utilization). The valid range is [10, 100] inclusive.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>config</code></p>
             <p><i>Required</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. The name of the instance's configuration (similar but not
-quite the same as a region) which defines the geographic placement and
-replication of your databases in this instance. It determines where your data
-is stored. Values are typically of the form 'regional-europe-west1' , 'us-central' etc.
-In order to obtain a valid list please consult the
-[Configuration section of the docs](https://cloud.google.com/spanner/docs/instances).{% endverbatim %}</p>
+            <p>{% verbatim %}Immutable. The name of the instance's configuration (similar but not quite the same as a region) which defines the geographic placement and replication of your databases in this instance. It determines where your data is stored. Values are typically of the form 'regional-europe-west1' , 'us-central' etc. In order to obtain a valid list please consult the [Configuration section of the docs](https://cloud.google.com/spanner/docs/instances).{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>defaultBackupScheduleType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Controls the default backup schedule behavior for new databases
+within the instance. By default, a backup schedule is created automatically
+when a new database is created in a new instance.
+
+Note that the `AUTOMATIC` value isn't permitted for free instances,
+as backups and backup schedules aren't supported for free instances.
+
+In the `GetInstance` or `ListInstances` response, if the value of
+`default_backup_schedule_type` isn't set, or set to `NONE`, Spanner doesn't
+create a default backup schedule for new databases in the instance.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -137,8 +251,47 @@ In order to obtain a valid list please consult the
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The descriptive name for this instance as it appears in UIs. Must be
-unique per project and between 4 and 30 characters in length.{% endverbatim %}</p>
+            <p>{% verbatim %}The descriptive name for this instance as it appears in UIs. Must be unique per project and between 4 and 30 characters in length.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>edition</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. The `Edition` of the current instance. Currently accepted values are STANDARD, ENTERPRISE, ENTERPRISE_PLUS. If edition is unspecified, it has automatically upgraded to the lowest edition that matches your usage pattern.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>labels</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">map (key: string, value: string)</code></p>
+            <p>{% verbatim %}Cloud Labels are a flexible and lightweight mechanism for organizing cloud
+resources into groups that reflect a customer's organizational needs and
+deployment strategies. Cloud Labels can be used to filter collections of
+resources. They can be used to control how resource metrics are aggregated.
+And they can be used as arguments to policy management rules (e.g. route,
+firewall, load balancing, etc.).
+
+  - Label keys must be between 1 and 63 characters long and must conform to
+    the following regular expression: `[a-z][a-z0-9_-]{0,62}`.
+  - Label values must be between 0 and 63 characters long and must conform
+    to the regular expression `[a-z0-9_-]{0,63}`.
+  - No more than 64 labels can be associated with a given resource.
+
+See https://goo.gl/xmQnxf for more information on and examples of labels.
+
+If you plan to use labels in your own code, please note that additional
+characters may be allowed in the future. And so you are advised to use an
+internal label representation, such as JSON, which doesn't rely upon
+specific characters being disallowed.  For example, representing labels
+as the string:  name + "_" + value  would prove problematic if we were to
+allow "_" in a future release.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -168,7 +321,7 @@ unique per project and between 4 and 30 characters in length.{% endverbatim %}</
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default.{% endverbatim %}</p>
+            <p>{% verbatim %}The SpannerInstance name. If not given, the metadata.name will be used.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -185,7 +338,11 @@ conditions:
   reason: string
   status: string
   type: string
+externalRef: string
 observedGeneration: integer
+observedState:
+  numNodes: integer
+  processingUnits: integer
 state: string
 ```
 
@@ -200,7 +357,7 @@ state: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the SpannerInstance's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -246,10 +403,38 @@ state: string
         </td>
     </tr>
     <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the SpannerInstance resource in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>observedGeneration</code></td>
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.numNodes</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}NumNodes and ProcessUnits is output fields with AutoScaler is set.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.processingUnits</code></td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

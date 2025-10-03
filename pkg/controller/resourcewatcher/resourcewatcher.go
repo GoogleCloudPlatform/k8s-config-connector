@@ -53,11 +53,11 @@ func NewWithClient(dynamicClient dynamic.Interface, logger logr.Logger) *Resourc
 	}
 }
 
-// WaitForResourceToBeReady waits for the resource identified by the given GVK
-// and NamespacedName. It blocks until the resource is ready, an error occurs, or a context
+// WaitForResourceToBeReadyOrDeleted waits for the resource identified by the given GVK
+// and NamespacedName. It blocks until the resource is ready or deleted, an error occurs, or a context
 // cancellation occurs. Note that a nil return value signifies that the resource is ready and
 // no errors have occurred.
-func (r *ResourceWatcher) WaitForResourceToBeReady(ctx context.Context, nn types.NamespacedName, gvk schema.GroupVersionKind) error {
+func (r *ResourceWatcher) WaitForResourceToBeReadyOrDeleted(ctx context.Context, nn types.NamespacedName, gvk schema.GroupVersionKind) error {
 	logger := r.logger.WithValues("resource", nn, "resourceGVK", gvk)
 	watch, err := r.WatchResource(ctx, nn, gvk)
 	if err != nil {
@@ -65,7 +65,7 @@ func (r *ResourceWatcher) WaitForResourceToBeReady(ctx context.Context, nn types
 	}
 	defer watch.Stop()
 	logger.Info("successfully created watch on resource")
-	return WaitForResourceToBeReadyViaWatch(ctx, watch, logger)
+	return WaitForResourceToBeReadyOrDeletedViaWatch(ctx, watch, logger)
 }
 
 // WatchResource creates a watch on a resource identified by the given GVK and NamespacedName.
@@ -79,25 +79,41 @@ func (r *ResourceWatcher) WatchResource(ctx context.Context, nn types.Namespaced
 	return watch, nil
 }
 
-// WaitForResourceToBeReadyViaWatch monitors a given 'Watch' for any
+// WaitForResourceToBeReadyOrDeletedViaWatch monitors a given 'Watch' for any
 // updates to the resource that the given 'Watch' is targeting. Note that
 // an error is returned to signify a failure during the 'Watch' process,
-// while nil is returned to signify the watched resource is ready.
-func WaitForResourceToBeReadyViaWatch(ctx context.Context, watch watch.Interface, logger logr.Logger) error {
+// while nil is returned to signify the watched resource is ready or deleted.
+func WaitForResourceToBeReadyOrDeletedViaWatch(ctx context.Context, w watch.Interface, logger logr.Logger) error {
 	for {
 		select {
 		case <-ctx.Done():
 			return fmt.Errorf("context was cancelled: %w", ctx.Err())
-		case event, ok := <-watch.ResultChan():
+		case event, ok := <-w.ResultChan():
 			if !ok {
 				return fmt.Errorf("watch channel was closed")
 			}
-			ok, reason, err := isResourceReady(event)
+			if event.Type == watch.Bookmark {
+				continue // ignore
+			}
+			if event.Type == watch.Deleted {
+				logger.Info("resource has been deleted; triggering watch completion")
+				return nil
+			}
+			if event.Type != watch.Modified && event.Type != watch.Added {
+				return fmt.Errorf("unexpected watch event type %v", event.Type)
+			}
+
+			u, ok := event.Object.(*unstructured.Unstructured)
+			if !ok {
+				return fmt.Errorf("error casting event object '%v' of kind '%v' to unstructured", event.Object, event.Object.GetObjectKind())
+			}
+
+			isReady, err := isResourceReady(u)
 			if err != nil {
 				return fmt.Errorf("error checking if resource is ready: %w", err)
 			}
-			if !ok {
-				logger.Info("resource not ready", "reason", reason)
+			if !isReady {
+				logger.Info("resource not ready")
 				continue
 			}
 			logger.Info("resource is ready")
@@ -107,27 +123,19 @@ func WaitForResourceToBeReadyViaWatch(ctx context.Context, watch watch.Interface
 }
 
 // isResourceReady returns whether a resource identified by the given GVK
-// and NamespacedName is ready. Note that a 'reason' for failure is returned only
-// when the resource is not ready and no fatal error has occurred.
-func isResourceReady(event watch.Event) (ok bool, reason string, err error) {
-	if event.Type != watch.Modified && event.Type != watch.Added {
-		return false, fmt.Sprintf("got watch event of type '%v', want event type '%v' or '%v'", event.Type, watch.Modified, watch.Added), nil
-	}
-	u, ok := event.Object.(*unstructured.Unstructured)
-	if !ok {
-		return false, "", fmt.Errorf("error casting event object '%v' of kind '%v' to unstructured", event.Object, event.Object.GetObjectKind())
-	}
+// and NamespacedName is ready.
+func isResourceReady(u *unstructured.Unstructured) (isReady bool, err error) {
 	resource, err := k8s.NewResource(u)
 	if err != nil {
-		return false, "", fmt.Errorf("error converting unstructured to resource: %w", err)
+		return false, fmt.Errorf("error converting unstructured to resource: %w", err)
 	}
 	// Secrets don't have a 'ready' condition. As long as they can be
 	// found on the API server, we consider them ready as resources.
 	if resource.Kind == "Secret" {
-		return true, "", nil
+		return true, nil
 	}
 	if !k8s.IsResourceReady(resource) {
-		return false, "resource not ready", nil
+		return false, nil
 	}
-	return true, "", nil
+	return true, nil
 }

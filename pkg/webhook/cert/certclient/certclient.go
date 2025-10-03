@@ -83,7 +83,7 @@ func certWriterFromOptsOrNew(opts Options) (writer.CertWriter, error) {
 	return certWriter, nil
 }
 
-func (c *CertClient) RefreshCertsAndInstall() error {
+func (c *CertClient) RefreshCertsAndInstall(ctx context.Context) error {
 	_, err := c.provisioner.Provision(provisioner.Options{
 		ClientConfig: &admissionregistration.WebhookClientConfig{
 			CABundle: []byte{},
@@ -98,7 +98,7 @@ func (c *CertClient) RefreshCertsAndInstall() error {
 		return fmt.Errorf("error provisioning certs: %w", err)
 	}
 	objects := append([]client.Object{c.svc}, c.webhookManifests...)
-	return batchCreateOrReplace(c.kubeClient, objects...)
+	return batchCreateOrReplace(ctx, c.kubeClient, objects...)
 }
 
 func (c *CertClient) Start(ctx context.Context) error {
@@ -106,7 +106,7 @@ func (c *CertClient) Start(ctx context.Context) error {
 	for {
 		select {
 		case <-timer:
-			if err := c.RefreshCertsAndInstall(); err != nil {
+			if err := c.RefreshCertsAndInstall(ctx); err != nil {
 				return fmt.Errorf("error refreshing certs: %w", err)
 			}
 
@@ -158,30 +158,34 @@ var genericFn = func(current, desired *client.Object) error {
 // createOrReplaceHelper creates the object if it doesn't exist;
 // otherwise, it will replace it.
 // When replacing, fn  should know how to preserve existing fields in the object GET from the APIServer.
-func createOrReplaceHelper(c client.Client, obj client.Object, fn mutateFn) error {
+func createOrReplaceHelper(ctx context.Context, c client.Client, obj client.Object, fn mutateFn) error {
 	if obj == nil {
 		return nil
 	}
-	err := c.Create(context.Background(), obj)
-	if apierrors.IsAlreadyExists(err) {
-		// TODO: retry mutiple times with backoff if necessary.
-		// this cast is not safe per-say but is added to get around the transition from runtime.Object to client.Object
-		existing, ok := obj.DeepCopyObject().(client.Object)
-		if !ok {
-			return fmt.Errorf("unable to cast deep copy to client.Object")
-		}
-		objectKey := client.ObjectKeyFromObject(obj)
-		err = c.Get(context.Background(), objectKey, existing)
-		if err != nil {
-			return err
-		}
-		err = fn(&existing, &obj)
-		if err != nil {
-			return err
-		}
-		return c.Update(context.Background(), existing)
+
+	objectKey := client.ObjectKeyFromObject(obj)
+
+	// this cast is not safe per-se but is added to get around the transition from runtime.Object to client.Object
+	existing, ok := obj.DeepCopyObject().(client.Object)
+	if !ok {
+		return fmt.Errorf("unable to cast deep copy %T to client.Object", obj)
 	}
-	return err
+
+	// NOTE: create *before* get does not always work for services.
+	// For services, if we are out of clusterIPs, then the create fails (with an error that is not NotFound)
+
+	if err := c.Get(ctx, objectKey, existing); err != nil {
+		if apierrors.IsNotFound(err) {
+			return c.Create(ctx, obj)
+		}
+		return err
+	}
+
+	if err := fn(&existing, &obj); err != nil {
+		return err
+	}
+
+	return c.Update(context.Background(), existing)
 }
 
 // createOrReplace creates the object if it doesn't exist;
@@ -189,27 +193,29 @@ func createOrReplaceHelper(c client.Client, obj client.Object, fn mutateFn) erro
 // When replacing, it knows how to preserve existing fields in the object GET from the APIServer.
 // It currently only support MutatingWebhookConfiguration, ValidatingWebhookConfiguration and Service.
 // For other kinds, it uses genericFn to replace the whole object.
-func createOrReplace(c client.Client, obj client.Object) error {
+func createOrReplace(ctx context.Context, c client.Client, obj client.Object) error {
 	if obj == nil {
 		return nil
 	}
 	switch obj.(type) {
 	case *admissionregistration.MutatingWebhookConfiguration:
-		return createOrReplaceHelper(c, obj, mutatingWebhookConfigFn)
+		return createOrReplaceHelper(ctx, c, obj, mutatingWebhookConfigFn)
 	case *admissionregistration.ValidatingWebhookConfiguration:
-		return createOrReplaceHelper(c, obj, validatingWebhookConfigFn)
+		return createOrReplaceHelper(ctx, c, obj, validatingWebhookConfigFn)
 	case *corev1.Service:
-		return createOrReplaceHelper(c, obj, serviceFn)
+		return createOrReplaceHelper(ctx, c, obj, serviceFn)
 	default:
-		return createOrReplaceHelper(c, obj, genericFn)
+		return createOrReplaceHelper(ctx, c, obj, genericFn)
 	}
 }
 
-func batchCreateOrReplace(c client.Client, objs ...client.Object) error {
+func batchCreateOrReplace(ctx context.Context, c client.Client, objs ...client.Object) error {
 	for i := range objs {
-		err := createOrReplace(c, objs[i])
+		obj := objs[i]
+		// TODO: We really should be using apply
+		err := createOrReplace(ctx, c, obj)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to apply object %T %v: %w", obj, obj.GetName(), err)
 		}
 	}
 	return nil

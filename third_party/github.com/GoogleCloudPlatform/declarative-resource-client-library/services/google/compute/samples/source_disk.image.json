@@ -1,0 +1,9 @@
+{
+  "name": "{{image}}",
+  "project": "{{project}}",
+  "description": "A sample image",
+  "sourceDisk": "{{ref:zonal.disk.json:selfLink}}",
+  "sourceDiskEncryptionKey": {
+    "rawKey": "{{ref:zonal.disk.json:diskEncryptionKey.rawKey}}"
+  }
+}

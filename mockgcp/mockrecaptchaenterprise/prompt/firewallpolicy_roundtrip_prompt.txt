@@ -1,0 +1,6 @@
+Please add the services in `mockrecaptchaenterprise` to `mock_http_roundtrip.go`
+
+* Use the ReadFile command to read the contents of the file.
+* Use the EditFile command to insert mockrecaptchaenterprise into the list of services.
+* Please keep the list of services in alphabetical order.
+* Don't forget to import the package!

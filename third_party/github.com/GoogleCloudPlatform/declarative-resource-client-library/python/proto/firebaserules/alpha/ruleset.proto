@@ -1,0 +1,78 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum FirebaserulesAlphaRulesetSourceLanguageEnum {
+  FirebaserulesAlphaRulesetSourceLanguageEnumNO_VALUE_DO_NOT_USE = 0;
+  FirebaserulesAlphaRulesetSourceLanguageEnumLANGUAGE_UNSPECIFIED = 1;
+  FirebaserulesAlphaRulesetSourceLanguageEnumFIREBASE_RULES = 2;
+  FirebaserulesAlphaRulesetSourceLanguageEnumEVENT_FLOW_TRIGGERS = 3;
+}
+
+message FirebaserulesAlphaRuleset {
+  string name = 1;
+  FirebaserulesAlphaRulesetSource source = 2;
+  string create_time = 3;
+  FirebaserulesAlphaRulesetMetadata metadata = 4;
+  string project = 5;
+}
+
+message FirebaserulesAlphaRulesetSource {
+  repeated FirebaserulesAlphaRulesetSourceFiles files = 1;
+  FirebaserulesAlphaRulesetSourceLanguageEnum language = 2;
+}
+
+message FirebaserulesAlphaRulesetSourceFiles {
+  string content = 1;
+  string name = 2;
+  string fingerprint = 3;
+}
+
+message FirebaserulesAlphaRulesetMetadata {
+  repeated string services = 1;
+}
+
+message ApplyFirebaserulesAlphaRulesetRequest {
+  FirebaserulesAlphaRuleset resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteFirebaserulesAlphaRulesetRequest {
+  string service_account_file = 1;
+  FirebaserulesAlphaRuleset resource = 2;
+}
+
+message ListFirebaserulesAlphaRulesetRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListFirebaserulesAlphaRulesetResponse {
+  repeated FirebaserulesAlphaRuleset items = 1;
+}
+
+service FirebaserulesAlphaRulesetService {
+  rpc ApplyFirebaserulesAlphaRuleset(ApplyFirebaserulesAlphaRulesetRequest) returns (FirebaserulesAlphaRuleset);
+  rpc DeleteFirebaserulesAlphaRuleset(DeleteFirebaserulesAlphaRulesetRequest) returns (google.protobuf.Empty);
+  rpc ListFirebaserulesAlphaRuleset(ListFirebaserulesAlphaRulesetRequest) returns (ListFirebaserulesAlphaRulesetResponse);
+}

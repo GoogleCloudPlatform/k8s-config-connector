@@ -30,7 +30,7 @@
 
 // Package v1alpha1 contains API Schema definitions for the k8s v1alpha1 API group
 // +k8s:openapi-gen=false
-// +k8s:deepcopy-gen=
+// +k8s:deepcopy-gen=package,register
 // +k8s:conversion-gen=github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s
 // +k8s:defaulter-gen=TypeMeta
 // +groupName=k8s.cnrm.cloud.google.com

@@ -39,6 +39,8 @@ type DatasetServiceClient interface {
 	ExportData(ctx context.Context, in *ExportDataRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Create a version from a Dataset.
 	CreateDatasetVersion(ctx context.Context, in *CreateDatasetVersionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Updates a DatasetVersion.
+	UpdateDatasetVersion(ctx context.Context, in *UpdateDatasetVersionRequest, opts ...grpc.CallOption) (*DatasetVersion, error)
 	// Deletes a Dataset version.
 	DeleteDatasetVersion(ctx context.Context, in *DeleteDatasetVersionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Gets a Dataset version.
@@ -57,8 +59,14 @@ type DatasetServiceClient interface {
 	DeleteSavedQuery(ctx context.Context, in *DeleteSavedQueryRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 	// Gets an AnnotationSpec.
 	GetAnnotationSpec(ctx context.Context, in *GetAnnotationSpecRequest, opts ...grpc.CallOption) (*AnnotationSpec, error)
-	// Lists Annotations belongs to a dataitem
+	// Lists Annotations belongs to a dataitem.
 	ListAnnotations(ctx context.Context, in *ListAnnotationsRequest, opts ...grpc.CallOption) (*ListAnnotationsResponse, error)
+	// Assesses the state or validity of the dataset with respect to a given use
+	// case.
+	AssessData(ctx context.Context, in *AssessDataRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
+	// Assembles each row of a multimodal dataset and writes the result into a
+	// BigQuery table.
+	AssembleData(ctx context.Context, in *AssembleDataRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error)
 }
 
 type datasetServiceClient struct {
@@ -135,6 +143,15 @@ func (c *datasetServiceClient) ExportData(ctx context.Context, in *ExportDataReq
 func (c *datasetServiceClient) CreateDatasetVersion(ctx context.Context, in *CreateDatasetVersionRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
 	out := new(longrunningpb.Operation)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.aiplatform.v1beta1.DatasetService/CreateDatasetVersion", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *datasetServiceClient) UpdateDatasetVersion(ctx context.Context, in *UpdateDatasetVersionRequest, opts ...grpc.CallOption) (*DatasetVersion, error) {
+	out := new(DatasetVersion)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.aiplatform.v1beta1.DatasetService/UpdateDatasetVersion", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -231,6 +248,24 @@ func (c *datasetServiceClient) ListAnnotations(ctx context.Context, in *ListAnno
 	return out, nil
 }
 
+func (c *datasetServiceClient) AssessData(ctx context.Context, in *AssessDataRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.aiplatform.v1beta1.DatasetService/AssessData", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *datasetServiceClient) AssembleData(ctx context.Context, in *AssembleDataRequest, opts ...grpc.CallOption) (*longrunningpb.Operation, error) {
+	out := new(longrunningpb.Operation)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.aiplatform.v1beta1.DatasetService/AssembleData", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DatasetServiceServer is the server API for DatasetService service.
 // All implementations must embed UnimplementedDatasetServiceServer
 // for forward compatibility
@@ -251,6 +286,8 @@ type DatasetServiceServer interface {
 	ExportData(context.Context, *ExportDataRequest) (*longrunningpb.Operation, error)
 	// Create a version from a Dataset.
 	CreateDatasetVersion(context.Context, *CreateDatasetVersionRequest) (*longrunningpb.Operation, error)
+	// Updates a DatasetVersion.
+	UpdateDatasetVersion(context.Context, *UpdateDatasetVersionRequest) (*DatasetVersion, error)
 	// Deletes a Dataset version.
 	DeleteDatasetVersion(context.Context, *DeleteDatasetVersionRequest) (*longrunningpb.Operation, error)
 	// Gets a Dataset version.
@@ -269,8 +306,14 @@ type DatasetServiceServer interface {
 	DeleteSavedQuery(context.Context, *DeleteSavedQueryRequest) (*longrunningpb.Operation, error)
 	// Gets an AnnotationSpec.
 	GetAnnotationSpec(context.Context, *GetAnnotationSpecRequest) (*AnnotationSpec, error)
-	// Lists Annotations belongs to a dataitem
+	// Lists Annotations belongs to a dataitem.
 	ListAnnotations(context.Context, *ListAnnotationsRequest) (*ListAnnotationsResponse, error)
+	// Assesses the state or validity of the dataset with respect to a given use
+	// case.
+	AssessData(context.Context, *AssessDataRequest) (*longrunningpb.Operation, error)
+	// Assembles each row of a multimodal dataset and writes the result into a
+	// BigQuery table.
+	AssembleData(context.Context, *AssembleDataRequest) (*longrunningpb.Operation, error)
 	mustEmbedUnimplementedDatasetServiceServer()
 }
 
@@ -302,6 +345,9 @@ func (UnimplementedDatasetServiceServer) ExportData(context.Context, *ExportData
 func (UnimplementedDatasetServiceServer) CreateDatasetVersion(context.Context, *CreateDatasetVersionRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateDatasetVersion not implemented")
 }
+func (UnimplementedDatasetServiceServer) UpdateDatasetVersion(context.Context, *UpdateDatasetVersionRequest) (*DatasetVersion, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateDatasetVersion not implemented")
+}
 func (UnimplementedDatasetServiceServer) DeleteDatasetVersion(context.Context, *DeleteDatasetVersionRequest) (*longrunningpb.Operation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteDatasetVersion not implemented")
 }
@@ -331,6 +377,12 @@ func (UnimplementedDatasetServiceServer) GetAnnotationSpec(context.Context, *Get
 }
 func (UnimplementedDatasetServiceServer) ListAnnotations(context.Context, *ListAnnotationsRequest) (*ListAnnotationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListAnnotations not implemented")
+}
+func (UnimplementedDatasetServiceServer) AssessData(context.Context, *AssessDataRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AssessData not implemented")
+}
+func (UnimplementedDatasetServiceServer) AssembleData(context.Context, *AssembleDataRequest) (*longrunningpb.Operation, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AssembleData not implemented")
 }
 func (UnimplementedDatasetServiceServer) mustEmbedUnimplementedDatasetServiceServer() {}
 
@@ -485,6 +537,24 @@ func _DatasetService_CreateDatasetVersion_Handler(srv interface{}, ctx context.C
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DatasetServiceServer).CreateDatasetVersion(ctx, req.(*CreateDatasetVersionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DatasetService_UpdateDatasetVersion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateDatasetVersionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DatasetServiceServer).UpdateDatasetVersion(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.aiplatform.v1beta1.DatasetService/UpdateDatasetVersion",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DatasetServiceServer).UpdateDatasetVersion(ctx, req.(*UpdateDatasetVersionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -669,6 +739,42 @@ func _DatasetService_ListAnnotations_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DatasetService_AssessData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssessDataRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DatasetServiceServer).AssessData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.aiplatform.v1beta1.DatasetService/AssessData",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DatasetServiceServer).AssessData(ctx, req.(*AssessDataRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DatasetService_AssembleData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssembleDataRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DatasetServiceServer).AssembleData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.aiplatform.v1beta1.DatasetService/AssembleData",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DatasetServiceServer).AssembleData(ctx, req.(*AssembleDataRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DatasetService_ServiceDesc is the grpc.ServiceDesc for DatasetService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -709,6 +815,10 @@ var DatasetService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _DatasetService_CreateDatasetVersion_Handler,
 		},
 		{
+			MethodName: "UpdateDatasetVersion",
+			Handler:    _DatasetService_UpdateDatasetVersion_Handler,
+		},
+		{
 			MethodName: "DeleteDatasetVersion",
 			Handler:    _DatasetService_DeleteDatasetVersion_Handler,
 		},
@@ -747,6 +857,14 @@ var DatasetService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListAnnotations",
 			Handler:    _DatasetService_ListAnnotations_Handler,
+		},
+		{
+			MethodName: "AssessData",
+			Handler:    _DatasetService_AssessData_Handler,
+		},
+		{
+			MethodName: "AssembleData",
+			Handler:    _DatasetService_AssembleData_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

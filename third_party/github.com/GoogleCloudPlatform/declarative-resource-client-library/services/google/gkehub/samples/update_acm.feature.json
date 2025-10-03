@@ -1,0 +1,9 @@
+{
+  "name": "configmanagement",
+  "project": "{{ref:anthosconfigmanagement.serviceusage.service.json:project}}",
+  "location": "global",
+  "labels": {
+    "label-two": "value-two"
+  },
+  "spec": {}
+}

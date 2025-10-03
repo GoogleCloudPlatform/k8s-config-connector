@@ -1,0 +1,135 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeAutoscalerAutoscalingPolicyCustomMetricUtilizationsUtilizationTargetTypeEnum {
+  ComputeAutoscalerAutoscalingPolicyCustomMetricUtilizationsUtilizationTargetTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAutoscalerAutoscalingPolicyCustomMetricUtilizationsUtilizationTargetTypeEnumGAUGE = 1;
+  ComputeAutoscalerAutoscalingPolicyCustomMetricUtilizationsUtilizationTargetTypeEnumDELTA_PER_SECOND = 2;
+  ComputeAutoscalerAutoscalingPolicyCustomMetricUtilizationsUtilizationTargetTypeEnumDELTA_PER_MINUTE = 3;
+}
+
+enum ComputeAutoscalerAutoscalingPolicyModeEnum {
+  ComputeAutoscalerAutoscalingPolicyModeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAutoscalerAutoscalingPolicyModeEnumOFF = 1;
+  ComputeAutoscalerAutoscalingPolicyModeEnumON = 2;
+  ComputeAutoscalerAutoscalingPolicyModeEnumONLY_SCALE_OUT = 3;
+  ComputeAutoscalerAutoscalingPolicyModeEnumONLY_UP = 4;
+}
+
+enum ComputeAutoscalerStatusEnum {
+  ComputeAutoscalerStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAutoscalerStatusEnumPENDING = 1;
+  ComputeAutoscalerStatusEnumRUNNING = 2;
+  ComputeAutoscalerStatusEnumDONE = 3;
+}
+
+enum ComputeAutoscalerStatusDetailsTypeEnum {
+  ComputeAutoscalerStatusDetailsTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAutoscalerStatusDetailsTypeEnumPATH = 1;
+  ComputeAutoscalerStatusDetailsTypeEnumOTHER = 2;
+  ComputeAutoscalerStatusDetailsTypeEnumPARAMETER = 3;
+}
+
+message ComputeAutoscaler {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string target = 4;
+  ComputeAutoscalerAutoscalingPolicy autoscaling_policy = 5;
+  string zone = 6;
+  string region = 7;
+  string self_link = 8;
+  ComputeAutoscalerStatusEnum status = 9;
+  repeated ComputeAutoscalerStatusDetails status_details = 10;
+  int64 recommended_size = 11;
+  string self_link_with_id = 12;
+  map<string, string> scaling_schedule_status = 13;
+  string project = 14;
+  string creation_timestamp = 15;
+  string location = 16;
+}
+
+message ComputeAutoscalerAutoscalingPolicy {
+  int64 min_num_replicas = 1;
+  int64 max_num_replicas = 2;
+  ComputeAutoscalerAutoscalingPolicyScaleInControl scale_in_control = 3;
+  int64 cool_down_period_sec = 4;
+  ComputeAutoscalerAutoscalingPolicyCpuUtilization cpu_utilization = 5;
+  repeated ComputeAutoscalerAutoscalingPolicyCustomMetricUtilizations custom_metric_utilizations = 6;
+  ComputeAutoscalerAutoscalingPolicyLoadBalancingUtilization load_balancing_utilization = 7;
+  ComputeAutoscalerAutoscalingPolicyModeEnum mode = 8;
+}
+
+message ComputeAutoscalerAutoscalingPolicyScaleInControl {
+  ComputeAutoscalerAutoscalingPolicyScaleInControlMaxScaledInReplicas max_scaled_in_replicas = 1;
+  int64 time_window_sec = 2;
+}
+
+message ComputeAutoscalerAutoscalingPolicyScaleInControlMaxScaledInReplicas {
+  int64 fixed = 1;
+  int64 percent = 2;
+  int64 calculated = 3;
+}
+
+message ComputeAutoscalerAutoscalingPolicyCpuUtilization {
+  double utilization_target = 1;
+}
+
+message ComputeAutoscalerAutoscalingPolicyCustomMetricUtilizations {
+  string metric = 1;
+  double utilization_target = 2;
+  ComputeAutoscalerAutoscalingPolicyCustomMetricUtilizationsUtilizationTargetTypeEnum utilization_target_type = 3;
+}
+
+message ComputeAutoscalerAutoscalingPolicyLoadBalancingUtilization {
+  double utilization_target = 1;
+}
+
+message ComputeAutoscalerStatusDetails {
+  string message = 1;
+  ComputeAutoscalerStatusDetailsTypeEnum type = 2;
+}
+
+message ApplyComputeAutoscalerRequest {
+  ComputeAutoscaler resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeAutoscalerRequest {
+  string service_account_file = 1;
+  ComputeAutoscaler resource = 2;
+}
+
+message ListComputeAutoscalerRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComputeAutoscalerResponse {
+  repeated ComputeAutoscaler items = 1;
+}
+
+service ComputeAutoscalerService {
+  rpc ApplyComputeAutoscaler(ApplyComputeAutoscalerRequest) returns (ComputeAutoscaler);
+  rpc DeleteComputeAutoscaler(DeleteComputeAutoscalerRequest) returns (google.protobuf.Empty);
+  rpc ListComputeAutoscaler(ListComputeAutoscalerRequest) returns (ListComputeAutoscalerResponse);
+}

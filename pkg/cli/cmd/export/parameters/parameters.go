@@ -15,7 +15,13 @@
 package parameters
 
 import (
+	"context"
+	"net/http"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/commonparams"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	"golang.org/x/oauth2"
 )
 
 type Parameters struct {
@@ -29,6 +35,26 @@ type Parameters struct {
 	ResourceFormat string
 	URI            string
 	Verbose        bool
+
+	// HTTPClient allows for overriding the default HTTP Client
+	HTTPClient *http.Client
+}
+
+func (p *Parameters) NewControllerConfig(ctx context.Context) (*config.ControllerConfig, error) {
+	c := &config.ControllerConfig{
+		HTTPClient: p.HTTPClient,
+		UserAgent:  gcp.KCCUserAgent(),
+	}
+	if p.GCPAccessToken != "" {
+		c.GCPTokenSource = oauth2.StaticTokenSource(
+			&oauth2.Token{AccessToken: p.GCPAccessToken},
+		)
+	}
+
+	if err := c.Init(ctx); err != nil {
+		return nil, err
+	}
+	return c, nil
 }
 
 func Validate(p *Parameters) error {

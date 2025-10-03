@@ -1,0 +1,61 @@
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubFeatureMembership
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: gkehubfeaturemembership-full-poco-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  featureRef:
+    name: gkehubfeature-full-poco-${uniqueId}
+  location: global
+  membershipLocation: us-west1
+  membershipRef:
+    name: gkehubmembership-full-poco-${uniqueId}
+  policycontroller:
+    policyControllerHubConfig:
+      auditIntervalSeconds: 15
+      constraintViolationLimit: 25
+      deploymentConfigs:
+        mutation:
+          containerResources:
+            limits:
+              cpu: "1"
+              memory: 2000Mi
+            requests:
+              cpu: 100m
+              memory: 20Mi
+          podAffinity: ANTI_AFFINITY
+          podTolerations:
+          - effect: NoSchedule
+            key: foo
+            operator: Equal
+            value: admission
+          replicaCount: 1
+      exemptableNamespaces:
+      - test-namespace-two
+      installSpec: INSTALL_SPEC_SUSPENDED
+      logDeniesEnabled: true
+      monitoring:
+        backends:
+        - CLOUD_MONITORING
+      mutationEnabled: true
+      policyContent:
+        templateLibrary:
+          installation: ALL
+      referentialRulesEnabled: true
+    version: 1.21.0
+  projectRef:
+    name: gkehubfm-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 2

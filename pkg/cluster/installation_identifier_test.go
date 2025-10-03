@@ -98,7 +98,7 @@ func testDeleteNamespaceID(t *testing.T, mgr manager.Manager) {
 	}
 
 	if val, ok := configMap.Data[namespaceName]; ok {
-		t.Fatalf("error checking deleted namespace, upexpected value from configmap '%v': %v", namespaceName, val)
+		t.Fatalf("error checking deleted namespace, unexpected value from configmap '%v': %v", namespaceName, val)
 	}
 }
 

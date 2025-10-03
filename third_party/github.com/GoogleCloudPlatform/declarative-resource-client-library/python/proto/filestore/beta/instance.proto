@@ -1,0 +1,127 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum FilestoreBetaInstanceStateEnum {
+  FilestoreBetaInstanceStateEnumNO_VALUE_DO_NOT_USE = 0;
+  FilestoreBetaInstanceStateEnumSTATE_UNSPECIFIED = 1;
+  FilestoreBetaInstanceStateEnumCREATING = 2;
+  FilestoreBetaInstanceStateEnumREADY = 3;
+  FilestoreBetaInstanceStateEnumREPAIRING = 4;
+  FilestoreBetaInstanceStateEnumDELETING = 5;
+  FilestoreBetaInstanceStateEnumERROR = 6;
+}
+
+enum FilestoreBetaInstanceTierEnum {
+  FilestoreBetaInstanceTierEnumNO_VALUE_DO_NOT_USE = 0;
+  FilestoreBetaInstanceTierEnumTIER_UNSPECIFIED = 1;
+  FilestoreBetaInstanceTierEnumSTANDARD = 2;
+  FilestoreBetaInstanceTierEnumPREMIUM = 3;
+  FilestoreBetaInstanceTierEnumBASIC_HDD = 4;
+  FilestoreBetaInstanceTierEnumBASIC_SSD = 5;
+  FilestoreBetaInstanceTierEnumHIGH_SCALE_SSD = 6;
+  FilestoreBetaInstanceTierEnumENTERPRISE = 7;
+}
+
+enum FilestoreBetaInstanceFileSharesNfsExportOptionsAccessModeEnum {
+  FilestoreBetaInstanceFileSharesNfsExportOptionsAccessModeEnumNO_VALUE_DO_NOT_USE = 0;
+  FilestoreBetaInstanceFileSharesNfsExportOptionsAccessModeEnumACCESS_MODE_UNSPECIFIED = 1;
+  FilestoreBetaInstanceFileSharesNfsExportOptionsAccessModeEnumREAD_ONLY = 2;
+  FilestoreBetaInstanceFileSharesNfsExportOptionsAccessModeEnumREAD_WRITE = 3;
+}
+
+enum FilestoreBetaInstanceFileSharesNfsExportOptionsSquashModeEnum {
+  FilestoreBetaInstanceFileSharesNfsExportOptionsSquashModeEnumNO_VALUE_DO_NOT_USE = 0;
+  FilestoreBetaInstanceFileSharesNfsExportOptionsSquashModeEnumSQUASH_MODE_UNSPECIFIED = 1;
+  FilestoreBetaInstanceFileSharesNfsExportOptionsSquashModeEnumNO_ROOT_SQUASH = 2;
+  FilestoreBetaInstanceFileSharesNfsExportOptionsSquashModeEnumROOT_SQUASH = 3;
+}
+
+enum FilestoreBetaInstanceNetworksModesEnum {
+  FilestoreBetaInstanceNetworksModesEnumNO_VALUE_DO_NOT_USE = 0;
+  FilestoreBetaInstanceNetworksModesEnumADDRESS_MODE_UNSPECIFIED = 1;
+  FilestoreBetaInstanceNetworksModesEnumMODE_IPV4 = 2;
+}
+
+message FilestoreBetaInstance {
+  string name = 1;
+  string description = 2;
+  FilestoreBetaInstanceStateEnum state = 3;
+  string status_message = 4;
+  string create_time = 5;
+  FilestoreBetaInstanceTierEnum tier = 6;
+  map<string, string> labels = 7;
+  repeated FilestoreBetaInstanceFileShares file_shares = 8;
+  repeated FilestoreBetaInstanceNetworks networks = 9;
+  string etag = 10;
+  string project = 11;
+  string location = 12;
+}
+
+message FilestoreBetaInstanceFileShares {
+  string name = 1;
+  int64 capacity_gb = 2;
+  string source_backup = 3;
+  repeated FilestoreBetaInstanceFileSharesNfsExportOptions nfs_export_options = 4;
+}
+
+message FilestoreBetaInstanceFileSharesNfsExportOptions {
+  repeated string ip_ranges = 1;
+  FilestoreBetaInstanceFileSharesNfsExportOptionsAccessModeEnum access_mode = 2;
+  FilestoreBetaInstanceFileSharesNfsExportOptionsSquashModeEnum squash_mode = 3;
+  int64 anon_uid = 4;
+  int64 anon_gid = 5;
+}
+
+message FilestoreBetaInstanceNetworks {
+  string network = 1;
+  repeated FilestoreBetaInstanceNetworksModesEnum modes = 2;
+  string reserved_ip_range = 3;
+  repeated string ip_addresses = 4;
+}
+
+message ApplyFilestoreBetaInstanceRequest {
+  FilestoreBetaInstance resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteFilestoreBetaInstanceRequest {
+  string service_account_file = 1;
+  FilestoreBetaInstance resource = 2;
+}
+
+message ListFilestoreBetaInstanceRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListFilestoreBetaInstanceResponse {
+  repeated FilestoreBetaInstance items = 1;
+}
+
+service FilestoreBetaInstanceService {
+  rpc ApplyFilestoreBetaInstance(ApplyFilestoreBetaInstanceRequest) returns (FilestoreBetaInstance);
+  rpc DeleteFilestoreBetaInstance(DeleteFilestoreBetaInstanceRequest) returns (google.protobuf.Empty);
+  rpc ListFilestoreBetaInstance(ListFilestoreBetaInstanceRequest) returns (ListFilestoreBetaInstanceResponse);
+}

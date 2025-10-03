@@ -1,5 +1,0 @@
-serviceusage.cnrm.cloud.google.com/v1beta1, Kind=ServiceIdentity
-kms.cnrm.cloud.google.com/v1beta1, Kind=KMSKeyRing
-kms.cnrm.cloud.google.com/v1beta1, Kind=KMSCryptoKey
-iam.cnrm.cloud.google.com/v1beta1, Kind=IAMPolicyMember
-sql.cnrm.cloud.google.com/v1beta1, Kind=SQLInstance

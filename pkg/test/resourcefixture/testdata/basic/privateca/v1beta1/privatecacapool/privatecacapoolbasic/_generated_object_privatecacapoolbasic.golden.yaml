@@ -1,0 +1,112 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: privateca.cnrm.cloud.google.com/v1beta1
+kind: PrivateCACAPool
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+    label-one: value-one
+    label-two: value-two
+  name: privatecacapool-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  issuancePolicy:
+    allowedIssuanceModes:
+      allowConfigBasedIssuance: true
+      allowCsrBasedIssuance: false
+    allowedKeyTypes:
+    - rsa:
+        maxModulusSize: 256
+        minModulusSize: 128
+    - ellipticCurve:
+        signatureAlgorithm: ECDSA_P256
+    baselineValues:
+      additionalExtensions:
+      - critical: true
+        objectId:
+          objectIdPath:
+          - 1
+          - 6
+        value: bmV3LXN0cmluZwo=
+      aiaOcspServers:
+      - new-string
+      caOptions:
+        isCa: true
+        maxIssuerPathLength: 6
+      keyUsage:
+        baseKeyUsage:
+          certSign: true
+          contentCommitment: true
+          crlSign: true
+          dataEncipherment: true
+          decipherOnly: true
+          digitalSignature: true
+          encipherOnly: true
+          keyAgreement: true
+          keyEncipherment: true
+        extendedKeyUsage:
+          clientAuth: true
+          codeSigning: true
+          emailProtection: true
+          ocspSigning: true
+          serverAuth: true
+          timeStamping: true
+        unknownExtendedKeyUsages:
+        - objectIdPath:
+          - 1
+          - 6
+      policyIds:
+      - objectIdPath:
+        - 1
+        - 6
+    identityConstraints:
+      allowSubjectAltNamesPassthrough: true
+      allowSubjectPassthrough: true
+      celExpression:
+        description: Always true
+        expression: "true"
+        location: update_devops.ca_pool.json
+        title: Updated expression
+    maximumLifetime: 86400s
+    passthroughExtensions:
+      additionalExtensions:
+      - objectIdPath:
+        - 1
+        - 6
+      knownExtensions:
+      - EXTENDED_KEY_USAGE
+  location: us-central1
+  projectRef:
+    external: projects/${projectId}
+  publishingOptions:
+    publishCaCert: true
+    publishCrl: true
+  resourceID: privatecacapool-${uniqueId}
+  tier: ENTERPRISE
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 3

@@ -1,0 +1,39 @@
+{
+  "name": "{{_routine}}",
+  "project": "{{project}}",
+  "dataset": "{{ref:basic.dataset.json:name}}",
+  "routineType": "SCALAR_FUNCTION",
+  "language": "JAVASCRIPT",
+  "arguments": [
+    {
+      "name": "x",
+      "argumentKind": "FIXED_TYPE",
+      "dataType": {
+        "typeKind": "FLOAT64"
+      }
+    },
+    {
+      "name": "y",
+      "dataType": {
+        "typeKind": "STRUCT",
+        "structType": {
+          "fields": [
+            {
+              "name": "z",
+              "type": {
+                "typeKind": "FLOAT64"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "returnType": {
+    "typeKind": "FLOAT64"
+  },
+  "importedLibraries": ["sample-library"],
+  "definitionBody": "CREATE FUNCTION multiplyInputs return x*y.z;",
+  "description": "A sample javascript routine",
+  "determinismLevel": "DETERMINISTIC"
+}

@@ -1,0 +1,5 @@
+
+- exec: gcloud alpha monitoring policies create --display-name="Test Policy ${uniqueId}" --user-labels=kcctestid=${uniqueId} --policy-from-file=high-cpu-usage.json --project=${projectId}
+- exec: gcloud alpha monitoring policies describe $(gcloud alpha monitoring policies list --filter='userLabels.kcctestid=${uniqueId}' --format='value(name)' --project=${projectId} ) --project=${projectId}
+- exec: gcloud alpha monitoring policies update $(gcloud alpha monitoring policies list --filter='userLabels.kcctestid=${uniqueId}' --format='value(name)' --project=${projectId} ) --display-name="Updated Test Policy ${uniqueId}" --project=${projectId}
+- exec: gcloud alpha monitoring policies delete $(gcloud alpha monitoring policies list --filter='userLabels.kcctestid=${uniqueId}' --format='value(name)' --project=${projectId} ) --project=${projectId} --quiet

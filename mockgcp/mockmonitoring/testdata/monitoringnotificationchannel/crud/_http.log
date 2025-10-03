@@ -1,0 +1,221 @@
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "description": "Test Channel Description",
+  "displayName": "Test Channel ${uniqueId}",
+  "labels": {
+    "email_address": "test-${uniqueId}@example.com"
+  },
+  "type": "email"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "description": "Test Channel Description",
+  "displayName": "Test Channel ${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "test-${uniqueId}@example.com"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "email"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "notificationChannels": [
+    {
+      "creationRecord": {
+        "mutateTime": "2024-04-01T12:34:56.123456Z"
+      },
+      "description": "Test Channel Description",
+      "displayName": "Test Channel ${uniqueId}",
+      "enabled": true,
+      "labels": {
+        "email_address": "test-${uniqueId}@example.com"
+      },
+      "mutationRecords": [
+        {
+          "mutateTime": "2024-04-01T12:34:56.123456Z"
+        }
+      ],
+      "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+      "type": "email"
+    }
+  ],
+  "totalSize": 1
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels?alt=json&filter=labels.email_address%3D%22test-${uniqueId}%40example.com%22
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "notificationChannels": [
+    {
+      "creationRecord": {
+        "mutateTime": "2024-04-01T12:34:56.123456Z"
+      },
+      "description": "Test Channel Description",
+      "displayName": "Test Channel ${uniqueId}",
+      "enabled": true,
+      "labels": {
+        "email_address": "test-${uniqueId}@example.com"
+      },
+      "mutationRecords": [
+        {
+          "mutateTime": "2024-04-01T12:34:56.123456Z"
+        }
+      ],
+      "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+      "type": "email"
+    }
+  ],
+  "totalSize": 1
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "description": "Test Channel Description",
+  "displayName": "Test Channel ${uniqueId}",
+  "enabled": true,
+  "labels": {
+    "email_address": "test-${uniqueId}@example.com"
+  },
+  "mutationRecords": [
+    {
+      "mutateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ],
+  "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+  "type": "email"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels?alt=json&filter=labels.email_address%3D%22test-${uniqueId}%40example.com%22
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "notificationChannels": [
+    {
+      "creationRecord": {
+        "mutateTime": "2024-04-01T12:34:56.123456Z"
+      },
+      "description": "Test Channel Description",
+      "displayName": "Test Channel ${uniqueId}",
+      "enabled": true,
+      "labels": {
+        "email_address": "test-${uniqueId}@example.com"
+      },
+      "mutationRecords": [
+        {
+          "mutateTime": "2024-04-01T12:34:56.123456Z"
+        }
+      ],
+      "name": "projects/${projectId}/notificationChannels/${notificationChannelID}",
+      "type": "email"
+    }
+  ],
+  "totalSize": 1
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/notificationChannels/${notificationChannelID}?alt=json&force=False
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

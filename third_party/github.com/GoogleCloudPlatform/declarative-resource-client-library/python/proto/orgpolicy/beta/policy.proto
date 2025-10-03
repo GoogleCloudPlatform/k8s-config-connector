@@ -1,0 +1,112 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+message OrgpolicyBetaPolicy {
+  string name = 1;
+  OrgpolicyBetaPolicySpec spec = 2;
+  OrgpolicyBetaPolicyDryRunSpec dry_run_spec = 3;
+  string etag = 4;
+  string parent = 5;
+}
+
+message OrgpolicyBetaPolicySpec {
+  string etag = 1;
+  string update_time = 2;
+  repeated OrgpolicyBetaPolicySpecRules rules = 3;
+  bool inherit_from_parent = 4;
+  bool reset = 5;
+}
+
+message OrgpolicyBetaPolicySpecRules {
+  OrgpolicyBetaPolicySpecRulesValues values = 1;
+  bool allow_all = 2;
+  bool deny_all = 3;
+  bool enforce = 4;
+  OrgpolicyBetaPolicySpecRulesCondition condition = 5;
+}
+
+message OrgpolicyBetaPolicySpecRulesValues {
+  repeated string allowed_values = 1;
+  repeated string denied_values = 2;
+}
+
+message OrgpolicyBetaPolicySpecRulesCondition {
+  string expression = 1;
+  string title = 2;
+  string description = 3;
+  string location = 4;
+}
+
+message OrgpolicyBetaPolicyDryRunSpec {
+  string etag = 1;
+  string update_time = 2;
+  repeated OrgpolicyBetaPolicyDryRunSpecRules rules = 3;
+  bool inherit_from_parent = 4;
+  bool reset = 5;
+}
+
+message OrgpolicyBetaPolicyDryRunSpecRules {
+  OrgpolicyBetaPolicyDryRunSpecRulesValues values = 1;
+  bool allow_all = 2;
+  bool deny_all = 3;
+  bool enforce = 4;
+  OrgpolicyBetaPolicyDryRunSpecRulesCondition condition = 5;
+}
+
+message OrgpolicyBetaPolicyDryRunSpecRulesValues {
+  repeated string allowed_values = 1;
+  repeated string denied_values = 2;
+}
+
+message OrgpolicyBetaPolicyDryRunSpecRulesCondition {
+  string expression = 1;
+  string title = 2;
+  string description = 3;
+  string location = 4;
+}
+
+message ApplyOrgpolicyBetaPolicyRequest {
+  OrgpolicyBetaPolicy resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteOrgpolicyBetaPolicyRequest {
+  string service_account_file = 1;
+  OrgpolicyBetaPolicy resource = 2;
+}
+
+message ListOrgpolicyBetaPolicyRequest {
+  string service_account_file = 1;
+  string Parent = 2;
+}
+
+message ListOrgpolicyBetaPolicyResponse {
+  repeated OrgpolicyBetaPolicy items = 1;
+}
+
+service OrgpolicyBetaPolicyService {
+  rpc ApplyOrgpolicyBetaPolicy(ApplyOrgpolicyBetaPolicyRequest) returns (OrgpolicyBetaPolicy);
+  rpc DeleteOrgpolicyBetaPolicy(DeleteOrgpolicyBetaPolicyRequest) returns (google.protobuf.Empty);
+  rpc ListOrgpolicyBetaPolicy(ListOrgpolicyBetaPolicyRequest) returns (ListOrgpolicyBetaPolicyResponse);
+}

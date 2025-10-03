@@ -1,0 +1,6 @@
+- pre: gcloud data-catalog entry-groups create testentrygroup${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud data-catalog entries create testentry${uniqueId} --entry-group=testentrygroup${uniqueId} --location=us-central1 --type=FILESET --gcs-file-patterns="gs://bucket/file" --project=${projectId}
+- exec: gcloud data-catalog entries describe testentry${uniqueId} --entry-group=testentrygroup${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud data-catalog entries update testentry${uniqueId} --entry-group=testentrygroup${uniqueId} --location=us-central1 --project=${projectId} --display-name="New Display Name"
+- exec: gcloud data-catalog entries delete testentry${uniqueId} --entry-group=testentrygroup${uniqueId} --location=us-central1 --project=${projectId} --quiet
+- post: gcloud data-catalog entry-groups delete testentrygroup${uniqueId} --location=us-central1 --project=${projectId} --quiet

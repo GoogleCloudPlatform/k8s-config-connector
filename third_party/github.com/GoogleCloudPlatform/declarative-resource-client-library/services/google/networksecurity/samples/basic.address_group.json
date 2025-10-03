@@ -1,0 +1,8 @@
+{
+  "name": "{{policy}}",
+  "parent": "projects/{{project}}",
+  "location": "us-central1",
+  "type": "IPV4",
+  "capacity": 100,
+  "description": "Basic address group sample test."
+}

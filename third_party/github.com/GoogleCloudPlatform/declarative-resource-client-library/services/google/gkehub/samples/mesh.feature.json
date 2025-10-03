@@ -1,0 +1,9 @@
+{
+  "name": "servicemesh",
+  "project": "{{ref:mesh.serviceusage.service.json:project}}",
+  "location": "global",
+  "labels": {
+    "label-one": "value-one"
+  },
+  "spec": {}
+}

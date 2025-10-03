@@ -1,0 +1,226 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: dataplexentrytypes.dataplex.cnrm.cloud.google.com
+spec:
+  group: dataplex.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: DataplexEntryType
+    listKind: DataplexEntryTypeList
+    plural: dataplexentrytypes
+    shortNames:
+    - gcpdataplexentrytype
+    - gcpdataplexentrytypes
+    singular: dataplexentrytype
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: DataplexEntryType is the Schema for the DataplexEntryType API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: DataplexEntryTypeSpec defines the desired state of DataplexEntryType
+            properties:
+              authorization:
+                description: Authorization contains constraints on the visibility
+                  of Entries that conform to the EntryType.
+                properties:
+                  alternateUsePermission:
+                    description: Immutable. The IAM permission grantable on the Entry
+                      Group to allow access to instantiate Entries of Dataplex owned
+                      Entry Types, only settable for Dataplex owned Types.
+                    type: string
+                type: object
+              description:
+                description: Optional. Description of the EntryType.
+                type: string
+              displayName:
+                description: Optional. User friendly display name.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. User-defined labels for the EntryType.
+                type: object
+              location:
+                type: string
+              platform:
+                description: Optional. The platform that Entries of this type belongs
+                  to.
+                type: string
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              requiredAspects:
+                description: AspectInfo contains overriding configuration for aspects.
+                items:
+                  properties:
+                    typeRef:
+                      description: Required aspect type for the entry type.
+                      properties:
+                        external:
+                          description: A reference to an externally managed DataplexAspectType
+                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}}".
+                          type: string
+                      type: object
+                  required:
+                  - typeRef
+                  type: object
+                type: array
+              resourceID:
+                description: The DataplexEntryType name. If not given, the metadata.name
+                  will be used.
+                type: string
+              system:
+                description: Optional. The system that Entries of this type belongs
+                  to. Examples include CloudSQL, MariaDB etc
+                type: string
+              typeAliases:
+                description: Optional. Indicates the classes this Entry Type belongs
+                  to, for example, TABLE, DATABASE, MODEL.
+                items:
+                  type: string
+                type: array
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: DataplexEntryTypeStatus defines the config connector machine
+              state of DataplexEntryType
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the DataplexEntryType resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The time when the EntryType was created.
+                    type: string
+                  etag:
+                    description: Optional. This checksum is computed by the service,
+                      and might be sent on update and delete requests to ensure the
+                      client has an up-to-date value before proceeding.
+                    type: string
+                  uid:
+                    description: Output only. System generated globally unique ID
+                      for the EntryType. This ID will be different if the EntryType
+                      is deleted and re-created with the same name.
+                    type: string
+                  updateTime:
+                    description: Output only. The time when the EntryType was last
+                      updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

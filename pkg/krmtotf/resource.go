@@ -22,6 +22,7 @@ import (
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -79,6 +80,21 @@ func NewResource(u *unstructured.Unstructured, sm *corekccv1alpha1.ServiceMappin
 
 func NewResourceFromResourceConfig(rc *corekccv1alpha1.ResourceConfig, p *tfschema.Provider) (*Resource, error) {
 	tfResource, ok := p.ResourcesMap[rc.Name]
+	// Pure Direct Resource does not have ResourceMap.
+	//
+	// TODO: remove 'Direct' field from ResourceConfig and remove the if statement.
+	// The 'Direct' indicator won't be needed after we finish all the migrations.
+	// The 'Direct' indicator is necessary during the migration so
+	// that Config Connector uses direct approach to generate CRDs
+	// but still allow TF-based controller to reconcile the resource.
+	if rc.Direct {
+		return &Resource{
+			TFInfo: &terraform.InstanceInfo{
+				Type: rc.Name,
+			},
+			ResourceConfig: *rc,
+		}, nil
+	}
 	if !ok {
 		return nil, fmt.Errorf("error getting TF resource: unknown resource %v", rc.Name)
 	}
@@ -94,7 +110,7 @@ func NewResourceFromResourceConfig(rc *corekccv1alpha1.ResourceConfig, p *tfsche
 
 func getServerGeneratedIDFromStatus(rc *corekccv1alpha1.ResourceConfig, gvk schema.GroupVersionKind, status map[string]interface{}) (string, bool, error) {
 	statusOrObservedState := status
-	if k8s.OutputOnlyFieldsAreUnderObservedState(gvk) {
+	if stateintospec.OutputOnlyFieldsAreUnderObservedState(gvk) {
 		statusOrObservedState = getObservedStateFromStatus(status)
 	}
 	splitPath := text.SnakeCaseStrsToLowerCamelCaseStrs(
@@ -332,7 +348,7 @@ func getObservedStateFromStatus(status map[string]interface{}) map[string]interf
 }
 
 func (r *Resource) GetStatusOrObservedState() map[string]interface{} {
-	if k8s.OutputOnlyFieldsAreUnderObservedState(r.GroupVersionKind()) {
+	if stateintospec.OutputOnlyFieldsAreUnderObservedState(r.GroupVersionKind()) {
 		return getObservedStateFromStatus(r.Status)
 	}
 	return r.Status
@@ -357,14 +373,6 @@ func SupportsHierarchicalReferences(rc *corekccv1alpha1.ResourceConfig) bool {
 func SupportsIAM(rc *corekccv1alpha1.ResourceConfig) bool {
 	emptyIAMConfig := corekccv1alpha1.IAMConfig{}
 	return !reflect.DeepEqual(rc.IAMConfig, emptyIAMConfig)
-}
-
-func GVKForResource(sm *corekccv1alpha1.ServiceMapping, rc *corekccv1alpha1.ResourceConfig) schema.GroupVersionKind {
-	return schema.GroupVersionKind{
-		Group:   sm.Name,
-		Version: sm.GetVersionFor(rc),
-		Kind:    rc.Kind,
-	}
 }
 
 func ServerGeneratedIDToTemplate(rc *corekccv1alpha1.ResourceConfig) string {

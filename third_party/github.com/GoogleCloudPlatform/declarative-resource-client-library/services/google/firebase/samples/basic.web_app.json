@@ -1,0 +1,6 @@
+{
+  "project": "{{ref:basic.firebase_project.json:project}}",
+  "displayName": "my cool name",
+  "appUrls" : ["http://some.url.com/foo"],
+  "apiKeyId" : "{{ref:basic.apikeys.key.json:uid}}"
+}

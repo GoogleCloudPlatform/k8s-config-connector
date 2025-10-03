@@ -1,0 +1,8 @@
+{
+  "parent": "projects/{{project}}/locations/{{region}}",
+  "dictionary": {
+    "cloudStoragePath": {
+      "path": "gs://aaa-dont-delete-dcl-dlp-testing/dictionary-1"
+    }
+  }
+}

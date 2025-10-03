@@ -1,0 +1,7 @@
+{
+  "name": "{{log_exclusion_name}}",
+  "parent": "projects/{{ref:project.cloudresourcemanager.project.json:name}}",
+  "description": "An updated log exclusion",
+  "filter": "resource.type=gcs_bucket severity<=ERROR sample(insertId, 0.99)",
+  "disabled": true
+}

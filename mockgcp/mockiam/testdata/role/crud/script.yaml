@@ -1,0 +1,4 @@
+- exec: gcloud iam roles create test_${uniqueId} --project=${projectId} --title="Test Role" --description="This is a test role" --permissions=iam.roles.get,iam.roles.list
+- exec: gcloud iam roles describe test_${uniqueId} --project=${projectId}
+- exec: gcloud iam roles update test_${uniqueId} --project=${projectId} --title="Updated Test Role" --add-permissions=iam.roles.create
+- exec: gcloud iam roles delete test_${uniqueId} --project=${projectId} --quiet

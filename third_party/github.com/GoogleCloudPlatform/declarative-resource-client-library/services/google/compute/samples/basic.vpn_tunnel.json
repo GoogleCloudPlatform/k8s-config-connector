@@ -1,0 +1,15 @@
+{
+  "project": "{{ref:compute.serviceusage.service.json:project}}",
+  "location": "{{region}}",
+  "name": "{{tunnel}}",
+  "peerIp": "{{ref:basic.vpn_gateway.json:vpnInterfaces[0].ipAddress}}",
+  "sharedSecret": "a secret",
+  "targetVpnGateway": "{{ref:basic.target_vpn_gateway.json:selfLink}}",
+  "router": "{{ref:project.router.json:selfLink}}",
+  "__dependsOn": [
+    "udp4500.forwarding_rule.json",
+    "udp500.forwarding_rule.json",
+    "esp.forwarding_rule.json"
+  ]
+}
+

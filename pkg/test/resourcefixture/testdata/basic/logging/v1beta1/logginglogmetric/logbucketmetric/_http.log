@@ -1,9 +1,8 @@
 GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/my-bucket-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -25,7 +24,7 @@ X-Xss-Protection: 0
 
 POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets?alt=json&bucketId=my-bucket-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "description": "A sample log bucket",
@@ -35,7 +34,6 @@ User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -58,10 +56,9 @@ X-Xss-Protection: 0
 
 GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/my-bucket-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -83,11 +80,9 @@ X-Xss-Protection: 0
 ---
 
 GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -109,8 +104,7 @@ X-Xss-Protection: 0
 
 POST https://logging.googleapis.com/v2/projects/${projectId}/metrics?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "bucketName": "projects/${projectId}/locations/global/buckets/my-bucket-${uniqueId}",
@@ -147,7 +141,6 @@ X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
       "samplePeriod": "5s"
     },
     "metricKind": "DELTA",
-    "name": "sample-descriptor",
     "unit": "bit",
     "valueType": "DISTRIBUTION"
   },
@@ -156,7 +149,6 @@ X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -210,11 +202,9 @@ X-Xss-Protection: 0
 ---
 
 GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -269,8 +259,7 @@ X-Xss-Protection: 0
 
 PUT https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "bucketName": "projects/${projectId}/locations/global/buckets/my-bucket-${uniqueId}",
@@ -308,7 +297,6 @@ X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
       "samplePeriod": "5s"
     },
     "metricKind": "DELTA",
-    "name": "sample-descriptor",
     "unit": "bit",
     "valueType": "DISTRIBUTION"
   },
@@ -318,7 +306,6 @@ X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
 }
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -371,12 +358,244 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5
-X-Goog-Api-Client: gl-go/1.22.3 gdcl/0.177.0
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
-Cache-Control: private
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bucketName": "projects/${projectId}/locations/global/buckets/my-bucket-${uniqueId}",
+  "bucketOptions": {
+    "linearBuckets": {
+      "numFiniteBuckets": 3,
+      "offset": 1.5,
+      "width": 3.5
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A sample log metric",
+  "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "labelExtractors": {
+    "mass": "EXTRACT(jsonPayload.request)",
+    "sku": "EXTRACT(jsonPayload.id)"
+  },
+  "metricDescriptor": {
+    "description": "A sample log metric",
+    "displayName": "sample-descriptor",
+    "labels": [
+      {
+        "description": "amount of matter",
+        "key": "mass"
+      },
+      {
+        "description": "identifying number for item",
+        "key": "sku",
+        "valueType": "INT64"
+      }
+    ],
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "bit",
+    "valueType": "DISTRIBUTION"
+  },
+  "name": "logginglogmetric-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "valueExtractor": "EXTRACT(jsonPayload.request)"
+}
+
+---
+
+PUT https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "bucketName": "projects/${projectId}/locations/global/buckets/my-bucket-${uniqueId}",
+  "bucketOptions": {
+    "linearBuckets": {
+      "numFiniteBuckets": 4,
+      "offset": 0.5,
+      "width": 2.5
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated sample log metric",
+  "disabled": true,
+  "filter": "resource.type=gae_app AND severity\u003e=ERROR",
+  "labelExtractors": {
+    "hasMass": "REGEXP_EXTRACT(jsonPayload.request, \".*([1-9]).*\")",
+    "mass": "EXTRACT(jsonPayload.request)",
+    "sku": "EXTRACT(jsonPayload.id)"
+  },
+  "metricDescriptor": {
+    "displayName": "updated-sample-descriptor",
+    "labels": [
+      {
+        "description": "amount of matter",
+        "key": "mass",
+        "valueType": "STRING"
+      },
+      {
+        "description": "whether the item has a mass",
+        "key": "hasMass",
+        "valueType": "BOOL"
+      },
+      {
+        "description": "identifying number for item",
+        "key": "sku",
+        "valueType": "INT64"
+      }
+    ],
+    "launchStage": "PRELAUNCH",
+    "metadata": {
+      "ingestDelay": "3.5s",
+      "samplePeriod": "3.5s"
+    },
+    "metricKind": "DELTA",
+    "unit": "s",
+    "valueType": "DISTRIBUTION"
+  },
+  "name": "logginglogmetric-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "valueExtractor": "EXTRACT(jsonPayload.response)"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bucketName": "projects/${projectId}/locations/global/buckets/my-bucket-${uniqueId}",
+  "bucketOptions": {
+    "linearBuckets": {
+      "numFiniteBuckets": 4,
+      "offset": 0.5,
+      "width": 2.5
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated sample log metric",
+  "disabled": true,
+  "filter": "resource.type=gae_app AND severity\u003e=ERROR",
+  "labelExtractors": {
+    "hasMass": "REGEXP_EXTRACT(jsonPayload.request, \".*([1-9]).*\")",
+    "mass": "EXTRACT(jsonPayload.request)",
+    "sku": "EXTRACT(jsonPayload.id)"
+  },
+  "metricDescriptor": {
+    "description": "An updated sample log metric",
+    "displayName": "updated-sample-descriptor",
+    "labels": [
+      {
+        "description": "amount of matter",
+        "key": "mass"
+      },
+      {
+        "description": "whether the item has a mass",
+        "key": "hasMass",
+        "valueType": "BOOL"
+      },
+      {
+        "description": "identifying number for item",
+        "key": "sku",
+        "valueType": "INT64"
+      }
+    ],
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "s",
+    "valueType": "DISTRIBUTION"
+  },
+  "name": "logginglogmetric-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "valueExtractor": "EXTRACT(jsonPayload.response)"
+}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bucketName": "projects/${projectId}/locations/global/buckets/my-bucket-${uniqueId}",
+  "bucketOptions": {
+    "linearBuckets": {
+      "numFiniteBuckets": 4,
+      "offset": 0.5,
+      "width": 2.5
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated sample log metric",
+  "disabled": true,
+  "filter": "resource.type=gae_app AND severity\u003e=ERROR",
+  "labelExtractors": {
+    "hasMass": "REGEXP_EXTRACT(jsonPayload.request, \".*([1-9]).*\")",
+    "mass": "EXTRACT(jsonPayload.request)",
+    "sku": "EXTRACT(jsonPayload.id)"
+  },
+  "metricDescriptor": {
+    "description": "An updated sample log metric",
+    "displayName": "updated-sample-descriptor",
+    "labels": [
+      {
+        "description": "amount of matter",
+        "key": "mass"
+      },
+      {
+        "description": "whether the item has a mass",
+        "key": "hasMass",
+        "valueType": "BOOL"
+      },
+      {
+        "description": "identifying number for item",
+        "key": "sku",
+        "valueType": "INT64"
+      }
+    ],
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "s",
+    "valueType": "DISTRIBUTION"
+  },
+  "name": "logginglogmetric-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "valueExtractor": "EXTRACT(jsonPayload.response)"
+}
+
+---
+
+DELETE https://logging.googleapis.com/v2/projects/${projectId}/metrics/logginglogmetric-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -392,10 +611,9 @@ X-Xss-Protection: 0
 
 GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/my-bucket-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -418,10 +636,9 @@ X-Xss-Protection: 0
 
 DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/my-bucket-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/controller-manager DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
-Cache-Control: private
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin

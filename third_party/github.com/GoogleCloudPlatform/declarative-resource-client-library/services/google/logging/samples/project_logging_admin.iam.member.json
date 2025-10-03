@@ -1,0 +1,5 @@
+{
+  "role": "roles/logging.admin",
+  "member": "serviceAccount:{{test_service_account}}",
+  "resource": "{{ref:project.cloudresourcemanager.project.json:__resource__}}"
+}

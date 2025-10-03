@@ -1,0 +1,12 @@
+{
+  "name": "{{c}}",
+  "project": "{{project}}",
+  "location": "us-central1",
+  "machineType": "e2-micro",
+  "minInstances": 2,
+  "maxInstances": 3,
+  "subnet": {
+    "name": "{{ref:basic.compute.subnetwork.json:name}}",
+    "projectId": "{{project}}"
+  }
+}

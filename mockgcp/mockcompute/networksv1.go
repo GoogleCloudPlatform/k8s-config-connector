@@ -43,6 +43,9 @@ func (s *NetworksV1) Get(ctx context.Context, req *pb.GetNetworkRequest) (*pb.Ne
 
 	obj := &pb.Network{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -60,11 +63,21 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 	id := s.generateID()
 
 	obj := proto.Clone(req.GetNetworkResource()).(*pb.Network)
-	obj.SelfLink = PtrTo("https://compute.googleapis.com/compute/v1/" + name.String())
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
-	obj.SelfLinkWithId = PtrTo(fmt.Sprintf("https://compute.googleapis.com/compute/v1/projects/%s/global/networks/%d", name.Project.ID, id))
+	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, name.String()))
+	obj.SelfLinkWithId = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%d", name.Project.ID, id)))
 	obj.Kind = PtrTo("compute#network")
+	obj.NetworkFirewallPolicyEnforcementOrder = PtrTo("AFTER_CLASSIC_FIREWALL")
+	if obj.RoutingConfig != nil {
+		if obj.RoutingConfig.BgpBestPathSelectionMode == nil {
+			obj.RoutingConfig.BgpBestPathSelectionMode = PtrTo("LEGACY")
+		}
+	}
+
+	if obj.AutoCreateSubnetworks == nil {
+		obj.AutoCreateSubnetworks = PtrTo(true)
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -72,10 +85,20 @@ func (s *NetworksV1) Insert(ctx context.Context, req *pb.InsertNetworkRequest) (
 
 	op := &pb.Operation{
 		TargetId:      obj.Id,
-		TargetLink:    obj.SelfLinkWithId,
+		TargetLink:    obj.SelfLink,
 		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		ctx := context.Background()
+		if ValueOf(obj.AutoCreateSubnetworks) {
+			if err := s.Workflows.CreateComputeNetworkSubnetworks(ctx, name.Project.ID, name.Name); err != nil {
+				return nil, err
+			}
+		}
+		if err := s.Workflows.CreateComputeNetworkRoutes(ctx, name.Project.ID, name.Name, ValueOf(obj.SelfLink)); err != nil {
+			return nil, err
+		}
 		return obj, nil
 	})
 }
@@ -109,8 +132,9 @@ func (s *NetworksV1) Patch(ctx context.Context, req *pb.PatchNetworkRequest) (*p
 
 	op := &pb.Operation{
 		TargetId:      obj.Id,
-		TargetLink:    obj.SelfLinkWithId,
+		TargetLink:    obj.SelfLink,
 		OperationType: PtrTo("compute.networks.patch"),
+		User:          PtrTo("user@example.com"),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
 		return obj, nil
@@ -131,7 +155,10 @@ func (s *NetworksV1) Delete(ctx context.Context, req *pb.DeleteNetworkRequest) (
 	}
 
 	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
 		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
 	}
 	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
 		return deleted, nil
@@ -197,6 +224,17 @@ func (s *MockService) parseNetworkName(name string) (*networkName, error) {
 		return s.newNetworkName(tokens[1], tokens[4])
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+// parseNetworkSelfLink parses a selfLink string into a networkName.
+// The expected form is `https://www.googleapis.com/compute/{version}/projects/*/global/networks/*`.
+func (s *MockService) parseNetworkSelfLink(selfLink string) (*networkName, error) {
+	name := selfLink
+	name = strings.TrimPrefix(name, "https://www.googleapis.com/compute/beta/")
+	name = strings.TrimPrefix(name, "https://www.googleapis.com/compute/v1/")
+	name = strings.TrimPrefix(name, "https://compute.googleapis.com/compute/v1/")
+
+	return s.parseNetworkName(name)
 }
 
 // newNetworkName builds a normalized networkName from the constituent parts.

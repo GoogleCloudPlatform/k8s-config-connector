@@ -1,0 +1,6 @@
+{
+  "name": "{{resource}}-2",
+  "project": "{{project}}",
+  "location": "global",
+  "allowOpen": true
+}

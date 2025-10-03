@@ -1,0 +1,17 @@
+{
+  "name": "{{asset_name}}",
+  "displayName": "Asset for DCL",
+  "location": "{{region}}",
+  "project": "{{project}}",
+  "resourceSpec": {
+    "name": "projects/{{project}}/buckets/{{ref:basic.storage.bucket.json:name}}",
+    "type": "STORAGE_BUCKET",
+    "readAccessMode": "MANAGED"
+  },
+  "discoverySpec": {
+    "enabled": false
+  },
+  "description": "Updated Asset for DCL",
+  "lake": "{{ref:basic.lake.json:name}}",
+  "dataplexZone": "{{ref:basic.zone.json:name}}"
+}

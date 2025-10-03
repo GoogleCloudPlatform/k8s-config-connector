@@ -1,0 +1,5 @@
+{
+  "name": "{{bucket}}",
+  "project": "{{project}}",
+  "location": "US"
+}

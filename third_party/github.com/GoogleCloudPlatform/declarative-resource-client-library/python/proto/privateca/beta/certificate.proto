@@ -1,0 +1,326 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum PrivatecaBetaCertificateConfigPublicKeyFormatEnum {
+  PrivatecaBetaCertificateConfigPublicKeyFormatEnumNO_VALUE_DO_NOT_USE = 0;
+  PrivatecaBetaCertificateConfigPublicKeyFormatEnumKEY_FORMAT_UNSPECIFIED = 1;
+  PrivatecaBetaCertificateConfigPublicKeyFormatEnumPEM = 2;
+}
+
+enum PrivatecaBetaCertificateSubjectModeEnum {
+  PrivatecaBetaCertificateSubjectModeEnumNO_VALUE_DO_NOT_USE = 0;
+  PrivatecaBetaCertificateSubjectModeEnumSUBJECT_REQUEST_MODE_UNSPECIFIED = 1;
+  PrivatecaBetaCertificateSubjectModeEnumDEFAULT = 2;
+  PrivatecaBetaCertificateSubjectModeEnumREFLECTED_SPIFFE = 3;
+}
+
+enum PrivatecaBetaCertificateRevocationDetailsRevocationStateEnum {
+  PrivatecaBetaCertificateRevocationDetailsRevocationStateEnumNO_VALUE_DO_NOT_USE = 0;
+  PrivatecaBetaCertificateRevocationDetailsRevocationStateEnumREVOCATION_REASON_UNSPECIFIED = 1;
+  PrivatecaBetaCertificateRevocationDetailsRevocationStateEnumKEY_COMPROMISE = 2;
+  PrivatecaBetaCertificateRevocationDetailsRevocationStateEnumCERTIFICATE_AUTHORITY_COMPROMISE = 3;
+  PrivatecaBetaCertificateRevocationDetailsRevocationStateEnumAFFILIATION_CHANGED = 4;
+  PrivatecaBetaCertificateRevocationDetailsRevocationStateEnumSUPERSEDED = 5;
+  PrivatecaBetaCertificateRevocationDetailsRevocationStateEnumCESSATION_OF_OPERATION = 6;
+  PrivatecaBetaCertificateRevocationDetailsRevocationStateEnumCERTIFICATE_HOLD = 7;
+  PrivatecaBetaCertificateRevocationDetailsRevocationStateEnumPRIVILEGE_WITHDRAWN = 8;
+  PrivatecaBetaCertificateRevocationDetailsRevocationStateEnumATTRIBUTE_AUTHORITY_COMPROMISE = 9;
+}
+
+enum PrivatecaBetaCertificateCertificateDescriptionPublicKeyFormatEnum {
+  PrivatecaBetaCertificateCertificateDescriptionPublicKeyFormatEnumNO_VALUE_DO_NOT_USE = 0;
+  PrivatecaBetaCertificateCertificateDescriptionPublicKeyFormatEnumKEY_FORMAT_UNSPECIFIED = 1;
+  PrivatecaBetaCertificateCertificateDescriptionPublicKeyFormatEnumPEM = 2;
+}
+
+message PrivatecaBetaCertificate {
+  string name = 1;
+  string pem_csr = 2;
+  PrivatecaBetaCertificateConfig config = 3;
+  string issuer_certificate_authority = 4;
+  string lifetime = 5;
+  string certificate_template = 6;
+  PrivatecaBetaCertificateSubjectModeEnum subject_mode = 7;
+  PrivatecaBetaCertificateRevocationDetails revocation_details = 8;
+  string pem_certificate = 9;
+  PrivatecaBetaCertificateCertificateDescription certificate_description = 10;
+  repeated string pem_certificate_chain = 11;
+  string create_time = 12;
+  string update_time = 13;
+  map<string, string> labels = 14;
+  string project = 15;
+  string location = 16;
+  string ca_pool = 17;
+  string certificate_authority = 18;
+}
+
+message PrivatecaBetaCertificateConfig {
+  PrivatecaBetaCertificateConfigSubjectConfig subject_config = 1;
+  PrivatecaBetaCertificateConfigX509Config x509_config = 2;
+  PrivatecaBetaCertificateConfigPublicKey public_key = 3;
+}
+
+message PrivatecaBetaCertificateConfigSubjectConfig {
+  PrivatecaBetaCertificateConfigSubjectConfigSubject subject = 1;
+  PrivatecaBetaCertificateConfigSubjectConfigSubjectAltName subject_alt_name = 2;
+}
+
+message PrivatecaBetaCertificateConfigSubjectConfigSubject {
+  string common_name = 1;
+  string country_code = 2;
+  string organization = 3;
+  string organizational_unit = 4;
+  string locality = 5;
+  string province = 6;
+  string street_address = 7;
+  string postal_code = 8;
+}
+
+message PrivatecaBetaCertificateConfigSubjectConfigSubjectAltName {
+  repeated string dns_names = 1;
+  repeated string uris = 2;
+  repeated string email_addresses = 3;
+  repeated string ip_addresses = 4;
+}
+
+message PrivatecaBetaCertificateConfigX509Config {
+  PrivatecaBetaCertificateConfigX509ConfigKeyUsage key_usage = 1;
+  PrivatecaBetaCertificateConfigX509ConfigCaOptions ca_options = 2;
+  repeated PrivatecaBetaCertificateConfigX509ConfigPolicyIds policy_ids = 3;
+  repeated string aia_ocsp_servers = 4;
+  repeated PrivatecaBetaCertificateConfigX509ConfigAdditionalExtensions additional_extensions = 5;
+}
+
+message PrivatecaBetaCertificateConfigX509ConfigKeyUsage {
+  PrivatecaBetaCertificateConfigX509ConfigKeyUsageBaseKeyUsage base_key_usage = 1;
+  PrivatecaBetaCertificateConfigX509ConfigKeyUsageExtendedKeyUsage extended_key_usage = 2;
+  repeated PrivatecaBetaCertificateConfigX509ConfigKeyUsageUnknownExtendedKeyUsages unknown_extended_key_usages = 3;
+}
+
+message PrivatecaBetaCertificateConfigX509ConfigKeyUsageBaseKeyUsage {
+  bool digital_signature = 1;
+  bool content_commitment = 2;
+  bool key_encipherment = 3;
+  bool data_encipherment = 4;
+  bool key_agreement = 5;
+  bool cert_sign = 6;
+  bool crl_sign = 7;
+  bool encipher_only = 8;
+  bool decipher_only = 9;
+}
+
+message PrivatecaBetaCertificateConfigX509ConfigKeyUsageExtendedKeyUsage {
+  bool server_auth = 1;
+  bool client_auth = 2;
+  bool code_signing = 3;
+  bool email_protection = 4;
+  bool time_stamping = 5;
+  bool ocsp_signing = 6;
+}
+
+message PrivatecaBetaCertificateConfigX509ConfigKeyUsageUnknownExtendedKeyUsages {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaBetaCertificateConfigX509ConfigCaOptions {
+  bool is_ca = 1;
+  bool non_ca = 2;
+  int64 max_issuer_path_length = 3;
+  bool zero_max_issuer_path_length = 4;
+}
+
+message PrivatecaBetaCertificateConfigX509ConfigPolicyIds {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaBetaCertificateConfigX509ConfigAdditionalExtensions {
+  PrivatecaBetaCertificateConfigX509ConfigAdditionalExtensionsObjectId object_id = 1;
+  bool critical = 2;
+  string value = 3;
+}
+
+message PrivatecaBetaCertificateConfigX509ConfigAdditionalExtensionsObjectId {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaBetaCertificateConfigPublicKey {
+  string key = 1;
+  PrivatecaBetaCertificateConfigPublicKeyFormatEnum format = 2;
+}
+
+message PrivatecaBetaCertificateRevocationDetails {
+  PrivatecaBetaCertificateRevocationDetailsRevocationStateEnum revocation_state = 1;
+  string revocation_time = 2;
+}
+
+message PrivatecaBetaCertificateCertificateDescription {
+  PrivatecaBetaCertificateCertificateDescriptionSubjectDescription subject_description = 1;
+  PrivatecaBetaCertificateCertificateDescriptionX509Description x509_description = 2;
+  PrivatecaBetaCertificateCertificateDescriptionPublicKey public_key = 3;
+  PrivatecaBetaCertificateCertificateDescriptionSubjectKeyId subject_key_id = 4;
+  PrivatecaBetaCertificateCertificateDescriptionAuthorityKeyId authority_key_id = 5;
+  repeated string crl_distribution_points = 6;
+  repeated string aia_issuing_certificate_urls = 7;
+  PrivatecaBetaCertificateCertificateDescriptionCertFingerprint cert_fingerprint = 8;
+}
+
+message PrivatecaBetaCertificateCertificateDescriptionSubjectDescription {
+  PrivatecaBetaCertificateCertificateDescriptionSubjectDescriptionSubject subject = 1;
+  PrivatecaBetaCertificateCertificateDescriptionSubjectDescriptionSubjectAltName subject_alt_name = 2;
+  string hex_serial_number = 3;
+  string lifetime = 4;
+  string not_before_time = 5;
+  string not_after_time = 6;
+}
+
+message PrivatecaBetaCertificateCertificateDescriptionSubjectDescriptionSubject {
+  string common_name = 1;
+  string country_code = 2;
+  string organization = 3;
+  string organizational_unit = 4;
+  string locality = 5;
+  string province = 6;
+  string street_address = 7;
+  string postal_code = 8;
+}
+
+message PrivatecaBetaCertificateCertificateDescriptionSubjectDescriptionSubjectAltName {
+  repeated string dns_names = 1;
+  repeated string uris = 2;
+  repeated string email_addresses = 3;
+  repeated string ip_addresses = 4;
+  repeated PrivatecaBetaCertificateCertificateDescriptionSubjectDescriptionSubjectAltNameCustomSans custom_sans = 5;
+}
+
+message PrivatecaBetaCertificateCertificateDescriptionSubjectDescriptionSubjectAltNameCustomSans {
+  PrivatecaBetaCertificateCertificateDescriptionSubjectDescriptionSubjectAltNameCustomSansObjectId object_id = 1;
+  bool critical = 2;
+  string value = 3;
+}
+
+message PrivatecaBetaCertificateCertificateDescriptionSubjectDescriptionSubjectAltNameCustomSansObjectId {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaBetaCertificateCertificateDescriptionX509Description {
+  PrivatecaBetaCertificateCertificateDescriptionX509DescriptionKeyUsage key_usage = 1;
+  PrivatecaBetaCertificateCertificateDescriptionX509DescriptionCaOptions ca_options = 2;
+  repeated PrivatecaBetaCertificateCertificateDescriptionX509DescriptionPolicyIds policy_ids = 3;
+  repeated string aia_ocsp_servers = 4;
+  repeated PrivatecaBetaCertificateCertificateDescriptionX509DescriptionAdditionalExtensions additional_extensions = 5;
+}
+
+message PrivatecaBetaCertificateCertificateDescriptionX509DescriptionKeyUsage {
+  PrivatecaBetaCertificateCertificateDescriptionX509DescriptionKeyUsageBaseKeyUsage base_key_usage = 1;
+  PrivatecaBetaCertificateCertificateDescriptionX509DescriptionKeyUsageExtendedKeyUsage extended_key_usage = 2;
+  repeated PrivatecaBetaCertificateCertificateDescriptionX509DescriptionKeyUsageUnknownExtendedKeyUsages unknown_extended_key_usages = 3;
+}
+
+message PrivatecaBetaCertificateCertificateDescriptionX509DescriptionKeyUsageBaseKeyUsage {
+  bool digital_signature = 1;
+  bool content_commitment = 2;
+  bool key_encipherment = 3;
+  bool data_encipherment = 4;
+  bool key_agreement = 5;
+  bool cert_sign = 6;
+  bool crl_sign = 7;
+  bool encipher_only = 8;
+  bool decipher_only = 9;
+}
+
+message PrivatecaBetaCertificateCertificateDescriptionX509DescriptionKeyUsageExtendedKeyUsage {
+  bool server_auth = 1;
+  bool client_auth = 2;
+  bool code_signing = 3;
+  bool email_protection = 4;
+  bool time_stamping = 5;
+  bool ocsp_signing = 6;
+}
+
+message PrivatecaBetaCertificateCertificateDescriptionX509DescriptionKeyUsageUnknownExtendedKeyUsages {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaBetaCertificateCertificateDescriptionX509DescriptionCaOptions {
+  bool is_ca = 1;
+  int64 max_issuer_path_length = 2;
+}
+
+message PrivatecaBetaCertificateCertificateDescriptionX509DescriptionPolicyIds {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaBetaCertificateCertificateDescriptionX509DescriptionAdditionalExtensions {
+  PrivatecaBetaCertificateCertificateDescriptionX509DescriptionAdditionalExtensionsObjectId object_id = 1;
+  bool critical = 2;
+  string value = 3;
+}
+
+message PrivatecaBetaCertificateCertificateDescriptionX509DescriptionAdditionalExtensionsObjectId {
+  repeated int64 object_id_path = 1;
+}
+
+message PrivatecaBetaCertificateCertificateDescriptionPublicKey {
+  string key = 1;
+  PrivatecaBetaCertificateCertificateDescriptionPublicKeyFormatEnum format = 2;
+}
+
+message PrivatecaBetaCertificateCertificateDescriptionSubjectKeyId {
+  string key_id = 1;
+}
+
+message PrivatecaBetaCertificateCertificateDescriptionAuthorityKeyId {
+  string key_id = 1;
+}
+
+message PrivatecaBetaCertificateCertificateDescriptionCertFingerprint {
+  string sha256_hash = 1;
+}
+
+message ApplyPrivatecaBetaCertificateRequest {
+  PrivatecaBetaCertificate resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeletePrivatecaBetaCertificateRequest {
+  string service_account_file = 1;
+  PrivatecaBetaCertificate resource = 2;
+}
+
+message ListPrivatecaBetaCertificateRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string CaPool = 4;
+}
+
+message ListPrivatecaBetaCertificateResponse {
+  repeated PrivatecaBetaCertificate items = 1;
+}
+
+service PrivatecaBetaCertificateService {
+  rpc ApplyPrivatecaBetaCertificate(ApplyPrivatecaBetaCertificateRequest) returns (PrivatecaBetaCertificate);
+  rpc DeletePrivatecaBetaCertificate(DeletePrivatecaBetaCertificateRequest) returns (google.protobuf.Empty);
+  rpc ListPrivatecaBetaCertificate(ListPrivatecaBetaCertificateRequest) returns (ListPrivatecaBetaCertificateResponse);
+}

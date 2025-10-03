@@ -30,11 +30,24 @@ func init() {
 		SkipUpdate:   true,
 	}
 
+	resourceContextMap["globalcomputebackendservicesecuritysettings"] = ResourceContext{
+		ResourceKind: "ComputeBackendService",
+		// Underlying API changes dependency resource's project id to number after successful creation.
+		// For now TF servicemapping does not have a way to resolve dependency DCL resources' project number.
+		// Skip checking no change after creation(testNoChangeAfterCreate) to bypass this temporarily.
+		// See https://buganizer.corp.google.com/issues/374166656#comment11 for details.
+		SkipNoChange: true,
+	}
+
 	resourceContextMap["computeexternalvpngateway"] = ResourceContext{
 		ResourceKind: "ComputeExternalVPNGateway",
 		SkipUpdate:   true,
 	}
-
+	resourceContextMap["computemanagedsslcertificate"] = ResourceContext{
+		ResourceKind: "ComputeManagedSSLCertificate",
+		// This resource doesn't support update.
+		SkipUpdate: true,
+	}
 	resourceContextMap["cloudfunctioncomputeregionnetworkendpointgroup"] = ResourceContext{
 		ResourceKind: "ComputeRegionNetworkEndpointGroup",
 		// The GCP resource for ComputeRegionNetworkEndpointGroup doesn't
@@ -85,10 +98,6 @@ func init() {
 		ResourceKind: "ComputeSharedVPCServiceProject",
 		SkipUpdate:   true,
 	}
-	resourceContextMap["computesslcertificate"] = ResourceContext{
-		ResourceKind: "ComputeSSLCertificate",
-		SkipUpdate:   true, // No input fields in this resource support update.
-	}
 
 	resourceContextMap["globalcomputesslcertificate"] = ResourceContext{
 		ResourceKind: "ComputeSSLCertificate",
@@ -130,7 +139,7 @@ func init() {
 		SkipUpdate:   true,
 	}
 
-	resourceContextMap["computeinstance"] = ResourceContext{
+	resourceContextMap["computeinstancebasicexample"] = ResourceContext{
 		ResourceKind: "ComputeInstance",
 		// TestCreateNoChangeUpdateDelete/basic-computeinstance: dynamic_controller_integration_test.go:239: reconcile
 		//    returned unexpected error: Update call failed: error applying desired state: Error creating instance:
@@ -174,28 +183,6 @@ func init() {
 	resourceContextMap["computetargetsslproxy"] = ResourceContext{
 		ResourceKind: "ComputeTargetSSLProxy",
 		SkipUpdate:   true,
-	}
-
-	resourceContextMap["computetargettcpproxy"] = ResourceContext{
-		ResourceKind: "ComputeTargetTCPProxy",
-	}
-
-	resourceContextMap["globalcomputeforwardingrule"] = ResourceContext{
-		ResourceKind: "ComputeForwardingRule",
-		SkipUpdate:   true, // The only field which supports update is targetRef, which currently cannot be used for testing updates because of b/147506185
-		// TestCreateNoChangeUpdateDelete/basic-globalcomputeforwardingrule: dynamic_controller_integration_test.go:239:
-		//   reconcile returned unexpected error: Update call failed: error applying desired state: Error creating
-		//   GlobalForwardingRule: googleapi: Error 400: Invalid value for field 'resource.IPAddress': '34.95.75.26'.
-		//   Invalid IP address specified., invalid
-		SkipDriftDetection: true,
-	}
-
-	resourceContextMap["regionalcomputeforwardingrule"] = ResourceContext{
-		ResourceKind: "ComputeForwardingRule",
-		SkipUpdate:   false,
-		// TestCreateNoChangeUpdateDelete/basic-regionalcomputeforwardingrule: dynamic_controller_integration_test.go:149:
-		//   value mismatch for label with key 'label-one': got 'value-two', want 'value-one'
-		SkipDriftDetection: true,
 	}
 
 	resourceContextMap["computevpngateway"] = ResourceContext{

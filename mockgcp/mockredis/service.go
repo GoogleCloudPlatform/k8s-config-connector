@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+	pbcluster "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/redis/cluster/v1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/redis/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
@@ -44,20 +45,31 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	return s
 }
 
-func (s *MockService) ExpectedHost() string {
-	return "redis.googleapis.com"
+func (s *MockService) ExpectedHosts() []string {
+	return []string{"redis.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterCloudRedisServer(grpcServer, &redisServer{MockService: s})
+	pbcluster.RegisterCloudRedisClusterServer(grpcServer, &clusterServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pb.RegisterCloudRedisHandler,
-		s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"))
+		pbcluster.RegisterCloudRedisClusterHandler,
+		s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"),
+		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"),
+	)
 	if err != nil {
 		return nil, err
+	}
+
+	// Returns slightly non-standard errors
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Errors = nil
+		}
 	}
 
 	return mux, nil

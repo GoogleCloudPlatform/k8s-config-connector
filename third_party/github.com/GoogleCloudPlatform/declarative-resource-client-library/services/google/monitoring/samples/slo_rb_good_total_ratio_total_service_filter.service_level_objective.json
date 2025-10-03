@@ -1,0 +1,19 @@
+{
+  "name": "{{name}}",
+  "project": "{{project}}",
+  "goal": 0.9,
+  "displayName": "{{displayname}}",
+  "rollingPeriod": "86400s",
+  "userLabels":{
+    "test1":"value1"
+  },
+  "service":"{{ref:basic.service.json:name}}",
+  "serviceLevelIndicator":{
+    "requestBased":{
+      "goodTotalRatio": {
+        "goodServiceFilter": "project = {{project}}\n metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" ",
+        "totalServiceFilter": "project = {{project}}\n metric.type=\"serviceruntime.googleapis.com/api/request_count\" \n resource.type=\"api\" "
+      }
+    }
+  }
+}

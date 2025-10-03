@@ -25,6 +25,7 @@ resource "google_pubsub_subscription" "pubsubsubscription_sample" {
     cnrm-lease-expiration = "1603984859"
     cnrm-lease-holder-id  = "btpp498colih6qs1pe5g"
     label-one             = "value-one"
+    managed-by-cnrm       = "true"
   }
 
   message_retention_duration = "86400s"

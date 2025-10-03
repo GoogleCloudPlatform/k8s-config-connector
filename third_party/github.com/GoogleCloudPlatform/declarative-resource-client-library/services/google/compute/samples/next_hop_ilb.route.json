@@ -1,0 +1,8 @@
+{
+  "name": "{{name}}",
+  "project": "{{project}}",
+  "destRange": "0.0.0.0/0",
+  "network": "{{ref:basic.network.json:selfLink}}",
+  "nextHopIlb": "{{ref:ilb_regional.forwarding_rule.json:selfLink}}",
+  "priority": 100
+}

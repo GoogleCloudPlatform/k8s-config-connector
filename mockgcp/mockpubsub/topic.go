@@ -23,7 +23,9 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"k8s.io/klog/v2"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/pubsub/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -48,14 +50,46 @@ func (s *publisherService) CreateTopic(ctx context.Context, req *pb.Topic) (*pb.
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+
 	return obj, nil
 }
 
 func (s *publisherService) populateDefaultsForTopic(obj *pb.Topic) {
-
+	// TODO: When _is_ this populated?
+	populateMessageStoragePolicy := false
+	if populateMessageStoragePolicy {
+		obj.MessageStoragePolicy = &pb.MessageStoragePolicy{
+			AllowedPersistenceRegions: []string{
+				"asia-east1",
+				"asia-northeast1",
+				"asia-southeast1",
+				"australia-southeast1",
+				"europe-north1",
+				"europe-west1",
+				"europe-west2",
+				"europe-west3",
+				"europe-west4",
+				"southamerica-west1",
+				"us-central1",
+				"us-central2",
+				"us-east1",
+				"us-east4",
+				"us-east5",
+				"us-east7",
+				"us-south1",
+				"us-west1",
+				"us-west2",
+				"us-west3",
+				"us-west4",
+				"us-west8",
+			},
+		}
+	}
 }
 
 func (s *publisherService) UpdateTopic(ctx context.Context, req *pb.UpdateTopicRequest) (*pb.Topic, error) {
+	log := klog.FromContext(ctx)
+
 	reqName := req.Topic.Name
 	name, err := s.parseTopicName(reqName)
 	if err != nil {
@@ -67,25 +101,55 @@ func (s *publisherService) UpdateTopic(ctx context.Context, req *pb.UpdateTopicR
 		return nil, err
 	}
 
-	updated := req.GetTopic()
+	updated := ProtoClone(existing)
 	updated.Name = name.String()
 
-	// Required. The update mask applies to the resource.
 	paths := req.GetUpdateMask().GetPaths()
 	if len(paths) == 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "update_mask is required")
+		// https://google.aip.dev/134
+		// field mask must be optional, and the service must treat an omitted field mask as an implied field mask equivalent to all fields that are populated (have a non-empty value).
+
+		paths = fields.ComputeImpliedFieldMask(ctx, req.GetTopic())
+		log.Info("computed implied field_mask", "paths", paths)
 	}
+
 	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		switch path {
-		// case "description":
-		// 	updated.Description = req.GetTopic().GetDescription()
-		// case "labels":
-		// 	updated.Labels = req.GetTopic().GetLabels()
+		case "name":
+			if updated.Name != req.GetTopic().GetName() {
+				return nil, status.Errorf(codes.InvalidArgument, "name is immutable")
+			}
+		case "labels":
+			updated.Labels = req.GetTopic().GetLabels()
+		case "schema_settings":
+			updated.SchemaSettings = req.GetTopic().GetSchemaSettings()
+		case "message_retention_duration":
+			updated.MessageRetentionDuration = req.GetTopic().GetMessageRetentionDuration()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
 	}
+
+	// Note that if we try to pass e.g. 10d to message_retention_duration we get this:
+	// {
+	//   "error": {
+	//     "code": 400,
+	//     "message": "Invalid value at 'topic.message_retention_duration' (type.googleapis.com/google.protobuf.Duration), Field 'messageRetentionDuration', Illegal duration format; duration must end with 's'",
+	//     "status": "INVALID_ARGUMENT",
+	//     "details": [
+	//       {
+	//         "@type": "type.googleapis.com/google.rpc.BadRequest",
+	//         "fieldViolations": [
+	//           {
+	//             "field": "topic.message_retention_duration",
+	//             "description": "Invalid value at 'topic.message_retention_duration' (type.googleapis.com/google.protobuf.Duration), Field 'messageRetentionDuration', Illegal duration format; duration must end with 's'"
+	//           }
+	//         ]
+	//       }
+	//     ]
+	//   }
+	// }
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
@@ -106,6 +170,7 @@ func (s *publisherService) GetTopic(ctx context.Context, req *pb.GetTopicRequest
 		}
 		return nil, err
 	}
+
 	return obj, nil
 }
 

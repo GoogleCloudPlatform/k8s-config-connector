@@ -1,0 +1,273 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: ConfigController/Instance
+  description: The ConfigController Instance resource
+  x-dcl-struct-name: Instance
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a Instance
+    parameters:
+    - name: instance
+      required: true
+      description: A full instance of a Instance
+  apply:
+    description: The function used to apply information about a Instance
+    parameters:
+    - name: instance
+      required: true
+      description: A full instance of a Instance
+  delete:
+    description: The function used to delete a Instance
+    parameters:
+    - name: instance
+      required: true
+      description: A full instance of a Instance
+  deleteAll:
+    description: The function used to delete all Instance
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many Instance
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Instance:
+      title: Instance
+      x-dcl-id: projects/{{project}}/locations/{{location}}/krmApiHosts/{{name}}
+      x-dcl-parent-container: project
+      x-dcl-labels: labels
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - managementConfig
+      - project
+      - location
+      properties:
+        gkeResourceLink:
+          type: string
+          x-dcl-go-name: GkeResourceLink
+          readOnly: true
+          description: Output only. KrmApiHost GCP self link used for identifying
+            the underlying endpoint (GKE cluster currently).
+          x-kubernetes-immutable: true
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: Labels
+          description: Labels are used for additional information for a KrmApiHost.
+          x-kubernetes-immutable: true
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location for the resource
+          x-kubernetes-immutable: true
+        managementConfig:
+          type: object
+          x-dcl-go-name: ManagementConfig
+          x-dcl-go-type: InstanceManagementConfig
+          description: Configuration of the cluster management
+          x-kubernetes-immutable: true
+          properties:
+            fullManagementConfig:
+              type: object
+              x-dcl-go-name: FullManagementConfig
+              x-dcl-go-type: InstanceManagementConfigFullManagementConfig
+              description: Configuration of the full (Autopilot) cluster management
+              x-kubernetes-immutable: true
+              x-dcl-conflicts:
+              - standardManagementConfig
+              x-dcl-server-default: true
+              x-dcl-send-empty: true
+              properties:
+                clusterCidrBlock:
+                  type: string
+                  x-dcl-go-name: ClusterCidrBlock
+                  description: The IP address range for the cluster pod IPs. Set to
+                    blank to have a range chosen with the default size. Set to /netmask
+                    (e.g. /14) to have a range chosen with a specific netmask. Set
+                    to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private
+                    networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick
+                    a specific range to use.
+                  x-kubernetes-immutable: true
+                  x-dcl-server-default: true
+                clusterNamedRange:
+                  type: string
+                  x-dcl-go-name: ClusterNamedRange
+                  description: The name of the existing secondary range in the cluster's
+                    subnetwork to use for pod IP addresses. Alternatively, cluster_cidr_block
+                    can be used to automatically create a GKE-managed one.
+                  x-kubernetes-immutable: true
+                manBlock:
+                  type: string
+                  x-dcl-go-name: ManBlock
+                  description: Master Authorized Network. Allows access to the k8s
+                    master from this block.
+                  x-kubernetes-immutable: true
+                  x-dcl-server-default: true
+                masterIPv4CidrBlock:
+                  type: string
+                  x-dcl-go-name: MasterIPv4CidrBlock
+                  description: The /28 network that the masters will use.
+                  x-kubernetes-immutable: true
+                network:
+                  type: string
+                  x-dcl-go-name: Network
+                  description: Existing VPC Network to put the GKE cluster and nodes
+                    in.
+                  x-kubernetes-immutable: true
+                  x-dcl-server-default: true
+                  x-dcl-references:
+                  - resource: Compute/Network
+                    field: name
+                servicesCidrBlock:
+                  type: string
+                  x-dcl-go-name: ServicesCidrBlock
+                  description: The IP address range for the cluster service IPs. Set
+                    to blank to have a range chosen with the default size. Set to
+                    /netmask (e.g. /14) to have a range chosen with a specific netmask.
+                    Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private
+                    networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick
+                    a specific range to use.
+                  x-kubernetes-immutable: true
+                  x-dcl-server-default: true
+                servicesNamedRange:
+                  type: string
+                  x-dcl-go-name: ServicesNamedRange
+                  description: The name of the existing secondary range in the cluster's
+                    subnetwork to use for service ClusterIPs. Alternatively, services_cidr_block
+                    can be used to automatically create a GKE-managed one.
+                  x-kubernetes-immutable: true
+            standardManagementConfig:
+              type: object
+              x-dcl-go-name: StandardManagementConfig
+              x-dcl-go-type: InstanceManagementConfigStandardManagementConfig
+              description: Configuration of the standard (GKE) cluster management
+              x-kubernetes-immutable: true
+              x-dcl-conflicts:
+              - fullManagementConfig
+              required:
+              - masterIPv4CidrBlock
+              properties:
+                clusterCidrBlock:
+                  type: string
+                  x-dcl-go-name: ClusterCidrBlock
+                  description: The IP address range for the cluster pod IPs. Set to
+                    blank to have a range chosen with the default size. Set to /netmask
+                    (e.g. /14) to have a range chosen with a specific netmask. Set
+                    to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private
+                    networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick
+                    a specific range to use.
+                  x-kubernetes-immutable: true
+                clusterNamedRange:
+                  type: string
+                  x-dcl-go-name: ClusterNamedRange
+                  description: The name of the existing secondary range in the cluster's
+                    subnetwork to use for pod IP addresses. Alternatively, cluster_cidr_block
+                    can be used to automatically create a GKE-managed one.
+                  x-kubernetes-immutable: true
+                manBlock:
+                  type: string
+                  x-dcl-go-name: ManBlock
+                  description: Master Authorized Network. Allows access to the k8s
+                    master from this block.
+                  x-kubernetes-immutable: true
+                  x-dcl-server-default: true
+                masterIPv4CidrBlock:
+                  type: string
+                  x-dcl-go-name: MasterIPv4CidrBlock
+                  description: The /28 network that the masters will use.
+                  x-kubernetes-immutable: true
+                network:
+                  type: string
+                  x-dcl-go-name: Network
+                  description: Existing VPC Network to put the GKE cluster and nodes
+                    in.
+                  x-kubernetes-immutable: true
+                  x-dcl-references:
+                  - resource: Compute/Network
+                    field: name
+                servicesCidrBlock:
+                  type: string
+                  x-dcl-go-name: ServicesCidrBlock
+                  description: The IP address range for the cluster service IPs. Set
+                    to blank to have a range chosen with the default size. Set to
+                    /netmask (e.g. /14) to have a range chosen with a specific netmask.
+                    Set to a CIDR notation (e.g. 10.96.0.0/14) from the RFC-1918 private
+                    networks (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) to pick
+                    a specific range to use.
+                  x-kubernetes-immutable: true
+                servicesNamedRange:
+                  type: string
+                  x-dcl-go-name: ServicesNamedRange
+                  description: The name of the existing secondary range in the cluster's
+                    subnetwork to use for service ClusterIPs. Alternatively, services_cidr_block
+                    can be used to automatically create a GKE-managed one.
+                  x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: 'The name of this KrmApiHost resource in the format: ''projects/{project_id}/locations/{location}/krmApiHosts/{krm_api_host_id}''.'
+          x-kubernetes-immutable: true
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        state:
+          type: string
+          x-dcl-go-name: State
+          x-dcl-go-type: InstanceStateEnum
+          readOnly: true
+          description: 'Output only. The current state of the internal state machine
+            for the KrmApiHost. Possible values: STATE_UNSPECIFIED, CREATING, RUNNING,
+            DELETING, SUSPENDED, READ_ONLY'
+          x-kubernetes-immutable: true
+          enum:
+          - STATE_UNSPECIFIED
+          - CREATING
+          - RUNNING
+          - DELETING
+          - SUSPENDED
+          - READ_ONLY
+        usePrivateEndpoint:
+          type: boolean
+          x-dcl-go-name: UsePrivateEndpoint
+          description: Only allow access to the master's private endpoint IP.
+          x-kubernetes-immutable: true

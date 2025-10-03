@@ -19,7 +19,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
@@ -47,9 +48,14 @@ func New(tfProvider *schema.Provider, smloader *servicemappingloader.ServiceMapp
 }
 
 func (i *iamClient) SupportsIAM(unstructured *unstructured.Unstructured) (bool, error) {
+	groundKind := unstructured.GroupVersionKind().GroupKind()
+	if registry.IsDirectByGK(groundKind) {
+		return registry.SupportsIAM(groundKind)
+	}
+
 	rc, err := i.smLoader.GetResourceConfig(unstructured)
 	if err != nil {
-		return false, fmt.Errorf("error getting resource config for %v with name '%v': %w",
+		return false, fmt.Errorf("error getting resource config for %q with name %q: %w",
 			unstructured.GetKind(), unstructured.GetName(), err)
 	}
 	return krmtotf.SupportsIAM(rc), nil

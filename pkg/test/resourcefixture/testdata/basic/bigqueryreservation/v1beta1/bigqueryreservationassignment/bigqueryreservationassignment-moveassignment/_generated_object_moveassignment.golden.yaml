@@ -1,0 +1,29 @@
+apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1alpha1
+kind: BigQueryReservationAssignment
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: bqassignment-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  assignee:
+    projectRef:
+      external: ${projectId}
+  jobType: QUERY
+  reservationRef:
+    name: bqreservation2-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-west2/reservations/bqreservation2${uniqueId}/assignments/bqassignment-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    state: ACTIVE

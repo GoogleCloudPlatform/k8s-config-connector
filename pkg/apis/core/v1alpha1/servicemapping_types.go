@@ -54,6 +54,11 @@ type ResourceConfig struct {
 	// If unset, the default API version of the service mapping will be used.
 	Version *string `json:"version"`
 
+	// Direct tells if the ResourceConfig is for ConfigConnector directly managed resources.
+	// Directly managed resource does not use Terraform or DCL controller, and do not rely on any TF specified fields like `SkipImport`
+	// A direct ResourceConfig is used to generate the reference doc.
+	Direct bool `json:"direct"`
+
 	// SkipImport skips the import step when fetching the live state of the underlying
 	// resource. If specified, IDTemplate must also be specified, and its expanded
 	// form will be used as the TF resource's `id` field.
@@ -130,6 +135,14 @@ type ResourceConfig struct {
 	// IgnoredFields is a list of fields that should be dropped from the underlying
 	// Terraform resource.
 	IgnoredFields []string `json:"ignoredFields,omitempty"`
+
+	// IgnoredOutputOnlySpecFields is a list of fields that should not be added
+	// to spec because they are output-only.
+	// We have a legacy bug that adds all the fields under a writable top-level
+	// field into spec during CRD generation even if the subfield itself is
+	// output-only. We should stop the bleeding by manually adding any new
+	// output-only subfields under a writable top-level field into this list.
+	IgnoredOutputOnlySpecFields *[]string `json:"ignoredOutputOnlySpecFields,omitempty"`
 
 	// Deprecated: use HierarchicalReferences instead. Only resources that
 	// already specify Containers should continue to specify Containers so that

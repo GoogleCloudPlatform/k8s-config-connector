@@ -1,0 +1,135 @@
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "accountId": "test-${uniqueId}",
+  "serviceAccount": {
+    "description": "Test Service Account",
+    "displayName": "Test Service Account"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Test Service Account",
+  "displayName": "Test Service Account",
+  "email": "test-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/test-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/-/serviceAccounts/test-${uniqueId}@${projectId}.iam.gserviceaccount.com/keys?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "privateKeyType": "TYPE_GOOGLE_CREDENTIALS_FILE"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "keyAlgorithm": "KEY_ALG_RSA_2048",
+  "keyOrigin": "GOOGLE_PROVIDED",
+  "keyType": "USER_MANAGED",
+  "name": "projects/${projectId}/serviceAccounts/test-${uniqueId}@${projectId}.iam.gserviceaccount.com/keys/${serviceAccountKeyID}",
+  "privateKeyData": "VGhpcyBzaG91bGQgcmVhbGx5IGJlIGEga2V5LCBidXQgaW5zdGVhZCB3ZSBqdXN0IHVzZSBhIHBsYWNlaG9sZGVyIHZhbHVlLiAgSSBkb24ndCB0aGluayBpdCBtYXR0ZXJzIGZvciBvdXIgdGVzdHMu",
+  "privateKeyType": "TYPE_GOOGLE_CREDENTIALS_FILE",
+  "validAfterTime": "2024-04-01T12:34:56Z",
+  "validBeforeTime": "9999-12-31T23:59:59Z"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/-/serviceAccounts/test-${uniqueId}@${projectId}.iam.gserviceaccount.com/keys?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "keys": [
+    {
+      "keyAlgorithm": "KEY_ALG_RSA_2048",
+      "keyOrigin": "GOOGLE_PROVIDED",
+      "keyType": "USER_MANAGED",
+      "name": "projects/${projectId}/serviceAccounts/test-${uniqueId}@${projectId}.iam.gserviceaccount.com/keys/${serviceAccountKeyID}",
+      "validAfterTime": "2024-04-01T12:34:56Z",
+      "validBeforeTime": "9999-12-31T23:59:59Z"
+    }
+  ]
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/-/serviceAccounts/test-${uniqueId}@${projectId}.iam.gserviceaccount.com/keys/${serviceAccountKeyID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/-/serviceAccounts/test-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

@@ -46,16 +46,18 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	return s
 }
 
-func (s *MockService) ExpectedHost() string {
-	return "bigquery.googleapis.com"
+func (s *MockService) ExpectedHosts() []string {
+	return []string{"bigquery.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDatasetsServerServer(grpcServer, &datasetsServer{MockService: s})
+	pb.RegisterTablesServerServer(grpcServer, &tablesServer{MockService: s})
+	pb.RegisterRoutinesServerServer(grpcServer, &routinesServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{}, pb.RegisterDatasetsServerHandler)
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{}, pb.RegisterDatasetsServerHandler, pb.RegisterTablesServerHandler, pb.RegisterRoutinesServerHandler)
 	if err != nil {
 		return nil, err
 	}

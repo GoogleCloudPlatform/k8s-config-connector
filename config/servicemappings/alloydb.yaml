@@ -71,6 +71,8 @@ spec:
         - initial_user
         - deletion_policy
         - display_name
+      observedFields:
+        - cluster_type
       hierarchicalReferences:
         - type: project
           key: projectRef

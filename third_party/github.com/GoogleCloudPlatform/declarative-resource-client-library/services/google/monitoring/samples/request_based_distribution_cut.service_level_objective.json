@@ -1,0 +1,18 @@
+{
+  "name": "{{name}}",
+  "project": "{{project}}",
+  "goal": 0.9,
+  "rollingPeriod": "86400s",
+  "service":"{{ref:basic.service.json:name}}",
+  "serviceLevelIndicator":{
+    "requestBased":{
+      "distributionCut": {
+        "distributionFilter": "project = {{project}}\n metric.type=\"serviceruntime.googleapis.com/api/request_latencies\" \n resource.type=\"api\"  ",
+        "range": {
+          "min": 50,
+          "max": 100
+        }
+      }
+    }
+  }
+}

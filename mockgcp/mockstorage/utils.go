@@ -34,3 +34,11 @@ func computeEtag(obj proto.Message) string {
 func PtrTo[T any](t T) *T {
 	return &t
 }
+
+func ValueOf[T any](p *T) T {
+	var v T
+	if p != nil {
+		v = *p
+	}
+	return v
+}

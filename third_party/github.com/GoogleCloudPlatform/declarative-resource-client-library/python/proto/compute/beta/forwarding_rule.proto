@@ -1,0 +1,149 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeBetaForwardingRuleIPProtocolEnum {
+  ComputeBetaForwardingRuleIPProtocolEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaForwardingRuleIPProtocolEnumTCP = 1;
+  ComputeBetaForwardingRuleIPProtocolEnumUDP = 2;
+  ComputeBetaForwardingRuleIPProtocolEnumESP = 3;
+  ComputeBetaForwardingRuleIPProtocolEnumAH = 4;
+  ComputeBetaForwardingRuleIPProtocolEnumSCTP = 5;
+  ComputeBetaForwardingRuleIPProtocolEnumICMP = 6;
+  ComputeBetaForwardingRuleIPProtocolEnumL3_DEFAULT = 7;
+}
+
+enum ComputeBetaForwardingRuleIPVersionEnum {
+  ComputeBetaForwardingRuleIPVersionEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaForwardingRuleIPVersionEnumUNSPECIFIED_VERSION = 1;
+  ComputeBetaForwardingRuleIPVersionEnumIPV4 = 2;
+  ComputeBetaForwardingRuleIPVersionEnumIPV6 = 3;
+}
+
+enum ComputeBetaForwardingRuleLoadBalancingSchemeEnum {
+  ComputeBetaForwardingRuleLoadBalancingSchemeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaForwardingRuleLoadBalancingSchemeEnumINVALID = 1;
+  ComputeBetaForwardingRuleLoadBalancingSchemeEnumINTERNAL = 2;
+  ComputeBetaForwardingRuleLoadBalancingSchemeEnumINTERNAL_MANAGED = 3;
+  ComputeBetaForwardingRuleLoadBalancingSchemeEnumINTERNAL_SELF_MANAGED = 4;
+  ComputeBetaForwardingRuleLoadBalancingSchemeEnumEXTERNAL = 5;
+  ComputeBetaForwardingRuleLoadBalancingSchemeEnumEXTERNAL_MANAGED = 6;
+}
+
+enum ComputeBetaForwardingRuleMetadataFilterFilterMatchCriteriaEnum {
+  ComputeBetaForwardingRuleMetadataFilterFilterMatchCriteriaEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaForwardingRuleMetadataFilterFilterMatchCriteriaEnumNOT_SET = 1;
+  ComputeBetaForwardingRuleMetadataFilterFilterMatchCriteriaEnumMATCH_ALL = 2;
+  ComputeBetaForwardingRuleMetadataFilterFilterMatchCriteriaEnumMATCH_ANY = 3;
+}
+
+enum ComputeBetaForwardingRuleNetworkTierEnum {
+  ComputeBetaForwardingRuleNetworkTierEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaForwardingRuleNetworkTierEnumPREMIUM = 1;
+  ComputeBetaForwardingRuleNetworkTierEnumSTANDARD = 2;
+}
+
+enum ComputeBetaForwardingRulePscConnectionStatusEnum {
+  ComputeBetaForwardingRulePscConnectionStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaForwardingRulePscConnectionStatusEnumSTATUS_UNSPECIFIED = 1;
+  ComputeBetaForwardingRulePscConnectionStatusEnumPENDING = 2;
+  ComputeBetaForwardingRulePscConnectionStatusEnumACCEPTED = 3;
+  ComputeBetaForwardingRulePscConnectionStatusEnumREJECTED = 4;
+  ComputeBetaForwardingRulePscConnectionStatusEnumCLOSED = 5;
+}
+
+message ComputeBetaForwardingRule {
+  map<string, string> labels = 1;
+  bool all_ports = 2;
+  bool allow_global_access = 3;
+  string label_fingerprint = 4;
+  string backend_service = 5;
+  string creation_timestamp = 6;
+  string description = 7;
+  string ip_address = 8;
+  ComputeBetaForwardingRuleIPProtocolEnum ip_protocol = 9;
+  ComputeBetaForwardingRuleIPVersionEnum ip_version = 10;
+  bool is_mirroring_collector = 11;
+  ComputeBetaForwardingRuleLoadBalancingSchemeEnum load_balancing_scheme = 12;
+  repeated ComputeBetaForwardingRuleMetadataFilter metadata_filter = 13;
+  string name = 14;
+  string network = 15;
+  ComputeBetaForwardingRuleNetworkTierEnum network_tier = 16;
+  string port_range = 17;
+  repeated string ports = 18;
+  string region = 19;
+  string self_link = 20;
+  string service_label = 21;
+  string service_name = 22;
+  string subnetwork = 23;
+  string target = 24;
+  string project = 25;
+  string location = 26;
+  repeated ComputeBetaForwardingRuleServiceDirectoryRegistrations service_directory_registrations = 27;
+  string psc_connection_id = 28;
+  ComputeBetaForwardingRulePscConnectionStatusEnum psc_connection_status = 29;
+  repeated string source_ip_ranges = 30;
+  string base_forwarding_rule = 31;
+  bool allow_psc_global_access = 32;
+}
+
+message ComputeBetaForwardingRuleMetadataFilter {
+  ComputeBetaForwardingRuleMetadataFilterFilterMatchCriteriaEnum filter_match_criteria = 1;
+  repeated ComputeBetaForwardingRuleMetadataFilterFilterLabel filter_label = 2;
+}
+
+message ComputeBetaForwardingRuleMetadataFilterFilterLabel {
+  string name = 1;
+  string value = 2;
+}
+
+message ComputeBetaForwardingRuleServiceDirectoryRegistrations {
+  string namespace = 1;
+  string service = 2;
+}
+
+message ApplyComputeBetaForwardingRuleRequest {
+  ComputeBetaForwardingRule resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaForwardingRuleRequest {
+  string service_account_file = 1;
+  ComputeBetaForwardingRule resource = 2;
+}
+
+message ListComputeBetaForwardingRuleRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComputeBetaForwardingRuleResponse {
+  repeated ComputeBetaForwardingRule items = 1;
+}
+
+service ComputeBetaForwardingRuleService {
+  rpc ApplyComputeBetaForwardingRule(ApplyComputeBetaForwardingRuleRequest) returns (ComputeBetaForwardingRule);
+  rpc DeleteComputeBetaForwardingRule(DeleteComputeBetaForwardingRuleRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaForwardingRule(ListComputeBetaForwardingRuleRequest) returns (ListComputeBetaForwardingRuleResponse);
+}

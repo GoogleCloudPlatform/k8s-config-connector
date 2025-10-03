@@ -18,12 +18,13 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 
+	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkservices/v1"
+	pbhttp "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/networkservices/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -48,8 +49,8 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	return s
 }
 
-func (s *MockService) ExpectedHost() string {
-	return "networkservices.googleapis.com"
+func (s *MockService) ExpectedHosts() []string {
+	return []string{"networkservices.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
@@ -57,9 +58,11 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux := runtime.NewServeMux()
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+		pbhttp.RegisterNetworkServicesHandler,
+		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 
-	if err := pb.RegisterNetworkServicesHandler(ctx, mux, conn); err != nil {
+	if err != nil {
 		return nil, err
 	}
 

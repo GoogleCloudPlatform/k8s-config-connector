@@ -34,6 +34,12 @@ mkdir -p "${BIN_DIR}"
 
 LICENSING_SCRIPT=${REPO_ROOT}/scripts/add-license-header-to-yaml.sh
 
+function add_license() {
+  file=$1
+  $LICENSING_SCRIPT ${file} > ${file}.tmp
+  mv ${file}.tmp ${file}
+}
+
 GOBIN=${BIN_DIR}/ go install sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
 export PATH=${BIN_DIR}/:$PATH
 
@@ -44,7 +50,31 @@ echo ${VERSION} > ${BUNDLE_DIR}/version
 # Create temp crds.yaml file
 CRDS_FILE=$(mktemp -t crds.XXXXXXXX.yaml)
 
+# Update container registry for kustomize
+IMAGE_PREFIX=${IMAGE_PREFIX:-"gcr.io/gke-release/cnrm/"}
+IMAGE_TAG=${IMAGE_TAG:-${VERSION}}
+
+RECORDER_IMG=${RECORDER_IMG:-"${IMAGE_PREFIX}recorder:${IMAGE_TAG}"}
+WEBHOOK_IMG=${WEBHOOK_IMG:-"${IMAGE_PREFIX}webhook:${IMAGE_TAG}"}
+UNMANAGEDDETECTOR_IMG=${UNMANAGEDDETECTOR_IMG:-"${IMAGE_PREFIX}unmanageddetector:${IMAGE_TAG}"}
+DELETIONDEFENDER_IMG=${DELETIONDEFENDER_IMG:-"${IMAGE_PREFIX}deletiondefender:${IMAGE_TAG}"}
+MANAGER_IMG=${MANAGER_IMG:-"${IMAGE_PREFIX}controller:${IMAGE_TAG}"}
+
+cd ${REPO_ROOT}
+cat config/installbundle/components/recorder/recorder_image_patch_template.yaml | \
+  sed -e "s@IMAGE_URL@${RECORDER_IMG}@g" > config/installbundle/components/recorder/recorder_image_patch.yaml
+cat config/installbundle/components/webhook/webhook_image_patch_template.yaml | \
+  sed -e "s@IMAGE_URL@${WEBHOOK_IMG}@g" > config/installbundle/components/webhook/webhook_image_patch.yaml
+cat config/installbundle/components/unmanageddetector/unmanageddetector_image_patch_template.yaml | \
+  sed -e "s@IMAGE_URL@${UNMANAGEDDETECTOR_IMG}@g" > config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
+cat config/installbundle/components/deletiondefender/deletiondefender_image_patch_template.yaml | \
+  sed -e "s@IMAGE_URL@${DELETIONDEFENDER_IMG}@g" > config/installbundle/components/deletiondefender/deletiondefender_image_patch.yaml
+cat config/installbundle/components/manager/base/manager_image_patch_template.yaml | \
+  sed -e "s@IMAGE_URL@${MANAGER_IMG}@g" > config/installbundle/components/manager/base/manager_image_patch.yaml
+
+
 # Combine CRDs into one file and add a license header
+rm -f kustomization.yaml
 kustomize create
 kustomize edit add resource config/crds/resources/*.yaml
 $LICENSING_SCRIPT <(kustomize build .) > $CRDS_FILE
@@ -78,17 +108,22 @@ sed -i "s/0.0.0-dev/${VERSION}/g" ${AUTOPILOT_WORKLOAD_IDENTITY_BUNDLE_DIR}/*
 # Build the namespaced-mode install bundle (uses workload identity)
 NAMESPACED_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-namespaced
 mkdir -p ${NAMESPACED_BUNDLE_DIR}
-$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/namespaced/shared-components) > ${NAMESPACED_BUNDLE_DIR}/0-cnrm-system.yaml
-$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/namespaced/per-namespace-components) |\
+kustomize build config/installbundle/releases/scopes/namespaced/shared-components > ${NAMESPACED_BUNDLE_DIR}/0-cnrm-system.yaml
+add_license ${NAMESPACED_BUNDLE_DIR}/0-cnrm-system.yaml
+kustomize build config/installbundle/releases/scopes/namespaced/per-namespace-components |\
   sed -e 's/mynamespace/${NAMESPACE?}/g' > ${NAMESPACED_BUNDLE_DIR}/per-namespace-components.yaml
+add_license ${NAMESPACED_BUNDLE_DIR}/per-namespace-components.yaml
 cp $CRDS_FILE ${NAMESPACED_BUNDLE_DIR}/crds.yaml
 sed -i "s/0.0.0-dev/${VERSION}/g" ${NAMESPACED_BUNDLE_DIR}/*
+
 # Create the autopilot variant of the namespaced-mode install bundle
 AUTOPILOT_NAMESPACED_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-autopilot-namespaced
 mkdir -p ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}
-$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/namespaced/autopilot-shared-components) > ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/0-cnrm-system.yaml
-$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/namespaced/per-namespace-components) |\
+kustomize build config/installbundle/releases/scopes/namespaced/autopilot-shared-components > ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/0-cnrm-system.yaml
+add_license ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/0-cnrm-system.yaml
+kustomize build config/installbundle/releases/scopes/namespaced/per-namespace-components |\
   sed -e 's/mynamespace/${NAMESPACE?}/g' > ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/per-namespace-components.yaml
+add_license ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/per-namespace-components.yaml
 cp $CRDS_FILE ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/crds.yaml
 sed -i "s/0.0.0-dev/${VERSION}/g" ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/*
 
@@ -96,3 +131,6 @@ sed -i "s/0.0.0-dev/${VERSION}/g" ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/*
 cp -r config/samples/ ${BUNDLE_DIR}/
 
 tar -czvf ${DIST}/release-bundle.tar.gz -C ${BUNDLE_DIR}/ .
+
+# Remove the temporary kustomization.yaml file we wrote
+rm -f ${REPO_ROOT}/kustomization.yaml

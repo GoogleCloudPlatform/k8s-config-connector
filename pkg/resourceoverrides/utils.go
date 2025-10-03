@@ -133,7 +133,7 @@ func PreserveMutuallyExclusiveNonReferenceField(crd *apiextensions.CustomResourc
 		}
 		// TODO(b/223688758): Handle multiple oneOf rules.
 		if oneOfRule != nil {
-			return fmt.Errorf("can't handle multiple pairs of required mutually exclustive fields under %s for field %s and %s in CRD %s", parentPath, referenceFieldName, referenceFieldName, crd.Name)
+			return fmt.Errorf("can't handle multiple pairs of required mutually exclusive fields under %s for field %s and %s in CRD %s", parentPath, referenceFieldName, referenceFieldName, crd.Name)
 		}
 
 		oneOfRule = []*apiextensions.JSONSchemaProps{
@@ -164,7 +164,7 @@ func PreserveMutuallyExclusiveNonReferenceField(crd *apiextensions.CustomResourc
 		}
 		// TODO(b/223688758): Handle multiple not rules.
 		if notRule != nil {
-			return fmt.Errorf("can't handling multiple pairs of optional mutually exclustive fields for %s in %s", referenceFieldName, crd.Name)
+			return fmt.Errorf("can't handling multiple pairs of optional mutually exclusive fields for %s in %s", referenceFieldName, crd.Name)
 		}
 
 		notRule = &apiextensions.JSONSchemaProps{

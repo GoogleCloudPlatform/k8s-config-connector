@@ -1,0 +1,5 @@
+{
+  "role": "roles/viewer",
+  "member": "serviceAccount:{{test_service_account}}",
+  "resource": "{{ref:basic.authorization_policy.json:__resource__}}"
+}

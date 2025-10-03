@@ -16,6 +16,7 @@ package mocksecretmanager
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -62,19 +63,35 @@ func (s *SecretsV1) CreateSecret(ctx context.Context, req *pb.CreateSecretReques
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.Now()
 	if obj.Replication == nil {
-		obj.Replication = &pb.Replication{}
+		return nil, fmt.Errorf("Secret.replication must be specified.")
 	}
-	if obj.Replication.Replication == nil {
-		obj.Replication.Replication = &pb.Replication_Automatic_{
-			Automatic: &pb.Replication_Automatic{},
-		}
+	obj.Etag = computeEtag(obj)
+	if err := s.populateDefaultsForSecret(ctx, obj); err != nil {
+		return nil, err
 	}
-
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	return obj, nil
+}
+
+func (s *SecretsV1) populateDefaultsForSecret(ctx context.Context, obj *pb.Secret) error {
+	for _, version := range obj.VersionAliases {
+		versionName := obj.Name + "/versions/" + strconv.FormatInt(version, 10)
+		_, err := s.GetSecretVersion(ctx, &pb.GetSecretVersionRequest{Name: versionName})
+		if err != nil {
+			return fmt.Errorf("Aliases cannot be assigned to versions that don't exist")
+		}
+	}
+	// TTL and ExpireTime are OneOf, but the GCP service always converts TTL to expireTime before storing the object.
+	if obj.GetTtl() != nil {
+		expirateTime := timestamppb.Now().AsTime().Add(obj.GetTtl().AsDuration())
+		obj.Expiration = &pb.Secret_ExpireTime{
+			ExpireTime: timestamppb.New(expirateTime),
+		}
+	}
+	return nil
 }
 
 // Gets metadata for a given [Secret][google.cloud.secretmanager.v1.Secret].
@@ -87,10 +104,83 @@ func (s *SecretsV1) GetSecret(ctx context.Context, req *pb.GetSecretRequest) (*p
 	var secret pb.Secret
 	fqn := name.String()
 	if err := s.storage.Get(ctx, fqn, &secret); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Secret [%s] not found.", fqn)
+		}
 		return nil, err
 	}
 
 	return &secret, nil
+}
+
+// ProtoClone is a type-safe wrapper around proto.Clone
+func ProtoClone[T proto.Message](t T) T {
+	return proto.Clone(t).(T)
+}
+
+// Update metadata for a given [Secret][google.cloud.secretmanager.v1.Secret].
+func (s *SecretsV1) UpdateSecret(ctx context.Context, req *pb.UpdateSecretRequest) (*pb.Secret, error) {
+	name, err := s.parseSecretName(req.Secret.Name)
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
+	existing := &pb.Secret{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		return nil, err
+	}
+
+	updated := ProtoClone(existing)
+	updated.Name = name.String()
+
+	// Required. The update mask applies to the resource.
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "update_mask is required")
+	}
+	for _, path := range paths {
+		switch path {
+		case "topics":
+			updated.Topics = req.Secret.GetTopics()
+		case "customerManagedEncryption":
+			updated.CustomerManagedEncryption = req.Secret.GetCustomerManagedEncryption()
+		case "rotation":
+			updated.Rotation = req.Secret.GetRotation()
+			if len(req.Secret.GetTopics()) == 0 {
+				return nil, fmt.Errorf("There must be at least one topic configured when a Rotation policy is set.")
+			}
+		case "rotation.rotationPeriod":
+			updated.Rotation.RotationPeriod = req.Secret.GetRotation().RotationPeriod
+		case "annotations":
+			updated.Annotations = req.Secret.GetAnnotations()
+		case "labels":
+			updated.Labels = req.Secret.GetLabels()
+		case "versionAliases":
+			updated.VersionAliases = req.Secret.GetVersionAliases()
+		case "expireTime":
+			updated.Expiration = &pb.Secret_ExpireTime{
+				ExpireTime: req.Secret.GetExpireTime(),
+			}
+		case "ttl":
+			updated.Expiration = &pb.Secret_Ttl{
+				Ttl: req.Secret.GetTtl(),
+			}
+		case "expiration":
+			updated.Expiration = req.Secret.GetExpiration()
+		case "rotation.nextRotationTime":
+			updated.Rotation.NextRotationTime = req.Secret.Rotation.NextRotationTime
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+		}
+	}
+
+	if err := s.populateDefaultsForSecret(ctx, updated); err != nil {
+		return nil, err
+	}
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+	return updated, nil
 }
 
 // Deletes a [Secret][google.cloud.secretmanager.v1.Secret].

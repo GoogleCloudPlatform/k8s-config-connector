@@ -17,8 +17,7 @@ package configconnectorcontext
 import (
 	"context"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
-
+	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative"
 )
 
@@ -26,7 +25,7 @@ import (
 func SourceLabel() declarative.LabelMaker {
 	return func(ctx context.Context, o declarative.DeclarativeObject) map[string]string {
 		res := map[string]string{
-			k8s.ConfigConnectorContextNamespaceLabel: o.GetNamespace(),
+			corev1beta1.ConfigConnectorContextNamespaceLabel: o.GetNamespace(),
 		}
 		return res
 	}

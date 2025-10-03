@@ -40,7 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/slice"
 
-	"github.com/ghodss/yaml"
+	"github.com/ghodss/yaml" //nolint:depguard
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	crdgen "sigs.k8s.io/controller-tools/pkg/crd"
 	"sigs.k8s.io/controller-tools/pkg/genall"
@@ -122,12 +122,26 @@ func generateTFBasedCRDs() []*apiextensions.CustomResourceDefinition {
 				log.Fatal(err)
 			}
 			crds := make([]*apiextensions.CustomResourceDefinition, 0)
+			directCount := 0
 			for _, rc := range rcs {
+				// TODO: remove 'Direct' field from ResourceConfig and remove the if statement.
+				// The 'Direct' indicator won't be needed after we finish all the migrations.
+				// The 'Direct' indicator is necessary during the migration so
+				// that Config Connector uses direct approach to generate CRDs
+				// but still allow TF-based controller to reconcile the resource.
+				if rc.Direct {
+					fmt.Printf("skip generate TF-based CRD for direct resource %s\n", rc.Kind)
+					directCount += 1
+					continue
+				}
 				crd, err := crdgeneration.GenerateTF2CRD(&sm, rc)
 				if err != nil {
 					log.Fatalf("error generating CRD for %v: %v", rc.Name, err)
 				}
 				crds = append(crds, crd)
+			}
+			if directCount == len(rcs) {
+				continue
 			}
 			crd, err := mergeCRDs(crds)
 			if err != nil {
@@ -154,7 +168,7 @@ func generateDCLBasedCRDs() []*apiextensions.CustomResourceDefinition {
 	if err != nil {
 		log.Fatalf("could not create service mapping loader: %v", err)
 	}
-	generator := crdgeneration.New(serviceMetadataLoader, schemaLoader, supportedgvks.All(smLoader, serviceMetadataLoader))
+	generator := crdgeneration.New(serviceMetadataLoader, schemaLoader, supportedgvks.AllWithoutDirect(smLoader, serviceMetadataLoader))
 	gvks := supportedgvks.BasedOnDCL(serviceMetadataLoader)
 	for _, gvk := range gvks {
 		s, err := dclschemaloader.GetDCLSchemaForGVK(gvk, serviceMetadataLoader, schemaLoader)
@@ -181,7 +195,7 @@ func generateCRDsForTypesFiles() []*apiextensions.CustomResourceDefinition {
 	crdGen := genall.Generator(crdgen.Generator{})
 	gens = append(gens, &crdGen)
 	rootPath := repo.GetRootOrLogFatal()
-	apisPath := path.Join(rootPath, "pkg", "apis", "iam", "v1beta1")
+	apisPath := path.Join(rootPath, "apis", "iam", "v1beta1")
 	roots, err := gens.ForRoots(apisPath)
 	if err != nil {
 		log.Fatalf("error producing a Runtime to run the generators: %v", err)
@@ -236,7 +250,7 @@ func addOneOfRulesForMultiTypeResourceReferences(crd *apiextensions.CustomResour
 		}
 		jsonSchema = setOneOfRuleForField(jsonSchema, field, oneOfRule)
 	}
-	outCRD.Spec.Versions[0].Schema.OpenAPIV3Schema = jsonSchema
+	k8s.PreferredVersion(outCRD).Schema.OpenAPIV3Schema = jsonSchema
 	return outCRD
 }
 

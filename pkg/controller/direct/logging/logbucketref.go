@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/logging/v1beta1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -93,7 +94,12 @@ func LogBucketRef_ConvertToExternal(ctx context.Context, reader client.Reader, s
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(loggingLogBucket.Object, &obj); err != nil {
 		return fmt.Errorf("error converting LoggingLogBucket %v: %w", key, err)
 	}
-	project, err := ResolveProject(ctx, reader, loggingLogBucket, obj.Spec.ProjectRef)
+	projectRef := &refs.ProjectRef{
+		Name:      obj.Spec.ProjectRef.Name,
+		Namespace: obj.Spec.ProjectRef.Namespace,
+		External:  obj.Spec.ProjectRef.External,
+	}
+	project, err := refs.ResolveProject(ctx, reader, loggingLogBucket.GetNamespace(), projectRef)
 	if err != nil {
 		return fmt.Errorf("cannot get project for referenced LoggingLogBucket %v: %w", key, err)
 	}
@@ -119,7 +125,7 @@ func LogBucketRef_ConvertToExternal(ctx context.Context, reader client.Reader, s
 func LogBucketRef_Parse(ctx context.Context, external string) (*LogBucket, error) {
 	bucketName := external
 
-	// validate the the bucket ref external is well formatted
+	// validate the bucket ref external is well formatted
 	// eg: projects/my-project/locations/global/buckets/my-bucket
 	parts := strings.Split(bucketName, "/")
 	if len(parts) != 6 || parts[0] != "projects" || parts[2] != "locations" || parts[4] != "buckets" {

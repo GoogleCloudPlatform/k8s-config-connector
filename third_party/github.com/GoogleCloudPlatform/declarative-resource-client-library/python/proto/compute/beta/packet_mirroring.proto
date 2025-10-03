@@ -1,0 +1,109 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeBetaPacketMirroringFilterDirectionEnum {
+  ComputeBetaPacketMirroringFilterDirectionEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaPacketMirroringFilterDirectionEnumINGRESS = 1;
+  ComputeBetaPacketMirroringFilterDirectionEnumEGRESS = 2;
+}
+
+enum ComputeBetaPacketMirroringEnableEnum {
+  ComputeBetaPacketMirroringEnableEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaPacketMirroringEnableEnumTRUE = 1;
+  ComputeBetaPacketMirroringEnableEnumFALSE = 2;
+}
+
+message ComputeBetaPacketMirroring {
+  int64 id = 1;
+  string self_link = 2;
+  string name = 3;
+  string description = 4;
+  string region = 5;
+  ComputeBetaPacketMirroringNetwork network = 6;
+  int64 priority = 7;
+  ComputeBetaPacketMirroringCollectorIlb collector_ilb = 8;
+  ComputeBetaPacketMirroringMirroredResources mirrored_resources = 9;
+  ComputeBetaPacketMirroringFilter filter = 10;
+  ComputeBetaPacketMirroringEnableEnum enable = 11;
+  string project = 12;
+  string location = 13;
+}
+
+message ComputeBetaPacketMirroringNetwork {
+  string url = 1;
+  string canonical_url = 2;
+}
+
+message ComputeBetaPacketMirroringCollectorIlb {
+  string url = 1;
+  string canonical_url = 2;
+}
+
+message ComputeBetaPacketMirroringMirroredResources {
+  repeated ComputeBetaPacketMirroringMirroredResourcesSubnetworks subnetworks = 1;
+  repeated ComputeBetaPacketMirroringMirroredResourcesInstances instances = 2;
+  repeated string tags = 3;
+}
+
+message ComputeBetaPacketMirroringMirroredResourcesSubnetworks {
+  string url = 1;
+  string canonical_url = 2;
+}
+
+message ComputeBetaPacketMirroringMirroredResourcesInstances {
+  string url = 1;
+  string canonical_url = 2;
+}
+
+message ComputeBetaPacketMirroringFilter {
+  repeated string cidr_ranges = 1;
+  repeated string ip_protocols = 2;
+  ComputeBetaPacketMirroringFilterDirectionEnum direction = 3;
+}
+
+message ApplyComputeBetaPacketMirroringRequest {
+  ComputeBetaPacketMirroring resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaPacketMirroringRequest {
+  string service_account_file = 1;
+  ComputeBetaPacketMirroring resource = 2;
+}
+
+message ListComputeBetaPacketMirroringRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComputeBetaPacketMirroringResponse {
+  repeated ComputeBetaPacketMirroring items = 1;
+}
+
+service ComputeBetaPacketMirroringService {
+  rpc ApplyComputeBetaPacketMirroring(ApplyComputeBetaPacketMirroringRequest) returns (ComputeBetaPacketMirroring);
+  rpc DeleteComputeBetaPacketMirroring(DeleteComputeBetaPacketMirroringRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaPacketMirroring(ListComputeBetaPacketMirroringRequest) returns (ListComputeBetaPacketMirroringResponse);
+}

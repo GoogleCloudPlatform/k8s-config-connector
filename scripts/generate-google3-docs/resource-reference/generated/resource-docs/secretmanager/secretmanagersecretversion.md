@@ -59,20 +59,6 @@
 ## Custom Resource Definition Properties
 
 
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
-</tbody>
-</table>
-
 
 ### Spec
 #### Schema
@@ -107,12 +93,7 @@ secretRef:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The deletion policy for the secret version. Setting 'ABANDON' allows the resource
-to be abandoned rather than deleted. Setting 'DISABLE' allows the resource to be
-disabled rather than deleted. Default is 'DELETE'. Possible values are:
-  * DELETE
-  * DISABLE
-  * ABANDON.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. You do not need to set this field in direct reconciler mode. Use delete-policy annotation instead. https://cloud.google.com/config-connector/docs/how-to/managing-deleting-resources#keeping_resources_after_deletion The deletion policy for the secret version. Setting 'ABANDON' allows the resource to be abandoned rather than deleted. Setting 'DISABLE' allows the resource to be disabled rather than deleted. Default is 'DELETE'. Possible values are: * DELETE * DISABLE * ABANDON.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -122,7 +103,7 @@ disabled rather than deleted. Default is 'DELETE'. Possible values are:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}The current state of the SecretVersion.{% endverbatim %}</p>
+            <p>{% verbatim %}Should enable or disable the current SecretVersion. - Enabled version can be accessed and described. - Disabled version cannot be accessed, but the secret's contents still exist{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -132,7 +113,7 @@ disabled rather than deleted. Default is 'DELETE'. Possible values are:
         </td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Immutable. If set to 'true', the secret data is expected to be base64-encoded string and would be sent as is.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED. You do not need to set this field in direct reconciler mode.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -142,17 +123,17 @@ disabled rather than deleted. Default is 'DELETE'. Possible values are:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The SecretVersion number. If given, Config Connector acquires the resource from the Secret Manager service. If not given, Config Connector adds a new secret version to the GCP service, and you can find out the version number from `status.observedState.version`{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td>
             <p><code>secretData</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Immutable. The secret data. Must be no larger than 64KiB.{% endverbatim %}</p>
+            <p>{% verbatim %}The actual secret data. Config Connector supports secret data stored in Kubernetes secret or plain data (base64){% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -208,11 +189,11 @@ disabled rather than deleted. Default is 'DELETE'. Possible values are:
     <tr>
         <td>
             <p><code>secretRef</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Secret Manager secret resource{% endverbatim %}</p>
+            <p>{% verbatim %}The resource name of the [Secret][google.cloud.secretmanager.v1.Secret] to create a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] for.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -222,7 +203,7 @@ disabled rather than deleted. Default is 'DELETE'. Possible values are:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `SecretManagerSecret` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally managed SecretManagerSecret resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -232,7 +213,7 @@ disabled rather than deleted. Default is 'DELETE'. Possible values are:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a SecretManagerSecret resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -242,7 +223,7 @@ disabled rather than deleted. Default is 'DELETE'. Possible values are:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a SecretManagerSecret resource.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>
@@ -263,8 +244,26 @@ conditions:
   type: string
 createTime: string
 destroyTime: string
+externalRef: string
 name: string
 observedGeneration: integer
+observedState:
+  clientSpecifiedPayloadChecksum: boolean
+  createTime: string
+  customerManagedEncryption:
+    kmsKeyVersionName: string
+  destroyTime: string
+  name: string
+  replicationStatus:
+    automatic:
+      customerManagedEncryption:
+        kmsKeyVersionName: string
+    userManaged:
+      replicas:
+      - customerManagedEncryption:
+          kmsKeyVersionName: string
+        location: string
+  scheduledDestroyTime: string
 version: string
 ```
 
@@ -279,7 +278,7 @@ version: string
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>{% verbatim %}Conditions represent the latest available observation of the resource's current state.{% endverbatim %}</p>
+            <p>{% verbatim %}Conditions represent the latest available observations of the object's current state.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -328,22 +327,28 @@ version: string
         <td><code>createTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time at which the Secret was created.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATING NOTE: Please use status.observedState.createTime instead.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>destroyTime</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The time at which the Secret was destroyed. Only present if state is DESTROYED.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATING NOTE: Please use status.observedState.destroyTime instead.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>externalRef</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}A unique specifier for the SecretManagerSecretVersion resource in GCP.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
         <td><code>name</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The resource name of the SecretVersion. Format:
-'projects/{{project}}/secrets/{{secret_id}}/versions/{{version}}'.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATING NOTE: Please use status.observedState.name instead.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -354,10 +359,154 @@ version: string
         </td>
     </tr>
     <tr>
+        <td><code>observedState</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}ObservedState is the state of the resource as most recently observed in GCP.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.clientSpecifiedPayloadChecksum</code></td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>{% verbatim %}Output only. True if payload checksum specified in [SecretPayload][google.cloud.secretmanager.v1.SecretPayload] object has been received by [SecretManagerService][google.cloud.secretmanager.v1.SecretManagerService] on [SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.createTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The time at which the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was created.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.customerManagedEncryption</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Output only. The customer-managed encryption status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only populated if customer-managed encryption is used and [Secret][google.cloud.secretmanager.v1.Secret] is a Regionalised Secret.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.customerManagedEncryption.kmsKeyVersionName</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The resource name of the Cloud KMS CryptoKeyVersion used to encrypt the secret payload, in the following format: `projects/*/locations/*/keyRings/*/cryptoKeys/*/versions/*`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.destroyTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The time this [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] was destroyed. Only present if [state][google.cloud.secretmanager.v1.SecretVersion.state] is [DESTROYED][google.cloud.secretmanager.v1.SecretVersion.State.DESTROYED].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.name</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The resource name of the
+[SecretVersion][google.cloud.secretmanager.v1.SecretVersion] in the
+format `projects/*/secrets/*/versions/*`.
+
+[SecretVersion][google.cloud.secretmanager.v1.SecretVersion] IDs in a
+[Secret][google.cloud.secretmanager.v1.Secret] start at 1 and are
+incremented for each subsequent version of the secret.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicationStatus</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The replication status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicationStatus.automatic</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Describes the replication status of a
+ [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] with
+ automatic replication.
+
+ Only populated if the parent
+ [Secret][google.cloud.secretmanager.v1.Secret] has an automatic
+ replication policy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicationStatus.automatic.customerManagedEncryption</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Output only. The customer-managed encryption status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only populated if customer-managed encryption is used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicationStatus.automatic.customerManagedEncryption.kmsKeyVersionName</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The resource name of the Cloud KMS CryptoKeyVersion used to encrypt the secret payload, in the following format: `projects/*/locations/*/keyRings/*/cryptoKeys/*/versions/*`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicationStatus.userManaged</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Describes the replication status of a
+ [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] with
+ user-managed replication.
+
+ Only populated if the parent
+ [Secret][google.cloud.secretmanager.v1.Secret] has a user-managed
+ replication policy.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicationStatus.userManaged.replicas</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}Output only. The list of replica statuses for the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicationStatus.userManaged.replicas[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicationStatus.userManaged.replicas[].customerManagedEncryption</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}Output only. The customer-managed encryption status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. Only populated if customer-managed encryption is used.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicationStatus.userManaged.replicas[].customerManagedEncryption.kmsKeyVersionName</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Required. The resource name of the Cloud KMS CryptoKeyVersion used to encrypt the secret payload, in the following format: `projects/*/locations/*/keyRings/*/cryptoKeys/*/versions/*`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicationStatus.userManaged.replicas[].location</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Output only. The canonical ID of the replica location. For example: `"us-east1"`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.scheduledDestroyTime</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Optional. Output only. Scheduled destroy time for secret version. This is a part of the Delayed secret version destroy feature. For a Secret with a valid version destroy TTL, when a secert version is destroyed, the version is moved to disabled state and it is scheduled for destruction. The version is destroyed only after the `scheduled_destroy_time`.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
         <td><code>version</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The version of the Secret.{% endverbatim %}</p>
+            <p>{% verbatim %}DEPRECATED.{% endverbatim %}</p>
         </td>
     </tr>
 </tbody>

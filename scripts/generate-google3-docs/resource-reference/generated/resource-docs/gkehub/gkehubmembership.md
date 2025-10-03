@@ -23,7 +23,7 @@ Note: GKE Hub REST documentation is under construction.
 </tr>
 <tr>
 <td>{{gcp_name_short}} Service Documentation</td>
-<td><a href="/anthos/multicluster-management/connect/overview">/anthos/multicluster-management/connect/overview</a></td>
+<td><a href="/kubernetes-engine/fleet-management/docs/manage-features">/kubernetes-engine/fleet-management/docs/manage-features</a></td>
 </tr>
 <tr>
 <td>{{gcp_name_short}} REST Resource Name</td>
@@ -72,9 +72,6 @@ Note: GKE Hub REST documentation is under construction.
 <tbody>
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
-    </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
     </tr>
 </tbody>
 </table>

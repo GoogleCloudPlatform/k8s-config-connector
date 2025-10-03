@@ -1,0 +1,69 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum VertexAlphaMetadataSchemaSchemaTypeEnum {
+  VertexAlphaMetadataSchemaSchemaTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  VertexAlphaMetadataSchemaSchemaTypeEnumMETADATA_SCHEMA_TYPE_UNSPECIFIED = 1;
+  VertexAlphaMetadataSchemaSchemaTypeEnumARTIFACT_TYPE = 2;
+  VertexAlphaMetadataSchemaSchemaTypeEnumEXECUTION_TYPE = 3;
+  VertexAlphaMetadataSchemaSchemaTypeEnumCONTEXT_TYPE = 4;
+}
+
+message VertexAlphaMetadataSchema {
+  string name = 1;
+  string schema_version = 2;
+  string schema = 3;
+  VertexAlphaMetadataSchemaSchemaTypeEnum schema_type = 4;
+  string create_time = 5;
+  string project = 6;
+  string location = 7;
+  string metadata_store = 8;
+}
+
+message ApplyVertexAlphaMetadataSchemaRequest {
+  VertexAlphaMetadataSchema resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteVertexAlphaMetadataSchemaRequest {
+  string service_account_file = 1;
+  VertexAlphaMetadataSchema resource = 2;
+}
+
+message ListVertexAlphaMetadataSchemaRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string MetadataStore = 4;
+}
+
+message ListVertexAlphaMetadataSchemaResponse {
+  repeated VertexAlphaMetadataSchema items = 1;
+}
+
+service VertexAlphaMetadataSchemaService {
+  rpc ApplyVertexAlphaMetadataSchema(ApplyVertexAlphaMetadataSchemaRequest) returns (VertexAlphaMetadataSchema);
+  rpc DeleteVertexAlphaMetadataSchema(DeleteVertexAlphaMetadataSchemaRequest) returns (google.protobuf.Empty);
+  rpc ListVertexAlphaMetadataSchema(ListVertexAlphaMetadataSchemaRequest) returns (ListVertexAlphaMetadataSchemaResponse);
+}

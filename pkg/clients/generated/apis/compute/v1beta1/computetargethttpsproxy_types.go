@@ -41,7 +41,10 @@ type ComputeTargetHTTPSProxySpec struct {
 
 	/* A reference to the CertificateMap resource uri that identifies a
 	certificate map associated with the given target proxy. This field
-	can only be set for global target proxies. */
+	can only be set for global target proxies. This field is only supported
+	for EXTERNAL and EXTERNAL_MANAGED load balancing schemes.
+	For INTERNAL_MANAGED, use certificateManagerCertificates instead.
+	sslCertificates and certificateMap fields cannot be defined together. */
 	// +optional
 	CertificateMapRef *v1alpha1.ResourceRef `json:"certificateMapRef,omitempty"`
 

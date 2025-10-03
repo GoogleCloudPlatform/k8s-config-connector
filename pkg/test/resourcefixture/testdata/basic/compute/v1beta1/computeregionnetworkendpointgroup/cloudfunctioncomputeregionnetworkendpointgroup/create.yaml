@@ -18,7 +18,6 @@ metadata:
   name: computeregionnetworkendpointgroup-${uniqueId}
 spec:
   region: us-central1
-  defaultPort: 90
   networkEndpointType: SERVERLESS
   cloudFunction:
     functionRef:

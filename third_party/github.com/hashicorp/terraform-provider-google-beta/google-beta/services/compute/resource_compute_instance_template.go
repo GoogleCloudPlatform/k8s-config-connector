@@ -873,7 +873,7 @@ be from 0 to 999,999,999 inclusive.`,
 							Required:         true,
 							ForceNew:         true,
 							DiffSuppressFunc: tpgresource.CompareSelfLinkOrResourceName,
-							Description:      `The accelerator type resource to expose to this instance. E.g. nvidia-tesla-k80.`,
+							Description:      `The accelerator type resource to expose to this instance. E.g. nvidia-tesla-t4.`,
 						},
 					},
 				},
@@ -1201,8 +1201,8 @@ func buildDisks(d *schema.ResourceData, config *transport_tpg.Config) ([]*comput
 //
 // Using a partial URL on an instance template results in:
 // Invalid value for field 'resource.properties.guestAccelerators[0].acceleratorType':
-// 'zones/us-east1-b/acceleratorTypes/nvidia-tesla-k80'.
-// Accelerator type 'zones/us-east1-b/acceleratorTypes/nvidia-tesla-k80'
+// 'zones/us-east1-b/acceleratorTypes/nvidia-tesla-t4'.
+// Accelerator type 'zones/us-east1-b/acceleratorTypes/nvidia-tesla-t4'
 // must be a valid resource name (not an url).
 func expandInstanceTemplateGuestAccelerators(d tpgresource.TerraformResourceData, config *transport_tpg.Config) []*compute.AcceleratorConfig {
 	configs, ok := d.GetOk("guest_accelerator")

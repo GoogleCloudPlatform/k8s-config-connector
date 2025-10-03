@@ -78,20 +78,6 @@
 ## Custom Resource Definition Properties
 
 
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
-</tbody>
-</table>
-
 
 ### Spec
 #### Schema
@@ -182,7 +168,12 @@ template:
       namespace: string
     timeout: string
     volumes:
-    - emptyDir:
+    - cloudSqlInstance:
+        instanceRefs:
+        - external: string
+          name: string
+          namespace: string
+      emptyDir:
         medium: string
         sizeLimit: string
       name: string
@@ -1146,6 +1137,66 @@ A duration in seconds with up to nine fractional digits, ending with 's'. Exampl
     </tr>
     <tr>
         <td>
+            <p><code>template.template.volumes[].cloudSqlInstance</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}For Cloud SQL volumes, contains the specific instances that should be mounted. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.template.volumes[].cloudSqlInstance.instanceRefs</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>{% verbatim %}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.template.volumes[].cloudSqlInstance.instanceRefs[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>{% verbatim %}The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. Format: {project}:{location}:{instance}{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.template.volumes[].cloudSqlInstance.instanceRefs[].external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Allowed value: The `connectionName` field of a `SQLInstance` resource.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.template.volumes[].cloudSqlInstance.instanceRefs[].name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.template.volumes[].cloudSqlInstance.instanceRefs[].namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>template.template.volumes[].emptyDir</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1834,12 +1885,9 @@ spec:
     template:
       containers:
       - image: "us-docker.pkg.dev/cloudrun/container/hello"
-  lifecycle:
-    ignore_changes:
-    - launch_stage
 ```
 
-### Job With Iamserviceaccount
+### Job With IAMServiceAccount
 ```yaml
 # Copyright 2023 Google LLC
 #
@@ -1879,7 +1927,7 @@ spec:
   displayName: runjob-dep-iamserviceaccount
 ```
 
-### Job With Kmscryptokey
+### Job With KMSCryptoKey
 ```yaml
 # Copyright 2023 Google LLC
 #
@@ -1940,7 +1988,56 @@ spec:
   location: us-central1
 ```
 
-### Job With Secretmanagersecret
+### Job With SQL
+```yaml
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: run.cnrm.cloud.google.com/v1beta1
+kind: RunJob
+metadata:
+  name: runjob-sample-sql
+spec:
+  launchStage: "GA"
+  location: "us-central1"
+  projectRef:
+    external: ${PROJECT_ID?}
+  template:
+    template:
+      containers:
+        - image: "us-docker.pkg.dev/cloudrun/container/hello"
+          volumeMounts:
+            - name: "cloudsql"
+              mountPath: "/cloudsql"
+      volumes:
+        - name: "cloudsql"
+          cloudSqlInstance:
+            instanceRefs:
+              - name: runjob-dep-sql
+---
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: runjob-dep-sql
+spec:
+  region: us-central1
+  databaseVersion: MYSQL_5_7
+  settings:
+    tier: db-n1-standard-1
+```
+
+### Job With SecretManagerSecret
 ```yaml
 # Copyright 2023 Google LLC
 #

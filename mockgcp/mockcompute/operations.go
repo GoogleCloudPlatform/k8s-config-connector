@@ -20,6 +20,7 @@ import (
 	"time"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"k8s.io/apimachinery/pkg/util/uuid"
 	"k8s.io/klog/v2"
@@ -39,6 +40,10 @@ func newComputeOperationsService(storage storage.Storage) *computeOperations {
 
 func (s *computeOperations) globalOperationFQN(projectID string, name string) string {
 	return "projects/" + projectID + "/global/operations/" + name
+}
+
+func (s *computeOperations) globalOrganizationOperationFQN(name string) string {
+	return "locations/global/operations/" + name
 }
 
 func (s *computeOperations) regionalOperationFQN(projectID string, region string, name string) string {
@@ -66,7 +71,8 @@ func (s *computeOperations) newLRO(ctx context.Context, projectID string) (*pb.O
 	op.Name = PtrTo(name)
 	op.Kind = PtrTo("compute#operation")
 	fqn := s.globalOperationFQN(projectID, name)
-	op.SelfLink = PtrTo("https://compute.googleapis.com/compute/v1/" + fqn)
+
+	op.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
 
 	op.Status = PtrTo(pb.Operation_DONE)
 
@@ -91,12 +97,26 @@ func (s *computeOperations) startLRO0(ctx context.Context, op *pb.Operation, fqn
 	op.InsertTime = PtrTo(formatTime(now))
 	op.Id = PtrTo(uint64(nanos))
 
-	op.Progress = PtrTo(int32(0))
+	// Specific to ComputeFirewallPolicy
+	// Remove targetId and targetLink when status is RUNNING to match realGCP operation
+	// ref: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/2800/commits/32fdacd53d59c36626fce16f2b0125a8a455f3d6#r1783642429
+	targetId := op.TargetId
+	targetLink := op.TargetLink
+	if op.OperationType != nil && *op.OperationType == "createFirewallPolicy" {
+		op.TargetId = nil
+		op.TargetLink = nil
+	}
+
+	if op.Progress == nil {
+		op.Progress = PtrTo(int32(0))
+	}
+
+	if op.Status == nil {
+		op.Status = PtrTo(pb.Operation_RUNNING)
+	}
 
 	op.Kind = PtrTo("compute#operation")
-	op.SelfLink = PtrTo("https://compute.googleapis.com/compute/v1/" + fqn)
-
-	op.Status = PtrTo(pb.Operation_RUNNING)
+	op.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
 
 	log.Info("storing operation", "fqn", fqn)
 	if err := s.storage.Create(ctx, fqn, op); err != nil {
@@ -115,10 +135,29 @@ func (s *computeOperations) startLRO0(ctx context.Context, op *pb.Operation, fqn
 		finished.Status = PtrTo(pb.Operation_DONE)
 		finished.EndTime = PtrTo(formatTime(time.Now()))
 
+		// Specific to ComputeFirewallPolicy
+		// Add targetId and targetLink back when status is DONE to match realGCP operation
+		if op.OperationType != nil && *op.OperationType == "createFirewallPolicy" {
+			finished.TargetId = targetId
+			finished.TargetLink = targetLink
+		}
+
 		if err != nil {
-			klog.Warningf("TODO: handle LRO error %v", err)
+			code := status.Code(err)
+			message := err.Error()
+
+			finished.Error = &pb.Error{
+				Errors: []*pb.Errors{
+					{
+						Code:    PtrTo(code.String()),
+						Message: PtrTo(message),
+					},
+				},
+			}
+			klog.Warningf("TODO: more fully handle LRO error %v", err)
 		} else {
-			klog.Warningf("TODO: handle LRO result %v", result)
+			// The LRO result does not appear to be returned in the operation
+			klog.V(4).Infof("LRO result: %+v", result)
 		}
 		if err := s.storage.Update(ctx, fqn, finished); err != nil {
 			klog.Warningf("error updating LRO: %v", err)
@@ -138,6 +177,7 @@ func (s *computeOperations) startRegionalLRO(ctx context.Context, projectID stri
 	fqn := s.regionalOperationFQN(projectID, region, name)
 
 	op.Name = PtrTo(name)
+	op.Region = PtrTo(buildComputeSelfLink(ctx, "projects/"+projectID+"/regions/"+region))
 	return s.startLRO0(ctx, op, fqn, callback)
 }
 
@@ -148,6 +188,18 @@ func (s *computeOperations) startGlobalLRO(ctx context.Context, projectID string
 
 	name := fmt.Sprintf("operation-%d-%s", millis, id)
 	fqn := s.globalOperationFQN(projectID, name)
+
+	op.Name = PtrTo(name)
+	return s.startLRO0(ctx, op, fqn, callback)
+}
+
+func (s *computeOperations) startGlobalOrganizationLRO(ctx context.Context, op *pb.Operation, callback func() (proto.Message, error)) (*pb.Operation, error) {
+	now := time.Now()
+	millis := now.UnixMilli()
+	id := uuid.NewUUID()
+
+	name := fmt.Sprintf("operation-%d-%s", millis, id)
+	fqn := s.globalOrganizationOperationFQN(name)
 
 	op.Name = PtrTo(name)
 	return s.startLRO0(ctx, op, fqn, callback)

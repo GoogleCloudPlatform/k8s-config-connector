@@ -15,6 +15,7 @@
 package webhook
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path"
@@ -78,7 +79,10 @@ func GetCommonWebhookConfigs() ([]Config, error) {
 		return nil, fmt.Errorf("error getting new dcl schema loader: %w", err)
 	}
 	serviceMetadataLoader := metadata.New()
-	allGVKs := supportedgvks.All(smLoader, serviceMetadataLoader)
+	allGVKs, err := supportedgvks.All(smLoader, serviceMetadataLoader)
+	if err != nil {
+		return nil, fmt.Errorf("error loading all supported GVKs: %w", err)
+	}
 	allResourcesRules := getRulesFromResources(allGVKs)
 	dynamicResourcesRules := getRulesFromResources(supportedgvks.AllDynamicTypes(smLoader, serviceMetadataLoader))
 	handwrittenIamResourcesRules := getRulesFromResources(supportedgvks.BasedOnHandwrittenIAMTypes())
@@ -91,7 +95,7 @@ func GetCommonWebhookConfigs() ([]Config, error) {
 			HandlerFunc:   NewRequestLoggingHandler(NewImmutableFieldsValidatorHandler(smLoader, dclSchemaLoader, serviceMetadataLoader), "immutable fields validation"),
 			FailurePolicy: admissionregistration.Fail,
 			Rules: getRulesForOperationTypes(
-				allResourcesRules,
+				getRulesFromResources(getResourcesForImmutableValidation(allGVKs)),
 				admissionregistration.Update,
 			),
 			SideEffects: admissionregistration.SideEffectClassNone,
@@ -180,8 +184,42 @@ func GetCommonWebhookConfigs() ([]Config, error) {
 			),
 			SideEffects: admissionregistration.SideEffectClassNone,
 		},
+		{
+			Name:          "state-into-spec-validation.cnrm.cloud.google.com",
+			Path:          "/state-into-spec-validation",
+			Type:          Validating,
+			HandlerFunc:   NewRequestLoggingHandler(NewStateIntoSpecAnnotationValidatorHandler(), "state-into-spec validation"),
+			FailurePolicy: admissionregistration.Fail,
+			Rules: getRulesForOperationTypes(allResourcesRules,
+				admissionregistration.Create,
+				admissionregistration.Update,
+			),
+			SideEffects: admissionregistration.SideEffectClassNone,
+		},
 	}
 	return whCfgs, nil
+}
+
+func getResourcesForImmutableValidation(allGVKs []schema.GroupVersionKind) []schema.GroupVersionKind {
+	// These IAM kinds have CEL validation for immutable fields and should be exempt from the webhook.
+	iamKindsWithCELValidation := map[string]bool{
+		"IAMAuditConfig":   true,
+		"IAMPartialPolicy": true,
+		"IAMPolicy":        true,
+		"IAMPolicyMember":  true,
+	}
+
+	var resourcesToValidate []schema.GroupVersionKind
+	for _, gvk := range allGVKs {
+		if gvk.Group == "iam.cnrm.cloud.google.com" {
+			if iamKindsWithCELValidation[gvk.Kind] {
+				// This IAM resource has its own validation, so the webhook should ignore it.
+				continue
+			}
+		}
+		resourcesToValidate = append(resourcesToValidate, gvk)
+	}
+	return resourcesToValidate
 }
 
 func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client.Client) error {
@@ -226,6 +264,8 @@ func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client
 
 func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName string,
 	whCfgs []Config, mgr manager.Manager, nocacheClient client.Client) error {
+	ctx := context.TODO()
+
 	validatingWebhookCfg, mutatingWebhookCfg := GenerateWebhookManifests(
 		validatingWebhookConfigurationName,
 		mutatingWebhookConfigurationName,
@@ -267,7 +307,7 @@ func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationNa
 	}
 	// Do an initial call so we can guarantee the webhook configuration resources are
 	// registered in the API server before marking this container as ready.
-	if err := certClient.RefreshCertsAndInstall(); err != nil {
+	if err := certClient.RefreshCertsAndInstall(ctx); err != nil {
 		return fmt.Errorf("error refreshing certs and installing manifests: %w", err)
 	}
 	if err := mgr.Add(certClient); err != nil {

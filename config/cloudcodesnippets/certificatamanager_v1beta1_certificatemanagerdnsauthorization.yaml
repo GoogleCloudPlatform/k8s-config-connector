@@ -6,7 +6,8 @@ insertText: |
   metadata:
     name: \${1:certificatemanagerdnsauthorization-name}
   spec:
-    description: \${2:sample dns authorization}
-    domain: \${3:subdomain.hashicorptest.com}
+    location: \${2:us-central1}
+    description: \${3:sample dns authorization}
+    domain: \${4:subdomain.hashicorptest.com}
     projectRef:
-      external: \${4:[PROJECT_ID?]}
+      external: \${5:[PROJECT_ID?]}

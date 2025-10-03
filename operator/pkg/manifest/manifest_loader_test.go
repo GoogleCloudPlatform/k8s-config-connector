@@ -21,7 +21,6 @@ import (
 	"testing"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/manifest"
 
 	"github.com/google/go-cmp/cmp"
@@ -41,7 +40,7 @@ func TestManifestLoader_ResolveManifest(t *testing.T) {
 			name: "cluster mode, workload identity",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
@@ -54,7 +53,7 @@ func TestManifestLoader_ResolveManifest(t *testing.T) {
 			name: "cluster mode, gcp identity",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					CredentialSecretName: "my-key",
@@ -67,7 +66,7 @@ func TestManifestLoader_ResolveManifest(t *testing.T) {
 			name: "namespaced mode",
 			cc: &corev1beta1.ConfigConnector{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: k8s.ConfigConnectorAllowedName,
+					Name: corev1beta1.ConfigConnectorAllowedName,
 				},
 				Spec: corev1beta1.ConfigConnectorSpec{
 					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",

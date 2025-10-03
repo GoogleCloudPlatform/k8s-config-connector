@@ -1,0 +1,11 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "organization": "{{org_id}}",
+  "location": "{{region}}",
+  "displayName": "updated-example",
+  "billingAccount": "billingAccounts/{{billing_account}}",
+  "complianceRegime": "FEDRAMP_MODERATE",
+  "labels": {
+    "label-two": "value-two"
+  }
+}

@@ -1,0 +1,270 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.136.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: iamdenypolicies.iam.cnrm.cloud.google.com
+spec:
+  group: iam.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: IAMDenyPolicy
+    listKind: IAMDenyPolicyList
+    plural: iamdenypolicies
+    shortNames:
+    - gcpiamdenypolicy
+    - gcpiamdenypolicies
+    singular: iamdenypolicy
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: IAMDenyPolicy is the Schema for the IAMDenyPolicy API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: IAMDenyPolicySpec defines the desired state of IAMDenyPolicy
+            properties:
+              displayName:
+                description: A user-specified description of the `Policy`. This value
+                  can be up to 63 characters.
+                type: string
+              resourceID:
+                description: The IAMDenyPolicy name. If not given, the metadata.name
+                  will be used.
+                type: string
+              rules:
+                description: A list of rules that specify the behavior of the `Policy`.
+                  All of the rules should be of the `kind` specified in the `Policy`.
+                items:
+                  properties:
+                    denyRule:
+                      description: A rule for a deny policy.
+                      properties:
+                        denialCondition:
+                          description: |-
+                            The condition that determines whether this deny rule applies to a request.
+                             If the condition expression evaluates to `true`, then the deny rule is
+                             applied; otherwise, the deny rule is not applied.
+
+                             Each deny rule is evaluated independently. If this deny rule does not apply
+                             to a request, other deny rules might still apply.
+
+                             The condition can use CEL functions that evaluate
+                             [resource
+                             tags](https://cloud.google.com/iam/help/conditions/resource-tags). Other
+                             functions and operators are not supported.
+                          properties:
+                            description:
+                              description: Optional. Description of the expression.
+                                This is a longer text which describes the expression,
+                                e.g. when hovered over it in a UI.
+                              type: string
+                            expression:
+                              description: Textual representation of an expression
+                                in Common Expression Language syntax.
+                              type: string
+                            location:
+                              description: Optional. String indicating the location
+                                of the expression for error reporting, e.g. a file
+                                name and a position in the file.
+                              type: string
+                            title:
+                              description: Optional. Title for the expression, i.e.
+                                a short string describing its purpose. This can be
+                                used e.g. in UIs which allow to enter the expression.
+                              type: string
+                          type: object
+                        deniedPermissions:
+                          description: The permissions that are explicitly denied
+                            by this rule. Each permission uses the format `{service_fqdn}/{resource}.{verb}`,
+                            where `{service_fqdn}` is the fully qualified domain name
+                            for the service. For example, `iam.googleapis.com/roles.list`.
+                          items:
+                            type: string
+                          type: array
+                        deniedPrincipals:
+                          description: |-
+                            The identities that are prevented from using one or more permissions on
+                             Google Cloud resources. This field can contain the following values:
+
+                             * `principalSet://goog/public:all`: A special identifier that represents
+                               any principal that is on the internet, even if they do not have a Google
+                               Account or are not logged in.
+
+                             * `principal://goog/subject/{email_id}`: A specific Google Account.
+                               Includes Gmail, Cloud Identity, and Google Workspace user accounts. For
+                               example, `principal://goog/subject/alice@example.com`.
+
+                             * `deleted:principal://goog/subject/{email_id}?uid={uid}`: A specific
+                               Google Account that was deleted recently. For example,
+                               `deleted:principal://goog/subject/alice@example.com?uid=1234567890`. If
+                               the Google Account is recovered, this identifier reverts to the standard
+                               identifier for a Google Account.
+
+                             * `principalSet://goog/group/{group_id}`: A Google group. For example,
+                               `principalSet://goog/group/admins@example.com`.
+
+                             * `deleted:principalSet://goog/group/{group_id}?uid={uid}`: A Google group
+                               that was deleted recently. For example,
+                               `deleted:principalSet://goog/group/admins@example.com?uid=1234567890`. If
+                               the Google group is restored, this identifier reverts to the standard
+                               identifier for a Google group.
+
+                             * `principal://iam.googleapis.com/projects/-/serviceAccounts/{service_account_id}`:
+                               A Google Cloud service account. For example,
+                               `principal://iam.googleapis.com/projects/-/serviceAccounts/my-service-account@iam.gserviceaccount.com`.
+
+                             * `deleted:principal://iam.googleapis.com/projects/-/serviceAccounts/{service_account_id}?uid={uid}`:
+                               A Google Cloud service account that was deleted recently. For example,
+                               `deleted:principal://iam.googleapis.com/projects/-/serviceAccounts/my-service-account@iam.gserviceaccount.com?uid=1234567890`.
+                               If the service account is undeleted, this identifier reverts to the
+                               standard identifier for a service account.
+
+                             * `principalSet://goog/cloudIdentityCustomerId/{customer_id}`: All of the
+                               principals associated with the specified Google Workspace or Cloud
+                               Identity customer ID. For example,
+                               `principalSet://goog/cloudIdentityCustomerId/C01Abc35`.
+                          items:
+                            type: string
+                          type: array
+                        exceptionPermissions:
+                          description: |-
+                            Specifies the permissions that this rule excludes from the set of denied
+                             permissions given by `denied_permissions`. If a permission appears in
+                             `denied_permissions` _and_ in `exception_permissions` then it will _not_ be
+                             denied.
+
+                             The excluded permissions can be specified using the same syntax as
+                             `denied_permissions`.
+                          items:
+                            type: string
+                          type: array
+                        exceptionPrincipals:
+                          description: |-
+                            The identities that are excluded from the deny rule, even if they are
+                             listed in the `denied_principals`. For example, you could add a Google
+                             group to the `denied_principals`, then exclude specific users who belong to
+                             that group.
+
+                             This field can contain the same values as the `denied_principals` field,
+                             excluding `principalSet://goog/public:all`, which represents all users on
+                             the internet.
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    description:
+                      description: A user-specified description of the rule. This
+                        value can be up to 256 characters.
+                      type: string
+                  type: object
+                type: array
+            type: object
+          status:
+            description: IAMDenyPolicyStatus defines the config connector machine
+              state of IAMDenyPolicy
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the IAMDenyPolicy resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null

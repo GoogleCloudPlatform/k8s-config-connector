@@ -1043,9 +1043,8 @@ spec:
                   type: string
                 type: array
               location:
-                description: |-
-                  Immutable. The [Cloud Build location](https://cloud.google.com/build/docs/locations) for the trigger.
-                  If not specified, "global" is used.
+                description: 'Immutable. The location of the Cloud Build trigger.
+                  If not specified, "global" is used. More info: cloud.google.com/build/docs/locations.'
                 type: string
               pubsubConfig:
                 description: |-

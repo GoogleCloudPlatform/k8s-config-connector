@@ -27,12 +27,13 @@ import (
 	"sort"
 	"strings"
 
-	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
+	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/fielddesc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
 
@@ -74,7 +75,7 @@ type svkMap struct {
 }
 
 func main() {
-	resources := make(map[string]*resourceDefinition)
+	var resources []*resourceDefinition
 	registerKinds := make(map[string]*svkMap)
 	crdsDir := repo.GetCRDsPath()
 	crdsPath, err := filepath.Abs(crdsDir)
@@ -87,8 +88,7 @@ func main() {
 	}
 
 	for _, crdFile := range crdFiles {
-		fileName := strings.TrimSuffix(crdFile.Name(), ".yaml")
-		resources[fileName] = constructResourceDefinition(crdsPath, crdFile.Name())
+		resources = append(resources, constructResourceDefinitions(crdsPath, crdFile.Name())...)
 	}
 
 	for _, rd := range resources {
@@ -261,8 +261,7 @@ func checkAndCreateFolder(dir string) {
 	}
 }
 
-func constructResourceDefinition(crdsPath, crdFile string) *resourceDefinition {
-	r := &resourceDefinition{}
+func constructResourceDefinitions(crdsPath, crdFile string) []*resourceDefinition {
 	crdFilePath, err := filepath.Abs(path.Join(crdsPath, crdFile))
 	if err != nil {
 		log.Fatalf("error getting the absolute representation of path for directory '%v': %v", crdFile, err)
@@ -272,26 +271,40 @@ func constructResourceDefinition(crdsPath, crdFile string) *resourceDefinition {
 		log.Fatalf("error loading crd from filepath %v: %v", crdFilePath, err)
 	}
 
-	r.CRD = crd
-	r.Name = crd.Spec.Names.Kind
-	if err = buildFieldProperties(r, crd); err != nil {
-		log.Fatalf("error building field properties for %v: %v", r.Name, err)
+	versionNames := sets.NewString()
+	for _, crdVersion := range crd.Spec.Versions {
+		versionNames.Insert(crdVersion.Name)
 	}
-	r.Service = strings.TrimSuffix(crd.Spec.Group, k8s.APIDomainSuffix)
-	r.Kind = strings.ToLower(crd.Spec.Names.Kind)
 
-	// TODO: Should we handle multiple versions?
-	r.Version = &crd.Spec.Versions[0]
+	var resources []*resourceDefinition
+	for _, versionName := range versionNames.List() {
+		// Don't generate alpha version if we have a beta
+		if versionName == "v1alpha1" && versionNames.Has("v1beta1") {
+			continue
+		}
+		crdVersionDefinition := k8s.GetCRDVersionDefinition(crd, versionName)
 
-	return r
+		r := &resourceDefinition{}
+		r.CRD = crd
+		r.Name = crd.Spec.Names.Kind
+		if err = buildFieldProperties(r, crd, crdVersionDefinition.Name); err != nil {
+			log.Fatalf("error building field properties for %v: %v", r.Name, err)
+		}
+		r.Service = strings.TrimSuffix(crd.Spec.Group, k8s.APIDomainSuffix)
+		r.Kind = strings.ToLower(crd.Spec.Names.Kind)
+
+		r.Version = crdVersionDefinition
+		resources = append(resources, r)
+	}
+	return resources
 }
 
-func buildFieldProperties(r *resourceDefinition, crd *apiextensions.CustomResourceDefinition) error {
-	specDesc := fielddesc.GetSpecDescription(crd)
+func buildFieldProperties(r *resourceDefinition, crd *apiextensions.CustomResourceDefinition, version string) error {
+	specDesc := fielddesc.GetSpecDescription(crd, version)
 	specDescriptions := dropRootAndFlattenChildrenDescriptions(specDesc)
 	r.SpecNestedStructs = make(map[string][]*fieldProperties)
 	organizeSpecFieldDescriptions(specDescriptions, r)
-	statusDesc, err := fielddesc.GetStatusDescription(crd)
+	statusDesc, err := fielddesc.GetStatusDescription(crd, version)
 	if err != nil {
 		return fmt.Errorf("error getting status descriptions: %w", err)
 	}
@@ -478,6 +491,8 @@ func formatType(desc fielddesc.FieldDescription, isRef, isSec, isIAMRef bool) st
 		switch desc.Format {
 		case "int64":
 			return "int64"
+		case "int32":
+			return "int32"
 		case "":
 			// The default is int64 (and not int, we don't want the schema to vary across architectures)
 			return "int64"
@@ -569,6 +584,9 @@ func flattenChildrenDescription(result []fielddesc.FieldDescription, fd fielddes
 	}
 	result = append(result, fd)
 	for _, child := range fd.Children {
+		result = flattenChildrenDescription(result, child)
+	}
+	for _, child := range fd.AdditionalProperties {
 		result = flattenChildrenDescription(result, child)
 	}
 	return result

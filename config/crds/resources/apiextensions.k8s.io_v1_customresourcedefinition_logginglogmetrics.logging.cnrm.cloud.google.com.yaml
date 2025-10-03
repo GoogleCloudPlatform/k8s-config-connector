@@ -46,14 +46,14 @@ spec:
         description: LoggingLogMetric is the Schema for the logging API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -70,8 +70,8 @@ spec:
                     properties:
                       bounds:
                         description: The values must be monotonically increasing.
+                        format: double
                         items:
-                          format: double
                           type: number
                         type: array
                     type: object
@@ -139,13 +139,12 @@ spec:
                   that are allowed in a project.
                 type: object
               loggingLogBucketRef:
-                description: |-
-                  The reference to the Log Bucket that owns
-                  the Log Metric. Only Log Buckets in projects are supported. The
-                  bucket has to be in the same project as the metric. For
-                  example:projects/my-project/locations/global/buckets/my-bucket
+                description: The reference to the Log Bucket that owns the Log Metric.
+                  Only Log Buckets in projects are supported. The bucket has to be
+                  in the same project as the metric. For example:projects/my-project/locations/global/buckets/my-bucket
                   If empty, then the Log Metric is considered a non-Bucket Log Metric.
-                  Only `external` field is supported to configure the reference.
+                  Only `external` field is supported to configure the reference for
+                  now.
                 oneOf:
                 - not:
                     required:
@@ -325,29 +324,28 @@ spec:
                     - external
                   required:
                   - name
-                  - kind
                 - not:
                     anyOf:
                     - required:
                       - name
                     - required:
                       - namespace
-                    - required:
-                      - kind
                   required:
                   - external
                 properties:
                   external:
-                    description: The external name of the referenced resource
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
                     type: string
                   kind:
-                    description: Kind of the referent.
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `Project` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
@@ -379,9 +377,8 @@ spec:
           status:
             properties:
               conditions:
-                description: |-
-                  Conditions represent the latest available observations of the
-                  LoggingLogMetric's current state.
+                description: Conditions represent the latest available observations
+                  of the LoggingLogMetric's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -393,9 +390,8 @@ spec:
                         last transition.
                       type: string
                     reason:
-                      description: |-
-                        Unique, one-word, CamelCase reason for the condition's last
-                        transition.
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
                       type: string
                     status:
                       description: Status is the status of the condition. Can be True,

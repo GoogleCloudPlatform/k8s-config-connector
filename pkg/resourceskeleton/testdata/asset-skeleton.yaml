@@ -49,6 +49,8 @@
 # Service: artifactregistry.googleapis.com
 - resourceConfigId: ArtifactRegistryRepository # not supported by asset inventory
 
+# not supported by asset inventory
+- resourceConfigId: BigQueryConnectionConnection
 # Service: bigquery.googleapis.com
 - asset:
     ancestors:
@@ -460,7 +462,7 @@
 - resourceConfigId: ComputeNodeTemplate
 # not supported by asset inventory
 - resourceConfigId: ComputeProjectMetadata
-# TODO: (b/233123518) Config Connector CLI can not currently support ComputeRegionNetworkEndpointGroup.
+# TODO: (b/233123518) Config Connector CLI cannot currently support ComputeRegionNetworkEndpointGroup.
 - resourceConfigId: ComputeRegionNetworkEndpointGroup
 # not supported by asset inventory
 - resourceConfigId: ComputeReservation
@@ -1204,3 +1206,32 @@
   resourceConfigId: VertexAIEndpoint
 # not supported by asset inventory
 - resourceConfigId: VertexAIIndex
+- asset:
+    ancestors:
+    - projects/1234567890
+    name: //ids.googleapis.com/projects/kcc-test/locations/us-west2-a/endpoints/cloudidsendpoint-ppdtifqxy4vqi4ezx7la
+    asset_type: cloudids.googleapis.com/Endpoint
+  expectedSkeleton:
+    apiVersion: cloudids.cnrm.cloud.google.com/v1beta1
+    kind: CloudIDSEndpoint
+    metadata:
+      name: cloudidsendpoint-ppdtifqxy4vqi4ezx7la
+    spec:
+      location: us-west2-a
+      projectRef:
+        external: kcc-test
+  resourceConfigId: CloudIDSEndpoint
+- resourceConfigId: ComputeManagedSSLCertificate
+  asset:
+    ancestors:
+      - projects/1234567890
+    name: //compute.googleapis.com/projects/kcc-test/global/sslCertificates/computemanagedsslcertificate-wj6kvvmztb67xscbzd5a
+    asset_type: compute.googleapis.com/ManagedSslCertificate
+  expectedSkeleton:
+    apiVersion: compute.cnrm.cloud.google.com/v1beta1
+    kind: ComputeManagedSSLCertificate
+    metadata:
+      name: computemanagedsslcertificate-wj6kvvmztb67xscbzd5a
+    spec:
+      projectRef:
+        external: kcc-test

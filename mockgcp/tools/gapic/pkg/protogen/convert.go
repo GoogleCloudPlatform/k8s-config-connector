@@ -37,12 +37,53 @@ type OpenAPIConverter struct {
 	imports map[string]bool
 
 	fileDescriptor *descriptorpb.FileDescriptorProto
+
+	// Comments holds field and message level comments
+	Comments
+
+	// protoPackageName is the name of the proto package we are generating.
+	protoPackageName string
+
+	// opt holds our conversion options
+	opt ConvertOptions
 }
 
-func NewOpenAPIConverter(doc *openapi.Document) *OpenAPIConverter {
+type ConvertOptions struct {
+	// NormalizeLRO indicates whether to normalize long-running operations to our standard LRO
+	NormalizeLRO bool
+}
+
+// Comments holds all the comments for our messages / fields
+type Comments struct {
+	comments map[string]*Comment
+}
+
+func (c *Comments) SetComment(key string, comment string) {
+	c.comments[key] = &Comment{Text: comment}
+
+}
+func (c *Comments) GetComment(key string) string {
+	o, found := c.comments[key]
+	if !found {
+		return ""
+	}
+	return o.Text
+}
+
+// Comment is a comment on a message/field
+type Comment struct {
+	Text string
+}
+
+func NewOpenAPIConverter(protoPackageName string, doc *openapi.Document, opt ConvertOptions) *OpenAPIConverter {
 	return &OpenAPIConverter{
-		doc:     doc,
-		imports: make(map[string]bool),
+		doc:              doc,
+		protoPackageName: protoPackageName,
+		imports:          make(map[string]bool),
+		Comments: Comments{
+			comments: make(map[string]*Comment),
+		},
+		opt: opt,
 	}
 }
 
@@ -54,168 +95,201 @@ func (c *OpenAPIConverter) buildMessageFromOpenAPI(message *openapi.Property) (*
 	nextTag := int32(1)
 	desc := &descriptorpb.DescriptorProto{}
 	desc.Name = PtrTo(message.ID)
-	for _, entry := range message.Properties.Entries() {
-		propertyID := entry.Key
-		property := entry.Value
-
-		tag := nextTag
-		nextTag++
-
-		field := &descriptorpb.FieldDescriptorProto{
-			Number: &tag,
+	c.SetComment(c.protoPackageName+"."+desc.GetName(), message.Description)
+	if len(message.Properties.Entries()) > 0 {
+		for _, entry := range message.Properties.Entries() {
+			field, err := c.buildProperty(message, desc, entry.Key, entry.Value, nextTag)
+			if err != nil {
+				return nil, err
+			}
+			desc.Field = append(desc.Field, field)
+			nextTag++
 		}
-		field.JsonName = PtrTo(propertyID)
-		field.Name = PtrTo(ToProtoFieldName(propertyID))
-
-		switch property.Type {
-		case "string", "boolean", "integer", "number":
-			c.setPrimitiveType(property, field)
-
-		case "object":
-			if property.Ref != "" {
-				typeName := c.resolveMessageType(property.Ref)
-				field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-				field.TypeName = &typeName
-
-			} else if property.AdditionalProperties != nil {
-				valueField := &descriptorpb.FieldDescriptorProto{
-					Name:   PtrTo("value"),
-					Number: PtrTo[int32](2),
-				}
-				switch property.AdditionalProperties.Type {
-				case "string", "boolean", "integer", "number":
-					c.setPrimitiveType(property.AdditionalProperties, valueField)
-
-				case "any":
-					valueField.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-					valueField.TypeName = PtrTo("google.protobuf.Any")
-					c.addImport("google/protobuf/any.proto")
-
-				case "":
-					if property.AdditionalProperties.Ref != "" {
-						valueMessage := c.resolveMessageType(property.AdditionalProperties.Ref)
-
-						valueField.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-						valueField.TypeName = PtrTo(valueMessage)
-					}
-				}
-
-				if valueField.Type == nil {
-					klog.Fatalf("unhandled additionalProperties for object: %+v", property)
-				}
-
-				mapType := MapEntryName(propertyID)
-
-				{
-					mapMessage := &descriptorpb.DescriptorProto{}
-					mapMessage.Name = &mapType
-					mapMessage.Options = &descriptorpb.MessageOptions{
-						MapEntry: PtrTo(true),
-					}
-
-					mapMessage.Field = append(mapMessage.Field, &descriptorpb.FieldDescriptorProto{
-						Name:   PtrTo("key"),
-						Type:   descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum(),
-						Number: PtrTo[int32](1),
-					})
-					mapMessage.Field = append(mapMessage.Field, valueField)
-
-					desc.NestedType = append(desc.NestedType, mapMessage)
-				}
-
-				field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-				field.TypeName = &mapType
-				field.Label = descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()
-			} else if len(property.Properties.Entries()) != 0 {
-				// An inline definition
-				inlineMessage, err := c.buildMessageFromOpenAPI(property)
-				if err != nil {
-					return nil, err
-				}
-				typeName := message.ID + StartWithUpper(propertyID)
-				inlineMessage.Name = &typeName
-				c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, inlineMessage)
-
-				field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-				field.TypeName = &typeName
-			} else {
-				klog.Fatalf("expected property.Ref to be set for object: %+v", property)
-			}
-
-		case "":
-			// TODO: Combine with object?
-			if property.Ref != "" {
-				typeName := c.resolveMessageType(property.Ref)
-				field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-				field.TypeName = &typeName
-			} else {
-				klog.Fatalf("expected property.Ref to be set for empty type: %+v", property)
-			}
-
-		case "array":
-			field.Label = descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()
-
-			if property.Ref != "" {
-				typeName := c.resolveMessageType(property.Ref)
-				field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-				field.TypeName = &typeName
-			} else if property.Items != nil {
-				if property.Items.Ref != "" {
-					typeName := c.resolveMessageType(property.Items.Ref)
-					field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-					field.TypeName = &typeName
-				} else {
-					switch property.Items.Type {
-					case "string", "boolean", "integer", "number":
-						c.setPrimitiveType(property.Items, field)
-
-					case "object":
-						if property.Items.AdditionalProperties != nil {
-							switch property.Items.AdditionalProperties.Type {
-							case "any":
-								field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-								field.TypeName = PtrTo("google.protobuf.Any")
-								c.addImport("google/protobuf/any.proto")
-							default:
-								klog.Fatalf("unhandled property.Format in %+v", property)
-							}
-						} else if len(property.Items.Properties.Entries()) != 0 {
-							// An inline definition
-							inlineMessage, err := c.buildMessageFromOpenAPI(property.Items)
-							if err != nil {
-								return nil, err
-							}
-							typeName := message.ID + StartWithUpper(propertyID)
-							inlineMessage.Name = &typeName
-							c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, inlineMessage)
-
-							field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-							field.TypeName = &typeName
-						} else {
-							klog.Fatalf("unhandled property.Format in %+v", property)
-						}
-
-					default:
-						klog.Fatalf("unhandled property.Items for array: %+v", property.Items)
-					}
-				}
-			} else {
-				klog.Fatalf("expected property.Ref to be set for array: %+v", property)
-			}
-
-		case "any":
-			field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
-			field.TypeName = PtrTo("google.protobuf.Any")
-			c.addImport("google/protobuf/any.proto")
-
-		default:
-			klog.Fatalf("unsupported property.Type %q %+v", property.Type, property)
+	} else if message.Items != nil {
+		field, err := c.buildProperty(message, desc, "items", message.Items, nextTag)
+		if err != nil {
+			return nil, err
 		}
-
+		field.Label = descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()
 		desc.Field = append(desc.Field, field)
+		nextTag++
 	}
 
 	return desc, nil
+}
+
+func (c *OpenAPIConverter) buildProperty(message *openapi.Property, desc *descriptorpb.DescriptorProto, propertyID string, property *openapi.Property, tag int32) (*descriptorpb.FieldDescriptorProto, error) {
+	field := &descriptorpb.FieldDescriptorProto{
+		Number: &tag,
+	}
+	field.JsonName = PtrTo(propertyID)
+	field.Name = PtrTo(ToProtoFieldName(propertyID))
+
+	switch property.Type {
+	case "string", "boolean", "integer", "number":
+		c.setPrimitiveType(property, field)
+
+	case "object":
+		if property.Ref != "" {
+			typeName := c.resolveMessageType(property.Ref)
+			field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+			field.TypeName = &typeName
+
+		} else if property.AdditionalProperties != nil {
+			valueField := &descriptorpb.FieldDescriptorProto{
+				Name:   PtrTo("value"),
+				Number: PtrTo[int32](2),
+			}
+			switch property.AdditionalProperties.Type {
+			case "string", "boolean", "integer", "number":
+				c.setPrimitiveType(property.AdditionalProperties, valueField)
+
+			case "any":
+				valueField.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+				valueField.TypeName = PtrTo("google.protobuf.Any")
+				c.addImport("google/protobuf/any.proto")
+
+			case "":
+				if property.AdditionalProperties.Ref != "" {
+					valueMessage := c.resolveMessageType(property.AdditionalProperties.Ref)
+
+					valueField.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+					valueField.TypeName = PtrTo(valueMessage)
+				}
+			}
+
+			if valueField.Type == nil {
+				klog.Fatalf("unhandled additionalProperties for object: %+v", property)
+			}
+
+			mapType := MapEntryName(propertyID)
+
+			{
+				mapMessage := &descriptorpb.DescriptorProto{}
+				mapMessage.Name = &mapType
+				mapMessage.Options = &descriptorpb.MessageOptions{
+					MapEntry: PtrTo(true),
+				}
+
+				mapMessage.Field = append(mapMessage.Field, &descriptorpb.FieldDescriptorProto{
+					Name:   PtrTo("key"),
+					Type:   descriptorpb.FieldDescriptorProto_TYPE_STRING.Enum(),
+					Number: PtrTo[int32](1),
+				})
+				mapMessage.Field = append(mapMessage.Field, valueField)
+
+				desc.NestedType = append(desc.NestedType, mapMessage)
+			}
+
+			field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+			field.TypeName = &mapType
+			field.Label = descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()
+		} else if len(property.Properties.Entries()) != 0 {
+			// An inline definition
+			inlineMessage, err := c.buildMessageFromOpenAPI(property)
+			if err != nil {
+				return nil, err
+			}
+			typeName := message.ID + StartWithUpper(propertyID)
+			inlineMessage.Name = &typeName
+			c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, inlineMessage)
+
+			field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+			field.TypeName = &typeName
+		} else {
+			klog.Fatalf("expected property.Ref to be set for object: %+v", property)
+		}
+
+	case "":
+		// TODO: Combine with object?
+		if property.Ref != "" {
+			typeName := c.resolveMessageType(property.Ref)
+			field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+			field.TypeName = &typeName
+		} else {
+			klog.Fatalf("expected property.Ref to be set for empty type: %+v", property)
+		}
+
+	case "array":
+		field.Label = descriptorpb.FieldDescriptorProto_LABEL_REPEATED.Enum()
+
+		if property.Ref != "" {
+			typeName := c.resolveMessageType(property.Ref)
+			field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+			field.TypeName = &typeName
+		} else if property.Items != nil {
+			if property.Items.Ref != "" {
+				typeName := c.resolveMessageType(property.Items.Ref)
+				field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+				field.TypeName = &typeName
+			} else {
+				switch property.Items.Type {
+				case "string", "boolean", "integer", "number":
+					c.setPrimitiveType(property.Items, field)
+
+				case "object":
+					if property.Items.AdditionalProperties != nil {
+						switch property.Items.AdditionalProperties.Type {
+						case "any":
+							field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+							field.TypeName = PtrTo("google.protobuf.Any")
+							c.addImport("google/protobuf/any.proto")
+						default:
+							klog.Fatalf("unhandled property.Format in %+v", property)
+						}
+					} else if len(property.Items.Properties.Entries()) != 0 {
+						// An inline definition
+						inlineMessage, err := c.buildMessageFromOpenAPI(property.Items)
+						if err != nil {
+							return nil, err
+						}
+						typeName := message.ID + StartWithUpper(propertyID)
+						inlineMessage.Name = &typeName
+						c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, inlineMessage)
+
+						field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+						field.TypeName = &typeName
+					} else {
+						klog.Fatalf("unhandled property.Format in %+v", property)
+					}
+
+				case "array":
+					inlineMessage, err := c.buildMessageFromOpenAPI(property.Items)
+					if err != nil {
+						return nil, err
+					}
+					typeName := message.ID + StartWithUpper(propertyID)
+					inlineMessage.Name = &typeName
+					c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, inlineMessage)
+
+					field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+					field.TypeName = &typeName
+
+				case "any":
+					field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+					field.TypeName = PtrTo("google.protobuf.Any")
+					c.addImport("google/protobuf/any.proto")
+
+				default:
+					klog.Fatalf("unhandled property.Items for array: %+v", property.Items)
+				}
+			}
+		} else {
+			klog.Fatalf("expected property.Ref to be set for array: %+v", property)
+		}
+
+	case "any":
+		field.Type = descriptorpb.FieldDescriptorProto_TYPE_MESSAGE.Enum()
+		field.TypeName = PtrTo("google.protobuf.Any")
+		c.addImport("google/protobuf/any.proto")
+
+	default:
+		klog.Fatalf("unsupported property.Type %q %+v", property.Type, property)
+	}
+
+	c.SetComment(c.protoPackageName+"."+desc.GetName()+"."+field.GetName(), property.Description)
+
+	return field, nil
 }
 
 func PtrTo[T any](val T) *T {
@@ -357,7 +431,18 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(pluralName string, resource *
 				match = strings.TrimPrefix(match, "{+")
 				match = strings.TrimSuffix(match, "}")
 
-				return "{" + match + "=*}"
+				expansion := "*"
+				if parameter := method.Parameters.Get(match); parameter != nil {
+					if parameter.Pattern != "" {
+						pattern := parameter.Pattern
+						pattern = strings.TrimPrefix(pattern, "^")
+						pattern = strings.TrimSuffix(pattern, "$")
+						pattern = strings.ReplaceAll(pattern, "[^/]+", "*")
+						expansion = pattern
+					}
+				}
+
+				return "{" + match + "=" + expansion + "}"
 			})
 		}
 
@@ -530,9 +615,11 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(pluralName string, resource *
 
 		proto.SetExtension(serviceMethod.Options, annotations.E_Http, httpRule)
 
+		c.SetComment(c.protoPackageName+"."+service.GetName()+"."+serviceMethod.GetName(), method.Description)
+
 		service.Method = append(service.Method, serviceMethod)
 
-		klog.Infof("%s/%s => %v", singularName, methodName, prototext.Format(serviceMethod))
+		klog.V(4).Infof("%s/%s => %v", singularName, methodName, prototext.Format(serviceMethod))
 	}
 
 	c.fileDescriptor.Service = append(c.fileDescriptor.Service, service)
@@ -542,12 +629,14 @@ func (c *OpenAPIConverter) buildServiceFromOpenAPI(pluralName string, resource *
 func (c *OpenAPIConverter) Convert(ctx context.Context) (*descriptorpb.FileDescriptorProto, error) {
 
 	{
-		version := c.doc.Version
-		serviceID := c.doc.Name
-		prefix := []string{"google", "cloud"}
-
-		name := path.Join(path.Join(prefix...), serviceID, version, serviceID+"pb.proto")
-		packageName := strings.Join(prefix, ".") + "." + serviceID + "." + version
+		tokens := strings.Split(c.protoPackageName, ".")
+		if len(tokens) < 2 {
+			return nil, fmt.Errorf("unexpected proto package name %q (expected more tokens)", c.protoPackageName)
+		}
+		name := path.Join(tokens...) + ".pb.proto"
+		packageName := c.protoPackageName
+		serviceID := tokens[len(tokens)-2]
+		version := tokens[len(tokens)-1]
 		goPackageName := path.Join("cloud.google.com/go", serviceID, "api"+version, serviceID+"pb") + ";" + serviceID + "pb"
 		c.fileDescriptor = &descriptorpb.FileDescriptorProto{
 			Name:    PtrTo(name),
@@ -562,13 +651,17 @@ func (c *OpenAPIConverter) Convert(ctx context.Context) (*descriptorpb.FileDescr
 		message := c.doc.Schemas[schemaName]
 
 		if message.Type == "object" {
-			desc, err := c.buildMessageFromOpenAPI(message)
-			if err != nil {
-				return nil, fmt.Errorf("buildMessageFromOpenAPI failed: %w", err)
-			}
-			c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, desc)
+			if !c.isWellKnown(message.ID) {
+				desc, err := c.buildMessageFromOpenAPI(message)
+				if err != nil {
+					return nil, fmt.Errorf("buildMessageFromOpenAPI failed: %w", err)
+				}
+				c.fileDescriptor.MessageType = append(c.fileDescriptor.MessageType, desc)
 
-			klog.Infof("%s => %+v\n", schemaName, prototext.Format(desc))
+				klog.V(4).Infof("%s => %+v\n", schemaName, prototext.Format(desc))
+			} else {
+				klog.Infof("skipping well known message %q", schemaName)
+			}
 		} else if message.Type == "any" {
 			klog.Warningf("skipping schema with type any: %q", message.ID)
 		} else {
@@ -622,13 +715,29 @@ func (c *OpenAPIConverter) resolveMessageType(ref string) string {
 	}
 
 	switch ref {
-	case "Operation":
-		c.addImport("google/longrunning/operations.proto")
-		return "google.longrunning.Operation"
-
+	case "Operation", "GoogleLongrunningOperation":
+		if c.opt.NormalizeLRO {
+			// Normalize to our standard LRO
+			c.addImport("google/longrunning/operations.proto")
+			return "google.longrunning.Operation"
+		}
+		return ref
 	default:
 		return ref
 	}
+}
+
+func (c *OpenAPIConverter) isWellKnown(ref string) bool {
+	if ref == "" {
+		return false
+	}
+	resolved := c.resolveMessageType(ref)
+	switch resolved {
+	case "google.longrunning.Operation":
+		return true
+	}
+
+	return false
 }
 
 func (c *OpenAPIConverter) setPrimitiveType(property *openapi.Property, field *descriptorpb.FieldDescriptorProto) {

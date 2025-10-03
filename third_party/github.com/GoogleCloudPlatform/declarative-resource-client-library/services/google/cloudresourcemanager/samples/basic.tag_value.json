@@ -1,0 +1,5 @@
+{
+  "parent": "tagKeys/{{ref:basic.tag_key.json:name}}",
+  "shortName": "{{tag_value}}",
+  "description": "This TagValue is new."
+}

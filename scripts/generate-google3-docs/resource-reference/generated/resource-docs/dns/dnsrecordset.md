@@ -70,9 +70,6 @@
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
@@ -2159,7 +2156,7 @@ spec:
   dnsName: "example.com."
   visibility: private
   privateVisibilityConfig:
-  networks:
+    networks:
     - networkRef:
         name: dnsrecordset-dep-computenetworkreference
 ```

@@ -38,10 +38,12 @@ var (
 		corekcck8s.ToGVR(customizev1beta1.ControllerResourceGroupVersionKind),
 		corekcck8s.ToGVR(customizev1beta1.ValidatingWebhookConfigurationCustomizationGroupVersionKind),
 		corekcck8s.ToGVR(customizev1beta1.MutatingWebhookConfigurationCustomizationGroupVersionKind),
+		corekcck8s.ToGVR(customizev1beta1.ControllerReconcilerGroupVersionKind),
 	}
 	// NamespacedCustomizationCRsToWatch contains all the namspaced customization CRs to watch
 	NamespacedCustomizationCRsToWatch = []schema.GroupVersionResource{
 		corekcck8s.ToGVR(customizev1beta1.NamespacedControllerResourceGroupVersionKind),
+		corekcck8s.ToGVR(customizev1beta1.NamespacedControllerReconcilerGroupVersionKind),
 	}
 )
 

@@ -1,0 +1,6 @@
+- pre: gcloud metastore services create test-service-${uniqueId} --location=us-central1 --project=${projectId} --endpoint-protocol=grpc
+- exec: gcloud metastore federations create test-${uniqueId} --location=us-central1 --backends=1=dpms:projects/${projectId}/locations/us-central1/services/test-service-${uniqueId} --project=${projectId} --hive-metastore-version=3.1.2
+- exec: gcloud metastore federations describe test-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud metastore federations update test-${uniqueId} --location=us-central1 --project=${projectId} --clear-backends --update-backends=1=dpms:projects/${projectId}/locations/us-central1/services/test-service-${uniqueId}
+- exec: gcloud metastore federations delete test-${uniqueId} --location=us-central1 --project=${projectId} --quiet
+- post: gcloud metastore services delete test-service-${uniqueId} --location=us-central1 --project=${projectId} --quiet

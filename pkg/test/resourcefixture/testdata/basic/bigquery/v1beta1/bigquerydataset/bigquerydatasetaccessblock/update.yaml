@@ -21,6 +21,8 @@ spec:
   description: "BigQuery Dataset With Access Block v2"
   friendlyName: bigquerydataset-accessblock
   location: US
+  projectRef:
+    external: ${projectId}
   access:
     - role: OWNER
       specialGroup: projectOwners

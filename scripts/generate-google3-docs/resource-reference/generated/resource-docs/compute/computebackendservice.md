@@ -79,9 +79,6 @@ the `spec.location` field. To manage a regional ComputeBackendService, use a reg
     <tr>
         <td><code>cnrm.cloud.google.com/project-id</code></td>
     </tr>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
 </tbody>
 </table>
 
@@ -2153,7 +2150,7 @@ service resource.{% endverbatim %}</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Allowed value: The `name` field of a `NetworkSecurityClientTLSPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}Allowed value: string of the format `//networksecurity.googleapis.com/projects/{{project}}/locations/{{location}}/clientTlsPolicies/{{value}}`, where {{value}} is the `name` field of a `NetworkSecurityClientTLSPolicy` resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -2499,7 +2496,7 @@ spec:
   localityLbPolicy: MAGLEV
   timeoutSec: 86400
   consistentHash:
-    httpHeaderName: "Hash string"
+    httpHeaderName: "Hash_String"
   healthChecks:
   - healthCheckRef:
       name: computebackendservice-dep-internalmanagedloadbalancing

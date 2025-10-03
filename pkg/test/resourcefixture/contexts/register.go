@@ -17,11 +17,27 @@ package contexts
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"strings"
 	"testing"
+	"time"
+
+	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
+	dclunstruct "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
+	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"github.com/nasa9084/go-openapi"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl"
 	dclconversion "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
 	dclextension "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/extension"
@@ -29,32 +45,31 @@ import (
 	dcllivestate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/livestate"
 	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	testreconciler "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller/reconciler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
-	"github.com/nasa9084/go-openapi"
-
-	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
-	dclunstruct "github.com/GoogleCloudPlatform/declarative-resource-client-library/unstructured"
-	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 type ResourceContext struct {
-	ResourceGVK        schema.GroupVersionKind
-	ResourceKind       string
-	SkipNoChange       bool
-	SkipUpdate         bool
+	ResourceGVK  schema.GroupVersionKind
+	ResourceKind string
+
+	SkipNoChange bool
+	SkipUpdate   bool
+	SkipDelete   bool
+
+	// Hack: Optionally wait before getting the object in GCP. This is to work around some issues with troublesome
+	// services in GCP that claim to be done with creating / updating the resource before it is actually available.
+	PostModifyDelay time.Duration
+
+	// If true, skip drift detection test.
 	SkipDriftDetection bool
-	SkipDelete         bool
 
 	// fields related to DCL-based resources
 	DCLSchema *openapi.Schema
-	DCLBased  bool
 }
 
 var (
@@ -62,7 +77,7 @@ var (
 	emptyGVK           = schema.GroupVersionKind{}
 )
 
-func GetResourceContext(fixture resourcefixture.ResourceFixture, serviceMetadataLoader dclmetadata.ServiceMetadataLoader, dclSchemaLoader dclschemaloader.DCLSchemaLoader) ResourceContext {
+func GetResourceContext(fixture resourcefixture.ResourceFixture, serviceMetadataLoader dclmetadata.ServiceMetadataLoader, dclSchemaLoader dclschemaloader.DCLSchemaLoader) (ResourceContext, error) {
 	rc, ok := resourceContextMap[fixture.Name]
 	if !ok {
 		rc = ResourceContext{
@@ -70,31 +85,47 @@ func GetResourceContext(fixture resourcefixture.ResourceFixture, serviceMetadata
 			ResourceKind: fixture.GVK.Kind,
 		}
 	}
+
 	if rc.ResourceGVK == emptyGVK {
 		rc.ResourceGVK = fixture.GVK
 	}
-	if dclmetadata.IsDCLBasedResourceKind(rc.ResourceGVK, serviceMetadataLoader) {
+
+	// If CRD has DCL controller label, fetch DCL schema.
+	crd, err := crdloader.GetCRDForGVK(rc.ResourceGVK)
+	if err != nil {
+		return ResourceContext{}, err
+	}
+	if crd.GetLabels()[crdgeneration.Dcl2CRDLabel] == "true" {
 		s, err := dclschemaloader.GetDCLSchemaForGVK(rc.ResourceGVK, serviceMetadataLoader, dclSchemaLoader)
 		if err != nil {
 			panic(fmt.Sprintf("error getting the DCL schema for GVK %v: %v", rc.ResourceGVK, err))
 		}
 		rc.DCLSchema = s
-		rc.DCLBased = true
 	}
-	return rc
+
+	return rc, nil
 }
 
-func (rc ResourceContext) SupportsLabels(smLoader *servicemappingloader.ServiceMappingLoader) bool {
-	if rc.DCLBased {
+func (rc ResourceContext) SupportsLabels(smLoader *servicemappingloader.ServiceMappingLoader, u *unstructured.Unstructured, c client.Client) bool {
+	rt, err := testreconciler.ReconcilerTypeForObject(u, c)
+	if err != nil {
+		panic(fmt.Errorf("error getting reconciler type: %w", err))
+	}
+
+	if rt == k8s.ReconcilerTypeTerraform {
+		// For tf based resources, resolve the label info from ResourceConfig
+		resourceConfig := rc.getResourceConfig(smLoader)
+		return resourceConfig.MetadataMapping.Labels != ""
+	} else if rt == k8s.ReconcilerTypeDCL {
 		_, _, found, err := dclextension.GetLabelsFieldSchema(rc.DCLSchema)
 		if err != nil {
 			panic(fmt.Errorf("error getting the DCL schema for labels field: %w", err))
 		}
 		return found
+	} else {
+		// Labels are not supported for Direct resources yet.
+		return false
 	}
-	// For tf based resources, resolve the label info from ResourceConfig
-	resourceConfig := rc.getResourceConfig(smLoader)
-	return resourceConfig.MetadataMapping.Labels != ""
 }
 
 func (rc ResourceContext) getResourceConfig(smLoader *servicemappingloader.ServiceMappingLoader) v1alpha1.ResourceConfig {
@@ -108,31 +139,65 @@ func (rc ResourceContext) getResourceConfig(smLoader *servicemappingloader.Servi
 	panic(fmt.Errorf("no resource config found for kind: %v", rc.ResourceKind))
 }
 
-func (rc ResourceContext) IsAutoGenerated(smLoader *servicemappingloader.ServiceMappingLoader) bool {
-	if rc.DCLBased {
+func (rc ResourceContext) IsAutoGenerated(smLoader *servicemappingloader.ServiceMappingLoader, u *unstructured.Unstructured, c client.Client) bool {
+	rt, err := testreconciler.ReconcilerTypeForObject(u, c)
+	if err != nil {
+		panic(fmt.Errorf("error getting reconciler type: %w", err))
+	}
+
+	if rt == k8s.ReconcilerTypeTerraform {
+		resourceConfig := rc.getResourceConfig(smLoader)
+		return resourceConfig.AutoGenerated
+	} else {
 		return false
 	}
-	resourceConfig := rc.getResourceConfig(smLoader)
-	return resourceConfig.AutoGenerated
 }
 
 func (rc ResourceContext) Create(ctx context.Context, _ *testing.T, u *unstructured.Unstructured, provider *tfschema.Provider, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader, config *mmdcl.Config, dclConverter *dclconversion.Converter) (*unstructured.Unstructured, error) {
-	if rc.DCLBased {
+	rt, err := testreconciler.ReconcilerTypeForObject(u, c)
+	if err != nil {
+		panic(fmt.Errorf("error getting reconciler type: %w", err))
+	}
+
+	if rt == k8s.ReconcilerTypeDirect {
+		return directCreate(ctx, u, c)
+	}
+	if rt == k8s.ReconcilerTypeDCL {
 		return dclCreate(ctx, u, config, c, dclConverter, smLoader)
 	}
 	return terraformCreate(ctx, u, provider, c, smLoader)
 }
 
-func (rc ResourceContext) Get(ctx context.Context, _ *testing.T, u *unstructured.Unstructured, provider *tfschema.Provider, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader, config *mmdcl.Config, dclConverter *dclconversion.Converter) (*unstructured.Unstructured, error) {
-	if rc.DCLBased {
-		return dclGet(ctx, u, config, c, dclConverter, smLoader)
+func (rc ResourceContext) Get(ctx context.Context, _ *testing.T, u *unstructured.Unstructured, provider *tfschema.Provider, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader, cfg *mmdcl.Config, dclConverter *dclconversion.Converter, httpClient *http.Client) (*unstructured.Unstructured, error) {
+	rt, err := testreconciler.ReconcilerTypeForObject(u, c)
+	if err != nil {
+		panic(fmt.Errorf("error getting reconciler type: %w", err))
+	}
+
+	if rt == k8s.ReconcilerTypeDirect {
+		result, err := directExport(ctx, u, c)
+		if result == nil && err == nil {
+			return nil, fmt.Errorf("%v uses direct controller and Export() is not implemented yet", u.GetKind())
+		}
+		return result, err
+	}
+	if rt == k8s.ReconcilerTypeDCL {
+		return dclGet(ctx, u, cfg, c, dclConverter, smLoader)
 	}
 	return terraformGet(ctx, u, provider, c, smLoader)
 }
 
-func (rc ResourceContext) Delete(ctx context.Context, _ *testing.T, u *unstructured.Unstructured, provider *tfschema.Provider, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader, config *mmdcl.Config, dclConverter *dclconversion.Converter) error {
-	if rc.DCLBased {
-		return dclDelete(ctx, u, config, c, dclConverter, smLoader)
+func (rc ResourceContext) Delete(ctx context.Context, _ *testing.T, u *unstructured.Unstructured, provider *tfschema.Provider, c client.Client, smLoader *servicemappingloader.ServiceMappingLoader, cfg *mmdcl.Config, dclConverter *dclconversion.Converter, httpClient *http.Client) error {
+	rt, err := testreconciler.ReconcilerTypeForObject(u, c)
+	if err != nil {
+		panic(fmt.Errorf("error getting reconciler type: %w", err))
+	}
+
+	if rt == k8s.ReconcilerTypeDirect {
+		return directDelete(ctx, u, c)
+	}
+	if rt == k8s.ReconcilerTypeDCL {
+		return dclDelete(ctx, u, cfg, c, dclConverter, smLoader)
 	}
 	return terraformDelete(ctx, u, provider, c, smLoader)
 }
@@ -319,4 +384,93 @@ func IsNotFoundError(err error) bool {
 		return false
 	}
 	return strings.Contains(err.Error(), "is not found")
+}
+
+func getAdapter(ctx context.Context, u *unstructured.Unstructured, c client.Client) (directbase.Adapter, error) {
+	gvk := u.GroupVersionKind()
+	model, err := registry.GetModel(gvk.GroupKind())
+	if err != nil {
+		return nil, err
+	}
+	return model.AdapterForObject(ctx, c, u)
+}
+
+func directExport(ctx context.Context, u *unstructured.Unstructured, c client.Client) (*unstructured.Unstructured, error) {
+	a, err := getAdapter(ctx, u, c)
+	if err != nil {
+		return nil, err
+	}
+
+	found, err := a.Find(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if !found {
+		return nil, fmt.Errorf("GVK %s '%v' is not found", u.GroupVersionKind(), u.GetName())
+	}
+
+	unst, err := a.Export(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return unst, nil
+}
+
+func directCreate(ctx context.Context, u *unstructured.Unstructured, c client.Client) (*unstructured.Unstructured, error) {
+	a, err := getAdapter(ctx, u, c)
+	if err != nil {
+		return nil, err
+	}
+
+	found, err := a.Find(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if found {
+		return nil, fmt.Errorf("GVK %s '%v' already exist", u.GroupVersionKind(), u.GetName())
+	}
+
+	op := directbase.NewCreateOperation(lifecyclehandler.LifecycleHandler{}, c, u)
+	err = a.Create(ctx, op)
+	if err != nil {
+		return nil, err
+	}
+	return directExport(ctx, u, c)
+}
+
+func directDelete(ctx context.Context, u *unstructured.Unstructured, c client.Client) error {
+	maxRetries := 3
+	baseDelay := 100 * time.Millisecond // starting delay
+	var err error
+
+	a, err := getAdapter(ctx, u, c)
+	if err != nil {
+		return err
+	}
+	// the very first call to find can be true but subsequent calls may return false
+	// with the underlying Delete call already succeeding! So if we do not find this resource
+	// in subsequent calls but found it originally, we can consider it deleted.
+	firstFind := false
+
+	for i := 0; i < maxRetries; i++ {
+		found, err := a.Find(ctx)
+		if err == nil && found {
+			firstFind = true
+			op := directbase.NewDeleteOperation(c, u)
+			_, err = a.Delete(ctx, op)
+			if err == nil {
+				return nil // success
+			}
+		} else if err == nil && !found {
+			if firstFind {
+				return nil // success
+			}
+			return fmt.Errorf("GVK %s '%v' is not found", u.GroupVersionKind(), u.GetName())
+		}
+
+		// Exponential backoff
+		time.Sleep(baseDelay * (1 << i)) // delays: 100ms * 2^0, 100ms * 2^1, 100ms * 2^2
+	}
+
+	return fmt.Errorf("failed to delete after %d retries: %w", maxRetries, err)
 }

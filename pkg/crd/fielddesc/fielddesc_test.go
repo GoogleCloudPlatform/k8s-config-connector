@@ -21,6 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/fielddesc"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 
 	"gopkg.in/yaml.v2"
@@ -33,14 +34,16 @@ func TestAllCRDsGetSpecAndStatusDescription(t *testing.T) {
 		t.Fatalf("error loading crds: %v", err)
 	}
 	for _, crd := range crds {
-		fd := fielddesc.GetSpecDescription(&crd)
-		expectedType := "object"
-		if fd.Type != expectedType {
-			t.Fatalf("unexpected type: got '%v', want' %v'", fd.Type, expectedType)
-		}
-		fd = getStatusDescription(t, &crd)
-		if fd.Type != expectedType {
-			t.Fatalf("unexpected type: got '%v', want' %v'", fd.Type, expectedType)
+		for _, version := range crd.Spec.Versions {
+			fd := fielddesc.GetSpecDescription(&crd, version.Name)
+			expectedType := "object"
+			if fd.Type != expectedType {
+				t.Fatalf("unexpected type: got '%v', want' %v'", fd.Type, expectedType)
+			}
+			fd = getStatusDescription(t, &crd, version.Name)
+			if fd.Type != expectedType {
+				t.Fatalf("unexpected type: got '%v', want' %v'", fd.Type, expectedType)
+			}
 		}
 	}
 }
@@ -58,16 +61,17 @@ func testOutputMatches(t *testing.T, resourceKind string) {
 	if err != nil {
 		t.Fatalf("error getting crd '%v': %v", resourceKind, err)
 	}
-	fd := fielddesc.GetSpecDescription(crd)
+	version := k8s.PreferredVersion(crd)
+	fd := fielddesc.GetSpecDescription(crd, version.Name)
 	fieldDescYAML := fieldDescToYAML(t, fd)
 	test.CompareGoldenFile(t, fmt.Sprintf("testdata/%v-spec.golden.yaml", strings.ToLower(resourceKind)), string(fieldDescYAML), test.IgnoreLeadingComments)
-	fd = getStatusDescription(t, crd)
+	fd = getStatusDescription(t, crd, version.Name)
 	fieldDescYAML = fieldDescToYAML(t, fd)
 	test.CompareGoldenFile(t, fmt.Sprintf("testdata/%v-status.golden.yaml", strings.ToLower(resourceKind)), string(fieldDescYAML), test.IgnoreLeadingComments)
 }
 
-func getStatusDescription(t *testing.T, crd *apiextensions.CustomResourceDefinition) fielddesc.FieldDescription {
-	fd, err := fielddesc.GetStatusDescription(crd)
+func getStatusDescription(t *testing.T, crd *apiextensions.CustomResourceDefinition, version string) fielddesc.FieldDescription {
+	fd, err := fielddesc.GetStatusDescription(crd, version)
 	if err != nil {
 		t.Fatalf("error getting status description")
 	}

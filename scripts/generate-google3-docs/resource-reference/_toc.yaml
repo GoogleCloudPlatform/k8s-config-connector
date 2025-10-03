@@ -33,24 +33,56 @@ toc:
     path: /config-connector/docs/reference/resource-docs/alloydb/alloydbinstance.md
   - title: "AlloyDBUser"
     path: /config-connector/docs/reference/resource-docs/alloydb/alloydbuser.md
+- title: "API Gateway"
+  section:
+  - title: "APIGatewayAPI"
+    path: /config-connector/docs/reference/resource-docs/apigateway/apigatewayapi.md
+- title: "App Hub"
+  section:
+  - title: "AppHubApplication"
+    path: /config-connector/docs/reference/resource-docs/apphub/apphubapplication.md
 - title: "Apigee"
   section:
+  - title: "ApigeeEndpointAttachment"
+    path: /config-connector/docs/reference/resource-docs/apigee/apigeeendpointattachment.md
+  - title: "ApigeeEnvgroup"
+    path: /config-connector/docs/reference/resource-docs/apigee/apigeeenvgroup.md
+  - title: "ApigeeEnvgroupAttachment"
+    path: /config-connector/docs/reference/resource-docs/apigee/apigeeenvgroupattachment.md
   - title: "ApigeeEnvironment"
     path: /config-connector/docs/reference/resource-docs/apigee/apigeeenvironment.md
+  - title: "ApigeeInstance"
+    path: /config-connector/docs/reference/resource-docs/apigee/apigeeinstance.md
+  - title: "ApigeeInstanceAttachment"
+    path: /config-connector/docs/reference/resource-docs/apigee/apigeeinstanceattachment.md
   - title: "ApigeeOrganization"
     path: /config-connector/docs/reference/resource-docs/apigee/apigeeorganization.md
 - title: "ArtifactRegistry"
   section:
   - title: "ArtifactRegistryRepository"
     path: /config-connector/docs/reference/resource-docs/artifactregistry/artifactregistryrepository.md
+- title: "Backup and DR"
+  section:
+  - title: "BackupDRBackupPlanAssociation"
+    path: /config-connector/docs/reference/resource-docs/backupdr/backupdrbackupplanassociation.md
+- title: "BigQueryAnalyticsHub"
+  section:
+  - title: "BigQueryAnalyticsHubDataExchange"
+    path: /config-connector/docs/reference/resource-docs/bigqueryanalyticshub/bigqueryanalyticshubdataexchange.md
+  - title: "BigQueryAnalyticsHubListing"
+    path: /config-connector/docs/reference/resource-docs/bigqueryanalyticshub/bigqueryanalyticshublisting.md
 - title: "BigQuery"
   section:
+  - title: "BigqueryConnectionConnection"
+    path: /config-connector/docs/reference/resource-docs/bigqueryconnection/bigqueryconnectionconnection.md
   - title: "BigQueryDataset"
     path: /config-connector/docs/reference/resource-docs/bigquery/bigquerydataset.md
   - title: "BigQueryJob"
     path: /config-connector/docs/reference/resource-docs/bigquery/bigqueryjob.md
   - title: "BigQueryTable"
     path: /config-connector/docs/reference/resource-docs/bigquery/bigquerytable.md
+  - title: "BigQueryDataTransferConfig"
+    path: /config-connector/docs/reference/resource-docs/bigquerydatatransfer/bigquerydatatransferconfig.md
 - title: "BillingBudgets"
   section:
   - title: "BillingBudgetsBudget"
@@ -85,6 +117,12 @@ toc:
   section:
   - title: "CloudBuildTrigger"
     path: /config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildtrigger.md
+  - title: "CloudBuildWorkerPool"
+    path: /config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildworkerpool.md
+- title: "Cloud Quotas"
+  section:
+  - title: "APIQuotaAdjusterSettings"
+    path: /config-connector/docs/reference/resource-docs/cloudquota/apiquotaadjustersettings.md
 - title: "Cloud Functions"
   section:
   - title: "CloudFunctionsFunction"
@@ -95,6 +133,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/cloudidentity/cloudidentitygroup.md
   - title: "CloudIdentityMembership"
     path: /config-connector/docs/reference/resource-docs/cloudidentity/cloudidentitymembership.md
+- title: "Cloud Intrusion Detection System"
+  section:
+  - title: "CloudIDSEndpoint"
+    path: /config-connector/docs/reference/resource-docs/cloudids/cloudsidsendpoint.md
 - title: "Cloud Scheduler"
   section:
   - title: "CloudSchedulerJob"
@@ -127,6 +169,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/kms/kmscryptokey.md
   - title: "KMSKeyRing"
     path: /config-connector/docs/reference/resource-docs/kms/kmskeyring.md
+  - title: "KMSAutokeyConfig"
+    path: /config-connector/docs/reference/resource-docs/kms/kmsautokeyconfig.md
+  - title: "KMSKeyHandle"
+    path: /config-connector/docs/reference/resource-docs/kms/kmskeyhandle.md
 - title: "Eventarc"
   section:
   - title: "EventarcTrigger"
@@ -155,12 +201,14 @@ toc:
     path: /config-connector/docs/reference/resource-docs/iam/iamworkloadidentitypool.md
   - title: "IAMWorkloadIdentityPoolProvider"
     path: /config-connector/docs/reference/resource-docs/iam/iamworkloadidentitypoolprovider.md
-- title: "Identity-Aware Proxy"
+- title: "Identity-Aware Proxy (IAP)"
   section:
   - title: "IAPBrand"
     path: /config-connector/docs/reference/resource-docs/iap/iapbrand.md
   - title: "IAPIdentityAwareProxyClient"
     path: /config-connector/docs/reference/resource-docs/iap/iapidentityawareproxyclient.md
+  - title: "IAPSettings"
+    path: /config-connector/docs/reference/resource-docs/iap/iapsettings.md
 - title: "Identity Platform"
   section:
   - title: "IdentityPlatformConfig"
@@ -217,8 +265,18 @@ toc:
   section:
   - title: "SourceRepoRepository"
     path: /config-connector/docs/reference/resource-docs/sourcerepo/sourcereporepository.md
+- title: "Speech-to-Text"
+  section:
+  - title: "SpeechCustomClass"
+    path: /config-connector/docs/reference/resource-docs/speech/speechcustomclass.md
+  - title: "SpeechPhraseSet"
+    path: /config-connector/docs/reference/resource-docs/speech/speechphraseset.md
+  - title: "SpeechRecognizer"
+    path: /config-connector/docs/reference/resource-docs/speech/speechrecognizer.md
 - title: "Cloud Spanner"
   section:
+  - title: "SpannerBackupSchedule"
+    path: /config-connector/docs/reference/resource-docs/spanner/spannerbackupschedule.md
   - title: "SpannerDatabase"
     path: /config-connector/docs/reference/resource-docs/spanner/spannerdatabase.md
   - title: "SpannerInstance"
@@ -237,6 +295,8 @@ toc:
   section:
   - title: "StorageBucket"
     path: /config-connector/docs/reference/resource-docs/storage/storagebucket.md
+  - title: "StorageAnywhereCache"
+    path: /config-connector/docs/reference/resource-docs/storage/storageanywherecache.md
   - title: "StorageBucketAccessControl"
     path: /config-connector/docs/reference/resource-docs/storage/storagebucketaccesscontrol.md
   - title: "StorageDefaultObjectAccessControl"
@@ -283,6 +343,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/compute/computeinstancetemplate.md
   - title: "ComputeInterconnectAttachment"
     path: /config-connector/docs/reference/resource-docs/compute/computeinterconnectattachment.md
+  - title: "ComputeManagedSSLCertificate"
+    path: /config-connector/docs/reference/resource-docs/compute/computemanagedsslcertificate.md
   - title: "ComputeNetwork"
     path: /config-connector/docs/reference/resource-docs/compute/computenetwork.md
   - title: "ComputeNetworkEndpointGroup"
@@ -369,6 +431,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/dataflow/dataflowjob.md
   - title: "DataflowFlexTemplateJob"
     path: /config-connector/docs/reference/resource-docs/dataflow/dataflowflextemplatejob.md
+- title: "Dataform"
+  section:
+  - title: "DataformRepository"
+    path: /config-connector/docs/reference/resource-docs/dataform/dataformrepository.md
 - title: "Data Fusion"
   section:
   - title: "DataFusionInstance"
@@ -389,6 +455,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/filestore/filestoreinstance.md
 - title: "Firestore"
   section:
+  - title: "FirestoreDatabase"
+    path: /config-connector/docs/reference/resource-docs/firestore/firestoredatabase.md
   - title: "FirestoreIndex"
     path: /config-connector/docs/reference/resource-docs/firestore/firestoreindex.md
 - title: "Google Kubernetes Engine (GKE)"
@@ -417,8 +485,16 @@ toc:
     path: /config-connector/docs/reference/resource-docs/gkehub/gkehubfeaturemembership.md
   - title: "GKEHubMembership"
     path: /config-connector/docs/reference/resource-docs/gkehub/gkehubmembership.md
+- title: "Managed Kafka"
+  section:
+  - title: "ManagedKafkaCluster"
+    path: /config-connector/docs/reference/resource-docs/managedkafka/managedkafkacluster.md
+  - title: "ManagedKafkaTopic"
+    path: /config-connector/docs/reference/resource-docs/managedkafka/managedkafkatopic.md
 - title: "Memorystore (Redis)"
   section:
+  - title: "RedisCluster"
+    path: /config-connector/docs/reference/resource-docs/redis/rediscluster.md
   - title: "RedisInstance"
     path: /config-connector/docs/reference/resource-docs/redis/redisinstance.md
 - title: "Network Connectivity"
@@ -451,6 +527,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/networkservices/networkservicestcproute.md
   - title: "NetworkServicesTLSRoute"
     path: /config-connector/docs/reference/resource-docs/networkservices/networkservicestlsroute.md
+- title: "Notebooks"
+  section:
+  - title: "NotebooksInstance"
+    path: "/config-connector/docs/reference/resource-docs/notebooks/notebookinstance.md"
 - title: "Private CA"
   section:
   - title: "PrivateCACAPool"
@@ -461,6 +541,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/privateca/privatecacertificateauthority.md
   - title: "PrivateCACertificateTemplate"
     path: /config-connector/docs/reference/resource-docs/privateca/privatecacertificatetemplate.md
+- title: "Privileged Access Manager"
+  section:
+  - title: "PrivilegedAccessManagerEntitlement"
+    path: /config-connector/docs/reference/resource-docs/privilegedaccessmanager/privilegedaccessmanagerentitlement.md
 - title: "Pub/Sub"
   section:
   - title: "PubSubSchema"
@@ -499,6 +583,12 @@ toc:
     path: /config-connector/docs/reference/resource-docs/secretmanager/secretmanagersecret.md
   - title: "SecretManagerSecretVersion"
     path: /config-connector/docs/reference/resource-docs/secretmanager/secretmanagersecretversion.md
+- title: "SecureSourceManager"
+  section:
+  - title: "SecureSourceManagerInstance"
+    path: /config-connector/docs/reference/resource-docs/securesourcemanager/securesourcemanagerinstance.md
+  - title: "SecureSourceManagerRepository"
+    path: /config-connector/docs/reference/resource-docs/securesourcemanager/securesourcemanagerrepository.md
 - title: "Service Directory"
   section:
   - title: "ServiceDirectoryEndpoint"
@@ -529,7 +619,17 @@ toc:
     path: /config-connector/docs/reference/resource-docs/vertexai/vertexaiendpoint.md
   - title: "VertexAIIndex"
     path: /config-connector/docs/reference/resource-docs/vertexai/vertexaiindex.md
+  - title: "VertexAIMetadataStore"
+    path: /config-connector/docs/reference/resource-docs/vertexai/vertexaimetadatastore.md
 - title: "VPC Access"
   section:
   - title: "VPCAccessConnector"
     path: /config-connector/docs/reference/resource-docs/vpcaccess/vpcaccessconnector.md
+- title: "Workstations"
+  section:
+  - title: "WorkstationCluster"
+    path: /config-connector/docs/reference/resource-docs/workstations/workstationcluster.md
+  - title: "WorkstationConfig"
+    path: /config-connector/docs/reference/resource-docs/workstations/workstationconfig.md
+  - title: "Workstation"
+    path: /config-connector/docs/reference/resource-docs/workstations/workstation.md

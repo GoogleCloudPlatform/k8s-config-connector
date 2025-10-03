@@ -23,12 +23,14 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/deepcopy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 	tfresource "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/resource"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
 )
 
@@ -64,9 +66,10 @@ func ResolveSpecAndStatus(resource *Resource, state *terraform.InstanceState) (
 func GetSpecAndStatusFromState(resource *Resource, state *terraform.InstanceState) (
 	spec map[string]interface{}, status map[string]interface{}) {
 	unmodifiedState := InstanceStateToMap(resource.TFResource, state)
-	krmState := ConvertTFObjToKCCObj(unmodifiedState, resource.Spec, resource.TFResource.Schema,
+	krmState, krmStateWithIgnoredOutputOnlySpecFields := ConvertTFObjToKCCObj(unmodifiedState, resource.Spec, resource.TFResource.Schema,
 		&resource.ResourceConfig, "", resource.ManagedFields)
 	krmState = withCustomExpanders(krmState, resource, resource.Kind)
+	krmStateWithIgnoredOutputOnlySpecFields = withCustomExpanders(krmStateWithIgnoredOutputOnlySpecFields, resource, resource.Kind)
 	spec = make(map[string]interface{})
 	status = make(map[string]interface{})
 	for field, fieldSchema := range resource.TFResource.Schema {
@@ -80,7 +83,7 @@ func GetSpecAndStatusFromState(resource *Resource, state *terraform.InstanceStat
 		}
 		target := &spec
 		if !fieldSchema.Required && !fieldSchema.Optional {
-			if k8s.OutputOnlyFieldsAreUnderObservedState(resource.GroupVersionKind()) {
+			if stateintospec.OutputOnlyFieldsAreUnderObservedState(resource.GroupVersionKind()) {
 				observedState, ok := status[k8s.ObservedStateFieldName]
 				if !ok {
 					// Always add the 'observedState' subfield if the resource
@@ -107,7 +110,7 @@ func GetSpecAndStatusFromState(resource *Resource, state *terraform.InstanceStat
 		status["observedGeneration"] = deepcopy.DeepCopy(observedGeneration)
 	}
 	if resource.ResourceConfig.ObservedFields != nil {
-		observedFields := resolveObservedFields(resource, krmState)
+		observedFields := resolveObservedFields(resource, krmStateWithIgnoredOutputOnlySpecFields)
 		if len(observedFields) > 0 {
 			// Merge the observed fields into the observed state.
 			observedState, ok := status[k8s.ObservedStateFieldName]
@@ -195,10 +198,13 @@ func addFieldIfExists(path []string, tfSchemas map[string]*tfschema.Schema, sour
 		if !ok {
 			panic(fmt.Errorf("retrieved fieldState of nested field %v is not of type map[string]interface{}: %v", field, fieldState))
 		}
-		result := make(map[string]interface{})
-		addFieldIfExists(path[1:], subSchema, fieldStateMap, result)
-		if len(result) > 0 {
-			parent[field] = result
+		value, ok := parent[field].(map[string]interface{})
+		if !ok {
+			value = make(map[string]interface{})
+		}
+		addFieldIfExists(path[1:], subSchema, fieldStateMap, value)
+		if len(value) > 0 {
+			parent[field] = value
 		}
 		return
 	default:
@@ -229,7 +235,19 @@ func ResolveSpecAndStatusWithResourceID(resource *Resource, state *terraform.Ins
 func resolveDesiredStateInSpecAndObservedStateInStatus(resource *Resource, state *terraform.InstanceState) (
 	spec map[string]interface{}, status map[string]interface{}) {
 	spec = deepcopy.MapStringInterface(resource.Spec)
-	_, status = GetSpecAndStatusFromState(resource, state)
+	returnedSpec, status := GetSpecAndStatusFromState(resource, state)
+	// 'spec.additionalExperiments' in DataflowJob needs to be replaced by the
+	// returned value because the API also updated the field and we need to
+	// match the desired state with the live state.
+	if resource.Kind == "DataflowJob" {
+		if _, ok := spec["additionalExperiments"]; ok {
+			if _, ok := returnedSpec["additionalExperiments"]; !ok {
+				klog.Error("Kind", resource.Kind, "NamespacedName", resource.GetNamespacedName(), "The returned state doesn't contain additionalExperiments but it should")
+			} else {
+				spec["additionalExperiments"] = returnedSpec["additionalExperiments"]
+			}
+		}
+	}
 	return spec, status
 }
 
@@ -455,8 +473,9 @@ func getValueFromState(state map[string]interface{}, key string) (string, bool) 
 }
 
 // ConvertTFObjToKCCObj takes the state (which should be a Terraform resource),
-// and returns a map that is formatted to KCC's custom resource schema for the
-// appropriate Kind.
+// and returns two maps: the first one is formatted to KCC's custom resource
+// schema for the appropriate Kind, the second one contains additional
+// output-only fields that are used in observed state only.
 //
 // prevSpec is used for multiple purposes:
 //   - ensures the returned result has a similar order for objects in lists, reducing
@@ -467,26 +486,35 @@ func getValueFromState(state map[string]interface{}, key string) (string, bool) 
 //     state and the prevSpec.
 func ConvertTFObjToKCCObj(state map[string]interface{}, prevSpec map[string]interface{},
 	schemas map[string]*tfschema.Schema, rc *corekccv1alpha1.ResourceConfig, prefix string,
-	managedFields *fieldpath.Set) map[string]interface{} {
-	raw := convertTFMapToKCCMap(state, prevSpec, schemas, rc, prefix, managedFields)
+	managedFields *fieldpath.Set) (krmState, krmStateWithIgnoredOutputOnlySpecFields map[string]interface{}) {
+	rawKRMState := convertTFMapToKCCMap(state, prevSpec, schemas, rc, prefix, managedFields, true)
+	rawKRMStateWithIgnoredOutputOnlySpecFields := deepcopy.DeepCopy(rawKRMState)
+	if rc.IgnoredOutputOnlySpecFields != nil {
+		rawKRMStateWithIgnoredOutputOnlySpecFields =
+			convertTFMapToKCCMap(state, prevSpec, schemas, rc, prefix, managedFields, false)
+	}
 	// Round-trip via JSON in order to ensure consistency with unstructured.Unstructured's Object type.
-	var ret map[string]interface{}
-	if err := util.Marshal(raw, &ret); err != nil {
+	var retKRMState map[string]interface{}
+	if err := util.Marshal(rawKRMState, &retKRMState); err != nil {
 		panic(fmt.Errorf("error normalizing KRM-ified object: %w", err))
 	}
-	return ret
+	var retKRMStateWithIgnoredOutputOnlySpecFields map[string]interface{}
+	if err := util.Marshal(rawKRMStateWithIgnoredOutputOnlySpecFields, &retKRMStateWithIgnoredOutputOnlySpecFields); err != nil {
+		panic(fmt.Errorf("error normalizing KRM-ified object: %w", err))
+	}
+	return retKRMState, retKRMStateWithIgnoredOutputOnlySpecFields
 }
 
 func convertTFMapToKCCMap(state map[string]interface{}, prevSpec map[string]interface{},
 	schemas map[string]*tfschema.Schema, rc *corekccv1alpha1.ResourceConfig, prefix string,
-	managedFields *fieldpath.Set) map[string]interface{} {
+	managedFields *fieldpath.Set, ignoreOutputOnlySpecFields bool) map[string]interface{} {
 	ret := make(map[string]interface{})
 	for field, schema := range schemas {
 		qualifiedName := field
 		if prefix != "" {
 			qualifiedName = prefix + "." + field
 		}
-		if isOverriddenField(qualifiedName, rc) {
+		if isOverriddenField(qualifiedName, rc, ignoreOutputOnlySpecFields) {
 			continue
 		}
 		if ok, refConfig := IsReferenceField(qualifiedName, rc); ok {
@@ -581,7 +609,7 @@ func convertTFMapToKCCMap(state map[string]interface{}, prevSpec map[string]inte
 						nestedManagedFields = fieldpath.NewSet()
 					}
 				}
-				if val := convertTFMapToKCCMap(tfObjMap, prevObjMap, tfObjSchema, rc, qualifiedName, nestedManagedFields); val != nil {
+				if val := convertTFMapToKCCMap(tfObjMap, prevObjMap, tfObjSchema, rc, qualifiedName, nestedManagedFields, ignoreOutputOnlySpecFields); val != nil {
 					ret[key] = val
 				}
 				continue
@@ -592,7 +620,7 @@ func convertTFMapToKCCMap(state map[string]interface{}, prevSpec map[string]inte
 				// the status can be treated the same as lists, as the new state is the definitive
 				// source of truth and there is no reference resolution.
 				if schema.Required || schema.Optional {
-					retObj := convertTFSetToKCCSet(stateVal, prevSpecVal, schema, rc, qualifiedName)
+					retObj := convertTFSetToKCCSet(stateVal, prevSpecVal, schema, rc, qualifiedName, ignoreOutputOnlySpecFields)
 					if retObj != nil {
 						ret[key] = retObj
 					}
@@ -615,7 +643,7 @@ func convertTFMapToKCCMap(state map[string]interface{}, prevSpec map[string]inte
 					if idx < len(prevList) {
 						prevObjMap, _ = prevList[idx].(map[string]interface{})
 					}
-					if val := convertTFMapToKCCMap(tfObjMap, prevObjMap, tfObjSchema, rc, qualifiedName, nil); val != nil {
+					if val := convertTFMapToKCCMap(tfObjMap, prevObjMap, tfObjSchema, rc, qualifiedName, nil, ignoreOutputOnlySpecFields); val != nil {
 						retObjList = append(retObjList, val)
 					}
 				}
@@ -715,7 +743,7 @@ func convertTFReferenceToKCCReference(tfField, specKey string, state map[string]
 }
 
 // convertTFSetToKCCSet converts a set object in Terraform to a KCC set object
-func convertTFSetToKCCSet(stateVal, prevSpecVal interface{}, schema *tfschema.Schema, rc *corekccv1alpha1.ResourceConfig, prefix string) interface{} {
+func convertTFSetToKCCSet(stateVal, prevSpecVal interface{}, schema *tfschema.Schema, rc *corekccv1alpha1.ResourceConfig, prefix string, ignoreOutputOnlySpecFields bool) interface{} {
 	if containsReferenceField(prefix, rc) {
 		// TODO(kcc-eng): Support the case where the hashing function depends on resolved values from
 		//  resource references. For the time being, fall back to the declared state.
@@ -764,12 +792,12 @@ func convertTFSetToKCCSet(stateVal, prevSpecVal interface{}, schema *tfschema.Sc
 			stateElem = map[string]interface{}{}
 		}
 		retObjList = append(retObjList,
-			convertTFElemToKCCElem(schema.Elem, stateElem, prevElem, rc, prefix))
+			convertTFElemToKCCElem(schema.Elem, stateElem, prevElem, rc, prefix, ignoreOutputOnlySpecFields))
 	}
 	// append any new elements in the list to the end
 	for _, newElem := range stateHashMap {
 		retObjList = append(retObjList,
-			convertTFElemToKCCElem(schema.Elem, newElem, nil, rc, prefix))
+			convertTFElemToKCCElem(schema.Elem, newElem, nil, rc, prefix, ignoreOutputOnlySpecFields))
 	}
 	if len(retObjList) == 0 {
 		return nil
@@ -864,7 +892,7 @@ func getDefaultValueForTFType(tfType tfschema.ValueType) interface{} {
 	}
 }
 
-func convertTFElemToKCCElem(elemSchema, tfObj, prevSpecObj interface{}, rc *corekccv1alpha1.ResourceConfig, prefix string) interface{} {
+func convertTFElemToKCCElem(elemSchema, tfObj, prevSpecObj interface{}, rc *corekccv1alpha1.ResourceConfig, prefix string, ignoreOutputOnlySpecFields bool) interface{} {
 	switch elemSchema.(type) {
 	case *tfschema.Schema:
 		if prevSpecObj != nil {
@@ -875,13 +903,13 @@ func convertTFElemToKCCElem(elemSchema, tfObj, prevSpecObj interface{}, rc *core
 		tfObjSchema := elemSchema.(*tfschema.Resource).Schema
 		tfObjMap, _ := tfObj.(map[string]interface{})
 		prevObjMap, _ := prevSpecObj.(map[string]interface{})
-		return convertTFMapToKCCMap(tfObjMap, prevObjMap, tfObjSchema, rc, prefix, nil)
+		return convertTFMapToKCCMap(tfObjMap, prevObjMap, tfObjSchema, rc, prefix, nil, ignoreOutputOnlySpecFields)
 	default:
 		return prevSpecObj
 	}
 }
 
-func isOverriddenField(field string, rc *corekccv1alpha1.ResourceConfig) bool {
+func isOverriddenField(field string, rc *corekccv1alpha1.ResourceConfig, ignoreOutputOnlySpecFields bool) bool {
 	if field == rc.MetadataMapping.Name || field == rc.MetadataMapping.Labels {
 		return true
 	}
@@ -904,7 +932,13 @@ func isOverriddenField(field string, rc *corekccv1alpha1.ResourceConfig) bool {
 				return true
 			}
 		}
-
+	}
+	if ignoreOutputOnlySpecFields && rc.IgnoredOutputOnlySpecFields != nil {
+		for _, f := range *rc.IgnoredOutputOnlySpecFields {
+			if field == f {
+				return true
+			}
+		}
 	}
 	return false
 }

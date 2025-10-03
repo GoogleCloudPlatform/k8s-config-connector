@@ -1,0 +1,49 @@
+apiVersion: asset.cnrm.cloud.google.com/v1beta1
+kind: AssetSavedQuery
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+    key1: value1
+  name: assetsavedquery-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  content:
+    iamPolicyAnalysisQuery:
+      accessSelector:
+        permissions:
+        - resourcemanager.projects.get
+        roles:
+        - roles/owner
+      conditionContext:
+        accessTime: "2035-01-01T10:00:00Z"
+      identitySelector:
+        identity: user:updated-test-user@example.com
+      options:
+        analyzeServiceAccountImpersonation: true
+        expandGroups: true
+        expandResources: true
+        expandRoles: true
+        outputGroupEdges: true
+        outputResourceEdges: true
+      resourceSelector:
+        fullResourceName: //cloudresourcemanager.googleapis.com/projects/${projectId}
+      scope: projects/${projectId}
+  description: An updated minimal saved query for testing.
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/savedQueries/assetsavedquery-minimal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    lastUpdateTime: "2025-04-14T20:19:35.325343Z"

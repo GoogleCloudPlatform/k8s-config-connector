@@ -1,0 +1,25 @@
+{
+  "project": "{{ref:basic.cloudresourcemanager.project.json:name}}",
+  "defaultAdmissionRule": {
+    "enforcementMode": "ENFORCED_BLOCK_AND_AUDIT_LOG",
+    "evaluationMode": "ALWAYS_ALLOW"
+  },
+  "globalPolicyEvaluationMode": "ENABLE",
+  "admissionWhitelistPatterns": [
+    {
+      "namePattern": "gcr.io/google_containers/*"
+    },
+    {
+      "namePattern": "gcr.io/google-containers/*"
+    },
+    {
+      "namePattern": "k8s.gcr.io/*"
+    },
+    {
+      "namePattern": "gke.gcr.io/*"
+    },
+    {
+      "namePattern": "gcr.io/stackdriver-agents/*"
+    }
+  ]
+}

@@ -1,0 +1,213 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: clouddmsconversionworkspaces.clouddms.cnrm.cloud.google.com
+spec:
+  group: clouddms.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: CloudDMSConversionWorkspace
+    listKind: CloudDMSConversionWorkspaceList
+    plural: clouddmsconversionworkspaces
+    shortNames:
+    - gcpclouddmsconversionworkspace
+    - gcpclouddmsconversionworkspaces
+    singular: clouddmsconversionworkspace
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: CloudDMSConversionWorkspace is the Schema for the CloudDMSConversionWorkspace
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: CloudDMSConversionWorkspaceSpec defines the desired state
+              of CloudDMSConversionWorkspace
+            properties:
+              destination:
+                description: Required. The destination engine details.
+                properties:
+                  engine:
+                    description: Required. Engine type.
+                    type: string
+                  version:
+                    description: Required. Engine named version, for example 12.c.1.
+                    type: string
+                type: object
+              displayName:
+                description: Optional. The display name for the workspace.
+                type: string
+              globalSettings:
+                additionalProperties:
+                  type: string
+                description: 'Optional. A generic list of settings for the workspace.
+                  The settings are database pair dependant and can indicate default
+                  behavior for the mapping rules engine or turn on or off specific
+                  features. Such examples can be: convert_foreign_key_to_interleave=true,
+                  skip_triggers=false, ignore_non_table_synonyms=true'
+                type: object
+              location:
+                description: Immutable. The location where the alloydb cluster should
+                  reside.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The CloudDMSConversionWorkspace name. If not given, the
+                  metadata.name will be used.
+                type: string
+              source:
+                description: Required. The source engine details.
+                properties:
+                  engine:
+                    description: Required. Engine type.
+                    type: string
+                  version:
+                    description: Required. Engine named version, for example 12.c.1.
+                    type: string
+                type: object
+            required:
+            - location
+            - projectRef
+            type: object
+          status:
+            description: CloudDMSConversionWorkspaceStatus defines the config connector
+              machine state of CloudDMSConversionWorkspace
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the CloudDMSConversionWorkspace
+                  resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The timestamp when the workspace resource
+                      was created.
+                    type: string
+                  hasUncommittedChanges:
+                    description: Output only. Whether the workspace has uncommitted
+                      changes (changes which were made after the workspace was committed).
+                    type: boolean
+                  latestCommitID:
+                    description: Output only. The latest commit ID.
+                    type: string
+                  latestCommitTime:
+                    description: Output only. The timestamp when the workspace was
+                      committed.
+                    type: string
+                  updateTime:
+                    description: Output only. The timestamp when the workspace resource
+                      was last updated.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

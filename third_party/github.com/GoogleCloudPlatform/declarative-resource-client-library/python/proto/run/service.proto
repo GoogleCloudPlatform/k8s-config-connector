@@ -1,0 +1,330 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum RunServiceIngressEnum {
+  RunServiceIngressEnumNO_VALUE_DO_NOT_USE = 0;
+  RunServiceIngressEnumINGRESS_TRAFFIC_UNSPECIFIED = 1;
+  RunServiceIngressEnumINGRESS_TRAFFIC_ALL = 2;
+  RunServiceIngressEnumINGRESS_TRAFFIC_INTERNAL_ONLY = 3;
+  RunServiceIngressEnumINGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER = 4;
+}
+
+enum RunServiceLaunchStageEnum {
+  RunServiceLaunchStageEnumNO_VALUE_DO_NOT_USE = 0;
+  RunServiceLaunchStageEnumLAUNCH_STAGE_UNSPECIFIED = 1;
+  RunServiceLaunchStageEnumUNIMPLEMENTED = 2;
+  RunServiceLaunchStageEnumPRELAUNCH = 3;
+  RunServiceLaunchStageEnumEARLY_ACCESS = 4;
+  RunServiceLaunchStageEnumALPHA = 5;
+  RunServiceLaunchStageEnumBETA = 6;
+  RunServiceLaunchStageEnumGA = 7;
+  RunServiceLaunchStageEnumDEPRECATED = 8;
+}
+
+enum RunServiceTemplateVPCAccessEgressEnum {
+  RunServiceTemplateVPCAccessEgressEnumNO_VALUE_DO_NOT_USE = 0;
+  RunServiceTemplateVPCAccessEgressEnumVPC_EGRESS_UNSPECIFIED = 1;
+  RunServiceTemplateVPCAccessEgressEnumALL_TRAFFIC = 2;
+  RunServiceTemplateVPCAccessEgressEnumPRIVATE_RANGES_ONLY = 3;
+}
+
+enum RunServiceTemplateExecutionEnvironmentEnum {
+  RunServiceTemplateExecutionEnvironmentEnumNO_VALUE_DO_NOT_USE = 0;
+  RunServiceTemplateExecutionEnvironmentEnumEXECUTION_ENVIRONMENT_UNSPECIFIED = 1;
+  RunServiceTemplateExecutionEnvironmentEnumEXECUTION_ENVIRONMENT_DEFAULT = 2;
+  RunServiceTemplateExecutionEnvironmentEnumEXECUTION_ENVIRONMENT_GEN2 = 3;
+}
+
+enum RunServiceTrafficTypeEnum {
+  RunServiceTrafficTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  RunServiceTrafficTypeEnumTRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED = 1;
+  RunServiceTrafficTypeEnumTRAFFIC_TARGET_ALLOCATION_TYPE_LATEST = 2;
+  RunServiceTrafficTypeEnumTRAFFIC_TARGET_ALLOCATION_TYPE_REVISION = 3;
+}
+
+enum RunServiceTerminalConditionStateEnum {
+  RunServiceTerminalConditionStateEnumNO_VALUE_DO_NOT_USE = 0;
+  RunServiceTerminalConditionStateEnumSTATE_UNSPECIFIED = 1;
+  RunServiceTerminalConditionStateEnumCONDITION_PENDING = 2;
+  RunServiceTerminalConditionStateEnumCONDITION_RECONCILING = 3;
+  RunServiceTerminalConditionStateEnumCONDITION_FAILED = 4;
+  RunServiceTerminalConditionStateEnumCONDITION_SUCCEEDED = 5;
+}
+
+enum RunServiceTerminalConditionSeverityEnum {
+  RunServiceTerminalConditionSeverityEnumNO_VALUE_DO_NOT_USE = 0;
+  RunServiceTerminalConditionSeverityEnumSEVERITY_UNSPECIFIED = 1;
+  RunServiceTerminalConditionSeverityEnumERROR = 2;
+  RunServiceTerminalConditionSeverityEnumWARNING = 3;
+  RunServiceTerminalConditionSeverityEnumINFO = 4;
+}
+
+enum RunServiceTerminalConditionReasonEnum {
+  RunServiceTerminalConditionReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunServiceTerminalConditionReasonEnumCOMMON_REASON_UNDEFINED = 1;
+  RunServiceTerminalConditionReasonEnumUNKNOWN = 2;
+  RunServiceTerminalConditionReasonEnumROUTE_MISSING = 3;
+  RunServiceTerminalConditionReasonEnumREVISION_FAILED = 4;
+  RunServiceTerminalConditionReasonEnumPROGRESS_DEADLINE_EXCEEDED = 5;
+  RunServiceTerminalConditionReasonEnumBUILD_STEP_FAILED = 6;
+  RunServiceTerminalConditionReasonEnumCONTAINER_MISSING = 7;
+  RunServiceTerminalConditionReasonEnumCONTAINER_PERMISSION_DENIED = 8;
+  RunServiceTerminalConditionReasonEnumCONTAINER_IMAGE_UNAUTHORIZED = 9;
+  RunServiceTerminalConditionReasonEnumCONTAINER_IMAGE_AUTHORIZATION_CHECK_FAILED = 10;
+  RunServiceTerminalConditionReasonEnumENCRYPTION_KEY_PERMISSION_DENIED = 11;
+  RunServiceTerminalConditionReasonEnumENCRYPTION_KEY_CHECK_FAILED = 12;
+  RunServiceTerminalConditionReasonEnumSECRETS_ACCESS_CHECK_FAILED = 13;
+  RunServiceTerminalConditionReasonEnumWAITING_FOR_OPERATION = 14;
+  RunServiceTerminalConditionReasonEnumIMMEDIATE_RETRY = 15;
+  RunServiceTerminalConditionReasonEnumPOSTPONED_RETRY = 16;
+}
+
+enum RunServiceTerminalConditionInternalReasonEnum {
+  RunServiceTerminalConditionInternalReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunServiceTerminalConditionInternalReasonEnumINTERNAL_REASON_UNDEFINED = 1;
+  RunServiceTerminalConditionInternalReasonEnumCONFLICTING_REVISION_NAME = 2;
+  RunServiceTerminalConditionInternalReasonEnumREVISION_MISSING = 3;
+  RunServiceTerminalConditionInternalReasonEnumCONFIGURATION_MISSING = 4;
+  RunServiceTerminalConditionInternalReasonEnumASSIGNING_TRAFFIC = 5;
+  RunServiceTerminalConditionInternalReasonEnumUPDATING_INGRESS_TRAFFIC_ALLOWED = 6;
+  RunServiceTerminalConditionInternalReasonEnumREVISION_ORG_POLICY_VIOLATION = 7;
+  RunServiceTerminalConditionInternalReasonEnumENABLING_GCFV2_URI_SUPPORT = 8;
+}
+
+enum RunServiceTerminalConditionDomainMappingReasonEnum {
+  RunServiceTerminalConditionDomainMappingReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunServiceTerminalConditionDomainMappingReasonEnumDOMAIN_MAPPING_REASON_UNDEFINED = 1;
+  RunServiceTerminalConditionDomainMappingReasonEnumROUTE_NOT_READY = 2;
+  RunServiceTerminalConditionDomainMappingReasonEnumPERMISSION_DENIED = 3;
+  RunServiceTerminalConditionDomainMappingReasonEnumCERTIFICATE_ALREADY_EXISTS = 4;
+  RunServiceTerminalConditionDomainMappingReasonEnumMAPPING_ALREADY_EXISTS = 5;
+  RunServiceTerminalConditionDomainMappingReasonEnumCERTIFICATE_PENDING = 6;
+  RunServiceTerminalConditionDomainMappingReasonEnumCERTIFICATE_FAILED = 7;
+}
+
+enum RunServiceTerminalConditionRevisionReasonEnum {
+  RunServiceTerminalConditionRevisionReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunServiceTerminalConditionRevisionReasonEnumREVISION_REASON_UNDEFINED = 1;
+  RunServiceTerminalConditionRevisionReasonEnumPENDING = 2;
+  RunServiceTerminalConditionRevisionReasonEnumRESERVE = 3;
+  RunServiceTerminalConditionRevisionReasonEnumRETIRED = 4;
+  RunServiceTerminalConditionRevisionReasonEnumRETIRING = 5;
+  RunServiceTerminalConditionRevisionReasonEnumRECREATING = 6;
+  RunServiceTerminalConditionRevisionReasonEnumHEALTH_CHECK_CONTAINER_ERROR = 7;
+  RunServiceTerminalConditionRevisionReasonEnumCUSTOMIZED_PATH_RESPONSE_PENDING = 8;
+  RunServiceTerminalConditionRevisionReasonEnumMIN_INSTANCES_NOT_PROVISIONED = 9;
+  RunServiceTerminalConditionRevisionReasonEnumACTIVE_REVISION_LIMIT_REACHED = 10;
+  RunServiceTerminalConditionRevisionReasonEnumNO_DEPLOYMENT = 11;
+}
+
+enum RunServiceTerminalConditionJobReasonEnum {
+  RunServiceTerminalConditionJobReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunServiceTerminalConditionJobReasonEnumJOB_REASON_UNDEFINED = 1;
+  RunServiceTerminalConditionJobReasonEnumJOB_STATUS_SERVICE_POLLING_ERROR = 2;
+}
+
+enum RunServiceTrafficStatusesTypeEnum {
+  RunServiceTrafficStatusesTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  RunServiceTrafficStatusesTypeEnumTRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED = 1;
+  RunServiceTrafficStatusesTypeEnumTRAFFIC_TARGET_ALLOCATION_TYPE_LATEST = 2;
+  RunServiceTrafficStatusesTypeEnumTRAFFIC_TARGET_ALLOCATION_TYPE_REVISION = 3;
+}
+
+message RunService {
+  string name = 1;
+  string description = 2;
+  string uid = 3;
+  int64 generation = 4;
+  map<string, string> labels = 5;
+  map<string, string> annotations = 6;
+  string create_time = 7;
+  string update_time = 8;
+  string delete_time = 9;
+  string expire_time = 10;
+  string creator = 11;
+  string last_modifier = 12;
+  string client = 13;
+  string client_version = 14;
+  RunServiceIngressEnum ingress = 15;
+  RunServiceLaunchStageEnum launch_stage = 16;
+  RunServiceBinaryAuthorization binary_authorization = 17;
+  RunServiceTemplate template = 18;
+  repeated RunServiceTraffic traffic = 19;
+  RunServiceTerminalCondition terminal_condition = 20;
+  string latest_ready_revision = 21;
+  string latest_created_revision = 22;
+  repeated RunServiceTrafficStatuses traffic_statuses = 23;
+  string uri = 24;
+  bool reconciling = 25;
+  string etag = 26;
+  string project = 27;
+  string location = 28;
+}
+
+message RunServiceBinaryAuthorization {
+  bool use_default = 1;
+  string breakglass_justification = 2;
+}
+
+message RunServiceTemplate {
+  string revision = 1;
+  map<string, string> labels = 2;
+  map<string, string> annotations = 3;
+  RunServiceTemplateScaling scaling = 4;
+  RunServiceTemplateVPCAccess vpc_access = 5;
+  int64 container_concurrency = 6;
+  string timeout = 7;
+  string service_account = 8;
+  repeated RunServiceTemplateContainers containers = 9;
+  repeated RunServiceTemplateVolumes volumes = 10;
+  bool confidential = 11;
+  RunServiceTemplateExecutionEnvironmentEnum execution_environment = 12;
+}
+
+message RunServiceTemplateScaling {
+  int64 min_instance_count = 1;
+  int64 max_instance_count = 2;
+}
+
+message RunServiceTemplateVPCAccess {
+  string connector = 1;
+  RunServiceTemplateVPCAccessEgressEnum egress = 2;
+}
+
+message RunServiceTemplateContainers {
+  string name = 1;
+  string image = 2;
+  repeated string command = 3;
+  repeated string args = 4;
+  repeated RunServiceTemplateContainersEnv env = 5;
+  RunServiceTemplateContainersResources resources = 6;
+  repeated RunServiceTemplateContainersPorts ports = 7;
+  repeated RunServiceTemplateContainersVolumeMounts volume_mounts = 8;
+}
+
+message RunServiceTemplateContainersEnv {
+  string name = 1;
+  string value = 2;
+  RunServiceTemplateContainersEnvValueSource value_source = 3;
+}
+
+message RunServiceTemplateContainersEnvValueSource {
+  RunServiceTemplateContainersEnvValueSourceSecretKeyRef secret_key_ref = 1;
+}
+
+message RunServiceTemplateContainersEnvValueSourceSecretKeyRef {
+  string secret = 1;
+  string version = 2;
+}
+
+message RunServiceTemplateContainersResources {
+  map<string, string> limits = 1;
+  bool cpu_idle = 2;
+}
+
+message RunServiceTemplateContainersPorts {
+  string name = 1;
+  int64 container_port = 2;
+}
+
+message RunServiceTemplateContainersVolumeMounts {
+  string name = 1;
+  string mount_path = 2;
+}
+
+message RunServiceTemplateVolumes {
+  string name = 1;
+  RunServiceTemplateVolumesSecret secret = 2;
+  RunServiceTemplateVolumesCloudSqlInstance cloud_sql_instance = 3;
+}
+
+message RunServiceTemplateVolumesSecret {
+  string secret = 1;
+  repeated RunServiceTemplateVolumesSecretItems items = 2;
+  int64 default_mode = 3;
+}
+
+message RunServiceTemplateVolumesSecretItems {
+  string path = 1;
+  string version = 2;
+  int64 mode = 3;
+}
+
+message RunServiceTemplateVolumesCloudSqlInstance {
+  repeated string connections = 1;
+}
+
+message RunServiceTraffic {
+  RunServiceTrafficTypeEnum type = 1;
+  string revision = 2;
+  int64 percent = 3;
+  string tag = 4;
+}
+
+message RunServiceTerminalCondition {
+  string type = 1;
+  RunServiceTerminalConditionStateEnum state = 2;
+  string message = 3;
+  string last_transition_time = 4;
+  RunServiceTerminalConditionSeverityEnum severity = 5;
+  RunServiceTerminalConditionReasonEnum reason = 6;
+  RunServiceTerminalConditionInternalReasonEnum internal_reason = 7;
+  RunServiceTerminalConditionDomainMappingReasonEnum domain_mapping_reason = 8;
+  RunServiceTerminalConditionRevisionReasonEnum revision_reason = 9;
+  RunServiceTerminalConditionJobReasonEnum job_reason = 10;
+}
+
+message RunServiceTrafficStatuses {
+  RunServiceTrafficStatusesTypeEnum type = 1;
+  string revision = 2;
+  int64 percent = 3;
+  string tag = 4;
+  string uri = 5;
+}
+
+message ApplyRunServiceRequest {
+  RunService resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteRunServiceRequest {
+  string service_account_file = 1;
+  RunService resource = 2;
+}
+
+message ListRunServiceRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListRunServiceResponse {
+  repeated RunService items = 1;
+}
+
+service RunServiceService {
+  rpc ApplyRunService(ApplyRunServiceRequest) returns (RunService);
+  rpc DeleteRunService(DeleteRunServiceRequest) returns (google.protobuf.Empty);
+  rpc ListRunService(ListRunServiceRequest) returns (ListRunServiceResponse);
+}

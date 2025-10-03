@@ -81,20 +81,6 @@
 ## Custom Resource Definition Properties
 
 
-### Annotations
-<table class="properties responsive">
-<thead>
-    <tr>
-        <th colspan="2">Fields</th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <td><code>cnrm.cloud.google.com/state-into-spec</code></td>
-    </tr>
-</tbody>
-</table>
-
 
 ### Spec
 #### Schema
@@ -498,10 +484,10 @@ spec:
 apiVersion: containeranalysis.cnrm.cloud.google.com/v1beta1
 kind: ContainerAnalysisNote
 metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: binauthzpolicy-dep-cluster
   name: binaryauthorizationpolicy-dep-cluster
 spec:
-  projectRef:
-    name: binauthzpolicy-dep-cluster
   package:
     name: test-package
 ---
@@ -654,10 +640,10 @@ spec:
 apiVersion: containeranalysis.cnrm.cloud.google.com/v1beta1
 kind: ContainerAnalysisNote
 metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: binauthzpolicy-dep-namespace
   name: binaryauthorizationpolicy-dep-namespace
 spec:
-  projectRef:
-    name: binauthzpolicy-dep-namespace
   package:
     name: test-package
 ---
@@ -751,10 +737,10 @@ spec:
 apiVersion: containeranalysis.cnrm.cloud.google.com/v1beta1
 kind: ContainerAnalysisNote
 metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: binauthzpolicy-dep-sa
   name: binaryauthorizationpolicy-dep-serviceaccount
 spec:
-  projectRef:
-    name: binauthzpolicy-dep-sa
   package:
     name: test-package
 ---
@@ -848,10 +834,10 @@ spec:
 apiVersion: containeranalysis.cnrm.cloud.google.com/v1beta1
 kind: ContainerAnalysisNote
 metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: binauthzpolicy-dep-si
   name: binaryauthorizationpolicy-dep-serviceidentity
 spec:
-  projectRef:
-    name: binauthzpolicy-dep-si
   package:
     name: test-package
 ---

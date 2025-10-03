@@ -26,4 +26,5 @@ spec:
       name: monitoringgroup-${uniqueId}
     resourceType: INSTANCE
   tcpCheck:
-    port: 81
+    # port: 81 # infeasible update: ({true <nil> TcpCheck.Port}) would require recreation
+    port: 80

@@ -1,0 +1,34 @@
+{
+  "name": "{{cluster_name}}",
+  "location": "{{region}}",
+  "project": "{{ref:dataproc.serviceusage.service.json:project}}",
+  "config": {
+    "gceClusterConfig": {
+      "zone": "{{zone}}",
+      "tags": ["foo", "bar"]
+    },
+    "masterConfig": {
+      "numInstances": 1,
+      "machineType": "n1-standard-4",
+      "diskConfig": {
+        "bootDiskType": "pd-ssd",
+        "bootDiskSizeGb": 30
+      }
+    },
+    "workerConfig": {
+      "numInstances": 2,
+      "machineType": "n1-standard-4",
+      "minCpuPlatform": "Intel Skylake",
+      "diskConfig": {
+        "bootDiskSizeGb": 30,
+        "numLocalSsds": 1
+      }
+    },
+    "secondaryWorkerConfig": {
+      "numInstances": 1
+    },
+    "softwareConfig": {
+      "imageVersion": "2.0.27-debian10"
+    }
+  }
+}
