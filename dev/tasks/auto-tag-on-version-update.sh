@@ -17,7 +17,7 @@ set -e
 
 echo "--- Checking for new version to tag from version/VERSION ---"
 
-# 1. Read the version from the VERSION file at HEAD. 
+# 1. Read the version from the VERSION file at HEAD.
 VERSION_FILE="version/VERSION"
 if [ ! -f "$VERSION_FILE" ]; then
     echo "ERROR: Version file not found at ${VERSION_FILE}"
