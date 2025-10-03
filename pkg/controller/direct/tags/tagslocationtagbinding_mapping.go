@@ -17,7 +17,6 @@ package tags
 import (
 	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -41,7 +40,7 @@ func TagsLocationTagBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagB
 	}
 	out := &krm.TagsLocationTagBindingSpec{}
 	if in.GetParent() != "" {
-		out.ParentRef = &v1alpha1.ResourceRef{External: in.GetParent()}
+		out.ParentRef = &krm.ParentRef{External: in.GetParent()}
 	}
 	if in.GetTagValue() != "" {
 		out.TagValueRef = &krm.TagValueRef{External: in.GetTagValue()}
