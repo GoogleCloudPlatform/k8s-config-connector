@@ -185,6 +185,7 @@ func (a *LoggingLinkAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	desiredPb.Name = a.id.String()
 
 	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
