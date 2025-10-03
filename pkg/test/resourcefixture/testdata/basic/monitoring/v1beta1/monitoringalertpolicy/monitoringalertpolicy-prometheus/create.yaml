@@ -1,0 +1,34 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringAlertPolicy
+metadata:
+  name: monitoringalertpolicy-${uniqueId}
+spec:
+  displayName: Test Alert Policy
+  enabled: true
+  severity: WARNING
+  notificationChannels:
+    - name: monitoringnotificationchannel1-${uniqueId}
+  combiner: OR
+  conditions:
+    - displayName: Condition 1
+      conditionPrometheusQueryLanguage:
+        duration: 3600s
+        evaluationInterval: 300s
+        query: sum(rate(logging_googleapis_com:billing_bytes_ingested{monitored_resource="global"}[60s]))>300
+  documentation:
+    content: |-
+      Example content
