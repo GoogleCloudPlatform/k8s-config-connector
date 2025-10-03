@@ -29,8 +29,8 @@ func init() {
 
 func featurestoreFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Featurestore{},
-		VertexAIFeaturestoreSpec_FromProto, VertexAIFeaturestoreSpec_ToProto,
-		VertexAIFeaturestoreObservedState_FromProto, VertexAIFeaturestoreObservedState_ToProto,
+		VertexAIFeaturestoreSpec_v1alpha1_FromProto, VertexAIFeaturestoreSpec_v1alpha1_ToProto,
+		VertexAIFeaturestoreObservedState_v1alpha1_FromProto, VertexAIFeaturestoreObservedState_v1alpha1_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name")          // special field

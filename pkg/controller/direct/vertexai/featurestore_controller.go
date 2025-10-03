@@ -133,7 +133,7 @@ func (a *FeaturestoreAdapter) Create(ctx context.Context, createOp *directbase.C
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := VertexAIFeaturestoreSpec_ToProto(mapCtx, &desired.Spec)
+	resource := VertexAIFeaturestoreSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -153,7 +153,7 @@ func (a *FeaturestoreAdapter) Create(ctx context.Context, createOp *directbase.C
 	}
 	log.V(2).Info("successfully created Featurestore", "name", a.id)
 	status := &krm.VertexAIFeaturestoreStatus{}
-	status.ObservedState = VertexAIFeaturestoreObservedState_FromProto(mapCtx, created)
+	status.ObservedState = VertexAIFeaturestoreObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -167,7 +167,7 @@ func (a *FeaturestoreAdapter) Update(ctx context.Context, updateOp *directbase.U
 	log.V(2).Info("updating Featurestore", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := VertexAIFeaturestoreSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desiredPb := VertexAIFeaturestoreSpec_v1alpha1_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -202,7 +202,7 @@ func (a *FeaturestoreAdapter) Update(ctx context.Context, updateOp *directbase.U
 	log.V(2).Info("successfully updated Featurestore", "name", a.id)
 
 	status := &krm.VertexAIFeaturestoreStatus{}
-	status.ObservedState = VertexAIFeaturestoreObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = VertexAIFeaturestoreObservedState_v1alpha1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -218,7 +218,7 @@ func (a *FeaturestoreAdapter) Export(ctx context.Context) (*unstructured.Unstruc
 
 	obj := &krm.VertexAIFeaturestore{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(VertexAIFeaturestoreSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(VertexAIFeaturestoreSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

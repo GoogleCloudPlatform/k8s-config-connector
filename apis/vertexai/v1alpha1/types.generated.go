@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: vertexai.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.aiplatform.v1beta1
+// resource: VertexAIFeaturestore:Featurestore
+
 package v1alpha1
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.Featurestore.OnlineServingConfig
@@ -51,37 +57,4 @@ type Featurestore_OnlineServingConfig_Scaling struct {
 	//  or set to 0, default to 50.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Featurestore.OnlineServingConfig.Scaling.cpu_utilization_target
 	CPUUtilizationTarget *int32 `json:"cpuUtilizationTarget,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.MetadataStore
-type MetadataStore struct {
-
-	// Customer-managed encryption key spec for a Metadata Store. If set, this
-	//  Metadata Store and all sub-resources of this Metadata Store are secured
-	//  using this key.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetadataStore.encryption_spec
-	EncryptionSpec *EncryptionSpec `json:"encryptionSpec,omitempty"`
-
-	// Description of the MetadataStore.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetadataStore.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. Dataplex integration settings.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetadataStore.dataplex_config
-	DataplexConfig *MetadataStore_DataplexConfig `json:"dataplexConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.MetadataStore.DataplexConfig
-type MetadataStore_DataplexConfig struct {
-	// Optional. Whether or not Data Lineage synchronization is enabled for
-	//  Vertex Pipelines.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetadataStore.DataplexConfig.enabled_pipelines_lineage
-	EnabledPipelinesLineage *bool `json:"enabledPipelinesLineage,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.MetadataStore.MetadataStoreState
-type MetadataStore_MetadataStoreState struct {
-	// The disk utilization of the MetadataStore in bytes.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetadataStore.MetadataStoreState.disk_utilization_bytes
-	DiskUtilizationBytes *int64 `json:"diskUtilizationBytes,omitempty"`
 }

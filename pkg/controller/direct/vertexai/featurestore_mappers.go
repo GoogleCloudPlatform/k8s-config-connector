@@ -16,60 +16,53 @@ package vertexai
 
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
+	krmvertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func VertexAIFeaturestoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore) *krm.VertexAIFeaturestoreObservedState {
+func VertexAIEncryptionSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krmvertexaiv1alpha1.EncryptionSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.VertexAIFeaturestoreObservedState{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
+	out := &krmvertexaiv1alpha1.EncryptionSpec{}
+	// MISSING: KMSKeyName
 	return out
 }
-func VertexAIFeaturestoreObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIFeaturestoreObservedState) *pb.Featurestore {
+func VertexAIEncryptionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.EncryptionSpec) *pb.EncryptionSpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Featurestore{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.State = direct.Enum_ToProto[pb.Featurestore_State](mapCtx, in.State)
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
+	out := &pb.EncryptionSpec{}
+	// MISSING: KMSKeyName
 	return out
 }
-func VertexAIFeaturestoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore) *krm.VertexAIFeaturestoreSpec {
+
+func VertexAIFeaturestoreSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore) *krmvertexaiv1alpha1.VertexAIFeaturestoreSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.VertexAIFeaturestoreSpec{}
+	out := &krmvertexaiv1alpha1.VertexAIFeaturestoreSpec{}
 	// MISSING: Name
+	// MISSING: Etag
 	out.Labels = in.Labels
-	out.OnlineServingConfig = Featurestore_OnlineServingConfig_FromProto(mapCtx, in.GetOnlineServingConfig())
+	out.OnlineServingConfig = Featurestore_OnlineServingConfig_v1alpha1_FromProto(mapCtx, in.GetOnlineServingConfig())
 	out.OnlineStorageTTLDays = direct.LazyPtr(in.GetOnlineStorageTtlDays())
-	out.EncryptionSpec = EncryptionSpecV1alpha1_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.EncryptionSpec = VertexAIEncryptionSpec_v1alpha1_FromProto(mapCtx, in.GetEncryptionSpec())
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
 	return out
 }
-func VertexAIFeaturestoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIFeaturestoreSpec) *pb.Featurestore {
+func VertexAIFeaturestoreSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIFeaturestoreSpec) *pb.Featurestore {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Featurestore{}
 	// MISSING: Name
+	// MISSING: Etag
 	out.Labels = in.Labels
-	out.OnlineServingConfig = Featurestore_OnlineServingConfig_ToProto(mapCtx, in.OnlineServingConfig)
+	out.OnlineServingConfig = Featurestore_OnlineServingConfig_v1alpha1_ToProto(mapCtx, in.OnlineServingConfig)
 	out.OnlineStorageTtlDays = direct.ValueOf(in.OnlineStorageTTLDays)
-	out.EncryptionSpec = EncryptionSpecV1alpha1_ToProto(mapCtx, in.EncryptionSpec)
+	out.EncryptionSpec = VertexAIEncryptionSpec_v1alpha1_ToProto(mapCtx, in.EncryptionSpec)
 	// MISSING: SatisfiesPzs
 	// MISSING: SatisfiesPzi
 	return out

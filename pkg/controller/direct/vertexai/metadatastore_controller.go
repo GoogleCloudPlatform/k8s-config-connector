@@ -156,7 +156,7 @@ func (a *MetadataStoreAdapter) Create(ctx context.Context, createOp *directbase.
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := VertexAIMetadataStoreSpec_ToProto(mapCtx, &desired.Spec)
+	resource := VertexAIMetadataStoreSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -183,7 +183,7 @@ func (a *MetadataStoreAdapter) Create(ctx context.Context, createOp *directbase.
 	}
 	created.State = obj.State
 	status := &krm.VertexAIMetadataStoreStatus{}
-	status.ObservedState = VertexAIMetadataStoreObservedState_FromProto(mapCtx, created)
+	status.ObservedState = VertexAIMetadataStoreObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -206,7 +206,7 @@ func (a *MetadataStoreAdapter) Export(ctx context.Context) (*unstructured.Unstru
 
 	obj := &krm.VertexAIMetadataStore{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(VertexAIMetadataStoreSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(VertexAIMetadataStoreSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
