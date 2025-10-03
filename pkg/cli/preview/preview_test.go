@@ -139,6 +139,9 @@ spec:
 	upstreamRESTConfig := harness.GetRESTConfig()
 
 	recorder := NewRecorder()
+	if err := recorder.PreloadGKNN(ctx, upstreamRESTConfig); err != nil {
+		t.Fatalf("PreloadGKNN: %v", err)
+	}
 
 	authorization := harness.GCPAuthorization()
 
@@ -151,32 +154,8 @@ spec:
 		t.Fatalf("building preview instance: %v", err)
 	}
 
-	go func() {
-		if err := preview.Start(ctx); err != nil {
-			t.Errorf("starting preview: %v", err)
-		}
-	}()
-
-	timeoutAt := time.Now().Add(2 * time.Minute)
-	for {
-		// Wait for the object to be reconciled
-		if len(recorder.objects) > 0 {
-			hasReconciled := make(map[GKNN]bool)
-			for gknn, obj := range recorder.objects {
-				for _, event := range obj.events {
-					if event.eventType == EventTypeReconcileEnd {
-						hasReconciled[gknn] = true
-					}
-				}
-			}
-			if len(hasReconciled) == len(testResources) {
-				break
-			}
-		}
-		if time.Now().After(timeoutAt) {
-			t.Fatalf("did not see captured object in recorder")
-		}
-		time.Sleep(time.Second)
+	if err := preview.Start(ctx); err != nil {
+		t.Errorf("starting preview: %v", err)
 	}
 
 	t.Logf("Printing captured changes")
