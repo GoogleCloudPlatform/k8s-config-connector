@@ -22,7 +22,10 @@ spec:
   projectRef:
     external: "projects/${projectId}"
   region: "us-west2"
-  runtime: "nodejs10"
+  # This field needs to be updated to a supported 1st gen version per the service team
+  # support schedule: https://cloud.google.com/functions/docs/runtime-support#support_schedule
+  # Deprecated runtime version will cause googleapis error
+  runtime: "nodejs20"
   description: "An updated sample cloud function with an event trigger"
   availableMemoryMb: 256
   serviceAccountRef:

@@ -27,7 +27,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}",
-  "runtime": "nodejs10",
+  "runtime": "nodejs20",
   "sourceArchiveUrl": "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
 }
 
@@ -77,7 +77,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "minInstances": 0,
   "name": "projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}",
   "network": "",
-  "runtime": "nodejs10",
+  "runtime": "nodejs20",
   "secretEnvironmentVariables": [],
   "secretVolumes": [],
   "serviceAccountEmail": "",
@@ -103,7 +103,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "runtime": "nodejs10",
+  "runtime": "nodejs20",
   "timeout": "120s",
   "vpcConnectorEgressSettings": "VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED"
 }
@@ -154,7 +154,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "minInstances": 0,
   "name": "projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}",
   "network": "",
-  "runtime": "nodejs10",
+  "runtime": "nodejs20",
   "secretEnvironmentVariables": [],
   "secretVolumes": [],
   "serviceAccountEmail": "",
