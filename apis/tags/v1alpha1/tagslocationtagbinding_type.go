@@ -17,11 +17,16 @@ package v1alpha1
 import (
 	// refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
-	refv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var TagsLocationTagBindingGVK = GroupVersion.WithKind("TagsLocationTagBinding")
+
+type ParentRef struct {
+	// The external name of the referenced resource
+	// +required
+	External string `json:"external"`
+}
 
 // TagsLocationTagBindingSpec defines the desired state of TagsLocationTagBinding
 // +kcc:spec:proto=google.cloud.resourcemanager.v3.TagBinding
@@ -30,7 +35,7 @@ type TagsLocationTagBindingSpec struct {
 	// The full resource name of the resource the TagValue is bound to.
 	/* Only `external` field is supported to configure the reference for now. */
 	// +required
-	ParentRef *refv1alpha1.ResourceRef `json:"parentRef"`
+	ParentRef *ParentRef `json:"parentRef"`
 
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
 	// Immutable. The TagValue of the TagBinding. Must be of the form tagValues/456.
