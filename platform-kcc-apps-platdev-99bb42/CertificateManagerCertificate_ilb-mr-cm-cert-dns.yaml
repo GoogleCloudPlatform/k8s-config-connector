@@ -1,0 +1,230 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+Object:
+  apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+  kind: CertificateManagerCertificate
+  metadata:
+    annotations:
+      cnrm.cloud.google.com/management-conflict-prevention-policy: none
+      cnrm.cloud.google.com/observed-secret-versions: '{"lib-mr-cert-secret":"1834153828"}'
+      cnrm.cloud.google.com/state-into-spec: absent
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"certificatemanager.cnrm.cloud.google.com/v1beta1","kind":"CertificateManagerCertificate","metadata":{"annotations":{},"labels":{"ci_group":"platform"},"name":"ilb-mr-cm-cert-dns","namespace":"platform-kcc-apps-platdev-99bb42"},"spec":{"description":"self managed Certificate Manager certificate for ilb multi region","location":"global","scope":"ALL_REGIONS","selfManaged":{"pemCertificate":"-----BEGIN CERTIFICATE-----\nMIIF1DCCA7ygAwIBAgITJF2z2IAYsqpE1Xee8jybIO52hTANBgkqhkiG9w0BAQ0F\nADBwMQswCQYDVQQGEwJBVTEMMAoGA1UECBMDVklDMRIwEAYDVQQHEwlNZWxib3Vy\nbmUxDTALBgNVBAoTBGFuengxDDAKBgNVBAsTA2djcDEiMCAGA1UEAxMZQU5aeCBH\nbG9iYWxUZXN0IEdDUCBDQSAwMTAeFw0yNTAzMDUyMjIyMTZaFw0yNTA2MDMyMjIy\nMTVaMDUxMzAxBgNVBAMTKmlsYi5tdWx0aS1yZWdpb24uY2xvdWRuZXR3b3Jrcy54\nLmdjcG5wLmFuejCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALdmbge2\nMWVa9vnV+jS7e83xTP3+uB/pZuK0fB7n2VNJZGyARANp7NRydve0b6L5Y82fvd5Y\nLfXx78DiQ6rWYfQSxDiVCc4oyCoht911U18mHmMg/p7ArKJUVs+ZCrIeIqWuGfGM\n5isVlvMRDzsjiHq1kRNIUFwFVrDjvRpSORs9fo0c9B0J2h3uRNE9j5Gb0McbAlCe\nYUoYE3mcJnA+UtQVyLAJCaaQDZllTsy1hZn+cDkRiIlg4iBdqmUD8Nq+WxobNeyv\nLpJHIsE36E/qaJr3Pl0Jvo0Rll8HIIfDHXlmrV6YoX9iuoOc9yed6aBrMt25Ziul\n0XfIO+lgiYaziO0CAwEAAaOCAaAwggGcMA4GA1UdDwEB/wQEAwIFoDAdBgNVHQ4E\nFgQUcIg1ui6k9lEd5gYnKTIZeKrX3aIwHwYDVR0jBBgwFoAUf8CsYC8pdL3bAPty\nyq3rDl59gGcwgY0GCCsGAQUFBwEBBIGAMH4wfAYIKwYBBQUHMAKGcGh0dHA6Ly9w\ncml2YXRlY2EtY29udGVudC02NzA1OGI2MS0wMDAwLTIwZjEtOTkxOC05NGViMmMx\nYjk5YTguc3RvcmFnZS5nb29nbGVhcGlzLmNvbS85YTU5OTMzY2E4ZjNmMmJkOWRl\nMS9jYS5jcnQwNQYDVR0RBC4wLIIqaWxiLm11bHRpLXJlZ2lvbi5jbG91ZG5ldHdv\ncmtzLnguZ2NwbnAuYW56MIGCBgNVHR8EezB5MHegdaBzhnFodHRwOi8vcHJpdmF0\nZWNhLWNvbnRlbnQtNjcwNThiNjEtMDAwMC0yMGYxLTk5MTgtOTRlYjJjMWI5OWE4\nLnN0b3JhZ2UuZ29vZ2xlYXBpcy5jb20vOWE1OTkzM2NhOGYzZjJiZDlkZTEvY3Js\nLmNybDANBgkqhkiG9w0BAQ0FAAOCAgEAGmxpRJfX5RAJg86LXh0OiWTcREOsL1UN\nDHvvGiBwudvM9ptufev+l0rGFDQsNo492S+cjwIrOb1b+MuAvS2IhxxeysKN785n\nUXQ0uUTrTGUzTM4VNwiIWUZNjPPNGcDz1jg6/+L0qaUrFJCvNEQtxuSQcNnt3/kO\nkxkgEvrbJtImn0AtEdTQtQjPskTXtxkPQg3qdD1Pr/fQPusnrI12DlHvBvIIGpkx\nFov3weJ5ggnVN2qarZaOKg/RuhWoxK11z78cbPmpT9H+UiLia0GETLQfVwymDSeo\n36UJIAgRbcO4kWWKV4u3DBM2TBl+oi6BpOBhtL4q3TkMDUrkdU24pJ0UI0CuAcRD\nuX5g5hKGvudWMXuWLsMCfdfAp2STpQo80ya4IztkRv/xGfwB1ZtQzlq+vdTbzRFr\nGAzrsJRMWJNIsspVcUmhMNSQFeJaMTD1piNT8w6vk0GD65nNwDRWu306irHa9xN3\n0oD1Nuzj/LfzPw+YLXPn/A8S2kMth9VOEDAFRq+n73tbQjydXc8OzetTdvkwN4MG\nfZuNSoNjCcFyZyx1tNAnjNG7kPJCctbc7cHvp2rJx1RfCl23oOskPHykKTJzMfv+\nrhsqEPSiXgIV1/v019A3+hswlltKWM5+7psn+/Du6YfPdY2UliEWid2wqYaH56Hk\nMjFIAFsU4sk=\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIHMjCCBRqgAwIBAgITJOQwtmGhCxUp1j+CECjUMKk3TjANBgkqhkiG9w0BAQ0F\nADBuMQswCQYDVQQGEwJBVTEMMAoGA1UECBMDVklDMRIwEAYDVQQHEwlNZWxib3Vy\nbmUxDDAKBgNVBAoTA2FuejEMMAoGA1UECxMDZ2NwMSEwHwYDVQQDExhBTlogR2xv\nYmFsVGVzdCBHQ1AgQ0EgMDEwHhcNMjQxMDE0MDA0NzMzWhcNMzExMTE4MDA0MTQz\nWjBwMQswCQYDVQQGEwJBVTEMMAoGA1UECBMDVklDMRIwEAYDVQQHEwlNZWxib3Vy\nbmUxDTALBgNVBAoTBGFuengxDDAKBgNVBAsTA2djcDEiMCAGA1UEAxMZQU5aeCBH\nbG9iYWxUZXN0IEdDUCBDQSAwMTCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoC\nggIBAKnEvu0jZHiMWdvVQb89Zp769XM5E4mLQyzt87TKyAJZr4AupQ5/ZFf+4jty\nzcsWsmHvhl9hOqwfviP5rFtn9ekmZ9PE0pFzkvhb+YgLvVorG2LfPm6eeXyejsMJ\nk/OuNENzJtqhqw/0W2uN56OomFo1hWU97kiPwHYhpWr0TtP4xU0d4qPFKbAN/wb+\nccqZaBGUPudHdAeTM0GZhXOv9lQWTm+qlc66pxROsPOd7hsIRwb1cganEayaHzaK\nOQMX1X8AfPpWqffE3Kehgt/Q3ti0NS+6f3RWzjoy5nuAYpZZAaghPRsbV3hx9tRz\nGUWBK9Z3MjHlWXv3UYP1ZIUkP8uwI6CoBkJX/YDpjtbSI2nduKNea7p8tLFDvr5f\nDyperW038pys9L8x0CcgceYVNQXTdGHlC6iLhAy/xbRFuWR/8Cs4ESRm6lBHaWTO\nnSAz2WGFuwHrUkM+POHDhbGKkIUreXJrAalAIcpiINtDbAWFGjc1wWeL5nBrr0HS\n10QY9oOHqzebFWpq4NqGomewDx9YE67L1lDcVcOXS+k5ghThPNUB0AFY97o+Q5z3\ndffcuNlJ+n8GpLXwoj7bs4Qnp99R/Co/yWxHTiHaRRGXpVc5XbeRWT4wTcsgCb3W\nlC8RF+XlsLYNhWkA9LnSwFsGdJgeBO94kASP9OU0OWWWlGEJAgMBAAGjggHFMIIB\nwTAPBgNVHQ8BAf8EBQMDB/+AMEUGA1UdJQQ+MDwGCCsGAQUFBwMBBggrBgEFBQcD\nAgYIKwYBBQUHAwMGCCsGAQUFBwMEBggrBgEFBQcDCAYIKwYBBQUHAwkwEgYDVR0T\nAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUf8CsYC8pdL3bAPtyyq3rDl59gGcwHwYD\nVR0jBBgwFoAUyvNQER3cq3bxAyvmXs8I5N3sHfcwgY0GCCsGAQUFBwEBBIGAMH4w\nfAYIKwYBBQUHMAKGcGh0dHA6Ly9wcml2YXRlY2EtY29udGVudC02MThkODQxYi0w\nMDAwLTJhNmMtOWU5Ni05NGViMmMxYmIzOTYuc3RvcmFnZS5nb29nbGVhcGlzLmNv\nbS9iZGQyMzhmZGM3ZGNlMGU3M2VjOC9jYS5jcnQwgYIGA1UdHwR7MHkwd6B1oHOG\ncWh0dHA6Ly9wcml2YXRlY2EtY29udGVudC02MThkODQxYi0wMDAwLTJhNmMtOWU5\nNi05NGViMmMxYmIzOTYuc3RvcmFnZS5nb29nbGVhcGlzLmNvbS9iZGQyMzhmZGM3\nZGNlMGU3M2VjOC9jcmwuY3JsMA0GCSqGSIb3DQEBDQUAA4ICAQAkn6hj8116BcTc\nQxwwcPhkvgC/QmRj6dThNs4L+MzhIDtWxc/zvb8q0X7Io8Jn+okZke1Ww697Z02g\nWy5G4bn9RgeHGCJHz2kVOKeLz0Jzx7UGTd4IgU+MQAPjOVGRT48Z2StVD2GVryEr\naYZm0db+5B3Zkj5WFfIsJmv/p6K+QPfpPNVMRPXlxbjeQ0dR0M4Yo0IS8xgFHD8t\nR0sjz5K546ZJZGoJ7kYP5G2zKzDrafVtO6Nor94mWvaVM92vzUyDUQioMVSmSlri\n11zzGxmxNUeDKMhxL8vzQClxl939zpYdbZQp1KWGQjB8ojop7GXtA2seWyPrUtU/\n4Kyz9lB6uKK9yD92cLy52/a5V1nFWlj6xrhI1qjANFpx0EGYkKW5DAGxCGa1fZGI\nerocrgJm9NcIjVqjzjLO3T9d6ArH+RKbYTGvu7HifzGuOhm4qe1Ay5es92wznOq4\niu+7I7/Aqm0j1NolBso51l0zyX7y6ZEWVsXkS+9jXKZcatFQsKfL921360zR3I2W\ndwNH1yrGYPtR02XFSHiDNx3lpILChvDwz0mSQwCUICIKpLaOTfQZ91hc0qpUuT0L\nh8IW6w9Ite/xzc2Tu0+Rfe3Sfi8JOSsvBfcj+h64kcInGpxdARWVRsRR731JMBN5\n/6o6Kwy2i9sg+Q/VjzQQmATBDT2mog==\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIG+TCCBOGgAwIBAgITHgAAABB9pZ7emGUq/QAAAAAAEDANBgkqhkiG9w0BAQsF\nADBqMRMwEQYKCZImiZPyLGQBGRYDY29tMRMwEQYKCZImiZPyLGQBGRYDYW56MRow\nGAYKCZImiZPyLGQBGRYKZ2xvYmFsdGVzdDEiMCAGA1UEAxMZQU5aIEdsb2JhbFRl\nc3QgUm9vdCBDQSB2MzAeFw0yMTExMTgwMDMxNDNaFw0zMTExMTgwMDQxNDNaMG4x\nCzAJBgNVBAYTAkFVMQwwCgYDVQQIEwNWSUMxEjAQBgNVBAcTCU1lbGJvdXJuZTEM\nMAoGA1UEChMDYW56MQwwCgYDVQQLEwNnY3AxITAfBgNVBAMTGEFOWiBHbG9iYWxU\nZXN0IEdDUCBDQSAwMTCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALYq\nTqJu2rh9o735p2h+jPtkJgBqhUaVl4FysVZQGdNLxsJBNOTEQcoCaoZwh8AocOl2\nuYDHlID19/yAuqak31ezwIg/tYULFpB5bfO+JbBvDoPNp88FO160od+ZKzQvZUwz\nNt2Cg9Tz8L2l/Fe5qzVlCW2R1hb82BzneNNuwhYvfCbPa5f3jWlaVqIUEpi/XogX\nwNj9h/u8B47VfxGpUf9NDvlpAncJ//feNzYgI/CFinhwn7W/QqGC3QfK698YNTQ5\nQsjMndP5hbrstNsd4q+iEYNUDjQhsKFx4kfoCsZswz427cE0XlAgtveYau2LMUVO\nE7LsIcoAryII3IfhLc2KL4CqybNXf7AagAx4IogYI43idLKOOcbwhJ681+LSyPfF\nxFC6Tij7R+x6zwlqTHkJm1Bm5bE9z7E1qCRN2SGBD1CJGp/wDtilFcAgpj6PcING\ndhveK3cU8CKMMZGhA2OQ3y8IarC0hnJZhf9/KGIDzkL3c2PC3UEFPRK39vvw6b6+\nabaAfZ2yzVgy9vQcrob3OTw++lDZS5fSbO7nnO9HVkfGq/aZWxdrCjb8shMOa98i\n4c2U3cHcjNXxqqk6HF8GSPD+53t+5K7jXpqcan2CtXCWc1G3o3w3mv1QCplltke3\nd5ZoafArenKHPBAv/CA4SmNQDJRH2avP1w2McKLrAgMBAAGjggGSMIIBjjAMBgNV\nHQ8EBQMDB/eAMEUGA1UdJQQ+MDwGCCsGAQUFBwMBBggrBgEFBQcDAgYIKwYBBQUH\nAwMGCCsGAQUFBwMEBggrBgEFBQcDCAYIKwYBBQUHAwkwEgYDVR0TAQH/BAgwBgEB\n/wIBATAdBgNVHQ4EFgQUyvNQER3cq3bxAyvmXs8I5N3sHfcwHwYDVR0jBBgwFoAU\n/PFGc/WoTFy17awita+FB5fQOpkwWQYDVR0fBFIwUDBOoEygSoZIaHR0cDovL3Br\naWdsb2JhbHRlc3R2My5hbnouY29tL0NSTC9BTlolMjBHbG9iYWxUZXN0JTIwUm9v\ndCUyMENBJTIwdjMuY3JsMIGHBggrBgEFBQcBAQR7MHkwdwYIKwYBBQUHMAKGa2h0\ndHA6Ly9wa2lnbG9iYWx0ZXN0djMuYW56LmNvbS9DUkwvQ0VSQVUxMDFNRUwwMDEw\nLmdsb2JhbHRlc3QuYW56LmNvbV9BTlolMjBHbG9iYWxUZXN0JTIwUm9vdCUyMENB\nJTIwdjMuY3J0MA0GCSqGSIb3DQEBCwUAA4ICAQAOCgWT8hDbfnsnxo8tzePSK3TW\nL39jjDrKyK9jTngPrgN62cgWeXW2u1DlZ8gygnvCH+18a19w9pnEHjB04K/Sk5n2\n137u6VigyQfIvCnGACXG1aEScvtflMVerci7D9rx/idb8ywVLWz3Yh/Wo3kRU+8h\n/9uhKXMPpPWUCTjJEKud8BU8NayVCyxbStcOVq8lkrU24udjuTZ/XAjP+93RypSq\nvWqBkNRji/Sp338mg/l3n6rUDQ2Zi52nD/0hcjHiZeIaKoWKk3UjGzLF/MEghwKW\n3mWd+w0noas4GJjmUEbVw+aBdSJC/UKpNL/Xkw2osIcJKLETG2e4ANP/Sus+uv+V\n9BJoguQedGzxwhS9Wn2jK1hk7TavRUlSZKK3ySucM32tnlH8XipN8E7gwbVqhiSV\nD9EIG+HR3D9kxD/Va3jFwg2EPiPHQwBSMfa+gxWcLYz2wBzLUMU+a8uUWqoM1iUT\nQLCNfpSxh9VrPjRD+AKsjfPtdorFQwmUy1BtKWuAbk7TeGA8eE3k5t4tUd1POt0b\nJtTYwk5+aJP5gr3O1UaszBvOfl+4P5j2nOFY75jM9Ts7pyN69N9Na0CvUC70aSf6\nuNkSwtESN/Eyc2no8sOb7IJxoxsif80cUD6M/RCG8x1Sw29XPvsmrY7aenvwRE70\nQ6TqtaqEcrNXasQjxw==\n-----END CERTIFICATE-----","pemPrivateKey":{"valueFrom":{"secretKeyRef":{"key":"tls.key","name":"lib-mr-cert-secret"}}}}}}
+    creationTimestamp: "2025-03-05T22:29:00Z"
+    finalizers:
+    - cnrm.cloud.google.com/finalizer
+    - cnrm.cloud.google.com/deletion-defender
+    generation: 2
+    labels:
+      ci_group: platform
+      x.anz.com/asset: platform
+    managedFields:
+    - apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:kubectl.kubernetes.io/last-applied-configuration: {}
+          f:labels:
+            .: {}
+            f:ci_group: {}
+        f:spec:
+          .: {}
+          f:description: {}
+          f:location: {}
+          f:scope: {}
+          f:selfManaged:
+            .: {}
+            f:pemCertificate: {}
+            f:pemPrivateKey:
+              .: {}
+              f:valueFrom:
+                .: {}
+                f:secretKeyRef:
+                  .: {}
+                  f:key: {}
+                  f:name: {}
+      manager: kubectl-client-side-apply
+      operation: Update
+      time: "2025-03-05T22:29:00Z"
+    - apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:cnrm.cloud.google.com/observed-secret-versions: {}
+            f:cnrm.cloud.google.com/state-into-spec: {}
+          f:finalizers:
+            .: {}
+            v:"cnrm.cloud.google.com/deletion-defender": {}
+            v:"cnrm.cloud.google.com/finalizer": {}
+        f:spec:
+          f:resourceID: {}
+      manager: cnrm-controller-manager
+      operation: Update
+      time: "2025-04-28T01:09:35Z"
+    - apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:status:
+          .: {}
+          f:conditions: {}
+          f:observedGeneration: {}
+      manager: cnrm-controller-manager
+      operation: Update
+      subresource: status
+      time: "2025-04-28T01:09:35Z"
+    name: ilb-mr-cm-cert-dns
+    namespace: platform-kcc-apps-platdev-99bb42
+    resourceVersion: "1834155389"
+    uid: a9efab1a-0168-4178-9b58-4b7f6e4af84e
+  spec:
+    description: self managed Certificate Manager certificate for ilb multi region
+    location: global
+    projectRef:
+      external: anz-x-apps-platdev-99bb42
+    resourceID: ilb-mr-cm-cert-dns
+    scope: ALL_REGIONS
+    selfManaged:
+      pemCertificate: |-
+        -----BEGIN CERTIFICATE-----
+        MIIF1DCCA7ygAwIBAgITJF2z2IAYsqpE1Xee8jybIO52hTANBgkqhkiG9w0BAQ0F
+        ADBwMQswCQYDVQQGEwJBVTEMMAoGA1UECBMDVklDMRIwEAYDVQQHEwlNZWxib3Vy
+        bmUxDTALBgNVBAoTBGFuengxDDAKBgNVBAsTA2djcDEiMCAGA1UEAxMZQU5aeCBH
+        bG9iYWxUZXN0IEdDUCBDQSAwMTAeFw0yNTAzMDUyMjIyMTZaFw0yNTA2MDMyMjIy
+        MTVaMDUxMzAxBgNVBAMTKmlsYi5tdWx0aS1yZWdpb24uY2xvdWRuZXR3b3Jrcy54
+        LmdjcG5wLmFuejCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALdmbge2
+        MWVa9vnV+jS7e83xTP3+uB/pZuK0fB7n2VNJZGyARANp7NRydve0b6L5Y82fvd5Y
+        LfXx78DiQ6rWYfQSxDiVCc4oyCoht911U18mHmMg/p7ArKJUVs+ZCrIeIqWuGfGM
+        5isVlvMRDzsjiHq1kRNIUFwFVrDjvRpSORs9fo0c9B0J2h3uRNE9j5Gb0McbAlCe
+        YUoYE3mcJnA+UtQVyLAJCaaQDZllTsy1hZn+cDkRiIlg4iBdqmUD8Nq+WxobNeyv
+        LpJHIsE36E/qaJr3Pl0Jvo0Rll8HIIfDHXlmrV6YoX9iuoOc9yed6aBrMt25Ziul
+        0XfIO+lgiYaziO0CAwEAAaOCAaAwggGcMA4GA1UdDwEB/wQEAwIFoDAdBgNVHQ4E
+        FgQUcIg1ui6k9lEd5gYnKTIZeKrX3aIwHwYDVR0jBBgwFoAUf8CsYC8pdL3bAPty
+        yq3rDl59gGcwgY0GCCsGAQUFBwEBBIGAMH4wfAYIKwYBBQUHMAKGcGh0dHA6Ly9w
+        cml2YXRlY2EtY29udGVudC02NzA1OGI2MS0wMDAwLTIwZjEtOTkxOC05NGViMmMx
+        Yjk5YTguc3RvcmFnZS5nb29nbGVhcGlzLmNvbS85YTU5OTMzY2E4ZjNmMmJkOWRl
+        MS9jYS5jcnQwNQYDVR0RBC4wLIIqaWxiLm11bHRpLXJlZ2lvbi5jbG91ZG5ldHdv
+        cmtzLnguZ2NwbnAuYW56MIGCBgNVHR8EezB5MHegdaBzhnFodHRwOi8vcHJpdmF0
+        ZWNhLWNvbnRlbnQtNjcwNThiNjEtMDAwMC0yMGYxLTk5MTgtOTRlYjJjMWI5OWE4
+        LnN0b3JhZ2UuZ29vZ2xlYXBpcy5jb20vOWE1OTkzM2NhOGYzZjJiZDlkZTEvY3Js
+        LmNybDANBgkqhkiG9w0BAQ0FAAOCAgEAGmxpRJfX5RAJg86LXh0OiWTcREOsL1UN
+        DHvvGiBwudvM9ptufev+l0rGFDQsNo492S+cjwIrOb1b+MuAvS2IhxxeysKN785n
+        UXQ0uUTrTGUzTM4VNwiIWUZNjPPNGcDz1jg6/+L0qaUrFJCvNEQtxuSQcNnt3/kO
+        kxkgEvrbJtImn0AtEdTQtQjPskTXtxkPQg3qdD1Pr/fQPusnrI12DlHvBvIIGpkx
+        Fov3weJ5ggnVN2qarZaOKg/RuhWoxK11z78cbPmpT9H+UiLia0GETLQfVwymDSeo
+        36UJIAgRbcO4kWWKV4u3DBM2TBl+oi6BpOBhtL4q3TkMDUrkdU24pJ0UI0CuAcRD
+        uX5g5hKGvudWMXuWLsMCfdfAp2STpQo80ya4IztkRv/xGfwB1ZtQzlq+vdTbzRFr
+        GAzrsJRMWJNIsspVcUmhMNSQFeJaMTD1piNT8w6vk0GD65nNwDRWu306irHa9xN3
+        0oD1Nuzj/LfzPw+YLXPn/A8S2kMth9VOEDAFRq+n73tbQjydXc8OzetTdvkwN4MG
+        fZuNSoNjCcFyZyx1tNAnjNG7kPJCctbc7cHvp2rJx1RfCl23oOskPHykKTJzMfv+
+        rhsqEPSiXgIV1/v019A3+hswlltKWM5+7psn+/Du6YfPdY2UliEWid2wqYaH56Hk
+        MjFIAFsU4sk=
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+        MIIHMjCCBRqgAwIBAgITJOQwtmGhCxUp1j+CECjUMKk3TjANBgkqhkiG9w0BAQ0F
+        ADBuMQswCQYDVQQGEwJBVTEMMAoGA1UECBMDVklDMRIwEAYDVQQHEwlNZWxib3Vy
+        bmUxDDAKBgNVBAoTA2FuejEMMAoGA1UECxMDZ2NwMSEwHwYDVQQDExhBTlogR2xv
+        YmFsVGVzdCBHQ1AgQ0EgMDEwHhcNMjQxMDE0MDA0NzMzWhcNMzExMTE4MDA0MTQz
+        WjBwMQswCQYDVQQGEwJBVTEMMAoGA1UECBMDVklDMRIwEAYDVQQHEwlNZWxib3Vy
+        bmUxDTALBgNVBAoTBGFuengxDDAKBgNVBAsTA2djcDEiMCAGA1UEAxMZQU5aeCBH
+        bG9iYWxUZXN0IEdDUCBDQSAwMTCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoC
+        ggIBAKnEvu0jZHiMWdvVQb89Zp769XM5E4mLQyzt87TKyAJZr4AupQ5/ZFf+4jty
+        zcsWsmHvhl9hOqwfviP5rFtn9ekmZ9PE0pFzkvhb+YgLvVorG2LfPm6eeXyejsMJ
+        k/OuNENzJtqhqw/0W2uN56OomFo1hWU97kiPwHYhpWr0TtP4xU0d4qPFKbAN/wb+
+        ccqZaBGUPudHdAeTM0GZhXOv9lQWTm+qlc66pxROsPOd7hsIRwb1cganEayaHzaK
+        OQMX1X8AfPpWqffE3Kehgt/Q3ti0NS+6f3RWzjoy5nuAYpZZAaghPRsbV3hx9tRz
+        GUWBK9Z3MjHlWXv3UYP1ZIUkP8uwI6CoBkJX/YDpjtbSI2nduKNea7p8tLFDvr5f
+        DyperW038pys9L8x0CcgceYVNQXTdGHlC6iLhAy/xbRFuWR/8Cs4ESRm6lBHaWTO
+        nSAz2WGFuwHrUkM+POHDhbGKkIUreXJrAalAIcpiINtDbAWFGjc1wWeL5nBrr0HS
+        10QY9oOHqzebFWpq4NqGomewDx9YE67L1lDcVcOXS+k5ghThPNUB0AFY97o+Q5z3
+        dffcuNlJ+n8GpLXwoj7bs4Qnp99R/Co/yWxHTiHaRRGXpVc5XbeRWT4wTcsgCb3W
+        lC8RF+XlsLYNhWkA9LnSwFsGdJgeBO94kASP9OU0OWWWlGEJAgMBAAGjggHFMIIB
+        wTAPBgNVHQ8BAf8EBQMDB/+AMEUGA1UdJQQ+MDwGCCsGAQUFBwMBBggrBgEFBQcD
+        AgYIKwYBBQUHAwMGCCsGAQUFBwMEBggrBgEFBQcDCAYIKwYBBQUHAwkwEgYDVR0T
+        AQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUf8CsYC8pdL3bAPtyyq3rDl59gGcwHwYD
+        VR0jBBgwFoAUyvNQER3cq3bxAyvmXs8I5N3sHfcwgY0GCCsGAQUFBwEBBIGAMH4w
+        fAYIKwYBBQUHMAKGcGh0dHA6Ly9wcml2YXRlY2EtY29udGVudC02MThkODQxYi0w
+        MDAwLTJhNmMtOWU5Ni05NGViMmMxYmIzOTYuc3RvcmFnZS5nb29nbGVhcGlzLmNv
+        bS9iZGQyMzhmZGM3ZGNlMGU3M2VjOC9jYS5jcnQwgYIGA1UdHwR7MHkwd6B1oHOG
+        cWh0dHA6Ly9wcml2YXRlY2EtY29udGVudC02MThkODQxYi0wMDAwLTJhNmMtOWU5
+        Ni05NGViMmMxYmIzOTYuc3RvcmFnZS5nb29nbGVhcGlzLmNvbS9iZGQyMzhmZGM3
+        ZGNlMGU3M2VjOC9jcmwuY3JsMA0GCSqGSIb3DQEBDQUAA4ICAQAkn6hj8116BcTc
+        QxwwcPhkvgC/QmRj6dThNs4L+MzhIDtWxc/zvb8q0X7Io8Jn+okZke1Ww697Z02g
+        Wy5G4bn9RgeHGCJHz2kVOKeLz0Jzx7UGTd4IgU+MQAPjOVGRT48Z2StVD2GVryEr
+        aYZm0db+5B3Zkj5WFfIsJmv/p6K+QPfpPNVMRPXlxbjeQ0dR0M4Yo0IS8xgFHD8t
+        R0sjz5K546ZJZGoJ7kYP5G2zKzDrafVtO6Nor94mWvaVM92vzUyDUQioMVSmSlri
+        11zzGxmxNUeDKMhxL8vzQClxl939zpYdbZQp1KWGQjB8ojop7GXtA2seWyPrUtU/
+        4Kyz9lB6uKK9yD92cLy52/a5V1nFWlj6xrhI1qjANFpx0EGYkKW5DAGxCGa1fZGI
+        erocrgJm9NcIjVqjzjLO3T9d6ArH+RKbYTGvu7HifzGuOhm4qe1Ay5es92wznOq4
+        iu+7I7/Aqm0j1NolBso51l0zyX7y6ZEWVsXkS+9jXKZcatFQsKfL921360zR3I2W
+        dwNH1yrGYPtR02XFSHiDNx3lpILChvDwz0mSQwCUICIKpLaOTfQZ91hc0qpUuT0L
+        h8IW6w9Ite/xzc2Tu0+Rfe3Sfi8JOSsvBfcj+h64kcInGpxdARWVRsRR731JMBN5
+        /6o6Kwy2i9sg+Q/VjzQQmATBDT2mog==
+        -----END CERTIFICATE-----
+        -----BEGIN CERTIFICATE-----
+        MIIG+TCCBOGgAwIBAgITHgAAABB9pZ7emGUq/QAAAAAAEDANBgkqhkiG9w0BAQsF
+        ADBqMRMwEQYKCZImiZPyLGQBGRYDY29tMRMwEQYKCZImiZPyLGQBGRYDYW56MRow
+        GAYKCZImiZPyLGQBGRYKZ2xvYmFsdGVzdDEiMCAGA1UEAxMZQU5aIEdsb2JhbFRl
+        c3QgUm9vdCBDQSB2MzAeFw0yMTExMTgwMDMxNDNaFw0zMTExMTgwMDQxNDNaMG4x
+        CzAJBgNVBAYTAkFVMQwwCgYDVQQIEwNWSUMxEjAQBgNVBAcTCU1lbGJvdXJuZTEM
+        MAoGA1UEChMDYW56MQwwCgYDVQQLEwNnY3AxITAfBgNVBAMTGEFOWiBHbG9iYWxU
+        ZXN0IEdDUCBDQSAwMTCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALYq
+        TqJu2rh9o735p2h+jPtkJgBqhUaVl4FysVZQGdNLxsJBNOTEQcoCaoZwh8AocOl2
+        uYDHlID19/yAuqak31ezwIg/tYULFpB5bfO+JbBvDoPNp88FO160od+ZKzQvZUwz
+        Nt2Cg9Tz8L2l/Fe5qzVlCW2R1hb82BzneNNuwhYvfCbPa5f3jWlaVqIUEpi/XogX
+        wNj9h/u8B47VfxGpUf9NDvlpAncJ//feNzYgI/CFinhwn7W/QqGC3QfK698YNTQ5
+        QsjMndP5hbrstNsd4q+iEYNUDjQhsKFx4kfoCsZswz427cE0XlAgtveYau2LMUVO
+        E7LsIcoAryII3IfhLc2KL4CqybNXf7AagAx4IogYI43idLKOOcbwhJ681+LSyPfF
+        xFC6Tij7R+x6zwlqTHkJm1Bm5bE9z7E1qCRN2SGBD1CJGp/wDtilFcAgpj6PcING
+        dhveK3cU8CKMMZGhA2OQ3y8IarC0hnJZhf9/KGIDzkL3c2PC3UEFPRK39vvw6b6+
+        abaAfZ2yzVgy9vQcrob3OTw++lDZS5fSbO7nnO9HVkfGq/aZWxdrCjb8shMOa98i
+        4c2U3cHcjNXxqqk6HF8GSPD+53t+5K7jXpqcan2CtXCWc1G3o3w3mv1QCplltke3
+        d5ZoafArenKHPBAv/CA4SmNQDJRH2avP1w2McKLrAgMBAAGjggGSMIIBjjAMBgNV
+        HQ8EBQMDB/eAMEUGA1UdJQQ+MDwGCCsGAQUFBwMBBggrBgEFBQcDAgYIKwYBBQUH
+        AwMGCCsGAQUFBwMEBggrBgEFBQcDCAYIKwYBBQUHAwkwEgYDVR0TAQH/BAgwBgEB
+        /wIBATAdBgNVHQ4EFgQUyvNQER3cq3bxAyvmXs8I5N3sHfcwHwYDVR0jBBgwFoAU
+        /PFGc/WoTFy17awita+FB5fQOpkwWQYDVR0fBFIwUDBOoEygSoZIaHR0cDovL3Br
+        aWdsb2JhbHRlc3R2My5hbnouY29tL0NSTC9BTlolMjBHbG9iYWxUZXN0JTIwUm9v
+        dCUyMENBJTIwdjMuY3JsMIGHBggrBgEFBQcBAQR7MHkwdwYIKwYBBQUHMAKGa2h0
+        dHA6Ly9wa2lnbG9iYWx0ZXN0djMuYW56LmNvbS9DUkwvQ0VSQVUxMDFNRUwwMDEw
+        Lmdsb2JhbHRlc3QuYW56LmNvbV9BTlolMjBHbG9iYWxUZXN0JTIwUm9vdCUyMENB
+        JTIwdjMuY3J0MA0GCSqGSIb3DQEBCwUAA4ICAQAOCgWT8hDbfnsnxo8tzePSK3TW
+        L39jjDrKyK9jTngPrgN62cgWeXW2u1DlZ8gygnvCH+18a19w9pnEHjB04K/Sk5n2
+        137u6VigyQfIvCnGACXG1aEScvtflMVerci7D9rx/idb8ywVLWz3Yh/Wo3kRU+8h
+        /9uhKXMPpPWUCTjJEKud8BU8NayVCyxbStcOVq8lkrU24udjuTZ/XAjP+93RypSq
+        vWqBkNRji/Sp338mg/l3n6rUDQ2Zi52nD/0hcjHiZeIaKoWKk3UjGzLF/MEghwKW
+        3mWd+w0noas4GJjmUEbVw+aBdSJC/UKpNL/Xkw2osIcJKLETG2e4ANP/Sus+uv+V
+        9BJoguQedGzxwhS9Wn2jK1hk7TavRUlSZKK3ySucM32tnlH8XipN8E7gwbVqhiSV
+        D9EIG+HR3D9kxD/Va3jFwg2EPiPHQwBSMfa+gxWcLYz2wBzLUMU+a8uUWqoM1iUT
+        QLCNfpSxh9VrPjRD+AKsjfPtdorFQwmUy1BtKWuAbk7TeGA8eE3k5t4tUd1POt0b
+        JtTYwk5+aJP5gr3O1UaszBvOfl+4P5j2nOFY75jM9Ts7pyN69N9Na0CvUC70aSf6
+        uNkSwtESN/Eyc2no8sOb7IJxoxsif80cUD6M/RCG8x1Sw29XPvsmrY7aenvwRE70
+        Q6TqtaqEcrNXasQjxw==
+        -----END CERTIFICATE-----
+      pemPrivateKey:
+        valueFrom:
+          secretKeyRef:
+            key: tls.key
+            name: lib-mr-cert-secret
+  status:
+    conditions:
+    - lastTransitionTime: "2025-04-28T01:09:35Z"
+      message: The resource is up to date
+      reason: UpToDate
+      status: "True"
+      type: Ready
+    observedGeneration: 2

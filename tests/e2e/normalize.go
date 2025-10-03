@@ -974,6 +974,16 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	// Find any URLs
 	for _, event := range events {
 		findLinksInEvent(t, normalizer.Replacements, event)
+
+		// Find IAP project number
+		if event.Response.Body != "" {
+			r := regexp.MustCompile(`projects/(\d+)/iap_web`)
+			matches := r.FindStringSubmatch(event.Response.Body)
+			if len(matches) > 1 {
+				projectNumber := matches[1]
+				normalizer.Replacements.PathIDs[projectNumber] = "${KCC_APP_TEST_PROJECT_NUMBER}"
+			}
+		}
 	}
 
 	// Remove idempotency tokens
