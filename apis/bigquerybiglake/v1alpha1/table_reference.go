@@ -16,68 +16,55 @@ package v1alpha1
 
 import (
 	"context"
-	"fmt"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &TableRef{}
+var _ refsv1beta1.Ref = &BigQueryBigLakeTableRef{}
 
-// TableRef defines the resource reference to BigLakeTable, which "External" field
-// holds the GCP identifier for the KRM object.
-type TableRef struct {
-	// A reference to an externally managed BigLakeTable resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/tables/{{tableID}}".
+// BigQueryBigLakeTableRef is a reference to a BigQueryBigLakeTable resource.
+type BigQueryBigLakeTableRef struct {
+	// A reference to an externally managed BigQueryBigLakeTable resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/catalogs/{{catalogID}}/databases/{{databaseID}}/tables/{{tableID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a BigLakeTable resource.
+	// The name of a BigQueryBigLakeTable resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a BigLakeTable resource.
+	// The namespace of a BigQueryBigLakeTable resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on BigLakeTable.
-// If the "External" is given in the other resource's spec.BigLakeTableRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual BigLakeTable object from the cluster.
-func (r *TableRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", BigLakeTableGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, _, err := ParseTableExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
+func (r *BigQueryBigLakeTableRef) GetGVK() schema.GroupVersionKind {
+	return BigLakeTableGVK
+}
 
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
+func (r *BigQueryBigLakeTableRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(BigLakeTableGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", BigLakeTableGVK, key, err)
+}
+
+func (r *BigQueryBigLakeTableRef) GetExternal() string {
+	return r.External
+}
+
+func (r *BigQueryBigLakeTableRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *BigQueryBigLakeTableRef) ValidateExternal(ref string) error {
+	id := &TableIdentity{}
+	if err := id.FromExternal(r.GetExternal()); err != nil {
+		return err
 	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
-	return r.External, nil
+	return nil
+}
+
+func (r *BigQueryBigLakeTableRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
 }

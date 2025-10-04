@@ -25,14 +25,14 @@ var BigLakeDatabaseGVK = GroupVersion.WithKind("BigLakeDatabase")
 // +kcc:spec:proto=google.cloud.bigquery.biglake.v1.Database
 type BigLakeDatabaseSpec struct {
 	// Required. Defines the parent path of the resource.
-	*Parent `json:",inline"`
+	ParentRef *BigQueryBigLakeCatalogRef `json:"parentRef,omitempty"`
 
 	// The BigLakeDatabase name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Options of a Hive database.
 	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Database.hive_options
-	HiveOptions *HiveDatabaseOptions `json:"hiveOptions,omitempty"`
+	Options *HiveDatabaseOptions `json:"options,omitempty"`
 
 	// The database type.
 	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Database.type

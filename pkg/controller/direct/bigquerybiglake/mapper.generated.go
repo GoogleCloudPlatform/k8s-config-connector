@@ -74,6 +74,7 @@ func BigLakeDatabaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Da
 		return nil
 	}
 	out := &krm.BigLakeDatabaseObservedState{}
+	// MISSING: HiveOptions
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -86,6 +87,7 @@ func BigLakeDatabaseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Big
 		return nil
 	}
 	out := &pb.Database{}
+	// MISSING: HiveOptions
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
@@ -98,7 +100,7 @@ func BigLakeDatabaseSpec_FromProto(mapCtx *direct.MapContext, in *pb.Database) *
 		return nil
 	}
 	out := &krm.BigLakeDatabaseSpec{}
-	out.HiveOptions = HiveDatabaseOptions_FromProto(mapCtx, in.GetHiveOptions())
+	// MISSING: HiveOptions
 	// MISSING: Name
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	return out
@@ -108,9 +110,7 @@ func BigLakeDatabaseSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigLakeDatab
 		return nil
 	}
 	out := &pb.Database{}
-	if oneof := HiveDatabaseOptions_ToProto(mapCtx, in.HiveOptions); oneof != nil {
-		out.Options = &pb.Database_HiveOptions{HiveOptions: oneof}
-	}
+	// MISSING: HiveOptions
 	// MISSING: Name
 	out.Type = direct.Enum_ToProto[pb.Database_Type](mapCtx, in.Type)
 	return out
