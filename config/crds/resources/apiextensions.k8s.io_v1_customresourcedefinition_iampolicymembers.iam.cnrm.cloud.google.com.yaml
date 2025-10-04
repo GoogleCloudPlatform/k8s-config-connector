@@ -105,7 +105,7 @@ spec:
                 properties:
                   bigQueryConnectionConnectionRef:
                     description: BigQueryConnectionConnection whose service account
-                      is to be bound to the role. Use the Type field to specifie the
+                      is to be bound to the role. Use the Type field to specify the
                       connection type. For "spark" connetion, the service account
                       is in `status.observedState.spark.serviceAccountID`. For "cloudSQL"
                       connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`.
