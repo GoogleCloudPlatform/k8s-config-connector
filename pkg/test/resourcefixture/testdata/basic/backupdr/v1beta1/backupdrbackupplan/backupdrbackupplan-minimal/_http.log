@@ -146,6 +146,10 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
   ],
   "backupVault": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}",
   "description": "Initial description",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "resourceType": "compute.googleapis.com/Instance"
 }
 
@@ -220,6 +224,10 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Initial description",
     "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "name": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}",
     "resourceType": "compute.googleapis.com/Instance",
     "state": "ACTIVE",
@@ -265,6 +273,10 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Initial description",
   "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-minimal-${uniqueId}",
   "resourceType": "compute.googleapis.com/Instance",
   "state": 2,

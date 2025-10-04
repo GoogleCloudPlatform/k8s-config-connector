@@ -32,7 +32,6 @@ func BackupDRBackupPlanSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	out := &krm.BackupDRBackupPlanSpec{}
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
 	out.BackupRules = direct.Slice_FromProto(mapCtx, in.BackupRules, BackupRule_v1beta1_FromProto)
 	out.ResourceType = direct.LazyPtr(in.GetResourceType())
 	if in.GetBackupVault() != "" {
@@ -49,7 +48,6 @@ func BackupDRBackupPlanSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.
 	out := &pb.BackupPlan{}
 	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
 	out.BackupRules = direct.Slice_ToProto(mapCtx, in.BackupRules, BackupRule_v1beta1_ToProto)
 	out.ResourceType = direct.ValueOf(in.ResourceType)
 	if in.BackupVaultRef != nil {

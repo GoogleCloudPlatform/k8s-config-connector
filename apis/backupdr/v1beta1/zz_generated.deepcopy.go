@@ -330,13 +330,6 @@ func (in *BackupDRBackupPlanSpec) DeepCopyInto(out *BackupDRBackupPlanSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.Labels != nil {
-		in, out := &in.Labels, &out.Labels
-		*out = make(map[string]string, len(*in))
-		for key, val := range *in {
-			(*out)[key] = val
-		}
-	}
 	if in.BackupRules != nil {
 		in, out := &in.BackupRules, &out.BackupRules
 		*out = make([]BackupRule, len(*in))

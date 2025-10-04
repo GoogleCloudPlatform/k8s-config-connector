@@ -42,7 +42,7 @@ type BackupDRBackupPlanSpec struct {
 	// Optional. This collection of key/value pairs allows for custom labels to be
 	//  supplied by the user.  Example, {"tag": "Weekly"}.
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.labels
-	Labels map[string]string `json:"labels,omitempty"`
+	// Labels map[string]string `json:"labels,omitempty"`
 
 	// Required. The backup rules for this `BackupPlan`. There must be at least
 	//  one `BackupRule` message.
