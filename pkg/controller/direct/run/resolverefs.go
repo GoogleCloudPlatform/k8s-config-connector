@@ -16,9 +16,12 @@ package run
 
 import (
 	"context"
+	"fmt"
+	"strings"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
+	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -45,6 +48,38 @@ func ResolveRunJobRefs(ctx context.Context, kube client.Reader, desired *krm.Run
 			template.VPCAccess.ConnectorRef.External, err = template.VPCAccess.ConnectorRef.NormalizedExternal(ctx, kube, desired.GetNamespace())
 			if err != nil {
 				return err
+			}
+		}
+		for _, c := range template.Containers {
+			for _, env := range c.Env {
+				if env.ValueSource != nil && env.ValueSource.SecretKeyRef != nil {
+					sm := env.ValueSource.SecretKeyRef
+					// Different from the TF-based RunJob, which requires both secret and secret version to be specified,
+					// the KRM-based RunJob allows users to only specify the secret version, and the secret will be inferred.
+					if sm.SecretRef != nil {
+						sm.SecretRef.External, err = sm.SecretRef.NormalizedExternal(ctx, kube, desired.GetNamespace())
+						if err != nil {
+							return fmt.Errorf("missing required field `.spec.template.template.containers[].env[].valueSource.secretKeyRef.secretRef` when using the short version secretVersionRef: %w", err)
+						}
+					}
+					if sm.VersionRef != nil && sm.VersionRef.External == "" {
+						sm.VersionRef.External, err = sm.VersionRef.NormalizedExternal(ctx, kube, desired.GetNamespace())
+						if err != nil {
+							return err
+						}
+						fullSecretVersionExternal := sm.VersionRef.External
+
+						// GCP server has special requirements for SecretManager.
+						// 1. SecretManager must be specified
+						// 2. SecertVersion must be in the short version.
+						if sm.SecretRef == nil {
+							sm.SecretRef = &secretmanagerv1beta1.SecretRef{
+								External: strings.Split(fullSecretVersionExternal, "/versions")[0],
+							}
+						}
+						sm.VersionRef.External = strings.Split(sm.VersionRef.External, "versions/")[1]
+					}
+				}
 			}
 		}
 		for _, v := range template.Volumes {

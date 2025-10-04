@@ -73,8 +73,12 @@ func (r *SecretVersionRef) NormalizedExternal(ctx context.Context, reader client
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	if err != nil || actualExternalRef == "" {
+		// Backward compatible to Terraform/DCL based resource, which does not have status.externalRef.
+		actualExternalRef, _, err = unstructured.NestedString(u.Object, "status", "name")
+		if err != nil {
+			return "", err
+		}
 	}
 	if actualExternalRef == "" {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
