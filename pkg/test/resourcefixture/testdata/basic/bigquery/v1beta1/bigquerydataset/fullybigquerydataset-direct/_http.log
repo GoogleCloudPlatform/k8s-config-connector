@@ -554,14 +554,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     },
     {
       "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
       "userByEmail": "user@google.com"
     }
   ],
-  "defaultCollation": "und:ci",
   "defaultEncryptionConfiguration": {
     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
@@ -570,12 +565,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "description": "Fully Configured BigQuery Dataset updated",
   "friendlyName": "bigquerydataset-fullyconfigured-updated",
   "isCaseInsensitive": false,
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "maxTimeTravelHours": "96",
-  "storageBillingModel": "LOGICAL"
+  "maxTimeTravelHours": "96"
 }
 
 200 OK
@@ -593,10 +583,6 @@ X-Xss-Protection: 0
     {
       "domain": "google.com",
       "role": "READER"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",
@@ -664,10 +650,6 @@ X-Xss-Protection: 0
     },
     {
       "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
       "userByEmail": "user@google.com"
     }
   ],
@@ -720,10 +702,6 @@ X-Xss-Protection: 0
     {
       "domain": "google.com",
       "role": "READER"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",

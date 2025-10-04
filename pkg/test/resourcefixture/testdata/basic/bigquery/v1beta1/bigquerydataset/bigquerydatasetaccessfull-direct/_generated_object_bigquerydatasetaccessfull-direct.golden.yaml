@@ -1,15 +1,14 @@
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryDataset
 metadata:
-  annotations:
-    alpha.cnrm.cloud.google.com/reconciler: direct
-    cnrm.cloud.google.com/management-conflict-prevention-policy: none
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
   generation: 3
   labels:
+    app.kubernetes.io/managed-by: kcc
     cnrm-test: "true"
+    configsync.gke.io/declared-version: v1beta1
   name: bigquerydatasetaccessfull${uniqueId}
   namespace: ${uniqueId}
 spec:
@@ -22,6 +21,8 @@ spec:
       - VIEWS
   - domain: google.com
     role: READER
+  - groupByEmail: kcc-eng@google.com
+    role: READER
   - role: OWNER
     specialGroup: projectOwners
   - routine:
@@ -33,7 +34,7 @@ spec:
       projectId: ${projectId}
       tableId: bigquerytablesample${uniqueId}
   defaultTableExpirationMs: 3600000
-  description: BigQuery Dataset With Full Access Block
+  description: BigQuery Dataset With Full Access Block Updated
   friendlyName: bigquerydataset-fullaccessblock
   location: us-central1
   projectRef:

@@ -20,7 +20,7 @@ spec:
   friendlyName: bigquerydataset-fullyconfigured
   isCaseInsensitive: true
   location: US
-  maxTimeTravelHours: "72"
+  maxTimeTravelHours: "168"
   projectRef:
     external: ${projectId}
   resourceID: bigquerydataset${uniqueId}

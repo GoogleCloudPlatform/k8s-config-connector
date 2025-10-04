@@ -147,6 +147,64 @@ X-Xss-Protection: 0
 
 ---
 
+PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "friendlyName": "bigquerydataset-sample-updated"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydatasetsample${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "etag": "abcdef0123A=",
+  "friendlyName": "bigquerydataset-sample-updated",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "US",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -186,7 +244,7 @@ X-Xss-Protection: 0
     "projectId": "${projectId}"
   },
   "etag": "abcdef0123A=",
-  "friendlyName": "bigquerydataset-sample",
+  "friendlyName": "bigquerydataset-sample-updated",
   "id": "000000000000000000000",
   "kind": "bigquery#dataset",
   "labels": {
@@ -240,7 +298,7 @@ X-Xss-Protection: 0
     "projectId": "${projectId}"
   },
   "etag": "abcdef0123A=",
-  "friendlyName": "bigquerydataset-sample",
+  "friendlyName": "bigquerydataset-sample-updated",
   "id": "000000000000000000000",
   "kind": "bigquery#dataset",
   "labels": {

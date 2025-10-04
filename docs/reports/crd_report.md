@@ -58,7 +58,7 @@
 | bigquerydatapolicy.cnrm.cloud.google.com      | BigQueryDataPolicy                              | True         | False       | False  | Direct     |
 | bigquerydatapolicy.cnrm.cloud.google.com      | BigQueryDataPolicyDataPolicy                    | True         | False       | False  | Terraform  |
 | bigquery.cnrm.cloud.google.com                | BigQueryDatasetAccess                           | True         | False       | False  | Terraform  |
-| bigquery.cnrm.cloud.google.com                | BigQueryDataset                                 | False        | True        | False  | Terraform  |
+| bigquery.cnrm.cloud.google.com                | BigQueryDataset                                 | False        | True        | False  | Direct     |
 | bigquerydatatransfer.cnrm.cloud.google.com    | BigQueryDataTransferConfig                      | True         | True        | False  | Direct     |
 | bigquery.cnrm.cloud.google.com                | BigQueryJob                                     | False        | True        | False  | Terraform  |
 | bigqueryreservation.cnrm.cloud.google.com     | BigQueryReservationAssignment                   | True         | True        | False  | Direct     |

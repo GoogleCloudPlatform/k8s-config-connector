@@ -186,39 +186,48 @@ func BigQueryDataset_ToMetadataToUpdate(mapCtx *direct.MapContext, in *pb.Datase
 		return nil
 	}
 	out := &pb.DatasetMetadataToUpdate{}
-	acccessList := []*pb.AccessEntry{}
-	for _, access := range in.Access {
-		acccessList = append(acccessList, access)
+	if slices.Contains(updatePaths, "access") {
+		acccessList := []*pb.AccessEntry{}
+		for _, access := range in.Access {
+			acccessList = append(acccessList, access)
+		}
+		out.Access = acccessList
 	}
-	out.Access = acccessList
 	if in.DefaultEncryptionConfig != nil {
 		out.DefaultEncryptionConfig = &pb.EncryptionConfig{
 			KMSKeyName: in.DefaultEncryptionConfig.KMSKeyName,
 		}
 	}
-	// if the value to explicitly set to empty in the update request, we set the value.
+	// if the value is explicitly set to empty in the update request, we set the value.
 	// Otherwise, we drop the value.
-	if in.DefaultCollation != "" || slices.Contains(updatePaths, "default_collation") {
+	if slices.Contains(updatePaths, "default_collation") {
 		out.DefaultCollation = in.DefaultCollation
 	}
-	if in.DefaultPartitionExpiration != 0 || slices.Contains(updatePaths, "default_partition_expiration") {
+	if slices.Contains(updatePaths, "default_partition_expiration") {
 		out.DefaultPartitionExpiration = in.DefaultPartitionExpiration
 	}
-	if in.DefaultTableExpiration != 0 || slices.Contains(updatePaths, "default_table_expiration") {
+	if slices.Contains(updatePaths, "default_table_expiration") {
 		out.DefaultTableExpiration = in.DefaultTableExpiration
 	}
-	if in.Description != "" || slices.Contains(updatePaths, "description") {
+	if slices.Contains(updatePaths, "description") {
 		out.Description = in.Description
 	}
-	if in.MaxTimeTravel != 0 || slices.Contains(updatePaths, "max_time_travel") {
+	if slices.Contains(updatePaths, "max_time_travel") {
 		out.MaxTimeTravel = in.MaxTimeTravel
 	}
-	out.IsCaseInsensitive = in.IsCaseInsensitive
-	if in.Name != "" || slices.Contains(updatePaths, "friendly_name") {
+	if slices.Contains(updatePaths, "is_case_insensitive") {
+		out.IsCaseInsensitive = in.IsCaseInsensitive
+	}
+	if slices.Contains(updatePaths, "friendly_name") {
 		out.Name = in.Name
 	}
-	if in.StorageBillingModel != "" || slices.Contains(updatePaths, "storage_billing_model") {
+	if slices.Contains(updatePaths, "storage_billing_model") {
 		out.StorageBillingModel = in.StorageBillingModel
+	}
+	if slices.Contains(updatePaths, "labels") {
+		for k, v := range in.Labels {
+			out.SetLabel(k, v)
+		}
 	}
 	return out
 }
