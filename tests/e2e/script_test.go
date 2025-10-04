@@ -294,6 +294,10 @@ func TestE2EScript(t *testing.T) {
 
 					case "ABANDON":
 						setAnnotation(h, obj, "cnrm.cloud.google.com/deletion-policy", "abandon")
+						// Pause to allow reconciliation to start. This is to fix a race
+						// condition where the object is deleted before the controller can
+						// act on it, which can lead to flaky tests.
+						time.Sleep(2 * time.Second)
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}})
 						// continue to export the resource
 						shouldGetKubeObject = false

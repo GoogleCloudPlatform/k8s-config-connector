@@ -38,10 +38,47 @@ import (
 )
 
 const (
-	ctrlName                            = "sqlinstance-controller"
-	unmanageEditionAnnotationValue      = "spec.settings.edition"
-	unmanageInstanceTypeAnnotationValue = "spec.instanceType"
+	ctrlName = "sqlinstance-controller"
 )
+
+// StatefulField encapsulates the state and logic for a field that can be unmanaged.
+type StatefulField struct {
+	// isUnmanaged tracks if the user has marked this field as unmanaged for a specific resource instance.
+	isUnmanaged bool
+
+	// paths holds the structured path to the field, e.g., ["spec", "settings", "edition"].
+	paths []string
+
+	// preserveActualValue contains the specific logic to copy this field's value
+	// from the live GCP resource (`actual`) to the outgoing API request payload (`out`).
+	preserveActualValue func(out *api.DatabaseInstance, actual *api.DatabaseInstance)
+}
+
+// Path returns the full, dot-separated path for the field.
+func (f *StatefulField) Path() string {
+	return strings.Join(f.paths, ".")
+}
+
+// supportedUnmanageableFields is the complete definition for all supported unmanageable fields.
+var supportedUnmanageableFields = []*StatefulField{
+	{
+		paths: []string{"spec", "settings", "edition"},
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				out.Settings.Edition = actual.Settings.Edition
+			}
+		},
+	},
+	{
+		paths: []string{"spec", "instanceType"},
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			out.InstanceType = actual.InstanceType
+		},
+	},
+}
 
 func init() {
 	registry.RegisterModel(krm.SQLInstanceGVK, newSQLInstanceModel)
@@ -67,7 +104,7 @@ type sqlInstanceAdapter struct {
 	sqlOperationsClient *api.OperationsService
 	sqlInstancesClient  *api.InstancesService
 	sqlUsersClient      *api.UsersService
-	unmanagedFields     []string
+	statefulFields      map[string]*StatefulField
 }
 
 var _ directbase.Adapter = &sqlInstanceAdapter{}
@@ -105,17 +142,35 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, kube client.Rea
 		sqlOperationsClient: gcpClient.sqlOperationsClient(),
 		sqlInstancesClient:  gcpClient.sqlInstancesClient(),
 		sqlUsersClient:      gcpClient.sqlUsersClient(),
+		statefulFields:      make(map[string]*StatefulField),
+	}
+
+	// Populate the map with all supported fields, initially marked as not unmanaged.
+	for _, f := range supportedUnmanageableFields {
+		fieldCopy := &StatefulField{
+			isUnmanaged:         false, // default
+			paths:               f.paths,
+			preserveActualValue: f.preserveActualValue,
+		}
+		adapter.statefulFields[fieldCopy.Path()] = fieldCopy
 	}
 
 	unmanaged, ok := obj.GetAnnotations()["cnrm.cloud.google.com/unmanaged"]
 	if ok && unmanaged != "" {
-		unmanagedFields := strings.Split(unmanaged, ",")
-		for _, field := range unmanagedFields {
-			if field != unmanageEditionAnnotationValue && field != unmanageInstanceTypeAnnotationValue {
-				return nil, fmt.Errorf("unmanaging field `%s` is not supported, supported fields are: %s", field, []string{unmanageEditionAnnotationValue, unmanageInstanceTypeAnnotationValue})
+		unmanagedFieldsList := strings.Split(unmanaged, ",")
+		for _, fieldPath := range unmanagedFieldsList {
+			field, supported := adapter.statefulFields[fieldPath]
+			if !supported {
+				// Build the list of supported paths for the error message
+				var supportedPaths []string
+				for _, sf := range supportedUnmanageableFields {
+					supportedPaths = append(supportedPaths, sf.Path())
+				}
+				return nil, fmt.Errorf("unmanaging field `%s` is not supported, supported fields are: %v", fieldPath, supportedPaths)
 			}
+			// Mark the field as unmanaged for this resource instance
+			field.isUnmanaged = true
 		}
-		adapter.unmanagedFields = unmanagedFields
 	}
 	return adapter, nil
 }
@@ -224,7 +279,7 @@ func (a *sqlInstanceAdapter) cloneInstance(ctx context.Context, u *unstructured.
 }
 
 func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured.Unstructured, log klog.Logger) error {
-	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual, a.unmanagedFields)
+	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual, a.statefulFields)
 	if err != nil {
 		return err
 	}
@@ -278,14 +333,6 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating SQLInstance", "desired", a.desired)
 
-	isEditionUnmanaged := false
-	for _, field := range a.unmanagedFields {
-		if field == unmanageEditionAnnotationValue {
-			isEditionUnmanaged = true
-			break
-		}
-	}
-
 	// First, handle database version updates
 	if a.desired.Spec.DatabaseVersion != nil && *a.desired.Spec.DatabaseVersion != a.actual.DatabaseVersion {
 		newVersionDb := &api.DatabaseInstance{
@@ -317,7 +364,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	// Next, handle database edition updates
-	if !isEditionUnmanaged {
+	if !a.statefulFields["spec.settings.edition"].isUnmanaged {
 		desiredEdition := "ENTERPRISE" // Default value
 		if a.desired.Spec.Settings.Edition != nil {
 			desiredEdition = *a.desired.Spec.Settings.Edition
@@ -388,7 +435,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	// Finally, update rest of the fields
-	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual, a.unmanagedFields)
+	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual, a.statefulFields)
 	if err != nil {
 		return err
 	}
