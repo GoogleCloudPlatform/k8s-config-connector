@@ -72,7 +72,7 @@ require (
 	cloud.google.com/go/workstations v1.1.1
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0
-	github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder v0.0.0-20250915202832-88fd3f7499ff
+	github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder v0.0.0-20251004052708-51ec4da717f7
 	github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-20240614222432-4bde5b345380
 	github.com/appscode/jsonpatch v0.0.0-20190108182946-7c0e3b262f30
 	github.com/blang/semver v3.5.1+incompatible
