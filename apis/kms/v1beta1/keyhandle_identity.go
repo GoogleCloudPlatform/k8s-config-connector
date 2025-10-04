@@ -49,10 +49,6 @@ func (p *KMSKeyHandleParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-func asKMSKeyHandleExternal(parent *KMSKeyHandleParent, resourceID string) (external string) {
-	return parent.String() + "/keyHandles/" + resourceID
-}
-
 func NewKMSKeyHandleIdentity(ctx context.Context, reader client.Reader, obj *KMSKeyHandle) (*KMSKeyHandleIdentity, error) {
 	id := &KMSKeyHandleIdentity{}
 
