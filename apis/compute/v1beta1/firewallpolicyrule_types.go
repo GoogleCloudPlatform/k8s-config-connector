@@ -1,18 +1,16 @@
-/*
-Copyright 2024.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 package v1beta1
 
@@ -27,94 +25,100 @@ var (
 )
 
 // +kcc:proto=google.cloud.compute.v1.FirewallPolicyRuleMatcherLayer4Config
-type FirewallPolicyRuleLayer4Configs struct {
+type FirewallPolicyRuleMatcherLayer4Config struct {
 	/* The IP protocol to which this rule applies. The protocol type is required when creating a firewall rule. This value can either be one of the following well known protocol strings (`tcp`, `udp`, `icmp`, `esp`, `ah`, `ipip`, `sctp`), or the IP protocol number. */
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcherLayer4Config.ip_protocol
 	IPProtocol string `json:"ipProtocol"`
 
 	/* An optional list of ports to which this rule applies. This field is only applicable for UDP or TCP protocol. Each entry must be either an integer or a range. If not specified, this rule applies to connections through any port. Example inputs include: ``. */
-	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcherLayer4Config.ports
 	Ports []string `json:"ports,omitempty"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.FirewallPolicyRuleMatcher
-type FirewallPolicyRuleMatch struct {
+type FirewallPolicyRuleMatcher struct {
 	/* Address groups which should be matched against the traffic destination. Maximum number of destination address groups is 10. Destination address groups is only supported in Egress rules. */
-	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.dest_address_groups
 	DestAddressGroups []string `json:"destAddressGroups,omitempty"`
 
 	/* Domain names that will be used to match against the resolved domain name of destination of traffic. Can only be specified if DIRECTION is egress. */
-	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.dest_fqdns
 	DestFqdns []string `json:"destFqdns,omitempty"`
 
 	/* CIDR IP address range. Maximum number of destination CIDR IP ranges allowed is 256. */
-	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.dest_ip_ranges
 	DestIPRanges []string `json:"destIPRanges,omitempty"`
 
 	/* The Unicode country codes whose IP addresses will be used to match against the source of traffic. Can only be specified if DIRECTION is egress. */
-	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.dest_region_codes
 	DestRegionCodes []string `json:"destRegionCodes,omitempty"`
 
 	/* Name of the Google Cloud Threat Intelligence list. */
-	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.dest_threat_intelligences
 	DestThreatIntelligences []string `json:"destThreatIntelligences,omitempty"`
 
 	/* Pairs of IP protocols and ports that the rule should match. */
-	Layer4Configs []FirewallPolicyRuleLayer4Configs `json:"layer4Configs"`
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.layer4_configs
+	Layer4Configs []FirewallPolicyRuleMatcherLayer4Config `json:"layer4Configs"`
 
 	/* Address groups which should be matched against the traffic source. Maximum number of source address groups is 10. Source address groups is only supported in Ingress rules. */
-	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.src_address_groups
 	SrcAddressGroups []string `json:"srcAddressGroups,omitempty"`
 
 	/* Domain names that will be used to match against the resolved domain name of source of traffic. Can only be specified if DIRECTION is ingress. */
-	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.src_fqdns
 	SrcFqdns []string `json:"srcFqdns,omitempty"`
 
 	/* CIDR IP address range. Maximum number of source CIDR IP ranges allowed is 256. */
-	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.src_ip_ranges
 	SrcIPRanges []string `json:"srcIPRanges,omitempty"`
 
 	/* The Unicode country codes whose IP addresses will be used to match against the source of traffic. Can only be specified if DIRECTION is ingress. */
-	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.src_region_codes
 	SrcRegionCodes []string `json:"srcRegionCodes,omitempty"`
 
 	/* Name of the Google Cloud Threat Intelligence list. */
-	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleMatcher.src_threat_intelligences
 	SrcThreatIntelligences []string `json:"srcThreatIntelligences,omitempty"`
 }
 
 // +kcc:spec:proto=google.cloud.compute.v1.FirewallPolicyRule
 type ComputeFirewallPolicyRuleSpec struct {
 	/* The Action to perform when the client connection triggers the rule. Valid actions are "allow", "deny" and "goto_next". */
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.action
 	Action string `json:"action"`
 
 	/* An optional description for this resource. */
-	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.description
 	Description *string `json:"description,omitempty"`
 
 	/* The direction in which this rule applies. Possible values: INGRESS, EGRESS */
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.direction
 	Direction string `json:"direction"`
 
 	/* Denotes whether the firewall policy rule is disabled. When set to true, the firewall policy rule is not enforced and traffic behaves as if it did not exist. If this is unspecified, the firewall policy rule will be enabled. */
-	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.disabled
 	Disabled *bool `json:"disabled,omitempty"`
 
 	/* Denotes whether to enable logging for a particular rule. If logging is enabled, logs will be exported to the configured export destination in Stackdriver. Logs may be exported to BigQuery or Pub/Sub. Note: you cannot enable logging on "goto_next" rules. */
-	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.enable_logging
 	EnableLogging *bool `json:"enableLogging,omitempty"`
 
 	/* Immutable. */
 	FirewallPolicyRef *refs.ComputeFirewallPolicyRef `json:"firewallPolicyRef"`
 
 	/* A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding 'action' is enforced. */
-	Match *FirewallPolicyRuleMatch `json:"match"`
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.match
+	Match *FirewallPolicyRuleMatcher `json:"match"`
 
 	/* Immutable. An integer indicating the priority of a rule in the list. The priority must be a positive value between 0 and 2147483647. Rules are evaluated from highest to lowest priority where 0 is the highest priority and 2147483647 is the lowest prority. */
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.priority
 	Priority int64 `json:"priority"`
 
-	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.target_resources
 	TargetResources []*refs.ComputeNetworkRef `json:"targetResources,omitempty"`
 
-	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.target_service_accounts
 	TargetServiceAccounts []*refs.IAMServiceAccountRef `json:"targetServiceAccounts,omitempty"`
 }
 
@@ -122,11 +126,11 @@ type ComputeFirewallPolicyRuleSpec struct {
 type ComputeFirewallPolicyRuleStatus struct {
 	commonv1alpha1.CommonStatus `json:",inline"`
 	/* Type of the resource. Always `compute#firewallPolicyRule` for firewall policy rules */
-	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.kind
 	Kind *string `json:"kind,omitempty"`
 
 	/* Calculation of the complexity of a single firewall policy rule. */
-	// +optional
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.rule_tuple_count
 	RuleTupleCount *int64 `json:"ruleTupleCount,omitempty"`
 }
 
