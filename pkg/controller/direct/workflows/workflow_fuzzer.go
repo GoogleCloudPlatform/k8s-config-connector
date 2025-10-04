@@ -52,6 +52,7 @@ func fuzzWorkflowsWorkflow() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".all_kms_keys")
 	f.Unimplemented_NotYetTriaged(".all_kms_keys_versions")
 	f.Unimplemented_NotYetTriaged(".crypto_key_version")
+	f.Unimplemented_NotYetTriaged(".revision_id")
 	f.Unimplemented_NotYetTriaged(".execution_history_level")
 
 	return f
