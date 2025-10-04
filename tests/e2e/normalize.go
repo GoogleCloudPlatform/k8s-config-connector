@@ -73,6 +73,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.removePaths.Insert(".metadata.uid")
 
 	visitor.replacePaths[".metadata.deletionTimestamp"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.lastModifiedCookie"] = "normalized-cookie"
 	visitor.replacePaths[".status.creationTimestamp"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.conditions[].lastTransitionTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.uniqueId"] = "12345678"
