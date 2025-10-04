@@ -13,12 +13,6 @@
 // limitations under the License.
 package parent
 
-import (
-	"context"
-
-	"sigs.k8s.io/controller-runtime/pkg/client"
-)
-
 type Parent interface {
 	// The external format of the Parent.
 	String() string
@@ -26,12 +20,4 @@ type Parent interface {
 	// This ensures the parent remains unchanged.
 	// We currently don't enforce parent immutability using a webhook or CRD CEL due to legacy reasons.
 	MatchActual(Parent) error
-}
-
-// ParentBuilder builds a Parent object from a ParentRef.
-// - ParentRef is the Config Connector API reference for identifying a resource's logical parent.
-// - The Parent object provides helper functions for parent-related logic in direct reconciliation.
-type ParentBuilder interface {
-	// Parent API reference builds its corresponding Parent object.
-	Build(ctx context.Context, reader client.Reader, othernamespace string, parent Parent) error
 }

@@ -51,7 +51,8 @@ func (r *CatalogRef) NormalizedExternal(ctx context.Context, reader client.Reade
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseCatalogExternal(r.External); err != nil {
+		id := &CatalogIdentity{}
+		if err := id.FromExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil

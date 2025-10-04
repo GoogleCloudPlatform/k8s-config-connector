@@ -24,7 +24,7 @@ import (
 // LogBucketIdentity defines the resource reference to LoggingLogBucketIdentity, which "External" field
 // holds the GCP identifier for the KRM object.
 type LogBucketIdentity struct {
-	parent *parent.ProjectAndLocationParent
+	parent *parent.ProjectAndLocation
 	id     string
 }
 
@@ -36,12 +36,12 @@ func (i *LogBucketIdentity) ID() string {
 	return i.id
 }
 
-func (i *LogBucketIdentity) Parent() *parent.ProjectAndLocationParent { return i.parent }
+func (i *LogBucketIdentity) Parent() *parent.ProjectAndLocation { return i.parent }
 
 func ParseLogBucketExternal(external string) (*LogBucketIdentity, error) {
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "buckets" {
 		return nil, fmt.Errorf("format of LoggingLink external=%q was not known (use projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}})", external)
 	}
-	return &LogBucketIdentity{parent: &parent.ProjectAndLocationParent{ProjectID: tokens[1], Location: tokens[3]}, id: tokens[5]}, nil
+	return &LogBucketIdentity{parent: &parent.ProjectAndLocation{ProjectID: tokens[1], Location: tokens[3]}, id: tokens[5]}, nil
 }

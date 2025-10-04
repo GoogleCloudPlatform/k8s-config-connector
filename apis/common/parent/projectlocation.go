@@ -18,22 +18,39 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ Parent = &ProjectAndLocationParent{}
+var _ Parent = &ProjectAndLocation{}
+var _ identity.Identity = &ProjectAndLocation{}
 
-type ProjectAndLocationParent struct {
+type ProjectAndLocation struct {
 	ProjectID string
 	Location  string
 }
 
-func (p *ProjectAndLocationParent) String() string {
+func (p *ProjectAndLocation) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
-func (p *ProjectAndLocationParent) MatchActual(actualI Parent) error {
-	actual, ok := actualI.(*ProjectAndLocationParent)
+func (p *ProjectAndLocation) URL() string {
+	return "projects/{{projectId}}/locations/{{location}}"
+}
+
+func (p *ProjectAndLocation) FromExternal(ref string) error {
+	tokens := strings.Split(ref, "/")
+	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "locations" {
+		return fmt.Errorf("format of ProjectAndLocation external=%q was not known (use %s)", ref, ProjectAndLocationURL)
+	}
+	p.ProjectID = tokens[1]
+	p.Location = tokens[3]
+	return nil
+}
+
+func (p *ProjectAndLocation) MatchActual(actualI Parent) error {
+	actual, ok := actualI.(*ProjectAndLocation)
 	if !ok {
 		return fmt.Errorf("parent format changed, desired %T", p)
 	}
@@ -46,9 +63,9 @@ func (p *ProjectAndLocationParent) MatchActual(actualI Parent) error {
 	return nil
 }
 
-var _ ParentBuilder = &ProjectAndLocationRef{}
+var _ refsv1beta1.ExternalNormalizer = &ProjectAndLocationRef{}
 
-// ProjectAndLocationParent specifies the resource's GCP hierarchy (Project/Folder/Organization) and its geographical location.
+// ProjectAndLocation specifies the resource's GCP hierarchy (Project/Folder/Organization) and its geographical location.
 // +kubebuilder:object:generate:=true
 type ProjectAndLocationRef struct {
 	// +required
@@ -58,31 +75,6 @@ type ProjectAndLocationRef struct {
 	Location string `json:"location"`
 }
 
-func (p *ProjectAndLocationRef) Build(ctx context.Context, reader client.Reader, othernamespace string, parent Parent) error {
-	projectAndLocation, ok := parent.(*ProjectAndLocationParent)
-	if !ok {
-		return fmt.Errorf("build invalid parent, except %T", &ProjectAndLocationParent{})
-	}
-	project := new(ProjectParent)
-	if err := p.ProjectRef.Build(ctx, reader, othernamespace, project); err != nil {
-		return err
-	}
-	if project.ProjectID == "" {
-		return fmt.Errorf("cannot resolve project")
-	}
-	projectAndLocation.ProjectID = project.ProjectID
-	projectAndLocation.Location = p.Location
+func (p *ProjectAndLocationRef) NormalizedExternal(ctx context.Context, reader client.Reader, othernamespace string) (string, error) {
 	return nil
-}
-
-func ParseProjectAndLocationParent(external string) (*ProjectAndLocationParent, error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "locations" {
-		return nil, fmt.Errorf("format of ProjectAndLocation external=%q was not known (use projects/<projectId>/locations/<location>)", external)
-	}
-
-	return &ProjectAndLocationParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}, nil
 }

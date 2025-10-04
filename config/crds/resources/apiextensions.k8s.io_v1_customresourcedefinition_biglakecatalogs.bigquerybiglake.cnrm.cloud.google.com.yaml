@@ -60,10 +60,9 @@ spec:
             description: BigLakeCatalogSpec defines the desired state of BigLakeCatalog
             properties:
               location:
-                description: Required. The location of the application.
                 type: string
               projectRef:
-                description: Required. The host project of the application.
+                description: Project specifies the resource's GCP hierarchy (Project/Folder/Organization).
                 oneOf:
                 - not:
                     required:
@@ -83,10 +82,6 @@ spec:
                     description: The `projectID` field of a project, when not managed
                       by Config Connector.
                     type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
-                    type: string
                   name:
                     description: The `name` field of a `Project` resource.
                     type: string
@@ -98,6 +93,9 @@ spec:
                 description: The BigLakeCatalog name. If not given, the metadata.name
                   will be used.
                 type: string
+            required:
+            - location
+            - projectRef
             type: object
           status:
             description: BigLakeCatalogStatus defines the config connector machine

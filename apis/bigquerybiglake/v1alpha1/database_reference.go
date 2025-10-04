@@ -51,7 +51,8 @@ func (r *DatabaseRef) NormalizedExternal(ctx context.Context, reader client.Read
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseDatabaseExternal(r.External); err != nil {
+		id := &DatabaseIdentity{}
+		if err := id.FromExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
