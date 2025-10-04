@@ -1,0 +1,297 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-kompanion-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/global/backendServices/computebackendservice-kompanion-${uniqueId}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/global/backendServices/computebackendservice-kompanion-${uniqueId}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "backends": [
+    {
+      "balancingMode": "UTILIZATION",
+      "capacityScaler": 1,
+      "group": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/networkEndpointGroups/computebackendservice-dep2-${uniqueId}",
+      "maxUtilization": null
+    },
+    {
+      "balancingMode": "UTILIZATION",
+      "capacityScaler": 1,
+      "group": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/networkEndpointGroups/computebackendservice-dep1-${uniqueId}",
+      "maxUtilization": null
+    }
+  ],
+  "description": "Backend Service for computebackendservice-kompanion-${uniqueId}",
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "loadBalancingScheme": "INTERNAL_MANAGED",
+  "name": "computebackendservice-kompanion-${uniqueId}",
+  "outlierDetection": {
+    "consecutiveErrors": 5,
+    "consecutiveGatewayFailure": 5,
+    "enforcingConsecutiveErrors": 100,
+    "maxEjectionPercent": 50
+  },
+  "portName": "http",
+  "protocol": "HTTPS",
+  "sessionAffinity": "NONE",
+  "timeoutSec": 30
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-kompanion-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backends": [
+    {
+      "balancingMode": "UTILIZATION",
+      "capacityScaler": 1,
+      "group": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/networkEndpointGroups/computebackendservice-dep2-${uniqueId}"
+    },
+    {
+      "balancingMode": "UTILIZATION",
+      "capacityScaler": 1,
+      "group": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/networkEndpointGroups/computebackendservice-dep1-${uniqueId}"
+    }
+  ],
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Backend Service for computebackendservice-kompanion-${uniqueId}",
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#backendService",
+  "loadBalancingScheme": "INTERNAL_MANAGED",
+  "name": "computebackendservice-kompanion-${uniqueId}",
+  "outlierDetection": {
+    "consecutiveErrors": 5,
+    "consecutiveGatewayFailure": 5,
+    "enforcingConsecutiveErrors": 100,
+    "maxEjectionPercent": 50
+  },
+  "portName": "http",
+  "protocol": "HTTPS",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-kompanion-${uniqueId}",
+  "sessionAffinity": "NONE",
+  "timeoutSec": 30
+}
+
+---
+
+PUT https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-kompanion-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "backends": [
+    {
+      "balancingMode": "UTILIZATION",
+      "capacityScaler": 1,
+      "group": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/networkEndpointGroups/computebackendservice-dep2-${uniqueId}",
+      "maxUtilization": null
+    },
+    {
+      "balancingMode": "UTILIZATION",
+      "capacityScaler": 1,
+      "group": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/networkEndpointGroups/computebackendservice-dep1-${uniqueId}",
+      "maxUtilization": null
+    }
+  ],
+  "customRequestHeaders": [],
+  "customResponseHeaders": [],
+  "description": "Backend Service for computebackendservice-kompanion-${uniqueId}",
+  "healthChecks": [],
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "loadBalancingScheme": "INTERNAL_MANAGED",
+  "name": "computebackendservice-kompanion-${uniqueId}",
+  "outlierDetection": {
+    "consecutiveErrors": 5,
+    "consecutiveGatewayFailure": 5,
+    "enforcingConsecutiveErrors": 100,
+    "maxEjectionPercent": 50
+  },
+  "portName": "http",
+  "protocol": "HTTPS",
+  "sessionAffinity": "NONE",
+  "timeoutSec": 30
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-kompanion-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backends": [
+    {
+      "balancingMode": "UTILIZATION",
+      "capacityScaler": 1,
+      "group": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/networkEndpointGroups/computebackendservice-dep2-${uniqueId}"
+    },
+    {
+      "balancingMode": "UTILIZATION",
+      "capacityScaler": 1,
+      "group": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/networkEndpointGroups/computebackendservice-dep1-${uniqueId}"
+    },
+    {
+      "balancingMode": "UTILIZATION",
+      "capacityScaler": 1,
+      "group": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/networkEndpointGroups/computebackendservice-dep2-${uniqueId}"
+    },
+    {
+      "balancingMode": "UTILIZATION",
+      "capacityScaler": 1,
+      "group": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/networkEndpointGroups/computebackendservice-dep1-${uniqueId}"
+    }
+  ],
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Backend Service for computebackendservice-kompanion-${uniqueId}",
+  "iap": {
+    "enabled": false,
+    "oauth2ClientId": "",
+    "oauth2ClientSecret": ""
+  },
+  "id": "000000000000000000000",
+  "kind": "compute#backendService",
+  "loadBalancingScheme": "INTERNAL_MANAGED",
+  "name": "computebackendservice-kompanion-${uniqueId}",
+  "outlierDetection": {
+    "consecutiveErrors": 5,
+    "consecutiveGatewayFailure": 5,
+    "enforcingConsecutiveErrors": 100,
+    "maxEjectionPercent": 50
+  },
+  "portName": "http",
+  "protocol": "HTTPS",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-kompanion-${uniqueId}",
+  "sessionAffinity": "NONE",
+  "timeoutSec": 30
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-kompanion-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE"
+}
