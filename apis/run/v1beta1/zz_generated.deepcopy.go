@@ -20,6 +20,7 @@ package v1beta1
 
 import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vpcaccess/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -946,12 +947,12 @@ func (in *SecretKeySelector) DeepCopyInto(out *SecretKeySelector) {
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(refsv1beta1.SecretManagerSecretRef)
+		*out = new(secretmanagerv1beta1.SecretRef)
 		**out = **in
 	}
 	if in.VersionRef != nil {
 		in, out := &in.VersionRef, &out.VersionRef
-		*out = new(refsv1beta1.SecretManagerSecretVersionRef)
+		*out = new(secretmanagerv1beta1.SecretVersionRef)
 		**out = **in
 	}
 }
@@ -971,7 +972,7 @@ func (in *SecretVolumeSource) DeepCopyInto(out *SecretVolumeSource) {
 	*out = *in
 	if in.SecretRef != nil {
 		in, out := &in.SecretRef, &out.SecretRef
-		*out = new(refsv1beta1.SecretManagerSecretRef)
+		*out = new(secretmanagerv1beta1.SecretRef)
 		**out = **in
 	}
 	if in.Items != nil {
@@ -1149,7 +1150,7 @@ func (in *VersionToPath) DeepCopyInto(out *VersionToPath) {
 	}
 	if in.VersionRef != nil {
 		in, out := &in.VersionRef, &out.VersionRef
-		*out = new(refsv1beta1.SecretManagerSecretVersionRef)
+		*out = new(secretmanagerv1beta1.SecretVersionRef)
 		**out = **in
 	}
 	if in.Mode != nil {

@@ -234,16 +234,16 @@ spec:
                                               - external
                                             properties:
                                               external:
-                                                description: ' If provided must be
-                                                  in the format `projects/*/secrets/*`.'
+                                                description: A reference to an externally
+                                                  managed SecretManagerSecret resource.
+                                                  Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
                                                 type: string
                                               name:
-                                                description: The `name` field of a
-                                                  `SecretManagerSecret` resource.
+                                                description: The name of a SecretManagerSecret
+                                                  resource.
                                                 type: string
                                               namespace:
-                                                description: The `metadata.namespace`
-                                                  field of a `SecretManagerSecret`
+                                                description: The namespace of a SecretManagerSecret
                                                   resource.
                                                 type: string
                                             type: object
@@ -268,16 +268,17 @@ spec:
                                               - external
                                             properties:
                                               external:
-                                                description: ' If provided must be
-                                                  in the format `projects/*/secrets/*/versions/*`.'
+                                                description: A reference to an externally
+                                                  managed SecretManagerSecretVersion
+                                                  resource. Should be in the format
+                                                  "projects/{{projectID}}/locations/{{location}}/secretversions/{{secretversionID}}".
                                                 type: string
                                               name:
-                                                description: The `name` field of a
-                                                  `SecretManagerSecretVersion` resource.
+                                                description: The name of a SecretManagerSecretVersion
+                                                  resource.
                                                 type: string
                                               namespace:
-                                                description: The `metadata.namespace`
-                                                  field of a `SecretManagerSecretVersion`
+                                                description: The namespace of a SecretManagerSecretVersion
                                                   resource.
                                                 type: string
                                             type: object
@@ -737,16 +738,16 @@ spec:
                                           - external
                                         properties:
                                           external:
-                                            description: ' If provided must be in
-                                              the format `projects/*/secrets/*/versions/*`.'
+                                            description: A reference to an externally
+                                              managed SecretManagerSecretVersion resource.
+                                              Should be in the format "projects/{{projectID}}/locations/{{location}}/secretversions/{{secretversionID}}".
                                             type: string
                                           name:
-                                            description: The `name` field of a `SecretManagerSecretVersion`
+                                            description: The name of a SecretManagerSecretVersion
                                               resource.
                                             type: string
                                           namespace:
-                                            description: The `metadata.namespace`
-                                              field of a `SecretManagerSecretVersion`
+                                            description: The namespace of a SecretManagerSecretVersion
                                               resource.
                                             type: string
                                         type: object
@@ -773,16 +774,17 @@ spec:
                                     - external
                                   properties:
                                     external:
-                                      description: ' If provided must be in the format
-                                        `projects/*/secrets/*`.'
+                                      description: A reference to an externally managed
+                                        SecretManagerSecret resource. Should be in
+                                        the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
                                       type: string
                                     name:
-                                      description: The `name` field of a `SecretManagerSecret`
+                                      description: The name of a SecretManagerSecret
                                         resource.
                                       type: string
                                     namespace:
-                                      description: The `metadata.namespace` field
-                                        of a `SecretManagerSecret` resource.
+                                      description: The namespace of a SecretManagerSecret
+                                        resource.
                                       type: string
                                   type: object
                               type: object
