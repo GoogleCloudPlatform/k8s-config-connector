@@ -127,7 +127,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}?alt=json&prettyPrint=false
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-prefix-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
@@ -143,23 +143,26 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}' was not found",
+    "message": "Resource 'projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-prefix-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges?alt=json&internalRangeId=networkconnectivityinternalrange-minimal-${uniqueId}&prettyPrint=false
+POST https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges?alt=json&internalRangeId=networkconnectivityinternalrange-full-prefix-${uniqueId}&prettyPrint=false
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "description": "Initial description",
+  "description": "Full test of all API fields with prefixLength",
   "network": "projects/${projectId}/global/networks/${networkID}",
-  "peering": "FOR_SELF",
-  "prefixLength": 28,
-  "usage": "FOR_VPC"
+  "peering": "FOR_PEER",
+  "prefixLength": 26,
+  "targetCidrRange": [
+    "10.0.0.0/16"
+  ],
+  "usage": "EXTERNAL_TO_VPC"
 }
 
 200 OK
@@ -179,7 +182,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-prefix-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}"
@@ -208,27 +211,30 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-prefix-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.InternalRange",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "Initial description",
-    "ipCidrRange": "10.150.243.32/28",
-    "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}",
+    "description": "Full test of all API fields with prefixLength",
+    "ipCidrRange": "10.0.3.128/26",
+    "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-prefix-${uniqueId}",
     "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-    "peering": "FOR_SELF",
-    "prefixLength": 28,
+    "peering": "FOR_PEER",
+    "prefixLength": 26,
+    "targetCidrRange": [
+      "10.0.0.0/16"
+    ],
     "updateTime": "2024-04-01T12:34:56.123456Z",
-    "usage": "FOR_VPC"
+    "usage": "EXTERNAL_TO_VPC"
   }
 }
 
 ---
 
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}?alt=json&prettyPrint=false
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-prefix-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -243,29 +249,35 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Initial description",
-  "ipCidrRange": "10.150.243.32/28",
-  "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}",
+  "description": "Full test of all API fields with prefixLength",
+  "ipCidrRange": "10.0.3.128/26",
+  "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-prefix-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "peering": "FOR_SELF",
-  "prefixLength": 28,
+  "peering": "FOR_PEER",
+  "prefixLength": 26,
+  "targetCidrRange": [
+    "10.0.0.0/16"
+  ],
   "updateTime": "2024-04-01T12:34:56.123456Z",
-  "usage": "FOR_VPC"
+  "usage": "EXTERNAL_TO_VPC"
 }
 
 ---
 
-PATCH https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}?alt=json&prettyPrint=false&updateMask=description%2CprefixLength
+PATCH https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-prefix-${uniqueId}?alt=json&prettyPrint=false&updateMask=description%2CprefixLength
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "description": "Updated description",
-  "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}",
+  "description": "Full test of all API fields with prefixLength - updated",
+  "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-prefix-${uniqueId}",
   "network": "projects/${projectId}/global/networks/${networkID}",
-  "peering": "FOR_SELF",
+  "peering": "FOR_PEER",
   "prefixLength": 24,
-  "usage": "FOR_VPC"
+  "targetCidrRange": [
+    "10.0.0.0/16"
+  ],
+  "usage": "EXTERNAL_TO_VPC"
 }
 
 200 OK
@@ -285,7 +297,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-prefix-${uniqueId}",
     "verb": "update"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}"
@@ -314,27 +326,30 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-prefix-${uniqueId}",
     "verb": "update"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.InternalRange",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "Updated description",
-    "ipCidrRange": "10.150.243.0/24",
-    "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}",
+    "description": "Full test of all API fields with prefixLength - updated",
+    "ipCidrRange": "10.0.3.0/24",
+    "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-prefix-${uniqueId}",
     "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-    "peering": "FOR_SELF",
+    "peering": "FOR_PEER",
     "prefixLength": 24,
+    "targetCidrRange": [
+      "10.0.0.0/16"
+    ],
     "updateTime": "2024-04-01T12:34:56.123456Z",
-    "usage": "FOR_VPC"
+    "usage": "EXTERNAL_TO_VPC"
   }
 }
 
 ---
 
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}?alt=json&prettyPrint=false
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-prefix-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -349,19 +364,22 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated description",
-  "ipCidrRange": "10.150.243.0/24",
-  "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}",
+  "description": "Full test of all API fields with prefixLength - updated",
+  "ipCidrRange": "10.0.3.0/24",
+  "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-prefix-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "peering": "FOR_SELF",
+  "peering": "FOR_PEER",
   "prefixLength": 24,
+  "targetCidrRange": [
+    "10.0.0.0/16"
+  ],
   "updateTime": "2024-04-01T12:34:56.123456Z",
-  "usage": "FOR_VPC"
+  "usage": "EXTERNAL_TO_VPC"
 }
 
 ---
 
-DELETE https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}?alt=json&prettyPrint=false
+DELETE https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-prefix-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -381,7 +399,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-prefix-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}"
@@ -410,7 +428,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "requestedCancellation": false,
-    "target": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-prefix-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}",

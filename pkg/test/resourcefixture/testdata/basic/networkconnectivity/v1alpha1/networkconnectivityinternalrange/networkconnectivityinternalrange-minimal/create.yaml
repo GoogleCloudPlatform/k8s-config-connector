@@ -24,3 +24,5 @@ spec:
   location: global
   prefixLength: 28
   description: "Initial description"
+  usage: "FOR_VPC"
+  peering: "FOR_SELF"
