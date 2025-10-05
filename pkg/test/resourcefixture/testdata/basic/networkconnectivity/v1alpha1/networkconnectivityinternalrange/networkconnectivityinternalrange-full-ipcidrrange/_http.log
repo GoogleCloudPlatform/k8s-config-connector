@@ -117,10 +117,6 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
@@ -176,12 +172,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-ipcidrrange-${uniqueId}",
     "verb": "create"
   },
@@ -210,7 +204,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-ipcidrrange-${uniqueId}",
     "verb": "create"
   },
@@ -221,7 +214,7 @@ X-Xss-Protection: 0
     "description": "Full test of all API fields with ipCIDRRange",
     "ipCidrRange": "10.0.100.0/24",
     "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-ipcidrrange-${uniqueId}",
-    "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+    "network": "projects/${projectId}/global/networks/${networkID}",
     "peering": "FOR_PEER",
     "targetCidrRange": [
       "10.0.0.0/16"
@@ -251,7 +244,7 @@ X-Xss-Protection: 0
   "description": "Full test of all API fields with ipCIDRRange",
   "ipCidrRange": "10.0.100.0/24",
   "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-ipcidrrange-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "peering": "FOR_PEER",
   "targetCidrRange": [
     "10.0.0.0/16"
@@ -289,12 +282,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-ipcidrrange-${uniqueId}",
     "verb": "update"
   },
@@ -323,7 +314,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-ipcidrrange-${uniqueId}",
     "verb": "update"
   },
@@ -334,7 +324,7 @@ X-Xss-Protection: 0
     "description": "Full test of all API fields with ipCIDRRange - updated",
     "ipCidrRange": "10.0.100.0/24",
     "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-ipcidrrange-${uniqueId}",
-    "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+    "network": "projects/${projectId}/global/networks/${networkID}",
     "peering": "FOR_PEER",
     "targetCidrRange": [
       "10.0.0.0/16"
@@ -364,7 +354,7 @@ X-Xss-Protection: 0
   "description": "Full test of all API fields with ipCIDRRange - updated",
   "ipCidrRange": "10.0.100.0/24",
   "name": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-ipcidrrange-${uniqueId}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
   "peering": "FOR_PEER",
   "targetCidrRange": [
     "10.0.0.0/16"
@@ -389,12 +379,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-ipcidrrange-${uniqueId}",
     "verb": "delete"
   },
@@ -423,7 +411,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-full-ipcidrrange-${uniqueId}",
     "verb": "delete"
   },
@@ -456,10 +443,6 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
