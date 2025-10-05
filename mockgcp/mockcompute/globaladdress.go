@@ -16,6 +16,7 @@ package mockcompute
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"google.golang.org/grpc/codes"
@@ -73,6 +74,22 @@ func (s *GlobalAddressesV1) Insert(ctx context.Context, req *pb.InsertGlobalAddr
 	if obj.LabelFingerprint == nil {
 		obj.LabelFingerprint = PtrTo(computeFingerprint(obj))
 	}
+
+	network := obj.GetNetwork()
+	tokens := strings.Split(network, "/")
+	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "networks" {
+		network = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/%s", tokens[1], tokens[4])
+		obj.Network = PtrTo(network)
+	}
+
+	// Labels cannot be set on creation.
+	obj.Labels = nil
+
+	if obj.NetworkTier == nil {
+		obj.NetworkTier = PtrTo("PREMIUM")
+	}
+
+	obj.Status = PtrTo("RESERVED")
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -134,7 +151,18 @@ func (s *GlobalAddressesV1) SetLabels(ctx context.Context, req *pb.SetLabelsGlob
 		return nil, err
 	}
 
-	return s.newLRO(ctx, name.Project.ID)
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("setLabels"),
+		User:          PtrTo("user@example.com"),
+		Status:        PtrTo(pb.Operation_DONE),
+		EndTime:       PtrTo(s.nowString()),
+		Progress:      PtrTo(int32(100)),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
 }
 
 type globalAddressName struct {
