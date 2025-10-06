@@ -21,6 +21,7 @@ package tags
 
 import (
 	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -31,8 +32,6 @@ func TagBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TagBind
 	}
 	out := &krm.TagBindingObservedState{}
 	// MISSING: Name
-	// MISSING: Parent
-	// MISSING: TagValue
 	// MISSING: TagValueNamespacedName
 	return out
 }
@@ -42,8 +41,6 @@ func TagBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TagBindi
 	}
 	out := &pb.TagBinding{}
 	// MISSING: Name
-	// MISSING: Parent
-	// MISSING: TagValue
 	// MISSING: TagValueNamespacedName
 	return out
 }
@@ -53,8 +50,12 @@ func TagBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagBinding) *krm
 	}
 	out := &krm.TagBindingSpec{}
 	// MISSING: Name
-	// MISSING: Parent
-	// MISSING: TagValue
+	if in.GetParent() != "" {
+		out.ParentRef = &krm.ParentRef{External: in.GetParent()}
+	}
+	if in.GetTagValue() != "" {
+		out.TagValueRef = &refsv1beta1.TagValueRef{External: in.GetTagValue()}
+	}
 	// MISSING: TagValueNamespacedName
 	return out
 }
@@ -64,8 +65,12 @@ func TagBindingSpec_ToProto(mapCtx *direct.MapContext, in *krm.TagBindingSpec) *
 	}
 	out := &pb.TagBinding{}
 	// MISSING: Name
-	// MISSING: Parent
-	// MISSING: TagValue
+	if in.ParentRef != nil {
+		out.Parent = in.ParentRef.External
+	}
+	if in.TagValueRef != nil {
+		out.TagValue = in.TagValueRef.External
+	}
 	// MISSING: TagValueNamespacedName
 	return out
 }
