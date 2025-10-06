@@ -1,0 +1,128 @@
+POST https://firestore.googleapis.com/v1/projects/${projectId}/databases?alt=json&databaseId=test-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "cmekConfig": {},
+  "databaseEdition": "STANDARD",
+  "deleteProtectionState": "DELETE_PROTECTION_DISABLED",
+  "locationId": "us-central1",
+  "pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_ENABLEMENT_UNSPECIFIED",
+  "type": "FIRESTORE_NATIVE"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.CreateDatabaseMetadata"
+  },
+  "name": "projects/${projectId}/databases/test-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.Database",
+    "appEngineIntegrationMode": "DISABLED",
+    "concurrencyMode": "PESSIMISTIC",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseEdition": "STANDARD",
+    "deleteProtectionState": "DELETE_PROTECTION_DISABLED",
+    "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "freeTier": true,
+    "locationId": "us-central1",
+    "name": "projects/${projectId}/databases/test-${uniqueId}",
+    "pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_DISABLED",
+    "type": "FIRESTORE_NATIVE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "versionRetentionPeriod": "3600s"
+  }
+}
+
+---
+
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "appEngineIntegrationMode": "DISABLED",
+  "concurrencyMode": "PESSIMISTIC",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "databaseEdition": "STANDARD",
+  "deleteProtectionState": "DELETE_PROTECTION_DISABLED",
+  "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "freeTier": true,
+  "locationId": "us-central1",
+  "name": "projects/${projectId}/databases/test-${uniqueId}",
+  "pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_DISABLED",
+  "type": "FIRESTORE_NATIVE",
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "versionRetentionPeriod": "3600s"
+}
+
+---
+
+DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.DeleteDatabaseMetadata"
+  },
+  "name": "projects/${projectId}/databases/test-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.Database",
+    "appEngineIntegrationMode": "DISABLED",
+    "concurrencyMode": "PESSIMISTIC",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseEdition": "STANDARD",
+    "deleteProtectionState": "DELETE_PROTECTION_DISABLED",
+    "deleteTime": "2024-04-01T12:34:56.123456Z",
+    "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "freeTier": false,
+    "locationId": "us-central1",
+    "name": "projects/${projectId}/databases/${randomDatabaseID}",
+    "pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_DISABLED",
+    "previousId": "test-${uniqueId}",
+    "type": "FIRESTORE_NATIVE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "versionRetentionPeriod": "3600s"
+  }
+}
