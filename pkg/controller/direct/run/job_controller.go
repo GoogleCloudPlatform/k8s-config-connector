@@ -17,6 +17,7 @@ package run
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
@@ -92,7 +93,26 @@ func (m *modelJob) AdapterForObject(ctx context.Context, reader client.Reader, u
 }
 
 func (m *modelJob) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
+	log := klog.FromContext(ctx)
+	if s, ok := strings.CutPrefix(url, "//run.googleapis.com/"); ok {
+		// Direct controller for RunJob only handles v2.
+		s = strings.TrimPrefix(s, "v2/")
+
+		var id krm.JobIdentity
+		if err := id.FromExternal(s); err != nil {
+			log.V(2).Error(err, "url did not match RunJob format", "url", url)
+			return nil, nil
+		}
+
+		gcpClient, err := m.client(ctx)
+		if err != nil {
+			return nil, err
+		}
+		return &JobAdapter{
+			gcpClient: gcpClient,
+			id:        &id,
+		}, nil
+	}
 	return nil, nil
 }
 
@@ -114,7 +134,7 @@ func (a *JobAdapter) Find(ctx context.Context) (bool, error) {
 	log.V(2).Info("getting Job", "name", a.id)
 
 	req := &runpb.GetJobRequest{Name: a.id.String()}
-	jobpb, err := a.gcpClient.GetJob(ctx, req)
+	found, err := a.gcpClient.GetJob(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -122,7 +142,7 @@ func (a *JobAdapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting Job %q: %w", a.id, err)
 	}
 
-	a.actual = jobpb
+	a.actual = found
 	return true, nil
 }
 
@@ -149,7 +169,7 @@ func (a *JobAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("Job %s waiting creation: %w", a.id, err)
+		return fmt.Errorf("waiting for creation of job %q: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created Job", "name", a.id)
 
@@ -212,7 +232,6 @@ func (a *JobAdapter) Export(ctx context.Context) (*unstructured.Unstructured, er
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
-	u := &unstructured.Unstructured{}
 
 	obj := &krm.RunJob{}
 	mapCtx := &direct.MapContext{}
@@ -227,10 +246,10 @@ func (a *JobAdapter) Export(ctx context.Context) (*unstructured.Unstructured, er
 		return nil, err
 	}
 
+	u := &unstructured.Unstructured{Object: uObj}
 	u.SetName(a.id.ID())
 	u.SetGroupVersionKind(krm.RunJobGVK)
 
-	u.Object = uObj
 	return u, nil
 }
 
@@ -239,7 +258,8 @@ func (a *JobAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOper
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Job", "name", a.id)
 
-	req := &runpb.DeleteJobRequest{Name: a.id.String()}
+	name := a.id.String()
+	req := &runpb.DeleteJobRequest{Name: name}
 	op, err := a.gcpClient.DeleteJob(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -251,8 +271,7 @@ func (a *JobAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOper
 	}
 	log.V(2).Info("successfully deleted Job", "name", a.id)
 
-	_, err = op.Wait(ctx)
-	if err != nil {
+	if _, err = op.Wait(ctx); err != nil {
 		return false, fmt.Errorf("waiting delete Job %s: %w", a.id, err)
 	}
 	return true, nil
