@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // +tool:fuzz-gen
-// proto.message: google.cloud.documentai.v1.ProcessorVersion
+// proto.message: google.cloud.documentai.v1.Processor
 // api.group: documentai.cnrm.cloud.google.com
 
 package documentai
@@ -24,30 +24,28 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(DocumentAIProcessorVersionFuzzer())
+	fuzztesting.RegisterKRMFuzzer(DocumentAIProcessorFuzzer())
 }
 
-func DocumentAIProcessorVersionFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&pb.ProcessorVersion{},
-		DocumentAIProcessorVersionSpec_v1alpha1_FromProto, DocumentAIProcessorVersionSpec_v1alpha1_ToProto,
-		DocumentAIProcessorVersionObservedState_v1alpha1_FromProto, DocumentAIProcessorVersionObservedState_v1alpha1_ToProto,
+func DocumentAIProcessorFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.Processor{},
+		DocumentAIProcessorSpec_v1alpha1_FromProto, DocumentAIProcessorSpec_v1alpha1_ToProto,
+		DocumentAIProcessorObservedState_v1alpha1_FromProto, DocumentAIProcessorObservedState_v1alpha1_ToProto,
 	)
 	f.UnimplementedFields.Insert(".name")
 
+	f.SpecFields.Insert(".type")
 	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".kms_key_name")
-	f.SpecFields.Insert(".kms_key_version_name")
-	f.SpecFields.Insert(".deprecation_info")
 
-	f.StatusFields.Insert(".document_schema")
 	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".latest_evaluation")
 	f.StatusFields.Insert(".state")
-	f.StatusFields.Insert(".google_managed")
-	f.StatusFields.Insert(".model_type")
-	f.StatusFields.Insert(".satisfies_pzs")
-	f.StatusFields.Insert(".satisfies_pzi")
-	f.StatusFields.Insert(".gen_ai_model_info")
+	f.StatusFields.Insert(".processor_version_aliases")
+	f.StatusFields.Insert(".process_endpoint")
+	f.StatusFields.Insert(".default_processor_version")
+
+	f.UnimplementedFields.Insert(".kms_key_name")
+	f.UnimplementedFields.Insert(".satisfies_pzi")
+	f.UnimplementedFields.Insert(".satisfies_pzs")
 
 	return f
 }

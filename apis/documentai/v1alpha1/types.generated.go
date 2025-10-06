@@ -12,6 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: documentai.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.documentai.v1
+// resource: DocumentAIProcessor:Processor
+// resource: DocumentAIProcessorVersion:ProcessorVersion
+
 package v1alpha1
 
 // +kcc:proto=google.cloud.documentai.v1.DocumentSchema
@@ -63,11 +70,6 @@ type DocumentSchema_EntityType struct {
 	// +kcc:proto:field=google.cloud.documentai.v1.DocumentSchema.EntityType.name
 	Name *string `json:"name,omitempty"`
 
-	// The description of the entity type. Could be used to provide more
-	//  information about the entity type for model calls.
-	// +kcc:proto:field=google.cloud.documentai.v1.DocumentSchema.EntityType.description
-	Description *string `json:"description,omitempty"`
-
 	// The entity type that this type is derived from.  For now, one and only
 	//  one should be set.
 	// +kcc:proto:field=google.cloud.documentai.v1.DocumentSchema.EntityType.base_types
@@ -76,10 +78,6 @@ type DocumentSchema_EntityType struct {
 	// Description the nested structure, or composition of an entity.
 	// +kcc:proto:field=google.cloud.documentai.v1.DocumentSchema.EntityType.properties
 	Properties []DocumentSchema_EntityType_Property `json:"properties,omitempty"`
-
-	// Metadata for the entity type.
-	// +kcc:proto:field=google.cloud.documentai.v1.DocumentSchema.EntityType.entity_type_metadata
-	EntityTypeMetadata *EntityTypeMetadata `json:"entityTypeMetadata,omitempty"`
 }
 
 // +kcc:proto=google.cloud.documentai.v1.DocumentSchema.EntityType.EnumValues
@@ -96,11 +94,6 @@ type DocumentSchema_EntityType_Property struct {
 	// +kcc:proto:field=google.cloud.documentai.v1.DocumentSchema.EntityType.Property.name
 	Name *string `json:"name,omitempty"`
 
-	// The description of the property. Could be used to provide more
-	//  information about the property for model calls.
-	// +kcc:proto:field=google.cloud.documentai.v1.DocumentSchema.EntityType.Property.description
-	Description *string `json:"description,omitempty"`
-
 	// User defined name for the property.
 	// +kcc:proto:field=google.cloud.documentai.v1.DocumentSchema.EntityType.Property.display_name
 	DisplayName *string `json:"displayName,omitempty"`
@@ -115,9 +108,9 @@ type DocumentSchema_EntityType_Property struct {
 	// +kcc:proto:field=google.cloud.documentai.v1.DocumentSchema.EntityType.Property.occurrence_type
 	OccurrenceType *string `json:"occurrenceType,omitempty"`
 
-	// Any additional metadata about the property can be added here.
-	// +kcc:proto:field=google.cloud.documentai.v1.DocumentSchema.EntityType.Property.property_metadata
-	PropertyMetadata *PropertyMetadata `json:"propertyMetadata,omitempty"`
+	// Specifies how the entity's value is obtained.
+	// +kcc:proto:field=google.cloud.documentai.v1.DocumentSchema.EntityType.Property.method
+	Method *string `json:"method,omitempty"`
 }
 
 // +kcc:proto=google.cloud.documentai.v1.DocumentSchema.Metadata
@@ -142,13 +135,6 @@ type DocumentSchema_Metadata struct {
 	//  `DocumentSchema.EntityType.Property.name` will not be checked.
 	// +kcc:proto:field=google.cloud.documentai.v1.DocumentSchema.Metadata.skip_naming_validation
 	SkipNamingValidation *bool `json:"skipNamingValidation,omitempty"`
-}
-
-// +kcc:proto=google.cloud.documentai.v1.EntityTypeMetadata
-type EntityTypeMetadata struct {
-	// Whether the entity type should be considered inactive.
-	// +kcc:proto:field=google.cloud.documentai.v1.EntityTypeMetadata.inactive
-	Inactive *bool `json:"inactive,omitempty"`
 }
 
 // +kcc:proto=google.cloud.documentai.v1.Evaluation.Metrics
@@ -217,13 +203,6 @@ type EvaluationReference struct {
 	AggregateMetricsExact *Evaluation_Metrics `json:"aggregateMetricsExact,omitempty"`
 }
 
-// +kcc:proto=google.cloud.documentai.v1.FieldExtractionMetadata
-type FieldExtractionMetadata struct {
-	// Summary options config.
-	// +kcc:proto:field=google.cloud.documentai.v1.FieldExtractionMetadata.summary_options
-	SummaryOptions *SummaryOptions `json:"summaryOptions,omitempty"`
-}
-
 // +kcc:proto=google.cloud.documentai.v1.ProcessorVersion.DeprecationInfo
 type ProcessorVersion_DeprecationInfo struct {
 	// The time at which this processor version will be deprecated.
@@ -278,26 +257,4 @@ type ProcessorVersionAlias struct {
 	// The resource name of aliased processor version.
 	// +kcc:proto:field=google.cloud.documentai.v1.ProcessorVersionAlias.processor_version
 	ProcessorVersion *string `json:"processorVersion,omitempty"`
-}
-
-// +kcc:proto=google.cloud.documentai.v1.PropertyMetadata
-type PropertyMetadata struct {
-	// Whether the property should be considered as "inactive".
-	// +kcc:proto:field=google.cloud.documentai.v1.PropertyMetadata.inactive
-	Inactive *bool `json:"inactive,omitempty"`
-
-	// Field extraction metadata on the property.
-	// +kcc:proto:field=google.cloud.documentai.v1.PropertyMetadata.field_extraction_metadata
-	FieldExtractionMetadata *FieldExtractionMetadata `json:"fieldExtractionMetadata,omitempty"`
-}
-
-// +kcc:proto=google.cloud.documentai.v1.SummaryOptions
-type SummaryOptions struct {
-	// How long the summary should be.
-	// +kcc:proto:field=google.cloud.documentai.v1.SummaryOptions.length
-	Length *string `json:"length,omitempty"`
-
-	// The format the summary should be in.
-	// +kcc:proto:field=google.cloud.documentai.v1.SummaryOptions.format
-	Format *string `json:"format,omitempty"`
 }
