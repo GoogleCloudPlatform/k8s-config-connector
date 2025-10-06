@@ -49,13 +49,14 @@ const (
 )
 
 type ResourceFixture struct {
-	GVK          schema.GroupVersionKind
-	Name         string
-	SourceDir    string
-	Create       []byte
-	Update       []byte
-	Dependencies []byte
-	Type         TestType
+	Name               string
+	SourceDir          string
+	GVK                schema.GroupVersionKind
+	Create             []byte
+	Update             []byte
+	Dependencies       []byte
+	DeleteDependencies []byte
+	Type               TestType
 }
 
 // Load loads all test cases found in the testdata directory. A
@@ -107,6 +108,7 @@ func LoadWithPathFilter(t *testing.T, pathFilter func(path string) bool, lightFi
 		if createFile, ok := testToFileName["create"]; ok {
 			updateFile := testToFileName["update"]
 			depFile := testToFileName["dependencies"]
+			deleteDepFile := testToFileName["delete_dependencies"]
 			name := filepath.Base(path)
 			testType := parseTestTypeFromPath(t, path)
 
@@ -116,7 +118,7 @@ func LoadWithPathFilter(t *testing.T, pathFilter func(path string) bool, lightFi
 			if lightFilterFunc != nil && !lightFilterFunc(name, testType) {
 				return nil
 			}
-			rf := loadResourceFixture(t, name, testType, path, createFile, updateFile, depFile)
+			rf := loadResourceFixture(t, name, testType, path, createFile, updateFile, depFile, deleteDepFile)
 			if heavyFilterFunc != nil && !heavyFilterFunc(rf) {
 				return nil
 			}
@@ -175,12 +177,13 @@ func LoadWithFilter(t *testing.T, lightFilterFunc LightFilter, heavyFilterFunc H
 		if createFile, ok := testToFileName["create"]; ok {
 			updateFile := testToFileName["update"]
 			depFile := testToFileName["dependencies"]
+			deleteDepFile := testToFileName["delete_dependencies"]
 			name := filepath.Base(path)
 			testType := parseTestTypeFromPath(t, path)
 			if lightFilterFunc != nil && !lightFilterFunc(name, testType) {
 				return nil
 			}
-			rf := loadResourceFixture(t, name, testType, path, createFile, updateFile, depFile)
+			rf := loadResourceFixture(t, name, testType, path, createFile, updateFile, depFile, deleteDepFile)
 			if heavyFilterFunc != nil && !heavyFilterFunc(rf) {
 				return nil
 			}
@@ -195,7 +198,7 @@ func LoadWithFilter(t *testing.T, lightFilterFunc LightFilter, heavyFilterFunc H
 	return allCases
 }
 
-func loadResourceFixture(t *testing.T, testName string, testType TestType, dir, createFile, updateFile, depFile string) ResourceFixture {
+func loadResourceFixture(t *testing.T, testName string, testType TestType, dir, createFile, updateFile, depFile, deleteDepFile string) ResourceFixture {
 	t.Helper()
 	createConfig := test.MustReadFile(t, path.Join(dir, createFile))
 	gvk, err := readGroupVersionKind(t, createConfig)
@@ -222,6 +225,9 @@ func loadResourceFixture(t *testing.T, testName string, testType TestType, dir, 
 	}
 	if depFile != "" {
 		rf.Dependencies = test.MustReadFile(t, path.Join(dir, depFile))
+	}
+	if deleteDepFile != "" {
+		rf.DeleteDependencies = test.MustReadFile(t, path.Join(dir, deleteDepFile))
 	}
 	return rf
 }

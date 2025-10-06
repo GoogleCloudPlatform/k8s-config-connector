@@ -23,7 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	api "google.golang.org/api/apigee/v1"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -52,6 +52,35 @@ func (m *modelApigeeEndpointAttachment) AdapterForObject(ctx context.Context, re
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	gcpClient, err := newGCPClient(ctx, m.config)
+	if err != nil {
+		return nil, err
+	}
+
+	if !u.GetDeletionTimestamp().IsZero() {
+		externalRef, found, _ := unstructured.NestedString(u.Object, "status", "externalRef")
+		if found && externalRef != "" {
+			klog.V(2).Infof("handling deletion for %v with externalRef %v", k8s.GetNamespacedName(u), externalRef)
+			id := &krm.ApigeeEndpointAttachmentIdentity{}
+			if err := id.FromExternal(externalRef); err != nil {
+				return nil, fmt.Errorf("error parsing externalRef %q: %w", externalRef, err)
+			}
+			return &ApigeeEndpointAttachmentAdapter{
+				id:                id,
+				k8sClient:         reader,
+				attachmentsClient: gcpClient.endpointsAttachmentsClient(),
+				operationsClient:  gcpClient.operationsClient(),
+				desired:           obj,
+			}, nil
+		}
+	}
+
+	// For create/update, or for deletion where status.externalRef is not set,
+	// we need to resolve dependencies.
+	if err := ResolveApigeeEndpointAttachmentRefs(ctx, reader, obj); err != nil {
+		return nil, err
+	}
+
 	i, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
@@ -59,7 +88,7 @@ func (m *modelApigeeEndpointAttachment) AdapterForObject(ctx context.Context, re
 	id := i.(*krm.ApigeeEndpointAttachmentIdentity)
 
 	// Get apigee GCP client
-	gcpClient, err := newGCPClient(ctx, m.config)
+	gcpClient, err = newGCPClient(ctx, m.config)
 	if err != nil {
 		return nil, err
 	}
@@ -114,14 +143,8 @@ func (a *ApigeeEndpointAttachmentAdapter) Create(ctx context.Context, createOp *
 	log.V(2).Info("creating ApigeeEndpointAttachment", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-
-	// Resolve references
-	if err := ResolveApigeeEndpointAttachmentRefs(ctx, a.k8sClient, desired); err != nil {
-		return err
-	}
 	// Convert to proto
-	resource := ApigeeEndpointAttachmentSpec_ToAPI(mapCtx, &desired.Spec)
+	resource := ApigeeEndpointAttachmentSpec_ToAPI(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

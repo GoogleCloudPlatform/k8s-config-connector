@@ -336,6 +336,14 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 	}
 	if adapteErr != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(adapteErr); ok {
+			// If the resource is being deleted, an unresolvable dependency means
+			// we have an orphan because the model couldn't build an adapter
+			// from status and has now failed to build one from spec.
+			if !u.GetDeletionTimestamp().IsZero() {
+				logger.Info("could not resolve dependencies for deletion and status.externalRef is missing; resource may be orphaned in GCP", "resource", k8s.GetNamespacedName(u), "error", unwrappedErr)
+				// Remove the finalizer to unblock Kubernetes object deletion.
+				return false, r.handleDeleted(ctx, u)
+			}
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
 			return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
 		}
