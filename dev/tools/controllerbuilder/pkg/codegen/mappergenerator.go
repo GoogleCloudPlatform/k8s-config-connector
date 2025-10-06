@@ -506,16 +506,30 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				protoreflect.Uint64Kind,
 				protoreflect.Fixed64Kind,
 				protoreflect.BytesKind:
-				if protoIsPointerInGo(protoField) {
-					fmt.Fprintf(out, "\tout.%s = in.%s\n",
-						krmFieldName,
-						protoFieldName,
-					)
-				} else {
-					fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(in.%s)\n",
-						krmFieldName,
-						protoAccessor,
-					)
+				if protoIsPointerInGo(protoField) { // proto is *Type
+					if strings.HasPrefix(krmField.Type, "*") { // krm is *Type
+						fmt.Fprintf(out, "\tout.%s = in.%s\n",
+							krmFieldName,
+							protoFieldName,
+						)
+					} else { // krm is Type
+						fmt.Fprintf(out, "\t\tout.%s = direct.ValueOf(in.%s)\n",
+							krmFieldName,
+							protoFieldName,
+						)
+					}
+				} else { // proto is Type
+					if strings.HasPrefix(krmField.Type, "*") { // krm is *Type
+						fmt.Fprintf(out, "\tout.%s = direct.LazyPtr(in.%s)\n",
+							krmFieldName,
+							protoAccessor,
+						)
+					} else { // krm is Type
+						fmt.Fprintf(out, "\tout.%s = in.%s\n",
+							krmFieldName,
+							protoAccessor,
+						)
+					}
 				}
 
 			default:
@@ -831,11 +845,18 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				}
 
 				oneof := protoField.ContainingOneof()
-				if protoField.HasOptionalKeyword() {
-					fmt.Fprintf(out, "\tout.%s = in.%s\n",
-						protoFieldName,
-						krmFieldName,
-					)
+				if protoField.HasOptionalKeyword() { // proto is *Type
+					if strings.HasPrefix(krmField.Type, "*") { // krm is *Type
+						fmt.Fprintf(out, "\tout.%s = in.%s\n",
+							protoFieldName,
+							krmFieldName,
+						)
+					} else { // krm is Type
+						fmt.Fprintf(out, "\tout.%s = direct.PtrTo(in.%s)\n",
+							protoFieldName,
+							krmFieldName,
+						)
+					}
 				} else if oneof != nil {
 					functionName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
 					fmt.Fprintf(out, "\tif oneof := %s(mapCtx, in.%s); oneof != nil {\n",
@@ -859,11 +880,18 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						protoFieldName,
 						krmFieldName,
 					)
-				} else {
-					fmt.Fprintf(out, "\tout.%s = direct.ValueOf(in.%s)\n",
-						protoFieldName,
-						krmFieldName,
-					)
+				} else { // proto is Type
+					if strings.HasPrefix(krmField.Type, "*") { // krm is *Type
+						fmt.Fprintf(out, "\tout.%s = direct.ValueOf(in.%s)\n",
+							protoFieldName,
+							krmFieldName,
+						)
+					} else { // krm is Type
+						fmt.Fprintf(out, "\tout.%s = in.%s\n",
+							protoFieldName,
+							krmFieldName,
+						)
+					}
 				}
 
 			default:
