@@ -23,6 +23,7 @@ import (
 	pb "cloud.google.com/go/run/apiv2/runpb"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
+	krmsecretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	krmvpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vpcaccess/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	apipb "google.golang.org/genproto/googleapis/api"
@@ -625,10 +626,10 @@ func SecretKeySelector_FromProto(mapCtx *direct.MapContext, in *pb.SecretKeySele
 	}
 	out := &krm.SecretKeySelector{}
 	if in.GetSecret() != "" {
-		out.SecretRef = &refsv1beta1.SecretManagerSecretRef{External: in.GetSecret()}
+		out.SecretRef = &krmsecretmanagerv1beta1.SecretRef{External: in.GetSecret()}
 	}
 	if in.GetVersion() != "" {
-		out.VersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetVersion()}
+		out.VersionRef = &krmsecretmanagerv1beta1.SecretVersionRef{External: in.GetVersion()}
 	}
 	return out
 }
@@ -651,7 +652,7 @@ func SecretVolumeSource_FromProto(mapCtx *direct.MapContext, in *pb.SecretVolume
 	}
 	out := &krm.SecretVolumeSource{}
 	if in.GetSecret() != "" {
-		out.SecretRef = &refsv1beta1.SecretManagerSecretRef{External: in.GetSecret()}
+		out.SecretRef = &krmsecretmanagerv1beta1.SecretRef{External: in.GetSecret()}
 	}
 	out.Items = direct.Slice_FromProto(mapCtx, in.Items, VersionToPath_FromProto)
 	out.DefaultMode = direct.LazyPtr(in.GetDefaultMode())
@@ -794,7 +795,7 @@ func VersionToPath_FromProto(mapCtx *direct.MapContext, in *pb.VersionToPath) *k
 	out := &krm.VersionToPath{}
 	out.Path = direct.LazyPtr(in.GetPath())
 	if in.GetVersion() != "" {
-		out.VersionRef = &refsv1beta1.SecretManagerSecretVersionRef{External: in.GetVersion()}
+		out.VersionRef = &krmsecretmanagerv1beta1.SecretVersionRef{External: in.GetVersion()}
 	}
 	out.Mode = direct.LazyPtr(in.GetMode())
 	return out
