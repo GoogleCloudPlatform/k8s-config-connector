@@ -57,13 +57,10 @@ func WorkflowsWorkflowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.RevisionCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevisionCreateTime())
 	// MISSING: Labels
-	// MISSING: CryptoKeyName
 	out.StateError = WorkflowsWorkflow_StateError_FromProto(mapCtx, in.GetStateError())
-	// MISSING: ExecutionHistoryLevel
 	// MISSING: AllKMSKeys
 	// MISSING: AllKMSKeysVersions
 	// MISSING: CryptoKeyVersion
-	// MISSING: Tags
 	return out
 }
 func WorkflowsWorkflowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsWorkflowObservedState) *pb.Workflow {
@@ -79,13 +76,10 @@ func WorkflowsWorkflowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.W
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.RevisionCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.RevisionCreateTime)
 	// MISSING: Labels
-	// MISSING: CryptoKeyName
 	out.StateError = WorkflowsWorkflow_StateError_ToProto(mapCtx, in.StateError)
-	// MISSING: ExecutionHistoryLevel
 	// MISSING: AllKMSKeys
 	// MISSING: AllKMSKeysVersions
 	// MISSING: CryptoKeyVersion
-	// MISSING: Tags
 	return out
 }
 func WorkflowsWorkflowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workflow) *krm.WorkflowsWorkflowSpec {
@@ -101,14 +95,16 @@ func WorkflowsWorkflowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workflow)
 		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
 	}
 	out.SourceContents = direct.LazyPtr(in.GetSourceContents())
-	// MISSING: CryptoKeyName
+	if in.GetCryptoKeyName() != "" {
+		out.CryptoKeyNameRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetCryptoKeyName()}
+	}
 	out.CallLogLevel = direct.Enum_FromProto(mapCtx, in.GetCallLogLevel())
 	out.UserEnvVars = in.UserEnvVars
-	// MISSING: ExecutionHistoryLevel
+	out.ExecutionHistoryLevel = direct.Enum_FromProto(mapCtx, in.GetExecutionHistoryLevel())
 	// MISSING: AllKMSKeys
 	// MISSING: AllKMSKeysVersions
 	// MISSING: CryptoKeyVersion
-	// MISSING: Tags
+	out.Tags = in.Tags
 	return out
 }
 func WorkflowsWorkflowSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsWorkflowSpec) *pb.Workflow {
@@ -126,14 +122,16 @@ func WorkflowsWorkflowSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsW
 	if oneof := WorkflowsWorkflowSpec_SourceContents_ToProto(mapCtx, in.SourceContents); oneof != nil {
 		out.SourceCode = oneof
 	}
-	// MISSING: CryptoKeyName
+	if in.CryptoKeyNameRef != nil {
+		out.CryptoKeyName = in.CryptoKeyNameRef.External
+	}
 	out.CallLogLevel = direct.Enum_ToProto[pb.Workflow_CallLogLevel](mapCtx, in.CallLogLevel)
 	out.UserEnvVars = in.UserEnvVars
-	// MISSING: ExecutionHistoryLevel
+	out.ExecutionHistoryLevel = direct.Enum_ToProto[pb.ExecutionHistoryLevel](mapCtx, in.ExecutionHistoryLevel)
 	// MISSING: AllKMSKeys
 	// MISSING: AllKMSKeysVersions
 	// MISSING: CryptoKeyVersion
-	// MISSING: Tags
+	out.Tags = in.Tags
 	return out
 }
 func WorkflowsWorkflowSpec_SourceContents_ToProto(mapCtx *direct.MapContext, in *string) *pb.Workflow_SourceContents {

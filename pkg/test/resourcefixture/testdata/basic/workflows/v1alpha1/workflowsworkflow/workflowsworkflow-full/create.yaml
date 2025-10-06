@@ -21,12 +21,10 @@ metadata:
 spec:
   location: us-central1
   description: "Example workflow"
-  labels:
-    env: "test"
   sourceContents: "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'"
   serviceAccountRef:
     name: gsa-${uniqueId}
-  kmsCryptoKeyRef:
+  cryptoKeyNameRef:
     name: kmscryptokey-${uniqueId}
   callLogLevel: "LOG_ERRORS_ONLY"
   userEnvVars:

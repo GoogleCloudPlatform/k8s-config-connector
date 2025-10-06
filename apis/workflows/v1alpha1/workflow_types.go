@@ -44,50 +44,68 @@ type Parent struct {
 // +kcc:spec:proto=google.cloud.workflows.v1.Workflow
 type WorkflowsWorkflowSpec struct {
 	Parent `json:",inline"`
-
 	// Description of the workflow provided by the user.
-	// Must be at most 1000 unicode characters long.
+	//  Must be at most 1000 Unicode characters long.
+	//  This is a workflow-wide field and is not tied to a specific revision.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.description
 	Description *string `json:"description,omitempty"`
 
 	// Labels associated with this workflow.
-	// Labels can contain at most 64 entries. Keys and values can be no longer
-	// than 63 characters and can only contain lowercase letters, numeric
-	// characters, underscores, and dashes. Label keys must start with a letter.
-	// International characters are allowed.
+	//  Labels can contain at most 64 entries. Keys and values can be no longer
+	//  than 63 characters and can only contain lowercase letters, numeric
+	//  characters, underscores, and dashes. Label keys must start with a letter.
+	//  International characters are allowed.
+	//  This is a workflow-wide field and is not tied to a specific revision.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.labels
 	// Labels map[string]string `json:"labels,omitempty"`
 
 	// The service account associated with the latest workflow version.
-	// This service account represents the identity of the workflow and determines
-	// what permissions the workflow has.
-	// If not provided, workflow will use the project's default service account.
-	// Modifying this field for an existing workflow results in a new workflow
-	// revision.
+	//  This service account represents the identity of the workflow and determines
+	//  what permissions the workflow has.
+	//  Format: projects/{project}/serviceAccounts/{account} or {account}
+	//
+	//  Using `-` as a wildcard for the `{project}` or not providing one at all
+	//  will infer the project from the account. The `{account}` value can be the
+	//  `email` address or the `unique_id` of the service account.
+	//
+	//  If not provided, workflow will use the project's default service account.
+	//  Modifying this field for an existing workflow results in a new workflow
+	//  revision.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.service_account
 	ServiceAccountRef *refs.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 
-	// Required. Workflow code to be executed. The size limit is 128KB.
-	// +required
+	// Workflow code to be executed. The size limit is 128KB.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.source_contents
 	SourceContents *string `json:"sourceContents,omitempty"`
 
 	// Optional. The resource name of a KMS crypto key used to encrypt or decrypt
 	// the data associated with the workflow.
-	// If not provided, data associated with the workflow will not be
-	// CMEK-encrypted.
-	// +optional
-	KMSCryptoKeyRef *refs.KMSCryptoKeyRef `json:"kmsCryptoKeyRef,omitempty"`
+	//  If not provided, data associated with the workflow will not be
+	//  CMEK-encrypted.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.crypto_key_name
+	CryptoKeyNameRef *refs.KMSCryptoKeyRef `json:"cryptoKeyNameRef,omitempty"`
 
 	// Optional. Describes the level of platform logging to apply to calls and
-	// call responses during executions of this workflow. If both the workflow and
-	// the execution specify a logging level, the execution level takes
-	// precedence.
-	//+optional
+	//  call responses during executions of this workflow. If both the workflow and
+	//  the execution specify a logging level, the execution level takes
+	//  precedence.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.call_log_level
 	CallLogLevel *string `json:"callLogLevel,omitempty"`
 
-	// Optional.User-defined environment variables associated with this workflow
-	// revision. This map has a maximum length of 20. Each string can take up to
-	// 40KiB. Keys cannot be empty strings and cannot start with “GOOGLE” or
-	// “WORKFLOWS".
-	// +optional
+	// Optional. User-defined environment variables associated with this workflow
+	//  revision. This map has a maximum length of 20. Each string can take up to
+	//  4KiB. Keys cannot be empty strings and cannot start with "GOOGLE" or
+	//  "WORKFLOWS".
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.user_env_vars
 	UserEnvVars map[string]string `json:"userEnvVars,omitempty"`
+
+	// Optional. Describes the execution history level to apply to this workflow.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.execution_history_level
+	ExecutionHistoryLevel *string `json:"executionHistoryLevel,omitempty"`
+
+	// Optional. Input only. Immutable. Tags associated with this workflow.
+	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.tags
+	Tags map[string]string `json:"tags,omitempty"`
 
 	// The Workflow name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

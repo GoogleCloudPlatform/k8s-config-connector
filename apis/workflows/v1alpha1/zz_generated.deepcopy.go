@@ -242,8 +242,8 @@ func (in *WorkflowsWorkflowSpec) DeepCopyInto(out *WorkflowsWorkflowSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.KMSCryptoKeyRef != nil {
-		in, out := &in.KMSCryptoKeyRef, &out.KMSCryptoKeyRef
+	if in.CryptoKeyNameRef != nil {
+		in, out := &in.CryptoKeyNameRef, &out.CryptoKeyNameRef
 		*out = new(v1beta1.KMSCryptoKeyRef)
 		**out = **in
 	}
@@ -254,6 +254,18 @@ func (in *WorkflowsWorkflowSpec) DeepCopyInto(out *WorkflowsWorkflowSpec) {
 	}
 	if in.UserEnvVars != nil {
 		in, out := &in.UserEnvVars, &out.UserEnvVars
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
+	if in.ExecutionHistoryLevel != nil {
+		in, out := &in.ExecutionHistoryLevel, &out.ExecutionHistoryLevel
+		*out = new(string)
+		**out = **in
+	}
+	if in.Tags != nil {
+		in, out := &in.Tags, &out.Tags
 		*out = make(map[string]string, len(*in))
 		for key, val := range *in {
 			(*out)[key] = val
