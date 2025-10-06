@@ -32,14 +32,14 @@ func ComputeFirewallPolicyRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.F
 		return nil
 	}
 	out := &krm.ComputeFirewallPolicyRuleSpec{}
-	out.Action = in.Action
+	out.Action = direct.ValueOf(in.Action)
 	out.Description = in.Description
-	out.Direction = in.Direction
+	out.Direction = direct.ValueOf(in.Direction)
 	out.Disabled = in.Disabled
 	out.EnableLogging = in.EnableLogging
 	// MISSING: Kind
 	out.Match = FirewallPolicyRuleMatch_FromProto(mapCtx, in.GetMatch())
-	out.Priority = in.Priority
+	out.Priority = direct.ValueOf(in.Priority)
 	// MISSING: RuleName
 	// MISSING: RuleTupleCount
 	// MISSING: SecurityProfileGroup
@@ -54,14 +54,14 @@ func ComputeFirewallPolicyRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.Co
 		return nil
 	}
 	out := &pb.FirewallPolicyRule{}
-	out.Action = in.Action
+	out.Action = direct.PtrTo(in.Action)
 	out.Description = in.Description
-	out.Direction = in.Direction
+	out.Direction = direct.PtrTo(in.Direction)
 	out.Disabled = in.Disabled
 	out.EnableLogging = in.EnableLogging
 	// MISSING: Kind
 	out.Match = FirewallPolicyRuleMatch_ToProto(mapCtx, in.Match)
-	out.Priority = in.Priority
+	out.Priority = direct.PtrTo(in.Priority)
 	// MISSING: RuleName
 	// MISSING: RuleTupleCount
 	// MISSING: SecurityProfileGroup
@@ -328,7 +328,7 @@ func FirewallPolicyRuleLayer4Configs_FromProto(mapCtx *direct.MapContext, in *pb
 		return nil
 	}
 	out := &krm.FirewallPolicyRuleLayer4Configs{}
-	out.IPProtocol = in.IpProtocol
+	out.IPProtocol = direct.ValueOf(in.IpProtocol)
 	out.Ports = in.Ports
 	return out
 }
@@ -337,7 +337,7 @@ func FirewallPolicyRuleLayer4Configs_ToProto(mapCtx *direct.MapContext, in *krm.
 		return nil
 	}
 	out := &pb.FirewallPolicyRuleMatcherLayer4Config{}
-	out.IpProtocol = in.IPProtocol
+	out.IpProtocol = direct.PtrTo(in.IPProtocol)
 	out.Ports = in.Ports
 	return out
 }
@@ -390,8 +390,8 @@ func ForwardingruleFilterLabels_FromProto(mapCtx *direct.MapContext, in *pb.Meta
 		return nil
 	}
 	out := &krm.ForwardingruleFilterLabels{}
-	out.Name = in.Name
-	out.Value = in.Value
+	out.Name = direct.ValueOf(in.Name)
+	out.Value = direct.ValueOf(in.Value)
 	return out
 }
 func ForwardingruleFilterLabels_ToProto(mapCtx *direct.MapContext, in *krm.ForwardingruleFilterLabels) *pb.MetadataFilterLabelMatch {
@@ -399,8 +399,8 @@ func ForwardingruleFilterLabels_ToProto(mapCtx *direct.MapContext, in *krm.Forwa
 		return nil
 	}
 	out := &pb.MetadataFilterLabelMatch{}
-	out.Name = in.Name
-	out.Value = in.Value
+	out.Name = direct.PtrTo(in.Name)
+	out.Value = direct.PtrTo(in.Value)
 	return out
 }
 func ForwardingruleMetadataFilters_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFilter) *krm.ForwardingruleMetadataFilters {
@@ -409,7 +409,7 @@ func ForwardingruleMetadataFilters_FromProto(mapCtx *direct.MapContext, in *pb.M
 	}
 	out := &krm.ForwardingruleMetadataFilters{}
 	out.FilterLabels = direct.Slice_FromProto(mapCtx, in.FilterLabels, ForwardingruleFilterLabels_FromProto)
-	out.FilterMatchCriteria = in.FilterMatchCriteria
+	out.FilterMatchCriteria = direct.ValueOf(in.FilterMatchCriteria)
 	return out
 }
 func ForwardingruleMetadataFilters_ToProto(mapCtx *direct.MapContext, in *krm.ForwardingruleMetadataFilters) *pb.MetadataFilter {
@@ -418,7 +418,7 @@ func ForwardingruleMetadataFilters_ToProto(mapCtx *direct.MapContext, in *krm.Fo
 	}
 	out := &pb.MetadataFilter{}
 	out.FilterLabels = direct.Slice_ToProto(mapCtx, in.FilterLabels, ForwardingruleFilterLabels_ToProto)
-	out.FilterMatchCriteria = in.FilterMatchCriteria
+	out.FilterMatchCriteria = direct.PtrTo(in.FilterMatchCriteria)
 	return out
 }
 func ForwardingruleServiceDirectoryRegistrations_FromProto(mapCtx *direct.MapContext, in *pb.ForwardingRuleServiceDirectoryRegistration) *krm.ForwardingruleServiceDirectoryRegistrations {
