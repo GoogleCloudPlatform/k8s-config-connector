@@ -32,7 +32,7 @@ type BigLakeDatabaseSpec struct {
 
 	// Options of a Hive database.
 	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Database.hive_options
-	Options *HiveDatabaseOptions `json:"options,omitempty"`
+	HiveOptions *HiveDatabaseOptions `json:"hiveOptions,omitempty"`
 
 	// The database type.
 	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Database.type

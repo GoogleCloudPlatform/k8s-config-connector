@@ -275,8 +275,8 @@ func (in *BigLakeDatabaseSpec) DeepCopyInto(out *BigLakeDatabaseSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.Options != nil {
-		in, out := &in.Options, &out.Options
+	if in.HiveOptions != nil {
+		in, out := &in.HiveOptions, &out.HiveOptions
 		*out = new(HiveDatabaseOptions)
 		(*in).DeepCopyInto(*out)
 	}

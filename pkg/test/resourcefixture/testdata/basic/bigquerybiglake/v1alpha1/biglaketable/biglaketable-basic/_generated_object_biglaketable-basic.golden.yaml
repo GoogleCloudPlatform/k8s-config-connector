@@ -10,10 +10,6 @@ metadata:
   name: biglaketable-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  catalogRef:
-    external: projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}
-  databaseRef:
-    external: projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}
   hiveOptions:
     parameters:
       new.parameter: new_value
@@ -25,9 +21,8 @@ spec:
       serdeInfo:
         serializationLib: org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe
     tableType: EXTERNAL_TABLE
-  location: us-central1
-  projectRef:
-    external: projects/${projectId}
+  parentRef:
+    external: projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}
   type: HIVE
 status:
   conditions:

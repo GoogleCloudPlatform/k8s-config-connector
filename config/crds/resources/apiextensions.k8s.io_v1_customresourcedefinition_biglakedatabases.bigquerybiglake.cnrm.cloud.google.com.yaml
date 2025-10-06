@@ -59,7 +59,7 @@ spec:
           spec:
             description: BigLakeDatabaseSpec defines the desired state of BigLakeDatabase
             properties:
-              options:
+              hiveOptions:
                 description: Options of a Hive database.
                 properties:
                   locationURI:
