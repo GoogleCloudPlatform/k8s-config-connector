@@ -341,8 +341,16 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 			// from status and has now failed to build one from spec.
 			if !u.GetDeletionTimestamp().IsZero() {
 				logger.Info("could not resolve dependencies for deletion and status.externalRef is missing; resource may be orphaned in GCP", "resource", k8s.GetNamespacedName(u), "error", unwrappedErr)
-				// Remove the finalizer to unblock Kubernetes object deletion.
-				return false, r.handleDeleted(ctx, u)
+				// This is the definitive signal of an orphaned resource that we cannot delete from GCP
+				// because we cannot resolve its full name.
+				// By not removing the finalizer (which `r.handleDeleted` would do), we intentionally
+				// cause the reconciliation to fail repeatedly. This keeps the Kubernetes object
+				// in a 'Terminating' state, making it clear to the user that the underlying
+				// GCP resource has been orphaned and requires manual cleanup.
+				// While removing the finalizer is a fallback to prevent the Kubernetes object from
+				// getting stuck, leaving it allows the user to recognize and address the orphaned resource.
+				// For more details, see docs/designs/graceful-orphan-deletion.md.
+				// return false, r.handleDeleted(ctx, u)
 			}
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
 			return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
