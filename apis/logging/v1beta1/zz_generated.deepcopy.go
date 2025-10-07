@@ -29,7 +29,7 @@ func (in *LogBucketIdentity) DeepCopyInto(out *LogBucketIdentity) {
 	*out = *in
 	if in.parent != nil {
 		in, out := &in.parent, &out.parent
-		*out = new(parent.ProjectAndLocationParent)
+		*out = new(parent.ProjectAndLocation)
 		**out = **in
 	}
 }

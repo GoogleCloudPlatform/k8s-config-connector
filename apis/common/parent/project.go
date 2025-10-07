@@ -31,8 +31,6 @@ type ProjectParent struct {
 	ProjectID string
 }
 
-var _ ParentBuilder = &ProjectRef{}
-
 // Project specifies the resource's GCP hierarchy (Project/Folder/Organization).
 // +kubebuilder:object:generate:=true
 type ProjectRef struct {
@@ -47,7 +45,7 @@ type ProjectRef struct {
 // Builds a the ProjectParent from ProjectRef.
 // If `projectRef.external` is given, parse projectID from External, otherwise find the ConfigConnector project
 // according to `projectRef.name` and `projectRef.namespace`.
-func (p *ProjectRef) Build(ctx context.Context, reader client.Reader, othernamespace string, parent Parent) error {
+func (p *ProjectRef) NormalizeExternal(ctx context.Context, reader client.Reader, othernamespace string) (string, error) {
 	projectParent, ok := parent.(*ProjectParent)
 	if !ok {
 		return fmt.Errorf("build invalid parent, except %T", &ProjectParent{})

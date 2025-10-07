@@ -20,14 +20,20 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var _ identity.Identity = &CatalogIdentity{}
+
+// Catalog is the parent of BigLakeDatabase.
+var _ parent.Parent = &CatalogIdentity{}
 
 // CatalogIdentity defines the resource reference to BigLakeCatalog, which "External" field
 // holds the GCP identifier for the KRM object.
 type CatalogIdentity struct {
-	parent *CatalogParent
+	parent *parent.ProjectAndLocation
 	id     string
 }
 
@@ -35,84 +41,79 @@ func (i *CatalogIdentity) String() string {
 	return i.parent.String() + "/catalogs/" + i.id
 }
 
+func (i *CatalogIdentity) URL() string {
+	return i.parent.URL() + "/catalogs/{{catalogID}}"
+}
+
 func (i *CatalogIdentity) ID() string {
 	return i.id
 }
 
-func (i *CatalogIdentity) Parent() *CatalogParent {
+func (i *CatalogIdentity) Parent() *parent.ProjectAndLocation {
 	return i.parent
 }
 
-type CatalogParent struct {
-	ProjectID string
-	Location  string
+func (i *CatalogIdentity) FromExternal(ref string) error {
+	tokens := strings.Split(ref, "/catalogs/")
+
+	if len(tokens) != 2 {
+		return fmt.Errorf("format of BigLakeCatalog external=%q was not known (use %s/catalogs/{{catalogID}})", i.parent.URL())
+	}
+	i.parent = &parent.ProjectAndLocation{}
+	if err := i.parent.FromExternal(tokens[0]); err != nil {
+		return fmt.Errorf("get parent project and location: %w", err)
+	}
+	i.id = tokens[1]
+	return nil
 }
 
-func (p *CatalogParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
+func (i *CatalogIdentity) MatchActual(actualI parent.Parent) error {
+	actual, ok := actualI.(*CatalogIdentity)
+	if !ok {
+		return fmt.Errorf("identity format changed, desired %T", i)
+	}
+	if i.id != actual.id {
+		return fmt.Errorf("spec.resourceID changed, desired %s, actual %s", i.id, actual.id)
+	}
+	if err := i.parent.MatchActual(actual.parent); err != nil {
+		return err
+	}
+	return nil
 }
 
-// NOT YET
 // New builds a CatalogIdentity from the Config Connector Catalog object.
 func NewCatalogIdentity(ctx context.Context, reader client.Reader, obj *BigLakeCatalog) (*CatalogIdentity, error) {
+	catalog := &CatalogIdentity{}
 
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
+	// Get ID from user-configurable field
+	catalog.id = common.ValueOf(obj.Spec.ResourceID)
+	if catalog.id == "" {
+		catalog.id = obj.GetName()
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
-
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
+	if catalog.id == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	// Get parent from user-configurable field
+	parentExternalRef, err := obj.Spec.Parent.NormalizedExternal(ctx, reader, obj.GetNamespace())
+	if err != nil {
+		return nil, fmt.Errorf("cannot build parent: %w", err)
+	}
+	if err := catalog.parent.FromExternal(parentExternalRef); err != nil {
+		return nil, fmt.Errorf("get parent project and location: %w", err)
+	}
+
+	// Verify the user-configured id matches the actual ID (reserved in .status.externalRef)
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseCatalogExternal(externalRef)
-		if err != nil {
+		idFromExternal := &CatalogIdentity{}
+		if err := idFromExternal.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+		if err := catalog.MatchActual(idFromExternal); err != nil {
+			return nil, err
 		}
 	}
-	return &CatalogIdentity{
-		parent: &CatalogParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
-}
 
-func ParseCatalogExternal(external string) (parent *CatalogParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "catalogs" {
-		return nil, "", fmt.Errorf("format of BigLakeCatalog external=%q was not known (use projects/{{projectID}}/locations/{{location}}/catalogs/{{catalogID}})", external)
-	}
-	parent = &CatalogParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return catalog, nil
 }

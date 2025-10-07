@@ -51,7 +51,8 @@ func (r *TableRef) NormalizedExternal(ctx context.Context, reader client.Reader,
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseTableExternal(r.External); err != nil {
+		id := &TableIdentity{}
+		if err := id.FromExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
@@ -68,7 +69,7 @@ func (r *TableRef) NormalizedExternal(ctx context.Context, reader client.Reader,
 		if apierrors.IsNotFound(err) {
 			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", BigLakeTableGVK, key, err)
+		return "", fmt.Errorf("reading referenced %s %s: %w", BigLakeDatabaseGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
