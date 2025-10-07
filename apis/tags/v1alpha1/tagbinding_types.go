@@ -20,7 +20,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var TagBindingGVK = GroupVersion.WithKind("TagBinding")
+var TagsTagBindingGVK = GroupVersion.WithKind("TagsTagBinding")
 
 type ParentRef struct {
 	// The external name of the referenced resource
@@ -28,9 +28,9 @@ type ParentRef struct {
 	External string `json:"external"`
 }
 
-// TagBindingSpec defines the desired state of TagBinding
+// TagsTagBindingSpec defines the desired state of TagsTagBinding
 // +kcc:spec:proto=google.cloud.resourcemanager.v3.TagBinding
-type TagBindingSpec struct {
+type TagsTagBindingSpec struct {
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
 	// The full resource name of the resource the TagValue is bound to.
 	/* Only `external` field is supported to configure the reference for now. */
@@ -51,8 +51,8 @@ type TagBindingSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-// TagBindingStatus defines the config connector machine state of TagBinding
-type TagBindingStatus struct {
+// TagsTagBindingStatus defines the config connector machine state of TagsTagBinding
+type TagsTagBindingStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -60,21 +60,21 @@ type TagBindingStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the TagBinding resource in GCP.
+	// A unique specifier for the TagsTagBinding resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *TagBindingObservedState `json:"observedState,omitempty"`
+	ObservedState *TagsTagBindingObservedState `json:"observedState,omitempty"`
 }
 
-// TagBindingObservedState is the state of the TagBinding resource as most recently observed in GCP.
+// TagsTagBindingObservedState is the state of the TagsTagBinding resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.resourcemanager.v3.TagBinding
-type TagBindingObservedState struct {
+type TagsTagBindingObservedState struct {
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcptagbinding;gcptagbindings
+// +kubebuilder:resource:categories=gcp,shortName=gcptagstagbinding;gcptagstagbindings
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
@@ -82,25 +82,25 @@ type TagBindingObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// TagBinding is the Schema for the TagBinding API
+// TagsTagBinding is the Schema for the TagsTagBinding API
 // +k8s:openapi-gen=true
-type TagBinding struct {
+type TagsTagBinding struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   TagBindingSpec   `json:"spec,omitempty"`
-	Status TagBindingStatus `json:"status,omitempty"`
+	Spec   TagsTagBindingSpec   `json:"spec,omitempty"`
+	Status TagsTagBindingStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// TagBindingList contains a list of TagBinding
-type TagBindingList struct {
+// TagsTagBindingList contains a list of TagsTagBinding
+type TagsTagBindingList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []TagBinding `json:"items"`
+	Items           []TagsTagBinding `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&TagBinding{}, &TagBindingList{})
+	SchemeBuilder.Register(&TagsTagBinding{}, &TagsTagBindingList{})
 }

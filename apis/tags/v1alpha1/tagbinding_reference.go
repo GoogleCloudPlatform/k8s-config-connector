@@ -26,32 +26,32 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &TagBindingRef{}
+var _ refsv1beta1.ExternalNormalizer = &TagsTagBindingRef{}
 
-// TagBinding defines the resource reference to TagBinding, which "External" field
+// TagsTagBindingRef defines the resource reference to TagsTagBinding, which "External" field
 // holds the GCP identifier for the KRM object.
-type TagBindingRef struct {
-	// A reference to an externally managed TagBinding resource.
-	// Should be in the format "tagBindings/{full-resource-name}/{tag-value-name}".
+type TagsTagBindingRef struct {
+	// A reference to an externally managed TagsTagBinding resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/tagbindings/{{tagbindingID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a TagBinding resource.
+	// The name of a TagsTagBinding resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a TagBinding resource.
+	// The namespace of a TagsTagBinding resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on TagBinding.
-// If the "External" is given in the other resource's spec.TagBinding, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual TagBinding object from the cluster.
-func (r *TagBindingRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+// NormalizedExternal provision the "External" value for other resource that depends on TagsTagBinding.
+// If the "External" is given in the other resource's spec.TagsTagBindingRef, the given value will be used.
+// Otherwise, the "Name" and "Namespace" will be used to query the actual TagsTagBinding object from the cluster.
+func (r *TagsTagBindingRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", TagBindingGVK.Kind)
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", TagsTagBindingGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseTagBindingExternal(r.External); err != nil {
+		if _, _, err := ParseTagsTagBindingExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
@@ -63,12 +63,12 @@ func (r *TagBindingRef) NormalizedExternal(ctx context.Context, reader client.Re
 	}
 	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(TagBindingGVK)
+	u.SetGroupVersionKind(TagsTagBindingGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
 			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", TagBindingGVK, key, err)
+		return "", fmt.Errorf("reading referenced %s %s: %w", TagsTagBindingGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")

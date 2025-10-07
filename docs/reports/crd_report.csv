@@ -417,7 +417,7 @@ storagetransfer.cnrm.cloud.google.com,StorageTransferAgentPool,True,False,False,
 storagetransfer.cnrm.cloud.google.com,StorageTransferJob,False,True,False,Terraform
 tags.cnrm.cloud.google.com,TagBinding,True,False,False,Direct
 tags.cnrm.cloud.google.com,TagsLocationTagBinding,True,False,False,Terraform
-tags.cnrm.cloud.google.com,TagsTagBinding,False,True,False,Terraform
+tags.cnrm.cloud.google.com,TagsTagBinding,True,False,False,Direct
 tags.cnrm.cloud.google.com,TagsTagKey,False,True,False,Terraform
 tags.cnrm.cloud.google.com,TagsTagValue,False,True,False,Terraform
 cloudtasks.cnrm.cloud.google.com,TasksQueue,True,False,False,Direct

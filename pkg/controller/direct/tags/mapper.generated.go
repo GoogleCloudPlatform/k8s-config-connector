@@ -26,16 +26,16 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func TagBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TagBinding) *krm.TagBindingObservedState {
+func TagsTagBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TagBinding) *krm.TagsTagBindingObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TagBindingObservedState{}
+	out := &krm.TagsTagBindingObservedState{}
 	// MISSING: Name
 	// MISSING: TagValueNamespacedName
 	return out
 }
-func TagBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TagBindingObservedState) *pb.TagBinding {
+func TagsTagBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TagsTagBindingObservedState) *pb.TagBinding {
 	if in == nil {
 		return nil
 	}
@@ -44,11 +44,11 @@ func TagBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TagBindi
 	// MISSING: TagValueNamespacedName
 	return out
 }
-func TagBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagBinding) *krm.TagBindingSpec {
+func TagsTagBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagBinding) *krm.TagsTagBindingSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TagBindingSpec{}
+	out := &krm.TagsTagBindingSpec{}
 	// MISSING: Name
 	if in.GetParent() != "" {
 		out.ParentRef = &krm.ParentRef{External: in.GetParent()}
@@ -59,7 +59,7 @@ func TagBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagBinding) *krm
 	// MISSING: TagValueNamespacedName
 	return out
 }
-func TagBindingSpec_ToProto(mapCtx *direct.MapContext, in *krm.TagBindingSpec) *pb.TagBinding {
+func TagsTagBindingSpec_ToProto(mapCtx *direct.MapContext, in *krm.TagsTagBindingSpec) *pb.TagBinding {
 	if in == nil {
 		return nil
 	}

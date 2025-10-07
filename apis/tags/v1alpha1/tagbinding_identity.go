@@ -24,36 +24,36 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// TagBindingIdentity defines the resource reference to TagBinding, which "External" field
+// TagsTagBindingIdentity defines the resource reference to TagsTagBinding, which "External" field
 // holds the GCP identifier for the KRM object.
-type TagBindingIdentity struct {
-	parent   *TagBindingParent
+type TagsTagBindingIdentity struct {
+	parent   *TagsTagBindingParent
 	location string
 	id       string
 }
 
-func (i *TagBindingIdentity) String() string {
+func (i *TagsTagBindingIdentity) String() string {
 	return i.id
 }
 
-func (i *TagBindingIdentity) ID() string {
+func (i *TagsTagBindingIdentity) ID() string {
 	return i.id
 }
 
-func (i *TagBindingIdentity) Parent() *TagBindingParent {
+func (i *TagsTagBindingIdentity) Parent() *TagsTagBindingParent {
 	return i.parent
 }
 
-type TagBindingParent struct {
+type TagsTagBindingParent struct {
 	parentResource string
 }
 
-func (p *TagBindingParent) String() string {
+func (p *TagsTagBindingParent) String() string {
 	return p.parentResource
 }
 
-// New builds a TagBindingIdentity from the Config Connector TagBinding object.
-func NewTagBindingIdentity(ctx context.Context, reader client.Reader, obj *TagBinding) (*TagBindingIdentity, error) {
+// New builds a TagsTagBindingIdentity from the Config Connector TagsTagBinding object.
+func NewTagsTagBindingIdentity(ctx context.Context, reader client.Reader, obj *TagsTagBinding) (*TagsTagBindingIdentity, error) {
 
 	// Get the resource name of the resource that the tag binds to.
 	// Uses the "spec.ParentRef"
@@ -78,7 +78,7 @@ func NewTagBindingIdentity(ctx context.Context, reader client.Reader, obj *TagBi
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseTagBindingExternal(externalRef)
+		actualParent, actualResourceID, err := ParseTagsTagBindingExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
@@ -94,8 +94,8 @@ func NewTagBindingIdentity(ctx context.Context, reader client.Reader, obj *TagBi
 			resourceID = actualResourceID
 		}
 	}
-	return &TagBindingIdentity{
-		parent: &TagBindingParent{
+	return &TagsTagBindingIdentity{
+		parent: &TagsTagBindingParent{
 			parentResource: parent,
 		},
 		location: location,
@@ -103,7 +103,7 @@ func NewTagBindingIdentity(ctx context.Context, reader client.Reader, obj *TagBi
 	}, nil
 }
 
-func ParseTagBindingExternal(external string) (parent *TagBindingParent, resourceID string, err error) {
+func ParseTagsTagBindingExternal(external string) (parent *TagsTagBindingParent, resourceID string, err error) {
 	if !strings.HasPrefix(external, "tagBindings/") {
 		return nil, "", fmt.Errorf("invalid format of TagsLocationTagsLocationTagBinding external=%q, expected prefix 'tagBindings/'", external)
 	}
@@ -121,7 +121,7 @@ func ParseTagBindingExternal(external string) (parent *TagBindingParent, resourc
 	if err != nil {
 		return nil, "", err
 	}
-	parent = &TagBindingParent{
+	parent = &TagsTagBindingParent{
 		parentResource: parentResource,
 	}
 
