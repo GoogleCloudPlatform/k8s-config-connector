@@ -203,11 +203,13 @@ func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 	ctx := &direct.MapContext{}
 	krm := f.FromProto(ctx, p1)
 	if ctx.Err() != nil {
+		t.Logf("p1 = %v", prototext.Format(p1))
 		t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
 	}
 
 	p2 := f.ToProto(ctx, krm)
 	if ctx.Err() != nil {
+		t.Logf("p1 = %v", prototext.Format(p1))
 		t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
 	}
 
