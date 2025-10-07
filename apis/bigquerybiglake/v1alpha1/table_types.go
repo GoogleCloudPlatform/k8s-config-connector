@@ -28,7 +28,7 @@ type BigLakeTableSpec struct {
 	// Format:
 	// projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
 	// +required
-	ParentRef *BigQueryBigLakeDatabaseRef `json:"parentRef,omitempty"`
+	ParentRef *BigQueryBigLakeDatabaseRef `json:"parentDatabaseRef,omitempty"`
 
 	// The BigLake Table ID. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

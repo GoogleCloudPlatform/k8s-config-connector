@@ -21,7 +21,7 @@ spec:
       serdeInfo:
         serializationLib: org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe
     tableType: EXTERNAL_TABLE
-  parentRef:
+  parentDatabaseRef:
     external: projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}
   type: HIVE
 status:

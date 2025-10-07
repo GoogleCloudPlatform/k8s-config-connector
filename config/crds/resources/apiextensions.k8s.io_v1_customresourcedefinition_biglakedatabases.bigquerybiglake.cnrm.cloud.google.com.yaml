@@ -72,7 +72,7 @@ spec:
                     description: Stores user supplied Hive database parameters.
                     type: object
                 type: object
-              parentRef:
+              parentCatalogRef:
                 description: Required. Defines the parent path of the resource.
                 oneOf:
                 - not:

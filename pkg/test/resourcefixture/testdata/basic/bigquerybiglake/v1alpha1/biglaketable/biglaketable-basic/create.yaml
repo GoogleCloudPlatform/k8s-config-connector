@@ -17,6 +17,6 @@ kind: BigLakeTable
 metadata:
   name: biglaketable-${uniqueId}
 spec:
-  parentRef:
+  parentDatabaseRef:
     external: projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}
   type: "HIVE"

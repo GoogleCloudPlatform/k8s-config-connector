@@ -96,7 +96,7 @@ spec:
                     description: Hive table type. For example, MANAGED_TABLE, EXTERNAL_TABLE.
                     type: string
                 type: object
-              parentRef:
+              parentDatabaseRef:
                 description: 'Required. The parent resource where this table will
                   be created. Format: projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}'
                 oneOf:
@@ -133,7 +133,7 @@ spec:
                 description: The table type.
                 type: string
             required:
-            - parentRef
+            - parentDatabaseRef
             type: object
           status:
             description: BigLakeTableStatus defines the config connector machine state

@@ -88,14 +88,14 @@ func NewDatabaseIdentity(ctx context.Context, reader client.Reader, obj *BigLake
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Validate against preserved ID, if any
+	// Validate against the ID stored in status.externalRef
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		preserved := &DatabaseIdentity{}
-		if err := preserved.FromExternal(externalRef); err != nil {
+		statusIdentity := &DatabaseIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
 		}
-		if preserved.String() != newIdentity.String() {
+		if statusIdentity.String() != newIdentity.String() {
 			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, newIdentity.String())
 		}
 	}
