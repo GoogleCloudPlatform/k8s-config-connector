@@ -57,41 +57,34 @@ func (m *modelApigeeEndpointAttachment) AdapterForObject(ctx context.Context, re
 		return nil, err
 	}
 
+	var id *krm.ApigeeEndpointAttachmentIdentity
 	if !u.GetDeletionTimestamp().IsZero() {
 		externalRef, found, _ := unstructured.NestedString(u.Object, "status", "externalRef")
 		if found && externalRef != "" {
 			klog.V(2).Infof("handling deletion for %v with externalRef %v", k8s.GetNamespacedName(u), externalRef)
-			id := &krm.ApigeeEndpointAttachmentIdentity{}
-			if err := id.FromExternal(externalRef); err != nil {
+			identity := &krm.ApigeeEndpointAttachmentIdentity{}
+			if err := identity.FromExternal(externalRef); err != nil {
 				return nil, fmt.Errorf("error parsing externalRef %q: %w", externalRef, err)
 			}
-			return &ApigeeEndpointAttachmentAdapter{
-				id:                id,
-				k8sClient:         reader,
-				attachmentsClient: gcpClient.endpointsAttachmentsClient(),
-				operationsClient:  gcpClient.operationsClient(),
-				desired:           obj,
-			}, nil
+			id = identity
 		}
 	}
 
-	// For create/update, or for deletion where status.externalRef is not set,
-	// we need to resolve dependencies.
-	if err := ResolveApigeeEndpointAttachmentRefs(ctx, reader, obj); err != nil {
-		return nil, err
+	if id == nil {
+		// For create/update, or for deletion where status.externalRef is not set,
+		// we need to resolve dependencies.
+		// TODO: use standard resolver
+		if err := ResolveApigeeEndpointAttachmentRefs(ctx, reader, obj); err != nil {
+			return nil, err
+		}
+
+		i, err := obj.GetIdentity(ctx, reader)
+		if err != nil {
+			return nil, err
+		}
+		id = i.(*krm.ApigeeEndpointAttachmentIdentity)
 	}
 
-	i, err := obj.GetIdentity(ctx, reader)
-	if err != nil {
-		return nil, err
-	}
-	id := i.(*krm.ApigeeEndpointAttachmentIdentity)
-
-	// Get apigee GCP client
-	gcpClient, err = newGCPClient(ctx, m.config)
-	if err != nil {
-		return nil, err
-	}
 	return &ApigeeEndpointAttachmentAdapter{
 		id:                id,
 		k8sClient:         reader,
