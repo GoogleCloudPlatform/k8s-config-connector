@@ -78,6 +78,12 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_Internal(fi
 	f.UnimplementedFields.Insert(fieldPath)
 }
 
+// Unimplemented_Identity marks the specified fieldPath as not round-tripped,
+// and should be used for fields that are considered identity (URL) rather than being part of the object itself.
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_Identity(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
+}
+
 // Unimplemented_LabelsAnnotations marks the specified fieldPath as not round-tripped,
 // and should be used for fields that are either labels or annotations
 func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_LabelsAnnotations(fieldPath string) {

@@ -36,7 +36,7 @@ require (
 	cloud.google.com/go/edgecontainer v1.4.3
 	cloud.google.com/go/essentialcontacts v1.7.6
 	cloud.google.com/go/eventarc v1.15.5
-	cloud.google.com/go/firestore v1.18.0
+	cloud.google.com/go/firestore v1.19.0
 	cloud.google.com/go/gkebackup v1.8.0
 	cloud.google.com/go/gkemulticloud v1.5.3
 	cloud.google.com/go/iam v1.5.2
@@ -66,7 +66,7 @@ require (
 	cloud.google.com/go/security v1.18.5
 	cloud.google.com/go/spanner v1.82.0
 	cloud.google.com/go/speech v1.27.1
-	cloud.google.com/go/storage v1.55.0
+	cloud.google.com/go/storage v1.56.0
 	cloud.google.com/go/vmwareengine v1.3.5
 	cloud.google.com/go/workflows v1.14.2
 	cloud.google.com/go/workstations v1.1.1
@@ -159,7 +159,7 @@ require (
 require (
 	bitbucket.org/creachadair/stringset v0.0.8 // indirect
 	cel.dev/expr v0.24.0 // indirect
-	cloud.google.com/go v0.121.2 // indirect
+	cloud.google.com/go v0.121.6 // indirect
 	cloud.google.com/go/auth v0.16.4 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	cloud.google.com/go/bigtable v1.38.0
