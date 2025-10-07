@@ -15,15 +15,11 @@ prompt = """
 Please act as a release notes generator for the Config Connector project.
 Your task is to analyze the git diff provided below and generate a structured summary based on the provided template.
 
-Here is the template from 'dev/release/template.md':
-$(cat dev/release/template.md)
+Here is the template from @dev/release/template.md:
 
----
 
-Here is the git diff from 'crd_diff.tmp':
-$(cat crd_diff.tmp)
+Here is the git diff from @crd_diff.tmp:
 
----
 
 Please fill in the template with the information you extract from the diff.
 Instructions for filling the template:
