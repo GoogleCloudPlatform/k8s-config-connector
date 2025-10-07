@@ -86,13 +86,24 @@
       ]
     },
     {
-      "name": "Push and Finalize",
+      "name": "Format Code",
+      "actions": [
+        {
+          "run": "make fmt"
+        },
+        {
+          "run": "git add ."
+        },
+        {
+          "run": "git diff --staged --quiet || git commit -m \"[make fmt] Apply formatting\""
+        }
+      ]
+    },
+    {
+      "name": "Print Push Command",
       "actions": [
         {
           "echo": "git push origin release-${get_version.input}"
-        },
-        {
-          "echo": "Pull request URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/new/release-${get_version.input}"
         }
       ]
     }
