@@ -16,9 +16,9 @@ package mockfirestore
 
 import (
 	"context"
-	"crypto/md5"
-	"encoding/base64"
 	"fmt"
+	"reflect"
+	"strings"
 	"time"
 
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
@@ -29,7 +29,8 @@ import (
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/firestore/admin/v1"
+	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
 type DatabaseService struct {
@@ -38,7 +39,11 @@ type DatabaseService struct {
 }
 
 func (s *DatabaseService) GetDatabase(ctx context.Context, req *pb.GetDatabaseRequest) (*pb.Database, error) {
-	fqn := req.GetName()
+	name, err := s.parseDatabaseName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
 
 	obj := &pb.Database{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
@@ -52,7 +57,11 @@ func (s *DatabaseService) GetDatabase(ctx context.Context, req *pb.GetDatabaseRe
 }
 
 func (s *DatabaseService) CreateDatabase(ctx context.Context, req *pb.CreateDatabaseRequest) (*longrunningpb.Operation, error) {
-	fqn := req.GetDatabase().GetName()
+	name, err := s.parseDatabaseName(req.Parent + "/databases/" + req.DatabaseId)
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
 
 	obj := proto.Clone(req.Database).(*pb.Database)
 	populateDefaultsForDatabase(obj)
@@ -60,18 +69,25 @@ func (s *DatabaseService) CreateDatabase(ctx context.Context, req *pb.CreateData
 	obj.CreateTime = t
 	obj.UpdateTime = t
 	obj.EarliestVersionTime = t
+
+	obj.Etag = computeEtag(obj)
+	obj.Name = fqn
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	metadata := &pb.CreateDatabaseMetadata{}
-	op, err := s.operations.StartLRO(ctx, fqn, metadata, func() (proto.Message, error) {
+	lroPrefix := fqn
+	op, err := s.operations.StartLRO(ctx, lroPrefix, metadata, func() (proto.Message, error) {
 		result := proto.Clone(obj).(*pb.Database)
 		return result, nil
 	})
 	if err != nil {
 		return op, err
 	}
+
+	// Unusually, response is populated right away
 	response, err := anypb.New(obj)
 	if err != nil {
 		return op, err
@@ -79,20 +95,28 @@ func (s *DatabaseService) CreateDatabase(ctx context.Context, req *pb.CreateData
 	op.Result = &longrunningpb.Operation_Response{
 		Response: response,
 	}
+
 	return op, err
 }
 
 func (s *DatabaseService) UpdateDatabase(ctx context.Context, req *pb.UpdateDatabaseRequest) (*longrunningpb.Operation, error) {
-	fqn := req.GetDatabase().GetName()
+	name, err := s.parseDatabaseName(req.GetDatabase().GetName())
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
 
 	existing := &pb.Database{}
 	if err := s.storage.Get(ctx, fqn, existing); err != nil {
 		return nil, err
 	}
 
-	updated := proto.Clone(req.Database).(*pb.Database)
+	updated := ProtoClone(req.Database)
 	populateDefaultsForDatabase(updated)
 	updated.UpdateTime = timestamppb.New(time.Now())
+
+	updated.Etag = computeEtag(updated)
+
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
@@ -116,10 +140,30 @@ func (s *DatabaseService) UpdateDatabase(ctx context.Context, req *pb.UpdateData
 }
 
 func (s *DatabaseService) DeleteDatabase(ctx context.Context, req *pb.DeleteDatabaseRequest) (*longrunningpb.Operation, error) {
-	fqn := req.GetName()
+	name, err := s.parseDatabaseName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+	fqn := name.String()
 
-	deleted := &pb.Database{}
-	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+	// Deletion is soft-delete; and unusually the name changes!
+
+	obj := &pb.Database{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	// The name changes on deletion
+	newName := *name
+	newName.Database = fmt.Sprintf("%x", time.Now().UnixNano())
+	obj.Name = newName.String()
+
+	obj.DeleteTime = timestamppb.New(time.Now())
+	obj.PreviousId = name.Database
+	obj.FreeTier = PtrTo(false)
+
+	obj.Etag = computeEtag(obj)
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
@@ -130,7 +174,7 @@ func (s *DatabaseService) DeleteDatabase(ctx context.Context, req *pb.DeleteData
 	if err != nil {
 		return op, err
 	}
-	response, err := anypb.New(deleted)
+	response, err := anypb.New(obj)
 	if err != nil {
 		return op, err
 	}
@@ -147,22 +191,58 @@ func populateDefaultsForDatabase(obj *pb.Database) {
 	if obj.ConcurrencyMode == pb.Database_CONCURRENCY_MODE_UNSPECIFIED {
 		obj.ConcurrencyMode = pb.Database_PESSIMISTIC
 	}
+
+	if obj.AppEngineIntegrationMode == pb.Database_APP_ENGINE_INTEGRATION_MODE_UNSPECIFIED {
+		obj.AppEngineIntegrationMode = pb.Database_DISABLED
+	}
+
+	if obj.FreeTier == nil {
+		obj.FreeTier = PtrTo(true)
+	}
+
 	if obj.PointInTimeRecoveryEnablement == pb.Database_POINT_IN_TIME_RECOVERY_ENABLEMENT_UNSPECIFIED {
 		obj.PointInTimeRecoveryEnablement = pb.Database_POINT_IN_TIME_RECOVERY_DISABLED
 	}
+
 	if obj.PointInTimeRecoveryEnablement == pb.Database_POINT_IN_TIME_RECOVERY_DISABLED {
 		obj.VersionRetentionPeriod = durationpb.New(time.Hour)
 	} else if obj.PointInTimeRecoveryEnablement == pb.Database_POINT_IN_TIME_RECOVERY_ENABLED {
 		obj.VersionRetentionPeriod = durationpb.New(7 * 24 * time.Hour)
 	}
-	obj.Etag = computeEtag(obj)
+
+	// Seems to clear empty cmek config rather than storing an empty object
+	if obj.CmekConfig != nil && reflect.DeepEqual(obj.CmekConfig, &pb.Database_CmekConfig{}) {
+		obj.CmekConfig = nil
+	}
 }
 
-func computeEtag(obj proto.Message) string {
-	b, err := proto.Marshal(obj)
-	if err != nil {
-		panic(fmt.Sprintf("converting to proto: %v", err))
+type databaseName struct {
+	Project  *projects.ProjectData
+	Database string
+}
+
+func (n *databaseName) String() string {
+	return "projects/" + n.Project.ID + "/databases/" + n.Database
+}
+
+// parseDatabaseName parses a string into a databaseName.
+// The expected form is projects/<projectID>/locations/<region>/zones/<zone>/networks/<networkId>
+func (s *MockService) parseDatabaseName(name string) (*databaseName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "databases" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &databaseName{
+			Project:  project,
+			Database: tokens[3],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
-	hash := md5.Sum(b)
-	return base64.StdEncoding.EncodeToString(hash[:])
 }
