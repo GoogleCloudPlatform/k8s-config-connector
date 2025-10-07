@@ -49,5 +49,9 @@ func firestoreIndexFuzzer() fuzztesting.KRMFuzzer {
 	// We do map array_config, but we can't handle the unspecified value correctly
 	f.Unimplemented_NotYetTriaged(".fields[].array_config")
 
+	f.Unimplemented_NotYetTriaged(".density")
+	f.Unimplemented_NotYetTriaged(".multikey")
+	f.Unimplemented_NotYetTriaged(".shard_count")
+
 	return f
 }
