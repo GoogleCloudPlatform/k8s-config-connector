@@ -10,6 +10,7 @@ metadata:
   name: firestoredatabase-full-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  appEngineIntegrationMode: ENABLED
   concurrencyMode: OPTIMISTIC
   locationID: us-west2
   pointInTimeRecoveryEnablement: POINT_IN_TIME_RECOVERY_ENABLED
