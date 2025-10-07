@@ -4,71 +4,33 @@
 
 description = "Generates a detailed summary of changes for a new release."
 
+prelude = """
+if ! ./dev/release/generate-crd-diff.sh; then
+  echo "Error generating crd_diff.tmp. Aborting."
+  exit 1
+fi
+"""
+
 prompt = """
-$(
-  echo "Preparing release summary..."
-  COMMIT_HASH=$(git log --grep='^Update alpha CRDs for Release ' --pretty=format:%H -n 1)
-  if [ -n "$COMMIT_HASH" ]; then
-    # 1. CRD Version Upgrades
-    VERSIONS=$(git diff --no-prefix -M $COMMIT_HASH^! | grep -E '^[+-]    cnrm.cloud.google.com/version:' | sed -E 's/.*version: (.*)/\\1/' | paste -d ' ' - -)
-    OLD_VERSION=$(echo "$VERSIONS" | cut -d ' ' -f 1 | head -n 1)
-    NEW_VERSION=$(echo "$VERSIONS" | cut -d ' ' -f 2 | head -n 1)
-    COUNT=$(echo "$VERSIONS" | wc -l)
-    VERSION_UPGRADES="* $COUNT version upgrades in crds/ were upgraded from version $OLD_VERSION to $NEW_VERSION."
+Please act as a release notes generator for the Config Connector project.
+Your task is to analyze the git diff provided below and generate a structured summary based on the provided template.
 
-    # 2. API Version Promotions
-    PROMOTIONS=$(git diff --summary $COMMIT_HASH^! | grep 'rename crds/.*v1alpha1.* => crds/.*v1beta1.*' | sed -E 's/ rename (.*) => (.*) \\(.*\\)/* `\\1` was promoted to `\\2`./' || echo "No API version promotions in this release.")
+Here is the template from 'dev/release/template.md':
+$(cat dev/release/template.md)
 
-    # 3. New CRDs
-    NEW_CRDS=$(git diff --summary $COMMIT_HASH^! | grep 'create mode .* crds/.*' | sed -E 's/ create mode [0-9]+ (.*)/* `\\1`/' || echo "No new CRDs in this release.")
+---
 
-    # 4. Other Notable Changes
-    FILTERED_DIFF=$(git diff $COMMIT_HASH^! | grep -vE '^[+-]    cnrm.cloud.google.com/version:')
-    echo "$FILTERED_DIFF" > filtered_crd_changes.diff
+Here is the git diff from 'crd_diff.tmp':
+$(cat crd_diff.tmp)
 
-    # 5. Verification
-    OPERATOR_VERIFICATION=$(git diff $COMMIT_HASH^! operator/ | grep $NEW_VERSION && echo "Operator channel versions updated to $NEW_VERSION" || echo "Operator channel versions not updated.")
-    MISSED_VERSIONS=$(git diff $COMMIT_HASH^! | grep $OLD_VERSION || echo "No missed old versions found.")
+---
 
-    # Generate Summary
-    echo "Please act as a release notes generator for the Config Connector project."
-    echo "Your task is to analyze the git diff for the commit that updates the CRDs for the new release and generate a structured summary."
-    echo ""
-    echo "The filtered diff has been saved to \`filtered_crd_changes.diff\`."
-    echo ""
-    echo "**CRD Version Upgrades**"
-    echo ""
-    echo "CRD Version Upgrades:"
-    echo "$VERSION_UPGRADES"
-    echo ""
-    echo "**API Version Promotions (v1alpha1 to v1beta1)**"
-    echo ""
-    echo "API Version Promotions (v1alpha1 to v1beta1):"
-    echo "$PROMOTIONS"
-    echo ""
-    echo "**New CRDs**"
-    echo ""
-    echo "New CRDs:"
-    echo "$NEW_CRDS"
-    echo ""
-    echo "**Other Notable Changes**"
-    echo ""
-    echo "The filtered diff has been saved to \`filtered_crd_changes.diff\`. Please review this file for a detailed list of other notable changes."
-    echo ""
-    echo "**Verification**"
-    echo ""
-    echo "Based on the new version number you identified in step 1, please perform the following checks using the full diff provided at the beginning:"
-    echo "- Scan the entire diff for any instances of the *old* version number within the \`crds/\` directories that might have been missed during the upgrade. Report any files that seem to have been missed."
-    echo ""
-    echo "Operator Channel Verification:"
-    echo "- $OPERATOR_VERIFICATION"
-    echo ""
-    echo "Missed Old Versions:"
-    echo "- $MISSED_VERSIONS"
-
-  else
-    echo "Could not find 'Update alpha CRDs for Release' commit. Some parts of the summary may be incomplete."
-  fi
-  echo "After the summary generation, follow instructions in .gemini/commands/release/generate-summary.json"
-)
+Please fill in the template with the information you extract from the diff.
+Instructions for filling the template:
+- **[COUNT]**, **[OLD_VERSION]**, **[NEW_VERSION]**: Determine these from changes to 'cnrm.cloud.google.com/version:' annotations.
+- **[RENAMED_FILE_OLD]** and **[RENAMED_FILE_NEW]**: Find file renames from 'v1alpha1' to 'v1beta1'.
+- **[NEW_CRD_FILE]**: Find newly created CRD files.
+- **[FIELD_NAME]** and **[RESOURCE_NAME]**: Identify newly added fields in the CRD specs.
+- **Other Notable Changes**: Summarize any other significant changes from the diff that are not covered by the other sections.
+- **Missed Old Versions**: Scan the diff for any instances of the old version number that might have been missed.
 """
