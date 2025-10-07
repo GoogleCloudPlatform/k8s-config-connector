@@ -32,6 +32,7 @@ func dashboardFuzzer() fuzztesting.KRMFuzzer {
 
 	fuzzer.UnimplementedFields.Insert(".name")
 	fuzzer.UnimplementedFields.Insert(".labels")
+	fuzzer.UnimplementedFields.Insert(".row_layout.rows[].widgets[].logsPanel.resource_names[].") // the proto 'resource_names' needs to be a special format.
 
 	widgetPaths := []string{
 		".grid_layout.widgets[]",
