@@ -442,7 +442,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   },
   "maxInstances": 10,
   "name": "projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}",
-  "runtime": "nodejs10",
+  "runtime": "nodejs20",
   "serviceAccountEmail": "${projectId}@appspot.gserviceaccount.com",
   "sourceRepository": {
     "url": "https://source.developers.google.com/projects//repos/kcc-cloud-functions/moveable-aliases/main"
@@ -505,7 +505,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "minInstances": 0,
   "name": "projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}",
   "network": "",
-  "runtime": "nodejs10",
+  "runtime": "nodejs20",
   "secretEnvironmentVariables": [],
   "secretVolumes": [],
   "serviceAccountEmail": "${projectId}@appspot.gserviceaccount.com",
@@ -543,7 +543,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "managed-by-cnrm": "true"
   },
   "maxInstances": 7,
-  "runtime": "nodejs10",
+  "runtime": "nodejs20",
   "timeout": "120s",
   "vpcConnector": "projects/${projectId}/locations/us-west2/connectors/c-2-${uniqueId}",
   "vpcConnectorEgressSettings": "ALL_TRAFFIC"
@@ -604,7 +604,7 @@ Grpc-Metadata-Content-Type: application/grpc
   "minInstances": 0,
   "name": "projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}",
   "network": "",
-  "runtime": "nodejs10",
+  "runtime": "nodejs20",
   "secretEnvironmentVariables": [],
   "secretVolumes": [],
   "serviceAccountEmail": "${projectId}@appspot.gserviceaccount.com",
