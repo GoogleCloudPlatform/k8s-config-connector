@@ -193,16 +193,15 @@ func (a *LoggingLinkAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		status := &krm.LoggingLinkStatus{}
-		status.ObservedState = LoggingLinkObservedState_FromProto(mapCtx, a.actual)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
-		}
-		return updateOp.UpdateStatus(ctx, status, nil)
 	} else {
-		return fmt.Errorf("update operation not supported for resource %v %v",
-			a.desired.GroupVersionKind(), k8s.GetNamespacedName(a.desired))
+		log.V(2).Info("update operation not supported for resource", "groupVersionKind", a.desired.GroupVersionKind(), "namespacedName", k8s.GetNamespacedName(a.desired))
 	}
+	status := &krm.LoggingLinkStatus{}
+	status.ObservedState = LoggingLinkObservedState_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
