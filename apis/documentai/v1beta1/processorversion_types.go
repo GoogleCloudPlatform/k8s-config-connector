@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1alpha1"
 	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -50,7 +51,7 @@ type DocumentAIProcessorVersionSpec struct {
 
 type Parent struct {
 	// +required
-	ProcessorRef *ProcessorRef `json:"processorRef"`
+	ProcessorRef *krm.ProcessorRef `json:"processorRef"`
 }
 
 // DocumentAIProcessorVersionStatus defines the config connector machine state of DocumentAIProcessorVersion
@@ -104,13 +105,14 @@ type DocumentAIProcessorVersionObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpdocumentaiprocessorversion;gcpdocumentaiprocessorversions
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
 // DocumentAIProcessorVersion is the Schema for the DocumentAIProcessorVersion API
+// +kubebuilder:storageversion
 // +k8s:openapi-gen=true
 type DocumentAIProcessorVersion struct {
 	metav1.TypeMeta   `json:",inline"`

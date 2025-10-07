@@ -1537,10 +1537,6 @@
 [missing_field] crd=dnsresponsepolicyrules.dns.cnrm.cloud.google.com version=v1alpha1: field ".spec.responsePolicy" is not set in unstructured objects
 [missing_field] crd=documentaiprocessordefaultversions.documentai.cnrm.cloud.google.com version=v1alpha1: field ".spec.version" is not set in unstructured objects
 [missing_field] crd=documentaiprocessors.documentai.cnrm.cloud.google.com version=v1alpha1: field ".spec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=documentaiprocessorversions.documentai.cnrm.cloud.google.com version=v1alpha1: field ".spec.deprecationInfo.deprecationTime" is not set in unstructured objects
-[missing_field] crd=documentaiprocessorversions.documentai.cnrm.cloud.google.com version=v1alpha1: field ".spec.deprecationInfo.replacementProcessorVersion" is not set in unstructured objects
-[missing_field] crd=documentaiprocessorversions.documentai.cnrm.cloud.google.com version=v1alpha1: field ".spec.kmsKeyNameRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=documentaiprocessorversions.documentai.cnrm.cloud.google.com version=v1alpha1: field ".spec.kmsKeyVersionNameRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=edgecontainermachines.edgecontainer.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=edgecontainermachines.edgecontainer.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=edgecontainermachines.edgecontainer.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set

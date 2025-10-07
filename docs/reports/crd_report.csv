@@ -236,7 +236,7 @@ dns.cnrm.cloud.google.com,DNSResponsePolicy,True,False,False,Terraform
 dns.cnrm.cloud.google.com,DNSResponsePolicyRule,True,False,False,Terraform
 documentai.cnrm.cloud.google.com,DocumentAIProcessorDefaultVersion,True,False,False,Terraform
 documentai.cnrm.cloud.google.com,DocumentAIProcessor,True,False,False,Direct
-documentai.cnrm.cloud.google.com,DocumentAIProcessorVersion,True,False,False,Direct
+documentai.cnrm.cloud.google.com,DocumentAIProcessorVersion,True,True,False,Direct
 edgecontainer.cnrm.cloud.google.com,EdgeContainerCluster,False,True,False,Terraform
 edgecontainer.cnrm.cloud.google.com,EdgeContainerMachine,True,False,False,Direct
 edgecontainer.cnrm.cloud.google.com,EdgeContainerNodePool,False,True,False,Terraform
