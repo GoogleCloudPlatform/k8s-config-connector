@@ -16,15 +16,15 @@ package documentai
 
 import (
 	pb "cloud.google.com/go/documentai/apiv1/documentaipb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1alpha1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DocumentSchema_Metadata_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DocumentSchema_Metadata) *krm.DocumentSchema_Metadata {
+func DocumentSchema_Metadata_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.DocumentSchema_Metadata) *krmv1beta1.DocumentSchema_Metadata {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DocumentSchema_Metadata{}
+	out := &krmv1beta1.DocumentSchema_Metadata{}
 	out.DocumentAllowMultipleLabels = direct.LazyPtr(in.DocumentAllowMultipleLabels)
 	out.DocumentSplitter = direct.LazyPtr(in.DocumentSplitter)
 	out.PrefixedNamingOnProperties = direct.LazyPtr(in.PrefixedNamingOnProperties)
@@ -32,7 +32,7 @@ func DocumentSchema_Metadata_v1alpha1_FromProto(mapCtx *direct.MapContext, in *p
 	return out
 }
 
-func DocumentSchema_Metadata_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.DocumentSchema_Metadata) *pb.DocumentSchema_Metadata {
+func DocumentSchema_Metadata_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.DocumentSchema_Metadata) *pb.DocumentSchema_Metadata {
 	if in == nil {
 		return nil
 	}
@@ -44,11 +44,11 @@ func DocumentSchema_Metadata_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	return out
 }
 
-func Evaluation_Metrics_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Evaluation_Metrics) *krm.Evaluation_Metrics {
+func Evaluation_Metrics_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Evaluation_Metrics) *krmv1beta1.Evaluation_Metrics {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Evaluation_Metrics{}
+	out := &krmv1beta1.Evaluation_Metrics{}
 	out.F1Score = direct.LazyPtr(in.F1Score)
 	out.GroundTruthDocumentCount = direct.LazyPtr(in.GroundTruthDocumentCount)
 	out.FalsePositivesCount = direct.LazyPtr(in.FalsePositivesCount)
@@ -62,7 +62,7 @@ func Evaluation_Metrics_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Eva
 	out.TruePositivesCount = direct.LazyPtr(in.TruePositivesCount)
 	return out
 }
-func Evaluation_Metrics_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Evaluation_Metrics) *pb.Evaluation_Metrics {
+func Evaluation_Metrics_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Evaluation_Metrics) *pb.Evaluation_Metrics {
 	if in == nil {
 		return nil
 	}

@@ -21,7 +21,7 @@ import (
 
 	gcp "cloud.google.com/go/documentai/apiv1"
 	documentaipb "cloud.google.com/go/documentai/apiv1/documentaipb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1alpha1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -35,7 +35,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.DocumentAIProcessorVersionGVK, NewProcessorVersionModel)
+	registry.RegisterModel(krmv1beta1.DocumentAIProcessorVersionGVK, NewProcessorVersionModel)
 }
 
 func NewProcessorVersionModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -62,12 +62,12 @@ func (m *modelProcessorVersion) client(ctx context.Context) (*gcp.DocumentProces
 }
 
 func (m *modelProcessorVersion) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	obj := &krm.DocumentAIProcessorVersion{}
+	obj := &krmv1beta1.DocumentAIProcessorVersion{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewProcessorVersionIdentity(ctx, reader, obj)
+	id, err := krmv1beta1.NewProcessorVersionIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -90,9 +90,9 @@ func (m *modelProcessorVersion) AdapterForURL(ctx context.Context, url string) (
 }
 
 type ProcessorVersionAdapter struct {
-	id        *krm.ProcessorVersionIdentity
+	id        *krmv1beta1.ProcessorVersionIdentity
 	gcpClient *gcp.DocumentProcessorClient
-	desired   *krm.DocumentAIProcessorVersion
+	desired   *krmv1beta1.DocumentAIProcessorVersion
 	actual    *documentaipb.ProcessorVersion
 }
 
@@ -133,7 +133,7 @@ func (a *ProcessorVersionAdapter) Create(ctx context.Context, createOp *directba
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := DocumentAIProcessorVersionSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
+	resource := DocumentAIProcessorVersionSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -163,8 +163,8 @@ func (a *ProcessorVersionAdapter) Create(ctx context.Context, createOp *directba
 	}
 	log.V(2).Info("successfully created ProcessorVersion", "name", a.id)
 
-	status := &krm.DocumentAIProcessorVersionStatus{}
-	status.ObservedState = DocumentAIProcessorVersionObservedState_v1alpha1_FromProto(mapCtx, created)
+	status := &krmv1beta1.DocumentAIProcessorVersionStatus{}
+	status.ObservedState = DocumentAIProcessorVersionObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -178,8 +178,8 @@ func (a *ProcessorVersionAdapter) Update(ctx context.Context, updateOp *directba
 	// no-op, just update obj status
 	mapCtx := &direct.MapContext{}
 	updated := a.actual
-	status := &krm.DocumentAIProcessorVersionStatus{}
-	status.ObservedState = DocumentAIProcessorVersionObservedState_v1alpha1_FromProto(mapCtx, updated)
+	status := &krmv1beta1.DocumentAIProcessorVersionStatus{}
+	status.ObservedState = DocumentAIProcessorVersionObservedState_v1beta1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -195,9 +195,9 @@ func (a *ProcessorVersionAdapter) Export(ctx context.Context) (*unstructured.Uns
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.DocumentAIProcessorVersion{}
+	obj := &krmv1beta1.DocumentAIProcessorVersion{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(DocumentAIProcessorVersionSpec_v1alpha1_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(DocumentAIProcessorVersionSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -207,7 +207,7 @@ func (a *ProcessorVersionAdapter) Export(ctx context.Context) (*unstructured.Uns
 	}
 
 	u.SetName(a.actual.Name)
-	u.SetGroupVersionKind(krm.DocumentAIProcessorVersionGVK)
+	u.SetGroupVersionKind(krmv1beta1.DocumentAIProcessorVersionGVK)
 
 	u.Object = uObj
 	return u, nil
