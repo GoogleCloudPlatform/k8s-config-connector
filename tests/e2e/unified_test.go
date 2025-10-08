@@ -411,18 +411,6 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					}
 				}
 
-				if fixture.DeleteDependencies != nil {
-					t.Logf("deleting dependencies to test orphan deletion")
-					deleteDepsOpt := create.CreateDeleteTestOptions{}
-					dependencyYamls := testyaml.SplitYAML(t, fixture.DeleteDependencies)
-					for _, dependBytes := range dependencyYamls {
-						depUnstruct := bytesToUnstructured(t, dependBytes, uniqueID, project)
-						deleteDepsOpt.Create = append(deleteDepsOpt.Create, depUnstruct)
-					}
-					create.SetupNamespacesAndApplyDefaults(h, deleteDepsOpt.Create, project)
-					create.DeleteResources(h, deleteDepsOpt)
-				}
-
 				if ShouldTestRereconiliation(t, testName, primaryResource) {
 					h.Log("Testing re-reconciliation...", "test name", testName, "primary GVK", primaryResource.GroupVersionKind().String())
 					eventsBefore := h.Events.HTTPEvents
