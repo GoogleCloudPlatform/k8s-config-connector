@@ -51,7 +51,7 @@
 | beyondcorp.cnrm.cloud.google.com              | BeyondCorpAppGateway                            | True         | False       | False  | Terraform  |
 | bigquerybiglake.cnrm.cloud.google.com         | BigLakeCatalog                                  | True         | False       | False  | Direct     |
 | bigquerybiglake.cnrm.cloud.google.com         | BigLakeDatabase                                 | True         | False       | False  | Direct     |
-| bigquerybiglake.cnrm.cloud.google.com         | BigLakeTable                                    | True         | False       | False  | Direct     |
+| bigquerybiglake.cnrm.cloud.google.com         | BigLakeTable                                    | True         | True        | False  | Direct     |
 | bigqueryanalyticshub.cnrm.cloud.google.com    | BigQueryAnalyticsHubDataExchange                | True         | True        | False  | Direct     |
 | bigqueryanalyticshub.cnrm.cloud.google.com    | BigQueryAnalyticsHubListing                     | True         | True        | False  | Direct     |
 | bigqueryconnection.cnrm.cloud.google.com      | BigQueryConnectionConnection                    | True         | True        | False  | Direct     |

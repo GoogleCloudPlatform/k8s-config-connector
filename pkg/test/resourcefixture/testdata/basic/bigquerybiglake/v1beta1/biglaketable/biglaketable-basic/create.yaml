@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: bigquerybiglake.cnrm.cloud.google.com/v1alpha1
+apiVersion: bigquerybiglake.cnrm.cloud.google.com/v1beta1
 kind: BigLakeTable
 metadata:
   name: biglaketable-${uniqueId}
@@ -20,14 +20,3 @@ spec:
   parentDatabaseRef:
     external: projects/${projectId}/locations/us-central1/catalogs/biglaketable-dep-${uniqueId}/databases/biglaketable-dep-${uniqueId}
   type: "HIVE"
-  hiveOptions:
-    parameters:
-      "spark.sql.warehouse.dir": "gs://${projectId}}-biglaketable/warehouse"
-      "new.parameter": "new_value"
-    storageDescriptor:
-      locationURI: "gs:/${projectId}-biglaketable/data"
-      inputFormat:  "org.apache.hadoop.mapred.TextInputFormat"
-      outputFormat: "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat"
-      serdeInfo:
-        serializationLib: "org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe"
-    tableType: "EXTERNAL_TABLE"

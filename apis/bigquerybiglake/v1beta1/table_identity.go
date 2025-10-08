@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
 	"context"
 	"fmt"
 	"strings"
 
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -27,13 +28,13 @@ import (
 var _ identity.Identity = &TableIdentity{}
 
 const (
-	TableIDURL = CatalogIDURL + "/tables/{{tableID}}"
+	TableIDURL = krmv1alpha1.CatalogIDURL + "/tables/{{tableID}}"
 )
 
 // TableIdentity defines the resource reference to BigLakeTable, which "External" field
 // holds the GCP identifier for the KRM object.
 type TableIdentity struct {
-	parent *DatabaseIdentity
+	parent *krmv1alpha1.DatabaseIdentity
 	id     string
 }
 
@@ -45,7 +46,7 @@ func (i *TableIdentity) ID() string {
 	return i.id
 }
 
-func (i *TableIdentity) Parent() *DatabaseIdentity {
+func (i *TableIdentity) Parent() *krmv1alpha1.DatabaseIdentity {
 	return i.parent
 }
 
@@ -54,7 +55,7 @@ func (i *TableIdentity) FromExternal(ref string) error {
 	if len(tokens) != 2 {
 		return fmt.Errorf("format of BigLakeTable external=%q was not known (use %s)", ref, TableIDURL)
 	}
-	i.parent = &DatabaseIdentity{}
+	i.parent = &krmv1alpha1.DatabaseIdentity{}
 	if err := i.parent.FromExternal(tokens[0]); err != nil {
 		return err
 	}
@@ -74,7 +75,7 @@ func (obj *BigLakeTable) GetIdentity(ctx context.Context, reader client.Reader) 
 	if err := obj.Spec.ParentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
 	}
-	newIdentity.parent = &DatabaseIdentity{}
+	newIdentity.parent = &krmv1alpha1.DatabaseIdentity{}
 	if err := newIdentity.parent.FromExternal(obj.Spec.ParentRef.GetExternal()); err != nil {
 		return nil, fmt.Errorf("parsing parentRef.external=%q: %w", obj.Spec.ParentRef.GetExternal(), err)
 	}
