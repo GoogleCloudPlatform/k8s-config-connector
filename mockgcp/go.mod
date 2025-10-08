@@ -16,14 +16,16 @@ require (
 	cloud.google.com/go/bigtable v1.38.0
 	cloud.google.com/go/billing v1.20.4
 	cloud.google.com/go/clouddms v1.8.7
-	cloud.google.com/go/compute v1.38.0
+	cloud.google.com/go/compute v1.48.0
 	cloud.google.com/go/dataplex v1.25.3
 	cloud.google.com/go/dataproc/v2 v2.11.2
 	cloud.google.com/go/discoveryengine v1.15.0
 	cloud.google.com/go/edgecontainer v1.4.3
+	cloud.google.com/go/firestore v1.19.0
 	cloud.google.com/go/iam v1.5.2
 	cloud.google.com/go/logging v1.13.0
 	cloud.google.com/go/longrunning v0.6.7
+	cloud.google.com/go/networksecurity v0.10.6
 	cloud.google.com/go/networkservices v0.5.0
 	cloud.google.com/go/notebooks v1.12.6
 	cloud.google.com/go/orgpolicy v1.15.0
@@ -55,7 +57,6 @@ require (
 	cloud.google.com/go/auth v0.16.4 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	cloud.google.com/go/compute/metadata v0.8.0 // indirect
-	cloud.google.com/go/firestore v1.19.0 // indirect
 	cloud.google.com/go/monitoring v1.24.2 // indirect
 	cloud.google.com/go/resourcemanager v1.10.6 // indirect
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0 // indirect
