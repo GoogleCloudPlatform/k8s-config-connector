@@ -101,6 +101,7 @@ type BigLakeTableObservedState struct {
 
 // BigLakeTable is the Schema for the BigLakeTable API
 // +k8s:openapi-gen=true
+// +kubebuilder:storageversion
 type BigLakeTable struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
