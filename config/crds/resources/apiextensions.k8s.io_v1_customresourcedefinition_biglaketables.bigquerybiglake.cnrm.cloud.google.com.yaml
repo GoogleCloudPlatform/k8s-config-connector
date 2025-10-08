@@ -60,63 +60,6 @@ spec:
           spec:
             description: BigLakeTableSpec defines the desired state of BigLakeTable
             properties:
-              catalogRef:
-                description: The BigLakeCatalog that this resource belongs to.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: A reference to an externally managed BigLakeCatalog
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/catalogs/{{catalogID}}".
-                    type: string
-                  name:
-                    description: The name of a BigLakeCatalog resource.
-                    type: string
-                  namespace:
-                    description: The namespace of a BigLakeCatalog resource.
-                    type: string
-                type: object
-              databaseRef:
-                description: 'Required. The parent resource where this table will
-                  be created. Format: projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}'
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
-                properties:
-                  external:
-                    description: A reference to an externally managed BigLakeDatabase
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/databases/{{databaseID}}".
-                    type: string
-                  name:
-                    description: The name of a BigLakeDatabase resource.
-                    type: string
-                  namespace:
-                    description: The namespace of a BigLakeDatabase resource.
-                    type: string
-                type: object
               hiveOptions:
                 description: Options of a Hive table.
                 properties:
@@ -153,11 +96,9 @@ spec:
                     description: Hive table type. For example, MANAGED_TABLE, EXTERNAL_TABLE.
                     type: string
                 type: object
-              location:
-                description: Immutable. The location where the Table should reside.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              parentDatabaseRef:
+                description: 'Required. The parent resource where this table will
+                  be created. Format: projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}'
                 oneOf:
                 - not:
                     required:
@@ -174,18 +115,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed BigQueryBigLakeDatabase
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/catalogs/{{catalogID}}/databases/{{databaseID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a BigQueryBigLakeDatabase resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a BigQueryBigLakeDatabase resource.
                     type: string
                 type: object
               resourceID:
@@ -196,10 +133,7 @@ spec:
                 description: The table type.
                 type: string
             required:
-            - catalogRef
-            - databaseRef
-            - location
-            - projectRef
+            - parentDatabaseRef
             type: object
           status:
             description: BigLakeTableStatus defines the config connector machine state

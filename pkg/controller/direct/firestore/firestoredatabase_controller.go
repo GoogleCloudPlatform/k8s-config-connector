@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"time"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -26,10 +27,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	gcp "cloud.google.com/go/firestore/apiv1"
 	apiv1 "cloud.google.com/go/firestore/apiv1/admin"
 	firestorepb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
-	"google.golang.org/api/option"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -56,25 +55,6 @@ var _ directbase.Model = &model{}
 
 type model struct {
 	config *config.ControllerConfig
-}
-
-func (m *model) client(ctx context.Context) (*gcp.Client, error) {
-	var opts []option.ClientOption
-	if m.config.UserAgent != "" {
-		opts = append(opts, option.WithUserAgent(m.config.UserAgent))
-	}
-	if m.config.HTTPClient != nil {
-		opts = append(opts, option.WithHTTPClient(m.config.HTTPClient))
-	}
-	if m.config.UserProjectOverride && m.config.BillingProject != "" {
-		opts = append(opts, option.WithQuotaProject(m.config.BillingProject))
-	}
-
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building firestore client: %w", err)
-	}
-	return gcpClient, err
 }
 
 func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
@@ -213,6 +193,17 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return fmt.Errorf("FirestoreDatabase %s waiting creation: %w", a.id.FullyQualifiedName(), err)
 	}
 	log.V(2).Info("successfully created FirestoreDatabase", "name", a.id.FullyQualifiedName())
+
+	// HACK: We wait for the negative-cache in the API server(s) to expire.
+	time.Sleep(15 * time.Second)
+	for {
+		_, err := a.firestoreAdminClient.GetDatabase(ctx, &firestorepb.GetDatabaseRequest{Name: a.id.FullyQualifiedName()})
+		if err == nil {
+			break
+		}
+		log.Info("waiting for FirestoreDatabase to be queryable after creation", "name", a.id.FullyQualifiedName(), "error", err)
+		time.Sleep(15 * time.Second)
+	}
 
 	status := &krm.FirestoreDatabaseStatus{}
 	status.ObservedState = FirestoreDatabaseObservedState_FromProto(mapCtx, created)

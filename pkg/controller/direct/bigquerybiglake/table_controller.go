@@ -19,7 +19,6 @@ import (
 	"fmt"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -71,7 +70,7 @@ func (m *modelTable) AdapterForObject(ctx context.Context, reader client.Reader,
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewTableIdentity(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +81,7 @@ func (m *modelTable) AdapterForObject(ctx context.Context, reader client.Reader,
 		return nil, err
 	}
 	return &TableAdapter{
-		id:        id,
+		id:        id.(*krm.TableIdentity),
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
@@ -214,8 +213,15 @@ func (a *TableAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = direct.LazyPtr(a.id.Parent().Location)
+	externalRef := a.actual.GetName()
+	var id *krm.TableIdentity
+	if err := id.FromExternal(externalRef); err != nil {
+		return nil, fmt.Errorf("parsing external ref %q: %w", externalRef, err)
+	}
+	obj.Spec.ParentRef = &krm.BigQueryBigLakeDatabaseRef{
+		External: id.Parent().String(),
+	}
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.ID())
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

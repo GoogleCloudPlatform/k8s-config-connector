@@ -161,6 +161,26 @@ func BigtableLogicalViewObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 		return nil
 	}
 	out := &pb.LogicalView{}
+	// MISSING: Name
+	// MISSING: Etag
+	// MISSING: DeletionProtection
+	return out
+}
+func BigtableMaterializedViewObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MaterializedView) *krmv1alpha1.BigtableMaterializedViewObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.BigtableMaterializedViewObservedState{}
+	// MISSING: Name
+	// MISSING: Etag
+	return out
+}
+func BigtableMaterializedViewObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigtableMaterializedViewObservedState) *pb.MaterializedView {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MaterializedView{}
+	// MISSING: Name
 	// MISSING: Etag
 	return out
 }

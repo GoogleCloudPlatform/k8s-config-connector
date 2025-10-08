@@ -229,13 +229,6 @@ spec:
                    is a backup plan that performs a daily backup at 6pm and retains data for 3
                    months". The description must be at most 2048 characters.
                 type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: 'Optional. This collection of key/value pairs allows
-                  for custom labels to be supplied by the user.  Example, {"tag":
-                  "Weekly"}.'
-                type: object
               location:
                 description: Immutable.
                 type: string
@@ -563,13 +556,6 @@ spec:
                    is a backup plan that performs a daily backup at 6pm and retains data for 3
                    months". The description must be at most 2048 characters.
                 type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: 'Optional. This collection of key/value pairs allows
-                  for custom labels to be supplied by the user.  Example, {"tag":
-                  "Weekly"}.'
-                type: object
               location:
                 description: Immutable.
                 type: string

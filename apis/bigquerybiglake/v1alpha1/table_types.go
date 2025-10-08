@@ -15,7 +15,6 @@
 package v1alpha1
 
 import (
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -25,26 +24,14 @@ var BigLakeTableGVK = GroupVersion.WithKind("BigLakeTable")
 // BigLakeTableSpec defines the desired state of BigLakeTable
 // +kcc:spec:proto=google.cloud.bigquery.biglake.v1.Table
 type BigLakeTableSpec struct {
-	// The project that this resource belongs to.
-	// +required
-	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
-
-	// The BigLakeCatalog that this resource belongs to.
-	// +required
-	CatalogRef *CatalogRef `json:"catalogRef"`
-
 	// Required. The parent resource where this table will be created.
 	// Format:
 	// projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
 	// +required
-	DatabaseRef *DatabaseRef `json:"databaseRef"`
+	ParentRef *BigQueryBigLakeDatabaseRef `json:"parentDatabaseRef,omitempty"`
 
 	// The BigLake Table ID. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	// Immutable. The location where the Table should reside.
-	// +required
-	Location *string `json:"location,omitempty"`
 
 	// The table type.
 	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Table.type
@@ -59,6 +46,7 @@ type BigLakeTableSpec struct {
 	// NOTYET: not supported in Config Connector reconciliation
 	// Output only. The etag for this table.
 	// +kcc:proto:field=google.cloud.bigquery.biglake.v1.Table.etag
+	// +optional
 	// Etag *string `json:"etag,omitempty"`
 }
 
