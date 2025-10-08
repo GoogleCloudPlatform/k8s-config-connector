@@ -123,6 +123,7 @@ LONG_RUNNING_CRUD_TESTS_REGEX="basicalloydbbackup|\
 basicalloydbinstance|\
 basicalloydbsecondarycluster|\
 basicalloydbsecondaryinstance|\
+bigtablematerializedview|\
 cidrconnector|\
 cloudidsendpoint|\
 configcontrollerinstance|\
