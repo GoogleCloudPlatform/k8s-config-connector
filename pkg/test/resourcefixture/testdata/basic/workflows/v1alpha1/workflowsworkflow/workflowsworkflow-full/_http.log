@@ -699,6 +699,10 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
   "callLogLevel": 2,
   "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "description": "Example workflow",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
   "serviceAccount": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
   "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'",
@@ -762,6 +766,10 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
     "description": "Example workflow",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
     "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
     "revisionId": "revision-id-placeholder",
@@ -797,6 +805,10 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "description": "Example workflow",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
   "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
   "revisionId": "revision-id-placeholder",
@@ -820,6 +832,10 @@ X-Goog-Request-Params: workflow.name=projects%2F${projectId}%2Flocations%2Fus-ce
   "callLogLevel": 1,
   "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}-updated",
   "description": "Updated Example workflow",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
   "serviceAccount": "gsa-${uniqueId}-updated@${projectId}.iam.gserviceaccount.com",
   "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'\n    - setFromCallResult:\n        assign:\n          - searchTerm: '${text.split(location, \"-\")[0]}'",
@@ -883,6 +899,10 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}-updated",
     "description": "Updated Example workflow",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
     "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
     "revisionId": "revision-id-placeholder",
@@ -918,6 +938,10 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}-updated",
   "description": "Updated Example workflow",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
   "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
   "revisionId": "revision-id-placeholder",
