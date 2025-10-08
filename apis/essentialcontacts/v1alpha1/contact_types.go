@@ -56,12 +56,6 @@ type EssentialContactsContactSpec struct {
 	// +kcc:proto:field=google.cloud.essentialcontacts.v1.Contact.language_tag
 	//+required
 	LanguageTag *string `json:"languageTag,omitempty"`
-
-	// The last time the validation_state was updated, either manually or
-	//  automatically. A contact is considered stale if its validation state was
-	//  updated more than 1 year ago.
-	// +kcc:proto:field=google.cloud.essentialcontacts.v1.Contact.validate_time
-	ValidateTime *string `json:"validateTime,omitempty"`
 }
 
 // EssentialContactsContactStatus defines the config connector machine state of EssentialContactsContact
@@ -88,6 +82,12 @@ type EssentialContactsContactObservedState struct {
 	//  it is the correct recipient for notifications for a particular resource.
 	// +kcc:proto:field=google.cloud.essentialcontacts.v1.Contact.validation_state
 	ValidationState *string `json:"validationState,omitempty"`
+
+	// The last time the validation_state was updated, either manually or
+	//  automatically. A contact is considered stale if its validation state was
+	//  updated more than 1 year ago.
+	// +kcc:proto:field=google.cloud.essentialcontacts.v1.Contact.validate_time
+	ValidateTime *string `json:"validateTime,omitempty"`
 }
 
 // +genclient
