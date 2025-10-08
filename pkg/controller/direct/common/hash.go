@@ -22,7 +22,6 @@ import (
 	"fmt"
 
 	"google.golang.org/genproto/googleapis/api/annotations"
-	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -36,13 +35,10 @@ func HashProto(obj proto.Message) (string, error) {
 	obj = proto.Clone(obj)
 	NormalizeProto(obj)
 
-	// We use a deterministic json marshaler.
-	// We use UseEnumNumbers to ensure that enums are marshaled to their numeric value,
-	// as some APIs (e.g. Run) can return enums as strings ("GA") in some contexts
-	// and as numbers (4) in others. Using the numeric value gives us a stable hash.
-	j, err := protojson.MarshalOptions{UseEnumNumbers: true}.Marshal(obj)
+	// We use a deterministic proto marshaler.
+	j, err := (proto.MarshalOptions{Deterministic: true}).Marshal(obj)
 	if err != nil {
-		return "", fmt.Errorf("cannot json marshal proto: %w", err)
+		return "", fmt.Errorf("cannot marshal proto: %w", err)
 	}
 
 	h := sha256.Sum256(j)
