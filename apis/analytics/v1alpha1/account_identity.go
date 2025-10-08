@@ -20,52 +20,25 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // AccountIdentity defines the resource reference to AnalyticsAccount, which "External" field
 // holds the GCP identifier for the KRM object.
 type AccountIdentity struct {
-	parent *AccountParent
-	id     string
+	id string
 }
 
 func (i *AccountIdentity) String() string {
-	return i.parent.String() + "/accounts/" + i.id
+	return "accounts/" + i.id
 }
 
 func (i *AccountIdentity) ID() string {
 	return i.id
 }
 
-func (i *AccountIdentity) Parent() *AccountParent {
-	return i.parent
-}
-
-type AccountParent struct {
-	ProjectID string
-	Location  string
-}
-
-func (p *AccountParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
 // New builds a AccountIdentity from the Config Connector Account object.
 func NewAccountIdentity(ctx context.Context, reader client.Reader, obj *AnalyticsAccount) (*AccountIdentity, error) {
-
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
-		return nil, err
-	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
-
 	// Get desired ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
@@ -79,15 +52,9 @@ func NewAccountIdentity(ctx context.Context, reader client.Reader, obj *Analytic
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseAccountExternal(externalRef)
+		actualResourceID, err := ParseAccountExternal(externalRef)
 		if err != nil {
 			return nil, err
-		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -95,23 +62,15 @@ func NewAccountIdentity(ctx context.Context, reader client.Reader, obj *Analytic
 		}
 	}
 	return &AccountIdentity{
-		parent: &AccountParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
 		id: resourceID,
 	}, nil
 }
 
-func ParseAccountExternal(external string) (parent *AccountParent, resourceID string, err error) {
+func ParseAccountExternal(external string) (resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "accounts" {
-		return nil, "", fmt.Errorf("format of AnalyticsAccount external=%q was not known (use projects/{{projectID}}/locations/{{location}}/accounts/{{accountID}})", external)
+	if len(tokens) != 2 || tokens[0] != "accounts" {
+		return "", fmt.Errorf("format of AnalyticsAccount external=%q was not known (use accounts/{{accountID}})", external)
 	}
-	parent = &AccountParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	resourceID = tokens[1]
+	return resourceID, nil
 }

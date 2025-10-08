@@ -51,7 +51,7 @@ func (r *AccountRef) NormalizedExternal(ctx context.Context, reader client.Reade
 	}
 	// From given External
 	if r.External != "" {
-		if _, _, err := ParseAccountExternal(r.External); err != nil {
+		if _, err := ParseAccountExternal(r.External); err != nil {
 			return "", err
 		}
 		return r.External, nil
