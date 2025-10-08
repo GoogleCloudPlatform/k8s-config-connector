@@ -22,9 +22,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
-// IAMPolicySpecDiffers compares two IAMPolicySpec objects and returns true if they differ.
-// Details of the differences are added to the provided diff object.
-func IAMPolicySpecDiffers(desired, actual *IAMPolicySpec, diff *structuredreporting.Diff) bool {
+// IAMPolicySpecDiffers compares two IAMPolicySpec objects and a diff.
+func IAMPolicySpecDiffers(desired, actual *IAMPolicySpec) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 
 	// Compare ResourceReference, which is immutable.
 	if desired.ResourceReference.Kind != actual.ResourceReference.Kind {
@@ -40,21 +40,19 @@ func IAMPolicySpecDiffers(desired, actual *IAMPolicySpec, diff *structuredreport
 		diff.AddField("spec.resourceRef.external", desired.ResourceReference.External, actual.ResourceReference.External)
 	}
 
-	// Compare Bindings
-	if bindingsDiffer(desired.Bindings, actual.Bindings, diff) {
-	}
+	bindingsDiff := compareBindings(desired.Bindings, actual.Bindings)
+	auditConfigDiffs := compareAuditConfigs(desired.AuditConfigs, actual.AuditConfigs)
 
-	// Compare AuditConfigs
-	if auditConfigsDiffer(desired.AuditConfigs, actual.AuditConfigs, diff) {
-	}
+	diff.AddDiff(bindingsDiff)
+	diff.AddDiff(auditConfigDiffs)
 
-	return len(diff.Fields) > 0
+	return diff
 }
 
-// bindingsDiffer compares two slices of IAMPolicyBinding.
+// compareBindings compares two slices of IAMPolicyBinding.
 // It treats the slices as maps keyed by Role, and members are treated as unordered sets.
-func bindingsDiffer(desired, actual []IAMPolicyBinding, diff *structuredreporting.Diff) bool {
-	changed := false
+func compareBindings(desired, actual []IAMPolicyBinding) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	desiredMap := make(map[string]IAMPolicyBinding)
 	for _, b := range desired {
 		sort.Slice(b.Members, func(i, j int) bool {
@@ -78,12 +76,10 @@ func bindingsDiffer(desired, actual []IAMPolicyBinding, diff *structuredreportin
 		actualBinding, ok := actualMap[role]
 		if !ok {
 			diff.AddField(fmt.Sprintf("spec.bindings[role=%v]", role), "present in desired spec", "absent in actual spec")
-			changed = true
 			continue
 		}
 		if !reflect.DeepEqual(desiredBinding, actualBinding) {
 			diff.AddField(fmt.Sprintf("spec.bindings[role=%v]", role), desiredBinding, actualBinding)
-			changed = true
 		}
 	}
 
@@ -91,21 +87,26 @@ func bindingsDiffer(desired, actual []IAMPolicyBinding, diff *structuredreportin
 	for role := range actualMap {
 		if _, ok := desiredMap[role]; !ok {
 			diff.AddField(fmt.Sprintf("spec.bindings[role=%v]", role), "absent in desired spec", "present in actual spec")
-			changed = true
 		}
 	}
-	return changed
+
+	return diff
 }
 
-// auditConfigsDiffer compares two slices of IAMPolicyAuditConfig.
+// compareAuditConfigs compares two slices of IAMPolicyAuditConfig.
 // It treats the slices as maps keyed by Service and canonicalizes inner slices for stable comparison.
-func auditConfigsDiffer(desired, actual []IAMPolicyAuditConfig, diff *structuredreporting.Diff) bool {
-	changed := false
+func compareAuditConfigs(desired, actual []IAMPolicyAuditConfig) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
+
 	// Helper function to canonicalize the inner slices for a stable comparison.
-	canonicalize := func(configs []IAMPolicyAuditConfig) {
+	canonicalize := func(configs []IAMPolicyAuditConfig) []IAMPolicyAuditConfig {
 		// Create a deep copy to avoid modifying the original struct.
 		copiedConfigs := make([]IAMPolicyAuditConfig, len(configs))
 		copy(copiedConfigs, configs)
+
+		for _, ac := range configs {
+			copiedConfigs = append(copiedConfigs, *ac.DeepCopy())
+		}
 
 		for i := range copiedConfigs {
 			for j := range copiedConfigs[i].AuditLogConfigs {
@@ -118,17 +119,19 @@ func auditConfigsDiffer(desired, actual []IAMPolicyAuditConfig, diff *structured
 				return copiedConfigs[i].AuditLogConfigs[j].LogType < copiedConfigs[i].AuditLogConfigs[k].LogType
 			})
 		}
+
+		return copiedConfigs
 	}
 
-	canonicalize(desired)
-	canonicalize(actual)
+	canonicalizedDesired := canonicalize(desired)
+	canonicalizedActual := canonicalize(actual)
 
 	desiredMap := make(map[string]IAMPolicyAuditConfig)
-	for _, ac := range desired {
+	for _, ac := range canonicalizedDesired {
 		desiredMap[ac.Service] = ac
 	}
 	actualMap := make(map[string]IAMPolicyAuditConfig)
-	for _, ac := range actual {
+	for _, ac := range canonicalizedActual {
 		actualMap[ac.Service] = ac
 	}
 
@@ -137,12 +140,10 @@ func auditConfigsDiffer(desired, actual []IAMPolicyAuditConfig, diff *structured
 		actualConfig, ok := actualMap[service]
 		if !ok {
 			diff.AddField(fmt.Sprintf("spec.auditConfigs[service=%v]", service), "present in desired spec", "absent in actual spec")
-			changed = true
 			continue
 		}
 		if !reflect.DeepEqual(desiredConfig, actualConfig) {
 			diff.AddField(fmt.Sprintf("spec.auditConfigs[service=%v]", service), desiredConfig, actualConfig)
-			changed = true
 		}
 	}
 
@@ -150,8 +151,8 @@ func auditConfigsDiffer(desired, actual []IAMPolicyAuditConfig, diff *structured
 	for service := range actualMap {
 		if _, ok := desiredMap[service]; !ok {
 			diff.AddField(fmt.Sprintf("spec.auditConfigs[service=%v]", service), "absent in desired spec", "present in actual spec")
-			changed = true
 		}
 	}
-	return changed
+
+	return diff
 }

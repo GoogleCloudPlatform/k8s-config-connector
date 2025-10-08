@@ -308,8 +308,8 @@ func (r *reconcileContext) doReconcile(pp *iamv1beta1.IAMPartialPolicy) (requeue
 	}
 	desiredPolicy := toDesiredPolicy(desiredPartialPolicy, iamPolicy)
 
-	diff := &structuredreporting.Diff{}
-	if iamv1beta1.IAMPolicySpecDiffers(&desiredPolicy.Spec, &iamPolicy.Spec, diff) {
+	diff := iamv1beta1.IAMPolicySpecDiffers(&desiredPolicy.Spec, &iamPolicy.Spec)
+	if diff.HasDiff() {
 		structuredreporting.ReportDiff(r.Ctx, diff)
 	}
 

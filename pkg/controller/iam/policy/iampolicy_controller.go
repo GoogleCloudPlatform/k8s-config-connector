@@ -287,8 +287,8 @@ func (r *reconcileContext) doReconcile(policy *iamv1beta1.IAMPolicy) (requeue bo
 	// set the etag to an empty string, since IAMPolicy is the authoritative intent, KCC wants to overwrite the underlying policy regardless
 	policy.Spec.Etag = ""
 
-	diff := &structuredreporting.Diff{}
-	if iamv1beta1.IAMPolicySpecDiffers(&oldIAMPolicy.Spec, &policy.Spec, diff) {
+	diff := iamv1beta1.IAMPolicySpecDiffers(&oldIAMPolicy.Spec, &policy.Spec)
+	if diff.HasDiff() {
 		structuredreporting.ReportDiff(r.Ctx, diff)
 	}
 
