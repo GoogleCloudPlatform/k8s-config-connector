@@ -36,6 +36,7 @@ status:
   creator: test@google.com
   etag: abcdef123456
   externalRef: projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}
+  lastModifiedCookie: normalized-cookie
   lastModifier: test@google.com
   latestCreatedExecution:
   - {}
