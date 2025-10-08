@@ -55,6 +55,25 @@ func (r *kmsCryptoKeyRef) normalizedExternal(ctx context.Context, reader client.
 		}
 		return "", fmt.Errorf("reading referenced %s %s: %w", KMSCryptoKeyGVK, key, err)
 	}
-	// todo: resolve KMSCryptoKey from its name
-	return "", nil
+
+	// Get external from status.externalRef. This is the most trustworthy place.
+	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+	if err != nil {
+		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	}
+	if actualExternalRef != "" {
+		return actualExternalRef, nil
+	}
+
+	// Backward compatible for resources still managed by the legacy controller and without the status.externalRef
+	// Use status.selfLink as the external value of cryptokey
+	// status.selfLink: projects/${projectId}/locations/us-central1/keyRings/kmscryptokey-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}
+	selfLink, _, err := unstructured.NestedString(u.Object, "status", "selfLink")
+	if err != nil {
+		return "", fmt.Errorf("reading status.selfLink: %w", err)
+	}
+	if selfLink == "" {
+		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	}
+	return selfLink, nil
 }
