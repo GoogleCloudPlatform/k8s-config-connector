@@ -28,9 +28,9 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	pb "cloud.google.com/go/logging/apiv2/loggingpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/operations"
 )
 
 func (s *configServiceV2) GetLink(ctx context.Context, req *pb.GetLinkRequest) (*pb.Link, error) {
@@ -52,7 +52,7 @@ func (s *configServiceV2) GetLink(ctx context.Context, req *pb.GetLinkRequest) (
 	return obj, nil
 }
 
-func (s *configServiceV2) CreateLink(ctx context.Context, req *pb.CreateLinkRequest) (*operations.Operation, error) {
+func (s *configServiceV2) CreateLink(ctx context.Context, req *pb.CreateLinkRequest) (*longrunningpb.Operation, error) {
 	reqName := req.Parent + "/links/" + req.GetLinkId()
 	name, err := s.parseLinkName(reqName)
 	if err != nil {
@@ -68,11 +68,12 @@ func (s *configServiceV2) CreateLink(ctx context.Context, req *pb.CreateLinkRequ
 
 	s.populateDefaultsForLink(obj)
 
-	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-
-	return s.operations.NewLRO(ctx)
+	return s.MockService.operations.StartLRO(ctx, fqn, nil, func() (proto.Message, error) {
+		if err := s.storage.Create(ctx, fqn, obj); err != nil {
+			return nil, err
+		}
+		return obj, nil
+	})
 }
 
 func (s *configServiceV2) populateDefaultsForLink(obj *pb.Link) {
@@ -81,7 +82,7 @@ func (s *configServiceV2) populateDefaultsForLink(obj *pb.Link) {
 	}
 }
 
-func (s *configServiceV2) DeleteLink(ctx context.Context, req *pb.DeleteLinkRequest) (*operations.Operation, error) {
+func (s *configServiceV2) DeleteLink(ctx context.Context, req *pb.DeleteLinkRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseLinkName(req.Name)
 	if err != nil {
 		return nil, err
@@ -94,7 +95,9 @@ func (s *configServiceV2) DeleteLink(ctx context.Context, req *pb.DeleteLinkRequ
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	return s.MockService.operations.StartLRO(ctx, fqn, nil, func() (proto.Message, error) {
+		return deletedObj, nil
+	})
 }
 
 type linkName struct {
