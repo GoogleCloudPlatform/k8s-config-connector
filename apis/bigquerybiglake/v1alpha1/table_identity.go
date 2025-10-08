@@ -27,8 +27,7 @@ import (
 var _ identity.Identity = &TableIdentity{}
 
 const (
-	TableIDTokens = "tables"
-	TableIDURL    = CatalogIDURL + "/tables/{{tableID}}"
+	TableIDURL = CatalogIDURL + "/tables/{{tableID}}"
 )
 
 // TableIdentity defines the resource reference to BigLakeTable, which "External" field
@@ -39,7 +38,7 @@ type TableIdentity struct {
 }
 
 func (i *TableIdentity) String() string {
-	return i.parent.String() + "/" + TableIDTokens + "/" + i.id
+	return i.parent.String() + "/tables/" + i.id
 }
 
 func (i *TableIdentity) ID() string {
@@ -51,7 +50,7 @@ func (i *TableIdentity) Parent() *DatabaseIdentity {
 }
 
 func (i *TableIdentity) FromExternal(ref string) error {
-	tokens := strings.Split(ref, "/"+TableIDTokens+"/")
+	tokens := strings.Split(ref, "/tables/")
 	if len(tokens) != 2 {
 		return fmt.Errorf("format of BigLakeTable external=%q was not known (use %s)", ref, TableIDURL)
 	}
@@ -66,8 +65,9 @@ func (i *TableIdentity) FromExternal(ref string) error {
 	return nil
 }
 
-// New builds a TableIdentity from the Config Connector Table object.
-func NewTableIdentity(ctx context.Context, reader client.Reader, obj *BigLakeTable) (*TableIdentity, error) {
+var _ identity.Resource = &BigLakeTable{}
+
+func (obj *BigLakeTable) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
 	newIdentity := &TableIdentity{}
 
 	// Resolve Parent

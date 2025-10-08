@@ -27,8 +27,7 @@ import (
 var _ identity.Identity = &DatabaseIdentity{}
 
 const (
-	DatabaseIDTokens = "databases"
-	DatabaseIDURL    = CatalogIDURL + "/databases/{{databaseID}}"
+	DatabaseIDURL = CatalogIDURL + "/databases/{{databaseID}}"
 )
 
 // DatabaseIdentity defines the resource reference to BigLakeDatabase, which "External" field
@@ -39,7 +38,7 @@ type DatabaseIdentity struct {
 }
 
 func (i *DatabaseIdentity) String() string {
-	return i.parent.String() + "/" + DatabaseIDTokens + "/" + i.id
+	return i.parent.String() + "/databases/" + i.id
 }
 
 func (i *DatabaseIdentity) ID() string {
@@ -51,7 +50,7 @@ func (i *DatabaseIdentity) Parent() *CatalogIdentity {
 }
 
 func (i *DatabaseIdentity) FromExternal(ref string) error {
-	tokens := strings.Split(ref, "/"+DatabaseIDTokens+"/")
+	tokens := strings.Split(ref, "/databases/")
 	if len(tokens) != 2 {
 		return fmt.Errorf("format of BigLakeDatabase external=%q was not known (use %s)", ref, DatabaseIDURL)
 	}
@@ -66,8 +65,9 @@ func (i *DatabaseIdentity) FromExternal(ref string) error {
 	return nil
 }
 
-// New builds a DatabaseIdentity from the Config Connector Database object.
-func NewDatabaseIdentity(ctx context.Context, reader client.Reader, obj *BigLakeDatabase) (*DatabaseIdentity, error) {
+var _ identity.Resource = &BigLakeDatabase{}
+
+func (obj *BigLakeDatabase) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
 	newIdentity := &DatabaseIdentity{}
 
 	// Resolve Parent
