@@ -142,7 +142,8 @@ GRPC /google.storage.control.v2.StorageControl/CreateAnywhereCache
     "ttl": "86400s",
     "zone": "us-central1-a"
   },
-  "parent": "projects/_/buckets/storagebucket-sample-${uniqueId}"
+  "parent": "projects/_/buckets/storagebucket-sample-${uniqueId}",
+  "requestId": "1234"
 }
 
 OK
@@ -208,6 +209,7 @@ GRPC /google.storage.control.v2.StorageControl/UpdateAnywhereCache
     "ttl": "56400s",
     "zone": "us-central1-a"
   },
+  "requestId": "1234",
   "updateMask": "admissionPolicy,ttl"
 }
 

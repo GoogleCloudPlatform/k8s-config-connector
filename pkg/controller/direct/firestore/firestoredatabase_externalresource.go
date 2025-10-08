@@ -21,7 +21,6 @@ import (
 
 type FirestoreDatabaseIdentity struct {
 	project           string
-	location          string
 	firestoredatabase string
 }
 
