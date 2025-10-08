@@ -28,8 +28,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	pb "cloud.google.com/go/logging/apiv2/loggingpb"
+	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
