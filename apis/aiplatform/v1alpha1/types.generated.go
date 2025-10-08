@@ -402,7 +402,7 @@ type FeatureNoiseSigma_NoiseSigmaForFeature struct {
 type GcsSource struct {
 	// Required. Google Cloud Storage URI(-s) to the input file(s). May contain
 	//  wildcards. For more information on wildcards, see
-	//  https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames.
+	//  https://cloud.google.com/storage/docs/gcloud-storage/wildcards.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.GcsSource.uris
 	Uris []string `json:"uris,omitempty"`
 }
