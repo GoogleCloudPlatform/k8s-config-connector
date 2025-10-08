@@ -14,14 +14,14 @@
 
 // +generated:mapper
 // krm.group: essentialcontacts.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: google.cloud.essentialcontacts.v1
 
 package essentialcontacts
 
 import (
 	pb "cloud.google.com/go/essentialcontacts/apiv1/essentialcontactspb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/essentialcontacts/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/essentialcontacts/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
