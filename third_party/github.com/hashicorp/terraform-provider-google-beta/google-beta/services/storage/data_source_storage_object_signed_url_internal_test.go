@@ -26,9 +26,9 @@ const fakeCredentials = `{
 }
 `
 
-// The following values are derived from the output of the `gsutil signurl` command.
+// The following values are derived from the output of the `gcloud storage sign-url` command.
 // i.e.
-// gsutil signurl fake_creds.json gs://tf-test-bucket-6159205297736845881/path/to/file
+// gcloud storage sign-url --private-key-file fake_creds.json gs://tf-test-bucket-6159205297736845881/path/to/file
 // URL	                                                HTTP Method     Expiration           Signed URL
 // gs://tf-test-bucket-6159205297736845881/path/to/file	GET             2016-08-12 14:03:30  https://storage.googleapis.com/tf-test-bucket-6159205297736845881/path/to/file?GoogleAccessId=user@gcp-project.iam.gserviceaccount.com&Expires=1470967410&Signature=JJvE2Jc%2BeoagyS1qRACKBGUkgLkKjw7cGymHhtB4IzzN3nbXDqr0acRWGy0%2BEpZ3HYNDalEYsK0lR9Q0WCgty5I0JKmPIuo9hOYa1xTNH%2B22xiWsekxGV%2FcA9FXgWpi%2BFt7fBmMk4dhDe%2BuuYc7N79hd0FYuSBNW1Wp32Bluoe4SNkNAB%2BuIDd9KqPzqs09UAbBoz2y4WxXOQnRyR8GAfb8B%2FDtv62gYjtmp%2F6%2Fyr6xj7byWKZdQt8kEftQLTQmP%2F17Efjp6p%2BXo71Q0F9IhAFiqWfp3Ij8hHDSebLcVb2ULXyHNNQpHBOhFgALrFW3I6Uc3WciLEOsBS9Ej3EGdTg%3D%3D
 
