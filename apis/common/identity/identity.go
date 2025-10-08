@@ -31,7 +31,4 @@ type Identity interface {
 type Resource interface {
 	// GetIdentity gets the identity of a resource.
 	GetIdentity(ctx context.Context, reader client.Reader) (Identity, error)
-
-	// GetParentIdentity gets the parent identity of a resource.
-	GetParentIdentity(ctx context.Context, reader client.Reader) (Identity, error)
 }
