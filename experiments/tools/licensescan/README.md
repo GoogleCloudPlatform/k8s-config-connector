@@ -37,7 +37,7 @@ go run . scan --print --binary ~/bin/kpt | jq -r '.[] | ("======================
 
    ```bash
 
-   grep -r "TODO" | awk -F: '{print }' | xargs -I {} ./dev/tasks/find-license.sh {}
+   grep -r "TODO" | awk -F: '{print $1}' | xargs -I {} ./dev/tasks/find-license.sh {}
 
    ```
 
