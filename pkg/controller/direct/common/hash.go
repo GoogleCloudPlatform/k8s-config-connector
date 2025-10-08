@@ -18,6 +18,7 @@ package common
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 
 	"google.golang.org/genproto/googleapis/api/annotations"
@@ -29,17 +30,17 @@ import (
 
 // HashProto calculates a hash of a proto message.
 // We use this to detect changes to the GCP resource.
-func HashProto(pb proto.Message) (string, error) {
+func HashProto(obj proto.Message) (string, error) {
 	// We normalize the proto by clearing output-only fields etc
 	// We do this on a copy
-	pb = proto.Clone(pb)
-	NormalizeProto(pb)
+	obj = proto.Clone(obj)
+	NormalizeProto(obj)
 
 	// We use a deterministic json marshaler.
 	// We use UseEnumNumbers to ensure that enums are marshaled to their numeric value,
 	// as some APIs (e.g. Run) can return enums as strings ("GA") in some contexts
 	// and as numbers (4) in others. Using the numeric value gives us a stable hash.
-	j, err := protojson.MarshalOptions{UseEnumNumbers: true}.Marshal(pb)
+	j, err := protojson.MarshalOptions{UseEnumNumbers: true}.Marshal(obj)
 	if err != nil {
 		return "", fmt.Errorf("cannot json marshal proto: %w", err)
 	}
@@ -107,4 +108,33 @@ func clearFields(m protoreflect.Message, paths []string) {
 		}
 		m.Clear(fd)
 	}
+}
+
+// Cookie is used for stateful reconciliation.
+// It is stored in the status of the KCC resource.
+type Cookie struct {
+	SpecHash string `json:"specHash"`
+	GCPHash  string `json:"gcpHash"`
+}
+
+// ComposeCookie creates a cookie string from the spec and gcp hashes.
+func ComposeCookie(specHash, gcpHash string) (string, error) {
+	cookie := &Cookie{
+		SpecHash: specHash,
+		GCPHash:  gcpHash,
+	}
+	b, err := json.Marshal(cookie)
+	if err != nil {
+		return "", fmt.Errorf("error marshalling cookie: %w", err)
+	}
+	return string(b), nil
+}
+
+// ParseCookie parses a cookie string.
+func ParseCookie(s string) (*Cookie, error) {
+	cookie := &Cookie{}
+	if err := json.Unmarshal([]byte(s), cookie); err != nil {
+		return nil, fmt.Errorf("error unmarshalling cookie: %w", err)
+	}
+	return cookie, nil
 }

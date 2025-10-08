@@ -190,7 +190,11 @@ func (a *JobAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 	if err != nil {
 		return fmt.Errorf("calculating gcp hash: %w", err)
 	}
-	status.LastModifiedCookie = direct.LazyPtr(fmt.Sprintf("%s/%s", specHash, gcpHash))
+	cookie, err := common.ComposeCookie(specHash, gcpHash)
+	if err != nil {
+		return fmt.Errorf("composing cookie: %w", err)
+	}
+	status.LastModifiedCookie = direct.LazyPtr(cookie)
 
 	return createOp.UpdateStatus(ctx, status, nil)
 }
@@ -208,48 +212,41 @@ func (a *JobAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	if err != nil {
 		return fmt.Errorf("calculating gcp hash: %w", err)
 	}
-	cookie := fmt.Sprintf("%s/%s", specHash, gcpHash)
 
 	if a.lastModifiedCookie != nil {
-		if direct.ValueOf(a.lastModifiedCookie) == cookie {
-			log.V(2).Info("resource is up to date", "name", a.id)
-			// Fast path: Update status with observed state and return.
-			// The status update is important to update conditions and observedGeneration.
-			status := &krm.RunJobStatus{}
-			mapCtx := &direct.MapContext{}
-			status.ObservedState = RunJobObservedState_FromProto(mapCtx, a.actual)
-			if mapCtx.Err() != nil {
-				return mapCtx.Err()
+		cookie, err := common.ParseCookie(direct.ValueOf(a.lastModifiedCookie))
+		if err != nil {
+			log.V(2).Info("could not parse cookie, forcing update", "cookie", direct.ValueOf(a.lastModifiedCookie), "err", err)
+		} else {
+			if cookie.SpecHash == specHash && cookie.GCPHash == gcpHash {
+				log.V(2).Info("resource is up to date", "name", a.id)
+				// Fast path: Update status with observed state and return.
+				// The status update is important to update conditions and observedGeneration.
+				status := &krm.RunJobStatus{}
+				mapCtx := &direct.MapContext{}
+				status.ObservedState = RunJobObservedState_FromProto(mapCtx, a.actual)
+				if mapCtx.Err() != nil {
+					return mapCtx.Err()
+				}
+				status.LastModifiedCookie = a.lastModifiedCookie // Preserve cookie
+				return updateOp.UpdateStatus(ctx, status, nil)
 			}
-			status.LastModifiedCookie = a.lastModifiedCookie // Preserve cookie
-			return updateOp.UpdateStatus(ctx, status, nil)
 		}
 	}
-	a.desired.Name = a.actual.Name // Name is output only, ensure it's set to avoid diffs.
-	paths, err := common.CompareProtoMessage(a.desired, a.actual, common.BasicDiff)
+
+	a.desired.Name = a.actual.Name
+	req := &runpb.UpdateJobRequest{
+		Job: a.desired,
+	}
+	op, err := a.gcpClient.UpdateJob(ctx, req)
 	if err != nil {
-		return err
+		return fmt.Errorf("updating Job %s: %w", a.id, err)
 	}
-
-	updated := a.actual
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
-	} else {
-		log.V(2).Info("fields need update", "name", a.id, "paths", paths)
-
-		req := &runpb.UpdateJobRequest{
-			Job: a.desired,
-		}
-		op, err := a.gcpClient.UpdateJob(ctx, req)
-		if err != nil {
-			return fmt.Errorf("updating Job %s: %w", a.id, err)
-		}
-		updated, err = op.Wait(ctx)
-		if err != nil {
-			return fmt.Errorf("Job %s waiting update: %w", a.id, err)
-		}
-		log.V(2).Info("successfully updated Job", "name", a.id)
+	updated, err := op.Wait(ctx)
+	if err != nil {
+		return fmt.Errorf("Job %s waiting update: %w", a.id, err)
 	}
+	log.V(2).Info("successfully updated Job", "name", a.id)
 
 	mapCtx := &direct.MapContext{}
 	status := &krm.RunJobStatus{}
@@ -262,7 +259,11 @@ func (a *JobAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	if err != nil {
 		return fmt.Errorf("calculating new gcp hash: %w", err)
 	}
-	status.LastModifiedCookie = direct.LazyPtr(fmt.Sprintf("%s/%s", specHash, newGCPHash))
+	cookie, err := common.ComposeCookie(specHash, newGCPHash)
+	if err != nil {
+		return fmt.Errorf("composing cookie: %w", err)
+	}
+	status.LastModifiedCookie = direct.LazyPtr(cookie)
 
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
