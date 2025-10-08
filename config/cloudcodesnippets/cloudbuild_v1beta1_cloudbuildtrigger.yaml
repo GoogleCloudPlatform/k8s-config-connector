@@ -29,8 +29,9 @@ insertText: |
       timeout: \${13:1800s}
       step:
       - id: \${14:download_zip}
-        name: \${15:gcr.io/cloud-builders/gsutil}
+        name: \${15:gcr.io/cloud-builders/gcloud}
         args:
+        - storage
         - \${16:cp}
         - \${17:gs://mybucket/remotefile.zip}
         - \${18:localfile.zip}
