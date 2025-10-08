@@ -446,7 +446,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 				if testPause {
 					opt.SkipWaitForDelete = true
 				}
-				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
+				if os.Getenv("RANDOMIZE_DELETION_ORDER") != "" {
+					opt.DeleteInOrder = false
+				} else if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
 					// If we're doing golden request checks, delete synchronously so that it is reproducible.
 					// Note that this does introduce a dependency that objects are ordered correctly for deletion.
 					opt.DeleteInOrder = true
@@ -462,7 +464,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 				verifyUserAgent(h)
 
 				// Verify events against golden file or records events
-				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+				if (os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "") && os.Getenv("RANDOMIZE_DELETION_ORDER") == "" {
 					events := test.LogEntries(h.Events.HTTPEvents)
 
 					got, normalizers := LegacyNormalize(t, h, project, uniqueID, events)
