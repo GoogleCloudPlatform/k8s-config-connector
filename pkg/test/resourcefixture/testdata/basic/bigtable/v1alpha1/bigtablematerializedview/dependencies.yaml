@@ -26,7 +26,7 @@ spec:
 apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
 kind: BigtableTable
 metadata:
-  name: test-table
+  name: table-${uniqueId}
 spec:
   instanceRef:
     name: mvdep${uniqueId}
