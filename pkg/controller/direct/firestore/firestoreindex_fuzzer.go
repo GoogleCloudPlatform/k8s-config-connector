@@ -29,8 +29,8 @@ func init() {
 
 func firestoreIndexFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Index{},
-		FirestoreIndexSpec_FromProto, FirestoreIndexSpec_ToProto,
-		FirestoreIndexStatus_FromProto, FirestoreIndexStatus_ToProto,
+		FirestoreIndexSpec_v1beta1_FromProto, FirestoreIndexSpec_v1beta1_ToProto,
+		FirestoreIndexStatus_v1beta1_FromProto, FirestoreIndexStatus_v1beta1_ToProto,
 	)
 
 	f.SpecField(".query_scope")
