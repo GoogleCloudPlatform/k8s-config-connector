@@ -210,8 +210,20 @@
 [missing_field] crd=binaryauthorizationattestors.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=binaryauthorizationattestors.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.userOwnedDrydockNote.publicKeys[].asciiArmoredPgpPublicKey" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationattestors.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.userOwnedDrydockNote.publicKeys[].id" is not set in unstructured objects
+[missing_field] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.clusterAdmissionRules.requireAttestationsBy[].external" is not set in unstructured objects
+[missing_field] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.clusterAdmissionRules.requireAttestationsBy[].name" is not set in unstructured objects
+[missing_field] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.clusterAdmissionRules.requireAttestationsBy[].namespace" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultAdmissionRule.requireAttestationsBy[].external" is not set in unstructured objects
 [missing_field] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.defaultAdmissionRule.requireAttestationsBy[].namespace" is not set in unstructured objects
+[missing_field] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.istioServiceIdentityAdmissionRules.requireAttestationsBy[].external" is not set in unstructured objects
+[missing_field] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.istioServiceIdentityAdmissionRules.requireAttestationsBy[].name" is not set in unstructured objects
+[missing_field] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.istioServiceIdentityAdmissionRules.requireAttestationsBy[].namespace" is not set in unstructured objects
+[missing_field] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.kubernetesNamespaceAdmissionRules.requireAttestationsBy[].external" is not set in unstructured objects
+[missing_field] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.kubernetesNamespaceAdmissionRules.requireAttestationsBy[].name" is not set in unstructured objects
+[missing_field] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.kubernetesNamespaceAdmissionRules.requireAttestationsBy[].namespace" is not set in unstructured objects
+[missing_field] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.kubernetesServiceAccountAdmissionRules.requireAttestationsBy[].external" is not set in unstructured objects
+[missing_field] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.kubernetesServiceAccountAdmissionRules.requireAttestationsBy[].name" is not set in unstructured objects
+[missing_field] crd=binaryauthorizationpolicies.binaryauthorization.cnrm.cloud.google.com version=v1beta1: field ".spec.kubernetesServiceAccountAdmissionRules.requireAttestationsBy[].namespace" is not set in unstructured objects
 [missing_field] crd=certificatemanagercertificatemapentries.certificatemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.hostname" is not set in unstructured objects
 [missing_field] crd=certificatemanagercertificates.certificatemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.managed.authorizationAttemptInfo[].details" is not set in unstructured objects
 [missing_field] crd=certificatemanagercertificates.certificatemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.managed.authorizationAttemptInfo[].domain" is not set in unstructured objects
@@ -315,7 +327,6 @@
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceToBuild.repoType" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceToBuild.repositoryRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.sourceToBuild.uri" is not set in unstructured objects
-[missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.tags[]" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.triggerTemplate.commitSha" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.triggerTemplate.invertRegex" is not set in unstructured objects
 [missing_field] crd=cloudbuildtriggers.cloudbuild.cnrm.cloud.google.com version=v1beta1: field ".spec.webhookConfig.secretRef" is not set; neither 'external' nor 'name' are set
@@ -637,8 +648,8 @@
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.namedPorts[].name" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.namedPorts[].port" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.statefulPolicy.preservedState.externalIps" is not set in unstructured objects
-[missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.statefulPolicy.preservedState.internalIps" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.statefulPolicy.preservedState.externalIps.autoDelete" is not set in unstructured objects
+[missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.statefulPolicy.preservedState.internalIps.autoDelete" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.targetPools[].external" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.targetPools[].name" is not set in unstructured objects
 [missing_field] crd=computeinstancegroupmanagers.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.targetPools[].namespace" is not set in unstructured objects
@@ -1472,7 +1483,6 @@
 [missing_field] crd=controllerresources.customize.core.cnrm.cloud.google.com version=v1beta1: field ".spec.replicas" is not set in unstructured objects
 [missing_field] crd=datacatalogpolicytags.datacatalog.cnrm.cloud.google.com version=v1beta1: field ".spec.parentPolicyTagRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataflowflextemplatejobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.additionalExperiments[]" is not set in unstructured objects
-[missing_field] crd=dataflowflextemplatejobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.autoscalingAlgorithm" is not set in unstructured objects
 [missing_field] crd=dataflowflextemplatejobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.enableStreamingEngine" is not set in unstructured objects
 [missing_field] crd=dataflowflextemplatejobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.ipConfiguration" is not set in unstructured objects
 [missing_field] crd=dataflowflextemplatejobs.dataflow.cnrm.cloud.google.com version=v1beta1: field ".spec.kmsKeyNameRef" is not set; neither 'external' nor 'name' are set
@@ -2224,6 +2234,8 @@
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.organizationRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.projectWebRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.projectWebRef.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=identityplatformconfigs.identityplatform.cnrm.cloud.google.com version=v1beta1: field ".spec.blockingFunctions.triggers.functionUriRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=identityplatformconfigs.identityplatform.cnrm.cloud.google.com version=v1beta1: field ".spec.blockingFunctions.triggers.updateTime" is not set in unstructured objects
 [missing_field] crd=identityplatformconfigs.identityplatform.cnrm.cloud.google.com version=v1beta1: field ".spec.notification.sendEmail.smtp.password.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=identityplatformoauthidpconfigs.identityplatform.cnrm.cloud.google.com version=v1beta1: field ".spec.clientSecret.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=identityplatformoauthidpconfigs.identityplatform.cnrm.cloud.google.com version=v1beta1: field ".spec.responseType.code" is not set in unstructured objects
