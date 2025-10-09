@@ -28,7 +28,9 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	// Instances
 	replacements.ReplacePath(".instances[].createTime", PlaceholderTime)
-}
 
+	// Clusters
+	replacements.SortSliceBy(".clusters", "location")
+}
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
 }
