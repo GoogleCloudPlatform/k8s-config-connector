@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 	"slices"
-	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
@@ -61,16 +60,6 @@ func (m *modelMaterializedView) client(ctx context.Context, parentProject string
 	return gcpClient, err
 }
 
-// This helper function converts a fully qualified project like "projects/myproject" into
-// the unqualified project ID, like "myproject".
-func (m *modelMaterializedView) getProjectId(fullyQualifiedProject string) (string, error) {
-	tokens := strings.Split(fullyQualifiedProject, "/")
-	if len(tokens) != 2 || tokens[0] != "projects" {
-		return "", fmt.Errorf("Unexpected format for MaterializedView Parent Project ID=%q was not known (expected projects/{projectID})", fullyQualifiedProject)
-	}
-	return tokens[1], nil
-}
-
 func (m *modelMaterializedView) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.BigtableMaterializedView{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
@@ -84,11 +73,8 @@ func (m *modelMaterializedView) AdapterForObject(ctx context.Context, reader cli
 
 	// Get bigtable instance admin GCP client. Accepts the non-fully qualified project ID.
 	// E.G. "myproject" instead of "projects/myproject"
-	parentProjectId, err := m.getProjectId(id.Parent().ParentString())
-	if err != nil {
-		return nil, err
-	}
-	instanceAdminClient, err := m.client(ctx, parentProjectId)
+	parentProjectID := id.Parent().Parent.ProjectID
+	instanceAdminClient, err := m.client(ctx, parentProjectID)
 	if err != nil {
 		return nil, fmt.Errorf("error creating instance admin client: %w", err)
 	}
@@ -129,16 +115,11 @@ func (a *MaterializedViewAdapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting BigtableMaterializedView %q: %w", a.id, err)
 	}
 
-	deletionProtection := false
-	if MaterializedViewInfo.DeletionProtection == gcp.Protected {
-		deletionProtection = true
+	mapCtx := &direct.MapContext{}
+	if mapCtx.Err() != nil {
+		return false, mapCtx.Err()
 	}
-
-	a.actual = &bigtablepb.MaterializedView{
-		Name:               a.id.String(),
-		Query:              MaterializedViewInfo.Query,
-		DeletionProtection: deletionProtection,
-	}
+	a.actual = BigtableMaterializedViewInfo_ToBigtableMaterializedView(mapCtx, MaterializedViewInfo, a.id)
 	return true, nil
 }
 
@@ -146,30 +127,13 @@ func (a *MaterializedViewAdapter) Find(ctx context.Context) (bool, error) {
 func (a *MaterializedViewAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating MaterializedView", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := BigtableMaterializedViewSpec_ToProto(mapCtx, &desired.Spec)
+	mapCtx := &direct.MapContext{}
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-
-	spec := a.desired.Spec
-
-	gcpDeletionProtection := gcp.None
-	if spec.DeletionProtection != nil {
-		if *spec.DeletionProtection {
-			gcpDeletionProtection = gcp.Protected
-		} else {
-			gcpDeletionProtection = gcp.Unprotected
-		}
-	}
-
-	MaterializedViewInfo := &gcp.MaterializedViewInfo{
-		MaterializedViewID: a.id.ID(),
-		Query:              resource.Query,
-		DeletionProtection: gcpDeletionProtection,
-	}
+	MaterializedViewInfo := BigtableMaterializedViewSpec_ToMaterializedViewInfo(mapCtx, &desired.Spec, a.id)
 	err := a.gcpClient.CreateMaterializedView(ctx, a.id.ParentInstanceIdString(), MaterializedViewInfo)
 	if err != nil {
 		return fmt.Errorf("creating MaterializedView %s: %w", a.id, err)
@@ -211,36 +175,23 @@ func (a *MaterializedViewAdapter) Update(ctx context.Context, updateOp *directba
 	} else {
 		log.V(2).Info("fields need update", "name", a.id, "paths", updateMask.Paths)
 
-		desiredmaterializedview := gcp.MaterializedViewInfo{
-			MaterializedViewID: a.id.ID(),
-			Query:              a.actual.Query,
+		spec := a.desired.Spec
+		spec.Query = &a.actual.Query // immutable
+		if !slices.Contains(updateMask.Paths, "deletion_protection") {
+			spec.DeletionProtection = &a.actual.DeletionProtection
 		}
 
-		if slices.Contains(updateMask.Paths, "deletion_protection") {
-			gcpDeletionProtection := gcp.None
-			if a.desired.Spec.DeletionProtection != nil {
-				if *a.desired.Spec.DeletionProtection {
-					gcpDeletionProtection = gcp.Protected
-				} else {
-					gcpDeletionProtection = gcp.Unprotected
-				}
-			}
-			desiredmaterializedview.DeletionProtection = gcpDeletionProtection
+		mapCtx := &direct.MapContext{}
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
 		}
+		desiredmaterializedview := BigtableMaterializedViewSpec_ToMaterializedViewInfo(mapCtx, &spec, a.id)
 
-		err := a.gcpClient.UpdateMaterializedView(ctx, a.id.ParentInstanceIdString(), desiredmaterializedview)
+		err := a.gcpClient.UpdateMaterializedView(ctx, a.id.ParentInstanceIdString(), *desiredmaterializedview)
 		if err != nil {
 			return fmt.Errorf("updating MaterializedView %s: %w", a.id, err)
 		}
 		log.V(2).Info("successfully updated MaterializedView", "name", a.id)
-		status := &krm.BigtableMaterializedViewStatus{}
-		status.Name = direct.LazyPtr(a.id.String())
-		// TODO: Add ObservedState
-		// status.ObservedState = MaterializedViewObservedState_FromProto(mapCtx, updated)
-		// if mapCtx.Err() != nil {
-		// 	return mapCtx.Err()
-		// }
-		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
 	status := &krm.BigtableMaterializedViewStatus{}

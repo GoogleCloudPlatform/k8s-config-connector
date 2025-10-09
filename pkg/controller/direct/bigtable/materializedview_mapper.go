@@ -20,6 +20,7 @@
 package bigtable
 
 import (
+	gcp "cloud.google.com/go/bigtable"
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -47,4 +48,42 @@ func BigtableMaterializedViewSpec_ToProto(mapCtx *direct.MapContext, in *krmv1al
 		DeletionProtection: *in.DeletionProtection,
 	}
 	return out
+}
+
+func BigtableMaterializedViewSpec_ToMaterializedViewInfo(mapCtx *direct.MapContext, in *krmv1alpha1.BigtableMaterializedViewSpec, identity *krmv1alpha1.MaterializedViewIdentity) *gcp.MaterializedViewInfo {
+	if in == nil || identity == nil {
+		return nil
+	}
+
+	gcpDeletionProtection := gcp.None
+	if in.DeletionProtection != nil {
+		if *in.DeletionProtection {
+			gcpDeletionProtection = gcp.Protected
+		} else {
+			gcpDeletionProtection = gcp.Unprotected
+		}
+	}
+
+	return &gcp.MaterializedViewInfo{
+		MaterializedViewID: identity.ID(),
+		Query:              *in.Query,
+		DeletionProtection: gcpDeletionProtection,
+	}
+}
+
+func BigtableMaterializedViewInfo_ToBigtableMaterializedView(mapCtx *direct.MapContext, in *gcp.MaterializedViewInfo, identity *krmv1alpha1.MaterializedViewIdentity) *pb.MaterializedView {
+	if in == nil || identity == nil {
+		return nil
+	}
+
+	deletionProtection := false
+	if in.DeletionProtection == gcp.Protected {
+		deletionProtection = true
+	}
+
+	return &pb.MaterializedView{
+		Name:               identity.ID(),
+		Query:              in.Query,
+		DeletionProtection: deletionProtection,
+	}
 }
