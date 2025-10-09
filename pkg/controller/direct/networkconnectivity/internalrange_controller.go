@@ -201,9 +201,6 @@ func (a *internalRangeAdapter) Update(ctx context.Context, updateOp *directbase.
 	if desired.Spec.PrefixLength != nil && !reflect.DeepEqual(resource.PrefixLength, a.actual.PrefixLength) {
 		paths = append(paths, "prefixLength")
 	}
-	if desired.Spec.TargetCIDRRange != nil && !reflect.DeepEqual(resource.TargetCidrRange, a.actual.TargetCidrRange) {
-		paths = append(paths, "targetCidrRange")
-	}
 	if desired.Spec.Usage != nil && !reflect.DeepEqual(resource.Usage, a.actual.Usage) {
 		paths = append(paths, "usage")
 	}
