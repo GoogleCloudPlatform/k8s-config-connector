@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
@@ -187,11 +188,11 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	spec := a.desired.Spec
 
 	updateMask := &fieldmaskpb.FieldMask{}
-	if (spec.Query != nil) && (*spec.Query != a.actual.Query) {
+	if !reflect.DeepEqual(spec.Query, a.actual.Query) {
 		updateMask.Paths = append(updateMask.Paths, "query")
 	}
 
-	if (spec.DeletionProtection != nil) && (*spec.DeletionProtection != a.actual.DeletionProtection) {
+	if !reflect.DeepEqual(spec.DeletionProtection, a.actual.DeletionProtection) {
 		updateMask.Paths = append(updateMask.Paths, "deletion_protection")
 	}
 
