@@ -54,7 +54,7 @@ func TestNormalizedExternal(t *testing.T) {
 			ref: &ComputeNetworkRef{
 				External: "invalid-format",
 			},
-			wantErr: `format of computenetwork external="invalid-format" was not known (use projects/{{projectId}}/global/networks/{{networkId}})`,
+			wantErr: `format of computenetwork external="invalid-format" was not known (use https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}} or projects/{{projectId}}/global/networks/{{networkId}})`,
 		},
 		{
 			name: "external is full url",

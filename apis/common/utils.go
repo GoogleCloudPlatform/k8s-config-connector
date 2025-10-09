@@ -32,9 +32,9 @@ func LazyPtr[V comparable](v V) *V {
 	return &v
 }
 
-// FixStaleExternalFormat converts the "External" reference field to the right format if a SelfLink value is used.
+// FixStaleComputeExternalFormat converts the "External" reference field to the right format if a SelfLink value is used.
 // This guarantees the backward compatibility for Compute Beta resources.
-func FixStaleExternalFormat(external string) string {
+func FixStaleComputeExternalFormat(external string) string {
 	external = strings.TrimPrefix(external, "https://www.googleapis.com/compute/v1/")
 	external = strings.TrimPrefix(external, "https://www.googleapis.com/compute/v1beta1/")
 	external = strings.TrimPrefix(external, "https://www.googleapis.com/compute/beta/")

@@ -18,6 +18,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 )
 
@@ -52,12 +54,13 @@ func ParseComputeNetworkExternal(external string) (*NetworkIdentity, error) {
 	if external == "" {
 		return nil, fmt.Errorf("empty ComputeNetwork external value")
 	}
-	tokens := strings.Split(external, "/")
+	trimmedExternal := common.FixStaleComputeExternalFormat(external)
+	tokens := strings.Split(trimmedExternal, "/")
 	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "networks" {
 		return &NetworkIdentity{
 			parent: parent.ProjectParent{ProjectID: tokens[1]},
 			id:     tokens[4],
 		}, nil
 	}
-	return nil, fmt.Errorf("format of computenetwork external=%q was not known (use projects/{{projectId}}/global/networks/{{networkId}})", external)
+	return nil, fmt.Errorf("format of computenetwork external=%q was not known (use https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}} or projects/{{projectId}}/global/networks/{{networkId}})", external)
 }

@@ -55,13 +55,12 @@ func (r *ComputeNetworkRef) NormalizedExternal(ctx context.Context, reader clien
 	if r.External != "" && r.Name != "" {
 		return "", fmt.Errorf("cannot specify both name and external on %s reference", ComputeNetworkGVK.Kind)
 	}
-	// For backward compatibility, we are not validating the external format.
 	if r.External != "" {
-		external := common.FixStaleExternalFormat(r.External)
-		_, err := ParseComputeNetworkExternal(external)
+		_, err := ParseComputeNetworkExternal(r.External)
 		if err != nil {
 			return "", err
 		}
+		external := common.FixStaleComputeExternalFormat(r.External)
 		r.External = external
 		return r.External, nil
 	}
@@ -99,7 +98,7 @@ func (r *ComputeNetworkRef) NormalizedExternal(ctx context.Context, reader clien
 		return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 	}
 
-	external := common.FixStaleExternalFormat(selfLink)
+	external := common.FixStaleComputeExternalFormat(selfLink)
 	r.External = external
 	return r.External, nil
 }
