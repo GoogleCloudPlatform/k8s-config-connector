@@ -261,6 +261,7 @@
 | firebasestorage.cnrm.cloud.google.com         | FirebaseStorageBucket                           | True         | False       | False  | Terraform  |
 | firebase.cnrm.cloud.google.com                | FirebaseWebApp                                  | True         | False       | False  | Terraform  |
 | firestore.cnrm.cloud.google.com               | FirestoreDatabase                               | True         | True        | False  | Direct     |
+| firestore.cnrm.cloud.google.com               | FirestoreField                                  | True         | False       | False  | Direct     |
 | firestore.cnrm.cloud.google.com               | FirestoreIndex                                  | False        | True        | False  | Terraform  |
 | resourcemanager.cnrm.cloud.google.com         | Folder                                          | False        | True        | False  | Terraform  |
 | gkebackup.cnrm.cloud.google.com               | GKEBackupBackupPlan                             | True         | False       | False  | Direct     |
