@@ -14,6 +14,8 @@
 
 package common
 
+import "strings"
+
 func ValueOf[T any](t *T) T {
 	var zeroVal T
 	if t == nil {
@@ -28,4 +30,14 @@ func LazyPtr[V comparable](v V) *V {
 		return nil
 	}
 	return &v
+}
+
+// FixStaleComputeExternalFormat converts the "External" reference field to the right format if a SelfLink value is used.
+// This guarantees the backward compatibility for Compute Beta resources.
+func FixStaleComputeExternalFormat(external string) string {
+	external = strings.TrimPrefix(external, "https://www.googleapis.com/compute/v1/")
+	external = strings.TrimPrefix(external, "https://www.googleapis.com/compute/v1beta1/")
+	external = strings.TrimPrefix(external, "https://www.googleapis.com/compute/beta/")
+	external = strings.TrimPrefix(external, "/")
+	return external
 }
