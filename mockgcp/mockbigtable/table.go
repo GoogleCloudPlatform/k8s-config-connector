@@ -46,7 +46,7 @@ func (s *tableAdminServer) GetTable(ctx context.Context, req *pb.GetTableRequest
 	obj := &pb.Table{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Table not found: %v", name.String())
+			return nil, status.Errorf(codes.NotFound, "Not found: %v", name.String())
 		}
 		return nil, err
 	}
