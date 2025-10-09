@@ -59,5 +59,5 @@ func ParseComputeNetworkExternal(external string) (*NetworkIdentity, error) {
 			id:     tokens[4],
 		}, nil
 	}
-	return nil, fmt.Errorf("format of computenetwork external=%q was not known (use projects/<project>/global/networks/<networkid>)", external)
+	return nil, fmt.Errorf("format of computenetwork external=%q was not known (use projects/{{projectId}}/global/networks/{{networkId}})", external)
 }
