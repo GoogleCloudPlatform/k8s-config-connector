@@ -14,8 +14,8 @@
 
 // +generated:types
 // krm.group: essentialcontacts.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: google.cloud.essentialcontacts.v1
 // resource: EssentialContactsContact:Contact
 
-package v1alpha1
+package v1beta1
