@@ -59,7 +59,7 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterFirestoreAdminServer(grpcServer, &DatabaseService{MockService: s})
+	pb.RegisterFirestoreAdminServer(grpcServer, &firestoreAdminServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {

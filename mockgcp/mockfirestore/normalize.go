@@ -31,6 +31,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".response.earliestVersionTime", TimePlaceholder)
 	replacements.ReplacePath(".earliestVersionTime", TimePlaceholder)
 
+	// Fields
+	replacements.ReplacePath(".response.startTime", TimePlaceholder)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

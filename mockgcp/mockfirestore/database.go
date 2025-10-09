@@ -33,12 +33,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
-type DatabaseService struct {
+type firestoreAdminServer struct {
 	*MockService
 	pb.UnimplementedFirestoreAdminServer
 }
 
-func (s *DatabaseService) GetDatabase(ctx context.Context, req *pb.GetDatabaseRequest) (*pb.Database, error) {
+func (s *firestoreAdminServer) GetDatabase(ctx context.Context, req *pb.GetDatabaseRequest) (*pb.Database, error) {
 	name, err := s.parseDatabaseName(req.Name)
 	if err != nil {
 		return nil, err
@@ -56,7 +56,7 @@ func (s *DatabaseService) GetDatabase(ctx context.Context, req *pb.GetDatabaseRe
 	return obj, nil
 }
 
-func (s *DatabaseService) CreateDatabase(ctx context.Context, req *pb.CreateDatabaseRequest) (*longrunningpb.Operation, error) {
+func (s *firestoreAdminServer) CreateDatabase(ctx context.Context, req *pb.CreateDatabaseRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseDatabaseName(req.Parent + "/databases/" + req.DatabaseId)
 	if err != nil {
 		return nil, err
@@ -99,7 +99,7 @@ func (s *DatabaseService) CreateDatabase(ctx context.Context, req *pb.CreateData
 	return op, err
 }
 
-func (s *DatabaseService) UpdateDatabase(ctx context.Context, req *pb.UpdateDatabaseRequest) (*longrunningpb.Operation, error) {
+func (s *firestoreAdminServer) UpdateDatabase(ctx context.Context, req *pb.UpdateDatabaseRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseDatabaseName(req.GetDatabase().GetName())
 	if err != nil {
 		return nil, err
@@ -161,7 +161,7 @@ func (s *DatabaseService) UpdateDatabase(ctx context.Context, req *pb.UpdateData
 	return op, err
 }
 
-func (s *DatabaseService) DeleteDatabase(ctx context.Context, req *pb.DeleteDatabaseRequest) (*longrunningpb.Operation, error) {
+func (s *firestoreAdminServer) DeleteDatabase(ctx context.Context, req *pb.DeleteDatabaseRequest) (*longrunningpb.Operation, error) {
 	name, err := s.parseDatabaseName(req.GetName())
 	if err != nil {
 		return nil, err

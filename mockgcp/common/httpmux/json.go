@@ -48,8 +48,13 @@ func (r *protoResolver) FindMessageByName(message protoreflect.FullName) (protor
 }
 
 func (r *protoResolver) FindMessageByURL(url string) (protoreflect.MessageType, error) {
-	if strings.HasPrefix(url, "type.googleapis.com/google.") {
-		s := "type.googleapis.com/mockgcp." + strings.TrimPrefix(url, "type.googleapis.com/google.")
+	// Default to trying to find the message as-is.
+	mt, err := protoregistry.GlobalTypes.FindMessageByURL(url)
+	if err == nil {
+		return mt, nil
+	}
+	if suffix, ok := strings.CutPrefix(url, "type.googleapis.com/google."); ok {
+		s := "type.googleapis.com/mockgcp." + suffix
 		mt, err := protoregistry.GlobalTypes.FindMessageByURL(s)
 		if err != nil {
 			klog.Warningf("FindMessageByURL(%q) failed: %v", s, err)
@@ -58,7 +63,7 @@ func (r *protoResolver) FindMessageByURL(url string) (protoreflect.MessageType, 
 		}
 	}
 
-	return protoregistry.GlobalTypes.FindMessageByURL(url)
+	return nil, err
 }
 
 func (r *protoResolver) remapName(name protoreflect.FullName) protoreflect.FullName {
