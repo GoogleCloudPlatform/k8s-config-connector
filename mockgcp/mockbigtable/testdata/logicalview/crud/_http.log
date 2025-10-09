@@ -127,7 +127,8 @@ X-Xss-Protection: 0
   "displayName": "test-instance",
   "name": "projects/${projectId}/instances/test-instance-${uniqueId}",
   "state": "READY",
-  "type": "PRODUCTION"
+  "type": "PRODUCTION",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -153,16 +154,13 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateLogicalViewMetadata"
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateLogicalViewMetadata",
+    "originalRequest": {},
+    "requestTime": "2024-04-01T12:34:56.123456Z",
+    "startTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}/locations/us-central1-a/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
-    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
-    "query": "SELECT 1 AS value"
-  }
+  "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}/locations/us-central1-a/operations/${operationID}"
 }
 
 ---
@@ -185,13 +183,21 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateLogicalViewMetadata"
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateLogicalViewMetadata",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {},
+    "requestTime": "2024-04-01T12:34:56.123456Z",
+    "startTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
     "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
-    "query": "SELECT 1 AS value"
+    "query": "SELECT 1 AS value",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -213,8 +219,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
   "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
-  "query": "SELECT 1 AS value"
+  "query": "SELECT 1 AS value",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -242,13 +251,24 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata"
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {
+      "logicalView": {},
+      "updateMask": ""
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z",
+    "startTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
     "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
-    "query": "SELECT 10 AS new_value"
+    "query": "SELECT 10 AS new_value",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -272,13 +292,24 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata"
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {
+      "logicalView": {},
+      "updateMask": ""
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z",
+    "startTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
     "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
-    "query": "SELECT 10 AS new_value"
+    "query": "SELECT 10 AS new_value",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -300,8 +331,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
   "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
-  "query": "SELECT 10 AS new_value"
+  "query": "SELECT 10 AS new_value",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -329,13 +363,25 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata"
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {
+      "logicalView": {},
+      "updateMask": ""
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z",
+    "startTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
+    "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtection": true,
-    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}"
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
+    "query": "SELECT 10 AS new_value",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -359,13 +405,25 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata"
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {
+      "logicalView": {},
+      "updateMask": ""
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z",
+    "startTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
+    "createTime": "2024-04-01T12:34:56.123456Z",
     "deletionProtection": true,
-    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}"
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
+    "query": "SELECT 10 AS new_value",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -387,9 +445,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "deletionProtection": true,
+  "etag": "abcdef0123A=",
   "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
-  "query": "SELECT 10 AS new_value"
+  "query": "SELECT 10 AS new_value",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -417,12 +478,24 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata"
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {
+      "logicalView": {},
+      "updateMask": ""
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z",
+    "startTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
-    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}"
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
+    "query": "SELECT 10 AS new_value",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -446,12 +519,24 @@ X-Xss-Protection: 0
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata"
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {
+      "logicalView": {},
+      "updateMask": ""
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z",
+    "startTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
-    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}"
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
+    "query": "SELECT 10 AS new_value",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -473,8 +558,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
   "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
-  "query": "SELECT 10 AS new_value"
+  "query": "SELECT 10 AS new_value",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
