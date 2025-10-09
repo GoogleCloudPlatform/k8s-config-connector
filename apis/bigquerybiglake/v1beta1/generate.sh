@@ -23,13 +23,13 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 go run . generate-types \
     --service google.cloud.bigquery.biglake.v1 \
-    --api-version "bigquerybiglake.cnrm.cloud.google.com/v1alpha1" \
-    --resource BigLakeCatalog:Catalog \
-    --resource BigLakeDatabase:Database
+    --api-version "bigquerybiglake.cnrm.cloud.google.com/v1beta1" \
+    --resource BigLakeTable:Table
 
 go run . generate-mapper \
+    --multiversion \
     --service google.cloud.bigquery.biglake.v1 \
-    --api-version "bigquerybiglake.cnrm.cloud.google.com/v1alpha1"
+    --api-version "bigquerybiglake.cnrm.cloud.google.com/v1beta1"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
