@@ -247,8 +247,9 @@ resource "google_cloudbuild_trigger" "build_trigger" {
     tags   = ["team-a", "service-b"]
     timeout = "1800s"
     step {
-      name = "gcr.io/cloud-builders/gsutil"
-      args = ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
+      name = "gcr.io/cloud-builders/gcloud"
+      entrypoint = "gcloud"
+      args = ["storage", "cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
       timeout = "300s"
     }
     step {
@@ -325,8 +326,9 @@ resource "google_cloudbuild_trigger" "build_trigger" {
     images = ["gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA"]
     tags   = ["team-a", "service-b"]
     step {
-      name = "gcr.io/cloud-builders/gsutil"
-      args = ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
+      name = "gcr.io/cloud-builders/gcloud"
+      entrypoint = "gcloud"
+      args = ["storage", "cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
     }
     step {
       name = "gcr.io/cloud-builders/go"
@@ -384,8 +386,9 @@ resource "google_cloudbuild_trigger" "build_trigger" {
     tags   = ["team-a", "service-b", "updated"]
     timeout = "2100s"
     step {
-      name = "gcr.io/cloud-builders/gsutil"
-      args = ["cp", "gs://mybucket/remotefile.zip", "localfile-updated.zip"]
+      name = "gcr.io/cloud-builders/gcloud"
+      entrypoint = "gcloud"
+      args = ["storage", "cp", "gs://mybucket/remotefile.zip", "localfile-updated.zip"]
       timeout = "300s"
     }
     step {
@@ -426,8 +429,9 @@ resource "google_cloudbuild_trigger" "build_trigger" {
     tags   = ["team-a", "service-b"]
     timeout = "1800s"
     step {
-      name = "gcr.io/cloud-builders/gsutil"
-      args = ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
+      name = "gcr.io/cloud-builders/gcloud"
+      entrypoint = "gcloud"
+      args = ["storage", "cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
       timeout = "300s"
     }
     available_secrets {
@@ -454,8 +458,9 @@ resource "google_cloudbuild_trigger" "build_trigger" {
     tags   = ["team-a", "service-b"]
     timeout = "1800s"
     step {
-      name = "gcr.io/cloud-builders/gsutil"
-      args = ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
+      name = "gcr.io/cloud-builders/gcloud"
+      entrypoint = "gcloud"
+      args = ["storage", "cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
       timeout = "300s"
     }
   }
@@ -479,8 +484,9 @@ resource "google_cloudbuild_trigger" "build_trigger" {
     tags   = ["team-a", "service-b"]
     timeout = "1800s"
     step {
-      name = "gcr.io/cloud-builders/gsutil"
-      args = ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
+      name = "gcr.io/cloud-builders/gcloud"
+      entrypoint = "gcloud"
+      args = ["storage", "cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
       timeout = "300s"
     }
   }
@@ -507,8 +513,9 @@ resource "google_cloudbuild_trigger" "build_trigger" {
     tags   = ["team-a", "service-b"]
     timeout = "1800s"
     step {
-      name = "gcr.io/cloud-builders/gsutil"
-      args = ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
+      name = "gcr.io/cloud-builders/gcloud"
+      entrypoint = "gcloud"
+      args = ["storage", "cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
       timeout = "300s"
     }
   }
@@ -663,8 +670,9 @@ resource "google_cloudbuild_trigger" "build_trigger" {
     tags = ["team-a", "service-b"]
     timeout = "900s"
     step {
-      name = "gcr.io/cloud-builders/gsutil"
-      args = ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
+      name = "gcr.io/cloud-builders/gcloud"
+      entrypoint = "gcloud"
+      args = ["storage", "cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
       timeout = "500s"
     }
     step {
@@ -697,8 +705,9 @@ resource "google_cloudbuild_trigger" "build_trigger" {
     tags = ["team-a", "service-b"]
     timeout = "1200"
     step {
-      name = "gcr.io/cloud-builders/gsutil"
-      args = ["cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
+      name = "gcr.io/cloud-builders/gcloud"
+      entrypoint = "gcloud"
+      args = ["storage", "cp", "gs://mybucket/remotefile.zip", "localfile.zip"]
       timeout = "500s"
     }
   }
