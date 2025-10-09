@@ -141,13 +141,7 @@ func (a *MaterializedViewAdapter) Create(ctx context.Context, createOp *directba
 	log.V(2).Info("successfully created MaterializedView", "name", a.id)
 
 	status := &krm.BigtableMaterializedViewStatus{}
-	// TODO: Add Observed State
-	// status.ObservedState = BigtableMaterializedViewObservedState_FromProto(mapCtx, created)
-	// if mapCtx.Err() != nil {
-	// 	return mapCtx.Err()
-	// }
 	status.ExternalRef = direct.LazyPtr(a.id.String())
-	status.Name = direct.LazyPtr(a.id.String())
 	if err := createOp.UpdateStatus(ctx, status, nil); err != nil {
 		return err
 	}
@@ -196,12 +190,6 @@ func (a *MaterializedViewAdapter) Update(ctx context.Context, updateOp *directba
 
 	status := &krm.BigtableMaterializedViewStatus{}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
-	status.Name = direct.LazyPtr(a.id.String())
-	// TODO: Add ObservedState
-	// status.ObservedState = MaterializedViewObservedState_FromProto(mapCtx, updated)
-	// if mapCtx.Err() != nil {
-	// 	return mapCtx.Err()
-	// }
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
