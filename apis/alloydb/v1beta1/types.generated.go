@@ -175,6 +175,17 @@ type Instance_ClientConnectionConfig struct {
 	SSLConfig *SSLConfig `json:"sslConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig
+type Instance_ConnectionPoolConfig struct {
+	// Optional. Whether to enable Managed Connection Pool (MCP).
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Optional. Connection Pool flags, as a list of "key": "value" pairs.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig.flags
+	Flags map[string]string `json:"flags,omitempty"`
+}
+
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.AuthorizedNetwork
 type Instance_InstanceNetworkConfig_AuthorizedNetwork struct {
 	// CIDR range for one authorzied network of the instance.
@@ -241,6 +252,10 @@ type Instance_ObservabilityInstanceConfig struct {
 	//  If not set, default value is "off".
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.track_client_address
 	TrackClientAddress *bool `json:"trackClientAddress,omitempty"`
+
+	// Whether assistive experiences are enabled for this AlloyDB instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ObservabilityInstanceConfig.assistive_experiences_enabled
+	AssistiveExperiencesEnabled *bool `json:"assistiveExperiencesEnabled,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig
@@ -335,6 +350,34 @@ type MaintenanceUpdatePolicy struct {
 	// Preferred windows to perform maintenance. Currently limited to 1.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.maintenance_windows
 	MaintenanceWindows []MaintenanceUpdatePolicy_MaintenanceWindow `json:"maintenanceWindows,omitempty"`
+
+	// Periods to deny maintenance. Currently limited to 1.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.deny_maintenance_periods
+	DenyMaintenancePeriods []MaintenanceUpdatePolicy_DenyMaintenancePeriod `json:"denyMaintenancePeriods,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.DenyMaintenancePeriod
+type MaintenanceUpdatePolicy_DenyMaintenancePeriod struct {
+	// Deny period start date.
+	//  This can be:
+	//  * A full date, with non-zero year, month and day values OR
+	//  * A month and day value, with a zero year for recurring
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.DenyMaintenancePeriod.start_date
+	StartDate *Date `json:"startDate,omitempty"`
+
+	// Deny period end date.
+	//  This can be:
+	//  * A full date, with non-zero year, month and day values OR
+	//  * A month and day value, with a zero year for recurring
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.DenyMaintenancePeriod.end_date
+	EndDate *Date `json:"endDate,omitempty"`
+
+	// Time in UTC when the deny period starts on start_date and ends on
+	//  end_date. This can be:
+	//  * Full time OR
+	//  * All zeros for 00:00:00 UTC
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.MaintenanceUpdatePolicy.DenyMaintenancePeriod.time
+	Time *TimeOfDay `json:"time,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.SslConfig
@@ -347,6 +390,25 @@ type SSLConfig struct {
 	//  supported currently, and is the default value.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.SslConfig.ca_source
 	CASource *string `json:"caSource,omitempty"`
+}
+
+// +kcc:proto=google.type.Date
+type Date struct {
+	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
+	//  a year.
+	// +kcc:proto:field=google.type.Date.year
+	Year *int32 `json:"year,omitempty"`
+
+	// Month of a year. Must be from 1 to 12, or 0 to specify a year without a
+	//  month and day.
+	// +kcc:proto:field=google.type.Date.month
+	Month *int32 `json:"month,omitempty"`
+
+	// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
+	//  to specify a year by itself or a year and month where the day isn't
+	//  significant.
+	// +kcc:proto:field=google.type.Date.day
+	Day *int32 `json:"day,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.Cluster.PrimaryConfig
@@ -386,20 +448,16 @@ type GcaInstanceConfigObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.GeminiClusterConfig
 type GeminiClusterConfigObservedState struct {
-	// Output only. Whether the Gemini in Databases add-on is enabled for the
-	//  cluster. It will be true only if the add-on has been enabled for the
-	//  billing account corresponding to the cluster. Its status is toggled from
-	//  the Admin Control Center (ACC) and cannot be toggled using AlloyDB's APIs.
+	// Output only. Deprecated and unused. This field will be removed in the near
+	//  future.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.GeminiClusterConfig.entitled
 	Entitled *bool `json:"entitled,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.alloydb.v1beta.GeminiInstanceConfig
 type GeminiInstanceConfigObservedState struct {
-	// Output only. Whether the Gemini in Databases add-on is enabled for the
-	//  instance. It will be true only if the add-on has been enabled for the
-	//  billing account corresponding to the instance. Its status is toggled from
-	//  the Admin Control Center (ACC) and cannot be toggled using AlloyDB's APIs.
+	// Output only. Deprecated and unused. This field will be removed in the near
+	//  future.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.GeminiInstanceConfig.entitled
 	Entitled *bool `json:"entitled,omitempty"`
 }
@@ -444,10 +502,34 @@ type Instance_PSCAutoConnectionConfigObservedState struct {
 	IPAddress *string `json:"ipAddress,omitempty"`
 
 	// Output only. The status of the PSC service automation connection.
+	//  Possible values:
+	//    "STATE_UNSPECIFIED" - An invalid state as the default case.
+	//    "ACTIVE" - The connection has been created successfully.
+	//    "FAILED" - The connection is not functional since some resources on the
+	//  connection fail to be created.
+	//    "CREATING" - The connection is being created.
+	//    "DELETING" - The connection is being deleted.
+	//    "CREATE_REPAIRING" - The connection is being repaired to complete
+	//  creation.
+	//    "DELETE_REPAIRING" - The connection is being repaired to complete
+	//  deletion.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.status
 	Status *string `json:"status,omitempty"`
 
 	// Output only. The status of the service connection policy.
+	//  Possible values:
+	//    "STATE_UNSPECIFIED" - Default state, when Connection Map is created
+	//  initially.
+	//    "VALID" - Set when policy and map configuration is valid, and their
+	//  matching can lead to allowing creation of PSC Connections subject to
+	//  other constraints like connections limit.
+	//    "CONNECTION_POLICY_MISSING" - No Service Connection Policy found for
+	//  this network and Service Class
+	//    "POLICY_LIMIT_REACHED" - Service Connection Policy limit reached for
+	//    this network and Service Class
+	//    "CONSUMER_INSTANCE_PROJECT_NOT_ALLOWLISTED" - The consumer instance
+	//  project is not in AllowedGoogleProducersResourceHierarchyLevels of the
+	//  matching ServiceConnectionPolicy.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.PscAutoConnectionConfig.consumer_network_status
 	ConsumerNetworkStatus *string `json:"consumerNetworkStatus,omitempty"`
 }
