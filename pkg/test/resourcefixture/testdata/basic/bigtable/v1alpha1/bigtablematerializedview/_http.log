@@ -213,11 +213,11 @@ OK
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
 
 {
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/test-table",
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/table-${uniqueId}",
   "view": "SCHEMA_VIEW"
 }
 
-error: rpc error: code = NotFound desc = Table not found: projects/${projectId}/instances/mvdep${uniqueId}/tables/test-table
+error: rpc error: code = NotFound desc = Not found: projects/${projectId}/instances/mvdep${uniqueId}/tables/table-${uniqueId}
 
 {}
 
@@ -234,7 +234,7 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/CreateTable
       }
     }
   },
-  "tableId": "test-table"
+  "tableId": "table-${uniqueId}"
 }
 
 OK
@@ -247,7 +247,7 @@ OK
     }
   },
   "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/test-table"
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/table-${uniqueId}"
 }
 
 ---
@@ -255,7 +255,7 @@ OK
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
 
 {
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/test-table",
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/table-${uniqueId}",
   "view": "SCHEMA_VIEW"
 }
 
@@ -266,7 +266,7 @@ OK
     "cf1": {}
   },
   "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/test-table"
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/table-${uniqueId}"
 }
 
 ---
@@ -274,7 +274,7 @@ OK
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
 
 {
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/test-table",
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/table-${uniqueId}",
   "view": "SCHEMA_VIEW"
 }
 
@@ -285,7 +285,7 @@ OK
     "cf1": {}
   },
   "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/test-table"
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/table-${uniqueId}"
 }
 
 ---
@@ -293,10 +293,10 @@ OK
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetMaterializedView
 
 {
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}"
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = Failed to read: projects/{${projectNumber}}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}
+error: rpc error: code = NotFound desc = Failed to read: projects/{${projectNumber}}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}
 
 {}
 
@@ -307,9 +307,9 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateMaterializedView
 {
   "materializedView": {
     "deletionProtection": true,
-    "query": "SELECT _key, COUNT(*) as count from test-table group by _key;"
+    "query": "SELECT _key, COUNT(*) as count from table-${uniqueId} group by _key;"
   },
-  "materializedViewId": "mv-${uniqueId}",
+  "materializedViewId": "bigtablematerializedview-${uniqueId}",
   "parent": "projects/${projectId}/instances/mvdep${uniqueId}"
 }
 
@@ -321,7 +321,7 @@ OK
     "originalRequest": {},
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}/locations/us-central1-a/operations/${operationID}"
 }
 
 ---
@@ -329,7 +329,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}/locations/us-central1-a/operations/${operationID}"
 }
 
 OK
@@ -342,13 +342,13 @@ OK
     "originalRequest": {},
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.MaterializedView",
     "deletionProtection": true,
     "etag": "abcdef0123A=",
-    "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}",
-    "query": "SELECT _key, COUNT(*) as count from test-table group by _key;"
+    "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}",
+    "query": "SELECT _key, COUNT(*) as count from table-${uniqueId} group by _key;"
   }
 }
 
@@ -357,7 +357,7 @@ OK
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetMaterializedView
 
 {
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}"
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}"
 }
 
 OK
@@ -365,8 +365,8 @@ OK
 {
   "deletionProtection": true,
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}",
-  "query": "SELECT _key, COUNT(*) as count from test-table group by _key;"
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}",
+  "query": "SELECT _key, COUNT(*) as count from table-${uniqueId} group by _key;"
 }
 
 ---
@@ -374,7 +374,7 @@ OK
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetMaterializedView
 
 {
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}"
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}"
 }
 
 OK
@@ -382,8 +382,8 @@ OK
 {
   "deletionProtection": true,
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}",
-  "query": "SELECT _key, COUNT(*) as count from test-table group by _key;"
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}",
+  "query": "SELECT _key, COUNT(*) as count from table-${uniqueId} group by _key;"
 }
 
 ---
@@ -392,8 +392,8 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateMaterializedView
 
 {
   "materializedView": {
-    "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}",
-    "query": "SELECT _key, COUNT(*) as count from test-table group by _key;"
+    "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}",
+    "query": "SELECT _key, COUNT(*) as count from table-${uniqueId} group by _key;"
   },
   "updateMask": "query,deletionProtection"
 }
@@ -409,7 +409,7 @@ OK
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}/locations/us-central1-a/operations/${operationID}"
 }
 
 ---
@@ -417,7 +417,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}/locations/us-central1-a/operations/${operationID}"
 }
 
 OK
@@ -433,12 +433,12 @@ OK
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.MaterializedView",
     "etag": "abcdef0123A=",
-    "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}",
-    "query": "SELECT _key, COUNT(*) as count from test-table group by _key;"
+    "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}",
+    "query": "SELECT _key, COUNT(*) as count from table-${uniqueId} group by _key;"
   }
 }
 
@@ -447,15 +447,15 @@ OK
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetMaterializedView
 
 {
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}"
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}"
 }
 
 OK
 
 {
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}",
-  "query": "SELECT _key, COUNT(*) as count from test-table group by _key;"
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}",
+  "query": "SELECT _key, COUNT(*) as count from table-${uniqueId} group by _key;"
 }
 
 ---
@@ -463,15 +463,15 @@ OK
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetMaterializedView
 
 {
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}"
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}"
 }
 
 OK
 
 {
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}",
-  "query": "SELECT _key, COUNT(*) as count from test-table group by _key;"
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}",
+  "query": "SELECT _key, COUNT(*) as count from table-${uniqueId} group by _key;"
 }
 
 ---
@@ -479,7 +479,7 @@ OK
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/DeleteMaterializedView
 
 {
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/mv-${uniqueId}"
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/bigtablematerializedview-${uniqueId}"
 }
 
 OK
@@ -491,7 +491,7 @@ OK
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
 
 {
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/test-table",
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/table-${uniqueId}",
   "view": "SCHEMA_VIEW"
 }
 
@@ -502,7 +502,7 @@ OK
     "cf1": {}
   },
   "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/test-table"
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/table-${uniqueId}"
 }
 
 ---
@@ -510,7 +510,7 @@ OK
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/DeleteTable
 
 {
-  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/test-table"
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/table-${uniqueId}"
 }
 
 OK
