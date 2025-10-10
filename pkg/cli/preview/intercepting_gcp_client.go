@@ -15,6 +15,7 @@
 package preview
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -118,6 +119,13 @@ func (c *interceptingGCPClient) blockedHTTPMethod(req *http.Request) (*http.Resp
 			body = b
 		}
 	}
+
+	// Try to format the body as JSON
+	var formattedBody bytes.Buffer
+	if err := json.Indent(&formattedBody, body, "", "  "); err == nil {
+		body = formattedBody.Bytes()
+	}
+
 	log.Info("blockedHTTPMethod", "req.method", req.Method, "req.url", req.URL.String())
 	return nil, BlockedGCPError{
 		Method: req.Method,

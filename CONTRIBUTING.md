@@ -230,6 +230,23 @@ by creating an Artifact Registry resource through Config Connector.
 
 ### Setup Troubleshooting
 
+#### Command kubebuilder/kustomize/etcd/go not found
+
+If, after running the setup scripts, you get a "command not found" error for `kubebuilder`, `kustomize`, or other tools,
+it is likely because your interactive terminal does not source the `~/.profile` file where the setup scripts add the new
+paths. This is a common issue, as many terminal configurations use `~/.bashrc` or `~/.bash_profile` for interactive sessions.
+
+**To fix this:**
+1.  Identify the lines added by the scripts to your `~/.profile` file. They will look similar to this:
+    ```shell
+    export PATH="/usr/local/kubebuilder/bin:$PATH"
+    export PATH="/usr/local/kustomize/bin:$PATH"
+    export TEST_ASSET_KUBE_APISERVER="${HOME}/kube/bin/kube-apiserver"
+    ```
+1.  Move these lines from `~/.profile` to the correct startup file for your shell (e.g., `~/.bashrc` or `~/.bash_profile`).
+1.  Apply the changes by either running `source ~/.bashrc` (or your chosen file) or by opening a new terminal window.
+1.  You can verify whether the issue is solved by checking the version of the tool you need, e.g. `kubebuilder version`.
+
 #### Looking for error logs
 
 You can look for error logs by checking the controller logs following the [troubleshooting](https://cloud.google.com/config-connector/docs/troubleshooting#check-controller-logs).

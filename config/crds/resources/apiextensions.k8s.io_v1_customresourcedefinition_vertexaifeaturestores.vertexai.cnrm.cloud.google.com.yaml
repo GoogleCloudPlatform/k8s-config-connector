@@ -99,10 +99,6 @@ spec:
                 required:
                 - kmsKeyRef
                 type: object
-              etag:
-                description: Optional. Used to perform consistent read-modify-write
-                  updates. If not set, a blind "overwrite" update happens.
-                type: string
               labels:
                 additionalProperties:
                   type: string

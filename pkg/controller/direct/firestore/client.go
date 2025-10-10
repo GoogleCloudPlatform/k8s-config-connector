@@ -22,19 +22,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 )
 
-type gcpClient struct {
-	config config.ControllerConfig
-}
-
-func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpClient, error) {
-	gcpClient := &gcpClient{
-		config: *config,
-	}
-	return gcpClient, nil
-}
-
-func (m *gcpClient) newFirestoreAdminClient(ctx context.Context) (*api.FirestoreAdminClient, error) {
-	opts, err := m.config.RESTClientOptions()
+func newFirestoreAdminClient(ctx context.Context, config *config.ControllerConfig) (*api.FirestoreAdminClient, error) {
+	opts, err := config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}

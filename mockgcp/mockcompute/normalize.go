@@ -56,6 +56,9 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	// Routes
 	// replacements.ReplacePath(".items[].id", PlaceholderID)
+
+	// BackendService
+	replacements.SortSlice(".backends")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

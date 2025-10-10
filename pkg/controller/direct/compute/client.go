@@ -22,6 +22,8 @@ import (
 	"context"
 	"fmt"
 
+	"google.golang.org/api/option"
+
 	compute "cloud.google.com/go/compute/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 )
@@ -57,6 +59,34 @@ func (m *gcpClient) newNetworkAttachmentsClient(ctx context.Context) (*compute.N
 	client, err := compute.NewNetworkAttachmentsRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building compute networkEdgeSecurityServices client: %w", err)
+
+	}
+	return client, err
+}
+
+func (m *gcpClient) newTargetTcpProxiesClient(ctx context.Context) (*compute.TargetTcpProxiesClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	client, err := compute.NewTargetTcpProxiesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute TargetTcpProxiesClient client: %w", err)
+
+	}
+	return client, err
+}
+
+func (m *gcpClient) newRegionalTargetTcpProxiesClient(ctx context.Context) (*compute.RegionTargetTcpProxiesClient, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewRegionTargetTcpProxiesRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building compute RegionalTargetTcpProxiesClient client: %w", err)
 
 	}
 	return client, err

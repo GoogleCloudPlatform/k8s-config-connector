@@ -29,8 +29,8 @@ func init() {
 
 func bigLakeTableFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Table{},
-		BigLakeTableSpec_FromProto, BigLakeTableSpec_ToProto,
-		BigLakeTableObservedState_FromProto, BigLakeTableObservedState_ToProto,
+		BigLakeTableSpec_v1beta1_FromProto, BigLakeTableSpec_v1beta1_ToProto,
+		BigLakeTableObservedState_v1beta1_FromProto, BigLakeTableObservedState_v1beta1_ToProto,
 	)
 
 	f.SpecFields.Insert(".type")

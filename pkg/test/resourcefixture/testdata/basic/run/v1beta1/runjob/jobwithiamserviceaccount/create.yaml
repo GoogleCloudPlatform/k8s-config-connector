@@ -16,6 +16,8 @@ apiVersion: run.cnrm.cloud.google.com/v1beta1
 kind: RunJob
 metadata:
   name: runjob-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: directh
 spec:
   launchStage: "GA"
   location: "us-central1"

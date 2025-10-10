@@ -203,7 +203,6 @@ func (a *instanceConfigAdapter) Delete(ctx context.Context, deleteOp *directbase
 
 	req := &instancepb.DeleteInstanceConfigRequest{
 		Name: a.id.String(),
-		Etag: direct.ValueOf(a.desired.Spec.Etag),
 		// An option to validate, but not actually execute, a request,
 		// and provide the same response.
 		// todo: shall we support this field in spec?

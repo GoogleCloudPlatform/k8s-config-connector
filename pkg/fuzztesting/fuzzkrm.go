@@ -78,6 +78,12 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_Internal(fi
 	f.UnimplementedFields.Insert(fieldPath)
 }
 
+// Unimplemented_Identity marks the specified fieldPath as not round-tripped,
+// and should be used for fields that are considered identity (URL) rather than being part of the object itself.
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_Identity(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
+}
+
 // Unimplemented_LabelsAnnotations marks the specified fieldPath as not round-tripped,
 // and should be used for fields that are either labels or annotations
 func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_LabelsAnnotations(fieldPath string) {
@@ -197,11 +203,13 @@ func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 	ctx := &direct.MapContext{}
 	krm := f.FromProto(ctx, p1)
 	if ctx.Err() != nil {
+		t.Logf("p1 = %v", prototext.Format(p1))
 		t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
 	}
 
 	p2 := f.ToProto(ctx, krm)
 	if ctx.Err() != nil {
+		t.Logf("p1 = %v", prototext.Format(p1))
 		t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
 	}
 

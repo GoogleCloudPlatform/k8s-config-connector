@@ -508,10 +508,6 @@ spec:
                       resource is created.'
                     type: string
                 type: object
-              etag:
-                description: Used to perform consistent read-modify-write updates.
-                  If not set, a blind "overwrite" update happens.
-                type: string
               explanationSpec:
                 description: |-
                   The default explanation specification for this Model.

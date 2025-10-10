@@ -47,6 +47,7 @@ import (
 	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -198,6 +199,8 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 		}
 		return reconcile.Result{}, err
 	}
+	structuredreporting.ReportReconcileStart(ctx, u)
+	defer structuredreporting.ReportReconcileEnd(ctx, u, res, err)
 	skip, err := resourceactuation.ShouldSkip(u)
 	if err != nil {
 		return reconcile.Result{}, err

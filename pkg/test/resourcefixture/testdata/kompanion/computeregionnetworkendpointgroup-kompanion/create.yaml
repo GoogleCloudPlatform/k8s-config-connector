@@ -1,0 +1,11 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRegionNetworkEndpointGroup
+metadata:
+  name: computeregionnetworkendpointgroup-kompanion-${uniqueId}
+spec:
+  description: NEG for chaosmonkey-ilb-failing-route
+  networkEndpointType: SERVERLESS
+  region: australia-southeast1
+  cloudRun:
+    serviceRef:
+      external: test-httpbin

@@ -20,7 +20,7 @@ import (
 
 	gcp "cloud.google.com/go/orchestration/airflow/service/apiv1"
 	composerpb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"

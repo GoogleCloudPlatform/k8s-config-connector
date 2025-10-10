@@ -770,6 +770,10 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 		return nil, err
 	}
 
+	if req.GetBody().GetInstanceType() != existing.GetInstanceType() {
+		return nil, status.Errorf(codes.InvalidArgument, "Invalid request: instanceType cannot be updated.")
+	}
+
 	if req.GetBody().GetMaintenanceVersion() != "" && req.GetBody().GetMaintenanceVersion() != existing.GetMaintenanceVersion() {
 		// Maintenance version is changing.
 		// Check if any other fields are changing.

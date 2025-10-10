@@ -18,8 +18,8 @@ import (
 	"context"
 	"fmt"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1alpha1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquerybiglake/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -39,7 +39,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.BigLakeTableGVK, NewTableModel)
+	registry.RegisterModel(krmv1beta1.BigLakeTableGVK, NewTableModel)
 }
 
 func NewTableModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -66,12 +66,12 @@ func (m *modelTable) client(ctx context.Context) (*gcp.MetastoreClient, error) {
 }
 
 func (m *modelTable) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	obj := &krm.BigLakeTable{}
+	obj := &krmv1beta1.BigLakeTable{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewTableIdentity(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +82,7 @@ func (m *modelTable) AdapterForObject(ctx context.Context, reader client.Reader,
 		return nil, err
 	}
 	return &TableAdapter{
-		id:        id,
+		id:        id.(*krmv1beta1.TableIdentity),
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
@@ -94,9 +94,9 @@ func (m *modelTable) AdapterForURL(ctx context.Context, url string) (directbase.
 }
 
 type TableAdapter struct {
-	id        *krm.TableIdentity
+	id        *krmv1beta1.TableIdentity
 	gcpClient *gcp.MetastoreClient
-	desired   *krm.BigLakeTable
+	desired   *krmv1beta1.BigLakeTable
 	actual    *bigquerybiglakepb.Table
 }
 
@@ -130,7 +130,7 @@ func (a *TableAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := BigLakeTableSpec_ToProto(mapCtx, &desired.Spec)
+	resource := BigLakeTableSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -146,8 +146,8 @@ func (a *TableAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	}
 	log.V(2).Info("successfully created Table", "name", a.id)
 
-	status := &krm.BigLakeTableStatus{}
-	status.ObservedState = BigLakeTableObservedState_FromProto(mapCtx, created)
+	status := &krmv1beta1.BigLakeTableStatus{}
+	status.ObservedState = BigLakeTableObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -161,7 +161,7 @@ func (a *TableAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	log.V(2).Info("updating Table", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := BigLakeTableSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desiredPb := BigLakeTableSpec_v1beta1_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -193,8 +193,8 @@ func (a *TableAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 
 	log.V(2).Info("successfully updated Table", "name", a.id)
 
-	status := &krm.BigLakeTableStatus{}
-	status.ObservedState = BigLakeTableObservedState_FromProto(mapCtx, updated)
+	status := &krmv1beta1.BigLakeTableStatus{}
+	status.ObservedState = BigLakeTableObservedState_v1beta1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -208,21 +208,28 @@ func (a *TableAdapter) Export(ctx context.Context) (*unstructured.Unstructured, 
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.BigLakeTable{}
+	obj := &krmv1beta1.BigLakeTable{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(BigLakeTableSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(BigLakeTableSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = direct.LazyPtr(a.id.Parent().Location)
+	externalRef := a.actual.GetName()
+	var id *krmv1beta1.TableIdentity
+	if err := id.FromExternal(externalRef); err != nil {
+		return nil, fmt.Errorf("parsing external ref %q: %w", externalRef, err)
+	}
+	obj.Spec.ParentRef = &krmv1alpha1.BigQueryBigLakeDatabaseRef{
+		External: id.Parent().String(),
+	}
+	obj.Spec.ResourceID = direct.LazyPtr(a.id.ID())
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u.SetName(a.id.ID())
-	u.SetGroupVersionKind(krm.BigLakeTableGVK)
+	u.SetGroupVersionKind(krmv1beta1.BigLakeTableGVK)
 
 	u.Object = uObj
 	return u, nil

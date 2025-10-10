@@ -1,0 +1,10 @@
+apiVersion: firestore.cnrm.cloud.google.com/v1beta1
+kind: FirestoreDatabase
+metadata:
+  name: firestoredatabase-${uniqueId}
+spec:
+  concurrencyMode: OPTIMISTIC
+  locationID: us-west2
+  pointInTimeRecoveryEnablement: POINT_IN_TIME_RECOVERY_ENABLED
+  projectRef:
+    external: projects/${projectId}

@@ -25,7 +25,7 @@ var BigLakeDatabaseGVK = GroupVersion.WithKind("BigLakeDatabase")
 // +kcc:spec:proto=google.cloud.bigquery.biglake.v1.Database
 type BigLakeDatabaseSpec struct {
 	// Required. Defines the parent path of the resource.
-	*Parent `json:",inline"`
+	ParentRef *BigQueryBigLakeCatalogRef `json:"parentCatalogRef,omitempty"`
 
 	// The BigLakeDatabase name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

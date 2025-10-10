@@ -72,7 +72,6 @@ func OrgPolicyPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *kr
 	out := &krm.OrgPolicyPolicySpec{}
 	out.Spec = PolicySpec_FromProto(mapCtx, in.GetSpec())
 	out.DryRunSpec = PolicySpec_FromProto(mapCtx, in.GetDryRunSpec())
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	return out
 }
 func OrgPolicyPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.OrgPolicyPolicySpec) *pb.Policy {
@@ -82,7 +81,6 @@ func OrgPolicyPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.OrgPolicyPol
 	out := &pb.Policy{}
 	out.Spec = PolicySpec_ToProto(mapCtx, in.Spec)
 	out.DryRunSpec = PolicySpec_ToProto(mapCtx, in.DryRunSpec)
-	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
 func PolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.PolicySpec) *krm.PolicySpec {
@@ -90,7 +88,6 @@ func PolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.PolicySpec) *krm.Pol
 		return nil
 	}
 	out := &krm.PolicySpec{}
-	out.Etag = direct.LazyPtr(in.GetEtag())
 	// MISSING: UpdateTime
 	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, PolicySpec_PolicyRule_FromProto)
 	out.InheritFromParent = direct.LazyPtr(in.GetInheritFromParent())
@@ -102,7 +99,6 @@ func PolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.PolicySpec) *pb.Polic
 		return nil
 	}
 	out := &pb.PolicySpec{}
-	out.Etag = direct.ValueOf(in.Etag)
 	// MISSING: UpdateTime
 	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, PolicySpec_PolicyRule_ToProto)
 	out.InheritFromParent = direct.ValueOf(in.InheritFromParent)

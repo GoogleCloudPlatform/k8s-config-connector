@@ -29,8 +29,8 @@ func init() {
 
 func DocumentAIProcessorVersionFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.ProcessorVersion{},
-		DocumentAIProcessorVersionSpec_FromProto, DocumentAIProcessorVersionSpec_ToProto,
-		DocumentAIProcessorVersionObservedState_FromProto, DocumentAIProcessorVersionObservedState_ToProto,
+		DocumentAIProcessorVersionSpec_v1beta1_FromProto, DocumentAIProcessorVersionSpec_v1beta1_ToProto,
+		DocumentAIProcessorVersionObservedState_v1beta1_FromProto, DocumentAIProcessorVersionObservedState_v1beta1_ToProto,
 	)
 	f.UnimplementedFields.Insert(".name")
 

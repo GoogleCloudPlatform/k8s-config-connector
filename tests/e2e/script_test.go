@@ -316,6 +316,7 @@ func TestE2EScript(t *testing.T) {
 
 					case "ABANDON-AND-REACQUIRE-WITH-GENERATED-ID":
 						existing := readObject(h, obj.GroupVersionKind(), obj.GetNamespace(), obj.GetName())
+						// Get the server generated id from spec.resourceID(legacy) or status.externalRef(direct)
 						resourceID, _, _ := unstructured.NestedString(existing.Object, "spec", "resourceID")
 						if resourceID == "" {
 							externalRef, _, _ := unstructured.NestedString(existing.Object, "status", "externalRef")
@@ -325,9 +326,17 @@ func TestE2EScript(t *testing.T) {
 							tokens := strings.Split(externalRef, "/")
 							resourceID = tokens[len(tokens)-1]
 						}
-						setAnnotation(h, obj, "cnrm.cloud.google.com/deletion-policy", "abandon")
-						deleteObj := obj.DeepCopy()
+
+						// Abandon the original resource
+						deleteObj := &unstructured.Unstructured{}
+						deleteObj.SetGroupVersionKind(existing.GroupVersionKind())
+						deleteObj.SetNamespace(existing.GetNamespace())
+						deleteObj.SetName(existing.GetName())
+						deleteObj.SetAnnotations(existing.GetAnnotations())
+						setAnnotation(h, deleteObj, "cnrm.cloud.google.com/deletion-policy", "abandon")
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{deleteObj}})
+
+						// Replace placeholder in configuration yaml with the server generated id
 						configuredID, _, _ := unstructured.NestedString(obj.Object, "spec", "resourceID")
 						if configuredID == "" {
 							h.Fatalf("object does not have resourceID configured: %v", obj)
@@ -548,15 +557,19 @@ func touchObject(h *create.Harness, obj *unstructured.Unstructured) {
 
 func setAnnotation(h *create.Harness, obj *unstructured.Unstructured, k, v string) {
 	patch := &unstructured.Unstructured{}
+	patch.Object = obj.Object
 	patch.SetGroupVersionKind(obj.GroupVersionKind())
 	patch.SetNamespace(obj.GetNamespace())
 	patch.SetName(obj.GetName())
-	annotations := map[string]string{
-		k: v,
+
+	annotations := patch.GetAnnotations()
+	if annotations == nil {
+		annotations = make(map[string]string)
 	}
+	annotations[k] = v
 	patch.SetAnnotations(annotations)
 
-	if err := h.GetClient().Patch(h.Ctx, patch, client.Apply, client.FieldOwner("kcc-tests-setannotation"), client.ForceOwnership); err != nil {
+	if err := h.GetClient().Patch(h.Ctx, removeTestFields(patch), client.Apply, client.FieldOwner("kcc-tests-setannotation"), client.ForceOwnership); err != nil {
 		h.Fatalf("error setting annotations on resource: %v", err)
 	}
 }

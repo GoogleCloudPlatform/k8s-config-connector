@@ -36,9 +36,9 @@ func essentialContactsContactFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".email")
 	f.SpecFields.Insert(".notification_category_subscriptions")
 	f.SpecFields.Insert(".language_tag")
-	f.SpecFields.Insert(".validate_time")
 
 	f.StatusFields.Insert(".validation_state")
+	f.StatusFields.Insert(".validate_time")
 
 	f.UnimplementedFields.Insert(".name") // special field
 	return f

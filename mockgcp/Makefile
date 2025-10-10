@@ -135,6 +135,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/kms/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/managedkafka/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/deploy/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/memorystore/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/orgpolicy/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/privilegedaccessmanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/pubsublite/v1/*.proto \
@@ -155,7 +156,6 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/dataflow/v1beta3/*.proto \
 		./third_party/googleapis/mockgcp/devtools/artifactregistry/v1/*.proto \
 		./third_party/googleapis/mockgcp/devtools/cloudbuild/v1/*.proto	 \
-		./third_party/googleapis/mockgcp/firestore/admin/v1/*.proto \
 		./third_party/googleapis/mockgcp/iam/admin/v1/*.proto \
 		./third_party/googleapis/mockgcp/monitoring/dashboard/v1/*.proto \
 		./third_party/googleapis/mockgcp/monitoring/metricsscope/v1/*.proto \
@@ -175,7 +175,6 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/backupdr/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/essentialcontacts/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/networkmanagement/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/networksecurity/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/netapp/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/vmwareengine/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/kms/v1/resources.proto \
@@ -184,7 +183,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/speech/v2/*.proto
-		
+
 
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos:
@@ -213,11 +212,13 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/batch/v1/*.proto \
 		./third_party/googleapis/google/cloud/edgecontainer/v1/*.proto \
 		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
+		./third_party/googleapis/google/cloud/networksecurity/v1beta1/*.proto \
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
 		./third_party/googleapis/google/cloud/dataplex/v1/*.proto \
 		./third_party/googleapis/google/cloud/clouddms/v1/*.proto \
 		./third_party/googleapis/google/cloud/notebooks/v1/*.proto \
 		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
+		./third_party/googleapis/google/firestore/admin/v1/*.proto \
 		./third_party/googleapis/google/iam/v2/*.proto \
 		./third_party/googleapis/google/logging/v2/*.proto
 

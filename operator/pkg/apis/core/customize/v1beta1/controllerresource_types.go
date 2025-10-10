@@ -89,6 +89,10 @@ type ControllerResourceList struct {
 	Items           []ControllerResource `json:"items"`
 }
 
+func (c *ControllerResource) GetCommonStatus() addonv1alpha1.CommonStatus {
+	return c.Status.CommonStatus
+}
+
 func (c *ControllerResource) SetCommonStatus(s addonv1alpha1.CommonStatus) {
 	c.Status.CommonStatus = s
 }

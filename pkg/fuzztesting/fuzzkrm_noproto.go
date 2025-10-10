@@ -146,11 +146,13 @@ func (f *FuzzTest_NoProto[APIType, KRMType]) Fuzz(t *testing.T, seed int64) {
 	ctx := &direct.MapContext{}
 	krm := f.FromAPI(ctx, p1)
 	if ctx.Err() != nil {
+		t.Logf("p1 = %v", p1)
 		t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
 	}
 
 	p2 := f.ToAPI(ctx, krm)
 	if ctx.Err() != nil {
+		t.Logf("p1 = %v", p1)
 		t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
 	}
 

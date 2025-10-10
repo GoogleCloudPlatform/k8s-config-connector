@@ -47,6 +47,26 @@ var (
 			},
 		},
 	}
+	ControllerResourceCRForObservedControllerManagerResources = &customizev1beta1.ControllerResource{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: "cnrm-controller-manager",
+		},
+		Spec: customizev1beta1.ControllerResourceSpec{
+			Containers: []customizev1beta1.ContainerResourceSpec{
+				{
+					Name: "manager",
+					Resources: customizev1beta1.ResourceRequirements{
+						Limits: corev1.ResourceList{
+							corev1.ResourceCPU: resource.MustParse("400m"),
+						},
+						Requests: corev1.ResourceList{
+							corev1.ResourceMemory: resource.MustParse("512Mi"),
+						},
+					},
+				},
+			},
+		},
+	}
 	ControllerResourceCRForControllerManagerReplicas = &customizev1beta1.ControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "cnrm-controller-manager",

@@ -86,5 +86,7 @@ func NetworkManagementConnectivityTestFuzzer() fuzztesting.KRMFuzzer {
 
 	f.UnimplementedFields.Insert(".name") // special field
 
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].serverless_external_connection")
+
 	return f
 }
