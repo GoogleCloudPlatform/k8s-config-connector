@@ -20,7 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BigtableAppProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krmv1beta1.BigtableAppProfileSpec {
+func BigtableAppProfileSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krmv1beta1.BigtableAppProfileSpec {
 	if in == nil {
 		return nil
 	}
@@ -42,7 +42,7 @@ func BigtableAppProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.AppProfi
 	out.StandardIsolation = AppProfile_StandardIsolation_v1beta1_FromProto(mapCtx, in.GetStandardIsolation())
 	return out
 }
-func BigtableAppProfileSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BigtableAppProfileSpec) *pb.AppProfile {
+func BigtableAppProfileSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BigtableAppProfileSpec) *pb.AppProfile {
 	if in == nil {
 		return nil
 	}
