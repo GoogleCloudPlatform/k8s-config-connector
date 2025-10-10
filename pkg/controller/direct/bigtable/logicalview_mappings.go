@@ -20,6 +20,7 @@
 package bigtable
 
 import (
+	gcp "cloud.google.com/go/bigtable"
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -33,9 +34,7 @@ func BigtableLogicalViewSpec_FromProto(mapCtx *direct.MapContext, in *pb.Logical
 	_, resourceID, _ := krmv1alpha1.ParseLogicalViewExternal(in.Name)
 	out.ResourceID = &resourceID
 	out.Query = &in.Query
-
-	// TODO: implement this once DeletionProtection is published in adminpb.logicalview.
-	// out.DeletionProtection = direct.LazyPtr(in.DeletionProtection)
+	out.DeletionProtection = &in.DeletionProtection
 	return out
 }
 
@@ -43,10 +42,42 @@ func BigtableLogicalViewSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.
 	if in == nil {
 		return nil
 	}
-	out := &pb.LogicalView{
-		Query: *in.Query,
+
+	out := &pb.LogicalView{}
+
+	if in.Query != nil {
+		out.Query = *in.Query
 	}
-	// TODO: implement this once DeletionProtection is published in adminpb.logicalview.
-	// out.DeletionProtection = direct.LazyPtr(in.DeletionProtection)
+
+	if in.DeletionProtection != nil {
+		out.DeletionProtection = *in.DeletionProtection
+	}
+	return out
+}
+
+func BigtableLogicalViewSpec_ToLogicalViewInfo(mapCtx *direct.MapContext, in *krmv1alpha1.BigtableLogicalViewSpec, identity *krmv1alpha1.LogicalViewIdentity) *gcp.LogicalViewInfo {
+	if in == nil {
+		return nil
+	}
+	if identity == nil {
+		return nil
+	}
+	gcpDeletionProtection := gcp.Unprotected
+	if in.DeletionProtection != nil {
+		if *in.DeletionProtection {
+			gcpDeletionProtection = gcp.Protected
+		} else {
+			gcpDeletionProtection = gcp.Unprotected
+		}
+	}
+	out := &gcp.LogicalViewInfo{
+		LogicalViewID:      identity.ID(),
+		DeletionProtection: gcpDeletionProtection,
+	}
+
+	if in.Query != nil {
+		out.Query = *in.Query
+	}
+
 	return out
 }

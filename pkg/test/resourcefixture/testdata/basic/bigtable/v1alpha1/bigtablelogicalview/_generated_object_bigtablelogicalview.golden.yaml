@@ -12,6 +12,7 @@ metadata:
   name: lv-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  deletionProtection: false
   instanceRef:
     name: lvdep${uniqueId}
   query: SELECT 2 AS new_value
