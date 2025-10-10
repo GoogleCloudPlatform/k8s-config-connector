@@ -1458,6 +1458,26 @@ jobs:
           path: /tmp/artifacts/
 
 
+  tests-e2e-random-deletion:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+      - name: "Run dev/ci/presubmits/tests-e2e-random-deletion"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-random-deletion
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-tests-e2e-random-deletion
+          path: /tmp/artifacts/
+
+
   tests-e2e-samples-alloydb:
     runs-on: ubuntu-latest
     timeout-minutes: 60
