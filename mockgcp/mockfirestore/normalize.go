@@ -33,6 +33,13 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	// Fields
 	replacements.ReplacePath(".response.startTime", TimePlaceholder)
+
+	// BackupSchedules
+	replacements.ReplacePath(".backupSchedules[].createTime", TimePlaceholder)
+	replacements.ReplacePath(".backupSchedules[].updateTime", TimePlaceholder)
+	replacements.ReplacePath(".createTime", TimePlaceholder)
+	replacements.ReplacePath(".updateTime", TimePlaceholder)
+
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
@@ -52,12 +59,16 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		event.VisitResponseStringValues(func(path string, value string) {
 			switch path {
 			case ".response.name", ".name":
+				tokens := strings.Split(value, "/")
+
 				if previousId != "" {
-					tokens := strings.Split(value, "/")
 					if len(tokens) == 4 && tokens[2] == "databases" {
 						log.Info("normalizing previousId in database name", "path", path, "name", value, "previousId", previousId)
 						replacements.ReplaceStringValue(tokens[3], "${randomDatabaseID}")
 					}
+				}
+				if len(tokens) == 6 && tokens[2] == "databases" && tokens[4] == "backupSchedules" {
+					replacements.ReplaceStringValue(tokens[5], "${backupScheduleID}")
 				}
 			}
 		})
