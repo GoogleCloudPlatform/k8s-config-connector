@@ -15,11 +15,22 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var BatchTaskGVK = GroupVersion.WithKind("BatchTask")
+
+type Parent struct {
+	// Immutable. The location where the alloydb cluster should reside.
+	// +required
+	Location *string `json:"location,omitempty"`
+
+	// The project that this resource belongs to.
+	// +required
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
+}
 
 // BatchTaskSpec defines the desired state of BatchTask
 // +kcc:spec:proto=google.cloud.batch.v1.Task

@@ -532,8 +532,6 @@ spec:
                     type: array
                 type: object
               location:
-                description: Immutable. The location where the alloydb cluster should
-                  reside.
                 type: string
               logsPolicy:
                 description: Log preservation policy for the Job.
@@ -637,7 +635,7 @@ spec:
                 format: int64
                 type: integer
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
