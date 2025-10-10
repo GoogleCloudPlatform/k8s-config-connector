@@ -43,12 +43,12 @@ func firestoreDatabaseFuzzer() fuzztesting.KRMFuzzer {
 
 	// Default value fields set by controller
 	f.UnimplementedFields.Insert(".type")
-	f.UnimplementedFields.Insert(".app_engine_integration_mode")
 	f.UnimplementedFields.Insert(".delete_protection_state")
 
 	f.SpecField(".location_id")
 	f.SpecField(".concurrency_mode")
 	f.SpecField(".point_in_time_recovery_enablement")
+	f.SpecField(".app_engine_integration_mode")
 
 	f.StatusField(".uid")
 	f.StatusField(".create_time")
