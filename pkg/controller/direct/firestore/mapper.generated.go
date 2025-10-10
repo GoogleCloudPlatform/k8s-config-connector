@@ -24,8 +24,23 @@ import (
 	krmfirestorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
 )
 
+func DailyRecurrence_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DailyRecurrence) *krmfirestorev1alpha1.DailyRecurrence {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.DailyRecurrence{}
+	return out
+}
+func DailyRecurrence_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.DailyRecurrence) *pb.DailyRecurrence {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DailyRecurrence{}
+	return out
+}
 func Database_CmekConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Database_CmekConfig) *krm.Database_CmekConfig {
 	if in == nil {
 		return nil
@@ -172,6 +187,50 @@ func Field_TTLConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	}
 	out := &pb.Field_TtlConfig{}
 	out.State = direct.Enum_ToProto[pb.Field_TtlConfig_State](mapCtx, in.State)
+	return out
+}
+func FirestoreBackupScheduleObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackupSchedule) *krmfirestorev1alpha1.FirestoreBackupScheduleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.FirestoreBackupScheduleObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func FirestoreBackupScheduleObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.FirestoreBackupScheduleObservedState) *pb.BackupSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackupSchedule{}
+	out.Name = direct.ValueOf(in.Name)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func FirestoreBackupScheduleSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackupSchedule) *krmfirestorev1alpha1.FirestoreBackupScheduleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.FirestoreBackupScheduleSpec{}
+	out.Retention = direct.StringDuration_FromProto(mapCtx, in.GetRetention())
+	out.DailyRecurrence = DailyRecurrence_v1alpha1_FromProto(mapCtx, in.GetDailyRecurrence())
+	out.WeeklyRecurrence = WeeklyRecurrence_v1alpha1_FromProto(mapCtx, in.GetWeeklyRecurrence())
+	return out
+}
+func FirestoreBackupScheduleSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.FirestoreBackupScheduleSpec) *pb.BackupSchedule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BackupSchedule{}
+	out.Retention = direct.StringDuration_ToProto(mapCtx, in.Retention)
+	if oneof := DailyRecurrence_v1alpha1_ToProto(mapCtx, in.DailyRecurrence); oneof != nil {
+		out.Recurrence = &pb.BackupSchedule_DailyRecurrence{DailyRecurrence: oneof}
+	}
+	if oneof := WeeklyRecurrence_v1alpha1_ToProto(mapCtx, in.WeeklyRecurrence); oneof != nil {
+		out.Recurrence = &pb.BackupSchedule_WeeklyRecurrence{WeeklyRecurrence: oneof}
+	}
 	return out
 }
 func FirestoreDatabaseObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Database) *krm.FirestoreDatabaseObservedState {
@@ -556,5 +615,21 @@ func Index_ObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfire
 	// MISSING: Density
 	// MISSING: Multikey
 	// MISSING: ShardCount
+	return out
+}
+func WeeklyRecurrence_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WeeklyRecurrence) *krmfirestorev1alpha1.WeeklyRecurrence {
+	if in == nil {
+		return nil
+	}
+	out := &krmfirestorev1alpha1.WeeklyRecurrence{}
+	out.Day = direct.Enum_FromProto(mapCtx, in.GetDay())
+	return out
+}
+func WeeklyRecurrence_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.WeeklyRecurrence) *pb.WeeklyRecurrence {
+	if in == nil {
+		return nil
+	}
+	out := &pb.WeeklyRecurrence{}
+	out.Day = direct.Enum_ToProto[dayofweekpb.DayOfWeek](mapCtx, in.Day)
 	return out
 }
