@@ -146,6 +146,13 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 
 	mapperGenerator := codegen.NewMapperGenerator(pathForMessage, o.OutputMapperDirectory, generatedFileAnnotation, o.Multiversion)
 
+	// Ensure that our first proto package is always imported with the "pb" alias.
+	firstService, err := api.GetFileDescriptorByPackage(o.ServiceNames[0])
+	if err != nil {
+		return err
+	}
+	mapperGenerator.AddGoImportAlias(codegen.GoPackageForProto(firstService[0]), "pb")
+
 	if err := mapperGenerator.VisitGoCode(o.APIGoPackagePath, o.APIDirectory); err != nil {
 		return err
 	}
