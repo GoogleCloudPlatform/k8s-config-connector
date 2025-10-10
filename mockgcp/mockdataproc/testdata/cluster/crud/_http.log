@@ -115,7 +115,7 @@ Content-Type: application/json
   "config": {
     "gceClusterConfig": {
       "serviceAccount": "dataproc-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-      "zoneUri": "us-west1-a"
+      "zoneUri": ""
     },
     "masterConfig": {
       "diskConfig": {}
