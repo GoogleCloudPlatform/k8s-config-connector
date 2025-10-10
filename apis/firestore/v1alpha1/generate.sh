@@ -24,7 +24,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.firestore.admin.v1 \
   --api-version firestore.cnrm.cloud.google.com/v1alpha1  \
-  --resource FirestoreField:Field
+  --resource FirestoreField:Field \
+  --resource FirestoreBackupSchedule:BackupSchedule
 
 go run . generate-mapper \
   --multiversion \
