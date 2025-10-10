@@ -63,6 +63,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkehub"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkemulticloud"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockkms"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocklogging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmetastore"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmodelarmor"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetapp"

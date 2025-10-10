@@ -31,8 +31,8 @@ import (
 	//"net/http"
 
 	gcp "cloud.google.com/go/logging/apiv2"
-	//"google.golang.org/api/option"
 	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
+	"google.golang.org/api/option"
 
 	//"google.golang.org/api/option"
 	//"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -58,8 +58,13 @@ type modelLoggingLink struct {
 }
 
 func (m *modelLoggingLink) client(ctx context.Context) (*gcp.ConfigClient, error) {
+	// Use the VCR-aware HTTP client
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("building authenticated HTTP client: %w", err)
+	}
 
-	gcpClient, err := gcp.NewConfigRESTClient(ctx)
+	gcpClient, err := gcp.NewConfigRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building Logging Config client: %w", err)
 	}
@@ -254,11 +259,13 @@ func (a *LoggingLinkAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 		}
 		return false, fmt.Errorf("deleting Link %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted Link", "name", a.id)
+	log.V(2).Info("successfully initiated deletion of Link", "name", a.id)
 
 	err = op.Wait(ctx)
 	if err != nil {
 		return false, fmt.Errorf("waiting delete Link %s: %w", a.id, err)
 	}
+	log.V(2).Info("successfully waited for link deletion LRO", "name", a.id)
+
 	return true, nil
 }
