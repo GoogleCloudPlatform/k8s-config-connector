@@ -481,6 +481,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: location=us-central1
 
 {
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "launchStage": 4,
   "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
   "template": {
