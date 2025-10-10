@@ -5,14 +5,14 @@
 - exec: gcloud bigtable logical-views describe test-logical-view-${uniqueId} --instance=test-instance-${uniqueId}
 
 # Change query
-- exec: gcloud bigtable logical-views update test-logical-view-${uniqueId} --instance=test-instance-${uniqueId} --query="SELECT 10 AS new_value"
+- exec: gcloud bigtable logical-views update test-logical-view-${uniqueId} --instance=test-instance-${uniqueId} --query="SELECT 2 AS new_value"
 - exec: gcloud bigtable logical-views describe test-logical-view-${uniqueId} --instance=test-instance-${uniqueId}
 
 # Change deletion protection
-- exec: gcloud bigtable logical-views update test-logical-view-${uniqueId} --instance=test-instance-${uniqueId} --deletion-protection=true
+- exec: gcloud bigtable logical-views update test-logical-view-${uniqueId} --instance=test-instance-${uniqueId} --query="SELECT 3 AS new_value" --deletion-protection=true
 - exec: gcloud bigtable logical-views describe test-logical-view-${uniqueId} --instance=test-instance-${uniqueId}
 # Change deletion protection back to allow the view to be deleted later.
-- exec: gcloud bigtable logical-views update test-logical-view-${uniqueId} --instance=test-instance-${uniqueId} --deletion-protection=false
+- exec: gcloud bigtable logical-views update test-logical-view-${uniqueId} --instance=test-instance-${uniqueId} --query="SELECT 4 AS new_value" --deletion-protection=false
 
 - exec: gcloud bigtable logical-views delete test-logical-view-${uniqueId} --instance=test-instance-${uniqueId} --quiet
 - exec: gcloud bigtable instances delete test-instance-${uniqueId} --quiet
