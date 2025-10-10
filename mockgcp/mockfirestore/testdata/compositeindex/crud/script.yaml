@@ -1,0 +1,7 @@
+# Test CRUD operations for gcloud firestore indexes composite
+- exec: gcloud firestore databases create --database="test-db-${uniqueId}" --location=us-central1 --project=${projectId} --quiet
+- exec: sleep 15 # allow for eventual consistency in control plane
+- exec: gcloud firestore indexes composite create --database=test-db-${uniqueId} --collection-group=cg-${uniqueId} --field-config=field-path=fieldA,order=ascending --field-config=field-path=fieldB,order=descending --project=${projectId}
+- exec: gcloud firestore indexes composite describe $(gcloud firestore indexes composite list --project=${projectId} --database=test-db-${uniqueId} --format="get(name)") --project=${projectId}
+- exec: gcloud firestore indexes composite delete $(gcloud firestore indexes composite list --project=${projectId} --database=test-db-${uniqueId} --format="get(name)") --project=${projectId} --quiet
+- exec: gcloud firestore databases delete --database=test-db-${uniqueId} --project=${projectId} --quiet
