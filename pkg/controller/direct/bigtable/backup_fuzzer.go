@@ -29,8 +29,8 @@ func init() {
 
 func bigtableBackupFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Backup{},
-		BigtableBackupSpec_FromProto, BigtableBackupSpec_ToProto,
-		BigtableBackupObservedState_FromProto, BigtableBackupObservedState_ToProto,
+		BigtableBackupSpec_v1alpha1_FromProto, BigtableBackupSpec_v1alpha1_ToProto,
+		BigtableBackupObservedState_v1alpha1_FromProto, BigtableBackupObservedState_v1alpha1_ToProto,
 	)
 
 	f.SpecFields.Insert(".source_table")

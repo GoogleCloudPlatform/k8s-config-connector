@@ -144,7 +144,7 @@ func (a *LogicalViewAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := BigtableLogicalViewSpec_ToProto(mapCtx, &desired.Spec)
+	resource := BigtableLogicalViewSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -186,7 +186,7 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log.V(2).Info("updating LogicalView", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := BigtableLogicalViewSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desiredPb := BigtableLogicalViewSpec_v1alpha1_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -241,7 +241,7 @@ func (a *LogicalViewAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 	obj := &krm.BigtableLogicalView{}
 	mapCtx := &direct.MapContext{}
-	spec := BigtableLogicalViewSpec_FromProto(mapCtx, a.actual)
+	spec := BigtableLogicalViewSpec_v1alpha1_FromProto(mapCtx, a.actual)
 	obj.Spec = direct.ValueOf(spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()

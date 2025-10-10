@@ -29,8 +29,8 @@ func init() {
 
 func BigtableClusterFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Cluster{},
-		BigtableClusterSpec_FromProto, BigtableClusterSpec_ToProto,
-		BigtableClusterObservedState_FromProto, BigtableClusterObservedState_ToProto,
+		BigtableClusterSpec_v1alpha1_FromProto, BigtableClusterSpec_v1alpha1_ToProto,
+		BigtableClusterObservedState_v1alpha1_FromProto, BigtableClusterObservedState_v1alpha1_ToProto,
 	)
 
 	f.SpecFields.Insert(".location")
