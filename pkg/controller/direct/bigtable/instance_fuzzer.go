@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // +tool:fuzz-gen
-// proto.message: google.bigtable.admin.v2.Cluster
+// proto.message: google.bigtable.admin.v2.Instance
 // api.group: bigtable.cnrm.cloud.google.com
 
 package bigtable
@@ -24,24 +24,24 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(BigtableClusterFuzzer())
+	fuzztesting.RegisterKRMFuzzer(bigtableInstanceFuzzer())
 }
 
-func BigtableClusterFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&pb.Cluster{},
-		BigtableClusterSpec_v1alpha1_FromProto, BigtableClusterSpec_v1alpha1_ToProto,
-		BigtableClusterObservedState_v1alpha1_FromProto, BigtableClusterObservedState_v1alpha1_ToProto,
+func bigtableInstanceFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.Instance{},
+		BigtableInstanceSpec_v1beta1_FromProto, BigtableInstanceSpec_v1beta1_ToProto,
 	)
 
-	f.SpecFields.Insert(".location")
-	f.SpecFields.Insert(".serve_nodes")
-	f.SpecFields.Insert(".node_scaling_factor")
-	f.SpecFields.Insert(".cluster_config")
-	f.SpecFields.Insert(".default_storage_type")
-	f.SpecFields.Insert(".encryption_config")
-	f.StatusFields.Insert(".state")
+	f.SpecFields.Insert("display_name")
+	f.SpecFields.Insert("instance_type")
+	f.SpecFields.Insert("labels")
+	f.SpecFields.Insert("cluster")
 
-	f.UnimplementedFields.Insert(".name")
+	f.StatusFields.Insert("state")
+	f.StatusFields.Insert("type")
+	f.StatusFields.Insert("create_time")
+	f.StatusFields.Insert("satisfies_pzs")
+
 	f.UnimplementedFields.Insert(".name")
 
 	return f
