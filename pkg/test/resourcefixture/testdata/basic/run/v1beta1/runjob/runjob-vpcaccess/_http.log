@@ -554,6 +554,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: location=us-central1
 
 {
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "launchStage": 4,
   "template": {
     "template": {
@@ -587,6 +591,10 @@ X-Xss-Protection: 0
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": 4,
@@ -650,6 +658,10 @@ X-Xss-Protection: 0
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
@@ -692,6 +704,10 @@ X-Xss-Protection: 0
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
@@ -752,6 +768,10 @@ X-Xss-Protection: 0
   "creator": "${creatorID}",
   "etag": "abcdef0123A=",
   "generation": "1",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "lastModifier": "test@google.com",
   "latestCreatedExecution": {},
   "launchStage": 4,
@@ -797,6 +817,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: location=us-central1
 
 {
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "launchStage": 4,
   "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
   "template": {
@@ -831,6 +855,10 @@ X-Xss-Protection: 0
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": 4,
@@ -894,6 +922,10 @@ X-Xss-Protection: 0
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
@@ -936,6 +968,10 @@ X-Xss-Protection: 0
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
@@ -996,6 +1032,10 @@ X-Xss-Protection: 0
   "creator": "${creatorID}",
   "etag": "abcdef0123A=",
   "generation": "1",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "lastModifier": "test@google.com",
   "latestCreatedExecution": {},
   "launchStage": 4,
@@ -1057,6 +1097,10 @@ X-Xss-Protection: 0
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": 4,
@@ -1120,6 +1164,10 @@ X-Xss-Protection: 0
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
@@ -1162,6 +1210,10 @@ X-Xss-Protection: 0
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
