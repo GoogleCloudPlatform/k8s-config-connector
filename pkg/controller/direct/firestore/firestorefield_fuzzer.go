@@ -32,6 +32,17 @@ func firestoreFieldFuzzer() fuzztesting.KRMFuzzer {
 		FirestoreFieldSpec_v1alpha1_FromProto, FirestoreFieldSpec_v1alpha1_ToProto,
 		FirestoreFieldObservedState_v1alpha1_FromProto, FirestoreFieldObservedState_v1alpha1_ToProto,
 	)
+	f.FilterSpec = func(in *pb.Field) {
+		for _, index := range in.GetIndexConfig().GetIndexes() {
+			for _, field := range index.GetFields() {
+				if x, ok := field.GetValueMode().(*pb.Index_IndexField_ArrayConfig_); ok {
+					if x.ArrayConfig == pb.Index_IndexField_ARRAY_CONFIG_UNSPECIFIED {
+						x.ArrayConfig = pb.Index_IndexField_CONTAINS
+					}
+				}
+			}
+		}
+	}
 
 	f.IdentityField(".name")
 
