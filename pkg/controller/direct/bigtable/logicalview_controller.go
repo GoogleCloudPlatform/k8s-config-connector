@@ -188,10 +188,11 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	spec := a.desired.Spec
 
 	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(spec.Query, a.actual.Query) {
+	// Only set query in update mask if it's set.
+	if (spec.Query != nil) && (*spec.Query != a.actual.Query) {
 		updateMask.Paths = append(updateMask.Paths, "query")
 	}
-
+	// Deletion protection can either be unset (which is in itself a possible resource state), false, or true.
 	if !reflect.DeepEqual(spec.DeletionProtection, a.actual.DeletionProtection) {
 		updateMask.Paths = append(updateMask.Paths, "deletion_protection")
 	}
