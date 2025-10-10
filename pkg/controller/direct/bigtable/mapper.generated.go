@@ -544,32 +544,6 @@ func BigtableTableObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: RowKeySchema
 	return out
 }
-func BigtableTableSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table) *krm.BigtableTableSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigtableTableSpec{}
-	// MISSING: ColumnFamilies
-	// MISSING: Granularity
-	// MISSING: ChangeStreamConfig
-	out.DeletionProtection = direct.LazyPtr(in.GetDeletionProtection())
-	// MISSING: AutomatedBackupPolicy
-	// MISSING: RowKeySchema
-	return out
-}
-func BigtableTableSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigtableTableSpec) *pb.Table {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Table{}
-	// MISSING: ColumnFamilies
-	// MISSING: Granularity
-	// MISSING: ChangeStreamConfig
-	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
-	// MISSING: AutomatedBackupPolicy
-	// MISSING: RowKeySchema
-	return out
-}
 func ChangeStreamConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ChangeStreamConfig) *krm.ChangeStreamConfig {
 	if in == nil {
 		return nil

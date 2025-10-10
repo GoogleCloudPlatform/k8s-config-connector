@@ -44,6 +44,11 @@ func bigtableTableFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert("restore_info")
 
 	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".change_stream_config")
+	f.UnimplementedFields.Insert(".granularity")
+	f.UnimplementedFields.Insert(".automated_backup_policy")
+	f.UnimplementedFields.Insert(".column_families.gc_rule")
+	f.UnimplementedFields.Insert(".column_families.value_type")
 
 	return f
 }
