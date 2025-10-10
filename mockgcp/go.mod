@@ -24,6 +24,7 @@ require (
 	cloud.google.com/go/iam v1.5.2
 	cloud.google.com/go/logging v1.13.0
 	cloud.google.com/go/longrunning v0.6.7
+	cloud.google.com/go/networksecurity v0.10.6
 	cloud.google.com/go/networkservices v0.5.0
 	cloud.google.com/go/notebooks v1.12.6
 	cloud.google.com/go/orgpolicy v1.15.0

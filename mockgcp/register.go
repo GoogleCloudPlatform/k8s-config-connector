@@ -35,7 +35,8 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfilestore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirestore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockiam"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocklogging"
+
+	// _ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocklogging"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmanagedkafka"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmemorystore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmonitoring"

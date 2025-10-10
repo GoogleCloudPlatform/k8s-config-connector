@@ -73,6 +73,7 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterMetricsServiceV2Server(grpcServer, &metricsServiceV2{MockService: s})
 	pb.RegisterConfigServiceV2Server(grpcServer, &configServiceV2{MockService: s})
+	// s.operations.RegisterGRPCServices(grpcServer)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
