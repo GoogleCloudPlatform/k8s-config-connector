@@ -226,7 +226,7 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
-  "query": "SELECT 10 AS new_value"
+  "query": "SELECT 2 AS new_value"
 }
 
 200 OK
@@ -248,7 +248,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
     "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
-    "query": "SELECT 10 AS new_value"
+    "query": "SELECT 2 AS new_value"
   }
 }
 
@@ -278,7 +278,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
     "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
-    "query": "SELECT 10 AS new_value"
+    "query": "SELECT 2 AS new_value"
   }
 }
 
@@ -301,19 +301,20 @@ X-Xss-Protection: 0
 
 {
   "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
-  "query": "SELECT 10 AS new_value"
+  "query": "SELECT 2 AS new_value"
 }
 
 ---
 
-PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}?alt=json&updateMask=deletion_protection
+PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}?alt=json&updateMask=query%2Cdeletion_protection
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
 
 {
-  "deletionProtection": true
+  "deletionProtection": true,
+  "query": "SELECT 3 AS new_value"
 }
 
 200 OK
@@ -335,7 +336,8 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
     "deletionProtection": true,
-    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}"
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
+    "query": "SELECT 3 AS new_value"
   }
 }
 
@@ -365,7 +367,8 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
     "deletionProtection": true,
-    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}"
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
+    "query": "SELECT 3 AS new_value"
   }
 }
 
@@ -389,19 +392,20 @@ X-Xss-Protection: 0
 {
   "deletionProtection": true,
   "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
-  "query": "SELECT 10 AS new_value"
+  "query": "SELECT 3 AS new_value"
 }
 
 ---
 
-PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}?alt=json&updateMask=deletion_protection
+PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}?alt=json&updateMask=query%2Cdeletion_protection
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 Content-Type: application/json
 
 {
-  "deletionProtection": false
+  "deletionProtection": false,
+  "query": "SELECT 4 AS new_value"
 }
 
 200 OK
@@ -422,7 +426,8 @@ X-Xss-Protection: 0
   "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
-    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}"
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
+    "query": "SELECT 4 AS new_value"
   }
 }
 
@@ -451,7 +456,8 @@ X-Xss-Protection: 0
   "name": "operations/projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
-    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}"
+    "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
+    "query": "SELECT 4 AS new_value"
   }
 }
 
@@ -474,7 +480,7 @@ X-Xss-Protection: 0
 
 {
   "name": "projects/${projectId}/instances/test-instance-${uniqueId}/logicalViews/test-logical-view-${uniqueId}",
-  "query": "SELECT 10 AS new_value"
+  "query": "SELECT 4 AS new_value"
 }
 
 ---
