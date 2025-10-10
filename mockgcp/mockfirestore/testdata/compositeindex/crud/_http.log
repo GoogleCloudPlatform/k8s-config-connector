@@ -41,7 +41,6 @@ X-Xss-Protection: 0
     "locationId": "us-central1",
     "name": "projects/${projectId}/databases/test-db-${uniqueId}",
     "pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_DISABLED",
-    "realtimeUpdatesMode": "REALTIME_UPDATES_MODE_ENABLED",
     "type": "FIRESTORE_NATIVE",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -86,7 +85,7 @@ X-Xss-Protection: 0
 {
   "metadata": {
     "@type": "type.googleapis.com/google.firestore.admin.v1.IndexOperationMetadata",
-    "index": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/cg-${uniqueId}/indexes/CICAgOjXh4EK",
+    "index": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/cg-${uniqueId}/indexes/${indexID}",
     "startTime": "2024-04-01T12:34:56.123456Z",
     "state": "INITIALIZING"
   },
@@ -115,7 +114,7 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.firestore.admin.v1.IndexOperationMetadata",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "index": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/cg-${uniqueId}/indexes/CICAgOjXh4EK",
+    "index": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/cg-${uniqueId}/indexes/${indexID}",
     "progressDocuments": {},
     "startTime": "2024-04-01T12:34:56.123456Z",
     "state": "SUCCESSFUL"
@@ -138,7 +137,7 @@ X-Xss-Protection: 0
         "order": "DESCENDING"
       }
     ],
-    "name": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/cg-${uniqueId}/indexes/CICAgOjXh4EK",
+    "name": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/cg-${uniqueId}/indexes/${indexID}",
     "queryScope": "COLLECTION",
     "state": "CREATING"
   }
@@ -179,7 +178,7 @@ X-Xss-Protection: 0
           "order": "DESCENDING"
         }
       ],
-      "name": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/cg-${uniqueId}/indexes/CICAgOjXh4EK",
+      "name": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/cg-${uniqueId}/indexes/${indexID}",
       "queryScope": "COLLECTION",
       "state": "READY"
     }
@@ -188,7 +187,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/cg-${uniqueId}/indexes/CICAgOjXh4EK?alt=json
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/cg-${uniqueId}/indexes/${indexID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -219,7 +218,7 @@ X-Xss-Protection: 0
       "order": "DESCENDING"
     }
   ],
-  "name": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/cg-${uniqueId}/indexes/CICAgOjXh4EK",
+  "name": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/cg-${uniqueId}/indexes/${indexID}",
   "queryScope": "COLLECTION",
   "state": "READY"
 }
@@ -259,7 +258,7 @@ X-Xss-Protection: 0
           "order": "DESCENDING"
         }
       ],
-      "name": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/cg-${uniqueId}/indexes/CICAgOjXh4EK",
+      "name": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/cg-${uniqueId}/indexes/${indexID}",
       "queryScope": "COLLECTION",
       "state": "READY"
     }
@@ -268,7 +267,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/cg-${uniqueId}/indexes/CICAgOjXh4EK?alt=json
+DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/cg-${uniqueId}/indexes/${indexID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -322,7 +321,6 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/databases/${randomDatabaseID}",
     "pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_DISABLED",
     "previousId": "test-db-${uniqueId}",
-    "realtimeUpdatesMode": "REALTIME_UPDATES_ENABLED",
     "type": "FIRESTORE_NATIVE",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z",
