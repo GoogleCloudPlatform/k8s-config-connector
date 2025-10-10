@@ -2,6 +2,8 @@ apiVersion: run.cnrm.cloud.google.com/v1beta1
 kind: RunJob
 metadata:
   name: runjob-labels
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
   labels:
     app.kubernetes.io/name: "mock-app"
     app.kubernetes.io/instance: "mock-instance"
