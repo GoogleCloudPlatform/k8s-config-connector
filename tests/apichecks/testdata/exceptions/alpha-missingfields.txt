@@ -1736,30 +1736,10 @@
 [missing_field] crd=managedkafkaconsumergroups.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.clusterRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=managedkafkaconsumergroups.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=managedkafkaconsumergroups.managedkafka.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.authorizationMode" is not set in unstructured objects
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.deletionProtectionEnabled" is not set in unstructured objects
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].connections[].pscAutoConnection.networkRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].connections[].pscAutoConnection.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].connections[].pscConnection.ipAddress" is not set in unstructured objects
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].connections[].pscConnection.networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].connections[].pscConnection.pscConnectionID" is not set in unstructured objects
 [missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.endpoints[].connections[].pscConnection.serviceAttachmentRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.engineConfigs" is not set in unstructured objects
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.engineVersion" is not set in unstructured objects
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.mode" is not set in unstructured objects
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.nodeType" is not set in unstructured objects
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.persistenceConfig.aofConfig.appendFsync" is not set in unstructured objects
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.persistenceConfig.mode" is not set in unstructured objects
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.persistenceConfig.rdbConfig.rdbSnapshotPeriod" is not set in unstructured objects
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.persistenceConfig.rdbConfig.rdbSnapshotStartTime" is not set in unstructured objects
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.replicaCount" is not set in unstructured objects
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.shardCount" is not set in unstructured objects
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.transitEncryptionMode" is not set in unstructured objects
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.zoneDistributionConfig.mode" is not set in unstructured objects
-[missing_field] crd=memorystoreinstances.memorystore.cnrm.cloud.google.com version=v1alpha1: field ".spec.zoneDistributionConfig.zone" is not set in unstructured objects
 [missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.databaseType" is not set in unstructured objects
 [missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionConfig.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=metastoreservices.metastore.cnrm.cloud.google.com version=v1alpha1: field ".spec.hiveMetastoreConfig.configOverrides" is not set in unstructured objects
