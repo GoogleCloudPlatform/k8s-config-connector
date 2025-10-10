@@ -56,8 +56,8 @@ type BatchJobSpec struct {
 	//  Batch, see
 	//  [Organize resources using
 	//  labels](https://cloud.google.com/batch/docs/organize-resources-using-labels).
-	// +kcc:proto:field=google.cloud.batch.v1.Job.labels
-	Labels map[string]string `json:"labels,omitempty"`
+	// +k_cc:proto:field=google.cloud.batch.v1.Job.labels
+	// Labels map[string]string `json:"labels,omitempty"`
 
 	// Log preservation policy for the Job.
 	// +kcc:proto:field=google.cloud.batch.v1.Job.logs_policy
@@ -161,7 +161,7 @@ type AllocationPolicy_Disk struct {
 	//  * `batch-cos`: use Batch Container-Optimized images.
 	//  * `batch-hpc-rocky`: use Batch HPC Rocky Linux images.
 	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.Disk.image
-	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
+	Image *string `json:"image,omitempty"`
 
 	// Name of a snapshot used as the data source.
 	//  Snapshot is not supported as boot disk now.

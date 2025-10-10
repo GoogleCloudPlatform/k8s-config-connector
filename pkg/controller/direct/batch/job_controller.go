@@ -41,6 +41,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/golang/protobuf/proto"
 )
 
@@ -99,6 +100,8 @@ func (m *jobModel) AdapterForObject(ctx context.Context, reader client.Reader, u
 	if err := mapCtx.Err(); err != nil {
 		return nil, err
 	}
+
+	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
 
 	gcpClient, err := m.Client(ctx, id.Parent().ProjectID)
 	if err != nil {

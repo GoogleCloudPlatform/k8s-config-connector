@@ -61,22 +61,3 @@ func AllocationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolic
 	out.Tags = in.Tags
 	return out
 }
-
-func AllocationPolicy_Disk_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_Disk) *pb.AllocationPolicy_Disk {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AllocationPolicy_Disk{}
-	if in.ImageRef != nil {
-		out.DataSource = &pb.AllocationPolicy_Disk_Image{
-			Image: in.ImageRef.External,
-		}
-	}
-	if oneof := AllocationPolicy_Disk_Snapshot_ToProto(mapCtx, in.Snapshot); oneof != nil {
-		out.DataSource = oneof
-	}
-	out.Type = direct.ValueOf(in.Type)
-	out.SizeGb = direct.ValueOf(in.SizeGB)
-	out.DiskInterface = direct.ValueOf(in.DiskInterface)
-	return out
-}

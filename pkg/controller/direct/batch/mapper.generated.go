@@ -24,7 +24,6 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
 	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -85,14 +84,34 @@ func AllocationPolicy_Disk_FromProto(mapCtx *direct.MapContext, in *pb.Allocatio
 		return nil
 	}
 	out := &krm.AllocationPolicy_Disk{}
-	if in.GetImage() != "" {
-		out.ImageRef = &v1alpha1.ResourceRef{External: in.GetImage()}
-	}
+	out.Image = direct.LazyPtr(in.GetImage())
 	out.Snapshot = direct.LazyPtr(in.GetSnapshot())
 	out.Type = direct.LazyPtr(in.GetType())
 	out.SizeGB = direct.LazyPtr(in.GetSizeGb())
 	out.DiskInterface = direct.LazyPtr(in.GetDiskInterface())
 	return out
+}
+func AllocationPolicy_Disk_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_Disk) *pb.AllocationPolicy_Disk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy_Disk{}
+	if oneof := AllocationPolicy_Disk_Image_ToProto(mapCtx, in.Image); oneof != nil {
+		out.DataSource = oneof
+	}
+	if oneof := AllocationPolicy_Disk_Snapshot_ToProto(mapCtx, in.Snapshot); oneof != nil {
+		out.DataSource = oneof
+	}
+	out.Type = direct.ValueOf(in.Type)
+	out.SizeGb = direct.ValueOf(in.SizeGB)
+	out.DiskInterface = direct.ValueOf(in.DiskInterface)
+	return out
+}
+func AllocationPolicy_Disk_Image_ToProto(mapCtx *direct.MapContext, in *string) *pb.AllocationPolicy_Disk_Image {
+	if in == nil {
+		return nil
+	}
+	return &pb.AllocationPolicy_Disk_Image{Image: *in}
 }
 func AllocationPolicy_Disk_Snapshot_ToProto(mapCtx *direct.MapContext, in *string) *pb.AllocationPolicy_Disk_Snapshot {
 	if in == nil {
@@ -248,6 +267,7 @@ func BatchJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.TaskGroups = direct.Slice_FromProto(mapCtx, in.TaskGroups, TaskGroupObservedState_FromProto)
+	// MISSING: Labels
 	out.Status = JobStatus_FromProto(mapCtx, in.GetStatus())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -261,6 +281,7 @@ func BatchJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BatchJobOb
 	out.Name = direct.ValueOf(in.Name)
 	out.Uid = direct.ValueOf(in.Uid)
 	out.TaskGroups = direct.Slice_ToProto(mapCtx, in.TaskGroups, TaskGroupObservedState_ToProto)
+	// MISSING: Labels
 	out.Status = JobStatus_ToProto(mapCtx, in.Status)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
@@ -274,7 +295,7 @@ func BatchJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.BatchJob
 	out.Priority = direct.LazyPtr(in.GetPriority())
 	out.TaskGroups = direct.Slice_FromProto(mapCtx, in.TaskGroups, TaskGroup_FromProto)
 	out.AllocationPolicy = AllocationPolicy_FromProto(mapCtx, in.GetAllocationPolicy())
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.LogsPolicy = LogsPolicy_FromProto(mapCtx, in.GetLogsPolicy())
 	out.Notifications = direct.Slice_FromProto(mapCtx, in.Notifications, JobNotification_FromProto)
 	return out
@@ -287,7 +308,7 @@ func BatchJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.BatchJobSpec) *pb.J
 	out.Priority = direct.ValueOf(in.Priority)
 	out.TaskGroups = direct.Slice_ToProto(mapCtx, in.TaskGroups, TaskGroup_ToProto)
 	out.AllocationPolicy = AllocationPolicy_ToProto(mapCtx, in.AllocationPolicy)
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.LogsPolicy = LogsPolicy_ToProto(mapCtx, in.LogsPolicy)
 	out.Notifications = direct.Slice_ToProto(mapCtx, in.Notifications, JobNotification_ToProto)
 	return out
