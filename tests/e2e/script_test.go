@@ -124,6 +124,8 @@ func TestE2EScript(t *testing.T) {
 						testCommand = "APPLY"
 					}
 
+					t.Logf("***/Step %d: %s %s %s/%s", i, testCommand, obj.GroupVersionKind().Kind, obj.GetNamespace(), obj.GetName())
+
 					if obj.GroupVersionKind().Kind == "RunCLI" {
 						argsObjects := obj.Object["args"].([]any)
 						var args []string
@@ -426,6 +428,8 @@ func TestE2EScript(t *testing.T) {
 
 					captureHTTPLogEvents(false)
 				}
+
+				t.Logf("***/Finished Steps")
 
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					{
