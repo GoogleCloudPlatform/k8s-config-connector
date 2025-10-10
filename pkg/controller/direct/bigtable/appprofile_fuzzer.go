@@ -29,7 +29,7 @@ func init() {
 
 func bigtableAppProfileFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.AppProfile{},
-		BigtableAppProfileSpec_FromProto, BigtableAppProfileSpec_ToProto,
+		BigtableAppProfileSpec_v1beta1_FromProto, BigtableAppProfileSpec_v1beta1_ToProto,
 		BigtableAppProfileObservedState_v1beta1_FromProto, BigtableAppProfileObservedState_v1beta1_ToProto,
 	)
 

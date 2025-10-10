@@ -54,6 +54,7 @@ type BigtableTableSpec struct {
 	// A list of predefined keys to split the table on.
 	SplitKeys []string `json:"splitKeys,omitempty"`
 
+	// NOTE: DeletionProtection proto field is changed from string (1.38) to bool (1.40) in cloud.google.com/go/bigtable/admin/apiv2/adminpb
 	// Set to true to make the table protected against data loss. i.e. deleting
 	// the following resources through Admin APIs are prohibited:
 	//
@@ -62,7 +63,7 @@ type BigtableTableSpec struct {
 	// * The instance containing the table.
 	//
 	// Note one can still delete the data stored in the table through Data APIs.
-	DeletionProtection *bool `json:"deletionProtection,omitempty"`
+	DeletionProtection *string `json:"deletionProtection,omitempty"`
 
 	// NOTYET
 	// If specified, automated backups are enabled for this table.

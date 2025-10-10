@@ -668,7 +668,7 @@ func (in *BigtableTableSpec) DeepCopyInto(out *BigtableTableSpec) {
 	}
 	if in.DeletionProtection != nil {
 		in, out := &in.DeletionProtection, &out.DeletionProtection
-		*out = new(bool)
+		*out = new(string)
 		**out = **in
 	}
 }

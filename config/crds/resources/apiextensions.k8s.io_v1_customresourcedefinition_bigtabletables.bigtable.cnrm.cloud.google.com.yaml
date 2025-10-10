@@ -81,6 +81,7 @@ spec:
                 type: array
               deletionProtection:
                 description: |-
+                  NOTE: DeletionProtection proto field is changed from string (1.38) to bool (1.40) in cloud.google.com/go/bigtable/admin/apiv2/adminpb
                   Set to true to make the table protected against data loss. i.e. deleting
                   the following resources through Admin APIs are prohibited:
 
@@ -89,7 +90,7 @@ spec:
                   * The instance containing the table.
 
                   Note one can still delete the data stored in the table through Data APIs.
-                type: boolean
+                type: string
               instanceRef:
                 description: Immutable. The instance to create the table in.
                 oneOf:

@@ -139,7 +139,7 @@ func (a *BigtableAppProfileAdapter) Create(ctx context.Context, createOp *direct
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := BigtableAppProfileSpec_ToProto(mapCtx, &desired.Spec)
+	resource := BigtableAppProfileSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -211,7 +211,7 @@ func (a *BigtableAppProfileAdapter) Update(ctx context.Context, updateOp *direct
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := BigtableAppProfileSpec_ToProto(mapCtx, &a.desired.Spec)
+	resource := BigtableAppProfileSpec_v1beta1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -289,7 +289,7 @@ func (a *BigtableAppProfileAdapter) Export(ctx context.Context) (*unstructured.U
 
 	obj := &krm.BigtableAppProfile{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(BigtableAppProfileSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(BigtableAppProfileSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
