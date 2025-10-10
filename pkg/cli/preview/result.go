@@ -23,50 +23,61 @@ import (
 )
 
 type PreviewSummary struct {
-	totalGood int
-	totalBad  int
 	// namespace -> group -> kind -> []name
-	goodGKNN map[string]map[string]map[string][]string
-	badGKNN  map[string]map[string]map[string][]string
+	goodGKNN GKNNList
+	badGKNN  GKNNList
 	reports  map[GKNN][]string
+}
+
+type GKNNList struct {
+	count int
+	// namespace -> group -> kind -> []name
+	storage map[string]map[string]map[string][]string
+}
+
+func newGKNNList() *GKNNList {
+	return &GKNNList{
+		storage: make(map[string]map[string]map[string][]string),
+		count:   0,
+	}
+}
+
+func (l *GKNNList) ensurePath(gknn GKNN) {
+	if _, ok := l.storage[gknn.Namespace]; !ok {
+		l.storage[gknn.Namespace] = make(map[string]map[string][]string)
+	}
+	if _, ok := l.storage[gknn.Namespace][gknn.Group]; !ok {
+		l.storage[gknn.Namespace][gknn.Group] = make(map[string][]string)
+	}
+	if _, ok := l.storage[gknn.Namespace][gknn.Group][gknn.Kind]; !ok {
+		l.storage[gknn.Namespace][gknn.Group][gknn.Kind] = []string{}
+	}
+}
+
+func (l *GKNNList) add(gknn GKNN) {
+	l.storage[gknn.Namespace][gknn.Group][gknn.Kind] = append(l.storage[gknn.Namespace][gknn.Group][gknn.Kind], gknn.Name)
+	l.count++
 }
 
 func (r *Recorder) newPreviewSummary() *PreviewSummary {
 	summary := &PreviewSummary{
-		totalGood: 0,
-		totalBad:  0,
-		goodGKNN:  make(map[string]map[string]map[string][]string),
-		badGKNN:   make(map[string]map[string]map[string][]string),
-		reports:   make(map[GKNN][]string),
+		goodGKNN: *newGKNNList(),
+		badGKNN:  *newGKNNList(),
+		reports:  make(map[GKNN][]string),
 	}
 
 	for gknn, info := range r.objects {
-		ensureGKNNPath(summary.goodGKNN, gknn)
-		ensureGKNNPath(summary.badGKNN, gknn)
-
 		good, report := ParseEventInfo(info)
+		summary.goodGKNN.ensurePath(gknn)
+		summary.badGKNN.ensurePath(gknn)
 		if good {
-			summary.totalGood++
-			summary.goodGKNN[gknn.Namespace][gknn.Group][gknn.Kind] = append(summary.goodGKNN[gknn.Namespace][gknn.Group][gknn.Kind], gknn.Name)
+			summary.goodGKNN.add(gknn)
 		} else {
-			summary.totalBad++
-			summary.badGKNN[gknn.Namespace][gknn.Group][gknn.Kind] = append(summary.badGKNN[gknn.Namespace][gknn.Group][gknn.Kind], gknn.Name)
+			summary.badGKNN.add(gknn)
 			summary.reports[gknn] = report
 		}
 	}
 	return summary
-}
-
-func ensureGKNNPath(m map[string]map[string]map[string][]string, gknn GKNN) {
-	if _, ok := m[gknn.Namespace]; !ok {
-		m[gknn.Namespace] = make(map[string]map[string][]string)
-	}
-	if _, ok := m[gknn.Namespace][gknn.Group]; !ok {
-		m[gknn.Namespace][gknn.Group] = make(map[string][]string)
-	}
-	if _, ok := m[gknn.Namespace][gknn.Group][gknn.Kind]; !ok {
-		m[gknn.Namespace][gknn.Group][gknn.Kind] = []string{}
-	}
 }
 
 func ParseEventInfo(info *objectInfo) (bool, []string) {
@@ -93,7 +104,7 @@ func ParseEventInfo(info *objectInfo) (bool, []string) {
 
 		case EventTypeGCPAction:
 			// The method is POST but it is actually a read-only call.
-			if strings.Contains(event.gcpAction.url, "getIamPolicy") {
+			if strings.Contains(event.gcpAction.url, ":getIamPolicy") {
 				continue
 			}
 			good = false
@@ -117,11 +128,11 @@ func (r *Recorder) ExportDetailObjectsEvent(filename string) error {
 	fmt.Fprintf(f, "Total number of resources: %d\n", len(r.objects))
 	fmt.Fprintf(f, "Number of resources that have not been fully reconciled: %d\n", r.RemainResourcesCount)
 	if r.RemainResourcesCount != 0 {
-		fmt.Fprintln(f, "Known Resource that was not reconciled")
+		fmt.Fprintln(f, "Known resources that were not reconciled:")
 		for gknn, reconciled := range r.ReconciledResources {
 			if !reconciled {
 				fmt.Fprintln(f, "-----------------------------------------------------------------")
-				fmt.Fprintf(f, "Not reconciled object %+v\n", gknn)
+				fmt.Fprintf(f, "Object not reconciled: %+v\n", gknn)
 			}
 		}
 	}
@@ -162,15 +173,15 @@ func (r *Recorder) SummaryReport(filename string) error {
 	reconciled := total - r.RemainResourcesCount
 	fmt.Fprintf(f, "Finish reconciled %d out of %d resouces.\n", reconciled, total)
 	summary := r.newPreviewSummary()
-	fmt.Fprintf(f, "Detect %d good and %d bad objects.\n", summary.totalGood, summary.totalBad)
-	for ns := range summary.badGKNN {
+	fmt.Fprintf(f, "Detect %d good and %d bad objects.\n", summary.goodGKNN.count, summary.badGKNN.count)
+	for ns := range summary.badGKNN.storage {
 		fmt.Fprintln(f, "-----------------------------------------------------------------")
 		fmt.Fprintf(f, "Namespace: %s\n", ns)
 		w := tabwriter.NewWriter(f, 0, 0, 3, ' ', 0)
 		fmt.Fprintln(w, "GROUP\tKIND\tGOOD\tBAD")
-		for group := range summary.badGKNN[ns] {
-			for kind := range summary.badGKNN[ns][group] {
-				fmt.Fprintf(w, "%s\t%s\t%d\t%d\n", group, kind, len(summary.goodGKNN[ns][group][kind]), len(summary.badGKNN[ns][group][kind]))
+		for group := range summary.badGKNN.storage[ns] {
+			for kind := range summary.badGKNN.storage[ns][group] {
+				fmt.Fprintf(w, "%s\t%s\t%d\t%d\n", group, kind, len(summary.goodGKNN.storage[ns][group][kind]), len(summary.badGKNN.storage[ns][group][kind]))
 			}
 		}
 		w.Flush()
@@ -180,7 +191,7 @@ func (r *Recorder) SummaryReport(filename string) error {
 	}
 
 	// Reconciled all resources and no issue detected.
-	if r.RemainResourcesCount == 0 && summary.totalBad == 0 {
+	if r.RemainResourcesCount == 0 && summary.badGKNN.count == 0 {
 		return nil
 	}
 	detailFileName := fmt.Sprintf("%s-detail", filename)
@@ -196,11 +207,11 @@ func (r *Recorder) SummaryReport(filename string) error {
 			}
 		}
 	}
-	if summary.totalBad > 0 {
-		for ns := range summary.badGKNN {
-			for group := range summary.badGKNN[ns] {
-				for kind := range summary.badGKNN[ns][group] {
-					for _, name := range summary.badGKNN[ns][group][kind] {
+	if summary.badGKNN.count > 0 {
+		for ns := range summary.badGKNN.storage {
+			for group := range summary.badGKNN.storage[ns] {
+				for kind := range summary.badGKNN.storage[ns][group] {
+					for _, name := range summary.badGKNN.storage[ns][group][kind] {
 						fmt.Fprintln(detailFile, "-----------------------------------------------------------------")
 						fmt.Fprintf(detailFile, "Group: %s, Kind: %s, Namespace: %s, Name: %s\n", group, kind, ns, name)
 						for _, s := range summary.reports[GKNN{Group: group, Kind: kind, Namespace: ns, Name: name}] {
