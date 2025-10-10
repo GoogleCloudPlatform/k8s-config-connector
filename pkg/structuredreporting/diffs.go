@@ -50,3 +50,15 @@ func ReportDiff(ctx context.Context, diff *Diff) {
 		listener.OnDiff(ctx, diff)
 	}
 }
+
+func (d *Diff) AddDiff(other *Diff) *Diff {
+	if other == nil {
+		return d
+	}
+
+	for _, f := range other.Fields {
+		d.AddField(f.ID, f.Old, f.New)
+	}
+
+	return d
+}
