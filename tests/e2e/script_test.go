@@ -251,6 +251,8 @@ func TestE2EScript(t *testing.T) {
 						// Allow some time for reconcile
 						// Maybe we should instead wait for observedState
 						time.Sleep(2 * time.Second)
+						exportResource = nil
+						shouldGetKubeObject = false
 
 					case "DELETE-NO-WAIT":
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}, SkipWaitForDelete: true})
