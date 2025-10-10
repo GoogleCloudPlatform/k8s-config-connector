@@ -23,7 +23,6 @@ import (
 
 type GenerateOptions struct {
 	ProtoSourcePath string
-	ServiceName     string
 	APIVersion      string
 	ConfigFilePath  string
 }
@@ -40,7 +39,6 @@ func (o *GenerateOptions) InitDefaults() error {
 func (o *GenerateOptions) BindPersistentFlags(cmd *cobra.Command) {
 	cmd.PersistentFlags().StringVar(&o.ProtoSourcePath, "proto-source-path", o.ProtoSourcePath, "path to (compiled) proto for APIs")
 	cmd.PersistentFlags().StringVarP(&o.APIVersion, "api-version", "v", o.APIVersion, "the KRM API version. used to import the KRM API")
-	cmd.PersistentFlags().StringVarP(&o.ServiceName, "service", "s", o.ServiceName, "the GCP service name")
 	cmd.PersistentFlags().StringVar(&o.ConfigFilePath, "config", "", "path to service config file, the config file will override other flags")
 }
 

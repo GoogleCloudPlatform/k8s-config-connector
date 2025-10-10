@@ -30,6 +30,8 @@ import (
 type GenerateControllerOptions struct {
 	*options.GenerateOptions
 
+	ServiceName string
+
 	Resource options.Resource
 }
 
@@ -58,7 +60,7 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 				return fmt.Errorf("unable to parse --api-version: %w", err)
 			}
 
-			if baseOptions.ServiceName == "" {
+			if opt.ServiceName == "" {
 				return fmt.Errorf("--service is required")
 			}
 			return nil
@@ -79,7 +81,7 @@ func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 
 func RunController(ctx context.Context, o *GenerateControllerOptions) error {
 	gv, _ := schema.ParseGroupVersion(o.GenerateOptions.APIVersion)
-	gcpTokens := strings.Split(o.GenerateOptions.ServiceName, ".")
+	gcpTokens := strings.Split(o.ServiceName, ".")
 	version := gcpTokens[len(gcpTokens)-1]
 	if version[0] != 'v' {
 		return fmt.Errorf("--service does not contain GCP version")
