@@ -40,7 +40,6 @@ func IAMPolicySpec_ToProto(_ *direct.MapContext, in *krm.IAMPolicySpec) *iampb.P
 		// Default to version 3, which supports conditions.
 		// IAM Server should downgrade to supported versions
 		Version: 3,
-		//Etag: spec.Etag, NOT YET
 	}
 
 	// Map Bindings
@@ -102,9 +101,7 @@ func IAMPolicySpec_FromProto(_ *direct.MapContext, in *iampb.Policy) *krm.IAMPol
 		return nil
 	}
 
-	out := &krm.IAMPolicySpec{
-		Etag: string(in.Etag),
-	}
+	out := &krm.IAMPolicySpec{}
 
 	// Map Bindings from Proto to KRM
 	if len(in.Bindings) > 0 {
