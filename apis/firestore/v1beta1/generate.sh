@@ -30,6 +30,7 @@ go run . generate-types \
 go run . generate-mapper \
   --multiversion \
   --service google.firestore.admin.v1 \
+  --service google.firestore.v1 \
   --api-version firestore.cnrm.cloud.google.com/v1beta1
 
 cd ${REPO_ROOT}
