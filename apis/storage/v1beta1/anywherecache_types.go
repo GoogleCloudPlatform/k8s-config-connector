@@ -50,7 +50,7 @@ type StorageAnywhereCacheSpec struct {
 	// +kubebuilder:default="86400s"
 	Ttl *string `json:"ttl,omitempty"`
 
-	// Cache admission policy. Valid values includes:
+	// Cache admission policy. Valid values include:
 	//  `admit-on-first-miss` and `admit-on-second-miss`. Defaults to
 	//  `admit-on-first-miss`.
 	// +kubebuilder:default=admit-on-first-miss
