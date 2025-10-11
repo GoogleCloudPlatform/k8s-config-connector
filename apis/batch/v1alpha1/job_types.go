@@ -15,10 +15,10 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -27,6 +27,7 @@ var BatchJobGVK = GroupVersion.WithKind("BatchJob")
 // BatchJobSpec defines the desired state of BatchJob
 // +kcc:spec:proto=google.cloud.batch.v1.Job
 type BatchJobSpec struct {
+	ParentRef *parent.ProjectAndLocationRef `json:",inline"`
 
 	// Priority of the Job.
 	//  The valid value range is [0, 100). Default value is 0.
@@ -56,8 +57,8 @@ type BatchJobSpec struct {
 	//  Batch, see
 	//  [Organize resources using
 	//  labels](https://cloud.google.com/batch/docs/organize-resources-using-labels).
-	// +kcc:proto:field=google.cloud.batch.v1.Job.labels
-	Labels map[string]string `json:"labels,omitempty"`
+	// +k_cc:proto:field=google.cloud.batch.v1.Job.labels
+	// Labels map[string]string `json:"labels,omitempty"`
 
 	// Log preservation policy for the Job.
 	// +kcc:proto:field=google.cloud.batch.v1.Job.logs_policy
@@ -67,21 +68,8 @@ type BatchJobSpec struct {
 	// +kcc:proto:field=google.cloud.batch.v1.Job.notifications
 	Notifications []JobNotification `json:"notifications,omitempty"`
 
-	// Required. The parent resource name where the Job will be created. Pattern: "projects/{project}/locations/{location}"
-	*Parent `json:",inline"`
-
 	// The BatchJob name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-}
-
-type Parent struct {
-	// Immutable. The location where the alloydb cluster should reside.
-	// +required
-	Location *string `json:"location,omitempty"`
-
-	// The project that this resource belongs to.
-	// +required
-	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.batch.v1.AllocationPolicy
@@ -161,7 +149,7 @@ type AllocationPolicy_Disk struct {
 	//  * `batch-cos`: use Batch Container-Optimized images.
 	//  * `batch-hpc-rocky`: use Batch HPC Rocky Linux images.
 	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.Disk.image
-	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
+	Image *string `json:"image,omitempty"`
 
 	// Name of a snapshot used as the data source.
 	//  Snapshot is not supported as boot disk now.

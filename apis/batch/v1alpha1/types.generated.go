@@ -12,6 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: batch.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.batch.v1
+// resource: BatchJob:Job
+// resource: BatchTask:Task
+
 package v1alpha1
 
 // +kcc:proto=google.cloud.batch.v1.AllocationPolicy.Accelerator
@@ -641,6 +648,17 @@ type TaskSpec struct {
 	Environment *Environment `json:"environment,omitempty"`
 }
 
+// +kcc:proto=google.cloud.batch.v1.TaskStatus
+type TaskStatus struct {
+	// Task state.
+	// +kcc:proto:field=google.cloud.batch.v1.TaskStatus.state
+	State *string `json:"state,omitempty"`
+
+	// Detailed info about why the state is reached.
+	// +kcc:proto:field=google.cloud.batch.v1.TaskStatus.status_events
+	StatusEvents []StatusEvent `json:"statusEvents,omitempty"`
+}
+
 // +kcc:proto=google.cloud.batch.v1.Volume
 type Volume struct {
 	// A Network File System (NFS) volume. For example, a
@@ -681,7 +699,7 @@ type Volume struct {
 	MountOptions []string `json:"mountOptions,omitempty"`
 }
 
-// +kcc:proto=google.cloud.batch.v1.TaskGroup
+// +kcc:observedstate:proto=google.cloud.batch.v1.TaskGroup
 type TaskGroupObservedState struct {
 	// Output only. TaskGroup name.
 	//  The system generates this field based on parent Job name.
@@ -689,15 +707,4 @@ type TaskGroupObservedState struct {
 	//  "projects/123456/locations/us-west1/jobs/job01/taskGroups/group01".
 	// +kcc:proto:field=google.cloud.batch.v1.TaskGroup.name
 	Name *string `json:"name,omitempty"`
-}
-
-// +kcc:proto=google.cloud.batch.v1.TaskStatus
-type TaskStatus struct {
-	// Task state.
-	// +kcc:proto:field=google.cloud.batch.v1.TaskStatus.state
-	State *string `json:"state,omitempty"`
-
-	// Detailed info about why the state is reached.
-	// +kcc:proto:field=google.cloud.batch.v1.TaskStatus.status_events
-	StatusEvents []StatusEvent `json:"statusEvents,omitempty"`
 }

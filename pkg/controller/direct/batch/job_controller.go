@@ -35,12 +35,14 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
 	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/golang/protobuf/proto"
 )
 
@@ -89,7 +91,7 @@ func (m *jobModel) AdapterForObject(ctx context.Context, reader client.Reader, u
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewJobIdentity(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -100,14 +102,16 @@ func (m *jobModel) AdapterForObject(ctx context.Context, reader client.Reader, u
 		return nil, err
 	}
 
-	gcpClient, err := m.Client(ctx, id.Parent().ProjectID)
+	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
+
+	gcpClient, err := m.Client(ctx, id.(*v1alpha1.JobIdentity).Parent().ProjectID)
 	if err != nil {
 		return nil, err
 	}
 
 	return &jobAdapter{
 		gcpClient: gcpClient,
-		id:        id,
+		id:        id.(*v1alpha1.JobIdentity),
 		desired:   desired,
 	}, nil
 }
@@ -218,8 +222,10 @@ func (a *jobAdapter) Export(ctx context.Context) (*unstructured.Unstructured, er
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &v1beta1.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = direct.LazyPtr(a.id.Parent().Location)
+	obj.Spec.ParentRef = &parent.ProjectAndLocationRef{
+		ProjectRef: &v1beta1.ProjectRef{External: a.id.Parent().ProjectID},
+		Location:   a.id.Parent().Location,
+	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

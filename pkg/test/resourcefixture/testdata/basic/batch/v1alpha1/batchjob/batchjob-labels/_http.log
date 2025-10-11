@@ -1,7 +1,7 @@
-GET https://batch.googleapis.com/v1/projects/${projectId}/locations/us-west2/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+GET https://batch.googleapis.com/v1/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Fjobs%2F${jobID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fjobs%2F${jobID}
 X-Goog-User-Project: ${projectId}
 
 404 Not Found
@@ -20,35 +20,43 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "job \"projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}\" not found",
+        "message": "job \"projects/${projectId}/locations/us-central1/jobs/${jobID}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "job \"projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}\" not found",
+    "message": "job \"projects/${projectId}/locations/us-central1/jobs/${jobID}\" not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://batch.googleapis.com/v1/projects/${projectId}/locations/us-west2/jobs?%24alt=json%3Benum-encoding%3Dint&jobId=${jobID}
+POST https://batch.googleapis.com/v1/projects/${projectId}/locations/us-central1/jobs?%24alt=json%3Benum-encoding%3Dint&jobId=${jobID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 X-Goog-User-Project: ${projectId}
 
 {
   "labels": {
     "cnrm-test": "true",
+    "custom-label": "foo",
     "managed-by-cnrm": "true"
   },
   "taskGroups": [
     {
+      "parallelism": "1",
+      "taskCount": "1",
       "taskSpec": {
         "runnables": [
           {
-            "script": {
-              "text": "echo hello"
+            "container": {
+              "commands": [
+                "-c",
+                "echo Hello world! This is task ${BATCH_TASK_INDEX}. This job has a total of ${BATCH_TASK_COUNT} tasks."
+              ],
+              "entrypoint": "/bin/sh",
+              "imageUri": "gcr.io/google-containers/busybox"
             }
           }
         ]
@@ -70,14 +78,14 @@ X-Xss-Protection: 0
 {
   "allocationPolicy": {
     "labels": {
-      "batch-job-id": "batchjob-${uniqueId}"
+      "batch-job-id": "${jobID}"
     },
     "location": {
       "allowedLocations": [
-        "regions/us-west2",
-        "zones/us-west2-a",
-        "zones/us-west2-b",
-        "zones/us-west2-c"
+        "regions/us-central1",
+        "zones/us-central1-a",
+        "zones/us-central1-b",
+        "zones/us-central1-c"
       ]
     },
     "serviceAccount": {
@@ -87,16 +95,17 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
+    "custom-label": "foo",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/jobs/${jobID}",
   "status": {
     "runDuration": "0s",
     "state": 1
   },
   "taskGroups": [
     {
-      "name": "projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}/taskGroups/group0",
+      "name": "projects/${projectId}/locations/us-central1/jobs/${jobID}/taskGroups/group0",
       "parallelism": "1",
       "taskCount": "1",
       "taskSpec": {
@@ -106,8 +115,13 @@ X-Xss-Protection: 0
         },
         "runnables": [
           {
-            "script": {
-              "text": "echo hello"
+            "container": {
+              "commands": [
+                "-c",
+                "echo Hello world! This is task ${BATCH_TASK_INDEX}. This job has a total of ${BATCH_TASK_COUNT} tasks."
+              ],
+              "entrypoint": "/bin/sh",
+              "imageUri": "gcr.io/google-containers/busybox"
             }
           }
         ]
@@ -120,10 +134,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://batch.googleapis.com/v1/projects/${projectId}/locations/us-west2/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+GET https://batch.googleapis.com/v1/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Fjobs%2F${jobID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fjobs%2F${jobID}
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -139,14 +153,14 @@ X-Xss-Protection: 0
 {
   "allocationPolicy": {
     "labels": {
-      "batch-job-id": "batchjob-${uniqueId}"
+      "batch-job-id": "${jobID}"
     },
     "location": {
       "allowedLocations": [
-        "regions/us-west2",
-        "zones/us-west2-a",
-        "zones/us-west2-b",
-        "zones/us-west2-c"
+        "regions/us-central1",
+        "zones/us-central1-a",
+        "zones/us-central1-b",
+        "zones/us-central1-c"
       ]
     },
     "serviceAccount": {
@@ -156,16 +170,17 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
+    "custom-label": "foo",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/jobs/${jobID}",
   "status": {
     "runDuration": "0s",
     "state": 1
   },
   "taskGroups": [
     {
-      "name": "projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}/taskGroups/group0",
+      "name": "projects/${projectId}/locations/us-central1/jobs/${jobID}/taskGroups/group0",
       "parallelism": "1",
       "taskCount": "1",
       "taskSpec": {
@@ -175,8 +190,13 @@ X-Xss-Protection: 0
         },
         "runnables": [
           {
-            "script": {
-              "text": "echo hello"
+            "container": {
+              "commands": [
+                "-c",
+                "echo Hello world! This is task ${BATCH_TASK_INDEX}. This job has a total of ${BATCH_TASK_COUNT} tasks."
+              ],
+              "entrypoint": "/bin/sh",
+              "imageUri": "gcr.io/google-containers/busybox"
             }
           }
         ]
@@ -189,10 +209,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://batch.googleapis.com/v1/projects/${projectId}/locations/us-west2/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://batch.googleapis.com/v1/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west2%2Fjobs%2F${jobID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fjobs%2F${jobID}
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -212,8 +232,8 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/jobs/${jobID}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/jobs/${jobID}/operations/${operationID}"
 }
