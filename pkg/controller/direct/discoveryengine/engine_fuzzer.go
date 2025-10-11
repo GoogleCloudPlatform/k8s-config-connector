@@ -18,8 +18,11 @@
 package discoveryengine
 
 import (
+	"fmt"
+
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+	"google.golang.org/protobuf/testing/protocmp"
 )
 
 func init() {
@@ -49,6 +52,18 @@ func engineFuzzer() fuzztesting.KRMFuzzer {
 
 	// f.StatusFields.Insert(".create_time")
 	// f.StatusFields.Insert(".update_time")
+
+	// We need the name to be set so we can map data_store_ids
+	f.MutateBeforeRoundtrip = func(v *pb.Engine) error {
+		projectID := "project123"
+		location := "global"
+		collection := "collection123"
+		engineID := "engine123"
+		v.Name = fmt.Sprintf("projects/%s/locations/%s/collections/%s/engines/%s", projectID, location, collection, engineID)
+
+		return nil
+	}
+	f.CompareOptions = append(f.CompareOptions, protocmp.IgnoreFields(&pb.Engine{}, "name"))
 
 	return f
 }
