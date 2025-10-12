@@ -22,7 +22,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func ComputeFirewallPolicyRuleSpec_TargetResources_ToProto(mapCtx *direct.MapContext, in []*refs.ComputeNetworkRef) []string {
+func ComputeFirewallPolicyRuleSpec_TargetResources_ToProto(mapCtx *direct.MapContext, in []*krm.ComputeNetworkRef) []string {
 	if in == nil {
 		return nil
 	}
@@ -56,13 +56,13 @@ func ComputeFirewallPolicyRuleSpec_TargetServiceAccounts_ToProto(mapCtx *direct.
 	return out
 }
 
-func ComputeFirewallPolicyRuleSpec_TargetResources_FromProto(mapCtx *direct.MapContext, in []string) []*refs.ComputeNetworkRef {
+func ComputeFirewallPolicyRuleSpec_TargetResources_FromProto(mapCtx *direct.MapContext, in []string) []*krm.ComputeNetworkRef {
 	if in == nil {
 		return nil
 	}
-	var out []*refs.ComputeNetworkRef
+	var out []*krm.ComputeNetworkRef
 	for _, i := range in {
-		out = append(out, &refs.ComputeNetworkRef{
+		out = append(out, &krm.ComputeNetworkRef{
 			External: i,
 		})
 	}

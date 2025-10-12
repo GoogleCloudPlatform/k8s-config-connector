@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -28,54 +28,6 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
-
-func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeNetworkRef) (*refs.ComputeNetworkRef, error) {
-	if ref == nil {
-		return nil, nil
-	}
-
-	if ref.External != "" {
-		if ref.Name != "" {
-			return nil, fmt.Errorf("cannot specify both name and external on reference")
-		}
-		return ref, nil
-	}
-
-	if ref.Name == "" {
-		return nil, fmt.Errorf("must specify either name or external on reference")
-	}
-
-	key := types.NamespacedName{
-		Namespace: ref.Namespace,
-		Name:      ref.Name,
-	}
-	if key.Namespace == "" {
-		key.Namespace = src.GetNamespace()
-	}
-
-	computeNetwork, err := resolveResourceName(ctx, reader, key, schema.GroupVersionKind{
-		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
-		Kind:    "ComputeNetwork",
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	resourceID, err := refs.GetResourceID(computeNetwork)
-	if err != nil {
-		return nil, err
-	}
-
-	projectID, err := refs.ResolveProjectID(ctx, reader, computeNetwork)
-	if err != nil {
-		return nil, err
-	}
-
-	return &refs.ComputeNetworkRef{
-		External: fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/%s", projectID, resourceID)}, nil
-}
 
 func ResolveIAMServiceAccount(ctx context.Context, reader client.Reader, src client.Object, ref *refs.IAMServiceAccountRef) (*refs.IAMServiceAccountRef, error) {
 	if ref == nil {
@@ -138,16 +90,17 @@ func resolveResourceName(ctx context.Context, reader client.Reader, key client.O
 	return resource, nil
 }
 
-func resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.ComputeFirewallPolicyRule) error {
+func resolveDependencies(ctx context.Context, reader client.Reader, obj *computev1beta1.ComputeFirewallPolicyRule) error {
 	// Get target resources(compute network)
-	var targetResources []*refs.ComputeNetworkRef
+	var targetResources []*computev1beta1.ComputeNetworkRef
 	if obj.Spec.TargetResources != nil {
 		for _, targetResource := range obj.Spec.TargetResources {
-			networkRef, err := ResolveComputeNetwork(ctx, reader, obj, targetResource)
+			networkRef, err := targetResource.NormalizedExternal(ctx, reader, obj.Namespace)
 			if err != nil {
 				return err
 			}
-			targetResource.External = networkRef.External
+			// todo(b/441312774): find a generic way to turn normalized external to API required format
+			targetResource.External = fmt.Sprintf("https://www.googleapis.com/compute/v1/%s", networkRef)
 			targetResources = append(targetResources, targetResource)
 		}
 		obj.Spec.TargetResources = targetResources

@@ -19,6 +19,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -651,7 +652,7 @@ func (in *PscAutoConnection) DeepCopyInto(out *PscAutoConnection) {
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1beta1.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 }
@@ -731,7 +732,7 @@ func (in *PscConnection) DeepCopyInto(out *PscConnection) {
 	}
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1beta1.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.ServiceAttachmentRef != nil {

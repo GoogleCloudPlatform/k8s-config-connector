@@ -123,7 +123,7 @@ func (a *MetastoreServiceAdapter) resolveReferences(ctx context.Context) error {
 	obj := a.desired
 
 	if obj.Spec.NetworkRef != nil {
-		if err := obj.Spec.NetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+		if _, err := obj.Spec.NetworkRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
 			return fmt.Errorf("normalizing networkRef: %w", err)
 		}
 	}
