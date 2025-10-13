@@ -70,6 +70,9 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 				if len(tokens) == 6 && tokens[2] == "databases" && tokens[4] == "backupSchedules" {
 					replacements.ReplaceStringValue(tokens[5], "${backupScheduleID}")
 				}
+				if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "databases" && tokens[4] == "collectionGroups" && tokens[6] == "indexes" {
+					replacements.ReplaceStringValue(tokens[7], "${indexID}")
+				}
 			}
 		})
 	}
