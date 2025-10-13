@@ -27,12 +27,22 @@ func BigtableTableSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table
 		return nil
 	}
 	out := &krm.BigtableTableSpec{}
-	// MISSING: ColumnFamilies
-	// MISSING: Granularity
-	// MISSING: ChangeStreamConfig
+
+	// Note: Bigtable proto 1.38 -> 1.40 changed the ColumnFamily from a slice to a map
+	out.ColumnFamily = []*krm.TableColumnFamily{}
+	for _, v := range in.GetColumnFamilies() {
+		out.ColumnFamily = append(out.ColumnFamily, TableColumnFamily_v1beta1_FromProto(mapCtx, v))
+	}
+
+	// Note: Bigtable proto 1.38 -> 1.40 changed the ChangeStreamRetention from a single field to a struct
+	changeStreamConfig := ChangeStreamConfig_v1beta1_FromProto(mapCtx, in.GetChangeStreamConfig())
+	out.ChangeStreamRetention = changeStreamConfig.RetentionPeriod
+
 	// Note: Bigtable proto 1.38 -> 1.40 changed the DeletionProtection type from string to bool; we handle the conversion.
 	s := strconv.FormatBool(in.GetDeletionProtection())
 	out.DeletionProtection = &s
+
+	// MISSING: Granularity
 	// MISSING: AutomatedBackupPolicy
 	// MISSING: RowKeySchema
 	return out
@@ -42,10 +52,22 @@ func BigtableTableSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Bigtab
 		return nil
 	}
 	out := &pb.Table{}
-	// MISSING: ColumnFamilies
-	// MISSING: Granularity
-	// MISSING: ChangeStreamConfig
+
+	// Note: Bigtable proto 1.38 -> 1.40 changed the ColumnFamily from a slice to a map
+	out.ColumnFamilies = map[string]*pb.ColumnFamily{}
+	for _, v := range in.ColumnFamily {
+		out.ColumnFamilies[v.FamilyID] = TableColumnFamily_v1beta1_ToProto(mapCtx, v)
+	}
+
+	// Note: Bigtable proto 1.38 -> 1.40 changed the ChangeStreamRetention from a single field to a struct
+	out.ChangeStreamConfig = &pb.ChangeStreamConfig{
+		RetentionPeriod: direct.Duration_ToProto(mapCtx, in.ChangeStreamRetention),
+	}
+
+	// Note: Bigtable proto 1.38 -> 1.40 changed the DeletionProtection type from string to bool; we handle the conversion.
 	out.DeletionProtection, _ = strconv.ParseBool(direct.ValueOf(in.DeletionProtection))
+
+	// MISSING: Granularity
 	// MISSING: AutomatedBackupPolicy
 	// MISSING: RowKeySchema
 	return out

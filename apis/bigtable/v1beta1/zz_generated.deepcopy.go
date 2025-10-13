@@ -653,8 +653,14 @@ func (in *BigtableTableSpec) DeepCopyInto(out *BigtableTableSpec) {
 	}
 	if in.ColumnFamily != nil {
 		in, out := &in.ColumnFamily, &out.ColumnFamily
-		*out = make([]TableColumnFamily, len(*in))
-		copy(*out, *in)
+		*out = make([]*TableColumnFamily, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(TableColumnFamily)
+				**out = **in
+			}
+		}
 	}
 	if in.ChangeStreamRetention != nil {
 		in, out := &in.ChangeStreamRetention, &out.ChangeStreamRetention
