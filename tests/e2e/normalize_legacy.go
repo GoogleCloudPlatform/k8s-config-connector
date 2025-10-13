@@ -692,9 +692,6 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 		}
 	})
 
-	// Specific to Analytics
-	addReplacement("accountTicketId", "ASDFGHJKL123456")
-
 	// Remove error details which can contain confidential information
 	jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 		response := obj["error"]
