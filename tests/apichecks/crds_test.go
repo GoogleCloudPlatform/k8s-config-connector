@@ -66,15 +66,15 @@ func TestMissingRefs(t *testing.T) {
 				if strings.HasSuffix(fieldPath, "Refs[]") || strings.HasSuffix(fieldPath, "Refs") {
 					return
 				}
-				if strings.HasSuffix(fieldPath, "Ref.external") {
+				// Field name ending with `.external` indicates that it is a subfield of a reference field.
+				if strings.HasSuffix(fieldPath, ".external") {
 					return
 				}
-				if strings.HasSuffix(fieldPath, "Refs[].external") {
-					return
-				}
-				if strings.HasSuffix(fieldPath, "Ref.name") {
-					return
-				}
+				// Checking for `.name` might be unnecessary since we have already checked for `.external`.
+				// A reference field must contain both subfields `.external` and `.name`.
+				//if strings.HasSuffix(fieldPath, ".name") {
+				//	return
+				//}
 
 				isRef := false
 				desc := field.props.Description
