@@ -69,6 +69,7 @@ func (s *configServiceV2) CreateLink(ctx context.Context, req *pb.CreateLinkRequ
 	obj := proto.Clone(req.GetLink()).(*pb.Link)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
+	obj.BigqueryDataset.DatasetId = "bigquery.googleapis.com/projects/${projectId}/datasets/logginglink${uniqueId}"
 
 	s.populateDefaultsForLink(obj)
 
