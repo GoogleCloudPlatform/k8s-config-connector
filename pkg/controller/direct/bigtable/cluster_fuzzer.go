@@ -42,6 +42,7 @@ func BigtableClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".state")
 
 	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".name")
 
 	return f
 }

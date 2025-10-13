@@ -34,7 +34,7 @@ type BigtableTableSpec struct {
 	// The names of the column families that should be created immediately upon
 	// table creation, specified by name. The values that may be set are specified
 	// here. At least one column family must be specified.
-	ColumnFamily []TableColumnFamily `json:"columnFamily,omitempty"`
+	ColumnFamily []*TableColumnFamily `json:"columnFamily,omitempty"`
 
 	//DEPRECATED: The ChangeStreamRetention no longer exists in the new proto, but has to map to ChangeStreamConfig.
 
