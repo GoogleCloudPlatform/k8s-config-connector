@@ -1,0 +1,21 @@
+# In: ~/.gemini/commands/generate/types.toml
+# This command will be invoked via: /generate:labels "AlloyDBInstance"
+
+description = "Asks the model to find controllers needing label sanitization."
+
+prompt = """
+You are a golang and config connector expert.
+
+Please get me the list of Direct Controllers which do not properly sanitize the labels sent to GCP.
+The method to sanitize the labels for a Direct Controller is 'NewGCPLabelsFromK8sLabels'.
+An example of a PR which fixes the issue is https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4808
+
+Please determine the list of Direct Controllers.
+The check is the controller makes the method call correctly.
+Return me a list of the Direct Controllers which do not call the method correctly.
+Prioritize Correctness in your response.
+
+Your response should include:
+1. A brief explanation of how you found the response.
+2. The list of Direct Controller which do not sanitize the labels correctly.
+"""

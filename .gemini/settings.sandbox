@@ -1,0 +1,14 @@
+// ~/.gemini/settings.json
+{
+    "mcpServers": {
+        "github": {
+            "command": "/server/github-mcp-server",
+            "args": [
+                "stdio"
+            ],
+            "env": {
+		"GITHUB_READ-ONLY": 1
+            }
+        }
+    }
+}
