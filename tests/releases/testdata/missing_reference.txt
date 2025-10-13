@@ -2,6 +2,7 @@ asset.cnrm.cloud.google.com/v1beta1, Kind=AssetFeed
 asset.cnrm.cloud.google.com/v1beta1, Kind=AssetSavedQuery
 backupdr.cnrm.cloud.google.com/v1beta1, Kind=BackupDRBackupPlan
 backupdr.cnrm.cloud.google.com/v1beta1, Kind=BackupDRBackupVault
+batch.cnrm.cloud.google.com/v1beta1, Kind=BatchJob
 bigquery.cnrm.cloud.google.com/v1beta1, Kind=BigQueryRoutine
 bigquerybiglake.cnrm.cloud.google.com/v1beta1, Kind=BigLakeTable
 bigqueryreservation.cnrm.cloud.google.com/v1beta1, Kind=BigQueryReservationAssignment
