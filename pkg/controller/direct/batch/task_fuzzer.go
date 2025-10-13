@@ -29,8 +29,8 @@ func init() {
 
 func batchTaskFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Task{},
-		BatchTaskSpec_FromProto, BatchTaskSpec_ToProto,
-		BatchTaskObservedState_FromProto, BatchTaskObservedState_ToProto,
+		BatchTaskSpec_v1alpha1_FromProto, BatchTaskSpec_v1alpha1_ToProto,
+		BatchTaskObservedState_v1alpha1_FromProto, BatchTaskObservedState_v1alpha1_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name")
