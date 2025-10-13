@@ -156,7 +156,7 @@ func (a *AccountAdapter) Find(ctx context.Context) (bool, error) {
 	}
 
 	// Step II: Try to identify what's missing.
-	idInfo := fmt.Sprintf("displayName %q and regionCode %q", a.desired.Spec.DisplayName, a.desired.Spec.RegionCode)
+	idInfo := fmt.Sprintf("displayName %q and regionCode %q", *a.desired.Spec.DisplayName, *a.desired.Spec.RegionCode)
 	log.V(2).Info("not found via ListAccount()", "identification info", idInfo)
 
 	if a.desired.Status.ObservedState != nil {
