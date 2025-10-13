@@ -130,8 +130,13 @@ func (in *AnalyticsAccountObservedState) DeepCopyInto(out *AnalyticsAccountObser
 		*out = new(bool)
 		**out = **in
 	}
-	if in.GmpOrganization != nil {
-		in, out := &in.GmpOrganization, &out.GmpOrganization
+	if in.GMPOrganization != nil {
+		in, out := &in.GMPOrganization, &out.GMPOrganization
+		*out = new(string)
+		**out = **in
+	}
+	if in.AccountTicketID != nil {
+		in, out := &in.AccountTicketID, &out.AccountTicketID
 		*out = new(string)
 		**out = **in
 	}
@@ -162,6 +167,11 @@ func (in *AnalyticsAccountSpec) DeepCopyInto(out *AnalyticsAccountSpec) {
 	}
 	if in.RegionCode != nil {
 		in, out := &in.RegionCode, &out.RegionCode
+		*out = new(string)
+		**out = **in
+	}
+	if in.RedirectURI != nil {
+		in, out := &in.RedirectURI, &out.RedirectURI
 		*out = new(string)
 		**out = **in
 	}

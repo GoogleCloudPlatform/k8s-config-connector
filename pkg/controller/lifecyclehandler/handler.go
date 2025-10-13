@@ -181,6 +181,9 @@ func CausedByUnresolvableDeps(err error) (unwrappedErr error, ok bool) { //nolin
 	if unwrappedErr, ok := k8s.AsTransitiveDependencyNotReadyError(err); ok {
 		return unwrappedErr, true
 	}
+	if unwrappedErr, ok := k8s.AsManualStepNotCompletedError(err); ok {
+		return unwrappedErr, true
+	}
 	return nil, false
 }
 

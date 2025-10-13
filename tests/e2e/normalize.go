@@ -377,6 +377,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to Workflows
 	visitor.replacePaths[".status.observedState.validateTime"] = "1970-01-01T00:00:00Z"
 
+	// Specific to Analytics
+	visitor.replacePaths[".status.observedState.accountTicketID"] = "ASDFGHJKL123456"
+
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
 	visitor.sortSlices.Insert(".spec.nodeConfig.oauthScopes")

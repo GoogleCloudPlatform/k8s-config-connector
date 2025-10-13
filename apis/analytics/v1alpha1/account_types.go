@@ -38,7 +38,13 @@ type AnalyticsAccountSpec struct {
 	// +required
 	RegionCode *string `json:"regionCode,omitempty"`
 
-	// TODO: RedirectURL field?
+	// Got the following error if 'redirect_uri' field is empty when provisioning the ticket for account creation:
+	// rpc error: code = InvalidArgument desc = The value for the 'redirect_uri' field was empty, but must be provided.
+
+	// Redirect URI where the user will be sent after accepting Terms of Service.
+	// +kcc:proto:field=google.analytics.admin.v1beta.ProvisionAccountTicketRequest.redirect_uri
+	// +required
+	RedirectURI *string `json:"redirectURI,omitempty"`
 }
 
 // AnalyticsAccountStatus defines the config connector machine state of AnalyticsAccount
@@ -77,9 +83,14 @@ type AnalyticsAccountObservedState struct {
 	//  Only set when this account is connected to a GMP organization.
 	//  Format: marketingplatformadmin.googleapis.com/organizations/{org_id}
 	// +kcc:proto:field=google.analytics.admin.v1beta.Account.gmp_organization
-	GmpOrganization *string `json:"gmpOrganization,omitempty"`
+	GMPOrganization *string `json:"gmpOrganization,omitempty"`
 
-	// TODO: AccountTicketID field?
+	// Output only. The ticket ID received after provisioning the account.
+	// Accept the Terms of Service in
+	// https://analytics.google.com/analytics/web/?provisioningSignup=false#/termsofservice/ACCOUNT_TICKET_ID
+	// to complete the creation of a Google Analytics account.
+	// +kcc:proto:field=google.analytics.admin.v1beta.ProvisionAccountTicketResponse.account_ticket_id
+	AccountTicketID *string `json:"accountTicketID,omitempty"`
 }
 
 // +genclient

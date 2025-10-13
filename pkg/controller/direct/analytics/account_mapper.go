@@ -48,7 +48,7 @@ func AnalyticsAccountObservedState_FromProto(mapCtx *direct.MapContext, in *pb.A
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.Deleted = direct.LazyPtr(in.GetDeleted())
-	out.GmpOrganization = direct.LazyPtr(in.GetGmpOrganization())
+	out.GMPOrganization = direct.LazyPtr(in.GetGmpOrganization())
 	return out
 }
 
@@ -61,6 +61,15 @@ func AnalyticsAccountObservedState_ToProto(mapCtx *direct.MapContext, in *v1alph
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.Deleted = direct.ValueOf(in.Deleted)
-	out.GmpOrganization = direct.ValueOf(in.GmpOrganization)
+	out.GmpOrganization = direct.ValueOf(in.GMPOrganization)
+	return out
+}
+
+func AnalyticsAccountObservedState_FromAccountTicketID(mapCtx *direct.MapContext, in string) *v1alpha1.AnalyticsAccountObservedState {
+	if in == "" {
+		return nil
+	}
+	out := &v1alpha1.AnalyticsAccountObservedState{}
+	out.AccountTicketID = direct.LazyPtr(in)
 	return out
 }

@@ -62,6 +62,10 @@ spec:
               displayName:
                 description: Required. Human-readable display name for this account.
                 type: string
+              redirectURI:
+                description: Redirect URI where the user will be sent after accepting
+                  Terms of Service.
+                type: string
               regionCode:
                 description: Country of business. Must be a Unicode CLDR region code.
                 type: string
@@ -72,6 +76,7 @@ spec:
                 type: string
             required:
             - displayName
+            - redirectURI
             - regionCode
             type: object
           status:
@@ -120,6 +125,11 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  accountTicketID:
+                    description: Output only. The ticket ID received after provisioning
+                      the account. Accept the Terms of Service in https://analytics.google.com/analytics/web/?provisioningSignup=false#/termsofservice/ACCOUNT_TICKET_ID
+                      to complete the creation of a Google Analytics account.
+                    type: string
                   createTime:
                     description: Output only. Time when this account was originally
                       created.

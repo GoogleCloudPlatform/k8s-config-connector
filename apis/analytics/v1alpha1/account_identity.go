@@ -37,33 +37,36 @@ func (i *AccountIdentity) ID() string {
 	return i.id
 }
 
+func (i *AccountIdentity) SetID(id string) {
+	i.id = id
+	return
+}
+
 // New builds a AccountIdentity from the Config Connector Account object.
 func NewAccountIdentity(ctx context.Context, reader client.Reader, obj *AnalyticsAccount) (*AccountIdentity, error) {
-	// Get desired ID
+	// Attempt to get the service-generated resource ID.
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	// Use approved External
-	externalRef := common.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		// Validate desired with actual
-		actualResourceID, err := ParseAccountExternal(externalRef)
+	if resourceID == "" && obj.Status.ExternalRef != nil { // Reconciliation after creation is completed.
+		savedResourceID, err := ParseAccountExternal(common.ValueOf(obj.Status.ExternalRef))
 		if err != nil {
 			return nil, err
 		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+		resourceID = savedResourceID
+	}
+
+	id := &AccountIdentity{
+		id: resourceID,
+	}
+
+	// Attempt to ensure ID is immutable, by verifying against previously-set `status.externalRef`.
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		if id.String() != externalRef {
+			return nil, fmt.Errorf("cannot update AnalyticsAccount identity (old=%q, new=%q): identity is immutable", externalRef, id.String())
 		}
 	}
-	return &AccountIdentity{
-		id: resourceID,
-	}, nil
+
+	return id, nil
 }
 
 func ParseAccountExternal(external string) (resourceID string, err error) {

@@ -51,6 +51,8 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBCluster"}:
 	case schema.GroupKind{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBInstance"}:
 	case schema.GroupKind{Group: "alloydb.cnrm.cloud.google.com", Kind: "AlloyDBUser"}:
+	// Re-reconciliation is expected to fail unless the manual step is conducted for the underlying Analytics Account resource.
+	case schema.GroupKind{Group: "analytics.cnrm.cloud.google.com", Kind: "AnalyticsAccount"}:
 	case schema.GroupKind{Group: "apigateway.cnrm.cloud.google.com", Kind: "APIGatewayAPIConfig"}:
 	case schema.GroupKind{Group: "apigateway.cnrm.cloud.google.com", Kind: "APIGatewayAPI"}:
 	case schema.GroupKind{Group: "apigateway.cnrm.cloud.google.com", Kind: "APIGatewayGateway"}:
