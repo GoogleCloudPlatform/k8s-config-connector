@@ -72,7 +72,7 @@ require (
 	cloud.google.com/go/workstations v1.1.1
 	contrib.go.opencensus.io/exporter/prometheus v0.1.0
 	github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0
-	github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder v0.0.0-20250915202832-88fd3f7499ff
+	github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder v0.0.0-20251009233413-70eb972ff698
 	github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp v0.0.0-20240614222432-4bde5b345380
 	github.com/appscode/jsonpatch v0.0.0-20190108182946-7c0e3b262f30
 	github.com/blang/semver v3.5.1+incompatible
@@ -137,6 +137,8 @@ require go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 require (
 	cloud.google.com/go/analytics v0.30.0 // indirect
 	cloud.google.com/go/osconfig v1.14.6 // indirect
+	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.53.0 // indirect
+	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.53.0 // indirect
 	github.com/envoyproxy/go-control-plane/envoy v1.32.4 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
 	github.com/go-jose/go-jose/v4 v4.0.5 // indirect
@@ -150,6 +152,7 @@ require (
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	github.com/zeebo/errs v1.4.0 // indirect
+	go.opentelemetry.io/contrib/detectors/gcp v1.36.0 // indirect
 	golang.org/x/telemetry v0.0.0-20250908211612-aef8a434d053 // indirect
 	golang.org/x/tools/godoc v0.1.0-deprecated // indirect
 	gonum.org/v1/gonum v0.16.0 // indirect
@@ -163,7 +166,7 @@ require (
 	cloud.google.com/go v0.121.6 // indirect
 	cloud.google.com/go/auth v0.16.4 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
-	cloud.google.com/go/bigtable v1.38.0
+	cloud.google.com/go/bigtable v1.40.1
 	cloud.google.com/go/compute/metadata v0.8.0 // indirect
 	cloud.google.com/go/longrunning v0.6.7
 	dario.cat/mergo v1.0.0 // indirect

@@ -245,7 +245,7 @@ func (a *LogicalViewAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 	obj := &krm.BigtableLogicalView{}
 	mapCtx := &direct.MapContext{}
-	spec := BigtableLogicalViewSpec_FromProto(mapCtx, a.actual)
+	spec := BigtableLogicalViewSpec_v1alpha1_FromProto(mapCtx, a.actual)
 	obj.Spec = direct.ValueOf(spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
