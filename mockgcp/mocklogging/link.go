@@ -100,9 +100,7 @@ func (s *configServiceV2) DeleteLink(ctx context.Context, req *pb.DeleteLinkRequ
 		return nil, err
 	}
 
-	return s.MockService.operations.StartLRO(ctx, fqn, nil, func() (proto.Message, error) {
-		return deletedObj, nil
-	})
+	return s.MockService.operations.DoneLRO(ctx, fqn, nil, deletedObj)
 }
 
 type linkName struct {
