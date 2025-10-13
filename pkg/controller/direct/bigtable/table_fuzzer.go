@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // +tool:fuzz-gen
-// proto.message: google.bigtable.admin.v2.AuthorizedView
+// proto.message: google.bigtable.admin.v2.Table
 // api.group: bigtable.cnrm.cloud.google.com
 
 package bigtable
@@ -24,20 +24,26 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMSpecFuzzer(bigtableAuthorizedViewFuzzer())
+	fuzztesting.RegisterKRMFuzzer(bigtableTableFuzzer())
 }
 
-func bigtableAuthorizedViewFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.AuthorizedView{},
-		BigtableAuthorizedViewSpec_v1alpha1_FromProto, BigtableAuthorizedViewSpec_v1alpha1_ToProto,
+func bigtableTableFuzzer() fuzztesting.KRMFuzzer {
+	f := fuzztesting.NewKRMTypedFuzzer(&pb.Table{},
+		BigtableTableSpec_v1beta1_FromProto, BigtableTableSpec_v1beta1_ToProto,
+		BigtableTableObservedState_v1beta1_FromProto, BigtableTableObservedState_v1beta1_ToProto,
 	)
 
-	f.SpecFields.Insert(".subset_view")
-	f.SpecFields.Insert(".deletion_protection")
+	f.SpecFields.Insert("column_families")
+	f.SpecFields.Insert("granularity")
+	f.SpecFields.Insert("change_stream_config")
+	f.SpecFields.Insert("deletion_protection")
+	f.SpecFields.Insert("automated_backup_policy")
+	f.SpecFields.Insert("row_key_schema")
 
-	f.UnimplementedFields.Insert(".name") // special field
-	f.UnimplementedFields.Insert(".subset_view.family_subsets")
-	f.Unimplemented_Etag()
+	f.StatusFields.Insert("cluster_states")
+	f.StatusFields.Insert("restore_info")
+
+	f.UnimplementedFields.Insert(".name")
 
 	return f
 }
