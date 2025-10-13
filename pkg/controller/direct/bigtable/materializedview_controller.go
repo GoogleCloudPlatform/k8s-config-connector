@@ -133,8 +133,8 @@ func (a *MaterializedViewAdapter) Create(ctx context.Context, createOp *directba
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	MaterializedViewInfo := BigtableMaterializedViewSpec_ToMaterializedViewInfo(mapCtx, &desired.Spec, a.id)
-	err := a.gcpClient.CreateMaterializedView(ctx, a.id.ParentInstanceIdString(), MaterializedViewInfo)
+	materializedViewInfo := BigtableMaterializedViewSpec_ToMaterializedViewInfo(mapCtx, &desired.Spec, a.id)
+	err := a.gcpClient.CreateMaterializedView(ctx, a.id.ParentInstanceIdString(), materializedViewInfo)
 	if err != nil {
 		return fmt.Errorf("creating MaterializedView %s: %w", a.id, err)
 	}
@@ -146,10 +146,6 @@ func (a *MaterializedViewAdapter) Create(ctx context.Context, createOp *directba
 		return err
 	}
 
-	// Write resourceID into spec.
-	if err := unstructured.SetNestedField(createOp.GetUnstructured().Object, a.id.ID(), "spec", "resourceID"); err != nil {
-		return fmt.Errorf("error setting spec.resourceID: %w", err)
-	}
 	return nil
 }
 
