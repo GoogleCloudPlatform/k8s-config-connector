@@ -42,7 +42,7 @@
 | asset.cnrm.cloud.google.com                   | AssetSavedQuery                                 | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupPlanAssociation                   | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupPlan                              | True         | True        | False  | Direct     |
-| backupdr.cnrm.cloud.google.com                | BackupDRBackupVault                             | True         | False       | False  | Direct     |
+| backupdr.cnrm.cloud.google.com                | BackupDRBackupVault                             | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRManagementServer                        | True         | False       | False  | Direct     |
 | batch.cnrm.cloud.google.com                   | BatchJob                                        | True         | False       | False  | Direct     |
 | batch.cnrm.cloud.google.com                   | BatchTask                                       | True         | False       | False  | Direct     |
