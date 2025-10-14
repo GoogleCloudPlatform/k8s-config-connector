@@ -71,6 +71,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreDatabase"}:
 		exportURI = "//firestore.googleapis.com/projects/{projectID}/databases/{resourceID}"
 
+	case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreIndex"}:
+		exportURI = "//firestore.googleapis.com/{.status.name}"
+
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
 		exportURI = "//logging.googleapis.com/projects/" + projectID + "/metrics/" + resourceID
 
@@ -124,6 +127,15 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 		}
 		exportURI = strings.ReplaceAll(exportURI, "{.spec.collection}", collection)
 	}
+
+	if strings.Contains(exportURI, "{.status.name}") {
+		v, _, _ := unstructured.NestedString(obj.Object, "status", "name")
+		if v == "" {
+			h.Errorf("unable to determine status.name")
+		}
+		exportURI = strings.ReplaceAll(exportURI, "{.status.name}", v)
+	}
+
 	exportParams := h.ExportParams()
 	exportParams.IAMFormat = "partialpolicy"
 	exportParams.ResourceFormat = "krm"
