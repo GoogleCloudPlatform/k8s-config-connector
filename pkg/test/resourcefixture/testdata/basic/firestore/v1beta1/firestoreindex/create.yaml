@@ -27,6 +27,8 @@ spec:
   # with the same fields and for the same collection) fails. There is
   # unfortunately no way to tell if a Firestore Index has been fully deleted.
   collection: sample-collection-${uniqueId}
+  # TODO: Should be databaseRef, but FirestoreIndex CRD is not updated yet.
+  database: firestoredatabase-${uniqueId}
   fields:
   - fieldPath: field1
     order: ASCENDING
