@@ -13,9 +13,9 @@
 // limitations under the License.
 
 // +generated:types
-// krm.group: eventarc.cnrm.cloud.google.com
+// krm.group: storagecontrol.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.service: google.cloud.eventarc.v1
-// resource: EventarcGoogleChannelConfig:GoogleChannelConfig
+// proto.service: google.storage.control.v2
+// resource: StorageManagedFolder:ManagedFolder
 
 package v1alpha1
