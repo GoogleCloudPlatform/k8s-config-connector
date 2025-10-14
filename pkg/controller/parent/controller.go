@@ -56,6 +56,12 @@ type Reconcilers struct {
 	TF     *tf.Reconciler
 	DCL    *dclcontroller.Reconciler
 	Direct *directbase.DirectReconciler
+	Custom *CustomReconciler
+}
+
+type CustomReconciler struct {
+	Type       k8s.ReconcilerType
+	Reconciler reconcile.Reconciler
 }
 
 // ParentReconciler is a top-level controller that decides which underlying
@@ -67,7 +73,7 @@ type ParentReconciler struct {
 	reconcilers Reconcilers
 }
 
-func Add(mgr manager.Manager, gvk schema.GroupVersionKind, tf *tf.Reconciler, dcl *dclcontroller.Reconciler, direct *directbase.DirectReconciler) error {
+func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcilers) error {
 	controllerName := fmt.Sprintf("%v-parent-controller", strings.ToLower(gvk.Kind))
 	obj := &unstructured.Unstructured{}
 	obj.SetGroupVersionKind(gvk)
@@ -79,9 +85,10 @@ func Add(mgr manager.Manager, gvk schema.GroupVersionKind, tf *tf.Reconciler, dc
 		mgr:    mgr,
 		gvk:    gvk,
 		reconcilers: Reconcilers{
-			TF:     tf,
-			DCL:    dcl,
-			Direct: direct,
+			TF:     reconcilers.TF,
+			DCL:    reconcilers.DCL,
+			Direct: reconcilers.Direct,
+			Custom: reconcilers.Custom,
 		},
 	}
 
@@ -171,6 +178,10 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 		}
 		return r.reconcilers.Direct.Reconcile(ctx, req)
 	default:
+		if r.reconcilers.Custom != nil && r.reconcilers.Custom.Type == controllerType {
+			logger.Info("routing to custom reconciler", "type", controllerType)
+			return r.reconcilers.Custom.Reconciler.Reconcile(ctx, req)
+		}
 		return reconcile.Result{}, fmt.Errorf("unknown controller type: %v", controllerType)
 	}
 }
