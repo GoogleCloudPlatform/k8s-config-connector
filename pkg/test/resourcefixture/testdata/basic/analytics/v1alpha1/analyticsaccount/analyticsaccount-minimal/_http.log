@@ -1,0 +1,117 @@
+GRPC /google.analytics.admin.v1alpha.AnalyticsAdminService/ListAccounts
+
+{}
+
+OK
+
+{
+  "accounts": [
+    {
+      "createTime": "2025-10-13T10:54:55.445887715Z",
+      "displayName": "test1",
+      "name": "accounts/370733778",
+      "regionCode": "US",
+      "updateTime": "2025-10-13T10:58:19.612207875Z"
+    },
+    {
+      "createTime": "2025-10-13T10:54:55.445887715Z",
+      "displayName": "test",
+      "name": "accounts/370735495",
+      "regionCode": "US",
+      "updateTime": "2025-10-13T10:58:19.612207875Z"
+    },
+    {
+      "createTime": "2025-10-13T10:54:55.445887715Z",
+      "displayName": "test",
+      "name": "accounts/370746985",
+      "regionCode": "AU",
+      "updateTime": "2025-10-13T10:58:19.612207875Z"
+    }
+  ]
+}
+
+---
+
+GRPC /google.analytics.admin.v1alpha.AnalyticsAdminService/ProvisionAccountTicket
+
+{
+  "account": {
+    "displayName": "test-${uniqueId}",
+    "regionCode": "US"
+  },
+  "redirectUri": "http://www.google.com"
+}
+
+OK
+
+{
+  "accountTicketId": "pb7qY-9XT3CM-EIJ9_27XQ"
+}
+
+---
+
+GRPC /google.analytics.admin.v1alpha.AnalyticsAdminService/ListAccounts
+
+{}
+
+OK
+
+{
+  "accounts": [
+    {
+      "createTime": "2025-10-13T10:54:55.445887715Z",
+      "displayName": "test1",
+      "name": "accounts/370733778",
+      "regionCode": "US",
+      "updateTime": "2025-10-13T10:58:19.612207875Z"
+    },
+    {
+      "createTime": "2025-10-13T10:54:55.445887715Z",
+      "displayName": "test",
+      "name": "accounts/370735495",
+      "regionCode": "US",
+      "updateTime": "2025-10-13T10:58:19.612207875Z"
+    },
+    {
+      "createTime": "2025-10-13T10:54:55.445887715Z",
+      "displayName": "test",
+      "name": "accounts/370746985",
+      "regionCode": "AU",
+      "updateTime": "2025-10-13T10:58:19.612207875Z"
+    }
+  ]
+}
+
+---
+
+GRPC /google.analytics.admin.v1alpha.AnalyticsAdminService/ListAccounts
+
+{}
+
+OK
+
+{
+  "accounts": [
+    {
+      "createTime": "2025-10-13T10:54:55.445887715Z",
+      "displayName": "test1",
+      "name": "accounts/370733778",
+      "regionCode": "US",
+      "updateTime": "2025-10-13T10:58:19.612207875Z"
+    },
+    {
+      "createTime": "2025-10-13T10:54:55.445887715Z",
+      "displayName": "test",
+      "name": "accounts/370735495",
+      "regionCode": "US",
+      "updateTime": "2025-10-13T10:58:19.612207875Z"
+    },
+    {
+      "createTime": "2025-10-13T10:54:55.445887715Z",
+      "displayName": "test",
+      "name": "accounts/370746985",
+      "regionCode": "AU",
+      "updateTime": "2025-10-13T10:58:19.612207875Z"
+    }
+  ]
+}

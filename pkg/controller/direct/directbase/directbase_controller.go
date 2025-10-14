@@ -354,6 +354,11 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 			// dependencies BUT the object is being deleted right now AND its dependecies have been deleted, then we will
 			// never encounter a "ready" condition for its dependencies
 			if !u.GetDeletionTimestamp().IsZero() {
+				// Edge case for AnalyticsAccount: When the manual step for the account creation is not completed, then
+				// the KRM object can be deleted without taking any actions because the account is never created.
+				if k8s.IsManualStepNotCompletedError(err) {
+					return false, r.handleDeleted(ctx, u)
+				}
 				resource, err := toK8sResource(u)
 				if err != nil {
 					return false, fmt.Errorf("error converting k8s resource while handling unresolvable dependencies event: %w", err)
