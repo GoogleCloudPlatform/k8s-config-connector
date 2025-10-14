@@ -20,6 +20,7 @@ package mocklogging
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"time"
 
@@ -28,6 +29,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "cloud.google.com/go/logging/apiv2/loggingpb"
@@ -47,7 +49,7 @@ func (s *configServiceV2) GetLink(ctx context.Context, req *pb.GetLinkRequest) (
 	obj := &pb.Link{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Link `%s` does not exist", name.LinkName)
+			return nil, status.Errorf(codes.NotFound, "%s does not exist", name)
 		}
 		return nil, err
 	}
@@ -69,14 +71,29 @@ func (s *configServiceV2) CreateLink(ctx context.Context, req *pb.CreateLinkRequ
 	obj := proto.Clone(req.GetLink()).(*pb.Link)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
+	obj.BigqueryDataset = &pb.BigQueryDataset{}
 	obj.BigqueryDataset.DatasetId = "bigquery.googleapis.com/projects/${projectId}/datasets/logginglink${uniqueId}"
 
 	s.populateDefaultsForLink(obj)
 
-	return s.MockService.operations.StartLRO(ctx, fqn, nil, func() (proto.Message, error) {
+	metadata := &pb.LinkMetadata{
+		StartTime: timestamppb.New(now),
+		Request: &pb.LinkMetadata_CreateLinkRequest{
+			CreateLinkRequest: &pb.CreateLinkRequest{
+				LinkId: req.GetLinkId(),
+				Parent: req.GetParent(),
+			},
+		},
+		State: pb.OperationState_OPERATION_STATE_SCHEDULED,
+	}
+
+	operationPrefix := fmt.Sprintf("projects/%v/locations/global", name.project.Number)
+	return s.MockService.operations.StartLRO(ctx, operationPrefix, metadata, func() (proto.Message, error) {
 		if err := s.storage.Create(ctx, fqn, obj); err != nil {
 			return nil, err
 		}
+		metadata.EndTime = timestamppb.New(now)
+		metadata.State = pb.OperationState_OPERATION_STATE_SUCCEEDED
 		return obj, nil
 	})
 }
@@ -95,13 +112,28 @@ func (s *configServiceV2) DeleteLink(ctx context.Context, req *pb.DeleteLinkRequ
 	}
 
 	fqn := name.String()
+	now := time.Now()
 
-	deletedObj := &pb.Link{}
-	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
-		return nil, err
+	metadata := &pb.LinkMetadata{
+		StartTime: timestamppb.New(now),
+		Request: &pb.LinkMetadata_DeleteLinkRequest{
+			DeleteLinkRequest: &pb.DeleteLinkRequest{
+				Name: req.Name,
+			},
+		},
+		State: pb.OperationState_OPERATION_STATE_SCHEDULED,
 	}
 
-	return s.MockService.operations.DoneLRO(ctx, fqn, nil, deletedObj)
+	operationPrefix := fmt.Sprintf("projects/%v/locations/global", name.project.Number)
+	return s.MockService.operations.StartLRO(ctx, operationPrefix, metadata, func() (proto.Message, error) {
+		deletedObj := &pb.Link{}
+		if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
+			return nil, err
+		}
+		metadata.EndTime = timestamppb.New(now)
+		metadata.State = pb.OperationState_OPERATION_STATE_SUCCEEDED
+		return &emptypb.Empty{}, nil
+	})
 }
 
 type linkName struct {
