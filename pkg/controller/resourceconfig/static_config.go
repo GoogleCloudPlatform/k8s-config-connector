@@ -19,11 +19,13 @@ package resourceconfig
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 // ControllerConfigStatic is the static controller configuration for all resources.
 // It is ordered by GroupKind alphabetically.
 var ControllerConfigStatic = &ResourcesControllerMap{
+
 	{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerAccessLevel"}:              {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerAccessLevelCondition"}:     {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerAccessPolicy"}:             {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
@@ -317,6 +319,7 @@ var ControllerConfigStatic = &ResourcesControllerMap{
 	{Group: "managedkafka.cnrm.cloud.google.com", Kind: "ManagedKafkaCluster"}:                                  {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "managedkafka.cnrm.cloud.google.com", Kind: "ManagedKafkaTopic"}:                                    {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "memcache.cnrm.cloud.google.com", Kind: "MemcacheInstance"}:                                         {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
+	{Group: "memorystore.cnrm.cloud.google.com", Kind: "MemorystoreInstance"}:                                   {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "metastore.cnrm.cloud.google.com", Kind: "MetastoreBackup"}:                                         {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "metastore.cnrm.cloud.google.com", Kind: "MetastoreFederation"}:                                     {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "metastore.cnrm.cloud.google.com", Kind: "MetastoreService"}:                                        {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
@@ -378,7 +381,7 @@ var ControllerConfigStatic = &ResourcesControllerMap{
 	{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "Project"}:                                           {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "ResourceManagerLien"}:                               {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "ResourceManagerPolicy"}:                             {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
-	{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:                                                        {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
+	{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:                                                        {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect, k8s.ReconcilerTypeTerraform}},
 	{Group: "run.cnrm.cloud.google.com", Kind: "RunService"}:                                                    {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecret"}:                                 {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect, k8s.ReconcilerTypeTerraform}},
 	{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecretVersion"}:                          {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect, k8s.ReconcilerTypeTerraform}},
@@ -441,4 +444,17 @@ var ControllerConfigStatic = &ResourcesControllerMap{
 	{Group: "workstations.cnrm.cloud.google.com", Kind: "Workstation"}:                                          {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "workstations.cnrm.cloud.google.com", Kind: "WorkstationCluster"}:                                   {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "workstations.cnrm.cloud.google.com", Kind: "WorkstationConfig"}:                                    {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
+}
+
+func IsControllerSupported(gvk schema.GroupVersionKind, controller k8s.ReconcilerType) bool {
+	supportedControllers, found := (*ControllerConfigStatic)[gvk.GroupKind()]
+	if !found {
+		return false
+	}
+	for _, c := range supportedControllers.SupportedControllers {
+		if c == controller {
+			return true
+		}
+	}
+	return false
 }

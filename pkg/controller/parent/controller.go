@@ -121,7 +121,7 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 		return reconcile.Result{}, err
 	}
 	resourceControllerConfig := resourceconfig.LoadConfig()
-	if !resourceControllerConfig.IsControllerSupported(r.gvk, controllerType) {
+	if !resourceconfig.IsControllerSupported(r.gvk, controllerType) {
 		logger.Info("controller type not supported for this resource", "resource", req.NamespacedName, "type", controllerType)
 		config, err := resourceControllerConfig.GetControllersForGVK(r.gvk)
 		if err != nil {
