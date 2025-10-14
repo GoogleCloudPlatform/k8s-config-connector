@@ -4,31 +4,7 @@ GRPC /google.analytics.admin.v1alpha.AnalyticsAdminService/ListAccounts
 
 OK
 
-{
-  "accounts": [
-    {
-      "createTime": "2025-10-13T10:54:55.445887715Z",
-      "displayName": "test1",
-      "name": "accounts/370733778",
-      "regionCode": "US",
-      "updateTime": "2025-10-13T10:58:19.612207875Z"
-    },
-    {
-      "createTime": "2025-10-13T10:54:55.445887715Z",
-      "displayName": "test",
-      "name": "accounts/370735495",
-      "regionCode": "US",
-      "updateTime": "2025-10-13T10:58:19.612207875Z"
-    },
-    {
-      "createTime": "2025-10-13T10:54:55.445887715Z",
-      "displayName": "test",
-      "name": "accounts/370746985",
-      "regionCode": "AU",
-      "updateTime": "2025-10-13T10:58:19.612207875Z"
-    }
-  ]
-}
+{}
 
 ---
 
@@ -45,7 +21,7 @@ GRPC /google.analytics.admin.v1alpha.AnalyticsAdminService/ProvisionAccountTicke
 OK
 
 {
-  "accountTicketId": "pb7qY-9XT3CM-EIJ9_27XQ"
+  "accountTicketId": "ASDFGHJKL123456"
 }
 
 ---
@@ -60,23 +36,9 @@ OK
   "accounts": [
     {
       "createTime": "2025-10-13T10:54:55.445887715Z",
-      "displayName": "test1",
-      "name": "accounts/370733778",
+      "displayName": "test-${uniqueId}",
+      "name": "accounts/123456",
       "regionCode": "US",
-      "updateTime": "2025-10-13T10:58:19.612207875Z"
-    },
-    {
-      "createTime": "2025-10-13T10:54:55.445887715Z",
-      "displayName": "test",
-      "name": "accounts/370735495",
-      "regionCode": "US",
-      "updateTime": "2025-10-13T10:58:19.612207875Z"
-    },
-    {
-      "createTime": "2025-10-13T10:54:55.445887715Z",
-      "displayName": "test",
-      "name": "accounts/370746985",
-      "regionCode": "AU",
       "updateTime": "2025-10-13T10:58:19.612207875Z"
     }
   ]
@@ -94,24 +56,22 @@ OK
   "accounts": [
     {
       "createTime": "2025-10-13T10:54:55.445887715Z",
-      "displayName": "test1",
-      "name": "accounts/370733778",
+      "displayName": "test-${uniqueId}",
+      "name": "accounts/123456",
       "regionCode": "US",
-      "updateTime": "2025-10-13T10:58:19.612207875Z"
-    },
-    {
-      "createTime": "2025-10-13T10:54:55.445887715Z",
-      "displayName": "test",
-      "name": "accounts/370735495",
-      "regionCode": "US",
-      "updateTime": "2025-10-13T10:58:19.612207875Z"
-    },
-    {
-      "createTime": "2025-10-13T10:54:55.445887715Z",
-      "displayName": "test",
-      "name": "accounts/370746985",
-      "regionCode": "AU",
       "updateTime": "2025-10-13T10:58:19.612207875Z"
     }
   ]
 }
+
+---
+
+GRPC /google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteAccount
+
+{
+  "name": "accounts/123456"
+}
+
+error: rpc error: code = NotFound desc = account "accounts/123456" not found
+
+{}
