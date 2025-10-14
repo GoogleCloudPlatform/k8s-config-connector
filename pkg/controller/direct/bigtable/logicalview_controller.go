@@ -145,17 +145,34 @@ func (a *LogicalViewAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
+func convertLogicalViewToLogicalViewInfo(in *bigtablepb.LogicalView) *gcp.LogicalViewInfo {
+	if in == nil {
+		return nil
+	}
+	out := &gcp.LogicalViewInfo{}
+	if in.DeletionProtection {
+		out.DeletionProtection = gcp.Protected
+	} else {
+		out.DeletionProtection = gcp.Unprotected
+	}
+	out.Query = in.Query
+	out.LogicalViewID = in.Name
+	return out
+}
+
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *LogicalViewAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating LogicalView", "name", a.id)
 	mapCtx := &direct.MapContext{}
-	logicalViewInfo := BigtableLogicalViewSpec_ToLogicalViewInfo(mapCtx, &a.desired.Spec, a.id)
+
+	lv := BigtableLogicalViewSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-
-	err := a.gcpClient.CreateLogicalView(ctx, a.id.ParentInstanceIdString(), logicalViewInfo)
+	lv.Name = a.id.ID()
+	lvi := convertLogicalViewToLogicalViewInfo(lv)
+	err := a.gcpClient.CreateLogicalView(ctx, a.id.ParentInstanceIdString(), lvi)
 	if err != nil {
 		return fmt.Errorf("creating LogicalView %s: %w", a.id, err)
 	}
@@ -203,14 +220,17 @@ func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		log.V(2).Info("fields need update", "name", a.id, "paths", updateMask.Paths)
 
 		mapCtx := &direct.MapContext{}
-		desiredlogicalview := BigtableLogicalViewSpec_ToLogicalViewInfo(mapCtx, &a.desired.Spec, a.id)
+
+		lv := BigtableLogicalViewSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
+		lv.Name = a.id.ID()
+		lvi := convertLogicalViewToLogicalViewInfo(lv)
 
-		log.V(2).Info("Updating logical view with desired logical view", desiredlogicalview)
+		log.V(2).Info("Updating logical view with desired logical view", lvi)
 
-		err := a.gcpClient.UpdateLogicalView(ctx, a.id.ParentInstanceIdString(), *desiredlogicalview)
+		err := a.gcpClient.UpdateLogicalView(ctx, a.id.ParentInstanceIdString(), *lvi)
 		if err != nil {
 			return fmt.Errorf("updating LogicalView %s: %w", a.id, err)
 		}

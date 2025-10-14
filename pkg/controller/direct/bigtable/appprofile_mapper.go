@@ -36,10 +36,10 @@ func BigtableAppProfileSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 		out.MultiClusterRoutingClusterIds = clusterIds
 	}
 	out.MultiClusterRoutingUseAny = isMultiClusterRouting
-	out.SingleClusterRouting = AppProfile_SingleClusterRouting_FromProto(mapCtx, in.GetSingleClusterRouting())
+	out.SingleClusterRouting = AppProfile_SingleClusterRouting_v1beta1_FromProto(mapCtx, in.GetSingleClusterRouting())
 	// MISSING: Priority
-	out.DataBoostIsolationReadOnly = AppProfile_DataBoostIsolationReadOnly_FromProto(mapCtx, in.GetDataBoostIsolationReadOnly())
-	out.StandardIsolation = AppProfile_StandardIsolation_FromProto(mapCtx, in.GetStandardIsolation())
+	out.DataBoostIsolationReadOnly = AppProfile_DataBoostIsolationReadOnly_v1beta1_FromProto(mapCtx, in.GetDataBoostIsolationReadOnly())
+	out.StandardIsolation = AppProfile_StandardIsolation_v1beta1_FromProto(mapCtx, in.GetStandardIsolation())
 	return out
 }
 func BigtableAppProfileSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.BigtableAppProfileSpec) *pb.AppProfile {
@@ -61,14 +61,14 @@ func BigtableAppProfileSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmv1
 			},
 		}
 	}
-	if oneof := AppProfile_SingleClusterRouting_ToProto(mapCtx, in.SingleClusterRouting); oneof != nil {
+	if oneof := AppProfile_SingleClusterRouting_v1beta1_ToProto(mapCtx, in.SingleClusterRouting); oneof != nil {
 		out.RoutingPolicy = &pb.AppProfile_SingleClusterRouting_{SingleClusterRouting: oneof}
 	}
 	// MISSING: Priority
-	if oneof := AppProfile_StandardIsolation_ToProto(mapCtx, in.StandardIsolation); oneof != nil {
+	if oneof := AppProfile_StandardIsolation_v1beta1_ToProto(mapCtx, in.StandardIsolation); oneof != nil {
 		out.Isolation = &pb.AppProfile_StandardIsolation_{StandardIsolation: oneof}
 	}
-	if oneof := AppProfile_DataBoostIsolationReadOnly_ToProto(mapCtx, in.DataBoostIsolationReadOnly); oneof != nil {
+	if oneof := AppProfile_DataBoostIsolationReadOnly_v1beta1_ToProto(mapCtx, in.DataBoostIsolationReadOnly); oneof != nil {
 		out.Isolation = &pb.AppProfile_DataBoostIsolationReadOnly_{DataBoostIsolationReadOnly: oneof}
 	}
 	return out
