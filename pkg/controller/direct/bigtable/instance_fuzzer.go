@@ -37,12 +37,11 @@ func bigtableInstanceFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert("labels")
 	f.SpecFields.Insert("cluster")
 
-	f.StatusFields.Insert("state")
-	f.StatusFields.Insert("type")
-	f.StatusFields.Insert("create_time")
-	f.StatusFields.Insert("satisfies_pzs")
-
 	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".create_time")
+	f.UnimplementedFields.Insert(".satisfies_pzs")
+	f.UnimplementedFields.Insert(".state")
+	f.UnimplementedFields.Insert(".type")
 
 	return f
 }

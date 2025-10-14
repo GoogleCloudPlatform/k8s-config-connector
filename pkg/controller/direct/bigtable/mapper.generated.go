@@ -513,36 +513,6 @@ func BigtableMaterializedViewSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
 	return out
 }
-func BigtableTableObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table) *krm.BigtableTableObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigtableTableObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	// TODO: map type string message for field ClusterStates
-	// MISSING: ColumnFamilies
-	// MISSING: Granularity
-	out.RestoreInfo = RestoreInfo_v1beta1_FromProto(mapCtx, in.GetRestoreInfo())
-	// MISSING: ChangeStreamConfig
-	// MISSING: AutomatedBackupPolicy
-	// MISSING: RowKeySchema
-	return out
-}
-func BigtableTableObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigtableTableObservedState) *pb.Table {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Table{}
-	out.Name = direct.ValueOf(in.Name)
-	// TODO: map type string message for field ClusterStates
-	// MISSING: ColumnFamilies
-	// MISSING: Granularity
-	out.RestoreInfo = RestoreInfo_v1beta1_ToProto(mapCtx, in.RestoreInfo)
-	// MISSING: ChangeStreamConfig
-	// MISSING: AutomatedBackupPolicy
-	// MISSING: RowKeySchema
-	return out
-}
 func ChangeStreamConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ChangeStreamConfig) *krm.ChangeStreamConfig {
 	if in == nil {
 		return nil
@@ -559,8 +529,7 @@ func ChangeStreamConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Chang
 	out.RetentionPeriod = direct.StringDuration_ToProto(mapCtx, in.RetentionPeriod)
 	return out
 }
-func Cluster_ClusterAutoscalingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_Cluster
-	scalingConfig) *krmbigtablev1alpha1.Cluster_ClusterAutoscalingConfig {
+func Cluster_ClusterAutoscalingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Cluster_ClusterAutoscalingConfig) *krmbigtablev1alpha1.Cluster_ClusterAutoscalingConfig {
 	if in == nil {
 		return nil
 	}

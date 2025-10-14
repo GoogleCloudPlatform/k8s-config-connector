@@ -29,14 +29,22 @@ func BigtableTableSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table
 	out := &krm.BigtableTableSpec{}
 
 	// Note: Bigtable proto 1.38 -> 1.40 changed the ColumnFamily from a slice to a map
-	out.ColumnFamily = []*krm.TableColumnFamily{}
-	for _, v := range in.GetColumnFamilies() {
-		out.ColumnFamily = append(out.ColumnFamily, TableColumnFamily_v1beta1_FromProto(mapCtx, v))
+	if in.GetColumnFamilies() != nil {
+		out.ColumnFamily = []*krm.TableColumnFamily{}
+		for _, v := range in.GetColumnFamilies() {
+			if v == nil {
+				continue
+			}
+			if cf := TableColumnFamily_v1beta1_FromProto(mapCtx, v); cf != nil {
+				out.ColumnFamily = append(out.ColumnFamily, cf)
+			}
+		}
 	}
 
 	// Note: Bigtable proto 1.38 -> 1.40 changed the ChangeStreamRetention from a single field to a struct
-	changeStreamConfig := ChangeStreamConfig_v1beta1_FromProto(mapCtx, in.GetChangeStreamConfig())
-	out.ChangeStreamRetention = changeStreamConfig.RetentionPeriod
+	if changeStreamConfig := ChangeStreamConfig_v1beta1_FromProto(mapCtx, in.GetChangeStreamConfig()); changeStreamConfig != nil {
+		out.ChangeStreamRetention = changeStreamConfig.RetentionPeriod
+	}
 
 	// Note: Bigtable proto 1.38 -> 1.40 changed the DeletionProtection type from string to bool; we handle the conversion.
 	s := strconv.FormatBool(in.GetDeletionProtection())
@@ -54,20 +62,80 @@ func BigtableTableSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Bigtab
 	out := &pb.Table{}
 
 	// Note: Bigtable proto 1.38 -> 1.40 changed the ColumnFamily from a slice to a map
-	out.ColumnFamilies = map[string]*pb.ColumnFamily{}
-	for _, v := range in.ColumnFamily {
-		out.ColumnFamilies[v.FamilyID] = TableColumnFamily_v1beta1_ToProto(mapCtx, v)
+	if in.ColumnFamily != nil {
+		out.ColumnFamilies = map[string]*pb.ColumnFamily{}
+		for _, v := range in.ColumnFamily {
+			if v == nil {
+				continue
+			}
+			out.ColumnFamilies[v.FamilyID] = TableColumnFamily_v1beta1_ToProto(mapCtx, v)
+		}
 	}
 
 	// Note: Bigtable proto 1.38 -> 1.40 changed the ChangeStreamRetention from a single field to a struct
-	out.ChangeStreamConfig = &pb.ChangeStreamConfig{
-		RetentionPeriod: direct.Duration_ToProto(mapCtx, in.ChangeStreamRetention),
+	if in.ChangeStreamRetention != nil {
+		out.ChangeStreamConfig = &pb.ChangeStreamConfig{
+			RetentionPeriod: direct.Duration_ToProto(mapCtx, in.ChangeStreamRetention),
+		}
 	}
 
 	// Note: Bigtable proto 1.38 -> 1.40 changed the DeletionProtection type from string to bool; we handle the conversion.
 	out.DeletionProtection, _ = strconv.ParseBool(direct.ValueOf(in.DeletionProtection))
 
 	// MISSING: Granularity
+	// MISSING: AutomatedBackupPolicy
+	// MISSING: RowKeySchema
+	return out
+}
+
+func BigtableTableObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table) *krm.BigtableTableObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigtableTableObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// TODO: map type string message for field ClusterStates
+	// MISSING: ColumnFamilies
+	// MISSING: Granularity
+	if restoreInfo := RestoreInfo_v1beta1_FromProto(mapCtx, in.GetRestoreInfo()); restoreInfo != nil {
+		out.RestoreInfo = restoreInfo
+	}
+
+	if in.GetClusterStates() != nil {
+		out.ClusterStates = map[string]krm.Table_ClusterState{}
+		for k, v := range in.GetClusterStates() {
+			if v == nil {
+				continue
+			}
+			if cs := Table_ClusterState_v1beta1_FromProto(mapCtx, v); cs != nil {
+				out.ClusterStates[k] = *cs
+			}
+		}
+	}
+	// MISSING: ChangeStreamConfig
+	// MISSING: AutomatedBackupPolicy
+	// MISSING: RowKeySchema
+	return out
+}
+func BigtableTableObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigtableTableObservedState) *pb.Table {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Table{}
+	out.Name = direct.ValueOf(in.Name)
+
+	if in.ClusterStates != nil {
+		out.ClusterStates = map[string]*pb.Table_ClusterState{}
+		for k, v := range in.ClusterStates {
+			out.ClusterStates[k] = Table_ClusterState_v1beta1_ToProto(mapCtx, &v)
+		}
+	}
+	// MISSING: ColumnFamilies
+	// MISSING: Granularity
+	if in.RestoreInfo != nil {
+		out.RestoreInfo = RestoreInfo_v1beta1_ToProto(mapCtx, in.RestoreInfo)
+	}
+	// MISSING: ChangeStreamConfig
 	// MISSING: AutomatedBackupPolicy
 	// MISSING: RowKeySchema
 	return out
