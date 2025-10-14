@@ -25,7 +25,6 @@ import (
 	"fmt"
 	"reflect"
 
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -211,7 +210,7 @@ func (a *BackupPlanAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.BackupVaultRef = &krmv1alpha1.BackupVaultRef{External: a.actual.BackupVault}
+	obj.Spec.BackupVaultRef = &krm.BackupVaultRef{External: a.actual.BackupVault}
 	obj.Spec.Location = a.id.Parent().Location
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {

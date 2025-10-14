@@ -18,6 +18,7 @@
 // proto.service: google.cloud.backupdr.v1
 // resource: BackupDRBackupPlanAssociation:BackupPlanAssociation
 // resource: BackupDRBackupPlan:BackupPlan
+// resource: BackupDRBackupVault:BackupVault
 
 package v1beta1
 
