@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,21 +20,20 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
-    cnrm.cloud.google.com/tf2crd: "true"
-  name: computenetworkfirewallpolicies.compute.cnrm.cloud.google.com
+  name: bigtablematerializedviews.bigtable.cnrm.cloud.google.com
 spec:
-  group: compute.cnrm.cloud.google.com
+  group: bigtable.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: ComputeNetworkFirewallPolicy
-    plural: computenetworkfirewallpolicies
+    kind: BigtableMaterializedView
+    listKind: BigtableMaterializedViewList
+    plural: bigtablematerializedviews
     shortNames:
-    - gcpcomputenetworkfirewallpolicy
-    - gcpcomputenetworkfirewallpolicies
-    singular: computenetworkfirewallpolicy
+    - gcpbigtablematerializedview
+    - gcpbigtablematerializedviews
+    singular: bigtablematerializedview
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -53,30 +52,35 @@ spec:
       jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
       name: Status Age
       type: date
-    name: v1beta1
+    name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: BigtableMaterializedView is the Schema for the BigtableMaterializedView
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: BigtableMaterializedViewSpec defines the desired state of
+              BigtableMaterializedView
             properties:
-              description:
-                description: An optional description of this resource. Provide this
-                  property when you create the resource.
-                type: string
-              projectRef:
-                description: The project that this resource belongs to.
+              deletionProtection:
+                description: Optional. Set to true to make the MaterializedView protected
+                  against deletion.
+                type: boolean
+              instanceRef:
+                description: InstanceRef defines the resource reference to BigtableInstance,
+                  which "External" field holds the GCP identifier for the KRM object.
                 oneOf:
                 - not:
                     required:
@@ -93,28 +97,31 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `Project` resource.'
+                    description: A reference to an externally managed BigtableInstance
+                      resource.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a BigtableInstance resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a BigtableInstance resource.
                     type: string
                 type: object
-              resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+              query:
+                description: Immutable. MaterializedView's select query.
                 type: string
-            required:
-            - projectRef
+              resourceID:
+                description: The BigtableMaterializedView name. If not given, the
+                  metadata.name will be used.
+                type: string
             type: object
           status:
+            description: BigtableMaterializedViewStatus defines the config connector
+              machine state of BigtableMaterializedView
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -138,16 +145,13 @@ spec:
                       type: string
                   type: object
                 type: array
-              creationTimestamp:
-                description: Creation timestamp in RFC3339 text format.
+              externalRef:
+                description: A unique specifier for the BigtableMaterializedView resource
+                  in GCP.
                 type: string
-              fingerprint:
-                description: Fingerprint of the resource. This field is used internally
-                  during updates of this resource.
-                type: string
-              networkFirewallPolicyId:
-                description: The unique identifier for the resource. This identifier
-                  is defined by the server.
+              name:
+                description: The unique name of the BigtableMaterializedView. Values
+                  are of the form `projects/{project}/instances/{instance}/materializedViews/{materializedViewID}`.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -155,18 +159,12 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
-              ruleTupleCount:
-                description: Total count of all firewall policy rule tuples. A firewall
-                  policy can not exceed a set number of tuples.
-                type: integer
-              selfLink:
-                description: Server-defined URL for the resource.
-                type: string
-              selfLinkWithId:
-                description: Server-defined URL for this resource with the resource
-                  id.
-                type: string
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
             type: object
         required:
         - spec
@@ -179,5 +177,5 @@ status:
   acceptedNames:
     kind: ""
     plural: ""
-  conditions: []
-  storedVersions: []
+  conditions: null
+  storedVersions: null
