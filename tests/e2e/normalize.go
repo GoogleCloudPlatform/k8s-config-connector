@@ -875,6 +875,27 @@ func (o *objectWalker) RewriteURL(url string) (string, error) {
 	return v2, nil
 }
 
+func (o *objectWalker) RewriteHeader(headerKey string, headerValue string) (string, error) {
+	v2, err := o.visitString(headerValue, "{header}:"+headerKey)
+	if err != nil {
+		return "", err
+	}
+	return v2, nil
+}
+
+func (o *objectWalker) RewriteHeaders(headers http.Header) error {
+	for k, vv := range headers {
+		for i, v := range vv {
+			s, err := o.RewriteHeader(k, v)
+			if err != nil {
+				return fmt.Errorf("error normalizing header %q=%q: %w", k, v, err)
+			}
+			headers[k][i] = s
+		}
+	}
+	return nil
+}
+
 // findLinksInEvent looks for link paths and feeds the values into replacement.ExtractIDsFromLinks
 func findLinksInEvent(t *testing.T, replacement *Replacements, event *test.LogEntry) {
 	linkPaths := sets.New(
@@ -1280,6 +1301,16 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 				t.Fatalf("error normalizing url %q: %v", event.Request.URL, err)
 			}
 			event.Request.URL = s
+		}
+
+		// Replace headers
+		for _, event := range events {
+			if err := replacements.RewriteHeaders(event.Request.Header); err != nil {
+				t.Fatalf("error normalizing request headers: %v", err)
+			}
+			if err := replacements.RewriteHeaders(event.Response.Header); err != nil {
+				t.Fatalf("error normalizing response headers: %v", err)
+			}
 		}
 
 		events.PrettifyJSON(func(requestURL string, obj map[string]any) {
