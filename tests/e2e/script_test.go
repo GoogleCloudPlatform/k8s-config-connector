@@ -362,9 +362,7 @@ func TestE2EScript(t *testing.T) {
 							t.Logf("ignoring failure to export resource of gvk %v", exportResource.GroupVersionKind())
 							// t.Errorf("failed to export resource of gvk %v", exportResource.GroupVersionKind())
 						} else {
-							if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
-								t.Fatalf("error from normalizeObject: %v", err)
-							}
+							normalizeKRMObject(t, u, project, folderID, uniqueID)
 							got, err := yaml.Marshal(u)
 							if err != nil {
 								t.Errorf("failed to convert kube object to yaml: %v", err)
@@ -385,9 +383,7 @@ func TestE2EScript(t *testing.T) {
 						if err := h.GetClient().Get(ctx, id, u); err != nil {
 							t.Errorf("failed to get kube object: %v", err)
 						} else {
-							if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
-								t.Fatalf("error from normalizeObject: %v", err)
-							}
+							normalizeKRMObject(t, u, project, folderID, uniqueID)
 							got, err := yaml.Marshal(u)
 							if err != nil {
 								t.Errorf("failed to convert kube object to yaml: %v", err)

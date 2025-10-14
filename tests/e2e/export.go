@@ -156,8 +156,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 		}
 	}
 
-	output := h.MustReadFile(outputPath)
-	return string(output)
+	outputBytes := h.MustReadFile(outputPath)
+	output := string(outputBytes)
+	return output
 }
 
 func exportResourceAsUnstructured(h *create.Harness, obj *unstructured.Unstructured) *unstructured.Unstructured {
