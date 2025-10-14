@@ -119,7 +119,8 @@ func (a *MaterializedViewAdapter) Find(ctx context.Context) (bool, error) {
 	if mapCtx.Err() != nil {
 		return false, mapCtx.Err()
 	}
-	a.actual = BigtableMaterializedViewInfo_ToBigtableMaterializedView(mapCtx, MaterializedViewInfo, a.id)
+	a.actual = BigtableMaterializedViewInfo_ToBigtableMaterializedView(mapCtx, MaterializedViewInfo)
+	a.actual.Name = a.id.ID()
 	return true, nil
 }
 
@@ -133,7 +134,9 @@ func (a *MaterializedViewAdapter) Create(ctx context.Context, createOp *directba
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	materializedViewInfo := BigtableMaterializedViewSpec_ToMaterializedViewInfo(mapCtx, &desired.Spec, a.id)
+	materializedViewInfo := BigtableMaterializedViewSpec_ToMaterializedViewInfo(mapCtx, &desired.Spec)
+	materializedViewInfo.MaterializedViewID = a.id.ID()
+
 	err := a.gcpClient.CreateMaterializedView(ctx, a.id.ParentInstanceIdString(), materializedViewInfo)
 	if err != nil {
 		return fmt.Errorf("creating MaterializedView %s: %w", a.id, err)
@@ -142,11 +145,7 @@ func (a *MaterializedViewAdapter) Create(ctx context.Context, createOp *directba
 
 	status := &krm.BigtableMaterializedViewStatus{}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
-	if err := createOp.UpdateStatus(ctx, status, nil); err != nil {
-		return err
-	}
-
-	return nil
+	return createOp.UpdateStatus(ctx, status, nil)
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
@@ -175,7 +174,8 @@ func (a *MaterializedViewAdapter) Update(ctx context.Context, updateOp *directba
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
-		desiredmaterializedview := BigtableMaterializedViewSpec_ToMaterializedViewInfo(mapCtx, &spec, a.id)
+		desiredmaterializedview := BigtableMaterializedViewSpec_ToMaterializedViewInfo(mapCtx, &spec)
+		desiredmaterializedview.MaterializedViewID = a.id.ID()
 
 		err := a.gcpClient.UpdateMaterializedView(ctx, a.id.ParentInstanceIdString(), *desiredmaterializedview)
 		if err != nil {

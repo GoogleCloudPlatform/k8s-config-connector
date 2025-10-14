@@ -50,8 +50,8 @@ func BigtableMaterializedViewSpec_ToProto(mapCtx *direct.MapContext, in *krmv1al
 	return out
 }
 
-func BigtableMaterializedViewSpec_ToMaterializedViewInfo(mapCtx *direct.MapContext, in *krmv1alpha1.BigtableMaterializedViewSpec, identity *krmv1alpha1.MaterializedViewIdentity) *gcp.MaterializedViewInfo {
-	if in == nil || identity == nil {
+func BigtableMaterializedViewSpec_ToMaterializedViewInfo(mapCtx *direct.MapContext, in *krmv1alpha1.BigtableMaterializedViewSpec) *gcp.MaterializedViewInfo {
+	if in == nil {
 		return nil
 	}
 
@@ -65,14 +65,13 @@ func BigtableMaterializedViewSpec_ToMaterializedViewInfo(mapCtx *direct.MapConte
 	}
 
 	return &gcp.MaterializedViewInfo{
-		MaterializedViewID: identity.ID(),
 		Query:              *in.Query,
 		DeletionProtection: gcpDeletionProtection,
 	}
 }
 
-func BigtableMaterializedViewInfo_ToBigtableMaterializedView(mapCtx *direct.MapContext, in *gcp.MaterializedViewInfo, identity *krmv1alpha1.MaterializedViewIdentity) *pb.MaterializedView {
-	if in == nil || identity == nil {
+func BigtableMaterializedViewInfo_ToBigtableMaterializedView(mapCtx *direct.MapContext, in *gcp.MaterializedViewInfo) *pb.MaterializedView {
+	if in == nil {
 		return nil
 	}
 
@@ -82,7 +81,6 @@ func BigtableMaterializedViewInfo_ToBigtableMaterializedView(mapCtx *direct.MapC
 	}
 
 	return &pb.MaterializedView{
-		Name:               identity.ID(),
 		Query:              in.Query,
 		DeletionProtection: deletionProtection,
 	}
