@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // +generated:mapper
-// krm.group: storage.cnrm.cloud.google.com
+// krm.group: storagecontrol.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.storage.control.v2
 
