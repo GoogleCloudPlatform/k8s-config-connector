@@ -467,6 +467,11 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 					return strings.ReplaceAll(s, id, "${processorID}")
 				})
 			}
+			if typeName == "indexes" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${indexID}")
+				})
+			}
 		}
 
 		id, _, _ := unstructured.NestedString(u.Object, "status", "selfLinkWithId")
