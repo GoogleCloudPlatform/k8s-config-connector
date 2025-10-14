@@ -1160,7 +1160,6 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 		case "cloudstoragepathstoredinfotype":
 		case "dnsrecordset":
 		case "eventarctrigger":
-		case "firestoreindex":
 		case "identityplatformoauthidpconfig":
 		case "kmscryptokey":
 		case "logginglogview":
