@@ -485,7 +485,6 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		testgcp.TestDependentNoNetworkProjectID.Set("mock-project")
 		testgcp.TestDependentOrgProjectID.Set("example-project-01")
 		testgcp.TestDependentFolderProjectID.Set("example-project-02")
-		testgcp.FirestoreTestProject.Set("cnrm-test-firestore")
 		testgcp.IdentityPlatformTestProject.Set("kcc-identity-platform")
 		testgcp.RecaptchaEnterpriseTestProject.Set("kcc-recaptcha-enterprise")
 
@@ -534,7 +533,6 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		}
 		testgcp.TestDependentOrgProjectID.Set("example-project-01")
 		testgcp.TestDependentFolderProjectID.Set("example-project-02")
-		testgcp.FirestoreTestProject.Set("cnrm-test-firestore")
 		testgcp.IdentityPlatformTestProject.Set("kcc-identity-platform")
 		testgcp.RecaptchaEnterpriseTestProject.Set("kcc-recaptcha-enterprise")
 		testgcp.TestOrgID.Set("123450001")
