@@ -34,12 +34,12 @@ type MetadataFilterLabelMatch struct {
 	/* Immutable. Name of the metadata label. The length must be between
 	1 and 1024 characters, inclusive. */
 	// +kcc:proto:field=google.cloud.compute.v1.MetadataFilterLabelMatch.name
-	Name string `json:"name"`
+	Name *string `json:"name"`
 
 	/* Immutable. The value that the label must match. The value has a maximum
 	length of 1024 characters. */
 	// +kcc:proto:field=google.cloud.compute.v1.MetadataFilterLabelMatch.value
-	Value string `json:"value"`
+	Value *string `json:"value"`
 }
 
 type IpAddress struct {
@@ -67,7 +67,7 @@ type MetadataFilter struct {
 	MATCH_ALL - All filterLabels must have matching labels in the
 	provided metadata. Possible values: ["MATCH_ANY", "MATCH_ALL"]. */
 	// +kcc:proto:field=google.cloud.compute.v1.MetadataFilter.filter_match_criteria
-	FilterMatchCriteria string `json:"filterMatchCriteria"`
+	FilterMatchCriteria *string `json:"filterMatchCriteria"`
 }
 
 // +kcc:proto=google.cloud.compute.v1.ForwardingRuleServiceDirectoryRegistration
@@ -217,7 +217,7 @@ type ComputeForwardingRuleSpec struct {
 	LoadBalancingScheme *string `json:"loadBalancingScheme,omitempty"`
 
 	/* Location represents the geographical location of the ComputeForwardingRule. Specify a region name or "global" for global resources. Reference: GCP definition of regions/zones (https://cloud.google.com/compute/docs/regions-zones/) */
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	/* Immutable. Opaque filter criteria used by Loadbalancer to restrict routing
 	configuration to a limited set xDS compliant clients. In their xDS

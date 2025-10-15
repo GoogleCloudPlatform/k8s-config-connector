@@ -52,10 +52,10 @@ func NewForwardingRuleIdentity(ctx context.Context, reader client.Reader, obj *C
 	}
 	// Get Location
 	var location string
-	if obj.Spec.Location == "" {
+	if obj.Spec.Location == nil {
 		location = "global"
 	} else {
-		location = obj.Spec.Location
+		location = common.ValueOf(obj.Spec.Location)
 	}
 
 	// Get desired ID
