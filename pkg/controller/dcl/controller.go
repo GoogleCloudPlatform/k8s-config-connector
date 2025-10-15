@@ -473,7 +473,7 @@ func (r *Reconciler) handleDefaults(ctx context.Context, u *unstructured.Unstruc
 	for _, defaulter := range r.defaulters {
 		changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeDCL, u)
 		if err != nil {
-			return fmt.Errorf("applying defaults: %w", err)
+			return fmt.Errorf("applying defaults in the dcl controller: %w", err)
 		}
 		if changed {
 			changeCount++

@@ -506,7 +506,7 @@ func (r *Reconciler) handleDefaults(ctx context.Context, u *unstructured.Unstruc
 	for _, defaulter := range r.defaulters {
 		changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeTerraform, u)
 		if err != nil {
-			return err
+			return fmt.Errorf("applying defaults in the tf controller: %w", err)
 		}
 		if changed {
 			changeCount++
