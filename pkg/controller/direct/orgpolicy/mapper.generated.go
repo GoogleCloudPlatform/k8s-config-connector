@@ -172,7 +172,7 @@ func PolicySpec_PolicyRule_FromProto(mapCtx *direct.MapContext, in *pb.PolicySpe
 	out.DenyAll = direct.LazyPtr(in.GetDenyAll())
 	out.Enforce = direct.LazyPtr(in.GetEnforce())
 	out.Condition = Expr_FromProto(mapCtx, in.GetCondition())
-	out.Parameters = Parameters_FromProto(mapCtx, in.GetParameters())
+	// MISSING: Parameters
 	return out
 }
 func PolicySpec_PolicyRule_ToProto(mapCtx *direct.MapContext, in *krmorgpolicyv1alpha1.PolicySpec_PolicyRule) *pb.PolicySpec_PolicyRule {
@@ -193,35 +193,8 @@ func PolicySpec_PolicyRule_ToProto(mapCtx *direct.MapContext, in *krmorgpolicyv1
 		out.Kind = oneof
 	}
 	out.Condition = Expr_ToProto(mapCtx, in.Condition)
-	out.Parameters = Parameters_ToProto(mapCtx, in.Parameters)
+	// MISSING: Parameters
 	return out
-}
-func PolicySpec_PolicyRule_AllowAll_ToProto(mapCtx *direct.MapContext, in *bool) *pb.PolicySpec_PolicyRule_AllowAll {
-	if in == nil {
-		return nil
-	}
-	if !*in {
-		return nil
-	}
-	return &pb.PolicySpec_PolicyRule_AllowAll{AllowAll: *in}
-}
-func PolicySpec_PolicyRule_DenyAll_ToProto(mapCtx *direct.MapContext, in *bool) *pb.PolicySpec_PolicyRule_DenyAll {
-	if in == nil {
-		return nil
-	}
-	if !*in {
-		return nil
-	}
-	return &pb.PolicySpec_PolicyRule_DenyAll{DenyAll: *in}
-}
-func PolicySpec_PolicyRule_Enforce_ToProto(mapCtx *direct.MapContext, in *bool) *pb.PolicySpec_PolicyRule_Enforce {
-	if in == nil {
-		return nil
-	}
-	if !*in {
-		return nil
-	}
-	return &pb.PolicySpec_PolicyRule_Enforce{Enforce: *in}
 }
 func PolicySpec_PolicyRule_StringValues_FromProto(mapCtx *direct.MapContext, in *pb.PolicySpec_PolicyRule_StringValues) *krmorgpolicyv1alpha1.PolicySpec_PolicyRule_StringValues {
 	if in == nil {

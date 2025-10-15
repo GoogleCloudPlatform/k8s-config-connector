@@ -1925,7 +1925,6 @@
 [missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dryRunSpec.rules[].condition.location" is not set in unstructured objects
 [missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dryRunSpec.rules[].condition.title" is not set in unstructured objects
 [missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dryRunSpec.rules[].denyAll" is not set in unstructured objects
-[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dryRunSpec.rules[].parameters" is not set in unstructured objects
 [missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dryRunSpec.rules[].values.allowedValues[]" is not set in unstructured objects
 [missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.dryRunSpec.rules[].values.deniedValues[]" is not set in unstructured objects
 [missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.folderRef" is not set; neither 'external' nor 'name' are set
@@ -1938,7 +1937,6 @@
 [missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.rules[].condition.location" is not set in unstructured objects
 [missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.rules[].condition.title" is not set in unstructured objects
 [missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.rules[].denyAll" is not set in unstructured objects
-[missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.rules[].parameters" is not set in unstructured objects
 [missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.rules[].values.allowedValues[]" is not set in unstructured objects
 [missing_field] crd=orgpolicypolicies.orgpolicy.cnrm.cloud.google.com version=v1alpha1: field ".spec.spec.rules[].values.deniedValues[]" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects

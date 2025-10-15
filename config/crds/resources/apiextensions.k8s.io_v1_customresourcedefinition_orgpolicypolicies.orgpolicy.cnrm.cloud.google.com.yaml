@@ -140,16 +140,6 @@ spec:
                             `false`, then any configuration is acceptable. This field
                             can be set only in policies for boolean constraints.
                           type: boolean
-                        parameters:
-                          additionalProperties:
-                            type: string
-                          description: 'Optional. Required for managed constraints
-                            if parameters are defined. Passes parameter values when
-                            policy enforcement is enabled. Ensure that parameter value
-                            types match those defined in the constraint definition.
-                            For example: { "allowedLocations" : ["us-east1", "us-west1"],
-                            "allowAll" : true }'
-                          type: object
                         values:
                           description: List of values to be used for this policy rule.
                             This field can be set only in policies for list constraints.
@@ -331,16 +321,6 @@ spec:
                             `false`, then any configuration is acceptable. This field
                             can be set only in policies for boolean constraints.
                           type: boolean
-                        parameters:
-                          additionalProperties:
-                            type: string
-                          description: 'Optional. Required for managed constraints
-                            if parameters are defined. Passes parameter values when
-                            policy enforcement is enabled. Ensure that parameter value
-                            types match those defined in the constraint definition.
-                            For example: { "allowedLocations" : ["us-east1", "us-west1"],
-                            "allowAll" : true }'
-                          type: object
                         values:
                           description: List of values to be used for this policy rule.
                             This field can be set only in policies for list constraints.

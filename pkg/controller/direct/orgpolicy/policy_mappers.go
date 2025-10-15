@@ -21,7 +21,6 @@ package orgpolicy
 import (
 	pb "cloud.google.com/go/orgpolicy/apiv2/orgpolicypb"
 	"google.golang.org/genproto/googleapis/type/expr"
-	structpb "google.golang.org/protobuf/types/known/structpb"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/orgpolicy/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -66,18 +65,6 @@ func Expr_FromProto(mapCtx *direct.MapContext, in *expr.Expr) *krm.Expr {
 	return out
 }
 
-func Parameters_FromProto(mapCtx *direct.MapContext, in *structpb.Struct) map[string]string {
-	if in == nil {
-		return nil
-	}
-
-	out := map[string]string{}
-	for k, v := range in.AsMap() {
-		out[k] = v.(string)
-	}
-	return out
-}
-
 func Expr_ToProto(mapCtx *direct.MapContext, in *krm.Expr) *expr.Expr {
 	if in == nil {
 		return nil
@@ -90,16 +77,21 @@ func Expr_ToProto(mapCtx *direct.MapContext, in *krm.Expr) *expr.Expr {
 	return out
 }
 
-func Parameters_ToProto(mapCtx *direct.MapContext, in map[string]string) *structpb.Struct {
+func PolicySpec_PolicyRule_AllowAll_ToProto(mapCtx *direct.MapContext, in *bool) *pb.PolicySpec_PolicyRule_AllowAll {
 	if in == nil {
 		return nil
 	}
-
-	out := &structpb.Struct{
-		Fields: map[string]*structpb.Value{},
+	return &pb.PolicySpec_PolicyRule_AllowAll{AllowAll: *in}
+}
+func PolicySpec_PolicyRule_DenyAll_ToProto(mapCtx *direct.MapContext, in *bool) *pb.PolicySpec_PolicyRule_DenyAll {
+	if in == nil {
+		return nil
 	}
-	for k, v := range in {
-		out.Fields[k] = structpb.NewStringValue(v)
+	return &pb.PolicySpec_PolicyRule_DenyAll{DenyAll: *in}
+}
+func PolicySpec_PolicyRule_Enforce_ToProto(mapCtx *direct.MapContext, in *bool) *pb.PolicySpec_PolicyRule_Enforce {
+	if in == nil {
+		return nil
 	}
-	return out
+	return &pb.PolicySpec_PolicyRule_Enforce{Enforce: *in}
 }

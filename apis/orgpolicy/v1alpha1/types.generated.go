@@ -33,56 +33,6 @@ type AlternatePolicySpec struct {
 	Spec *PolicySpec `json:"spec,omitempty"`
 }
 
-// +kcc:proto=google.cloud.orgpolicy.v2.PolicySpec.PolicyRule
-type PolicySpec_PolicyRule struct {
-	// List of values to be used for this policy rule. This field can be set
-	//  only in policies for list constraints.
-	// +kcc:proto:field=google.cloud.orgpolicy.v2.PolicySpec.PolicyRule.values
-	Values *PolicySpec_PolicyRule_StringValues `json:"values,omitempty"`
-
-	// Setting this to true means that all values are allowed. This field can
-	//  be set only in policies for list constraints.
-	// +kcc:proto:field=google.cloud.orgpolicy.v2.PolicySpec.PolicyRule.allow_all
-	AllowAll *bool `json:"allowAll,omitempty"`
-
-	// Setting this to true means that all values are denied. This field can
-	//  be set only in policies for list constraints.
-	// +kcc:proto:field=google.cloud.orgpolicy.v2.PolicySpec.PolicyRule.deny_all
-	DenyAll *bool `json:"denyAll,omitempty"`
-
-	// If `true`, then the policy is enforced. If `false`, then any
-	//  configuration is acceptable.
-	//  This field can be set only in policies for boolean constraints.
-	// +kcc:proto:field=google.cloud.orgpolicy.v2.PolicySpec.PolicyRule.enforce
-	Enforce *bool `json:"enforce,omitempty"`
-
-	// A condition which determines whether this rule is used
-	//  in the evaluation of the policy. When set, the `expression` field in
-	//  the `Expr' must include from 1 to 10 subexpressions, joined by the "||"
-	//  or "&&" operators. Each subexpression must be of the form
-	//  "resource.matchTag('<ORG_ID>/tag_key_short_name,
-	//  'tag_value_short_name')". or "resource.matchTagId('tagKeys/key_id',
-	//  'tagValues/value_id')". where key_name and value_name are the resource
-	//  names for Label Keys and Values. These names are available from the Tag
-	//  Manager Service. An example expression is:
-	//  "resource.matchTag('123456789/environment,
-	//  'prod')". or "resource.matchTagId('tagKeys/123',
-	//  'tagValues/456')".
-	// +kcc:proto:field=google.cloud.orgpolicy.v2.PolicySpec.PolicyRule.condition
-	Condition *Expr `json:"condition,omitempty"`
-
-	// Optional. Required for managed constraints if parameters are defined.
-	//  Passes parameter values when policy enforcement is enabled. Ensure that
-	//  parameter value types match those defined in the constraint definition.
-	//  For example:
-	//  {
-	//    "allowedLocations" : ["us-east1", "us-west1"],
-	//    "allowAll" : true
-	//  }
-	// +kcc:proto:field=google.cloud.orgpolicy.v2.PolicySpec.PolicyRule.parameters
-	Parameters map[string]string `json:"parameters,omitempty"`
-}
-
 // +kcc:proto=google.cloud.orgpolicy.v2.PolicySpec.PolicyRule.StringValues
 type PolicySpec_PolicyRule_StringValues struct {
 	// List of values allowed at this resource.
