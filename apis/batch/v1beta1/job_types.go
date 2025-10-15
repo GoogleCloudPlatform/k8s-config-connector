@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1alpha1
+package v1beta1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -27,6 +27,7 @@ var BatchJobGVK = GroupVersion.WithKind("BatchJob")
 // BatchJobSpec defines the desired state of BatchJob
 // +kcc:spec:proto=google.cloud.batch.v1.Job
 type BatchJobSpec struct {
+	ParentRef *parent.ProjectAndLocationRef `json:",inline"`
 
 	// Priority of the Job.
 	//  The valid value range is [0, 100). Default value is 0.
@@ -56,8 +57,8 @@ type BatchJobSpec struct {
 	//  Batch, see
 	//  [Organize resources using
 	//  labels](https://cloud.google.com/batch/docs/organize-resources-using-labels).
-	// +kcc:proto:field=google.cloud.batch.v1.Job.labels
-	Labels map[string]string `json:"labels,omitempty"`
+	// +k_cc:proto:field=google.cloud.batch.v1.Job.labels
+	// Labels map[string]string `json:"labels,omitempty"`
 
 	// Log preservation policy for the Job.
 	// +kcc:proto:field=google.cloud.batch.v1.Job.logs_policy
@@ -67,21 +68,8 @@ type BatchJobSpec struct {
 	// +kcc:proto:field=google.cloud.batch.v1.Job.notifications
 	Notifications []JobNotification `json:"notifications,omitempty"`
 
-	// Required. The parent resource name where the Job will be created. Pattern: "projects/{project}/locations/{location}"
-	*Parent `json:",inline"`
-
 	// The BatchJob name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-}
-
-type Parent struct {
-	// Immutable. The location where the alloydb cluster should reside.
-	// +required
-	Location *string `json:"location,omitempty"`
-
-	// The project that this resource belongs to.
-	// +required
-	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.batch.v1.AllocationPolicy
@@ -161,7 +149,7 @@ type AllocationPolicy_Disk struct {
 	//  * `batch-cos`: use Batch Container-Optimized images.
 	//  * `batch-hpc-rocky`: use Batch HPC Rocky Linux images.
 	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.Disk.image
-	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
+	Image *string `json:"image,omitempty"`
 
 	// Name of a snapshot used as the data source.
 	//  Snapshot is not supported as boot disk now.
@@ -482,7 +470,7 @@ type BatchJobObservedState struct {
 // TODO(user): make sure the pluralizaiton below is correct
 // +kubebuilder:resource:categories=gcp,shortName=gcpbatchjob;gcpbatchjobs
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true";"internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
@@ -490,6 +478,7 @@ type BatchJobObservedState struct {
 
 // BatchJob is the Schema for the BatchJob API
 // +k8s:openapi-gen=true
+// +kubebuilder:storageversion
 type BatchJob struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
