@@ -17,7 +17,6 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.orgpolicy.v2
 // resource: OrgPolicyPolicy:Policy
-// resource: OrgPolicyCustomConstraint:CustomConstraint
 
 package v1alpha1
 
@@ -71,6 +70,17 @@ type PolicySpec_PolicyRule struct {
 	//  'tagValues/456')".
 	// +kcc:proto:field=google.cloud.orgpolicy.v2.PolicySpec.PolicyRule.condition
 	Condition *Expr `json:"condition,omitempty"`
+
+	// Optional. Required for managed constraints if parameters are defined.
+	//  Passes parameter values when policy enforcement is enabled. Ensure that
+	//  parameter value types match those defined in the constraint definition.
+	//  For example:
+	//  {
+	//    "allowedLocations" : ["us-east1", "us-west1"],
+	//    "allowAll" : true
+	//  }
+	// +kcc:proto:field=google.cloud.orgpolicy.v2.PolicySpec.PolicyRule.parameters
+	Parameters map[string]string `json:"parameters,omitempty"`
 }
 
 // +kcc:proto=google.cloud.orgpolicy.v2.PolicySpec.PolicyRule.StringValues
@@ -106,13 +116,4 @@ type Expr struct {
 	//  reporting, e.g. a file name and a position in the file.
 	// +kcc:proto:field=google.type.Expr.location
 	Location *string `json:"location,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.orgpolicy.v2.PolicySpec
-type PolicySpecObservedState struct {
-	// Output only. The time stamp this was previously updated. This
-	//  represents the last time a call to `CreatePolicy` or `UpdatePolicy` was
-	//  made for that policy.
-	// +kcc:proto:field=google.cloud.orgpolicy.v2.PolicySpec.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
 }

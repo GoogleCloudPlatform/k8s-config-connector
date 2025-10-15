@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: orgpolicy.cnrm.cloud.google.com/v1alpha1
+apiVersion: orgpolicy.cnrm.cloud.google.com/v1beta1
 kind: OrgPolicyCustomConstraint
 metadata:
   name: custom.orgpolicycustomconstraint${uniqueId}
@@ -20,8 +20,8 @@ spec:
   organizationRef:
     external: organizations/${TEST_ORG_ID}
   actionType: ALLOW
-  displayName: KCC generated test CuOP for create
-  condition: resource.management.autoUpgrade == false
+  displayName: KCC generated test CuOP for update
+  condition: resource.management.autoUpgrade == true
   methodTypes:
   - CREATE
   - UPDATE

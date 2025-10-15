@@ -23,12 +23,12 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 go run . generate-types \
     --service google.cloud.orgpolicy.v2  \
-    --api-version orgpolicy.cnrm.cloud.google.com/v1alpha1 \
-    --resource OrgPolicyPolicy:Policy
+    --api-version orgpolicy.cnrm.cloud.google.com/v1beta1 \
+    --resource OrgPolicyCustomConstraint:CustomConstraint
 
 go run . generate-mapper \
     --service google.cloud.orgpolicy.v2 \
-    --api-version orgpolicy.cnrm.cloud.google.com/v1alpha1
+    --api-version orgpolicy.cnrm.cloud.google.com/v1beta1
 
 
 cd ${REPO_ROOT}

@@ -176,3 +176,12 @@ type PolicySpec struct {
 	// +kcc:proto:field=google.cloud.orgpolicy.v2.PolicySpec.reset
 	Reset *bool `json:"reset,omitempty"`
 }
+
+// +kcc:observedstate:proto=google.cloud.orgpolicy.v2.PolicySpec
+type PolicySpecObservedState struct {
+	// Output only. The time stamp this was previously updated. This
+	//  represents the last time a call to `CreatePolicy` or `UpdatePolicy` was
+	//  made for that policy.
+	// +kcc:proto:field=google.cloud.orgpolicy.v2.PolicySpec.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}

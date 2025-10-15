@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-apiVersion: orgpolicy.cnrm.cloud.google.com/v1alpha1
+apiVersion: orgpolicy.cnrm.cloud.google.com/v1beta1
 kind: OrgPolicyCustomConstraint
 metadata:
   name: custom.orgpolicypolicy${uniqueId}
