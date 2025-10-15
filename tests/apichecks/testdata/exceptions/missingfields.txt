@@ -3235,7 +3235,6 @@
 [missing_field] crd=resourcemanagerpolicies.resourcemanager.cnrm.cloud.google.com version=v1beta1: field ".spec.version" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.annotations" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.binaryAuthorization.breakglassJustification" is not set in unstructured objects
-[missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.binaryAuthorization.useDefault" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.client" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.clientVersion" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.annotations" is not set in unstructured objects

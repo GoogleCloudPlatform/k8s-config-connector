@@ -55,9 +55,6 @@ func BinaryAuthorization_UseDefault_ToProto(mapCtx *direct.MapContext, in *bool)
 	if in == nil {
 		return nil
 	}
-	if !*in {
-		return nil
-	}
 	return &pb.BinaryAuthorization_UseDefault{UseDefault: *in}
 }
 func BuildInfo_FromProto(mapCtx *direct.MapContext, in *pb.BuildInfo) *krm.BuildInfo {
