@@ -112,7 +112,6 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
 
 	// Specific to Bigtable
-	visitor.replacePaths[".materializedViews[].etag"] = "abcdef0123A="
 	// TODO: these can be removed once the following fields have been released
 	metadata_type, _, _ := unstructured.NestedString(u.Object, "metadata", "@type")
 	if metadata_type == "type.googleapis.com/google.bigtable.admin.v2.CreateMaterializedViewMetadata" || metadata_type == "type.googleapis.com/google.bigtable.admin.v2.UpdateMaterializedViewMetadata" {
