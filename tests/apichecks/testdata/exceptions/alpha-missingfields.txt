@@ -281,14 +281,14 @@
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].policy.accelerators[].installGpuDrivers" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].policy.accelerators[].type" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].policy.bootDisk.diskInterface" is not set in unstructured objects
-[missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].policy.bootDisk.imageRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].policy.bootDisk.image" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].policy.bootDisk.sizeGB" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].policy.bootDisk.snapshot" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].policy.bootDisk.type" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].policy.disks[].deviceName" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].policy.disks[].existingDisk" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].policy.disks[].newDisk.diskInterface" is not set in unstructured objects
-[missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].policy.disks[].newDisk.imageRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].policy.disks[].newDisk.image" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].policy.disks[].newDisk.sizeGB" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].policy.disks[].newDisk.snapshot" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.instances[].policy.disks[].newDisk.type" is not set in unstructured objects
@@ -307,7 +307,6 @@
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.serviceAccount.name" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.serviceAccount.namespace" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.allocationPolicy.tags[]" is not set in unstructured objects
-[missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.logsPolicy.cloudLoggingOption.useGenericTaskMonitoredResource" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.logsPolicy.destination" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.logsPolicy.logsPath" is not set in unstructured objects
@@ -316,12 +315,10 @@
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.notifications[].message.type" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.notifications[].pubsubTopicRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.priority" is not set in unstructured objects
-[missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].parallelism" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].permissiveSSH" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].requireHostsFile" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].runAsNonRoot" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].schedulingPolicy" is not set in unstructured objects
-[missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].taskCount" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].taskCountPerNode" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].taskEnvironments[].encryptedVariables.cipherText" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].taskEnvironments[].encryptedVariables.kmsKeyRef" is not set; neither 'external' nor 'name' are set
@@ -343,10 +340,7 @@
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].taskSpec.runnables[].background" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].taskSpec.runnables[].barrier.name" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].taskSpec.runnables[].container.blockExternalNetwork" is not set in unstructured objects
-[missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].taskSpec.runnables[].container.commands[]" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].taskSpec.runnables[].container.enableImageStreaming" is not set in unstructured objects
-[missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].taskSpec.runnables[].container.entrypoint" is not set in unstructured objects
-[missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].taskSpec.runnables[].container.imageURI" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].taskSpec.runnables[].container.options" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].taskSpec.runnables[].container.username" is not set in unstructured objects
 [missing_field] crd=batchjobs.batch.cnrm.cloud.google.com version=v1alpha1: field ".spec.taskGroups[].taskSpec.runnables[].container.volumes[]" is not set in unstructured objects

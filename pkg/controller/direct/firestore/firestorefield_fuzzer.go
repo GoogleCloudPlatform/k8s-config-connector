@@ -36,7 +36,6 @@ func firestoreFieldFuzzer() fuzztesting.KRMFuzzer {
 	f.IdentityField(".name")
 
 	f.SpecField(".index_config")
-
 	f.StatusField(".index_config.ancestor_field")
 	f.StatusField(".index_config.reverting")
 	f.StatusField(".index_config.uses_ancestor_config")
