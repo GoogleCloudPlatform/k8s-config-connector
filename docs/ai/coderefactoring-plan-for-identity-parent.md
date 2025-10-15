@@ -44,15 +44,15 @@ The refactoring will be applied to each resource, one at a time, following these
 5.  **Cleanup**: Once the new, manually crafted files are in place, any corresponding auto-generated files for that resource should be removed to avoid conflicts.
 6.  **Repeat**: Apply this process systematically to all other resources in the `apis/` directory.
 
-## Concrete Example: Refactoring `IAMServiceAccount`
+## Concrete Example: Refactoring `BigQueryBigLakeCatalog`
 
-Here is how the plan would be applied to the `IAMServiceAccount` resource.
+Here is how the plan would be applied to the `BigQueryBigLakeCatalog` resource.
 
-### 1. Create `iamserviceaccount_identity.go`
+### 1. Create `catalog_identity.go`
 
 ```go
-// in apis/iam/v1beta1/iamserviceaccount_identity.go
-package v1beta1
+// in apis/bigquerybiglake/v1alpha1/catalog_identity.go
+package v1alpha1
 
 import (
 	"context"
@@ -65,35 +65,35 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ identity.Identity = &IAMServiceAccountIdentity{}
+var _ identity.Identity = &CatalogIdentity{}
 
 const (
-	IAMServiceAccountIdentityURL = parent.ProjectURL + "/serviceAccounts/{{accountID}}@{{projectID}}.iam.gserviceaccount.com"
+	CatalogIDURL = parent.ProjectAndLocationURL + "/catalogs/{{catalogID}}"
 )
 
-type IAMServiceAccountIdentity struct {
-	parent *parent.ProjectParent
+type CatalogIdentity struct {
+	parent *parent.ProjectAndLocationParent
 	id     string
 }
 
-func (i *IAMServiceAccountIdentity) String() string {
-	return i.parent.String() + "/serviceAccounts/" + i.id + "@" + i.parent.ID() + ".iam.gserviceaccount.com"
+func (i *CatalogIdentity) String() string {
+	return i.parent.String() + "/catalogs/" + i.id
 }
 
 // ... (rest of the implementation) ...
 
-var _ identity.Resource = &IAMServiceAccount{}
+var _ identity.Resource = &BigLakeCatalog{}
 
-func (obj *IAMServiceAccount) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+func (obj *BigLakeCatalog) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
 	// ... (implementation to resolve identity from spec) ...
 }
 ```
 
-### 2. Create `iamserviceaccount_reference.go`
+### 2. Create `catalog_reference.go`
 
 ```go
-// in apis/iam/v1beta1/iamserviceaccount_reference.go
-package v1beta1
+// in apis/bigquerybiglake/v1alpha1/catalog_reference.go
+package v1alpha1
 
 import (
 	"context"
@@ -104,59 +104,41 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.Ref = &IAMServiceAccountRef{}
+var _ refsv1beta1.Ref = &BigQueryBigLakeCatalogRef{}
 
-type IAMServiceAccountRef struct {
+// BigQueryBigLakeCatalogRef is a reference to a BigQueryBigLakeCatalog resource.
+type BigQueryBigLakeCatalogRef struct {
+	// A reference to an externally managed BigQueryBigLakeCatalog resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/catalogs/{{catalogID}}".
 	External string `json:"external,omitempty"`
+
+	// The name of a BigQueryBigLakeCatalog resource.
 	Name string `json:"name,omitempty"`
+
+	// The namespace of a BigQueryBigLakeCatalog resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
 // ... (implementation of refsv1beta1.Ref interface) ...
 ```
 
-### 3. Update `iamserviceaccount_types.go`
+### 3. Update `catalog_types.go`
 
-The original `IAMServiceAccountSpec` would be modified from:
-
-```go
-// Original Spec
-type IAMServiceAccountSpec struct {
-	Description *string `json:"description,omitempty"`
-	Disabled *bool `json:"disabled,omitempty"`
-	DisplayName *string `json:"displayName,omitempty"`
-	ResourceID *string `json:"resourceID,omitempty"`
-}
-```
-
-To the new version with an explicit parent reference:
+The `BigLakeCatalogSpec` would be defined with an explicit parent reference:
 
 ```go
-// in apis/iam/v1beta1/iamserviceaccount_types.go
+// in apis/bigquerybiglake/v1alpha1/catalog_types.go
 import (
     "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
     // ... other imports
 )
 
-// New Spec
-type IAMServiceAccountSpec struct {
-    // Required. Defines the parent path of the resource.
-	*parent.ProjectRef `json:",inline"`
+// BigLakeCatalogSpec defines the desired state of BigLakeCatalog
+type BigLakeCatalogSpec struct {
+	// Required. Defines the parent path of the resource.
+	*parent.ProjectAndLocationRef `json:",inline"`
 
-	/* A text description of the service account. */
-	// +optional
-	Description *string `json:"description,omitempty"`
-
-	/* Whether the service account is disabled. Defaults to false. */
-	// +optional
-	Disabled *bool `json:"disabled,omitempty"`
-
-	/* The display name for the service account. */
-	// +optional
-	DisplayName *string `json:"displayName,omitempty"`
-
-	/* The IAMServiceAccount name. If not given, the metadata.name will be used. */
-	// +optional
+	// The BigLakeCatalog name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 ```
