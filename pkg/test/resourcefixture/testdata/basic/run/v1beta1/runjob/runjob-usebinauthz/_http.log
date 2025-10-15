@@ -29,7 +29,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: location=us-central1
 
 {
-  "binaryAuthorization": {},
+  "binaryAuthorization": {
+    "useDefault": false
+  },
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -59,7 +61,9 @@ X-Xss-Protection: 0
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
-    "binaryAuthorization": {},
+    "binaryAuthorization": {
+      "useDefault": false
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
@@ -123,7 +127,9 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
-    "binaryAuthorization": {},
+    "binaryAuthorization": {
+      "useDefault": false
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
@@ -166,7 +172,9 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
-    "binaryAuthorization": {},
+    "binaryAuthorization": {
+      "useDefault": false
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
@@ -227,7 +235,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "binaryAuthorization": {},
+  "binaryAuthorization": {
+    "useDefault": false
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creator": "${creatorID}",
   "etag": "abcdef0123A=",
@@ -310,7 +320,9 @@ X-Xss-Protection: 0
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
-    "binaryAuthorization": {},
+    "binaryAuthorization": {
+      "useDefault": false
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
@@ -374,7 +386,9 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
-    "binaryAuthorization": {},
+    "binaryAuthorization": {
+      "useDefault": false
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
@@ -417,7 +431,9 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
-    "binaryAuthorization": {},
+    "binaryAuthorization": {
+      "useDefault": false
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
@@ -478,7 +494,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "binaryAuthorization": {},
+  "binaryAuthorization": {
+    "useDefault": false
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creator": "${creatorID}",
   "etag": "abcdef0123A=",
@@ -540,7 +558,9 @@ X-Xss-Protection: 0
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
-    "binaryAuthorization": {},
+    "binaryAuthorization": {
+      "useDefault": false
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
@@ -604,7 +624,9 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
-    "binaryAuthorization": {},
+    "binaryAuthorization": {
+      "useDefault": false
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
@@ -647,7 +669,9 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
-    "binaryAuthorization": {},
+    "binaryAuthorization": {
+      "useDefault": false
+    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "test@google.com",
     "etag": "abcdef0123A=",
