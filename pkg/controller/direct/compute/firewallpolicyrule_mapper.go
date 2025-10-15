@@ -12,11 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package firewallpolicyrule
+package compute
 
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -30,7 +32,7 @@ func ComputeFirewallPolicyRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.F
 	out.Direction = in.GetDirection()
 	out.Disabled = in.Disabled
 	out.EnableLogging = in.EnableLogging
-	out.Match = FirewallpolicyruleMatch_FromProto(mapCtx, in.Match)
+	out.Match = FirewallPolicyRuleMatcher_FromProto(mapCtx, in.Match)
 	out.Priority = int64(in.GetPriority())
 	// MISSING: RuleName
 	// MISSING: SecurityProfileGroup
@@ -50,7 +52,7 @@ func ComputeFirewallPolicyRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.Co
 	out.Direction = direct.LazyPtr(in.Direction)
 	out.Disabled = in.Disabled
 	out.EnableLogging = in.EnableLogging
-	out.Match = FirewallpolicyruleMatch_ToProto(mapCtx, in.Match)
+	out.Match = FirewallPolicyRuleMatcher_ToProto(mapCtx, in.Match)
 	out.Priority = direct.LazyPtr(int32(in.Priority))
 	// MISSING: RuleName
 	// MISSING: SecurityProfileGroup
@@ -59,27 +61,17 @@ func ComputeFirewallPolicyRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.Co
 	// MISSING: TlsInspect
 	return out
 }
-func ComputeFirewallPolicyRuleStatus_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleStatus {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ComputeFirewallPolicyRuleStatus{}
-	out.Kind = in.Kind
-	out.RuleTupleCount = direct.LazyPtr(int64(in.GetRuleTupleCount()))
-	// MISSING: TargetSecureTags
-	return out
-}
 
-func FirewallpolicyruleLayer4Configs_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcherLayer4Config) *krm.FirewallPolicyRuleLayer4Configs {
+func FirewallPolicyRuleMatcherLayer4Config_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcherLayer4Config) *krm.FirewallPolicyRuleMatcherLayer4Config {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FirewallPolicyRuleLayer4Configs{}
+	out := &krm.FirewallPolicyRuleMatcherLayer4Config{}
 	out.IPProtocol = in.GetIpProtocol()
 	out.Ports = in.Ports
 	return out
 }
-func FirewallpolicyruleLayer4Configs_ToProto(mapCtx *direct.MapContext, in *krm.FirewallPolicyRuleLayer4Configs) *pb.FirewallPolicyRuleMatcherLayer4Config {
+func FirewallPolicyRuleMatcherLayer4Config_ToProto(mapCtx *direct.MapContext, in *krm.FirewallPolicyRuleMatcherLayer4Config) *pb.FirewallPolicyRuleMatcherLayer4Config {
 	if in == nil {
 		return nil
 	}
@@ -88,41 +80,85 @@ func FirewallpolicyruleLayer4Configs_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.Ports = in.Ports
 	return out
 }
-func FirewallpolicyruleMatch_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcher) *krm.FirewallPolicyRuleMatch {
+
+func ComputeFirewallPolicyRuleSpec_TargetResources_ToProto(mapCtx *direct.MapContext, in []*refs.ComputeNetworkRef) []string {
 	if in == nil {
 		return nil
 	}
-	out := &krm.FirewallPolicyRuleMatch{}
-	out.DestAddressGroups = in.DestAddressGroups
-	out.DestFqdns = in.DestFqdns
-	out.DestIPRanges = in.DestIpRanges
-	out.DestRegionCodes = in.DestRegionCodes
-	out.DestThreatIntelligences = in.DestThreatIntelligences
-	out.Layer4Configs = direct.Slice_FromProto(mapCtx, in.Layer4Configs, FirewallpolicyruleLayer4Configs_FromProto)
-	out.SrcAddressGroups = in.SrcAddressGroups
-	out.SrcFqdns = in.SrcFqdns
-	out.SrcIPRanges = in.SrcIpRanges
-	out.SrcRegionCodes = in.SrcRegionCodes
-	// MISSING: SrcSecureTags
-	out.SrcThreatIntelligences = in.SrcThreatIntelligences
+	var out []string
+	for _, i := range in {
+		if i == nil {
+			continue
+		}
+		if i.External == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", i.Name)
+		}
+		out = append(out, i.External)
+	}
 	return out
 }
-func FirewallpolicyruleMatch_ToProto(mapCtx *direct.MapContext, in *krm.FirewallPolicyRuleMatch) *pb.FirewallPolicyRuleMatcher {
+
+func ComputeFirewallPolicyRuleSpec_TargetServiceAccounts_ToProto(mapCtx *direct.MapContext, in []*refs.IAMServiceAccountRef) []string {
 	if in == nil {
 		return nil
 	}
-	out := &pb.FirewallPolicyRuleMatcher{}
-	out.DestAddressGroups = in.DestAddressGroups
-	out.DestFqdns = in.DestFqdns
-	out.DestIpRanges = in.DestIPRanges
-	out.DestRegionCodes = in.DestRegionCodes
-	out.DestThreatIntelligences = in.DestThreatIntelligences
-	out.Layer4Configs = direct.Slice_ToProto(mapCtx, in.Layer4Configs, FirewallpolicyruleLayer4Configs_ToProto)
-	out.SrcAddressGroups = in.SrcAddressGroups
-	out.SrcFqdns = in.SrcFqdns
-	out.SrcIpRanges = in.SrcIPRanges
-	out.SrcRegionCodes = in.SrcRegionCodes
-	// MISSING: SrcSecureTags
-	out.SrcThreatIntelligences = in.SrcThreatIntelligences
+	var out []string
+	for _, i := range in {
+		if i == nil {
+			continue
+		}
+		if i.External == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", i.Name)
+		}
+		out = append(out, i.External)
+	}
+	return out
+}
+
+func ComputeFirewallPolicyRuleSpec_TargetResources_FromProto(mapCtx *direct.MapContext, in []string) []*refs.ComputeNetworkRef {
+	if in == nil {
+		return nil
+	}
+	var out []*refs.ComputeNetworkRef
+	for _, i := range in {
+		out = append(out, &refs.ComputeNetworkRef{
+			External: i,
+		})
+	}
+	return out
+}
+
+func ComputeFirewallPolicyRuleSpec_TargetServiceAccounts_FromProto(mapCtx *direct.MapContext, in []string) []*refs.IAMServiceAccountRef {
+	if in == nil {
+		return nil
+	}
+	var out []*refs.IAMServiceAccountRef
+	for _, i := range in {
+		out = append(out, &refs.IAMServiceAccountRef{
+			External: i,
+		})
+	}
+	return out
+}
+
+func ComputeFirewallPolicyRuleStatus_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallPolicyRuleStatus) *pb.FirewallPolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicyRule{}
+	out.Kind = in.Kind
+	out.RuleTupleCount = direct.LazyPtr(int32(direct.ValueOf(in.RuleTupleCount)))
+	// MISSING: TargetSecureTags
+	return out
+}
+
+func ComputeFirewallPolicyRuleStatus_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallPolicyRuleStatus{}
+	out.Kind = in.Kind
+	out.RuleTupleCount = direct.LazyPtr(int64(direct.ValueOf(in.RuleTupleCount)))
+	// MISSING: TargetSecureTags
 	return out
 }

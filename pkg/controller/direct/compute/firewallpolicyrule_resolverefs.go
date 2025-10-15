@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package firewallpolicyrule
+package compute
 
 import (
 	"context"
@@ -138,7 +138,7 @@ func resolveResourceName(ctx context.Context, reader client.Reader, key client.O
 	return resource, nil
 }
 
-func resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.ComputeFirewallPolicyRule) error {
+func resolveFirewallPolicyRuleRefs(ctx context.Context, reader client.Reader, obj *krm.ComputeFirewallPolicyRule) error {
 	// Get target resources(compute network)
 	var targetResources []*refs.ComputeNetworkRef
 	if obj.Spec.TargetResources != nil {
