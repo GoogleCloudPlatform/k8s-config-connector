@@ -57,7 +57,11 @@ type modelBackupPlan struct {
 
 func (m *modelBackupPlan) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.BackupDRBackupPlan{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+	copied := u.DeepCopy()
+	if err := label.ComputeLabels(copied); err != nil {
+		return nil, err
+	}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(copied.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 

@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	gcp "cloud.google.com/go/backupdr/apiv1"
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
@@ -57,7 +58,11 @@ type modelBackupVault struct {
 
 func (m *modelBackupVault) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.BackupDRBackupVault{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+	copied := u.DeepCopy()
+	if err := label.ComputeLabels(copied); err != nil {
+		return nil, err
+	}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(copied.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
