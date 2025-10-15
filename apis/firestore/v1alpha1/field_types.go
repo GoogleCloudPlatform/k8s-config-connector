@@ -17,6 +17,8 @@ package v1alpha1
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1beta1"
 )
 
 var FirestoreFieldGVK = GroupVersion.WithKind("FirestoreField")
@@ -24,40 +26,16 @@ var FirestoreFieldGVK = GroupVersion.WithKind("FirestoreField")
 // FirestoreFieldSpec defines the desired state of FirestoreField
 // +kcc:spec:proto=google.firestore.admin.v1.Field
 type FirestoreFieldSpec struct {
+	// The FirestoreDatabase containing the collection group for this field.
+	// +required
+	DatabaseRef *v1beta1.FirestoreDatabaseRef `json:"databaseRef"`
+
 	// The FirestoreField name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// The collectionGroup of which this field is a part.
 	// +required
 	CollectionGroup *string `json:"collectionGroup,omitempty"`
-
-	// NOTYET:
-	// // Required. A field name of the form:
-	// //  `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/fields/{field_path}`
-	// //
-	// //  A field path can be a simple field name, e.g. `address` or a path to fields
-	// //  within `map_value` , e.g. `address.city`,
-	// //  or a special field path. The only valid special field is `*`, which
-	// //  represents any field.
-	// //
-	// //  Field paths can be quoted using `` ` `` (backtick). The only character that
-	// //  must be escaped within a quoted field path is the backtick character
-	// //  itself, escaped using a backslash. Special characters in field paths that
-	// //  must be quoted include: `*`, `.`,
-	// //  `` ` `` (backtick), `[`, `]`, as well as any ascii symbolic characters.
-	// //
-	// //  Examples:
-	// //  `` `address.city` `` represents a field named `address.city`, not the map
-	// //  key `city` in the field `address`. `` `*` `` represents a field named `*`,
-	// //  not any field.
-	// //
-	// //  A special `Field` contains the default indexing settings for all fields.
-	// //  This field's resource name is:
-	// //  `projects/{project_id}/databases/{database_id}/collectionGroups/__default__/fields/*`
-	// //  Indexes defined on this `Field` will be applied to all fields which do not
-	// //  have their own `Field` index configuration.
-	// // +kcc:proto:field=google.firestore.admin.v1.Field.name
-	// Name *string `json:"name,omitempty"`
 
 	// The index configuration for this field. If unset, field indexing will
 	//  revert to the configuration defined by the `ancestor_field`. To
