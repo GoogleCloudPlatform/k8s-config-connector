@@ -38,7 +38,14 @@ import (
 
 const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
 
-func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) error {
+func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) {
+	visitor := buildKRMNormalizer(t, u, project, folderID, uniqueID)
+	if err := visitor.VisitUnstructured(u); err != nil {
+		t.Fatalf("failed to normalize KRM object: %v", err)
+	}
+}
+
+func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) *objectWalker {
 	replacements := NewReplacements()
 	findLinksInKRMObject(t, replacements, u)
 
@@ -618,7 +625,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		})
 	}
 
-	return visitor.VisitUnstructured(u)
+	return visitor
 }
 
 func setStringAtPath(m map[string]any, atPath string, newValue string) error {
@@ -1050,9 +1057,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
 		u := &unstructured.Unstructured{}
 		u.Object = obj
-		if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
-			t.Fatalf("error from normalizeObject: %v", err)
-		}
+		normalizeKRMObject(t, u, project, folderID, uniqueID)
 	})
 
 	// Apply replacements

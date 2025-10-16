@@ -374,16 +374,42 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					folderID := h.FolderID()
 
 					for _, obj := range exportResources {
-						// Golden test exported GCP object
+						// Check the final state of the object in the kube-apiserver (and compare against golden file)
+						var normalizer *objectWalker
+						{
+							u := &unstructured.Unstructured{}
+							u.SetGroupVersionKind(obj.GroupVersionKind())
+							id := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
+							if err := h.GetClient().Get(ctx, id, u); err != nil {
+								t.Fatalf("FAIL: failed to get KRM object: %v", err)
+							}
+
+							normalizer = buildKRMNormalizer(t, u, project, folderID, uniqueID)
+							if err := normalizer.VisitUnstructured(u); err != nil {
+								t.Fatalf("FAIL: error from normalizer: %v", err)
+							}
+
+							got, err := yaml.Marshal(u)
+							if err != nil {
+								t.Fatalf("FAIL: failed to convert KRM object to yaml: %v", err)
+							}
+							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_object_%v.golden.yaml", testName))
+							test.CompareGoldenObject(t, expectedPath, got)
+						}
+
+						// Try to export the resource (and compare against golden file)
 						exportedYAML := exportResource(h, obj, &Expectations{})
 						if exportedYAML != "" {
 							exportedObj := &unstructured.Unstructured{}
 							if err := yaml.Unmarshal([]byte(exportedYAML), exportedObj); err != nil {
 								t.Fatalf("FAIL: error from yaml.Unmarshal: %v", err)
 							}
-							if err := normalizeKRMObject(t, exportedObj, project, folderID, uniqueID); err != nil {
-								t.Fatalf("FAIL: error from normalizeObject: %v", err)
+
+							// Note: the normalizer for the object has more information, so we reuse that normalizer
+							if err := normalizer.VisitUnstructured(exportedObj); err != nil {
+								t.Fatalf("FAIL: error from normalizer: %v", err)
 							}
+
 							got, err := yaml.Marshal(exportedObj)
 							if err != nil {
 								t.Fatalf("FAIL: failed to convert KRM object to yaml: %v", err)
@@ -392,23 +418,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_export_%v.golden", testName))
 							h.CompareGoldenFile(expectedPath, string(got), IgnoreComments)
 						}
-						// Golden test created KRM object
-						u := &unstructured.Unstructured{}
-						u.SetGroupVersionKind(obj.GroupVersionKind())
-						id := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
-						if err := h.GetClient().Get(ctx, id, u); err != nil {
-							t.Fatalf("FAIL: failed to get KRM object: %v", err)
-						} else {
-							if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
-								t.Fatalf("FAIL: error from normalizeObject: %v", err)
-							}
-							got, err := yaml.Marshal(u)
-							if err != nil {
-								t.Fatalf("FAIL: failed to convert KRM object to yaml: %v", err)
-							}
-							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_object_%v.golden.yaml", testName))
-							test.CompareGoldenObject(t, expectedPath, got)
-						}
+
 					}
 				}
 
