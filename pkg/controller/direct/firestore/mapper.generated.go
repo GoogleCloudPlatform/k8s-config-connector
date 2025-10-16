@@ -189,7 +189,7 @@ func FirestoreDatabaseObservedState_v1beta1_FromProto(mapCtx *direct.MapContext,
 	out.EarliestVersionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEarliestVersionTime())
 	// MISSING: AppEngineIntegrationMode
 	out.KeyPrefix = direct.LazyPtr(in.GetKeyPrefix())
-	// MISSING: DeleteProtectionState
+	out.DeleteProtectionState = direct.Enum_FromProto(mapCtx, in.GetDeleteProtectionState())
 	// MISSING: CmekConfig
 	// MISSING: PreviousID
 	// MISSING: SourceInfo
@@ -214,7 +214,7 @@ func FirestoreDatabaseObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, i
 	out.EarliestVersionTime = direct.StringTimestamp_ToProto(mapCtx, in.EarliestVersionTime)
 	// MISSING: AppEngineIntegrationMode
 	out.KeyPrefix = direct.ValueOf(in.KeyPrefix)
-	// MISSING: DeleteProtectionState
+	out.DeleteProtectionState = direct.Enum_ToProto[pb.Database_DeleteProtectionState](mapCtx, in.DeleteProtectionState)
 	// MISSING: CmekConfig
 	// MISSING: PreviousID
 	// MISSING: SourceInfo
@@ -236,7 +236,7 @@ func FirestoreDatabaseSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.D
 	out.ConcurrencyMode = direct.Enum_FromProto(mapCtx, in.GetConcurrencyMode())
 	out.PointInTimeRecoveryEnablement = direct.Enum_FromProto(mapCtx, in.GetPointInTimeRecoveryEnablement())
 	// MISSING: AppEngineIntegrationMode
-	// MISSING: DeleteProtectionState
+	out.DeleteProtectionState = direct.Enum_FromProto(mapCtx, in.GetDeleteProtectionState())
 	// MISSING: CmekConfig
 	// MISSING: PreviousID
 	// MISSING: SourceInfo
@@ -257,7 +257,7 @@ func FirestoreDatabaseSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Fi
 	out.ConcurrencyMode = direct.Enum_ToProto[pb.Database_ConcurrencyMode](mapCtx, in.ConcurrencyMode)
 	out.PointInTimeRecoveryEnablement = direct.Enum_ToProto[pb.Database_PointInTimeRecoveryEnablement](mapCtx, in.PointInTimeRecoveryEnablement)
 	// MISSING: AppEngineIntegrationMode
-	// MISSING: DeleteProtectionState
+	out.DeleteProtectionState = direct.Enum_ToProto[pb.Database_DeleteProtectionState](mapCtx, in.DeleteProtectionState)
 	// MISSING: CmekConfig
 	// MISSING: PreviousID
 	// MISSING: SourceInfo

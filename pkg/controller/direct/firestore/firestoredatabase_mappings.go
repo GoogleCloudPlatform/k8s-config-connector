@@ -32,6 +32,7 @@ func FirestoreDatabaseObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.EarliestVersionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEarliestVersionTime())
 	out.KeyPrefix = direct.LazyPtr(in.GetKeyPrefix())
 	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.DeleteProtectionState = direct.Enum_FromProto(mapCtx, in.GetDeleteProtectionState())
 	return out
 }
 
@@ -47,6 +48,7 @@ func FirestoreDatabaseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.F
 	out.EarliestVersionTime = direct.StringTimestamp_ToProto(mapCtx, in.EarliestVersionTime)
 	out.KeyPrefix = direct.ValueOf(in.KeyPrefix)
 	out.Etag = direct.ValueOf(in.Etag)
+	out.DeleteProtectionState = direct.Enum_ToProto[pb.Database_DeleteProtectionState](mapCtx, in.DeleteProtectionState)
 	return out
 }
 
@@ -58,6 +60,7 @@ func FirestoreDatabaseSpec_FromProto(mapCtx *direct.MapContext, in *pb.Database)
 	out.LocationID = direct.LazyPtr(in.GetLocationId())
 	out.ConcurrencyMode = direct.Enum_FromProto(mapCtx, in.GetConcurrencyMode())
 	out.PointInTimeRecoveryEnablement = direct.Enum_FromProto(mapCtx, in.GetPointInTimeRecoveryEnablement())
+	out.DeleteProtectionState = direct.Enum_FromProto(mapCtx, in.GetDeleteProtectionState())
 	return out
 }
 
@@ -69,5 +72,6 @@ func FirestoreDatabaseSpec_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreD
 	out.LocationId = direct.ValueOf(in.LocationID)
 	out.ConcurrencyMode = direct.Enum_ToProto[pb.Database_ConcurrencyMode](mapCtx, in.ConcurrencyMode)
 	out.PointInTimeRecoveryEnablement = direct.Enum_ToProto[pb.Database_PointInTimeRecoveryEnablement](mapCtx, in.PointInTimeRecoveryEnablement)
+	out.DeleteProtectionState = direct.Enum_ToProto[pb.Database_DeleteProtectionState](mapCtx, in.DeleteProtectionState)
 	return out
 }
