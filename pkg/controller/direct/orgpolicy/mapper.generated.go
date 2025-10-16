@@ -162,40 +162,6 @@ func PolicySpecObservedState_ToProto(mapCtx *direct.MapContext, in *krmorgpolicy
 	// MISSING: Reset
 	return out
 }
-func PolicySpec_PolicyRule_FromProto(mapCtx *direct.MapContext, in *pb.PolicySpec_PolicyRule) *krmorgpolicyv1alpha1.PolicySpec_PolicyRule {
-	if in == nil {
-		return nil
-	}
-	out := &krmorgpolicyv1alpha1.PolicySpec_PolicyRule{}
-	out.Values = PolicySpec_PolicyRule_StringValues_FromProto(mapCtx, in.GetValues())
-	out.AllowAll = direct.LazyPtr(in.GetAllowAll())
-	out.DenyAll = direct.LazyPtr(in.GetDenyAll())
-	out.Enforce = direct.LazyPtr(in.GetEnforce())
-	out.Condition = Expr_FromProto(mapCtx, in.GetCondition())
-	out.Parameters = direct.Struct_FromProto(mapCtx, in.GetParameters())
-	return out
-}
-func PolicySpec_PolicyRule_ToProto(mapCtx *direct.MapContext, in *krmorgpolicyv1alpha1.PolicySpec_PolicyRule) *pb.PolicySpec_PolicyRule {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PolicySpec_PolicyRule{}
-	if oneof := PolicySpec_PolicyRule_StringValues_ToProto(mapCtx, in.Values); oneof != nil {
-		out.Kind = &pb.PolicySpec_PolicyRule_Values{Values: oneof}
-	}
-	if oneof := PolicySpec_PolicyRule_AllowAll_ToProto(mapCtx, in.AllowAll); oneof != nil {
-		out.Kind = oneof
-	}
-	if oneof := PolicySpec_PolicyRule_DenyAll_ToProto(mapCtx, in.DenyAll); oneof != nil {
-		out.Kind = oneof
-	}
-	if oneof := PolicySpec_PolicyRule_Enforce_ToProto(mapCtx, in.Enforce); oneof != nil {
-		out.Kind = oneof
-	}
-	out.Condition = Expr_ToProto(mapCtx, in.Condition)
-	out.Parameters = direct.Struct_ToProto(mapCtx, in.Parameters)
-	return out
-}
 func PolicySpec_PolicyRule_AllowAll_ToProto(mapCtx *direct.MapContext, in *bool) *pb.PolicySpec_PolicyRule_AllowAll {
 	if in == nil {
 		return nil
