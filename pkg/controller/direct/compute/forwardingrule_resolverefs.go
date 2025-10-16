@@ -431,12 +431,10 @@ func ResolveComputeTargetVPNGateway(ctx context.Context, reader client.Reader, s
 func resolveForwardingRuleRefs(ctx context.Context, reader client.Reader, obj *krm.ComputeForwardingRule) error {
 	// Get network
 	if obj.Spec.NetworkRef != nil {
-		networkRef, err := ResolveComputeNetwork(ctx, reader, obj, obj.Spec.NetworkRef)
+		err := obj.Spec.NetworkRef.Normalize(ctx, reader, obj)
 		if err != nil {
 			return err
-
 		}
-		obj.Spec.NetworkRef.External = networkRef.External
 	}
 
 	// Get subnetwork
