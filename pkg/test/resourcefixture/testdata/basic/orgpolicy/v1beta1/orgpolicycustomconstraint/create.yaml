@@ -17,6 +17,7 @@ kind: OrgPolicyCustomConstraint
 metadata:
   name: custom.orgpolicycustomconstraint${uniqueId}
 spec:
+  description: A new OrgPolicy custom constraint 
   organizationRef:
     external: organizations/${TEST_ORG_ID}
   actionType: ALLOW

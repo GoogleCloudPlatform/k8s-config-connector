@@ -12,6 +12,7 @@ metadata:
 spec:
   actionType: ALLOW
   condition: resource.management.autoUpgrade == true
+  description: updated OrgPolicy custom constraint
   displayName: KCC generated test CuOP for update
   methodTypes:
   - CREATE

@@ -3121,7 +3121,6 @@
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.vmImage.imageFamily" is not set in unstructured objects
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.vmImage.imageName" is not set in unstructured objects
 [missing_field] crd=notebookinstances.notebooks.cnrm.cloud.google.com version=v1beta1: field ".spec.vmImage.project" is not set in unstructured objects
-[missing_field] crd=orgpolicycustomconstraints.orgpolicy.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=osconfigguestpolicies.osconfig.cnrm.cloud.google.com version=v1beta1: field ".spec.assignment.instanceNamePrefixes[]" is not set in unstructured objects
 [missing_field] crd=osconfigguestpolicies.osconfig.cnrm.cloud.google.com version=v1beta1: field ".spec.assignment.instances[].external" is not set in unstructured objects
 [missing_field] crd=osconfigguestpolicies.osconfig.cnrm.cloud.google.com version=v1beta1: field ".spec.assignment.instances[].namespace" is not set in unstructured objects
