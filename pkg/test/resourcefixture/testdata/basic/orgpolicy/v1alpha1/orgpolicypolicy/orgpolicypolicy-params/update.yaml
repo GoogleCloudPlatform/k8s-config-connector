@@ -27,3 +27,9 @@ spec:
             - us-east1
             - us-west1
           allowAll: false
+    rules:
+      - enforce: false
+        parameters:
+          allowedLocations:
+            - europe-west3
+          allowAll: true

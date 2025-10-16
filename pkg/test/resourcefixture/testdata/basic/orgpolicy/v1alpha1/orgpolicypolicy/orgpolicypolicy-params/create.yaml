@@ -27,3 +27,14 @@ spec:
             - us-east1
             - us-west1
           allowAll: true
+  dryRunSpec:
+    rules:
+      - enforce: true
+
+    rules:
+      - enforce: false
+        parameters:
+          allowedLocations:
+            - europe-west1
+            - europe-west2
+          allowAll: true

@@ -16,10 +16,9 @@ spec:
     rules:
     - enforce: false
       parameters:
-        allowAll: false
+        allowAll: true
         allowedLocations:
-        - us-east1
-        - us-west1
+        - europe-west3
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

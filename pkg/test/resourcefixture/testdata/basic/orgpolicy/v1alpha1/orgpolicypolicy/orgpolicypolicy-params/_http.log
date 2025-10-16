@@ -29,6 +29,20 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
+  "dryRunSpec": {
+    "rules": [
+      {
+        "enforce": false,
+        "parameters": {
+          "allowAll": true,
+          "allowedLocations": [
+            "europe-west1",
+            "europe-west2"
+          ]
+        }
+      }
+    ]
+  },
   "name": "projects/${projectId}/policies/custom.orgpolicypolicy-params-${uniqueId}",
   "spec": {
     "rules": [
@@ -57,6 +71,22 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "dryRunSpec": {
+    "etag": "abcdef0123A=",
+    "rules": [
+      {
+        "enforce": false,
+        "parameters": {
+          "allowAll": true,
+          "allowedLocations": [
+            "europe-west1",
+            "europe-west2"
+          ]
+        }
+      }
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/policies/custom.orgpolicypolicy-params-${uniqueId}",
   "spec": {
@@ -95,6 +125,22 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "dryRunSpec": {
+    "etag": "abcdef0123A=",
+    "rules": [
+      {
+        "enforce": false,
+        "parameters": {
+          "allowAll": true,
+          "allowedLocations": [
+            "europe-west1",
+            "europe-west2"
+          ]
+        }
+      }
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/policies/custom.orgpolicypolicy-params-${uniqueId}",
   "spec": {
@@ -129,10 +175,9 @@ X-Goog-Request-Params: policy.name=projects%2F${projectId}%2Fpolicies%2Fcustom.o
       {
         "enforce": false,
         "parameters": {
-          "allowAll": false,
+          "allowAll": true,
           "allowedLocations": [
-            "us-east1",
-            "us-west1"
+            "europe-west3"
           ]
         }
       }
@@ -159,10 +204,9 @@ X-Xss-Protection: 0
       {
         "enforce": false,
         "parameters": {
-          "allowAll": false,
+          "allowAll": true,
           "allowedLocations": [
-            "us-east1",
-            "us-west1"
+            "europe-west3"
           ]
         }
       }
@@ -197,10 +241,9 @@ X-Xss-Protection: 0
       {
         "enforce": false,
         "parameters": {
-          "allowAll": false,
+          "allowAll": true,
           "allowedLocations": [
-            "us-east1",
-            "us-west1"
+            "europe-west3"
           ]
         }
       }
