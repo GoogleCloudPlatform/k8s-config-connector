@@ -20,26 +20,59 @@ package orgpolicy
 
 import (
 	pb "cloud.google.com/go/orgpolicy/apiv2/orgpolicypb"
+	"google.golang.org/genproto/googleapis/type/expr"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/orgpolicy/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func OrgPolicyPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krm.OrgPolicyPolicyObservedState {
+func PolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.PolicySpec) *krm.PolicySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.OrgPolicyPolicyObservedState{}
-	out.Spec = PolicySpecObservedState_FromProto(mapCtx, in.GetSpec())
-	out.DryRunSpec = PolicySpecObservedState_FromProto(mapCtx, in.GetDryRunSpec())
+	out := &krm.PolicySpec{}
+	// MISSING: Etag
+	// MISSING: UpdateTime
+	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, PolicySpec_PolicyRule_FromProto)
+	out.InheritFromParent = direct.LazyPtr(in.GetInheritFromParent())
+	// Expected code `in.GetReset()`, actual code `in.GetReset_()`
+	out.Reset = direct.LazyPtr(in.GetReset_())
 	return out
 }
-func OrgPolicyPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OrgPolicyPolicyObservedState) *pb.Policy {
+func PolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.PolicySpec) *pb.PolicySpec {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Policy{}
-	out.Spec = PolicySpecObservedState_ToProto(mapCtx, in.Spec)
-	out.DryRunSpec = PolicySpecObservedState_ToProto(mapCtx, in.DryRunSpec)
+	out := &pb.PolicySpec{}
+	// MISSING: Etag
+	// MISSING: UpdateTime
+	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, PolicySpec_PolicyRule_ToProto)
+	out.InheritFromParent = direct.ValueOf(in.InheritFromParent)
+	// Expected code `in.GetReset()`, actual code `in.GetReset_()`
+	out.Reset_ = direct.ValueOf(in.Reset)
+	return out
+}
+
+func Expr_FromProto(mapCtx *direct.MapContext, in *expr.Expr) *krm.Expr {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Expr{}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Expression = direct.LazyPtr(in.GetExpression())
+	out.Location = direct.LazyPtr(in.GetLocation())
+	out.Title = direct.LazyPtr(in.GetTitle())
+	return out
+}
+
+func Expr_ToProto(mapCtx *direct.MapContext, in *krm.Expr) *expr.Expr {
+	if in == nil {
+		return nil
+	}
+	out := &expr.Expr{}
+	out.Description = direct.ValueOf(in.Description)
+	out.Expression = direct.ValueOf(in.Expression)
+	out.Location = direct.ValueOf(in.Location)
+	out.Title = direct.ValueOf(in.Title)
 	return out
 }

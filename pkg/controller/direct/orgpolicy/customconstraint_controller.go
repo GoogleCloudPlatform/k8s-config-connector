@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/orgpolicy/v1alpha1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/orgpolicy/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -37,7 +37,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.OrgPolicyCustomConstraintGVK, NewCustomConstraintModel)
+	registry.RegisterModel(krmv1beta1.OrgPolicyCustomConstraintGVK, NewCustomConstraintModel)
 }
 
 func NewCustomConstraintModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -64,12 +64,13 @@ func (m *modelCustomConstraint) client(ctx context.Context) (*gcp.Client, error)
 }
 
 func (m *modelCustomConstraint) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	obj := &krm.OrgPolicyCustomConstraint{}
+
+	obj := &krmv1beta1.OrgPolicyCustomConstraint{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewCustomConstraintIdentity(ctx, reader, obj)
+	id, err := krmv1beta1.NewCustomConstraintIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -92,9 +93,9 @@ func (m *modelCustomConstraint) AdapterForURL(ctx context.Context, url string) (
 }
 
 type CustomConstraintAdapter struct {
-	id        *krm.CustomConstraintIdentity
+	id        *krmv1beta1.CustomConstraintIdentity
 	gcpClient *gcp.Client
-	desired   *krm.OrgPolicyCustomConstraint
+	desired   *krmv1beta1.OrgPolicyCustomConstraint
 	actual    *orgpolicypb.CustomConstraint
 }
 
@@ -144,7 +145,7 @@ func (a *CustomConstraintAdapter) Create(ctx context.Context, createOp *directba
 	}
 	log.V(2).Info("successfully created CustomConstraint", "name", a.id)
 
-	status := &krm.OrgPolicyCustomConstraintStatus{}
+	status := &krmv1beta1.OrgPolicyCustomConstraintStatus{}
 	status.ObservedState = OrgPolicyCustomConstraintObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -174,7 +175,7 @@ func (a *CustomConstraintAdapter) Update(ctx context.Context, updateOp *directba
 	}
 	log.V(2).Info("successfully updated CustomConstraint", "name", a.id)
 
-	status := &krm.OrgPolicyCustomConstraintStatus{}
+	status := &krmv1beta1.OrgPolicyCustomConstraintStatus{}
 	status.ObservedState = OrgPolicyCustomConstraintObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -189,7 +190,7 @@ func (a *CustomConstraintAdapter) Export(ctx context.Context) (*unstructured.Uns
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.OrgPolicyCustomConstraint{}
+	obj := &krmv1beta1.OrgPolicyCustomConstraint{}
 	mapCtx := &direct.MapContext{}
 	obj.Spec = direct.ValueOf(OrgPolicyCustomConstraintSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
@@ -202,7 +203,7 @@ func (a *CustomConstraintAdapter) Export(ctx context.Context) (*unstructured.Uns
 	}
 
 	u.SetName(a.actual.Name)
-	u.SetGroupVersionKind(krm.OrgPolicyCustomConstraintGVK)
+	u.SetGroupVersionKind(krmv1beta1.OrgPolicyCustomConstraintGVK)
 
 	u.Object = uObj
 	return u, nil

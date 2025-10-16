@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: orgpolicy.cnrm.cloud.google.com/v1alpha1
+apiVersion: orgpolicy.cnrm.cloud.google.com/v1beta1
 kind: OrgPolicyCustomConstraint
 metadata:
   name: custom.orgpolicycustomconstraint${uniqueId}
 spec:
+  description: updated OrgPolicy custom constraint 
   organizationRef:
     external: organizations/${TEST_ORG_ID}
   actionType: ALLOW
