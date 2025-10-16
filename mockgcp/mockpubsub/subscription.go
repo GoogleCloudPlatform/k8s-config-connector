@@ -22,7 +22,6 @@ import (
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"k8s.io/klog/v2"
@@ -59,7 +58,7 @@ func (s *subscriberService) CreateSubscription(ctx context.Context, req *pb.Subs
 	go func() {
 		ctx := context.Background()
 		time.Sleep(2 * time.Second)
-		if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		if err := s.subscriptions.Create(ctx, fqn, obj); err != nil {
 			klog.Errorf("error creaing pubsub Subscription: %v", err)
 		}
 	}()
@@ -109,7 +108,7 @@ func (s *subscriberService) UpdateSubscription(ctx context.Context, req *pb.Upda
 	}
 	fqn := name.String()
 	existing := &pb.Subscription{}
-	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+	if err := s.subscriptions.Get(ctx, fqn, existing); err != nil {
 		return nil, err
 	}
 
@@ -159,7 +158,7 @@ func (s *subscriberService) UpdateSubscription(ctx context.Context, req *pb.Upda
 
 	s.populateDefaultsForSubscription(updated)
 
-	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+	if err := s.subscriptions.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
 
@@ -184,7 +183,7 @@ func (s *subscriberService) GetSubscription(ctx context.Context, req *pb.GetSubs
 	}
 	fqn := name.String()
 	obj := &pb.Subscription{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+	if err := s.subscriptions.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource not found (resource=%s).", name.ID)
 		}
@@ -208,9 +207,7 @@ func (s *subscriberService) ListSubscriptions(ctx context.Context, req *pb.ListS
 
 	var subscriptions []*pb.Subscription
 
-	subscriptionKind := (&pb.Subscription{}).ProtoReflect().Descriptor()
-	if err := s.storage.List(ctx, subscriptionKind, storage.ListOptions{}, func(obj proto.Message) error {
-		subscription := obj.(*pb.Subscription)
+	if err := s.subscriptions.List(ctx, storage.ListOptions{}, func(subscription *pb.Subscription) error {
 		if strings.HasPrefix(subscription.Name, findPrefix) {
 			subscriptions = append(subscriptions, subscription)
 		}
@@ -232,7 +229,7 @@ func (s *subscriberService) DeleteSubscription(ctx context.Context, req *pb.Dele
 	}
 	fqn := name.String()
 	deletedObj := &pb.Subscription{}
-	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
+	if err := s.subscriptions.Delete(ctx, fqn, deletedObj); err != nil {
 		return nil, err
 	}
 	return &emptypb.Empty{}, nil
