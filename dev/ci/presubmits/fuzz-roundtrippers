@@ -40,3 +40,6 @@ go test -v ./pkg/controller/direct/cloudidentity -fuzz=FuzzCloudIdentityGroupSpe
 go test -v ./pkg/controller/direct/cloudidentity -fuzz=FuzzCloudIdentityGroupStatus -fuzztime 60s
 go test -v ./pkg/controller/direct/cloudidentity -fuzz=FuzzCloudIdentityMembershipSpec -fuzztime 60s
 go test -v ./pkg/controller/direct/cloudidentity -fuzz=FuzzCloudIdentityMembershipStatus -fuzztime 60s
+
+go test -v ./pkg/controller/direct/networksecurity/ -fuzz=FuzzNetworkSecurityAddressGroupSpec -fuzztime 60s
+go test -v ./pkg/controller/direct/networksecurity/ -fuzz=FuzzNetworkSecurityAddressGroupObservedState -fuzztime 60s

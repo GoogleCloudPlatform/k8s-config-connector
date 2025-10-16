@@ -67,6 +67,13 @@ for f in $(find apis -name "generate.sh"); do
         echo "Skipping ${f}"
         continue
     fi
+    # networksecurity.v1.AddressGroup proto file was added to googleapis repo recently,
+    # need to re-generate proto from remote googleapis HEAD.
+    # this requires an updated mockgcp/git.version.
+    if [[ "${f}" == *"networksecurity"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
     if [[ "${f}" == *"orgpolicy"* ]]; then
         echo "Skipping ${f}"
         continue
