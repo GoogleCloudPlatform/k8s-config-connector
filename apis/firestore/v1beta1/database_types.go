@@ -42,6 +42,10 @@ type FirestoreDatabaseSpec struct {
 	// Whether to enable the PITR feature on this database.
 	// See https://cloud.google.com/firestore/docs/reference/rest/v1/projects.databases#pointintimerecoveryenablement for more info.
 	PointInTimeRecoveryEnablement *string `json:"pointInTimeRecoveryEnablement,omitempty"`
+
+	// The delete protection state of the database.
+	// See https://cloud.google.com/firestore/docs/reference/rest/v1/projects.databases#deleteprotectionstate for more info.
+	DeleteProtectionState *string `json:"deleteProtectionState,omitempty"`
 }
 
 // FirestoreDatabaseStatus defines the config connector machine state of FirestoreDatabase
