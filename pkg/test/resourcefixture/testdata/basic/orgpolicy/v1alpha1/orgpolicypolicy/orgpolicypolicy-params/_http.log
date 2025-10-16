@@ -1,0 +1,229 @@
+GET https://orgpolicy.googleapis.com/v2/projects/${projectId}/policies/custom.orgpolicypolicy-params-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fpolicies%2Fcustom.orgpolicypolicy-params-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://orgpolicy.googleapis.com/v2/projects/${projectId}/policies?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+
+{
+  "name": "projects/${projectId}/policies/custom.orgpolicypolicy-params-${uniqueId}",
+  "spec": {
+    "rules": [
+      {
+        "enforce": false,
+        "parameters": {
+          "allowAll": true,
+          "allowedLocations": [
+            "us-east1",
+            "us-west1"
+          ]
+        }
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/policies/custom.orgpolicypolicy-params-${uniqueId}",
+  "spec": {
+    "etag": "abcdef0123A=",
+    "rules": [
+      {
+        "enforce": false,
+        "parameters": {
+          "allowAll": true,
+          "allowedLocations": [
+            "us-east1",
+            "us-west1"
+          ]
+        }
+      }
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://orgpolicy.googleapis.com/v2/projects/${projectId}/policies/custom.orgpolicypolicy-params-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fpolicies%2Fcustom.orgpolicypolicy-params-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/policies/custom.orgpolicypolicy-params-${uniqueId}",
+  "spec": {
+    "etag": "abcdef0123A=",
+    "rules": [
+      {
+        "enforce": false,
+        "parameters": {
+          "allowAll": true,
+          "allowedLocations": [
+            "us-east1",
+            "us-west1"
+          ]
+        }
+      }
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+PATCH https://orgpolicy.googleapis.com/v2/projects/${projectId}/policies/custom.orgpolicypolicy-params-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=policy.spec%2Cpolicy.dryRunSpec
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: policy.name=projects%2F${projectId}%2Fpolicies%2Fcustom.orgpolicypolicy-params-${uniqueId}
+
+{
+  "name": "projects/${projectId}/policies/custom.orgpolicypolicy-params-${uniqueId}",
+  "spec": {
+    "rules": [
+      {
+        "enforce": false,
+        "parameters": {
+          "allowAll": false,
+          "allowedLocations": [
+            "us-east1",
+            "us-west1"
+          ]
+        }
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/policies/custom.orgpolicypolicy-params-${uniqueId}",
+  "spec": {
+    "etag": "abcdef0123A=",
+    "rules": [
+      {
+        "enforce": false,
+        "parameters": {
+          "allowAll": false,
+          "allowedLocations": [
+            "us-east1",
+            "us-west1"
+          ]
+        }
+      }
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://orgpolicy.googleapis.com/v2/projects/${projectId}/policies/custom.orgpolicypolicy-params-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fpolicies%2Fcustom.orgpolicypolicy-params-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/policies/custom.orgpolicypolicy-params-${uniqueId}",
+  "spec": {
+    "etag": "abcdef0123A=",
+    "rules": [
+      {
+        "enforce": false,
+        "parameters": {
+          "allowAll": false,
+          "allowedLocations": [
+            "us-east1",
+            "us-west1"
+          ]
+        }
+      }
+    ],
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+DELETE https://orgpolicy.googleapis.com/v2/projects/${projectId}/policies/custom.orgpolicypolicy-params-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fpolicies%2Fcustom.orgpolicypolicy-params-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

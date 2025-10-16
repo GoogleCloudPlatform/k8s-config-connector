@@ -1034,7 +1034,7 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 	case "google.protobuf.Timestamp":
 		return "direct.StringTimestamp_FromProto"
 	case "google.protobuf.Struct":
-		return krmFieldName + "_FromProto"
+		return "direct.Struct_FromProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_FromProto"
 	case "google.protobuf.Int64Value":
@@ -1066,7 +1066,7 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 	case "google.protobuf.Timestamp":
 		return "direct.StringTimestamp_ToProto"
 	case "google.protobuf.Struct":
-		return krmFieldName + "_ToProto"
+		return "direct.Struct_ToProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_ToProto"
 	case "google.protobuf.Int64Value":

@@ -172,7 +172,7 @@ func PolicySpec_PolicyRule_FromProto(mapCtx *direct.MapContext, in *pb.PolicySpe
 	out.DenyAll = direct.LazyPtr(in.GetDenyAll())
 	out.Enforce = direct.LazyPtr(in.GetEnforce())
 	out.Condition = Expr_FromProto(mapCtx, in.GetCondition())
-	// MISSING: Parameters
+	out.Parameters = direct.Struct_FromProto(mapCtx, in.GetParameters())
 	return out
 }
 func PolicySpec_PolicyRule_ToProto(mapCtx *direct.MapContext, in *krmorgpolicyv1alpha1.PolicySpec_PolicyRule) *pb.PolicySpec_PolicyRule {
@@ -193,7 +193,7 @@ func PolicySpec_PolicyRule_ToProto(mapCtx *direct.MapContext, in *krmorgpolicyv1
 		out.Kind = oneof
 	}
 	out.Condition = Expr_ToProto(mapCtx, in.Condition)
-	// MISSING: Parameters
+	out.Parameters = direct.Struct_ToProto(mapCtx, in.Parameters)
 	return out
 }
 func PolicySpec_PolicyRule_AllowAll_ToProto(mapCtx *direct.MapContext, in *bool) *pb.PolicySpec_PolicyRule_AllowAll {
