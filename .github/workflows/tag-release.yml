@@ -19,8 +19,6 @@ on:
     branches:
       - master
       - 'release-*'
-    paths:
-      - 'version/VERSION'
 
 jobs:
   tag-release:
@@ -34,10 +32,20 @@ jobs:
         with:
           # We need to fetch all tags to see if the tag already exists.
           fetch-depth: 0
+      # Check if version/VERSION was changed
+      - name: "Check for version change"
+        id: check_version
+        run: |
+          # Compare the list of changed files between the last two commits
+          if git diff --name-only HEAD~1 HEAD | grep -q "version/VERSION"; then
+            echo "version_changed=true" >> $GITHUB_OUTPUT
+          fi
       - name: "Set git user"
+        if: steps.check_version.outputs.version_changed == 'true'
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions Release Tagger"
       - name: "Run tag script"
+        if: steps.check_version.outputs.version_changed == 'true'
         run: |
           ./dev/tasks/auto-tag-on-version-update.sh
