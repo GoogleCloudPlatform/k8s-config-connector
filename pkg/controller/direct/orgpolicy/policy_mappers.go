@@ -76,22 +76,3 @@ func Expr_ToProto(mapCtx *direct.MapContext, in *krm.Expr) *expr.Expr {
 	out.Title = direct.ValueOf(in.Title)
 	return out
 }
-
-func PolicySpec_PolicyRule_AllowAll_ToProto(mapCtx *direct.MapContext, in *bool) *pb.PolicySpec_PolicyRule_AllowAll {
-	if in == nil {
-		return nil
-	}
-	return &pb.PolicySpec_PolicyRule_AllowAll{AllowAll: *in}
-}
-func PolicySpec_PolicyRule_DenyAll_ToProto(mapCtx *direct.MapContext, in *bool) *pb.PolicySpec_PolicyRule_DenyAll {
-	if in == nil {
-		return nil
-	}
-	return &pb.PolicySpec_PolicyRule_DenyAll{DenyAll: *in}
-}
-func PolicySpec_PolicyRule_Enforce_ToProto(mapCtx *direct.MapContext, in *bool) *pb.PolicySpec_PolicyRule_Enforce {
-	if in == nil {
-		return nil
-	}
-	return &pb.PolicySpec_PolicyRule_Enforce{Enforce: *in}
-}
