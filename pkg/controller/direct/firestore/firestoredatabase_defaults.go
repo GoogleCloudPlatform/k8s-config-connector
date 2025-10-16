@@ -20,5 +20,8 @@ func ApplyFirestoreDatabaseDefaults(in *pb.Database) {
 	// Set default values to make sure firestore database is "declarative-friendly".
 	in.Type = pb.Database_FIRESTORE_NATIVE
 	in.AppEngineIntegrationMode = pb.Database_DISABLED
-	in.DeleteProtectionState = pb.Database_DELETE_PROTECTION_DISABLED
+	// Only set default if not specified by user
+	if in.DeleteProtectionState == pb.Database_DELETE_PROTECTION_STATE_UNSPECIFIED {
+		in.DeleteProtectionState = pb.Database_DELETE_PROTECTION_DISABLED
+	}
 }
