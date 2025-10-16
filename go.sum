@@ -13,6 +13,8 @@ cloud.google.com/go/aiplatform v1.99.0 h1:SB4gurI6YSuZJCfAzjuIxxgbtJtczJFOTmCM7f
 cloud.google.com/go/aiplatform v1.99.0/go.mod h1:bOuku89ZrJVGkCUbEV3JHWRtOlneAXXMGMvaPhWVqfo=
 cloud.google.com/go/alloydb v1.16.1 h1:pW4D0O2jAfAjoOEI1bgChPwMHWE8X8BjwSO0tfWkWvk=
 cloud.google.com/go/alloydb v1.16.1/go.mod h1:zeZuGJ5mEaQE70FMXEvZIp5hQLR9yrGnHo1YUOncWRY=
+cloud.google.com/go/analytics v0.30.0 h1:9PvoT9SvNIHRqTZye7+WudvO2vr4PiZ9mLhiOtEE7Eo=
+cloud.google.com/go/analytics v0.30.0/go.mod h1:dneJtsGmmK6EkEPg59vRlncKFWt3xzmKNOc9aKXCTrI=
 cloud.google.com/go/apigateway v1.7.6 h1:do+u3rjDYuTxD2ypRfv4uwTMoy/VHFLclvaYcb5Mv6I=
 cloud.google.com/go/apigateway v1.7.6/go.mod h1:SiBx36VPjShaOCk8Emf63M2t2c1yF+I7mYZaId7OHiA=
 cloud.google.com/go/apikeys v1.1.12 h1:ZTFWJ1ibGjiIrIhhtdWOm7AGJd+y9R17dVujlgU//6E=
