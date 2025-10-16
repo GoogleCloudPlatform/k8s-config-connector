@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# This script is a simple wrapper to run specific tests.
+# The idea is that we can pass directories to it, and it will run the relevant tests.
+# It currently only supports scenario tests, but should be easy to extend.
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+TEST_SPEC=${1:-}
+if [[ -z "${TEST_SPEC}" ]]; then
+  echo "Usage: $0 <test-spec>"
+  echo "Example: $0 tests/e2e/testdata/scenarios/containercluster/change_channel/"
+  exit 1
+fi
+
+# If the test starts with "tests/e2e/testdata/scenarios", run that as a scenario test
+if [[ "${TEST_SPEC}" == tests/e2e/testdata/scenarios/* ]]; then
+  # Trim the prefix
+  RUN_TESTS=TestE2EScript/${TEST_SPEC#tests/e2e/testdata/}
+  export RUN_TESTS
+  echo "Running scenario tests: ${RUN_TESTS}"
+  ./dev/tasks/run-e2e
+fi
+
+echo "Unknown test spec: ${TEST_SPEC}"
+exit 1
