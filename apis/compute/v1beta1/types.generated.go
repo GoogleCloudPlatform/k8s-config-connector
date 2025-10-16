@@ -17,6 +17,7 @@
 // krm.version: v1beta1
 // proto.service: google.cloud.compute.v1
 // resource: ComputeFirewallPolicyRule:FirewallPolicyRule
+// resource: ComputeForwardingRule:ForwardingRule
 // resource: ComputeTargetTcpProxy:TargetTcpProxy
 
 package v1beta1

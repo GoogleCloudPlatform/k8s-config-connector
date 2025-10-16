@@ -755,10 +755,8 @@ spec:
               selfLink:
                 type: string
               serviceName:
-                description: |-
-                  The internal fully qualified service name for this Forwarding Rule.
-
-                  This field is only used for INTERNAL load balancing.
+                description: The internal fully qualified service name for this Forwarding
+                  Rule. This field is only used for INTERNAL load balancing.
                 type: string
             type: object
         type: object
