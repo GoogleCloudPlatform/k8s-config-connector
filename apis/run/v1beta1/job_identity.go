@@ -20,15 +20,28 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var _ identity.Identity = &JobIdentity{}
 
 // JobIdentity defines the resource reference to RunJob, which "External" field
 // holds the GCP identifier for the KRM object.
 type JobIdentity struct {
 	parent *JobParent
 	id     string
+}
+
+func (i *JobIdentity) FromExternal(ref string) error {
+	parent, resourceID, err := ParseJobExternal(ref)
+	if err != nil {
+		return err
+	}
+	i.parent = parent
+	i.id = resourceID
+	return nil
 }
 
 func (i *JobIdentity) String() string {

@@ -17,6 +17,7 @@ package run
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
@@ -25,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	gcp "cloud.google.com/go/run/apiv2"
 
@@ -79,28 +81,59 @@ func (m *modelJob) AdapterForObject(ctx context.Context, reader client.Reader, u
 		return nil, err
 	}
 
+	mapCtx := &direct.MapContext{}
+
+	copied := obj.DeepCopy()
+	desired := RunJobSpec_ToProto(mapCtx, &copied.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
+
 	// Get run GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
 	return &JobAdapter{
-		id:        id,
-		gcpClient: gcpClient,
-		desired:   obj,
+		id:                 id,
+		gcpClient:          gcpClient,
+		desired:            desired,
+		lastModifiedCookie: obj.Status.LastModifiedCookie,
 	}, nil
 }
 
 func (m *modelJob) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
+	log := klog.FromContext(ctx)
+	if s, ok := strings.CutPrefix(url, "//run.googleapis.com/"); ok {
+		// Direct controller for RunJob only handles v2.
+		s = strings.TrimPrefix(s, "v2/")
+
+		var id krm.JobIdentity
+		if err := id.FromExternal(s); err != nil {
+			log.V(2).Error(err, "url did not match RunJob format", "url", url)
+			return nil, nil
+		}
+
+		gcpClient, err := m.client(ctx)
+		if err != nil {
+			return nil, err
+		}
+		return &JobAdapter{
+			gcpClient: gcpClient,
+			id:        &id,
+		}, nil
+	}
 	return nil, nil
 }
 
 type JobAdapter struct {
-	id        *krm.JobIdentity
-	gcpClient *gcp.JobsClient
-	desired   *krm.RunJob
-	actual    *runpb.Job
+	id                 *krm.JobIdentity
+	gcpClient          *gcp.JobsClient
+	desired            *runpb.Job
+	actual             *runpb.Job
+	lastModifiedCookie *string
 }
 
 var _ directbase.Adapter = &JobAdapter{}
@@ -114,7 +147,7 @@ func (a *JobAdapter) Find(ctx context.Context) (bool, error) {
 	log.V(2).Info("getting Job", "name", a.id)
 
 	req := &runpb.GetJobRequest{Name: a.id.String()}
-	jobpb, err := a.gcpClient.GetJob(ctx, req)
+	found, err := a.gcpClient.GetJob(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -122,7 +155,7 @@ func (a *JobAdapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting Job %q: %w", a.id, err)
 	}
 
-	a.actual = jobpb
+	a.actual = found
 	return true, nil
 }
 
@@ -130,17 +163,9 @@ func (a *JobAdapter) Find(ctx context.Context) (bool, error) {
 func (a *JobAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Job", "name", a.id)
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := RunJobSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
 	req := &runpb.CreateJobRequest{
 		Parent: a.id.Parent().String(),
-		Job:    resource,
+		Job:    a.desired,
 		JobId:  a.id.ID(),
 	}
 	op, err := a.gcpClient.CreateJob(ctx, req)
@@ -149,16 +174,32 @@ func (a *JobAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 	}
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("Job %s waiting creation: %w", a.id, err)
+		return fmt.Errorf("waiting for creation of job %q: %w", a.id, err)
 	}
 	log.V(2).Info("successfully created Job", "name", a.id)
 
+	mapCtx := &direct.MapContext{}
 	status := &krm.RunJobStatus{}
 	status.ObservedState = RunJobObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
+
+	specHash, err := common.HashProto(a.desired)
+	if err != nil {
+		return fmt.Errorf("calculating spec hash: %w", err)
+	}
+	gcpHash, err := common.HashProto(created)
+	if err != nil {
+		return fmt.Errorf("calculating gcp hash: %w", err)
+	}
+	cookie, err := common.ComposeCookie(specHash, gcpHash)
+	if err != nil {
+		return fmt.Errorf("composing cookie: %w", err)
+	}
+	status.LastModifiedCookie = direct.LazyPtr(cookie)
+
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -166,44 +207,68 @@ func (a *JobAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 func (a *JobAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Job", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	desiredPb := RunJobSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	desiredPb.Name = a.id.String()
-
-	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	specHash, err := common.HashProto(a.desired)
 	if err != nil {
-		return err
+		return fmt.Errorf("calculating spec hash: %w", err)
+	}
+	gcpHash, err := common.HashProto(a.actual)
+	if err != nil {
+		return fmt.Errorf("calculating gcp hash: %w", err)
 	}
 
-	updated := a.actual
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
-	} else {
-		log.V(2).Info("fields need update", "name", a.id, "paths", paths)
-
-		req := &runpb.UpdateJobRequest{
-			Job: desiredPb,
-		}
-		op, err := a.gcpClient.UpdateJob(ctx, req)
+	if a.lastModifiedCookie != nil {
+		cookie, err := common.ParseCookie(direct.ValueOf(a.lastModifiedCookie))
 		if err != nil {
-			return fmt.Errorf("updating Job %s: %w", a.id, err)
+			log.V(2).Info("could not parse cookie, forcing update", "cookie", direct.ValueOf(a.lastModifiedCookie), "err", err)
+		} else {
+			if cookie.SpecHash == specHash && cookie.GCPHash == gcpHash {
+				log.V(2).Info("resource is up to date", "name", a.id)
+				// Fast path: Update status with observed state and return.
+				// The status update is important to update conditions and observedGeneration.
+				status := &krm.RunJobStatus{}
+				mapCtx := &direct.MapContext{}
+				status.ObservedState = RunJobObservedState_FromProto(mapCtx, a.actual)
+				if mapCtx.Err() != nil {
+					return mapCtx.Err()
+				}
+				status.LastModifiedCookie = a.lastModifiedCookie // Preserve cookie
+				return updateOp.UpdateStatus(ctx, status, nil)
+			}
 		}
-		updated, err = op.Wait(ctx)
-		if err != nil {
-			return fmt.Errorf("Job %s waiting update: %w", a.id, err)
-		}
-		log.V(2).Info("successfully updated Job", "name", a.id)
 	}
 
+	a.desired.Name = a.actual.Name
+	req := &runpb.UpdateJobRequest{
+		Job: a.desired,
+	}
+	op, err := a.gcpClient.UpdateJob(ctx, req)
+	if err != nil {
+		return fmt.Errorf("updating Job %s: %w", a.id, err)
+	}
+	updated, err := op.Wait(ctx)
+	if err != nil {
+		return fmt.Errorf("Job %s waiting update: %w", a.id, err)
+	}
+	log.V(2).Info("successfully updated Job", "name", a.id)
+
+	mapCtx := &direct.MapContext{}
 	status := &krm.RunJobStatus{}
 	status.ObservedState = RunJobObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+
+	newGCPHash, err := common.HashProto(updated)
+	if err != nil {
+		return fmt.Errorf("calculating new gcp hash: %w", err)
+	}
+	cookie, err := common.ComposeCookie(specHash, newGCPHash)
+	if err != nil {
+		return fmt.Errorf("composing cookie: %w", err)
+	}
+	status.LastModifiedCookie = direct.LazyPtr(cookie)
+
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -212,7 +277,6 @@ func (a *JobAdapter) Export(ctx context.Context) (*unstructured.Unstructured, er
 	if a.actual == nil {
 		return nil, fmt.Errorf("Find() not called")
 	}
-	u := &unstructured.Unstructured{}
 
 	obj := &krm.RunJob{}
 	mapCtx := &direct.MapContext{}
@@ -227,10 +291,10 @@ func (a *JobAdapter) Export(ctx context.Context) (*unstructured.Unstructured, er
 		return nil, err
 	}
 
+	u := &unstructured.Unstructured{Object: uObj}
 	u.SetName(a.id.ID())
 	u.SetGroupVersionKind(krm.RunJobGVK)
 
-	u.Object = uObj
 	return u, nil
 }
 
@@ -239,7 +303,8 @@ func (a *JobAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOper
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting Job", "name", a.id)
 
-	req := &runpb.DeleteJobRequest{Name: a.id.String()}
+	name := a.id.String()
+	req := &runpb.DeleteJobRequest{Name: name}
 	op, err := a.gcpClient.DeleteJob(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -251,8 +316,7 @@ func (a *JobAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOper
 	}
 	log.V(2).Info("successfully deleted Job", "name", a.id)
 
-	_, err = op.Wait(ctx)
-	if err != nil {
+	if _, err = op.Wait(ctx); err != nil {
 		return false, fmt.Errorf("waiting delete Job %s: %w", a.id, err)
 	}
 	return true, nil

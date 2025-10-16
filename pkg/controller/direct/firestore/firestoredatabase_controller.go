@@ -18,18 +18,17 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
+	"time"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
-	gcp "cloud.google.com/go/firestore/apiv1"
 	apiv1 "cloud.google.com/go/firestore/apiv1/admin"
 	firestorepb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
-	"google.golang.org/api/option"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -40,8 +39,7 @@ import (
 )
 
 const (
-	ctrlName      = "firestoredatabase-controller"
-	serviceDomain = "//firestore.googleapis.com"
+	ctrlName = "firestoredatabase-controller"
 )
 
 func init() {
@@ -49,40 +47,17 @@ func init() {
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	return &model{config: config}, nil
+	return &firestoreDatabaseModel{config: config}, nil
 }
 
-var _ directbase.Model = &model{}
+var _ directbase.Model = &firestoreDatabaseModel{}
 
-type model struct {
+type firestoreDatabaseModel struct {
 	config *config.ControllerConfig
 }
 
-func (m *model) client(ctx context.Context) (*gcp.Client, error) {
-	var opts []option.ClientOption
-	if m.config.UserAgent != "" {
-		opts = append(opts, option.WithUserAgent(m.config.UserAgent))
-	}
-	if m.config.HTTPClient != nil {
-		opts = append(opts, option.WithHTTPClient(m.config.HTTPClient))
-	}
-	if m.config.UserProjectOverride && m.config.BillingProject != "" {
-		opts = append(opts, option.WithQuotaProject(m.config.BillingProject))
-	}
-
-	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building firestore client: %w", err)
-	}
-	return gcpClient, err
-}
-
-func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	gcpClient, err := newGCPClient(ctx, m.config)
-	if err != nil {
-		return nil, err
-	}
-	firestoreAdminClient, err := gcpClient.newFirestoreAdminClient(ctx)
+func (m *firestoreDatabaseModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+	firestoreAdminClient, err := newFirestoreAdminClient(ctx, m.config)
 	if err != nil {
 		return nil, err
 	}
@@ -92,59 +67,44 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Get Resource ID
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	// Get Project ID
-	projectRef, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), &obj.Spec.ProjectRef)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-
-	var id *FirestoreDatabaseIdentity
-	externalRef := direct.ValueOf(obj.Status.ExternalRef)
-	if externalRef == "" {
-		id = BuildID(projectID, resourceID)
-	} else {
-		id, err = asID(externalRef)
-		if err != nil {
-			return nil, err
-		}
-
-		if id.project != projectID {
-			return nil, fmt.Errorf("FirestoreDatabase %s/%s has spec.projectRef changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.project, projectID)
-		}
-		if id.firestoredatabase != resourceID {
-			return nil, fmt.Errorf("FirestoreDatabase  %s/%s has metadata.name or spec.resourceID changed, expect %s, got %s",
-				u.GetNamespace(), u.GetName(), id.firestoredatabase, resourceID)
-		}
-	}
 
 	return &Adapter{
-		id:                   id,
+		id:                   id.(*krm.FirestoreDatabaseIdentity),
 		firestoreAdminClient: firestoreAdminClient,
 		desired:              obj,
 	}, nil
 }
 
-func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	// TODO: Support URLs
-	return nil, nil
+func (m *firestoreDatabaseModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	// The url format should match the Cloud-Asset-Inventory format: https://cloud.google.com/asset-inventory/docs/resource-name-format
+	if !strings.HasPrefix(url, "//firestore.googleapis.com/") {
+		return nil, nil
+	}
+
+	url = strings.TrimPrefix(url, "//firestore.googleapis.com/")
+
+	id := &krm.FirestoreDatabaseIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	firestoreAdminClient, err := newFirestoreAdminClient(ctx, m.config)
+	if err != nil {
+		return nil, err
+	}
+	return &Adapter{
+		id:                   id,
+		firestoreAdminClient: firestoreAdminClient,
+	}, nil
 }
 
 type Adapter struct {
-	id                   *FirestoreDatabaseIdentity
+	id                   *krm.FirestoreDatabaseIdentity
 	firestoreAdminClient *apiv1.FirestoreAdminClient
 	desired              *krm.FirestoreDatabase
 	actual               *firestorepb.Database
@@ -154,19 +114,20 @@ var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("getting FirestoreDatabase", "name", a.id.FullyQualifiedName())
+	fqn := a.id.String()
+	log.V(2).Info("getting FirestoreDatabase", "name", fqn)
 
 	if a.id == nil {
 		return false, nil
 	}
 
-	req := &firestorepb.GetDatabaseRequest{Name: a.id.FullyQualifiedName()}
+	req := &firestorepb.GetDatabaseRequest{Name: fqn}
 	firestoredatabasepb, err := a.firestoreAdminClient.GetDatabase(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting FirestoreDatabase %q: %w", a.id.FullyQualifiedName(), err)
+		return false, fmt.Errorf("getting FirestoreDatabase %q: %w", fqn, err)
 	}
 
 	a.actual = firestoredatabasepb
@@ -174,60 +135,66 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	fqn := a.id.String()
+
 	u := createOp.GetUnstructured()
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("creating FirestoreDatabase", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("creating FirestoreDatabase", "name", fqn)
 	mapCtx := &direct.MapContext{}
-
-	projectID := a.id.project
-	if projectID == "" {
-		return fmt.Errorf("project is empty")
-	}
-	if a.id.firestoredatabase == "" {
-		return fmt.Errorf("resourceID is empty")
-	}
 
 	desired := a.desired.DeepCopy()
 	resource := FirestoreDatabaseSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Name = a.id.FullyQualifiedName()
+	resource.Name = fqn
 
 	// Apply default values.
 	ApplyFirestoreDatabaseDefaults(resource)
 
 	req := &firestorepb.CreateDatabaseRequest{
-		Parent:     a.id.Parent(),
+		Parent:     a.id.Parent.String(),
 		Database:   resource,
-		DatabaseId: a.id.firestoredatabase,
+		DatabaseId: a.id.Database,
 	}
 	op, err := a.firestoreAdminClient.CreateDatabase(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating FirestoreDatabase %s: %w", a.id.FullyQualifiedName(), err)
+		return fmt.Errorf("creating FirestoreDatabase %s: %w", fqn, err)
 	}
 
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("FirestoreDatabase %s waiting creation: %w", a.id.FullyQualifiedName(), err)
+		return fmt.Errorf("FirestoreDatabase %s waiting creation: %w", fqn, err)
 	}
-	log.V(2).Info("successfully created FirestoreDatabase", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("successfully created FirestoreDatabase", "name", fqn)
+
+	// HACK: We wait for the negative-cache in the API server(s) to expire.
+	time.Sleep(15 * time.Second)
+	for {
+		_, err := a.firestoreAdminClient.GetDatabase(ctx, &firestorepb.GetDatabaseRequest{Name: fqn})
+		if err == nil {
+			break
+		}
+		log.Info("waiting for FirestoreDatabase to be queryable after creation", "name", fqn, "error", err)
+		time.Sleep(15 * time.Second)
+	}
 
 	status := &krm.FirestoreDatabaseStatus{}
 	status.ObservedState = FirestoreDatabaseObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = a.id.AsExternalRef()
+	status.ExternalRef = direct.PtrTo(a.id.String())
 	return setStatus(u, status)
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	fqn := a.id.String()
 	u := updateOp.GetUnstructured()
 
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("updating FirestoreDatabase", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("updating FirestoreDatabase", "name", fqn)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
@@ -267,14 +234,14 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	op, err := a.firestoreAdminClient.UpdateDatabase(ctx, req)
 	if err != nil {
-		return fmt.Errorf("updating FirestoreDatabase %q: %w", a.id.FullyQualifiedName(), err)
+		return fmt.Errorf("updating FirestoreDatabase %q: %w", fqn, err)
 	}
 
 	updated, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("FirestoreDatabase %s waiting update: %w", a.id.FullyQualifiedName(), err)
+		return fmt.Errorf("FirestoreDatabase %s waiting update: %w", fqn, err)
 	}
-	log.V(2).Info("successfully updated FirestoreDatabase", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("successfully updated FirestoreDatabase", "name", fqn)
 
 	status := &krm.FirestoreDatabaseStatus{}
 	status.ObservedState = FirestoreDatabaseObservedState_FromProto(mapCtx, updated)
@@ -285,8 +252,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	fqn := a.id.String()
 	if a.actual == nil {
-		return nil, fmt.Errorf("FirestoreDatabase %q not found", a.id.FullyQualifiedName())
+		return nil, fmt.Errorf("FirestoreDatabase %q not found", fqn)
 	}
 
 	mapCtx := &direct.MapContext{}
@@ -295,6 +263,11 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	db := &krm.FirestoreDatabase{
 		Spec: *dbSpec,
 	}
+
+	db.SetGroupVersionKind(krm.FirestoreDatabaseGVK)
+	db.Name = a.id.Database
+	db.Spec.ProjectRef.External = a.id.Parent.String()
+
 	obj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(db)
 	if err != nil {
 		return nil, fmt.Errorf("converting FirestoreDatabase to unstructured failed: %w", err)
@@ -303,35 +276,35 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	u := &unstructured.Unstructured{
 		Object: obj,
 	}
-	u.SetName(a.id.firestoredatabase)
-	u.SetGroupVersionKind(krm.FirestoreDatabaseGVK)
 
 	return u, nil
 }
 
 // Delete implements the Adapter interface.
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+	fqn := a.id.String()
+
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("deleting FirestoreDatabase", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("deleting FirestoreDatabase", "name", fqn)
 
 	req := &firestorepb.DeleteDatabaseRequest{
-		Name: a.id.FullyQualifiedName(),
+		Name: fqn,
 		Etag: a.actual.Etag,
 	}
 	op, err := a.firestoreAdminClient.DeleteDatabase(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent FirestoreDatabase, assuming it was already deleted", "name", a.id.FullyQualifiedName())
+			log.V(2).Info("skipping delete for non-existent FirestoreDatabase, assuming it was already deleted", "name", fqn)
 			return true, nil
 		}
-		return false, fmt.Errorf("deleting FirestoreDatabase %s: %w", a.id.FullyQualifiedName(), err)
+		return false, fmt.Errorf("deleting FirestoreDatabase %s: %w", fqn, err)
 	}
-	log.V(2).Info("successfully deleted FirestoreDatabase", "name", a.id.FullyQualifiedName())
+	log.V(2).Info("successfully deleted FirestoreDatabase", "name", fqn)
 
 	_, err = op.Wait(ctx)
 	if err != nil {
-		return false, fmt.Errorf("waiting delete FirestoreDatabase %s: %w", a.id.FullyQualifiedName(), err)
+		return false, fmt.Errorf("waiting delete FirestoreDatabase %s: %w", fqn, err)
 	}
 	return true, nil
 }

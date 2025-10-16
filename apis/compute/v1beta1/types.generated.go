@@ -16,6 +16,19 @@
 // krm.group: compute.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.cloud.compute.v1
+// resource: ComputeFirewallPolicyRule:FirewallPolicyRule
 // resource: ComputeTargetTcpProxy:TargetTcpProxy
 
 package v1beta1
+
+// +kcc:proto=google.cloud.compute.v1.FirewallPolicyRuleSecureTag
+type FirewallPolicyRuleSecureTag struct {
+	// Name of the secure tag, created with TagManager's TagValue API.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleSecureTag.name
+	Name *string `json:"name,omitempty"`
+
+	// [Output Only] State of the secure tag, either `EFFECTIVE` or `INEFFECTIVE`. A secure tag is `INEFFECTIVE` when it is deleted or its network is deleted.
+	//  Check the State enum for the list of possible values.
+	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRuleSecureTag.state
+	State *string `json:"state,omitempty"`
+}

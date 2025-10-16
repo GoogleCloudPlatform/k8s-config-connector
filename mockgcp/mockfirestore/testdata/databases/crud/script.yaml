@@ -1,0 +1,7 @@
+- exec: gcloud firestore databases create --database=test-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud firestore databases describe --database=test-${uniqueId} --project=${projectId}
+- exec: gcloud firestore databases update --database=test-${uniqueId} --project=${projectId} --delete-protection
+- exec: gcloud firestore databases describe --database=test-${uniqueId} --project=${projectId}
+- exec: gcloud firestore databases update --database=test-${uniqueId} --project=${projectId} --no-delete-protection
+- exec: gcloud firestore databases describe --database=test-${uniqueId} --project=${projectId}
+- exec: gcloud firestore databases delete --database=test-${uniqueId} --project=${projectId} --quiet

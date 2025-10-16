@@ -22,6 +22,3 @@ spec:
   - clusterId: cluster1-${uniqueId}
     zone: us-central1-a
     numNodes: 3
-  - clusterId: cluster2-${uniqueId}
-    zone: us-west1-a
-    numNodes: 3

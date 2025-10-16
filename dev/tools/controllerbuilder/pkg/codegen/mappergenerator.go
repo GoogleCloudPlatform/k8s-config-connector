@@ -914,9 +914,6 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			fmt.Fprintf(out, "\treturn &%s{%s: direct.Enum_ToProto[%s](mapCtx, in)}\n", oneofWrapperTypeName, protoFieldName, protoEnumTypeName)
 
 		case protoreflect.BoolKind:
-			fmt.Fprintf(out, "\tif !*in {\n")
-			fmt.Fprintf(out, "\t\treturn nil\n")
-			fmt.Fprintf(out, "\t}\n")
 			fmt.Fprintf(out, "\treturn &%s{%s: *in}\n", oneofWrapperTypeName, protoFieldName)
 
 		case protoreflect.StringKind,

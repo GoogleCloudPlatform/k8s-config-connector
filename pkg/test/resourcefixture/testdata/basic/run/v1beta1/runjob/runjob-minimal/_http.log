@@ -1,0 +1,677 @@
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: location=us-central1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "job \"projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs?%24alt=json%3Benum-encoding%3Dint&jobId=${jobID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: location=us-central1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "launchStage": 4,
+  "template": {
+    "template": {
+      "containers": [
+        {
+          "image": "us-docker.pkg.dev/cloudrun/container/hello"
+        }
+      ]
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Job",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "latestCreatedExecution": {},
+    "launchStage": 4,
+    "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+    "template": {
+      "taskCount": 1,
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "executionEnvironment": 2,
+        "maxRetries": 3,
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "timeout": "600s"
+      }
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": 4,
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Job",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "latestCreatedExecution": {},
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+    "template": {
+      "taskCount": 1,
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+        "maxRetries": 3,
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "timeout": "600s"
+      }
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Job",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "latestCreatedExecution": {},
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+    "template": {
+      "taskCount": 1,
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+        "maxRetries": 3,
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "timeout": "600s"
+      }
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: location=us-central1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "etag": "abcdef0123A=",
+  "generation": "1",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifier": "test@google.com",
+  "latestCreatedExecution": {},
+  "launchStage": 4,
+  "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+  "template": {
+    "taskCount": 1,
+    "template": {
+      "containers": [
+        {
+          "image": "us-docker.pkg.dev/cloudrun/container/hello",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          }
+        }
+      ],
+      "executionEnvironment": 2,
+      "maxRetries": 3,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "600s"
+    }
+  },
+  "terminalCondition": {
+    "lastTransitionTime": "2025-01-01T00:00:00Z",
+    "state": 4,
+    "type": "Ready"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: location=us-central1
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "launchStage": 4,
+  "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+  "template": {
+    "template": {
+      "containers": [
+        {
+          "image": "us-docker.pkg.dev/cloudrun/container/hello",
+          "name": "container-name"
+        }
+      ]
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Job",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "latestCreatedExecution": {},
+    "launchStage": 4,
+    "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+    "template": {
+      "taskCount": 1,
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "executionEnvironment": 2,
+        "maxRetries": 3,
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "timeout": "600s"
+      }
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": 4,
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Job",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "latestCreatedExecution": {},
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+    "template": {
+      "taskCount": 1,
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+        "maxRetries": 3,
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "timeout": "600s"
+      }
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Job",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "latestCreatedExecution": {},
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+    "template": {
+      "taskCount": 1,
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+        "maxRetries": 3,
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "timeout": "600s"
+      }
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: location=us-central1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "etag": "abcdef0123A=",
+  "generation": "1",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifier": "test@google.com",
+  "latestCreatedExecution": {},
+  "launchStage": 4,
+  "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+  "template": {
+    "taskCount": 1,
+    "template": {
+      "containers": [
+        {
+          "image": "us-docker.pkg.dev/cloudrun/container/hello",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          }
+        }
+      ],
+      "executionEnvironment": 2,
+      "maxRetries": 3,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "600s"
+    }
+  },
+  "terminalCondition": {
+    "lastTransitionTime": "2025-01-01T00:00:00Z",
+    "state": 4,
+    "type": "Ready"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/jobs/${jobID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: location=us-central1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Job",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "latestCreatedExecution": {},
+    "launchStage": 4,
+    "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+    "template": {
+      "taskCount": 1,
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "executionEnvironment": 2,
+        "maxRetries": 3,
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "timeout": "600s"
+      }
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": 4,
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Job",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "latestCreatedExecution": {},
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+    "template": {
+      "taskCount": 1,
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+        "maxRetries": 3,
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "timeout": "600s"
+      }
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Job",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "latestCreatedExecution": {},
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/jobs/runjob-${uniqueId}",
+    "template": {
+      "taskCount": 1,
+      "template": {
+        "containers": [
+          {
+            "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "resources": {
+              "limits": {
+                "cpu": "1000m",
+                "memory": "512Mi"
+              }
+            }
+          }
+        ],
+        "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+        "maxRetries": 3,
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "timeout": "600s"
+      }
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}

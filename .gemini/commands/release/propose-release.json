@@ -86,27 +86,24 @@
       ]
     },
     {
-      "name": "Generate Release Summary",
+      "name": "Format Code",
       "actions": [
         {
-          "run": "git log -n 3 --pretty=\"format:%H %s\" > commits.log"
+          "run": "make fmt"
         },
         {
-          "prompt": {
-            "message": "Please review commits.log and then create a release-summary.md file with a summary of the changes. Once you are done, type 'ok' to continue.",
-            "id": "create_summary"
-          }
+          "run": "git add ."
+        },
+        {
+          "run": "git diff --staged --quiet || git commit -m \"[make fmt] Apply formatting\""
         }
       ]
     },
     {
-      "name": "Push and Finalize",
+      "name": "Print Push Command",
       "actions": [
         {
-          "run": "git push origin release-${get_version.input}"
-        },
-        {
-          "echo": "Pull request URL: https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/new/release-${get_version.input}"
+          "echo": "git push origin release-${get_version.input}"
         }
       ]
     }

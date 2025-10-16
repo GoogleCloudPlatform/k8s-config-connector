@@ -60,10 +60,9 @@ spec:
             description: BigLakeCatalogSpec defines the desired state of BigLakeCatalog
             properties:
               location:
-                description: Required. The location of the application.
                 type: string
               projectRef:
-                description: Required. The host project of the application.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -98,6 +97,9 @@ spec:
                 description: The BigLakeCatalog name. If not given, the metadata.name
                   will be used.
                 type: string
+            required:
+            - location
+            - projectRef
             type: object
           status:
             description: BigLakeCatalogStatus defines the config connector machine

@@ -68,6 +68,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:
 		exportURI = "//discoveryengine.googleapis.com/projects/{projectID}/locations/{.spec.location}/collections/{.spec.collection}/dataStores/{resourceID}"
 
+	case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreDatabase"}:
+		exportURI = "//firestore.googleapis.com/projects/{projectID}/databases/{resourceID}"
+
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
 		exportURI = "//logging.googleapis.com/projects/" + projectID + "/metrics/" + resourceID
 
@@ -83,6 +86,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	case schema.GroupKind{Group: "servicenetworking.cnrm.cloud.google.com", Kind: "ServiceNetworkingPeeredDnsDomain"}:
 		network := resolveNetwork(h, obj)
 		exportURI = fmt.Sprintf("//servicenetworking.googleapis.com/services/servicenetworking.googleapis.com/projects/%s/global/networks/%s/peeredDnsDomains/{resourceID}", network.Project, network.Network)
+
+	case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
+		exportURI = "//run.googleapis.com/v2/projects/{projectID}/locations/{.spec.location}/jobs/{resourceID}"
 	}
 
 	if exportURI == "" {
@@ -138,8 +144,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 		}
 	}
 
-	output := h.MustReadFile(outputPath)
-	return string(output)
+	outputBytes := h.MustReadFile(outputPath)
+	output := string(outputBytes)
+	return output
 }
 
 func exportResourceAsUnstructured(h *create.Harness, obj *unstructured.Unstructured) *unstructured.Unstructured {

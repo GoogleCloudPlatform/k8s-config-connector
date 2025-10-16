@@ -38,7 +38,14 @@ import (
 
 const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
 
-func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) error {
+func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) {
+	visitor := buildKRMNormalizer(t, u, project, folderID, uniqueID)
+	if err := visitor.VisitUnstructured(u); err != nil {
+		t.Fatalf("failed to normalize KRM object: %v", err)
+	}
+}
+
+func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) *objectWalker {
 	replacements := NewReplacements()
 	findLinksInKRMObject(t, replacements, u)
 
@@ -73,6 +80,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.removePaths.Insert(".metadata.uid")
 
 	visitor.replacePaths[".metadata.deletionTimestamp"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.lastModifiedCookie"] = "normalized-cookie"
 	visitor.replacePaths[".status.creationTimestamp"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.conditions[].lastTransitionTime"] = "1970-01-01T00:00:00Z"
 	visitor.replacePaths[".status.uniqueId"] = "12345678"
@@ -373,6 +381,9 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 	// Specific to RunJob
 	visitor.replacePaths[".status.terminalCondition[].lastTransitionTime"] = "1970-01-01T00:00:00Z"
 
+	// Specific to Workflows
+	visitor.replacePaths[".status.observedState.validateTime"] = "1970-01-01T00:00:00Z"
+
 	// TODO: This should not be needed, we want to avoid churning the kube objects
 	visitor.sortSlices.Insert(".spec.access")
 	visitor.sortSlices.Insert(".spec.nodeConfig.oauthScopes")
@@ -614,7 +625,7 @@ func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project test
 		})
 	}
 
-	return visitor.VisitUnstructured(u)
+	return visitor
 }
 
 func setStringAtPath(m map[string]any, atPath string, newValue string) error {
@@ -871,6 +882,27 @@ func (o *objectWalker) RewriteURL(url string) (string, error) {
 	return v2, nil
 }
 
+func (o *objectWalker) RewriteHeader(headerKey string, headerValue string) (string, error) {
+	v2, err := o.visitString(headerValue, "{header}:"+headerKey)
+	if err != nil {
+		return "", err
+	}
+	return v2, nil
+}
+
+func (o *objectWalker) RewriteHeaders(headers http.Header) error {
+	for k, vv := range headers {
+		for i, v := range vv {
+			s, err := o.RewriteHeader(k, v)
+			if err != nil {
+				return fmt.Errorf("error normalizing header %q=%q: %w", k, v, err)
+			}
+			headers[k][i] = s
+		}
+	}
+	return nil
+}
+
 // findLinksInEvent looks for link paths and feeds the values into replacement.ExtractIDsFromLinks
 func findLinksInEvent(t *testing.T, replacement *Replacements, event *test.LogEntry) {
 	linkPaths := sets.New(
@@ -1025,9 +1057,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
 		u := &unstructured.Unstructured{}
 		u.Object = obj
-		if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
-			t.Fatalf("error from normalizeObject: %v", err)
-		}
+		normalizeKRMObject(t, u, project, folderID, uniqueID)
 	})
 
 	// Apply replacements
@@ -1276,6 +1306,16 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 				t.Fatalf("error normalizing url %q: %v", event.Request.URL, err)
 			}
 			event.Request.URL = s
+		}
+
+		// Replace headers
+		for _, event := range events {
+			if err := replacements.RewriteHeaders(event.Request.Header); err != nil {
+				t.Fatalf("error normalizing request headers: %v", err)
+			}
+			if err := replacements.RewriteHeaders(event.Response.Header); err != nil {
+				t.Fatalf("error normalizing response headers: %v", err)
+			}
 		}
 
 		events.PrettifyJSON(func(requestURL string, obj map[string]any) {

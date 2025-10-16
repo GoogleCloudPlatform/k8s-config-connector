@@ -16,6 +16,7 @@ package v1beta1
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vpcaccess/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -60,6 +61,12 @@ type RunJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	// LastModifiedCookie contains hashes of the last applied spec and the last observed GCP state.
+	// The format is "<spec-hash>/<gcp-hash>".
+	// This is used by the controller to detect if the user's desired state has changed or if the GCP resource has drifted.
+	// +optional
+	LastModifiedCookie *string `json:"lastModifiedCookie,omitempty"`
 
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
@@ -427,13 +434,13 @@ type SecretKeySelector struct {
 	// The name of the secret in Cloud Secret  Manager. Format: {secret} if the secret is in
 	// the same project. projects/{project}/secrets/{secret}
 	// +kcc:proto:field=google.cloud.run.v2.SecretKeySelector.secret
-	SecretRef *refs.SecretManagerSecretRef `json:"secretRef,omitempty"`
+	SecretRef *secretmanagerv1beta1.SecretRef `json:"secretRef,omitempty"`
 
 	// The Cloud Secret Manager secret version.
 	//  Can be 'latest' for the latest version, an integer for a specific version,
 	//  or a version alias.
 	// +kcc:proto:field=google.cloud.run.v2.SecretKeySelector.version
-	VersionRef *refs.SecretManagerSecretVersionRef `json:"versionRef,omitempty"`
+	VersionRef *secretmanagerv1beta1.SecretVersionRef `json:"versionRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.run.v2.SecretVolumeSource
@@ -443,7 +450,7 @@ type SecretVolumeSource struct {
 	//  projects/{project}/secrets/{secret} if the secret is
 	//  in a different project.
 	// +kcc:proto:field=google.cloud.run.v2.SecretVolumeSource.secret
-	SecretRef *refs.SecretManagerSecretRef `json:"secretRef,omitempty"`
+	SecretRef *secretmanagerv1beta1.SecretRef `json:"secretRef,omitempty"`
 
 	// If unspecified, the volume will expose a file whose name is the
 	//  secret, relative to VolumeMount.mount_path.
@@ -539,7 +546,7 @@ type VersionToPath struct {
 	//  Can be 'latest' for the latest value, or an integer or a secret alias for a
 	//  specific version.
 	// +kcc:proto:field=google.cloud.run.v2.VersionToPath.version
-	VersionRef *refs.SecretManagerSecretVersionRef `json:"versionRef,omitempty"`
+	VersionRef *secretmanagerv1beta1.SecretVersionRef `json:"versionRef,omitempty"`
 
 	// Integer octal mode bits to use on this file, must be a value between
 	//  01 and 0777 (octal). If 0 or not set, the Volume's default mode will be

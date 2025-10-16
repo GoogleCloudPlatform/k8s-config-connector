@@ -38,6 +38,10 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
 X-Goog-User-Project: ${projectId}
 
 {
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "taskGroups": [
     {
       "taskSpec": {
@@ -81,6 +85,10 @@ X-Xss-Protection: 0
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}",
   "status": {
     "runDuration": "0s",
@@ -146,6 +154,10 @@ X-Xss-Protection: 0
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-west2/jobs/batchjob-${uniqueId}",
   "status": {
     "runDuration": "0s",

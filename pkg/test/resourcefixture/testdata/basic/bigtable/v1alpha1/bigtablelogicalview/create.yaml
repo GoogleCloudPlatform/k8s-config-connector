@@ -19,7 +19,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/ignore-warnings: "true"
 spec:
-  # resourceId: lv-${uniqueId}
   instanceRef:
     name: lvdep${uniqueId}
   query: "SELECT 1 AS value"
+  deletionProtection: true
