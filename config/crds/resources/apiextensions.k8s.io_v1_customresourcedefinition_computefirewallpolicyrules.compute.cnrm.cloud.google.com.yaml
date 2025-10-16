@@ -60,15 +60,17 @@ spec:
           spec:
             properties:
               action:
-                description: The Action to perform when the client connection triggers
-                  the rule. Valid actions are "allow", "deny" and "goto_next".
+                description: 'The Action to perform when the client connection triggers
+                  the rule. Valid actions for firewall rules are: "allow", "deny",
+                  "apply_security_profile_group" and "goto_next". Valid actions for
+                  packet mirroring rules are: "mirror", "do_not_mirror" and "goto_next".'
                 type: string
               description:
                 description: An optional description for this resource.
                 type: string
               direction:
-                description: 'The direction in which this rule applies. Possible values:
-                  INGRESS, EGRESS'
+                description: The direction in which this rule applies. Check the Direction
+                  enum for the list of possible values.
                 type: string
               disabled:
                 description: Denotes whether the firewall policy rule is disabled.
@@ -119,33 +121,34 @@ spec:
                   destAddressGroups:
                     description: Address groups which should be matched against the
                       traffic destination. Maximum number of destination address groups
-                      is 10. Destination address groups is only supported in Egress
-                      rules.
+                      is 10.
                     items:
                       type: string
                     type: array
                   destFqdns:
-                    description: Domain names that will be used to match against the
-                      resolved domain name of destination of traffic. Can only be
-                      specified if DIRECTION is egress.
+                    description: Fully Qualified Domain Name (FQDN) which should be
+                      matched against traffic destination. Maximum number of destination
+                      fqdn allowed is 100.
                     items:
                       type: string
                     type: array
                   destIPRanges:
                     description: CIDR IP address range. Maximum number of destination
-                      CIDR IP ranges allowed is 256.
+                      CIDR IP ranges allowed is 5000.
                     items:
                       type: string
                     type: array
                   destRegionCodes:
-                    description: The Unicode country codes whose IP addresses will
-                      be used to match against the source of traffic. Can only be
-                      specified if DIRECTION is egress.
+                    description: Region codes whose IP addresses will be used to match
+                      for destination of traffic. Should be specified as 2 letter
+                      country code defined as per ISO 3166 alpha-2 country codes.
+                      ex."US" Maximum number of dest region codes allowed is 5000.
                     items:
                       type: string
                     type: array
                   destThreatIntelligences:
-                    description: Name of the Google Cloud Threat Intelligence list.
+                    description: Names of Network Threat Intelligence lists. The IPs
+                      in these lists will be matched against traffic destination.
                     items:
                       type: string
                     type: array
@@ -158,65 +161,67 @@ spec:
                           description: The IP protocol to which this rule applies.
                             The protocol type is required when creating a firewall
                             rule. This value can either be one of the following well
-                            known protocol strings (`tcp`, `udp`, `icmp`, `esp`, `ah`,
-                            `ipip`, `sctp`), or the IP protocol number.
+                            known protocol strings (tcp, udp, icmp, esp, ah, ipip,
+                            sctp), or the IP protocol number.
                           type: string
                         ports:
                           description: 'An optional list of ports to which this rule
                             applies. This field is only applicable for UDP or TCP
                             protocol. Each entry must be either an integer or a range.
                             If not specified, this rule applies to connections through
-                            any port. Example inputs include: ``.'
+                            any port. Example inputs include: ["22"], ["80","443"],
+                            and ["12345-12349"].'
                           items:
                             type: string
                           type: array
-                      required:
-                      - ipProtocol
                       type: object
                     type: array
                   srcAddressGroups:
                     description: Address groups which should be matched against the
                       traffic source. Maximum number of source address groups is 10.
-                      Source address groups is only supported in Ingress rules.
                     items:
                       type: string
                     type: array
                   srcFqdns:
-                    description: Domain names that will be used to match against the
-                      resolved domain name of source of traffic. Can only be specified
-                      if DIRECTION is ingress.
+                    description: Fully Qualified Domain Name (FQDN) which should be
+                      matched against traffic source. Maximum number of source fqdn
+                      allowed is 100.
                     items:
                       type: string
                     type: array
                   srcIPRanges:
                     description: CIDR IP address range. Maximum number of source CIDR
-                      IP ranges allowed is 256.
+                      IP ranges allowed is 5000.
                     items:
                       type: string
                     type: array
                   srcRegionCodes:
-                    description: The Unicode country codes whose IP addresses will
-                      be used to match against the source of traffic. Can only be
-                      specified if DIRECTION is ingress.
+                    description: Region codes whose IP addresses will be used to match
+                      for source of traffic. Should be specified as 2 letter country
+                      code defined as per ISO 3166 alpha-2 country codes. ex."US"
+                      Maximum number of source region codes allowed is 5000.
                     items:
                       type: string
                     type: array
                   srcThreatIntelligences:
-                    description: Name of the Google Cloud Threat Intelligence list.
+                    description: Names of Network Threat Intelligence lists. The IPs
+                      in these lists will be matched against traffic source.
                     items:
                       type: string
                     type: array
-                required:
-                - layer4Configs
                 type: object
               priority:
-                description: Immutable. An integer indicating the priority of a rule
-                  in the list. The priority must be a positive value between 0 and
-                  2147483647. Rules are evaluated from highest to lowest priority
-                  where 0 is the highest priority and 2147483647 is the lowest prority.
-                format: int64
+                description: An integer indicating the priority of a rule in the list.
+                  The priority must be a positive value between 0 and 2147483647.
+                  Rules are evaluated from highest to lowest priority where 0 is the
+                  highest priority and 2147483647 is the lowest priority.
+                format: int32
                 type: integer
               targetResources:
+                description: A list of network resource URLs to which this rule applies.
+                  This field allows you to control which network's VMs get this rule.
+                  If this field is left blank, all VMs within the organization will
+                  receive the rule.
                 items:
                   oneOf:
                   - not:
@@ -246,6 +251,8 @@ spec:
                   type: object
                 type: array
               targetServiceAccounts:
+                description: A list of service accounts indicating the sets of instances
+                  that are applied with this rule.
                 items:
                   oneOf:
                   - not:
@@ -274,11 +281,7 @@ spec:
                   type: object
                 type: array
             required:
-            - action
-            - direction
             - firewallPolicyRef
-            - match
-            - priority
             type: object
           status:
             properties:
@@ -313,8 +316,9 @@ spec:
                   in GCP.
                 type: string
               kind:
-                description: Type of the resource. Always `compute#firewallPolicyRule`
-                  for firewall policy rules
+                description: '[Output only] Type of the resource. Returns compute#firewallPolicyRule
+                  for firewall rules and compute#packetMirroringRule for packet mirroring
+                  rules.'
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -325,9 +329,9 @@ spec:
                 format: int64
                 type: integer
               ruleTupleCount:
-                description: Calculation of the complexity of a single firewall policy
-                  rule.
-                format: int64
+                description: '[Output Only] Calculation of the complexity of a single
+                  firewall policy rule.'
+                format: int32
                 type: integer
             type: object
         type: object
