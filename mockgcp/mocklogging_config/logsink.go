@@ -16,7 +16,7 @@
 // proto.service: google.logging.v2.ConfigServiceV2
 // proto.message: google.logging.v2.LogSink
 
-package mocklogging
+package mocklogging_config
 
 import (
 	"context"

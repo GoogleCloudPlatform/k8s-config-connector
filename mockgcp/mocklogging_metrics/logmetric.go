@@ -16,7 +16,7 @@
 // proto.service: google.logging.v2.MetricsServiceV2
 // proto.message: google.logging.v2.LogMetric
 
-package mocklogging
+package mocklogging_metrics
 
 import (
 	"context"
