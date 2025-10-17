@@ -70,6 +70,10 @@ func (r *LoggingLinkRef) NormalizedExternal(ctx context.Context, reader client.R
 		}
 		return "", fmt.Errorf("reading referenced %s %s: %w", LoggingLinkGVK, key, err)
 	}
+	// if the referenced resource is being deleted, return a ReferenceNotReady error
+	if u.GetDeletionTimestamp() != nil {
+		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
 	if err != nil {
