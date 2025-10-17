@@ -21,6 +21,7 @@ import (
 	"net/http"
 	_ "net/http/pprof" // Needed to allow pprof server to accept requests
 	"os"
+	goruntime "runtime"
 	"strings"
 	"time"
 
@@ -43,9 +44,6 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	crlog "sigs.k8s.io/controller-runtime/pkg/log"
-
-	// Ensure built-in types are registered.
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 var (
@@ -140,6 +138,8 @@ func run(ctx context.Context) error {
 	statViews := make(map[CRDInfo]*kube.KubeView[ResourceStats])
 
 	for {
+		goruntime.GC() // Reduce memory by cleaning up unused objects before sleeping
+
 		time.Sleep(time.Duration(metricInterval) * time.Second)
 
 		// Reset all metrics before updating.
@@ -196,10 +196,11 @@ func run(ctx context.Context) error {
 			}
 
 			// Record stats.
+			groupKind := crdInfo.GVK.GroupKind().String()
 			for ns, stats := range nsAggStats {
 				for condition, count := range stats.lastConditionCounts {
 					logger.V(2).Info("posting metrics", "namespace", ns, "gvk", crdInfo.GVK.String(), "status", condition, "count", count)
-					appliedResources.WithLabelValues(ns, crdInfo.GVK.GroupKind().String(), condition).Set(float64(count))
+					appliedResources.WithLabelValues(ns, groupKind, condition).Set(float64(count))
 				}
 			}
 		}
