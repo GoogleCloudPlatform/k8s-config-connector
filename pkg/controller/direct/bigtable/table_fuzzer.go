@@ -33,19 +33,18 @@ func bigtableTableFuzzer() fuzztesting.KRMFuzzer {
 		BigtableTableObservedState_v1beta1_FromProto, BigtableTableObservedState_v1beta1_ToProto,
 	)
 
-	f.SpecFields.Insert("column_families")
-	f.SpecFields.Insert("change_stream_config")
-	f.SpecFields.Insert("deletion_protection")
-	f.SpecFields.Insert("row_key_schema")
+	f.SpecFields.Insert(".deletion_protection")
+	f.SpecFields.Insert(".row_key_schema")
 
-	f.StatusFields.Insert("cluster_states")
-	f.StatusFields.Insert("restore_info")
+	f.StatusFields.Insert(".restore_info")
 
 	f.UnimplementedFields.Insert(".name")
-	f.UnimplementedFields.Insert(".granularity")
 	f.UnimplementedFields.Insert(".automated_backup_policy")
-	f.UnimplementedFields.Insert(".column_families.gc_rule")
-	f.UnimplementedFields.Insert(".column_families.value_type")
+	f.UnimplementedFields.Insert(".granularity")
+	f.UnimplementedFields.Insert(".cluster_states")
+	f.UnimplementedFields.Insert(".column_families")
+	f.UnimplementedFields.Insert(".row_key_schema")
+	f.UnimplementedFields.Insert(".change_stream_config") // The value has to be a duration
 
 	return f
 }
