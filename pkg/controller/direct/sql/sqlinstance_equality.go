@@ -22,13 +22,15 @@ import (
 	api "google.golang.org/api/sqladmin/v1beta4"
 )
 
-func InstancesMatch(desired *api.DatabaseInstance, actual *api.DatabaseInstance, diff *structuredreporting.Diff) bool {
+func DiffInstances(desired *api.DatabaseInstance, actual *api.DatabaseInstance) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	if desired == nil && actual == nil {
-		return true
+		return diff
 	}
 	if !PointersMatch(desired, actual) {
-		return false
+		return diff
 	}
+
 	if desired.DatabaseVersion != actual.DatabaseVersion {
 		diff.AddField(".databaseVersion", actual.DatabaseVersion, desired.DatabaseVersion)
 	}
@@ -59,14 +61,13 @@ func InstancesMatch(desired *api.DatabaseInstance, actual *api.DatabaseInstance,
 	}
 	// Ignore ReplicationCluster. It is not supported in KRM API.
 	// Ignore RootPassword. It is not exported.
-	if !SettingsMatch(desired.Settings, actual.Settings, diff) {
-		diff.AddField(".settings", actual, desired)
-	}
+	diff.AddDiff(DiffSettings(desired.Settings, actual.Settings))
+
 	// Ignore SqlNetworkArchitecture. It is not supported in KRM API.
 	// Ignore SwitchTransactionLogsToCloudStorageEnabled. It is not supported in KRM API.
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
-	return !diff.HasDiff()
+	return diff
 }
 
 func DiskEncryptionConfigurationsMatch(desired *api.DiskEncryptionConfiguration, actual *api.DiskEncryptionConfiguration) bool {
@@ -105,12 +106,14 @@ func ReplicaConfigurationsMatch(desired *api.ReplicaConfiguration, actual *api.R
 	return true
 }
 
-func SettingsMatch(desired *api.Settings, actual *api.Settings, diff *structuredreporting.Diff) bool {
+func DiffSettings(desired *api.Settings, actual *api.Settings) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
 	if desired == nil && actual == nil {
-		return true
+		return diff
 	}
 	if !PointersMatch(desired, actual) {
-		return false
+		diff.AddField(".settings", actual, desired)
+		return diff
 	}
 	if desired.ActivationPolicy != actual.ActivationPolicy {
 		diff.AddField(".settings.activationPolicy", actual.ActivationPolicy, desired.ActivationPolicy)
@@ -206,7 +209,7 @@ func SettingsMatch(desired *api.Settings, actual *api.Settings, diff *structured
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
-	return !diff.HasDiff()
+	return diff
 }
 
 // slicesMatch checks if two slices are equal, matching with reflect.DeepEqual.
