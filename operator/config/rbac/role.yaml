@@ -205,3 +205,16 @@ rules:
   - patch
   - update
   - watch
+- apiGroups:
+  - multicluster.core.cnrm.cloud.google.com
+  resources:
+  - multiclusterleases
+  - multiclusterleases/status
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
