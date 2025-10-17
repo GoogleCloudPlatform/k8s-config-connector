@@ -62,7 +62,7 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterBigtableInstanceAdminServer(grpcServer, &instanceAdminServer{MockService: s})
 	pb.RegisterBigtableTableAdminServer(grpcServer, &tableAdminServer{MockService: s})
-	s.operations.RegisterGRPCServices(grpcServer)
+	// s.operations.RegisterGRPCServices(grpcServer)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
