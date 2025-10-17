@@ -16,6 +16,7 @@
 // krm.group: documentai.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.cloud.documentai.v1
+// resource: DocumentAIProcessor:Processor
 // resource: DocumentAIProcessorVersion:ProcessorVersion
 
 package v1beta1
@@ -245,4 +246,15 @@ type ProcessorVersion_GenAiModelInfo_FoundationGenAiModelInfo struct {
 	//  required for finetuning.
 	// +kcc:proto:field=google.cloud.documentai.v1.ProcessorVersion.GenAiModelInfo.FoundationGenAiModelInfo.min_train_labeled_documents
 	MinTrainLabeledDocuments *int32 `json:"minTrainLabeledDocuments,omitempty"`
+}
+
+// +kcc:proto=google.cloud.documentai.v1.ProcessorVersionAlias
+type ProcessorVersionAlias struct {
+	// The alias in the form of `processor_version` resource name.
+	// +kcc:proto:field=google.cloud.documentai.v1.ProcessorVersionAlias.alias
+	Alias *string `json:"alias,omitempty"`
+
+	// The resource name of aliased processor version.
+	// +kcc:proto:field=google.cloud.documentai.v1.ProcessorVersionAlias.processor_version
+	ProcessorVersion *string `json:"processorVersion,omitempty"`
 }
