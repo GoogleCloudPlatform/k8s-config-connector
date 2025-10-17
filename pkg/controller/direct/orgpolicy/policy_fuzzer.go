@@ -42,13 +42,6 @@ func orgPolicyPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".name")
 	f.UnimplementedFields.Insert(".alternate") // deprecated field
 	f.UnimplementedFields.Insert(".dry_run_spec.etag")
-	f.UnimplementedFields.Insert(".dry_run_spec.rules[].allow_all")
-	f.UnimplementedFields.Insert(".dry_run_spec.rules[].deny_all")
-	f.UnimplementedFields.Insert(".dry_run_spec.rules[].enforce")
-
-	f.UnimplementedFields.Insert(".spec.rules[].allow_all")
-	f.UnimplementedFields.Insert(".spec.rules[].deny_all")
-	f.UnimplementedFields.Insert(".spec.rules[].enforce")
 
 	f.Unimplemented_Etag()
 	f.UnimplementedFields.Insert(".spec.etag")
