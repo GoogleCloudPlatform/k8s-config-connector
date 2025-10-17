@@ -42,11 +42,21 @@ section.
 
 #### Implementation Analysis
 - Are there any potential bugs, logic errors, or race conditions in the implementation?
-- Does the code adhere to established k8s coding conventions and best practices?
+- **Pointer Safety:** Are pointers being dereferenced without proper nil checks? This is a critical check.
+- **Error Handling:** Are errors from all function calls, especially mapping and conversion functions, being properly checked and handled?
+- Does the code adhere to established k8s coding conventions and best practices (e.g., import groups, logging levels, error message formatting)?
+
+#### Controller and API Wrapper Analysis
+- **API vs. Client Discrepancies:** Critically compare the KRM API definition (in `apis/`) with the underlying GCP API proto and the Go client library's implementation. Flag any type mismatches (e.g., `bool` in KRM vs. `int` in the client) as potential bugs.
+- **Update Semantics:** Scrutinize how `nil` or omitted fields in the KRM spec are handled during updates. Does the controller correctly interpret this as a signal to ignore the field or to explicitly unset it on the GCP resource?
+- **Client Library Usage:** Confirm that the mapping functions in the controller are converting KRM objects to the correct struct/message type that the GCP client library function expects.
 
 #### Testing Gaps
 - How thorough is the test coverage for the new changes?
 - Are there missing unit, integration, or e2e tests for critical code paths or edge cases?
+- **Test Data Rationale:** For any changes to test fixtures (e.g., `create.yaml`, `dependencies.yaml`), is there a clear justification? Do the changes accurately reflect the new feature and test its lifecycle correctly (e.g., enabling and then disabling a feature to allow for proper resource cleanup at the end of the test)?
+
+#### Mock vs. Real GCP Log Analysis
 
 #### Mock vs. Real GCP Log Analysis
 - **This check is mandatory if any files in `mockgcp/`, `apis/`, `pkg/controller/direct/`, `config/crds/resources/` are added or changed, or if a new test fixture is added.**
