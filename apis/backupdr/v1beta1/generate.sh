@@ -25,7 +25,9 @@ go run . generate-types \
     --service google.cloud.backupdr.v1 \
     --api-version backupdr.cnrm.cloud.google.com/v1beta1 \
     --resource BackupDRBackupPlanAssociation:BackupPlanAssociation \
-    --resource BackupDRBackupPlan:BackupPlan
+    --resource BackupDRBackupPlan:BackupPlan \
+    --resource BackupDRBackupVault:BackupVault \
+
 
 go run . generate-mapper \
     --multiversion \
