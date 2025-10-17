@@ -39,6 +39,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"k8s.io/client-go/rest"
 	"k8s.io/klog/v2"
@@ -185,15 +186,16 @@ func run(ctx context.Context) error {
 
 			// Aggregate stats for each namespace.
 			nsAggStats := make(map[string]*AggregatedResourceStats)
-			for i, s := range statViews[crdInfo].Snapshot() {
-				ns := i.Namespace
+
+			statViews[crdInfo].WalkSnapshot(func(nn types.NamespacedName, s ResourceStats) {
+				ns := nn.Namespace
 				nsStats, ok := nsAggStats[ns]
 				if !ok {
 					nsStats = NewAggregatedResourceStats()
 					nsAggStats[ns] = nsStats
 				}
 				nsStats.lastConditionCounts[s.lastCondition]++
-			}
+			})
 
 			// Record stats.
 			groupKind := crdInfo.GVK.GroupKind().String()
