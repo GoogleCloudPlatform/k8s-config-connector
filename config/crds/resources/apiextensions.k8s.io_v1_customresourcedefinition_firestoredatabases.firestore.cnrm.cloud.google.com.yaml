@@ -59,6 +59,11 @@ spec:
           spec:
             description: FirestoreDatabaseSpec defines the desired state of FirestoreDatabase
             properties:
+              appEngineIntegrationMode:
+                description: The App Engine integration mode to use for this database.
+                  See https://cloud.google.com/firestore/docs/reference/rest/v1/projects.databases#appengineintegrationmode
+                  for more info.
+                type: string
               concurrencyMode:
                 description: The concurrency control mode to use for this database.
                   See https://cloud.google.com/firestore/docs/reference/rest/v1/projects.databases#concurrencymode
@@ -254,6 +259,11 @@ spec:
           spec:
             description: FirestoreDatabaseSpec defines the desired state of FirestoreDatabase
             properties:
+              appEngineIntegrationMode:
+                description: The App Engine integration mode to use for this database.
+                  See https://cloud.google.com/firestore/docs/reference/rest/v1/projects.databases#appengineintegrationmode
+                  for more info.
+                type: string
               concurrencyMode:
                 description: The concurrency control mode to use for this database.
                   See https://cloud.google.com/firestore/docs/reference/rest/v1/projects.databases#concurrencymode
