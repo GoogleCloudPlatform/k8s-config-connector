@@ -28,6 +28,9 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	// Instances
 	replacements.ReplacePath(".instances[].createTime", PlaceholderTime)
+
+	// Materialized Views
+	replacements.ReplacePath(".materializedViews[].etag", "abcdef0123A=")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
