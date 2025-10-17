@@ -24,8 +24,6 @@ import (
 	"strings"
 	"time"
 
-	"k8s.io/klog/v2"
-
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -38,7 +36,6 @@ import (
 )
 
 func (s *configServiceV2) GetLink(ctx context.Context, req *pb.GetLinkRequest) (*pb.Link, error) {
-	klog.Infof("tylerreid - GetLink - %+v", &req)
 	name, err := s.parseLinkName(req.Name)
 	if err != nil {
 		return nil, err
@@ -58,7 +55,6 @@ func (s *configServiceV2) GetLink(ctx context.Context, req *pb.GetLinkRequest) (
 }
 
 func (s *configServiceV2) CreateLink(ctx context.Context, req *pb.CreateLinkRequest) (*longrunningpb.Operation, error) {
-	klog.Infof("tylerreid - CreateLink - %+v", &req)
 	reqName := req.Parent + "/links/" + req.GetLinkId()
 	name, err := s.parseLinkName(reqName)
 	if err != nil {
@@ -106,7 +102,6 @@ func (s *configServiceV2) populateDefaultsForLink(obj *pb.Link) {
 }
 
 func (s *configServiceV2) DeleteLink(ctx context.Context, req *pb.DeleteLinkRequest) (*longrunningpb.Operation, error) {
-	klog.Infof("tylerreid - DELETELink - %+v", &req)
 	name, err := s.parseLinkName(req.Name)
 	if err != nil {
 		return nil, err
