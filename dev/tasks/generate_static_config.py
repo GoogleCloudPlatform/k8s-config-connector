@@ -160,14 +160,27 @@ def main():
         lines.append("%s%s%s" % (key_part, padding, value_part))
 
     lines.append("}")
-    
     go_file_content = "\n".join(lines)
-
+    
     output_path = os.path.join(repo_root, 'pkg', 'controller', 'resourceconfig', 'static_config.go')
+    
     with open(output_path, 'w') as f:
         f.write(go_file_content)
-
+    
     print(f"Generated {output_path}")
+    
+    print("Running make fmt...")
+    
+    try:
+        subprocess.run(['make', 'fmt'], cwd=repo_root, check=True)
+        print("Finished running make fmt.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error running 'make fmt': {e}")
+        # Depending on the desired behavior, you might want to exit or handle the error
+    except FileNotFoundError:
+        print("Error: 'make' command not found. Please ensure make is installed and in your PATH.")
 
 if __name__ == '__main__':
     main()
+    
+    
