@@ -348,11 +348,11 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 	return schemaUpdater, nil
 }
 
-func registerDeletionDefenderController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, _ schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
+func registerDeletionDefenderController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
 	}
-	if err := deletiondefender.Add(r.mgr, crd); err != nil {
+	if err := deletiondefender.Add(r.mgr, crd, gvk); err != nil {
 		return nil, fmt.Errorf("error registering deletion defender controller for '%v': %w", crd.GetName(), err)
 	}
 	return nil, nil
