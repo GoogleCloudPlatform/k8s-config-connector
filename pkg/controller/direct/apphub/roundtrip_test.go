@@ -51,11 +51,13 @@ func FuzzAppHubApplicationSpec(f *testing.F) {
 		ctx := &direct.MapContext{}
 		k := AppHubApplicationSpec_FromProto(ctx, p1)
 		if ctx.Err() != nil {
+			t.Logf("p1 = %v", prototext.Format(p1))
 			t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
 		}
 
 		p2 := AppHubApplicationSpec_ToProto(ctx, k)
 		if ctx.Err() != nil {
+			t.Logf("p1 = %v", prototext.Format(p1))
 			t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
 		}
 
