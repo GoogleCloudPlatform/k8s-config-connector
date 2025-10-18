@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: BillingBudgetsBudget
+    listKind: BillingBudgetsBudgetList
     plural: billingbudgetsbudgets
     shortNames:
     - gcpbillingbudgetsbudget
@@ -43,20 +44,23 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: BillingBudgetsBudget is the Schema for the BillingBudgetsBudget
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: BillingBudgetsBudgetSpec defines the desired state of BillingBudgetsBudget
             properties:
               allUpdatesRule:
                 description: Optional. Rules to apply to notifications sent based
@@ -69,7 +73,16 @@ spec:
                       Account User IAM roles for the target account.
                     type: boolean
                   monitoringNotificationChannels:
+                    description: Optional. Targets to send notifications to when a
+                      threshold is exceeded. This is in addition to default recipients
+                      who have billing account IAM roles. The value is the full REST
+                      resource name of a monitoring notification channel with the
+                      form `projects/{project_id}/notificationChannels/{channel_id}`.
+                      A maximum of 5 channels are allowed. See https://cloud.google.com/billing/docs/how-to/budgets-notification-recipients
+                      for more details.
                     items:
+                      description: NotificationChannelRef is a reference to a MonitoringNotificationChannel
+                        resource.
                       oneOf:
                       - not:
                           required:
@@ -86,19 +99,28 @@ spec:
                         - external
                       properties:
                         external:
-                          description: 'Allowed value: The Google Cloud resource name
-                            of a `MonitoringNotificationChannel` resource (format:
-                            `projects/{{project}}/notificationChannels/{{name}}`).'
+                          description: A reference to an externally managed MonitoringNotificationChannel
+                            resource. Should be in the format "projects/{{projectID}}/notificationChannels/{{channelID}}".
                           type: string
                         name:
-                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          description: The name of a MonitoringNotificationChannel
+                            resource.
                           type: string
                         namespace:
-                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          description: The namespace of a MonitoringNotificationChannel
+                            resource.
                           type: string
                       type: object
                     type: array
                   pubsubTopicRef:
+                    description: Optional. The name of the Pub/Sub topic where budget
+                      related messages will be published, in the form `projects/{project_id}/topics/{topic_id}`.
+                      Updates are sent at regular intervals to the topic. The topic
+                      needs to be created before the budget is created; see https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications
+                      for more details. Caller is expected to have `pubsub.topics.setIamPolicy`
+                      permission on the topic when it's set for a budget, otherwise,
+                      the API call will fail with PERMISSION_DENIED. See https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#permissions_required_for_this_task
+                      for more details on Pub/Sub roles and permissions.
                     oneOf:
                     - not:
                         required:
@@ -115,21 +137,19 @@ spec:
                       - external
                     properties:
                       external:
-                        description: |-
-                          Optional. The name of the Pub/Sub topic where budget related messages will be published, in the form `projects/{project_id}/topics/{topic_id}`. Updates are sent at regular intervals to the topic. The topic needs to be created before the budget is created; see https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications for more details. Caller is expected to have `pubsub.topics.setIamPolicy` permission on the topic when it's set for a budget, otherwise, the API call will fail with PERMISSION_DENIED. See https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#permissions_required_for_this_task for more details on Pub/Sub roles and permissions.
-
-                          Allowed value: The Google Cloud resource name of a `PubSubTopic` resource (format: `projects/{{project}}/topics/{{name}}`).
+                        description: A reference to an externally managed PubSubTopic
+                          resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".
                         type: string
                       name:
-                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        description: The name of a PubSubTopic resource.
                         type: string
                       namespace:
-                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        description: The namespace of a PubSubTopic resource.
                         type: string
                     type: object
                   schemaVersion:
-                    description: Optional. Required when NotificationsRule.pubsub_topic
-                      is set. The schema version of the notification sent to NotificationsRule.pubsub_topic.
+                    description: Optional. Required when [AllUpdatesRule.pubsub_topic][google.cloud.billing.budgets.v1beta1.AllUpdatesRule.pubsub_topic]
+                      is set. The schema version of the notification sent to [AllUpdatesRule.pubsub_topic][google.cloud.billing.budgets.v1beta1.AllUpdatesRule.pubsub_topic].
                       Only "1.0" is accepted. It represents the JSON schema as defined
                       in https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format.
                     type: string
@@ -140,9 +160,9 @@ spec:
                   lastPeriodAmount:
                     description: Use the last period's actual spend as the budget
                       for the present period. LastPeriodAmount can only be set when
-                      the budget's time period is a .
+                      the budget's time period is a [Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period].
+                      It cannot be set in combination with [Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period].
                     type: object
-                    x-kubernetes-preserve-unknown-fields: true
                   specifiedAmount:
                     description: A specified amount to use as the budget. `currency_code`
                       is optional. If specified when creating a budget, it must match
@@ -151,8 +171,8 @@ spec:
                       The `currency_code` is provided on output.
                     properties:
                       currencyCode:
-                        description: Immutable. The three-letter currency code defined
-                          in ISO 4217.
+                        description: The three-letter currency code defined in ISO
+                          4217.
                         type: string
                       nanos:
                         description: Number of nano (10^-9) units of the amount. The
@@ -161,7 +181,7 @@ spec:
                           If `units` is zero, `nanos` can be positive, zero, or negative.
                           If `units` is negative, `nanos` must be negative or zero.
                           For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
-                        format: int64
+                        format: int32
                         type: integer
                       units:
                         description: The whole units of the amount. For example if
@@ -171,7 +191,7 @@ spec:
                     type: object
                 type: object
               billingAccountRef:
-                description: Immutable.
+                description: The billing account for which the budget applies.
                 oneOf:
                 - not:
                     required:
@@ -188,18 +208,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: |-
-                      The billing account of the resource
-
-                      Allowed value: The Google Cloud resource name of a Google Cloud Billing Account (format: `billingAccounts/{{name}}`).
+                    description: A reference to an externally managed BillingAccount
+                      resource. Should be in the format "billingAccounts/{billingAccountID}".
                     type: string
                   name:
-                    description: |-
-                      [WARNING] BillingAccount not yet supported in Config Connector, use 'external' field to reference existing resources.
-                      Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                    description: The name of a BillingAccount resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a BillingAccount resource.
                     type: string
                 type: object
               budgetFilter:
@@ -208,20 +224,25 @@ spec:
                   services, and the budget's time period, as well as other filters.
                 properties:
                   calendarPeriod:
-                    description: 'Optional. Specifies to track usage for recurring
+                    description: Optional. Specifies to track usage for recurring
                       calendar period. For example, assume that CalendarPeriod.QUARTER
                       is set. The budget will track usage from April 1 to June 30,
                       when the current calendar month is April, May, June. After that,
                       it will track usage from July 1 to September 30 when the current
-                      calendar month is July, August, September, so on. Possible values:
-                      CALENDAR_PERIOD_UNSPECIFIED, MONTH, QUARTER, YEAR'
+                      calendar month is July, August, September, so on.
                     type: string
                   creditTypes:
-                    description: Optional. If Filter.credit_types_treatment is INCLUDE_SPECIFIED_CREDITS,
-                      this is a list of credit types to be subtracted from gross cost
-                      to determine the spend for threshold calculations. See a list
-                      of acceptable credit type values. If Filter.credit_types_treatment
-                      is not INCLUDE_SPECIFIED_CREDITS, this field must be empty.
+                    description: |-
+                      Optional. If
+                       [Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment]
+                       is INCLUDE_SPECIFIED_CREDITS, this is a list of credit types to be
+                       subtracted from gross cost to determine the spend for threshold
+                       calculations. See [a list of acceptable credit type
+                       values](https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type).
+
+                       If
+                       [Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment]
+                       is **not** INCLUDE_SPECIFIED_CREDITS, this field must be empty.
                     items:
                       type: string
                     type: array
@@ -234,73 +255,57 @@ spec:
                       is static, it does not recur.
                     properties:
                       endDate:
-                        description: Immutable. Optional. The end date of the time
-                          period. Budgets with elapsed end date won't be processed.
-                          If unset, specifies to track all usage incurred since the
-                          start_date.
+                        description: Optional. The end date of the time period. Budgets
+                          with elapsed end date won't be processed. If unset, specifies
+                          to track all usage incurred since the start_date.
                         properties:
                           day:
-                            description: Immutable. Day of a month. Must be from 1
-                              to 31 and valid for the year and month, or 0 to specify
-                              a year by itself or a year and month where the day isn't
-                              significant.
-                            format: int64
+                            description: Day of a month. Must be from 1 to 31 and
+                              valid for the year and month, or 0 to specify a year
+                              by itself or a year and month where the day isn't significant.
+                            format: int32
                             type: integer
                           month:
-                            description: Immutable. Month of a year. Must be from
-                              1 to 12, or 0 to specify a year without a month and
-                              day.
-                            format: int64
+                            description: Month of a year. Must be from 1 to 12, or
+                              0 to specify a year without a month and day.
+                            format: int32
                             type: integer
                           year:
-                            description: Immutable. Year of the date. Must be from
-                              1 to 9999, or 0 to specify a date without a year.
-                            format: int64
+                            description: Year of the date. Must be from 1 to 9999,
+                              or 0 to specify a date without a year.
+                            format: int32
                             type: integer
                         type: object
                       startDate:
-                        description: Immutable. Required. The start date must be after
-                          January 1, 2017.
+                        description: Required. The start date must be after January
+                          1, 2017.
                         properties:
                           day:
-                            description: Immutable. Day of a month. Must be from 1
-                              to 31 and valid for the year and month, or 0 to specify
-                              a year by itself or a year and month where the day isn't
-                              significant.
-                            format: int64
+                            description: Day of a month. Must be from 1 to 31 and
+                              valid for the year and month, or 0 to specify a year
+                              by itself or a year and month where the day isn't significant.
+                            format: int32
                             type: integer
                           month:
-                            description: Immutable. Month of a year. Must be from
-                              1 to 12, or 0 to specify a year without a month and
-                              day.
-                            format: int64
+                            description: Month of a year. Must be from 1 to 12, or
+                              0 to specify a year without a month and day.
+                            format: int32
                             type: integer
                           year:
-                            description: Immutable. Year of the date. Must be from
-                              1 to 9999, or 0 to specify a date without a year.
-                            format: int64
+                            description: Year of the date. Must be from 1 to 9999,
+                              or 0 to specify a date without a year.
+                            format: int32
                             type: integer
                         type: object
-                    required:
-                    - startDate
-                    type: object
-                  labels:
-                    additionalProperties:
-                      properties:
-                        values:
-                          description: Immutable. The values of the label
-                          items:
-                            type: string
-                          type: array
-                      type: object
-                    description: Optional. A single label and value pair specifying
-                      that usage from only this set of labeled resources should be
-                      included in the budget. Currently, multiple entries or multiple
-                      values per entry are not allowed. If omitted, the report will
-                      include all labeled and unlabeled usage.
                     type: object
                   projects:
+                    description: Optional. A set of projects of the form `projects/{project}`,
+                      specifying that usage from only this set of projects should
+                      be included in the budget. If omitted, the report will include
+                      all usage for the billing account, regardless of which project
+                      the usage occurred on.
                     items:
+                      description: The Project that this resource belongs to.
                       oneOf:
                       - not:
                           required:
@@ -317,14 +322,18 @@ spec:
                         - external
                       properties:
                         external:
-                          description: 'Allowed value: The Google Cloud resource name
-                            of a `Project` resource (format: `projects/{{name}}`).'
+                          description: The `projectID` field of a project, when not
+                            managed by Config Connector.
+                          type: string
+                        kind:
+                          description: The kind of the Project resource; optional
+                            but must be `Project` if provided.
                           type: string
                         name:
-                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                          description: The `name` field of a `Project` resource.
                           type: string
                         namespace:
-                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                          description: The `namespace` field of a `Project` resource.
                           type: string
                       type: object
                     type: array
@@ -338,75 +347,54 @@ spec:
                       type: string
                     type: array
                   subaccounts:
+                    description: Optional. A set of subaccounts of the form `billingAccounts/{account_id}`,
+                      specifying that usage from only this set of subaccounts should
+                      be included in the budget. If a subaccount is set to the name
+                      of the parent account, usage from the parent account will be
+                      included. If omitted, the report will include usage from the
+                      parent account and all subaccounts, if they exist.
                     items:
-                      oneOf:
-                      - not:
-                          required:
-                          - external
-                        required:
-                        - name
-                      - not:
-                          anyOf:
-                          - required:
-                            - name
-                          - required:
-                            - namespace
-                        required:
-                        - external
-                      properties:
-                        external:
-                          type: string
-                        name:
-                          description: |-
-                            [WARNING] CloudBillingBillingAccount not yet supported in Config Connector, use 'external' field to reference existing resources.
-                            Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-                          type: string
-                        namespace:
-                          description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                          type: string
-                      type: object
+                      type: string
                     type: array
                 type: object
               displayName:
-                description: User data for display name in UI. The name must be less
-                  than or equal to 60 characters.
+                description: 'User data for display name in UI. Validation: <= 60
+                  chars.'
                 type: string
               resourceID:
-                description: Immutable. Optional. The service-generated name of the
-                  resource. Used for acquisition only. Leave unset to create a new
-                  resource.
+                description: The BillingBudgetsBudget name. If not given, the metadata.name
+                  will be used.
                 type: string
               thresholdRules:
-                description: Optional. Rules that trigger alerts (notifications of
-                  thresholds being crossed) when spend exceeds the specified percentages
-                  of the budget.
+                description: |-
+                  Optional. Rules that trigger alerts (notifications of thresholds
+                   being crossed) when spend exceeds the specified percentages of the budget.
+
+                   Optional for `pubsubTopic` notifications.
+
+                   Required if using email notifications.
                 items:
                   properties:
                     spendBasis:
-                      description: 'Optional. The type of basis used to determine
-                        if spend has passed the threshold. Behavior defaults to CURRENT_SPEND
-                        if not set. Possible values: BASIS_UNSPECIFIED, CURRENT_SPEND,
-                        FORECASTED_SPEND'
+                      description: Optional. The type of basis used to determine if
+                        spend has passed the threshold. Behavior defaults to CURRENT_SPEND
+                        if not set.
                       type: string
                     thresholdPercent:
                       description: 'Required. Send an alert when this threshold is
                         exceeded. This is a 1.0-based percentage, so 0.5 = 50%. Validation:
                         non-negative number.'
-                      format: double
                       type: number
-                  required:
-                  - thresholdPercent
                   type: object
                 type: array
-            required:
-            - amount
-            - billingAccountRef
             type: object
           status:
+            description: BillingBudgetsBudgetStatus defines the config connector machine
+              state of BillingBudgetsBudget
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -431,9 +419,12 @@ spec:
                   type: object
                 type: array
               etag:
-                description: Optional. Etag to validate that the object is unchanged
-                  for a read-modify-write operation. An empty etag will cause an update
-                  to overwrite other changes.
+                description: This field is deprecated and will not be set in future
+                  versions
+                type: string
+              externalRef:
+                description: A unique specifier for the BillingBudgetsBudget resource
+                  in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -441,6 +432,7 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
             type: object
         required:
@@ -450,9 +442,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

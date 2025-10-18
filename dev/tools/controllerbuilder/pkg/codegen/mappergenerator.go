@@ -400,6 +400,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					krmElemTypeName := krmField.Type
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "*")
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
+					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "*")
 
 					functionName := krmElemTypeName + versionSpecifier + "_FromProto"
 					useSliceFromProtoFunction = functionName
@@ -674,6 +675,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					krmElemTypeName := krmField.Type
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "*")
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
+					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "*")
 
 					functionName := krmElemTypeName + versionSpecifier + "_ToProto"
 					useSliceToProtoFunction = functionName
