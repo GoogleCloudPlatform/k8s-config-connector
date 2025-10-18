@@ -153,7 +153,8 @@ func TestHandleReconcileSucceeded(t *testing.T) {
 }
 
 func TestHandleConfigConnectorCreate(t *testing.T) {
-	t.Parallel()
+	// Remove to avoid error: panic: testing: test using t.Setenv or t.Chdir can not use t.Parallel
+	// t.Parallel()
 	tests := []testCaseStruct{
 		{
 			name: "1 CC and 1 CCContext, namespaced mode",
@@ -283,11 +284,47 @@ func TestHandleConfigConnectorCreate(t *testing.T) {
 			},
 			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
 		},
+		{
+			name: "recorder gets GOOGLE_APPLICATION_CREDENTIALS env var",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc-1",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode: "namespaced",
+				},
+			},
+			loadedManifest: testcontroller.GetManifestWithRecorder(),
+			resultsFunc: func(t *testing.T, c client.Client) []string {
+				return testcontroller.GetManifestWithRecorderWithEnvVar()
+			},
+			envVars: map[string]string{
+				"GOOGLE_APPLICATION_CREDENTIALS": "/foo/bar.json",
+			},
+		},
+		{
+			name: "recorder with existing GOOGLE_APPLICATION_CREDENTIALS env var",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc-1",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode: "namespaced",
+				},
+			},
+			loadedManifest: testcontroller.GetManifestWithRecorderWithEnvVar(),
+			resultsFunc: func(t *testing.T, c client.Client) []string {
+				return testcontroller.GetManifestWithRecorderWithEnvVar()
+			},
+			envVars: map[string]string{
+				"GOOGLE_APPLICATION_CREDENTIALS": "/foo/bar.json",
+			},
+		},
 	}
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			t.Parallel()
+			//t.Parallel()
 			ctx := context.TODO()
 			mgr, stop := testmain.StartTestManagerFromNewTestEnv()
 			defer stop()
@@ -302,10 +339,13 @@ func TestHandleConfigConnectorCreate(t *testing.T) {
 				r.managerNamespaceIsolation = k8s.ManagerNamespaceIsolationShared
 			}
 
+			for k, v := range tc.envVars {
+				t.Setenv(k, v)
+			}
+
 			if err := c.Create(ctx, tc.cc); err != nil {
 				t.Fatalf("error creating %v %v: %v", tc.cc.Kind, tc.cc.Name, err)
 			}
-
 			for _, ccc := range tc.cccs {
 				testcontroller.EnsureNamespaceExists(c, ccc.Namespace)
 				if err := c.Create(ctx, &ccc); err != nil {
@@ -1098,6 +1138,7 @@ type testCaseStruct struct {
 	loadedManifest            []string
 	resultsFunc               func(t *testing.T, c client.Client) []string
 	managerNamespaceIsolation string
+	envVars                   map[string]string
 }
 
 func handleLifecycles(ctx context.Context, t *testing.T, r *Reconciler, cc *corev1beta1.ConfigConnector, m *manifest.Objects) error {
@@ -1108,7 +1149,10 @@ func handleLifecycles(ctx context.Context, t *testing.T, r *Reconciler, cc *core
 		return err
 	}
 	fn = r.handleConfigConnectorLifecycle()
-
+	if err := fn(ctx, cc, m); err != nil {
+		return err
+	}
+	fn = r.transformSystemComponents()
 	return fn(ctx, cc, m)
 }
 
