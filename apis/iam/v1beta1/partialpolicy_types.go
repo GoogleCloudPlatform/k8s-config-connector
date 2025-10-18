@@ -47,7 +47,7 @@ type MemberSource struct {
 	ServiceIdentityRef *MemberReference `json:"serviceIdentityRef,omitempty"`
 
 	// BigQueryConnectionConnection whose service account is to be bound to the role.
-	// Use the Type field to specifie the connection type.
+	// Use the Type field to specify the connection type.
 	// For "spark" connetion, the service account is in `status.observedState.spark.serviceAccountID`.
 	// For "cloudSQL" connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`.
 	// For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`.

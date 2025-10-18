@@ -95,7 +95,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed BigQueryDataset
+                    description: A reference to an externally-managed BigQueryDataset
                       resource. Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".
                     type: string
                   name:
@@ -479,7 +479,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed BigQueryDataset
+                    description: A reference to an externally-managed BigQueryDataset
                       resource. Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".
                     type: string
                   name:

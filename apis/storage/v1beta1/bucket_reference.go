@@ -34,7 +34,7 @@ var StorageBucketGVK = GroupVersion.WithKind("StorageBucket")
 type StorageBucketRef struct {
 	// For backward compatibility, we are not enforcing the external format.
 
-	// A reference to an externally managed StorageBucket resource.
+	// A reference to an externally-managed StorageBucket resource.
 	External string `json:"external,omitempty"`
 
 	// The name of a StorageBucket resource.
