@@ -17,8 +17,13 @@
 // krm.version: v1alpha1
 // proto.service: google.firestore.admin.v1
 // resource: FirestoreField:Field
+// resource: FirestoreBackupSchedule:BackupSchedule
 
 package v1alpha1
+
+// +kcc:proto=google.firestore.admin.v1.DailyRecurrence
+type DailyRecurrence struct {
+}
 
 // +kcc:proto=google.firestore.admin.v1.Field.TtlConfig
 type Field_TTLConfig struct {
@@ -63,6 +68,15 @@ type Index_IndexField_VectorConfig struct {
 
 // +kcc:proto=google.firestore.admin.v1.Index.IndexField.VectorConfig.FlatIndex
 type Index_IndexField_VectorConfig_FlatIndex struct {
+}
+
+// +kcc:proto=google.firestore.admin.v1.WeeklyRecurrence
+type WeeklyRecurrence struct {
+	// The day of week to run.
+	//
+	//  DAY_OF_WEEK_UNSPECIFIED is not allowed.
+	// +kcc:proto:field=google.firestore.admin.v1.WeeklyRecurrence.day
+	Day *string `json:"day,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.firestore.admin.v1.Field.TtlConfig
