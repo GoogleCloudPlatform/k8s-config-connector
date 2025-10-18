@@ -371,7 +371,7 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config) error {
 			if !apiResource.Namespaced {
 				continue
 			}
-			if !contains(apiResource.Verbs, "list") {
+			if !containsEqualFold(apiResource.Verbs, "list") {
 				continue
 			}
 			gvr := schema.GroupVersionResource{
@@ -408,8 +408,8 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config) error {
 	return nil
 }
 
-// contains checks if a slice contains a specific string.
-func contains(slice []string, str string) bool {
+// containsEqualFold checks if a slice contains a specific string.
+func containsEqualFold(slice []string, str string) bool {
 	for _, s := range slice {
 		if strings.EqualFold(s, str) {
 			return true
