@@ -1,0 +1,84 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# 00: Dependency: ComputeNetwork
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: computenetwork-${uniqueId}
+spec:
+  routingMode: REGIONAL
+  autoCreateSubnetworks: false
+---
+# 01: Dependency: ComputeSubnetwork
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: computesubnetwork-${uniqueId}
+spec:
+  ipCidrRange: 10.2.204.0/22
+  region: northamerica-northeast1
+  networkRef:
+    name: computenetwork-${uniqueId}
+  privateIpGoogleAccess: true
+---
+# 02: ContainerCluster with privateClusterConfig setup
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  name: containercluster-${uniqueId}
+spec:
+  location: northamerica-northeast1-c
+  initialNodeCount: 1
+  networkRef:
+    name: computenetwork-${uniqueId}
+  subnetworkRef:
+    name: computesubnetwork-${uniqueId}
+  privateClusterConfig:
+    enablePrivateNodes: true
+    privateEndpointSubnetworkRef:
+      name: computesubnetwork-${uniqueId}
+    enablePrivateEndpoint: true
+    masterGlobalAccessConfig:
+      enabled: true
+  masterAuthorizedNetworksConfig:
+    gcpPublicCidrsAccessEnabled: false
+---
+# 03: ContainerCluster adopts the controlPlaneEndpointsConfig field but this
+# should not introduce any real API changes, i.e. no POST/PUT/PATCH in _http03.log
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  name: containercluster-${uniqueId}
+spec:
+  location: northamerica-northeast1-c
+  initialNodeCount: 1
+  networkRef:
+    name: computenetwork-${uniqueId}
+  subnetworkRef:
+    name: computesubnetwork-${uniqueId}
+  controlPlaneEndpointsConfig:
+    dnsEndpointConfig:
+      allowExternalTraffic: false
+    ipEndpointsConfig:
+      enabled: true
+  privateClusterConfig:
+    enablePrivateNodes: true
+    privateEndpointSubnetworkRef:
+      name: computesubnetwork-${uniqueId}
+    enablePrivateEndpoint: true
+    masterGlobalAccessConfig:
+      enabled: true
+  masterAuthorizedNetworksConfig:
+    gcpPublicCidrsAccessEnabled: false
