@@ -29,6 +29,6 @@ func ComputePartialPolicyWithRemainingBindings(partialPolicy *v1beta1.IAMPartial
 	return bindings.ComputePartialPolicyWithRemainingBindings(partialPolicy, livePolicy)
 }
 
-func ConvertIAMPartialBindingsToIAMPolicyBindings(partialPolicy *v1beta1.IAMPartialPolicy, resolver MemberIdentityResolver) (bindings []v1beta1.IAMPolicyBinding, err error) {
+func ConvertIAMPartialBindingsToIAMPolicyBindings(partialPolicy *v1beta1.IAMPartialPolicy, resolver MemberIdentityResolver) ([]v1beta1.IAMPolicyBinding, error) {
 	return bindings.ConvertIAMPartialBindingsToIAMPolicyBindings(partialPolicy, resolver)
 }

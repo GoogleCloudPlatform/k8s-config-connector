@@ -239,7 +239,6 @@ func TestComputePartialPolicyWithMergedBindings(t *testing.T) {
 						},
 					},
 				},
-				},
 				Status: iamv1beta1.IAMPartialPolicyStatus{
 					LastAppliedBindings: []iamv1beta1.IAMPolicyBinding{
 						{
