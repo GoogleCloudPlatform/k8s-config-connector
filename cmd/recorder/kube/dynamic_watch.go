@@ -187,6 +187,11 @@ func (w *dynamicWatch) watchUntilClosed(ctx context.Context) {
 			(*listener).OnBookmark()
 			continue
 		case watch.Error:
+			if err := ctx.Err(); err != nil {
+				// Context was cancelled
+				log.Info("watch finished because context was cancelled", "cancellationReason", err)
+				return
+			}
 			log.Error(fmt.Errorf("unexpected error from watch: %v", clientEvent.Object), "error during watch")
 			return
 		}
