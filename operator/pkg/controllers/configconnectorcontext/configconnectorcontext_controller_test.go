@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 
@@ -1269,6 +1270,7 @@ func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 		manifests              []string
 		controllerReconcilerCR *customizev1beta1.NamespacedControllerReconciler
 		expectedManifests      []string
+		expectedCreateError    string
 		expectedCRStatus       customizev1beta1.NamespacedControllerReconcilerStatus
 	}{
 		{
@@ -1276,6 +1278,7 @@ func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 			manifests:              testcontroller.NamespacedComponents,
 			controllerReconcilerCR: testcontroller.NamespacedControllerReconcilerCR,
 			expectedManifests:      testcontroller.NamespacedComponentsWithRatLimitCustomization,
+			expectedCreateError:    "",
 			expectedCRStatus: customizev1beta1.NamespacedControllerReconcilerStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: true,
@@ -1287,6 +1290,7 @@ func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 			manifests:              testcontroller.NamespacedComponents,
 			controllerReconcilerCR: testcontroller.NamespacedControllerReconcilerCRForUnsupportedController,
 			expectedManifests:      testcontroller.NamespacedComponents, // same as the input manifests
+			expectedCreateError:    "failed rule: self.metadata.name == 'cnrm-controller-manager'",
 			expectedCRStatus: customizev1beta1.NamespacedControllerReconcilerStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: false,
@@ -1299,6 +1303,7 @@ func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 			manifests:              testcontroller.NamespacedComponents,
 			controllerReconcilerCR: testcontroller.NamespacedControllerReconcilerCRWrongNamespace,
 			expectedManifests:      testcontroller.NamespacedComponents, // same as the input manifests
+			expectedCreateError:    "",
 			expectedCRStatus: customizev1beta1.NamespacedControllerReconcilerStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{}, // no update to status because it is not in the same namespace as the CCC reconciler.
 			},
@@ -1317,7 +1322,13 @@ func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 				cr := tc.controllerReconcilerCR
 				testcontroller.EnsureNamespaceExists(c, cr.Namespace)
 				if err := c.Create(ctx, cr); err != nil {
+					if tc.expectedCreateError == "" {
+						t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
+					} else if strings.Contains(err.Error(), tc.expectedCreateError) {
+						return
+					}
 					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
+
 				}
 			}
 			manifests := testcontroller.ParseObjects(ctx, t, tc.manifests)

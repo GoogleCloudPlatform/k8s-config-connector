@@ -1599,6 +1599,7 @@ func TestApplyRateLimitCustomizations(t *testing.T) {
 		controllerReconcilerCR           *customizev1beta1.ControllerReconciler
 		namespacedControllerReconcilerCR *customizev1beta1.NamespacedControllerReconciler
 		expectedManifests                []string
+		expectedCreateError              string
 		skipCheckingCRStatus             bool
 		expectedCRStatus                 customizev1beta1.ControllerReconcilerStatus
 	}{
@@ -1607,6 +1608,7 @@ func TestApplyRateLimitCustomizations(t *testing.T) {
 			manifests:              testcontroller.ClusterModeComponents,
 			controllerReconcilerCR: testcontroller.ControllerReconcilerCR,
 			expectedManifests:      testcontroller.ClusterModeComponentsWithRatLimitCustomization,
+			expectedCreateError:    "",
 			expectedCRStatus: customizev1beta1.ControllerReconcilerStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: true,
@@ -1618,6 +1620,7 @@ func TestApplyRateLimitCustomizations(t *testing.T) {
 			manifests:              testcontroller.ClusterModeComponents,
 			controllerReconcilerCR: testcontroller.ControllerReconcilerCRForUnsupportedController,
 			expectedManifests:      testcontroller.ClusterModeComponents, // same as the input manifests
+			expectedCreateError:    "failed rule: self.metadata.name == 'cnrm-controller-manager'",
 			expectedCRStatus: customizev1beta1.ControllerReconcilerStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
 					Healthy: false,
@@ -1630,6 +1633,7 @@ func TestApplyRateLimitCustomizations(t *testing.T) {
 			manifests:                        testcontroller.ClusterModeComponents,
 			namespacedControllerReconcilerCR: testcontroller.NamespacedControllerReconcilerCR,
 			expectedManifests:                testcontroller.ClusterModeComponents, // same as the input manifests
+			expectedCreateError:              "",
 			skipCheckingCRStatus:             true,
 		},
 	}
@@ -1645,6 +1649,11 @@ func TestApplyRateLimitCustomizations(t *testing.T) {
 			if tc.controllerReconcilerCR != nil {
 				cr := tc.controllerReconcilerCR
 				if err := c.Create(ctx, cr); err != nil {
+					if tc.expectedCreateError == "" {
+						t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
+					} else if strings.Contains(err.Error(), tc.expectedCreateError) {
+						return
+					}
 					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
 				}
 			}
