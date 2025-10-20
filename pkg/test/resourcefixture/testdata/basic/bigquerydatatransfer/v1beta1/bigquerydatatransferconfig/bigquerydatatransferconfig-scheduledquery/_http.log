@@ -64,6 +64,91 @@ X-Xss-Protection: 0
 GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Service account projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Service account projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Test GSA for big query data transfer config",
+  "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Service account projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Service account projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
 200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
@@ -128,7 +213,11 @@ X-Xss-Protection: 0
     "write_disposition": "WRITE_APPEND"
   },
   "schedule": "first sunday of quarter 00:00",
-  "state": 2,
+  "scheduleOptionsV2": {
+    "timeBasedSchedule": {
+      "schedule": "first sunday of quarter 00:00"
+    }
+  },
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "userId": "0000000000000000000"
 }
@@ -153,6 +242,7 @@ X-Xss-Protection: 0
 {
   "dataSourceId": "scheduled_query",
   "datasetRegion": "us-central1",
+  "destinationDatasetId": "",
   "displayName": "example of scheduled query",
   "emailPreferences": {},
   "name": "projects/${projectNumber}/locations/us-central1/transferConfigs/${transferConfigID}",
@@ -166,7 +256,12 @@ X-Xss-Protection: 0
     "write_disposition": "WRITE_APPEND"
   },
   "schedule": "first sunday of quarter 00:00",
-  "state": 2,
+  "scheduleOptions": {},
+  "scheduleOptionsV2": {
+    "timeBasedSchedule": {
+      "schedule": "first sunday of quarter 00:00"
+    }
+  },
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "userId": "0000000000000000000"
 }
@@ -181,6 +276,7 @@ X-Goog-Request-Params: transfer_config.name=projects%2F${projectId}%2Flocations%
 {
   "dataSourceId": "scheduled_query",
   "datasetRegion": "us-central1",
+  "destinationDatasetId": "",
   "displayName": "an updated example of scheduled query",
   "emailPreferences": {},
   "name": "projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}",
@@ -194,7 +290,12 @@ X-Goog-Request-Params: transfer_config.name=projects%2F${projectId}%2Flocations%
     "write_disposition": "WRITE_TRUNCATE"
   },
   "schedule": "every 24 hours",
-  "state": 2,
+  "scheduleOptions": {},
+  "scheduleOptionsV2": {
+    "timeBasedSchedule": {
+      "schedule": "first sunday of quarter 00:00"
+    }
+  },
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "userId": "0000000000000000000"
 }
@@ -212,6 +313,7 @@ X-Xss-Protection: 0
 {
   "dataSourceId": "scheduled_query",
   "datasetRegion": "us-central1",
+  "destinationDatasetId": "",
   "displayName": "an updated example of scheduled query",
   "emailPreferences": {},
   "name": "projects/${projectNumber}/locations/us-central1/transferConfigs/${transferConfigID}",
@@ -225,7 +327,12 @@ X-Xss-Protection: 0
     "write_disposition": "WRITE_TRUNCATE"
   },
   "schedule": "every 24 hours",
-  "state": 2,
+  "scheduleOptions": {},
+  "scheduleOptionsV2": {
+    "timeBasedSchedule": {
+      "schedule": "every 24 hours"
+    }
+  },
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "userId": "0000000000000000000"
 }
@@ -250,6 +357,7 @@ X-Xss-Protection: 0
 {
   "dataSourceId": "scheduled_query",
   "datasetRegion": "us-central1",
+  "destinationDatasetId": "",
   "displayName": "an updated example of scheduled query",
   "emailPreferences": {},
   "name": "projects/${projectNumber}/locations/us-central1/transferConfigs/${transferConfigID}",
@@ -264,7 +372,11 @@ X-Xss-Protection: 0
   },
   "schedule": "every 24 hours",
   "scheduleOptions": {},
-  "state": 2,
+  "scheduleOptionsV2": {
+    "timeBasedSchedule": {
+      "schedule": "every 24 hours"
+    }
+  },
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "userId": "0000000000000000000"
 }
