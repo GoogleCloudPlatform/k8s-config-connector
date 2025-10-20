@@ -42,6 +42,6 @@ status:
   observedGeneration: 2
   observedState:
     dryRunSpec:
-      updateTime: "2025-10-16T20:05:23.722598541Z"
+      updateTime: "2024-04-01T12:34:56.123456Z"
     spec:
       updateTime: "2024-04-01T12:34:56.123456Z"
