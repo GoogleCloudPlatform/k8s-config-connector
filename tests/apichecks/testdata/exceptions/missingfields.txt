@@ -110,7 +110,6 @@
 [missing_field] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.dataRefreshWindowDays" is not set in unstructured objects
 [missing_field] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.emailPreferences.enableFailureEmail" is not set in unstructured objects
 [missing_field] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfiguration.kmsKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.pubSubTopicRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.scheduleOptions.disableAutoScheduling" is not set in unstructured objects
 [missing_field] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.scheduleOptions.endTime" is not set in unstructured objects
 [missing_field] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com version=v1beta1: field ".spec.scheduleOptions.startTime" is not set in unstructured objects
