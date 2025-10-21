@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"regexp"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -135,7 +136,14 @@ func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbas
 	if err := a.SpecValidation(); err != nil {
 		return err
 	}
-	resource := SpannerInstanceSpec_ToProto(mapCtx, &desired.Spec, a.id.SpannerInstanceConfigPrefix())
+
+	resource := SpannerInstanceSpec_ToProto(mapCtx, &desired.Spec)
+
+	r := regexp.MustCompile("projects/(.+)/instanceConfigs/(.+)")
+	// Normalize config to the full URI, if not specified as such.
+	if !r.MatchString(resource.Config) {
+		resource.Config = a.id.SpannerInstanceConfigPrefix() + resource.Config
+	}
 
 	// If node count or processing unit and auto-scaling config is not specify,
 	// Default NodeCount to 1.
@@ -182,7 +190,7 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 		return err
 	}
 	desired := a.desired.DeepCopy()
-	resource := SpannerInstanceSpec_ToProto(mapCtx, &desired.Spec, a.id.SpannerInstanceConfigPrefix())
+	resource := SpannerInstanceSpec_ToProto(mapCtx, &desired.Spec)
 	resource.Name = a.id.String()
 	if resource.Labels == nil {
 		resource.Labels = make(map[string]string)
@@ -290,7 +298,8 @@ func (a *SpannerInstanceAdapter) Export(ctx context.Context) (*unstructured.Unst
 
 	obj := &krm.SpannerInstance{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(SpannerInstanceSpec_FromProto(mapCtx, a.actual, a.id.SpannerInstanceConfigPrefix()))
+	obj.Spec = direct.ValueOf(SpannerInstanceSpec_FromProto(mapCtx, a.actual))
+
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
