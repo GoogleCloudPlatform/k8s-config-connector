@@ -24,7 +24,6 @@ BIN_DIR=bin
 CONFIG_CONNECTOR_BINARY_NAME=config-connector
 
 # dependency versions
-KUBEBUILDER_VERSION=2.3.1
 KUSTOMIZE_VERSION=3.5.4
 
 # Supported GCP services API endpoints in Config Connector
