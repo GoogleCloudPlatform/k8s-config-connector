@@ -32,7 +32,7 @@ var (
 // of kube-apiserver. The desired version is specified in scripts/shared-vars.sh.
 // The `expectedVersion` variable in the test will need to be updated when we upgrade the kube-apiserver binary.
 func TestKubeAPIServerVersion(t *testing.T) {
-	expectedVersion := "v1.21.0"
+	expectedVersion := "v1.31.0"
 	v, err := getKubernetesVersion(mgr.GetConfig())
 	if err != nil {
 		t.Fatalf("error retrieving the Kubernetes API Server version")
