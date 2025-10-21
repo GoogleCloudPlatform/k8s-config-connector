@@ -18,6 +18,8 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"regexp"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -135,7 +137,9 @@ func (a *SpannerInstanceAdapter) Create(ctx context.Context, createOp *directbas
 	if err := a.SpecValidation(); err != nil {
 		return err
 	}
-	resource := SpannerInstanceSpec_ToProto(mapCtx, &desired.Spec, a.id.SpannerInstanceConfigPrefix())
+
+	resource := SpannerInstanceSpec_ToProto(mapCtx, &desired.Spec)
+	resource.Config = a.normalizeInstanceConfig(resource.Config)
 
 	// If node count or processing unit and auto-scaling config is not specify,
 	// Default NodeCount to 1.
@@ -182,7 +186,9 @@ func (a *SpannerInstanceAdapter) Update(ctx context.Context, updateOp *directbas
 		return err
 	}
 	desired := a.desired.DeepCopy()
-	resource := SpannerInstanceSpec_ToProto(mapCtx, &desired.Spec, a.id.SpannerInstanceConfigPrefix())
+	resource := SpannerInstanceSpec_ToProto(mapCtx, &desired.Spec)
+	resource.Config = a.normalizeInstanceConfig(resource.Config)
+
 	resource.Name = a.id.String()
 	if resource.Labels == nil {
 		resource.Labels = make(map[string]string)
@@ -290,7 +296,13 @@ func (a *SpannerInstanceAdapter) Export(ctx context.Context) (*unstructured.Unst
 
 	obj := &krm.SpannerInstance{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(SpannerInstanceSpec_FromProto(mapCtx, a.actual, a.id.SpannerInstanceConfigPrefix()))
+	obj.Spec = direct.ValueOf(SpannerInstanceSpec_FromProto(mapCtx, a.actual))
+	// Ensure instanceConfig isn't overwritten if the user didn't specify the
+	// full URI in krm.
+	if a.desired.Spec.Config != "" && a.desired.Spec.Config != a.actual.Config {
+		obj.Spec.Config = strings.TrimPrefix(obj.Spec.Config, a.id.SpannerInstanceConfigPrefix())
+	}
+
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -325,4 +337,14 @@ func (a *SpannerInstanceAdapter) SpecValidation() error {
 		return fmt.Errorf("Only one field can be set between numNodes and processingUnits.")
 	}
 	return nil
+}
+
+func (a *SpannerInstanceAdapter) normalizeInstanceConfig(ic string) string {
+	r := regexp.MustCompile("projects/(.+)/instanceConfigs/(.+)")
+	// Normalize config to the full URI, if not specified as such.
+	if !r.MatchString(ic) {
+		return a.id.SpannerInstanceConfigPrefix() + ic
+	}
+
+	return ic
 }
