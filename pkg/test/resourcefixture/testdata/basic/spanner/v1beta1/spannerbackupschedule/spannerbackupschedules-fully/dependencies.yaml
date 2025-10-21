@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ kind: KMSKeyRing
 metadata:
   name: kmskeyring-${uniqueId}
 spec:
-  location: us-central1
+  location: us-west1
 ---
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSCryptoKey

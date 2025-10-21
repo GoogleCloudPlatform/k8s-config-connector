@@ -71,6 +71,7 @@ X-Xss-Protection: 0
           }
         }
       ],
+      "resourceLocation": "us-west1",
       "state": "READY"
     },
     "startTime": "2024-04-01T12:34:56.123456Z"
@@ -121,6 +122,7 @@ X-Xss-Protection: 0
           }
         }
       ],
+      "resourceLocation": "us-west1",
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -150,6 +152,7 @@ X-Xss-Protection: 0
         }
       }
     ],
+    "resourceLocation": "us-west1",
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -192,6 +195,7 @@ X-Xss-Protection: 0
       }
     }
   ],
+  "resourceLocation": "us-west1",
   "state": "READY",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -214,7 +218,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "database \"projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}\" not found",
+    "message": "Database not found: projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
     "status": "NOT_FOUND"
   }
 }
@@ -272,7 +276,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.database.v1.Database",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "databaseDialect": "GOOGLE_STANDARD_SQL",
+    "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
     "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
+    "resourceLocationId": "us-west1",
     "state": "READY",
     "versionRetentionPeriod": "1h"
   }
@@ -302,9 +308,23 @@ X-Xss-Protection: 0
 {
   "metadata": {
     "@type": "type.googleapis.com/google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata",
+    "actions": [
+      {
+        "action": "CREATE",
+        "entityNames": [
+          "t1"
+        ],
+        "entityType": "TABLE"
+      }
+    ],
     "database": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
+    "progress": [
+      {
+        "startTime": "2024-04-01T12:34:56.123456Z"
+      }
+    ],
     "statements": [
-      "CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)"
+      "CREATE TABLE t1 (\n  t1 INT64 NOT NULL,\n) PRIMARY KEY(t1)"
     ]
   },
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/operations/${operationID}"
@@ -329,19 +349,33 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata",
+    "actions": [
+      {
+        "action": "CREATE",
+        "entityNames": [
+          "t1"
+        ],
+        "entityType": "TABLE"
+      }
+    ],
+    "commitTimestamps": [
+      "2024-04-01T12:34:56.123456Z"
+    ],
     "database": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
+    "progress": [
+      {
+        "endTime": "2024-04-01T12:34:56.123456Z",
+        "progressPercent": 100,
+        "startTime": "2024-04-01T12:34:56.123456Z"
+      }
+    ],
     "statements": [
-      "CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)"
+      "CREATE TABLE t1 (\n  t1 INT64 NOT NULL,\n) PRIMARY KEY(t1)"
     ]
   },
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.spanner.admin.database.v1.Database",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseDialect": "GOOGLE_STANDARD_SQL",
-    "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
-    "state": "READY",
-    "versionRetentionPeriod": "1h"
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }
 
@@ -363,6 +397,12 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseDialect": "GOOGLE_STANDARD_SQL",
+  "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+  "encryptionInfo": [
+    {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    }
+  ],
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
   "state": "READY",
   "versionRetentionPeriod": "1h"
@@ -388,7 +428,7 @@ X-Xss-Protection: 0
   "done": true,
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
+    "@type": "type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity",
     "email": "service-${projectNumber}@gcp-sa-spanner.iam.gserviceaccount.com",
     "uniqueId": "12345678"
   }
@@ -396,7 +436,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -413,14 +453,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "KeyRing projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId} not found.",
+    "message": "KeyRing projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId} not found.",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings?alt=json&keyRingId=kmskeyring-${uniqueId}
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west1/keyRings?alt=json&keyRingId=kmskeyring-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -436,12 +476,12 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}"
 }
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -457,12 +497,12 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}"
 }
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -479,14 +519,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "CryptoKey projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId} not found.",
+    "message": "CryptoKey projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId} not found.",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys?alt=json&cryptoKeyId=kmscryptokey-${uniqueId}&skipInitialVersionCreation=false
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys?alt=json&cryptoKeyId=kmscryptokey-${uniqueId}&skipInitialVersionCreation=false
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -515,12 +555,12 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "primary": {
     "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "generateTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "name": "projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
     "protectionLevel": "SOFTWARE",
     "state": "ENABLED"
   },
@@ -533,7 +573,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -554,12 +594,12 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "primary": {
     "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "generateTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "name": "projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
     "protectionLevel": "SOFTWARE",
     "state": "ENABLED"
   },
@@ -589,7 +629,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "backupSchedule \"projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}\" not found",
+    "message": "Backup schedule not found: projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}",
     "status": "NOT_FOUND"
   }
 }
@@ -603,7 +643,8 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Finstances%2Fspannerinsta
 
 {
   "encryptionConfig": {
-    "encryptionType": 2
+    "encryptionType": 3,
+    "kmsKeyName": "projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
   "fullBackupSpec": {},
   "retentionDuration": "1209600s",
@@ -625,7 +666,8 @@ X-Xss-Protection: 0
 
 {
   "encryptionConfig": {
-    "encryptionType": 2
+    "encryptionType": 3,
+    "kmsKeyName": "projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
   "fullBackupSpec": {},
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}",
@@ -658,7 +700,8 @@ X-Xss-Protection: 0
 
 {
   "encryptionConfig": {
-    "encryptionType": 2
+    "encryptionType": 3,
+    "kmsKeyName": "projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
   "fullBackupSpec": {},
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}",
@@ -682,7 +725,8 @@ X-Goog-Request-Params: backup_schedule.name=projects%2F${projectId}%2Finstances%
 
 {
   "encryptionConfig": {
-    "encryptionType": 2
+    "encryptionType": 3,
+    "kmsKeyName": "projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
   "incrementalBackupSpec": {},
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}",
@@ -705,7 +749,8 @@ X-Xss-Protection: 0
 
 {
   "encryptionConfig": {
-    "encryptionType": 2
+    "encryptionType": 3,
+    "kmsKeyName": "projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
   "fullBackupSpec": {},
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}",
@@ -738,7 +783,8 @@ X-Xss-Protection: 0
 
 {
   "encryptionConfig": {
-    "encryptionType": 2
+    "encryptionType": 3,
+    "kmsKeyName": "projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
   },
   "fullBackupSpec": {},
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}/backupSchedules/spannerbackupschedule-${uniqueId}",
@@ -773,7 +819,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -794,12 +840,12 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "primary": {
     "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "generateTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "name": "projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
     "protectionLevel": "SOFTWARE",
     "state": "ENABLED"
   },
@@ -812,7 +858,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?alt=json&prettyPrint=false
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -831,7 +877,7 @@ X-Xss-Protection: 0
       "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
       "createTime": "2024-04-01T12:34:56.123456Z",
       "generateTime": "2024-04-01T12:34:56.123456Z",
-      "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+      "name": "projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
       "protectionLevel": "SOFTWARE",
       "state": "ENABLED"
     }
@@ -841,7 +887,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -862,14 +908,14 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "destroyTime": "2024-04-01T12:34:56.123456Z",
   "generateTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+  "name": "projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
   "protectionLevel": "SOFTWARE",
   "state": "DESTROY_SCHEDULED"
 }
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -885,7 +931,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-west1/keyRings/kmskeyring-${uniqueId}"
 }
 
 ---
@@ -906,6 +952,12 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseDialect": "GOOGLE_STANDARD_SQL",
+  "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+  "encryptionInfo": [
+    {
+      "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
+    }
+  ],
   "name": "projects/${projectId}/instances/spannerinstance-${uniqueId}/databases/spannerdb-${uniqueId}",
   "state": "READY",
   "versionRetentionPeriod": "1h"
@@ -965,6 +1017,7 @@ X-Xss-Protection: 0
       }
     }
   ],
+  "resourceLocation": "us-west1",
   "state": "READY",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
