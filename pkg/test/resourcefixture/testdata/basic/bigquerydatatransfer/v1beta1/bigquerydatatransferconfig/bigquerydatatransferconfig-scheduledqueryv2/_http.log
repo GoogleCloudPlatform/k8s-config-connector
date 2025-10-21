@@ -87,7 +87,6 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
-  "satisfiesPzs": false,
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
   "type": "DEFAULT"
 }
@@ -1582,10 +1581,6 @@ X-Xss-Protection: 0
     {
       "role": "WRITER",
       "specialGroup": "projectWriters"
-    },
-    {
-      "role": "WRITER",
-      "userByEmail": "user@google.com"
     }
   ],
   "creationTime": "123456789",
