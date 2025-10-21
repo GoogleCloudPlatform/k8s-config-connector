@@ -79,7 +79,7 @@ func (m *modelBackupVault) AdapterForObject(ctx context.Context, reader client.R
 
 	mapCtx := &direct.MapContext{}
 	// Convert KCC resource spec to GCP proto message
-	desiredProto := BackupDRBackupVaultSpec_v1alpha1_ToProto(mapCtx, &obj.Spec)
+	desiredProto := BackupDRBackupVaultSpec_v1beta1_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
