@@ -18,12 +18,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"runtime"
 	"sort"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/memory"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 	"github.com/google/go-cmp/cmp"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -56,7 +56,7 @@ func TestRecorder(t *testing.T) {
 		}
 	}()
 
-	memoryRecorder := StartMemoryRecorder()
+	memoryRecorder := memory.StartMemoryRecorder()
 
 	httpClient, err := rest.HTTPClientFor(restConfig)
 	if err != nil {
@@ -156,38 +156,4 @@ func TestRecorder(t *testing.T) {
 	cancel(fmt.Errorf("test complete"))
 
 	t.Logf("Memory usage report: HeapAlloc=%d HeapInuse=%d TotalAlloc=%d", memoryReport.HeapAlloc, memoryReport.HeapInuse, memoryReport.TotalAlloc)
-}
-
-// MemoryReport holds memory usage statistics, and makes it easy to report basic memory usage for a test.
-type MemoryRecorder struct {
-	before runtime.MemStats
-	after  runtime.MemStats
-}
-
-// StartMemoryRecorder captures the memory usage at the start of a test.
-func StartMemoryRecorder() *MemoryRecorder {
-	r := &MemoryRecorder{}
-	runtime.GC()
-	runtime.ReadMemStats(&r.before)
-	return r
-}
-
-// Stop captures the memory usage at the end of a test, and returns a report of the differences.
-func (r *MemoryRecorder) Stop() *MemoryRecorderReport {
-	runtime.GC()
-	runtime.ReadMemStats(&r.after)
-
-	report := &MemoryRecorderReport{
-		HeapAlloc:  int64(r.after.HeapAlloc) - int64(r.before.HeapAlloc),
-		HeapInuse:  int64(r.after.HeapInuse) - int64(r.before.HeapInuse),
-		TotalAlloc: int64(r.after.TotalAlloc) - int64(r.before.TotalAlloc),
-	}
-	return report
-}
-
-// MemoryRecorderReport holds memory usage statistics from a MemoryRecorder.
-type MemoryRecorderReport struct {
-	HeapAlloc  int64
-	HeapInuse  int64
-	TotalAlloc int64
 }
