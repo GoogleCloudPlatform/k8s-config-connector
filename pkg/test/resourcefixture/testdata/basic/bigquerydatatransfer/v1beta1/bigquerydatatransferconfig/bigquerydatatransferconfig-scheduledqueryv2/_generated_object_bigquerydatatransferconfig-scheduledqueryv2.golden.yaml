@@ -22,6 +22,8 @@ spec:
     write_disposition: APPEND
   projectRef:
     external: ${projectId}
+  pubSubTopicRef:
+    name: pubsubtopic-${uniqueId}-2
   scheduleOptionsV2:
     eventDrivenSchedule:
       pubSubSubscriptionRef:

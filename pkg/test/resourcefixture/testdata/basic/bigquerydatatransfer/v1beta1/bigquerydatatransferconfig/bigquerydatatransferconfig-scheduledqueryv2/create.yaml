@@ -25,6 +25,8 @@ spec:
   dataSourceID: "google_cloud_storage"
   datasetRef:
     name: bigquerydataset${uniqueId}
+  pubSubTopicRef:
+    name: pubsubtopic-${uniqueId}-2
   params:
     data_path_template: "gs://config-connector-samples/bigquerydatatransferconfig/*.csv"
     destination_table_name_template: "bigquerytable${uniqueId}"
