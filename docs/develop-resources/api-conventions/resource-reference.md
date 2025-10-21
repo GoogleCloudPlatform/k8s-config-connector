@@ -1,182 +1,118 @@
 # Direct Resource Reference Guide
 
+## TL;DR
 
-# TL;DR
+Referencing GCP objects should define an API field that ends with `Ref` or `Refs` to indicate a dependency on another GCP resource. This document outlines the conventions for these reference fields, ensuring consistency and enabling automation via tooling.
 
-Referencing GCP objects should define a API field `spec.<Kind>Ref(s)` to reference the dependency of another GCP resource.  
+## Naming Conventions
 
+The naming of resource reference fields follows a clear and consistent pattern, mapping from the GCP proto field name to the KCC KRM field name and type. This convention is **required** for the `mapper-generator` to function correctly.
 
-# Basic rules
+### From GCP Proto to KRM
 
-If a Config Connector resource depends on another resource, it should define a `spec.<Kind>Ref` field, even if the dependent does not have a Config Connector resource yet (in which case only External is required).
+-   **GCP Proto Field:** The original field name in the GCP proto definition (e.g., `crypto_key_name`). This is typically in `snake_case`.
+-   **KRM Field Name:** The field name in the KCC CRD. This **must** be the `UpperCamelCase` version of the GCP proto field name, with a `Ref` suffix (e.g., `CryptoKeyNameRef`).
+-   **KRM Field Type:** The Go type of the KRM field. This should be a pointer to a reference struct, named `*<Kind>Ref` (e.g., `*KMSCryptoKeyRef`), where `Kind` is the KCC Kind of the referenced resource.
 
-If a Config Connector resource needs to depend on a list of resources of a single Kind, it should define a `spec.<Kind>Refs `field.
+**Example:**
 
+A GCP proto with a field `crypto_key_name` that references a `KMSCryptoKey` resource would be represented in the KCC CRD spec as:
 
-```yaml
-spec:
-  # A single dependency to network 
-  computeNetworkRef: 
-    name: sample-network  
-
-  # A list of dependencies of the same kind 
-  projectRefs:
-    name: Config Connector-project1
-    name: Config Connector-project2
-    name: Config Connector-project3 
+```go
+// CryptoKeyNameRef is a reference to a KMSCryptoKey.
+CryptoKeyNameRef *KMSCryptoKeyRef `json:"cryptoKeyNameRef,omitempty"`
 ```
 
-# Naming
+Here is a table summarizing the convention:
 
-As a naming convention, the resource reference field should be `<Kind>Ref(s)`.
+| GCP Proto Field (`snake_case`) | KRM Field Name (`UpperCamelCase` + `Ref`) | KRM Field Type (`*<Kind>Ref`) | Referenced KCC Kind |
+| ------------------------------ | ----------------------------------------- | ----------------------------- | ------------------- |
+| `crypto_key_name`              | `CryptoKeyNameRef`                        | `*KMSCryptoKeyRef`            | `KMSCryptoKey`      |
+| `network`                      | `NetworkRef`                              | `*ComputeNetworkRef`          | `ComputeNetwork`    |
 
-* `Kind` is the dependency’s Kind with a lowercase first letter, i.e. `projectRef`
-* `Ref` can be singular or plural, depending on the number of dependencies, i.e. `projectRef` refers to a single project, `projectRefs` refers to a list of projects
+### Pluralization
 
+If a resource can reference multiple resources of the same Kind, the field name should be pluralized by changing the `Ref` suffix to `Refs` (e.g., `ProjectRefs`). The type will be a slice of pointers to the reference struct (e.g., `[]*ProjectRef`).
 
-# API Rule
+## API Rule
 
+The struct for a reference field type (e.g., `KMSCryptoKeyRef`) must implement the `refsv1beta1.Ref` interface. This enables consistent handling of reference resolution and validation.
 
-```yaml
-type <KindRef> struct {
-  // +optional   
-  External string   `json:"external,omitempty"`
-  // +optional  
-  Name string       `json:"name,omitempty"`
-  // +optional
-  Namespace string  `json:"name,omitempty"`
+```go
+// apis/refs/v1beta1/interface.go
+
+type Ref interface {
+	GetGVK() schema.GroupVersionKind
+	GetNamespacedName() types.NamespacedName
+	GetExternal() string
+	SetExternal(ref string)
+	ValidateExternal(ref string) error
+	Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error
 }
 ```
 
-# Validation
+The reference struct itself should be defined as follows:
 
-
-## Rule 1: Config Connector level only
-
-The reference validation can be either CRD validation or Config Connector controller check. It should not require GCP calls.
-
-
-## Rule 2: Required fields
-
-* If the reference does not have a corresponding Config Connector Kind yet, the `.<Kind>Ref.external` is required. Note: the `.<Kind>Ref` itself can be optional.
-* If the reference has a corresponding Config Connector Kind, the `<Kind>Ref.external` and `<Kind>Ref.name` are `oneOf` required. Note: the `.<Kind>Ref` itself can be optional.
-
-## Rule 3:  External
-
-The `external` should be in the format of the asset inventory without the service domain.
-
-
-* i.e. `computeNetworkRef.external` should be in the form of `projects/<projectID>/global/networks/<networkID>`
-
-
-## Rule 4:  Namespace
-
-If the referenced Config Connector object is cluster scoped or in the same namespace, the referenced `<Kind>Ref.namespace` is optional and should use `default`
-
-If the referenced Config Connector object is namespace scoped but not in the same namespace, the referenced `<Kind>Ref.namespace` is **required **to avoid Config Connector ambiguity and customer errors.
-
-
-## Rule 5:  Errors
-
-Config Connector has a predefined `k8s.ReferenceNotFound` error that should be used when the referenced Config Connector object is not found.
-
-
-# Same Kind references
-
-A list of references of the same kind can introduce many problems if not handled well. 
-
-Config Connector should have strict validations for those resources _according to the real usage_. This will make Config Connector survive in the long run to avoid backward compatibility overhead.  
-
-
-## Rule 1: Avoid mixed form
-
-If the GCP service expects each reference to be unique, Config Connector should require using either `<Kind>Refs[].external` or  `<Kind>Refs[].name`, but **not** a mix of the two types. This gives sanity uniqueness checks without too much user overhead.
-
-
-```yaml
-spec:
-  projectRefs:
-    name: Config Connector-project1
-    name: Config Connector-project2
-    name: Config Connector-project3 
+```go
+type <Kind>Ref struct {
+  // +optional
+  External string   `json:"external,omitempty"`
+  // +optional
+  Name string       `json:"name,omitempty"`
+  // +optional
+  Namespace string  `json:"namespace,omitempty"`
+}
 ```
 
+## Type and Mapper Generation
 
-Or
+The `type-generator` and `mapper-generator` tools enforce these conventions and automate the creation of mapper functions. These tools will:
 
+1.  **Identify reference fields** in the GCP protos.
+2.  **Determine the corresponding KCC Kind** for the referenced resource (often via a `//+kcc:ref` annotation).
+3.  **Validate that the KRM field name** matches the `UpperCamelCase(proto_field_name) + "Ref"` convention.
+4.  **Generate the mapper function** that uses the `refsv1beta1.Ref` interface to resolve the reference.
 
-```yaml
-spec:
-  projectRefs:
-    external: projects/gcp1
-    external: projects/gcp2
-    external: projects/gcp3
-```
+This automation reduces boilerplate code and ensures that all reference fields are handled consistently.
 
+## Validation
 
-## Rule 2: Form switch allowed
+### Rule 1: Config Connector Level Only
 
-Config Connector shall allow users to change between  `<Kind>Refs[].external `and  `<Kind>Refs[].name`
+Reference validation can be either CRD validation or a Config Connector controller check. It should not require GCP calls.
 
+### Rule 2: Required Fields
 
-## Rule 3: Unique `external`
+- If the reference does not have a corresponding Config Connector Kind yet, the `.<Kind>Ref.external` is required. Note: the `.<Kind>Ref` itself can be optional.
+- If the reference has a corresponding Config Connector Kind, the `<Kind>Ref.external` and `<Kind>Ref.name` are `oneOf` required. Note: the `.<Kind>Ref` itself can be optional.
 
-If `<Kind>Refs[].external` is used, Config Connector shall only validate the uniqueness of the string values, but not check any GCP level requirements. 
+### Rule 3: External
 
+The `external` field should be in the format of the asset inventory without the service domain (e.g., `projects/<projectID>/global/networks/<networkID>`).
 
-## Rule 4: Non-unique `name`
+### Rule 4: Namespace
 
-Config Connector does not (yet) have a good handle on the uniqueness of the Config Connector objects and their corresponding GCP resources. 
+- If the referenced Config Connector object is cluster-scoped or in the same namespace, the `namespace` field is optional.
+- If the referenced Config Connector object is in a different namespace, the `namespace` field is **required**.
 
-If `<Kind>Refs[].name` is used, Config Connector shall **not** validate the uniqueness of the namespace/name value, but check the uniqueness of the GCP resources from the corresponding Config Connector objects from [externalRef field](external-reference.md).
+### Rule 5: Errors
 
+Use the `k8s.ReferenceNotFoundError` when the referenced Config Connector object is not found.
 
-## Rule 5: Ordering
+## Same Kind References
 
-Config Connector shall send the **exact same order** of `<Kind>Refs[] `to GCP service, unless sorting is preferred by the GCP service.
+For lists of references of the same kind:
 
-A change to the `<Kind>Refs[] `order shall **not** trigger a new GCP call if only the order is changed but not the real content, unless the order matters to GCP services. If Config Connector cannot make the decision, skip this check. (open to discuss, I see some real use cases here) 
+- **Rule 1: Avoid Mixed Forms:** Use either `external` or `name` for all references in a list, not a mix of both.
+- **Rule 2: Form Switching:** Users should be able to switch between using `external` and `name`.
+- **Rule 3: Unique `external`:** Validate the uniqueness of `external` string values.
+- **Rule 4: Non-unique `name`:** Do not validate the uniqueness of `name`/`namespace` pairs. Instead, check the uniqueness of the GCP resources referenced by the `externalRef` field of the corresponding Config Connector objects.
+- **Rule 5: Ordering:** Preserve the order of references as defined in the CRD, unless the GCP service prefers a sorted order.
 
+## Code Style
 
-# Code Style
+Place the code for a reference struct in a `<kind>_reference.go` file under `apis/<service>/<version>/`.
 
-The code of adding a reference should be placed in `<kind>_reference.go` file under  `apis/<service>/<version>/`.
+## Backward Compatibility
 
-
-# Backward Compatibility
-
-For TF-based or DCL-based Beta resources, Config Connector shall keep their original CRD and behavior when migrating to the Direct Resource.
-
-
-## Generic Reference with Kind
-
-Some Config Connector resources support a generic reference that requires `Kind`. 
-
-When migrating to the Direct Resource, we should treat the `resourceRef.Kind` as `<Kind>Ref`, all other rules apply.
-
-
-```yaml
-spec:
-   resourceRef:
-      kind: Project
-      name: gcp1
-```
-
-Some other thoughts: a conversion to change `resourceRef` to `<Kind>Ref`; warn that `spec.resourceRef` as deprecated in `status`
-
-
-## Ambiguous `external` usage 
-
-Some Config Connector resources make the `resourceKind.external` to serve different usages.
-
-For example, the `computeForwardingRule` has the `ComputeAddress` reference which `external` allows IP address value like `8.8.8.8 `(search `spec.ipAddress.addressRef.external` in this [page](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computeforwardingrule)) 
-
-
-### Rule 1
-
-We will continue supporting the existing bebavior when migrating to the Direct Resource. 
-
-
-### Rule 2
-
-Each of those ambiguous usages requires special handling, we shall limit those special handling code inside the corresponding Direct Resource resource code base and mark them with “legacy” comment to avoid repeating the bad design. 
+For TF-based or DCL-based Beta resources, maintain the original CRD and behavior when migrating to a Direct Resource. Address ambiguous `external` usage and generic references with `Kind` on a case-by-case basis, with a preference for migrating to the new reference structure.
