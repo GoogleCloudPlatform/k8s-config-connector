@@ -245,7 +245,7 @@ func (s *SpannerDatabaseV1) GetBackupSchedule(ctx context.Context, req *pb.GetBa
 
 	obj := &pb.BackupSchedule{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, err
+		return nil, status.Errorf(codes.NotFound, "Backup schedule not found: %s", fqn)
 	}
 	obj.Name = fqn
 	cronSpecText := ""
