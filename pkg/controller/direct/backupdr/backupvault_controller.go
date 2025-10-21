@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	gcp "cloud.google.com/go/backupdr/apiv1"
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
@@ -75,11 +76,23 @@ func (m *modelBackupVault) AdapterForObject(ctx context.Context, reader client.R
 	if err != nil {
 		return nil, err
 	}
+
+	mapCtx := &direct.MapContext{}
+	// Convert KCC resource spec to GCP proto message
+	desiredProto := BackupDRBackupVaultSpec_v1beta1_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	// Handle GCP Labels
+	desiredProto.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
+
 	return &BackupVaultAdapter{
-		id:        id,
-		gcpClient: backupDRClient,
-		desired:   obj,
-		reader:    reader,
+		id:                        id,
+		gcpClient:                 backupDRClient,
+		reader:                    reader,
+		desired:                   desiredProto,
+		ignoreInactiveDatasources: obj.Spec.IgnoreInactiveDatasources,
 	}, nil
 }
 
@@ -89,11 +102,12 @@ func (m *modelBackupVault) AdapterForURL(ctx context.Context, url string) (direc
 }
 
 type BackupVaultAdapter struct {
-	id        *krm.BackupVaultIdentity
-	gcpClient *gcp.Client
-	desired   *krm.BackupDRBackupVault
-	actual    *pb.BackupVault
-	reader    client.Reader
+	id                        *krm.BackupVaultIdentity
+	gcpClient                 *gcp.Client
+	desired                   *pb.BackupVault
+	actual                    *pb.BackupVault
+	reader                    client.Reader
+	ignoreInactiveDatasources *bool
 }
 
 var _ directbase.Adapter = &BackupVaultAdapter{}
@@ -125,16 +139,10 @@ func (a *BackupVaultAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	log.V(2).Info("creating BackupVault", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	resource := BackupDRBackupVaultSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
 	req := &pb.CreateBackupVaultRequest{
 		Parent:        a.id.Parent().String(),
 		BackupVaultId: a.id.ID(),
-		BackupVault:   resource,
+		BackupVault:   a.desired,
 	}
 	op, err := a.gcpClient.CreateBackupVault(ctx, req)
 	if err != nil {
@@ -161,29 +169,23 @@ func (a *BackupVaultAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log.V(2).Info("updating BackupVault", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	resource := BackupDRBackupVaultSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
 	paths := []string{}
-	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
+	if !reflect.DeepEqual(a.desired.Description, a.actual.Description) {
 		paths = append(paths, "description")
 	}
-	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+	if !reflect.DeepEqual(a.desired.Labels, a.actual.Labels) {
 		paths = append(paths, "labels")
 	}
-	if desired.Spec.BackupMinimumEnforcedRetentionDuration != nil && !reflect.DeepEqual(resource.BackupMinimumEnforcedRetentionDuration, a.actual.BackupMinimumEnforcedRetentionDuration) {
+	if !reflect.DeepEqual(a.desired.BackupMinimumEnforcedRetentionDuration, a.actual.BackupMinimumEnforcedRetentionDuration) {
 		paths = append(paths, "backup_minimum_enforced_retention_duration")
 	}
-	if desired.Spec.EffectiveTime != nil && !reflect.DeepEqual(resource.EffectiveTime, a.actual.EffectiveTime) {
+	if !reflect.DeepEqual(a.desired.EffectiveTime, a.actual.EffectiveTime) {
 		paths = append(paths, "effective_time")
 	}
-	if desired.Spec.Annotations != nil && !reflect.DeepEqual(resource.Annotations, a.actual.Annotations) {
+	if !reflect.DeepEqual(a.desired.Annotations, a.actual.Annotations) {
 		paths = append(paths, "annotations")
 	}
-	if desired.Spec.AccessRestriction != nil && !reflect.DeepEqual(resource.AccessRestriction, a.actual.AccessRestriction) {
+	if !reflect.DeepEqual(a.desired.AccessRestriction, a.actual.AccessRestriction) {
 		paths = append(paths, "access_restriction")
 	}
 
@@ -193,10 +195,10 @@ func (a *BackupVaultAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		// even though there is no update, we still want to update KRM status
 		updated = a.actual
 	} else {
-		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
-		resource.Etag = a.actual.Etag // Etag is always updated, even if it is not changed.
+		a.desired.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
+		a.desired.Etag = a.actual.Etag // Etag is always updated, even if it is not changed.
 		req := &pb.UpdateBackupVaultRequest{
-			BackupVault: resource,
+			BackupVault: a.desired,
 			UpdateMask:  &fieldmaskpb.FieldMask{Paths: paths},
 		}
 		op, err := a.gcpClient.UpdateBackupVault(ctx, req)
@@ -254,7 +256,7 @@ func (a *BackupVaultAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 
 	req := &pb.DeleteBackupVaultRequest{Name: a.id.String()}
 
-	if a.desired.Spec.IgnoreInactiveDatasources != nil && *a.desired.Spec.IgnoreInactiveDatasources {
+	if a.ignoreInactiveDatasources != nil && *a.ignoreInactiveDatasources {
 		req.Force = true
 	}
 	op, err := a.gcpClient.DeleteBackupVault(ctx, req)

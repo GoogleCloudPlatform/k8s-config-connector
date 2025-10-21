@@ -48,7 +48,7 @@ type BackupDRBackupVaultSpec struct {
 	// Optional. Resource labels to represent user provided metadata.
 	//  No labels currently defined:
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupVault.labels
-	Labels map[string]string `json:"labels,omitempty"`
+	// Labels map[string]string `json:"labels,omitempty"`
 
 	// Required. The default and minimum enforced retention for each backup within
 	//  the backup vault.  The enforced retention for each backup can be extended.

@@ -62,7 +62,6 @@ func BackupDRBackupVaultSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.
 	out := &pb.BackupVault{}
 	// MISSING: Name
 	out.Description = in.Description
-	out.Labels = in.Labels
 	out.BackupMinimumEnforcedRetentionDuration = direct.StringDuration_ToProto(mapCtx, in.BackupMinimumEnforcedRetentionDuration)
 	out.EffectiveTime = direct.StringTimestamp_ToProto(mapCtx, in.EffectiveTime)
 	// MISSING: Uid
