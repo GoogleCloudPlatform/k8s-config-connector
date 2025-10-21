@@ -34,7 +34,7 @@ func backupDRBackupVaultFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".labels")
+	f.Unimplemented_LabelsAnnotations(".labels")
 	f.SpecFields.Insert(".backup_minimum_enforced_retention_duration")
 	f.SpecFields.Insert(".effective_time")
 	f.SpecFields.Insert(".annotations")
