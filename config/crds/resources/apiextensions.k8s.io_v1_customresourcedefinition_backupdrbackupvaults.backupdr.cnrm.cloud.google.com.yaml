@@ -93,12 +93,6 @@ spec:
                   the default restriction that prevents deletion of backup vaults
                   with any data sources, even if those data sources are inactive.
                 type: boolean
-              labels:
-                additionalProperties:
-                  type: string
-                description: 'Optional. Resource labels to represent user provided
-                  metadata. No labels currently defined:'
-                type: object
               location:
                 description: Immutable.
                 type: string
