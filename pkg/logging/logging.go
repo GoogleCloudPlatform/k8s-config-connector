@@ -56,3 +56,8 @@ func Fatal(err error, msg string) {
 	logger.Error(err, msg)
 	os.Exit(1)
 }
+
+func ExitInfo(msg string) {
+	logger.Info(msg)
+	os.Exit(0)
+}

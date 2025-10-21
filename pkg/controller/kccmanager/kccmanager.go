@@ -39,13 +39,16 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
+	mcleclient "github.com/gke-labs/multicluster-leader-election/pkg/client"
 	"golang.org/x/oauth2"
 	"google.golang.org/grpc"
-
 	corev1 "k8s.io/api/core/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/rest"
+	"k8s.io/klog/v2"
+	crclient "sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
 	// Register direct controllers
@@ -91,6 +94,46 @@ type Config struct {
 
 	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
 	EnableMetricsTransport bool
+
+	// Configure manager to participate in leader election if MultiClusterLease is enabled.
+	MultiClusterLease bool
+}
+
+func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, opts manager.Options) (manager.Options, error) {
+	// Create a temporary client to read the ConfigConnector object for leader election config.
+	c, err := crclient.New(restConfig, crclient.Options{Scheme: opts.Scheme})
+	if err != nil {
+		return manager.Options{}, fmt.Errorf("error creating temporary client: %w", err)
+	}
+
+	// Get the ConfigConnector object.
+	cc := &operatorv1beta1.ConfigConnector{}
+	ccName := types.NamespacedName{Name: "configconnector.core.cnrm.cloud.google.com"}
+	klog.Infof("checking for ConfigConnector object")
+	if err := c.Get(ctx, ccName, cc); err != nil {
+		// If the ConfigConnector object is not found, proceed with default leader election.
+		klog.Infof("ConfigConnector object not found, using default in-cluster leader election")
+	} else {
+		klog.Infof("found ConfigConnector object")
+		if cc.Spec.Experiments != nil && cc.Spec.Experiments.LeaderElection != nil && cc.Spec.Experiments.LeaderElection.MultiClusterLease != nil {
+			klog.Infof("multi-cluster leader election is configured")
+			leaseSpec := cc.Spec.Experiments.LeaderElection.MultiClusterLease
+			lock := mcleclient.New(
+				c,
+				leaseSpec.LeaseName,
+				leaseSpec.Namespace,
+				leaseSpec.GlobalLockName,
+				15*time.Second,
+			)
+			opts.LeaderElectionResourceLock = leaseSpec.GlobalLockName
+			opts.LeaderElection = true
+			opts.LeaderElectionNamespace = leaseSpec.Namespace
+			opts.LeaderElectionID = leaseSpec.LeaseName
+			opts.LeaderElectionResourceLockInterface = lock
+		}
+	}
+
+	return opts, nil
 }
 
 // Creates a new controller-runtime manager.Manager and starts all of the KCC controllers pointed at the
@@ -101,6 +144,7 @@ type Config struct {
 // with care.
 func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Manager, error) {
 	opts := cfg.ManagerOptions
+
 	if opts.Scheme == nil {
 		// By default, controller-runtime uses the Kubernetes client-go scheme, this can create concurrency bugs as the
 		// the calls to AddToScheme(..) will modify the internal maps
@@ -109,8 +153,16 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	opts.BaseContext = func() context.Context {
 		return ctx
 	}
-	if err := addSchemes(opts.Scheme); err != nil {
+	err := addSchemes(opts.Scheme)
+	if err != nil {
 		return nil, fmt.Errorf("error adding schemes: %w", err)
+	}
+
+	if cfg.MultiClusterLease {
+		opts, err = setUpMultiClusterLease(ctx, restConfig, opts)
+		if err != nil {
+			return nil, fmt.Errorf("error setting up multi-cluster leader election: %w", err)
+		}
 	}
 
 	// only cache CC and CCC resources
