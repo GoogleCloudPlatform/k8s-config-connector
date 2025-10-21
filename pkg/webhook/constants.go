@@ -16,16 +16,19 @@ package webhook
 
 const (
 	ControllerManagerServiceAccountRegex = "system:serviceaccount:[a-z0-9.-]+:cnrm-controller-manager"
-	// ServicePort is the port that the webhook binary will bind to, as well as use as the service port.
-	//
-	// must be 443 as private GKE clusters have opened up 443 specifically
-	// as a port that GKE masters can send requests to nodes to, and the requests are sent
-	// directly to the targetPort of the pod rather than the service port.
-	// see b/180354275
-	//
-	// Since the TargetPort is effectively being used as a public port,
-	// standardizing public ports removes ambiguity.
-	ServicePort    = 443
-	certDir        = "/tmp/cert"
-	certSecretName = "cnrm-webhook-cert"
+	certDir                              = "/tmp/cert"
+	certSecretName                       = "cnrm-webhook-cert"
 )
+
+// ServicePort is the port that the webhook binary will bind to, as well as use as the service port.
+//
+// must be 443 as private GKE clusters have opened up 443 specifically
+// as a port that GKE masters can send requests to nodes to, and the requests are sent
+// directly to the targetPort of the pod rather than the service port.
+// see b/180354275
+//
+// Since the TargetPort is effectively being used as a public port,
+// standardizing public ports removes ambiguity.
+//
+// This is a mutable variable for tests.
+var ServicePort = 443
