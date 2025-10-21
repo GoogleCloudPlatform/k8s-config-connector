@@ -11,6 +11,7 @@ require (
 	cloud.google.com/go/aiplatform v1.99.0
 	cloud.google.com/go/alloydb v1.16.1
 	cloud.google.com/go/apigateway v1.7.6
+	cloud.google.com/go/apihub v0.2.0
 	cloud.google.com/go/apikeys v1.1.12
 	cloud.google.com/go/apphub v0.2.4
 	cloud.google.com/go/asset v1.21.1
