@@ -123,7 +123,7 @@ func BackupDRBackupVaultSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *p
 	out := &krmbackupdrv1alpha1.BackupDRBackupVaultSpec{}
 	// MISSING: Name
 	out.Description = in.Description
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.BackupMinimumEnforcedRetentionDuration = direct.StringDuration_FromProto(mapCtx, in.GetBackupMinimumEnforcedRetentionDuration())
 	out.EffectiveTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEffectiveTime())
 	// MISSING: Uid
