@@ -24,14 +24,17 @@ There are two cases to consider:
 
 Once you have identified a reference field, you need to change its definition in the Go struct to follow the naming convention required by the `mapper-generator`.
 
--   **Field Name:** The KRM field name **must** be the `UpperCamelCase` version of the original GCP proto field name, with a `Ref` suffix. For a proto field `kms_key_name`, the KRM field name must be `KmsKeyNameRef`.
+-   **Go Field Name:** The Go struct field name **must** be the `UpperCamelCase` version of the original GCP proto field name, with a `Ref` suffix. For a proto field `kms_key_name`, the Go field name must be `KmsKeyNameRef`. This is critical for the auto-mapper to work.
+-   **JSON Tag:** The `json` tag determines the field name in the YAML/JSON representation of the resource. It can be different from the Go field name. This is useful for backward compatibility, for example when migrating a Beta resource that had a different field name.
 -   **Field Type:** The Go type for this field must be a pointer to the reference struct, e.g., `*KMSCryptoKeyRef`.
 
-For example, if you have a proto field `kms_key_name` that is a reference to a `KMSCryptoKey` resource, you should change the Go struct definition from `KmsKeyName *string` to:
+For example, if you have a proto field `kms_key_name` that is a reference to a `KMSCryptoKey` resource, and the old field was named `kmsKeyName`, you should change the Go struct definition from `KmsKeyName *string` to:
 
 ```go
-KmsKeyNameRef *KMSKeyKeyRef `json:"kmsKeyNameRef,omitempty"`
+KmsKeyNameRef *KMSCryptoKeyRef `json:"kmsKeyName,omitempty"`
 ```
+
+In this example, `KmsKeyNameRef` is the Go field name that the auto-mapper uses. `kmsKeyName` is the field name in the YAML, which is kept for backward compatibility. If there are no backward compatibility concerns, the json tag should be the camelCase version of the Go field name (e.g., `kmsKeyNameRef`).
 
 If the reference object (e.g., `KMSCryptoKeyRef`) does not exist, you should create one. You can use `apis/bigquerybiglake/v1alpha1/table_reference.go` as a template.
 

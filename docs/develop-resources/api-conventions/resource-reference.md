@@ -11,24 +11,27 @@ The naming of resource reference fields follows a clear and consistent pattern, 
 ### From GCP Proto to KRM
 
 -   **GCP Proto Field:** The original field name in the GCP proto definition (e.g., `crypto_key_name`). This is typically in `snake_case`.
--   **KRM Field Name:** The field name in the KCC CRD. This **must** be the `UpperCamelCase` version of the GCP proto field name, with a `Ref` suffix (e.g., `CryptoKeyNameRef`).
--   **KRM Field Type:** The Go type of the KRM field. This should be a pointer to a reference struct, named `*<Kind>Ref` (e.g., `*KMSCryptoKeyRef`), where `Kind` is the KCC Kind of the referenced resource.
+-   **Go Field Name:** The field name in the Go struct for the KCC CRD. This **must** be the `UpperCamelCase` version of the GCP proto field name, with a `Ref` suffix (e.g., `CryptoKeyNameRef`). This strict convention is required for the `mapper-generator` to work correctly.
+-   **Go Field Type:** The Go type of the KRM field. This should be a pointer to a reference struct, named `*<Kind>Ref` (e.g., `*KMSCryptoKeyRef`), where `Kind` is the KCC Kind of the referenced resource.
+-   **JSON Tag:** The `json` tag defines the field name in the Kubernetes resource's YAML/JSON representation. This name can differ from the Go field name. This is particularly useful for maintaining backward compatibility when migrating existing Beta resources. For new resources, the JSON tag should be the `camelCase` version of the Go field name (e.g., `cryptoKeyNameRef`).
 
 **Example:**
 
-A GCP proto with a field `crypto_key_name` that references a `KMSCryptoKey` resource would be represented in the KCC CRD spec as:
+A GCP proto has a field `crypto_key_name`. In a previous version of the KCC resource, this was exposed as a string field named `cryptoKeyName`. To migrate this to a proper reference object while maintaining backward compatibility, the new field would be:
 
 ```go
 // CryptoKeyNameRef is a reference to a KMSCryptoKey.
-CryptoKeyNameRef *KMSCryptoKeyRef `json:"cryptoKeyNameRef,omitempty"`
+// The Go field name 'CryptoKeyNameRef' follows the convention for the mapper-generator.
+// The json tag 'cryptoKeyName' is kept for backward compatibility with the old CRD.
+CryptoKeyNameRef *KMSCryptoKeyRef `json:"cryptoKeyName,omitempty"`
 ```
 
 Here is a table summarizing the convention:
 
-| GCP Proto Field (`snake_case`) | KRM Field Name (`UpperCamelCase` + `Ref`) | KRM Field Type (`*<Kind>Ref`) | Referenced KCC Kind |
-| ------------------------------ | ----------------------------------------- | ----------------------------- | ------------------- |
-| `crypto_key_name`              | `CryptoKeyNameRef`                        | `*KMSCryptoKeyRef`            | `KMSCryptoKey`      |
-| `network`                      | `NetworkRef`                              | `*ComputeNetworkRef`          | `ComputeNetwork`    |
+| GCP Proto Field (`snake_case`) | Go Field Name (`UpperCamelCase` + `Ref`) | Go Field Type (`*<Kind>Ref`) | Referenced KCC Kind | JSON tag (`camelCase`)                               |
+| ------------------------------ | ---------------------------------------- | ---------------------------- | ------------------- | ---------------------------------------------------- |
+| `crypto_key_name`              | `CryptoKeyNameRef`                       | `*KMSCryptoKeyRef`           | `KMSCryptoKey`      | `cryptoKeyNameRef` (new) or `cryptoKeyName` (compat) |
+| `network`                      | `NetworkRef`                             | `*ComputeNetworkRef`         | `ComputeNetwork`    | `networkRef` (new) or `network` (compat)             |
 
 ### Pluralization
 
@@ -107,7 +110,7 @@ For lists of references of the same kind:
 - **Rule 2: Form Switching:** Users should be able to switch between using `external` and `name`.
 - **Rule 3: Unique `external`:** Validate the uniqueness of `external` string values.
 - **Rule 4: Non-unique `name`:** Do not validate the uniqueness of `name`/`namespace` pairs. Instead, check the uniqueness of the GCP resources referenced by the `externalRef` field of the corresponding Config Connector objects.
-- **Rule 5: Ordering:** Preserve the order of references as defined in the CRD, unless the GCP service prefers a sorted order.
+- **Rule 5: Ordering:** Preserve the order of references as defined in the CR, unless the GCP service prefers a sorted order.
 
 ## Code Style
 
