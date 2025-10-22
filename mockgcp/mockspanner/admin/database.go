@@ -36,6 +36,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/spanner/admin/database/v1"
+	instancepb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/spanner/admin/instance/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -212,6 +213,34 @@ func (s *SpannerDatabaseV1) CreateBackupSchedule(ctx context.Context, req *pb.Cr
 		}
 	}
 
+	// To simulate realGCP behavior
+	if obj.EncryptionConfig != nil && obj.EncryptionConfig.KmsKeyName != "" {
+		// CryptoKey must be in the same location as the BackupSchedule
+		keyTokens := strings.Split(obj.EncryptionConfig.KmsKeyName, "/")
+		keyLocation := keyTokens[3]
+
+		instanceTokens := strings.Split(fqn, "/")
+		instanceName := strings.Join(instanceTokens[:4], "/")
+		instanceObj := &instancepb.Instance{}
+		if err := s.storage.Get(ctx, instanceName, instanceObj); err != nil {
+			if status.Code(err) == codes.NotFound {
+				return nil, status.Errorf(codes.NotFound, "Instance not found: %s", name.String())
+			}
+			return nil, err
+		}
+		configTokens := strings.Split(instanceObj.Config, "/")
+		// Values are typically of the form 'regional-europe-west1' , 'us-central' etc.
+		configLocation := strings.TrimPrefix(configTokens[3], "regional-")
+		if configLocation != keyLocation {
+			return nil, status.Errorf(codes.InvalidArgument, "KMS key provided can not protect the Spanner resource: Incompatible CryptoKey location. Resource location: %s, Key location: %s.", configLocation, keyLocation)
+		}
+		// CryptoKeyName/Names should be set only when encryption_type is `CUSTOMER_MANAGED_ENCRYPTION`
+		encryptionType := obj.EncryptionConfig.EncryptionType.String()
+		if encryptionType != "CUSTOMER_MANAGED_ENCRYPTION" {
+			return nil, status.Errorf(codes.InvalidArgument, "Invalid encryption_config: 'encryption_type doesn't match kms_key_name or kms_key_names.Invalid encryption_config: 'kms_key_name or kms_key_names must not be specified when encryption_type is %s", encryptionType)
+		}
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -245,7 +274,10 @@ func (s *SpannerDatabaseV1) GetBackupSchedule(ctx context.Context, req *pb.GetBa
 
 	obj := &pb.BackupSchedule{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		return nil, status.Errorf(codes.NotFound, "Backup schedule not found: %s", fqn)
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Backup schedule not found: %s", fqn)
+		}
+		return nil, err
 	}
 	obj.Name = fqn
 	cronSpecText := ""
