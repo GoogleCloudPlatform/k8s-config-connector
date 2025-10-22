@@ -30,3 +30,11 @@
     postStart:
       exec:
         command: ["./gke_addon_poststart"]
+- op: add
+  path: /spec/template/spec/containers/0/securityContext/readOnlyRootFilesystem
+  value: true
+- op: add
+  path: /spec/template/spec/containers/0/env/-
+  value:
+    name: GOOGLE_APPLICATION_CREDENTIALS
+    value: '{{ if eq $.NodeP4SAParams.TokenMode "MODE_TOKEN_BROKER_WITH_FALLBACK" "MODE_TOKEN_BROKER_NO_FALLBACK" }}{{$.NodeP4SAParams.ADCFilePath}}{{ end }}'
