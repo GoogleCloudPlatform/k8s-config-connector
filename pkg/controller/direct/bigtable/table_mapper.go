@@ -28,7 +28,7 @@ func BigtableTableSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table
 	}
 	out := &krm.BigtableTableSpec{}
 
-	// Note: Bigtable proto 1.38 -> 1.40 changed the ColumnFamily from a slice to a map
+	// Note: KRM-based ColumnFamily is a slice, but the proto-based ColumnFamily is a map.
 	if in.GetColumnFamilies() != nil {
 		out.ColumnFamily = []*krm.TableColumnFamily{}
 		for _, v := range in.GetColumnFamilies() {
@@ -41,12 +41,12 @@ func BigtableTableSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table
 		}
 	}
 
-	// Note: Bigtable proto 1.38 -> 1.40 changed the ChangeStreamRetention from a single field to a struct
+	// Note: KRM-based ChangeStreamRetention is a single field, but the proto-based ChangeStreamConfig is a struct.
 	if changeStreamConfig := ChangeStreamConfig_v1beta1_FromProto(mapCtx, in.GetChangeStreamConfig()); changeStreamConfig != nil {
 		out.ChangeStreamRetention = changeStreamConfig.RetentionPeriod
 	}
 
-	// Note: Bigtable proto 1.38 -> 1.40 changed the DeletionProtection type from string to bool; we handle the conversion.
+	// Note: KRM-based DeletionProtection is a string, but the proto-based DeletionProtection is a bool.
 	s := strconv.FormatBool(in.GetDeletionProtection())
 	out.DeletionProtection = &s
 
@@ -61,7 +61,7 @@ func BigtableTableSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Bigtab
 	}
 	out := &pb.Table{}
 
-	// Note: Bigtable proto 1.38 -> 1.40 changed the ColumnFamily from a slice to a map
+	// Note: KRM-based ColumnFamily is a slice, but the proto-based ColumnFamily is a map.
 	if in.ColumnFamily != nil {
 		out.ColumnFamilies = map[string]*pb.ColumnFamily{}
 		for _, v := range in.ColumnFamily {
@@ -72,14 +72,14 @@ func BigtableTableSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Bigtab
 		}
 	}
 
-	// Note: Bigtable proto 1.38 -> 1.40 changed the ChangeStreamRetention from a single field to a struct
+	// Note: KRM-based ChangeStreamRetention is a single field, but the proto-based ChangeStreamConfig is a struct.
 	if in.ChangeStreamRetention != nil {
 		out.ChangeStreamConfig = &pb.ChangeStreamConfig{
 			RetentionPeriod: direct.Duration_ToProto(mapCtx, in.ChangeStreamRetention),
 		}
 	}
 
-	// Note: Bigtable proto 1.38 -> 1.40 changed the DeletionProtection type from string to bool; we handle the conversion.
+	// Note: KRM-based DeletionProtection is a string, but the proto-based DeletionProtection is a bool.
 	out.DeletionProtection, _ = strconv.ParseBool(direct.ValueOf(in.DeletionProtection))
 
 	// MISSING: Granularity
