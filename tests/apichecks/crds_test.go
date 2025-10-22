@@ -589,7 +589,7 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 
 					// Only report an error if neither external nor name is set
 					if !hasExternal && !hasName {
-						untestedRefErrs = append(untestedRefErrs, fmt.Sprintf("[missing_field] crd=%s version=%v: field %q is not set, neither 'external' nor 'name' is set in unstructured objects.", crd.Name, version.Name, fieldPath))
+						untestedRefErrs = append(untestedRefErrs, fmt.Sprintf("[untested_ref_field] crd=%s version=%v: field %q is not set, neither 'external' nor 'name' is set in unstructured objects.", crd.Name, version.Name, fieldPath))
 					}
 					return
 				}
@@ -637,7 +637,7 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 				}
 
 				if untested {
-					errs = append(errs, fmt.Sprintf("[missing_field] crd=%s version=%v: field %q is not set in unstructured objects", crd.Name, version.Name, fieldPath))
+					errs = append(errs, fmt.Sprintf("[untested_field] crd=%s version=%v: field %q is not set in unstructured objects", crd.Name, version.Name, fieldPath))
 				}
 			})
 		}
