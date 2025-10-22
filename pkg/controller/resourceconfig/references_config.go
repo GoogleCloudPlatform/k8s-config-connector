@@ -30,10 +30,16 @@ var ResourceReferences = ResourceReferenceMap{
 		{
 			ReferenceFieldName: "basic.conditions[].members[].serviceAccountRef",
 		},
+		{
+			ReferenceFieldName: "basic.conditions[].requiredAccessLevels[]",
+		},
 	},
 	{Group: "accesscontextmanager.cnrm.cloud.google.com", Version: "v1beta1", Kind: "AccessContextManagerServicePerimeter"}: {
 		{
 			ReferenceFieldName: "accessPolicyRef",
+		},
+		{
+			ReferenceFieldName: "spec.accessLevels[]",
 		},
 		{
 			ReferenceFieldName: "spec.egressPolicies[].egressFrom.identities[].serviceAccountRef",
@@ -55,6 +61,9 @@ var ResourceReferences = ResourceReferenceMap{
 		},
 		{
 			ReferenceFieldName: "spec.resources[].projectRef",
+		},
+		{
+			ReferenceFieldName: "status.accessLevels[]",
 		},
 		{
 			ReferenceFieldName: "status.egressPolicies[].egressFrom.identities[].serviceAccountRef",
@@ -416,10 +425,19 @@ var ResourceReferences = ResourceReferenceMap{
 	},
 	{Group: "billingbudgets.cnrm.cloud.google.com", Version: "v1beta1", Kind: "BillingBudgetsBudget"}: {
 		{
+			ReferenceFieldName: "allUpdatesRule.monitoringNotificationChannels[]",
+		},
+		{
 			ReferenceFieldName: "allUpdatesRule.pubsubTopicRef",
 		},
 		{
 			ReferenceFieldName: "billingAccountRef",
+		},
+		{
+			ReferenceFieldName: "budgetFilter.projects[]",
+		},
+		{
+			ReferenceFieldName: "budgetFilter.subaccounts[]",
 		},
 	},
 	{Group: "binaryauthorization.cnrm.cloud.google.com", Version: "v1beta1", Kind: "BinaryAuthorizationAttestor"}: {
@@ -431,6 +449,9 @@ var ResourceReferences = ResourceReferenceMap{
 		},
 	},
 	{Group: "binaryauthorization.cnrm.cloud.google.com", Version: "v1beta1", Kind: "BinaryAuthorizationPolicy"}: {
+		{
+			ReferenceFieldName: "defaultAdmissionRule.requireAttestationsBy[]",
+		},
 		{
 			ReferenceFieldName: "projectRef",
 		},
@@ -677,6 +698,9 @@ var ResourceReferences = ResourceReferenceMap{
 			ReferenceFieldName: "projectRef",
 		},
 		{
+			ReferenceFieldName: "resourcePolicies[]",
+		},
+		{
 			ReferenceFieldName: "snapshotRef",
 		},
 		{
@@ -699,6 +723,12 @@ var ResourceReferences = ResourceReferenceMap{
 		{
 			ReferenceFieldName: "networkRef",
 		},
+		{
+			ReferenceFieldName: "sourceServiceAccounts[]",
+		},
+		{
+			ReferenceFieldName: "targetServiceAccounts[]",
+		},
 	},
 	{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeFirewallPolicy"}: {
 		{
@@ -719,6 +749,12 @@ var ResourceReferences = ResourceReferenceMap{
 	{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeFirewallPolicyRule"}: {
 		{
 			ReferenceFieldName: "firewallPolicyRef",
+		},
+		{
+			ReferenceFieldName: "targetResources[]",
+		},
+		{
+			ReferenceFieldName: "targetServiceAccounts[]",
 		},
 	},
 	{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeForwardingRule"}: {
@@ -811,10 +847,16 @@ var ResourceReferences = ResourceReferenceMap{
 			ReferenceFieldName: "networkInterface[].subnetworkRef",
 		},
 		{
+			ReferenceFieldName: "resourcePolicies[]",
+		},
+		{
 			ReferenceFieldName: "serviceAccount.serviceAccountRef",
 		},
 	},
 	{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeInstanceGroup"}: {
+		{
+			ReferenceFieldName: "instances[]",
+		},
 		{
 			ReferenceFieldName: "networkRef",
 		},
@@ -833,12 +875,18 @@ var ResourceReferences = ResourceReferenceMap{
 			ReferenceFieldName: "serviceAccountRef",
 		},
 		{
+			ReferenceFieldName: "targetPools[]",
+		},
+		{
 			ReferenceFieldName: "versions[].instanceTemplateRef",
 		},
 	},
 	{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeInstanceTemplate"}: {
 		{
 			ReferenceFieldName: "disk[].diskEncryptionKey.kmsKeyRef",
+		},
+		{
+			ReferenceFieldName: "disk[].resourcePolicies[]",
 		},
 		{
 			ReferenceFieldName: "disk[].sourceDiskRef",
@@ -871,10 +919,16 @@ var ResourceReferences = ResourceReferenceMap{
 			ReferenceFieldName: "networkInterface[].subnetworkRef",
 		},
 		{
+			ReferenceFieldName: "resourcePolicies[]",
+		},
+		{
 			ReferenceFieldName: "serviceAccount.serviceAccountRef",
 		},
 	},
 	{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeInterconnectAttachment"}: {
+		{
+			ReferenceFieldName: "ipsecInternalAddresses[]",
+		},
 		{
 			ReferenceFieldName: "routerRef",
 		},
@@ -999,6 +1053,12 @@ var ResourceReferences = ResourceReferenceMap{
 	},
 	{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeRouterNAT"}: {
 		{
+			ReferenceFieldName: "drainNatIps[]",
+		},
+		{
+			ReferenceFieldName: "natIps[]",
+		},
+		{
 			ReferenceFieldName: "routerRef",
 		},
 		{
@@ -1012,6 +1072,9 @@ var ResourceReferences = ResourceReferenceMap{
 		},
 	},
 	{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeRouterPeer"}: {
+		{
+			ReferenceFieldName: "ipAddress",
+		},
 		{
 			ReferenceFieldName: "routerApplianceInstanceRef",
 		},
@@ -1038,6 +1101,12 @@ var ResourceReferences = ResourceReferenceMap{
 	{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeServiceAttachment"}: {
 		{
 			ReferenceFieldName: "consumerAcceptLists[].projectRef",
+		},
+		{
+			ReferenceFieldName: "consumerRejectLists[]",
+		},
+		{
+			ReferenceFieldName: "natSubnets[]",
 		},
 		{
 			ReferenceFieldName: "projectRef",
@@ -1088,10 +1157,16 @@ var ResourceReferences = ResourceReferenceMap{
 	},
 	{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeTargetHTTPSProxy"}: {
 		{
+			ReferenceFieldName: "certificateManagerCertificates[]",
+		},
+		{
 			ReferenceFieldName: "certificateMapRef",
 		},
 		{
 			ReferenceFieldName: "serverTlsPolicyRef",
+		},
+		{
+			ReferenceFieldName: "sslCertificates[]",
 		},
 		{
 			ReferenceFieldName: "sslPolicyRef",
@@ -1119,6 +1194,9 @@ var ResourceReferences = ResourceReferenceMap{
 			ReferenceFieldName: "healthChecks[].httpHealthCheckRef",
 		},
 		{
+			ReferenceFieldName: "instances[]",
+		},
+		{
 			ReferenceFieldName: "securityPolicyRef",
 		},
 	},
@@ -1128,6 +1206,9 @@ var ResourceReferences = ResourceReferenceMap{
 		},
 		{
 			ReferenceFieldName: "certificateMapRef",
+		},
+		{
+			ReferenceFieldName: "sslCertificates[]",
 		},
 		{
 			ReferenceFieldName: "sslPolicyRef",
@@ -1230,6 +1311,11 @@ var ResourceReferences = ResourceReferenceMap{
 		},
 		{
 			ReferenceFieldName: "projectRef",
+		},
+	},
+	{Group: "containeranalysis.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ContainerAnalysisNote"}: {
+		{
+			ReferenceFieldName: "relatedNoteNames[]",
 		},
 	},
 	{Group: "containerattached.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ContainerAttachedCluster"}: {
@@ -1982,6 +2068,9 @@ var ResourceReferences = ResourceReferenceMap{
 		{
 			ReferenceFieldName: "folderRef",
 		},
+		{
+			ReferenceFieldName: "keyProject",
+		},
 	},
 	{Group: "kms.cnrm.cloud.google.com", Version: "v1beta1", Kind: "KMSCryptoKey"}: {
 		{
@@ -2103,6 +2192,11 @@ var ResourceReferences = ResourceReferenceMap{
 			ReferenceFieldName: "serviceRef",
 		},
 	},
+	{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Kind: "MonitoringAlertPolicy"}: {
+		{
+			ReferenceFieldName: "notificationChannels[]",
+		},
+	},
 	{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Kind: "MonitoringDashboard"}: {
 		{
 			ReferenceFieldName: "columnLayout.columns[].widgets[].alertChart.alertPolicyRef",
@@ -2114,6 +2208,9 @@ var ResourceReferences = ResourceReferenceMap{
 			ReferenceFieldName: "columnLayout.columns[].widgets[].incidentList.policyRefs[]",
 		},
 		{
+			ReferenceFieldName: "columnLayout.columns[].widgets[].logsPanel.resourceNames[]",
+		},
+		{
 			ReferenceFieldName: "gridLayout.widgets[].alertChart.alertPolicyRef",
 		},
 		{
@@ -2123,6 +2220,9 @@ var ResourceReferences = ResourceReferenceMap{
 			ReferenceFieldName: "gridLayout.widgets[].incidentList.policyRefs[]",
 		},
 		{
+			ReferenceFieldName: "gridLayout.widgets[].logsPanel.resourceNames[]",
+		},
+		{
 			ReferenceFieldName: "mosaicLayout.tiles[].widget.alertChart.alertPolicyRef",
 		},
 		{
@@ -2130,6 +2230,9 @@ var ResourceReferences = ResourceReferenceMap{
 		},
 		{
 			ReferenceFieldName: "mosaicLayout.tiles[].widget.incidentList.policyRefs[]",
+		},
+		{
+			ReferenceFieldName: "mosaicLayout.tiles[].widget.logsPanel.resourceNames[]",
 		},
 		{
 			ReferenceFieldName: "projectRef",
@@ -2142,6 +2245,9 @@ var ResourceReferences = ResourceReferenceMap{
 		},
 		{
 			ReferenceFieldName: "rowLayout.rows[].widgets[].incidentList.policyRefs[]",
+		},
+		{
+			ReferenceFieldName: "rowLayout.rows[].widgets[].logsPanel.resourceNames[]",
 		},
 	},
 	{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Kind: "MonitoringGroup"}: {
@@ -2202,10 +2308,16 @@ var ResourceReferences = ResourceReferenceMap{
 			ReferenceFieldName: "hubRef",
 		},
 		{
+			ReferenceFieldName: "linkedInterconnectAttachments.uris[]",
+		},
+		{
 			ReferenceFieldName: "linkedRouterApplianceInstances.instances[].virtualMachineRef",
 		},
 		{
 			ReferenceFieldName: "linkedVPCNetwork.uriRef",
+		},
+		{
+			ReferenceFieldName: "linkedVpnTunnels.uris[]",
 		},
 		{
 			ReferenceFieldName: "projectRef",
@@ -2242,6 +2354,12 @@ var ResourceReferences = ResourceReferenceMap{
 	},
 	{Group: "networkservices.cnrm.cloud.google.com", Version: "v1beta1", Kind: "NetworkServicesGRPCRoute"}: {
 		{
+			ReferenceFieldName: "gateways[]",
+		},
+		{
+			ReferenceFieldName: "meshes[]",
+		},
+		{
 			ReferenceFieldName: "projectRef",
 		},
 		{
@@ -2257,6 +2375,12 @@ var ResourceReferences = ResourceReferenceMap{
 		},
 	},
 	{Group: "networkservices.cnrm.cloud.google.com", Version: "v1beta1", Kind: "NetworkServicesHTTPRoute"}: {
+		{
+			ReferenceFieldName: "gateways[]",
+		},
+		{
+			ReferenceFieldName: "meshes[]",
+		},
 		{
 			ReferenceFieldName: "projectRef",
 		},
@@ -2274,6 +2398,12 @@ var ResourceReferences = ResourceReferenceMap{
 	},
 	{Group: "networkservices.cnrm.cloud.google.com", Version: "v1beta1", Kind: "NetworkServicesTCPRoute"}: {
 		{
+			ReferenceFieldName: "gateways[]",
+		},
+		{
+			ReferenceFieldName: "meshes[]",
+		},
+		{
 			ReferenceFieldName: "projectRef",
 		},
 		{
@@ -2281,6 +2411,12 @@ var ResourceReferences = ResourceReferenceMap{
 		},
 	},
 	{Group: "networkservices.cnrm.cloud.google.com", Version: "v1beta1", Kind: "NetworkServicesTLSRoute"}: {
+		{
+			ReferenceFieldName: "gateways[]",
+		},
+		{
+			ReferenceFieldName: "meshes[]",
+		},
 		{
 			ReferenceFieldName: "projectRef",
 		},
@@ -2306,6 +2442,9 @@ var ResourceReferences = ResourceReferenceMap{
 		},
 	},
 	{Group: "osconfig.cnrm.cloud.google.com", Version: "v1beta1", Kind: "OSConfigGuestPolicy"}: {
+		{
+			ReferenceFieldName: "assignment.instances[]",
+		},
 		{
 			ReferenceFieldName: "recipes[].artifacts[].gcs.bucketRef",
 		},
@@ -2518,6 +2657,9 @@ var ResourceReferences = ResourceReferenceMap{
 			ReferenceFieldName: "template.serviceAccountRef",
 		},
 		{
+			ReferenceFieldName: "template.volumes[].cloudSqlInstance.instances[]",
+		},
+		{
 			ReferenceFieldName: "template.volumes[].secret.items[].versionRef",
 		},
 		{
@@ -2646,6 +2788,9 @@ var ResourceReferences = ResourceReferenceMap{
 	{Group: "servicenetworking.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ServiceNetworkingConnection"}: {
 		{
 			ReferenceFieldName: "networkRef",
+		},
+		{
+			ReferenceFieldName: "reservedPeeringRanges[]",
 		},
 	},
 	{Group: "sourcerepo.cnrm.cloud.google.com", Version: "v1beta1", Kind: "SourceRepoRepository"}: {
@@ -2810,6 +2955,9 @@ var ResourceReferences = ResourceReferenceMap{
 	{Group: "workstations.cnrm.cloud.google.com", Version: "v1beta1", Kind: "WorkstationCluster"}: {
 		{
 			ReferenceFieldName: "networkRef",
+		},
+		{
+			ReferenceFieldName: "privateClusterConfig.allowedProjects[]",
 		},
 		{
 			ReferenceFieldName: "projectRef",

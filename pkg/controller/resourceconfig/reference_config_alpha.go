@@ -1,3 +1,17 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package resourceconfig
 
 // TODO: The ReferenceMeta fields are not populated and need to be filled in.
@@ -223,6 +237,9 @@ var ResourceReferencesAlpha = ResourceReferenceMap{
 		},
 		{
 			ReferenceFieldName: "allocationPolicy.network.networkInterfaces[].subnetworkRef",
+		},
+		{
+			ReferenceFieldName: "allocationPolicy.serviceAccount",
 		},
 		{
 			ReferenceFieldName: "notifications[].pubsubTopicRef",
@@ -638,6 +655,12 @@ var ResourceReferencesAlpha = ResourceReferenceMap{
 		},
 	},
 	{Group: "compute.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "ComputeNetworkAttachment"}: {
+		{
+			ReferenceFieldName: "producerAcceptLists[]",
+		},
+		{
+			ReferenceFieldName: "producerRejectLists[]",
+		},
 		{
 			ReferenceFieldName: "projectRef",
 		},
@@ -1135,6 +1158,9 @@ var ResourceReferencesAlpha = ResourceReferenceMap{
 		{
 			ReferenceFieldName: "folderRef",
 		},
+		{
+			ReferenceFieldName: "keyProject",
+		},
 	},
 	{Group: "kms.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "KMSImportJob"}: {
 		{
@@ -1284,7 +1310,13 @@ var ResourceReferencesAlpha = ResourceReferenceMap{
 			ReferenceFieldName: "destination.projectRef",
 		},
 		{
+			ReferenceFieldName: "destination.sqlInstance",
+		},
+		{
 			ReferenceFieldName: "projectRef",
+		},
+		{
+			ReferenceFieldName: "relatedProjects[]",
 		},
 		{
 			ReferenceFieldName: "source.cloudRunRevision.runRevisionRef",
@@ -1303,6 +1335,9 @@ var ResourceReferencesAlpha = ResourceReferenceMap{
 		},
 		{
 			ReferenceFieldName: "source.projectRef",
+		},
+		{
+			ReferenceFieldName: "source.sqlInstance",
 		},
 	},
 	{Group: "networkservices.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "NetworkServicesEdgeCacheKeyset"}: {
@@ -1689,6 +1724,9 @@ var ResourceReferencesAlpha = ResourceReferenceMap{
 	{Group: "workstations.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "WorkstationCluster"}: {
 		{
 			ReferenceFieldName: "networkRef",
+		},
+		{
+			ReferenceFieldName: "privateClusterConfig.allowedProjects[]",
 		},
 		{
 			ReferenceFieldName: "projectRef",

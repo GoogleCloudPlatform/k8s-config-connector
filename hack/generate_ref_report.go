@@ -77,12 +77,20 @@ func main() {
 func findRefs(properties map[string]apiextensionsv1.JSONSchemaProps, prefix string) []string {
 	var refs []string
 	for name, prop := range properties {
+		// A field is considered a reference field if its name ends with "Ref" or "Refs",
+		// or if it contains an "external" subfield.
 		if strings.HasSuffix(name, "Ref") {
 			refs = append(refs, prefix+name)
-		}
-		if strings.HasSuffix(name, "Refs") {
+		} else if strings.HasSuffix(name, "Refs") {
 			refs = append(refs, prefix+name+"[]")
+		} else if _, ok := prop.Properties["external"]; ok {
+			refs = append(refs, prefix+name)
+		} else if prop.Items != nil && prop.Items.Schema != nil {
+			if _, ok := prop.Items.Schema.Properties["external"]; ok {
+				refs = append(refs, prefix+name+"[]")
+			}
 		}
+
 		if len(prop.Properties) > 0 {
 			refs = append(refs, findRefs(prop.Properties, prefix+name+".")...)
 		}
