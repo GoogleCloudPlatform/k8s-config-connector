@@ -225,6 +225,9 @@ var ResourceReferencesAlpha = ResourceReferenceMap{
 			ReferenceFieldName: "allocationPolicy.network.networkInterfaces[].subnetworkRef",
 		},
 		{
+			ReferenceFieldName: "allocationPolicy.serviceAccount",
+		},
+		{
 			ReferenceFieldName: "notifications[].pubsubTopicRef",
 		},
 		{
@@ -638,6 +641,12 @@ var ResourceReferencesAlpha = ResourceReferenceMap{
 		},
 	},
 	{Group: "compute.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "ComputeNetworkAttachment"}: {
+		{
+			ReferenceFieldName: "producerAcceptLists[]",
+		},
+		{
+			ReferenceFieldName: "producerRejectLists[]",
+		},
 		{
 			ReferenceFieldName: "projectRef",
 		},
@@ -1135,6 +1144,9 @@ var ResourceReferencesAlpha = ResourceReferenceMap{
 		{
 			ReferenceFieldName: "folderRef",
 		},
+		{
+			ReferenceFieldName: "keyProject",
+		},
 	},
 	{Group: "kms.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "KMSImportJob"}: {
 		{
@@ -1284,7 +1296,13 @@ var ResourceReferencesAlpha = ResourceReferenceMap{
 			ReferenceFieldName: "destination.projectRef",
 		},
 		{
+			ReferenceFieldName: "destination.sqlInstance",
+		},
+		{
 			ReferenceFieldName: "projectRef",
+		},
+		{
+			ReferenceFieldName: "relatedProjects[]",
 		},
 		{
 			ReferenceFieldName: "source.cloudRunRevision.runRevisionRef",
@@ -1303,6 +1321,9 @@ var ResourceReferencesAlpha = ResourceReferenceMap{
 		},
 		{
 			ReferenceFieldName: "source.projectRef",
+		},
+		{
+			ReferenceFieldName: "source.sqlInstance",
 		},
 	},
 	{Group: "networkservices.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "NetworkServicesEdgeCacheKeyset"}: {
@@ -1689,6 +1710,9 @@ var ResourceReferencesAlpha = ResourceReferenceMap{
 	{Group: "workstations.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "WorkstationCluster"}: {
 		{
 			ReferenceFieldName: "networkRef",
+		},
+		{
+			ReferenceFieldName: "privateClusterConfig.allowedProjects[]",
 		},
 		{
 			ReferenceFieldName: "projectRef",
