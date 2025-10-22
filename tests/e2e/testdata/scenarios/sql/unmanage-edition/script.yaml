@@ -30,7 +30,7 @@ TEST: ABANDON
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance
 metadata:
-  name: acquisition-sqlinstance-${uniqueId}
+  name: sqlinstance-${uniqueId}
   annotations:
     cnrm.cloud.google.com/deletion-policy: abandon
 spec:
@@ -56,7 +56,19 @@ spec:
   resourceID: sqlinstance-${uniqueId}
 ---
 # 03: Remove the unmanaged annotation and the edition field. Now the defaulting of the edition field should happen.
-# todo acpana -- why is this not showing a patch ???
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-${uniqueId}
+spec:
+  databaseVersion: POSTGRES_15
+  region: us-central1
+  settings:
+    tier: db-g1-small
+  resourceID: sqlinstance-${uniqueId}
+---
+# 04
+TEST: TOUCH
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance
 metadata:
