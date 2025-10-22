@@ -17,7 +17,6 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.backupdr.v1
 // resource: BackupDRManagementServer:ManagementServer
-// resource: BackupDRBackupVault:BackupVault
 
 package v1alpha1
 
