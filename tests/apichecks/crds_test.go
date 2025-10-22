@@ -77,6 +77,7 @@ func TestMissingRefs(t *testing.T) {
 				}
 
 				isRef := false
+
 				desc := field.props.Description
 				// Heuristic: look for descriptions like "should be of the form projects/{projectID}/locations/{location}/bars/{name}"
 				if strings.Contains(desc, " projects/") {
@@ -484,10 +485,13 @@ func TestCRDFieldPresenceInTests(t *testing.T) {
 		return true
 	}
 
-	missing := findFieldsNotCoveredByTests(t, shouldVisitCRD)
+	untested, untestedRefs := findFieldsNotCoveredByTests(t, shouldVisitCRD)
 
-	want := strings.Join(missing, "\n")
-	test.CompareGoldenFile(t, "testdata/exceptions/missingfields.txt", want)
+	untestedList := strings.Join(untested, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/missingfields.txt", untestedList)
+
+	untestedRefsList := strings.Join(untestedRefs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/missingreffields.txt", untestedRefsList)
 }
 
 // Run this test with WRITE_GOLDEN_OUTPUT set to update the exceptions list.
@@ -502,13 +506,16 @@ func TestCRDFieldPresenceInTestsForAlpha(t *testing.T) {
 		return true
 	}
 
-	missing := findFieldsNotCoveredByTests(t, shouldVisitCRD)
+	untested, untestedRefs := findFieldsNotCoveredByTests(t, shouldVisitCRD)
 
-	want := strings.Join(missing, "\n")
-	test.CompareGoldenFile(t, "testdata/exceptions/alpha-missingfields.txt", want)
+	untestedList := strings.Join(untested, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/alpha-missingfields.txt", untestedList)
+
+	untestedRefsList := strings.Join(untestedRefs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/alpha-missingreffields.txt", untestedRefsList)
 }
 
-func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiextensions.CustomResourceDefinition, version string) bool) []string {
+func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiextensions.CustomResourceDefinition, version string) bool) ([]string, []string) {
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
 		t.Fatalf("error loading CRDs: %v", err)
@@ -521,6 +528,7 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 	}
 
 	var errs []string
+	var untestedRefErrs []string
 	for _, crd := range crds {
 		// Only visit the latest version of the CRD.
 		versions := make(map[string]bool)
@@ -581,7 +589,7 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 
 					// Only report an error if neither external nor name is set
 					if !hasExternal && !hasName {
-						errs = append(errs, fmt.Sprintf("[missing_field] crd=%s version=%v: field %q is not set; neither 'external' nor 'name' are set", crd.Name, version.Name, fieldPath))
+						untestedRefErrs = append(untestedRefErrs, fmt.Sprintf("[missing_field] crd=%s version=%v: field %q is not set, neither 'external' nor 'name' is set in unstructured objects.", crd.Name, version.Name, fieldPath))
 					}
 					return
 				}
@@ -611,13 +619,13 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 				}
 
 				// Check if field exists in any unstructured object
-				missing := true
+				untested := true
 				for _, obj := range unstructs {
 					if obj.GetKind() != kind {
 						continue
 					}
 					if hasField(obj.Object, fieldPath) {
-						missing = false
+						untested = false
 						break
 					}
 				}
@@ -625,10 +633,10 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 				// Exclude output-only spec fields.
 				oosfLine := fmt.Sprintf("[output_only_spec_field] crd=%s version=%v: field %q is not set in unstructured objects", crd.Name, version.Name, fieldPath)
 				if _, ok := outputOnlySpecFields[oosfLine]; ok {
-					missing = false
+					untested = false
 				}
 
-				if missing {
+				if untested {
 					errs = append(errs, fmt.Sprintf("[missing_field] crd=%s version=%v: field %q is not set in unstructured objects", crd.Name, version.Name, fieldPath))
 				}
 			})
@@ -636,7 +644,8 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 	}
 
 	sort.Strings(errs)
-	return errs
+	sort.Strings(untestedRefErrs)
+	return errs, untestedRefErrs
 }
 
 func loadOutputOnlySpecFields() (map[string]bool, error) {
