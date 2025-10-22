@@ -16,8 +16,8 @@ package resourceconfig
 
 import "k8s.io/apimachinery/pkg/runtime/schema"
 
-// ResourceReferences is a map from GVK to a map of reference fields to their types and ReferenceFormats.
-var ResourceReferences = ResourceReferenceMap{
+// ResourceReferencesDirect is a map from GVK to a map of reference fields to their types and ReferenceFormats.
+var ResourceReferencesDirect = ResourceReferenceMap{
 	{Group: "aiplatform.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "AIPlatformModel"}: {
 		{
 			ReferenceFieldName: "projectRef",
