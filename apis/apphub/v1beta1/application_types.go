@@ -88,7 +88,7 @@ type AppHubApplicationStatus struct {
 	// A unique specifier for the AppHubApplication resource in Google Cloud .
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in Google Cloud .
+	// ObservedState is the state of the resource as most recently observed in {{gcp_name_short}}.
 	ObservedState *AppHubApplicationObservedState `json:"observedState,omitempty"`
 }
 

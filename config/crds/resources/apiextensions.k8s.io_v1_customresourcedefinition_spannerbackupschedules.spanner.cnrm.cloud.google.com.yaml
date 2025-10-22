@@ -160,7 +160,7 @@ spec:
                   to be automatically deleted once the retention period has elapsed.
                 type: string
               spannerDatabaseRef:
-                description: Required. The spanner database that this backup applies
+                description: Required. The Spanner Database that this backup applies
                   to.
                 oneOf:
                 - not:
@@ -428,7 +428,7 @@ spec:
                   to be automatically deleted once the retention period has elapsed.
                 type: string
               spannerDatabaseRef:
-                description: Required. The spanner database that this backup applies
+                description: Required. The Spanner Database that this backup applies
                   to.
                 oneOf:
                 - not:

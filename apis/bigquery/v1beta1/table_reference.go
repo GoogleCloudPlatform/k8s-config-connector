@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &TableRef{}
 // TableRef defines the resource reference to BigQueryTable, which "External" field
 // holds the GCP identifier for the KRM object.
 type TableRef struct {
-	// A reference to an externally managed BigQueryTable resource.
+	// A reference to an externally-managed BigQueryTable resource.
 	// Should be in the format "projects/{{projectID}}/datasets/{{datasetsID}}/tables/{{tableID}}".
 	External string `json:"external,omitempty"`
 

@@ -115,7 +115,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed StorageBucket
+                    description: A reference to an externally-managed StorageBucket
                       resource.
                     type: string
                   name:
