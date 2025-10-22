@@ -488,10 +488,10 @@ func TestCRDFieldPresenceInTests(t *testing.T) {
 	untested, untestedRefs := findFieldsNotCoveredByTests(t, shouldVisitCRD)
 
 	untestedList := strings.Join(untested, "\n")
-	test.CompareGoldenFile(t, "testdata/exceptions/missingfields.txt", untestedList)
+	test.CompareGoldenFile(t, "testdata/exceptions/untestedfields.txt", untestedList)
 
 	untestedRefsList := strings.Join(untestedRefs, "\n")
-	test.CompareGoldenFile(t, "testdata/exceptions/missingreffields.txt", untestedRefsList)
+	test.CompareGoldenFile(t, "testdata/exceptions/untestedreffields.txt", untestedRefsList)
 }
 
 // Run this test with WRITE_GOLDEN_OUTPUT set to update the exceptions list.
@@ -509,10 +509,10 @@ func TestCRDFieldPresenceInTestsForAlpha(t *testing.T) {
 	untested, untestedRefs := findFieldsNotCoveredByTests(t, shouldVisitCRD)
 
 	untestedList := strings.Join(untested, "\n")
-	test.CompareGoldenFile(t, "testdata/exceptions/alpha-missingfields.txt", untestedList)
+	test.CompareGoldenFile(t, "testdata/exceptions/alpha-untestedfields.txt", untestedList)
 
 	untestedRefsList := strings.Join(untestedRefs, "\n")
-	test.CompareGoldenFile(t, "testdata/exceptions/alpha-missingreffields.txt", untestedRefsList)
+	test.CompareGoldenFile(t, "testdata/exceptions/alpha-untestedreffields.txt", untestedRefsList)
 }
 
 func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiextensions.CustomResourceDefinition, version string) bool) ([]string, []string) {
