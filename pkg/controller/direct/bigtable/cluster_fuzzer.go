@@ -42,7 +42,6 @@ func BigtableClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".state")
 
 	f.UnimplementedFields.Insert(".name")
-	f.UnimplementedFields.Insert(".name")
-
+	f.UnimplementedFields.Insert(".cluster_config.cluster_autoscaling_config.autoscaling_targets.storage_utilization_gib_per_node")
 	return f
 }
