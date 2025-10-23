@@ -1,0 +1,2 @@
+[mismatch_ref] GoStruct=SkaffoldModules_SkaffoldGcbRepoSource, Version=v1alpha1: KRM field "Ref" has no matching proto field. The KRM field should be the PascalCase of the proto field name with a "Ref" suffix.
+[mismatch_ref] GoStruct=SkaffoldModules_SkaffoldGitSource, Version=v1alpha1: KRM field "Ref" has no matching proto field. The KRM field should be the PascalCase of the proto field name with a "Ref" suffix.

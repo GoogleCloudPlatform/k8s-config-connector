@@ -1,0 +1,1 @@
+[mismatch_ref] GoStruct=Environment_KMSEnvMap, Version=v1alpha1: KRM field "KMSKeyRef" has no matching proto field. The KRM field should be the PascalCase of the proto field name with a "Ref" suffix.
