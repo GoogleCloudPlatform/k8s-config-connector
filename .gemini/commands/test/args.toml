@@ -1,0 +1,15 @@
+# In: ~/.gemini/commands/test/args.toml
+# This command will be invoked via: /test:args "first second"
+
+description = "Test if we can break args into multiple entries."
+
+prompt = """
+Please split {{args}} based on the space character ' '.
+Record the first part as {{one}} and the second part as {{two}}.
+Please print out a happy message to {{one}}.
+Please echo what you have recorded as {{two}}.
+
+Your response should include:
+1. Separate lines addressing {{one}} and {{two}}.
+2. A brief explanation of what you did and why.
+"""

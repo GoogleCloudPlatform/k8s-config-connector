@@ -36,11 +36,12 @@ spec:
   description: "A basic organization firewall policy"
 
 ---
-TEST: APPLY
+# waiting for the parent resource to be ready before creating the child resource.
+TEST: WAIT
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeFirewallPolicyRule
+kind: ComputeFirewallPolicy
 metadata:
-  name: firewallpolicyrule-${uniqueId}
+  name: firewallpolicy-${uniqueId}
 spec:
   action: "deny"
   direction: "INGRESS"

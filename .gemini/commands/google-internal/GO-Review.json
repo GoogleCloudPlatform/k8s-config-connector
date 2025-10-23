@@ -1,0 +1,111 @@
+{
+  "hints": {
+    "go-review": {
+      "title": "Go Code Review Guidelines",
+      "description": "A set of guidelines for reviewing Go code, emphasizing clarity, maintainability, and correctness, based on Effective Go, YAGNI, KISS, and the Single Responsibility Principle.",
+      "categories": [
+        {
+          "name": "Clarity",
+          "points": [
+            {
+              "id": "GO-CLARITY-001",
+              "text": "Naming Conventions: Variable and function names should be clear, concise, and descriptive. Follow Go's conventions for idiomatic naming (e.g., short variable names for local scope, camelCase for exported identifiers)."
+            },
+            {
+              "id": "GO-CLARITY-002",
+              "text": "Comments: Write comments to explain the 'why', not the 'what'. Code should be self-documenting where possible, but complex logic, business rules, or non-obvious behavior should be explained."
+            },
+            {
+              "id": "GO-CLARITY-003",
+              "text": "Simplicity (KISS): Prioritize simplicity. Avoid clever or obscure code. A straightforward implementation is easier to understand and maintain."
+            },
+            {
+              "id": "GO-CLARITY-004",
+              "text": "Readability: Code should be easy to read. Use `gofmt` to ensure consistent formatting."
+            }
+          ]
+        },
+        {
+          "name": "Maintainability",
+          "points": [
+            {
+              "id": "GO-MAINTAIN-001",
+              "text": "YAGNI (You Aren't Gonna Need It): Do not add functionality that is not currently required. Avoid premature optimization and over-engineering."
+            },
+            {
+              "id": "GO-MAINTAIN-002",
+              "text": "Modularity: Break down large functions and packages into smaller, more manageable pieces. Each piece should have a clear and single purpose."
+            },
+            {
+              "id": "GO-MAINTAIN-003",
+              "text": "Dependencies: Minimize dependencies between packages. Use interfaces to decouple components and make the code more flexible."
+            },
+            {
+              "id": "GO-MAINTAIN-004",
+              "text": "Testability: Write code that is easy to test. Use dependency injection and interfaces to isolate components for unit testing."
+            }
+          ]
+        },
+        {
+          "name": "Clear Code Organization",
+          "points": [
+            {
+              "id": "GO-ORG-001",
+              "text": "Single Responsibility Principle: Each function, type, and package should have a single, well-defined responsibility. This makes the code easier to understand, test, and modify."
+            },
+            {
+              "id": "GO-ORG-002",
+              "text": "Package Structure: Organize code into logical packages. A good package structure makes the codebase easier to navigate and understand."
+            },
+            {
+              "id": "GO-ORG-003",
+              "text": "File Organization: Keep related types and functions together in the same file. A file should have a clear purpose."
+            }
+          ]
+        },
+        {
+          "name": "Correctness",
+          "points": [
+            {
+              "id": "GO-CORRECT-001",
+              "text": "Error Handling: Handle errors explicitly and immediately. Don't ignore them. Use `if err != nil` checks and return errors to the caller."
+            },
+            {
+              "id": "GO-CORRECT-002",
+              "text": "Concurrency: When using goroutines and channels, ensure that there are no race conditions. Use `go vet` and the race detector to identify potential issues."
+            },
+            {
+              "id": "GO-CORRECT-003",
+              "text": "Resource Management: Ensure that resources like files and network connections are properly closed, even in the presence of errors. Use `defer` for cleanup."
+            },
+            {
+              "id": "GO-CORRECT-004",
+              "text": "Edge Cases: Consider edge cases and boundary conditions. Write tests to cover these scenarios."
+            }
+          ]
+        },
+        {
+          "name": "Security",
+          "points": [
+            {
+              "id": "GO-SEC-001",
+              "text": "Input Validation: Always validate and sanitize input from external sources to prevent vulnerabilities like SQL injection and cross-site scripting (XSS)."
+            },
+            {
+              "id": "GO-SEC-002",
+              "text": "Secrets Management: Do not hardcode secrets (API keys, passwords) in the code. Use a secure method for managing secrets, such as environment variables or a secrets management service."
+            },
+            {
+              "id": "GO-SEC-003",
+              "text": "Least Privilege: Follow the principle of least privilege. A piece of code should only have the permissions it needs to do its job."
+            },
+            {
+              "id": "GO-SEC-004",
+              "text": "Dependencies: Be mindful of third-party dependencies. Use tools to scan for vulnerabilities in your dependencies."
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
