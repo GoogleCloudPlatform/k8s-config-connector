@@ -38,6 +38,7 @@ type GenerateMapperOptions struct {
 	OutputMapperDirectory string
 
 	Multiversion bool
+	Validate     bool
 }
 
 func (o *GenerateMapperOptions) InitDefaults() error {
@@ -56,6 +57,7 @@ func (o *GenerateMapperOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.APIDirectory, "api-dir", o.APIDirectory, "base directory for reading APIs")
 	cmd.Flags().StringVar(&o.OutputMapperDirectory, "output-dir", o.OutputMapperDirectory, "base directory for writing mappers")
 	cmd.Flags().BoolVar(&o.Multiversion, "multiversion", o.Multiversion, "generate mappers with version specifiers, to support mixed versions")
+	cmd.Flags().BoolVar(&o.Validate, "validate", true, "validate that Ref fields in proto and go api are the same")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -134,7 +136,7 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 		},
 	}
 
-	mapperGenerator := codegen.NewMapperGenerator(pathForMessage, o.OutputMapperDirectory, generatedFileAnnotation, o.Multiversion)
+	mapperGenerator := codegen.NewMapperGenerator(pathForMessage, o.OutputMapperDirectory, generatedFileAnnotation, o.Multiversion, o.Validate)
 
 	if err := mapperGenerator.VisitGoCode(o.APIGoPackagePath, o.APIDirectory); err != nil {
 		return err
