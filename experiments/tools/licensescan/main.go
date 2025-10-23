@@ -192,6 +192,7 @@ func RunLicenseScan(ctx context.Context, opts RunLicenseScanOptions) error {
 		"BSL-1.0":          false,
 		"NCSA":             false,
 		"OPENSSL":          false,
+		"ZLIB":             false,
 	}
 
 	if len(errors) == 0 {

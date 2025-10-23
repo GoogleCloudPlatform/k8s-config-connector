@@ -102,8 +102,8 @@ require (
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.10.0
-	github.com/tmccombs/hcl2json v0.6.7
-	github.com/zclconf/go-cty v1.16.3
+	github.com/tmccombs/hcl2json v0.6.8
+	github.com/zclconf/go-cty v1.16.4
 	go.opencensus.io v0.24.0
 	go.uber.org/mock v0.5.2
 	go.uber.org/zap v1.27.0
@@ -135,6 +135,7 @@ require (
 require go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 
 require (
+	cloud.google.com/go/analytics v0.30.0 // indirect
 	cloud.google.com/go/osconfig v1.14.6 // indirect
 	github.com/envoyproxy/go-control-plane/envoy v1.32.4 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect

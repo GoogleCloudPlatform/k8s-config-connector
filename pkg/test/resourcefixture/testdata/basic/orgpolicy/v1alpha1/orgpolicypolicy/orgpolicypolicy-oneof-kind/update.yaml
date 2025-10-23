@@ -12,13 +12,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: backupdr.cnrm.cloud.google.com/v1alpha1
-kind: BackupDRBackupVault
+apiVersion: orgpolicy.cnrm.cloud.google.com/v1alpha1
+kind: OrgPolicyPolicy
 metadata:
-  name: backupdrbackupvault-minimal-${uniqueId}
+  name: custom.orgpolicypolicy-params-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
-  location: us-west2
-  description: "Initial description"
-  backupMinimumEnforcedRetentionDuration: "100000s"
+  spec:
+    rules:
+      - enforce: true
+      - denyAll: true
+      - allowAll: true
+      - values: 
+          allowedValues:
+          - "foo"
+          deniedValues:
+          - "bar"
+  dryRunSpec:
+    rules:
+      - enforce: true
+      - denyAll: true
+      - allowAll: true
+      - values: 
+          allowedValues:
+          - "foo"
+          - "bar"

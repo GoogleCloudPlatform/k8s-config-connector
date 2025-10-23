@@ -62,7 +62,7 @@ spec:
             properties:
               admissionPolicy:
                 default: admit-on-first-miss
-                description: 'Cache admission policy. Valid values includes: `admit-on-first-miss`
+                description: 'Cache admission policy. Valid values include: `admit-on-first-miss`
                   and `admit-on-second-miss`. Defaults to `admit-on-first-miss`.'
                 enum:
                 - admit-on-first-miss
@@ -87,7 +87,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed StorageBucket
+                    description: A reference to an externally-managed StorageBucket
                       resource.
                     type: string
                   name:
@@ -240,7 +240,7 @@ spec:
             properties:
               admissionPolicy:
                 default: admit-on-first-miss
-                description: 'Cache admission policy. Valid values includes: `admit-on-first-miss`
+                description: 'Cache admission policy. Valid values include: `admit-on-first-miss`
                   and `admit-on-second-miss`. Defaults to `admit-on-first-miss`.'
                 enum:
                 - admit-on-first-miss
@@ -265,7 +265,7 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed StorageBucket
+                    description: A reference to an externally-managed StorageBucket
                       resource.
                     type: string
                   name:

@@ -88,7 +88,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}Cache admission policy. Valid values includes: `admit-on-first-miss` and `admit-on-second-miss`. Defaults to `admit-on-first-miss`.{% endverbatim %}</p>
+            <p>{% verbatim %}Cache admission policy. Valid values include: `admit-on-first-miss` and `admit-on-second-miss`. Defaults to `admit-on-first-miss`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -108,7 +108,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed StorageBucket resource.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally-managed StorageBucket resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -148,7 +148,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The AnywhereCacheID generated via backend. It can be used by users to manage an existing cache.{% endverbatim %}</p>
+            <p>{% verbatim %}The AnywhereCacheID generated via backend. This field manages an existing cache.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -282,7 +282,7 @@ observedState:
         <td><code>observedState.pendingUpdate</code></td>
         <td>
             <p><code class="apitype">boolean</code></p>
-            <p>{% verbatim %}Output only. True if there is an active update operation against this cache instance. Subsequential update requests will be rejected if this field is true. Output only.{% endverbatim %}</p>
+            <p>{% verbatim %}Output only. True if there is an active update operation against this cache instance. Subsequent update requests will be rejected if this field is true. Output only.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

@@ -48,6 +48,19 @@ section.
 - How thorough is the test coverage for the new changes?
 - Are there missing unit, integration, or e2e tests for critical code paths or edge cases?
 
+#### Mock vs. Real GCP Log Analysis
+- **This check is mandatory if any files in `mockgcp/`, `apis/`, `pkg/controller/direct/`, `config/crds/resources/` are added or changed, or if a new test fixture is added.**
+- If the above condition is met, perform the following steps:
+  1. **Identify Commits:**
+     - Find the commit hash for the **real GCP log**. Look for a commit message like: `Ran hack/record-gcp ...`, "real GCP", "real log", "real API".
+     - Find the commit hash for the **latest mock GCP log**. This is a commit in the PR that occurs *after* the real GCP log commit. If no explicit mock-related commit message is found after the real one, use the HEAD of the pull request.
+     - Skip log analysis if the commit for the **real GCP log** cannot be found and flag this in the summary.
+  2. **Generate Diff URL:**
+     - Construct and provide the GitHub compare URL for the `_http.log` file(s) between these two commits.
+  3. **Analyze the Diff:**
+     - Summarize the key differences in the `_http.log` file.
+     - Explicitly state whether the discrepancies are **expected** (due to the feature change) or **unexpected** (potential bug in the mock implementation).
+
 #### Backward Compatibility
 - **Crucially, analyze backward compatibility implications.**
 - For changes in the `apis/` directory (e.g., to exported Go types), confirm they are **backward
