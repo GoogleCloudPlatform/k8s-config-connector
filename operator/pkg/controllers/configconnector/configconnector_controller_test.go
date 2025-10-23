@@ -1601,6 +1601,7 @@ func TestApplyRateLimitCustomizations(t *testing.T) {
 		expectedManifests                []string
 		skipCheckingCRStatus             bool
 		expectedCRStatus                 customizev1beta1.ControllerReconcilerStatus
+		expectCELFailure                 string
 	}{
 		{
 			name:                   "customize the rate limit for cnrm-controller-manager",
@@ -1618,12 +1619,7 @@ func TestApplyRateLimitCustomizations(t *testing.T) {
 			manifests:              testcontroller.ClusterModeComponents,
 			controllerReconcilerCR: testcontroller.ControllerReconcilerCRForUnsupportedController,
 			expectedManifests:      testcontroller.ClusterModeComponents, // same as the input manifests
-			expectedCRStatus: customizev1beta1.ControllerReconcilerStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: false,
-					Errors:  []string{testcontroller.ErrUnsupportedController},
-				},
-			},
+			expectCELFailure:       "failed rule: self.metadata.name == 'cnrm-controller-manager'",
 		},
 		{
 			name:                             "namespaced rate limit CR has no effect in cluster mode",
@@ -1645,6 +1641,13 @@ func TestApplyRateLimitCustomizations(t *testing.T) {
 			if tc.controllerReconcilerCR != nil {
 				cr := tc.controllerReconcilerCR
 				if err := c.Create(ctx, cr); err != nil {
+					if tc.expectCELFailure != "" {
+						s := fmt.Sprintf("%T %v", err, err)
+						if !strings.Contains(s, tc.expectCELFailure) {
+							t.Fatalf("expected CEL failure to contain %q, but got %q", tc.expectCELFailure, s)
+						}
+						return
+					}
 					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
 				}
 			}

@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 
@@ -1270,6 +1271,7 @@ func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 		controllerReconcilerCR *customizev1beta1.NamespacedControllerReconciler
 		expectedManifests      []string
 		expectedCRStatus       customizev1beta1.NamespacedControllerReconcilerStatus
+		expectCELFailure       string
 	}{
 		{
 			name:                   "customize the rate limit for cnrm-controller-manager",
@@ -1287,12 +1289,7 @@ func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 			manifests:              testcontroller.NamespacedComponents,
 			controllerReconcilerCR: testcontroller.NamespacedControllerReconcilerCRForUnsupportedController,
 			expectedManifests:      testcontroller.NamespacedComponents, // same as the input manifests
-			expectedCRStatus: customizev1beta1.NamespacedControllerReconcilerStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: false,
-					Errors:  []string{testcontroller.ErrUnsupportedController},
-				},
-			},
+			expectCELFailure:       "failed rule: self.metadata.name == 'cnrm-controller-manager'",
 		},
 		{
 			name:                   "customization from a different namespace has no effect",
@@ -1317,6 +1314,13 @@ func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 				cr := tc.controllerReconcilerCR
 				testcontroller.EnsureNamespaceExists(c, cr.Namespace)
 				if err := c.Create(ctx, cr); err != nil {
+					if tc.expectCELFailure != "" {
+						s := fmt.Sprintf("%T %v", err, err)
+						if !strings.Contains(s, tc.expectCELFailure) {
+							t.Fatalf("expected CEL failure to contain %q, but got %q", tc.expectCELFailure, s)
+						}
+						return
+					}
 					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
 				}
 			}
