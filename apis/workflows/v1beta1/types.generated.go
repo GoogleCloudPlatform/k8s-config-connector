@@ -14,11 +14,11 @@
 
 // +generated:types
 // krm.group: workflows.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: google.cloud.workflows.v1
 // resource: WorkflowsWorkflow:Workflow
 
-package v1alpha1
+package v1beta1
 
 // +kcc:proto=google.cloud.workflows.v1.Workflow.StateError
 type Workflow_StateError struct {

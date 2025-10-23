@@ -17,3 +17,4 @@ tags.cnrm.cloud.google.com/v1beta1, Kind=TagsTagBinding
 tags.cnrm.cloud.google.com/v1beta1, Kind=TagsTagKey
 tags.cnrm.cloud.google.com/v1beta1, Kind=TagsTagValue
 vmwareengine.cnrm.cloud.google.com/v1beta1, Kind=VMwareEngineExternalAddress
+workflows.cnrm.cloud.google.com/v1beta1, Kind=WorkflowsWorkflow

@@ -14,7 +14,7 @@
 
 // +generated:mapper
 // krm.group: workflows.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: google.cloud.workflows.v1
 
 package workflows
@@ -22,11 +22,11 @@ package workflows
 import (
 	pb "cloud.google.com/go/workflows/apiv1/workflowspb"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func Workflow_StateError_FromProto(mapCtx *direct.MapContext, in *pb.Workflow_StateError) *krm.Workflow_StateError {
+func Workflow_StateError_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Workflow_StateError) *krm.Workflow_StateError {
 	if in == nil {
 		return nil
 	}
@@ -35,7 +35,7 @@ func Workflow_StateError_FromProto(mapCtx *direct.MapContext, in *pb.Workflow_St
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	return out
 }
-func Workflow_StateError_ToProto(mapCtx *direct.MapContext, in *krm.Workflow_StateError) *pb.Workflow_StateError {
+func Workflow_StateError_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Workflow_StateError) *pb.Workflow_StateError {
 	if in == nil {
 		return nil
 	}
@@ -44,7 +44,7 @@ func Workflow_StateError_ToProto(mapCtx *direct.MapContext, in *krm.Workflow_Sta
 	out.Type = direct.Enum_ToProto[pb.Workflow_StateError_Type](mapCtx, in.Type)
 	return out
 }
-func WorkflowsWorkflowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workflow) *krm.WorkflowsWorkflowObservedState {
+func WorkflowsWorkflowObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Workflow) *krm.WorkflowsWorkflowObservedState {
 	if in == nil {
 		return nil
 	}
@@ -57,13 +57,13 @@ func WorkflowsWorkflowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.RevisionCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevisionCreateTime())
 	// MISSING: Labels
-	out.StateError = WorkflowsWorkflow_StateError_FromProto(mapCtx, in.GetStateError())
+	out.StateError = WorkflowsWorkflow_StateError_v1beta1_FromProto(mapCtx, in.GetStateError())
 	// MISSING: AllKMSKeys
 	// MISSING: AllKMSKeysVersions
 	// MISSING: CryptoKeyVersion
 	return out
 }
-func WorkflowsWorkflowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsWorkflowObservedState) *pb.Workflow {
+func WorkflowsWorkflowObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsWorkflowObservedState) *pb.Workflow {
 	if in == nil {
 		return nil
 	}
@@ -76,13 +76,13 @@ func WorkflowsWorkflowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.W
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.RevisionCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.RevisionCreateTime)
 	// MISSING: Labels
-	out.StateError = WorkflowsWorkflow_StateError_ToProto(mapCtx, in.StateError)
+	out.StateError = WorkflowsWorkflow_StateError_v1beta1_ToProto(mapCtx, in.StateError)
 	// MISSING: AllKMSKeys
 	// MISSING: AllKMSKeysVersions
 	// MISSING: CryptoKeyVersion
 	return out
 }
-func WorkflowsWorkflowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workflow) *krm.WorkflowsWorkflowSpec {
+func WorkflowsWorkflowSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Workflow) *krm.WorkflowsWorkflowSpec {
 	if in == nil {
 		return nil
 	}
@@ -107,7 +107,7 @@ func WorkflowsWorkflowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workflow)
 	out.Tags = in.Tags
 	return out
 }
-func WorkflowsWorkflowSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsWorkflowSpec) *pb.Workflow {
+func WorkflowsWorkflowSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsWorkflowSpec) *pb.Workflow {
 	if in == nil {
 		return nil
 	}
