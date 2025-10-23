@@ -10,6 +10,7 @@ require (
 	cloud.google.com/go/accesscontextmanager v1.9.6
 	cloud.google.com/go/aiplatform v1.99.0
 	cloud.google.com/go/alloydb v1.16.1
+	cloud.google.com/go/analytics v0.30.0
 	cloud.google.com/go/apigateway v1.7.6
 	cloud.google.com/go/apikeys v1.1.12
 	cloud.google.com/go/apphub v0.2.4
@@ -135,7 +136,6 @@ require (
 require go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 
 require (
-	cloud.google.com/go/analytics v0.30.0 // indirect
 	cloud.google.com/go/osconfig v1.14.6 // indirect
 	github.com/envoyproxy/go-control-plane/envoy v1.32.4 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
