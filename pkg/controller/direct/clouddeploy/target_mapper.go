@@ -27,7 +27,7 @@ func CloudDeployTargetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Target) *
 	out := &krm.CloudDeployTargetSpec{}
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Annotations = in.Annotations
-	out.Labels = in.Labels
+	//out.Labels = in.Labels
 	out.RequireApproval = direct.LazyPtr(in.GetRequireApproval())
 	out.Gke = GKECluster_FromProto(mapCtx, in.GetGke())
 	out.AnthosCluster = AnthosCluster_FromProto(mapCtx, in.GetAnthosCluster())
@@ -62,7 +62,7 @@ func CloudDeployTargetSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudDeplo
 	out := &pb.Target{}
 	out.Description = direct.ValueOf(in.Description)
 	out.Annotations = in.Annotations
-	out.Labels = in.Labels
+	//out.Labels = in.Labels
 	out.RequireApproval = direct.ValueOf(in.RequireApproval)
 	if oneof := GKECluster_ToProto(mapCtx, in.Gke); oneof != nil {
 		out.DeploymentTarget = &pb.Target_Gke{Gke: oneof}

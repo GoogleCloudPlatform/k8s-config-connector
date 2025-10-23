@@ -51,7 +51,7 @@ type CloudDeployTargetSpec struct {
 	// * Each resource is limited to a maximum of 64 labels.
 	//
 	// Both keys and values are additionally constrained to be <= 128 bytes.
-	Labels map[string]string `json:"labels,omitempty"`
+	// Labels map[string]string `json:"labels,omitempty"`
 
 	// Optional. Whether or not the `Target` requires approval.
 	RequireApproval *bool `json:"requireApproval,omitempty"`
@@ -159,6 +159,7 @@ func init() {
 
 // Moved here since auto-generator creates this type as GkeCluster, which causes
 // issues down the line in both zz_generated.deepcopy and the mapper
+
 // +kcc:proto=google.cloud.deploy.v1.GkeCluster
 type GKECluster struct {
 	// Optional. Information specifying a GKE Cluster. Format is

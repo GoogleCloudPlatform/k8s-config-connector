@@ -35,7 +35,6 @@ func cloudDeployTargetFuzzer() fuzztesting.KRMFuzzer {
 
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".annotations")
-	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".require_approval")
 	f.SpecFields.Insert(".gke")
 	f.SpecFields.Insert(".anthos_cluster")
@@ -53,6 +52,7 @@ func cloudDeployTargetFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".etag")
 
 	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".labels")
 
 	return f
 }
