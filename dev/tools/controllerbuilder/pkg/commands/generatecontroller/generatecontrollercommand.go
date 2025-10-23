@@ -97,6 +97,31 @@ func RunController(ctx context.Context, o *GenerateControllerOptions) error {
 		return err
 	}
 
+	goPackage := serviceName + "/" + gv.Version
+	scaffolder := &scaffold.APIScaffolder{
+		BaseDir:         root + "/apis/",
+		GoPackage:       goPackage,
+		Group:           gv.Group,
+		Version:         gv.Version,
+		PackageProtoTag: o.ServiceName,
+	}
+	if scaffolder.RefsFileExist(o.Resource) {
+		fmt.Printf("file %s already exists, skipping\n", scaffolder.PathToRefsFile(o.Resource))
+	} else {
+		err := scaffolder.AddRefsFile(o.Resource)
+		if err != nil {
+			return fmt.Errorf("add refs file %s: %w", scaffolder.PathToRefsFile(o.Resource), err)
+		}
+	}
+	if scaffolder.IdentityFileExist(o.Resource) {
+		fmt.Printf("file %s already exists, skipping\n", scaffolder.PathToIdentityFile(o.Resource))
+	} else {
+		err := scaffolder.AddIdentityFile(o.Resource)
+		if err != nil {
+			return fmt.Errorf("add identity file %s: %w", scaffolder.PathToIdentityFile(o.Resource), err)
+		}
+	}
+
 	c := scaffold.NewControllerBuilder(root, serviceName, o.Resource.ProtoName)
 	err = errors.Join(err, c.GenerateController(cArgs))
 	err = errors.Join(err, c.RegisterController())
