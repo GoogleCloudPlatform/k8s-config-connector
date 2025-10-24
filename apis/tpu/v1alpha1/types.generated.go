@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: tpu.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.tpu.v2
+// resource: TPUVirtualMachine:Node
+
 package v1alpha1
 
 // +kcc:proto=google.cloud.tpu.v2.AcceleratorConfig
