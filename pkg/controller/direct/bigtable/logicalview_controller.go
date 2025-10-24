@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
+	// TODO: This gcp should not be used, it takes a different proto definition than the one defined in kcc apis.
 	gcp "cloud.google.com/go/bigtable"
 	bigtablepb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	"google.golang.org/api/option"

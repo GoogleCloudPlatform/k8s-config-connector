@@ -112,7 +112,7 @@ spec:
                 description: Immutable. The encryption configuration for CMEK-protected
                   clusters.
                 properties:
-                  kmsKeyNameRef:
+                  kmsKeyRef:
                     description: 'Describes the Cloud KMS encryption key that will
                       be used to protect the destination Bigtable cluster. The requirements
                       for this key are: 1) The Cloud Bigtable service account associated
