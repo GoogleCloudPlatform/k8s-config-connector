@@ -15,15 +15,28 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var APIHubAPIGVK = GroupVersion.WithKind("APIHubAPI")
 
+type APIParent struct {
+	// Required. The location of the API.
+	// +required
+	Location string `json:"location,omitempty"`
+
+	// Required. The host project of the API.
+	// +required
+	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
+}
+
 // APIHubAPISpec defines the desired state of APIHubAPI
 // +kcc:spec:proto=google.cloud.apihub.v1.Api
 type APIHubAPISpec struct {
+	APIParent `json:",inline"`
+
 	// The APIHubAPI name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 

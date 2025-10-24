@@ -210,6 +210,9 @@ spec:
                     description: Optional. The uri of the externally hosted documentation.
                     type: string
                 type: object
+              location:
+                description: Required. The location of the API.
+                type: string
               maturityLevel:
                 description: 'Optional. The maturity level of the API. This maps to
                   the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-maturity-level`
@@ -287,6 +290,38 @@ spec:
                     type: string
                   email:
                     description: Required. The email of the owner.
+                    type: string
+                type: object
+              projectRef:
+                description: Required. The host project of the API.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
               resourceID:
@@ -438,6 +473,8 @@ spec:
                 type: object
             required:
             - displayName
+            - location
+            - projectRef
             type: object
           status:
             description: APIHubAPIStatus defines the config connector machine state
