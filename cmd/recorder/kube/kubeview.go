@@ -33,11 +33,11 @@ type KubeView[V any] struct {
 	mutex sync.Mutex
 
 	// values holds the value of the function for each object.
-	values map[types.NamespacedName]V
+	values NamespaceNameMap[V]
 
 	// seenSinceLastRestart is populated on a new watch until we receive the first bookmark.
 	// This allows us to track object deletions (in between watches)
-	seenSinceLastRestart map[types.NamespacedName]bool
+	seenSinceLastRestart NamespaceNameMap[struct{}]
 
 	// syncedOnce is set once we have observed the full set of objects at least once,
 	// because we have seen a bookmark event that indicates all the objects have been sent.
@@ -63,7 +63,7 @@ var _ watchListener = &kubeViewListener[string]{}
 func WatchKube[V any](ctx context.Context, kube *Target, gvr schema.GroupVersionResource, fn func(*unstructured.Unstructured) V) *KubeView[V] {
 	k := &KubeView[V]{
 		mapFn:  fn,
-		values: make(map[types.NamespacedName]V),
+		values: NewNamespaceNameMap[V](),
 	}
 
 	listener := &kubeViewListener[V]{
@@ -81,11 +81,7 @@ func (m *KubeView[V]) Snapshot() map[types.NamespacedName]V {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 
-	out := make(map[types.NamespacedName]V, len(m.values))
-	for k, v := range m.values {
-		out[k] = v
-	}
-	return out
+	return m.values.Snapshot()
 }
 
 // HasSyncedOnce is true if we have seen all the objects at least once.
@@ -106,7 +102,7 @@ func (l *kubeViewListener[V]) OnRestartWatch() {
 	l.mutex.Lock()
 	defer l.mutex.Unlock()
 
-	l.seenSinceLastRestart = make(map[types.NamespacedName]bool)
+	l.seenSinceLastRestart = NewNamespaceNameMap[struct{}]()
 }
 
 // OnBookmark implements WatchListener.
@@ -116,11 +112,11 @@ func (l *kubeViewListener[V]) OnBookmark() {
 
 	// kube-apiserver sends a bookmark once the initial stream is done.
 	if l.seenSinceLastRestart != nil {
-		for id := range l.values {
-			if !l.seenSinceLastRestart[id] {
-				delete(l.values, id)
+		l.values.Walk(func(id types.NamespacedName, _ V) {
+			if !l.seenSinceLastRestart.Has(id) {
+				l.values.Delete(id)
 			}
-		}
+		})
 
 		l.seenSinceLastRestart = nil
 	}
@@ -130,11 +126,17 @@ func (l *kubeViewListener[V]) OnBookmark() {
 
 // OnAdded implements WatchListener.
 func (l *kubeViewListener[V]) OnAdded(obj *unstructured.Unstructured) {
+	l.mutex.Lock()
+	defer l.mutex.Unlock()
+
 	l.setValue(obj)
 }
 
 // OnModified implements WatchListener.
 func (l *kubeViewListener[V]) OnModified(obj *unstructured.Unstructured) {
+	l.mutex.Lock()
+	defer l.mutex.Unlock()
+
 	l.setValue(obj)
 }
 
@@ -148,9 +150,9 @@ func (l *kubeViewListener[V]) setValue(obj *unstructured.Unstructured) {
 	l.mutex.Lock()
 	defer l.mutex.Unlock()
 
-	l.values[id] = newV
+	l.values.Set(id, newV)
 	if l.seenSinceLastRestart != nil {
-		l.seenSinceLastRestart[id] = true
+		l.seenSinceLastRestart.Set(id, struct{}{})
 	}
 }
 
@@ -164,5 +166,5 @@ func (l *kubeViewListener[V]) OnDeleted(obj *unstructured.Unstructured) {
 	l.mutex.Lock()
 	defer l.mutex.Unlock()
 
-	delete(l.values, id)
+	l.values.Delete(id)
 }
