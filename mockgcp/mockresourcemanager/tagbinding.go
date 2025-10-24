@@ -25,8 +25,6 @@ import (
 	"strings"
 
 	lropb "cloud.google.com/go/longrunning/autogen/longrunningpb"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 
@@ -80,8 +78,14 @@ func (s *TagBindingsServer) DeleteTagBinding(ctx context.Context, req *pb.Delete
 	deleted := &pb.TagBinding{}
 
 	name := req.GetName()
-	if name, err := url.PathUnescape(name); err != nil {
-		return nil, status.Errorf(codes.InvalidArgument, "invalid name %q", name)
+	// The `name` field is URL-encoded, but different clients do different things.
+	// gcloud seems to double-encode, terraform seems to single-encode.
+	// Try to unescape twice.
+	if unescaped, err := url.PathUnescape(name); err == nil {
+		name = unescaped
+		if unescaped, err := url.PathUnescape(name); err == nil {
+			name = unescaped
+		}
 	}
 
 	name = strings.TrimPrefix(name, "tagBindings/")
