@@ -94,15 +94,10 @@ func AttributeValues_FromProto(mapCtx *direct.MapContext, in *pb.AttributeValues
 		return nil
 	}
 	out := &krm.AttributeValues{}
+	out.EnumValues = AttributeValues_EnumAttributeValues_FromProto(mapCtx, in.GetEnumValues())
+	out.StringValues = AttributeValues_StringAttributeValues_FromProto(mapCtx, in.GetStringValues())
+	out.JsonValues = AttributeValues_StringAttributeValues_FromProto(mapCtx, in.GetJsonValues())
 	// MISSING: Attribute
-	switch v := in.Value.(type) {
-	case *pb.AttributeValues_EnumValues:
-		out.EnumValues = AttributeValues_EnumAttributeValues_FromProto(mapCtx, v.EnumValues)
-	case *pb.AttributeValues_StringValues:
-		out.StringValues = AttributeValues_StringAttributeValues_FromProto(mapCtx, v.StringValues)
-	case *pb.AttributeValues_JsonValues:
-		out.JsonValues = AttributeValues_StringAttributeValues_FromProto(mapCtx, v.JsonValues)
-	}
 	return out
 }
 func AttributeValues_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValues) *pb.AttributeValues {
@@ -127,15 +122,10 @@ func AttributeValuesObservedState_FromProto(mapCtx *direct.MapContext, in *pb.At
 		return nil
 	}
 	out := &krm.AttributeValuesObservedState{}
+	// MISSING: EnumValues
+	// MISSING: StringValues
+	// MISSING: JsonValues
 	out.Attribute = direct.LazyPtr(in.GetAttribute())
-	switch v := in.Value.(type) {
-	case *pb.AttributeValues_EnumValues:
-		// MISSING "EnumValues"
-	case *pb.AttributeValues_StringValues:
-		// MISSING "StringValues"
-	case *pb.AttributeValues_JsonValues:
-		// MISSING "JsonValues"
-	}
 	return out
 }
 func AttributeValuesObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AttributeValuesObservedState) *pb.AttributeValues {
