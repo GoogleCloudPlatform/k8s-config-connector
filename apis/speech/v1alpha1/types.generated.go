@@ -14,7 +14,7 @@
 
 // +generated:types
 // krm.group: speech.cnrm.cloud.google.com
-// krm.version: v1beta1
+// krm.version: v1alpha1
 // proto.service: google.cloud.speech.v2
 // resource: SpeechRecognizer:Recognizer
 // resource: SpeechCustomClass:CustomClass
@@ -33,6 +33,22 @@ type CustomClass_ClassItem struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// +kcc:proto=google.cloud.speech.v2.DenoiserConfig
+type DenoiserConfig struct {
+	// Denoise audio before sending to the transcription model.
+	// +kcc:proto:field=google.cloud.speech.v2.DenoiserConfig.denoise_audio
+	DenoiseAudio *bool `json:"denoiseAudio,omitempty"`
+
+	// Signal-to-Noise Ratio (SNR) threshold for the denoiser. Here SNR means the
+	//  loudness of the speech signal. Audio with an SNR below this threshold,
+	//  meaning the speech is too quiet, will be prevented from being sent to the
+	//  transcription model.
+	//
+	//  If snr_threshold=0, no filtering will be applied.
+	// +kcc:proto:field=google.cloud.speech.v2.DenoiserConfig.snr_threshold
+	SnrThreshold *float32 `json:"snrThreshold,omitempty"`
+}
+
 // +kcc:proto=google.cloud.speech.v2.RecognitionFeatures
 type RecognitionFeatures struct {
 	// If set to `true`, the server will attempt to filter out profanities,
@@ -40,25 +56,25 @@ type RecognitionFeatures struct {
 	//  asterisks, for instance, "f***". If set to `false` or omitted, profanities
 	//  won't be filtered out.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionFeatures.profanity_filter
-	/* NOTYET ProfanityFilter *bool `json:"profanityFilter,omitempty"` */
+	ProfanityFilter *bool `json:"profanityFilter,omitempty"`
 
 	// If `true`, the top result includes a list of words and the start and end
 	//  time offsets (timestamps) for those words. If `false`, no word-level time
 	//  offset information is returned. The default is `false`.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionFeatures.enable_word_time_offsets
-	/* NOTYET EnableWordTimeOffsets *bool `json:"enableWordTimeOffsets,omitempty"` */
+	EnableWordTimeOffsets *bool `json:"enableWordTimeOffsets,omitempty"`
 
 	// If `true`, the top result includes a list of words and the confidence for
 	//  those words. If `false`, no word-level confidence information is returned.
 	//  The default is `false`.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionFeatures.enable_word_confidence
-	/* NOTYET EnableWordConfidence *bool `json:"enableWordConfidence,omitempty"` */
+	EnableWordConfidence *bool `json:"enableWordConfidence,omitempty"`
 
 	// If `true`, adds punctuation to recognition result hypotheses. This feature
 	//  is only available in select languages. The default `false` value does not
 	//  add punctuation to result hypotheses.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionFeatures.enable_automatic_punctuation
-	/* NOTYET EnableAutomaticPunctuation *bool `json:"enableAutomaticPunctuation,omitempty"` */
+	EnableAutomaticPunctuation *bool `json:"enableAutomaticPunctuation,omitempty"`
 
 	// The spoken punctuation behavior for the call. If `true`, replaces spoken
 	//  punctuation with the corresponding symbols in the request. For example,
@@ -66,18 +82,18 @@ type RecognitionFeatures struct {
 	//  https://cloud.google.com/speech-to-text/docs/spoken-punctuation for
 	//  support. If `false`, spoken punctuation is not replaced.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionFeatures.enable_spoken_punctuation
-	/* NOTYET EnableSpokenPunctuation *bool `json:"enableSpokenPunctuation,omitempty"` */
+	EnableSpokenPunctuation *bool `json:"enableSpokenPunctuation,omitempty"`
 
 	// The spoken emoji behavior for the call. If `true`, adds spoken emoji
 	//  formatting for the request. This will replace spoken emojis with the
 	//  corresponding Unicode symbols in the final transcript. If `false`, spoken
 	//  emojis are not replaced.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionFeatures.enable_spoken_emojis
-	/* NOTYET EnableSpokenEmojis *bool `json:"enableSpokenEmojis,omitempty"` */
+	EnableSpokenEmojis *bool `json:"enableSpokenEmojis,omitempty"`
 
 	// Mode for recognizing multi-channel audio.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionFeatures.multi_channel_mode
-	/* NOTYET MultiChannelMode *string `json:"multiChannelMode,omitempty"` */
+	MultiChannelMode *string `json:"multiChannelMode,omitempty"`
 
 	// Configuration to enable speaker diarization and set additional
 	//  parameters to make diarization better suited for your application.
@@ -95,7 +111,7 @@ type RecognitionFeatures struct {
 	//  Valid values are `0`-`30`. A value of `0` or `1` will return a maximum of
 	//  one. If omitted, will return a maximum of one.
 	// +kcc:proto:field=google.cloud.speech.v2.RecognitionFeatures.max_alternatives
-	/* NOTYET MaxAlternatives *int32 `json:"maxAlternatives,omitempty"` */
+	MaxAlternatives *int32 `json:"maxAlternatives,omitempty"`
 }
 
 // +kcc:proto=google.cloud.speech.v2.TranscriptNormalization
@@ -112,21 +128,13 @@ type TranscriptNormalization struct {
 type TranscriptNormalization_Entry struct {
 	// What to replace. Max length is 100 characters.
 	// +kcc:proto:field=google.cloud.speech.v2.TranscriptNormalization.Entry.search
-	/* NOTYET Search *string `json:"search,omitempty"` */
+	Search *string `json:"search,omitempty"`
 
 	// What to replace with. Max length is 100 characters.
 	// +kcc:proto:field=google.cloud.speech.v2.TranscriptNormalization.Entry.replace
-	/* NOTYET Replace *string `json:"replace,omitempty"` */
+	Replace *string `json:"replace,omitempty"`
 
 	// Whether the search is case sensitive.
 	// +kcc:proto:field=google.cloud.speech.v2.TranscriptNormalization.Entry.case_sensitive
-	/* NOTYET CaseSensitive *bool `json:"caseSensitive,omitempty"` */
-}
-
-// +kcc:proto=google.cloud.speech.v2.RecognitionConfig
-type RecognitionConfigObservedState struct {
-	// Speech adaptation context that weights recognizer predictions for specific
-	//  words and phrases.
-	// +kcc:proto:field=google.cloud.speech.v2.RecognitionConfig.adaptation
-	Adaptation *SpeechAdaptationObservedState `json:"adaptation,omitempty"`
+	CaseSensitive *bool `json:"caseSensitive,omitempty"`
 }

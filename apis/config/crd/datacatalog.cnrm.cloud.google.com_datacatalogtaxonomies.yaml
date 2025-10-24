@@ -1,0 +1,218 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
+    cnrm.cloud.google.com/system: "true"
+    cnrm.cloud.google.com/tf2crd: "true"
+  name: datacatalogtaxonomies.datacatalog.cnrm.cloud.google.com
+spec:
+  group: datacatalog.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: DataCatalogTaxonomy
+    listKind: DataCatalogTaxonomyList
+    plural: datacatalogtaxonomies
+    shortNames:
+    - gcpdatacatalogtaxonomy
+    - gcpdatacatalogtaxonomies
+    singular: datacatalogtaxonomy
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: DataCatalogTaxonomy is the Schema for the datacatalog API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              activatedPolicyTypes:
+                description: |-
+                  A list of policy types that are activated for this taxonomy. If not set,
+                  defaults to an empty list. Possible values: ["POLICY_TYPE_UNSPECIFIED", "FINE_GRAINED_ACCESS_CONTROL"].
+                items:
+                  type: string
+                type: array
+              description:
+                description: |-
+                  Description of this taxonomy. It must: contain only unicode characters,
+                  tabs, newlines, carriage returns and page breaks; and be at most 2000 bytes
+                  long when encoded in UTF-8. If not set, defaults to an empty description.
+                type: string
+              displayName:
+                description: |-
+                  User defined name of this taxonomy.
+                  It must: contain only unicode letters, numbers, underscores, dashes
+                  and spaces; not start or end with spaces; and be at most 200 bytes
+                  long when encoded in UTF-8.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              region:
+                description: Immutable. Taxonomy location region.
+                type: string
+              resourceID:
+                description: Immutable. Optional. The service-generated name of the
+                  resource. Used for acquisition only. Leave unset to create a new
+                  resource.
+                type: string
+            required:
+            - displayName
+            - projectRef
+            type: object
+          status:
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  DataCatalogTaxonomy's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the DataCatalogTaxonomy resource
+                  in GCP.
+                type: string
+              name:
+                description: |-
+                  Resource name of this taxonomy, whose format is:
+                  "projects/{project}/locations/{region}/taxonomies/{taxonomy}".
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  policyTagCount:
+                    description: Output only. Number of policy tags in this taxonomy.
+                    format: int32
+                    type: integer
+                  service:
+                    description: |-
+                      Output only. Identity of the service which owns the Taxonomy. This field is
+                       only populated when the taxonomy is created by a Google Cloud service.
+                       Currently only 'DATAPLEX' is supported.
+                    properties:
+                      identity:
+                        description: The service agent for the service.
+                        type: string
+                      name:
+                        description: The Google Cloud service name.
+                        type: string
+                    type: object
+                  taxonomyTimestamps:
+                    description: Output only. Creation and modification timestamps
+                      of this taxonomy.
+                    properties:
+                      createTime:
+                        description: Creation timestamp of the resource within the
+                          given system.
+                        type: string
+                      expiredTime:
+                        description: |-
+                          Output only. Expiration timestamp of the resource within the given system.
+
+                          Currently only applicable to BigQuery resources.
+                        type: string
+                      updateTime:
+                        description: |-
+                          Timestamp of the last modification of the resource or its metadata within
+                           a given system.
+
+                           Note: Depending on the source system, not every modification updates this
+                           timestamp.
+                           For example, BigQuery timestamps every metadata modification but not data
+                           or permission changes.
+                        type: string
+                    type: object
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

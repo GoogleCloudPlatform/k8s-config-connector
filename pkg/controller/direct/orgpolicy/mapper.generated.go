@@ -14,28 +14,28 @@
 
 // +generated:mapper
 // krm.group: orgpolicy.cnrm.cloud.google.com
-// krm.version: v1beta1
+// krm.version: v1alpha1
 // proto.service: google.cloud.orgpolicy.v2
 
 package orgpolicy
 
 import (
 	pb "cloud.google.com/go/orgpolicy/apiv2/orgpolicypb"
-	krmorgpolicyv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/orgpolicy/v1alpha1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/orgpolicy/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/orgpolicy/v1alpha1"
+	krmorgpolicyv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/orgpolicy/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AlternatePolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.AlternatePolicySpec) *krmorgpolicyv1alpha1.AlternatePolicySpec {
+func AlternatePolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.AlternatePolicySpec) *krm.AlternatePolicySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmorgpolicyv1alpha1.AlternatePolicySpec{}
+	out := &krm.AlternatePolicySpec{}
 	out.Launch = direct.LazyPtr(in.GetLaunch())
 	out.Spec = PolicySpec_FromProto(mapCtx, in.GetSpec())
 	return out
 }
-func AlternatePolicySpec_ToProto(mapCtx *direct.MapContext, in *krmorgpolicyv1alpha1.AlternatePolicySpec) *pb.AlternatePolicySpec {
+func AlternatePolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.AlternatePolicySpec) *pb.AlternatePolicySpec {
 	if in == nil {
 		return nil
 	}
@@ -44,16 +44,16 @@ func AlternatePolicySpec_ToProto(mapCtx *direct.MapContext, in *krmorgpolicyv1al
 	out.Spec = PolicySpec_ToProto(mapCtx, in.Spec)
 	return out
 }
-func OrgPolicyCustomConstraintObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomConstraint) *krm.OrgPolicyCustomConstraintObservedState {
+func OrgPolicyCustomConstraintObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomConstraint) *krmorgpolicyv1beta1.OrgPolicyCustomConstraintObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.OrgPolicyCustomConstraintObservedState{}
+	out := &krmorgpolicyv1beta1.OrgPolicyCustomConstraintObservedState{}
 	// MISSING: Name
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
-func OrgPolicyCustomConstraintObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OrgPolicyCustomConstraintObservedState) *pb.CustomConstraint {
+func OrgPolicyCustomConstraintObservedState_ToProto(mapCtx *direct.MapContext, in *krmorgpolicyv1beta1.OrgPolicyCustomConstraintObservedState) *pb.CustomConstraint {
 	if in == nil {
 		return nil
 	}
@@ -62,11 +62,11 @@ func OrgPolicyCustomConstraintObservedState_ToProto(mapCtx *direct.MapContext, i
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
-func OrgPolicyCustomConstraintSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomConstraint) *krm.OrgPolicyCustomConstraintSpec {
+func OrgPolicyCustomConstraintSpec_FromProto(mapCtx *direct.MapContext, in *pb.CustomConstraint) *krmorgpolicyv1beta1.OrgPolicyCustomConstraintSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.OrgPolicyCustomConstraintSpec{}
+	out := &krmorgpolicyv1beta1.OrgPolicyCustomConstraintSpec{}
 	// MISSING: Name
 	out.ResourceTypes = in.ResourceTypes
 	out.MethodTypes = direct.EnumSlice_FromProto(mapCtx, in.MethodTypes)
@@ -76,7 +76,7 @@ func OrgPolicyCustomConstraintSpec_FromProto(mapCtx *direct.MapContext, in *pb.C
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
 }
-func OrgPolicyCustomConstraintSpec_ToProto(mapCtx *direct.MapContext, in *krm.OrgPolicyCustomConstraintSpec) *pb.CustomConstraint {
+func OrgPolicyCustomConstraintSpec_ToProto(mapCtx *direct.MapContext, in *krmorgpolicyv1beta1.OrgPolicyCustomConstraintSpec) *pb.CustomConstraint {
 	if in == nil {
 		return nil
 	}
@@ -90,11 +90,11 @@ func OrgPolicyCustomConstraintSpec_ToProto(mapCtx *direct.MapContext, in *krm.Or
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
-func OrgPolicyPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krmorgpolicyv1alpha1.OrgPolicyPolicyObservedState {
+func OrgPolicyPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krm.OrgPolicyPolicyObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmorgpolicyv1alpha1.OrgPolicyPolicyObservedState{}
+	out := &krm.OrgPolicyPolicyObservedState{}
 	// MISSING: Name
 	out.Spec = PolicySpecObservedState_FromProto(mapCtx, in.GetSpec())
 	// MISSING: Alternate
@@ -102,7 +102,7 @@ func OrgPolicyPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Po
 	// MISSING: Etag
 	return out
 }
-func OrgPolicyPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krmorgpolicyv1alpha1.OrgPolicyPolicyObservedState) *pb.Policy {
+func OrgPolicyPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OrgPolicyPolicyObservedState) *pb.Policy {
 	if in == nil {
 		return nil
 	}
@@ -114,11 +114,11 @@ func OrgPolicyPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krmorgp
 	// MISSING: Etag
 	return out
 }
-func OrgPolicyPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krmorgpolicyv1alpha1.OrgPolicyPolicySpec {
+func OrgPolicyPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *krm.OrgPolicyPolicySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmorgpolicyv1alpha1.OrgPolicyPolicySpec{}
+	out := &krm.OrgPolicyPolicySpec{}
 	// MISSING: Name
 	out.Spec = PolicySpec_FromProto(mapCtx, in.GetSpec())
 	// MISSING: Alternate
@@ -126,7 +126,7 @@ func OrgPolicyPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.Policy) *kr
 	// MISSING: Etag
 	return out
 }
-func OrgPolicyPolicySpec_ToProto(mapCtx *direct.MapContext, in *krmorgpolicyv1alpha1.OrgPolicyPolicySpec) *pb.Policy {
+func OrgPolicyPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.OrgPolicyPolicySpec) *pb.Policy {
 	if in == nil {
 		return nil
 	}
@@ -138,11 +138,11 @@ func OrgPolicyPolicySpec_ToProto(mapCtx *direct.MapContext, in *krmorgpolicyv1al
 	// MISSING: Etag
 	return out
 }
-func PolicySpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PolicySpec) *krmorgpolicyv1alpha1.PolicySpecObservedState {
+func PolicySpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PolicySpec) *krm.PolicySpecObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmorgpolicyv1alpha1.PolicySpecObservedState{}
+	out := &krm.PolicySpecObservedState{}
 	// MISSING: Etag
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: Rules
@@ -150,7 +150,7 @@ func PolicySpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PolicyS
 	// MISSING: Reset
 	return out
 }
-func PolicySpecObservedState_ToProto(mapCtx *direct.MapContext, in *krmorgpolicyv1alpha1.PolicySpecObservedState) *pb.PolicySpec {
+func PolicySpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PolicySpecObservedState) *pb.PolicySpec {
 	if in == nil {
 		return nil
 	}
@@ -180,16 +180,16 @@ func PolicySpec_PolicyRule_Enforce_ToProto(mapCtx *direct.MapContext, in *bool) 
 	}
 	return &pb.PolicySpec_PolicyRule_Enforce{Enforce: *in}
 }
-func PolicySpec_PolicyRule_StringValues_FromProto(mapCtx *direct.MapContext, in *pb.PolicySpec_PolicyRule_StringValues) *krmorgpolicyv1alpha1.PolicySpec_PolicyRule_StringValues {
+func PolicySpec_PolicyRule_StringValues_FromProto(mapCtx *direct.MapContext, in *pb.PolicySpec_PolicyRule_StringValues) *krm.PolicySpec_PolicyRule_StringValues {
 	if in == nil {
 		return nil
 	}
-	out := &krmorgpolicyv1alpha1.PolicySpec_PolicyRule_StringValues{}
+	out := &krm.PolicySpec_PolicyRule_StringValues{}
 	out.AllowedValues = in.AllowedValues
 	out.DeniedValues = in.DeniedValues
 	return out
 }
-func PolicySpec_PolicyRule_StringValues_ToProto(mapCtx *direct.MapContext, in *krmorgpolicyv1alpha1.PolicySpec_PolicyRule_StringValues) *pb.PolicySpec_PolicyRule_StringValues {
+func PolicySpec_PolicyRule_StringValues_ToProto(mapCtx *direct.MapContext, in *krm.PolicySpec_PolicyRule_StringValues) *pb.PolicySpec_PolicyRule_StringValues {
 	if in == nil {
 		return nil
 	}
