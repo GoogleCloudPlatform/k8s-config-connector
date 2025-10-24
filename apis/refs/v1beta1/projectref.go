@@ -189,6 +189,29 @@ func ResolveProjectID(ctx context.Context, reader client.Reader, obj *unstructur
 	return "", fmt.Errorf("cannot find project id for %v %v/%v", obj.GetKind(), obj.GetNamespace(), obj.GetName())
 }
 
+func ResolveProjectNumber(ctx context.Context, reader client.Reader, key types.NamespacedName) (string, error) {
+	project := &unstructured.Unstructured{}
+	project.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "resourcemanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "Project",
+	})
+	if err := reader.Get(ctx, key, project); err != nil {
+		if apierrors.IsNotFound(err) {
+			return "", fmt.Errorf("Project %v not found", key)
+		}
+		return "", fmt.Errorf("error reading Project %v: %w", key, err)
+	}
+	projectNumber, found, err := unstructured.NestedString(project.Object, "status", "number")
+	if err != nil {
+		return "", fmt.Errorf("error reading projectNumber from Project %v: %w", key, err)
+	}
+	if !found || projectNumber == "" {
+		return "", fmt.Errorf("projectNumber not found in status of Project %v", key)
+	}
+	return projectNumber, nil
+}
+
 func (r *ProjectRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	// No status.externalRef, so can't use default method
 	// return Normalize(ctx, reader, r, defaultNamespace)
