@@ -103,21 +103,46 @@ func (s *dataTransferService) CreateTransferConfig(ctx context.Context, req *pb.
 	obj.DatasetRegion = name.Location
 	obj.Name = name.String()
 	obj.NextRunTime = timestamppb.New(now)
+	// Event driven schedule does not output next run time
+	if obj.ScheduleOptionsV2 == nil {
+		obj.NextRunTime = timestamppb.New(now)
+	}
+	// Update ScheduleOptionV2 for time based schedule
+	if obj.Schedule != "" {
+		obj.ScheduleOptionsV2 = &pb.ScheduleOptionsV2{
+			Schedule: &pb.ScheduleOptionsV2_TimeBasedSchedule{TimeBasedSchedule: &pb.TimeBasedSchedule{Schedule: obj.Schedule}},
+		}
+	}
 	email := "user@google.com"
 	obj.OwnerInfo = &pb.UserInfo{
 		Email: &email,
 	}
-	obj.State = pb.TransferState_PENDING
+	// field was not populated in realGCP log, commented out temporarily
+	//obj.State = pb.TransferState_PENDING
 	obj.UpdateTime = timestamppb.New(now)
 	obj.UserId = int64(123)
+
+	if obj.EncryptionConfiguration == nil { // match the behavior of GCP
+		obj.EncryptionConfiguration = &pb.EncryptionConfiguration{}
+	}
+
+	if obj.EncryptionConfiguration != nil && obj.EncryptionConfiguration.KmsKeyName != nil {
+		obj.Params.Fields["destination_table_kms_key"] = structpb.NewStringValue(obj.EncryptionConfiguration.KmsKeyName.Value)
+	}
 
 	objToStore := proto.Clone(obj).(*pb.TransferConfig)
 	if objToStore.EmailPreferences == nil { // match the behavior of GCP
 		objToStore.EmailPreferences = &pb.EmailPreferences{}
 	}
 
-	if obj.EncryptionConfiguration == nil { // match the behavior of GCP
-		obj.EncryptionConfiguration = &pb.EncryptionConfiguration{}
+	if objToStore.DataSourceId == "scheduled_query" { // match the behavior of GCP
+		if objToStore.ScheduleOptions == nil {
+			objToStore.ScheduleOptions = &pb.ScheduleOptions{}
+		}
+	}
+
+	if objToStore.Destination == nil {
+		objToStore.Destination = &pb.TransferConfig_DestinationDatasetId{DestinationDatasetId: ""}
 	}
 
 	if err := s.storage.Create(ctx, fqn, objToStore); err != nil {
@@ -158,7 +183,7 @@ func (s *dataTransferService) UpdateTransferConfig(ctx context.Context, req *pb.
 			obj.DisplayName = req.TransferConfig.GetDisplayName()
 		case "emailPreferences":
 			obj.EmailPreferences = req.TransferConfig.GetEmailPreferences()
-		case "encryptionconfiguration":
+		case "encryptionConfiguration":
 			obj.EncryptionConfiguration = req.TransferConfig.GetEncryptionConfiguration()
 		case "notificationPubsubTopic":
 			obj.NotificationPubsubTopic = req.TransferConfig.GetNotificationPubsubTopic()
@@ -175,6 +200,12 @@ func (s *dataTransferService) UpdateTransferConfig(ctx context.Context, req *pb.
 	obj.UpdateTime = timestamppb.New(now)
 	if obj.DataSourceId != "scheduled_query" { // match the behavior of GCP
 		obj.NextRunTime = nil
+	}
+	// Update ScheduleOptionV2 for time based schedule
+	if obj.Schedule != "" {
+		obj.ScheduleOptionsV2 = &pb.ScheduleOptionsV2{
+			Schedule: &pb.ScheduleOptionsV2_TimeBasedSchedule{TimeBasedSchedule: &pb.TimeBasedSchedule{Schedule: obj.Schedule}},
+		}
 	}
 
 	objToStore := proto.Clone(obj).(*pb.TransferConfig)
