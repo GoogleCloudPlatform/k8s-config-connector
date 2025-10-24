@@ -12,10 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +generated:types
-// krm.group: edgecontainer.cnrm.cloud.google.com
-// krm.version: v1alpha1
-// proto.service: google.cloud.edgecontainer.v1
-// resource: EdgeContainerMachine:Machine
-
 package v1alpha1
