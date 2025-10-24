@@ -12,49 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +generated:types
-// krm.group: discoveryengine.cnrm.cloud.google.com
-// krm.version: v1alpha1
-// proto.service: google.cloud.discoveryengine.v1
-// resource: DiscoveryEngineDataStore:DataStore
-// resource: DiscoveryEngineEngine:Engine
-// resource: DiscoveryEngineTargetSite:TargetSite
-
 package v1alpha1
-
-// +kcc:proto=google.cloud.discoveryengine.v1.AdvancedSiteSearchConfig
-type AdvancedSiteSearchConfig struct {
-	// If set true, initial indexing is disabled for the DataStore.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.AdvancedSiteSearchConfig.disable_initial_index
-	DisableInitialIndex *bool `json:"disableInitialIndex,omitempty"`
-
-	// If set true, automatic refresh is disabled for the DataStore.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.AdvancedSiteSearchConfig.disable_automatic_refresh
-	DisableAutomaticRefresh *bool `json:"disableAutomaticRefresh,omitempty"`
-}
-
-// +kcc:proto=google.cloud.discoveryengine.v1.CmekConfig
-type CmekConfig struct {
-	// Required. The name of the CmekConfig of the form
-	//  `projects/{project}/locations/{location}/cmekConfig` or
-	//  `projects/{project}/locations/{location}/cmekConfigs/{cmek_config}`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.name
-	Name *string `json:"name,omitempty"`
-
-	// KMS key resource name which will be used to encrypt resources
-	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key
-	KMSKey *string `json:"kmsKey,omitempty"`
-
-	// KMS key version resource name which will be used to encrypt resources
-	//  `<kms_key>/cryptoKeyVersions/{keyVersion}`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.kms_key_version
-	KMSKeyVersion *string `json:"kmsKeyVersion,omitempty"`
-
-	// Optional. Single-regional CMEKs that are required for some VAIS features.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.single_region_keys
-	SingleRegionKeys []SingleRegionKey `json:"singleRegionKeys,omitempty"`
-}
 
 // +kcc:proto=google.cloud.discoveryengine.v1.DataStore.BillingEstimation
 type DataStore_BillingEstimation struct {
@@ -152,34 +110,6 @@ type DocumentProcessingConfig_ParsingConfig_DigitalParsingConfig struct {
 
 // +kcc:proto=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig
 type DocumentProcessingConfig_ParsingConfig_LayoutParsingConfig struct {
-	// Optional. If true, the LLM based annotation is added to the table
-	//  during parsing.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig.enable_table_annotation
-	EnableTableAnnotation *bool `json:"enableTableAnnotation,omitempty"`
-
-	// Optional. If true, the LLM based annotation is added to the image
-	//  during parsing.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig.enable_image_annotation
-	EnableImageAnnotation *bool `json:"enableImageAnnotation,omitempty"`
-
-	// Optional. Contains the required structure types to extract from the
-	//  document. Supported values:
-	//
-	//  * `shareholder-structure`
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig.structured_content_types
-	StructuredContentTypes []string `json:"structuredContentTypes,omitempty"`
-
-	// Optional. List of HTML elements to exclude from the parsed content.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig.exclude_html_elements
-	ExcludeHTMLElements []string `json:"excludeHTMLElements,omitempty"`
-
-	// Optional. List of HTML classes to exclude from the parsed content.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig.exclude_html_classes
-	ExcludeHTMLClasses []string `json:"excludeHTMLClasses,omitempty"`
-
-	// Optional. List of HTML ids to exclude from the parsed content.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig.exclude_html_ids
-	ExcludeHTMLIds []string `json:"excludeHTMLIds,omitempty"`
 }
 
 // +kcc:proto=google.cloud.discoveryengine.v1.DocumentProcessingConfig.ParsingConfig.OcrParsingConfig
@@ -226,21 +156,6 @@ type Engine_ChatEngineConfig struct {
 	//  for actual agent association after Engine is created.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.ChatEngineConfig.dialogflow_agent_to_link
 	DialogflowAgentToLink *string `json:"dialogflowAgentToLink,omitempty"`
-
-	// Optional. If the flag set to true, we allow the agent and engine are in
-	//  different locations, otherwise the agent and engine are required to be in
-	//  the same location. The flag is set to false by default.
-	//
-	//  Note that the `allow_cross_region` are one-time consumed by and
-	//  passed to
-	//  [EngineService.CreateEngine][google.cloud.discoveryengine.v1.EngineService.CreateEngine].
-	//  It means they cannot be retrieved using
-	//  [EngineService.GetEngine][google.cloud.discoveryengine.v1.EngineService.GetEngine]
-	//  or
-	//  [EngineService.ListEngines][google.cloud.discoveryengine.v1.EngineService.ListEngines]
-	//  API after engine creation.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.ChatEngineConfig.allow_cross_region
-	AllowCrossRegion *bool `json:"allowCrossRegion,omitempty"`
 }
 
 // +kcc:proto=google.cloud.discoveryengine.v1.Engine.ChatEngineConfig.AgentCreationConfig
@@ -290,109 +205,6 @@ type Engine_CommonConfig struct {
 	CompanyName *string `json:"companyName,omitempty"`
 }
 
-// +kcc:proto=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig
-type Engine_MediaRecommendationEngineConfig struct {
-	// Required. The type of engine. e.g., `recommended-for-you`.
-	//
-	//  This field together with
-	//  [optimization_objective][google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.optimization_objective]
-	//  describe engine metadata to use to control engine training and serving.
-	//
-	//  Currently supported values: `recommended-for-you`, `others-you-may-like`,
-	//  `more-like-this`, `most-popular-items`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.type
-	Type *string `json:"type,omitempty"`
-
-	// The optimization objective. e.g., `cvr`.
-	//
-	//  This field together with
-	//  [optimization_objective][google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.type]
-	//  describe engine metadata to use to control engine training and serving.
-	//
-	//  Currently supported
-	//  values: `ctr`, `cvr`.
-	//
-	//   If not specified, we choose default based on engine type.
-	//  Default depends on type of recommendation:
-	//
-	//  `recommended-for-you` => `ctr`
-	//
-	//  `others-you-may-like` => `ctr`
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.optimization_objective
-	OptimizationObjective *string `json:"optimizationObjective,omitempty"`
-
-	// Name and value of the custom threshold for cvr optimization_objective.
-	//  For target_field `watch-time`, target_field_value must be an integer
-	//  value indicating the media progress time in seconds between (0, 86400]
-	//  (excludes 0, includes 86400) (e.g., 90).
-	//  For target_field `watch-percentage`, the target_field_value must be a
-	//  valid float value between (0, 1.0] (excludes 0, includes 1.0) (e.g.,
-	//  0.5).
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.optimization_objective_config
-	OptimizationObjectiveConfig *Engine_MediaRecommendationEngineConfig_OptimizationObjectiveConfig `json:"optimizationObjectiveConfig,omitempty"`
-
-	// The training state that the engine is in (e.g.
-	//  `TRAINING` or `PAUSED`).
-	//
-	//  Since part of the cost of running the service
-	//  is frequency of training - this can be used to determine when to train
-	//  engine in order to control cost. If not specified: the default value for
-	//  `CreateEngine` method is `TRAINING`. The default value for
-	//  `UpdateEngine` method is to keep the state the same as before.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.training_state
-	TrainingState *string `json:"trainingState,omitempty"`
-
-	// Optional. Additional engine features config.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.engine_features_config
-	EngineFeaturesConfig *Engine_MediaRecommendationEngineConfig_EngineFeaturesConfig `json:"engineFeaturesConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.EngineFeaturesConfig
-type Engine_MediaRecommendationEngineConfig_EngineFeaturesConfig struct {
-	// Recommended for you engine feature config.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.EngineFeaturesConfig.recommended_for_you_config
-	RecommendedForYouConfig *Engine_MediaRecommendationEngineConfig_RecommendedForYouFeatureConfig `json:"recommendedForYouConfig,omitempty"`
-
-	// Most popular engine feature config.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.EngineFeaturesConfig.most_popular_config
-	MostPopularConfig *Engine_MediaRecommendationEngineConfig_MostPopularFeatureConfig `json:"mostPopularConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.MostPopularFeatureConfig
-type Engine_MediaRecommendationEngineConfig_MostPopularFeatureConfig struct {
-	// The time window of which the engine is queried at training and
-	//  prediction time. Positive integers only. The value translates to the
-	//  last X days of events. Currently required for the `most-popular-items`
-	//  engine.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.MostPopularFeatureConfig.time_window_days
-	TimeWindowDays *int64 `json:"timeWindowDays,omitempty"`
-}
-
-// +kcc:proto=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig
-type Engine_MediaRecommendationEngineConfig_OptimizationObjectiveConfig struct {
-	// Required. The name of the field to target. Currently supported
-	//  values: `watch-percentage`, `watch-time`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig.target_field
-	TargetField *string `json:"targetField,omitempty"`
-
-	// Required. The threshold to be applied to the target (e.g., 0.5).
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig.target_field_value_float
-	TargetFieldValueFloat *float32 `json:"targetFieldValueFloat,omitempty"`
-}
-
-// +kcc:proto=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.RecommendedForYouFeatureConfig
-type Engine_MediaRecommendationEngineConfig_RecommendedForYouFeatureConfig struct {
-	// The type of event with which the engine is queried at prediction time.
-	//  If set to `generic`, only `view-item`, `media-play`,and
-	//  `media-complete` will be used as `context-event` in engine training. If
-	//  set to `view-home-page`, `view-home-page` will also be used as
-	//  `context-events` in addition to `view-item`, `media-play`, and
-	//  `media-complete`. Currently supported for the `recommended-for-you`
-	//  engine. Currently supported values: `view-home-page`, `generic`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.RecommendedForYouFeatureConfig.context_event_type
-	ContextEventType *string `json:"contextEventType,omitempty"`
-}
-
 // +kcc:proto=google.cloud.discoveryengine.v1.Engine.SearchEngineConfig
 type Engine_SearchEngineConfig struct {
 	// The search feature tier of this engine.
@@ -411,30 +223,11 @@ type Engine_SearchEngineConfig struct {
 	SearchAddOns []string `json:"searchAddOns,omitempty"`
 }
 
-// +kcc:proto=google.cloud.discoveryengine.v1.HealthcareFhirConfig
-type HealthcareFhirConfig struct {
-	// Whether to enable configurable schema for `HEALTHCARE_FHIR` vertical.
-	//
-	//  If set to `true`, the predefined healthcare fhir schema can be extended
-	//  for more customized searching and filtering.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.HealthcareFhirConfig.enable_configurable_schema
-	EnableConfigurableSchema *bool `json:"enableConfigurableSchema,omitempty"`
-
-	// Whether to enable static indexing for `HEALTHCARE_FHIR` batch
-	//  ingestion.
-	//
-	//  If set to `true`, the batch ingestion will be processed in a static
-	//  indexing mode which is slower but more capable of handling larger
-	//  volume.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.HealthcareFhirConfig.enable_static_indexing_for_batch_ingestion
-	EnableStaticIndexingForBatchIngestion *bool `json:"enableStaticIndexingForBatchIngestion,omitempty"`
-}
-
 // +kcc:proto=google.cloud.discoveryengine.v1.Schema
 type Schema struct {
 	// The structured representation of the schema.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Schema.struct_schema
-	StructSchema apiextensionsv1.JSON `json:"structSchema,omitempty"`
+	StructSchema map[string]string `json:"structSchema,omitempty"`
 
 	// The JSON representation of the schema.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Schema.json_schema
@@ -447,15 +240,6 @@ type Schema struct {
 	//  characters.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Schema.name
 	Name *string `json:"name,omitempty"`
-}
-
-// +kcc:proto=google.cloud.discoveryengine.v1.SingleRegionKey
-type SingleRegionKey struct {
-	// Required. Single-regional kms key resource name which will be used to
-	//  encrypt resources
-	//  `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.SingleRegionKey.kms_key
-	KMSKey *string `json:"kmsKey,omitempty"`
 }
 
 // +kcc:proto=google.cloud.discoveryengine.v1.SiteVerificationInfo
@@ -505,23 +289,4 @@ type WorkspaceConfig struct {
 	//  connector data ingestion.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.WorkspaceConfig.super_admin_email_address
 	SuperAdminEmailAddress *string `json:"superAdminEmailAddress,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.CmekConfig
-type CmekConfigObservedState struct {
-	// Output only. The states of the CmekConfig.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. The default CmekConfig for the Customer.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.is_default
-	IsDefault *bool `json:"isDefault,omitempty"`
-
-	// Output only. The timestamp of the last key rotation.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.last_rotation_timestamp_micros
-	LastRotationTimestampMicros *int64 `json:"lastRotationTimestampMicros,omitempty"`
-
-	// Output only. Whether the NotebookLM Corpus is ready to be used.
-	// +kcc:proto:field=google.cloud.discoveryengine.v1.CmekConfig.notebooklm_state
-	NotebooklmState *string `json:"notebooklmState,omitempty"`
 }

@@ -13,9 +13,9 @@
 // limitations under the License.
 
 // +generated:mapper
+// proto.service: google.cloud.edgecontainer.v1
 // krm.group: edgecontainer.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.service: google.cloud.edgecontainer.v1
 
 package edgecontainer
 
