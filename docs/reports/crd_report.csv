@@ -23,6 +23,7 @@ apigee.cnrm.cloud.google.com,ApigeeInstance,True,True,False,Direct
 apigee.cnrm.cloud.google.com,ApigeeNATAddress,True,False,False,Terraform
 apigee.cnrm.cloud.google.com,ApigeeOrganization,False,True,False,DCL
 apigee.cnrm.cloud.google.com,ApigeeSyncAuthorization,True,False,False,Terraform
+apihub.cnrm.cloud.google.com,APIHubAPI,True,False,False,Direct
 apikeys.cnrm.cloud.google.com,APIKeysKey,True,False,False,Terraform
 cloudquota.cnrm.cloud.google.com,APIQuotaAdjusterSettings,True,True,False,Direct
 cloudquota.cnrm.cloud.google.com,APIQuotaPreference,False,True,False,Direct
