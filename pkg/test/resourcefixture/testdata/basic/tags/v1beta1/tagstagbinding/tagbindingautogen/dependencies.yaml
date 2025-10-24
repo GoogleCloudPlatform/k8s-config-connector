@@ -18,7 +18,7 @@ metadata:
   name: tagstagkey-${uniqueId}
 spec:
   description: For keyname resources.
-  parent: organizations/406172723981
+  parent: organizations/${TEST_ORG_ID}
   shortName: keyname${uniqueId}
 ---
 apiVersion: tags.cnrm.cloud.google.com/v1beta1

@@ -14,8 +14,8 @@ metadata:
   namespace: ${uniqueId}
 spec:
   parentRef:
-    external: //cloudresourcemanager.googleapis.com/projects/938492827514
-  resourceID: '%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F938492827514/tagValues/281477804699916'
+    external: //cloudresourcemanager.googleapis.com/projects/${projectNumber}
+  resourceID: '%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/tagValues/${tagValueID}'
   tagValueRef:
     name: tagstagvalue-${uniqueId}
 status:
@@ -25,5 +25,5 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  name: '%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F938492827514/tagValues/281477804699916'
+  name: '%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/tagValues/${tagValueID}'
   observedGeneration: 2
