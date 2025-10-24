@@ -15,14 +15,16 @@ metadata:
   name: dataflowflextemplatejob-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  containerSpecGcsPath: gs://dataflow-templates/2022-10-03-00_RC00/flex/File_Format_Conversion
+  containerSpecGcsPath: gs://dataflow-templates/2020-08-31-00_RC00/flex/PubSub_Avro_to_BigQuery
   parameters:
-    inputFileFormat: csv
-    inputFileSpec: gs://config-connector-samples/dataflowflextemplate/numbertest.csv
-    outputBucket: gs://storagebucket-${uniqueId}
-    outputFileFormat: avro
-    schema: gs://config-connector-samples/dataflowflextemplate/numbers.avsc
+    createDisposition: CREATE_NEVER
+    inputSubscription: projects/${projectId}/subscriptions/pubsubsubscription-${uniqueId}
+    outputTableSpec: ${projectId}:bigquerydataset${uniqueId}.bigquerytable${uniqueId}
+    outputTopic: projects/${projectId}/topics/pubsubtopic0-${uniqueId}
+    schemaPath: gs://config-connector-samples/dataflowflextemplate/numbers.avsc
   region: us-central1
+  subnetworkRef:
+    external: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -33,4 +35,4 @@ status:
   jobId: ${jobID}
   observedGeneration: 1
   state: JOB_STATE_RUNNING
-  type: JOB_TYPE_BATCH
+  type: JOB_TYPE_STREAMING
