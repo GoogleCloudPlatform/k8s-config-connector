@@ -141,7 +141,7 @@ type NamespacedNames struct {
 
 // +kcc:proto=google.cloud.gkebackup.v1.Namespaces
 type Namespaces struct {
-	// Optional. A list of Kubernetes Namespaces
+	// Optional. A list of Kubernetes Namespaces.
 	// +kcc:proto:field=google.cloud.gkebackup.v1.Namespaces.namespaces
 	Namespaces []string `json:"namespaces,omitempty"`
 }
@@ -306,7 +306,7 @@ type RestoreConfig_ClusterResourceRestoreScope struct {
 type RestoreConfig_GroupKind struct {
 	// Optional. API group string of a Kubernetes resource, e.g.
 	//  "apiextensions.k8s.io", "storage.k8s.io", etc.
-	//  Note: use empty string for core API group
+	//  Note: use empty string for core API group.
 	// +kcc:proto:field=google.cloud.gkebackup.v1.RestoreConfig.GroupKind.resource_group
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 
