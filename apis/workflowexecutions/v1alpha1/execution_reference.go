@@ -21,7 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	workflow "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1alpha1"
+	workflowsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -59,7 +59,7 @@ func NewExecutionRef(ctx context.Context, reader client.Reader, obj *WorkflowsEx
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 	location := obj.Spec.Location
-	_, workflow, err := workflow.ParseWorkflowsWorkflowExternal(obj.Spec.WorkflowRef.External)
+	_, workflow, err := workflowsv1beta1.ParseWorkflowsWorkflowExternal(obj.Spec.WorkflowRef.External)
 	if err != nil {
 		return nil, err
 	}
