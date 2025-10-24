@@ -102,3 +102,7 @@ func (r *ApigeeOrganizationRef) Normalize(ctx context.Context, reader client.Rea
 	}
 	return nil
 }
+
+func (r *ApigeeOrganizationRef) GetExternalFromCustomFields() []string {
+	return nil
+}
