@@ -12,18 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +generated:mapper
-// krm.group: tpu.cnrm.cloud.google.com
-// krm.version: v1alpha1
-// proto.service: google.cloud.tpu.v2
-
 package tpu
 
 import (
-	pb "cloud.google.com/go/tpu/apiv2/tpupb"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tpu/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/tpu/v2"
 )
 
 func AcceleratorConfig_FromProto(mapCtx *direct.MapContext, in *pb.AcceleratorConfig) *krm.AcceleratorConfig {
@@ -84,10 +79,10 @@ func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *k
 	}
 	out := &krm.NetworkConfig{}
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &refs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetSubnetwork() != "" {
-		out.SubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
+		out.SubnetworkRef = &refs.ComputeSubnetworkRef{External: in.GetSubnetwork()}
 	}
 	out.EnableExternalIps = direct.LazyPtr(in.GetEnableExternalIps())
 	out.CanIPForward = direct.LazyPtr(in.GetCanIpForward())

@@ -116,7 +116,7 @@ spec:
                             resourceGroup:
                               description: 'Optional. API group string of a Kubernetes
                                 resource, e.g. "apiextensions.k8s.io", "storage.k8s.io",
-                                etc. Note: use empty string for core API group.'
+                                etc. Note: use empty string for core API group'
                               type: string
                             resourceKind:
                               description: Optional. Kind of a Kubernetes resource,
@@ -167,7 +167,7 @@ spec:
                             resourceGroup:
                               description: 'Optional. API group string of a Kubernetes
                                 resource, e.g. "apiextensions.k8s.io", "storage.k8s.io",
-                                etc. Note: use empty string for core API group.'
+                                etc. Note: use empty string for core API group'
                               type: string
                             resourceKind:
                               description: Optional. Kind of a Kubernetes resource,
@@ -403,7 +403,7 @@ spec:
                                 resourceGroup:
                                   description: 'Optional. API group string of a Kubernetes
                                     resource, e.g. "apiextensions.k8s.io", "storage.k8s.io",
-                                    etc. Note: use empty string for core API group.'
+                                    etc. Note: use empty string for core API group'
                                   type: string
                                 resourceKind:
                                   description: Optional. Kind of a Kubernetes resource,
@@ -429,7 +429,7 @@ spec:
                                 resourceGroup:
                                   description: 'Optional. API group string of a Kubernetes
                                     resource, e.g. "apiextensions.k8s.io", "storage.k8s.io",
-                                    etc. Note: use empty string for core API group.'
+                                    etc. Note: use empty string for core API group'
                                   type: string
                                 resourceKind:
                                   description: Optional. Kind of a Kubernetes resource,
@@ -445,7 +445,7 @@ spec:
                           All namespaces except those in this list will be restored.
                         properties:
                           namespaces:
-                            description: Optional. A list of Kubernetes Namespaces.
+                            description: Optional. A list of Kubernetes Namespaces
                             items:
                               type: string
                             type: array
@@ -479,7 +479,7 @@ spec:
                                       description: 'Optional. API group string of
                                         a Kubernetes resource, e.g. "apiextensions.k8s.io",
                                         "storage.k8s.io", etc. Note: use empty string
-                                        for core API group.'
+                                        for core API group'
                                       type: string
                                     resourceKind:
                                       description: Optional. Kind of a Kubernetes
@@ -497,7 +497,7 @@ spec:
                                       description: 'Optional. API group string of
                                         a Kubernetes resource, e.g. "apiextensions.k8s.io",
                                         "storage.k8s.io", etc. Note: use empty string
-                                        for core API group.'
+                                        for core API group'
                                       type: string
                                     resourceKind:
                                       description: Optional. Kind of a Kubernetes
@@ -539,7 +539,7 @@ spec:
                           in them will be restored.
                         properties:
                           namespaces:
-                            description: Optional. A list of Kubernetes Namespaces.
+                            description: Optional. A list of Kubernetes Namespaces
                             items:
                               type: string
                             type: array
@@ -585,7 +585,7 @@ spec:
                                     description: 'Optional. API group string of a
                                       Kubernetes resource, e.g. "apiextensions.k8s.io",
                                       "storage.k8s.io", etc. Note: use empty string
-                                      for core API group.'
+                                      for core API group'
                                     type: string
                                   resourceKind:
                                     description: Optional. Kind of a Kubernetes resource,
@@ -687,7 +687,7 @@ spec:
                                         description: 'Optional. API group string of
                                           a Kubernetes resource, e.g. "apiextensions.k8s.io",
                                           "storage.k8s.io", etc. Note: use empty string
-                                          for core API group.'
+                                          for core API group'
                                         type: string
                                       resourceKind:
                                         description: Optional. Kind of a Kubernetes
