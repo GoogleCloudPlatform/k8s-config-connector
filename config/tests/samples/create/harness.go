@@ -17,6 +17,7 @@ package create
 import (
 	"context"
 	"errors"
+	goflag "flag"
 	"fmt"
 	"io"
 	"net/http"
@@ -49,6 +50,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver"
@@ -74,6 +76,12 @@ import (
 	testwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/webhook"
 	cnrmwebhook "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
 )
+
+var zapOpts = &zap.Options{}
+
+func init() {
+	zapOpts.BindFlags(goflag.CommandLine)
+}
 
 type Harness struct {
 	*testing.T
@@ -390,7 +398,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		h.client = client
 	}
 
-	logging.SetupLogger()
+	logging.SetupLogger(zapOpts)
 
 	if loadCRDs {
 		crds, err := crdloader.LoadAllCRDs()

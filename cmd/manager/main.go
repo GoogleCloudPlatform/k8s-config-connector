@@ -39,6 +39,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	crlog "sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
 
@@ -81,7 +82,10 @@ func main() {
 	// logger.
 	log.SetOutput(ioutil.Discard)
 
-	logging.SetupLogger()
+	// Bind the flags for the zap logger. This allows tuning the  structured logger's verbosity via flags like --zap-log-level.
+	zapOpts := &zap.Options{}
+	zapOpts.BindFlags(goflag.CommandLine)
+	logging.SetupLogger(zapOpts)
 
 	// Start pprof server if enabled
 	if enablePprof {

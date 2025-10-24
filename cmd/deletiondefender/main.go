@@ -36,6 +36,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	crlog "sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
 
@@ -56,9 +57,11 @@ func main() {
 	flag.BoolVar(&enablePprof, "enable-pprof", false, "Enable the pprof server.")
 	flag.IntVar(&pprofPort, "pprof-port", 6060, "The port that the pprof server binds to if enabled.")
 	flag.Parse()
-
+	
+	zapOpts := &zap.Options{}
+	zapOpts.BindFlags(goflag.CommandLine)
 	// this enables packages using the kubernetes controller-runtime logging package to log
-	logging.SetupLogger()
+	logging.SetupLogger(zapOpts)
 
 	// Start pprof server if enabled
 	if enablePprof {
