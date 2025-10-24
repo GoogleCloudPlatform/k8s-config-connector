@@ -88,6 +88,17 @@ func (m *KubeView[V]) Snapshot() map[types.NamespacedName]V {
 	return out
 }
 
+// WalkSnapshot walks a consistent copy of the map.
+// callback should be fast, as it holds the lock for the duration.
+func (m *KubeView[V]) WalkSnapshot(callback func(types.NamespacedName, V)) {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
+	for k, v := range m.values {
+		callback(k, v)
+	}
+}
+
 // HasSyncedOnce is true if we have seen all the objects at least once.
 // This allows us to wait for the initial "list" to complete, though
 // that list may be implemented via a watch.

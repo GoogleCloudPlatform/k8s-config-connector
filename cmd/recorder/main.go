@@ -21,6 +21,7 @@ import (
 	"net/http"
 	_ "net/http/pprof" // Needed to allow pprof server to accept requests
 	"os"
+	goruntime "runtime"
 	"strings"
 	"time"
 
@@ -38,14 +39,12 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"k8s.io/client-go/rest"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	crlog "sigs.k8s.io/controller-runtime/pkg/log"
-
-	// Ensure built-in types are registered.
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 var (
@@ -140,6 +139,8 @@ func run(ctx context.Context) error {
 	statViews := make(map[CRDInfo]*kube.KubeView[ResourceStats])
 
 	for {
+		goruntime.GC() // Reduce memory by cleaning up unused objects before sleeping
+
 		time.Sleep(time.Duration(metricInterval) * time.Second)
 
 		// Reset all metrics before updating.
@@ -185,21 +186,23 @@ func run(ctx context.Context) error {
 
 			// Aggregate stats for each namespace.
 			nsAggStats := make(map[string]*AggregatedResourceStats)
-			for i, s := range statViews[crdInfo].Snapshot() {
-				ns := i.Namespace
+
+			statViews[crdInfo].WalkSnapshot(func(nn types.NamespacedName, s ResourceStats) {
+				ns := nn.Namespace
 				nsStats, ok := nsAggStats[ns]
 				if !ok {
 					nsStats = NewAggregatedResourceStats()
 					nsAggStats[ns] = nsStats
 				}
 				nsStats.lastConditionCounts[s.lastCondition]++
-			}
+			})
 
 			// Record stats.
+			groupKind := crdInfo.GVK.GroupKind().String()
 			for ns, stats := range nsAggStats {
 				for condition, count := range stats.lastConditionCounts {
 					logger.V(2).Info("posting metrics", "namespace", ns, "gvk", crdInfo.GVK.String(), "status", condition, "count", count)
-					appliedResources.WithLabelValues(ns, crdInfo.GVK.GroupKind().String(), condition).Set(float64(count))
+					appliedResources.WithLabelValues(ns, groupKind, condition).Set(float64(count))
 				}
 			}
 		}
