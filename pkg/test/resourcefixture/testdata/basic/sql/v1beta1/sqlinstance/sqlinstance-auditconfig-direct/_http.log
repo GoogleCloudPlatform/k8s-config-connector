@@ -56,6 +56,7 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
+  "generation": "1757539819026171228",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -94,13 +95,14 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
+Expires: {now+-6m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
+  "generation": "1757539819026171228",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -278,10 +280,11 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-auditconfig-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR",
+  "databaseInstalledVersion": "SQLSERVER_2022_EXPRESS_CU19",
   "databaseVersion": "SQLSERVER_2022_EXPRESS",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -290,10 +293,11 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05",
+  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU19.R20250727.00_07",
   "name": "sqlinstance-auditconfig-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-auditconfig-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -315,6 +319,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -338,6 +343,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "sqlServerAuditConfig": {
@@ -398,9 +404,6 @@ X-Xss-Protection: 0
       "instance": "sqlinstance-auditconfig-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "##MS_PolicyEventProcessingLogin##",
-      "passwordPolicy": {
-        "status": {}
-      },
       "project": "${projectId}",
       "sqlserverUserDetails": {
         "disabled": true
@@ -412,9 +415,6 @@ X-Xss-Protection: 0
       "instance": "sqlinstance-auditconfig-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "##MS_PolicyTsqlExecutionLogin##",
-      "passwordPolicy": {
-        "status": {}
-      },
       "project": "${projectId}",
       "sqlserverUserDetails": {
         "disabled": true
@@ -426,9 +426,6 @@ X-Xss-Protection: 0
       "instance": "sqlinstance-auditconfig-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "sqlserver",
-      "passwordPolicy": {
-        "status": {}
-      },
       "project": "${projectId}",
       "sqlserverUserDetails": {
         "serverRoles": [
@@ -459,10 +456,11 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-auditconfig-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR",
+  "databaseInstalledVersion": "SQLSERVER_2022_EXPRESS_CU19",
   "databaseVersion": "SQLSERVER_2022_EXPRESS",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -471,10 +469,11 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05",
+  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU19.R20250727.00_07",
   "name": "sqlinstance-auditconfig-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-auditconfig-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -496,6 +495,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -519,6 +519,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "sqlServerAuditConfig": {
@@ -566,7 +567,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "databaseVersion": "SQLSERVER_2022_EXPRESS",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
-  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05",
+  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU19.R20250727.00_07",
   "name": "sqlinstance-auditconfig-direct-${uniqueId}",
   "region": "us-central1",
   "rootPassword": "1234!@#$asdf",
@@ -578,6 +579,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
       "transactionLogRetentionDays": 7,
@@ -686,10 +688,11 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-auditconfig-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR",
+  "databaseInstalledVersion": "SQLSERVER_2022_EXPRESS_CU19",
   "databaseVersion": "SQLSERVER_2022_EXPRESS",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -698,10 +701,11 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05",
+  "maintenanceVersion": "SQLSERVER_2022_EXPRESS_CU19.R20250727.00_07",
   "name": "sqlinstance-auditconfig-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-auditconfig-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -723,6 +727,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -746,6 +751,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "sqlServerAuditConfig": {
@@ -855,6 +861,7 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
+  "generation": "1757539819026171228",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -899,11 +906,7 @@ Vary: Origin
 Vary: X-Origin
 
 {
-  "kind": "storage#objects",
-  "prefixes": [
-    "testfolder",
-    "testmanagedfolder"
-  ]
+  "kind": "storage#objects"
 }
 
 ---
