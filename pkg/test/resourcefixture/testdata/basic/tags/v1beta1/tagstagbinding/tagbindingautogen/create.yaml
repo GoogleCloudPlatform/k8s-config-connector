@@ -19,6 +19,6 @@ metadata:
 spec:
   parentRef:
     #  external: //cloudresourcemanager.googleapis.com/projects/938492827514 # If parent is project, This is the full resource name of a GCP project number not ID! 
-    external: //cloudresourcemanager.googleapis.com/projects/938492827514
+    external: //cloudresourcemanager.googleapis.com/projects/${projectNumber}
   tagValueRef:
     name: tagstagvalue-${uniqueId}

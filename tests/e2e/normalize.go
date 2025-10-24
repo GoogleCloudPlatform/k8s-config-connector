@@ -430,6 +430,16 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 			}
 		}
 		if len(tokens) >= 2 {
+
+			switch u.GetKind() {
+			case "TagsTagBinding":
+				// TagBinding name is a concatenation of a dynamic parent (full resource name of project, org, storage bucket or another kind)
+				// and a "tagValues" resource name that contains a dynamic tagValueID (encrypted from timestamp)
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, tokens[len(tokens)-1], "${tagValueID}")
+				})
+			}
+
 			typeName := tokens[len(tokens)-2]
 			id := tokens[len(tokens)-1]
 
