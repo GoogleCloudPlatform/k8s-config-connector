@@ -110,16 +110,6 @@ function fetch_tools {
   mkdir -p "$kb_root_dir"
   tar -zvxf "$kb_tools_archive_path" -C "$kb_root_dir" --strip-components=1
 
-  # We want to independently choose the version of kube-apiserver binary to perform testing against
-  # given the default version packaged with kubebuilder can be out-of-date.
-  header_text "fetching kube-apiserver"
-  mkdir -p "$kube_bin_dir"
-  curl -sL --retry 5 "https://dl.k8s.io/v${KUBEAPISERVER_VERSION}/bin/${goos}/${goarch}/kube-apiserver" -o "$kube_bin_dir/kube-apiserver"
-  chmod a+rx $kube_bin_dir/kube-apiserver
-
-  echo "kube-apiserver version:"
-  $kube_bin_dir/kube-apiserver --version
-
   # Download kustomize
   curl -O -L https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VERSION}/kustomize_v${KUSTOMIZE_VERSION}_${goos}_${goarch}.tar.gz
   tar -zxvf kustomize_v${KUSTOMIZE_VERSION}_${goos}_${goarch}.tar.gz
