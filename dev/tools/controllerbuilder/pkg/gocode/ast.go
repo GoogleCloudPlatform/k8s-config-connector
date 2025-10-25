@@ -213,7 +213,9 @@ func (p *Package) addStruct(name *ast.Ident, def *ast.StructType, comments []ast
 		}
 		structField.Type = goType
 
-		tokens := strings.Split(strings.TrimLeft(goType, "*[]"), ".")
+		s := strings.TrimPrefix(goType, "map[string]")
+		s = strings.TrimLeft(s, "*[]")
+		tokens := strings.Split(s, ".")
 		if len(tokens) > 1 {
 			packageName := tokens[0]
 			for _, imp := range p.Imports {
