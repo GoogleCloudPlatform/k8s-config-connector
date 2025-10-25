@@ -16,8 +16,11 @@ apiVersion: tags.cnrm.cloud.google.com/v1beta1
 kind: TagsTagBinding
 metadata:
   name: tagstagbinding-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   parentRef:
-    name: project-${uniqueId}
+    #  external: //cloudresourcemanager.googleapis.com/projects/938492827514 # If parent is project, This is the full resource name of a GCP project number not ID! 
+    external: //cloudresourcemanager.googleapis.com/projects/${projectNumber}
   tagValueRef:
     name: tagstagvalue-${uniqueId}

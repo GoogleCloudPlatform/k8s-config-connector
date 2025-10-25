@@ -14,6 +14,23 @@
 
 package v1beta1
 
+import (
+	"context"
+	"fmt"
+	"strings"
+
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+var (
+	TagsTagValueGVK = GroupVersion.WithKind("TagsTagValue")
+)
+
+var _ refsv1beta1.Ref = &TagsTagValueRef{}
+
 // TagsTagValueRef is a reference to a TagsTagValue resource.
 // +kcc:ref=TagsTagValue
 type TagsTagValueRef struct {
@@ -26,4 +43,44 @@ type TagsTagValueRef struct {
 	// Allowed value: string of the format `tagValues/{{value}}`,
 	// where {{value}} is the `name` field of a `TagsTagValue` resource.
 	External string `json:"external,omitempty"`
+}
+
+// GetGVK returns the GroupVersionKind of the referenced resource.
+func (r *TagsTagValueRef) GetGVK() schema.GroupVersionKind {
+	return TagsTagValueGVK
+}
+
+// GetNamespacedName returns the NamespacedName of the referenced resource.
+func (r *TagsTagValueRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+// GetExternal returns the external reference string of the referenced resource.
+func (r *TagsTagValueRef) GetExternal() string {
+	return r.External
+}
+
+// SetExternal sets the external reference string of the referenced resource.
+func (r *TagsTagValueRef) SetExternal(external string) {
+	r.External = external
+}
+
+// ValidateExternal validates the external reference string of the referenced resource.
+func (r *TagsTagValueRef) ValidateExternal(external string) error {
+	if strings.HasPrefix(external, "tagValues/") {
+		return fmt.Errorf("format of TagsTagValue external=%q was not known, missing prefix tagValues/", external)
+	}
+	return nil
+}
+
+func (r *TagsTagValueRef) GetExternalFromCustomFields() []string {
+	return []string{"status", "name"}
+}
+
+// Normalize resolves the reference to an external resource string.
+func (r *TagsTagValueRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
 }
