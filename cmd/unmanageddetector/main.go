@@ -15,6 +15,7 @@
 package main
 
 import (
+	"context"
 	goflag "flag"
 	"fmt"
 	"net/http"
@@ -33,6 +34,7 @@ import (
 	flag "github.com/spf13/pflag"
 	corev1 "k8s.io/api/core/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
@@ -88,7 +90,22 @@ func main() {
 		logging.Fatal(err, "error getting config to talk to API server")
 	}
 
-	opts := manager.Options{}
+	unmanagedDetector := &UnmanagedDetector{
+		RESTConfig: cfg,
+	}
+
+	if err := unmanagedDetector.Run(stop); err != nil {
+		logging.Fatal(err, "error running unmanaged detector")
+	}
+}
+
+type UnmanagedDetector struct {
+	RESTConfig     *rest.Config
+	ManagerOptions manager.Options
+}
+
+func (u *UnmanagedDetector) Run(ctx context.Context) error {
+	opts := u.ManagerOptions
 
 	// Disable cache to avoid stale reads (e.g. of pods, which we need do
 	// to determine if a controller pod exists for a namespace).
@@ -97,9 +114,9 @@ func main() {
 	nocache.TurnOffAllCaching(&opts)
 
 	// Create a new Manager to provide shared dependencies and start components
-	mgr, err := manager.New(cfg, opts)
+	mgr, err := manager.New(u.RESTConfig, opts)
 	if err != nil {
-		logging.Fatal(err, "error creating the manager")
+		return fmt.Errorf("creating controller manager: %w", err)
 	}
 
 	// Set up schemes
@@ -108,13 +125,13 @@ func main() {
 		apiextensions.AddToScheme,
 	)
 	if err := apis.AddToScheme(mgr.GetScheme()); err != nil {
-		logging.Fatal(err, "error setting up schemes")
+		return fmt.Errorf("setting up schemes: %w", err)
 	}
 
 	// Register the registration controller, which will dynamically create
 	// controllers for all our resources.
 	if err := registration.AddUnmanagedDetector(mgr, &controller.Deps{}); err != nil {
-		logging.Fatal(err, "error adding registration controller")
+		return fmt.Errorf("adding registration controller: %w", err)
 	}
 
 	// Set up the HTTP server for the readiness probe
@@ -122,8 +139,11 @@ func main() {
 	ready.SetContainerAsReady()
 	logger.Info("Container is ready.")
 
-	logger.Info("Starting the Cmd.")
+	logger.Info("Starting the controllers.")
 
-	// Start the Cmd
-	logging.Fatal(mgr.Start(stop), "error during manager execution")
+	// Start the controllers
+	if err := mgr.Start(ctx); err != nil {
+		return fmt.Errorf("running the controllers: %w", err)
+	}
+	return nil
 }

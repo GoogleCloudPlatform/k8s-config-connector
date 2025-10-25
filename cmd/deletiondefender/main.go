@@ -15,6 +15,7 @@
 package main
 
 import (
+	"context"
 	goflag "flag"
 	"fmt"
 	"log"
@@ -33,6 +34,7 @@ import (
 	flag "github.com/spf13/pflag"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
+	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	crlog "sigs.k8s.io/controller-runtime/pkg/log"
@@ -46,7 +48,7 @@ import (
 var logger = crlog.Log.WithName("setup")
 
 func main() {
-	stop := signals.SetupSignalHandler()
+	ctx := signals.SetupSignalHandler()
 
 	var enablePprof bool
 	var pprofPort int
@@ -80,39 +82,56 @@ func main() {
 		log.Fatal(err)
 	}
 
-	opts := manager.Options{}
+	deletionDefender := &DeletionDefender{
+		RESTConfig: cfg,
+	}
+
+	if err := deletionDefender.Run(ctx); err != nil {
+		log.Fatal(err)
+	}
+}
+
+type DeletionDefender struct {
+	RESTConfig *rest.Config
+
+	ManagerOptions manager.Options
+}
+
+func (d *DeletionDefender) Run(ctx context.Context) error {
+	opts := d.ManagerOptions
+
 	// WARNING: It is CRITICAL that we do not use a cache for the client for the deletion defender.
 	// Doing so could give us stale reads when checking the deletion timestamp of CRDs, negating
 	// the Kubernetes API Server's strong consistency guarantees.
 	nocache.TurnOffAllCaching(&opts)
 
 	// Create a new Manager to provide shared dependencies and start components
-	mgr, err := manager.New(cfg, opts)
+	mgr, err := manager.New(d.RESTConfig, opts)
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("creating controller manager: %w", err)
 	}
 
 	// Setup Scheme for all resources
 	apis.AddToSchemes = append(apis.AddToSchemes, apiextensions.SchemeBuilder.AddToScheme)
 	if err := apis.AddToScheme(mgr.GetScheme()); err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("adding to scheme: %w", err)
 	}
 
 	// Register the registration controller, which will dynamically create controllers for
 	// all our resources.
 	if err := registration.AddDeletionDefender(mgr, &controller.Deps{}); err != nil {
-		log.Fatal(err, "error adding registration controller")
+		return fmt.Errorf("error adding registration controller: %w", err)
 	}
 
 	// Create a client that reads and writes directly from the server without object caches.
 	// We want to use a no-cache client for creating/updating the cert secret. With a cached client,
 	// it requires list privilege for the secret type.
-	nocacheClient, err := client.New(cfg, client.Options{})
+	nocacheClient, err := client.New(d.RESTConfig, client.Options{})
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("creating no-cache client: %w", err)
 	}
-	if err := webhook.RegisterAbandonOnUninstallWebhook(mgr, nocacheClient); err != nil {
-		log.Fatal(err, "error adding the abandon on uninstall webhook")
+	if err := webhook.RegisterAbandonOnUninstallWebhook(ctx, mgr, nocacheClient); err != nil {
+		return fmt.Errorf("error adding the abandon on uninstall webhook: %w", err)
 	}
 
 	// Set up the HTTP server for the readiness probe
@@ -120,8 +139,11 @@ func main() {
 	ready.SetContainerAsReady()
 	log.Println("Container is ready.")
 
-	log.Println("Starting the Cmd.")
+	log.Println("Starting the deletion defender controllers.")
 
-	// Start the Cmd
-	log.Fatal(mgr.Start(stop))
+	// run the manager until the context is canceled
+	if err := mgr.Start(ctx); err != nil {
+		return fmt.Errorf("running controller manager: %w", err)
+	}
+	return nil
 }
