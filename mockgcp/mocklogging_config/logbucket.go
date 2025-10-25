@@ -16,7 +16,7 @@
 // proto.service: google.logging.v2.ConfigServiceV2
 // proto.message: google.logging.v2.LogBucket
 
-package mocklogging
+package mocklogging_config
 
 import (
 	"context"
@@ -107,7 +107,7 @@ func (s *configServiceV2) GetBucket(ctx context.Context, req *pb.GetBucketReques
 	obj := &pb.LogBucket{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Bucket `%s` does not exist", name.BucketName)
+			return nil, status.Errorf(codes.NotFound, "Bucket `%s` in location `%s` does not exist", name.BucketName, name.location)
 		}
 		return nil, err
 	}

@@ -1,0 +1,5 @@
+- exec: gcloud logging buckets create test-bucket-${uniqueId} --location=global --description="Initial description" --project=${projectId}
+- exec: gcloud logging buckets list --location=global --project=${projectId}
+- exec: gcloud logging buckets describe test-bucket-${uniqueId} --location=global --project=${projectId}
+- exec: gcloud logging buckets update test-bucket-${uniqueId} --location=global --description="Updated description" --project=${projectId}
+- exec: gcloud logging buckets delete test-bucket-${uniqueId} --location=global --project=${projectId}

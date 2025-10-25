@@ -15,8 +15,6 @@
 package logging
 
 import (
-	"strings"
-
 	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
 
 	pb "cloud.google.com/go/logging/apiv2/loggingpb"
@@ -49,10 +47,18 @@ func LoggingLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.Logg
 	}
 	out := &krm.LoggingLinkSpec{}
 	name := in.GetName()
-	resourceID := name[strings.LastIndex(name, "/")+1:]
+
+	parent, resourceID, err := krm.ParseLinkExternal(name)
+	if err != nil {
+		mapCtx.Errorf("error parsing link external %s: %w", name, err)
+		return nil
+	}
+
 	out.ResourceID = direct.LazyPtr(resourceID)
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.LoggingLogBucketRef = LoggingLinkSpec_LoggingLogBucketRef_FromProto(mapCtx, resourceID)
+	out.LoggingLogBucketRef = &loggingv1beta1.LoggingLogBucketRef{
+		External: parent.String(),
+	}
 	return out
 }
 func LoggingLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkSpec) *pb.Link {
