@@ -46,8 +46,8 @@ func generateService(name string, selector map[string]string) *corev1.Service {
 			Selector: selector,
 			Ports: []corev1.ServicePort{
 				{
-					Port:       ServicePort,
-					TargetPort: intstr.IntOrString{Type: intstr.Int, IntVal: ServicePort},
+					Port:       int32(ServicePort),
+					TargetPort: intstr.IntOrString{Type: intstr.Int, IntVal: int32(ServicePort)},
 				},
 			},
 		},
