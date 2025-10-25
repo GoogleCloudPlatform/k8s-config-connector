@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1alpha1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -36,7 +36,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.DocumentAIProcessorGVK, NewProcessorModel)
+	registry.RegisterModel(krmv1beta1.DocumentAIProcessorGVK, NewProcessorModel)
 }
 
 func NewProcessorModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -63,12 +63,12 @@ func (m *modelProcessor) client(ctx context.Context) (*gcp.DocumentProcessorClie
 }
 
 func (m *modelProcessor) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	obj := &krm.DocumentAIProcessor{}
+	obj := &krmv1beta1.DocumentAIProcessor{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewProcessorIdentity(ctx, reader, obj)
+	id, err := krmv1beta1.NewProcessorIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -91,9 +91,9 @@ func (m *modelProcessor) AdapterForURL(ctx context.Context, url string) (directb
 }
 
 type ProcessorAdapter struct {
-	id        *krm.ProcessorIdentity
+	id        *krmv1beta1.ProcessorIdentity
 	gcpClient *gcp.DocumentProcessorClient
-	desired   *krm.DocumentAIProcessor
+	desired   *krmv1beta1.DocumentAIProcessor
 	actual    *pb.Processor
 }
 
@@ -127,7 +127,7 @@ func (a *ProcessorAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := DocumentAIProcessorSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
+	resource := DocumentAIProcessorSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -142,8 +142,8 @@ func (a *ProcessorAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	}
 	log.V(2).Info("successfully created Processor", "name", a.id)
 
-	status := &krm.DocumentAIProcessorStatus{}
-	status.ObservedState = DocumentAIProcessorObservedState_v1alpha1_FromProto(mapCtx, created)
+	status := &krmv1beta1.DocumentAIProcessorStatus{}
+	status.ObservedState = DocumentAIProcessorObservedState_v1beta1_FromProto(mapCtx, created)
 	// TODO: is the default version also an output field?
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -158,7 +158,7 @@ func (a *ProcessorAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	log.V(2).Info("updating Processor", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := DocumentAIProcessorSpec_v1alpha1_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desiredPb := DocumentAIProcessorSpec_v1beta1_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -178,8 +178,8 @@ func (a *ProcessorAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	// ONLY allow updating DefaultProcessorVersion
 	if desiredPb.DefaultProcessorVersion == a.actual.DefaultProcessorVersion {
 		log.V(2).Info("no field needs update", "name", a.id.String())
-		status := &krm.DocumentAIProcessorStatus{}
-		status.ObservedState = DocumentAIProcessorObservedState_v1alpha1_FromProto(mapCtx, a.actual)
+		status := &krmv1beta1.DocumentAIProcessorStatus{}
+		status.ObservedState = DocumentAIProcessorObservedState_v1beta1_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -206,8 +206,8 @@ func (a *ProcessorAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		return fmt.Errorf("getting updated Processor %s: %w", a.id.String(), err)
 	}
 
-	status := &krm.DocumentAIProcessorStatus{}
-	status.ObservedState = DocumentAIProcessorObservedState_v1alpha1_FromProto(mapCtx, updated)
+	status := &krmv1beta1.DocumentAIProcessorStatus{}
+	status.ObservedState = DocumentAIProcessorObservedState_v1beta1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -221,9 +221,9 @@ func (a *ProcessorAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.DocumentAIProcessor{}
+	obj := &krmv1beta1.DocumentAIProcessor{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(DocumentAIProcessorSpec_v1alpha1_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(DocumentAIProcessorSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -235,7 +235,7 @@ func (a *ProcessorAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 	}
 
 	u.SetName(a.actual.Name)
-	u.SetGroupVersionKind(krm.DocumentAIProcessorGVK)
+	u.SetGroupVersionKind(krmv1beta1.DocumentAIProcessorGVK)
 
 	u.Object = uObj
 	return u, nil
