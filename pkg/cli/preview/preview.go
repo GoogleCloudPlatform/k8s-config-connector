@@ -56,6 +56,10 @@ type PreviewInstanceOptions struct {
 	// UpstreamGCPHTTPClient is the http client to use when talking to upstream (real) GCP
 	// (Upstream GCP may be mocked in tests)
 	UpstreamGCPHTTPClient *http.Client
+
+	// Maximum GCP GET calls allowed per resource
+	// If not set, default to 0 meaning unlimited GET calls allowed.
+	MaxGcpGETCall int
 }
 
 // NewPreviewInstance creates a new PreviewInstance.
@@ -72,7 +76,7 @@ func NewPreviewInstance(recorder *Recorder, options PreviewInstanceOptions) (*Pr
 		return nil, err
 	}
 
-	hookGCP := newInterceptingGCPClient(upstreamGCPHTTPClient, authorization)
+	hookGCP := newInterceptingGCPClient(upstreamGCPHTTPClient, authorization, options.MaxGcpGETCall)
 
 	i := &PreviewInstance{}
 	i.hookGCP = hookGCP
