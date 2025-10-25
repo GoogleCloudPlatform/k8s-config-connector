@@ -1,0 +1,6 @@
+
+- exec: gcloud logging buckets create bucket${uniqueId} --location=global --project=${projectId} --enable-analytics
+- exec: gcloud logging links create link${uniqueId} --bucket=bucket${uniqueId} --location=global --project=${projectId}
+- exec: gcloud logging links describe link${uniqueId} --bucket=bucket${uniqueId} --location=global --project=${projectId}
+- exec: gcloud logging links delete link${uniqueId} --bucket=bucket${uniqueId} --location=global --project=${projectId}
+- exec: gcloud logging buckets delete bucket${uniqueId} --location=global --project=${projectId}
