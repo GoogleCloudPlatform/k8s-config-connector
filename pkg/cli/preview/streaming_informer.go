@@ -45,6 +45,12 @@ type streamingInformer struct {
 	objects   objects
 }
 
+// AddEventHandlerWithOptions implements cache.Informer.
+func (i *streamingInformer) AddEventHandlerWithOptions(handler toolscache.ResourceEventHandler, options toolscache.HandlerOptions) (toolscache.ResourceEventHandlerRegistration, error) {
+	// todo kcc team: implement this
+	panic("AddEventHandlerWithOptions unimplemented")
+}
+
 // objects is a map of objects by their namespaced name.
 type objects struct {
 	mutex sync.Mutex

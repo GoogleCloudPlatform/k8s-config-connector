@@ -27,7 +27,6 @@ import (
 	controllermetrics "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/ready"
@@ -35,7 +34,6 @@ import (
 
 	flag "github.com/spf13/pflag"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
-	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	crlog "sigs.k8s.io/controller-runtime/pkg/log"
@@ -62,6 +60,7 @@ func main() {
 		pprofPort                int
 		rateLimitQps             float32
 		rateLimitBurst           int
+		multiClusterElection     bool
 	)
 	flag.StringVar(&prometheusScrapeEndpoint, "prometheus-scrape-endpoint", ":8888", "configure the Prometheus scrape endpoint; :8888 as default")
 	flag.BoolVar(&controllermetrics.ResourceNameLabel, "resource-name-label", false, "option to enable the resource name label on some Prometheus metrics; false by default")
@@ -72,6 +71,7 @@ func main() {
 	flag.IntVar(&pprofPort, "pprof-port", 6060, "The port that the pprof server binds to if enabled.")
 	flag.Float32Var(&rateLimitQps, "qps", 20.0, "The client-side token bucket rate limit qps.")
 	flag.IntVar(&rateLimitBurst, "burst", 30, "The client-side token bucket rate limit burst.")
+	flag.BoolVar(&multiClusterElection, "multi-cluster-election", false, "Enable multi-cluster leader election.")
 	profiler.AddFlag(flag.CommandLine)
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	flag.Parse()
@@ -106,7 +106,19 @@ func main() {
 	// Set client site rate limiter to optimize the configconnector re-reconciliation performance.
 	ratelimiter.SetMasterRateLimiter(restCfg, rateLimitQps, rateLimitBurst)
 	logger.Info("Creating the manager")
-	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject)
+	controllersCfg := kccmanager.Config{
+		ManagerOptions: manager.Options{
+			Cache: cache.Options{
+				DefaultNamespaces: map[string]cache.Config{
+					scopedNamespace: {},
+				},
+			},
+		},
+	}
+	controllersCfg.UserProjectOverride = userProjectOverride
+	controllersCfg.BillingProject = billingProject
+	controllersCfg.StateIntoSpecDefaultValue = stateintospec.StateIntoSpecDefaultValueV1Beta1
+	mgr, err := kccmanager.New(ctx, restCfg, controllersCfg)
 	if err != nil {
 		logging.Fatal(err, "error creating the manager")
 	}
@@ -142,28 +154,12 @@ func main() {
 	logger.Info("Starting the Cmd.")
 
 	// Start the Cmd
-	logging.Fatal(mgr.Start(stop), "error during manager execution.")
-}
-
-func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string) (manager.Manager, error) {
-	krmtotf.SetUserAgentForTerraformProvider()
-	controllersCfg := kccmanager.Config{
-		ManagerOptions: manager.Options{
-			Cache: cache.Options{
-				DefaultNamespaces: map[string]cache.Config{
-					scopedNamespace: {},
-				},
-			},
-		},
+	mgrErr := mgr.Start(stop)
+	if mgrErr != nil {
+		logging.Fatal(mgrErr, "error during manager execution.")
+	} else {
+		// err is nil
+		// todo acpana add more defense in depth here
+		logging.ExitInfo("might've lost leader election")
 	}
-
-	controllersCfg.UserProjectOverride = userProjectOverride
-	controllersCfg.BillingProject = billingProject
-	// TODO(b/320784855): StateIntoSpecDefaultValue and StateIntoSpecUserOverride values should come from the flags.
-	controllersCfg.StateIntoSpecDefaultValue = stateintospec.StateIntoSpecDefaultValueV1Beta1
-	mgr, err := kccmanager.New(ctx, restCfg, controllersCfg)
-	if err != nil {
-		return nil, fmt.Errorf("error creating manager: %w", err)
-	}
-	return mgr, nil
 }
