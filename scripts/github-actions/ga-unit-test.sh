@@ -24,9 +24,6 @@ echo "Downloading envtest assets..."
 export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
 
 source ${REPO_ROOT}/scripts/shared-vars-public.sh
-source ${REPO_ROOT}/scripts/fetch_ext_bins.sh && \
-	fetch_tools && \
-	setup_envs
 
 echo "Running unit tests..."
 # A dummy default project id is required for a few unit test cases
