@@ -20,7 +20,7 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/operator
 
-source ./scripts/fetch_ext_bins.sh && \
-	fetch_tools && \
-	setup_envs
+echo "Downloading envtest assets..."
+export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
+
 make test

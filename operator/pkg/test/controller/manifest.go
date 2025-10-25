@@ -340,6 +340,10 @@ spec:
       labels:
         cnrm.cloud.google.com/component: cnrm-controller-manager
         cnrm.cloud.google.com/system: "true"
+    spec:
+      containers:
+      - name: manager
+        image: controller:latest
 `}
 
 var ClusterModeOnlyGCPComponents = []string{`
@@ -388,6 +392,9 @@ spec:
       - name: gcp-service-account
         secret:
           secretName: gcp-key
+      containers:
+      - name: manager
+        image: controller:latest
 `}
 
 var PerNamespaceControllerManagerPod = `apiVersion: v1

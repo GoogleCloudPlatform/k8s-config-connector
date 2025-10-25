@@ -110,6 +110,10 @@ spec:
        cnrm.cloud.google.com/component: cnrm-controller-manager
        cnrm.cloud.google.com/scoped-namespace: foo-ns
        cnrm.cloud.google.com/system: "true"
+   spec:
+     containers:
+     - name: manager
+       image: controller:latest
 `},
 		},
 		{
@@ -174,6 +178,10 @@ spec:
        cnrm.cloud.google.com/component: cnrm-controller-manager
        cnrm.cloud.google.com/scoped-namespace: t1234-tenant0-provider
        cnrm.cloud.google.com/system: "true"
+   spec:
+     containers:
+     - name: manager
+       image: controller:latest
 `},
 		},
 	}
