@@ -66,3 +66,16 @@ func (p *Proto) SortedFiles() []protoreflect.FileDescriptor {
 func (p *Proto) Files() *protoregistry.Files {
 	return p.files
 }
+
+func (p *Proto) GetFileDescriptorByPackage(protoPackage string) ([]protoreflect.FileDescriptor, error) {
+	var files []protoreflect.FileDescriptor
+	for _, f := range p.SortedFiles() {
+		if string(f.Package()) == protoPackage {
+			files = append(files, f)
+		}
+	}
+	if len(files) == 0 {
+		return nil, fmt.Errorf("could not find FileDescriptor for package %q", protoPackage)
+	}
+	return files, nil
+}

@@ -1557,6 +1557,7 @@
 [missing_field] crd=firestorebackupschedules.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.databaseRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=firestorebackupschedules.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.retention" is not set in unstructured objects
 [missing_field] crd=firestorebackupschedules.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.weeklyRecurrence.day" is not set in unstructured objects
+[missing_field] crd=firestoredocuments.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.fields" is not set in unstructured objects
 [missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.collectionGroup" is not set in unstructured objects
 [missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.indexes[].apiScope" is not set in unstructured objects
 [missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.indexes[].density" is not set in unstructured objects

@@ -16,6 +16,7 @@
 // krm.group: firestore.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.firestore.admin.v1
+// resource: FirestoreDocument:google.firestore.v1.Document
 // resource: FirestoreField:Field
 // resource: FirestoreBackupSchedule:BackupSchedule
 
@@ -77,6 +78,92 @@ type WeeklyRecurrence struct {
 	//  DAY_OF_WEEK_UNSPECIFIED is not allowed.
 	// +kcc:proto:field=google.firestore.admin.v1.WeeklyRecurrence.day
 	Day *string `json:"day,omitempty"`
+}
+
+// +kcc:proto=google.firestore.v1.ArrayValue
+type ArrayValue struct {
+	// Values in the array.
+	// +kcc:proto:field=google.firestore.v1.ArrayValue.values
+	Values []Value `json:"values,omitempty"`
+}
+
+// +kcc:proto=google.firestore.v1.MapValue
+type MapValue struct {
+
+	// TODO: unsupported map type with key string and value message
+
+}
+
+// +kcc:proto=google.firestore.v1.Value
+type Value struct {
+	// A null value.
+	// +kcc:proto:field=google.firestore.v1.Value.null_value
+	NullValue *string `json:"nullValue,omitempty"`
+
+	// A boolean value.
+	// +kcc:proto:field=google.firestore.v1.Value.boolean_value
+	BooleanValue *bool `json:"booleanValue,omitempty"`
+
+	// An integer value.
+	// +kcc:proto:field=google.firestore.v1.Value.integer_value
+	IntegerValue *int64 `json:"integerValue,omitempty"`
+
+	// A double value.
+	// +kcc:proto:field=google.firestore.v1.Value.double_value
+	DoubleValue *float64 `json:"doubleValue,omitempty"`
+
+	// A timestamp value.
+	//
+	//  Precise only to microseconds. When stored, any additional precision is
+	//  rounded down.
+	// +kcc:proto:field=google.firestore.v1.Value.timestamp_value
+	TimestampValue *string `json:"timestampValue,omitempty"`
+
+	// A string value.
+	//
+	//  The string, represented as UTF-8, must not exceed 1 MiB - 89 bytes.
+	//  Only the first 1,500 bytes of the UTF-8 representation are considered by
+	//  queries.
+	// +kcc:proto:field=google.firestore.v1.Value.string_value
+	StringValue *string `json:"stringValue,omitempty"`
+
+	// A bytes value.
+	//
+	//  Must not exceed 1 MiB - 89 bytes.
+	//  Only the first 1,500 bytes are considered by queries.
+	// +kcc:proto:field=google.firestore.v1.Value.bytes_value
+	BytesValue []byte `json:"bytesValue,omitempty"`
+
+	// A reference to a document. For example:
+	//  `projects/{project_id}/databases/{database_id}/documents/{document_path}`.
+	// +kcc:proto:field=google.firestore.v1.Value.reference_value
+	ReferenceValue *string `json:"referenceValue,omitempty"`
+
+	// A geo point value representing a point on the surface of Earth.
+	// +kcc:proto:field=google.firestore.v1.Value.geo_point_value
+	GeoPointValue *LatLng `json:"geoPointValue,omitempty"`
+
+	// An array value.
+	//
+	//  Cannot directly contain another array value, though can contain a
+	//  map which contains another array.
+	// +kcc:proto:field=google.firestore.v1.Value.array_value
+	ArrayValue *ArrayValue `json:"arrayValue,omitempty"`
+
+	// A map value.
+	// +kcc:proto:field=google.firestore.v1.Value.map_value
+	MapValue *MapValue `json:"mapValue,omitempty"`
+}
+
+// +kcc:proto=google.type.LatLng
+type LatLng struct {
+	// The latitude in degrees. It must be in the range [-90.0, +90.0].
+	// +kcc:proto:field=google.type.LatLng.latitude
+	Latitude *float64 `json:"latitude,omitempty"`
+
+	// The longitude in degrees. It must be in the range [-180.0, +180.0].
+	// +kcc:proto:field=google.type.LatLng.longitude
+	Longitude *float64 `json:"longitude,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.firestore.admin.v1.Field.TtlConfig
