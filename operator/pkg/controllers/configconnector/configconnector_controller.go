@@ -194,10 +194,11 @@ func (r *Reconciler) handleReconcileFailed(ctx context.Context, nn types.Namespa
 	}
 	msg := fmt.Errorf("error during reconciliation: %w", reconcileErr).Error()
 	r.recordEvent(cc, corev1.EventTypeWarning, k8s.UpdateFailed, msg)
-	cc.SetCommonStatus(v1alpha1.CommonStatus{
-		Healthy: false,
-		Errors:  []string{msg},
-	})
+	status := cc.GetCommonStatus()
+	status.Healthy = false
+	status.Errors = []string{msg}
+	status.ObservedGeneration = cc.Generation
+	cc.SetCommonStatus(status)
 	return r.updateConfigConnectorStatus(ctx, cc)
 }
 
@@ -211,10 +212,11 @@ func (r *Reconciler) handleReconcileSucceeded(ctx context.Context, nn types.Name
 		return fmt.Errorf("error getting ConfigConnector object %v: %w", nn.Name, err)
 	}
 	r.recordEvent(cc, corev1.EventTypeNormal, k8s.UpToDate, k8s.UpToDateMessage)
-	cc.SetCommonStatus(v1alpha1.CommonStatus{
-		Healthy: true,
-		Errors:  []string{},
-	})
+	status := cc.GetCommonStatus()
+	status.Healthy = true
+	status.Errors = []string{}
+	status.ObservedGeneration = cc.Generation
+	cc.SetCommonStatus(status)
 	return r.updateConfigConnectorStatus(ctx, cc)
 }
 
