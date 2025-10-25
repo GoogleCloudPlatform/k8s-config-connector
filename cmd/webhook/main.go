@@ -24,6 +24,7 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/contexts"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
@@ -42,7 +43,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	crlog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
-	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
 	crwebhook "sigs.k8s.io/controller-runtime/pkg/webhook"
 
 	// Ensure built-in types are registered.
@@ -52,7 +52,7 @@ import (
 var logger = crlog.Log.WithName("setup")
 
 func main() {
-	stop := signals.SetupSignalHandler()
+	ctx := contexts.SetupSignalHandler()
 
 	var enablePprof bool
 	var pprofPort int
@@ -160,7 +160,7 @@ func main() {
 	log.Printf("Starting the Cmd.")
 
 	// Start the Cmd
-	log.Fatal(mgr.Start(stop))
+	log.Fatal(mgr.Start(ctx))
 }
 
 func waitForHTTPServerToAcceptRequests(host string, port int, timeout time.Duration) error {
