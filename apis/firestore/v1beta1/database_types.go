@@ -42,6 +42,10 @@ type FirestoreDatabaseSpec struct {
 	// Whether to enable the PITR feature on this database.
 	// See https://cloud.google.com/firestore/docs/reference/rest/v1/projects.databases#pointintimerecoveryenablement for more info.
 	PointInTimeRecoveryEnablement *string `json:"pointInTimeRecoveryEnablement,omitempty"`
+
+	// The App Engine integration mode to use for this database.
+	// See https://cloud.google.com/firestore/docs/reference/rest/v1/projects.databases#appengineintegrationmode for more info.
+	AppEngineIntegrationMode *string `json:"appEngineIntegrationMode,omitempty"`
 }
 
 // FirestoreDatabaseStatus defines the config connector machine state of FirestoreDatabase
