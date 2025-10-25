@@ -1,0 +1,108 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+Object:
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeRegionNetworkEndpointGroup
+  metadata:
+    annotations:
+      cnrm.cloud.google.com/management-conflict-prevention-policy: none
+      cnrm.cloud.google.com/project-id: anz-x-apps-platdev-99bb42
+      cnrm.cloud.google.com/state-into-spec: absent
+      utils.platform.x.anz/owner: '{"apiVersion":"netoperator.platform.x.anz/v1alpha1","kind":"IngressRoute","name":"chaosmonkey-ilb-failing-route","namespace":"platform-kcc-apps-platdev-99bb42"}'
+    creationTimestamp: "2025-05-23T02:01:28Z"
+    finalizers:
+    - cnrm.cloud.google.com/finalizer
+    - cnrm.cloud.google.com/deletion-defender
+    generation: 1
+    labels:
+      app.kubernetes.io/managed-by: netoperator
+      ci_group: platform
+      managed-by: netoperator
+      netoperator.platform.x.anz/controller: ingressroute
+      x.anz.com/asset: platform
+    managedFields:
+    - apiVersion: compute.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:cnrm.cloud.google.com/project-id: {}
+            f:utils.platform.x.anz/owner: {}
+          f:labels:
+            .: {}
+            f:app.kubernetes.io/managed-by: {}
+            f:managed-by: {}
+            f:netoperator.platform.x.anz/controller: {}
+        f:spec:
+          .: {}
+          f:cloudRun:
+            .: {}
+            f:serviceRef:
+              .: {}
+              f:external: {}
+          f:description: {}
+          f:networkEndpointType: {}
+          f:region: {}
+          f:resourceID: {}
+      manager: main
+      operation: Update
+      time: "2025-05-23T02:01:28Z"
+    - apiVersion: compute.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:cnrm.cloud.google.com/state-into-spec: {}
+          f:finalizers:
+            .: {}
+            v:"cnrm.cloud.google.com/deletion-defender": {}
+            v:"cnrm.cloud.google.com/finalizer": {}
+      manager: cnrm-controller-manager
+      operation: Update
+      time: "2025-05-23T02:01:40Z"
+    - apiVersion: compute.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:status:
+          .: {}
+          f:conditions: {}
+          f:observedGeneration: {}
+          f:selfLink: {}
+      manager: cnrm-controller-manager
+      operation: Update
+      subresource: status
+      time: "2025-05-23T02:01:40Z"
+    name: chaosmonkey-ilb-failing-route-australia-southeast2
+    namespace: platform-kcc-apps-platdev-99bb42
+    resourceVersion: "1880859600"
+    uid: ba139c88-1f57-4fc4-9682-c599f6f365e6
+  spec:
+    cloudRun:
+      serviceRef:
+        external: helloworld-multi-region-mel
+    description: NEG for chaosmonkey-ilb-failing-route
+    networkEndpointType: SERVERLESS
+    region: australia-southeast2
+    resourceID: chaosmonkey-ilb-failing-route-australia-southeast2
+  status:
+    conditions:
+    - lastTransitionTime: "2025-05-23T02:01:40Z"
+      message: The resource is up to date
+      reason: UpToDate
+      status: "True"
+      type: Ready
+    observedGeneration: 1
+    selfLink: https://www.googleapis.com/compute/v1/projects/anz-x-apps-platdev-99bb42/regions/australia-southeast2/networkEndpointGroups/chaosmonkey-ilb-failing-route-australia-southeast2
