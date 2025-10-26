@@ -37,7 +37,7 @@ type DiscoveryEngineEngineSpec struct {
 	// same Collection can be associated here.
 	// Note that when used in CreateEngineRequest, one DataStore must be
 	// provided as the system will use it for necessary initializations.
-	DataStoreRefs []*DiscoveryEngineDataStoreRef `json:"dataStoreRefs,omitempty"`
+	DataStoreRefs []DiscoveryEngineDataStoreRef `json:"dataStoreRefs,omitempty"`
 
 	// Required. The solutions of the engine.
 	// +required
