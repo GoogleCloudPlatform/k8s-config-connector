@@ -156,6 +156,7 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 		// https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/3530c83a5e0d331640ec2160675d80336fad9c53/config/servicemappings/secretmanager.yaml#L79
 		break
 	default:
+		h.Logf("exporting resource %q", exportURI)
 		if err := export.Execute(h.Ctx, &exportParams); err != nil {
 			h.Errorf("error from export.Execute of %q: %v", exportURI, err)
 			return ""

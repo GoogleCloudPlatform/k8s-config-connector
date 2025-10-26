@@ -59,6 +59,39 @@ spec:
           spec:
             description: FirestoreDocumentSpec defines the desired state of FirestoreDocument
             properties:
+              collection:
+                description: Collection is the identity of the firestore collection
+                  in which to create the document.
+                type: string
+              databaseRef:
+                description: DatabaseRef references the FirestoreDatabase in which
+                  to create the document.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed Firestore database
+                      resource. Should be in the format "projects/{{projectID}}/databases/{{databaseID}}".
+                    type: string
+                  name:
+                    description: The name of a FirestoreDatabase resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a FirestoreDatabase resource.
+                    type: string
+                type: object
               fields:
                 additionalProperties:
                   x-kubernetes-preserve-unknown-fields: true
@@ -69,6 +102,8 @@ spec:
                 description: The FirestoreDocument name. If not given, the metadata.name
                   will be used.
                 type: string
+            required:
+            - databaseRef
             type: object
           status:
             description: FirestoreDocumentStatus defines the config connector machine
