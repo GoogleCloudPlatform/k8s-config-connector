@@ -38,6 +38,17 @@ if [[ "${TEST_SPEC}" == tests/e2e/testdata/scenarios/* ]]; then
   export RUN_TESTS
   echo "Running scenario tests: ${RUN_TESTS}"
   ./dev/tasks/run-e2e
+  exit $?
+fi
+
+# If the test starts with "pkg/test/resourcefixture/testdata", run that as a scenario test
+if [[ "${TEST_SPEC}" == pkg/test/resourcefixture/testdata/* ]]; then
+  # Trim everything but the last component
+  RUN_TESTS=TestAllInSeries/${TEST_SPEC##*/}
+  export RUN_TESTS
+  echo "Running scenario tests: ${RUN_TESTS}"
+  ./dev/tasks/run-e2e
+  exit $?
 fi
 
 echo "Unknown test spec: ${TEST_SPEC}"
