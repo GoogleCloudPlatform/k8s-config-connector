@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -25,6 +26,13 @@ var FirestoreDocumentGVK = GroupVersion.WithKind("FirestoreDocument")
 // FirestoreDocumentSpec defines the desired state of FirestoreDocument
 // +kcc:spec:proto=google.firestore.v1.Document
 type FirestoreDocumentSpec struct {
+	// DatabaseRef references the FirestoreDatabase in which to create the document.
+	// +required
+	DatabaseRef v1beta1.FirestoreDatabaseRef `json:"databaseRef"`
+
+	// Collection is the identity of the firestore collection in which to create the document.
+	Collection *string `json:"collection,omitempty"`
+
 	// The FirestoreDocument name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
