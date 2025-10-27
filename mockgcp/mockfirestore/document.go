@@ -169,7 +169,6 @@ func (n *documentName) String() string {
 func (s *firestoreServer) parseDocumentName(name string) (*documentName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 7 && tokens[0] == "projects" && tokens[2] == "databases" && tokens[4] == "documents" {
-
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
