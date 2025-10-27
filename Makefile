@@ -258,7 +258,7 @@ ensure:
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
-ready-pr: lint manifests generate-resource-report ensure fmt
+ready-pr: lint api-checks manifests resource-report ensure fmt
 
 # Should run all needed commands to prepare a release.
 .PHONY: release-check
@@ -399,6 +399,10 @@ generate-types:
 	find config -name "*.yaml" -type f | xargs -I {} go run . generate-types --config {}
 	dev/tasks/fix-gofmt
 
-.PHONY: generate-resource-report
-generate-resource-report:
+.PHONY: resource-report
+resource-report:
 	./dev/tasks/generate-resource-report
+
+.PHONY: api-checks
+api-checks:
+	go test ./tests/apichecks/...
