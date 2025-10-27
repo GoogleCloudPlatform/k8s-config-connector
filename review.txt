@@ -1,0 +1,5 @@
+LGTM with nits.
+
+The duplicated code in 'pkg/controller/direct/iam/iambindings.go' and 'pkg/controller/iam/partialpolicy/bindings.go' should be refactored into a common package. This will make the code easier to maintain.
+
+Also, the 'sortBindingSlice' function in 'pkg/controller/direct/iam/iambindings.go' is more robust than the one in 'pkg/controller/iam/partialpolicy/bindings.go'. The common implementation should use the more robust version.

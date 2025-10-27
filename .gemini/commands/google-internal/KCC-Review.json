@@ -1,0 +1,65 @@
+{
+  "project_name": "k8s-config-connector",
+  "guidelines": {
+    "clarity": [
+      {
+        "title": "Prefer Explicit over Implicit",
+        "description": "Avoid 'magic' or overly complex solutions that rely on reflection or other implicit mechanisms. Favor explicit and straightforward code that is easy to follow and understand.",
+        "example": "Instead of using reflection to find and validate fields in a generic way, consider code generation or more direct validation logic for each resource type."
+      },
+      {
+        "title": "Clear and Consistent Naming",
+        "description": "Use clear and consistent naming conventions. For example, prefer user-friendly and predictable identifiers like `projectId` over server-generated, opaque ones like `projectNumber`, especially in user-facing APIs and test data.",
+        "example": "In test files and resource definitions, use `${projectId}` instead of `${projectNumber}`."
+      },
+      {
+        "title": "Write Clear Comments",
+        "description": "Ensure that comments are clear, concise, and not contradictory. Comments should explain the 'why' behind the code, not just the 'what'.",
+        "example": "If a comment explains the purpose of a function, make sure it accurately reflects the function's behavior."
+      }
+    ],
+    "maintainability": [
+      {
+        "title": "Small, Focused Pull Requests",
+        "description": "Keep pull requests small and focused on a single logical change. This makes them easier to review, understand, and merge.",
+        "example": "If you are making multiple independent changes, submit them as separate PRs."
+      },
+      {
+        "title": "Automate Code Formatting",
+        "description": "Use tools like `goimports` to automatically format code and manage imports. This ensures consistency and reduces the cognitive load on reviewers.",
+        "example": "Integrate `goimports` into the code generation process to ensure all generated code is properly formatted."
+      },
+      {
+        "title": "Reduce Boilerplate",
+        "description": "Strive to reduce boilerplate code. If you find yourself repeating the same code in multiple places, consider creating a shared function or using a more abstract approach.",
+        "example": "If multiple code generation scripts have the same setup and teardown logic, extract that logic into a shared library."
+      },
+      {
+        "title": "Use Shared Functions",
+        "description": "To avoid code duplication, use shared functions for common logic. This improves maintainability and reduces the chance of bugs.",
+        "example": "If the `Create` and `Update` functions for a resource share a lot of code, extract the common logic into a separate function."
+      }
+    ],
+    "code_organization": [
+      {
+        "title": "Clean API Design",
+        "description": "Pay attention to the design of your APIs. They should be clean, intuitive, and easy to use.",
+        "example": "When adding a new version of a resource, ensure the new version is well-structured and follows the existing conventions."
+      }
+    ],
+    "correctness": [
+      {
+        "title": "Attention to Detail",
+        "description": "Pay close attention to the details of your implementation. Small mistakes can have a big impact.",
+        "example": "Use the most precise function for the job, for example, `strings.HasSuffix` instead of `strings.Contains` when checking for a suffix."
+      },
+      {
+        "title": "Thorough Testing",
+        "description": "Ensure that your changes are well-tested. For beta and v1 resources, all fields should be covered by tests.",
+        "example": "When adding a new field to a resource, add a test case that covers that field."
+      }
+    ],
+    "security": [],
+    "performance": []
+  }
+}
