@@ -28,6 +28,7 @@ import (
 	apiv1 "cloud.google.com/go/firestore/apiv1"
 	pb "cloud.google.com/go/firestore/apiv1/firestorepb"
 
+	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -88,9 +89,12 @@ func (m *firestoreDocumentModel) AdapterForURL(ctx context.Context, url string) 
 
 	id := &krm.FirestoreDocumentIdentity{}
 	if err := id.FromExternal(url); err != nil {
+		klog.Warningf("FirestoreDocument identity could not be parsed from url=%q: %v", url, err)
 		// Not recognized
 		return nil, nil
 	}
+
+	klog.Infof("parsed as id %v", id)
 
 	firestoreClient, err := newFirestoreClient(ctx, m.config)
 	if err != nil {
@@ -204,6 +208,8 @@ func (a *firestoreDocumentAdapter) Export(ctx context.Context) (*unstructured.Un
 	if a.actual == nil {
 		return nil, fmt.Errorf("FirestoreDocument %q not found", fqn)
 	}
+
+	klog.Infof("EXPORT OF %v", prototext.Format(a.actual))
 
 	mapCtx := &direct.MapContext{}
 	objSpec := FirestoreDocumentSpec_v1alpha1_FromProto(mapCtx, a.actual)

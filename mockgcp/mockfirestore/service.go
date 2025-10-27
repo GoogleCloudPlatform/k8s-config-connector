@@ -29,9 +29,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
-	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
-	pb_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/firestore/admin/v1"
-)
+	adminpb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
+	pb "cloud.google.com/go/firestore/apiv1/firestorepb"
+	adminpb_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/firestore/admin/v1"
+	pb_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/firestore/v1")
 
 func init() {
 	mockgcpregistry.Register(New)
@@ -59,11 +60,13 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterFirestoreAdminServer(grpcServer, &firestoreAdminServer{MockService: s})
+	adminpb.RegisterFirestoreAdminServer(grpcServer, &firestoreAdminServer{MockService: s})
+	pb.RegisterFirestoreServer(grpcServer, &firestoreServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+		adminpb_http.RegisterFirestoreAdminHandler,
 		pb_http.RegisterFirestoreAdminHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
@@ -78,4 +81,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	return mux, nil
+}
+
+// firestoreServer implements the FirestoreServer interface.
+type firestoreServer struct {
+	*MockService
+	pb.UnimplementedFirestoreServer
 }

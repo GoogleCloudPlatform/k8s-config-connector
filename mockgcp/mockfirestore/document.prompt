@@ -1,0 +1,3 @@
+// +tool:mockgcp-support
+// proto.service: google.firestore.v1.Firestore
+// proto.message: google.firestore.v1.Document
