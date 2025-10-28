@@ -26,6 +26,456 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AddHeader_FromProto(mapCtx *direct.MapContext, in *pb.AddHeader) *krm.AddHeader {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AddHeader{}
+	out.HeaderName = direct.LazyPtr(in.GetHeaderName())
+	out.HeaderValue = direct.LazyPtr(in.GetHeaderValue())
+	out.Replace = direct.LazyPtr(in.GetReplace())
+	return out
+}
+func AddHeader_ToProto(mapCtx *direct.MapContext, in *krm.AddHeader) *pb.AddHeader {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AddHeader{}
+	out.HeaderName = direct.ValueOf(in.HeaderName)
+	out.HeaderValue = direct.ValueOf(in.HeaderValue)
+	out.Replace = direct.ValueOf(in.Replace)
+	return out
+}
+func AddSignatures_FromProto(mapCtx *direct.MapContext, in *pb.AddSignatures) *krm.AddSignatures {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AddSignatures{}
+	out.Actions = direct.EnumSlice_FromProto(mapCtx, in.Actions)
+	out.Keyset = direct.LazyPtr(in.GetKeyset())
+	out.TokenTTL = direct.StringDuration_FromProto(mapCtx, in.GetTokenTtl())
+	out.TokenQueryParameter = direct.LazyPtr(in.GetTokenQueryParameter())
+	out.CopiedParameters = in.CopiedParameters
+	return out
+}
+func AddSignatures_ToProto(mapCtx *direct.MapContext, in *krm.AddSignatures) *pb.AddSignatures {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AddSignatures{}
+	out.Actions = direct.EnumSlice_ToProto[pb.SignatureAction](mapCtx, in.Actions)
+	out.Keyset = direct.ValueOf(in.Keyset)
+	out.TokenTtl = direct.StringDuration_ToProto(mapCtx, in.TokenTTL)
+	out.TokenQueryParameter = direct.ValueOf(in.TokenQueryParameter)
+	out.CopiedParameters = in.CopiedParameters
+	return out
+}
+func CDNPolicy_FromProto(mapCtx *direct.MapContext, in *pb.CdnPolicy) *krm.CDNPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CDNPolicy{}
+	out.CacheMode = direct.Enum_FromProto(mapCtx, in.GetCacheMode())
+	out.ClientTTL = direct.StringDuration_FromProto(mapCtx, in.GetClientTtl())
+	out.DefaultTTL = direct.StringDuration_FromProto(mapCtx, in.GetDefaultTtl())
+	out.MaxTTL = direct.StringDuration_FromProto(mapCtx, in.GetMaxTtl())
+	out.NegativeCaching = direct.LazyPtr(in.GetNegativeCaching())
+	// MISSING: NegativeCachingPolicy
+	out.CacheKeyPolicy = CacheKeyPolicy_FromProto(mapCtx, in.GetCacheKeyPolicy())
+	out.SignedRequestMode = direct.Enum_FromProto(mapCtx, in.GetSignedRequestMode())
+	out.SignedRequestKeyset = direct.LazyPtr(in.GetSignedRequestKeyset())
+	out.SignedTokenOptions = SignedTokenOptions_FromProto(mapCtx, in.GetSignedTokenOptions())
+	out.AddSignatures = AddSignatures_FromProto(mapCtx, in.GetAddSignatures())
+	out.SignedRequestMaximumExpirationTTL = direct.StringDuration_FromProto(mapCtx, in.GetSignedRequestMaximumExpirationTtl())
+	return out
+}
+func CDNPolicy_ToProto(mapCtx *direct.MapContext, in *krm.CDNPolicy) *pb.CdnPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CdnPolicy{}
+	out.CacheMode = direct.Enum_ToProto[pb.CacheMode](mapCtx, in.CacheMode)
+	out.ClientTtl = direct.StringDuration_ToProto(mapCtx, in.ClientTTL)
+	out.DefaultTtl = direct.StringDuration_ToProto(mapCtx, in.DefaultTTL)
+	out.MaxTtl = direct.StringDuration_ToProto(mapCtx, in.MaxTTL)
+	out.NegativeCaching = direct.ValueOf(in.NegativeCaching)
+	// MISSING: NegativeCachingPolicy
+	out.CacheKeyPolicy = CacheKeyPolicy_ToProto(mapCtx, in.CacheKeyPolicy)
+	out.SignedRequestMode = direct.Enum_ToProto[pb.SignedRequestMode](mapCtx, in.SignedRequestMode)
+	out.SignedRequestKeyset = direct.ValueOf(in.SignedRequestKeyset)
+	out.SignedTokenOptions = SignedTokenOptions_ToProto(mapCtx, in.SignedTokenOptions)
+	out.AddSignatures = AddSignatures_ToProto(mapCtx, in.AddSignatures)
+	out.SignedRequestMaximumExpirationTtl = direct.StringDuration_ToProto(mapCtx, in.SignedRequestMaximumExpirationTTL)
+	return out
+}
+func CacheKeyPolicy_FromProto(mapCtx *direct.MapContext, in *pb.CacheKeyPolicy) *krm.CacheKeyPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CacheKeyPolicy{}
+	out.IncludeProtocol = direct.LazyPtr(in.GetIncludeProtocol())
+	out.ExcludeHost = direct.LazyPtr(in.GetExcludeHost())
+	out.ExcludeQueryString = direct.LazyPtr(in.GetExcludeQueryString())
+	out.IncludedQueryParameters = in.IncludedQueryParameters
+	out.ExcludedQueryParameters = in.ExcludedQueryParameters
+	out.IncludedHeaderNames = in.IncludedHeaderNames
+	out.IncludedCookieNames = in.IncludedCookieNames
+	return out
+}
+func CacheKeyPolicy_ToProto(mapCtx *direct.MapContext, in *krm.CacheKeyPolicy) *pb.CacheKeyPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CacheKeyPolicy{}
+	out.IncludeProtocol = direct.ValueOf(in.IncludeProtocol)
+	out.ExcludeHost = direct.ValueOf(in.ExcludeHost)
+	out.ExcludeQueryString = direct.ValueOf(in.ExcludeQueryString)
+	out.IncludedQueryParameters = in.IncludedQueryParameters
+	out.ExcludedQueryParameters = in.ExcludedQueryParameters
+	out.IncludedHeaderNames = in.IncludedHeaderNames
+	out.IncludedCookieNames = in.IncludedCookieNames
+	return out
+}
+func CorsPolicy_FromProto(mapCtx *direct.MapContext, in *pb.CorsPolicy) *krm.CorsPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CorsPolicy{}
+	out.MaxAge = direct.StringDuration_FromProto(mapCtx, in.GetMaxAge())
+	out.AllowOrigins = in.AllowOrigins
+	out.AllowMethods = in.AllowMethods
+	out.AllowHeaders = in.AllowHeaders
+	out.ExposeHeaders = in.ExposeHeaders
+	out.AllowCredentials = direct.LazyPtr(in.GetAllowCredentials())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	return out
+}
+func CorsPolicy_ToProto(mapCtx *direct.MapContext, in *krm.CorsPolicy) *pb.CorsPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CorsPolicy{}
+	out.MaxAge = direct.StringDuration_ToProto(mapCtx, in.MaxAge)
+	out.AllowOrigins = in.AllowOrigins
+	out.AllowMethods = in.AllowMethods
+	out.AllowHeaders = in.AllowHeaders
+	out.ExposeHeaders = in.ExposeHeaders
+	out.AllowCredentials = direct.ValueOf(in.AllowCredentials)
+	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
+}
+func EdgeCacheService_FromProto(mapCtx *direct.MapContext, in *pb.EdgeCacheService) *krm.EdgeCacheService {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EdgeCacheService{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Routing = Routing_FromProto(mapCtx, in.GetRouting())
+	out.EdgeSSLCertificates = in.EdgeSslCertificates
+	out.DisableQuic = direct.LazyPtr(in.GetDisableQuic())
+	// MISSING: IPV4Addresses
+	// MISSING: IPV6Addresses
+	out.LogConfig = LogConfig_FromProto(mapCtx, in.GetLogConfig())
+	out.DisableHttp2 = direct.LazyPtr(in.GetDisableHttp2())
+	out.RequireTLS = direct.LazyPtr(in.GetRequireTls())
+	out.EdgeSecurityPolicy = direct.LazyPtr(in.GetEdgeSecurityPolicy())
+	return out
+}
+func EdgeCacheService_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService) *pb.EdgeCacheService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EdgeCacheService{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Labels = in.Labels
+	out.Description = direct.ValueOf(in.Description)
+	out.Routing = Routing_ToProto(mapCtx, in.Routing)
+	out.EdgeSslCertificates = in.EdgeSSLCertificates
+	out.DisableQuic = direct.ValueOf(in.DisableQuic)
+	// MISSING: IPV4Addresses
+	// MISSING: IPV6Addresses
+	out.LogConfig = LogConfig_ToProto(mapCtx, in.LogConfig)
+	out.DisableHttp2 = direct.ValueOf(in.DisableHttp2)
+	out.RequireTls = direct.ValueOf(in.RequireTLS)
+	out.EdgeSecurityPolicy = direct.ValueOf(in.EdgeSecurityPolicy)
+	return out
+}
+func EdgeCacheServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EdgeCacheService) *krm.EdgeCacheServiceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EdgeCacheServiceObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: Description
+	// MISSING: Routing
+	// MISSING: EdgeSSLCertificates
+	// MISSING: DisableQuic
+	out.IPV4Addresses = in.Ipv4Addresses
+	out.IPV6Addresses = in.Ipv6Addresses
+	// MISSING: LogConfig
+	// MISSING: DisableHttp2
+	// MISSING: RequireTLS
+	// MISSING: EdgeSecurityPolicy
+	return out
+}
+func EdgeCacheServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheServiceObservedState) *pb.EdgeCacheService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EdgeCacheService{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: Description
+	// MISSING: Routing
+	// MISSING: EdgeSSLCertificates
+	// MISSING: DisableQuic
+	out.Ipv4Addresses = in.IPV4Addresses
+	out.Ipv6Addresses = in.IPV6Addresses
+	// MISSING: LogConfig
+	// MISSING: DisableHttp2
+	// MISSING: RequireTLS
+	// MISSING: EdgeSecurityPolicy
+	return out
+}
+func HeaderAction_FromProto(mapCtx *direct.MapContext, in *pb.HeaderAction) *krm.HeaderAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HeaderAction{}
+	out.RequestHeadersToAdd = direct.Slice_FromProto(mapCtx, in.RequestHeadersToAdd, AddHeader_FromProto)
+	out.RequestHeadersToRemove = direct.Slice_FromProto(mapCtx, in.RequestHeadersToRemove, RemoveHeader_FromProto)
+	out.ResponseHeadersToAdd = direct.Slice_FromProto(mapCtx, in.ResponseHeadersToAdd, AddHeader_FromProto)
+	out.ResponseHeadersToRemove = direct.Slice_FromProto(mapCtx, in.ResponseHeadersToRemove, RemoveHeader_FromProto)
+	return out
+}
+func HeaderAction_ToProto(mapCtx *direct.MapContext, in *krm.HeaderAction) *pb.HeaderAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HeaderAction{}
+	out.RequestHeadersToAdd = direct.Slice_ToProto(mapCtx, in.RequestHeadersToAdd, AddHeader_ToProto)
+	out.RequestHeadersToRemove = direct.Slice_ToProto(mapCtx, in.RequestHeadersToRemove, RemoveHeader_ToProto)
+	out.ResponseHeadersToAdd = direct.Slice_ToProto(mapCtx, in.ResponseHeadersToAdd, AddHeader_ToProto)
+	out.ResponseHeadersToRemove = direct.Slice_ToProto(mapCtx, in.ResponseHeadersToRemove, RemoveHeader_ToProto)
+	return out
+}
+func HeaderMatch_FromProto(mapCtx *direct.MapContext, in *pb.HeaderMatch) *krm.HeaderMatch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HeaderMatch{}
+	out.HeaderName = direct.LazyPtr(in.GetHeaderName())
+	out.InvertMatch = direct.LazyPtr(in.GetInvertMatch())
+	out.PresentMatch = direct.LazyPtr(in.GetPresentMatch())
+	out.ExactMatch = direct.LazyPtr(in.GetExactMatch())
+	out.PrefixMatch = direct.LazyPtr(in.GetPrefixMatch())
+	out.SuffixMatch = direct.LazyPtr(in.GetSuffixMatch())
+	return out
+}
+func HeaderMatch_ToProto(mapCtx *direct.MapContext, in *krm.HeaderMatch) *pb.HeaderMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HeaderMatch{}
+	out.HeaderName = direct.ValueOf(in.HeaderName)
+	out.InvertMatch = direct.ValueOf(in.InvertMatch)
+	if oneof := HeaderMatch_PresentMatch_ToProto(mapCtx, in.PresentMatch); oneof != nil {
+		out.MatchType = oneof
+	}
+	if oneof := HeaderMatch_ExactMatch_ToProto(mapCtx, in.ExactMatch); oneof != nil {
+		out.MatchType = oneof
+	}
+	if oneof := HeaderMatch_PrefixMatch_ToProto(mapCtx, in.PrefixMatch); oneof != nil {
+		out.MatchType = oneof
+	}
+	if oneof := HeaderMatch_SuffixMatch_ToProto(mapCtx, in.SuffixMatch); oneof != nil {
+		out.MatchType = oneof
+	}
+	return out
+}
+func HeaderMatch_PresentMatch_ToProto(mapCtx *direct.MapContext, in *bool) *pb.HeaderMatch_PresentMatch {
+	if in == nil {
+		return nil
+	}
+	return &pb.HeaderMatch_PresentMatch{PresentMatch: *in}
+}
+func HeaderMatch_ExactMatch_ToProto(mapCtx *direct.MapContext, in *string) *pb.HeaderMatch_ExactMatch {
+	if in == nil {
+		return nil
+	}
+	return &pb.HeaderMatch_ExactMatch{ExactMatch: *in}
+}
+func HeaderMatch_PrefixMatch_ToProto(mapCtx *direct.MapContext, in *string) *pb.HeaderMatch_PrefixMatch {
+	if in == nil {
+		return nil
+	}
+	return &pb.HeaderMatch_PrefixMatch{PrefixMatch: *in}
+}
+func HeaderMatch_SuffixMatch_ToProto(mapCtx *direct.MapContext, in *string) *pb.HeaderMatch_SuffixMatch {
+	if in == nil {
+		return nil
+	}
+	return &pb.HeaderMatch_SuffixMatch{SuffixMatch: *in}
+}
+func HostRule_FromProto(mapCtx *direct.MapContext, in *pb.HostRule) *krm.HostRule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.HostRule{}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Hosts = in.Hosts
+	out.PathMatcher = direct.LazyPtr(in.GetPathMatcher())
+	return out
+}
+func HostRule_ToProto(mapCtx *direct.MapContext, in *krm.HostRule) *pb.HostRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.HostRule{}
+	out.Description = direct.ValueOf(in.Description)
+	out.Hosts = in.Hosts
+	out.PathMatcher = direct.ValueOf(in.PathMatcher)
+	return out
+}
+func LogConfig_FromProto(mapCtx *direct.MapContext, in *pb.LogConfig) *krm.LogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LogConfig{}
+	out.Enable = direct.LazyPtr(in.GetEnable())
+	out.SampleRate = direct.LazyPtr(in.GetSampleRate())
+	return out
+}
+func LogConfig_ToProto(mapCtx *direct.MapContext, in *krm.LogConfig) *pb.LogConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LogConfig{}
+	out.Enable = direct.ValueOf(in.Enable)
+	out.SampleRate = direct.ValueOf(in.SampleRate)
+	return out
+}
+func MatchRule_FromProto(mapCtx *direct.MapContext, in *pb.MatchRule) *krm.MatchRule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MatchRule{}
+	out.PathTemplateMatch = direct.LazyPtr(in.GetPathTemplateMatch())
+	out.PrefixMatch = direct.LazyPtr(in.GetPrefixMatch())
+	out.FullPathMatch = direct.LazyPtr(in.GetFullPathMatch())
+	out.IgnoreCase = direct.LazyPtr(in.GetIgnoreCase())
+	out.HeaderMatches = direct.Slice_FromProto(mapCtx, in.HeaderMatches, HeaderMatch_FromProto)
+	out.QueryParameterMatches = direct.Slice_FromProto(mapCtx, in.QueryParameterMatches, QueryParameterMatch_FromProto)
+	return out
+}
+func MatchRule_ToProto(mapCtx *direct.MapContext, in *krm.MatchRule) *pb.MatchRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MatchRule{}
+	out.PathTemplateMatch = direct.ValueOf(in.PathTemplateMatch)
+	out.PrefixMatch = direct.ValueOf(in.PrefixMatch)
+	out.FullPathMatch = direct.ValueOf(in.FullPathMatch)
+	out.IgnoreCase = direct.ValueOf(in.IgnoreCase)
+	out.HeaderMatches = direct.Slice_ToProto(mapCtx, in.HeaderMatches, HeaderMatch_ToProto)
+	out.QueryParameterMatches = direct.Slice_ToProto(mapCtx, in.QueryParameterMatches, QueryParameterMatch_ToProto)
+	return out
+}
+func NetworkServicesEdgeCacheServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EdgeCacheService) *krm.NetworkServicesEdgeCacheServiceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkServicesEdgeCacheServiceObservedState{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: Description
+	// MISSING: Routing
+	// MISSING: EdgeSSLCertificates
+	// MISSING: DisableQuic
+	// MISSING: IPV4Addresses
+	// MISSING: IPV6Addresses
+	// MISSING: LogConfig
+	// MISSING: DisableHttp2
+	// MISSING: RequireTLS
+	// MISSING: EdgeSecurityPolicy
+	return out
+}
+func NetworkServicesEdgeCacheServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesEdgeCacheServiceObservedState) *pb.EdgeCacheService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EdgeCacheService{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: Description
+	// MISSING: Routing
+	// MISSING: EdgeSSLCertificates
+	// MISSING: DisableQuic
+	// MISSING: IPV4Addresses
+	// MISSING: IPV6Addresses
+	// MISSING: LogConfig
+	// MISSING: DisableHttp2
+	// MISSING: RequireTLS
+	// MISSING: EdgeSecurityPolicy
+	return out
+}
+func NetworkServicesEdgeCacheServiceSpec_FromProto(mapCtx *direct.MapContext, in *pb.EdgeCacheService) *krm.NetworkServicesEdgeCacheServiceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkServicesEdgeCacheServiceSpec{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: Description
+	// MISSING: Routing
+	// MISSING: EdgeSSLCertificates
+	// MISSING: DisableQuic
+	// MISSING: IPV4Addresses
+	// MISSING: IPV6Addresses
+	// MISSING: LogConfig
+	// MISSING: DisableHttp2
+	// MISSING: RequireTLS
+	// MISSING: EdgeSecurityPolicy
+	return out
+}
+func NetworkServicesEdgeCacheServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesEdgeCacheServiceSpec) *pb.EdgeCacheService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EdgeCacheService{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: Description
+	// MISSING: Routing
+	// MISSING: EdgeSSLCertificates
+	// MISSING: DisableQuic
+	// MISSING: IPV4Addresses
+	// MISSING: IPV6Addresses
+	// MISSING: LogConfig
+	// MISSING: DisableHttp2
+	// MISSING: RequireTLS
+	// MISSING: EdgeSecurityPolicy
+	return out
+}
 func NetworkServicesServiceBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.NetworkServicesServiceBindingObservedState {
 	if in == nil {
 		return nil
@@ -74,5 +524,227 @@ func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	}
 	// MISSING: ServiceID
 	out.Labels = in.Labels
+	return out
+}
+func PathMatcher_FromProto(mapCtx *direct.MapContext, in *pb.PathMatcher) *krm.PathMatcher {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PathMatcher{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.RouteRules = direct.Slice_FromProto(mapCtx, in.RouteRules, RouteRule_FromProto)
+	return out
+}
+func PathMatcher_ToProto(mapCtx *direct.MapContext, in *krm.PathMatcher) *pb.PathMatcher {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PathMatcher{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.RouteRules = direct.Slice_ToProto(mapCtx, in.RouteRules, RouteRule_ToProto)
+	return out
+}
+func QueryParameterMatch_FromProto(mapCtx *direct.MapContext, in *pb.QueryParameterMatch) *krm.QueryParameterMatch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.QueryParameterMatch{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.PresentMatch = direct.LazyPtr(in.GetPresentMatch())
+	out.ExactMatch = direct.LazyPtr(in.GetExactMatch())
+	return out
+}
+func QueryParameterMatch_ToProto(mapCtx *direct.MapContext, in *krm.QueryParameterMatch) *pb.QueryParameterMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QueryParameterMatch{}
+	out.Name = direct.ValueOf(in.Name)
+	if oneof := QueryParameterMatch_PresentMatch_ToProto(mapCtx, in.PresentMatch); oneof != nil {
+		out.MatchType = oneof
+	}
+	if oneof := QueryParameterMatch_ExactMatch_ToProto(mapCtx, in.ExactMatch); oneof != nil {
+		out.MatchType = oneof
+	}
+	return out
+}
+func QueryParameterMatch_PresentMatch_ToProto(mapCtx *direct.MapContext, in *bool) *pb.QueryParameterMatch_PresentMatch {
+	if in == nil {
+		return nil
+	}
+	return &pb.QueryParameterMatch_PresentMatch{PresentMatch: *in}
+}
+func QueryParameterMatch_ExactMatch_ToProto(mapCtx *direct.MapContext, in *string) *pb.QueryParameterMatch_ExactMatch {
+	if in == nil {
+		return nil
+	}
+	return &pb.QueryParameterMatch_ExactMatch{ExactMatch: *in}
+}
+func RemoveHeader_FromProto(mapCtx *direct.MapContext, in *pb.RemoveHeader) *krm.RemoveHeader {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoveHeader{}
+	out.HeaderName = direct.LazyPtr(in.GetHeaderName())
+	return out
+}
+func RemoveHeader_ToProto(mapCtx *direct.MapContext, in *krm.RemoveHeader) *pb.RemoveHeader {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoveHeader{}
+	out.HeaderName = direct.ValueOf(in.HeaderName)
+	return out
+}
+func RouteAction_FromProto(mapCtx *direct.MapContext, in *pb.RouteAction) *krm.RouteAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RouteAction{}
+	out.CDNPolicy = CDNPolicy_FromProto(mapCtx, in.GetCdnPolicy())
+	out.URLRewrite = URLRewrite_FromProto(mapCtx, in.GetUrlRewrite())
+	out.CorsPolicy = CorsPolicy_FromProto(mapCtx, in.GetCorsPolicy())
+	out.CompressionMode = direct.Enum_FromProto(mapCtx, in.GetCompressionMode())
+	return out
+}
+func RouteAction_ToProto(mapCtx *direct.MapContext, in *krm.RouteAction) *pb.RouteAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouteAction{}
+	out.CdnPolicy = CDNPolicy_ToProto(mapCtx, in.CDNPolicy)
+	out.UrlRewrite = URLRewrite_ToProto(mapCtx, in.URLRewrite)
+	out.CorsPolicy = CorsPolicy_ToProto(mapCtx, in.CorsPolicy)
+	out.CompressionMode = direct.Enum_ToProto[pb.CompressionMode](mapCtx, in.CompressionMode)
+	return out
+}
+func RouteMethods_FromProto(mapCtx *direct.MapContext, in *pb.RouteMethods) *krm.RouteMethods {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RouteMethods{}
+	out.AllowedMethods = in.AllowedMethods
+	return out
+}
+func RouteMethods_ToProto(mapCtx *direct.MapContext, in *krm.RouteMethods) *pb.RouteMethods {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouteMethods{}
+	out.AllowedMethods = in.AllowedMethods
+	return out
+}
+func RouteRule_FromProto(mapCtx *direct.MapContext, in *pb.RouteRule) *krm.RouteRule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RouteRule{}
+	out.Priority = direct.LazyPtr(in.GetPriority())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.MatchRules = direct.Slice_FromProto(mapCtx, in.MatchRules, MatchRule_FromProto)
+	out.HeaderAction = HeaderAction_FromProto(mapCtx, in.GetHeaderAction())
+	out.RouteAction = RouteAction_FromProto(mapCtx, in.GetRouteAction())
+	out.URLRedirect = URLRedirect_FromProto(mapCtx, in.GetUrlRedirect())
+	out.Origin = direct.LazyPtr(in.GetOrigin())
+	out.RouteMethods = RouteMethods_FromProto(mapCtx, in.GetRouteMethods())
+	return out
+}
+func RouteRule_ToProto(mapCtx *direct.MapContext, in *krm.RouteRule) *pb.RouteRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RouteRule{}
+	out.Priority = direct.ValueOf(in.Priority)
+	out.Description = direct.ValueOf(in.Description)
+	out.MatchRules = direct.Slice_ToProto(mapCtx, in.MatchRules, MatchRule_ToProto)
+	out.HeaderAction = HeaderAction_ToProto(mapCtx, in.HeaderAction)
+	out.RouteAction = RouteAction_ToProto(mapCtx, in.RouteAction)
+	out.UrlRedirect = URLRedirect_ToProto(mapCtx, in.URLRedirect)
+	out.Origin = direct.ValueOf(in.Origin)
+	out.RouteMethods = RouteMethods_ToProto(mapCtx, in.RouteMethods)
+	return out
+}
+func Routing_FromProto(mapCtx *direct.MapContext, in *pb.Routing) *krm.Routing {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Routing{}
+	out.HostRules = direct.Slice_FromProto(mapCtx, in.HostRules, HostRule_FromProto)
+	out.PathMatchers = direct.Slice_FromProto(mapCtx, in.PathMatchers, PathMatcher_FromProto)
+	return out
+}
+func Routing_ToProto(mapCtx *direct.MapContext, in *krm.Routing) *pb.Routing {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Routing{}
+	out.HostRules = direct.Slice_ToProto(mapCtx, in.HostRules, HostRule_ToProto)
+	out.PathMatchers = direct.Slice_ToProto(mapCtx, in.PathMatchers, PathMatcher_ToProto)
+	return out
+}
+func SignedTokenOptions_FromProto(mapCtx *direct.MapContext, in *pb.SignedTokenOptions) *krm.SignedTokenOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SignedTokenOptions{}
+	out.TokenQueryParameter = direct.LazyPtr(in.GetTokenQueryParameter())
+	out.AllowedSignatureAlgorithms = direct.EnumSlice_FromProto(mapCtx, in.AllowedSignatureAlgorithms)
+	return out
+}
+func SignedTokenOptions_ToProto(mapCtx *direct.MapContext, in *krm.SignedTokenOptions) *pb.SignedTokenOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SignedTokenOptions{}
+	out.TokenQueryParameter = direct.ValueOf(in.TokenQueryParameter)
+	out.AllowedSignatureAlgorithms = direct.EnumSlice_ToProto[pb.SignatureAlgorithm](mapCtx, in.AllowedSignatureAlgorithms)
+	return out
+}
+func URLRedirect_FromProto(mapCtx *direct.MapContext, in *pb.UrlRedirect) *krm.URLRedirect {
+	if in == nil {
+		return nil
+	}
+	out := &krm.URLRedirect{}
+	out.HostRedirect = direct.LazyPtr(in.GetHostRedirect())
+	out.PathRedirect = direct.LazyPtr(in.GetPathRedirect())
+	out.PrefixRedirect = direct.LazyPtr(in.GetPrefixRedirect())
+	out.RedirectResponseCode = direct.Enum_FromProto(mapCtx, in.GetRedirectResponseCode())
+	out.HTTPSRedirect = direct.LazyPtr(in.GetHttpsRedirect())
+	out.StripQuery = direct.LazyPtr(in.GetStripQuery())
+	return out
+}
+func URLRedirect_ToProto(mapCtx *direct.MapContext, in *krm.URLRedirect) *pb.UrlRedirect {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UrlRedirect{}
+	out.HostRedirect = direct.ValueOf(in.HostRedirect)
+	out.PathRedirect = direct.ValueOf(in.PathRedirect)
+	out.PrefixRedirect = direct.ValueOf(in.PrefixRedirect)
+	out.RedirectResponseCode = direct.Enum_ToProto[pb.RedirectResponseCode](mapCtx, in.RedirectResponseCode)
+	out.HttpsRedirect = direct.ValueOf(in.HTTPSRedirect)
+	out.StripQuery = direct.ValueOf(in.StripQuery)
+	return out
+}
+func URLRewrite_FromProto(mapCtx *direct.MapContext, in *pb.UrlRewrite) *krm.URLRewrite {
+	if in == nil {
+		return nil
+	}
+	out := &krm.URLRewrite{}
+	out.PathPrefixRewrite = direct.LazyPtr(in.GetPathPrefixRewrite())
+	out.PathTemplateRewrite = direct.LazyPtr(in.GetPathTemplateRewrite())
+	out.HostRewrite = direct.LazyPtr(in.GetHostRewrite())
+	return out
+}
+func URLRewrite_ToProto(mapCtx *direct.MapContext, in *krm.URLRewrite) *pb.UrlRewrite {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UrlRewrite{}
+	out.PathPrefixRewrite = direct.ValueOf(in.PathPrefixRewrite)
+	out.PathTemplateRewrite = direct.ValueOf(in.PathTemplateRewrite)
+	out.HostRewrite = direct.ValueOf(in.HostRewrite)
 	return out
 }
