@@ -109,9 +109,10 @@ func RefineComputeSubnetworkRef(ctx context.Context, reader client.Reader, src c
 		}, nil
 	}
 
-	// Validate and refine the shared-VPC network format to full URL. This is required by GCP service.
+	// Validate and refine the shared-VPC network format to full URL. This is required by GCP service.
 	fullURLPrefix := "https://www.googleapis.com/compute/v1/"
 	ref.External = strings.TrimPrefix(ref.External, fullURLPrefix)
+	tokens = strings.Split(ref.External, "/")
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "regions" && tokens[4] == "subnetworks" {
 		return &refs.ComputeSubnetworkRef{
 			External: fullURLPrefix + "projects/" + tokens[1] + "/regions/" + tokens[3] + "/subnetworks/" + tokens[5],
