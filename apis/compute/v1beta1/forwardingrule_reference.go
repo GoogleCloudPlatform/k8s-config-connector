@@ -17,19 +17,19 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	reference "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &ForwardingRuleRef{}
+var _ refsv1beta1.Ref = &ForwardingRuleRef{}
 
 // ForwardingRuleRef defines the resource reference to ComputeForwardingRule, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -46,55 +46,59 @@ type ForwardingRuleRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on ComputeForwardingRule.
-// If the "External" is given in the other resource's spec.ComputeForwardingRuleRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual ComputeForwardingRule object from the cluster.
-func (r *ForwardingRuleRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", ComputeForwardingRuleGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, err := ParseForwardingRuleExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
-
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(ComputeForwardingRuleGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", ComputeForwardingRuleGVK, key, err)
-	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
-	}
-	r.External = actualExternalRef
-	return r.External, nil
+func (r *ForwardingRuleRef) GetGVK() schema.GroupVersionKind {
+	return ComputeForwardingRuleGVK
 }
 
-func ParseForwardingRuleExternal(external string) (*ForwardingRuleIdentity, error) {
-	external = strings.TrimPrefix(external, "/")
-	tokens := strings.Split(external, "/")
-	p, err := parent.ParseComputeParent(strings.Join(tokens[:len(tokens)-2], "/"))
-	if err != nil {
-		return nil, err
+func (r *ForwardingRuleRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
 	}
-	if tokens[len(tokens)-2] == "forwardingRules" {
-		return &ForwardingRuleIdentity{parent: p, id: tokens[len(tokens)-1]}, nil
+}
+
+func (r *ForwardingRuleRef) GetExternal() string {
+	return r.External
+}
+
+func (r *ForwardingRuleRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *ForwardingRuleRef) ValidateExternal(ref string) error {
+	id := &ForwardingRuleIdentity{}
+	external := reference.FixStaleComputeExternalFormat(r.GetExternal())
+	if err := id.FromExternal(external); err != nil {
+		return err
 	}
-	return nil, fmt.Errorf("format of ComputeForwardingRule external=%q was not known (use %s/forwardingRules/{{forwardingRuleID}}", external, p)
+	return nil
+}
+
+func (r *ForwardingRuleRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	// TODO: Use general-purpose refsv1beta1.Normalize function once direct controller is implemented.
+	// For now, we can build the external reference by reading status fields.
+	if r.GetExternal() == "" {
+		if r.Namespace == "" {
+			r.Namespace = defaultNamespace
+		}
+		key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+		u := &unstructured.Unstructured{}
+		u.SetGroupVersionKind(ComputeForwardingRuleGVK)
+		if err := reader.Get(ctx, key, u); err != nil {
+			if apierrors.IsNotFound(err) {
+				return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+			}
+			return fmt.Errorf("reading referenced %s %s: %w", ComputeForwardingRuleGVK, key, err)
+		}
+		selfLink, _, err := unstructured.NestedString(u.Object, "status", "selfLink")
+		if err != nil {
+			return fmt.Errorf("reading status.selfLink: %w", err)
+		}
+		if selfLink == "" {
+			return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+		}
+		r.SetExternal(reference.FixStaleComputeExternalFormat(selfLink))
+		return nil
+	}
+	return r.ValidateExternal(r.GetExternal())
 }
