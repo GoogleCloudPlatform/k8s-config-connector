@@ -56,6 +56,18 @@
 </tbody>
 </table>
 
+## Prerequisites
+
+Before you can use this resource, you must follow the guide https://cloud.google.com/kms/docs/enable-autokey to enable
+and configure Cloud KMS Autokey on a resource folder. This includes: 
+
+*   Setup resource folder.
+*   Setup key project.
+*   Enable Cloud KMS Autokey on the resource folder.
+*   Setup the Cloud KMS service agent.
+*   Grant Autokey user roles.
+*   Enable Autokey on resource project.
+
 ## Custom Resource Definition Properties
 
 

@@ -16,7 +16,6 @@ package mockbigquery
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -56,6 +55,8 @@ func (s *tablesServer) PatchTable(ctx context.Context, req *pb.PatchTableRequest
 	updated.LastModifiedTime = PtrTo(uint64(now.UnixMilli()))
 
 	updated.FriendlyName = req.GetTable().FriendlyName
+	updated.Description = req.GetTable().Description
+	updated.Schema = req.GetTable().Schema
 	if updated.GetExternalDataConfiguration() != nil {
 		updated.RequirePartitionFilter = PtrTo(req.GetTable().GetRequirePartitionFilter())
 	}
@@ -100,6 +101,23 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 
 	obj := proto.Clone(req.GetTable()).(*pb.Table)
 
+	datasetServer := &datasetsServer{MockService: s.MockService}
+	datasetName, err := datasetServer.buildDatasetName(req.GetProjectId(), req.GetDatasetId())
+	if err != nil {
+		return nil, err
+	}
+	dataset := &pb.Dataset{}
+	if err := s.storage.Get(ctx, datasetName.String(), dataset); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Not found: Dataset %s:%s", name.Project.ID, name.DatasetID)
+		}
+		return nil, err
+	}
+
+	if dataset.DefaultEncryptionConfiguration != nil && obj.EncryptionConfiguration == nil {
+		obj.EncryptionConfiguration = dataset.DefaultEncryptionConfiguration
+	}
+
 	if obj.TableReference == nil {
 		obj.TableReference = &pb.TableReference{}
 	}
@@ -121,6 +139,8 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 
 	if obj.GetExternalDataConfiguration() != nil {
 		obj.Type = PtrTo("EXTERNAL")
+	} else if obj.GetView() != nil {
+		obj.Type = PtrTo("VIEW")
 	} else {
 		obj.Type = PtrTo("TABLE")
 	}
@@ -152,84 +172,152 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 		if obj.Schema == nil {
 			if obj.GetExternalDataConfiguration().GetAutodetect() {
 				obj.Schema = &pb.TableSchema{}
-
-				// Schema for "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
-				obj.Schema.Fields = []*pb.TableFieldSchema{
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("string_field_0"),
-						Type: PtrTo("STRING"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("string_field_1"),
-						Type: PtrTo("STRING"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("string_field_2"),
-						Type: PtrTo("STRING"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("string_field_3"),
-						Type: PtrTo("STRING"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("string_field_4"),
-						Type: PtrTo("STRING"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("string_field_5"),
-						Type: PtrTo("STRING"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("int64_field_6"),
-						Type: PtrTo("INTEGER"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("int64_field_7"),
-						Type: PtrTo("INTEGER"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("int64_field_8"),
-						Type: PtrTo("INTEGER"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("int64_field_9"),
-						Type: PtrTo("INTEGER"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("string_field_10"),
-						Type: PtrTo("STRING"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("int64_field_11"),
-						Type: PtrTo("INTEGER"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("int64_field_12"),
-						Type: PtrTo("INTEGER"),
-					},
-					{
-						Mode: PtrTo("NULLABLE"),
-						Name: PtrTo("string_field_13"),
-						Type: PtrTo("STRING"),
-					},
+				sourceURI := ""
+				if len(obj.GetExternalDataConfiguration().SourceUris) == 1 {
+					sourceURI = obj.GetExternalDataConfiguration().SourceUris[0]
+				}
+				switch sourceURI {
+				case "gs://cloud-samples-data/bigquery/us-states/us-states-by-date.csv":
+					obj.Schema.Fields = []*pb.TableFieldSchema{
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("name"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("post_abbr"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("date"),
+							Type: PtrTo("DATE"),
+						},
+					}
+				case "gs://cloud-samples-data/bigquery/us-states/us-states.avro":
+					obj.Schema.Fields = []*pb.TableFieldSchema{
+						{
+							Mode:        PtrTo("REQUIRED"),
+							Name:        PtrTo("name"),
+							Type:        PtrTo("STRING"),
+							Description: PtrTo("The common name of the state."),
+						},
+						{
+							Mode:        PtrTo("REQUIRED"),
+							Name:        PtrTo("post_abbr"),
+							Type:        PtrTo("STRING"),
+							Description: PtrTo("The postal code abbreviation of the state."),
+						},
+					}
+				case "gs://cloud-samples-data/bigquery/us-states/us-states.parquet":
+					obj.Schema.Fields = []*pb.TableFieldSchema{
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("name"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("post_abbr"),
+							Type: PtrTo("STRING"),
+						},
+					}
+				default:
+					// Schema for "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt"
+					obj.Schema.Fields = []*pb.TableFieldSchema{
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("string_field_0"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("string_field_1"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("string_field_2"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("string_field_3"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("string_field_4"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("string_field_5"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("int64_field_6"),
+							Type: PtrTo("INTEGER"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("int64_field_7"),
+							Type: PtrTo("INTEGER"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("int64_field_8"),
+							Type: PtrTo("INTEGER"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("int64_field_9"),
+							Type: PtrTo("INTEGER"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("string_field_10"),
+							Type: PtrTo("STRING"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("int64_field_11"),
+							Type: PtrTo("INTEGER"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("int64_field_12"),
+							Type: PtrTo("INTEGER"),
+						},
+						{
+							Mode: PtrTo("NULLABLE"),
+							Name: PtrTo("string_field_13"),
+							Type: PtrTo("STRING"),
+						},
+					}
 				}
 			}
 		}
 	}
-
+	if obj.GetView() != nil {
+		if strings.HasPrefix(ValueOf(obj.View.Query), "SELECT distinct dt, user_id FROM") {
+			obj.Schema = &pb.TableSchema{}
+			obj.Schema.Fields = []*pb.TableFieldSchema{
+				{
+					Mode: PtrTo("NULLABLE"),
+					Name: PtrTo("dt"),
+					Type: PtrTo("DATE"),
+				},
+				{
+					Mode: PtrTo("NULLABLE"),
+					Name: PtrTo("user_id"),
+					Type: PtrTo("STRING"),
+				},
+			}
+		}
+	}
 	if obj.MaterializedView != nil {
 		obj.Type = PtrTo("MATERIALIZED_VIEW")
 		obj.MaterializedView.LastRefreshTime = PtrTo(now.UnixMilli())
@@ -255,21 +343,22 @@ func (s *tablesServer) InsertTable(ctx context.Context, req *pb.InsertTableReque
 		}
 	}
 
-	if obj.EncryptionConfiguration != nil {
-		fmt.Println("####################################################")
-		fmt.Printf("%+v\n", obj.EncryptionConfiguration)
-		fmt.Println("####################################################")
-	}
-
 	obj.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
 
 	obj.Etag = PtrTo(computeEtag(obj))
+
+	ret := CloneProto(obj)
+
+	// TimePartitioning.RequirePartitionFilter is not returned in the POST response,
+	// but will be returned after the table is created.
+	if obj.RequirePartitionFilter != nil && obj.TimePartitioning != nil {
+		obj.TimePartitioning.RequirePartitionFilter = obj.RequirePartitionFilter
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, status.Errorf(codes.Internal, "error creating Table: %v", err)
 	}
 
-	ret := CloneProto(obj)
 	// Return value has empty schema populated, even though other methods do not
 	if ret.Schema == nil {
 		ret.Schema = &pb.TableSchema{}
@@ -296,13 +385,47 @@ func (s *tablesServer) UpdateTable(ctx context.Context, req *pb.UpdateTableReque
 	updated.LastModifiedTime = PtrTo(uint64(now.UnixMilli()))
 	updated.Description = req.GetTable().Description
 	updated.FriendlyName = req.GetTable().FriendlyName
+	updated.Schema = req.GetTable().GetSchema()
 	if updated.GetExternalDataConfiguration() != nil {
 		updated.RequirePartitionFilter = PtrTo(req.GetTable().GetRequirePartitionFilter())
+		updated.ExternalDataConfiguration = req.GetTable().ExternalDataConfiguration
 	}
+	updated.Schema = req.GetTable().Schema
+	updated.ExpirationTime = req.GetTable().ExpirationTime
 
 	updated.Etag = PtrTo(computeEtag(updated))
+	updated.Labels = req.GetTable().Labels
 
 	updated.TableConstraints = req.GetTable().TableConstraints
+
+	updated.View = req.GetTable().View
+
+	if req.GetTable().View != nil {
+		if strings.HasPrefix(ValueOf(req.GetTable().View.Query), "SELECT distinct dt, user_id, guid FROM") {
+			updated.Schema = &pb.TableSchema{}
+			updated.Schema.Fields = []*pb.TableFieldSchema{
+				{
+					Mode:        PtrTo("NULLABLE"),
+					Name:        PtrTo("dt"),
+					Type:        PtrTo("DATE"),
+					Description: PtrTo("dt"),
+				},
+				{
+					Mode:        PtrTo("NULLABLE"),
+					Name:        PtrTo("user_id"),
+					Type:        PtrTo("STRING"),
+					Description: PtrTo("user_id"),
+				},
+				{
+					Mode:        PtrTo("NULLABLE"),
+					Name:        PtrTo("guid"),
+					Type:        PtrTo("STRING"),
+					Description: PtrTo("guid"),
+				},
+			}
+		}
+	}
+
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}

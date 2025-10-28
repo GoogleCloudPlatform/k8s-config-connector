@@ -1,0 +1,81 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// +generated:mapper
+// krm.group: accesscontextmanager.cnrm.cloud.google.com
+// krm.version: v1beta1
+// proto.service: google.identity.accesscontextmanager.v1
+
+package accesscontextmanager
+
+import (
+	pb "cloud.google.com/go/accesscontextmanager/apiv1/accesscontextmanagerpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/accesscontextmanager/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+
+func AccessContextManagerAccessPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AccessPolicy) *krm.AccessContextManagerAccessPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerAccessPolicyObservedState{}
+	// MISSING: Name
+	// MISSING: Parent
+	// MISSING: Scopes
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	return out
+}
+func AccessContextManagerAccessPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerAccessPolicyObservedState) *pb.AccessPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AccessPolicy{}
+	// MISSING: Name
+	// MISSING: Parent
+	// MISSING: Scopes
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	return out
+}
+func AccessContextManagerAccessPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.AccessPolicy) *krm.AccessContextManagerAccessPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerAccessPolicySpec{}
+	// MISSING: Name
+	// MISSING: Parent
+	out.Title = direct.LazyPtr(in.GetTitle())
+	// MISSING: Scopes
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	return out
+}
+func AccessContextManagerAccessPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerAccessPolicySpec) *pb.AccessPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AccessPolicy{}
+	// MISSING: Name
+	// MISSING: Parent
+	out.Title = direct.ValueOf(in.Title)
+	// MISSING: Scopes
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	return out
+}

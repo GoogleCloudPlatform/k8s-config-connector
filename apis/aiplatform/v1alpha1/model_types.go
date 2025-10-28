@@ -131,10 +131,10 @@ type AIPlatformModelSpec struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.explanation_spec
 	ExplanationSpec *ExplanationSpec `json:"explanationSpec,omitempty"`
 
-	// Used to perform consistent read-modify-write updates. If not set, a blind
-	//  "overwrite" update happens.
+	// NOTYET: not supported in Config Connector reconciliation
+	// Optional. Used to perform consistent read-modify-write updates. If not set, a blind "overwrite" update happens.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.etag
-	Etag *string `json:"etag,omitempty"`
+	// Etag *string `json:"etag,omitempty"`
 
 	// The labels with user-defined metadata to organize your Models.
 	//

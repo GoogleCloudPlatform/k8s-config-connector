@@ -43,6 +43,13 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -65,6 +72,13 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -95,6 +109,13 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -117,6 +138,13 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "filter": "resource.type=gae_app AND severity\u003c=ERROR",
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "type": "logging.googleapis.com/user/logginglogmetric-${uniqueId}",
+    "unit": "1",
+    "valueType": "INT64"
+  },
   "name": "logginglogmetric-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }

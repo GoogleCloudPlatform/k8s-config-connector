@@ -17,7 +17,10 @@ package bigqueryconnection
 import (
 	pb "cloud.google.com/go/bigquery/connection/apiv1/connectionpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryconnection/v1beta1"
+	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
+	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	spannerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -161,7 +164,7 @@ func CloudSpannerPropertiesSpec_FromProto(mapCtx *direct.MapContext, in *pb.Clou
 	out.UseParallelism = direct.LazyPtr(in.UseParallelism)
 	out.MaxParallelism = direct.LazyPtr(in.MaxParallelism)
 	out.DatabaseRole = direct.LazyPtr(in.DatabaseRole)
-	out.DatabaseRef = &refs.SpannerDatabaseRef{
+	out.DatabaseRef = &spannerv1beta1.SpannerDatabaseRef{
 		External: in.Database,
 	}
 	return out
@@ -206,7 +209,7 @@ func MetastoreServiceConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.Meta
 		return nil
 	}
 	out := &krm.MetastoreServiceConfigSpec{}
-	out.MetastoreServiceRef = &refs.MetastoreServiceRef{
+	out.MetastoreServiceRef = &metastorev1alpha1.ServiceRef{
 		External: in.MetastoreService,
 	}
 	return out
@@ -231,7 +234,7 @@ func SparkHistoryServerConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.Sp
 		return nil
 	}
 	out := &krm.SparkHistoryServerConfigSpec{}
-	out.DataprocClusterRef = &refs.DataprocClusterRef{
+	out.DataprocClusterRef = &dataprocv1beta1.DataprocClusterRef{
 		External: in.DataprocCluster,
 	}
 	return out

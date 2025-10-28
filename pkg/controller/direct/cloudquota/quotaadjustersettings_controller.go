@@ -16,7 +16,7 @@
 // proto.service: google.api.cloudquotas.v1beta.QuotaAdjusterSettingsManager
 // proto.message: google.api.cloudquotas.v1beta.QuotaAdjusterSettings
 // crd.type: APIQuotaAdjusterSettings
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package cloudquota
 
@@ -27,7 +27,7 @@ import (
 
 	gcp "cloud.google.com/go/cloudquotas/apiv1beta"
 	pb "cloud.google.com/go/cloudquotas/apiv1beta/cloudquotaspb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudquota/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudquota/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -121,7 +121,7 @@ func (a *apiQuotaAdjusterSettingsAdapter) Find(ctx context.Context) (bool, error
 	return true, nil
 }
 
-// Create is not supported for QuotaAdjusterSettings. This resource is managed by GCP implicitly.
+// This function should not be reachable, because Find always returns an object"
 func (a *apiQuotaAdjusterSettingsAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("create operation is not supported for resource %s", krm.APIQuotaAdjusterSettingsGVK)

@@ -35,7 +35,6 @@ var (
 		"alloydb/google_alloydb_backup",
 		"alloydb/google_alloydb_cluster",
 		"alloydb/google_alloydb_instance",
-		"api_gateway/google_api_gateway_api",
 		"api_gateway/google_api_gateway_api_config",
 		"api_gateway/google_api_gateway_gateway",
 		"apigee/google_apigee_addons_config",
@@ -156,7 +155,6 @@ var (
 		"vertex_ai/google_vertex_ai_featurestore_entitytype_feature",
 		"vertex_ai/google_vertex_ai_index",
 		"vertex_ai/google_vertex_ai_index_endpoint",
-		"vertex_ai/google_vertex_ai_metadata_store",
 		"vertex_ai/google_vertex_ai_tensorboard",
 		"workflows/google_workflows_workflow",
 	}

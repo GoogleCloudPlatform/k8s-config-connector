@@ -39,13 +39,13 @@ func cloudDeployDeliveryPipelineFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".annotations")
 	f.SpecFields.Insert(".serial_pipeline")
-	f.SpecFields.Insert(".etag")
 	f.SpecFields.Insert(".suspended")
 
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".update_time")
 	f.StatusFields.Insert(".condition")
+	f.Unimplemented_Etag()
 
 	return f
 }

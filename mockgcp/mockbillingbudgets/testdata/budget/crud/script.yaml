@@ -1,0 +1,6 @@
+
+- exec: gcloud beta billing budgets create --billing-account=${BILLING_ACCOUNT_ID} --display-name=test-${uniqueId} --budget-amount=100USD --threshold-rule=percent=0.5
+- exec: gcloud beta billing budgets list --billing-account=${BILLING_ACCOUNT_ID}
+- exec: gcloud beta billing budgets describe --billing-account=${BILLING_ACCOUNT_ID} $(gcloud beta billing budgets list --billing-account=${BILLING_ACCOUNT_ID} "--format=value(name)")
+- exec: gcloud beta billing budgets delete --billing-account=${BILLING_ACCOUNT_ID} $(gcloud beta billing budgets list --billing-account=${BILLING_ACCOUNT_ID} "--format=value(name)") --quiet
+- exec: gcloud beta billing budgets list --billing-account=${BILLING_ACCOUNT_ID}

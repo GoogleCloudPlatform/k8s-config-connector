@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+pushd dev/tools/controllerbuilder
+./generate-proto.sh
+popd
+
+# For efficiency, we generate CRDs only once at the end
+export SKIP_GENERATE_CRDS=1
+
+for f in $(find apis -name "generate.sh" | sort); do
+    # Skip some generate.sh scripts that are not up to date
+    # TODO: Fix these!
+
+    if [[ "${f}" == *"backupdr"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+    if [[ "${f}" == *"bigquerybiglake"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+    if [[ "${f}" == *"bigtable"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+    if [[ "${f}" == *"composer"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+    if [[ "${f}" == *"datastream"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+    if [[ "${f}" == *"discoveryengine"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+    if [[ "${f}" == *"documentai"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+    if [[ "${f}" == *"edgecontainer"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+    if [[ "${f}" == *"gkebackup"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+    if [[ "${f}" == *"orgpolicy"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+    if [[ "${f}" == *"speech"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+    if [[ "${f}" == *"tpu"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+    if [[ "${f}" == *"vertexai"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+    if [[ "${f}" == *"vmwareengine"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+
+    echo "running ${f}"
+    ./${f}
+done
+
+# Now we generate CRDs
+unset SKIP_GENERATE_CRDS
+echo "Generating CRDs"
+dev/tasks/generate-crds

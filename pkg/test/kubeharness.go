@@ -29,6 +29,7 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/rest"
@@ -37,9 +38,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/mockkubeapiserver"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dynamic"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/teststatus"
 )
 
 // KubeHarness is a test harness that brings up a kube-apiserver (only).
@@ -202,7 +203,7 @@ func (h *KubeHarness) waitForCRDReady(obj client.Object) {
 			logger.Info("Error getting resource", "kind", kind, "id", id, "error", err)
 			return false, err
 		}
-		objectStatus := dynamic.GetObjectStatus(h.T, u)
+		objectStatus := teststatus.GetObjectStatus(h.T, u)
 		// CRDs do not have observedGeneration
 		for _, condition := range objectStatus.Conditions {
 			if condition.Type == "Established" && condition.Status == "True" {
@@ -235,21 +236,22 @@ func (h *KubeHarness) EnsureNamespaceExists(name string) {
 }
 
 // CreateDummyCRD registers a CRD so we can create objects in tests
-func (h *KubeHarness) CreateDummyCRD(group, version, kind string) {
+func (h *KubeHarness) CreateDummyCRD(gvk schema.GroupVersionKind) {
 	ctx := h.Ctx
 
-	resource := strings.ToLower(kind) + "s"
+	resource := strings.ToLower(gvk.Kind) + "s" // It's only a test
+
 	crd := &apiextensions.CustomResourceDefinition{}
 	crd.SetGroupVersionKind(apiextensions.SchemeGroupVersion.WithKind("CustomResourceDefinition"))
 
-	crd.SetName(resource + "." + group)
-	crd.Spec.Group = group
-	crd.Spec.Names.Kind = kind
+	crd.SetName(resource + "." + gvk.Group)
+	crd.Spec.Group = gvk.Group
+	crd.Spec.Names.Kind = gvk.Kind
 	crd.Spec.Names.Plural = resource
 	crd.Spec.Scope = apiextensions.NamespaceScoped
 
 	crd.Spec.Versions = append(crd.Spec.Versions, apiextensions.CustomResourceDefinitionVersion{
-		Name:    version,
+		Name:    gvk.Version,
 		Served:  true,
 		Storage: true,
 		Schema: &apiextensions.CustomResourceValidation{
@@ -259,10 +261,53 @@ func (h *KubeHarness) CreateDummyCRD(group, version, kind string) {
 					"spec": {
 						Type: "object",
 					},
+					"status": {
+						Type: "object",
+
+						Properties: map[string]apiextensions.JSONSchemaProps{
+							"observedGeneration": {
+								Type:   "integer",
+								Format: "int64",
+							},
+							"conditions": {
+								Type: "array",
+								Items: &apiextensions.JSONSchemaPropsOrArray{
+									Schema: &apiextensions.JSONSchemaProps{
+										Type: "object",
+										Properties: map[string]apiextensions.JSONSchemaProps{
+											"type": {
+												Type: "string",
+											},
+											"status": {
+												Type: "string",
+											},
+											"lastTransitionTime": {
+												Type:   "string",
+												Format: "date-time",
+											},
+											"reason": {
+												Type: "string",
+											},
+											"message": {
+												Type: "string",
+											},
+										},
+									},
+								},
+							},
+						},
+					},
 				},
 			},
 		},
 	})
+
+	// Enable the status subresource for this CRD. This is needed to allow
+	// UpdateStatus() calls to work on custom resources belonging to this CRD
+	// on the API server.
+	crd.Spec.Versions[0].Subresources = &apiextensions.CustomResourceSubresources{
+		Status: &apiextensions.CustomResourceSubresourceStatus{},
+	}
 
 	if err := h.client.Create(ctx, crd); err != nil {
 		h.Fatalf("error creating crd %v: %v", crd.GroupVersionKind(), err)

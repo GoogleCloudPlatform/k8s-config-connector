@@ -18,7 +18,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"reflect"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudidentity/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -26,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 	api "google.golang.org/api/cloudidentity/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -105,6 +105,9 @@ func (a *MembershipAdapter) Find(ctx context.Context) (bool, error) {
 
 	resource, err := a.gcpClient.Groups.Memberships.Get(a.id.String()).Context(ctx).Do()
 	if err != nil {
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
 		return false, fmt.Errorf("getting Membership %q: %w", a.id, err)
 	}
 
@@ -167,7 +170,11 @@ func (a *MembershipAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		return mapCtx.Err()
 	}
 
-	if reflect.DeepEqual(resource.Roles, a.actual.Roles) {
+	// `Roles` contains a slice of key-value pairs, so we need to sort the elements
+	sortRoles := func(x, y *api.MembershipRole) bool {
+		return x.Name < y.Name
+	}
+	if cmp.Equal(resource.Roles, a.actual.Roles, cmpopts.SortSlices(sortRoles)) {
 		log.V(2).Info("no field needs update", "name", a.id)
 		status := CloudIdentityMembershipStatus_FromAPI(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
@@ -290,7 +297,7 @@ func (a *MembershipAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 	op, err := a.gcpClient.Groups.Memberships.Delete(a.id.String()).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
-			return false, nil
+			return true, nil
 		}
 		return false, fmt.Errorf("deleting Membership %q: %w", a.id, err)
 	}

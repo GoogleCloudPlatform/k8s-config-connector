@@ -208,7 +208,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}Optional. The encryption config can be specified to encrypt the backups with a customer-managed encryption key (CMEK). When this field is not specified, the backup will then use default encryption scheme to protect the user data.{% endverbatim %}</p>
+            <p>{% verbatim %}Optional. The encryption config can be specified to encrypt the backups with a customer-managed encryption key (CMEK). When this field is not specified, the backup will use the cluster's encryption config.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -448,7 +448,7 @@ secondaryConfig:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}The encryption config can be specified to encrypt the backups with a customer-managed encryption key (CMEK). When this field is not specified, the backup will then use default encryption scheme to protect the user data.{% endverbatim %}</p>
+            <p>{% verbatim %}The encryption config can be specified to encrypt the backups with a customer-managed encryption key (CMEK). When this field is not specified, the backup will use the cluster's encryption config.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

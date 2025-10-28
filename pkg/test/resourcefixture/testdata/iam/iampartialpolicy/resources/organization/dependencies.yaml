@@ -1,0 +1,6 @@
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Organization
+metadata:
+  name: organization-${uniqueId}
+spec:
+  displayName: Test Organization

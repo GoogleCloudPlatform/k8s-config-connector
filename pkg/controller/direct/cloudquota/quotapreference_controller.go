@@ -16,7 +16,7 @@
 // proto.service: google.api.cloudquotas.v1beta.CloudQuotas
 // proto.message: google.api.cloudquotas.v1beta.QuotaPreference
 // crd.type: APIQuotaPreference
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package cloudquota
 
@@ -27,7 +27,7 @@ import (
 
 	gcp "cloud.google.com/go/cloudquotas/apiv1beta"
 	pb "cloud.google.com/go/cloudquotas/apiv1beta/cloudquotaspb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudquota/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudquota/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"

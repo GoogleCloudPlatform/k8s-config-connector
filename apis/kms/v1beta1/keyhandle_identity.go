@@ -32,6 +32,10 @@ func (i *KMSKeyHandleIdentity) String() string {
 	return i.parent.String() + "/keyHandles/" + i.id
 }
 
+func (r *KMSKeyHandleIdentity) ID() string {
+	return r.id
+}
+
 func (r *KMSKeyHandleIdentity) Parent() *KMSKeyHandleParent {
 	return r.parent
 }
@@ -43,10 +47,6 @@ type KMSKeyHandleParent struct {
 
 func (p *KMSKeyHandleParent) String() string {
 	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
-
-func asKMSKeyHandleExternal(parent *KMSKeyHandleParent, resourceID string) (external string) {
-	return parent.String() + "/keyHandles/" + resourceID
 }
 
 func NewKMSKeyHandleIdentity(ctx context.Context, reader client.Reader, obj *KMSKeyHandle) (*KMSKeyHandleIdentity, error) {
@@ -65,15 +65,8 @@ func NewKMSKeyHandleIdentity(ctx context.Context, reader client.Reader, obj *KMS
 	id.parent = &KMSKeyHandleParent{ProjectID: projectID, Location: location}
 
 	// Get desired ID
-	desiredHandleID := valueOf(obj.Spec.ResourceID)
-	// set the desired keyhandle id in the identity
-	id.id = desiredHandleID
+	resourceID := valueOf(obj.Spec.ResourceID)
 
-	// At this point we are expecting desiredHandleID to be either empty or valid uuid
-	// 1. if desiredHandleID empty:
-	// id.external will be projects/{{pid}}/locations/{{loc}}/keyHandles/. i.e without resourceID.
-	// A call will be made to find() with invalid externalID which will return false.
-	// 2. if desiredHandleID is a valid UUID: id.external will be valid.
 	// Use approved External
 	externalRef := valueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
@@ -88,13 +81,19 @@ func NewKMSKeyHandleIdentity(ctx context.Context, reader client.Reader, obj *KMS
 		if actualParent.Location != location {
 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
 		}
-		if desiredHandleID != "" && (actualHandleID != desiredHandleID) {
+		if resourceID != "" && actualHandleID != resourceID {
 			return nil, fmt.Errorf("cannot reset `spec.resourceID` to %s, since it has already assigned to %s",
-				desiredHandleID, actualHandleID)
+				resourceID, actualHandleID)
 		}
-		return id, nil
+		resourceID = actualHandleID
 	}
-	return id, nil
+	return &KMSKeyHandleIdentity{
+		parent: &KMSKeyHandleParent{
+			ProjectID: projectID,
+			Location:  location,
+		},
+		id: resourceID,
+	}, nil
 }
 
 func ParseKMSKeyHandleExternal(external string) (parent *KMSKeyHandleParent, resourceID string, err error) {
@@ -109,21 +108,4 @@ func ParseKMSKeyHandleExternal(external string) (parent *KMSKeyHandleParent, res
 	}
 	resourceID = tokens[5]
 	return parent, resourceID, nil
-}
-
-func (r *KMSKeyHandleIdentity) KeyHandleID() (string, bool) {
-	return r.id, r.id != ""
-}
-
-func asKMSKeyHandleExternal_FromSpec(spec *KMSKeyHandleSpec) (parent *KMSKeyHandleParent, resourceID string, err error) {
-	external := strings.TrimPrefix(spec.ProjectRef.External, "/")
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 2 || tokens[0] != "projects" {
-		return nil, "", fmt.Errorf("invalid projectRef found in KMSKeyHandle=%q was not known (use projects/{{projectId}})", external)
-	}
-	parent = &KMSKeyHandleParent{
-		ProjectID: tokens[1],
-		Location:  valueOf(spec.Location),
-	}
-	return parent, valueOf(spec.ResourceID), nil
 }

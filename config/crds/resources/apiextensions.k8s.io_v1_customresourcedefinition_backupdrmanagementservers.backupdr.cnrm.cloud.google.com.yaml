@@ -65,10 +65,6 @@ spec:
                 description: Optional. The description of the ManagementServer instance
                   (2048 characters or less).
                 type: string
-              etag:
-                description: Optional. Server specified ETag for the ManagementServer
-                  resource to prevent simultaneous updates from overwiting each other.
-                type: string
               labels:
                 additionalProperties:
                   type: string
@@ -108,7 +104,7 @@ spec:
                         - external
                       properties:
                         external:
-                          description: A reference to an externally managed Compute
+                          description: A reference to an externally-managed Compute
                             Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
                           type: string
                         name:

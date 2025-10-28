@@ -46,6 +46,7 @@ gen-proto-no-fixup:
 		--grpc-gateway_opt paths=source_relative \
 		--experimental_allow_proto3_optional \
 		./apis/google/apps/cloudidentity/v1beta1/*.proto \
+		./apis/google/cloud/dns/v1/*.proto \
 		./apis/mockgcp/cloud/apigee/v1/*.proto \
 		./apis/mockgcp/cloud/bigquery/v2/*.proto \
 		./apis/mockgcp/cloud/ids/v1/*.proto \
@@ -134,7 +135,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/kms/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/managedkafka/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/deploy/v1/*.proto \
-		./third_party/googleapis/mockgcp/cloud/networkservices/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/memorystore/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/orgpolicy/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/privilegedaccessmanager/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/pubsublite/v1/*.proto \
@@ -155,7 +156,6 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/dataflow/v1beta3/*.proto \
 		./third_party/googleapis/mockgcp/devtools/artifactregistry/v1/*.proto \
 		./third_party/googleapis/mockgcp/devtools/cloudbuild/v1/*.proto	 \
-		./third_party/googleapis/mockgcp/firestore/admin/v1/*.proto \
 		./third_party/googleapis/mockgcp/iam/admin/v1/*.proto \
 		./third_party/googleapis/mockgcp/monitoring/dashboard/v1/*.proto \
 		./third_party/googleapis/mockgcp/monitoring/metricsscope/v1/*.proto \
@@ -181,7 +181,9 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/datastream/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/modelarmor/v1/service.proto \
 		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
 		./third_party/googleapis/mockgcp/cloud/speech/v2/*.proto
+
 
 .PHONY: generate-grpc-for-google-protos
 generate-grpc-for-google-protos:
@@ -200,6 +202,7 @@ generate-grpc-for-google-protos:
 		--grpc-gateway_opt logtostderr=true \
 		--grpc-gateway_opt paths=source_relative \
 		--grpc-gateway_opt standalone=true \
+		./third_party/googleapis/google/cloud/billing/budgets/v1beta1/*.proto \
 		./third_party/googleapis/google/cloud/discoveryengine/v1/data_store_service.proto \
 		./third_party/googleapis/google/cloud/discoveryengine/v1/engine_service.proto \
 		./third_party/googleapis/google/bigtable/admin/v2/*.proto \
@@ -209,12 +212,16 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/batch/v1/*.proto \
 		./third_party/googleapis/google/cloud/edgecontainer/v1/*.proto \
 		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
+		./third_party/googleapis/google/cloud/networksecurity/v1beta1/*.proto \
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
 		./third_party/googleapis/google/cloud/dataplex/v1/*.proto \
 		./third_party/googleapis/google/cloud/clouddms/v1/*.proto \
 		./third_party/googleapis/google/cloud/notebooks/v1/*.proto \
-		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \	
-		./third_party/googleapis/google/logging/v2/*.proto
+		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
+		./third_party/googleapis/google/firestore/admin/v1/*.proto \
+		./third_party/googleapis/google/iam/v2/*.proto \
+		./third_party/googleapis/google/logging/v2/*.proto \
+		./third_party/googleapis/google/analytics/admin/v1alpha/*.proto
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:
@@ -255,5 +262,10 @@ generate-protos-from-openapi:
 	wget -O temp/cloudidentity-api.json https://raw.githubusercontent.com/googleapis/google-api-go-client/refs/heads/main/cloudidentity/v1beta1/cloudidentity-api.json
 	mkdir -p apis/google/apps/cloudidentity/v1beta1/
 	cd tools/gapic; go run . --proto-version=2 --proto-package google.apps.cloudidentity.v1beta1 ../../temp/cloudidentity-api.json > ../../apis/google/apps/cloudidentity/v1beta1//service.proto
+
+	wget -O temp/dns-api.json https://raw.githubusercontent.com/googleapis/google-api-go-client/refs/heads/main/dns/v1/dns-api.json
+	mkdir -p apis/google/cloud/dns/v1/
+	# DNS sadly uses a bespoke operation type
+	cd tools/gapic; go run . --proto-version=2 --proto-package google.cloud.dns.v1 --normalize-lro=false ../../temp/dns-api.json > ../../apis/google/cloud/dns/v1/service.proto
 
 	rm -r temp

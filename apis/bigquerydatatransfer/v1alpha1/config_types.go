@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	bigquery "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -71,7 +72,7 @@ type BigQueryDataTransferConfigSpec struct {
 
 	// Pub/Sub topic where notifications will be sent after transfer runs
 	//  associated with this transfer config finish.
-	PubSubTopicRef *refv1beta1.PubSubTopicRef `json:"pubSubTopicRef,omitempty"`
+	PubSubTopicRef *pubsubv1beta1.PubSubTopicRef `json:"pubSubTopicRef,omitempty"`
 
 	// Parameters specific to each data source. For more information see the
 	//  bq tab in the 'Setting up a data transfer' section for each data source.

@@ -17,6 +17,7 @@ package mockcompute
 import (
 	"context"
 	"fmt"
+	"net"
 	"strings"
 
 	"google.golang.org/grpc/codes"
@@ -24,7 +25,9 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/regions"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type SubnetsV1 struct {
@@ -51,6 +54,100 @@ func (s *SubnetsV1) Get(ctx context.Context, req *pb.GetSubnetworkRequest) (*pb.
 	return obj, nil
 }
 
+func (s *SubnetsV1) List(ctx context.Context, req *pb.ListSubnetworksRequest) (*pb.SubnetworkList, error) {
+	name, err := s.newSubnetName(req.GetProject(), req.GetRegion(), "placeholder")
+	if err != nil {
+		return nil, err
+	}
+
+	findPrefix := strings.TrimSuffix(name.String(), "placeholder")
+
+	response := &pb.SubnetworkList{}
+	response.Id = PtrTo("0123456789")
+	response.Kind = PtrTo("compute#subnetworkList")
+	response.SelfLink = PtrTo(buildComputeSelfLink(ctx, strings.TrimSuffix(findPrefix, "/")))
+
+	findKind := (&pb.Subnetwork{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, findKind, storage.ListOptions{Prefix: findPrefix}, func(obj proto.Message) error {
+		subnet := obj.(*pb.Subnetwork)
+		isMatch, err := matchFilter(req.GetFilter(), subnet)
+		if err != nil {
+			return err
+		}
+		if isMatch {
+			response.Items = append(response.Items, subnet)
+		}
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+func (s *SubnetsV1) AggregatedList(ctx context.Context, req *pb.AggregatedListSubnetworksRequest) (*pb.SubnetworkAggregatedList, error) {
+	name, err := s.newSubnetName(req.GetProject(), "-", "-")
+	if err != nil {
+		return nil, err
+	}
+
+	if req.GetFilter() != "" {
+		return nil, fmt.Errorf("filter %q not implemented by mockgcp", req.GetFilter())
+	}
+
+	findPrefix := strings.TrimSuffix(name.String(), "-/subnetworks/-")
+
+	response := &pb.SubnetworkAggregatedList{}
+	response.Id = PtrTo("0123456789")
+	response.Kind = PtrTo("compute#subnetworkAggregatedList")
+	response.SelfLink = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/aggregated/subnetworks", name.Project.ID)))
+	response.Items = make(map[string]*pb.SubnetworksScopedList)
+
+	// Add empty lists for all regions and zones (and global).
+	response.Items["global"] = &pb.SubnetworksScopedList{}
+	for _, region := range regions.GetAllRegions(ctx) {
+		response.Items["regions/"+region.Name] = &pb.SubnetworksScopedList{}
+
+		for _, zone := range region.Zones(ctx) {
+			response.Items["zones/"+zone] = &pb.SubnetworksScopedList{}
+		}
+	}
+
+	// Actually populate the lists
+	findKind := (&pb.Subnetwork{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, findKind, storage.ListOptions{Prefix: findPrefix}, func(obj proto.Message) error {
+		subnet := obj.(*pb.Subnetwork)
+
+		key := fmt.Sprintf("regions/%s", lastComponent(subnet.GetRegion()))
+		scopedList := response.Items[key]
+		scopedList.Subnetworks = append(scopedList.Subnetworks, subnet)
+
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	// Add a warning if there are no subnets in a region or zone.
+	for name, scopedList := range response.Items {
+		if len(scopedList.Subnetworks) != 0 {
+			continue
+		}
+
+		scopedList.Warning = &pb.Warning{
+			Code:    PtrTo("NO_RESULTS_ON_PAGE"),
+			Message: PtrTo(fmt.Sprintf("No results for the scope '%s'.", name)),
+			Data: []*pb.Data{
+				{
+					Key:   PtrTo("scope"),
+					Value: PtrTo(name),
+				},
+			},
+		}
+	}
+
+	return response, nil
+}
+
 func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest) (*pb.Operation, error) {
 	name, err := s.newSubnetName(req.GetProject(), req.GetRegion(), req.GetSubnetworkResource().GetName())
 	if err != nil {
@@ -66,9 +163,9 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#subnetwork")
-	if obj.EnableFlowLogs == nil {
-		obj.EnableFlowLogs = PtrTo(false)
-	}
+	// if obj.EnableFlowLogs == nil {
+	// 	obj.EnableFlowLogs = PtrTo(false)
+	// }
 	if obj.PrivateIpGoogleAccess == nil {
 		obj.PrivateIpGoogleAccess = PtrTo(false)
 	}
@@ -88,7 +185,19 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	}
 	obj.Network = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name)))
 
-	obj.GatewayAddress = PtrTo("10.2.0.1")
+	cidrIP, _, err := net.ParseCIDR(obj.GetIpCidrRange())
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "ipCidrRange %q is not valid", obj.GetIpCidrRange())
+	}
+	cidrIP = cidrIP.To4()
+	if cidrIP == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "ipCidrRange %q is not valid", obj.GetIpCidrRange())
+	}
+	gatewayAddress := make(net.IP, len(cidrIP))
+	copy(gatewayAddress, cidrIP)
+	gatewayAddress[3] = 1
+	obj.GatewayAddress = PtrTo(gatewayAddress.String())
+
 	// obj.AllowSubnetCidrRoutesOverlap = PtrTo(false)
 	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {

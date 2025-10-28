@@ -16,7 +16,6 @@ package v1beta1
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"strings"
 
@@ -73,25 +72,26 @@ func (r *SpannerInstanceRef) NormalizedExternal(ctx context.Context, reader clie
 		return "", fmt.Errorf("reading referenced %s %s: %w", SpannerInstanceGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err1 := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err1 != nil {
-		err1 = fmt.Errorf("SecretManagerSecret `status.externalRef` not configured: %w", err1)
-		// Backward compatible to Terraform/DCL based resource, which does not have status.externalRef.
-		var err2 error
-		actualExternalRef, _, err2 = unstructured.NestedString(u.Object, "status", "name")
-		if err2 != nil {
-			return "", errors.Join(err1, err2)
-		}
+	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+	if err != nil {
+		return "", fmt.Errorf("reading status.externalRef: %w", err)
 	}
-	if actualExternalRef == "" {
-		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+	if actualExternalRef != "" {
+		r.External = actualExternalRef
+		return r.External, nil
 	}
-	r.External = actualExternalRef
-	return r.External, nil
-}
 
-func asSpannerInstanceExternal(parent *SpannerInstanceParent, resourceID string) (external string) {
-	return parent.String() + "/instances/" + resourceID
+	// Backward compatible to Terraform/DCL based resource, which does not have status.externalRef.
+	resourceID, err := refsv1beta1.GetResourceID(u)
+	if err != nil {
+		return "", err
+	}
+	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
+	if err != nil {
+		return "", err
+	}
+	r.External = fmt.Sprintf("projects/%s/instances/%s", projectID, resourceID)
+	return r.External, nil
 }
 
 func ParseSpannerInstanceExternal(external string) (*SpannerInstanceIdentity, error) {

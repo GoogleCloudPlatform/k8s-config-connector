@@ -74,6 +74,24 @@ func AlloyDBInstanceStatus_FromProto(mapCtx *direct.MapContext, in *pb.Instance)
 	return out
 }
 
+func AlloyDBInstanceStatus_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBInstanceStatus) *pb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.IpAddress = direct.ValueOf(in.IPAddress)
+	out.Name = direct.ValueOf(in.Name)
+	out.OutboundPublicIpAddresses = in.OutboundPublicIPAddresses
+	out.PublicIpAddress = direct.ValueOf(in.PublicIPAddress)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.State = direct.Enum_ToProto[pb.Instance_State](mapCtx, in.State)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+
+	return out
+}
+
 func Instance_InstanceType_FromProto(mapCtx *direct.MapContext, in pb.Instance_InstanceType) *refs.AlloyDBClusterTypeRef {
 	out := &refs.AlloyDBClusterTypeRef{}
 	instanceType := direct.Enum_FromProto(mapCtx, in)

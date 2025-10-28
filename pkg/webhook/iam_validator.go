@@ -19,8 +19,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/extension"
@@ -166,7 +166,7 @@ func getResourceConfigs(smLoader *servicemappingloader.ServiceMappingLoader, gvk
 	if externalonlygvks.IsExternalOnlyGVK(gvk) {
 		rc, err := kcciamclient.GetResourceConfigForExternalOnlyGVK(gvk)
 		if err != nil {
-			return []*v1alpha1.ResourceConfig{}, fmt.Errorf("error getting ResourceConfig for GroupVersionKind %v: %w", gvk, err)
+			return []*v1alpha1.ResourceConfig{}, fmt.Errorf("error getting ResourceConfig for external GroupVersionKind %v: %w", gvk, err)
 		}
 		return []*v1alpha1.ResourceConfig{rc}, nil
 	}

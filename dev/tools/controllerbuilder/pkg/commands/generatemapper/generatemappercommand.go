@@ -33,9 +33,13 @@ import (
 type GenerateMapperOptions struct {
 	*options.GenerateOptions
 
+	ServiceNames []string
+
 	APIGoPackagePath      string
 	APIDirectory          string
 	OutputMapperDirectory string
+
+	Multiversion bool
 }
 
 func (o *GenerateMapperOptions) InitDefaults() error {
@@ -50,9 +54,12 @@ func (o *GenerateMapperOptions) InitDefaults() error {
 }
 
 func (o *GenerateMapperOptions) BindFlags(cmd *cobra.Command) {
+	cmd.Flags().StringSliceVarP(&o.ServiceNames, "service", "s", o.ServiceNames, "the GCP service name(s); if multiple, must be comma-separated")
+
 	cmd.Flags().StringVar(&o.APIGoPackagePath, "api-go-package-path", o.APIGoPackagePath, "package path")
 	cmd.Flags().StringVar(&o.APIDirectory, "api-dir", o.APIDirectory, "base directory for reading APIs")
 	cmd.Flags().StringVar(&o.OutputMapperDirectory, "output-dir", o.OutputMapperDirectory, "base directory for writing mappers")
+	cmd.Flags().BoolVar(&o.Multiversion, "multiversion", o.Multiversion, "generate mappers with version specifiers, to support mixed versions")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {
@@ -115,7 +122,13 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 		if strings.HasSuffix(fullName, "Metadata") {
 			return "", false
 		}
-		if !strings.HasPrefix(fullName, o.ServiceName+".") {
+		matchedService := false
+		for _, serviceName := range o.ServiceNames {
+			if strings.HasPrefix(fullName, serviceName+".") {
+				matchedService = true
+			}
+		}
+		if !matchedService {
 			return "", false
 		}
 
@@ -125,13 +138,20 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 	generatedFileAnnotation := &annotations.FileAnnotation{
 		Key: "+generated:mapper",
 		Attributes: map[string][]string{
-			"proto.service": {o.ServiceName},
+			"proto.service": o.ServiceNames,
 			"krm.group":     {gv.Group},
 			"krm.version":   {gv.Version},
 		},
 	}
 
-	mapperGenerator := codegen.NewMapperGenerator(pathForMessage, o.OutputMapperDirectory, generatedFileAnnotation)
+	mapperGenerator := codegen.NewMapperGenerator(pathForMessage, o.OutputMapperDirectory, generatedFileAnnotation, o.Multiversion)
+
+	// Ensure that our first proto package is always imported with the "pb" alias.
+	firstService, err := api.GetFileDescriptorByPackage(o.ServiceNames[0])
+	if err != nil {
+		return err
+	}
+	mapperGenerator.AddGoImportAlias(codegen.GoPackageForProto(firstService[0]), "pb")
 
 	if err := mapperGenerator.VisitGoCode(o.APIGoPackagePath, o.APIDirectory); err != nil {
 		return err
@@ -141,12 +161,16 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 		return err
 	}
 
-	if err := mapperGenerator.GenerateMappers(); err != nil {
+	goImports := map[string]string{
+		"krm": "github.com/GoogleCloudPlatform/k8s-config-connector/apis/" + strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com") + "/" + gv.Version,
+	}
+	if err := mapperGenerator.GenerateMappers(goImports); err != nil {
 		return err
 	}
 
 	addCopyright := true
-	if err := mapperGenerator.WriteFiles(addCopyright); err != nil {
+	writeEmptyFiles := true
+	if err := mapperGenerator.WriteFiles(addCopyright, writeEmptyFiles); err != nil {
 		return err
 	}
 
@@ -170,13 +194,13 @@ func (o *GenerateMapperOptions) loadAndApplyConfig() error {
 		return fmt.Errorf("mapper generation is disabled for this service in config file %s", o.ConfigFilePath)
 	}
 
-	o.ServiceName = config.Service
+	o.ServiceNames = []string{config.Service}
 	o.APIVersion = config.APIVersion
 	return nil
 }
 
 func (o *GenerateMapperOptions) validate() error {
-	if o.ServiceName == "" {
+	if len(o.ServiceNames) == 0 {
 		return fmt.Errorf("ServiceName is required")
 	}
 	if o.GenerateOptions.ProtoSourcePath == "" {

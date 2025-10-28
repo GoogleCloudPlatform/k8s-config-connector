@@ -17,6 +17,7 @@ package mockresourcemanager
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
@@ -82,7 +83,7 @@ func (s *MockService) GetProjectStore() projects.ProjectStore {
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{"cloudresourcemanager.googleapis.com"}
+	return []string{"cloudresourcemanager.googleapis.com", "{region}-cloudresourcemanager.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
@@ -112,5 +113,20 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		response.Header().Del("Cache-Control")
 	}
 
-	return mux, nil
+	return &stripTrailingSlashHandler{mux}, nil
+}
+
+// stripTrailingSlashHandler is a middleware that removes trailing slashes from
+// the request URL path. This is necessary because the grpc-gateway mux performs
+// strict path matching, and clients (like gcloud) may inconsistently send
+// requests with a trailing slash. For example, this ensures that a request for
+// `/v3/tagBindings/` is correctly routed to the handler registered for
+// `/v3/tagBindings`.
+type stripTrailingSlashHandler struct {
+	handler http.Handler
+}
+
+func (h *stripTrailingSlashHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	r.URL.Path = strings.TrimSuffix(r.URL.Path, "/")
+	h.handler.ServeHTTP(w, r)
 }

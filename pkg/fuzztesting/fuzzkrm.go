@@ -60,6 +60,54 @@ type KRMTypedFuzzer[ProtoT proto.Message, SpecType any, StatusType any] struct {
 	UnimplementedFields sets.Set[string]
 	SpecFields          sets.Set[string]
 	StatusFields        sets.Set[string]
+
+	FilterSpec   func(in ProtoT)
+	FilterStatus func(in ProtoT)
+}
+
+// SpecField marks the specified fieldPath as round-tripping to/from the Spec
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) SpecField(fieldPath string) {
+	f.SpecFields.Insert(fieldPath)
+}
+
+// StatusField marks the specified fieldPath as round-tripping to/from the Status
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) StatusField(fieldPath string) {
+	f.StatusFields.Insert(fieldPath)
+}
+
+// Unimplemented_Internal marks the specified fieldPath as not round-tripped,
+// and should be used for fields that are considered internal implementation details of the service
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_Internal(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
+}
+
+// Unimplemented_Identity marks the specified fieldPath as not round-tripped,
+// and should be used for fields that are considered identity (URL) rather than being part of the object itself.
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_Identity(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
+}
+
+// Unimplemented_LabelsAnnotations marks the specified fieldPath as not round-tripped,
+// and should be used for fields that are either labels or annotations
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_LabelsAnnotations(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
+}
+
+// Unimplemented_Etag marks the 'etag' field as not round-tripped.
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_Etag() {
+	f.UnimplementedFields.Insert(".etag")
+}
+
+// Unimplemented_NotYetTriaged marks the specified fieldPath as not round-tripped,
+// and should be used for fields that are added by the service and where we haven't decided whether or not to implement them.
+// This should be the "starting point" for new fields added by services.
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) Unimplemented_NotYetTriaged(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
+}
+
+// IdentityField marks a field as not supported in the mapper, because it is part of the identity (URL) rather than being part of the object itself.
+func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) IdentityField(fieldPath string) {
+	f.UnimplementedFields.Insert(fieldPath)
 }
 
 type KRMFuzzer interface {
@@ -88,6 +136,7 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzSpec(t *testing.T, se
 	fuzzer := NewFuzzTest(f.ProtoType, f.SpecFromProto, f.SpecToProto)
 	fuzzer.IgnoreFields = f.StatusFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
+	fuzzer.Filter = f.FilterSpec
 	fuzzer.Fuzz(t, seed)
 }
 
@@ -95,6 +144,7 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzStatus(t *testing.T, 
 	fuzzer := NewFuzzTest(f.ProtoType, f.StatusFromProto, f.StatusToProto)
 	fuzzer.IgnoreFields = f.SpecFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
+	fuzzer.Filter = f.FilterStatus
 	fuzzer.Fuzz(t, seed)
 }
 
@@ -127,6 +177,8 @@ type FuzzTest[ProtoT proto.Message, KRMType any] struct {
 
 	UnimplementedFields sets.Set[string]
 	IgnoreFields        sets.Set[string]
+
+	Filter func(in ProtoT)
 }
 
 func NewFuzzTest[ProtoT proto.Message, KRMType any](protoType ProtoT, fromProto func(ctx *direct.MapContext, in ProtoT) *KRMType, toProto func(ctx *direct.MapContext, in *KRMType) ProtoT) *FuzzTest[ProtoT, KRMType] {
@@ -155,14 +207,20 @@ func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 	}
 	fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
 
+	if f.Filter != nil {
+		f.Filter(p1)
+	}
+
 	ctx := &direct.MapContext{}
 	krm := f.FromProto(ctx, p1)
 	if ctx.Err() != nil {
+		t.Logf("p1 = %v", prototext.Format(p1))
 		t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
 	}
 
 	p2 := f.ToProto(ctx, krm)
 	if ctx.Err() != nil {
+		t.Logf("p1 = %v", prototext.Format(p1))
 		t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
 	}
 

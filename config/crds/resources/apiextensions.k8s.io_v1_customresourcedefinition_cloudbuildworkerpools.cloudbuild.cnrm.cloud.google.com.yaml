@@ -7,6 +7,7 @@ metadata:
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: beta
+    cnrm.cloud.google.com/system: "true"
   name: cloudbuildworkerpools.cloudbuild.cnrm.cloud.google.com
 spec:
   group: cloudbuild.cnrm.cloud.google.com
@@ -75,7 +76,7 @@ spec:
                           - external
                         properties:
                           external:
-                            description: A reference to an externally managed Compute
+                            description: A reference to an externally-managed Compute
                               Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
                             type: string
                           name:
@@ -283,7 +284,7 @@ spec:
                           - external
                         properties:
                           external:
-                            description: A reference to an externally managed Compute
+                            description: A reference to an externally-managed Compute
                               Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
                             type: string
                           name:

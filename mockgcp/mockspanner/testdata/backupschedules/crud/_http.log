@@ -27,8 +27,11 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.CreateInstanceMetadata",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
+      "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "Test Instance",
       "edition": "STANDARD",
+      "instanceType": "PROVISIONED",
+      "name": "projects/${projectId}/instances/test-${uniqueId}",
       "nodeCount": 1,
       "processingUnits": 1000,
       "replicaComputeCapacity": [
@@ -70,11 +73,22 @@ X-Xss-Protection: 0
     "expectedFulfillmentPeriod": "FULFILLMENT_PERIOD_NORMAL",
     "instance": {
       "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "defaultBackupScheduleType": "AUTOMATIC",
       "displayName": "Test Instance",
       "edition": "STANDARD",
+      "instanceType": "PROVISIONED",
       "name": "projects/${projectId}/instances/test-${uniqueId}",
       "nodeCount": 1,
       "processingUnits": 1000,
+      "replicaComputeCapacity": [
+        {
+          "nodeCount": 1,
+          "replicaSelection": {
+            "location": "us-central1"
+          }
+        }
+      ],
       "state": "READY",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     },
@@ -85,11 +99,21 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.spanner.admin.instance.v1.Instance",
     "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "defaultBackupScheduleType": "AUTOMATIC",
     "displayName": "Test Instance",
     "edition": "STANDARD",
+    "instanceType": "PROVISIONED",
     "name": "projects/${projectId}/instances/test-${uniqueId}",
     "nodeCount": 1,
     "processingUnits": 1000,
+    "replicaComputeCapacity": [
+      {
+        "nodeCount": 1,
+        "replicaSelection": {
+          "location": "us-central1"
+        }
+      }
+    ],
     "state": "READY",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -114,10 +138,21 @@ X-Xss-Protection: 0
 {
   "config": "projects/${projectId}/instanceConfigs/regional-us-central1",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultBackupScheduleType": "AUTOMATIC",
   "displayName": "Test Instance",
   "edition": "STANDARD",
+  "instanceType": "PROVISIONED",
+  "name": "projects/${projectId}/instances/test-${uniqueId}",
   "nodeCount": 1,
   "processingUnits": 1000,
+  "replicaComputeCapacity": [
+    {
+      "nodeCount": 1,
+      "replicaSelection": {
+        "location": "us-central1"
+      }
+    }
+  ],
   "state": "READY",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }

@@ -375,14 +375,6 @@ func SupportsIAM(rc *corekccv1alpha1.ResourceConfig) bool {
 	return !reflect.DeepEqual(rc.IAMConfig, emptyIAMConfig)
 }
 
-func GVKForResource(sm *corekccv1alpha1.ServiceMapping, rc *corekccv1alpha1.ResourceConfig) schema.GroupVersionKind {
-	return schema.GroupVersionKind{
-		Group:   sm.Name,
-		Version: sm.GetVersionFor(rc),
-		Kind:    rc.Kind,
-	}
-}
-
 func ServerGeneratedIDToTemplate(rc *corekccv1alpha1.ResourceConfig) string {
 	return fmt.Sprintf("{{%v}}", rc.ServerGeneratedIDField)
 }

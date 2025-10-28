@@ -32,4 +32,4 @@ spec:
       maxAge: 305s
       policyType: MINIMUM
   applicationSettings:
-    cookieDomain: test.abc.com
+    cookieDomain: .example.com

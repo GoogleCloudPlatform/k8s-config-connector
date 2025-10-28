@@ -148,10 +148,10 @@ func AccessEntry_ToProto(mapCtx *direct.MapContext, in *krm.Access) *pb.AccessEn
 		out.EntityType = pb.IAMMemberEntity
 	case in.Routine != nil:
 		out.Routine = RoutineReference_ToProto(mapCtx, in.Routine)
-		out.EntityType = pb.ViewEntity
+		out.EntityType = pb.RoutineEntity
 	case in.Dataset != nil:
 		out.Dataset = DatasetAccessEntry_ToProto(mapCtx, in.Dataset)
-		out.EntityType = pb.ViewEntity
+		out.EntityType = pb.DatasetEntity
 	}
 	return out
 }
@@ -228,9 +228,7 @@ func DatasetAccessEntry_FromProto(mapCtx *direct.MapContext, in *pb.DatasetAcces
 	}
 	out := &krm.DatasetAccessEntry{}
 	out.Dataset = DatasetReference_FromProto(mapCtx, in.Dataset)
-	for _, targetType := range in.TargetTypes {
-		out.TargetTypes = append(out.TargetTypes, targetType)
-	}
+	out.TargetTypes = append(out.TargetTypes, in.TargetTypes...)
 	return out
 }
 func DatasetAccessEntry_ToProto(mapCtx *direct.MapContext, in *krm.DatasetAccessEntry) *pb.DatasetAccessEntry {
@@ -239,10 +237,7 @@ func DatasetAccessEntry_ToProto(mapCtx *direct.MapContext, in *krm.DatasetAccess
 	}
 	out := &pb.DatasetAccessEntry{}
 	out.Dataset = DatasetReference_ToProto(mapCtx, in.Dataset)
-	out.TargetTypes = make([]string, len(in.TargetTypes))
-	for _, targetType := range in.TargetTypes {
-		out.TargetTypes = append(out.TargetTypes, targetType)
-	}
+	out.TargetTypes = append(out.TargetTypes, in.TargetTypes...)
 	return out
 }
 func DatasetReference_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.DatasetReference {

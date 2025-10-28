@@ -23,6 +23,7 @@ import (
 	"net/http"
 	_ "net/http/pprof" // Needed to allow pprof server to accept requests
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/contexts"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	controllermetrics "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
@@ -34,23 +35,20 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 
 	flag "github.com/spf13/pflag"
-	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	crlog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
-	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
 
+	// Ensure built-in types are registered.
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 var logger = crlog.Log.WithName("setup")
 
 func main() {
-	ctx := context.Background()
-
-	stop := signals.SetupSignalHandler()
+	ctx := contexts.SetupSignalHandler()
 
 	var (
 		prometheusScrapeEndpoint string
@@ -141,7 +139,7 @@ func main() {
 	logger.Info("Starting the Cmd.")
 
 	// Start the Cmd
-	logging.Fatal(mgr.Start(stop), "error during manager execution.")
+	logging.Fatal(mgr.Start(ctx), "error during manager execution.")
 }
 
 func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string) (manager.Manager, error) {

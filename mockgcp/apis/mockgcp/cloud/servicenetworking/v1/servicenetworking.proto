@@ -319,7 +319,7 @@ message AddSubnetworkRequest {
   string private_ipv6_google_access = 10 [json_name="privateIpv6GoogleAccess"];
   // Optional. Defines the purpose field of the subnet, e.g. 'PRIVATE_SERVICE_CONNECT'. For information about the purposes that can be set using this field, see [subnetwork](https://cloud.google.com/compute/docs/reference/rest/v1/subnetworks) in the Compute API documentation.
   string purpose = 11 [json_name="purpose"];
-  // Required. The name of a [region](/compute/docs/regions-zones) for the subnet, such `europe-west1`.
+  // Required. The name of a [region](https://cloud.google.com/compute/docs/regions-zones) for the subnet, such `europe-west1`.
   string region = 12 [json_name="region"];
   // Optional. The starting address of a range. The address must be a valid IPv4 address in the x.x.x.x format. This value combined with the IP prefix range is the CIDR range for the subnet. The range must be within the allocated range that is assigned to the private connection. If the CIDR range isn't available, the call fails.
   string requested_address = 13 [json_name="requestedAddress"];
@@ -331,7 +331,7 @@ message AddSubnetworkRequest {
   repeated SecondaryIpRangeSpec secondary_ip_range_specs = 16 [json_name="secondaryIpRangeSpecs"];
   // Optional. Skips validating if the requested_address is in use by SN VPC’s peering group. Compute Engine will still perform this check and fail the request if the requested_address is in use. Note that Compute Engine does not check for the existence of dynamic routes when performing this check. Caller of this API should make sure that there are no dynamic routes overlapping with the requested_address/prefix_length IP address range otherwise the created subnet could cause misrouting.
   bool skip_requested_address_validation = 17 [json_name="skipRequestedAddressValidation"];
-  // Required. A name for the new subnet. For information about the naming requirements, see [subnetwork](/compute/docs/reference/rest/v1/subnetworks) in the Compute API documentation.
+  // Required. A name for the new subnet. For information about the naming requirements, see [subnetwork](https://cloud.google.com/compute/docs/reference/rest/v1/subnetworks) in the Compute API documentation.
   string subnetwork = 18 [json_name="subnetwork"];
   // A list of members that are granted the `roles/servicenetworking.subnetworkAdmin` role on the subnet.
   repeated string subnetwork_users = 19 [json_name="subnetworkUsers"];
@@ -339,29 +339,31 @@ message AddSubnetworkRequest {
   bool use_custom_compute_idempotency_window = 20 [json_name="useCustomComputeIdempotencyWindow"];
 }
 
-// Api is a light-weight descriptor for an API Interface. Interfaces are also described as "protocol buffer services" in some contexts, such as by the "service" keyword in a .proto file, but they are different from API Services, which represent a concrete implementation of an interface as opposed to simply a description of methods and bindings. They are also sometimes simply referred to as "APIs" in other contexts, such as the name of this message itself. See https://cloud.google.com/apis/design/glossary for detailed terminology.
+// Api is a light-weight descriptor for an API Interface. Interfaces are also described as "protocol buffer services" in some contexts, such as by the "service" keyword in a .proto file, but they are different from API Services, which represent a concrete implementation of an interface as opposed to simply a description of methods and bindings. They are also sometimes simply referred to as "APIs" in other contexts, such as the name of this message itself. See https://cloud.google.com/apis/design/glossary for detailed terminology. New usages of this message as an alternative to ServiceDescriptorProto are strongly discouraged. This message does not reliability preserve all information necessary to model the schema and preserve semantics. Instead make use of FileDescriptorSet which preserves the necessary information.
 message Api {
+  // The source edition string, only valid when syntax is SYNTAX_EDITIONS.
+  string edition = 1 [json_name="edition"];
   // The methods of this interface, in unspecified order.
-  repeated Method methods = 1 [json_name="methods"];
+  repeated Method methods = 2 [json_name="methods"];
   // Included interfaces. See Mixin.
-  repeated Mixin mixins = 2 [json_name="mixins"];
+  repeated Mixin mixins = 3 [json_name="mixins"];
   // The fully qualified name of this interface, including package name followed by the interface's simple name.
-  string name = 3 [json_name="name"];
+  string name = 4 [json_name="name"];
   // Any metadata attached to the interface.
-  repeated Option options = 4 [json_name="options"];
+  repeated Option options = 5 [json_name="options"];
   // Source context for the protocol buffer service represented by this message.
-  SourceContext source_context = 5 [json_name="sourceContext"];
+  SourceContext source_context = 6 [json_name="sourceContext"];
   // The source syntax of the service.
-  string syntax = 6 [json_name="syntax"];
+  string syntax = 7 [json_name="syntax"];
   // A version string for this interface. If specified, must have the form `major-version.minor-version`, as in `1.10`. If the minor version is omitted, it defaults to zero. If the entire version field is empty, the major version is derived from the package name, as outlined below. If the field is not empty, the version in the package name will be verified to be consistent with what is provided here. The versioning schema uses [semantic versioning](http://semver.org) where the major version number indicates a breaking change and the minor version an additive, non-breaking change. Both version numbers are signals to users what to expect from different versions, and should be carefully chosen based on the product plan. The major version is also reflected in the package name of the interface, which must end in `v`, as in `google.feature.v1`. For major versions 0 and 1, the suffix can be omitted. Zero major versions must only be used for experimental, non-GA interfaces. 
-  string version = 7 [json_name="version"];
+  string version = 8 [json_name="version"];
 }
 
 // Aspect represents Generic aspect. It is used to configure an aspect without making direct changes to service.proto
 message Aspect {
   // The type of this aspect configuration.
   string kind = 1 [json_name="kind"];
-  // Content of the configuration. The underlying schema should be defined by Aspect owners as protobuf message under `apiserving/configaspects/proto`.
+  // Content of the configuration. The underlying schema should be defined by Aspect owners as protobuf message under `google/api/configaspects/proto`.
   map<string, .google.protobuf.Any> spec = 2 [json_name="spec"];
 }
 
@@ -433,11 +435,50 @@ message BackendRule {
   double operation_deadline = 7 [json_name="operationDeadline"];
   // The map between request protocol and the backend address.
   map<string, BackendRule> overrides_by_request_protocol = 8 [json_name="overridesByRequestProtocol"];
+  // no-lint
   string path_translation = 9 [json_name="pathTranslation"];
   // The protocol used for sending a request to the backend. The supported values are "http/1.1" and "h2". The default value is inferred from the scheme in the address field: SCHEME PROTOCOL http:// http/1.1 https:// http/1.1 grpc:// h2 grpcs:// h2 For secure HTTP backends (https://) that support HTTP/2, set this field to "h2" for improved performance. Configuring this field to non-default values is only supported for secure HTTP backends. This field will be ignored for all other backends. See https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids for more details on the supported values.
   string protocol = 10 [json_name="protocol"];
   // Selects the methods to which this rule applies. Refer to selector for syntax details.
   string selector = 11 [json_name="selector"];
+}
+
+// `BatchingConfigProto` defines the batching configuration for an API method.
+message BatchingConfigProto {
+  // The request and response fields used in batching.
+  BatchingDescriptorProto batch_descriptor = 1 [json_name="batchDescriptor"];
+  // The thresholds which trigger a batched request to be sent.
+  BatchingSettingsProto thresholds = 2 [json_name="thresholds"];
+}
+
+// `BatchingDescriptorProto` specifies the fields of the request message to be used for batching, and, optionally, the fields of the response message to be used for demultiplexing.
+message BatchingDescriptorProto {
+  // The repeated field in the request message to be aggregated by batching.
+  string batched_field = 1 [json_name="batchedField"];
+  // A list of the fields in the request message. Two requests will be batched together only if the values of every field specified in `request_discriminator_fields` is equal between the two requests.
+  repeated string discriminator_fields = 2 [json_name="discriminatorFields"];
+  // Optional. When present, indicates the field in the response message to be used to demultiplex the response into multiple response messages, in correspondence with the multiple request messages originally batched together.
+  string subresponse_field = 3 [json_name="subresponseField"];
+}
+
+// `BatchingSettingsProto` specifies a set of batching thresholds, each of which acts as a trigger to send a batch of messages as a request. At least one threshold must be positive nonzero.
+message BatchingSettingsProto {
+  // The duration after which a batch should be sent, starting from the addition of the first message to that batch.
+  .google.protobuf.Duration delay_threshold = 1 [json_name="delayThreshold"];
+  // The maximum number of elements collected in a batch that could be accepted by server.
+  int32 element_count_limit = 2 [json_name="elementCountLimit"];
+  // The number of elements of a field collected into a batch which, if exceeded, causes the batch to be sent.
+  int32 element_count_threshold = 3 [json_name="elementCountThreshold"];
+  // The maximum size of data allowed by flow control.
+  int32 flow_control_byte_limit = 4 [json_name="flowControlByteLimit"];
+  // The maximum number of elements allowed by flow control.
+  int32 flow_control_element_limit = 5 [json_name="flowControlElementLimit"];
+  // The behavior to take when the flow control limit is exceeded.
+  string flow_control_limit_exceeded_behavior = 6 [json_name="flowControlLimitExceededBehavior"];
+  // The maximum size of the request that could be accepted by server.
+  int32 request_byte_limit = 7 [json_name="requestByteLimit"];
+  // The aggregated size of the batched field which, if exceeded, causes the batch to be sent. This size is computed by aggregating the sizes of the request field to be batched, not of the entire request message.
+  int64 request_byte_threshold = 8 [json_name="requestByteThreshold"];
 }
 
 // Billing related configuration of the service. The following example shows how to configure monitored resources and metrics for billing, `consumer_destinations` is the only supported destination and the monitored resources need at least one label key `cloud.googleapis.com/location` to indicate the location of the billing usage, using different monitored resources between monitoring and billing is recommended so they can be evolved independently: monitored_resources: - type: library.googleapis.com/billing_branch labels: - key: cloud.googleapis.com/location description: | Predefined label to support billing location restriction. - key: city description: | Custom label to define the city where the library branch is located in. - key: name description: Custom label to define the name of the library branch. metrics: - name: library.googleapis.com/book/borrowed_count metric_kind: DELTA value_type: INT64 unit: "1" billing: consumer_destinations: - monitored_resource: library.googleapis.com/billing_branch metrics: - library.googleapis.com/book/borrowed_count
@@ -456,6 +497,10 @@ message BillingDestination {
 
 // The request message for Operations.CancelOperation.
 message CancelOperationRequest {
+}
+
+// Metadata provided through GetOperation request for the LRO generated by Cleanup Connection API
+message CleanupConnectionMetadata {
 }
 
 // Details about how and where to publish client libraries.
@@ -486,11 +531,11 @@ message ClientLibrarySettings {
 
 // Cloud SQL configuration.
 message CloudSQLConfig {
-  // Peering service used for peering with the Cloud SQL project.
+  // Required. Peering service used for peering with the Cloud SQL project.
   string service = 1 [json_name="service"];
-  // The name of the umbrella network in the Cloud SQL umbrella project.
+  // Required. The name of the umbrella network in the Cloud SQL umbrella project.
   string umbrella_network = 2 [json_name="umbrellaNetwork"];
-  // The project number of the Cloud SQL umbrella project.
+  // Required. The project number of the Cloud SQL umbrella project.
   int64 umbrella_project = 3 [json_name="umbrellaProject"];
 }
 
@@ -506,7 +551,7 @@ message CommonLanguageSettings {
 
 // Represents a private connection resource. A private connection is implemented as a VPC Network Peering connection between a service producer's VPC network and a service consumer's VPC network.
 message Connection {
-  // The name of service consumer's VPC network that's connected with service producer network, in the following format: `projects/{project}/global/networks/{network}`. `{project}` is a project number, such as in `12345` that includes the VPC service consumer's VPC network. `{network}` is the name of the service consumer's VPC network.
+  // Required. The name of service consumer's VPC network that's connected with service producer network, in the following format: `projects/{project}/global/networks/{network}`. `{project}` is a project number, such as in `12345` that includes the VPC service consumer's VPC network. `{network}` is the name of the service consumer's VPC network.
   string network = 1 [json_name="network"];
   // Output only. The name of the VPC Network Peering connection that was created by the service producer.
   string peering = 2 [json_name="peering"];
@@ -732,7 +777,7 @@ message Endpoint {
   string target = 4 [json_name="target"];
 }
 
-// Enum type definition.
+// Enum type definition. New usages of this message as an alternative to EnumDescriptorProto are strongly discouraged. This message does not reliability preserve all information necessary to model the schema and preserve semantics. Instead make use of FileDescriptorSet which preserves the necessary information.
 message Enum {
   // The source edition string, only valid when syntax is SYNTAX_EDITIONS.
   string edition = 1 [json_name="edition"];
@@ -748,7 +793,7 @@ message Enum {
   string syntax = 6 [json_name="syntax"];
 }
 
-// Enum value definition.
+// Enum value definition. New usages of this message as an alternative to EnumValueDescriptorProto are strongly discouraged. This message does not reliability preserve all information necessary to model the schema and preserve semantics. Instead make use of FileDescriptorSet which preserves the necessary information.
 message EnumValue {
   // Enum value name.
   string name = 1 [json_name="name"];
@@ -768,7 +813,7 @@ message ExperimentalFeatures {
   bool unversioned_package_disabled = 3 [json_name="unversionedPackageDisabled"];
 }
 
-// A single field of a message type.
+// A single field of a message type. New usages of this message as an alternative to FieldDescriptorProto are strongly discouraged. This message does not reliability preserve all information necessary to model the schema and preserve semantics. Instead make use of FileDescriptorSet which preserves the necessary information.
 message Field {
   // The field cardinality.
   string cardinality = 1 [json_name="cardinality"];
@@ -814,7 +859,7 @@ message GetDnsZoneResponse {
 message GoSettings {
   // Some settings.
   CommonLanguageSettings common = 1 [json_name="common"];
-  // Map of service names to renamed services. Keys are the package relative service names and values are the name to be used for the service client and call options. publishing: go_settings: renamed_services: Publisher: TopicAdmin
+  // Map of service names to renamed services. Keys are the package relative service names and values are the name to be used for the service client and call options. Example: publishing: go_settings: renamed_services: Publisher: TopicAdmin
   map<string, string> renamed_services = 2 [json_name="renamedServices"];
 }
 
@@ -988,22 +1033,24 @@ message LongRunning {
   .google.protobuf.Duration total_poll_timeout = 4 [json_name="totalPollTimeout"];
 }
 
-// Method represents a method of an API interface.
+// Method represents a method of an API interface. New usages of this message as an alternative to MethodDescriptorProto are strongly discouraged. This message does not reliability preserve all information necessary to model the schema and preserve semantics. Instead make use of FileDescriptorSet which preserves the necessary information.
 message Method {
+  // The source edition string, only valid when syntax is SYNTAX_EDITIONS. This field should be ignored, instead the edition should be inherited from Api. This is similar to Field and EnumValue.
+  string edition = 1 [json_name="edition"];
   // The simple name of this method.
-  string name = 1 [json_name="name"];
+  string name = 2 [json_name="name"];
   // Any metadata attached to the method.
-  repeated Option options = 2 [json_name="options"];
+  repeated Option options = 3 [json_name="options"];
   // If true, the request is streamed.
-  bool request_streaming = 3 [json_name="requestStreaming"];
+  bool request_streaming = 4 [json_name="requestStreaming"];
   // A URL of the input message type.
-  string request_type_url = 4 [json_name="requestTypeUrl"];
+  string request_type_url = 5 [json_name="requestTypeUrl"];
   // If true, the response is streamed.
-  bool response_streaming = 5 [json_name="responseStreaming"];
+  bool response_streaming = 6 [json_name="responseStreaming"];
   // The URL of the output message type.
-  string response_type_url = 6 [json_name="responseTypeUrl"];
-  // The source syntax of this method.
-  string syntax = 7 [json_name="syntax"];
+  string response_type_url = 7 [json_name="responseTypeUrl"];
+  // The source syntax of this method. This field should be ignored, instead the syntax should be inherited from Api. This is similar to Field and EnumValue.
+  string syntax = 8 [json_name="syntax"];
 }
 
 // Defines policies applying to an RPC method.
@@ -1018,10 +1065,12 @@ message MethodPolicy {
 message MethodSettings {
   // List of top-level fields of the request message, that should be automatically populated by the client libraries based on their (google.api.field_info).format. Currently supported format: UUID4. Example of a YAML configuration: publishing: method_settings: - selector: google.example.v1.ExampleService.CreateExample auto_populated_fields: - request_id
   repeated string auto_populated_fields = 1 [json_name="autoPopulatedFields"];
+  // Batching configuration for an API method in client libraries. Example of a YAML configuration: publishing: method_settings: - selector: google.example.v1.ExampleService.BatchCreateExample batching: element_count_threshold: 1000 request_byte_threshold: 100000000 delay_threshold_millis: 10
+  BatchingConfigProto batching = 2 [json_name="batching"];
   // Describes settings to use for long-running operations when generating API methods for RPCs. Complements RPCs that use the annotations in google/longrunning/operations.proto. Example of a YAML configuration:: publishing: method_settings: - selector: google.cloud.speech.v2.Speech.BatchRecognize long_running: initial_poll_delay: 60s # 1 minute poll_delay_multiplier: 1.5 max_poll_delay: 360s # 6 minutes total_poll_timeout: 54000s # 90 minutes
-  LongRunning long_running = 2 [json_name="longRunning"];
+  LongRunning long_running = 3 [json_name="longRunning"];
   // The fully qualified name of the method, for which the options below apply. This is used to find the method to apply the options. Example: publishing: method_settings: - selector: google.storage.control.v2.StorageControl.CreateFolder # method settings for CreateFolder...
-  string selector = 3 [json_name="selector"];
+  string selector = 4 [json_name="selector"];
 }
 
 // Defines a metric type and its schema. Once a metric descriptor is created, deleting or altering it stops data collection and makes the metric type's existing data unusable. 
@@ -1122,7 +1171,7 @@ message OAuthRequirements {
   string canonical_scopes = 1 [json_name="canonicalScopes"];
 }
 
-// A protocol buffer option, which can be attached to a message, field, enumeration, etc.
+// A protocol buffer option, which can be attached to a message, field, enumeration, etc. New usages of this message as an alternative to FileOptions, MessageOptions, FieldOptions, EnumOptions, EnumValueOptions, ServiceOptions, or MethodOptions are strongly discouraged.
 message Option {
   // The option's name. For protobuf built-in options (options defined in descriptor.proto), this is the short name. For example, `"map_entry"`. For custom options, it should be the fully-qualified name. For example, `"google.api.http"`.
   string name = 1 [json_name="name"];
@@ -1148,7 +1197,7 @@ message PartialDeleteConnectionMetadata {
 message PeeredDnsDomain {
   // The DNS domain name suffix e.g. `example.com.`. Cloud DNS requires that a DNS suffix ends with a trailing dot.
   string dns_suffix = 1 [json_name="dnsSuffix"];
-  // User assigned name for this resource. Must be unique within the consumer network. The name must be 1-63 characters long, must begin with a letter, end with a letter or digit, and only contain lowercase letters, digits or dashes.
+  // Required. User assigned name for this resource. Must be unique within the consumer network. The name must be 1-63 characters long, must begin with a letter, end with a letter or digit, and only contain lowercase letters, digits or dashes.
   string name = 2 [json_name="name"];
 }
 
@@ -1160,6 +1209,8 @@ message PeeredDnsDomainMetadata {
 message PhpSettings {
   // Some settings.
   CommonLanguageSettings common = 1 [json_name="common"];
+  // The package name to use in Php. Clobbers the php_namespace option set in the protobuf. This should be used **only** by APIs who have already set the language_settings.php.package_name" field in gapic.yaml. API teams should use the protobuf php_namespace option where possible. Example of a YAML configuration:: publishing: library_settings: php_settings: library_package: Google\Cloud\PubSub\V1
+  string library_package = 2 [json_name="libraryPackage"];
 }
 
 // Grouping of IAM role and IAM member.
@@ -1312,7 +1363,7 @@ message RubySettings {
 message SearchRangeRequest {
   // Required. The prefix length of the IP range. Use usual CIDR range notation. For example, '30' to find unused x.x.x.x/30 CIDR range. Actual range will be determined using allocated range for the consumer peered network and returned in the result.
   int32 ip_prefix_length = 1 [json_name="ipPrefixLength"];
-  // Network name in the consumer project. This network must have been already peered with a shared VPC network using CreateConnection method. Must be in a form 'projects/{project}/global/networks/{network}'. {project} is a project number, as in '12345' {network} is network name.
+  // Required. Network name in the consumer project. This network must have been already peered with a shared VPC network using CreateConnection method. Must be in a form 'projects/{project}/global/networks/{network}'. {project} is a project number, as in '12345' {network} is network name.
   string network = 2 [json_name="network"];
 }
 
@@ -1466,7 +1517,7 @@ message SystemParameters {
   repeated SystemParameterRule rules = 1 [json_name="rules"];
 }
 
-// A protocol buffer message type.
+// A protocol buffer message type. New usages of this message as an alternative to DescriptorProto are strongly discouraged. This message does not reliability preserve all information necessary to model the schema and preserve semantics. Instead make use of FileDescriptorSet which preserves the necessary information.
 message Type {
   // The source edition string, only valid when syntax is SYNTAX_EDITIONS.
   string edition = 1 [json_name="edition"];
@@ -1533,7 +1584,7 @@ message ValidateConsumerConfigRequest {
   string consumer_network = 2 [json_name="consumerNetwork"];
   // NETWORK_NOT_IN_CONSUMERS_PROJECT, NETWORK_NOT_IN_CONSUMERS_HOST_PROJECT, and HOST_PROJECT_NOT_FOUND are done when consumer_project is provided.
   ConsumerProject consumer_project = 3 [json_name="consumerProject"];
-  // RANGES_EXHAUSTED, RANGES_EXHAUSTED, and RANGES_DELETED_LATER are done when range_reservation is provided.
+  // RANGES_EXHAUSTED, RANGES_NOT_RESERVED, and RANGES_DELETED_LATER are done when range_reservation is provided.
   RangeReservation range_reservation = 4 [json_name="rangeReservation"];
   // The validations will be performed in the order listed in the ValidationError enum. The first failure will return. If a validation is not requested, then the next one will be performed. SERVICE_NETWORKING_NOT_ENABLED and NETWORK_NOT_PEERED checks are performed for all requests where validation is requested. NETWORK_NOT_FOUND and NETWORK_DISCONNECTED checks are done for requests that have validate_network set to true.
   bool validate_network = 5 [json_name="validateNetwork"];

@@ -16,7 +16,7 @@
 // proto.service: google.cloud.apigateway.v1.ApiGatewayService
 // proto.message: google.cloud.apigateway.v1.Api
 // crd.type: APIGatewayAPI
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package apigateway
 
@@ -33,12 +33,13 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigateway/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apigateway/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 )
 
 func init() {
@@ -57,7 +58,12 @@ type apiModel struct {
 
 func (m *apiModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.APIGatewayAPI{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+
+	copied := u.DeepCopy()
+	if err := label.ComputeLabels(copied); err != nil {
+		return nil, err
+	}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(copied.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
@@ -123,6 +129,7 @@ func (a *apiAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
+
 	resource := APIGatewayAPISpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -168,7 +175,7 @@ func (a *apiAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	if desired.Spec.DisplayName != nil && !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
 		paths = append(paths, "display_name")
 	}
-	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+	if !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
 		paths = append(paths, "labels")
 	}
 

@@ -16,15 +16,15 @@ package speech
 
 import (
 	pb "cloud.google.com/go/speech/apiv2/speechpb"
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1alpha1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/speech/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func SpeechPhraseSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krmv1alpha1.SpeechPhraseSetObservedState {
+func SpeechPhraseSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krmv1beta1.SpeechPhraseSetObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.SpeechPhraseSetObservedState{}
+	out := &krmv1beta1.SpeechPhraseSetObservedState{}
 	// MISSING: Name
 	out.UID = direct.LazyPtr(in.GetUid())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
@@ -38,7 +38,7 @@ func SpeechPhraseSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Ph
 	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
 	return out
 }
-func SpeechPhraseSetObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.SpeechPhraseSetObservedState) *pb.PhraseSet {
+func SpeechPhraseSetObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.SpeechPhraseSetObservedState) *pb.PhraseSet {
 	if in == nil {
 		return nil
 	}
@@ -56,41 +56,41 @@ func SpeechPhraseSetObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1al
 	out.KmsKeyVersionName = direct.ValueOf(in.KMSKeyVersionName)
 	return out
 }
-func SpeechPhraseSetSpec_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krmv1alpha1.SpeechPhraseSetSpec {
+func SpeechPhraseSetSpec_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krmv1beta1.SpeechPhraseSetSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.SpeechPhraseSetSpec{}
+	out := &krmv1beta1.SpeechPhraseSetSpec{}
 	// MISSING: Name
 	out.Phrases = direct.Slice_FromProto(mapCtx, in.Phrases, PhraseSet_Phrase_FromProto)
-	out.Boost = direct.LazyPtr(direct.Float32ToString(mapCtx, in.GetBoost()))
+	/* NOTYET out.Boost = direct.LazyPtr(direct.Float32ToString(mapCtx, in.GetBoost())) */
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Annotations = in.Annotations
 	return out
 }
-func SpeechPhraseSetSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.SpeechPhraseSetSpec) *pb.PhraseSet {
+func SpeechPhraseSetSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.SpeechPhraseSetSpec) *pb.PhraseSet {
 	if in == nil {
 		return nil
 	}
 	out := &pb.PhraseSet{}
 	// MISSING: Name
 	out.Phrases = direct.Slice_ToProto(mapCtx, in.Phrases, PhraseSet_Phrase_ToProto)
-	out.Boost = direct.StringToFloat32(mapCtx, direct.ValueOf(in.Boost))
+	/* NOTYET out.Boost = direct.StringToFloat32(mapCtx, direct.ValueOf(in.Boost)) */
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Annotations = in.Annotations
 	return out
 }
 
-func PhraseSet_Phrase_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet_Phrase) *krmv1alpha1.PhraseSet_Phrase {
+func PhraseSet_Phrase_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet_Phrase) *krmv1beta1.PhraseSet_Phrase {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.PhraseSet_Phrase{}
+	out := &krmv1beta1.PhraseSet_Phrase{}
 	out.Value = direct.LazyPtr(in.GetValue())
 	out.Boost = direct.LazyPtr(direct.Float32ToString(mapCtx, in.GetBoost()))
 	return out
 }
-func PhraseSet_Phrase_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.PhraseSet_Phrase) *pb.PhraseSet_Phrase {
+func PhraseSet_Phrase_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.PhraseSet_Phrase) *pb.PhraseSet_Phrase {
 	if in == nil {
 		return nil
 	}

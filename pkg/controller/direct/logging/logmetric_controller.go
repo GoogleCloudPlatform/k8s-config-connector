@@ -98,6 +98,9 @@ func (m *logMetricModel) AdapterForObject(ctx context.Context, reader client.Rea
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
+	// resolve LoggingLogBucketRef
+	// todo: LoggingLogBucketRef is *v1alpha1.ResourceRef, ideally should use *loggingv1beta1.LoggingLogBucketRef instead
+	// *v1alpha1.ResourceRef has required `kind` field, this migration could introduce breaking changes to Beta CRD
 	if err := LogBucketRef_ConvertToExternal(ctx, reader, obj, &obj.Spec.LoggingLogBucketRef); err != nil {
 		return nil, err
 	}
@@ -264,11 +267,9 @@ func (a *logMetricAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 			}
 		}
 
-		if !compareMetricDescriptors(a.desired.Spec.MetricDescriptor, a.actual.MetricDescriptor) {
-			if err := validateImmutableFieldsUpdated(a.desired.Spec.MetricDescriptor, a.actual.MetricDescriptor); err != nil {
-				return fmt.Errorf("logMetric update failed: %w", err)
-			}
-			update.MetricDescriptor = convertKCCtoAPIForMetricDescriptor(a.desired.Spec.MetricDescriptor)
+		desired := convertKCCtoAPI(&a.desired.Spec)
+		if !compareMetricDescriptors(desired.MetricDescriptor, a.actual.MetricDescriptor) {
+			update.MetricDescriptor = desired.MetricDescriptor
 		}
 
 		if !reflect.DeepEqual(a.desired.Spec.LabelExtractors, a.actual.LabelExtractors) {

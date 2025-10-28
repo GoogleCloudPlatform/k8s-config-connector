@@ -24,8 +24,6 @@ spec:
     name: bigquerydataset${uniqueId}
   friendlyName: BigQueryTable Full Example
   description: "A detailed example of a BigQuery Table resource."
-  labels: # These are GCP labels, use .metadata.labels for K8s labels unless using direct reconciler
-    gcp-label-key: gcp-label-value
   schema: |-
     [
       {
@@ -86,6 +84,10 @@ spec:
     expirationMs: 86400000
     field: date
   requirePartitionFilter: true # Use top-level field instead of the one under timePartitioning
+  # The labels are ignored in the TF-based controller. metadata.labels will be used instead.
+  labels:
+    spec-label-key1: value1
+    spec-label-key2: value2
   clustering:
     - name # Must match a field in the schema
     - post_abbr

@@ -18,6 +18,8 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
+	"strconv"
 	"time"
 
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
@@ -86,6 +88,9 @@ type Config struct {
 	// UseCache is true if we should use the informer cache
 	// Currently only used in preview
 	UseCache bool
+
+	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
+	EnableMetricsTransport bool
 }
 
 // Creates a new controller-runtime manager.Manager and starts all of the KCC controllers pointed at the
@@ -122,6 +127,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	tfCfg.UserProjectOverride = cfg.UserProjectOverride
 	tfCfg.BillingProject = cfg.BillingProject
 	tfCfg.GCPAccessToken = cfg.GCPAccessToken
+	tfCfg.EnableMetricsTransport = cfg.EnableMetricsTransport
 
 	provider, err := tfprovider.New(ctx, tfCfg)
 	if err != nil {
@@ -144,6 +150,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	dclOptions.BillingProject = cfg.BillingProject
 	dclOptions.HTTPClient = cfg.HTTPClient
 	dclOptions.UserAgent = gcp.KCCUserAgent()
+	dclOptions.EnableMetricsTransport = cfg.EnableMetricsTransport
 
 	dclConfig, err := clientconfig.New(ctx, dclOptions)
 	if err != nil {
@@ -151,16 +158,22 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	}
 
 	stateIntoSpecDefaulter := stateintospec.NewStateIntoSpecDefaulter(mgr.GetClient())
+
 	controllerConfig := &config.ControllerConfig{
 		UserProjectOverride:        cfg.UserProjectOverride,
 		BillingProject:             cfg.BillingProject,
 		HTTPClient:                 cfg.HTTPClient,
 		GRPCUnaryClientInterceptor: cfg.GRPCUnaryClientInterceptor,
 		UserAgent:                  gcp.KCCUserAgent(),
+		EnableMetricsTransport:     cfg.EnableMetricsTransport,
 	}
 
 	if cfg.GCPAccessToken != "" {
 		controllerConfig.GCPTokenSource = oauth2.StaticTokenSource(&oauth2.Token{AccessToken: cfg.GCPAccessToken})
+	}
+
+	if err := controllerConfig.Init(ctx); err != nil {
+		return nil, err
 	}
 
 	// Initialize direct controllers
@@ -169,11 +182,13 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	}
 
 	rd := controller.Deps{
-		TfProvider:   provider,
-		TfLoader:     smLoader,
-		DclConfig:    dclConfig,
-		DclConverter: dclConverter,
-		Defaulters:   []k8s.Defaulter{stateIntoSpecDefaulter},
+		TFProvider:   provider,
+		TFLoader:     smLoader,
+		DCLConfig:    dclConfig,
+		DCLConverter: dclConverter,
+		Defaulters: []k8s.Defaulter{
+			stateIntoSpecDefaulter,
+		},
 	}
 
 	fetcher, err := gcpwatch.NewIAMFetcher(ctx, controllerConfig)
@@ -182,8 +197,20 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	}
 	rd.DependencyTracker = gcpwatch.NewDependencyTracker(fetcher)
 
+	pollInterval := gcpwatch.DefaultPollInterval
+	if interval := os.Getenv("TEST_DEPENDENCY_TRACKER_POLL_INTERVAL"); interval != "" {
+		intInterval, err := strconv.Atoi(interval)
+		if err != nil {
+			return nil, fmt.Errorf("parsing TEST_DEPENDENCY_TRACKER_POLL_INTERVAL: %w", err)
+		}
+		pollInterval = time.Duration(intInterval) * time.Second
+	}
 	go func() {
-		rd.DependencyTracker.PollForever(ctx, time.Second, time.Second)
+		rd.DependencyTracker.PollForever(ctx, &gcpwatch.PollConfig{
+			InitialDelay: gcpwatch.DefaultInitialDelay,
+			MinInterval:  gcpwatch.DefaultMinInterval,
+			PollInterval: pollInterval,
+		})
 	}()
 
 	// Register the registration controller, which will dynamically create controllers for

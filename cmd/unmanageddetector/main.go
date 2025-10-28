@@ -21,10 +21,13 @@ import (
 	_ "net/http/pprof" // Needed to allow pprof server to accept requests
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/contexts"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/unmanageddetector"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp/profiler"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/ready"
 
@@ -34,22 +37,33 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
-	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
+
+	// Ensure built-in types are registered.
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 var logger = log.Log.WithName("setup")
 
 func main() {
-	stop := signals.SetupSignalHandler()
+	ctx := contexts.SetupSignalHandler()
 
 	var enablePprof bool
 	var pprofPort int
+	var managerNamespaceIsolation string
 
 	profiler.AddFlag(flag.CommandLine)
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	flag.BoolVar(&enablePprof, "enable-pprof", false, "Enable the pprof server.")
 	flag.IntVar(&pprofPort, "pprof-port", 6060, "The port that the pprof server binds to if enabled.")
+	flag.StringVar(&managerNamespaceIsolation, k8s.ManagerNamespaceIsolationFlag, k8s.ManagerNamespaceIsolationShared, fmt.Sprintf("'%s' if all controller managers run in shared 'cnrm-system' namespace, '%s' if controller managers run in dedicated namespace. Default is '%s'", k8s.ManagerNamespaceIsolationShared, k8s.ManagerNamespaceIsolationDedicated, k8s.ManagerNamespaceIsolationShared))
 	flag.Parse()
+
+	switch managerNamespaceIsolation {
+	case k8s.ManagerNamespaceIsolationShared, k8s.ManagerNamespaceIsolationDedicated:
+		unmanageddetector.ManagerNamespaceIsolation = managerNamespaceIsolation
+	default:
+		logging.Fatal(fmt.Errorf("unknown value for --%s: %s, expected '%s' or '%s'", k8s.ManagerNamespaceIsolationFlag, managerNamespaceIsolation, k8s.ManagerNamespaceIsolationShared, k8s.ManagerNamespaceIsolationDedicated), "error starting unmanaged detector")
+	}
 
 	// Enable packages using the Kubernetes controller-runtime logging package to log
 	logging.SetupLogger()
@@ -111,5 +125,5 @@ func main() {
 	logger.Info("Starting the Cmd.")
 
 	// Start the Cmd
-	logging.Fatal(mgr.Start(stop), "error during manager execution")
+	logging.Fatal(mgr.Start(ctx), "error during manager execution")
 }

@@ -39,14 +39,13 @@ spec:
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: 'Update call failed: error updating: logMetric update failed: cannot
-      make changes to immutable field(s): [metricDescriptor.MetricKind metricDescriptor.ValueType]'
-    reason: UpdateFailed
-    status: "False"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
   metricDescriptor:
-    description: a description
+    description: an updated description
     name: projects/${projectId}/metricDescriptors/logging.googleapis.com/user/logginglogmetric-${uniqueId}
     type: logging.googleapis.com/user/logginglogmetric-${uniqueId}
   observedGeneration: 3

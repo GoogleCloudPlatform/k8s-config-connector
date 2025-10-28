@@ -48,10 +48,11 @@ type VertexAIFeaturestoreSpec struct {
 	// The VertexAIFeaturestore name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	// NOTYET: not supported in Config Connector reconciliation
 	// Optional. Used to perform consistent read-modify-write updates. If not set,
 	//  a blind "overwrite" update happens.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Featurestore.etag
-	Etag *string `json:"etag,omitempty"`
+	// Etag *string `json:"etag,omitempty"`
 
 	// Optional. The labels with user-defined metadata to organize your
 	//  Featurestore.

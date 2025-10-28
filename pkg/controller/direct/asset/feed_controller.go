@@ -16,7 +16,7 @@
 // proto.service: google.cloud.asset.v1.AssetService
 // proto.message: google.cloud.asset.v1.Feed
 // crd.type: AssetFeed
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package asset
 
@@ -35,7 +35,7 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/asset/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -144,11 +144,11 @@ func (a *feedAdapter) Find(ctx context.Context) (bool, error) {
 func (a *feedAdapter) normalizeReferences(ctx context.Context) error {
 	obj := a.desired
 	if obj.Spec.FeedOutputConfig.PubsubDestination != nil && obj.Spec.FeedOutputConfig.PubsubDestination.TopicRef != nil {
-		topic, err := refs.ResolvePubSubTopic(ctx, a.reader, obj, obj.Spec.FeedOutputConfig.PubsubDestination.TopicRef)
+		ref := obj.Spec.FeedOutputConfig.PubsubDestination.TopicRef
+		_, err := ref.NormalizedExternal(ctx, a.reader, obj.GetNamespace())
 		if err != nil {
-			return fmt.Errorf("resolving pubsub topic ref: %w", err)
+			return err
 		}
-		obj.Spec.FeedOutputConfig.PubsubDestination.TopicRef.External = topic.String()
 	}
 	return nil
 }

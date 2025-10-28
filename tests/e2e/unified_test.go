@@ -88,8 +88,30 @@ func TestAllInSeries(t *testing.T) {
 				{
 					dummySample := create.LoadSample(t, sampleKey, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
 					create.MaybeSkip(t, sampleKey.Name, dummySample.Resources)
-					if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
-						t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_APIGROUPS=%s", s)
+
+					group := dummySample.APIGroup
+					skipTestReason := ""
+					if group != "" {
+						if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
+							skippedGroups := strings.Split(s, ",")
+							if slice.StringSliceContains(skippedGroups, group) {
+								skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", sampleKey.Name, group, s)
+							}
+						}
+						if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+							onlyGroups := strings.Split(s, ",")
+							if !slice.StringSliceContains(onlyGroups, group) {
+								skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", sampleKey.Name, group, s)
+							}
+						}
+					} else {
+						if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+							t.Skipf("skipping test because cannot determine group for samples, with ONLY_TEST_APIGROUPS=%s", s)
+						}
+					}
+
+					if skipTestReason != "" {
+						t.Skip(skipTestReason)
 					}
 
 					// Record the CRDs we will use, for faster testing
@@ -158,7 +180,19 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 	}
 
 	t.Run("fixtures", func(t *testing.T) {
-		fixtures := resourcefixture.Load(t)
+		// Skip newly added iam/iampartialpolicy for now as they run under TestIAM_AllInSeries
+		lightFilter := func(name string, testType resourcefixture.TestType) bool {
+			return !strings.Contains(name, "iam-bigqueryconnectionconnectionref") &&
+				!strings.Contains(name, "iam-logsinkref") &&
+				!strings.Contains(name, "iam-serviceaccountref") &&
+				!strings.Contains(name, "iam-serviceidentityref") &&
+				!strings.Contains(name, "iam-sqlinstanceref")
+		}
+		pathFilter := func(path string) bool {
+			return !strings.Contains(path, "testdata/iam/iampartialpolicy")
+		}
+
+		fixtures := resourcefixture.LoadWithPathFilter(t, pathFilter, lightFilter, nil)
 		for _, fixture := range fixtures {
 			fixture := fixture
 			group := fixture.GVK.Group
@@ -208,6 +242,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					// We want to use SSA everywhere, but some of our tests are broken by SSA
 					switch group := primaryResource.GetObjectKind().GroupVersionKind().Group; group {
 					case "bigtable.cnrm.cloud.google.com",
+						"gkehub.cnrm.cloud.google.com",
+						"kms.cnrm.cloud.google.com",
 						"orgpolicy.cnrm.cloud.google.com":
 						// Use SSA
 
@@ -324,30 +360,56 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 				}
 				create.RunCreateDeleteTest(h, opt)
 
+				// Get testName from t.Name()
+				// If t.Name() = TestAllInInSeries_fixtures_computenodetemplate
+				// the testName should be computenodetemplate
+				pieces := strings.Split(t.Name(), "/")
+				var testName string
+				if len(pieces) > 0 {
+					testName = pieces[len(pieces)-1]
+				} else {
+					t.Fatalf("FAIL: failed to get test name")
+				}
 				if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					folderID := h.FolderID()
 
 					for _, obj := range exportResources {
-						// Get testName from t.Name()
-						// If t.Name() = TestAllInInSeries_fixtures_computenodetemplate
-						// the testName should be computenodetemplate
-						pieces := strings.Split(t.Name(), "/")
-						var testName string
-						if len(pieces) > 0 {
-							testName = pieces[len(pieces)-1]
-						} else {
-							t.Fatalf("FAIL: failed to get test name")
+						// Check the final state of the object in the kube-apiserver (and compare against golden file)
+						var normalizer *objectWalker
+						{
+							u := &unstructured.Unstructured{}
+							u.SetGroupVersionKind(obj.GroupVersionKind())
+							id := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
+							if err := h.GetClient().Get(ctx, id, u); err != nil {
+								t.Fatalf("FAIL: failed to get KRM object: %v", err)
+							}
+
+							normalizer = buildKRMNormalizer(t, u, project, folderID, uniqueID)
+							if err := normalizer.VisitUnstructured(u); err != nil {
+								t.Fatalf("FAIL: error from normalizer: %v", err)
+							}
+
+							got, err := yaml.Marshal(u)
+							if err != nil {
+								t.Fatalf("FAIL: failed to convert KRM object to yaml: %v", err)
+							}
+							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_object_%v.golden.yaml", testName))
+							test.CompareGoldenObject(t, expectedPath, got)
 						}
-						// Golden test exported GCP object
+
+						// Try to export the resource (and compare against golden file)
 						exportedYAML := exportResource(h, obj, &Expectations{})
 						if exportedYAML != "" {
 							exportedObj := &unstructured.Unstructured{}
 							if err := yaml.Unmarshal([]byte(exportedYAML), exportedObj); err != nil {
 								t.Fatalf("FAIL: error from yaml.Unmarshal: %v", err)
 							}
-							if err := normalizeKRMObject(t, exportedObj, project, folderID, uniqueID); err != nil {
-								t.Fatalf("FAIL: error from normalizeObject: %v", err)
+
+							// Note: the normalizer for the object has more information, so we reuse that normalizer
+							if err := normalizer.VisitUnstructured(exportedObj); err != nil {
+								t.Fatalf("FAIL: error from normalizer: %v", err)
 							}
+
 							got, err := yaml.Marshal(exportedObj)
 							if err != nil {
 								t.Fatalf("FAIL: failed to convert KRM object to yaml: %v", err)
@@ -356,23 +418,39 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_export_%v.golden", testName))
 							h.CompareGoldenFile(expectedPath, string(got), IgnoreComments)
 						}
-						// Golden test created KRM object
-						u := &unstructured.Unstructured{}
-						u.SetGroupVersionKind(obj.GroupVersionKind())
-						id := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
-						if err := h.GetClient().Get(ctx, id, u); err != nil {
-							t.Fatalf("FAIL: failed to get KRM object: %v", err)
-						} else {
-							if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
-								t.Fatalf("FAIL: error from normalizeObject: %v", err)
-							}
-							got, err := yaml.Marshal(u)
-							if err != nil {
-								t.Fatalf("FAIL: failed to convert KRM object to yaml: %v", err)
-							}
-							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_object_%v.golden.yaml", testName))
-							test.CompareGoldenObject(t, expectedPath, got)
+
+					}
+				}
+
+				if ShouldTestRereconiliation(t, testName, primaryResource) {
+					h.Log("Testing re-reconciliation...", "test name", testName, "primary GVK", primaryResource.GroupVersionKind().String())
+					eventsBefore := h.Events.HTTPEvents
+
+					oldGeneration := getGeneration(h, primaryResource)
+					touchObject(h, primaryResource)
+					// Pause to allow re-reconciliation
+					// (annotations don't change the generation, so we can't wait for observedGeneration)
+					time.Sleep(2 * time.Second)
+
+					eventsAfter := h.Events.HTTPEvents
+
+					h.Events.HTTPEvents = eventsBefore
+
+					for i := len(eventsBefore); i < len(eventsAfter); i++ {
+						event := eventsAfter[i]
+						isReadOnly := false
+						switch event.Request.Method {
+						case "GET":
+							isReadOnly = true
 						}
+						if !isReadOnly {
+							t.Errorf("FAIL: unexpected event during re-reconciliation: %v", event)
+						}
+					}
+
+					newGeneration := getGeneration(h, primaryResource)
+					if oldGeneration != newGeneration {
+						t.Errorf("FAIL: re-reconciliation caused generation to change (from %v to %v)", oldGeneration, newGeneration)
 					}
 				}
 
@@ -579,8 +657,20 @@ func isOperationDone(s string) bool {
 
 // addTestTimeout will ensure the test fails if not completed before timeout
 func addTestTimeout(ctx context.Context, t *testing.T, timeout time.Duration, name string) context.Context {
-	ctx, cancel := context.WithTimeout(ctx, timeout)
 
+	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "real" {
+		// If the target is real, check if SUBTEST_TIMEOUT_E2E is present set
+		// accordingly, or fallback to original timeouts if there's any error.
+
+		if subtestTimeoutE2EStr := os.Getenv("SUBTEST_TIMEOUT_E2E"); subtestTimeoutE2EStr != "" {
+			parsedTimeout, err := time.ParseDuration(subtestTimeoutE2EStr)
+			if err == nil {
+				timeout = parsedTimeout
+			}
+		}
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, timeout)
 	done := false
 	timedOut := false
 	t.Cleanup(func() {
@@ -749,4 +839,96 @@ func buildCRDFilter(keepCRDs map[schema.GroupKind]bool) create.HarnessOption {
 		// Otherwise only allow the specified CRDs
 		return keepCRDs[gk]
 	})
+}
+
+func TestIAM_AllInSeries(t *testing.T) {
+	if os.Getenv("RUN_E2E") == "" {
+		t.Skip("RUN_E2E not set; skipping")
+	}
+
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+	t.Cleanup(func() {
+		cancel()
+	})
+
+	subtestTimeout := time.Hour
+	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
+		subtestTimeout = 1 * time.Minute
+	}
+
+	t.Run("iam-fixtures", func(t *testing.T) {
+		fixtures := resourcefixture.LoadWithPathFilter(t, func(path string) bool {
+			// Only run fixtures under iam/iampartialpolicy
+			return strings.Contains(path, "testdata/iam/iampartialpolicy") &&
+				// todo kcc team: need to implement GetIAM/ SetIAM for mock
+				!strings.Contains(path, "computeimage") &&
+				// todo kcc team: "Failed to get server metadata from context" for some reason
+				!strings.Contains(path, "storagebucket") &&
+				// todo acpana exclude failing tests for now; needs setup validation
+				!strings.Contains(path, "cloudfunctionsfunction") &&
+				!strings.Contains(path, "computedisk") &&
+				!strings.Contains(path, "computeinstance") &&
+				!strings.Contains(path, "computesubnetwork") &&
+				!strings.Contains(path, "dataproccluster") &&
+				!strings.Contains(path, "folder") &&
+				!strings.Contains(path, "iamserviceaccount") &&
+				!strings.Contains(path, "servicedirectoryservice") &&
+				!strings.Contains(path, "spannerdatabase")
+		}, nil, nil)
+		for _, fixture := range fixtures {
+			fixture := fixture
+			group := fixture.GVK.Group
+
+			skipTestReason := ""
+
+			if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
+				skippedGroups := strings.Split(s, ",")
+				if slice.StringSliceContains(skippedGroups, group) {
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", fixture.Name, group, s)
+				}
+			}
+			if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+				groups := strings.Split(s, ",")
+				if !slice.StringSliceContains(groups, group) {
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.Name, group, s)
+				}
+			}
+			t.Run(fixture.Name, func(t *testing.T) {
+				if skipTestReason != "" {
+					t.Skip(skipTestReason)
+				}
+
+				ctx := addTestTimeout(ctx, t, subtestTimeout, fixture.Name)
+
+				loadFixture := func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
+					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
+
+					opt := create.CreateDeleteTestOptions{CleanupResources: true}
+
+					if fixture.Dependencies != nil {
+						dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
+						for _, dependBytes := range dependencyYamls {
+							depUnstruct := bytesToUnstructured(t, dependBytes, uniqueID, project)
+							opt.Create = append(opt.Create, depUnstruct)
+						}
+					}
+
+					opt.Create = append(opt.Create, primaryResource)
+
+					if fixture.Update != nil {
+						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
+						opt.Updates = append(opt.Updates, u)
+					}
+
+					return primaryResource, opt
+				}
+
+				runScenario(ctx, t, false, fixture, loadFixture)
+			})
+		}
+	})
+
+	t.Logf("shutting down manager")
+	cancel()
 }

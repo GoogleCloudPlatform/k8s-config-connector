@@ -650,6 +650,18 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "binaryAuthorization": {
       "enabled": false
     },
+    "controlPlaneEndpointsConfig": {
+      "dnsEndpointConfig": {
+        "allowExternalTraffic": false
+      },
+      "ipEndpointsConfig": {
+        "authorizedNetworksConfig": {},
+        "enablePublicEndpoint": true,
+        "enabled": true,
+        "globalAccess": false,
+        "privateEndpointSubnetwork": ""
+      }
+    },
     "initialNodeCount": 1,
     "ipAllocationPolicy": {
       "stackType": "IPV4",
@@ -661,7 +673,6 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "maintenancePolicy": {
       "window": {}
     },
-    "masterAuthorizedNetworksConfig": {},
     "name": "gke-full-poco-${uniqueId}",
     "network": "projects/example-project-01/global/networks/default",
     "networkConfig": {},
@@ -795,25 +806,28 @@ X-Xss-Protection: 0
   },
   "autopilot": {},
   "autoscaling": {
-    "autoprovisioningNodePoolDefaults": {
-      "management": {
-        "autoRepair": true,
-        "autoUpgrade": true
-      },
-      "oauthScopes": [
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/cloud-platform"
-      ],
-      "upgradeSettings": {
-        "strategy": "SURGE"
-      }
-    },
     "autoscalingProfile": "BALANCED"
   },
   "binaryAuthorization": {},
   "clusterIpv4Cidr": "10.92.0.0/14",
   "clusterTelemetry": {
     "type": "ENABLED"
+  },
+  "controlPlaneEndpointsConfig": {
+    "dnsEndpointConfig": {
+      "allowExternalTraffic": false,
+      "endpoint": "gke-12345trewq-${projectNumber}.us-west1-a.gke.goog"
+    },
+    "ipEndpointsConfig": {
+      "authorizedNetworksConfig": {
+        "gcpPublicCidrsAccessEnabled": true
+      },
+      "enablePublicEndpoint": true,
+      "enabled": true,
+      "globalAccess": false,
+      "privateEndpoint": "10.128.0.2",
+      "publicEndpoint": "8.8.8.8"
+    }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "currentMasterVersion": "1.30.5-gke.1014001",
@@ -826,14 +840,21 @@ X-Xss-Protection: 0
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"
   },
+  "endpoint": "1.23.456.78",
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
   "initialClusterVersion": "1.30.5-gke.1014001",
   "initialNodeCount": 1,
+  "instanceGroupUrls": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instanceGroupManagers/gke-containercluster-abcdef"
+  ],
   "ipAllocationPolicy": {
     "stackType": "IPV4"
   },
+  "labelFingerprint": "abcdef0123A=",
   "legacyAbac": {},
   "location": "us-west1-a",
   "locations": [
@@ -849,7 +870,12 @@ X-Xss-Protection: 0
   },
   "loggingService": "logging.googleapis.com/kubernetes",
   "maintenancePolicy": {
-    "window": {}
+    "resourceVersion": "1234abcd"
+  },
+  "master": {},
+  "masterAuth": {
+    "clientCertificateConfig": {},
+    "clusterCaCertificate": "1234567890abcdefghijklmn"
   },
   "masterAuthorizedNetworksConfig": {
     "gcpPublicCidrsAccessEnabled": true
@@ -869,10 +895,11 @@ X-Xss-Protection: 0
   "name": "gke-full-poco-${uniqueId}",
   "network": "default",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "projects/example-project-01/global/networks/default",
-    "subnetwork": "default"
+    "serviceExternalIpsConfig": {},
+    "subnetwork": "projects/example-project-01/regions/us-west1/subnetworks/default"
   },
-  "networkPolicy": {},
   "nodeConfig": {
     "diskSizeGb": 100,
     "diskType": "pd-balanced",
@@ -1310,6 +1337,51 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "policyControllerHubConfig": {
           "auditIntervalSeconds": "10",
           "constraintViolationLimit": "20",
+          "deploymentConfigs": {
+            "admission": {
+              "containerResources": {
+                "limits": {
+                  "cpu": "2",
+                  "memory": "4000Mi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "2000Mi"
+                }
+              },
+              "podAffinity": "ANTI_AFFINITY",
+              "podTolerations": [
+                {
+                  "effect": "NoSchedule",
+                  "key": "foo",
+                  "operator": "Equal",
+                  "value": "admission"
+                }
+              ],
+              "replicaCount": "1"
+            },
+            "audit": {
+              "containerResources": {
+                "limits": {
+                  "cpu": "1.5",
+                  "memory": "1000Mi"
+                },
+                "requests": {
+                  "cpu": "0.5",
+                  "memory": "500Mi"
+                }
+              },
+              "podAffinity": "NO_AFFINITY",
+              "podTolerations": [
+                {
+                  "effect": "NoSchedule",
+                  "key": "foo",
+                  "operator": "Equal",
+                  "value": "audit"
+                }
+              ]
+            }
+          },
           "exemptableNamespaces": [
             "test-namespace"
           ],
@@ -1325,7 +1397,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
             }
           }
         },
-        "version": "1.18.0"
+        "version": "1.21.0"
       }
     }
   },
@@ -1388,6 +1460,51 @@ X-Xss-Protection: 0
           "policyControllerHubConfig": {
             "auditIntervalSeconds": "10",
             "constraintViolationLimit": "20",
+            "deploymentConfigs": {
+              "admission": {
+                "containerResources": {
+                  "limits": {
+                    "cpu": "2",
+                    "memory": "4000Mi"
+                  },
+                  "requests": {
+                    "cpu": "1",
+                    "memory": "2000Mi"
+                  }
+                },
+                "podAffinity": "ANTI_AFFINITY",
+                "podTolerations": [
+                  {
+                    "effect": "NoSchedule",
+                    "key": "foo",
+                    "operator": "Equal",
+                    "value": "admission"
+                  }
+                ],
+                "replicaCount": "1"
+              },
+              "audit": {
+                "containerResources": {
+                  "limits": {
+                    "cpu": "1.5",
+                    "memory": "1000Mi"
+                  },
+                  "requests": {
+                    "cpu": "0.5",
+                    "memory": "500Mi"
+                  }
+                },
+                "podAffinity": "NO_AFFINITY",
+                "podTolerations": [
+                  {
+                    "effect": "NoSchedule",
+                    "key": "foo",
+                    "operator": "Equal",
+                    "value": "audit"
+                  }
+                ]
+              }
+            },
             "exemptableNamespaces": [
               "test-namespace"
             ],
@@ -1403,7 +1520,7 @@ X-Xss-Protection: 0
               }
             }
           },
-          "version": "1.18.0"
+          "version": "1.21.0"
         }
       }
     },
@@ -1441,6 +1558,51 @@ X-Xss-Protection: 0
         "policyControllerHubConfig": {
           "auditIntervalSeconds": "10",
           "constraintViolationLimit": "20",
+          "deploymentConfigs": {
+            "admission": {
+              "containerResources": {
+                "limits": {
+                  "cpu": "2",
+                  "memory": "4000Mi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "2000Mi"
+                }
+              },
+              "podAffinity": "ANTI_AFFINITY",
+              "podTolerations": [
+                {
+                  "effect": "NoSchedule",
+                  "key": "foo",
+                  "operator": "Equal",
+                  "value": "admission"
+                }
+              ],
+              "replicaCount": "1"
+            },
+            "audit": {
+              "containerResources": {
+                "limits": {
+                  "cpu": "1.5",
+                  "memory": "1000Mi"
+                },
+                "requests": {
+                  "cpu": "0.5",
+                  "memory": "500Mi"
+                }
+              },
+              "podAffinity": "NO_AFFINITY",
+              "podTolerations": [
+                {
+                  "effect": "NoSchedule",
+                  "key": "foo",
+                  "operator": "Equal",
+                  "value": "audit"
+                }
+              ]
+            }
+          },
           "exemptableNamespaces": [
             "test-namespace"
           ],
@@ -1456,7 +1618,7 @@ X-Xss-Protection: 0
             }
           }
         },
-        "version": "1.18.0"
+        "version": "1.21.0"
       }
     }
   },
@@ -1481,6 +1643,30 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "policyControllerHubConfig": {
           "auditIntervalSeconds": "15",
           "constraintViolationLimit": "25",
+          "deploymentConfigs": {
+            "mutation": {
+              "containerResources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "2000Mi"
+                },
+                "requests": {
+                  "cpu": "100m",
+                  "memory": "20Mi"
+                }
+              },
+              "podAffinity": "ANTI_AFFINITY",
+              "podTolerations": [
+                {
+                  "effect": "NoSchedule",
+                  "key": "foo",
+                  "operator": "Equal",
+                  "value": "admission"
+                }
+              ],
+              "replicaCount": "1"
+            }
+          },
           "exemptableNamespaces": [
             "test-namespace-two"
           ],
@@ -1499,7 +1685,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
           },
           "referentialRulesEnabled": true
         },
-        "version": "1.18.0"
+        "version": "1.21.0"
       }
     }
   },
@@ -1563,6 +1749,30 @@ X-Xss-Protection: 0
           "policyControllerHubConfig": {
             "auditIntervalSeconds": "15",
             "constraintViolationLimit": "25",
+            "deploymentConfigs": {
+              "mutation": {
+                "containerResources": {
+                  "limits": {
+                    "cpu": "1",
+                    "memory": "2000Mi"
+                  },
+                  "requests": {
+                    "cpu": "100m",
+                    "memory": "20Mi"
+                  }
+                },
+                "podAffinity": "ANTI_AFFINITY",
+                "podTolerations": [
+                  {
+                    "effect": "NoSchedule",
+                    "key": "foo",
+                    "operator": "Equal",
+                    "value": "admission"
+                  }
+                ],
+                "replicaCount": "1"
+              }
+            },
             "exemptableNamespaces": [
               "test-namespace-two"
             ],
@@ -1581,7 +1791,7 @@ X-Xss-Protection: 0
             },
             "referentialRulesEnabled": true
           },
-          "version": "1.18.0"
+          "version": "1.21.0"
         }
       }
     },
@@ -1619,6 +1829,30 @@ X-Xss-Protection: 0
         "policyControllerHubConfig": {
           "auditIntervalSeconds": "15",
           "constraintViolationLimit": "25",
+          "deploymentConfigs": {
+            "mutation": {
+              "containerResources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "2000Mi"
+                },
+                "requests": {
+                  "cpu": "100m",
+                  "memory": "20Mi"
+                }
+              },
+              "podAffinity": "ANTI_AFFINITY",
+              "podTolerations": [
+                {
+                  "effect": "NoSchedule",
+                  "key": "foo",
+                  "operator": "Equal",
+                  "value": "admission"
+                }
+              ],
+              "replicaCount": "1"
+            }
+          },
           "exemptableNamespaces": [
             "test-namespace-two"
           ],
@@ -1637,7 +1871,7 @@ X-Xss-Protection: 0
           },
           "referentialRulesEnabled": true
         },
-        "version": "1.18.0"
+        "version": "1.21.0"
       }
     }
   },
@@ -1850,25 +2084,28 @@ X-Xss-Protection: 0
   },
   "autopilot": {},
   "autoscaling": {
-    "autoprovisioningNodePoolDefaults": {
-      "management": {
-        "autoRepair": true,
-        "autoUpgrade": true
-      },
-      "oauthScopes": [
-        "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/cloud-platform"
-      ],
-      "upgradeSettings": {
-        "strategy": "SURGE"
-      }
-    },
     "autoscalingProfile": "BALANCED"
   },
   "binaryAuthorization": {},
   "clusterIpv4Cidr": "10.92.0.0/14",
   "clusterTelemetry": {
     "type": "ENABLED"
+  },
+  "controlPlaneEndpointsConfig": {
+    "dnsEndpointConfig": {
+      "allowExternalTraffic": false,
+      "endpoint": "gke-12345trewq-${projectNumber}.us-west1-a.gke.goog"
+    },
+    "ipEndpointsConfig": {
+      "authorizedNetworksConfig": {
+        "gcpPublicCidrsAccessEnabled": true
+      },
+      "enablePublicEndpoint": true,
+      "enabled": true,
+      "globalAccess": false,
+      "privateEndpoint": "10.128.0.2",
+      "publicEndpoint": "8.8.8.8"
+    }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "currentMasterVersion": "1.30.5-gke.1014001",
@@ -1881,14 +2118,21 @@ X-Xss-Protection: 0
   "defaultMaxPodsConstraint": {
     "maxPodsPerNode": "110"
   },
+  "endpoint": "1.23.456.78",
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
   "initialClusterVersion": "1.30.5-gke.1014001",
   "initialNodeCount": 1,
+  "instanceGroupUrls": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-west1-a/instanceGroupManagers/gke-containercluster-abcdef"
+  ],
   "ipAllocationPolicy": {
     "stackType": "IPV4"
   },
+  "labelFingerprint": "abcdef0123A=",
   "legacyAbac": {},
   "location": "us-west1-a",
   "locations": [
@@ -1904,7 +2148,12 @@ X-Xss-Protection: 0
   },
   "loggingService": "logging.googleapis.com/kubernetes",
   "maintenancePolicy": {
-    "window": {}
+    "resourceVersion": "1234abcd"
+  },
+  "master": {},
+  "masterAuth": {
+    "clientCertificateConfig": {},
+    "clusterCaCertificate": "1234567890abcdefghijklmn"
   },
   "masterAuthorizedNetworksConfig": {
     "gcpPublicCidrsAccessEnabled": true
@@ -1924,10 +2173,11 @@ X-Xss-Protection: 0
   "name": "gke-full-poco-${uniqueId}",
   "network": "default",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "projects/example-project-01/global/networks/default",
-    "subnetwork": "default"
+    "serviceExternalIpsConfig": {},
+    "subnetwork": "projects/example-project-01/regions/us-west1/subnetworks/default"
   },
-  "networkPolicy": {},
   "nodeConfig": {
     "diskSizeGb": 100,
     "diskType": "pd-balanced",

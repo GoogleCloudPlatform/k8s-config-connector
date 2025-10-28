@@ -24,6 +24,8 @@ import (
 	"context"
 	"fmt"
 
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+
 	kms "cloud.google.com/go/kms/apiv1"
 	"cloud.google.com/go/kms/apiv1/kmspb"
 	"google.golang.org/api/option"
@@ -33,8 +35,7 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -85,7 +86,7 @@ func (m *importJobModel) AdapterForObject(ctx context.Context, reader client.Rea
 		return nil, err
 	}
 
-	gcpClient, err := m.client(ctx, id.Parent().ProjectID)
+	gcpClient, err := m.client(ctx, id.Parent().Parent.ProjectID)
 	if err != nil {
 		return nil, err
 	}
@@ -133,24 +134,11 @@ func (a *importJobAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func (a *importJobAdapter) normalizeReferences(ctx context.Context) error {
-	if a.desired.Spec.KMSKeyRingRef != nil {
-		if _, err := refs.ResolveKMSKeyRingRef(ctx, a.reader, a.desired, a.desired.Spec.KMSKeyRingRef); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *importJobAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating kms importjob", "name", a.id)
 	mapCtx := &direct.MapContext{}
-
-	if err := a.normalizeReferences(ctx); err != nil {
-		return fmt.Errorf("normalizing references: %w", err)
-	}
 
 	desired := KMSImportJobSpec_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
@@ -183,10 +171,6 @@ func (a *importJobAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating KMSImportJob", "name", a.id)
 	mapCtx := &direct.MapContext{}
-
-	if err := a.normalizeReferences(ctx); err != nil {
-		return fmt.Errorf("normalizing references: %w", err)
-	}
 
 	desiredPb := KMSImportJobSpec_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
@@ -227,7 +211,7 @@ func (a *importJobAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.KMSKeyRingRef = &refs.KMSKeyRingRef{External: a.id.Parent().String()}
+	obj.Spec.KMSKeyRingRef = &kmsv1beta1.KMSKeyRingRef{External: a.id.Parent().String()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

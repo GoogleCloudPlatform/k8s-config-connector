@@ -26,19 +26,19 @@ import (
 )
 
 func init() {
-	RegisterTool(&ListFilesInWorkspace{})
+	RegisterTool(&ListInWorkspace{})
 }
 
-type ListFilesInWorkspace struct {
+type ListInWorkspace struct {
 	FindFileName string `json:"find_file_name"`
 }
 
-type ListFilesInWorkspaceResponse struct {
+type ListInWorkspaceResponse struct {
 	Matches []*File `json:"matches"`
 	Result  string  `json:"result"`
 }
 
-func (t *ListFilesInWorkspace) Run(ctx context.Context, c *Chat, args map[string]any) (any, error) {
+func (t *ListInWorkspace) Run(ctx context.Context, c *Chat, args map[string]any) (any, error) {
 	b, err := json.Marshal(args)
 	if err != nil {
 		return nil, fmt.Errorf("converting to json: %w", err)
@@ -47,7 +47,7 @@ func (t *ListFilesInWorkspace) Run(ctx context.Context, c *Chat, args map[string
 		return nil, fmt.Errorf("unmarshalling %T: %w", t, err)
 	}
 
-	result := &ListFilesInWorkspaceResponse{}
+	result := &ListInWorkspaceResponse{}
 
 	klog.V(2).Infof("%T: %+v", t, t)
 
@@ -62,9 +62,9 @@ func (t *ListFilesInWorkspace) Run(ctx context.Context, c *Chat, args map[string
 	return result, nil
 }
 
-func (t *ListFilesInWorkspace) BuildFunctionDefinition() *gollm.FunctionDefinition {
+func (t *ListInWorkspace) BuildFunctionDefinition() *gollm.FunctionDefinition {
 	declaration := &gollm.FunctionDefinition{
-		Name: "ListFilesInWorkspace",
+		Name: "ListInWorkspace",
 		Description: `
 List all the files in the workspace.  The list can be filtered by providing a find_file_name to only return files with that name.
 Where possible, filter the list to reduce the amount of data returned.
@@ -90,7 +90,7 @@ type File struct {
 	Filename string `json:"filename"`
 }
 
-func (t *ListFilesInWorkspace) findMatchingFiles(ctx context.Context, baseDir string) ([]*File, error) {
+func (t *ListInWorkspace) findMatchingFiles(ctx context.Context, baseDir string) ([]*File, error) {
 	var matches []*File
 	if err := filepath.WalkDir(baseDir, func(path string, d os.DirEntry, err error) error {
 		if err != nil {

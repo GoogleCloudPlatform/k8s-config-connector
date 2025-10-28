@@ -12,97 +12,841 @@
     }
   },
   {
-    "name": "cloud.google.com/go",
-    "sum": "h1:ZaGT6LiG7dBzi6zNOvVZwacaXlmf3lRqnC4DQzqyRQw=",
-    "version": "v0.112.2",
+    "name": "cel.dev/expr",
+    "sum": "h1:56OvJKSH3hDGL0ml5uSxZmz3/3Pq4tJ+fb1unVLAFcY=",
+    "version": "v0.24.0",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/cloud.google.com/go@v0.112.2?tab=licenses"
+        "https://pkg.go.dev/cel.dev/expr@v0.24.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go",
+    "sum": "h1:waZiuajrI28iAf40cWgycWNgaXPO06dupuS+sgibK6c=",
+    "version": "v0.121.6",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go@v0.121.6?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/accesscontextmanager",
+    "sum": "h1:2LnncRqfYB8NEdh9+FeYxAt9POTW/0zVboktnRlO11w=",
+    "version": "v1.9.6",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/accesscontextmanager@v1.9.6?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/aiplatform",
+    "sum": "h1:SB4gurI6YSuZJCfAzjuIxxgbtJtczJFOTmCM7fLYRGg=",
+    "version": "v1.99.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/aiplatform@v1.99.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/alloydb",
+    "sum": "h1:pW4D0O2jAfAjoOEI1bgChPwMHWE8X8BjwSO0tfWkWvk=",
+    "version": "v1.16.1",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/alloydb@v1.16.1?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/apigateway",
+    "sum": "h1:do+u3rjDYuTxD2ypRfv4uwTMoy/VHFLclvaYcb5Mv6I=",
+    "version": "v1.7.6",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/apigateway@v1.7.6?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/apikeys",
+    "sum": "h1:ZTFWJ1ibGjiIrIhhtdWOm7AGJd+y9R17dVujlgU//6E=",
+    "version": "v1.1.12",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/apikeys@v1.1.12?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/apphub",
+    "sum": "h1:lhsd/6+16NUshw8c52T+DfMaAz04SX6ItMr8caGbtgY=",
+    "version": "v0.2.4",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/apphub@v0.2.4?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/asset",
+    "sum": "h1:i55wWC/EwVdHMyJgRfbLp/L6ez4nQuOpZwSxkuqN9ek=",
+    "version": "v1.21.1",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/asset@v1.21.1?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "cloud.google.com/go/auth",
-    "sum": "h1:PRyzEpGfx/Z9e8+lHsbkoUVXD0gnu4MNmm7Gp8TQNIs=",
-    "version": "v0.3.0",
+    "sum": "h1:fXOAIQmkApVvcIn7Pc2+5J8QTMVbUGLscnSVNl11su8=",
+    "version": "v0.16.4",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/cloud.google.com/go/auth@v0.3.0?tab=licenses"
+        "https://pkg.go.dev/cloud.google.com/go/auth@v0.16.4?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "cloud.google.com/go/auth/oauth2adapt",
-    "sum": "h1:+TTV8aXpjeChS9M+aTtN/TjdQnzJvmzKFt//oWu7HX4=",
-    "version": "v0.2.2",
+    "sum": "h1:keo8NaayQZ6wimpNSmW5OPc283g65QNIiLpZnkHRbnc=",
+    "version": "v0.2.8",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/cloud.google.com/go/auth/oauth2adapt@v0.2.2?tab=licenses"
+        "https://pkg.go.dev/cloud.google.com/go/auth/oauth2adapt@v0.2.8?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/backupdr",
+    "sum": "h1:KockukaErJZdzB27QSCHqSgH8VDXbdLG0AznR85X/4c=",
+    "version": "v1.4.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/backupdr@v1.4.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/batch",
+    "sum": "h1:gWQdvdPplptpvrkqF6ibtxZkOsYKLTFbxYawHa/TvCg=",
+    "version": "v1.12.2",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/batch@v1.12.2?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/bigquery",
+    "sum": "h1:rZvHnjSUs5sHK3F9awiuFk2PeOaB8suqNuim21GbaTc=",
+    "version": "v1.69.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/bigquery@v1.69.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "cloud.google.com/go/bigtable",
-    "sum": "h1:wiq9LT0kukfInzvy1joMDijCw/OD1UChpSbORXYn0LI=",
-    "version": "v1.19.0",
+    "sum": "h1:L/PnUXRtAzFfa7qMULJHt4cXa/O2dqPJEkzYNGA4hfo=",
+    "version": "v1.38.0",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/cloud.google.com/go/bigtable@v1.19.0?tab=licenses"
+        "https://pkg.go.dev/cloud.google.com/go/bigtable@v1.38.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/billing",
+    "sum": "h1:pqM5/c9UGydB9H90IPCxSvfCNLUPazAOSMsZkz5q5P4=",
+    "version": "v1.20.4",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/billing@v1.20.4?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/certificatemanager",
+    "sum": "h1:+ZPglfDurCcsv4azizDFpBucD1IkRjWjbnU7zceyjfY=",
+    "version": "v1.9.5",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/certificatemanager@v1.9.5?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/cloudbuild",
+    "sum": "h1:4LlrIFa3IFLgD1mGEXmUE4cm9fYoU71OLwTvjM7Dg3c=",
+    "version": "v1.22.2",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/cloudbuild@v1.22.2?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/cloudquotas",
+    "sum": "h1:mTrWHKc5YO/YWNTM0YN8lPG5ThdGlKNR3YYjM7Xm9yc=",
+    "version": "v1.3.2",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/cloudquotas@v1.3.2?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/cloudtasks",
+    "sum": "h1:Fwan19UiNoFD+3KY0MnNHE5DyixOxNzS1mZ4ChOdpy0=",
+    "version": "v1.13.6",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/cloudtasks@v1.13.6?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/compute",
+    "sum": "h1:MilCLYQW2m7Dku8hRIIKo4r0oKastlD74sSu16riYKs=",
+    "version": "v1.38.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/compute@v1.38.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "cloud.google.com/go/compute/metadata",
-    "sum": "h1:Tz+eQXMEqDIKRsmY3cHTL6FVaynIjX2QxYC4trgAKZc=",
-    "version": "v0.3.0",
+    "sum": "h1:HxMRIbao8w17ZX6wBnjhcDkW6lTFpgcaobyVfZWqRLA=",
+    "version": "v0.8.0",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/cloud.google.com/go/compute/metadata@v0.3.0?tab=licenses"
+        "https://pkg.go.dev/cloud.google.com/go/compute/metadata@v0.8.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/datacatalog",
+    "sum": "h1:eFgygb3DTufTWWUB8ARk+dSuXz+aefNJXTlkWlQcWwE=",
+    "version": "v1.26.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/datacatalog@v1.26.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/dataflow",
+    "sum": "h1:AdhB4cAkMOC9NtrHJxpKOVvO/VqBLaIyk0tEEhbGjYM=",
+    "version": "v0.11.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/dataflow@v0.11.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/dataform",
+    "sum": "h1:0eCPTPUC/RZ863aVfXTJLkg0tEpdpn62VD6ywSmmzxM=",
+    "version": "v0.12.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/dataform@v0.12.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/dataplex",
+    "sum": "h1:Xr0Toh6wyBlmL3H4EPu1YKwxUtkDSzzq+IP0iLc88kk=",
+    "version": "v1.25.3",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/dataplex@v1.25.3?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/dataproc/v2",
+    "sum": "h1:KhC8wdLILpAs17yeTG6Miwg1v0nOP/OXD+9QNg3w6AQ=",
+    "version": "v2.11.2",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/dataproc/v2@v2.11.2?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/datastream",
+    "sum": "h1:j+y0lUKm9pbDjJn0YcWxPI/hXNGUQ80GE6yrFuJC/JA=",
+    "version": "v1.14.1",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/datastream@v1.14.1?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/deploy",
+    "sum": "h1:C0VqBhFyQFp6+xgPHZAD7LeRA4XGy5YLzGmPQ2NhlLk=",
+    "version": "v1.27.2",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/deploy@v1.27.2?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/discoveryengine",
+    "sum": "h1:CHUN1mbs5iTqWJRuU6rZCvcuV5iVMr/rW8Kr1ivn7p4=",
+    "version": "v1.15.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/discoveryengine@v1.15.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/documentai",
+    "sum": "h1:6uWDoi/wAT8D9belR9Q1n2fFtY6YJ+/3aj6rR9mAlbY=",
+    "version": "v1.38.1",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/documentai@v1.38.1?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/edgecontainer",
+    "sum": "h1:9tfGCicvrki927T+hGMB0yYmwIbRuZY6JR1/awrKiZ0=",
+    "version": "v1.4.3",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/edgecontainer@v1.4.3?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/essentialcontacts",
+    "sum": "h1:ysHZ4gr4plW1CL1Ur/AucUUfh20hDjSFbfjxSK0q/sk=",
+    "version": "v1.7.6",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/essentialcontacts@v1.7.6?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/eventarc",
+    "sum": "h1:bZW7ZMM+XXNErg6rOZcgxUzAgz4vpReRDP3ZiGf7/sI=",
+    "version": "v1.15.5",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/eventarc@v1.15.5?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/firestore",
+    "sum": "h1:E3FiRsWfZKwZ6W+Lsp1YqTzZ9H6jP+QsKW40KR21C8I=",
+    "version": "v1.19.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/firestore@v1.19.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/gkebackup",
+    "sum": "h1:eBqOt61yEChvj7I/GDPBbdCCRdUPudD1qrQYfYWV3Ok=",
+    "version": "v1.8.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/gkebackup@v1.8.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "cloud.google.com/go/iam",
-    "sum": "h1:z4VHOhwKLF/+UYXAJDFwGtNF0b6gjsW1Pk9Ml0U/IoM=",
-    "version": "v1.1.7",
+    "sum": "h1:qgFRAGEmd8z6dJ/qyEchAuL9jpswyODjA2lS+w234g8=",
+    "version": "v1.5.2",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/cloud.google.com/go/iam@v1.1.7?tab=licenses"
+        "https://pkg.go.dev/cloud.google.com/go/iam@v1.5.2?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/iap",
+    "sum": "h1:VIioCrYsyWiRGx7Y8RDNylpI6d4t1Qx5ZgSLUVmWWPo=",
+    "version": "v1.11.2",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/iap@v1.11.2?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/kms",
+    "sum": "h1:dBRIj7+GDeeEvatJeTB19oYZNV0aj6wEqSIT/7gLqtk=",
+    "version": "v1.22.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/kms@v1.22.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/logging",
+    "sum": "h1:7j0HgAp0B94o1YRDqiqm26w4q1rDMH7XNRU34lJXHYc=",
+    "version": "v1.13.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/logging@v1.13.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "cloud.google.com/go/longrunning",
-    "sum": "h1:xAe8+0YaWoCKr9t1+aWe+OeQgN/iJK1fEgZSXmjuEaE=",
-    "version": "v0.5.6",
+    "sum": "h1:IGtfDWHhQCgCjwQjV9iiLnUta9LBCo8R9QmAFsS/PrE=",
+    "version": "v0.6.7",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/cloud.google.com/go/longrunning@v0.5.6?tab=licenses"
+        "https://pkg.go.dev/cloud.google.com/go/longrunning@v0.6.7?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/managedkafka",
+    "sum": "h1:/snDok/h6TZKw0ubmfj/LYIwSn16mWBoBI2OEl7ldIA=",
+    "version": "v0.4.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/managedkafka@v0.4.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/metastore",
+    "sum": "h1:dLm59AHHZCorveCylj7c2iWhkQsmMIeWTsV+tG/BXtY=",
+    "version": "v1.14.7",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/metastore@v1.14.7?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/monitoring",
+    "sum": "h1:5OTsoJ1dXYIiMiuL+sYscLc9BumrL3CarVLL7dd7lHM=",
+    "version": "v1.24.2",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/monitoring@v1.24.2?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/netapp",
+    "sum": "h1:3MxBolN91fsXtzIQRsp8UZfLF0zTrCUpl+DnYC7/qBU=",
+    "version": "v1.7.1",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/netapp@v1.7.1?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/networkmanagement",
+    "sum": "h1:ecukgArkYCVcK5w2h7WDDd+nHgmBAp9Bst7ClmVKz5A=",
+    "version": "v1.19.1",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/networkmanagement@v1.19.1?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/networksecurity",
+    "sum": "h1:6b6fcCG9BFNcmtNO+VuPE04vkZb5TKNX9+7ZhYMgstE=",
+    "version": "v0.10.6",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/networksecurity@v0.10.6?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/networkservices",
+    "sum": "h1:/yQrBP9Tb69M5V6/1j7yr+p/ByLLYmTkeDvh713lpSA=",
+    "version": "v0.5.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/networkservices@v0.5.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/notebooks",
+    "sum": "h1:nCfZwVihArMPP2atRoxRrXOXJ/aC9rAgpBQGCc2zpYw=",
+    "version": "v1.12.6",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/notebooks@v1.12.6?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/orchestration",
+    "sum": "h1:PnlZ/O4R/eiounpxUkhI9ZXRMWbG7vFqxc6L6sR+31k=",
+    "version": "v1.11.9",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/orchestration@v1.11.9?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/orgpolicy",
+    "sum": "h1:uQziDu3UKYk9ZwUgneZAW5aWxZFKgOXXsuVKFKh0z7Y=",
+    "version": "v1.15.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/orgpolicy@v1.15.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/osconfig",
+    "sum": "h1:4uJrA1obzMBp1I+DF15y/MvsXKIODevuANpq3QhvX30=",
+    "version": "v1.14.6",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/osconfig@v1.14.6?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/privilegedaccessmanager",
+    "sum": "h1:8M1ZJLUuZvh1tgsYoX9W9uR8qR3vDR8e4WeH+GK7aDA=",
+    "version": "v0.2.5",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/privilegedaccessmanager@v0.2.5?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/pubsub/v2",
+    "sum": "h1:0qS6mRJ41gD1lNmM/vdm6bR7DQu6coQcVwD+VPf0Bz0=",
+    "version": "v2.0.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/pubsub/v2@v2.0.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/recaptchaenterprise/v2",
+    "sum": "h1:P4QMryKcWdi4LIe1Sx0b2ZOAQv5gVfdzPt2peXcN32Y=",
+    "version": "v2.20.4",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/recaptchaenterprise/v2@v2.20.4?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/redis",
+    "sum": "h1:JlHLceAOILEmbn+NIS7l+vmUKkFuobLToCWTxL7NGcQ=",
+    "version": "v1.18.2",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/redis@v1.18.2?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/resourcemanager",
+    "sum": "h1:LIa8kKE8HF71zm976oHMqpWFiaDHVw/H1YMO71lrGmo=",
+    "version": "v1.10.6",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/resourcemanager@v1.10.6?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/run",
+    "sum": "h1:CDhz0PPzI/cVpmNFyHe3Yp21jNpiAqtkfRxuoLi+JU0=",
+    "version": "v1.10.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/run@v1.10.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/secretmanager",
+    "sum": "h1:VkscIRzj7GcmZyO4z9y1EH7Xf81PcoiAo7MtlD+0O80=",
+    "version": "v1.14.7",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/secretmanager@v1.14.7?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/securesourcemanager",
+    "sum": "h1:raOxRsR507ALLlc5yG79LK7O2TuDbD7o7IyHwyCoYAE=",
+    "version": "v1.1.1",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/securesourcemanager@v1.1.1?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/security",
+    "sum": "h1:6hqzvuwC8za9jyCTxygmEHnp4vZ8hfhwKVArxSCAVCo=",
+    "version": "v1.18.5",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/security@v1.18.5?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/spanner",
+    "sum": "h1:w9uO8RqEoBooBLX4nqV1RtgudyU2ZX780KTLRgeVg60=",
+    "version": "v1.82.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/spanner@v1.82.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/speech",
+    "sum": "h1:+OktATNlQc+4WH78OrQadIP4CzXb9mBucdDGCO1NrlI=",
+    "version": "v1.27.1",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/speech@v1.27.1?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/storage",
+    "sum": "h1:iixmq2Fse2tqxMbWhLWC9HfBj1qdxqAmiK8/eqtsLxI=",
+    "version": "v1.56.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/storage@v1.56.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/vmwareengine",
+    "sum": "h1:OsGd1SB91y9fDuzdzFngMv4UcT4cqmRxjsCsS4Xmcu8=",
+    "version": "v1.3.5",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/vmwareengine@v1.3.5?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/workflows",
+    "sum": "h1:phBz5TOAES0YGogxZ6Q7ISSudaf618lRhE3euzBpE9U=",
+    "version": "v1.14.2",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/workflows@v1.14.2?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "cloud.google.com/go/workstations",
+    "sum": "h1:wIA5Pk4Z9xwdmltGQoAVP4vr441MGhOu9sGv0Sk4lnI=",
+    "version": "v1.1.1",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/cloud.google.com/go/workstations@v1.1.1?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "contrib.go.opencensus.io/exporter/prometheus",
+    "sum": "h1:SByaIoWwNgMdPSgl5sMqM2KDE5H/ukPWBRo314xiDvg=",
+    "version": "v0.1.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/contrib.go.opencensus.io/exporter/prometheus@v0.1.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "github.com/GoogleCloudPlatform/declarative-resource-client-library",
-    "sum": "h1:s4Y6r6RrYLBnqosGXLwR0h1Gqr0VT3wgd6rqvHsD9OE=",
-    "version": "v1.62.0",
+    "sum": "",
+    "version": "(devel)",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/GoogleCloudPlatform/declarative-resource-client-library@v1.62.0?tab=licenses"
+        "https://raw.githubusercontent.com/GoogleCloudPlatform/declarative-resource-client-library/main/LICENSE"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp",
+    "sum": "",
+    "version": "(devel)",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://raw.githubusercontent.com/GoogleCloudPlatform/k8s-config-connector/master/LICENSE"
       ],
       "mustShipCode": false
     }
@@ -120,6 +864,18 @@
     }
   },
   {
+    "name": "github.com/apache/arrow/go/v15",
+    "sum": "h1:60IliRbiyTWCWjERBCkO1W4Qun9svcYoZrSLcyOsMLE=",
+    "version": "v15.0.2",
+    "licenseInfo": {
+      "license": "Apache-2.0, BSD-2-Clause, BSD-3-Clause, BSL-1.0, CC-BY-3.0, HPND, MIT, NCSA, OpenSSL, Zlib",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/apache/arrow/go/v15@v15.0.2?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
     "name": "github.com/apparentlymart/go-cidr",
     "sum": "h1:2mAhrMoF+nhXqxTzSZMUzDHkLjmIHC+Zzn4tdgBZjnU=",
     "version": "v1.1.0",
@@ -127,18 +883,6 @@
       "license": "MIT",
       "licenseURLs": [
         "https://pkg.go.dev/github.com/apparentlymart/go-cidr@v1.1.0?tab=licenses"
-      ],
-      "mustShipCode": false
-    }
-  },
-  {
-    "name": "github.com/apparentlymart/go-textseg/v13",
-    "sum": "h1:Y+KvPE1NYz0xl601PVImeQfFyEy6iT90AvPUL1NNfNw=",
-    "version": "v13.0.0",
-    "licenseInfo": {
-      "license": "Apache-2.0,MIT,Unicode-DFS-2016",
-      "licenseURLs": [
-        "https://raw.githubusercontent.com/apparentlymart/go-textseg/master/LICENSE"
       ],
       "mustShipCode": false
     }
@@ -156,6 +900,18 @@
     }
   },
   {
+    "name": "github.com/beorn7/perks",
+    "sum": "h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=",
+    "version": "v1.0.1",
+    "licenseInfo": {
+      "license": "MIT",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/beorn7/perks@v1.0.1?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
     "name": "github.com/cenkalti/backoff",
     "sum": "h1:tNowT99t7UNflLxfYYSlKYsBpXdEet03Pg2g16Swow4=",
     "version": "v2.2.1+incompatible",
@@ -168,109 +924,97 @@
     }
   },
   {
-    "name": "github.com/census-instrumentation/opencensus-proto",
-    "sum": "h1:iKLQ0xPNFxR/2hzXZMrBo8f1j86j5WHzznCCQxV/b8g=",
-    "version": "v0.4.1",
-    "licenseInfo": {
-      "license": "Apache-2.0",
-      "licenseURLs": [
-        "https://pkg.go.dev/github.com/census-instrumentation/opencensus-proto@v0.4.1?tab=licenses"
-      ],
-      "mustShipCode": false
-    }
-  },
-  {
     "name": "github.com/cespare/xxhash/v2",
-    "sum": "h1:DC2CZ1Ep5Y4k3ZQ899DldepgrayRUGE6BBZ/cd9Cj44=",
-    "version": "v2.2.0",
+    "sum": "h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=",
+    "version": "v2.3.0",
     "licenseInfo": {
       "license": "MIT",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/cespare/xxhash/v2@v2.2.0?tab=licenses"
+        "https://pkg.go.dev/github.com/cespare/xxhash/v2@v2.3.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "github.com/cncf/xds/go",
-    "sum": "h1:jQCWAUqqlij9Pgj2i/PB79y4KOPYVyFYdROxgaCwdTQ=",
-    "version": "v0.0.0-20231128003011-0fa0005c9caa",
+    "sum": "h1:aQ3y1lwWyqYPiWZThqv1aFbZMiM9vblcSArJRf2Irls=",
+    "version": "v0.0.0-20250501225837-2ac532fd4443",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/cncf/xds/go@v0.0.0-20231128003011-0fa0005c9caa?tab=licenses"
+        "https://pkg.go.dev/github.com/cncf/xds/go@v0.0.0-20250501225837-2ac532fd4443?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "github.com/davecgh/go-spew",
-    "sum": "h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=",
-    "version": "v1.1.1",
+    "sum": "h1:U9qPSI2PIWSS1VwoXQT9A3Wy9MM3WgvqSxFWenqJduM=",
+    "version": "v1.1.2-0.20180830191138-d8f796af33cc",
     "licenseInfo": {
       "license": "ISC",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/davecgh/go-spew@v1.1.1?tab=licenses"
+        "https://pkg.go.dev/github.com/davecgh/go-spew@v1.1.2-0.20180830191138-d8f796af33cc?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "github.com/emicklei/go-restful/v3",
-    "sum": "h1:hIovbnmBTLjHXkqEBUz3HGpXZdM7ZrE9fJIZIqlJLqE=",
-    "version": "v3.10.2",
+    "sum": "h1:PJMDIM/ak7btuL8Ex0iYET9hxM3CI2sjZtzpL63nKAU=",
+    "version": "v3.12.1",
     "licenseInfo": {
       "license": "MIT",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/emicklei/go-restful/v3@v3.10.2?tab=licenses"
+        "https://pkg.go.dev/github.com/emicklei/go-restful/v3@v3.12.1?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
-    "name": "github.com/envoyproxy/go-control-plane",
-    "sum": "h1:4X+VP1GHd1Mhj6IB5mMeGbLCleqxjletLK6K0rbxyZI=",
-    "version": "v0.12.0",
+    "name": "github.com/envoyproxy/go-control-plane/envoy",
+    "sum": "h1:jb83lalDRZSpPWW2Z7Mck/8kXZ5CQAFYVjQcdVIr83A=",
+    "version": "v1.32.4",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/envoyproxy/go-control-plane@v0.12.0?tab=licenses"
+        "https://pkg.go.dev/github.com/envoyproxy/go-control-plane/envoy@v1.32.4?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "github.com/envoyproxy/protoc-gen-validate",
-    "sum": "h1:gVPz/FMfvh57HdSJQyvBtF00j8JU4zdyUgIUNhlgg0A=",
-    "version": "v1.0.4",
+    "sum": "h1:DEo3O99U8j4hBFwbJfrz9VtgcDfUKS7KJ7spH3d86P8=",
+    "version": "v1.2.1",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/envoyproxy/protoc-gen-validate@v1.0.4?tab=licenses"
+        "https://pkg.go.dev/github.com/envoyproxy/protoc-gen-validate@v1.2.1?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "github.com/evanphx/json-patch/v5",
-    "sum": "h1:b91NhWfaz02IuVxO9faSllyAtNXHMPkC5J8sJCLunww=",
-    "version": "v5.6.0",
+    "sum": "h1:/8HVnzMq13/3x9TPvjG08wUGqBTmZBsCWzjTM0wiaDU=",
+    "version": "v5.9.11",
     "licenseInfo": {
       "license": "BSD-3-Clause",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/evanphx/json-patch/v5@v5.6.0?tab=licenses"
+        "https://pkg.go.dev/github.com/evanphx/json-patch/v5@v5.9.11?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "github.com/fatih/color",
-    "sum": "h1:kOqh6YHBtK8aywxGerMG2Eq3H6Qgoqeo13Bk2Mv/nBs=",
-    "version": "v1.15.0",
+    "sum": "h1:S8gINlzdQ840/4pfAwic/ZE0djQEH3wM94VfqLTZcOM=",
+    "version": "v1.18.0",
     "licenseInfo": {
       "license": "MIT",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/fatih/color@v1.15.0?tab=licenses"
+        "https://pkg.go.dev/github.com/fatih/color@v1.18.0?tab=licenses"
       ],
       "mustShipCode": false
     }
@@ -283,6 +1027,30 @@
       "license": "MIT",
       "licenseURLs": [
         "https://pkg.go.dev/github.com/felixge/httpsnoop@v1.0.4?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/fsnotify/fsnotify",
+    "sum": "h1:8JEhPFa5W2WU7YfeZzPNqzMP6Lwt7L2715Ggo0nosvA=",
+    "version": "v1.7.0",
+    "licenseInfo": {
+      "license": "BSD-3-Clause",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/fsnotify/fsnotify@v1.7.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/fxamacker/cbor/v2",
+    "sum": "h1:iM5WgngdRBanHcxugY4JySA0nk1wZorNOpTgCMedv5E=",
+    "version": "v2.7.0",
+    "licenseInfo": {
+      "license": "BSD-3-Clause",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/fxamacker/cbor/v2@v2.7.0?tab=licenses"
       ],
       "mustShipCode": false
     }
@@ -324,13 +1092,25 @@
     }
   },
   {
-    "name": "github.com/go-logr/logr",
-    "sum": "h1:pKouT5E8xu9zeFC39JXRDukb6JFQPXM5p5I91188VAQ=",
-    "version": "v1.4.1",
+    "name": "github.com/go-jose/go-jose/v4",
+    "sum": "h1:M6T8+mKZl/+fNNuFHvGIzDz7BTLQPIounk/b9dw3AaE=",
+    "version": "v4.0.5",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/go-logr/logr@v1.4.1?tab=licenses"
+        "https://pkg.go.dev/github.com/go-jose/go-jose/v4@v4.0.5?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/go-logr/logr",
+    "sum": "h1:CjnDlHq8ikf6E492q6eKboGOC0T8CDaOvkHCIg8idEI=",
+    "version": "v1.4.3",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/go-logr/logr@v1.4.3?tab=licenses"
       ],
       "mustShipCode": false
     }
@@ -348,37 +1128,61 @@
     }
   },
   {
-    "name": "github.com/go-openapi/jsonpointer",
-    "sum": "h1:eCs3fxoIi3Wh6vtgmLTOjdhSpiqphQ+DaPn38N2ZdrE=",
-    "version": "v0.19.6",
+    "name": "github.com/go-logr/zapr",
+    "sum": "h1:XGdV8XW8zdwFiwOA2Dryh1gj2KRQyOOoNmBy4EplIcQ=",
+    "version": "v1.3.0",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/go-openapi/jsonpointer@v0.19.6?tab=licenses"
+        "https://pkg.go.dev/github.com/go-logr/zapr@v1.3.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/go-openapi/jsonpointer",
+    "sum": "h1:YgdVicSA9vH5RiHs9TZW5oyafXZFc6+2Vc1rr/O9oNQ=",
+    "version": "v0.21.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/go-openapi/jsonpointer@v0.21.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "github.com/go-openapi/jsonreference",
-    "sum": "h1:3sVjiK66+uXK/6oQ8xgcRKcFgQ5KXa2KvnJRumpMGbE=",
-    "version": "v0.20.2",
+    "sum": "h1:Rs+Y7hSXT83Jacb7kFyjn4ijOuVGSvOdF2+tg1TRrwQ=",
+    "version": "v0.21.0",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/go-openapi/jsonreference@v0.20.2?tab=licenses"
+        "https://pkg.go.dev/github.com/go-openapi/jsonreference@v0.21.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "github.com/go-openapi/swag",
-    "sum": "h1:yMBqmnQ0gyZvEb/+KzuWZOXgllrXT4SADYbvDaXHv/g=",
-    "version": "v0.22.3",
+    "sum": "h1:vsEVJDUo2hPJ2tu0/Xc+4noaxyEffXNIs3cOULZ+GrE=",
+    "version": "v0.23.0",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/go-openapi/swag@v0.22.3?tab=licenses"
+        "https://pkg.go.dev/github.com/go-openapi/swag@v0.23.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/goccy/go-json",
+    "sum": "h1:CrxCmQqYDkv1z7lO7Wbh2HN93uovUHgrECaO5ZrCXAU=",
+    "version": "v0.10.2",
+    "licenseInfo": {
+      "license": "MIT",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/goccy/go-json@v0.10.2?tab=licenses"
       ],
       "mustShipCode": false
     }
@@ -397,12 +1201,12 @@
   },
   {
     "name": "github.com/golang/glog",
-    "sum": "h1:uCdmnmatrKCgMBlM4rMuJZWOkPDqdbZPnrMXDY4gI68=",
-    "version": "v1.2.0",
+    "sum": "h1:DrW6hGnjIhtvhOIiAKT6Psh/Kd/ldepEa81DKeiRJ5I=",
+    "version": "v1.2.5",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/golang/glog@v1.2.0?tab=licenses"
+        "https://pkg.go.dev/github.com/golang/glog@v1.2.5?tab=licenses"
       ],
       "mustShipCode": false
     }
@@ -433,36 +1237,48 @@
   },
   {
     "name": "github.com/google/btree",
-    "sum": "h1:xf4v41cLI2Z6FxbKm+8Bu+m8ifhj15JuZ9sa0jZCMUU=",
-    "version": "v1.1.2",
+    "sum": "h1:CVpQJjYgC4VbzxeGVHfvZrv1ctoYCAI8vbl07Fcxlyg=",
+    "version": "v1.1.3",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/google/btree@v1.1.2?tab=licenses"
+        "https://pkg.go.dev/github.com/google/btree@v1.1.3?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
-    "name": "github.com/google/gnostic",
-    "sum": "h1:ZK/5VhkoX835RikCHpSUJV9a+S3e1zLh59YnyWeBW+0=",
-    "version": "v0.6.9",
+    "name": "github.com/google/flatbuffers",
+    "sum": "h1:CX395cjN9Kke9mmalRoL3d81AtFUxJM+yDthflgJGkI=",
+    "version": "v24.3.25+incompatible",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/google/gnostic@v0.6.9?tab=licenses"
+        "https://pkg.go.dev/github.com/google/flatbuffers@v24.3.25+incompatible?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/google/gnostic-models",
+    "sum": "h1:yo/ABAfM5IMRsS1VnXjTBvUb61tFIHozhlYvRgGre9I=",
+    "version": "v0.6.8",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/google/gnostic-models@v0.6.8?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "github.com/google/go-cmp",
-    "sum": "h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=",
-    "version": "v0.6.0",
+    "sum": "h1:wk8382ETsv4JYUZwIsn6YpYiWiBsYLSJiTsyBybVuN8=",
+    "version": "v0.7.0",
     "licenseInfo": {
       "license": "BSD-3-Clause",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/google/go-cmp@v0.6.0?tab=licenses"
+        "https://pkg.go.dev/github.com/google/go-cmp@v0.7.0?tab=licenses"
       ],
       "mustShipCode": false
     }
@@ -493,12 +1309,12 @@
   },
   {
     "name": "github.com/google/s2a-go",
-    "sum": "h1:60BLSyTrOV4/haCDW4zb1guZItoSq8foHCXrAnjBo/o=",
-    "version": "v0.1.7",
+    "sum": "h1:LGD7gtMgezd8a/Xak7mEWL0PjoTQFvpRudN895yqKW0=",
+    "version": "v0.1.9",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/google/s2a-go@v0.1.7?tab=licenses"
+        "https://pkg.go.dev/github.com/google/s2a-go@v0.1.9?tab=licenses"
       ],
       "mustShipCode": false
     }
@@ -517,48 +1333,24 @@
   },
   {
     "name": "github.com/googleapis/enterprise-certificate-proxy",
-    "sum": "h1:Vie5ybvEvT75RniqhfFxPRy3Bf7vr3h0cechB90XaQs=",
-    "version": "v0.3.2",
+    "sum": "h1:GW/XbdyBFQ8Qe+YAmFU9uHLo7OnF5tL52HFAgMmyrf4=",
+    "version": "v0.3.6",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/googleapis/enterprise-certificate-proxy@v0.3.2?tab=licenses"
+        "https://pkg.go.dev/github.com/googleapis/enterprise-certificate-proxy@v0.3.6?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "github.com/googleapis/gax-go/v2",
-    "sum": "h1:5/zPPDvw8Q1SuXjrqrZslrqT7dL/uJT2CQii/cLCKqA=",
-    "version": "v2.12.3",
+    "sum": "h1:SyjDc1mGgZU5LncH8gimWo9lW1DtIfPibOG81vgd/bo=",
+    "version": "v2.15.0",
     "licenseInfo": {
       "license": "BSD-3-Clause",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/googleapis/gax-go/v2@v2.12.3?tab=licenses"
-      ],
-      "mustShipCode": false
-    }
-  },
-  {
-    "name": "github.com/gosimple/slug",
-    "sum": "h1:bQ+kpX9Qa6tHRaK+fZR0A0M2Kd7Pa5eHPPsb1JpHD+Q=",
-    "version": "v1.13.1",
-    "licenseInfo": {
-      "license": "MPL-2.0",
-      "licenseURLs": [
-        "https://pkg.go.dev/github.com/gosimple/slug@v1.13.1?tab=licenses"
-      ],
-      "mustShipCode": true
-    }
-  },
-  {
-    "name": "github.com/gosimple/unidecode",
-    "sum": "h1:hZzFTMMqSswvf0LBJZCZgThIZrpDHFXux9KeGmn6T/o=",
-    "version": "v1.0.1",
-    "licenseInfo": {
-      "license": "Apache-2.0",
-      "licenseURLs": [
-        "https://pkg.go.dev/github.com/gosimple/unidecode@v1.0.1?tab=licenses"
+        "https://pkg.go.dev/github.com/googleapis/gax-go/v2@v2.15.0?tab=licenses"
       ],
       "mustShipCode": false
     }
@@ -577,12 +1369,24 @@
   },
   {
     "name": "github.com/grpc-ecosystem/go-grpc-middleware",
-    "sum": "h1:+9834+KizmvFV7pXQGSXQTsaWhq2GjuNUt0aUU0YBYw=",
-    "version": "v1.3.0",
+    "sum": "h1:UH//fgunKIs4JdUbpDl1VZCDaL56wXCB/5+wF6uHfaI=",
+    "version": "v1.4.0",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/grpc-ecosystem/go-grpc-middleware@v1.3.0?tab=licenses"
+        "https://pkg.go.dev/github.com/grpc-ecosystem/go-grpc-middleware@v1.4.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/grpc-ecosystem/grpc-gateway/v2",
+    "sum": "h1:5ZPtiqj0JL5oKWmcsq4VMaAW5ukBEgSGXEN89zeH1Jo=",
+    "version": "v2.26.3",
+    "licenseInfo": {
+      "license": "BSD-3-Clause",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/grpc-ecosystem/grpc-gateway/v2@v2.26.3?tab=licenses"
       ],
       "mustShipCode": false
     }
@@ -721,12 +1525,12 @@
   },
   {
     "name": "github.com/hashicorp/hcl/v2",
-    "sum": "h1://i05Jqznmb2EXqa39Nsvyan2o5XyMowW5fnCKW5RPI=",
-    "version": "v2.19.1",
+    "sum": "h1:2QJdZ454DSsYGoaE6QheQZjtKZSUs9Nh2izTWiwQxvE=",
+    "version": "v2.24.0",
     "licenseInfo": {
       "license": "MPL-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/hashicorp/hcl/v2@v2.19.1?tab=licenses"
+        "https://pkg.go.dev/github.com/hashicorp/hcl/v2@v2.24.0?tab=licenses"
       ],
       "mustShipCode": true
     }
@@ -864,18 +1668,6 @@
     }
   },
   {
-    "name": "github.com/imdario/mergo",
-    "sum": "h1:M8XP7IuFNsqUx6VPK2P9OSmsYsI/YFaGil0uD21V3dM=",
-    "version": "v0.3.15",
-    "licenseInfo": {
-      "license": "BSD-3-Clause",
-      "licenseURLs": [
-        "https://pkg.go.dev/github.com/imdario/mergo@v0.3.15?tab=licenses"
-      ],
-      "mustShipCode": false
-    }
-  },
-  {
     "name": "github.com/josharian/intern",
     "sum": "h1:vlS4z54oSdjm0bgjRigI+G1HpF+tI+9rE5LLzOg8HmY=",
     "version": "v1.0.0",
@@ -895,6 +1687,30 @@
       "license": "MIT",
       "licenseURLs": [
         "https://pkg.go.dev/github.com/json-iterator/go@v1.1.12?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/klauspost/compress",
+    "sum": "h1:6KIumPrER1LHsvBVuDa0r5xaG0Es51mhhB9BQB2qeMA=",
+    "version": "v1.17.9",
+    "licenseInfo": {
+      "license": "Apache-2.0, BSD-3-Clause, MIT",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/klauspost/compress@v1.17.9?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/klauspost/cpuid/v2",
+    "sum": "h1:S4CRMLnYUhGeDFDqkGriYKdfoFlDnMtqTiI/sFzhA9Y=",
+    "version": "v2.3.0",
+    "licenseInfo": {
+      "license": "MIT",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/klauspost/cpuid/v2@v2.3.0?tab=licenses"
       ],
       "mustShipCode": false
     }
@@ -937,24 +1753,24 @@
   },
   {
     "name": "github.com/mattn/go-isatty",
-    "sum": "h1:BTarxUcIeDqL27Mc+vyvdWYSL28zpIhv3RoTdsLMPng=",
-    "version": "v0.0.17",
+    "sum": "h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=",
+    "version": "v0.0.20",
     "licenseInfo": {
       "license": "MIT",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/mattn/go-isatty@v0.0.17?tab=licenses"
+        "https://pkg.go.dev/github.com/mattn/go-isatty@v0.0.20?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "github.com/mattn/go-runewidth",
-    "sum": "h1:Lm995f3rfxdpd6TSmuVCHVb/QhupuXlYr8sCI/QdE+0=",
-    "version": "v0.0.9",
+    "sum": "h1:UNAjwbU9l54TA3KzvqLGxwWjHmMgBUVhBiTjelZgg3U=",
+    "version": "v0.0.15",
     "licenseInfo": {
       "license": "MIT",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/mattn/go-runewidth@v0.0.9?tab=licenses"
+        "https://pkg.go.dev/github.com/mattn/go-runewidth@v0.0.15?tab=licenses"
       ],
       "mustShipCode": false
     }
@@ -1128,6 +1944,18 @@
     }
   },
   {
+    "name": "github.com/pierrec/lz4/v4",
+    "sum": "h1:xaKrnTkyoqfh1YItXl56+6KJNVYWlEEPuAQW9xsplYQ=",
+    "version": "v4.1.18",
+    "licenseInfo": {
+      "license": "BSD-3-Clause",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/pierrec/lz4/v4@v4.1.18?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
     "name": "github.com/pkg/errors",
     "sum": "h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=",
     "version": "v0.9.1",
@@ -1140,25 +1968,85 @@
     }
   },
   {
-    "name": "github.com/sirupsen/logrus",
-    "sum": "h1:trlNQbNUG3OdDrDil03MCb1H2o9nJ1x4/5LYw7byDE0=",
-    "version": "v1.9.0",
+    "name": "github.com/prometheus/client_golang",
+    "sum": "h1:Tgh3Yr67PaOv/uTqloMsCEdeuFTatm5zIq5+qNN23vI=",
+    "version": "v1.20.4",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/prometheus/client_golang@v1.20.4?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/prometheus/client_model",
+    "sum": "h1:ZKSh/rekM+n3CeS952MLRAdFwIKqeY8b62p8ais2e9E=",
+    "version": "v0.6.1",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/prometheus/client_model@v0.6.1?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/prometheus/common",
+    "sum": "h1:LXb1quJHWm1P6wq/U824uxYi4Sg0oGvNeUm1z5dJoX0=",
+    "version": "v0.59.1",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/prometheus/common@v0.59.1?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/prometheus/procfs",
+    "sum": "h1:YagwOFzUgYfKKHX6Dr+sHT7km/hxC76UB0learggepc=",
+    "version": "v0.15.1",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/prometheus/procfs@v0.15.1?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/rivo/uniseg",
+    "sum": "h1:WUdvkW8uEhrYfLC4ZzdpI2ztxP1I582+49Oc5Mq64VQ=",
+    "version": "v0.4.7",
     "licenseInfo": {
       "license": "MIT",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/sirupsen/logrus@v1.9.0?tab=licenses"
+        "https://pkg.go.dev/github.com/rivo/uniseg@v0.4.7?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/sirupsen/logrus",
+    "sum": "h1:dueUQJ1C2q9oE3F7wvmSGAaVtTmUizReu6fjN8uqzbQ=",
+    "version": "v1.9.3",
+    "licenseInfo": {
+      "license": "MIT",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/sirupsen/logrus@v1.9.3?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "github.com/spf13/cobra",
-    "sum": "h1:hyqWnYt1ZQShIddO5kBpj3vu05/++x6tJ6dg8EC572I=",
-    "version": "v1.7.0",
+    "sum": "h1:e5/vxKd/rZsfSJMUX1agtjeTDf+qv1/JdBF8gg5k9ZM=",
+    "version": "v1.8.1",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/spf13/cobra@v1.7.0?tab=licenses"
+        "https://pkg.go.dev/github.com/spf13/cobra@v1.8.1?tab=licenses"
       ],
       "mustShipCode": false
     }
@@ -1171,6 +2059,18 @@
       "license": "BSD-3-Clause",
       "licenseURLs": [
         "https://pkg.go.dev/github.com/spf13/pflag@v1.0.5?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/spiffe/go-spiffe/v2",
+    "sum": "h1:N2I01KCUkv1FAjZXJMwh95KK1ZIQLYbPfhaxw8WS0hE=",
+    "version": "v2.5.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/spiffe/go-spiffe/v2@v2.5.0?tab=licenses"
       ],
       "mustShipCode": false
     }
@@ -1212,13 +2112,49 @@
     }
   },
   {
-    "name": "github.com/zclconf/go-cty",
-    "sum": "h1:It5dfKTTZHe9aeppbNOda3mN7Ag7sg6QkBNm6TkyFa0=",
-    "version": "v1.13.0",
+    "name": "github.com/x448/float16",
+    "sum": "h1:qLwI1I70+NjRFUR3zs1JPUCgaCXSh3SW62uAKT1mSBM=",
+    "version": "v0.8.4",
     "licenseInfo": {
       "license": "MIT",
       "licenseURLs": [
-        "https://pkg.go.dev/github.com/zclconf/go-cty@v1.13.0?tab=licenses"
+        "https://pkg.go.dev/github.com/x448/float16@v0.8.4?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/zclconf/go-cty",
+    "sum": "h1:osr++gw2T61A8KVYHoQiFbFd1Lh3JOCXc/jFLJXKTxk=",
+    "version": "v1.16.3",
+    "licenseInfo": {
+      "license": "MIT",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/zclconf/go-cty@v1.16.3?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/zeebo/errs",
+    "sum": "h1:XNdoD/RRMKP7HD0UhJnIzUy74ISdGGxURlYG8HSWSfM=",
+    "version": "v1.4.0",
+    "licenseInfo": {
+      "license": "MIT",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/zeebo/errs@v1.4.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "github.com/zeebo/xxh3",
+    "sum": "h1:xZmwmqxHZA8AI603jOQ0tMqmBr9lPeFwGg6d+xy9DC0=",
+    "version": "v1.0.2",
+    "licenseInfo": {
+      "license": "BSD-2-Clause",
+      "licenseURLs": [
+        "https://pkg.go.dev/github.com/zeebo/xxh3@v1.0.2?tab=licenses"
       ],
       "mustShipCode": false
     }
@@ -1236,229 +2172,361 @@
     }
   },
   {
-    "name": "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc",
-    "sum": "h1:4Pp6oUg3+e/6M4C0A/3kJ2VYa++dsWVTtGgLVj5xtHg=",
-    "version": "v0.49.0",
+    "name": "go.opentelemetry.io/auto/sdk",
+    "sum": "h1:cH53jehLUN6UFLY71z+NDOiNJqDdPRaXzTel0sJySYA=",
+    "version": "v1.1.0",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc@v0.49.0?tab=licenses"
+        "https://pkg.go.dev/go.opentelemetry.io/auto/sdk@v1.1.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc",
+    "sum": "h1:q4XOmH/0opmeuJtPsbFNivyl7bCt7yRBbeEm2sC/XtQ=",
+    "version": "v0.61.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc@v0.61.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp",
-    "sum": "h1:jq9TW8u3so/bN+JPT166wjOI6/vQPF6Xe7nMNIltagk=",
-    "version": "v0.49.0",
+    "sum": "h1:F7Jx+6hwnZ41NSFTO5q4LYDtJRXBf2PD0rNBkeB/lus=",
+    "version": "v0.61.0",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp@v0.49.0?tab=licenses"
+        "https://pkg.go.dev/go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp@v0.61.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "go.opentelemetry.io/otel",
-    "sum": "h1:0LAOdjNmQeSTzGBzduGe/rU4tZhMwL5rWgtp9Ku5Jfo=",
-    "version": "v1.24.0",
+    "sum": "h1:UumtzIklRBY6cI/lllNZlALOF5nNIzJVb16APdvgTXg=",
+    "version": "v1.36.0",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/go.opentelemetry.io/otel@v1.24.0?tab=licenses"
+        "https://pkg.go.dev/go.opentelemetry.io/otel@v1.36.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "go.opentelemetry.io/otel/metric",
-    "sum": "h1:6EhoGWWK28x1fbpA4tYTOWBkPefTDQnb8WSGXlc88kI=",
-    "version": "v1.24.0",
+    "sum": "h1:MoWPKVhQvJ+eeXWHFBOPoBOi20jh6Iq2CcCREuTYufE=",
+    "version": "v1.36.0",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/go.opentelemetry.io/otel/metric@v1.24.0?tab=licenses"
+        "https://pkg.go.dev/go.opentelemetry.io/otel/metric@v1.36.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "go.opentelemetry.io/otel/sdk",
+    "sum": "h1:b6SYIuLRs88ztox4EyrvRti80uXIFy+Sqzoh9kFULbs=",
+    "version": "v1.36.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/go.opentelemetry.io/otel/sdk@v1.36.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "go.opentelemetry.io/otel/sdk/metric",
+    "sum": "h1:r0ntwwGosWGaa0CrSt8cuNuTcccMXERFwHX4dThiPis=",
+    "version": "v1.36.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/go.opentelemetry.io/otel/sdk/metric@v1.36.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "go.opentelemetry.io/otel/trace",
-    "sum": "h1:CsKnnL4dUAr/0llH9FKuc698G04IrpWV0MQA/Y1YELI=",
-    "version": "v1.24.0",
+    "sum": "h1:ahxWNuqZjpdiFAyrIoQ4GIiAIhxAunQR6MUoKrsNd4w=",
+    "version": "v1.36.0",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/go.opentelemetry.io/otel/trace@v1.24.0?tab=licenses"
+        "https://pkg.go.dev/go.opentelemetry.io/otel/trace@v1.36.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "go.uber.org/mock",
+    "sum": "h1:LbtPTcP8A5k9WPXj54PPPbjcI4Y6lhyOZXn+VS7wNko=",
+    "version": "v0.5.2",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/go.uber.org/mock@v0.5.2?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "go.uber.org/multierr",
+    "sum": "h1:blXXJkSxSSfBVBlC76pxqeO+LN3aDfLQo+309xJstO0=",
+    "version": "v1.11.0",
+    "licenseInfo": {
+      "license": "MIT",
+      "licenseURLs": [
+        "https://pkg.go.dev/go.uber.org/multierr@v1.11.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "go.uber.org/zap",
+    "sum": "h1:aJMhYGrd5QSmlpLMr2MftRKl7t8J8PTZPA732ud/XR8=",
+    "version": "v1.27.0",
+    "licenseInfo": {
+      "license": "MIT",
+      "licenseURLs": [
+        "https://pkg.go.dev/go.uber.org/zap@v1.27.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "golang.org/x/crypto",
-    "sum": "h1:g1v0xeRhjcugydODzvb3mEM9SQ0HGp9s/nh3COQ/C30=",
-    "version": "v0.22.0",
+    "sum": "h1:chiH31gIWm57EkTXpwnqf8qeuMUi0yekh6mT2AvFlqI=",
+    "version": "v0.42.0",
     "licenseInfo": {
       "license": "BSD-3-Clause",
       "licenseURLs": [
-        "https://pkg.go.dev/golang.org/x/crypto@v0.22.0?tab=licenses"
+        "https://pkg.go.dev/golang.org/x/crypto@v0.42.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "golang.org/x/exp",
+    "sum": "h1:2id6c1/gto0kaHYyrixvknJ8tUK/Qs5IsmBtrc+FtgU=",
+    "version": "v0.0.0-20250911091902-df9299821621",
+    "licenseInfo": {
+      "license": "BSD-3-Clause",
+      "licenseURLs": [
+        "https://pkg.go.dev/golang.org/x/exp@v0.0.0-20250911091902-df9299821621?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "golang.org/x/net",
-    "sum": "h1:1PcaxkF854Fu3+lvBIx5SYn9wRlBzzcnHZSiaFFAb0w=",
-    "version": "v0.24.0",
+    "sum": "h1:evd8IRDyfNBMBTTY5XRF1vaZlD+EmWx6x8PkhR04H/I=",
+    "version": "v0.44.0",
     "licenseInfo": {
       "license": "BSD-3-Clause",
       "licenseURLs": [
-        "https://pkg.go.dev/golang.org/x/net@v0.24.0?tab=licenses"
+        "https://pkg.go.dev/golang.org/x/net@v0.44.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "golang.org/x/oauth2",
-    "sum": "h1:9+E/EZBCbTLNrbN35fHv/a/d/mOBatymz1zbtQrXpIg=",
-    "version": "v0.19.0",
+    "sum": "h1:dnDm7JmhM45NNpd8FDDeLhK6FwqbOf4MLCM9zb1BOHI=",
+    "version": "v0.30.0",
     "licenseInfo": {
       "license": "BSD-3-Clause",
       "licenseURLs": [
-        "https://pkg.go.dev/golang.org/x/oauth2@v0.19.0?tab=licenses"
+        "https://pkg.go.dev/golang.org/x/oauth2@v0.30.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "golang.org/x/sync",
-    "sum": "h1:YsImfSBoP9QPYL0xyKJPq0gcaJdG3rInoqxTWbfQu9M=",
-    "version": "v0.7.0",
+    "sum": "h1:l60nONMj9l5drqw6jlhIELNv9I0A4OFgRsG9k2oT9Ug=",
+    "version": "v0.17.0",
     "licenseInfo": {
       "license": "BSD-3-Clause",
       "licenseURLs": [
-        "https://pkg.go.dev/golang.org/x/sync@v0.7.0?tab=licenses"
+        "https://pkg.go.dev/golang.org/x/sync@v0.17.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "golang.org/x/sys",
-    "sum": "h1:q5f1RH2jigJ1MoAWp2KTp3gm5zAGFUTarQZ5U386+4o=",
-    "version": "v0.19.0",
+    "sum": "h1:KVRy2GtZBrk1cBYA7MKu5bEZFxQk4NIDV6RLVcC8o0k=",
+    "version": "v0.36.0",
     "licenseInfo": {
       "license": "BSD-3-Clause",
       "licenseURLs": [
-        "https://pkg.go.dev/golang.org/x/sys@v0.19.0?tab=licenses"
+        "https://pkg.go.dev/golang.org/x/sys@v0.36.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "golang.org/x/term",
-    "sum": "h1:+ThwsDv+tYfnJFhF4L8jITxu1tdTWRTZpdsWgEgjL6Q=",
-    "version": "v0.19.0",
+    "sum": "h1:bZBVKBudEyhRcajGcNc3jIfWPqV4y/Kt2XcoigOWtDQ=",
+    "version": "v0.35.0",
     "licenseInfo": {
       "license": "BSD-3-Clause",
       "licenseURLs": [
-        "https://pkg.go.dev/golang.org/x/term@v0.19.0?tab=licenses"
+        "https://pkg.go.dev/golang.org/x/term@v0.35.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "golang.org/x/text",
-    "sum": "h1:ScX5w1eTa3QqT8oi6+ziP7dTV1S2+ALU0bI+0zXKWiQ=",
-    "version": "v0.14.0",
+    "sum": "h1:1neNs90w9YzJ9BocxfsQNHKuAT4pkghyXc4nhZ6sJvk=",
+    "version": "v0.29.0",
     "licenseInfo": {
       "license": "BSD-3-Clause",
       "licenseURLs": [
-        "https://pkg.go.dev/golang.org/x/text@v0.14.0?tab=licenses"
+        "https://pkg.go.dev/golang.org/x/text@v0.29.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "golang.org/x/time",
-    "sum": "h1:o7cqy6amK/52YcAKIPlM3a+Fpj35zvRj2TP+e1xFSfk=",
-    "version": "v0.5.0",
+    "sum": "h1:ScB/8o8olJvc+CQPWrK3fPZNfh7qgwCrY0zJmoEQLSE=",
+    "version": "v0.12.0",
     "licenseInfo": {
       "license": "BSD-3-Clause",
       "licenseURLs": [
-        "https://pkg.go.dev/golang.org/x/time@v0.5.0?tab=licenses"
+        "https://pkg.go.dev/golang.org/x/time@v0.12.0?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "golang.org/x/xerrors",
+    "sum": "h1:noIWHXmPHxILtqtCOPIhSt0ABwskkZKjD3bXGnZGpNY=",
+    "version": "v0.0.0-20240903120638-7835f813f4da",
+    "licenseInfo": {
+      "license": "BSD-3-Clause",
+      "licenseURLs": [
+        "https://pkg.go.dev/golang.org/x/xerrors@v0.0.0-20240903120638-7835f813f4da?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "gomodules.xyz/jsonpatch/v2",
+    "sum": "h1:Ci3iUJyx9UeRx7CeFN8ARgGbkESwJK+KB9lLcWxY/Zw=",
+    "version": "v2.4.0",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/gomodules.xyz/jsonpatch/v2@v2.4.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "google.golang.org/api",
-    "sum": "h1:8a0p/BbPa65GlqGWtUKxot4p0TV8OGOfyTjtmkXNXmk=",
-    "version": "v0.177.0",
+    "sum": "h1:tSd/e0QrUlLsrwMKmkbQhYVa109qIintOls2Wh6bngc=",
+    "version": "v0.247.0",
     "licenseInfo": {
       "license": "BSD-3-Clause",
       "licenseURLs": [
-        "https://pkg.go.dev/google.golang.org/api@v0.177.0?tab=licenses"
+        "https://pkg.go.dev/google.golang.org/api@v0.247.0?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "google.golang.org/genproto",
-    "sum": "h1:wu/KJm9KJwpfHWhkkZGohVC6KRrc1oJNr4jwtQMOQXw=",
-    "version": "v0.0.0-20240401170217-c3f982113cda",
+    "sum": "h1:rHWScKit0gvAPuOnu87KpaYtjK5zBMLcULh7gxkCXu4=",
+    "version": "v0.0.0-20250603155806-513f23925822",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/google.golang.org/genproto@v0.0.0-20240401170217-c3f982113cda?tab=licenses"
+        "https://pkg.go.dev/google.golang.org/genproto@v0.0.0-20250603155806-513f23925822?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "google.golang.org/genproto/googleapis/api",
-    "sum": "h1:DTJM0R8LECCgFeUwApvcEJHz85HLagW8uRENYxHh1ww=",
-    "version": "v0.0.0-20240429193739-8cf5692501f6",
+    "sum": "h1:AtEkQdl5b6zsybXcbz00j1LwNodDuH6hVifIaNqk7NQ=",
+    "version": "v0.0.0-20250818200422-3122310a409c",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/google.golang.org/genproto/googleapis/api@v0.0.0-20240429193739-8cf5692501f6?tab=licenses"
+        "https://pkg.go.dev/google.golang.org/genproto/googleapis/api@v0.0.0-20250818200422-3122310a409c?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "google.golang.org/genproto/googleapis/api/serviceusage",
+    "sum": "h1:s26x/Q4E4zQd7DKL8gpnEnRJmGqWvraezKu2q12CyBg=",
+    "version": "v0.0.0-20250519155744-55703ea1f237",
+    "licenseInfo": {
+      "license": "Apache-2.0",
+      "licenseURLs": [
+        "https://pkg.go.dev/google.golang.org/genproto/googleapis/api/serviceusage@v0.0.0-20250519155744-55703ea1f237?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "google.golang.org/genproto/googleapis/rpc",
-    "sum": "h1:DujSIu+2tC9Ht0aPNA7jgj23Iq8Ewi5sgkQ++wdvonE=",
-    "version": "v0.0.0-20240429193739-8cf5692501f6",
+    "sum": "h1:qXWI/sQtv5UKboZ/zUk7h+mrf/lXORyI+n9DKDAusdg=",
+    "version": "v0.0.0-20250818200422-3122310a409c",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/google.golang.org/genproto/googleapis/rpc@v0.0.0-20240429193739-8cf5692501f6?tab=licenses"
+        "https://pkg.go.dev/google.golang.org/genproto/googleapis/rpc@v0.0.0-20250818200422-3122310a409c?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "google.golang.org/grpc",
-    "sum": "h1:MUeiw1B2maTVZthpU5xvASfTh3LDbxHd6IJ6QQVU+xM=",
-    "version": "v1.63.2",
+    "sum": "h1:WoosgB65DlWVC9FqI82dGsZhWFNBSLjQ84bjROOpMu4=",
+    "version": "v1.74.2",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/google.golang.org/grpc@v1.63.2?tab=licenses"
+        "https://pkg.go.dev/google.golang.org/grpc@v1.74.2?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "google.golang.org/protobuf",
-    "sum": "h1:Qo/qEd2RZPCf2nKuorzksSknv0d3ERwp1vFG38gSmH4=",
-    "version": "v1.34.0",
+    "sum": "h1:IgrO7UwFQGJdRNXH/sQux4R1Dj1WAKcLElzeeRaXV2A=",
+    "version": "v1.36.7",
     "licenseInfo": {
       "license": "BSD-3-Clause",
       "licenseURLs": [
-        "https://pkg.go.dev/google.golang.org/protobuf@v1.34.0?tab=licenses"
+        "https://pkg.go.dev/google.golang.org/protobuf@v1.36.7?tab=licenses"
+      ],
+      "mustShipCode": false
+    }
+  },
+  {
+    "name": "gopkg.in/evanphx/json-patch.v4",
+    "sum": "h1:n6jtcsulIzXPJaxegRbvFNNrZDjbij7ny3gmSPG+6V4=",
+    "version": "v4.12.0",
+    "licenseInfo": {
+      "license": "BSD-3-Clause",
+      "licenseURLs": [
+        "https://pkg.go.dev/gopkg.in/evanphx/json-patch.v4@v4.12.0?tab=licenses"
       ],
       "mustShipCode": false
     }
@@ -1501,144 +2569,144 @@
   },
   {
     "name": "k8s.io/api",
-    "sum": "h1:IsGrWbXt7RkE+arc9GLQPYI5AtZkT+feBMorY+Nzx4I=",
-    "version": "v0.27.11",
+    "sum": "h1:f562zw9cy+GvXzXf0CKlVQ7yHJVYzLfL6JAS4kOAaOc=",
+    "version": "v0.32.1",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/k8s.io/api@v0.27.11?tab=licenses"
+        "https://pkg.go.dev/k8s.io/api@v0.32.1?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "k8s.io/apiextensions-apiserver",
-    "sum": "h1:z7f95DVIrNkscuV2f/JdZNpjOxpUYeeRYcmrn0Wixas=",
-    "version": "v0.27.9",
+    "sum": "h1:hjkALhRUeCariC8DiVmb5jj0VjIc1N0DREP32+6UXZw=",
+    "version": "v0.32.1",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/k8s.io/apiextensions-apiserver@v0.27.9?tab=licenses"
+        "https://pkg.go.dev/k8s.io/apiextensions-apiserver@v0.32.1?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "k8s.io/apimachinery",
-    "sum": "h1:ivrKMN7JgdtKhay14S5UQlvilV3z6W+wjiSQTzyr5zc=",
-    "version": "v0.27.11",
+    "sum": "h1:683ENpaCBjma4CYqsmZyhEzrGz6cjn1MY/X2jB2hkZs=",
+    "version": "v0.32.1",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/k8s.io/apimachinery@v0.27.11?tab=licenses"
+        "https://pkg.go.dev/k8s.io/apimachinery@v0.32.1?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "k8s.io/client-go",
-    "sum": "h1:SZChXsDaN6lB5IYywCpvQs/ZUa5vK2NHkpEwUhoK3fQ=",
-    "version": "v0.27.11",
+    "sum": "h1:otM0AxdhdBIaQh7l1Q0jQpmo7WOFIk5FFa4bg6YMdUU=",
+    "version": "v0.32.1",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/k8s.io/client-go@v0.27.11?tab=licenses"
+        "https://pkg.go.dev/k8s.io/client-go@v0.32.1?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "k8s.io/klog/v2",
-    "sum": "h1:7WCHKK6K8fNhTqfBhISHQ97KrnJNFZMcQvKp7gP/tmg=",
-    "version": "v2.100.1",
+    "sum": "h1:n9Xl7H1Xvksem4KFG4PYbdQCQxqc/tTUyrgXaOhHSzk=",
+    "version": "v2.130.1",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/k8s.io/klog/v2@v2.100.1?tab=licenses"
+        "https://pkg.go.dev/k8s.io/klog/v2@v2.130.1?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "k8s.io/kube-openapi",
-    "sum": "h1:2kWPakN3i/k81b0gvD5C5FJ2kxm1WrQFanWchyKuqGg=",
-    "version": "v0.0.0-20230501164219-8b0f38b5fd1f",
+    "sum": "h1:GA7//TjRY9yWGy1poLzYYJJ4JRdzg3+O6e8I+e+8T5Y=",
+    "version": "v0.0.0-20241105132330-32ad38e42d3f",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/k8s.io/kube-openapi@v0.0.0-20230501164219-8b0f38b5fd1f?tab=licenses"
+        "https://pkg.go.dev/k8s.io/kube-openapi@v0.0.0-20241105132330-32ad38e42d3f?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "k8s.io/utils",
-    "sum": "h1:EObNQ3TW2D+WptiYXlApGNLVy0zm/JIBVY9i+M4wpAU=",
-    "version": "v0.0.0-20230505201702-9f6742963106",
+    "sum": "h1:M3sRQVHv7vB20Xc2ybTt7ODCeFj6JSWYFzOFnYeS6Ro=",
+    "version": "v0.0.0-20241104100929-3ea5e8cea738",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/k8s.io/utils@v0.0.0-20230505201702-9f6742963106?tab=licenses"
+        "https://pkg.go.dev/k8s.io/utils@v0.0.0-20241104100929-3ea5e8cea738?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "sigs.k8s.io/controller-runtime",
-    "sum": "h1:9V7b7SDQSJ08IIsJ6CY1CE85Okhp87dyTMNDG0FS7f4=",
-    "version": "v0.15.2",
+    "sum": "h1:X3c+Odnxz+iPTRobG4tp092+CvBU9UK0t/bRf+n0DGU=",
+    "version": "v0.20.4",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.15.2?tab=licenses"
+        "https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.20.4?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "sigs.k8s.io/json",
-    "sum": "h1:EDPBXCAspyGV4jQlpZSudPeMmr1bNJefnuqLsRAsHZo=",
-    "version": "v0.0.0-20221116044647-bc3834ca7abd",
+    "sum": "h1:/Rv+M11QRah1itp8VhT6HoVx1Ray9eB4DBr+K+/sCJ8=",
+    "version": "v0.0.0-20241010143419-9aa6b5e7a4b3",
     "licenseInfo": {
-      "license": "Apache-2.0,BSD-3-Clause",
+      "license": "Apache-2.0, BSD-3-Clause",
       "licenseURLs": [
-        "https://pkg.go.dev/sigs.k8s.io/json@v0.0.0-20221116044647-bc3834ca7abd?tab=licenses"
+        "https://pkg.go.dev/sigs.k8s.io/json@v0.0.0-20241010143419-9aa6b5e7a4b3?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "sigs.k8s.io/kubebuilder-declarative-pattern",
-    "sum": "h1:g6VgSNpmrGDeHqw2/CRYrzYRRFE/5UCODIQJu64TBww=",
-    "version": "v0.15.0-beta.2",
+    "sum": "h1:ScBLFA+p3cYk39rvECI4S8tfQxlve3MeV29WToScngc=",
+    "version": "v0.20.0-beta.1.0.20250514194322-871029137730",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/sigs.k8s.io/kubebuilder-declarative-pattern@v0.15.0-beta.2?tab=licenses"
+        "https://pkg.go.dev/sigs.k8s.io/kubebuilder-declarative-pattern@v0.20.0-beta.1.0.20250514194322-871029137730?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "sigs.k8s.io/structured-merge-diff/v4",
-    "sum": "h1:150L+0vs/8DA78h1u02ooW1/fFq/Lwr+sGiqlzvrtq4=",
-    "version": "v4.4.1",
+    "sum": "h1:MdmvkGuXi/8io6ixD5wud3vOLwc1rj0aNqRlpuvjmwA=",
+    "version": "v4.4.2",
     "licenseInfo": {
       "license": "Apache-2.0",
       "licenseURLs": [
-        "https://pkg.go.dev/sigs.k8s.io/structured-merge-diff/v4@v4.4.1?tab=licenses"
+        "https://pkg.go.dev/sigs.k8s.io/structured-merge-diff/v4@v4.4.2?tab=licenses"
       ],
       "mustShipCode": false
     }
   },
   {
     "name": "sigs.k8s.io/yaml",
-    "sum": "h1:a2VclLzOGrwOHDiV8EfBGhvjHvP46CtW5j6POvhYGGo=",
-    "version": "v1.3.0",
+    "sum": "h1:Mk1wCc2gy/F0THH0TAp1QYyJNzRm2KCLy3o5ASXVI5E=",
+    "version": "v1.4.0",
     "licenseInfo": {
       "license": "BSD-3-Clause, MIT",
       "licenseURLs": [
-        "https://pkg.go.dev/sigs.k8s.io/yaml@v1.3.0?tab=licenses"
+        "https://pkg.go.dev/sigs.k8s.io/yaml@v1.4.0?tab=licenses"
       ],
       "mustShipCode": false
     }

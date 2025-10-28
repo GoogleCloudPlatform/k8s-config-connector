@@ -29,8 +29,8 @@ func init() {
 
 func bigtableAppProfileFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.AppProfile{},
-		BigtableAppProfileSpec_FromProto, BigtableAppProfileSpec_ToProto,
-		BigtableAppProfileObservedState_FromProto, BigtableAppProfileObservedState_ToProto,
+		BigtableAppProfileSpec_v1beta1_FromProto, BigtableAppProfileSpec_v1beta1_ToProto,
+		BigtableAppProfileObservedState_v1beta1_FromProto, BigtableAppProfileObservedState_v1beta1_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".multi_cluster_routing_use_any.row_affinity")

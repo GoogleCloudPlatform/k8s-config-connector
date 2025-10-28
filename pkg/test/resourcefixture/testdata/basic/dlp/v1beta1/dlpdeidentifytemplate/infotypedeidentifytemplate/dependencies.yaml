@@ -50,7 +50,6 @@ kind: KMSCryptoKey
 metadata:
   name: kmscryptokey-1-${uniqueId}
 spec:
-  location: "global"
   keyRingRef:
     name: "kmskeyring-${uniqueId}"
   purpose: "ENCRYPT_DECRYPT"

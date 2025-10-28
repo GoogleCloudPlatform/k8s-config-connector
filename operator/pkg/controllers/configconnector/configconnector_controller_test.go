@@ -255,6 +255,34 @@ func TestHandleConfigConnectorCreate(t *testing.T) {
 				return testcontroller.ManuallyReplaceGSA(testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
 			},
 		},
+		{
+			name: "1 CC and 1 CCContext, per namespace mode",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc-1",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode: "namespaced",
+				},
+			},
+			cccs: []corev1beta1.ConfigConnectorContext{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      corev1beta1.ConfigConnectorContextAllowedName,
+						Namespace: "foo-ns",
+					},
+					Spec: corev1beta1.ConfigConnectorContextSpec{
+						GoogleServiceAccount: "foo-ns@bar.iam.gserviceaccount.com",
+						ManagerNamespace:     "t1234-tenant0-supervisor",
+					},
+				},
+			},
+			loadedManifest: testcontroller.GetSharedComponentsManifest(),
+			resultsFunc: func(t *testing.T, c client.Client) []string {
+				return []string{testcontroller.FooCRD, testcontroller.SystemNs}
+			},
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
+		},
 	}
 	for _, tc := range tests {
 		tc := tc
@@ -268,6 +296,11 @@ func TestHandleConfigConnectorCreate(t *testing.T) {
 			testcontroller.EnsureNamespaceExists(c, k8s.OperatorSystemNamespace)
 			m := testcontroller.ParseObjects(ctx, t, tc.loadedManifest)
 			r := newConfigConnectorReconciler(c)
+			if tc.managerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
+				r.managerNamespaceIsolation = k8s.ManagerNamespaceIsolationDedicated
+			} else {
+				r.managerNamespaceIsolation = k8s.ManagerNamespaceIsolationShared
+			}
 
 			if err := c.Create(ctx, tc.cc); err != nil {
 				t.Fatalf("error creating %v %v: %v", tc.cc.Kind, tc.cc.Name, err)
@@ -328,11 +361,12 @@ func TestHandleConfigConnectorCreate(t *testing.T) {
 
 func TestHandleConfigConnectorDelete(t *testing.T) {
 	tests := []struct {
-		name                 string
-		cc                   *corev1beta1.ConfigConnector
-		cccs                 []corev1beta1.ConfigConnectorContext
-		installedObjectsFunc func(t *testing.T, c client.Client) []string
-		resultsFunc          func(t *testing.T, c client.Client) []string
+		name                      string
+		cc                        *corev1beta1.ConfigConnector
+		cccs                      []corev1beta1.ConfigConnectorContext
+		installedObjectsFunc      func(t *testing.T, c client.Client) []string
+		resultsFunc               func(t *testing.T, c client.Client) []string
+		managerNamespaceIsolation string
 	}{
 		{
 			name: "cluster mode workload identity uninstall",
@@ -407,6 +441,43 @@ func TestHandleConfigConnectorDelete(t *testing.T) {
 				return nil
 			},
 		},
+		{
+			name: "namespaced mode CC, 1 CCContext per namespace, delete CC",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:       "test-kcc",
+					Finalizers: []string{k8s.OperatorFinalizer},
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode: "namespaced",
+				},
+			},
+			cccs: []corev1beta1.ConfigConnectorContext{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:       corev1beta1.ConfigConnectorContextAllowedName,
+						Namespace:  "t1234-tenant0-provider",
+						Finalizers: []string{k8s.OperatorFinalizer},
+					},
+					Spec: corev1beta1.ConfigConnectorContextSpec{
+						ManagerNamespace:     "t1234-tenant0-supervisor",
+						GoogleServiceAccount: "foo-ns@bar.iam.gserviceaccount.com",
+					},
+				},
+			},
+			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
+				res := make([]string, 0)
+				res = append(res, testcontroller.GetSharedComponentsManifest()...)
+				namespacedManifest := testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.NamespacedComponentsTemplate, "t1234-tenant0-provider", "foo-ns@bar.iam.gserviceaccount.com", false, "", c)
+				res = append(res, namespacedManifest...)
+				res = append(res, testcontroller.PerNamespaceControllerManagerPod)
+				return res
+			},
+			resultsFunc: func(t *testing.T, c client.Client) []string {
+				return nil
+			},
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
+		},
 	}
 	for _, tc := range tests {
 		tc := tc
@@ -420,6 +491,12 @@ func TestHandleConfigConnectorDelete(t *testing.T) {
 			testcontroller.EnsureNamespaceExists(c, k8s.CNRMSystemNamespace)
 			m := testcontroller.ParseObjects(ctx, t, tc.installedObjectsFunc(t, c))
 			r := newConfigConnectorReconciler(c)
+			if tc.managerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
+				r.managerNamespaceIsolation = k8s.ManagerNamespaceIsolationDedicated
+			} else {
+				r.managerNamespaceIsolation = k8s.ManagerNamespaceIsolationShared
+			}
+
 			if err := c.Create(ctx, tc.cc); err != nil {
 				t.Fatalf("error creating %v %v: %v", tc.cc.Kind, tc.cc.Name, err)
 			}
@@ -431,6 +508,9 @@ func TestHandleConfigConnectorDelete(t *testing.T) {
 			}
 			for _, ccc := range tc.cccs {
 				testcontroller.EnsureNamespaceExists(c, ccc.Namespace)
+				if ccc.Spec.ManagerNamespace != "" {
+					testcontroller.EnsureNamespaceExists(c, ccc.Spec.ManagerNamespace)
+				}
 				if err := c.Create(ctx, &ccc); err != nil {
 					t.Fatalf("error creating %v %v/%v: %v", ccc.Kind, ccc.Namespace, ccc.Name, err)
 				}
@@ -491,14 +571,15 @@ func TestHandleConfigConnectorDelete(t *testing.T) {
 func TestConfigConnectorUpdate(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
-		name                 string
-		cc                   *corev1beta1.ConfigConnector
-		updatedCc            *corev1beta1.ConfigConnector
-		cccs                 []*corev1beta1.ConfigConnectorContext
-		installedObjectsFunc func(t *testing.T, c client.Client) []string
-		manifest             []string
-		toDeleteObjectsFunc  func(t *testing.T, c client.Client) []string
-		resultsFunc          func(t *testing.T, c client.Client) []string
+		name                      string
+		cc                        *corev1beta1.ConfigConnector
+		updatedCc                 *corev1beta1.ConfigConnector
+		cccs                      []*corev1beta1.ConfigConnectorContext
+		installedObjectsFunc      func(t *testing.T, c client.Client) []string
+		manifest                  []string
+		toDeleteObjectsFunc       func(t *testing.T, c client.Client) []string
+		resultsFunc               func(t *testing.T, c client.Client) []string
+		managerNamespaceIsolation string
 	}{
 		{
 			name: "workload identity cluster mode to namespaced mode",
@@ -738,6 +819,191 @@ func TestConfigConnectorUpdate(t *testing.T) {
 				return testcontroller.ManuallyReplaceGSA(testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
 			},
 		},
+
+		{
+			name: "workload identity cluster mode to per namespace mode",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+					Mode:                 "cluster",
+				},
+			},
+			updatedCc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode: "namespaced",
+				},
+			},
+			cccs: []*corev1beta1.ConfigConnectorContext{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:       corev1beta1.ConfigConnectorContextAllowedName,
+						Namespace:  "foo-ns",
+						Finalizers: []string{k8s.OperatorFinalizer},
+					},
+					Spec: corev1beta1.ConfigConnectorContextSpec{
+						GoogleServiceAccount: "foo-ns@bar.iam.gserviceaccount.com",
+						ManagerNamespace:     "t1234-tenant0-supervisor",
+					},
+				},
+			},
+			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
+				return testcontroller.ManuallyReplaceGSA(testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
+			},
+			toDeleteObjectsFunc: func(t *testing.T, c client.Client) []string {
+				return testcontroller.ManuallyReplaceGSA(testcontroller.ClusterModeOnlyWorkloadIdentityComponents, "foo@bar.iam.gserviceaccount.com")
+			},
+			manifest: testcontroller.GetSharedComponentsManifest(),
+			resultsFunc: func(t *testing.T, c client.Client) []string {
+				res := []string{testcontroller.FooCRD, testcontroller.SystemNs}
+				return res
+			},
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
+		},
+		{
+			name: "gcp identity cluster mode to per namespace mode",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					CredentialSecretName: "my-key",
+					Mode:                 "cluster",
+				},
+			},
+			updatedCc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode: "namespaced",
+				},
+			},
+			cccs: []*corev1beta1.ConfigConnectorContext{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:       corev1beta1.ConfigConnectorContextAllowedName,
+						Namespace:  "foo-ns",
+						Finalizers: []string{k8s.OperatorFinalizer},
+					},
+					Spec: corev1beta1.ConfigConnectorContextSpec{
+						GoogleServiceAccount: "foo-ns@bar.iam.gserviceaccount.com",
+						ManagerNamespace:     "t1234-tenant0-supervisor",
+					},
+				},
+			},
+			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
+				return testcontroller.ManuallyReplaceSecretVolume(testcontroller.GetClusterModeGCPManifest(), "my-key")
+			},
+			toDeleteObjectsFunc: func(t *testing.T, c client.Client) []string {
+				return testcontroller.ManuallyReplaceSecretVolume(testcontroller.ClusterModeOnlyGCPComponents, "my-key")
+			},
+			manifest: testcontroller.GetSharedComponentsManifest(),
+			resultsFunc: func(t *testing.T, c client.Client) []string {
+				res := []string{testcontroller.FooCRD, testcontroller.SystemNs}
+				return res
+			},
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
+		},
+		{
+			name: "per namespace mode to workload identity cluster mode",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode: "namespaced",
+				},
+			},
+			updatedCc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					GoogleServiceAccount: "foo@bar.iam.gserviceaccount.com",
+					Mode:                 "cluster",
+				},
+			},
+			cccs: []*corev1beta1.ConfigConnectorContext{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:       corev1beta1.ConfigConnectorContextAllowedName,
+						Namespace:  "t1234-tenant0-provider",
+						Finalizers: []string{k8s.OperatorFinalizer},
+					},
+					Spec: corev1beta1.ConfigConnectorContextSpec{
+						GoogleServiceAccount: "foo-ns@bar.iam.gserviceaccount.com",
+						ManagerNamespace:     "t1234-tenant0-supervisor",
+					},
+				},
+			},
+			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
+				res := []string{testcontroller.FooCRD, testcontroller.SystemNs}
+				res = append(res, testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.NamespacedComponentsTemplate, "t1234-tenant0-provider", "foo-ns@bar.iam.gserviceaccount.com", false, "", c)...)
+				res = append(res, testcontroller.NamespacedControllerManagerPod)
+				return res
+			},
+			toDeleteObjectsFunc: func(t *testing.T, c client.Client) []string {
+				return []string{}
+			},
+			manifest: testcontroller.GetClusterModeWorkloadIdentityManifest(),
+			resultsFunc: func(t *testing.T, c client.Client) []string {
+				return testcontroller.ManuallyReplaceGSA(testcontroller.GetClusterModeWorkloadIdentityManifest(), "foo@bar.iam.gserviceaccount.com")
+			},
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
+		},
+		{
+			name: "per namespace mode to gcp identity cluster mode",
+			cc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					Mode: "namespaced",
+				},
+			},
+			updatedCc: &corev1beta1.ConfigConnector{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test-kcc",
+				},
+				Spec: corev1beta1.ConfigConnectorSpec{
+					CredentialSecretName: "my-key",
+					Mode:                 "cluster",
+				},
+			},
+			cccs: []*corev1beta1.ConfigConnectorContext{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:       corev1beta1.ConfigConnectorContextAllowedName,
+						Namespace:  "t1234-tenant0-provider",
+						Finalizers: []string{k8s.OperatorFinalizer},
+					},
+					Spec: corev1beta1.ConfigConnectorContextSpec{
+						GoogleServiceAccount: "foo-ns@bar.iam.gserviceaccount.com",
+						ManagerNamespace:     "t1234-tenant0-supervisor",
+					},
+				},
+			},
+			installedObjectsFunc: func(t *testing.T, c client.Client) []string {
+				res := []string{testcontroller.FooCRD, testcontroller.SystemNs}
+				res = append(res, testcontroller.ManuallyModifyNamespaceTemplates(t, testcontroller.NamespacedComponentsTemplate, "t1234-tenant0-provider", "foo-ns@bar.iam.gserviceaccount.com", false, "", c)...)
+				res = append(res, testcontroller.NamespacedControllerManagerPod)
+				return res
+			},
+			toDeleteObjectsFunc: func(t *testing.T, c client.Client) []string {
+				return []string{}
+			},
+			manifest: testcontroller.GetClusterModeGCPManifest(),
+			resultsFunc: func(t *testing.T, c client.Client) []string {
+				return testcontroller.ManuallyReplaceSecretVolume(testcontroller.GetClusterModeGCPManifest(), "my-key ")
+			},
+			managerNamespaceIsolation: k8s.ManagerNamespaceIsolationDedicated,
+		},
 	}
 
 	for _, tc := range tests {
@@ -749,6 +1015,11 @@ func TestConfigConnectorUpdate(t *testing.T) {
 			defer stop()
 			c := mgr.GetClient()
 			r := newConfigConnectorReconciler(c)
+			if tc.managerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
+				r.managerNamespaceIsolation = k8s.ManagerNamespaceIsolationDedicated
+			} else {
+				r.managerNamespaceIsolation = k8s.ManagerNamespaceIsolationShared
+			}
 
 			testcontroller.EnsureNamespaceExists(c, k8s.OperatorSystemNamespace)
 			if err := c.Create(ctx, tc.cc); err != nil {
@@ -756,6 +1027,9 @@ func TestConfigConnectorUpdate(t *testing.T) {
 			}
 			for _, ccc := range tc.cccs {
 				testcontroller.EnsureNamespaceExists(c, ccc.Namespace)
+				if ccc.Spec.ManagerNamespace != "" {
+					testcontroller.EnsureNamespaceExists(c, ccc.Spec.ManagerNamespace)
+				}
 				if err := c.Create(ctx, ccc); err != nil {
 					t.Fatalf("error creating %v %v/%v: %v", ccc.Kind, ccc.Namespace, ccc.Name, err)
 				}
@@ -818,11 +1092,12 @@ func TestConfigConnectorUpdate(t *testing.T) {
 }
 
 type testCaseStruct struct {
-	name           string
-	cc             *corev1beta1.ConfigConnector
-	cccs           []corev1beta1.ConfigConnectorContext
-	loadedManifest []string
-	resultsFunc    func(t *testing.T, c client.Client) []string
+	name                      string
+	cc                        *corev1beta1.ConfigConnector
+	cccs                      []corev1beta1.ConfigConnectorContext
+	loadedManifest            []string
+	resultsFunc               func(t *testing.T, c client.Client) []string
+	managerNamespaceIsolation string
 }
 
 func handleLifecycles(ctx context.Context, t *testing.T, r *Reconciler, cc *corev1beta1.ConfigConnector, m *manifest.Objects) error {
@@ -1074,96 +1349,15 @@ func TestApplyFailsForDuplicatedWebhook(t *testing.T) {
 	}
 }
 
-func TestApplyCustomizations(t *testing.T) {
+func TestNamespaceScopedApplyCustomizations(t *testing.T) {
 	tests := []struct {
 		name                          string
 		manifests                     []string
-		clusterScopedCustomizationCR  *customizev1beta1.ControllerResource
 		namespacedCustomizationCR     *customizev1beta1.NamespacedControllerResource
 		expectedManifests             []string
 		expectedCustomizationCRStatus customizev1beta1.ControllerResourceStatus
 		skipCheckingCRStatus          bool
 	}{
-		{
-			name:                         "customize the resources for cnrm-controller-manager",
-			manifests:                    testcontroller.ClusterModeComponents,
-			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForControllerManagerResources,
-			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedControllerManager,
-			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: true,
-				},
-			},
-		},
-		{
-			name:                         "customize the resources and replica for cnrm-webhook-manager",
-			manifests:                    testcontroller.ClusterModeComponents,
-			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForWebhookManagerResourcesAndReplicas,
-			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedWebhookManager,
-			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: true,
-				},
-			},
-		},
-		{
-			name:                         "customize for a non-existing controller fails",
-			manifests:                    testcontroller.ClusterModeComponents,
-			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForNonExistingController,
-			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
-			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: false,
-					Errors:  []string{testcontroller.ErrNonExistingController},
-				},
-			},
-		},
-		{
-			name:                         "customize for the same container multiple times in the CR fails",
-			manifests:                    testcontroller.ClusterModeComponents,
-			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForDuplicatedContainer,
-			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
-			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: false,
-					Errors:  []string{testcontroller.ErrDuplicatedContainer},
-				},
-			},
-		},
-		{
-			name:                         "customize for a non-existing container in a valid controller fails",
-			manifests:                    testcontroller.ClusterModeComponents,
-			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForNonExistingContainer,
-			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
-			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: false,
-					Errors:  []string{testcontroller.ErrNonExistingContainer},
-				},
-			},
-		},
-		{
-			name:                         "customize the replicas for cnrm-controller-manager has no effect",
-			manifests:                    testcontroller.ClusterModeComponents,
-			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForControllerManagerReplicas,
-			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
-			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: true,
-				},
-			},
-		},
-		{
-			name:                         "customize the replicas for cnrm-webhook-manager to a value large than the maxReplicas of HPA",
-			manifests:                    testcontroller.ClusterModeComponents,
-			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForWebhookManagerWithLargeReplicas,
-			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedWebhookManagerWithLargeReplicas,
-			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: true,
-				},
-			},
-		},
 		{
 			name:                      "namespaced customization CR has no effect",
 			manifests:                 testcontroller.ClusterModeComponents,
@@ -1181,18 +1375,10 @@ func TestApplyCustomizations(t *testing.T) {
 			mgr, stop := testmain.StartTestManagerFromNewTestEnv()
 			defer stop()
 			c := mgr.GetClient()
-			if tc.clusterScopedCustomizationCR != nil {
-				cr := tc.clusterScopedCustomizationCR
-				if err := c.Create(ctx, cr); err != nil {
-					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
-				}
-			}
-			if tc.namespacedCustomizationCR != nil {
-				cr := tc.namespacedCustomizationCR
-				testcontroller.EnsureNamespaceExists(c, cr.Namespace)
-				if err := c.Create(ctx, cr); err != nil {
-					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
-				}
+			cr := tc.namespacedCustomizationCR
+			testcontroller.EnsureNamespaceExists(c, cr.Namespace)
+			if err := c.Create(ctx, cr); err != nil {
+				t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
 			}
 			manifests := testcontroller.ParseObjects(ctx, t, tc.manifests)
 			r := newConfigConnectorReconciler(c)
@@ -1225,12 +1411,182 @@ func TestApplyCustomizations(t *testing.T) {
 				return
 			}
 			updatedCR := &customizev1beta1.ControllerResource{}
-			if err := c.Get(ctx, types.NamespacedName{Namespace: tc.clusterScopedCustomizationCR.Namespace, Name: tc.clusterScopedCustomizationCR.Name}, updatedCR); err != nil {
+			if err := c.Get(ctx, types.NamespacedName{Namespace: tc.namespacedCustomizationCR.Namespace, Name: tc.namespacedCustomizationCR.Name}, updatedCR); err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
 			gotStatus := updatedCR.Status
-			if !reflect.DeepEqual(gotStatus, tc.expectedCustomizationCRStatus) {
-				t.Fatalf("unexpected diff: %v", cmp.Diff(gotStatus, tc.expectedCustomizationCRStatus))
+			expectedStatus := tc.expectedCustomizationCRStatus
+			if expectedStatus.ObservedGeneration != 0 {
+				expectedStatus.ObservedGeneration = updatedCR.Generation
+			}
+			if !reflect.DeepEqual(gotStatus, expectedStatus) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(gotStatus, expectedStatus))
+			}
+		})
+	}
+}
+
+func TestClusterScopedApplyCustomizations(t *testing.T) {
+	tests := []struct {
+		name                          string
+		manifests                     []string
+		clusterScopedCustomizationCR  *customizev1beta1.ControllerResource
+		expectedManifests             []string
+		expectedCustomizationCRStatus customizev1beta1.ControllerResourceStatus
+		skipCheckingCRStatus          bool
+	}{
+		{
+			name:                         "customize the resources for cnrm-controller-manager",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForControllerManagerResources,
+			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedControllerManager,
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            true,
+					ObservedGeneration: 1,
+				},
+			},
+		},
+		{
+			name:                         "customize the resources for cnrm-controller-manager and check observedGeneration",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForObservedControllerManagerResources,
+			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedControllerManager,
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            true,
+					ObservedGeneration: 1,
+				},
+			},
+		},
+		{
+			name:                         "customize the resources and replica for cnrm-webhook-manager",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForWebhookManagerResourcesAndReplicas,
+			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedWebhookManager,
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            true,
+					ObservedGeneration: 1,
+				},
+			},
+		},
+		{
+			name:                         "customize for a non-existing controller fails",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForNonExistingController,
+			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            false,
+					Errors:             []string{testcontroller.ErrNonExistingController},
+					ObservedGeneration: 1,
+				},
+			},
+		},
+		{
+			name:                         "customize for the same container multiple times in the CR fails",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForDuplicatedContainer,
+			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            false,
+					Errors:             []string{testcontroller.ErrDuplicatedContainer},
+					ObservedGeneration: 1,
+				},
+			},
+		},
+		{
+			name:                         "customize for a non-existing container in a valid controller fails",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForNonExistingContainer,
+			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            false,
+					Errors:             []string{testcontroller.ErrNonExistingContainer},
+					ObservedGeneration: 1,
+				},
+			},
+		},
+		{
+			name:                         "customize the replicas for cnrm-controller-manager has no effect",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForControllerManagerReplicas,
+			expectedManifests:            testcontroller.ClusterModeComponents, // same as the input manifests
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            true,
+					ObservedGeneration: 1,
+				},
+			},
+		},
+		{
+			name:                         "customize the replicas for cnrm-webhook-manager to a value large than the maxReplicas of HPA",
+			manifests:                    testcontroller.ClusterModeComponents,
+			clusterScopedCustomizationCR: testcontroller.ControllerResourceCRForWebhookManagerWithLargeReplicas,
+			expectedManifests:            testcontroller.ClusterModeComponentsWithCustomizedWebhookManagerWithLargeReplicas,
+			expectedCustomizationCRStatus: customizev1beta1.ControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            true,
+					ObservedGeneration: 1,
+				},
+			},
+		},
+	}
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			// test setup
+			ctx := context.TODO()
+			mgr, stop := testmain.StartTestManagerFromNewTestEnv()
+			defer stop()
+			c := mgr.GetClient()
+			cr := tc.clusterScopedCustomizationCR
+			if err := c.Create(ctx, cr); err != nil {
+				t.Fatalf("error for test(%s) creating %v %v: %v", tc.name, cr.Kind, cr.Name, err)
+			}
+
+			manifests := testcontroller.ParseObjects(ctx, t, tc.manifests)
+			r := newConfigConnectorReconciler(c)
+
+			// run the test function
+			fn := r.applyCustomizations()
+			if err := fn(ctx, nil, manifests); err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			// check the resulting manifests
+			gotJSON, err := manifests.JSONManifest()
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			expectedManifests := testcontroller.ParseObjects(ctx, t, tc.expectedManifests)
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			expectedJSON, err := expectedManifests.JSONManifest()
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if !reflect.DeepEqual(gotJSON, expectedJSON) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(gotJSON, expectedJSON))
+			}
+
+			// check the status of cluster-scoped customization CR
+			if tc.skipCheckingCRStatus {
+				return
+			}
+			updatedCR := tc.clusterScopedCustomizationCR
+			if err := c.Get(ctx, types.NamespacedName{Name: tc.clusterScopedCustomizationCR.Name}, updatedCR); err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			gotStatus := updatedCR.Status
+			expectedStatus := tc.expectedCustomizationCRStatus
+			if !reflect.DeepEqual(gotStatus, expectedStatus) {
+				t.Fatalf("unexpected diff: %v", cmp.Diff(gotStatus, expectedStatus))
 			}
 		})
 	}
@@ -1245,6 +1601,7 @@ func TestApplyRateLimitCustomizations(t *testing.T) {
 		expectedManifests                []string
 		skipCheckingCRStatus             bool
 		expectedCRStatus                 customizev1beta1.ControllerReconcilerStatus
+		expectCELFailure                 string
 	}{
 		{
 			name:                   "customize the rate limit for cnrm-controller-manager",
@@ -1262,12 +1619,7 @@ func TestApplyRateLimitCustomizations(t *testing.T) {
 			manifests:              testcontroller.ClusterModeComponents,
 			controllerReconcilerCR: testcontroller.ControllerReconcilerCRForUnsupportedController,
 			expectedManifests:      testcontroller.ClusterModeComponents, // same as the input manifests
-			expectedCRStatus: customizev1beta1.ControllerReconcilerStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: false,
-					Errors:  []string{testcontroller.ErrUnsupportedController},
-				},
-			},
+			expectCELFailure:       "failed rule: self.metadata.name == 'cnrm-controller-manager'",
 		},
 		{
 			name:                             "namespaced rate limit CR has no effect in cluster mode",
@@ -1289,6 +1641,13 @@ func TestApplyRateLimitCustomizations(t *testing.T) {
 			if tc.controllerReconcilerCR != nil {
 				cr := tc.controllerReconcilerCR
 				if err := c.Create(ctx, cr); err != nil {
+					if tc.expectCELFailure != "" {
+						s := fmt.Sprintf("%T %v", err, err)
+						if !strings.Contains(s, tc.expectCELFailure) {
+							t.Fatalf("expected CEL failure to contain %q, but got %q", tc.expectCELFailure, s)
+						}
+						return
+					}
 					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
 				}
 			}

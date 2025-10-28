@@ -55,8 +55,9 @@ const controllerName = "configconnectorcontext-controller"
 
 // ReconcilerOptions holds configuration options for the reconciler
 type ReconcilerOptions struct {
-	RepoPath       string
-	ImageTransform *controllers.ImageTransform
+	RepoPath                  string
+	ImageTransform            *controllers.ImageTransform
+	ManagerNamespaceIsolation string
 }
 
 // Reconciler reconciles a ConfigConnectorContext object.
@@ -67,13 +68,14 @@ type ReconcilerOptions struct {
 // Reconciler also watches "NamespacedControllerResource" kind and apply
 // customizations specified in "NamespacedControllerResource" CRs to per-namespace KCC components.
 type Reconciler struct {
-	reconciler           *declarative.Reconciler
-	client               client.Client
-	recorder             record.EventRecorder
-	labelMaker           declarative.LabelMaker
-	log                  logr.Logger
-	customizationWatcher *controllers.CustomizationWatcher
-	jitterGen            jitter.Generator
+	reconciler                *declarative.Reconciler
+	client                    client.Client
+	recorder                  record.EventRecorder
+	labelMaker                declarative.LabelMaker
+	log                       logr.Logger
+	customizationWatcher      *controllers.CustomizationWatcher
+	jitterGen                 jitter.Generator
+	managerNamespaceIsolation string
 }
 
 func Add(mgr ctrl.Manager, opt *ReconcilerOptions) error {
@@ -108,12 +110,13 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 	})
 
 	r := &Reconciler{
-		reconciler: &declarative.Reconciler{},
-		client:     mgr.GetClient(),
-		recorder:   mgr.GetEventRecorderFor(controllerName),
-		labelMaker: SourceLabel(),
-		log:        ctrl.Log.WithName(controllerName),
-		jitterGen:  &jitter.SimpleJitterGenerator{},
+		reconciler:                &declarative.Reconciler{},
+		client:                    mgr.GetClient(),
+		recorder:                  mgr.GetEventRecorderFor(controllerName),
+		labelMaker:                SourceLabel(),
+		log:                       ctrl.Log.WithName(controllerName),
+		jitterGen:                 &jitter.SimpleJitterGenerator{},
+		managerNamespaceIsolation: opt.ManagerNamespaceIsolation,
 	}
 
 	r.customizationWatcher = controllers.NewWithDynamicClient(
@@ -127,13 +130,19 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 		declarative.WithPreserveNamespace(),
 		declarative.WithManifestController(manifestLoader),
 		declarative.WithObjectTransform(r.transformNamespacedComponents()),
+	}
+
+	if opt.ManagerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
+		options = append(options, declarative.WithObjectTransform(r.transformPerNamespaceComponents()))
+	}
+
+	options = append(options,
 		declarative.WithObjectTransform(r.addLabels()),
 		declarative.WithObjectTransform(r.handleCCContextLifecycle()),
 		declarative.WithObjectTransform(r.applyNamespacedCustomizations()),
 		declarative.WithStatus(&declarative.StatusBuilder{
 			PreflightImpl: preflight,
-		}),
-	}
+		}))
 
 	if opt.ImageTransform != nil {
 		options = append(options, declarative.WithObjectTransform(opt.ImageTransform.RemapImages))
@@ -193,10 +202,11 @@ func (r *Reconciler) handleReconcileFailed(ctx context.Context, nn types.Namespa
 	msg := fmt.Errorf("error during reconciliation: %w", reconcileErr).Error()
 	r.recorder.Event(ccc, corev1.EventTypeWarning, k8s.UpdateFailed, msg)
 	r.log.Info("surfacing error messages in status...", "namespace", nn.Namespace, "name", nn.Name, "error", msg)
-	ccc.SetCommonStatus(v1alpha1.CommonStatus{
-		Healthy: false,
-		Errors:  []string{msg},
-	})
+	status := ccc.GetCommonStatus()
+	status.Healthy = false
+	status.Errors = []string{msg}
+	status.ObservedGeneration = ccc.Generation
+	ccc.SetCommonStatus(status)
 	return r.updateConfigConnectorContextStatus(ctx, ccc)
 }
 
@@ -211,10 +221,11 @@ func (r *Reconciler) handleReconcileSucceeded(ctx context.Context, nn types.Name
 	}
 
 	r.recorder.Event(ccc, corev1.EventTypeNormal, k8s.UpToDate, k8s.UpToDateMessage)
-	ccc.SetCommonStatus(v1alpha1.CommonStatus{
-		Healthy: true,
-		Errors:  []string{},
-	})
+	status := ccc.GetCommonStatus()
+	status.Healthy = true
+	status.Errors = []string{}
+	status.ObservedGeneration = ccc.Generation
+	ccc.SetCommonStatus(status)
 	return r.updateConfigConnectorContextStatus(ctx, ccc)
 }
 
@@ -234,6 +245,21 @@ func (r *Reconciler) transformNamespacedComponents() declarative.ObjectTransform
 		transformedObjects, err := transformNamespacedComponentTemplates(ctx, r.client, ccc, m.Items)
 		if err != nil {
 			return fmt.Errorf("error transforming namespaced components: %w", err)
+		}
+		m.Items = transformedObjects
+		return nil
+	}
+}
+
+func (r *Reconciler) transformPerNamespaceComponents() declarative.ObjectTransform {
+	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
+		ccc, ok := o.(*corev1beta1.ConfigConnectorContext)
+		if !ok {
+			return fmt.Errorf("expected the resource to be a ConfigConnectorContext, but it was not. Object: %v", o)
+		}
+		transformedObjects, err := transformPerNamespaceComponentTemplates(ctx, r.client, ccc, m.Items)
+		if err != nil {
+			return fmt.Errorf("error transforming per namespace components: %w", err)
 		}
 		m.Items = transformedObjects
 		return nil
@@ -276,6 +302,12 @@ func (r *Reconciler) handleCCContextLifecycle() declarative.ObjectTransform {
 			}
 			isCCObjectNotFound = true
 		}
+		if r.managerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated && ccc.Spec.ManagerNamespace == "" {
+			return fmt.Errorf("error in ConfigConnectorContext object %v: dedicated manager namespace mode enabled, but spec.ManagerNamespace is not configured", controllers.ValidConfigConnectorNamespacedName)
+		}
+		if r.managerNamespaceIsolation == k8s.ManagerNamespaceIsolationShared && ccc.Spec.ManagerNamespace != "" {
+			return fmt.Errorf("error in ConfigConnectorContext object %v: dedicated manager namespace mode disabled, but spec.ManagerNamespace=%s is configured", controllers.ValidConfigConnectorNamespacedName, ccc.Spec.ManagerNamespace)
+		}
 		if isCCObjectNotFound || !cc.GetDeletionTimestamp().IsZero() {
 			return r.finalizeSystemComponentsDeletion(ctx, ccc, m)
 		}
@@ -302,6 +334,11 @@ func (r *Reconciler) finalizeCCContextDeletion(ctx context.Context, ccc *corev1b
 	}
 	if err := cluster.DeleteNamespaceID(ctx, k8s.OperatorNamespaceIDConfigMapNN, r.client, ccc.Namespace); err != nil {
 		return err
+	}
+	if r.managerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
+		if err := r.deleteManagerNamepace(ctx, ccc.Spec.ManagerNamespace); err != nil {
+			return err
+		}
 	}
 	r.log.Info("Successfully finalized ConfigConnectorContext deletion...", "name", ccc.Name, "namespace", ccc.Namespace)
 	// Nothing needs to apply when it's a delete ops.
@@ -341,6 +378,11 @@ func (r *Reconciler) handleCCContextLifecycleForNamespacedMode(ctx context.Conte
 	}
 	if err := r.verifyCNRMSystemNamespaceIsActive(ctx); err != nil {
 		return err
+	}
+	if r.managerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
+		if err := r.verifyManagerNamespaceIsActive(ctx, ccc.Spec.ManagerNamespace); err != nil {
+			return err
+		}
 	}
 
 	if !controllers.EnsureOperatorFinalizer(ccc) {
@@ -409,6 +451,60 @@ func (r *Reconciler) verifyCNRMSystemNamespaceIsActive(ctx context.Context) erro
 	}
 	if !n.GetDeletionTimestamp().IsZero() {
 		return fmt.Errorf("ConfigConnector system namespace %v is pending deletion, stop the reconciliation", k8s.CNRMSystemNamespace)
+	}
+	return nil
+}
+
+func (r *Reconciler) verifyManagerNamespaceIsActive(ctx context.Context, managerNamespace string) error {
+	r.log.Info("verifying that ConfigConnector manager namespace is active...", "manager namespace", managerNamespace)
+	n := &corev1.Namespace{}
+	key := types.NamespacedName{
+		Name: managerNamespace,
+	}
+	if err := r.client.Get(ctx, key, n); err != nil {
+		if apierrors.IsNotFound(err) {
+			r.log.Info("verifying that ConfigConnector manager namespace not found, creating...", "manager namespace", managerNamespace)
+			ns := &corev1.Namespace{}
+			ns.SetName(managerNamespace)
+			ns.SetLabels(map[string]string{k8s.ManagedByKCCLabel: "true"})
+			if err := r.client.Create(ctx, ns); err != nil {
+				return fmt.Errorf("error creating the ConfigConnector manager namespace %v: %w", ns, err)
+			}
+			return nil
+		}
+		return fmt.Errorf("error getting the ConfigConnector manager namespace %v: %w", key, err)
+	}
+	if !n.GetDeletionTimestamp().IsZero() {
+		return fmt.Errorf("ConfigConnector manager namespace %v is pending deletion, stop the reconciliation", managerNamespace)
+	}
+	return nil
+}
+
+func (r *Reconciler) deleteManagerNamepace(ctx context.Context, managerNamespace string) error {
+	r.log.Info("deleting ConfigConnector manager namespace...", "manager namespace", managerNamespace)
+	n := &corev1.Namespace{}
+	key := types.NamespacedName{
+		Name: managerNamespace,
+	}
+	if err := r.client.Get(ctx, key, n); err != nil {
+		if apierrors.IsNotFound(err) {
+			r.log.Info("not found ConfigConnector manager namespace...", "manager namespace", managerNamespace)
+			return nil
+		}
+		return err
+	}
+	if !n.GetDeletionTimestamp().IsZero() {
+		r.log.Info("ConfigConnector manager namespace already deleted...", "manager namespace", managerNamespace)
+		return nil
+	}
+	managed, found := n.GetLabels()[k8s.ManagedByKCCLabel]
+	if found && managed == "true" {
+		r.log.Info("managed ConfigConnector manager namespace...", "manager namespace", managerNamespace)
+		if err := r.client.Delete(ctx, n); err != nil {
+			return fmt.Errorf("error deleting the ConfigConnector manager namespace %v: %w", n, err)
+		}
+	} else {
+		r.log.Info("manager namespace is not managed by ConfigConnector, skip deletion...", "manager namespace", managerNamespace)
 	}
 	return nil
 }
@@ -485,10 +581,11 @@ func (r *Reconciler) handleApplyNamespacedControllerResourceFailed(ctx context.C
 		r.log.Error(err, "error getting NamespacedControllerResource object %v", "Namespace", namespace, "Name", name)
 		return nil
 	}
-	cr.Status.CommonStatus = v1alpha1.CommonStatus{
-		Healthy: false,
-		Errors:  []string{msg},
-	}
+	status := cr.GetCommonStatus()
+	status.Healthy = false
+	status.Errors = []string{msg}
+	status.ObservedGeneration = cr.Generation
+	cr.SetCommonStatus(status)
 	return r.updateNamespacedControllerResourceStatus(ctx, cr)
 }
 
@@ -504,10 +601,11 @@ func (r *Reconciler) handleApplyNamespacedControllerResourceSucceeded(ctx contex
 		r.log.Error(err, "error getting NamespacedControllerResource object %v", "Namespace", namespace, "Name", name)
 		return nil
 	}
-	cr.SetCommonStatus(v1alpha1.CommonStatus{
-		Healthy: true,
-		Errors:  []string{},
-	})
+	status := cr.GetCommonStatus()
+	status.Healthy = true
+	status.Errors = []string{}
+	status.ObservedGeneration = cr.Generation
+	cr.SetCommonStatus(status)
 	return r.updateNamespacedControllerResourceStatus(ctx, cr)
 }
 

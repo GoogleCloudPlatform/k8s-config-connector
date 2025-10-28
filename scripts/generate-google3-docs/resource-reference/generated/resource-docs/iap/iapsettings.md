@@ -1064,7 +1064,7 @@ spec:
       maxAge: 305s
       policyType: MINIMUM
   applicationSettings:
-    cookieDomain: test.abc.com
+    cookieDomain: .example.com
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeBackendService

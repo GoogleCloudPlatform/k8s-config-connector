@@ -17,6 +17,8 @@ package sql
 import (
 	"fmt"
 
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
+
 	api "google.golang.org/api/sqladmin/v1beta4"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
@@ -27,7 +29,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 )
 
-func SQLInstanceKRMToGCP(in *krm.SQLInstance, actual *api.DatabaseInstance) (*api.DatabaseInstance, error) {
+func SQLInstanceKRMToGCP(in *krm.SQLInstance, actual *api.DatabaseInstance, unmanagedFields []string) (*api.DatabaseInstance, error) {
 	if in == nil {
 		return nil, fmt.Errorf("cannot convert nil KRM SQLInstance to GCP DatabaseInstance")
 	}
@@ -53,7 +55,7 @@ func SQLInstanceKRMToGCP(in *krm.SQLInstance, actual *api.DatabaseInstance) (*ap
 	}
 
 	// Here be dragons.
-	ApplySQLInstanceGCPDefaults(in, out, actual)
+	ApplySQLInstanceGCPDefaults(in, out, actual, unmanagedFields)
 
 	return out, nil
 }
@@ -530,7 +532,7 @@ func InstanceSqlServerAuditConfigKRMToGCP(in *krm.InstanceSqlServerAuditConfig) 
 	return out
 }
 
-func InstanceAuditConfigBucketRefKRMToGCP(in *refs.StorageBucketRef) string {
+func InstanceAuditConfigBucketRefKRMToGCP(in *storagev1beta1.StorageBucketRef) string {
 	if in == nil {
 		return ""
 	}
@@ -995,12 +997,12 @@ func InstanceSqlServerAuditConfigGCPToKRM(in *api.SqlServerAuditConfig) *krm.Ins
 	return out
 }
 
-func InstanceAuditConfigBucketRefGCPToKRM(in string) *refs.StorageBucketRef {
+func InstanceAuditConfigBucketRefGCPToKRM(in string) *storagev1beta1.StorageBucketRef {
 	if in == "" {
 		return nil
 	}
 
-	out := &refs.StorageBucketRef{
+	out := &storagev1beta1.StorageBucketRef{
 		External: in,
 	}
 

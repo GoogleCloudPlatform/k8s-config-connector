@@ -14,15 +14,15 @@
 
 // +generated:mapper
 // krm.group: composer.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: google.cloud.orchestration.airflow.service.v1
 
 package composer
 
 import (
 	pb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
+	krmstoragev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -173,7 +173,7 @@ func EnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.EnvironmentCo
 		return nil
 	}
 	out := &krm.EnvironmentConfig{}
-	// MISSING: GkeCluster
+	// MISSING: GKECluster
 	// MISSING: DagGCSPrefix
 	out.NodeCount = direct.LazyPtr(in.GetNodeCount())
 	out.SoftwareConfig = SoftwareConfig_FromProto(mapCtx, in.GetSoftwareConfig())
@@ -199,7 +199,7 @@ func EnvironmentConfig_ToProto(mapCtx *direct.MapContext, in *krm.EnvironmentCon
 		return nil
 	}
 	out := &pb.EnvironmentConfig{}
-	// MISSING: GkeCluster
+	// MISSING: GKECluster
 	// MISSING: DagGCSPrefix
 	out.NodeCount = direct.ValueOf(in.NodeCount)
 	out.SoftwareConfig = SoftwareConfig_ToProto(mapCtx, in.SoftwareConfig)
@@ -225,7 +225,7 @@ func EnvironmentConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.EnvironmentConfigObservedState{}
-	out.GkeCluster = direct.LazyPtr(in.GetGkeCluster())
+	out.GKECluster = direct.LazyPtr(in.GetGkeCluster())
 	out.DagGCSPrefix = direct.LazyPtr(in.GetDagGcsPrefix())
 	// MISSING: NodeCount
 	// MISSING: SoftwareConfig
@@ -251,7 +251,7 @@ func EnvironmentConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.E
 		return nil
 	}
 	out := &pb.EnvironmentConfig{}
-	out.GkeCluster = direct.ValueOf(in.GkeCluster)
+	out.GkeCluster = direct.ValueOf(in.GKECluster)
 	out.DagGcsPrefix = direct.ValueOf(in.DagGCSPrefix)
 	// MISSING: NodeCount
 	// MISSING: SoftwareConfig
@@ -271,6 +271,30 @@ func EnvironmentConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.E
 	// MISSING: ResilienceMode
 	// MISSING: DataRetentionConfig
 	return out
+}
+func IPAllocationPolicy_ClusterSecondaryRangeName_ToProto(mapCtx *direct.MapContext, in *string) *pb.IPAllocationPolicy_ClusterSecondaryRangeName {
+	if in == nil {
+		return nil
+	}
+	return &pb.IPAllocationPolicy_ClusterSecondaryRangeName{ClusterSecondaryRangeName: *in}
+}
+func IPAllocationPolicy_ClusterIpv4CidrBlock_ToProto(mapCtx *direct.MapContext, in *string) *pb.IPAllocationPolicy_ClusterIpv4CidrBlock {
+	if in == nil {
+		return nil
+	}
+	return &pb.IPAllocationPolicy_ClusterIpv4CidrBlock{ClusterIpv4CidrBlock: *in}
+}
+func IPAllocationPolicy_ServicesSecondaryRangeName_ToProto(mapCtx *direct.MapContext, in *string) *pb.IPAllocationPolicy_ServicesSecondaryRangeName {
+	if in == nil {
+		return nil
+	}
+	return &pb.IPAllocationPolicy_ServicesSecondaryRangeName{ServicesSecondaryRangeName: *in}
+}
+func IPAllocationPolicy_ServicesIpv4CidrBlock_ToProto(mapCtx *direct.MapContext, in *string) *pb.IPAllocationPolicy_ServicesIpv4CidrBlock {
+	if in == nil {
+		return nil
+	}
+	return &pb.IPAllocationPolicy_ServicesIpv4CidrBlock{ServicesIpv4CidrBlock: *in}
 }
 func MaintenanceWindow_FromProto(mapCtx *direct.MapContext, in *pb.MaintenanceWindow) *krm.MaintenanceWindow {
 	if in == nil {
@@ -440,7 +464,7 @@ func StorageConfig_FromProto(mapCtx *direct.MapContext, in *pb.StorageConfig) *k
 	}
 	out := &krm.StorageConfig{}
 	if in.GetBucket() != "" {
-		out.BucketRef = &refs.StorageBucketRef{External: in.GetBucket()}
+		out.BucketRef = &krmstoragev1beta1.StorageBucketRef{External: in.GetBucket()}
 	}
 	return out
 }

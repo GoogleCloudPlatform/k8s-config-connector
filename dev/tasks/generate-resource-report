@@ -1,0 +1,138 @@
+#!/usr/bin/env python3
+
+import csv
+import glob
+import yaml
+import os
+import subprocess
+
+def analyze_crd(file_path):
+    """
+    Analyzes a single CRD file to extract relevant information.
+
+    Args:
+        file_path: The path to the CRD YAML file.
+
+    Returns:
+        A dictionary containing the extracted information, or None if the file
+        cannot be parsed.
+    """
+    with open(file_path, 'r') as f:
+        try:
+            crd = yaml.safe_load(f)
+        except yaml.YAMLError as e:
+            print(f"Error parsing YAML file {file_path}: {e}")
+            return None
+
+    if not crd or 'spec' not in crd:
+        return None
+
+    spec = crd.get('spec', {})
+    metadata = crd.get('metadata', {})
+    labels = metadata.get('labels', {})
+    names = spec.get('names', {})
+
+    group = spec.get('group', '')
+    kind = names.get('kind', '')
+
+    versions = [v['name'] for v in spec.get('versions', [])]
+    has_v1alpha1 = 'v1alpha1' in versions
+    has_v1beta1 = 'v1beta1' in versions
+    has_v1 = 'v1' in versions
+
+    reconciler = 'Direct'
+    if labels.get('cnrm.cloud.google.com/tf2crd') == 'true':
+        reconciler = 'Terraform'
+    elif labels.get('cnrm.cloud.google.com/dcl2crd') == 'true':
+        reconciler = 'DCL'
+
+    return {
+        'group': group,
+        'kind': kind,
+        'has_v1alpha1': has_v1alpha1,
+        'has_v1beta1': has_v1beta1,
+        'has_v1': has_v1,
+        'reconciler': reconciler,
+    }
+
+def write_csv_report(results, fieldnames, file_path):
+    """
+    Writes the analysis results to a CSV file.
+
+    Args:
+        results: A list of dictionaries containing the analysis results.
+        fieldnames: the names of the fields to write to the CSV file.
+        file_path: The path to the output CSV file.
+    """
+    with open(file_path, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(results)
+
+def write_markdown_report(results, fieldnames, mdfile):
+    """
+    Writes the analysis results to a Markdown file.
+
+    Args:
+        results: A list of dictionaries containing the analysis results.
+        fieldnames: the names of the fields to write to the CSV file.
+        mdfile: The file to write to
+    """
+    col_widths = {h: len(h) for h in fieldnames}
+    for res in results:
+        for h in fieldnames:
+            col_widths[h] = max(col_widths[h], len(str(res[h])))
+
+    header_line = "| " + " | ".join([h.ljust(col_widths[h]) for h in fieldnames]) + " |"
+    mdfile.write(header_line + '\n')
+
+    separator_line = "|-" + "-|- ".join([ "-" * col_widths[h] for h in fieldnames]) + "-|"
+    mdfile.write(separator_line + '\n')
+
+    for res in results:
+        row_line = "| " + " | ".join([str(res[h]).ljust(col_widths[h]) for h in fieldnames]) + " |"
+        mdfile.write(row_line + '\n')
+
+def switch_to_repo_root():
+    """
+    Changes the current working directory to the root of the git repository.
+    """
+    repo_root = subprocess.check_output(['git', 'rev-parse', '--show-toplevel']).strip().decode('utf-8')
+    os.chdir(repo_root)
+
+def main():
+    """
+    Main function to find CRD files, analyze them, and write reports.
+    """
+    switch_to_repo_root()
+
+    crd_files = glob.glob('config/crds/resources/*.yaml')
+    if not crd_files:
+        print("No CRD files found in config/crds/resources/")
+        return
+
+    results = []
+    for file_path in sorted(crd_files):
+        data = analyze_crd(file_path)
+        if data:
+            results.append(data)
+
+    output_dir = 'docs/reports'
+    os.makedirs(output_dir, exist_ok=True)
+
+    csv_path = os.path.join(output_dir, 'crd_report.csv')
+    md_path = os.path.join(output_dir, 'crd_report.md')
+
+    fieldnames = ['group', 'kind', 'has_v1alpha1', 'has_v1beta1', 'has_v1', 'reconciler']
+
+    write_csv_report(results, fieldnames, csv_path)
+    print(f"Generated {file_path}")
+
+    with open(md_path, 'w') as mdfile:
+      mdfile.write('# CRD Analysis Report\n\n')
+
+      write_markdown_report(results, fieldnames, mdfile)
+    print(f"Generated {md_path}")
+
+if __name__ == '__main__':
+    main()

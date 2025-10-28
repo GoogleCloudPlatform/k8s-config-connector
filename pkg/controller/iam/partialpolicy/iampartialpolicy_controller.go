@@ -21,9 +21,9 @@ import (
 	"reflect"
 	"time"
 
+	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
-	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	condition "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	kontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
@@ -40,6 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -67,22 +68,22 @@ import (
 
 const controllerName = "iampartialpolicy-controller"
 
-var logger = log.Log.WithName(controllerName)
+var logger = log.Log.WithName(controllerName).WithValues("controllerType", "legacy/handrolled")
 
 // Add creates a new IAM Partial Policy Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
 // and start it when the Manager is started.
 func Add(mgr manager.Manager, deps *kontroller.Deps) error {
 	if deps.JitterGen == nil {
 		var dclML metadata.ServiceMetadataLoader
-		if deps.DclConverter != nil {
-			dclML = deps.DclConverter.MetadataLoader
+		if deps.DCLConverter != nil {
+			dclML = deps.DCLConverter.MetadataLoader
 		}
-		deps.JitterGen = jitter.NewDefaultGenerator(deps.TfLoader, dclML)
+		deps.JitterGen = jitter.NewDefaultGenerator(deps.TFLoader, dclML)
 	}
 
 	immediateReconcileRequests := make(chan event.GenericEvent, k8s.ImmediateReconcileRequestsBufferSize)
 	resourceWatcherRoutines := semaphore.NewWeighted(k8s.MaxNumResourceWatcherRoutines)
-	reconciler, err := NewReconciler(mgr, deps.TfProvider, deps.TfLoader, deps.DclConverter, deps.DclConfig, immediateReconcileRequests, resourceWatcherRoutines, deps.Defaulters, deps.JitterGen, deps.DependencyTracker)
+	reconciler, err := NewReconciler(mgr, deps.TFProvider, deps.TFLoader, deps.DCLConverter, deps.DCLConfig, immediateReconcileRequests, resourceWatcherRoutines, deps.Defaulters, deps.JitterGen, deps.DependencyTracker)
 	if err != nil {
 		return err
 	}
@@ -196,6 +197,16 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 		Ctx:            ctx,
 		NamespacedName: request.NamespacedName,
 	}
+	uObj := &unstructured.Unstructured{}
+	uObj.Object, err = runtime.DefaultUnstructuredConverter.ToUnstructured(policy)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+	uObj.SetNamespace(policy.GetNamespace())
+	uObj.SetName(policy.GetName())
+	uObj.SetGroupVersionKind(iamv1beta1.IAMPartialPolicyGVK)
+	structuredreporting.ReportReconcileStart(ctx, uObj)
+	defer structuredreporting.ReportReconcileEnd(ctx, uObj, result, err)
 	requeue, err := runCtx.doReconcile(policy)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -222,9 +233,19 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 }
 
 func (r *ReconcileIAMPartialPolicy) handleDefaults(ctx context.Context, pp *iamv1beta1.IAMPartialPolicy) error {
+	changeCount := 0
 	for _, defaulter := range r.defaulters {
-		if _, err := defaulter.ApplyDefaults(ctx, pp); err != nil {
+		changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeIAMPartialPolicy, pp)
+		if err != nil {
 			return err
+		}
+		if changed {
+			changeCount++
+		}
+	}
+	if changeCount > 0 {
+		if err := r.Update(ctx, pp); err != nil {
+			return fmt.Errorf("applying update after setting defaults: %w", err)
 		}
 	}
 	return nil
@@ -286,6 +307,12 @@ func (r *reconcileContext) doReconcile(pp *iamv1beta1.IAMPartialPolicy) (requeue
 		return false, r.handleUpdateFailed(pp, fmt.Errorf("error computing partial policy: %w", err))
 	}
 	desiredPolicy := toDesiredPolicy(desiredPartialPolicy, iamPolicy)
+
+	diff := iamv1beta1.IAMPolicySpecDiffers(&desiredPolicy.Spec, &iamPolicy.Spec)
+	if diff.HasDiff() {
+		structuredreporting.ReportDiff(r.Ctx, diff)
+	}
+
 	if _, err = r.Reconciler.iamClient.SetPolicy(r.Ctx, desiredPolicy); err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(pp))
@@ -428,7 +455,7 @@ func (r *reconcileContext) handleUnresolvableDeps(policy *iamv1beta1.IAMPartialP
 		ctx, cancel := context.WithTimeout(context.TODO(), timeoutPeriod)
 		defer cancel()
 		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
-		if err := watcher.WaitForResourceToBeReady(ctx, refNN, refGVK); err != nil {
+		if err := watcher.WaitForResourceToBeReadyOrDeleted(ctx, refNN, refGVK); err != nil {
 			logger.Error(err, "error while waiting for resource's reference to be ready")
 			return
 		}

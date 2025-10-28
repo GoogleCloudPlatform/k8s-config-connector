@@ -18,11 +18,14 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"time"
 
 	"golang.org/x/oauth2"
 	"k8s.io/client-go/rest"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/contexts"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
@@ -159,8 +162,31 @@ func (i *PreviewInstance) Start(ctx context.Context) error {
 	// 		server.Register(cfg.Path, &webhook.Admission{Handler: handler})
 	// 	}
 	// }
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	go func() {
+		ticker := time.NewTicker(1 * time.Second) // Check every second
+		defer ticker.Stop()
+		for {
+			select {
+			case <-ctx.Done(): // The outer context was cancelled
+				return
+			case <-ticker.C:
+				if i.recorder.DoneReconciling() {
+					klog.Info("All resources reconciled, stopping manager.")
+					cancel() // Cancel the inner context
+					return
+				}
+			}
+		}
+	}()
 
 	if err := mgr.Start(ctx); err != nil {
+		// We expect an error when the context is canceled
+		if contexts.IsContextCanceledErr(err) {
+			return nil
+		}
 		return fmt.Errorf("starting controllers: %w", err)
 	}
 

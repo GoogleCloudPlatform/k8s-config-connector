@@ -111,8 +111,8 @@ func TestE2EScript(t *testing.T) {
 					eventsBefore = h.Events.HTTPEvents
 				}
 
-				// tracks the set of all applied objects as keyed by a gvk, namespaced name tuple
-				appliedObjects := map[gvkNN]*unstructured.Unstructured{}
+				// tracks the all applied objects (in order, to avoid deletion dependency-ordering issues)
+				appliedObjects := []*unstructured.Unstructured{}
 
 				for i, obj := range script.Objects {
 					testCommand := ""
@@ -123,6 +123,8 @@ func TestE2EScript(t *testing.T) {
 					if testCommand == "" {
 						testCommand = "APPLY"
 					}
+
+					t.Logf("***/Step %d: %s %s %s/%s", i, testCommand, obj.GroupVersionKind().Kind, obj.GetNamespace(), obj.GetName())
 
 					if obj.GroupVersionKind().Kind == "RunCLI" {
 						argsObjects := obj.Object["args"].([]any)
@@ -192,27 +194,19 @@ func TestE2EScript(t *testing.T) {
 						shouldGetKubeObject = v.(bool)
 					}
 
-					k := gvkNN{
-						gvk: obj.GroupVersionKind(),
-						nn: types.NamespacedName{
-							Name:      obj.GetName(),
-							Namespace: obj.GetNamespace(),
-						},
-					}
-
 					var targetStepForReadAndCompare int
 					switch testCommand {
 					case "APPLY":
 						applyObject(h, obj)
 						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
-						appliedObjects[k] = obj
+						appliedObjects = append(appliedObjects, obj)
 
 					case "APPLY-10-SEC":
 						applyObject(h, obj)
 						time.Sleep(10 * time.Second)
 
 					case "READ-OBJECT":
-						appliedObjects[k] = obj
+						appliedObjects = append(appliedObjects, obj)
 
 					case "READ-OBJECT-AND-COMPARE-SPEC":
 						v, ok := obj.Object["TARGET_STEP_FOR_READ_AND_COMPARE"]
@@ -223,11 +217,11 @@ func TestE2EScript(t *testing.T) {
 						if targetStepForReadAndCompare <= 0 {
 							t.Fatalf("value of TARGET_STEP_FOR_READ_AND_COMPARE should be an integer > 0")
 						}
-						appliedObjects[k] = obj
+						appliedObjects = append(appliedObjects, obj)
 
 					case "APPLY-NO-WAIT":
 						applyObject(h, obj)
-						appliedObjects[k] = obj
+						appliedObjects = append(appliedObjects, obj)
 						exportResource = nil
 						shouldGetKubeObject = false
 
@@ -312,10 +306,11 @@ func TestE2EScript(t *testing.T) {
 						}
 						applyObject(h, obj)
 						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
-						appliedObjects[k] = obj
+						appliedObjects = append(appliedObjects, obj)
 
 					case "ABANDON-AND-REACQUIRE-WITH-GENERATED-ID":
 						existing := readObject(h, obj.GroupVersionKind(), obj.GetNamespace(), obj.GetName())
+						// Get the server generated id from spec.resourceID(legacy) or status.externalRef(direct)
 						resourceID, _, _ := unstructured.NestedString(existing.Object, "spec", "resourceID")
 						if resourceID == "" {
 							externalRef, _, _ := unstructured.NestedString(existing.Object, "status", "externalRef")
@@ -325,9 +320,17 @@ func TestE2EScript(t *testing.T) {
 							tokens := strings.Split(externalRef, "/")
 							resourceID = tokens[len(tokens)-1]
 						}
-						setAnnotation(h, obj, "cnrm.cloud.google.com/deletion-policy", "abandon")
-						deleteObj := obj.DeepCopy()
+
+						// Abandon the original resource
+						deleteObj := &unstructured.Unstructured{}
+						deleteObj.SetGroupVersionKind(existing.GroupVersionKind())
+						deleteObj.SetNamespace(existing.GetNamespace())
+						deleteObj.SetName(existing.GetName())
+						deleteObj.SetAnnotations(existing.GetAnnotations())
+						setAnnotation(h, deleteObj, "cnrm.cloud.google.com/deletion-policy", "abandon")
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{deleteObj}})
+
+						// Replace placeholder in configuration yaml with the server generated id
 						configuredID, _, _ := unstructured.NestedString(obj.Object, "spec", "resourceID")
 						if configuredID == "" {
 							h.Fatalf("object does not have resourceID configured: %v", obj)
@@ -338,7 +341,7 @@ func TestE2EScript(t *testing.T) {
 						}
 						applyObject(h, obj)
 						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
-						appliedObjects[k] = obj
+						appliedObjects = append(appliedObjects, obj)
 
 					default:
 						t.Errorf("unknown TEST command %q", testCommand)
@@ -351,9 +354,7 @@ func TestE2EScript(t *testing.T) {
 							t.Logf("ignoring failure to export resource of gvk %v", exportResource.GroupVersionKind())
 							// t.Errorf("failed to export resource of gvk %v", exportResource.GroupVersionKind())
 						} else {
-							if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
-								t.Fatalf("error from normalizeObject: %v", err)
-							}
+							normalizeKRMObject(t, u, project, folderID, uniqueID)
 							got, err := yaml.Marshal(u)
 							if err != nil {
 								t.Errorf("failed to convert kube object to yaml: %v", err)
@@ -374,9 +375,7 @@ func TestE2EScript(t *testing.T) {
 						if err := h.GetClient().Get(ctx, id, u); err != nil {
 							t.Errorf("failed to get kube object: %v", err)
 						} else {
-							if err := normalizeKRMObject(t, u, project, folderID, uniqueID); err != nil {
-								t.Fatalf("error from normalizeObject: %v", err)
-							}
+							normalizeKRMObject(t, u, project, folderID, uniqueID)
 							got, err := yaml.Marshal(u)
 							if err != nil {
 								t.Errorf("failed to convert kube object to yaml: %v", err)
@@ -418,6 +417,8 @@ func TestE2EScript(t *testing.T) {
 					captureHTTPLogEvents(false)
 				}
 
+				t.Logf("***/Finished Steps")
+
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					{
 						x := NewNormalizer(uniqueID, project)
@@ -446,11 +447,20 @@ func TestE2EScript(t *testing.T) {
 					}
 				}
 
-				objSet := []*unstructured.Unstructured{}
-				for k := range appliedObjects {
-					objSet = append(objSet, appliedObjects[k])
+				{
+					// Delete objects in order, de-duplicating objects we might have applied twice
+					var objectsToDelete []*unstructured.Unstructured
+					seen := make(map[string]bool)
+					for _, obj := range appliedObjects {
+						k := obj.GroupVersionKind().Group + "::" + obj.GroupVersionKind().Kind + "::" + obj.GetNamespace() + "::" + obj.GetName()
+						if seen[k] {
+							continue
+						}
+						objectsToDelete = append(objectsToDelete, obj)
+						seen[k] = true
+					}
+					create.DeleteResources(h, create.CreateDeleteTestOptions{Create: objectsToDelete})
 				}
-				create.DeleteResources(h, create.CreateDeleteTestOptions{Create: objSet})
 
 				h.NoExtraGoldenFiles(filepath.Join(script.SourceDir, "_*.yaml"))
 			})
@@ -480,6 +490,26 @@ func patchObjectWithExternallyManagedFields(h *create.Harness, obj *unstructured
 	if err := h.GetClient().Patch(h.Ctx, removeTestFields(obj), client.Apply, client.FieldOwner(k8s.ControllerManagedFieldManager)); err != nil {
 		h.Fatalf("error updating resource with externally managed fields: %v", err)
 	}
+}
+
+// getGeneration gets the metadata.generation for a given object
+func getGeneration(h *create.Harness, obj *unstructured.Unstructured) int64 {
+	existing := &unstructured.Unstructured{}
+	{
+		existing.SetGroupVersionKind(obj.GroupVersionKind())
+		existing.SetName(obj.GetName())
+		existing.SetNamespace(obj.GetNamespace())
+
+		key := types.NamespacedName{
+			Namespace: obj.GetNamespace(),
+			Name:      obj.GetName(),
+		}
+		if err := h.GetClient().Get(h.Ctx, key, existing); err != nil {
+			h.Fatalf("error getting object %v: %v", key, err)
+		}
+	}
+
+	return existing.GetGeneration()
 }
 
 // touchObject sets a new annotation that forces a re-reconciliation
@@ -528,15 +558,19 @@ func touchObject(h *create.Harness, obj *unstructured.Unstructured) {
 
 func setAnnotation(h *create.Harness, obj *unstructured.Unstructured, k, v string) {
 	patch := &unstructured.Unstructured{}
+	patch.Object = obj.Object
 	patch.SetGroupVersionKind(obj.GroupVersionKind())
 	patch.SetNamespace(obj.GetNamespace())
 	patch.SetName(obj.GetName())
-	annotations := map[string]string{
-		k: v,
+
+	annotations := patch.GetAnnotations()
+	if annotations == nil {
+		annotations = make(map[string]string)
 	}
+	annotations[k] = v
 	patch.SetAnnotations(annotations)
 
-	if err := h.GetClient().Patch(h.Ctx, patch, client.Apply, client.FieldOwner("kcc-tests-setannotation"), client.ForceOwnership); err != nil {
+	if err := h.GetClient().Patch(h.Ctx, removeTestFields(patch), client.Apply, client.FieldOwner("kcc-tests-setannotation"), client.ForceOwnership); err != nil {
 		h.Fatalf("error setting annotations on resource: %v", err)
 	}
 }

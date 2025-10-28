@@ -17,13 +17,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "batch \"projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "batch \"projects/${projectId}/locations/us-central1/batches/dataprocbatch-minimal-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }

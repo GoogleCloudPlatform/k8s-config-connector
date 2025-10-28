@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.128.0
+    cnrm.cloud.google.com/version: 1.137.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -30,6 +30,7 @@ spec:
     categories:
     - gcp
     kind: FirestoreIndex
+    listKind: FirestoreIndexList
     plural: firestoreindexes
     shortNames:
     - gcpfirestoreindex
@@ -56,20 +57,22 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: FirestoreIndex is the Schema for the FirestoreIndex API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: FirestoreIndexSpec defines the desired state of FirestoreIndex
             properties:
               collection:
                 description: Immutable. The collection being indexed.
@@ -78,27 +81,28 @@ spec:
                 description: Immutable. The Firestore database id. Defaults to '"(default)"'.
                 type: string
               fields:
-                description: |-
-                  Immutable. The fields supported by this index. The last field entry is always for
-                  the field path '__name__'. If, on creation, '__name__' was not
-                  specified as the last field, it will be added automatically with the
-                  same direction as that of the last field defined. If the final field
-                  in a composite index is not directional, the '__name__' will be
-                  ordered '"ASCENDING"' (unless explicitly specified otherwise).
+                description: Immutable. The fields supported by this index. The last
+                  field entry is always for the field path '__name__'. If, on creation,
+                  '__name__' was not specified as the last field, it will be added
+                  automatically with the same direction as that of the last field
+                  defined. If the final field in a composite index is not directional,
+                  the '__name__' will be ordered '"ASCENDING"' (unless explicitly
+                  specified otherwise).
                 items:
                   properties:
                     arrayConfig:
-                      description: |-
-                        Immutable. Indicates that this field supports operations on arrayValues. Only one of 'order' and 'arrayConfig' can
-                        be specified. Possible values: ["CONTAINS"].
+                      description: 'Immutable. Indicates that this field supports
+                        operations on arrayValues. Only one of ''order'' and ''arrayConfig''
+                        can be specified. Possible values: ["CONTAINS"].'
                       type: string
                     fieldPath:
                       description: Immutable. Name of the field.
                       type: string
                     order:
-                      description: |-
-                        Immutable. Indicates that this field supports ordering by the specified order or comparing using =, <, <=, >, >=.
-                        Only one of 'order' and 'arrayConfig' can be specified. Possible values: ["ASCENDING", "DESCENDING"].
+                      description: 'Immutable. Indicates that this field supports
+                        ordering by the specified order or comparing using =, <, <=,
+                        >, >=. Only one of ''order'' and ''arrayConfig'' can be specified.
+                        Possible values: ["ASCENDING", "DESCENDING"].'
                       type: string
                   type: object
                 type: array
@@ -111,10 +115,12 @@ spec:
             - fields
             type: object
           status:
+            description: FirestoreIndexStatus defines the config connector machine
+              state of FirestoreIndex
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -139,9 +145,7 @@ spec:
                   type: object
                 type: array
               name:
-                description: |-
-                  A server defined name for this index. Format:
-                  'projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/indexes/{{server_generated_id}}'.
+                description: 'A server defined name for this index. Format: ''projects/{{project}}/databases/{{database}}/collectionGroups/{{collection}}/indexes/{{server_generated_id}}''.'
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -149,10 +153,9 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
             type: object
-        required:
-        - spec
         type: object
     served: true
     storage: true
@@ -162,5 +165,5 @@ status:
   acceptedNames:
     kind: ""
     plural: ""
-  conditions: []
-  storedVersions: []
+  conditions: null
+  storedVersions: null

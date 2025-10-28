@@ -162,6 +162,8 @@ X-Xss-Protection: 0
       "state": "READY"
     },
     "progress": {
+      "endTime": "2024-04-02T12:34:56.123456Z",
+      "progressPercent": 100,
       "startTime": "2024-04-01T12:34:56.123456Z"
     }
   },

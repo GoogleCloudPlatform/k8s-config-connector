@@ -25,7 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func ManagementURIObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ManagementURI) *krm.ManagementURIObservedState {
+func ManagementURIObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ManagementURI) *krm.ManagementURIObservedState {
 	if in == nil {
 		return nil
 	}
@@ -34,7 +34,7 @@ func ManagementURIObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Mana
 	out.API = direct.LazyPtr(in.GetApi())
 	return out
 }
-func ManagementURIObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ManagementURIObservedState) *pb.ManagementURI {
+func ManagementURIObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.ManagementURIObservedState) *pb.ManagementURI {
 	if in == nil {
 		return nil
 	}
@@ -43,7 +43,7 @@ func ManagementURIObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Manag
 	out.Api = direct.ValueOf(in.API)
 	return out
 }
-func WorkforceIdentityBasedOAuth2ClientIDObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WorkforceIdentityBasedOAuth2ClientID) *krm.WorkforceIdentityBasedOAuth2ClientIDObservedState {
+func WorkforceIdentityBasedOAuth2ClientIDObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkforceIdentityBasedOAuth2ClientID) *krm.WorkforceIdentityBasedOAuth2ClientIDObservedState {
 	if in == nil {
 		return nil
 	}
@@ -52,7 +52,7 @@ func WorkforceIdentityBasedOAuth2ClientIDObservedState_FromProto(mapCtx *direct.
 	out.ThirdPartyOAuth2ClientID = direct.LazyPtr(in.GetThirdPartyOauth2ClientId())
 	return out
 }
-func WorkforceIdentityBasedOAuth2ClientIDObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkforceIdentityBasedOAuth2ClientIDObservedState) *pb.WorkforceIdentityBasedOAuth2ClientID {
+func WorkforceIdentityBasedOAuth2ClientIDObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.WorkforceIdentityBasedOAuth2ClientIDObservedState) *pb.WorkforceIdentityBasedOAuth2ClientID {
 	if in == nil {
 		return nil
 	}
@@ -61,7 +61,7 @@ func WorkforceIdentityBasedOAuth2ClientIDObservedState_ToProto(mapCtx *direct.Ma
 	out.ThirdPartyOauth2ClientId = direct.ValueOf(in.ThirdPartyOAuth2ClientID)
 	return out
 }
-func BackupDRManagementServerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ManagementServer) *krm.BackupDRManagementServerObservedState {
+func BackupDRManagementServerObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ManagementServer) *krm.BackupDRManagementServerObservedState {
 	if in == nil {
 		return nil
 	}
@@ -69,15 +69,15 @@ func BackupDRManagementServerObservedState_FromProto(mapCtx *direct.MapContext, 
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.ManagementURI = ManagementURIObservedState_FromProto(mapCtx, in.GetManagementUri())
-	out.WorkforceIdentityBasedManagementURI = WorkforceIdentityBasedManagementURIObservedState_FromProto(mapCtx, in.GetWorkforceIdentityBasedManagementUri())
+	out.ManagementURI = ManagementURIObservedState_v1alpha1_FromProto(mapCtx, in.GetManagementUri())
+	out.WorkforceIdentityBasedManagementURI = WorkforceIdentityBasedManagementURIObservedState_v1alpha1_FromProto(mapCtx, in.GetWorkforceIdentityBasedManagementUri())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.OAuth2ClientID = direct.LazyPtr(in.GetOauth2ClientId())
-	out.WorkforceIdentityBasedOAuth2ClientID = WorkforceIdentityBasedOAuth2ClientIDObservedState_FromProto(mapCtx, in.GetWorkforceIdentityBasedOauth2ClientId())
+	out.WorkforceIdentityBasedOAuth2ClientID = WorkforceIdentityBasedOAuth2ClientIDObservedState_v1alpha1_FromProto(mapCtx, in.GetWorkforceIdentityBasedOauth2ClientId())
 	out.BAProxyURIs = in.BaProxyUri
 	return out
 }
-func BackupDRManagementServerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRManagementServerObservedState) *pb.ManagementServer {
+func BackupDRManagementServerObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.BackupDRManagementServerObservedState) *pb.ManagementServer {
 	if in == nil {
 		return nil
 	}
@@ -85,15 +85,15 @@ func BackupDRManagementServerObservedState_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.ManagementUri = ManagementURIObservedState_ToProto(mapCtx, in.ManagementURI)
-	out.WorkforceIdentityBasedManagementUri = WorkforceIdentityBasedManagementURIObservedState_ToProto(mapCtx, in.WorkforceIdentityBasedManagementURI)
+	out.ManagementUri = ManagementURIObservedState_v1alpha1_ToProto(mapCtx, in.ManagementURI)
+	out.WorkforceIdentityBasedManagementUri = WorkforceIdentityBasedManagementURIObservedState_v1alpha1_ToProto(mapCtx, in.WorkforceIdentityBasedManagementURI)
 	out.State = direct.Enum_ToProto[pb.ManagementServer_InstanceState](mapCtx, in.State)
 	out.Oauth2ClientId = direct.ValueOf(in.OAuth2ClientID)
-	out.WorkforceIdentityBasedOauth2ClientId = WorkforceIdentityBasedOAuth2ClientIDObservedState_ToProto(mapCtx, in.WorkforceIdentityBasedOAuth2ClientID)
+	out.WorkforceIdentityBasedOauth2ClientId = WorkforceIdentityBasedOAuth2ClientIDObservedState_v1alpha1_ToProto(mapCtx, in.WorkforceIdentityBasedOAuth2ClientID)
 	out.BaProxyUri = in.BAProxyURIs
 	return out
 }
-func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfig {
+func NetworkConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfig {
 	if in == nil {
 		return nil
 	}

@@ -16,7 +16,7 @@
 // proto.service: google.cloud.backupdr.v1.BackupDR
 // proto.message: google.cloud.backupdr.v1.BackupPlanAssociation
 // crd.type: BackupDRBackupPlanAssociation
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package backupdr
 
@@ -25,7 +25,7 @@ import (
 	"fmt"
 	"reflect"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -129,7 +129,7 @@ func (a *BackupPlanAssociationAdapter) Create(ctx context.Context, createOp *dir
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	resource := BackupDRBackupPlanAssociationSpec_ToProto(mapCtx, &desired.Spec)
+	resource := BackupDRBackupPlanAssociationSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -150,7 +150,7 @@ func (a *BackupPlanAssociationAdapter) Create(ctx context.Context, createOp *dir
 	log.V(2).Info("successfully created BackupPlanAssociation", "name", a.id)
 
 	status := &krm.BackupDRBackupPlanAssociationStatus{}
-	status.ObservedState = BackupDRBackupPlanAssociationObservedState_FromProto(mapCtx, created)
+	status.ObservedState = BackupDRBackupPlanAssociationObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -169,7 +169,7 @@ func (a *BackupPlanAssociationAdapter) Update(ctx context.Context, updateOp *dir
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	resource := BackupDRBackupPlanAssociationSpec_ToProto(mapCtx, &desired.Spec)
+	resource := BackupDRBackupPlanAssociationSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -191,7 +191,7 @@ func (a *BackupPlanAssociationAdapter) Update(ctx context.Context, updateOp *dir
 
 	// still need to update status (in the event of acquiring an existing resource)
 	status := &krm.BackupDRBackupPlanAssociationStatus{}
-	status.ObservedState = BackupDRBackupPlanAssociationObservedState_FromProto(mapCtx, a.actual)
+	status.ObservedState = BackupDRBackupPlanAssociationObservedState_v1beta1_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -208,7 +208,7 @@ func (a *BackupPlanAssociationAdapter) Export(ctx context.Context) (*unstructure
 
 	obj := &krm.BackupDRBackupPlanAssociation{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(BackupDRBackupPlanAssociationSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(BackupDRBackupPlanAssociationSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -252,7 +252,6 @@ func (a *BackupPlanAssociationAdapter) Delete(ctx context.Context, deleteOp *dir
 
 func (a *BackupPlanAssociationAdapter) normalizeReferenceFields(ctx context.Context) error {
 	obj := a.desired
-
 	if obj.Spec.BackupPlanRef != nil {
 		if _, err := obj.Spec.BackupPlanRef.NormalizedExternal(ctx, a.reader, obj.GetNamespace()); err != nil {
 			return err

@@ -42,21 +42,31 @@ var (
 		Kind:    reflect.TypeOf(IAMPolicy{}).Name(),
 	}
 
-	// NOT YET
-	// IAMPartialPolicyGVK = schema.GroupVersionKind{
-	// 	Group:   SchemeGroupVersion.Group,
-	// 	Version: SchemeGroupVersion.Version,
-	// 	Kind:    reflect.TypeOf(IAMPartialPolicy{}).Name(),
-	// }
-	// IAMPolicyMemberGVK = schema.GroupVersionKind{
-	// 	Group:   SchemeGroupVersion.Group,
-	// 	Version: SchemeGroupVersion.Version,
-	// 	Kind:    reflect.TypeOf(IAMPolicyMember{}).Name(),
-	// }
-	// IAMAuditConfigGVK = schema.GroupVersionKind{
-	// 	Group:   SchemeGroupVersion.Group,
-	// 	Version: SchemeGroupVersion.Version,
-	// 	Kind:    reflect.TypeOf(IAMAuditConfig{}).Name(),
-	// }
-	//IAMAPIVersion = SchemeGroupVersion.String()
+	IAMPartialPolicyGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMPartialPolicy{}).Name(),
+	}
+	IAMPolicyMemberGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMPolicyMember{}).Name(),
+	}
+	IAMAuditConfigGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(IAMAuditConfig{}).Name(),
+	}
+	IAMAPIVersion = SchemeGroupVersion.String()
 )
+
+// IsHandwrittenIAM returns true if the given GVK corresponds to that of a
+// handwritten IAM resource.
+func IsHandwrittenIAM(gvk schema.GroupVersionKind) bool {
+	switch gvk {
+	case IAMPolicyGVK, IAMPolicyMemberGVK, IAMAuditConfigGVK, IAMPartialPolicyGVK:
+		return true
+	default:
+		return false
+	}
+}

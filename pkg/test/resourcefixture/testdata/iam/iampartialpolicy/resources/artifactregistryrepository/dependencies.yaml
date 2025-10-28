@@ -1,0 +1,7 @@
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  name: artifactregistryrepository-${uniqueId}
+spec:
+  format: DOCKER
+  location: us-central1

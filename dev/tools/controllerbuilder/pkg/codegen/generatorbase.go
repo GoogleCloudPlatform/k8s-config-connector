@@ -23,6 +23,7 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/annotations"
+	"golang.org/x/tools/imports"
 	"k8s.io/klog/v2"
 )
 
@@ -51,10 +52,10 @@ func (g *generatorBase) Errorf(msg string, args ...any) {
 }
 
 type generatedFile struct {
-	baseDir     string
-	key         generatedFileKey
-	packageName string
-	body        bytes.Buffer
+	baseDir   string
+	key       generatedFileKey
+	goPackage string
+	body      bytes.Buffer
 
 	fileAnnotation *annotations.FileAnnotation
 
@@ -82,8 +83,8 @@ func (f *generatedFile) addImport(alias string, pkgName string) {
 	f.imports[pkgName] = alias
 }
 
-func (f *generatedFile) Write(addCopyright bool) error {
-	if f.body.Len() == 0 {
+func (f *generatedFile) Write(addCopyright bool, writeEmptyFiles bool) error {
+	if f.body.Len() == 0 && !writeEmptyFiles {
 		return nil
 	}
 
@@ -104,8 +105,8 @@ func (f *generatedFile) Write(addCopyright bool) error {
 		fmt.Fprintf(&w, "%s\n", s)
 	}
 
-	if f.packageName != "" {
-		fmt.Fprintf(&w, "package %s\n", f.packageName)
+	if f.goPackage != "" {
+		fmt.Fprintf(&w, "package %s\n", f.goPackage)
 		fmt.Fprintf(&w, "\n")
 	}
 
@@ -123,17 +124,23 @@ func (f *generatedFile) Write(addCopyright bool) error {
 	f.body.WriteTo(&w)
 
 	p := filepath.Join(dir, f.key.FileName)
+	formatted, err := imports.Process(p, w.Bytes(), nil)
+	if err != nil {
+		klog.Errorf("error from goimports processing file %q:\n%s", p, w.String())
+		return fmt.Errorf("running goimports on %q: %w", p, err)
+	}
+
 	klog.Infof("writing file %v", p)
-	if err := os.WriteFile(p, w.Bytes(), 0644); err != nil {
+	if err := os.WriteFile(p, formatted, 0644); err != nil {
 		return fmt.Errorf("writing %q: %w", p, err)
 	}
 
 	return nil
 }
 
-func (g *generatorBase) WriteFiles(addCopyright bool) error {
+func (g *generatorBase) WriteFiles(addCopyright bool, writeEmptyFiles bool) error {
 	for _, f := range g.generatedFiles {
-		if err := f.Write(addCopyright); err != nil {
+		if err := f.Write(addCopyright, writeEmptyFiles); err != nil {
 			return err
 		}
 	}

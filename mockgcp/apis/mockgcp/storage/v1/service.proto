@@ -633,8 +633,26 @@ message BucketCustomPlacementConfig {
   repeated string data_locations = 1 [json_name="dataLocations"];
 }
 
+message CustomerManagedEncryptionEnforcementConfig {
+  optional .google.protobuf.Timestamp effective_time = 1 [json_name="effectiveTime"];
+  optional string restriction_mode = 2 [json_name="restrictionMode"];
+}
+
+message CustomerSuppliedEncryptionEnforcementConfig {
+  optional .google.protobuf.Timestamp effective_time = 1 [json_name="effectiveTime"];
+  optional string restriction_mode = 2 [json_name="restrictionMode"];
+}
+
+message GoogleManagedEncryptionEnforcementConfig {
+  optional .google.protobuf.Timestamp effective_time = 1 [json_name="effectiveTime"];
+  optional string restriction_mode = 2 [json_name="restrictionMode"];
+}
+
 message BucketEncryption {
-  optional string default_kms_key_name = 1 [json_name="defaultKmsKeyName"];
+  optional CustomerManagedEncryptionEnforcementConfig customer_managed_encryption_enforcement_config = 1 [json_name="customerManagedEncryptionEnforcementConfig"];
+  optional CustomerSuppliedEncryptionEnforcementConfig customer_supplied_encryption_enforcement_config = 2 [json_name="customerSuppliedEncryptionEnforcementConfig"];
+  optional string default_kms_key_name = 3 [json_name="defaultKmsKeyName"];
+  optional GoogleManagedEncryptionEnforcementConfig google_managed_encryption_enforcement_config = 4 [json_name="googleManagedEncryptionEnforcementConfig"];
 }
 
 message BucketHierarchicalNamespace {
@@ -667,9 +685,11 @@ message VpcNetworkSources {
 }
 
 message BucketIpFilter {
-  optional string mode = 1 [json_name="mode"];
-  optional PublicNetworkSource public_network_source = 2 [json_name="publicNetworkSource"];
-  repeated VpcNetworkSources vpc_network_sources = 3 [json_name="vpcNetworkSources"];
+  optional bool allow_all_service_agent_access = 1 [json_name="allowAllServiceAgentAccess"];
+  optional bool allow_cross_org_vpcs = 2 [json_name="allowCrossOrgVpcs"];
+  optional string mode = 3 [json_name="mode"];
+  optional PublicNetworkSource public_network_source = 4 [json_name="publicNetworkSource"];
+  repeated VpcNetworkSources vpc_network_sources = 5 [json_name="vpcNetworkSources"];
 }
 
 message Action {
@@ -905,12 +925,16 @@ message BulkRestoreObjectsRequest {
   optional bool allow_overwrite = 1 [json_name="allowOverwrite"];
   // If true, copies the source object's ACL; otherwise, uses the bucket's default object ACL. The default is false.
   optional bool copy_source_acl = 2 [json_name="copySourceAcl"];
+  // Restores only the objects that were created after this time.
+  optional .google.protobuf.Timestamp created_after_time = 3 [json_name="createdAfterTime"];
+  // Restores only the objects that were created before this time.
+  optional .google.protobuf.Timestamp created_before_time = 4 [json_name="createdBeforeTime"];
   // Restores only the objects matching any of the specified glob(s). If this parameter is not specified, all objects will be restored within the specified time range.
-  repeated string match_globs = 3 [json_name="matchGlobs"];
+  repeated string match_globs = 5 [json_name="matchGlobs"];
   // Restores only the objects that were soft-deleted after this time.
-  optional .google.protobuf.Timestamp soft_deleted_after_time = 4 [json_name="softDeletedAfterTime"];
+  optional .google.protobuf.Timestamp soft_deleted_after_time = 6 [json_name="softDeletedAfterTime"];
   // Restores only the objects that were soft-deleted before this time.
-  optional .google.protobuf.Timestamp soft_deleted_before_time = 5 [json_name="softDeletedBeforeTime"];
+  optional .google.protobuf.Timestamp soft_deleted_before_time = 7 [json_name="softDeletedBeforeTime"];
 }
 
 // An notification channel used to watch for resource changes.
@@ -1129,6 +1153,10 @@ message Notifications {
   optional string kind = 2 [json_name="kind"];
 }
 
+message ObjectContexts {
+  map<string, ObjectCustomContextPayload> custom = 1 [json_name="custom"];
+}
+
 message ObjectCustomerEncryption {
   optional string encryption_algorithm = 1 [json_name="encryptionAlgorithm"];
   optional string key_sha256 = 2 [json_name="keySha256"];
@@ -1162,64 +1190,66 @@ message Object {
   optional string content_language = 7 [json_name="contentLanguage"];
   // Content-Type of the object data. If an object is stored without a Content-Type, it is served as application/octet-stream.
   optional string content_type = 8 [json_name="contentType"];
+  // User-defined or system-defined object contexts. Each object context is a key-payload pair, where the key provides the identification and the payload holds the associated value and additional metadata.
+  optional ObjectContexts contexts = 9 [json_name="contexts"];
   // CRC32c checksum, as described in RFC 4960, Appendix B; encoded using base64 in big-endian byte order. For more information about using the CRC32c checksum, see [Data Validation and Change Detection](https://cloud.google.com/storage/docs/data-validation).
-  optional string crc32c = 9 [json_name="crc32c"];
+  optional string crc32c = 10 [json_name="crc32c"];
   // A timestamp in RFC 3339 format specified by the user for an object.
-  optional .google.protobuf.Timestamp custom_time = 10 [json_name="customTime"];
+  optional .google.protobuf.Timestamp custom_time = 11 [json_name="customTime"];
   // Metadata of customer-supplied encryption key, if the object is encrypted by such a key.
-  optional ObjectCustomerEncryption customer_encryption = 11 [json_name="customerEncryption"];
+  optional ObjectCustomerEncryption customer_encryption = 12 [json_name="customerEncryption"];
   // HTTP 1.1 Entity tag for the object.
-  optional string etag = 12 [json_name="etag"];
+  optional string etag = 13 [json_name="etag"];
   // Whether an object is under event-based hold. Event-based hold is a way to retain objects until an event occurs, which is signified by the hold's release (i.e. this value is set to false). After being released (set to false), such objects will be subject to bucket-level retention (if any). One sample use case of this flag is for banks to hold loan documents for at least 3 years after loan is paid in full. Here, bucket-level retention is 3 years and the event is the loan being paid in full. In this example, these objects will be held intact for any number of years until the event has occurred (event-based hold on the object is released) and then 3 more years after that. That means retention duration of the objects begins from the moment event-based hold transitioned from true to false.
-  optional bool event_based_hold = 13 [json_name="eventBasedHold"];
+  optional bool event_based_hold = 14 [json_name="eventBasedHold"];
   // The content generation of this object. Used for object versioning.
-  optional int64 generation = 14 [json_name="generation"];
+  optional int64 generation = 15 [json_name="generation"];
   // This is the time (in the future) when the soft-deleted object will no longer be restorable. It is equal to the soft delete time plus the current soft delete retention duration of the bucket.
-  optional .google.protobuf.Timestamp hard_delete_time = 15 [json_name="hardDeleteTime"];
+  optional .google.protobuf.Timestamp hard_delete_time = 16 [json_name="hardDeleteTime"];
   // The ID of the object, including the bucket name, object name, and generation number.
-  optional string id = 16 [json_name="id"];
+  optional string id = 17 [json_name="id"];
   // The kind of item this is. For objects, this is always storage#object.
-  optional string kind = 17 [json_name="kind"];
+  optional string kind = 18 [json_name="kind"];
   // Not currently supported. Specifying the parameter causes the request to fail with status code 400 - Bad Request.
-  optional string kms_key_name = 18 [json_name="kmsKeyName"];
+  optional string kms_key_name = 19 [json_name="kmsKeyName"];
   // MD5 hash of the data; encoded using base64. For more information about using the MD5 hash, see [Data Validation and Change Detection](https://cloud.google.com/storage/docs/data-validation).
-  optional string md5_hash = 19 [json_name="md5Hash"];
+  optional string md5_hash = 20 [json_name="md5Hash"];
   // Media download link.
-  optional string media_link = 20 [json_name="mediaLink"];
+  optional string media_link = 21 [json_name="mediaLink"];
   // User-provided metadata, in key/value pairs.
-  map<string, string> metadata = 21 [json_name="metadata"];
+  map<string, string> metadata = 22 [json_name="metadata"];
   // The version of the metadata for this object at this generation. Used for preconditions and for detecting changes in metadata. A metageneration number is only meaningful in the context of a particular generation of a particular object.
-  optional int64 metageneration = 22 [json_name="metageneration"];
+  optional int64 metageneration = 23 [json_name="metageneration"];
   // The name of the object. Required if not specified by URL parameter.
-  optional string name = 23 [json_name="name"];
+  optional string name = 24 [json_name="name"];
   // The owner of the object. This will always be the uploader of the object.
-  optional ObjectOwner owner = 24 [json_name="owner"];
+  optional ObjectOwner owner = 25 [json_name="owner"];
   // Restore token used to differentiate deleted objects with the same name and generation. This field is only returned for deleted objects in hierarchical namespace buckets.
-  optional string restore_token = 25 [json_name="restoreToken"];
+  optional string restore_token = 26 [json_name="restoreToken"];
   // A collection of object level retention parameters.
-  optional ObjectRetention retention = 26 [json_name="retention"];
+  optional ObjectRetention retention = 27 [json_name="retention"];
   // A server-determined value that specifies the earliest time that the object's retention period expires. This value is in RFC 3339 format. Note 1: This field is not provided for objects with an active event-based hold, since retention expiration is unknown until the hold is removed. Note 2: This value can be provided even when temporary hold is set (so that the user can reason about policy without having to first unset the temporary hold).
-  optional .google.protobuf.Timestamp retention_expiration_time = 27 [json_name="retentionExpirationTime"];
+  optional .google.protobuf.Timestamp retention_expiration_time = 28 [json_name="retentionExpirationTime"];
   // The link to this object.
-  optional string self_link = 28 [json_name="selfLink"];
+  optional string self_link = 29 [json_name="selfLink"];
   // Content-Length of the data in bytes.
-  optional uint64 size = 29 [json_name="size"];
+  optional uint64 size = 30 [json_name="size"];
   // The time at which the object became soft-deleted in RFC 3339 format.
-  optional .google.protobuf.Timestamp soft_delete_time = 30 [json_name="softDeleteTime"];
+  optional .google.protobuf.Timestamp soft_delete_time = 31 [json_name="softDeleteTime"];
   // Storage class of the object.
-  optional string storage_class = 31 [json_name="storageClass"];
+  optional string storage_class = 32 [json_name="storageClass"];
   // Whether an object is under temporary hold. While this flag is set to true, the object is protected against deletion and overwrites. A common use case of this flag is regulatory investigations where objects need to be retained while the investigation is ongoing. Note that unlike event-based hold, temporary hold does not impact retention expiration time of an object.
-  optional bool temporary_hold = 32 [json_name="temporaryHold"];
+  optional bool temporary_hold = 33 [json_name="temporaryHold"];
   // The creation time of the object in RFC 3339 format.
-  optional .google.protobuf.Timestamp time_created = 33 [json_name="timeCreated"];
+  optional .google.protobuf.Timestamp time_created = 34 [json_name="timeCreated"];
   // The time at which the object became noncurrent in RFC 3339 format. Will be returned if and only if this version of the object has been deleted.
-  optional .google.protobuf.Timestamp time_deleted = 34 [json_name="timeDeleted"];
+  optional .google.protobuf.Timestamp time_deleted = 35 [json_name="timeDeleted"];
   // The time when the object was finalized.
-  optional .google.protobuf.Timestamp time_finalized = 35 [json_name="timeFinalized"];
+  optional .google.protobuf.Timestamp time_finalized = 36 [json_name="timeFinalized"];
   // The time at which the object's storage class was last changed. When the object is initially created, it will be set to timeCreated.
-  optional .google.protobuf.Timestamp time_storage_class_updated = 36 [json_name="timeStorageClassUpdated"];
+  optional .google.protobuf.Timestamp time_storage_class_updated = 37 [json_name="timeStorageClassUpdated"];
   // The modification time of the object metadata in RFC 3339 format. Set initially to object creation time and then updated whenever any metadata of the object changes. This includes changes made by a requester, such as modifying custom metadata, as well as changes made by Cloud Storage on behalf of a requester, such as changing the storage class based on an Object Lifecycle Configuration.
-  optional .google.protobuf.Timestamp updated = 37 [json_name="updated"];
+  optional .google.protobuf.Timestamp updated = 38 [json_name="updated"];
 }
 
 message ObjectAccessControlProjectTeam {
@@ -1274,6 +1304,16 @@ message ObjectAccessControls {
   repeated ObjectAccessControl items = 1 [json_name="items"];
   // The kind of item this is. For lists of object access control entries, this is always storage#objectAccessControls.
   optional string kind = 2 [json_name="kind"];
+}
+
+// The payload of a single user-defined object context.
+message ObjectCustomContextPayload {
+  // The time at which the object context was created in RFC 3339 format.
+  optional .google.protobuf.Timestamp create_time = 1 [json_name="createTime"];
+  // The time at which the object context was last updated in RFC 3339 format.
+  optional .google.protobuf.Timestamp update_time = 2 [json_name="updateTime"];
+  // The value of the object context.
+  optional string value = 3 [json_name="value"];
 }
 
 // A list of objects.
@@ -1791,17 +1831,18 @@ message ListObjectsRequest {
   optional string bucket = 1;
   optional string delimiter = 2;
   optional string end_offset = 3;
-  optional bool include_folders_as_prefixes = 4;
-  optional bool include_trailing_delimiter = 5;
-  optional string match_glob = 6;
-  optional int32 max_results = 7;
-  optional string page_token = 8;
-  optional string prefix = 9;
-  optional string projection = 10;
-  optional bool soft_deleted = 11;
-  optional string start_offset = 12;
-  optional string user_project = 13;
-  optional bool versions = 14;
+  optional string filter = 4;
+  optional bool include_folders_as_prefixes = 5;
+  optional bool include_trailing_delimiter = 6;
+  optional string match_glob = 7;
+  optional int32 max_results = 8;
+  optional string page_token = 9;
+  optional string prefix = 10;
+  optional string projection = 11;
+  optional bool soft_deleted = 12;
+  optional string start_offset = 13;
+  optional string user_project = 14;
+  optional bool versions = 15;
 }
 
 message MoveObjectRequest {

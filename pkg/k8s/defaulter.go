@@ -20,6 +20,20 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+// ReconcilerType describes the type of reconciler (controller) being used
+type ReconcilerType string
+
+const (
+	ReconcilerTypeDirect           ReconcilerType = "direct"
+	ReconcilerTypeIAMPolicy        ReconcilerType = "iampolicy"
+	ReconcilerTypeIAMPartialPolicy ReconcilerType = "iampartialpolicy"
+	ReconcilerTypeIAMPolicyMember  ReconcilerType = "iampolicymember"
+	ReconcilerTypeIAMAuditConfig   ReconcilerType = "iamauditconfig"
+
+	ReconcilerTypeTerraform ReconcilerType = "tf"
+	ReconcilerTypeDCL       ReconcilerType = "dcl"
+)
+
 type Defaulter interface {
-	ApplyDefaults(ctx context.Context, obj client.Object) (changed bool, err error)
+	ApplyDefaults(ctx context.Context, reconcilerType ReconcilerType, obj client.Object) (changed bool, err error)
 }

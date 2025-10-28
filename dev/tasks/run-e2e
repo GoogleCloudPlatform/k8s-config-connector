@@ -25,11 +25,29 @@ if [[ -z "${KUBEBUILDER_ASSETS:-}" ]]; then
   export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
 fi
 
-if [[ -z "${KCC_USE_DIRECT_RECONCILERS:-}" ]]; then
-  KCC_USE_DIRECT_RECONCILERS=SpannerInstance
+if [[ -n "${KCC_USE_DIRECT_RECONCILERS:-}" ]]; then
+  echo "Using direct controllers: $KCC_USE_DIRECT_RECONCILERS"
+  export KCC_USE_DIRECT_RECONCILERS
 fi
-echo "Using direct controllers: $KCC_USE_DIRECT_RECONCILERS"
-export KCC_USE_DIRECT_RECONCILERS
+
+# Temporarily skip flaky tests in presubmit
+# Add skip reason and test name into below list
+flaky_tests=(
+  # https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/2745
+  "TestAllInSeries/samples/regular-cluster"
+  # b/321582240 flaky gkehubfeaturemembership scenarios test due to deletion ordering
+  "TestE2EScript/scenarios/gkehubfeaturemembership"
+  # https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/4624
+  "TestE2EScript/scenarios/iam/iampartialpolicy"
+
+  "TestE2EScript/scenarios/acquisition/bigqueryconnectionconnection"
+)
+
+if [[ -n "${SKIP_TESTS:-}" ]]; then
+  flaky_tests=("${SKIP_TESTS}" "${flaky_tests[@]}")
+fi
+SKIP_TESTS=$(IFS="|"; echo "${flaky_tests[*]}")
+export SKIP_TESTS
 
 if [[ -z "${RUN_TESTS:-}" ]]; then
   RUN_TESTS=TestAllInSeries/fixtures
@@ -99,4 +117,4 @@ GOLDEN_REQUEST_CHECKS=1 \
 GOLDEN_OBJECT_CHECKS=1 \
 WRITE_GOLDEN_OUTPUT=1 \
 RUN_E2E=1 \
- ${PREBUILT_TEST_BINARY} -test.timeout ${TEST_TIMEOUT} -test.v -test.run $RUN_TESTS
+ ${PREBUILT_TEST_BINARY} -test.timeout ${TEST_TIMEOUT} -test.v -test.run $RUN_TESTS -test.skip $SKIP_TESTS

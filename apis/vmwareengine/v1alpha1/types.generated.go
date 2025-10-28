@@ -21,7 +21,6 @@
 // resource: VMwareEngineNetworkPolicy:NetworkPolicy
 // resource: VMwareEngineExternalAccessRule:ExternalAccessRule
 // resource: VMwareEnginePrivateCloud:PrivateCloud
-// resource: VMwareEngineExternalAddress:ExternalAddress
 
 package v1alpha1
 
@@ -33,10 +32,10 @@ type NetworkPolicy_NetworkService struct {
 }
 
 // +kcc:proto=google.cloud.vmwareengine.v1.VmwareEngineNetwork.VpcNetwork
-type VmwareEngineNetwork_VpcNetwork struct {
+type VmwareEngineNetwork_VPCNetwork struct {
 }
 
-// +kcc:proto=google.cloud.vmwareengine.v1.NetworkPolicy.NetworkService
+// +kcc:observedstate:proto=google.cloud.vmwareengine.v1.NetworkPolicy.NetworkService
 type NetworkPolicy_NetworkServiceObservedState struct {
 	// Output only. State of the service. New values may be added to this enum
 	//  when appropriate.
@@ -44,8 +43,8 @@ type NetworkPolicy_NetworkServiceObservedState struct {
 	State *string `json:"state,omitempty"`
 }
 
-// +kcc:proto=google.cloud.vmwareengine.v1.VmwareEngineNetwork.VpcNetwork
-type VmwareEngineNetwork_VpcNetworkObservedState struct {
+// +kcc:observedstate:proto=google.cloud.vmwareengine.v1.VmwareEngineNetwork.VpcNetwork
+type VmwareEngineNetwork_VPCNetworkObservedState struct {
 	// Output only. Type of VPC network (INTRANET, INTERNET, or
 	//  GOOGLE_CLOUD)
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.VmwareEngineNetwork.VpcNetwork.type

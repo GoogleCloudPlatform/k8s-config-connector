@@ -86,8 +86,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed BigQueryDataset
-                      resource. Should be in the format "projects/<projectID>/datasets/<datasetID>".
+                    description: A reference to an externally-managed BigQueryDataset
+                      resource. Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".
                     type: string
                   name:
                     description: The name of a BigQueryDataset resource.

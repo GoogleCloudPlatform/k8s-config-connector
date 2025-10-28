@@ -1414,7 +1414,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1424,7 +1424,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a MonitoringAlertPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1434,7 +1434,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a MonitoringAlertPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1654,7 +1654,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}MonitoringAlertPolicyRef defines the resource reference to MonitoringAlertPolicy, which "External" field holds the GCP identifier for the KRM object.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1664,7 +1664,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1674,7 +1674,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a MonitoringAlertPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1684,7 +1684,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a MonitoringAlertPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4674,7 +4674,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4684,7 +4684,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a MonitoringAlertPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4694,7 +4694,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a MonitoringAlertPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4914,7 +4914,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}MonitoringAlertPolicyRef defines the resource reference to MonitoringAlertPolicy, which "External" field holds the GCP identifier for the KRM object.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4924,7 +4924,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4934,7 +4934,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a MonitoringAlertPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -4944,7 +4944,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a MonitoringAlertPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7884,7 +7884,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7894,7 +7894,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a MonitoringAlertPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -7904,7 +7904,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a MonitoringAlertPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8124,7 +8124,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}MonitoringAlertPolicyRef defines the resource reference to MonitoringAlertPolicy, which "External" field holds the GCP identifier for the KRM object.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8134,7 +8134,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8144,7 +8144,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a MonitoringAlertPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -8154,7 +8154,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a MonitoringAlertPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11184,7 +11184,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11194,7 +11194,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a MonitoringAlertPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11204,7 +11204,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a MonitoringAlertPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11424,7 +11424,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>{% verbatim %}{% endverbatim %}</p>
+            <p>{% verbatim %}MonitoringAlertPolicyRef defines the resource reference to MonitoringAlertPolicy, which "External" field holds the GCP identifier for the KRM object.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11434,7 +11434,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The MonitoringAlertPolicy link in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]", when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}The value of an externally managed MonitoringAlertPolicy resource. Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11444,7 +11444,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a MonitoringAlertPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -11454,7 +11454,7 @@ rowLayout:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `MonitoringAlertPolicy` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a MonitoringAlertPolicy resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

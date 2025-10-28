@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	bigquery "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
+	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryanalyticshub/v1beta1"
 
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -31,14 +31,14 @@ type SelectedResource struct {
 	// Format:
 	//  `projects/{projectId}/datasets/{datasetId}/tables/{tableId}`
 	//  Example:"projects/test_project/datasets/test_dataset/tables/test_table"
-	TableRef *refv1beta1.BigQueryTableRef `json:"tableRef,omitempty"`
+	TableRef *bigqueryv1beta1.TableRef `json:"tableRef,omitempty"`
 }
 
 type BigQueryDatasetSource struct {
 	// +required
 	// Resource name of the dataset source for this listing.
 	//  e.g. `projects/myproject/datasets/123`
-	DatasetRef *bigquery.DatasetRef `json:"datasetRef,omitempty"`
+	DatasetRef *bigqueryv1beta1.DatasetRef `json:"datasetRef,omitempty"`
 
 	// Optional. Resources in this dataset that are selectively shared.
 	//  If this field is empty, then the entire dataset (all resources) are

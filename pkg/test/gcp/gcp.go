@@ -66,7 +66,6 @@ var (
 	TestAttachedClusterName                 = EnvVar{Key: "TEST_ATTACHED_CLUSTER_NAME"}
 	TestKCCAttachedClusterProject           = EnvVar{Key: "KCC_ATTACHED_CLUSTER_TEST_PROJECT"}
 	TestKCCAttachedClusterPlatformVersion   = EnvVar{Key: "ATTACHED_CLUSTER_PLATFORM_VERSION"}
-	FirestoreTestProject                    = EnvVar{Key: "FIRESTORE_TEST_PROJECT"}
 	IdentityPlatformTestProject             = EnvVar{Key: "IDENTITY_PLATFORM_TEST_PROJECT"}
 	RecaptchaEnterpriseTestProject          = EnvVar{Key: "RECAPTCHA_ENTERPRISE_TEST_PROJECT"}
 	TestKCCVertexAIIndexBucket              = EnvVar{Key: "KCC_VERTEX_AI_INDEX_TEST_BUCKET"}
@@ -127,8 +126,18 @@ func GetDefaultProject(t *testing.T) GCPProject {
 	return GCPProject{ProjectID: projectID, ProjectNumber: projectNumber}
 }
 
+// NewCloudResourceManagerClient returns a GCP Cloud Resource Manager service.
+func NewCloudResourceManagerClient(ctx context.Context) (*cloudresourcemanager.Service, error) {
+	client, err := cloudresourcemanager.NewService(ctx)
+	if err != nil {
+		return nil, err
+	}
+	client.UserAgent = gcp.KCCUserAgent()
+	return client, nil
+}
+
 func GetProjectNumber(ctx context.Context, projectID string) (int64, error) {
-	client, err := gcp.NewCloudResourceManagerClient(ctx)
+	client, err := NewCloudResourceManagerClient(ctx)
 	if err != nil {
 		return 0, fmt.Errorf("error creating resource manager client: %w", err)
 	}
@@ -223,15 +232,6 @@ func NewStorageClient(t *testing.T) *storage.Service {
 	client, err := gcp.NewStorageClient(context.TODO())
 	if err != nil {
 		t.Fatalf("error creating storage client: %v", err)
-	}
-	return client
-}
-
-func NewResourceManagerClient(t *testing.T) *cloudresourcemanager.Service {
-	t.Helper()
-	client, err := gcp.NewCloudResourceManagerClient(context.TODO())
-	if err != nil {
-		t.Fatalf("error creating cloud resource manager client: %v", err)
 	}
 	return client
 }

@@ -16,7 +16,6 @@ package mockcontainer
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
 	"google.golang.org/grpc/codes"
@@ -62,7 +61,7 @@ func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNod
 
 	obj := proto.Clone(req.NodePool).(*pb.NodePool)
 
-	obj.SelfLink = fmt.Sprintf("https://container.googlerapis.com/v1beta1/%s", fqn)
+	obj.SelfLink = buildSelfLink(ctx, fqn)
 
 	if err := s.populateNodePoolDefaults(cluster, obj); err != nil {
 		return nil, err
@@ -112,6 +111,20 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(cluster *pb.Cluster, obj *pb
 		}
 	}
 
+	// TODO: Fix NetworkConfig behavior.
+	// Real log:
+	//      "networkConfig": {
+	//        "podIpv4CidrBlock": "10.108.0.0/14",
+	//        "podRange": "gke-containercluster-${uniqueId}-pods-4e499d58",
+	//        "subnetwork": "projects/${projectId}/regions/us-east1/subnetworks/default"
+	//      },
+	// Mock log:
+	//     "networkConfig": {
+	//        "enablePrivateNodes": false,
+	//        "podIpv4CidrBlock": "10.92.0.0/14",
+	//        "podIpv4RangeUtilization": 0.001,
+	//        "podRange": "default-pool-pods-12345678"
+	//      },
 	if obj.NetworkConfig == nil {
 		obj.NetworkConfig = &pb.NodeNetworkConfig{}
 	}
@@ -202,6 +215,32 @@ func (s *ClusterManagerV1) populateAutoprovisioningNodePoolDefaults(obj *pb.Auto
 			"https://www.googleapis.com/auth/userinfo.email",
 			"https://www.googleapis.com/auth/cloud-platform",
 		}
+	} else {
+		// TODO: Reach out to API team to get clarification of the following behavior:
+		// When the input is
+		// "oauthScopes": [
+		//   "https://www.googleapis.com/auth/devstorage.read_only",
+		//   "https://www.googleapis.com/auth/logging.write"
+		// ],
+		// the output becomes
+		// "oauthScopes": [
+		//   "https://www.googleapis.com/auth/devstorage.read_only",
+		//   "https://www.googleapis.com/auth/logging.write",
+		//   "https://www.googleapis.com/auth/monitoring"
+		// ],
+		hasMonitoring := false
+		hasLoggingWrite := false
+		for _, scope := range obj.OauthScopes {
+			if scope == "https://www.googleapis.com/auth/monitoring" {
+				hasMonitoring = true
+			}
+			if scope == "https://www.googleapis.com/auth/logging.write" {
+				hasLoggingWrite = true
+			}
+		}
+		if hasLoggingWrite && !hasMonitoring {
+			obj.OauthScopes = append(obj.OauthScopes, "https://www.googleapis.com/auth/monitoring")
+		}
 	}
 
 	if obj.UpgradeSettings == nil {
@@ -216,6 +255,15 @@ func (s *ClusterManagerV1) populateAutoprovisioningNodePoolDefaults(obj *pb.Auto
 			AutoRepair:  true,
 			AutoUpgrade: true,
 		}
+	}
+
+	// According to the proto:
+	//   This field is deprecated, min_cpu_platform should be specified using
+	//   `cloud.google.com/requested-min-cpu-platform` label selector on the pod.
+	//   To unset the min cpu platform field pass "automatic"
+	//   as field value.
+	if obj.MinCpuPlatform == "automatic" {
+		obj.MinCpuPlatform = ""
 	}
 
 	return nil

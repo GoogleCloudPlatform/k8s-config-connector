@@ -35,11 +35,10 @@ func iapsettingsFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".access_settings")
 	f.SpecFields.Insert(".application_settings")
 
-	// Identity fields
-	f.UnimplementedFields.Insert(".name")
+	f.IdentityField(".name")
 
-	// New fields that could potentially be added
-	f.UnimplementedFields.Insert(".access_settings.identity_sources")
+	f.Unimplemented_NotYetTriaged(".access_settings.identity_sources")
+	f.Unimplemented_NotYetTriaged(".access_settings.workforce_identity_settings")
 
 	return f
 }

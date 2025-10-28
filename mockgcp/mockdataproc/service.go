@@ -75,6 +75,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterAutoscalingPolicyServiceServer(grpcServer, &autoscalingPolicyServiceServer{MockService: s})
 	pb.RegisterWorkflowTemplateServiceServer(grpcServer, &workflowTemplateServer{MockService: s})
 	pb.RegisterBatchControllerServer(grpcServer, &batchControllerServer{MockService: s})
+	pb.RegisterJobControllerServer(grpcServer, &jobControllerServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -83,13 +84,22 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		pbhttp.RegisterAutoscalingPolicyServiceHandler,
 		pbhttp.RegisterWorkflowTemplateServiceHandler,
 		pbhttp.RegisterBatchControllerHandler,
+		pbhttp.RegisterJobControllerHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err
 	}
 
+	// Dataproc does not set Cache-Control
 	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
 		response.Header().Del("Cache-Control")
+	}
+
+	// Returns non-standard errors
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Errors = nil
+		}
 	}
 
 	return mux, nil

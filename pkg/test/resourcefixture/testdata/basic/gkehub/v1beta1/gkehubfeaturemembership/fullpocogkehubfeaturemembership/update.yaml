@@ -41,4 +41,20 @@ spec:
         templateLibrary:
           installation: "ALL"
       referentialRulesEnabled: true
-    version: "1.18.0"
+      deploymentConfigs:
+        mutation:
+          podTolerations:
+          - key: foo
+            operator: "Equal"
+            value: "admission"
+            effect: "NoSchedule"
+          podAffinity: ANTI_AFFINITY
+          replicaCount: 1
+          containerResources:
+            limits:
+              cpu: "1"
+              memory: 2000Mi
+            requests:
+              cpu: "100m"
+              memory: 20Mi
+    version: "1.21.0"

@@ -33,10 +33,10 @@ func speechPhraseSetFuzzer() fuzztesting.KRMFuzzer {
 		SpeechPhraseSetObservedState_FromProto, SpeechPhraseSetObservedState_ToProto,
 	)
 
-	f.SpecFields.Insert(".phrases")
-	f.SpecFields.Insert(".boost")
 	f.SpecFields.Insert(".display_name")
 	f.SpecFields.Insert(".annotations")
+	f.SpecFields.Insert(".phrases.boost")
+	f.SpecFields.Insert(".phrases")
 
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".state")
@@ -50,6 +50,7 @@ func speechPhraseSetFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".kms_key_version_name")
 
 	f.UnimplementedFields.Insert(".name") // special field
+	f.UnimplementedFields.Insert(".boost")
 
 	return f
 }

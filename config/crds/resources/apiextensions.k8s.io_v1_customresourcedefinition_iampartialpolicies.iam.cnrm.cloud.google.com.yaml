@@ -111,7 +111,7 @@ spec:
                               bigQueryConnectionConnectionRef:
                                 description: BigQueryConnectionConnection whose service
                                   account is to be bound to the role. Use the Type
-                                  field to specifie the connection type. For "spark"
+                                  field to specify the connection type. For "spark"
                                   connetion, the service account is in `status.observedState.spark.serviceAccountID`.
                                   For "cloudSQL" connection, the service account is
                                   in `status.observedState.cloudSQL.serviceAccountID`.
@@ -238,6 +238,9 @@ spec:
                 required:
                 - kind
                 type: object
+                x-kubernetes-validations:
+                - message: resourceRef is immutable
+                  rule: self == oldSelf
             required:
             - resourceRef
             type: object

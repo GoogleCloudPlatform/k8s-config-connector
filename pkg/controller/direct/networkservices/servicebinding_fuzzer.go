@@ -41,6 +41,7 @@ func networkServicesServiceBindingFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".update_time")
 
 	f.UnimplementedFields.Insert(".name")
+	f.UnimplementedFields.Insert(".service_id")
 
 	return f
 }

@@ -18,7 +18,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"path/filepath"
 	"regexp"
 	"sort"
 	"strconv"
@@ -129,13 +128,13 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			continue
 		}
 
-		krmVersion := filepath.Base(g.goPackage)
-
 		k := generatedFileKey{
 			GoPackage: g.goPackage,
 			FileName:  "types.generated.go",
 		}
 		out := g.getOutputFile(k)
+
+		out.goPackage = lastGoComponent(g.goPackage)
 
 		out.fileAnnotation = g.generatedFileAnnotation
 
@@ -159,8 +158,6 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			continue
 		}
 
-		out.packageName = krmVersion
-
 		WriteMessage(&out.body, msg)
 	}
 	return errors.Join(g.errors...)
@@ -173,13 +170,12 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 			continue
 		}
 
-		krmVersion := filepath.Base(g.goPackage)
-
 		k := generatedFileKey{
 			GoPackage: g.goPackage,
 			FileName:  "types.generated.go",
 		}
 		out := g.getOutputFile(k)
+		out.goPackage = lastGoComponent(g.goPackage)
 
 		out.fileAnnotation = g.generatedFileAnnotation
 
@@ -203,9 +199,7 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 			continue
 		}
 
-		out.packageName = krmVersion
-
-		WriteOutputMessage(&out.body, msgDetails)
+		WriteObservedStateMessage(&out.body, msgDetails)
 	}
 	return errors.Join(g.errors...)
 }
@@ -226,7 +220,7 @@ func WriteMessage(out io.Writer, msg protoreflect.MessageDescriptor) {
 	fmt.Fprintf(out, "}\n")
 }
 
-func WriteOutputMessage(out io.Writer, msgDetails *OutputMessageDetails) {
+func WriteObservedStateMessage(out io.Writer, msgDetails *OutputMessageDetails) {
 	msg := msgDetails.Message
 	goType := goNameForOutputProtoMessage(msg)
 
@@ -284,8 +278,8 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool)
 		goType = "[]byte"
 	}
 	// Special case for proto "google.protobuf.Struct" type
-	if goType == "*map[string]string" {
-		goType = "map[string]string"
+	if goType == "*apiextensionsv1.JSON" {
+		goType = "apiextensionsv1.JSON"
 	}
 
 	return goType, nil

@@ -30,8 +30,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/log"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"golang.org/x/oauth2"
@@ -41,6 +39,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -115,9 +114,9 @@ func (t *Harness) getCloudResourceManagerClient(httpClient *http.Client) *cloudr
 
 func (t *Harness) Init() {
 	// t := h.t
-	// log := klog.FromContext(ctx)
 
 	ctx := t.Ctx
+	log := klog.FromContext(ctx)
 
 	var mockCloudGRPCClientConnection *grpc.ClientConn
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "mock" {
@@ -159,23 +158,22 @@ func (t *Harness) Init() {
 	}
 
 	if os.Getenv("E2E_GCP_TARGET") == "mock" {
-		// // Some fixed-value fake org-ids for testing.
-		// // We used fixed values so that the output is predictable (for golden testing)
-		// testgcp.TestFolderID.Set("123451001")
-		// testgcp.TestFolder2ID.Set("123451002")
-		// testgcp.TestOrgID.Set("123450001")
-		// testgcp.IsolatedTestOrgName.Set("isolated-test-org.example.com")
-		// testgcp.TestBillingAccountID.Set("123456-777777-000001")
-		// testgcp.TestBillingAccountIDForBillingResources.Set("123456-777777-000003")
-		// testgcp.IAMIntegrationTestsOrganizationID.Set("123450002")
-		// testgcp.IAMIntegrationTestsBillingAccountID.Set("123456-777777-000002")
-		// testgcp.TestAttachedClusterName.Set("xks-cluster")
-		// testgcp.TestDependentNoNetworkProjectID.Set("mock-project")
-		// testgcp.TestDependentOrgProjectID.Set("example-project-01")
-		// testgcp.TestDependentFolderProjectID.Set("example-project-02")
-		// testgcp.FirestoreTestProject.Set("cnrm-test-firestore")
-		// testgcp.IdentityPlatformTestProject.Set("kcc-identity-platform")
-		// testgcp.RecaptchaEnterpriseTestProject.Set("kcc-recaptcha-enterprise")
+		// Some fixed-value fake org-ids for testing.
+		// We used fixed values so that the output is predictable (for golden testing)
+		testgcp.TestFolderID.Set("123451001")
+		testgcp.TestFolder2ID.Set("123451002")
+		testgcp.TestOrgID.Set("123450001")
+		testgcp.IsolatedTestOrgName.Set("isolated-test-org.example.com")
+		testgcp.TestBillingAccountID.Set("123456-777777-000001")
+		testgcp.TestBillingAccountIDForBillingResources.Set("123456-777777-000003")
+		testgcp.IAMIntegrationTestsOrganizationID.Set("123450002")
+		testgcp.IAMIntegrationTestsBillingAccountID.Set("123456-777777-000002")
+		testgcp.TestAttachedClusterName.Set("xks-cluster")
+		testgcp.TestDependentNoNetworkProjectID.Set("mock-project")
+		testgcp.TestDependentOrgProjectID.Set("example-project-01")
+		testgcp.TestDependentFolderProjectID.Set("example-project-02")
+		testgcp.IdentityPlatformTestProject.Set("kcc-identity-platform")
+		testgcp.RecaptchaEnterpriseTestProject.Set("kcc-recaptcha-enterprise")
 
 		crm := t.getCloudResourceManagerClient(t.HTTPClient)
 		req := &cloudresourcemanagerv1.Project{
@@ -186,7 +184,7 @@ func (t *Harness) Init() {
 			t.Fatalf("error creating project: %v", err)
 		}
 
-		for i := 0; i < 10; i++ {
+		for i := 0; i < 100; i++ {
 			if op.Done {
 				break
 			}
@@ -198,7 +196,7 @@ func (t *Harness) Init() {
 			op = latest
 		}
 		if !op.Done {
-			t.Fatalf("expected mock create project operation to be done")
+			t.Fatalf("FAIL: expected mock create project operation to be done (timed out after 5 seconds); operation state was %+v", op)
 		}
 		found, err := crm.Projects.Get(req.ProjectId).Context(ctx).Do()
 		if err != nil {
@@ -221,7 +219,6 @@ func (t *Harness) Init() {
 		// 	}
 		// 	testgcp.TestDependentOrgProjectID.Set("example-project-01")
 		// 	testgcp.TestDependentFolderProjectID.Set("example-project-02")
-		// 	testgcp.FirestoreTestProject.Set("cnrm-test-firestore")
 		// 	testgcp.IdentityPlatformTestProject.Set("kcc-identity-platform")
 		// 	testgcp.RecaptchaEnterpriseTestProject.Set("kcc-recaptcha-enterprise")
 		// 	testgcp.TestOrgID.Set("123450001")
@@ -289,7 +286,10 @@ func (t *Harness) Init() {
 		// Intercept (and log) DCL and direct(non TF) requests
 		if len(eventSinks) != 0 {
 			if t.HTTPClient == nil {
-				httpClient, err := google.DefaultClient(ctx, gcp.ClientScopes...)
+				clientScopes := []string{
+					"https://www.googleapis.com/auth/cloud-platform",
+				}
+				httpClient, err := google.DefaultClient(ctx, clientScopes...)
 				if err != nil {
 					t.Fatalf("error creating the http client to be used by DCL: %v", err)
 				}

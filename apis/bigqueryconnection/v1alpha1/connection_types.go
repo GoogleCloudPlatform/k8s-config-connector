@@ -15,8 +15,11 @@
 package v1alpha1
 
 import (
+	dataprocv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
+	metastorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/metastore/v1alpha1"
 	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	refsv1beta1secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
+	spannerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -162,7 +165,7 @@ type CloudSqlPropertiesSpec struct {
 type CloudSpannerPropertiesSpec struct {
 	// Reference to a spanner database ID.
 	// +required
-	DatabaseRef *refv1beta1.SpannerDatabaseRef `json:"databaseRef,omitempty"`
+	DatabaseRef *spannerv1beta1.SpannerDatabaseRef `json:"databaseRef,omitempty"`
 
 	// If parallelism should be used when reading from Cloud Spanner
 	UseParallelism *bool `json:"useParallelism,omitempty"`
@@ -217,7 +220,7 @@ type MetastoreServiceConfigSpec struct {
 	//  Example:
 	//
 	//  * `projects/[project_id]/locations/[region]/services/[service_id]`
-	MetastoreServiceRef *refv1beta1.MetastoreServiceRef `json:"metastoreServiceRef,omitempty"`
+	MetastoreServiceRef *metastorev1alpha1.ServiceRef `json:"metastoreServiceRef,omitempty"`
 }
 
 type SparkHistoryServerConfigSpec struct {
@@ -227,7 +230,7 @@ type SparkHistoryServerConfigSpec struct {
 	//  Example:
 	//
 	//  * `projects/[project_id]/regions/[region]/clusters/[cluster_name]`
-	DataprocClusterRef *refv1beta1.DataprocClusterRef `json:"dataprocClusterRef,omitempty"`
+	DataprocClusterRef *dataprocv1beta1.DataprocClusterRef `json:"dataprocClusterRef,omitempty"`
 }
 
 // +kcc:status:proto=google.cloud.bigquery.connection.v1.AwsProperties

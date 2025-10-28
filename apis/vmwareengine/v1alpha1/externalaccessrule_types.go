@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/vmwareengine/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -35,7 +36,7 @@ type ExternalAccessRule_IPRange struct {
 	//  have been reserved in the scope of this external access rule's parent
 	//  network policy.
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.ExternalAccessRule.IpRange.external_address
-	ExternalAddressRef *ExternalAddressRef `json:"externalAddressRef,omitempty"`
+	ExternalAddressRef *v1beta1.ExternalAddressRef `json:"externalAddressRef,omitempty"`
 }
 
 // VMwareEngineExternalAccessRuleSpec defines the desired state of VMwareEngineExternalAccessRule

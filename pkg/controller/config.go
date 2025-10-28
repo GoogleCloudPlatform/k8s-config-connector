@@ -26,10 +26,10 @@ import (
 
 // Common controller dependencies.
 type Deps struct {
-	TfProvider        *tfschema.Provider
-	TfLoader          *servicemappingloader.ServiceMappingLoader
-	DclConfig         *dcl.Config
-	DclConverter      *conversion.Converter
+	TFProvider        *tfschema.Provider
+	TFLoader          *servicemappingloader.ServiceMappingLoader
+	DCLConfig         *dcl.Config
+	DCLConverter      *conversion.Converter
 	Defaulters        []k8s.Defaulter
 	JitterGen         jitter.Generator
 	DependencyTracker *gcpwatch.DependencyTracker

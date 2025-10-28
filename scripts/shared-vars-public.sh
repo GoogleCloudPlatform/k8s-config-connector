@@ -25,7 +25,6 @@ CONFIG_CONNECTOR_BINARY_NAME=config-connector
 
 # dependency versions
 KUBEBUILDER_VERSION=2.3.1
-KUBEAPISERVER_VERSION=1.21.0
 KUSTOMIZE_VERSION=3.5.4
 
 # Supported GCP services API endpoints in Config Connector
@@ -55,6 +54,7 @@ SUPPORTED_SERVICES=(
   cloudfunctions.googleapis.com
   cloudkms.googleapis.com
   cloudresourcemanager.googleapis.com
+  cloudquotas.googleapis.com
   cloudscheduler.googleapis.com
   compute.googleapis.com
   connectgateway.googleapis.com
@@ -89,6 +89,7 @@ SUPPORTED_SERVICES=(
   networkconnectivity.googleapis.com
   networksecurity.googleapis.com
   networkservices.googleapis.com
+  notebooks.googleapis.com
   osconfig.googleapis.com
   opsconfigmonitoring.googleapis.com
   privateca.googleapis.com
@@ -106,11 +107,13 @@ SUPPORTED_SERVICES=(
   sourcerepo.googleapis.com
   stackdriver.googleapis.com
   spanner.googleapis.com
+  speech.googleapis.com
   sqladmin.googleapis.com
   storagetransfer.googleapis.com
   vpcaccess.googleapis.com
   vmwareengine.googleapis.com
   workstations.googleapis.com
+  storage.googleapis.com
 )
 
 # Regex used to match long running tests cases (10m+ runtime). Any new
@@ -144,6 +147,8 @@ securesourcemanagerinstancecmek|\
 securesourcemanagerrepositorybasic|\
 securesourcemanagerrepositoryfull|\
 sqlinstanceencryptionkey|\
+storageanywherecache-base|\
+storageanywherecache-full|\
 subnetconnector|\
 vertexaidatasetencryptionkey|\
 vertexaiendpointencryptionkey|\
@@ -151,3 +156,22 @@ vmwareengineexternalaccessrule|\
 vmwareengineexternaladdress|\
 vmwareengineprivatecloud|\
 zonalalloydbinstance"
+
+# Regex used to match long running samples tests cases (10m+ runtime). Any new
+# long-running samples tests should be added to this regex in alphabetical order.
+LONG_RUNNING_SAMPLES_TESTS_REGEX="autopilot-cluster|\
+autopilot-config-controller-instance|\
+basic-node-pool|\
+cloudidsendpoint|\
+datafusioninstance|\
+gkehubmembership|\
+managedkafkacluster-basic|\
+managedkafkacluster-cmek|\
+managedkafkatopic|\
+mysql-sql-instance|\
+private-ip-instance|\
+rediscluster|\
+securesourcemanagerinstance-cmek|\
+securesourcemanagerrepository|\
+sqlsslcert|\
+storageanywherecache"

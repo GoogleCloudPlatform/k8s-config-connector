@@ -23,6 +23,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
@@ -32,6 +33,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourcewatcher"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/execution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	"golang.org/x/sync/semaphore"
@@ -42,6 +45,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/rest"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	crcontroller "sigs.k8s.io/controller-runtime/pkg/controller"
@@ -62,20 +66,22 @@ func AddController(mgr manager.Manager, gvk schema.GroupVersionKind, model Model
 		return fmt.Errorf("model is nil for gvk %s", gvk)
 	}
 
-	reconciler, err := NewReconciler(mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model, deps.JitterGenerator)
+	reconciler, err := NewReconciler(mgr, immediateReconcileRequests, resourceWatcherRoutines, gvk, model, deps)
 	if err != nil {
 		return err
 	}
-	return add(mgr, reconciler, deps.ReconcilePredicate)
+	return add(mgr, reconciler)
 }
 
 // NewReconciler returns a new reconcile.Reconciler.
 func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.GenericEvent, resourceWatcherRoutines *semaphore.Weighted,
-	gvk schema.GroupVersionKind, model Model, jg jitter.Generator) (*DirectReconciler, error) {
+	gvk schema.GroupVersionKind, model Model, deps Deps) (*DirectReconciler, error) {
 	controllerName := strings.ToLower(gvk.Kind) + "-controller"
-	if jg == nil {
+
+	if deps.JitterGenerator == nil {
 		return nil, fmt.Errorf("jitter generator is not initialized")
 	}
+
 	r := DirectReconciler{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
 			mgr.GetClient(),
@@ -93,25 +99,24 @@ func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.Ge
 		ReconcilerMetrics: metrics.ReconcilerMetrics{
 			ResourceNameLabel: metrics.ResourceNameLabel,
 		},
-		jitterGenerator: jg,
+		jitterGenerator: deps.JitterGenerator,
+		defaulters:      deps.Defaulters,
+		iamDeps:         deps.IAMAdapterDeps,
 	}
 	return &r, nil
 }
 
 // add adds a new Controller to mgr with r as the reconcile.Reconciler.
-func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.Predicate) error {
+func add(mgr manager.Manager, r *DirectReconciler) error {
 	obj := &unstructured.Unstructured{}
 	obj.SetGroupVersionKind(r.gvk)
 
 	predicateList := []predicate.Predicate{kccpredicate.UnderlyingResourceOutOfSyncPredicate{}}
-	if reconcilePredicate != nil {
-		predicateList = append(predicateList, reconcilePredicate)
-	}
 
 	controllerBuilder := builder.
 		ControllerManagedBy(mgr).
 		Named(r.controllerName).
-		WithOptions(crcontroller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, RateLimiter: ratelimiter.NewRateLimiter()}).
+		WithOptions(crcontroller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles, SkipNameValidation: ptr.To(true), RateLimiter: ratelimiter.NewRateLimiter()}).
 		WatchesRawSource(
 			source.TypedChannel(r.immediateReconcileRequests, &handler.EnqueueRequestForObject{})).
 		For(obj, builder.OnlyMetadata, builder.WithPredicates(predicateList...))
@@ -149,9 +154,21 @@ func add(mgr manager.Manager, r *DirectReconciler, reconcilePredicate predicate.
 
 var _ reconcile.Reconciler = &DirectReconciler{}
 
+// Reconciler dependencies.
 type Deps struct {
-	JitterGenerator    jitter.Generator
-	ReconcilePredicate predicate.Predicate
+	Defaulters      []k8s.Defaulter
+	JitterGenerator jitter.Generator
+
+	// There are Dependencies for Adapters in particular (not the reconcilers)
+	IAMAdapterDeps *IAMAdapterDeps
+}
+
+// TODO(kcc-team): we want to remove these in the future
+// In a world where there are no TF or DCL based IAM resources, we don't need
+// these dependencies and the "special" IAM model.
+type IAMAdapterDeps struct {
+	ControllerDeps *controller.Deps
+	KubeClient     client.Client
 }
 
 // DirectReconciler is a reconciler for reconciling resources that support the Model/Adapter pattern.
@@ -169,6 +186,13 @@ type DirectReconciler struct {
 	jitterGenerator            jitter.Generator
 
 	controllerName string
+
+	defaulters []k8s.Defaulter
+	// For IAM controllers
+	iamDeps *IAMAdapterDeps
+
+	// reconcilePredicate is the predicate which determines if we should be reconciling this object
+	reconcilePredicate predicate.Predicate
 }
 
 type reconcileContext struct {
@@ -190,6 +214,8 @@ func (r *DirectReconciler) mapSecretToResources(ctx context.Context, obj client.
 
 // Reconcile checks k8s for the current state of the resource.
 func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Request) (result reconcile.Result, err error) {
+	ctx = metricstransport.WithControllerName(ctx, r.controllerName)
+
 	logger := log.FromContext(ctx)
 
 	logger.Info("Running reconcile", "resource", request.NamespacedName)
@@ -211,11 +237,14 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 		// Error reading the object - requeue the request.
 		return reconcile.Result{}, err
 	}
+
 	runCtx := &reconcileContext{
 		Reconciler:     r,
 		gvk:            r.gvk,
 		NamespacedName: request.NamespacedName,
 	}
+	structuredreporting.ReportReconcileStart(ctx, obj)
+	defer structuredreporting.ReportReconcileEnd(ctx, obj, result, err)
 
 	skip, err := resourceactuation.ShouldSkip(obj)
 	if err != nil {
@@ -277,13 +306,40 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		return false, fmt.Errorf("unknown actuation mode %v", am)
 	}
 
-	adapter, err := r.Reconciler.model.AdapterForObject(ctx, r.Reconciler.Client, u)
-	if err != nil {
-		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
+	// Apply defaulters
+	{
+		changeCount := 0
+		for _, defaulter := range r.Reconciler.defaulters {
+			changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeDirect, u)
+			if err != nil {
+				return false, fmt.Errorf("applying defaults in the directbase reconciler: %w", err)
+			}
+			if changed {
+				changeCount++
+			}
+		}
+		if changeCount > 0 {
+			if err := r.Reconciler.Update(ctx, u); err != nil {
+				return false, fmt.Errorf("applying update after setting defaults: %w", err)
+			}
+		}
+	}
+
+	var adapter Adapter
+	var adapteErr error
+	switch m := r.Reconciler.model.(type) {
+	case IAMModel:
+		adapter, adapteErr = m.IAMAdapterForObject(ctx, r.Reconciler.Client, u, r.Reconciler.iamDeps)
+	default:
+		// The default case handles any other type that implements the base model interface.
+		adapter, adapteErr = r.Reconciler.model.AdapterForObject(ctx, r.Reconciler.Client, u)
+	}
+	if adapteErr != nil {
+		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(adapteErr); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
 			return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
 		}
-		return false, r.handleUpdateFailed(ctx, u, err)
+		return false, r.handleUpdateFailed(ctx, u, adapteErr)
 	}
 
 	// To create, update or delete the GCP object, we need to get the GCP object first.
@@ -293,15 +349,30 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
-			return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
+
+			// if we have failed to "FIND" the resource and that is caused by an error deemed to be about its unresolved
+			// dependencies BUT the object is being deleted right now AND its dependecies have been deleted, then we will
+			// never encounter a "ready" condition for its dependencies
+			if !u.GetDeletionTimestamp().IsZero() {
+				resource, err := toK8sResource(u)
+				if err != nil {
+					return false, fmt.Errorf("error converting k8s resource while handling unresolvable dependencies event: %w", err)
+				}
+
+				return true, r.Reconciler.HandleUnresolvableDeps(ctx, resource, unwrappedErr)
+			}
+
+			return false, r.handleUpdateFailed(ctx, u, err)
 		}
-		return false, r.handleUpdateFailed(ctx, u, err)
 	}
 
 	defer execution.RecoverWithInternalError(&err)
 	if !u.GetDeletionTimestamp().IsZero() {
+		logger.Info("finalizing resource deletion", "resource", k8s.GetNamespacedName(u))
 		if !k8s.HasFinalizer(u, k8s.ControllerFinalizerName) {
 			// Resource has no controller finalizer; no finalization necessary
+			logger.Info("no controller finalizer; no finalization necessary",
+				"resource", k8s.GetNamespacedName(u))
 			return false, nil
 		}
 		if k8s.HasFinalizer(u, k8s.DeletionDefenderFinalizerName) {
@@ -309,21 +380,29 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 			logger.Info("deletion defender has not yet finalized; cannot delete yet", "resource", k8s.GetNamespacedName(u))
 			return false, nil
 		}
-		if !k8s.HasAbandonAnnotation(u) {
-			deleteOp := NewDeleteOperation(r.Reconciler.Client, u)
-			if _, err := adapter.Delete(ctx, deleteOp); err != nil {
-				if !errors.Is(err, k8s.ErrIAMNotFound) && !k8s.IsReferenceNotFoundError(err) {
-					if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
-						logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
-						resource, err := toK8sResource(u)
-						if err != nil {
-							return false, fmt.Errorf("error converting k8s resource while handling unresolvable dependencies event: %w", err)
-						}
-						// Requeue resource for reconciliation with exponential backoff applied
-						return true, r.Reconciler.HandleUnresolvableDeps(ctx, resource, unwrappedErr)
+		if k8s.HasAbandonAnnotation(u) {
+			logger.Info("deletion policy set to abandon; abandoning underlying resource", "resource", k8s.GetNamespacedName(u))
+			return false, r.handleDeleted(ctx, u)
+		}
+		if !existsAlready {
+			logger.Info("underlying resource does not exist; no API call necessary", "resource", k8s.GetNamespacedName(u))
+			return false, r.handleDeleted(ctx, u)
+		}
+
+		logger.Info("deleting underlying resource", "resource", k8s.GetNamespacedName(u))
+		deleteOp := NewDeleteOperation(r.Reconciler.Client, u)
+		if _, err := adapter.Delete(ctx, deleteOp); err != nil {
+			if !errors.Is(err, k8s.ErrIAMNotFound) && !k8s.IsReferenceNotFoundError(err) {
+				if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
+					logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
+					resource, err := toK8sResource(u)
+					if err != nil {
+						return false, fmt.Errorf("error converting k8s resource while handling unresolvable dependencies event: %w", err)
 					}
-					return false, r.handleDeleteFailed(ctx, u, err)
+					// Requeue resource for reconciliation with exponential backoff applied
+					return true, r.Reconciler.HandleUnresolvableDeps(ctx, resource, unwrappedErr)
 				}
+				return false, r.handleDeleteFailed(ctx, u, err)
 			}
 		}
 		return false, r.handleDeleted(ctx, u)
@@ -474,7 +553,7 @@ func (r *reconcileContext) handleUnresolvableDeps(ctx context.Context, policy *u
 		ctx, cancel := context.WithTimeout(context.TODO(), timeoutPeriod)
 		defer cancel()
 		logger.Info("starting wait with timeout on resource's reference", "timeout", timeoutPeriod)
-		if err := watcher.WaitForResourceToBeReady(ctx, refNN, refGVK); err != nil {
+		if err := watcher.WaitForResourceToBeReadyOrDeleted(ctx, refNN, refGVK); err != nil {
 			logger.Error(err, "error while waiting for resource's reference to be ready")
 			return
 		}

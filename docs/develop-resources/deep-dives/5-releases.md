@@ -1,14 +1,10 @@
 # 5. Release
 
-## 5.1 Turn on your Direct controller (TF/DCL Beta Only)
+## 5.1 Make Direct Controller the Default for Beta
 
-### For TF-based Beta resource
+When a resource is promoted to Beta, the `direct` controller should typically become the default. This is achieved by ensuring the `v1beta1` CRD does not contain the `cnrm.cloud.google.com/tf2crd` or `cnrm.cloud.google.com/dcl2crd` labels, and then regenerating the static controller configuration.
 
-* Remove the `cnrm.cloud.google.com/tf2crd: "true"` label from the CRD will turn on SciFi controller. [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/196a4b9a28b59b17936a443d5b36bb65f3c42fd9/apis/apikeys/v1alpha1/apikey_type.go#L44)
-
-### For DCL-based Beta resource
-
-* Remove the `cnrm.cloud.google.com/dcl2crd: "true"` label from the CRD will turn on SciFi controller.
+For detailed instructions, please see [4-add-controller.md](./4-add-controller.md), under "Scenario 3: Promoting an alpha direct resource to beta".
 
 ## 5.2 Bump from v1alpha1 to v1beta1
 
@@ -33,9 +29,15 @@
 
 ## 5.4 Add samples 
 
-1.  In [config/samples/resources](config/samples/resources), create a new
-    directory for the resource's samples: `mkdir spannerinstance`.
-1.  Follow the [sample guidelines](./../../../README.Samples.md) and create sample(s) for the resource.
+1.  Make sure a <kind> directory exist under [config/samples/resources](config/samples/resources).
+    For example, if the kind is `spannerinstance`, the directory should be `config/samples/resources/spannerinstance`.
+1.  Make sure a a sample YAML file named `<service>-<version>-<kind>.yaml` exist under the directory. 
+1.  Look at example in pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<kind>-minimal/create.yaml to fill in the content for the sample YAML.
+1.  Fulfill the following requirements for the sample YAML file (the path is in JSON format).
+    - The `.metadata.name` is in the format `<kind>-sample` (lower case).
+    - If the resource has a `.spec.projectRef` field, use `projects/${PROJECT_ID?}` literally as `.spec.projectRef.external` value. 
+1.  Enable your service API in [SUPPORTED_SERVICES](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/scripts/shared-vars-public.sh#L32) if it's not there.
+1.  If the test takes more than 10 minutes to finish, add it to LONG_RUNNING_SAMPLES_TESTS_REGEX in [./scripts/shared-vars-public.sh](./scripts/shared-vars-public.sh).
 
 ### Run/Disable Sample Tests
 
@@ -45,7 +47,7 @@ Run the sample
 go test -v -tags=integration ./config/tests/samples/create -test.run TestAll -run-tests <your_sample_test_name>
 ```
 
-`your_sample_test_name` is the sample suite directory name, i.e `scheduler-job-pubsub`
+`your_sample_test_name` is the sample suite directory name, i.e `spannerinstance`
 
 Replace the environment variables to real values before running the tests.
 
@@ -58,6 +60,7 @@ tell the script which sample to use for generating snippets. Update the
 [pkg/snippet/snippetgeneration/snippetgeneration.go](./../../../pkg/snippet/snippetgeneration/snippetgeneration.go).
 
 ## 5.5 Add reference document 
+
 
 All beta resource can have a Google Reference documentation Connector 
 [reference doc](https://cloud.google.com/config-connector/docs/reference/overview). Please follow the steps to add the reference doc.
@@ -75,7 +78,8 @@ All beta resource can have a Google Reference documentation Connector
     [scripts/generate-google3-docs/resource-reference/generated/resource-docs/secretmanager/secretmanagersecret.md](./../../../scripts/generate-google3-docs/resource-reference/generated/resource-docs/secretmanager/secretmanagersecret.md)
 1.  Update
     [scripts/generate-google3-docs/resource-reference/overview.md](./../../../scripts/generate-google3-docs/resource-reference/overview.md)
-    by adding a row for your resource to the resource table.
+    by adding a row for your resource to the resource table. Note that {{spanner_name}} is the template variable for Cloud Spanner. 
+    The template variables for gcp product names can be found [here](https://source.corp.google.com/piper///depot/google3/third_party/devsite/cloud/en/_shared/_product_names.html).
     
 1.  Update
     [scripts/generate-google3-docs/resource-reference/_toc.yaml](./../../../scripts/generate-google3-docs/resource-reference/_toc.yaml)

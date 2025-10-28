@@ -99,16 +99,16 @@ spec:
                                       - external
                                     properties:
                                       external:
-                                        description: The MonitoringAlertPolicy link
-                                          in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]",
-                                          when not managed by Config Connector.
+                                        description: The value of an externally managed
+                                          MonitoringAlertPolicy resource. Should be
+                                          in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".
                                         type: string
                                       name:
-                                        description: The `name` field of a `MonitoringAlertPolicy`
+                                        description: The name of a MonitoringAlertPolicy
                                           resource.
                                         type: string
                                       namespace:
-                                        description: The `namespace` field of a `MonitoringAlertPolicy`
+                                        description: The namespace of a MonitoringAlertPolicy
                                           resource.
                                         type: string
                                     type: object
@@ -144,15 +144,12 @@ spec:
                                           - external
                                         required:
                                         - name
-                                        - kind
                                       - not:
                                           anyOf:
                                           - required:
                                             - name
                                           - required:
                                             - namespace
-                                          - required:
-                                            - kind
                                         required:
                                         - external
                                       properties:
@@ -226,6 +223,10 @@ spec:
                                     description: Optional. A list of alert policies
                                       to filter the incident list by.
                                     items:
+                                      description: MonitoringAlertPolicyRef defines
+                                        the resource reference to MonitoringAlertPolicy,
+                                        which "External" field holds the GCP identifier
+                                        for the KRM object.
                                       oneOf:
                                       - not:
                                           required:
@@ -242,17 +243,17 @@ spec:
                                         - external
                                       properties:
                                         external:
-                                          description: The MonitoringAlertPolicy link
-                                            in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]",
-                                            when not managed by Config Connector.
+                                          description: The value of an externally
+                                            managed MonitoringAlertPolicy resource.
+                                            Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".
                                           type: string
                                         name:
-                                          description: The `name` field of a `MonitoringAlertPolicy`
+                                          description: The name of a MonitoringAlertPolicy
                                             resource.
                                           type: string
                                         namespace:
-                                          description: The `namespace` field of a
-                                            `MonitoringAlertPolicy` resource.
+                                          description: The namespace of a MonitoringAlertPolicy
+                                            resource.
                                           type: string
                                       type: object
                                     type: array
@@ -2150,16 +2151,16 @@ spec:
                                 - external
                               properties:
                                 external:
-                                  description: The MonitoringAlertPolicy link in the
-                                    form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]",
-                                    when not managed by Config Connector.
+                                  description: The value of an externally managed
+                                    MonitoringAlertPolicy resource. Should be in the
+                                    format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".
                                   type: string
                                 name:
-                                  description: The `name` field of a `MonitoringAlertPolicy`
+                                  description: The name of a MonitoringAlertPolicy
                                     resource.
                                   type: string
                                 namespace:
-                                  description: The `namespace` field of a `MonitoringAlertPolicy`
+                                  description: The namespace of a MonitoringAlertPolicy
                                     resource.
                                   type: string
                               type: object
@@ -2193,15 +2194,12 @@ spec:
                                     - external
                                   required:
                                   - name
-                                  - kind
                                 - not:
                                     anyOf:
                                     - required:
                                       - name
                                     - required:
                                       - namespace
-                                    - required:
-                                      - kind
                                   required:
                                   - external
                                 properties:
@@ -2274,6 +2272,10 @@ spec:
                               description: Optional. A list of alert policies to filter
                                 the incident list by.
                               items:
+                                description: MonitoringAlertPolicyRef defines the
+                                  resource reference to MonitoringAlertPolicy, which
+                                  "External" field holds the GCP identifier for the
+                                  KRM object.
                                 oneOf:
                                 - not:
                                     required:
@@ -2290,16 +2292,16 @@ spec:
                                   - external
                                 properties:
                                   external:
-                                    description: The MonitoringAlertPolicy link in
-                                      the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]",
-                                      when not managed by Config Connector.
+                                    description: The value of an externally managed
+                                      MonitoringAlertPolicy resource. Should be in
+                                      the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".
                                     type: string
                                   name:
-                                    description: The `name` field of a `MonitoringAlertPolicy`
+                                    description: The name of a MonitoringAlertPolicy
                                       resource.
                                     type: string
                                   namespace:
-                                    description: The `namespace` field of a `MonitoringAlertPolicy`
+                                    description: The namespace of a MonitoringAlertPolicy
                                       resource.
                                     type: string
                                 type: object
@@ -4017,16 +4019,16 @@ spec:
                                     - external
                                   properties:
                                     external:
-                                      description: The MonitoringAlertPolicy link
-                                        in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]",
-                                        when not managed by Config Connector.
+                                      description: The value of an externally managed
+                                        MonitoringAlertPolicy resource. Should be
+                                        in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".
                                       type: string
                                     name:
-                                      description: The `name` field of a `MonitoringAlertPolicy`
+                                      description: The name of a MonitoringAlertPolicy
                                         resource.
                                       type: string
                                     namespace:
-                                      description: The `namespace` field of a `MonitoringAlertPolicy`
+                                      description: The namespace of a MonitoringAlertPolicy
                                         resource.
                                       type: string
                                   type: object
@@ -4061,15 +4063,12 @@ spec:
                                         - external
                                       required:
                                       - name
-                                      - kind
                                     - not:
                                         anyOf:
                                         - required:
                                           - name
                                         - required:
                                           - namespace
-                                        - required:
-                                          - kind
                                       required:
                                       - external
                                     properties:
@@ -4143,6 +4142,10 @@ spec:
                                   description: Optional. A list of alert policies
                                     to filter the incident list by.
                                   items:
+                                    description: MonitoringAlertPolicyRef defines
+                                      the resource reference to MonitoringAlertPolicy,
+                                      which "External" field holds the GCP identifier
+                                      for the KRM object.
                                     oneOf:
                                     - not:
                                         required:
@@ -4159,16 +4162,16 @@ spec:
                                       - external
                                     properties:
                                       external:
-                                        description: The MonitoringAlertPolicy link
-                                          in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]",
-                                          when not managed by Config Connector.
+                                        description: The value of an externally managed
+                                          MonitoringAlertPolicy resource. Should be
+                                          in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".
                                         type: string
                                       name:
-                                        description: The `name` field of a `MonitoringAlertPolicy`
+                                        description: The name of a MonitoringAlertPolicy
                                           resource.
                                         type: string
                                       namespace:
-                                        description: The `namespace` field of a `MonitoringAlertPolicy`
+                                        description: The namespace of a MonitoringAlertPolicy
                                           resource.
                                         type: string
                                     type: object
@@ -6030,16 +6033,16 @@ spec:
                                       - external
                                     properties:
                                       external:
-                                        description: The MonitoringAlertPolicy link
-                                          in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]",
-                                          when not managed by Config Connector.
+                                        description: The value of an externally managed
+                                          MonitoringAlertPolicy resource. Should be
+                                          in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".
                                         type: string
                                       name:
-                                        description: The `name` field of a `MonitoringAlertPolicy`
+                                        description: The name of a MonitoringAlertPolicy
                                           resource.
                                         type: string
                                       namespace:
-                                        description: The `namespace` field of a `MonitoringAlertPolicy`
+                                        description: The namespace of a MonitoringAlertPolicy
                                           resource.
                                         type: string
                                     type: object
@@ -6075,15 +6078,12 @@ spec:
                                           - external
                                         required:
                                         - name
-                                        - kind
                                       - not:
                                           anyOf:
                                           - required:
                                             - name
                                           - required:
                                             - namespace
-                                          - required:
-                                            - kind
                                         required:
                                         - external
                                       properties:
@@ -6157,6 +6157,10 @@ spec:
                                     description: Optional. A list of alert policies
                                       to filter the incident list by.
                                     items:
+                                      description: MonitoringAlertPolicyRef defines
+                                        the resource reference to MonitoringAlertPolicy,
+                                        which "External" field holds the GCP identifier
+                                        for the KRM object.
                                       oneOf:
                                       - not:
                                           required:
@@ -6173,17 +6177,17 @@ spec:
                                         - external
                                       properties:
                                         external:
-                                          description: The MonitoringAlertPolicy link
-                                            in the form "projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]",
-                                            when not managed by Config Connector.
+                                          description: The value of an externally
+                                            managed MonitoringAlertPolicy resource.
+                                            Should be in the format "projects/{{projectID}}/alertPolicies/{{alertPolicyID}}".
                                           type: string
                                         name:
-                                          description: The `name` field of a `MonitoringAlertPolicy`
+                                          description: The name of a MonitoringAlertPolicy
                                             resource.
                                           type: string
                                         namespace:
-                                          description: The `namespace` field of a
-                                            `MonitoringAlertPolicy` resource.
+                                          description: The namespace of a MonitoringAlertPolicy
+                                            resource.
                                           type: string
                                       type: object
                                     type: array

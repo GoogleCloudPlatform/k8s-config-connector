@@ -624,6 +624,9 @@ X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
+  "encryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
   "etag": "abcdef0123A=",
   "friendlyName": "referencedtable${uniqueId}",
   "id": "000000000000000000000",
@@ -703,6 +706,9 @@ X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
+  "encryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
   "etag": "abcdef0123A=",
   "friendlyName": "referencedtable${uniqueId}",
   "id": "000000000000000000000",
@@ -768,7 +774,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -799,7 +805,7 @@ X-Xss-Protection: 0
 
 POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "clustering": {
@@ -815,10 +821,9 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
   "expirationTime": "2024-09-01T12:34:56.123456Z",
   "friendlyName": "BigQueryTable Full Example",
   "labels": {
-    "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "spec-label-key1": "value1",
+    "spec-label-key2": "value2"
   },
   "requirePartitionFilter": true,
   "schema": {
@@ -950,10 +955,9 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
-    "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "spec-label-key1": "value1",
+    "spec-label-key2": "value2"
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
@@ -1077,7 +1081,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1107,10 +1111,9 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
-    "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "spec-label-key1": "value1",
+    "spec-label-key2": "value2"
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
@@ -1226,6 +1229,7 @@ X-Xss-Protection: 0
   "timePartitioning": {
     "expirationMs": "86400000",
     "field": "date",
+    "requirePartitionFilter": true,
     "type": "DAY"
   },
   "type": "TABLE"
@@ -1235,510 +1239,141 @@ X-Xss-Protection: 0
 
 PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "clustering": {
-    "fields": [
-      "name",
-      "post_abbr"
-    ]
-  },
-  "description": "A detailed example of a BigQuery Table resource.",
-  "encryptionConfiguration": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "expirationTime": "2024-09-01T12:34:56.123456Z",
-  "friendlyName": "BigQueryTable Full Example",
-  "labels": {
-    "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
-    "managed-by-cnrm": "true"
-  },
-  "requirePartitionFilter": true,
-  "schema": {
-    "fields": [
-      {
-        "mode": "REQUIRED",
-        "name": "name",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "name": "post_abbr",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "name": "date",
-        "policyTags": {},
-        "type": "DATE"
-      },
-      {
-        "name": "col_numeric",
-        "policyTags": {},
-        "precision": "38",
-        "scale": "9",
-        "type": "NUMERIC"
-      },
-      {
-        "name": "col_bignumeric",
-        "policyTags": {},
-        "precision": "76",
-        "scale": "38",
-        "type": "BIGNUMERIC"
-      },
-      {
-        "name": "col_geography",
-        "policyTags": {},
-        "type": "GEOGRAPHY"
-      },
-      {
-        "name": "col_timestamp",
-        "policyTags": {},
-        "type": "TIMESTAMP"
-      },
-      {
-        "fields": [
-          {
-            "name": "sub_col1",
-            "policyTags": {},
-            "type": "INTEGER"
-          },
-          {
-            "name": "sub_col2",
-            "policyTags": {},
-            "type": "BOOLEAN"
-          }
-        ],
-        "name": "col_record",
-        "type": "RECORD"
-      },
-      {
-        "mode": "REPEATED",
-        "name": "col_array",
-        "policyTags": {},
-        "type": "INTEGER"
-      }
-    ]
-  },
-  "tableConstraints": {
-    "foreignKeys": [
-      {
-        "columnReferences": [
-          {
-            "referencedColumn": "state_code",
-            "referencingColumn": "post_abbr"
-          }
-        ],
-        "name": "fk_constraint_example",
-        "referencedTable": {
-          "datasetId": "bigquerydataset${uniqueId}",
-          "projectId": "${projectId}",
-          "tableId": "referencedtable${uniqueId}"
-        }
-      },
-      {
-        "columnReferences": [
-          {
-            "referencedColumn": "dt",
-            "referencingColumn": "date"
-          }
-        ],
-        "name": "fk_constraint_example_2",
-        "referencedTable": {
-          "datasetId": "bigquerydataset${uniqueId}",
-          "projectId": "${projectId}",
-          "tableId": "referencedtable${uniqueId}"
-        }
-      }
-    ],
-    "primaryKey": {
-      "columns": [
-        "name"
-      ]
-    }
-  },
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable-${uniqueId}"
-  },
-  "timePartitioning": {
-    "expirationMs": "86400000",
-    "field": "date",
-    "type": "DAY"
-  }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "clustering": {
-    "fields": [
-      "name",
-      "post_abbr"
-    ]
-  },
-  "creationTime": "123456789",
-  "description": "A detailed example of a BigQuery Table resource.",
-  "encryptionConfiguration": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "etag": "abcdef0123A=",
-  "expirationTime": "2024-09-01T12:34:56.123456Z",
-  "friendlyName": "BigQueryTable Full Example",
-  "id": "000000000000000000000",
-  "kind": "bigquery#table",
-  "labels": {
-    "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "numActiveLogicalBytes": "0",
-  "numBytes": "0",
-  "numLongTermBytes": "0",
-  "numLongTermLogicalBytes": "0",
-  "numRows": "0",
-  "numTotalLogicalBytes": "0",
-  "partitionDefinition": {
-    "partitionedColumn": [
-      {
-        "field": "date"
-      }
-    ]
-  },
-  "requirePartitionFilter": true,
-  "schema": {
-    "fields": [
-      {
-        "mode": "REQUIRED",
-        "name": "name",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "name": "post_abbr",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "name": "date",
-        "policyTags": {},
-        "type": "DATE"
-      },
-      {
-        "name": "col_numeric",
-        "policyTags": {},
-        "precision": "38",
-        "scale": "9",
-        "type": "NUMERIC"
-      },
-      {
-        "name": "col_bignumeric",
-        "policyTags": {},
-        "precision": "76",
-        "scale": "38",
-        "type": "BIGNUMERIC"
-      },
-      {
-        "name": "col_geography",
-        "policyTags": {},
-        "type": "GEOGRAPHY"
-      },
-      {
-        "name": "col_timestamp",
-        "policyTags": {},
-        "type": "TIMESTAMP"
-      },
-      {
-        "fields": [
-          {
-            "name": "sub_col1",
-            "policyTags": {},
-            "type": "INTEGER"
-          },
-          {
-            "name": "sub_col2",
-            "policyTags": {},
-            "type": "BOOLEAN"
-          }
-        ],
-        "name": "col_record",
-        "type": "RECORD"
-      },
-      {
-        "mode": "REPEATED",
-        "name": "col_array",
-        "policyTags": {},
-        "type": "INTEGER"
-      }
-    ]
-  },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
-  "tableConstraints": {
-    "foreignKeys": [
-      {
-        "columnReferences": [
-          {
-            "referencedColumn": "state_code",
-            "referencingColumn": "post_abbr"
-          }
-        ],
-        "name": "fk_constraint_example",
-        "referencedTable": {
-          "datasetId": "bigquerydataset${uniqueId}",
-          "projectId": "${projectId}",
-          "tableId": "referencedtable${uniqueId}"
-        }
-      },
-      {
-        "columnReferences": [
-          {
-            "referencedColumn": "dt",
-            "referencingColumn": "date"
-          }
-        ],
-        "name": "fk_constraint_example_2",
-        "referencedTable": {
-          "datasetId": "bigquerydataset${uniqueId}",
-          "projectId": "${projectId}",
-          "tableId": "referencedtable${uniqueId}"
-        }
-      }
-    ],
-    "primaryKey": {
-      "columns": [
-        "name"
-      ]
-    }
-  },
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable-${uniqueId}"
-  },
-  "timePartitioning": {
-    "expirationMs": "86400000",
-    "field": "date",
-    "type": "DAY"
-  },
-  "type": "TABLE"
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "clustering": {
-    "fields": [
-      "name",
-      "post_abbr"
-    ]
-  },
-  "creationTime": "123456789",
-  "description": "A detailed example of a BigQuery Table resource.",
-  "encryptionConfiguration": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "etag": "abcdef0123A=",
-  "expirationTime": "2024-09-01T12:34:56.123456Z",
-  "friendlyName": "BigQueryTable Full Example",
-  "id": "000000000000000000000",
-  "kind": "bigquery#table",
-  "labels": {
-    "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "numActiveLogicalBytes": "0",
-  "numBytes": "0",
-  "numLongTermBytes": "0",
-  "numLongTermLogicalBytes": "0",
-  "numRows": "0",
-  "numTotalLogicalBytes": "0",
-  "partitionDefinition": {
-    "partitionedColumn": [
-      {
-        "field": "date"
-      }
-    ]
-  },
-  "requirePartitionFilter": true,
-  "schema": {
-    "fields": [
-      {
-        "mode": "REQUIRED",
-        "name": "name",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "name": "post_abbr",
-        "policyTags": {},
-        "type": "STRING"
-      },
-      {
-        "name": "date",
-        "policyTags": {},
-        "type": "DATE"
-      },
-      {
-        "name": "col_numeric",
-        "policyTags": {},
-        "precision": "38",
-        "scale": "9",
-        "type": "NUMERIC"
-      },
-      {
-        "name": "col_bignumeric",
-        "policyTags": {},
-        "precision": "76",
-        "scale": "38",
-        "type": "BIGNUMERIC"
-      },
-      {
-        "name": "col_geography",
-        "policyTags": {},
-        "type": "GEOGRAPHY"
-      },
-      {
-        "name": "col_timestamp",
-        "policyTags": {},
-        "type": "TIMESTAMP"
-      },
-      {
-        "fields": [
-          {
-            "name": "sub_col1",
-            "policyTags": {},
-            "type": "INTEGER"
-          },
-          {
-            "name": "sub_col2",
-            "policyTags": {},
-            "type": "BOOLEAN"
-          }
-        ],
-        "name": "col_record",
-        "type": "RECORD"
-      },
-      {
-        "mode": "REPEATED",
-        "name": "col_array",
-        "policyTags": {},
-        "type": "INTEGER"
-      }
-    ]
-  },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
-  "tableConstraints": {
-    "foreignKeys": [
-      {
-        "columnReferences": [
-          {
-            "referencedColumn": "state_code",
-            "referencingColumn": "post_abbr"
-          }
-        ],
-        "name": "fk_constraint_example",
-        "referencedTable": {
-          "datasetId": "bigquerydataset${uniqueId}",
-          "projectId": "${projectId}",
-          "tableId": "referencedtable${uniqueId}"
-        }
-      },
-      {
-        "columnReferences": [
-          {
-            "referencedColumn": "dt",
-            "referencingColumn": "date"
-          }
-        ],
-        "name": "fk_constraint_example_2",
-        "referencedTable": {
-          "datasetId": "bigquerydataset${uniqueId}",
-          "projectId": "${projectId}",
-          "tableId": "referencedtable${uniqueId}"
-        }
-      }
-    ],
-    "primaryKey": {
-      "columns": [
-        "name"
-      ]
-    }
-  },
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable-${uniqueId}"
-  },
-  "timePartitioning": {
-    "expirationMs": "86400000",
-    "field": "date",
-    "type": "DAY"
-  },
-  "type": "TABLE"
-}
-
----
-
-POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
-  "options": {
-    "requestedPolicyVersion": 1
+  "clustering": {
+    "fields": [
+      "name",
+      "post_abbr"
+    ]
+  },
+  "description": "A detailed example of a BigQuery Table resource.",
+  "encryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
+  "expirationTime": "2024-09-01T12:34:56.123456Z",
+  "friendlyName": "BigQueryTable Full Example",
+  "labels": {
+    "managed-by-cnrm": "true",
+    "spec-label-key1": "updated-value1",
+    "spec-label-key2": "updated-value2"
+  },
+  "requirePartitionFilter": true,
+  "schema": {
+    "fields": [
+      {
+        "mode": "REQUIRED",
+        "name": "name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "name": "post_abbr",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "name": "date",
+        "policyTags": {},
+        "type": "DATE"
+      },
+      {
+        "name": "col_numeric",
+        "policyTags": {},
+        "precision": "38",
+        "scale": "9",
+        "type": "NUMERIC"
+      },
+      {
+        "name": "col_bignumeric",
+        "policyTags": {},
+        "precision": "76",
+        "scale": "38",
+        "type": "BIGNUMERIC"
+      },
+      {
+        "name": "col_geography",
+        "policyTags": {},
+        "type": "GEOGRAPHY"
+      },
+      {
+        "name": "col_timestamp",
+        "policyTags": {},
+        "type": "TIMESTAMP"
+      },
+      {
+        "fields": [
+          {
+            "name": "sub_col1",
+            "policyTags": {},
+            "type": "INTEGER"
+          },
+          {
+            "name": "sub_col2",
+            "policyTags": {},
+            "type": "BOOLEAN"
+          }
+        ],
+        "name": "col_record",
+        "type": "RECORD"
+      },
+      {
+        "mode": "REPEATED",
+        "name": "col_array",
+        "policyTags": {},
+        "type": "INTEGER"
+      }
+    ]
+  },
+  "tableConstraints": {
+    "foreignKeys": [
+      {
+        "columnReferences": [
+          {
+            "referencedColumn": "state_code",
+            "referencingColumn": "post_abbr"
+          }
+        ],
+        "name": "fk_constraint_example",
+        "referencedTable": {
+          "datasetId": "bigquerydataset${uniqueId}",
+          "projectId": "${projectId}",
+          "tableId": "referencedtable${uniqueId}"
+        }
+      },
+      {
+        "columnReferences": [
+          {
+            "referencedColumn": "dt",
+            "referencingColumn": "date"
+          }
+        ],
+        "name": "fk_constraint_example_2",
+        "referencedTable": {
+          "datasetId": "bigquerydataset${uniqueId}",
+          "projectId": "${projectId}",
+          "tableId": "referencedtable${uniqueId}"
+        }
+      }
+    ],
+    "primaryKey": {
+      "columns": [
+        "name"
+      ]
+    }
+  },
+  "tableReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytable-${uniqueId}"
+  },
+  "timePartitioning": {
+    "expirationMs": "86400000",
+    "field": "date",
+    "type": "DAY"
   }
 }
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A="
-}
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1768,10 +1403,9 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "bigquery#table",
   "labels": {
-    "cnrm-test": "true",
-    "key1": "value1",
-    "key2": "value2",
-    "managed-by-cnrm": "true"
+    "managed-by-cnrm": "true",
+    "spec-label-key1": "updated-value1",
+    "spec-label-key2": "updated-value2"
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
@@ -1901,6 +1535,178 @@ X-Xss-Protection: 0
   "timePartitioning": {
     "expirationMs": "86400000",
     "field": "date",
+    "requirePartitionFilter": true,
+    "type": "DAY"
+  },
+  "type": "TABLE"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "clustering": {
+    "fields": [
+      "name",
+      "post_abbr"
+    ]
+  },
+  "creationTime": "123456789",
+  "description": "A detailed example of a BigQuery Table resource.",
+  "encryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
+  "etag": "abcdef0123A=",
+  "expirationTime": "2024-09-01T12:34:56.123456Z",
+  "friendlyName": "BigQueryTable Full Example",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "managed-by-cnrm": "true",
+    "spec-label-key1": "updated-value1",
+    "spec-label-key2": "updated-value2"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "partitionDefinition": {
+    "partitionedColumn": [
+      {
+        "field": "date"
+      }
+    ]
+  },
+  "requirePartitionFilter": true,
+  "schema": {
+    "fields": [
+      {
+        "mode": "REQUIRED",
+        "name": "name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "name": "post_abbr",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "name": "date",
+        "policyTags": {},
+        "type": "DATE"
+      },
+      {
+        "name": "col_numeric",
+        "policyTags": {},
+        "precision": "38",
+        "scale": "9",
+        "type": "NUMERIC"
+      },
+      {
+        "name": "col_bignumeric",
+        "policyTags": {},
+        "precision": "76",
+        "scale": "38",
+        "type": "BIGNUMERIC"
+      },
+      {
+        "name": "col_geography",
+        "policyTags": {},
+        "type": "GEOGRAPHY"
+      },
+      {
+        "name": "col_timestamp",
+        "policyTags": {},
+        "type": "TIMESTAMP"
+      },
+      {
+        "fields": [
+          {
+            "name": "sub_col1",
+            "policyTags": {},
+            "type": "INTEGER"
+          },
+          {
+            "name": "sub_col2",
+            "policyTags": {},
+            "type": "BOOLEAN"
+          }
+        ],
+        "name": "col_record",
+        "type": "RECORD"
+      },
+      {
+        "mode": "REPEATED",
+        "name": "col_array",
+        "policyTags": {},
+        "type": "INTEGER"
+      }
+    ]
+  },
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
+  "tableConstraints": {
+    "foreignKeys": [
+      {
+        "columnReferences": [
+          {
+            "referencedColumn": "state_code",
+            "referencingColumn": "post_abbr"
+          }
+        ],
+        "name": "fk_constraint_example",
+        "referencedTable": {
+          "datasetId": "bigquerydataset${uniqueId}",
+          "projectId": "${projectId}",
+          "tableId": "referencedtable${uniqueId}"
+        }
+      },
+      {
+        "columnReferences": [
+          {
+            "referencedColumn": "dt",
+            "referencingColumn": "date"
+          }
+        ],
+        "name": "fk_constraint_example_2",
+        "referencedTable": {
+          "datasetId": "bigquerydataset${uniqueId}",
+          "projectId": "${projectId}",
+          "tableId": "referencedtable${uniqueId}"
+        }
+      }
+    ],
+    "primaryKey": {
+      "columns": [
+        "name"
+      ]
+    }
+  },
+  "tableReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytable-${uniqueId}"
+  },
+  "timePartitioning": {
+    "expirationMs": "86400000",
+    "field": "date",
+    "requirePartitionFilter": true,
     "type": "DAY"
   },
   "type": "TABLE"
@@ -1909,7 +1715,7 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json; charset=UTF-8
@@ -1939,6 +1745,9 @@ X-Xss-Protection: 0
 
 {
   "creationTime": "123456789",
+  "encryptionConfiguration": {
+    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  },
   "etag": "abcdef0123A=",
   "friendlyName": "referencedtable${uniqueId}",
   "id": "000000000000000000000",

@@ -175,6 +175,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_9_6_24.R20250302.00_31",
   "name": "test-${uniqueId}",
   "project": "${projectId}",
   "region": "europe-west3",
@@ -321,6 +322,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
+  "maintenanceVersion": "POSTGRES_9_6_24.R20250302.00_31",
   "name": "test-${uniqueId}",
   "project": "${projectId}",
   "region": "europe-west3",

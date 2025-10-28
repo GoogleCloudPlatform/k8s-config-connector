@@ -20,6 +20,6 @@ metadata:
   name: spannerinstance-sample-${uniqueId}
 spec:
   config: regional-us-west1
-  displayName: Spanner Instance Sample
+  displayName: New Spanner Instance Sample
   numNodes: 3
 

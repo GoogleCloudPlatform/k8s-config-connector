@@ -28,8 +28,8 @@ import (
 	// as such its not a yaml injection vulnerability.
 	"text/template" // NOLINT
 
+	iamapi "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
-	iamapi "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	kcciamclient "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/iam/iamclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/reconciliationinterval"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
@@ -46,6 +46,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/fileutil"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
+
+	// Ensure built-in types are registered.
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -160,15 +163,26 @@ func main() {
 	if err != nil {
 		log.Fatalf("error getting manual resources: %v", err)
 	}
+
 	directGVKs := supportedgvks.DirectResources()
+
 	docGenerator := &DocGenerator{
 		smLoader:              smLoader,
 		serviceMetadataLoader: serviceMetadataLoader,
 		directGVKs:            directGVKs,
 	}
 	for _, gvk := range manualResources {
-		if strings.HasPrefix(gvk.Version, "v1alpha") {
+		// TODO: Identify highest supported version for direct resource.
+		if strings.HasPrefix(gvk.Version, "v1alpha") &&
+			!(gvk.Kind == "BigQueryAnalyticsHubDataExchange" ||
+				gvk.Kind == "BigQueryAnalyticsHubListing" ||
+				gvk.Kind == "RedisCluster") {
 			klog.Infof("skipping alpha resource %v", gvk)
+			continue
+		}
+		// TODO: Add resource docs for all the v1beta1 resources and remove exceptions.
+		if gvk.Kind == "KMSImportJob" || gvk.Kind == "MetastoreBackup" {
+			klog.Errorf("doc template missing for GVK %v", gvk)
 			continue
 		}
 		if err := docGenerator.generateDocForGVK(gvk); err != nil {
@@ -327,7 +341,7 @@ func (d *DocGenerator) constructResourceForGVK(gvk schema.GroupVersionKind) (*re
 	if err != nil {
 		// TODO: Samples should also be required for direct CRDs.
 		if isDirectGVK &&
-			strings.Contains(err.Error(), fmt.Sprintf("k8s-config-connector/config/samples/resources/%s: no such file or directory", strings.ToLower(gvk.Kind))) {
+			strings.Contains(err.Error(), fmt.Sprintf("/config/samples/resources/%s: no such file or directory", strings.ToLower(gvk.Kind))) {
 			log.Printf("direct GK '%v' doesn't have samples", gvk.GroupKind().String())
 		} else {
 			return nil, fmt.Errorf("error building samples: %w", err)
@@ -852,7 +866,22 @@ func crdFilePathForGVK(gvk schema.GroupVersionKind) string {
 }
 
 func crdFileNameForGVK(gvk schema.GroupVersionKind) string {
-	crdName := fmt.Sprintf("%s.%s", text.Pluralize(gvk.Kind), gvk.Group)
+	plural := text.Pluralize(gvk.Kind)
+
+	// special plural formats. The best practice is to use singular as is
+	alreadyPluralWords := []string{"settings", "metrics", "series", "data"}
+
+	switch gvk.Kind {
+	// We already missed some resources before they have been promoted to Beta
+	case "ComputeProjectMetadata":
+	default:
+		for _, word := range alreadyPluralWords {
+			if strings.HasSuffix(strings.ToLower(gvk.Kind), word) {
+				plural = gvk.Kind // Already plural words should stay the same
+			}
+		}
+	}
+	crdName := fmt.Sprintf("%s.%s", plural, gvk.Group)
 	return strings.ToLower(strings.Join([]string{"apiextensions.k8s.io_v1_customresourcedefinition", crdName}, "_")) + ".yaml"
 }
 

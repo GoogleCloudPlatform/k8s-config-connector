@@ -62,9 +62,18 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/alloydb/alloydbuser.md">AlloyDBUser</a></td>
 </tr>
 <tr>
+  <td><a href="/api-gateway/docs/">{{apigateway_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/apigateway/apigatewayapi.md">APIGatewayAPI</a></td>
+</tr>
+<tr>
   <td><a href="/artifact-registry/docs/">{{ar_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/artifactregistry/artifactregistryrepository.md">ArtifactRegistryRepository</a></td>
-</tr><tr>
+</tr>
+<tr>
+  <td><a href="https://cloud.google.com/app-hub/docs/">{{app_hub_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/apphub/apphubapplication.md">AppHubApplication</a></td>
+</tr>
+<tr>
   <td><a href="/apigee/docs/">{{apigee_x_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/apigee/apigeeendpointattachment.md">ApigeeEndpointAttachment</a></td>
 </tr>
@@ -93,6 +102,14 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/apigee/apigeeorganization.md">ApigeeOrganization</a></td>
 </tr>
 <tr>
+  <td><a href="https://cloud.google.com/app-hub/docs/">{{app_hub_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/apphub/apphubapplication.md">AppHubApplication</a></td>
+</tr>
+<tr>
+  <td><a href="/artifact-registry/docs/">{{ar_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/artifactregistry/artifactregistryrepository.md">ArtifactRegistryRepository</a></td>
+</tr>
+<tr>
   <td><a href="/bigquery/docs/query-overview">{{analytics_hub_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/bigqueryanalyticshub/bigqueryanalyticshubdataexchange.md">BigQueryAnalyticsHubDataExchange</a></td>
 </tr>
@@ -101,10 +118,14 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/bigqueryanalyticshub/bigqueryanalyticshublisting.md">BigQueryAnalyticsHubListing</a></td>
 </tr>
 <tr>
-<tr>
   <td><a href="/bigquery/docs/">{{bigquery_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/bigqueryconnection/bigqueryconnectionconnection.md">BigqueryConnectionConnection</a></td>
 </tr>
+<tr>
+  <td><a href="/backup-dr/docs/">Backup and DR</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/backupdr/backupdrbackupplanassociation.md">BackupDRBackupPlanAssociation</a></td>
+</tr>
+<tr>
   <td><a href="/bigquery/docs/">{{bigquery_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/bigquery/bigquerydataset.md">BigQueryDataset</a></td>
 </tr>
@@ -155,6 +176,10 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/cloud-build/docs/">{{builder_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildworkerpool.md">CloudBuildWorkerPool</a></td>
+</tr>
+<tr>
+  <td><a href="/quotas/docs/">Cloud Quotas</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/cloudquota/apiquotaadjustersettings.md">APIQuotaAdjusterSettings</a></td>
 </tr>
 <tr>
   <td><a href="/functions/docs/">{{function_name}}</a></td>
@@ -654,11 +679,11 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/logging/logginglogview.md">LoggingLogView</a></td>
 </tr>
 <tr>
-  <td><a href="/managed-service-for-apache-kafka/docs">{{managedkafka_name}}</a></td>
+  <td><a href="/managed-service-for-apache-kafka/docs">{{managed_kafka_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/managedkafka/managedkafkacluster.md">ManagedKafkaCluster</a></td>
 </tr>
 <tr>
-  <td><a href="/managed-service-for-apache-kafka/docs">{{managedkafka_name}}</a></td>
+  <td><a href="/managed-service-for-apache-kafka/docs">{{managed_kafka_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/managedkafka/managedkafkatopic.md">ManagedKafkaTopic</a></td>
 </tr>
 <tr>
@@ -711,7 +736,7 @@ issues for {{product_name_short}}.
 </tr>
 <tr>
   <td><a href="/notebooks/docs/">Notebooks</a></td>
-  <td><a href="/config-connector/docs/reference/resource-docs/notebooks/notebooksinstance.md">NotebooksInstance</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/notebooks/notebookinstance.md">NotebooksInstance</a></td>
 </tr>
 <tr>
   <td><a href="/compute/docs/osconfig/rest/">OS Config</a></td>
@@ -802,11 +827,11 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/secretmanager/secretmanagersecretversion.md">SecretManagerSecretVersion</a></td>
 </tr>
 <tr>
-  <td><a href="/secure-source-manager/docs/">{{secure_source_manager_name}}</a></td>
+  <td><a href="/secure-source-manager/docs/">{{ssm_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/securesourcemanager/securesourcemanagerinstance.md">SecureSourceManagerInstance</a></td>
 </tr>
 <tr>
-  <td><a href="/secure-source-manager/docs/">{{secure_source_manager_name}}</a></td>
+  <td><a href="/secure-source-manager/docs/">{{ssm_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/securesourcemanager/securesourcemanagerrepository.md">SecureSourceManagerRepository</a></td>
 </tr>
 <tr>
@@ -838,6 +863,22 @@ issues for {{product_name_short}}.
   <td><a href="/config-connector/docs/reference/resource-docs/sourcerepo/sourcereporepository.md">SourceRepoRepository</a></td>
 </tr>
 <tr>
+  <td><a href="/speech-to-text/docs/">{{speech_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/speech/speechcustomclass.md">SpeechCustomClass</a></td>
+</tr>
+<tr>
+  <td><a href="/speech-to-text/docs/">{{speech_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/speech/speechphraseset.md">SpeechPhraseSet</a></td>
+</tr>
+<tr>
+  <td><a href="/speech-to-text/docs/">{{speech_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/speech/speechrecognizer.md">SpeechRecognizer</a></td>
+</tr>
+<tr>
+  <td><a href="/spanner/docs/">{{spanner_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/spanner/spannerbackupschedule.md">SpannerBackupSchedule</a></td>
+</tr>
+<tr>
   <td><a href="/spanner/docs/">{{spanner_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/spanner/spannerdatabase.md">SpannerDatabase</a></td>
 </tr>
@@ -860,6 +901,10 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/sql/docs/">{{sql_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/sql/sqluser.md">SQLUser</a></td>
+</tr>
+<tr>
+  <td><a href="/storage/docs/">{{storage_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/storage/storageanywherecache.md">StorageAnywhereCache</a></td>
 </tr>
 <tr>
   <td><a href="/storage/docs/">{{storage_name}}</a></td>
@@ -932,6 +977,10 @@ issues for {{product_name_short}}.
 <tr>
   <td><a href="/vertex-ai/docs/">{{vertex_ai_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/vertexai/vertexaiindex.md">VertexAIIndex</a></td>
+</tr>
+<tr>
+  <td><a href="/vertex-ai/docs/">{{vertex_ai_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/vertexai/vertexaimetadatastore.md">VertexAIMetadataStore</a></td>
 </tr>
 <tr>
   <td><a href="/vpc/docs/">{{serverless_vpc_access_name}}</a></td>

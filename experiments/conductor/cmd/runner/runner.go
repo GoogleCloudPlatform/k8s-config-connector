@@ -44,6 +44,7 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	loggingDirFlag          = "logging-dir"
 	readFileTypeFlag        = "file-type"
 	controllerFilterFlag    = "controller-filter"
+	testDirSuffixFlag       = "test-suffix"
 
 	// Command values
 	cmdDeleteGitBranch              = -5
@@ -82,10 +83,15 @@ conductor runner --branch-repo=/usr/local/google/home/wfender/go/src/github.com/
 	cmdCaptureGoldenMockOutput      = 47
 	cmdRunAndFixGoldenMockOutput    = 48
 	cmdMoveExistingTest             = 50
+	cmdCreateFullTest               = 51
 
 	typeScriptYaml = "scriptyaml"
 	typeHttpLog    = "httplog"
 	typeMockGo     = "mockgo"
+
+	handleLocalChangeOptionCleanUp = "CLEANUP"
+	handleLocalChangeOptionCommit  = "COMMIT"
+	handleLocalChangeOptionFail    = "FAIL"
 )
 
 func BuildRunnerCmd() *cobra.Command {
@@ -135,6 +141,10 @@ func BuildRunnerCmd() *cobra.Command {
 		"", "", "Comma-separated list of processor function names to run (if empty, all processors are run)")
 	cmd.Flags().StringVarP(&opts.controllerFilter, controllerFilterFlag,
 		"", "", "Type of controller to filter for. (Eg terraform-v1beta1)")
+	cmd.Flags().StringVarP(&opts.handleLocalChange, "handle-local-change",
+		"", "", "Option to handle uncommitted local changes before switching to a different branch, available values: 'CLEANUP', 'COMMIT', 'FAIL'.")
+	cmd.Flags().StringVarP(&opts.testDirSuffix, testDirSuffixFlag,
+		"", "", "Suffix of the test to generate/run/fix for each branch")
 
 	return cmd
 }
@@ -157,11 +167,43 @@ type RunnerOptions struct {
 	skipMakeReadyPR   bool   // Skip make ready-pr step when pushing branches
 	processors        string // Comma-separated list of processor function names to run
 	controllerFilter  string // Filter the metadata for 1 type of controller. (Eg terraform-v1beta1)
+	handleLocalChange string // Option to handle uncommitted local changes before switching to a different branch
+	testDirSuffix     string // Suffix for test directory
 }
 
-func (opts *RunnerOptions) validateFlags() error {
+func (opts *RunnerOptions) validateAndDefaultFlags() error {
 	if opts.defaultRetries < 0 {
 		return fmt.Errorf("retries flag cannot be negative, got %d", opts.defaultRetries)
+	}
+
+	switch opts.handleLocalChange {
+	case "":
+		// When the handle local change option is unset, each command will handle it differently.
+		switch opts.command {
+		case cmdCreateFullTest:
+			opts.handleLocalChange = handleLocalChangeOptionCommit
+		default:
+			opts.handleLocalChange = handleLocalChangeOptionCleanUp
+		}
+	case handleLocalChangeOptionCleanUp, handleLocalChangeOptionCommit, handleLocalChangeOptionFail:
+	default:
+		return fmt.Errorf("handle-local-change flag must be set with one of %q, %q, %q but it is set to %q",
+			handleLocalChangeOptionCleanUp, handleLocalChangeOptionCommit, handleLocalChangeOptionFail, opts.handleLocalChange)
+	}
+
+	if opts.testDirSuffix == "" {
+		// When the test directory suffix is unset, each command will handle it differently.
+		switch opts.command {
+		case cmdControllerCreateTest, cmdCaptureGoldenRealGCPOutput,
+			cmdRunAndFixGoldenRealGCPOutput, cmdCaptureGoldenMockOutput,
+			cmdRunAndFixGoldenMockOutput:
+			opts.testDirSuffix = "minimal"
+		case cmdCreateFullTest:
+			opts.testDirSuffix = "full"
+		}
+	} else {
+		// Ensure the suffix is in lowercase.
+		opts.testDirSuffix = strings.ToLower(opts.testDirSuffix)
 	}
 	return nil
 }
@@ -224,7 +266,7 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		opts.loggingDir = filepath.Join(cwd, opts.loggingDir)
 	}
 
-	if err := opts.validateFlags(); err != nil {
+	if err := opts.validateAndDefaultFlags(); err != nil {
 		return err
 	}
 
@@ -443,6 +485,12 @@ func RunRunner(ctx context.Context, opts *RunnerOptions) error {
 		processBranches(ctx, opts, REGEX_MSG_48, branches.Branches, "Fix Mock GCP Tests", []BranchProcessor{{Fn: fixMockGcpForGoldenTests, CommitMsgTemplate: COMMIT_MSG_48, VerifyFn: runGoldenMockTests, VerifyAttempts: 5, AttemptsOnNoChange: 2}})
 	case cmdMoveExistingTest: // 50
 		processBranches(ctx, opts, REGEX_MSG_50, branches.Branches, "Move Existing Test", []BranchProcessor{{Fn: moveTestToSubDir, CommitMsgTemplate: COMMIT_MSG_50, AttemptsOnNoChange: 0, CommitOptional: true}})
+	case cmdCreateFullTest: // 51
+		processBranches(ctx, opts, REGEX_MSG_51, branches.Branches, "Create Maximal Test", []BranchProcessor{
+			{Fn: moveTestToSubDir, CommitMsgTemplate: COMMIT_MSG_51A, AttemptsOnNoChange: 0, CommitOptional: true, SkipProcessorOnMsg: skipPost51A},
+			{Fn: createFullCoverageTest, CommitMsgTemplate: COMMIT_MSG_51B, CommitOptional: true},
+			{Fn: updateTestHarness, CommitMsgTemplate: COMMIT_MSG_51C, CommitOptional: true},
+		})
 	default:
 		log.Fatalf("unrecognized command: %d", opts.command)
 	}
@@ -487,6 +535,7 @@ func printHelp() {
 	log.Println("\t47 - [Controller] Capture golden logs for mock GCP tests for each branch")
 	log.Println("\t48 - [Controller] Run and Fix mock GCP tests for each branch")
 	log.Println("\t50 - [Test] Move test data to subdirectory if the test files are directly under <version>/<kind> directory for each branch")
+	log.Println("\t51 - [Test] Create a maximal test for each branch")
 }
 
 func checkRepoDir(ctx context.Context, opts *RunnerOptions, branches Branches) {

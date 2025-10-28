@@ -18,10 +18,11 @@ import (
 	"reflect"
 	"sort"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	api "google.golang.org/api/sqladmin/v1beta4"
 )
 
-func InstancesMatch(desired *api.DatabaseInstance, actual *api.DatabaseInstance) bool {
+func InstancesMatch(desired *api.DatabaseInstance, actual *api.DatabaseInstance, diff *structuredreporting.Diff) bool {
 	if desired == nil && actual == nil {
 		return true
 	}
@@ -29,36 +30,44 @@ func InstancesMatch(desired *api.DatabaseInstance, actual *api.DatabaseInstance)
 		return false
 	}
 	if desired.DatabaseVersion != actual.DatabaseVersion {
+		diff.AddField(".databaseVersion", actual.DatabaseVersion, desired.DatabaseVersion)
 		return false
 	}
 	if !DiskEncryptionConfigurationsMatch(desired.DiskEncryptionConfiguration, actual.DiskEncryptionConfiguration) {
+		diff.AddField(".diskEncryptionConfiguration", actual.DiskEncryptionConfiguration, desired.DiskEncryptionConfiguration)
 		return false
 	}
 	// Ignore GeminiConfig. It is not supported in KRM API.
 	if desired.InstanceType != actual.InstanceType {
+		diff.AddField(".instanceType", actual.InstanceType, desired.InstanceType)
 		return false
 	}
 	// Ignore Kind. It is sometimes not set in API responses.
 	if desired.MaintenanceVersion != actual.MaintenanceVersion {
+		diff.AddField(".maintenanceVersion", actual.MaintenanceVersion, desired.MaintenanceVersion)
 		return false
 	}
 	if desired.MasterInstanceName != actual.MasterInstanceName {
+		diff.AddField(".masterInstanceName", actual.MasterInstanceName, desired.MasterInstanceName)
 		return false
 	}
 	// Ignore MaxDiskSize. It is not supported in KRM API.
 	if desired.Name != actual.Name {
+		diff.AddField(".name", actual.Name, desired.Name)
 		return false
 	}
 	// Ignore OnPremisesConfiguration. It is not supported in KRM API.
 	if desired.Region != actual.Region {
+		diff.AddField(".region", actual.Region, desired.Region)
 		return false
 	}
 	if !ReplicaConfigurationsMatch(desired.ReplicaConfiguration, actual.ReplicaConfiguration) {
+		diff.AddField(".replicaConfiguration", actual.ReplicaConfiguration, desired.ReplicaConfiguration)
 		return false
 	}
 	// Ignore ReplicationCluster. It is not supported in KRM API.
 	// Ignore RootPassword. It is not exported.
-	if !SettingsMatch(desired.Settings, actual.Settings) {
+	if !SettingsMatch(desired.Settings, actual.Settings, diff) {
 		return false
 	}
 	// Ignore SqlNetworkArchitecture. It is not supported in KRM API.
@@ -104,108 +113,150 @@ func ReplicaConfigurationsMatch(desired *api.ReplicaConfiguration, actual *api.R
 	return true
 }
 
-func SettingsMatch(desired *api.Settings, actual *api.Settings) bool {
+func SettingsMatch(desired *api.Settings, actual *api.Settings, diff *structuredreporting.Diff) bool {
 	if desired == nil && actual == nil {
 		return true
 	}
 	if !PointersMatch(desired, actual) {
+		diff.AddField(".settings", actual, desired)
 		return false
 	}
 	if desired.ActivationPolicy != actual.ActivationPolicy {
+		diff.AddField(".settings.activationPolicy", actual.ActivationPolicy, desired.ActivationPolicy)
 		return false
 	}
 	if !ActiveDirectoryConfigsMatch(desired.ActiveDirectoryConfig, actual.ActiveDirectoryConfig) {
+		diff.AddField(".settings.activeDirectoryConfig", actual.ActiveDirectoryConfig, desired.ActiveDirectoryConfig)
 		return false
 	}
 	if !AdvancedMachineFeaturesMatch(desired.AdvancedMachineFeatures, actual.AdvancedMachineFeatures) {
+		diff.AddField(".settings.advancedMachineFeatures", actual.AdvancedMachineFeatures, desired.AdvancedMachineFeatures)
 		return false
 	}
-	if !reflect.DeepEqual(desired.AuthorizedGaeApplications, actual.AuthorizedGaeApplications) {
+	if !slicesMatch(desired.AuthorizedGaeApplications, actual.AuthorizedGaeApplications) {
+		diff.AddField(".settings.authorizedGaeApplications", actual.AuthorizedGaeApplications, desired.AuthorizedGaeApplications)
 		return false
 	}
 	if desired.AvailabilityType != actual.AvailabilityType {
+		diff.AddField(".settings.availabilityType", actual.AvailabilityType, desired.AvailabilityType)
 		return false
 	}
 	if !BackupConfigurationsMatch(desired.BackupConfiguration, actual.BackupConfiguration) {
+		diff.AddField(".settings.backupConfiguration", actual.BackupConfiguration, desired.BackupConfiguration)
 		return false
 	}
 	if desired.Collation != actual.Collation {
+		diff.AddField(".settings.collation", actual.Collation, desired.Collation)
 		return false
 	}
 	if desired.ConnectorEnforcement != actual.ConnectorEnforcement {
+		diff.AddField(".settings.connectorEnforcement", actual.ConnectorEnforcement, desired.ConnectorEnforcement)
 		return false
 	}
 	// Ignore CrashSafeReplicationEnabled. It is only applicable to first-gen instances.
 	if !DataCacheConfigsMatch(desired.DataCacheConfig, actual.DataCacheConfig) {
+		diff.AddField(".settings.dataCacheConfig", actual.DataCacheConfig, desired.DataCacheConfig)
 		return false
 	}
 	if desired.DataDiskSizeGb != actual.DataDiskSizeGb {
+		diff.AddField(".settings.dataDiskSizeGb", actual.DataDiskSizeGb, desired.DataDiskSizeGb)
 		return false
 	}
 	if desired.DataDiskType != actual.DataDiskType {
+		diff.AddField(".settings.dataDiskType", actual.DataDiskType, desired.DataDiskType)
 		return false
 	}
 	if !DatabaseFlagListsMatch(desired.DatabaseFlags, actual.DatabaseFlags) {
+		diff.AddField(".settings.databaseFlags", actual.DatabaseFlags, desired.DatabaseFlags)
 		return false
 	}
 	// Ignore DatabaseReplicationEnabled. It is not supported in KRM API.
 	if desired.DeletionProtectionEnabled != actual.DeletionProtectionEnabled {
+		diff.AddField(".settings.deletionProtectionEnabled", actual.DeletionProtectionEnabled, desired.DeletionProtectionEnabled)
 		return false
 	}
 	if !DenyMaintenancePeriodListsMatch(desired.DenyMaintenancePeriods, actual.DenyMaintenancePeriods) {
+		diff.AddField(".settings.denyMaintenancePeriods", actual.DenyMaintenancePeriods, desired.DenyMaintenancePeriods)
 		return false
 	}
 	if desired.Edition != actual.Edition {
+		diff.AddField(".settings.edition", actual.Edition, desired.Edition)
 		return false
 	}
 	// Ignore EnableDataplexIntegration. It is not supported in KRM API.
 	// Ignore EnableGoogleMlIntegration. It is not supported in KRM API.
 	if !InsightsConfigsMatch(desired.InsightsConfig, actual.InsightsConfig) {
+		diff.AddField(".settings.insightsConfig", actual.InsightsConfig, desired.InsightsConfig)
 		return false
 	}
 	if !IpConfigurationsMatch(desired.IpConfiguration, actual.IpConfiguration) {
+		diff.AddField(".settings.ipConfiguration", actual.IpConfiguration, desired.IpConfiguration)
 		return false
 	}
 	// Ignore Kind. It is sometimes not set in API responses.
 	if !LocationPreferencesMatch(desired.LocationPreference, actual.LocationPreference) {
+		diff.AddField(".settings.locationPreference", actual.LocationPreference, desired.LocationPreference)
 		return false
 	}
 	if !MaintenanceWindowsMatch(desired.MaintenanceWindow, actual.MaintenanceWindow) {
+		diff.AddField(".settings.maintenanceWindow", actual.MaintenanceWindow, desired.MaintenanceWindow)
 		return false
 	}
 	if !PasswordValidationPoliciesMatch(desired.PasswordValidationPolicy, actual.PasswordValidationPolicy) {
+		diff.AddField(".settings.passwordValidationPolicy", actual.PasswordValidationPolicy, desired.PasswordValidationPolicy)
 		return false
 	}
 	if desired.PricingPlan != actual.PricingPlan {
+		diff.AddField(".settings.pricingPlan", actual.PricingPlan, desired.PricingPlan)
 		return false
 	}
 	if desired.ReplicationType != actual.ReplicationType {
+		diff.AddField(".settings.replicationType", actual.ReplicationType, desired.ReplicationType)
 		return false
 	}
 	if desired.SettingsVersion != actual.SettingsVersion {
+		diff.AddField(".settings.settingsVersion", actual.SettingsVersion, desired.SettingsVersion)
 		return false
 	}
 	if !SqlServerAuditConfigsMatch(desired.SqlServerAuditConfig, actual.SqlServerAuditConfig) {
+		diff.AddField(".settings.sqlServerAuditConfig", actual.SqlServerAuditConfig, desired.SqlServerAuditConfig)
 		return false
 	}
 	if !StorageAutoResizesMatch(desired.StorageAutoResize, actual.StorageAutoResize) {
+		diff.AddField(".settings.storageAutoResize", actual.StorageAutoResize, desired.StorageAutoResize)
 		return false
 	}
 	if desired.StorageAutoResizeLimit != actual.StorageAutoResizeLimit {
+		diff.AddField(".settings.storageAutoResizeLimit", actual.StorageAutoResizeLimit, desired.StorageAutoResizeLimit)
 		return false
 	}
 	if desired.Tier != actual.Tier {
+		diff.AddField(".settings.tier", actual.Tier, desired.Tier)
 		return false
 	}
 	if desired.TimeZone != actual.TimeZone {
+		diff.AddField(".settings.timeZone", actual.TimeZone, desired.TimeZone)
 		return false
 	}
 	if !reflect.DeepEqual(desired.UserLabels, actual.UserLabels) {
+		diff.AddField(".settings.userLabels", actual.UserLabels, desired.UserLabels)
 		return false
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
 	return true
+}
+
+// slicesMatch checks if two slices are equal, matching with reflect.DeepEqual.
+// As a special-case, the empty slice is treated the same as the nil slice
+func slicesMatch[T any](desired []T, actual []T) bool {
+	if len(desired) != len(actual) {
+		return false
+	}
+	if len(desired) == 0 && len(actual) == 0 {
+		return true
+	}
+	return reflect.DeepEqual(desired, actual)
 }
 
 func MysqlReplicaConfigurationsMatch(desired *api.MySqlReplicaConfiguration, actual *api.MySqlReplicaConfiguration) bool {

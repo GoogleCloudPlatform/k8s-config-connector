@@ -19,6 +19,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/export"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -67,6 +68,12 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:
 		exportURI = "//discoveryengine.googleapis.com/projects/{projectID}/locations/{.spec.location}/collections/{.spec.collection}/dataStores/{resourceID}"
 
+	case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreDatabase"}:
+		exportURI = "//firestore.googleapis.com/projects/{projectID}/databases/{resourceID}"
+
+	case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreIndex"}:
+		exportURI = "//firestore.googleapis.com/{.status.name}"
+
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
 		exportURI = "//logging.googleapis.com/projects/" + projectID + "/metrics/" + resourceID
 
@@ -79,6 +86,12 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecret"}:
 		exportURI = "//secretmanager.googleapis.com/projects/" + projectID + "/secrets/" + resourceID
 
+	case schema.GroupKind{Group: "servicenetworking.cnrm.cloud.google.com", Kind: "ServiceNetworkingPeeredDnsDomain"}:
+		network := resolveNetwork(h, obj)
+		exportURI = fmt.Sprintf("//servicenetworking.googleapis.com/services/servicenetworking.googleapis.com/projects/%s/global/networks/%s/peeredDnsDomains/{resourceID}", network.Project, network.Network)
+
+	case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
+		exportURI = "//run.googleapis.com/v2/projects/{projectID}/locations/{.spec.location}/jobs/{resourceID}"
 	}
 
 	if exportURI == "" {
@@ -114,6 +127,15 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 		}
 		exportURI = strings.ReplaceAll(exportURI, "{.spec.collection}", collection)
 	}
+
+	if strings.Contains(exportURI, "{.status.name}") {
+		v, _, _ := unstructured.NestedString(obj.Object, "status", "name")
+		if v == "" {
+			h.Errorf("unable to determine status.name")
+		}
+		exportURI = strings.ReplaceAll(exportURI, "{.status.name}", v)
+	}
+
 	exportParams := h.ExportParams()
 	exportParams.IAMFormat = "partialpolicy"
 	exportParams.ResourceFormat = "krm"
@@ -129,13 +151,14 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 		break
 	default:
 		if err := export.Execute(h.Ctx, &exportParams); err != nil {
-			h.Errorf("error from export.Execute: %v", err)
+			h.Errorf("error from export.Execute of %q: %v", exportURI, err)
 			return ""
 		}
 	}
 
-	output := h.MustReadFile(outputPath)
-	return string(output)
+	outputBytes := h.MustReadFile(outputPath)
+	output := string(outputBytes)
+	return output
 }
 
 func exportResourceAsUnstructured(h *create.Harness, obj *unstructured.Unstructured) *unstructured.Unstructured {
@@ -195,4 +218,22 @@ func resolveProjectID(h *create.Harness, obj *unstructured.Unstructured) string 
 
 	// Assume it's the namespace
 	return h.Project.ProjectID
+}
+
+func resolveNetwork(h *create.Harness, obj *unstructured.Unstructured) v1beta1.ComputeNetworkID {
+	networkRef := v1beta1.ComputeNetworkRef{}
+
+	networkRef.External, _, _ = unstructured.NestedString(obj.Object, "spec", "networkRef", "external")
+	networkRef.Name, _, _ = unstructured.NestedString(obj.Object, "spec", "networkRef", "name")
+	networkRef.Namespace, _, _ = unstructured.NestedString(obj.Object, "spec", "networkRef", "namespace")
+
+	if err := networkRef.Normalize(h.Ctx, h.GetClient(), obj); err != nil {
+		h.Fatalf("normalizing networkRef: %v", err)
+	}
+
+	var id v1beta1.ComputeNetworkID
+	if err := id.FromExternal(networkRef.External); err != nil {
+		h.Fatalf("error from id.FromExternal: %v", err)
+	}
+	return id
 }

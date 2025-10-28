@@ -21,12 +21,13 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/externalonlygvks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/krmtotf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/text"
 	tfresource "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/resource"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
@@ -39,6 +40,7 @@ import (
 
 	tfschema "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
 type TFIAMClient struct {
@@ -78,6 +80,29 @@ func (t *TFIAMClient) SetPolicyMember(ctx context.Context, policyMember *v1beta1
 		logger.Info("underlying resource is already up to date", "resource", k8s.GetNamespacedName(policyMember))
 		return policyMember, nil
 	}
+
+	// Report diff to structured-reporting subsystem
+	{
+		report := &structuredreporting.Diff{}
+		u, err := resource.MarshalAsUnstructured()
+		if err != nil {
+			log := log.FromContext(ctx)
+			log.Error(err, "error reporting diff")
+		}
+		report.Object = u
+		if diff != nil {
+			for k, attr := range diff.Attributes {
+				report.Fields = append(report.Fields, structuredreporting.DiffField{
+					ID:  k,
+					Old: attr.Old,
+					New: attr.New,
+				})
+			}
+		}
+		report.IsNewObject = liveState.Empty()
+		structuredreporting.ReportDiff(ctx, report)
+	}
+
 	newState, diagnostics := resource.TFResource.Apply(ctx, liveState, diff, t.provider.Meta())
 	if err := krmtotf.NewErrorFromDiagnostics(diagnostics); err != nil {
 		return nil, fmt.Errorf("error applying changes: %w", err)

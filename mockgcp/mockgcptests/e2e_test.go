@@ -82,6 +82,9 @@ func TestScripts(t *testing.T) {
 
 			var httpEvents []*test.LogEntry
 
+			// scriptEnv holds environment variables set by steps in the script.
+			scriptEnv := map[string]string{}
+
 			for _, step := range script.Steps {
 				stepCmd := ""
 				stepType := ""
@@ -107,12 +110,20 @@ func TestScripts(t *testing.T) {
 
 					cmd.Env = append(cmd.Env, os.Environ()...)
 
+					// Don't check for updates to gcloud components (causes spurious requests to dl.google.com)
+					cmd.Env = append(cmd.Env, "CLOUDSDK_COMPONENT_MANAGER_DISABLE_UPDATE_CHECK=yes")
+
 					if h.gcpAccessToken != "" {
 						cmd.Env = append(cmd.Env, fmt.Sprintf("CLOUDSDK_AUTH_ACCESS_TOKEN=%v", h.gcpAccessToken))
 					}
 					cmd.Env = append(cmd.Env, "CLOUDSDK_CORE_PROJECT="+h.Project.ProjectID)
 					gcloudConfig := h.proxy.BuildGcloudConfig(h.ProxyEndpoint, h.MockGCP)
 					cmd.Env = append(cmd.Env, gcloudConfig.EnvVars...)
+
+					for k, v := range scriptEnv {
+						cmd.Env = append(cmd.Env, fmt.Sprintf("%s=%s", k, v))
+					}
+
 					cmd.Dir = testDir
 
 					t.Logf("executing step type: %s  cmd: %q", stepType, stepCmd)
@@ -121,6 +132,37 @@ func TestScripts(t *testing.T) {
 						t.Logf("stderr: %v", stderr.String())
 
 						t.Errorf("error running step type: %s  cmd: %q: %v", stepType, stepCmd, err)
+					}
+
+					if step.SetEnv != "" {
+						if !strings.Contains(step.SetEnv, "{{") {
+							envVarName := step.SetEnv
+							envVarValue := strings.TrimSpace(stdout.String())
+							t.Logf("setting env var %q to %q", envVarName, envVarValue)
+							scriptEnv[envVarName] = envVarValue
+						} else {
+							// We match something like projects/{{PROJECT_ID}}/databases/{{DATABASE_ID}}/backupSchedules/{{BACKUPSCHEDULE_ID}}
+							// Currently we _only_ match URLs
+							tokens := strings.Split(step.SetEnv, "/")
+							stdoutStr := strings.TrimSpace(stdout.String())
+							valueTokens := strings.Split(stdoutStr, "/")
+							if len(tokens) != len(valueTokens) {
+								t.Errorf("cannot extract env vars from output %q using pattern %q", stdoutStr, step.SetEnv)
+							} else {
+								for i, token := range tokens {
+									if strings.HasPrefix(token, "{{") && strings.HasSuffix(token, "}}") {
+										envVarName := strings.TrimSuffix(strings.TrimPrefix(token, "{{"), "}}")
+										envVarValue := valueTokens[i]
+										t.Logf("setting env var %q to %q", envVarName, envVarValue)
+										scriptEnv[envVarName] = envVarValue
+									} else {
+										if token != valueTokens[i] {
+											t.Errorf("cannot extract env vars from output %q using pattern %q", stdoutStr, step.SetEnv)
+										}
+									}
+								}
+							}
+						}
 					}
 
 					if captureEvents {
@@ -192,9 +234,10 @@ type Script struct {
 }
 
 type Step struct {
-	Exec string `json:"exec"`
-	Pre  string `json:"pre"`
-	Post string `json:"post"`
+	Exec   string `json:"exec"`
+	Pre    string `json:"pre"`
+	Post   string `json:"post"`
+	SetEnv string `json:"setEnv"`
 }
 
 func loadScript(t *testing.T, dir string, placeholders Placeholders) *Script {

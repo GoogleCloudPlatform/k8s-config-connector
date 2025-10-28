@@ -269,7 +269,7 @@ oneOf:
   - required:
     - memberFrom
 `
-	} else if fieldPath == ".spec.bindings[].members[].memberFrom" {
+	} else if fieldPath == ".spec.bindings[].members[].memberFrom" || fieldPath == ".spec.memberFrom" {
 		ruleYAML = `
 oneOf:
   - required:
@@ -289,7 +289,15 @@ oneOf:
 			fields.Insert(k)
 		}
 		signature := strings.Join(sets.List(fields), ",")
-		if signature == "apiVersion,external,kind,name,namespace" {
+		if strings.HasPrefix(signature, "condition,member,memberFrom") && fieldPath == ".spec" { // IAMPolicyMember
+			ruleYAML = `
+oneOf:
+  - required:
+    - member
+  - required:
+    - memberFrom
+`
+		} else if signature == "apiVersion,external,kind,name,namespace" {
 			// hack for IAMPolicy.spec.resourceRef for backwards compat
 			if fieldPath == ".spec.resourceRef" {
 				ruleYAML = resourceRefRuleWithOnlyKind
@@ -300,7 +308,7 @@ oneOf:
 			ruleYAML = refRuleWithKind
 			// kind is optional for projectRef (and maybe in future other well-known ref types)
 			// fieldPath is the best mechanism we have today (?)
-			if fieldPath == ".spec.projectRef" {
+			if isProjectPath(fieldPath) {
 				ruleYAML = refRuleWithOptionalKind
 			}
 		} else if signature == "external,name,namespace" {
@@ -323,4 +331,9 @@ oneOf:
 	props.OneOf = rule.OneOf
 
 	return nil
+}
+
+// isProjectPath checks if the given fieldPath defines a Project reference resource.
+func isProjectPath(fieldPath string) bool {
+	return strings.HasSuffix(fieldPath, ".projectRef") || strings.HasSuffix(fieldPath, ".projectRefs[]") || strings.HasSuffix(fieldPath, ".project") || strings.HasSuffix(fieldPath, ".projects[]")
 }

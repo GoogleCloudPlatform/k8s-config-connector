@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.128.0
+    cnrm.cloud.google.com/version: 1.137.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -108,15 +108,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: If provided must be in the format `projects/[project_id]/datasets/[dataset_id]`.
+                    description: A reference to an externally managed BigQueryDataset
+                      resource. Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".
                     type: string
                   name:
-                    description: The `metadata.name` field of a `BigQueryDataset`
-                      resource.
+                    description: The name of a BigQueryDataset resource.
                     type: string
                   namespace:
-                    description: The `metadata.namespace` field of a `BigQueryDataset`
-                      resource.
+                    description: The namespace of a BigQueryDataset resource.
                     type: string
                 type: object
               disabled:
@@ -237,14 +236,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: If provided must be in the format `projects/[project_id]/topics/[topic_id]`.
+                    description: A reference to an externally managed PubSubTopic
+                      resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".
                     type: string
                   name:
-                    description: The `metadata.name` field of a `PubSubTopic` resource.
+                    description: The name of a PubSubTopic resource.
                     type: string
                   namespace:
-                    description: The `metadata.namespace` field of a `PubSubTopic`
-                      resource.
+                    description: The namespace of a PubSubTopic resource.
                     type: string
                 type: object
               resourceID:
@@ -325,7 +324,6 @@ spec:
                 type: object
             required:
             - dataSourceID
-            - datasetRef
             - location
             - params
             - projectRef
@@ -494,15 +492,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: If provided must be in the format `projects/[project_id]/datasets/[dataset_id]`.
+                    description: A reference to an externally managed BigQueryDataset
+                      resource. Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".
                     type: string
                   name:
-                    description: The `metadata.name` field of a `BigQueryDataset`
-                      resource.
+                    description: The name of a BigQueryDataset resource.
                     type: string
                   namespace:
-                    description: The `metadata.namespace` field of a `BigQueryDataset`
-                      resource.
+                    description: The namespace of a BigQueryDataset resource.
                     type: string
                 type: object
               disabled:
@@ -623,14 +620,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: If provided must be in the format `projects/[project_id]/topics/[topic_id]`.
+                    description: A reference to an externally managed PubSubTopic
+                      resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".
                     type: string
                   name:
-                    description: The `metadata.name` field of a `PubSubTopic` resource.
+                    description: The name of a PubSubTopic resource.
                     type: string
                   namespace:
-                    description: The `metadata.namespace` field of a `PubSubTopic`
-                      resource.
+                    description: The namespace of a PubSubTopic resource.
                     type: string
                 type: object
               resourceID:
@@ -705,15 +702,14 @@ spec:
                           - external
                         properties:
                           external:
-                            description: If provided must be in the format `projects/[project_id]/subscriptions/[subscription_id]`.
+                            description: A reference to an externally managed PubSubSubscription
+                              resource. Should be in the format "projects/{{projectID}}/subscriptions/{{subscriptionID}}".
                             type: string
                           name:
-                            description: The `metadata.name` field of a `PubSubSubscription`
-                              resource.
+                            description: The name of a PubSubSubscription resource.
                             type: string
                           namespace:
-                            description: The `metadata.namespace` field of a `PubSubSubscription`
-                              resource.
+                            description: The namespace of a PubSubSubscription resource.
                             type: string
                         type: object
                     type: object
@@ -790,7 +786,6 @@ spec:
                 type: object
             required:
             - dataSourceID
-            - datasetRef
             - location
             - params
             - projectRef

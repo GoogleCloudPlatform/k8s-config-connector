@@ -47,7 +47,7 @@ type MemberSource struct {
 	ServiceIdentityRef *MemberReference `json:"serviceIdentityRef,omitempty"`
 
 	// BigQueryConnectionConnection whose service account is to be bound to the role.
-	// Use the Type field to specifie the connection type.
+	// Use the Type field to specify the connection type.
 	// For "spark" connetion, the service account is in `status.observedState.spark.serviceAccountID`.
 	// For "cloudSQL" connection, the service account is in `status.observedState.cloudSQL.serviceAccountID`.
 	// For "cloudResource" connection, the service account is in `status.observedState.cloudResource.serviceAccountID`.
@@ -80,6 +80,7 @@ type IAMPartialPolicyBinding struct {
 type IAMPartialPolicySpec struct {
 	// Immutable. Required. The GCP resource to set the IAM policy on (e.g.
 	// organization, project...)
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="resourceRef is immutable"
 	ResourceReference ResourceReference `json:"resourceRef"`
 	// Optional. The list of IAM bindings managed by Config Connector.
 	Bindings []IAMPartialPolicyBinding `json:"bindings,omitempty"`

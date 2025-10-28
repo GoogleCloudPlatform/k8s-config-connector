@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	gcp "cloud.google.com/go/alloydb/apiv1beta"
 	alloydbpb "cloud.google.com/go/alloydb/apiv1beta/alloydbpb"
@@ -182,9 +183,9 @@ func (a *instanceAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Labels = make(map[string]string)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		resource.Labels[k] = v
+	resource.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
+	if resource.Labels == nil {
+		resource.Labels = make(map[string]string)
 	}
 	resource.Labels["managed-by-cnrm"] = "true"
 
@@ -254,7 +255,7 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if err != nil {
 		return err
 	}
-	desiredLabels := a.desired.GetObjectMeta().GetLabels()
+	desiredLabels := label.NewGCPLabelsFromK8sLabels(a.desired.GetObjectMeta().GetLabels())
 	if desiredLabels == nil {
 		desiredLabels = make(map[string]string)
 	}
@@ -266,7 +267,7 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 
 	if len(updatePaths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		if *a.desired.Status.ExternalRef == "" {
+		if a.desired.Status.ExternalRef == nil {
 			// If it is the first reconciliation after switching to direct controller,
 			// or is an acquisition, then update Status to fill out the ExternalRef
 			// and ObservedState.
@@ -305,7 +306,7 @@ func (a *instanceAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	if *a.desired.Status.ExternalRef == "" {
+	if a.desired.Status.ExternalRef == nil {
 		// If it is the first reconciliation after switching to direct controller,
 		// or is an acquisition with updates, then fill out the ExternalRef.
 		status.ExternalRef = direct.LazyPtr(a.id.String())
@@ -350,6 +351,10 @@ func compareInstance(ctx context.Context, actual, desired *krm.AlloyDBInstanceSp
 		if desired.MachineConfig.CPUCount != nil && !reflect.DeepEqual(actual.MachineConfig.CPUCount, desired.MachineConfig.CPUCount) {
 			log.V(2).Info("'spec.machineConfig.cpuCount' field is updated (-old +new)", cmp.Diff(actual.MachineConfig.CPUCount, desired.MachineConfig.CPUCount))
 			updatePaths = append(updatePaths, "machine_config.cpu_count")
+		}
+		if desired.MachineConfig.MachineType != nil && !reflect.DeepEqual(actual.MachineConfig.MachineType, desired.MachineConfig.MachineType) {
+			log.V(2).Info("'spec.machineConfig.machineType' field is updated (-old +new)", cmp.Diff(actual.MachineConfig.MachineType, desired.MachineConfig.MachineType))
+			updatePaths = append(updatePaths, "machine_config.machine_type")
 		}
 	}
 	if desired.NetworkConfig != nil {

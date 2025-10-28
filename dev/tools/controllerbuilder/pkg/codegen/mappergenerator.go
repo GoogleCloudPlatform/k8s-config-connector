@@ -37,19 +37,38 @@ type MapperGenerator struct {
 	goPackages []*gocode.Package
 
 	typePairs           []typePair
-	precomputedMappings map[protoreflect.FullName]map[string]*gocode.GoStruct
+	precomputedMappings map[protoreflect.FullName][]*gocode.GoStruct
 
 	generatedFileAnnotation *annotations.FileAnnotation
+
+	multiversion bool
+
+	importedPackages map[string]importedPackage
 }
 
-func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string, generatedFileAnnotation *annotations.FileAnnotation) *MapperGenerator {
+type importedPackage struct {
+	alias     string
+	goPackage string
+}
+
+func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string, generatedFileAnnotation *annotations.FileAnnotation, multiversion bool) *MapperGenerator {
 	g := &MapperGenerator{
 		goPathForMessage:        goPathForMessage,
-		precomputedMappings:     make(map[protoreflect.FullName]map[string]*gocode.GoStruct),
+		precomputedMappings:     make(map[protoreflect.FullName][]*gocode.GoStruct),
 		generatedFileAnnotation: generatedFileAnnotation,
+		multiversion:            multiversion,
+		importedPackages:        make(map[string]importedPackage),
 	}
 	g.generatorBase.init(outputBaseDir)
 	return g
+}
+
+func (v *MapperGenerator) AddGoImportAlias(goPackage string, alias string) string {
+	v.importedPackages[goPackage] = importedPackage{
+		alias:     alias,
+		goPackage: goPackage,
+	}
+	return alias
 }
 
 type OutputFunc func(msg protoreflect.MessageDescriptor) (goPath string, shouldWrite bool)
@@ -77,10 +96,7 @@ func (v *MapperGenerator) VisitGoCode(goPackage string, basePath string) error {
 						line = strings.TrimSpace(line)
 						if proto, ok := GetProtoMessageFromAnnotation(line); ok {
 							protoName := protoreflect.FullName(proto)
-							if _, ok := v.precomputedMappings[protoName]; !ok {
-								v.precomputedMappings[protoName] = make(map[string]*gocode.GoStruct)
-							}
-							v.precomputedMappings[protoName][s.Name] = s
+							v.precomputedMappings[protoName] = append(v.precomputedMappings[protoName], s)
 						}
 					}
 				}
@@ -105,7 +121,7 @@ func (g *MapperGenerator) visitFile(f protoreflect.FileDescriptor) {
 	}
 }
 
-func (v *MapperGenerator) findKRMStructsForProto(msg protoreflect.MessageDescriptor) map[string]*gocode.GoStruct {
+func (v *MapperGenerator) findKRMStructsForProto(msg protoreflect.MessageDescriptor) []*gocode.GoStruct {
 	// Use precomputed mappings
 	if matches, found := v.precomputedMappings[msg.FullName()]; found {
 		return matches
@@ -119,9 +135,8 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 		return
 	}
 	goTypes := v.findKRMStructsForProto(msg)
-
-	if goTypes == nil || len(goTypes) == 0 {
-		klog.Infof("no krm for %v", msg.FullName())
+	if len(goTypes) == 0 {
+		klog.Infof("no go types found for proto %v", msg.FullName())
 		return
 	}
 	parentFile := msg.ParentFile()
@@ -165,10 +180,21 @@ func lastGoComponent(goPackage string) string {
 	return filepath.Base(goPackage)
 }
 
-func (v *MapperGenerator) GenerateMappers() error {
+func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 	sort.Slice(v.typePairs, func(i, j int) bool {
+		if v.typePairs[i].KRMType.Name == v.typePairs[j].KRMType.Name {
+			return v.typePairs[i].KRMType.GoPackage < v.typePairs[j].KRMType.GoPackage
+		}
 		return v.typePairs[i].KRMType.Name < v.typePairs[j].KRMType.Name
 	})
+
+	for alias, pkgName := range goImports {
+		v.importedPackages[pkgName] = importedPackage{
+			alias:     alias,
+			goPackage: pkgName,
+		}
+	}
+
 	for _, pair := range v.typePairs {
 		goPackage, shouldVisit := v.goPathForMessage(pair.Proto)
 		if !shouldVisit {
@@ -180,36 +206,30 @@ func (v *MapperGenerator) GenerateMappers() error {
 			FileName:  "mapper.generated.go",
 		}
 		out := v.getOutputFile(k)
-		out.packageName = lastGoComponent(goPackage)
+		out.goPackage = lastGoComponent(goPackage)
 
 		out.fileAnnotation = v.generatedFileAnnotation
 
 		{
-			pbPackage := pair.ProtoGoPackage
-			krmPackage := pair.KRMType.GoPackage
-
-			// TODO: Can we figure out a better way here?
-			switch pbPackage {
-			case "cloud.google.com/go/bigtable/admin/apiv2/adminpb":
-				// pbPackage = "google.golang.org/genproto/googleapis/bigtable/admin/v2"
-			}
-
 			out.addImport("refs", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1")
-			out.addImport("pb", pbPackage)
-			out.addImport(getKRMImportName(krmPackage), krmPackage)
 			out.addImport("", "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct")
 		}
 
 		v.writeMapFunctionsForPair(&out.body, out.OutputDir(), &pair)
+
+		for _, importedPackage := range v.importedPackages {
+			goPackage := importedPackage.goPackage
+			out.addImport(importedPackage.alias, goPackage)
+		}
 	}
 
 	return nil
 }
-
 func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string, pair *typePair) {
 	klog.V(2).InfoS("writeMapFunctionsForPair", "pair.Proto.FullName", pair.Proto.FullName(), "pair.KRMType.Name", pair.KRMType.Name)
 	msg := pair.Proto
 	pbTypeName := protoNameForType(msg)
+	pbTypeGoImport := v.goPackageForProto(msg.ParentFile())
 
 	goType := pair.KRMType
 	goTypeName := goType.Name
@@ -219,10 +239,15 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		goFields[f.Name] = f
 	}
 
-	krmImportName := getKRMImportName(pair.KRMType.GoPackage)
+	krmImportName := v.getGoImportAlias(pair.KRMType.GoPackage)
 
-	if v.findFuncDeclaration(goTypeName+"_FromProto", srcDir, true) == nil {
-		fmt.Fprintf(out, "func %s_FromProto(mapCtx *direct.MapContext, in *pb.%s) *%s.%s {\n", goTypeName, pbTypeName, krmImportName, goTypeName)
+	versionSpecifier := ""
+	if v.multiversion {
+		versionSpecifier = "_" + lastGoComponent(pair.KRMType.GoPackage)
+	}
+
+	if v.findFuncDeclaration(goTypeName+versionSpecifier+"_FromProto", srcDir, true) == nil {
+		fmt.Fprintf(out, "func %s_FromProto(mapCtx *direct.MapContext, in *%s.%s) *%s.%s {\n", goTypeName+versionSpecifier, pbTypeGoImport, pbTypeName, krmImportName, goTypeName)
 		fmt.Fprintf(out, "\tif in == nil {\n")
 		fmt.Fprintf(out, "\t\treturn nil\n")
 		fmt.Fprintf(out, "\t}\n")
@@ -236,11 +261,51 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			krmField := goFields[krmFieldName]
 			if krmField == nil {
 				// Support refs
-				krmFieldRef := goFields[krmFieldName+"Ref"]
-				if krmFieldRef != nil {
+				if krmFieldRef := goFields[krmFieldName+"Ref"]; krmFieldRef != nil {
 					fmt.Fprintf(out, "\tif in.%s != \"\" {\n", protoAccessor)
-					fmt.Fprintf(out, "\t	out.%v = &refs.%v{External: in.%v}\n", krmFieldRef.Name, strings.TrimPrefix(krmFieldRef.Type, "*refs."), protoAccessor)
+					qualifiedTypeName := strings.TrimPrefix(krmFieldRef.Type, "*")
+					tokens := strings.SplitN(qualifiedTypeName, ".", 2)
+					if len(tokens) > 1 {
+						alias := v.getGoImportAlias(krmFieldRef.GoPackage)
+						qualifiedTypeName = alias + "." + tokens[1]
+					} else if len(tokens) == 1 {
+						// In same package
+						alias := v.getGoImportAlias(pair.KRMType.GoPackage)
+						qualifiedTypeName = alias + "." + tokens[0]
+					}
+					fmt.Fprintf(out, "\t\tout.%v = &%v{External: in.%v}\n", krmFieldRef.Name, qualifiedTypeName, protoAccessor)
 					fmt.Fprintf(out, "\t}\n")
+					continue
+				}
+
+				if krmFieldRefs := goFields[strings.TrimSuffix(krmFieldName, "s")+"Refs"]; krmFieldRefs != nil {
+					template := `
+						if v := in.{protoAccessor}; len(v) != 0 {
+							for i := range v {
+								out.{KRMField} = append(out.{KRMField}, &{RefType}{External: v[i]})
+							}
+						}
+					`
+
+					qualifiedTypeName := strings.TrimPrefix(krmFieldRefs.Type, "*")
+					tokens := strings.SplitN(qualifiedTypeName, ".", 2)
+					if len(tokens) > 1 {
+						alias := v.getGoImportAlias(krmFieldRefs.GoPackage)
+						klog.Infof("getGetImportAlias(%q) => %q", krmFieldRefs.GoPackage, alias)
+						qualifiedTypeName = alias + "." + tokens[1]
+					} else if len(tokens) == 1 {
+						// In same package
+						alias := v.getGoImportAlias(pair.KRMType.GoPackage)
+						qualifiedTypeName = alias + "." + tokens[0]
+					}
+
+					s := template
+					s = strings.ReplaceAll(s, "{protoAccessor}", protoAccessor)
+					s = strings.ReplaceAll(s, "{KRMField}", krmFieldRefs.Name)
+					s = strings.ReplaceAll(s, "{RefType}", qualifiedTypeName)
+
+					fmt.Fprintf(out, "%s\n", s)
+
 					continue
 				}
 
@@ -255,6 +320,82 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				continue
 			}
 
+			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]")
+			isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
+
+			if isProtoFieldSlice && !isKRMFieldSlice && !protoField.IsMap() { // proto slice -> krm single
+				var fromProtoElemFunc string
+				switch protoField.Kind() {
+				case protoreflect.MessageKind:
+					krmElemTypeName := strings.TrimPrefix(krmField.Type, "*")
+					fromProtoElemFunc = krmElemTypeName + versionSpecifier + "_FromProto"
+					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+						fromProtoElemFunc = krmFromProtoFunctionName(protoField, krmField.Name)
+					}
+				case protoreflect.EnumKind:
+					fromProtoElemFunc = "direct. "
+				}
+
+				fmt.Fprintf(out, "\tif len(in.%s) > 0 {\n", protoAccessor)
+				if fromProtoElemFunc != "" {
+					fmt.Fprintf(out, "\t\tout.%s = %s(mapCtx, in.%s[0])\n", krmFieldName, fromProtoElemFunc, protoAccessor)
+				} else {
+					if protoField.Kind() == protoreflect.BytesKind {
+						fmt.Fprintf(out, "\t\tout.%s = in.%s[0]\n", krmFieldName, protoAccessor)
+					} else {
+						fmt.Fprintf(out, "\t\tout.%s = direct.LazyPtr(in.%s[0])\n", krmFieldName, protoAccessor)
+					}
+				}
+				fmt.Fprintf(out, "\t}\n")
+				continue
+			}
+
+			if !isProtoFieldSlice && isKRMFieldSlice { // proto single -> krm slice
+				krmSliceElemType := strings.TrimPrefix(krmField.Type, "[]")
+
+				switch protoField.Kind() {
+				case protoreflect.MessageKind:
+					krmElemTypeName := strings.TrimPrefix(krmSliceElemType, "*")
+					functionName := krmElemTypeName + versionSpecifier + "_FromProto"
+					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+						functionName = krmFromProtoFunctionName(protoField, krmField.Name)
+					}
+					fmt.Fprintf(out, "\tif v := in.%s; v != nil {\n", protoAccessor)
+					if strings.HasPrefix(krmSliceElemType, "*") {
+						fmt.Fprintf(out, "\t\tout.%s = []*%s.%s{%s(mapCtx, v)}\n", krmFieldName, krmImportName, strings.TrimPrefix(krmSliceElemType, "*"), functionName)
+					} else {
+						fmt.Fprintf(out, "\t\tout.%s = []%s.%s{%s(mapCtx, v)}\n", krmFieldName, krmImportName, krmSliceElemType, functionName)
+					}
+					fmt.Fprintf(out, "\t}\n")
+
+				case protoreflect.EnumKind:
+					functionName := "direct.Enum_FromProto"
+					fmt.Fprintf(out, "\tout.%s = []%s.%s{%s(mapCtx, in.%s)}\n", krmFieldName, krmImportName, krmSliceElemType, functionName, protoAccessor)
+
+				case protoreflect.StringKind,
+					protoreflect.FloatKind,
+					protoreflect.DoubleKind,
+					protoreflect.BoolKind,
+					protoreflect.Int64Kind,
+					protoreflect.Int32Kind,
+					protoreflect.Uint32Kind,
+					protoreflect.Uint64Kind,
+					protoreflect.Fixed64Kind,
+					protoreflect.BytesKind:
+					if protoIsPointerInGo(protoField) {
+						fmt.Fprintf(out, "\tif v := in.%s; v != nil {\n", protoFieldName)
+						fmt.Fprintf(out, "\t\tout.%s = []%s.%s{v}\n", krmFieldName, krmImportName, krmSliceElemType)
+						fmt.Fprintf(out, "\t}\n")
+					} else {
+						fmt.Fprintf(out, "\tout.%s = []%s.%s{direct.LazyPtr(in.%s)}\n", krmFieldName, krmImportName, krmSliceElemType, protoAccessor)
+					}
+
+				default:
+					klog.Fatalf("unhandled kind %q for field %v", protoField.Kind(), protoField)
+				}
+				continue
+			}
+
 			if protoField.Cardinality() == protoreflect.Repeated {
 				useSliceFromProtoFunction := ""
 				useCustomMethod := ""
@@ -265,7 +406,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "*")
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
 
-					functionName := krmElemTypeName + "_FromProto"
+					functionName := krmElemTypeName + versionSpecifier + "_FromProto"
 					useSliceFromProtoFunction = functionName
 				case protoreflect.StringKind:
 					if krmField.Type != "[]string" {
@@ -332,7 +473,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				krmTypeName := krmField.Type
 				krmTypeName = strings.TrimPrefix(krmTypeName, "*")
 
-				functionName := krmTypeName + "_FromProto"
+				functionName := krmTypeName + versionSpecifier + "_FromProto"
 				switch krmTypeName {
 				case "string":
 					functionName = string(msg.Name()) + "_" + krmFieldName + "_FromProto"
@@ -368,7 +509,8 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				protoreflect.Int32Kind,
 				protoreflect.Uint32Kind,
 				protoreflect.Uint64Kind,
-				protoreflect.Fixed64Kind:
+				protoreflect.Fixed64Kind,
+				protoreflect.BytesKind:
 				if protoIsPointerInGo(protoField) {
 					fmt.Fprintf(out, "\tout.%s = in.%s\n",
 						krmFieldName,
@@ -381,12 +523,6 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					)
 				}
 
-			case protoreflect.BytesKind:
-				fmt.Fprintf(out, "\tout.%s = in.%s\n",
-					krmFieldName,
-					protoAccessor,
-				)
-
 			default:
 				klog.Fatalf("unhandled kind %q for field %v", protoField.Kind(), protoField)
 			}
@@ -397,25 +533,43 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		klog.Infof("found existing non-generated mapping function %q, won't generate", goTypeName+"_FromProto")
 	}
 
-	if v.findFuncDeclaration(goTypeName+"_ToProto", srcDir, true) == nil {
-		fmt.Fprintf(out, "func %s_ToProto(mapCtx *direct.MapContext, in *%s.%s) *pb.%s {\n", goTypeName, krmImportName, goTypeName, pbTypeName)
+	if v.findFuncDeclaration(goTypeName+versionSpecifier+"_ToProto", srcDir, true) == nil {
+		fmt.Fprintf(out, "func %s_ToProto(mapCtx *direct.MapContext, in *%s.%s) *%s.%s {\n", goTypeName+versionSpecifier, krmImportName, goTypeName, pbTypeGoImport, pbTypeName)
 		fmt.Fprintf(out, "\tif in == nil {\n")
 		fmt.Fprintf(out, "\t\treturn nil\n")
 		fmt.Fprintf(out, "\t}\n")
-		fmt.Fprintf(out, "\tout := &pb.%s{}\n", pbTypeName)
+		fmt.Fprintf(out, "\tout := &%s.%s{}\n", pbTypeGoImport, pbTypeName)
 		for i := 0; i < msg.Fields().Len(); i++ {
 			protoField := msg.Fields().Get(i)
 			protoFieldName := protoNameForField(protoField)
+			protoFieldPackage := v.goPackageForProto(protoField.ParentFile())
 
 			krmFieldName := goFieldName(protoField)
 			krmField := goFields[krmFieldName]
 			if krmField == nil {
 				// Support refs
-				krmFieldRef := goFields[krmFieldName+"Ref"]
-				if krmFieldRef != nil {
+				if krmFieldRef := goFields[krmFieldName+"Ref"]; krmFieldRef != nil {
 					fmt.Fprintf(out, "\tif in.%s != nil {\n", krmFieldRef.Name)
-					fmt.Fprintf(out, "\t	out.%v = in.%v.External\n", protoFieldName, krmFieldRef.Name)
+					fmt.Fprintf(out, "\t\tout.%s = in.%s.External\n", protoFieldName, krmFieldRef.Name)
 					fmt.Fprintf(out, "\t}\n")
+					continue
+				}
+
+				if krmFieldRefs := goFields[strings.TrimSuffix(krmFieldName, "s")+"Refs"]; krmFieldRefs != nil {
+					template := `
+						if v := in.{KRMField}; len(v) != 0 {
+							for i := range v {
+								out.{protoFieldName} = append(out.{protoFieldName}, v[i].External)
+							}
+						}
+						`
+
+					s := template
+					s = strings.ReplaceAll(s, "{protoFieldName}", protoFieldName)
+					s = strings.ReplaceAll(s, "{KRMField}", krmFieldRefs.Name)
+
+					fmt.Fprintf(out, "%s\n", s)
+
 					continue
 				}
 
@@ -430,6 +584,93 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				continue
 			}
 
+			isKRMFieldSlice := strings.HasPrefix(krmField.Type, "[]")
+			isProtoFieldSlice := protoField.Cardinality() == protoreflect.Repeated
+
+			if !isProtoFieldSlice && isKRMFieldSlice { // proto single <- krm slice
+				krmElemType := strings.TrimPrefix(krmField.Type, "[]")
+				krmElemTypeName := strings.TrimPrefix(krmElemType, "*")
+
+				fmt.Fprintf(out, "\tif len(in.%s) > 0 && in.%s[0] != nil {\n", krmFieldName, krmFieldName)
+
+				switch protoField.Kind() {
+				case protoreflect.MessageKind:
+					functionName := krmElemTypeName + versionSpecifier + "_ToProto"
+					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+						functionName = krmToProtoFunctionName(protoField, krmField.Name)
+					}
+					fmt.Fprintf(out, "\t\tout.%s = %s(mapCtx, in.%s[0])\n", protoFieldName, functionName, krmFieldName)
+
+				case protoreflect.EnumKind:
+					protoTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
+					functionName := "direct.Enum_ToProto"
+					fmt.Fprintf(out, "\t\tout.%s = %s[%s](mapCtx, *in.%s[0])\n", protoFieldName, functionName, protoTypeName, krmFieldName)
+
+				case protoreflect.StringKind,
+					protoreflect.FloatKind,
+					protoreflect.DoubleKind,
+					protoreflect.BoolKind,
+					protoreflect.Int64Kind,
+					protoreflect.Int32Kind,
+					protoreflect.Uint32Kind,
+					protoreflect.Uint64Kind,
+					protoreflect.Fixed64Kind,
+					protoreflect.BytesKind:
+					if protoIsPointerInGo(protoField) {
+						fmt.Fprintf(out, "\t\tout.%s = in.%s[0]\n", protoFieldName, krmFieldName)
+					} else {
+						fmt.Fprintf(out, "\t\tout.%s = direct.ValueOf(in.%s[0])\n", protoFieldName, krmFieldName)
+					}
+
+				default:
+					klog.Fatalf("unhandled kind %q for field %v", protoField.Kind(), protoField)
+				}
+				fmt.Fprintf(out, "\t}\n")
+				continue
+			}
+
+			if isProtoFieldSlice && !isKRMFieldSlice && !protoField.IsMap() { // proto slice <- krm single
+				var toProtoElemFunc string
+				krmElemTypeName := strings.TrimPrefix(krmField.Type, "*")
+
+				var protoSliceElemType string
+
+				switch protoField.Kind() {
+				case protoreflect.MessageKind:
+					functionName := krmElemTypeName + versionSpecifier + "_ToProto"
+					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
+						functionName = krmToProtoFunctionName(protoField, krmField.Name)
+					}
+					toProtoElemFunc = functionName
+					protoSliceElemType = "*" + v.goPackageForProto(protoField.Message().ParentFile()) + "." + protoNameForType(protoField.Message())
+
+				case protoreflect.EnumKind:
+					protoTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
+					toProtoElemFunc = fmt.Sprintf("direct.Enum_ToProto[%s]", protoTypeName)
+					protoSliceElemType = v.goPackageForProto(protoField.Message().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
+
+				default:
+					protoSliceElemType = goTypeForProtoKind(protoField.Kind())
+				}
+
+				fmt.Fprintf(out, "\tif v := in.%s; v != nil {\n", krmFieldName)
+				if toProtoElemFunc != "" {
+					if protoField.Kind() == protoreflect.EnumKind {
+						fmt.Fprintf(out, "\t\tout.%s = []%s{%s(mapCtx, *v)}\n", protoFieldName, protoSliceElemType, toProtoElemFunc)
+					} else {
+						fmt.Fprintf(out, "\t\tout.%s = []%s{%s(mapCtx, v)}\n", protoFieldName, protoSliceElemType, toProtoElemFunc)
+					}
+				} else {
+					if protoField.Kind() == protoreflect.BytesKind {
+						fmt.Fprintf(out, "\t\tout.%s = [][]byte{in.%s}\n", protoFieldName, krmFieldName)
+					} else {
+						fmt.Fprintf(out, "\t\tout.%s = []%s{direct.ValueOf(in.%s)}\n", protoFieldName, protoSliceElemType, krmFieldName)
+					}
+				}
+				fmt.Fprintf(out, "\t}\n")
+				continue
+			}
+
 			if protoField.Cardinality() == protoreflect.Repeated {
 				useSliceToProtoFunction := ""
 				useCustomMethod := ""
@@ -440,7 +681,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "*")
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
 
-					functionName := krmElemTypeName + "_ToProto"
+					functionName := krmElemTypeName + versionSpecifier + "_ToProto"
 					useSliceToProtoFunction = functionName
 
 				case protoreflect.StringKind:
@@ -453,7 +694,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "*")
 					krmElemTypeName = strings.TrimPrefix(krmElemTypeName, "[]")
 
-					protoTypeName := "pb." + protoNameForEnum(protoField.Enum())
+					protoTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
 					useCustomMethod = fmt.Sprintf("direct.EnumSlice_ToProto[%s]", protoTypeName)
 
 				case protoreflect.FloatKind,
@@ -510,7 +751,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				krmTypeName := krmField.Type
 				krmTypeName = strings.TrimPrefix(krmTypeName, "*")
 
-				functionName := krmTypeName + "_ToProto"
+				functionName := krmTypeName + versionSpecifier + "_ToProto"
 				switch krmTypeName {
 				case "string":
 					functionName = string(msg.Name()) + "_" + krmFieldName + "_ToProto"
@@ -522,7 +763,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				}
 
 				oneof := protoField.ContainingOneof()
-				if oneof != nil {
+				if oneof != nil && !protoField.HasOptionalKeyword() {
 					fmt.Fprintf(out, "\tif oneof := %s(mapCtx, in.%s); oneof != nil {\n",
 						functionName,
 						krmFieldName,
@@ -532,8 +773,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 					oneofTypeName := protoNameForOneOf(protoField)
 
-					fmt.Fprintf(out, "\t\tout.%s = &pb.%s{%s: oneof}\n",
+					fmt.Fprintf(out, "\t\tout.%s = &%s.%s{%s: oneof}\n",
 						oneofFieldName,
+						protoFieldPackage,
 						oneofTypeName,
 						protoFieldName)
 					fmt.Fprintf(out, "\t}\n")
@@ -545,7 +787,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					krmFieldName,
 				)
 			case protoreflect.EnumKind:
-				protoTypeName := "pb." + protoNameForEnum(protoField.Enum())
+				protoTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
 				functionName := "direct.Enum_ToProto"
 				if protoIsPointerInGo(protoField) {
 					functionName = "EnumPtr_ToProto[" + protoTypeName + "]"
@@ -642,20 +884,79 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		klog.Infof("found existing non-generated mapping function %q, won't generate", goTypeName+"_ToProto")
 	}
 
+	// Generate ToProto helpers for oneof fields that are not messages
+	for i := 0; i < msg.Fields().Len(); i++ {
+		protoField := msg.Fields().Get(i)
+		oneof := protoField.ContainingOneof()
+		if oneof == nil || protoField.HasOptionalKeyword() || protoField.Kind() == protoreflect.MessageKind {
+			continue
+		}
+
+		protoFieldName := protoNameForField(protoField)
+		functionName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
+
+		if v.findFuncDeclaration(functionName, srcDir, true) != nil {
+			continue
+		}
+
+		krmFieldName := goFieldName(protoField)
+		krmField, ok := goFields[krmFieldName]
+		if !ok {
+			// This can happen if the field is not in the KRM struct (e.g. output-only).
+			// We should not generate a helper if there is no corresponding KRM field.
+			continue
+		}
+		krmFieldType := krmField.Type
+
+		oneofWrapperTypeName := v.goPackageForProto(protoField.ParentFile()) + "." + protoNameForOneOf(protoField)
+
+		fmt.Fprintf(out, "func %s(mapCtx *direct.MapContext, in %s) *%s {\n", functionName, krmFieldType, oneofWrapperTypeName)
+		fmt.Fprintf(out, "\tif in == nil {\n")
+		fmt.Fprintf(out, "\t\treturn nil\n")
+		fmt.Fprintf(out, "\t}\n")
+
+		switch protoField.Kind() {
+		case protoreflect.EnumKind:
+			protoEnumTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
+			fmt.Fprintf(out, "\treturn &%s{%s: direct.Enum_ToProto[%s](mapCtx, in)}\n", oneofWrapperTypeName, protoFieldName, protoEnumTypeName)
+
+		case protoreflect.BoolKind:
+			fmt.Fprintf(out, "\treturn &%s{%s: *in}\n", oneofWrapperTypeName, protoFieldName)
+
+		case protoreflect.StringKind,
+			protoreflect.FloatKind,
+			protoreflect.DoubleKind,
+			protoreflect.Int64Kind,
+			protoreflect.Int32Kind,
+			protoreflect.Uint32Kind,
+			protoreflect.Uint64Kind,
+			protoreflect.Fixed64Kind,
+			protoreflect.BytesKind:
+
+			fmt.Fprintf(out, "\treturn &%s{%s: *in}\n", oneofWrapperTypeName, protoFieldName)
+		}
+		fmt.Fprintf(out, "}\n")
+	}
 }
 
 func protoNameForType(msg protoreflect.MessageDescriptor) string {
 	fullName := string(msg.FullName())
-	fullName = strings.TrimPrefix(fullName, string(msg.ParentFile().FullName()))
-	fullName = strings.TrimPrefix(fullName, ".")
+	namespace := string(msg.ParentFile().Package())
+	if namespace != "" {
+		namespace = namespace + "."
+	}
+	fullName = strings.TrimPrefix(fullName, namespace)
 	fullName = strings.ReplaceAll(fullName, ".", "_")
 	return fullName
 }
 
 func protoNameForEnum(msg protoreflect.EnumDescriptor) string {
 	fullName := string(msg.FullName())
-	fullName = strings.TrimPrefix(fullName, string(msg.ParentFile().FullName()))
-	fullName = strings.TrimPrefix(fullName, ".")
+	namespace := string(msg.ParentFile().Package())
+	if namespace != "" {
+		namespace = namespace + "."
+	}
+	fullName = strings.TrimPrefix(fullName, namespace)
 	fullName = strings.ReplaceAll(fullName, ".", "_")
 	return fullName
 }
@@ -740,7 +1041,7 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 	case "google.protobuf.Timestamp":
 		return "direct.StringTimestamp_FromProto"
 	case "google.protobuf.Struct":
-		return krmFieldName + "_FromProto"
+		return "direct.Struct_FromProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_FromProto"
 	case "google.protobuf.Int64Value":
@@ -772,7 +1073,7 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 	case "google.protobuf.Timestamp":
 		return "direct.StringTimestamp_ToProto"
 	case "google.protobuf.Struct":
-		return krmFieldName + "_ToProto"
+		return "direct.Struct_ToProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_ToProto"
 	case "google.protobuf.Int64Value":
@@ -833,10 +1134,60 @@ func fieldExistInStruct(goType *gocode.GoStruct, fieldName string) bool {
 	return false
 }
 
-// getKRMImportName generates an import alias for KRM package based on its version
-// e.g. "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1" -> "krmv1alpha1"
-func getKRMImportName(krmPackage string) string {
-	parts := strings.Split(krmPackage, "/")
-	version := parts[len(parts)-1]
-	return "krm" + version
+// getGoImportAlias generates an import alias for go package
+func (o *MapperGenerator) getGoImportAlias(goPackage string) string {
+	existing, found := o.importedPackages[goPackage]
+	if found {
+		return existing.alias
+	}
+
+	importAlias := lastComponent(goPackage)
+
+	// Disambiguate in a way that preserves compatibility with the existing code
+	if strings.Contains(goPackage, "k8s-config-connector/apis/refs/") {
+		importAlias = "refs" + importAlias
+	} else if _, suffix, found := strings.Cut(goPackage, "k8s-config-connector/apis/"); found {
+		tokens := strings.Split(suffix, "/")
+		if len(tokens) == 2 {
+			importAlias = "krm" + tokens[0] + tokens[1]
+		} else {
+			klog.Fatalf("cannot determine import alias for %s", goPackage)
+		}
+	}
+
+	o.importedPackages[goPackage] = importedPackage{
+		alias:     importAlias,
+		goPackage: goPackage,
+	}
+	return importAlias
+}
+
+// GoPackageForProto returns the full go package import path for a proto message
+// For the import alias, see goPackageForProto
+func GoPackageForProto(parentFile protoreflect.FileDescriptor) string {
+	fileOptions := parentFile.Options().(*descriptorpb.FileOptions)
+	protoGoPackage := fileOptions.GetGoPackage()
+	if ix := strings.Index(protoGoPackage, ";"); ix != -1 {
+		protoGoPackage = protoGoPackage[:ix]
+	}
+	return protoGoPackage
+}
+
+// goPackageForProto returns the go package import alias for a proto message
+func (o *MapperGenerator) goPackageForProto(parentFile protoreflect.FileDescriptor) string {
+	protoGoPackage := GoPackageForProto(parentFile)
+	existing, found := o.importedPackages[protoGoPackage]
+	if found {
+		return existing.alias
+	}
+
+	importAlias := strings.TrimSuffix(lastComponent(protoGoPackage), "pb") + "pb"
+
+	o.AddGoImportAlias(protoGoPackage, importAlias)
+	return importAlias
+}
+
+func lastComponent(s string) string {
+	ix := strings.LastIndex(s, "/")
+	return s[ix+1:]
 }

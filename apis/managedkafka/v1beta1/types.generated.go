@@ -28,3 +28,42 @@ type RebalanceConfig struct {
 	// +kcc:proto:field=google.cloud.managedkafka.v1.RebalanceConfig.mode
 	Mode *string `json:"mode,omitempty"`
 }
+
+// +kcc:proto=google.cloud.managedkafka.v1.TlsConfig
+type TLSConfig struct {
+	// Optional. The configuration of the broker truststore. If specified, clients
+	//  can use mTLS for authentication.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.TlsConfig.trust_config
+	TrustConfig *TrustConfig `json:"trustConfig,omitempty"`
+
+	// Optional. A list of rules for mapping from SSL principal names to
+	//  short names. These are applied in order by Kafka.
+	//  Refer to the Apache Kafka documentation for `ssl.principal.mapping.rules`
+	//  for the precise formatting details and syntax.
+	//  Example: "RULE:^CN=(.*?),OU=ServiceUsers.*$/$1@example.com/,DEFAULT"
+	//
+	//  This is a static Kafka broker configuration. Setting or modifying this
+	//  field will trigger a rolling restart of the Kafka brokers to apply
+	//  the change. An empty string means no rules are applied (Kafka default).
+	// +kcc:proto:field=google.cloud.managedkafka.v1.TlsConfig.ssl_principal_mapping_rules
+	SSLPrincipalMappingRules *string `json:"sslPrincipalMappingRules,omitempty"`
+}
+
+// +kcc:proto=google.cloud.managedkafka.v1.TrustConfig
+type TrustConfig struct {
+	// Optional. Configuration for the Google Certificate Authority Service.
+	//  Maximum 10.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.TrustConfig.cas_configs
+	CasConfigs []TrustConfig_CertificateAuthorityServiceConfig `json:"casConfigs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.managedkafka.v1.TrustConfig.CertificateAuthorityServiceConfig
+type TrustConfig_CertificateAuthorityServiceConfig struct {
+	// Required. The name of the CA pool to pull CA certificates from.
+	//  Structured like:
+	//  projects/{project}/locations/{location}/caPools/{ca_pool}.
+	//  The CA pool does not need to be in the same project or location as the
+	//  Kafka cluster.
+	// +kcc:proto:field=google.cloud.managedkafka.v1.TrustConfig.CertificateAuthorityServiceConfig.ca_pool
+	CAPool *string `json:"caPool,omitempty"`
+}

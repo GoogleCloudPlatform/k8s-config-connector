@@ -22,6 +22,7 @@ import (
 	_ "net/http/pprof" // Needed to allow pprof server to accept requests
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/contexts"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
@@ -32,18 +33,19 @@ import (
 
 	flag "github.com/spf13/pflag"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	crlog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
-	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
+
+	// Ensure built-in types are registered.
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 var logger = crlog.Log.WithName("setup")
 
 func main() {
-	stop := signals.SetupSignalHandler()
+	ctx := contexts.SetupSignalHandler()
 
 	var enablePprof bool
 	var pprofPort int
@@ -120,5 +122,5 @@ func main() {
 	log.Println("Starting the Cmd.")
 
 	// Start the Cmd
-	log.Fatal(mgr.Start(stop))
+	log.Fatal(mgr.Start(ctx))
 }

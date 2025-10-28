@@ -17,11 +17,10 @@ package vertexai
 import (
 	"context"
 	"fmt"
-	"strconv"
-	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -29,9 +28,7 @@ import (
 
 	gcp "cloud.google.com/go/aiplatform/apiv1beta1"
 	vertexaipb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
-	cloudresourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 
-	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	"google.golang.org/api/option"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -69,19 +66,6 @@ func (m *modelMetadataStore) client(ctx context.Context, location string) (*gcp.
 	return gcpClient, err
 }
 
-func (m *modelMetadataStore) projectsClient(ctx context.Context) (*cloudresourcemanager.ProjectsClient, error) {
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-
-	crmClient, err := cloudresourcemanager.NewProjectsRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building cloudresourcemanager client: %w", err)
-	}
-	return crmClient, err
-}
-
 func (m *modelMetadataStore) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.VertexAIMetadataStore{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
@@ -97,12 +81,6 @@ func (m *modelMetadataStore) AdapterForObject(ctx context.Context, reader client
 		return nil, err
 	}
 
-	// Get Project GCP client
-	projectClient, err := m.projectsClient(ctx)
-	if err != nil {
-		return nil, err
-	}
-
 	// Get vertexai GCP client
 	gcpClient, err := m.client(ctx, id.Parent().Location)
 	if err != nil {
@@ -113,7 +91,7 @@ func (m *modelMetadataStore) AdapterForObject(ctx context.Context, reader client
 		id:            id,
 		gcpClient:     gcpClient,
 		desired:       obj,
-		projectClient: projectClient,
+		projectMapper: m.config.ProjectMapper,
 	}, nil
 }
 
@@ -139,7 +117,7 @@ type MetadataStoreAdapter struct {
 	gcpClient     *gcp.MetadataClient
 	desired       *krm.VertexAIMetadataStore
 	actual        *vertexaipb.MetadataStore
-	projectClient *cloudresourcemanager.ProjectsClient
+	projectMapper *projects.ProjectMapper
 }
 
 var _ directbase.Adapter = &MetadataStoreAdapter{}
@@ -153,11 +131,11 @@ func (a *MetadataStoreAdapter) Find(ctx context.Context) (bool, error) {
 	log.V(2).Info("getting MetadataStore", "name", a.id)
 
 	// metadataStores requires project number instead of project ID
-	projectNumber, err := getProjectNumberFromID(ctx, a.id.Parent().ProjectID, a.projectClient)
+	projectNumber, err := a.projectMapper.LookupProjectNumber(ctx, a.id.Parent().ProjectID)
 	if err != nil {
 		return false, fmt.Errorf("error converting project ID %s to project number: %w", a.id.Parent().ProjectID, err)
 	}
-	id := fmt.Sprintf("projects/%s/locations/%s/metadataStores/%s", projectNumber, a.id.Parent().Location, a.id.ID())
+	id := fmt.Sprintf("projects/%d/locations/%s/metadataStores/%s", projectNumber, a.id.Parent().Location, a.id.ID())
 	req := &vertexaipb.GetMetadataStoreRequest{Name: id}
 	metadatastorepb, err := a.gcpClient.GetMetadataStore(ctx, req)
 	if err != nil {
@@ -169,21 +147,6 @@ func (a *MetadataStoreAdapter) Find(ctx context.Context) (bool, error) {
 
 	a.actual = metadatastorepb
 	return true, nil
-}
-
-func getProjectNumberFromID(ctx context.Context, projectID string, projectsClient *cloudresourcemanager.ProjectsClient) (string, error) {
-	req := &resourcemanagerpb.GetProjectRequest{
-		Name: "projects/" + projectID,
-	}
-	project, err := projectsClient.GetProject(ctx, req)
-	if err != nil {
-		return "", fmt.Errorf("error getting project %q: %w", req.Name, err)
-	}
-	n, err := strconv.ParseInt(strings.TrimPrefix(project.Name, "projects/"), 10, 64)
-	if err != nil {
-		return "", fmt.Errorf("error parsing project number for %q: %w", project.Name, err)
-	}
-	return fmt.Sprintf("%d", n), nil
 }
 
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.

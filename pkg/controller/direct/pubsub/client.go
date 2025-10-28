@@ -22,7 +22,7 @@ import (
 	"context"
 	"fmt"
 
-	api "cloud.google.com/go/pubsub/apiv1"
+	api "cloud.google.com/go/pubsub/v2/apiv1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 )
 
@@ -37,12 +37,12 @@ func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpCli
 	return gcpClient, nil
 }
 
-func (m *gcpClient) newSubscriberClient(ctx context.Context) (*api.SubscriberClient, error) {
+func (m *gcpClient) newSubscriberClient(ctx context.Context) (*api.SubscriptionAdminClient, error) {
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewSubscriberRESTClient(ctx, opts...)
+	client, err := api.NewSubscriptionAdminClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building pubsub subscriber client: %w", err)
 	}

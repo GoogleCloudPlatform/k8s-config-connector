@@ -15,14 +15,19 @@
 package mockcompute
 
 import (
+	"context"
+	"fmt"
 	"net/url"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/regions"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"k8s.io/klog/v2"
 )
 
 const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
+const PlaceholderFingerprint = "abcdef0123A="
+const PlaceholderID = "1234567890"
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
@@ -32,8 +37,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".items[].creationTimestamp", PlaceholderTimestamp)
 
 	// Addresses
-	replacements.ReplacePath(".labelFingerprint", "abcdef0123A=")
-	replacements.ReplacePath(".items[].labelFingerprint", "abcdef0123A=")
+	replacements.ReplacePath(".labelFingerprint", PlaceholderFingerprint)
+	replacements.ReplacePath(".items[].labelFingerprint", PlaceholderFingerprint)
 
 	replacements.ReplacePath(".address", "8.8.8.8")
 	replacements.ReplacePath(".items[].address", "8.8.8.8")
@@ -42,10 +47,33 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	// Subnets
 	replacements.ReplacePath(".gatewayAddress", "10.0.0.1")
+	for _, region := range regions.GetAllRegions(context.Background()) {
+		prefix := fmt.Sprintf(".items.regions/%s.subnetworks[]", region.Name)
+		replacements.ReplacePath(prefix+".creationTimestamp", PlaceholderTimestamp)
+		replacements.ReplacePath(prefix+".fingerprint", PlaceholderFingerprint)
+		replacements.ReplacePath(prefix+".id", PlaceholderID)
+	}
+
+	// Routes
+	// replacements.ReplacePath(".items[].id", PlaceholderID)
+
+	// BackendService
+	replacements.SortSlice(".backends")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
-	if isComputeAPI(event) && isGetOperation(event) {
+	if !isComputeAPI(event) {
+		return
+
+	}
+	kind := ""
+	event.VisitResponseStringValues(func(path string, value string) {
+		if path == ".kind" {
+			kind = value
+		}
+	})
+
+	if isGetOperation(event) {
 		targetLink := ""
 		targetId := ""
 
@@ -89,6 +117,27 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 			}
 		}
 	}
+
+	if kind == "compute#routeList" {
+		// Sort the items list, because otherwise the order is by name, and the name includes an unpredictable hash.
+		replacements.SortSliceBy(".items", "destRange")
+	}
+
+	event.VisitResponseStringValues(func(path string, value string) {
+		switch path {
+		case ".name", ".items[].name":
+			switch kind {
+			case "compute#route", "compute#routeList":
+				replacements.ReplaceStringValue(value, "${routeName}")
+			}
+		case ".id", ".items[].id":
+			switch kind {
+			case "compute#route", "compute#routeList":
+				replacements.ReplaceStringValue(value, "${routeID}")
+			}
+		}
+	})
+
 }
 
 // isGetOperation returns true if this is an operation poll request

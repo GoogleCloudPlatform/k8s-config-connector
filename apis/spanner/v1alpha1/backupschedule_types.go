@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	spannerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/spanner/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -52,8 +53,8 @@ type SpannerBackupScheduleSpec struct {
 	// +kcc:proto:field=google.spanner.admin.database.v1.BackupSchedule.incremental_backup_spec
 	IncrementalBackupSpec *IncrementalBackupSpec `json:"incrementalBackupSpec,omitempty"`
 
-	// Required. The spanner database that this backup applies to.
-	DatabaseRef *refs.SpannerDatabaseRef `json:"spannerDatabaseRef,omitempty"`
+	// Required. The Spanner Database that this backup applies to.
+	DatabaseRef *spannerv1beta1.SpannerDatabaseRef `json:"spannerDatabaseRef,omitempty"`
 
 	// The SpannerBackupSchedule name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`

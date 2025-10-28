@@ -1,0 +1,38 @@
+--- a/v1alpha1
++++ b/v1beta1
+  &v1.JSONSchemaProps{
+  	... // 26 identical fields
+  	AnyOf: nil,
+  	Not:   nil,
+  	Properties: map[string]v1.JSONSchemaProps{
+  		"apiVersion": {Description: "APIVersion defines the versioned schema of this representation o"..., Type: "string"},
+  		"kind":       {Description: "Kind is a string value representing the REST resource this objec"..., Type: "string"},
+  		"metadata":   {Type: "object"},
+  		"spec": {
+  			... // 26 identical fields
+  			AnyOf: nil,
+  			Not:   nil,
+  			Properties: map[string]v1.JSONSchemaProps{
+  				"displayName": {Description: "Optional. Display name.", Type: "string"},
+  				"labels":      {Description: "Optional. Resource labels to represent user-provided metadata. F"..., Type: "object", AdditionalProperties: &{Allows: true, Schema: &{Type: "string"}}},
+  				"managedService": {
+  					... // 41 identical fields
+  					XListType:    nil,
+  					XMapType:     nil,
+- 					XValidations: nil,
++ 					XValidations: v1.ValidationRules{{Rule: "self == oldSelf", Message: "the field is immutable"}},
+  				},
+  				"projectRef": {Description: " Optional. The project that this resource belongs to.", Type: "object", OneOf: {{Required: {"name"}, Not: &{Required: {"external"}}}, {Required: {"external"}, Not: &{AnyOf: {{Required: {"name"}}, {Required: {"namespace"}}}}}}, Properties: {"external": {Description: "The `projectID` field of a project, when not managed by Config C"..., Type: "string"}, "kind": {Description: "The kind of the Project resource; optional but must be `Project`"..., Type: "string"}, "name": {Description: "The `name` field of a `Project` resource.", Type: "string"}, "namespace": {Description: "The `namespace` field of a `Project` resource.", Type: "string"}}, ...},
+  				"resourceID": {Description: "The APIGatewayAPI name. If not given, the metadata.name will be "..., Type: "string"},
+  			},
+  			AdditionalProperties: nil,
+  			PatternProperties:    nil,
+  			... // 13 identical fields
+  		},
+  		"status": {Description: "APIGatewayAPIStatus defines the config connector machine state o"..., Type: "object", Properties: {"conditions": {Description: "Conditions represent the latest available observations of the ob"..., Type: "array", Items: &{Schema: &{Type: "object", Properties: {"lastTransitionTime": {Description: "Last time the condition transitioned from one status to another.", Type: "string"}, "message": {Description: "Human-readable message indicating details about last transition.", Type: "string"}, "reason": {Description: "Unique, one-word, CamelCase reason for the condition's last tran"..., Type: "string"}, "status": {Description: "Status is the status of the condition. Can be True, False, Unknown.", Type: "string"}, ...}}}}, "externalRef": {Description: "A unique specifier for the APIGatewayAPI resource in GCP.", Type: "string"}, "observedGeneration": {Description: "ObservedGeneration is the generation of the resource that was mo"..., Type: "integer", Format: "int64"}, "observedState": {Description: "ObservedState is the state of the resource as most recently obse"..., Type: "object", Properties: {"createTime": {Description: "Created time.", Type: "string"}, "name": {Description: "Resource name of the API. Format: projects/{project}/locations/g"..., Type: "string"}, "state": {Description: " State of the API.", Type: "string"}, "updateTime": {Description: "Updated time.", Type: "string"}}}}},
+  	},
+  	AdditionalProperties: nil,
+  	PatternProperties:    nil,
+  	... // 13 identical fields
+  }
+

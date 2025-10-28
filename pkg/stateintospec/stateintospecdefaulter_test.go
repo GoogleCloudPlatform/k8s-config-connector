@@ -314,7 +314,7 @@ func TestStateIntoSpecDefaulter_ApplyDefaults(t *testing.T) {
 				}
 			}
 			defaulter := NewStateIntoSpecDefaulter(client)
-			changed, err := defaulter.ApplyDefaults(ctx, tc.resource)
+			changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeTerraform, tc.resource)
 			if tc.expectError {
 				if err == nil {
 					t.Fatalf("got nil, but expect an error")

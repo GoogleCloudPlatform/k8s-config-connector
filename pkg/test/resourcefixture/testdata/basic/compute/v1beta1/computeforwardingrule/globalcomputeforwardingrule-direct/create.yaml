@@ -17,6 +17,8 @@ kind: ComputeForwardingRule
 metadata:
   labels:
     label-one: "value-one"
+    foo/not-valid-in-gcp: bar
+    foo: bar
   annotations:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
   name: computeglobalforwardingrule-${uniqueId}

@@ -34,8 +34,6 @@ func speechRecognizerFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".model")
-	f.SpecFields.Insert(".language_codes")
 	f.SpecFields.Insert(".default_recognition_config")
 	f.SpecFields.Insert(".annotations")
 
@@ -52,6 +50,8 @@ func speechRecognizerFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".kms_key_version_name")
 
 	f.UnimplementedFields.Insert(".name") // special field
+	f.UnimplementedFields.Insert(".language_codes")
+	f.UnimplementedFields.Insert(".model")
 
 	return f
 }

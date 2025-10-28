@@ -45,20 +45,6 @@ type ContactInfo struct {
 	Email *string `json:"email,omitempty"`
 }
 
-// +kcc:proto=google.cloud.apphub.v1.Criticality
-type Criticality struct {
-	// Required. Criticality Type.
-	// +kcc:proto:field=google.cloud.apphub.v1.Criticality.type
-	Type *string `json:"type,omitempty"`
-}
-
-// +kcc:proto=google.cloud.apphub.v1.Environment
-type Environment struct {
-	// Required. Environment Type.
-	// +kcc:proto:field=google.cloud.apphub.v1.Environment.type
-	Type *string `json:"type,omitempty"`
-}
-
 // +kcc:proto=google.cloud.apphub.v1.Scope
 type Scope struct {
 	// Required. Scope Type.

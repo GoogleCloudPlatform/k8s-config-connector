@@ -178,7 +178,7 @@ spec:
                       - external
                     properties:
                       external:
-                        description: A reference to an externally managed Compute
+                        description: A reference to an externally-managed Compute
                           Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
                         type: string
                       name:
@@ -255,15 +255,12 @@ spec:
                         - external
                       required:
                       - name
-                      - kind
                     - not:
                         anyOf:
                         - required:
                           - name
                         - required:
                           - namespace
-                        - required:
-                          - kind
                       required:
                       - external
                     properties:
@@ -529,7 +526,7 @@ spec:
                       - external
                     properties:
                       external:
-                        description: A reference to an externally managed Compute
+                        description: A reference to an externally-managed Compute
                           Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
                         type: string
                       name:
@@ -606,15 +603,12 @@ spec:
                         - external
                       required:
                       - name
-                      - kind
                     - not:
                         anyOf:
                         - required:
                           - name
                         - required:
                           - namespace
-                        - required:
-                          - kind
                       required:
                       - external
                     properties:

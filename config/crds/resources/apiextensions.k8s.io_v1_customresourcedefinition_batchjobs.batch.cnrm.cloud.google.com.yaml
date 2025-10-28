@@ -159,7 +159,7 @@ spec:
                                     This field is ignored for persistent disks as
                                     the interface is chosen automatically. See https://cloud.google.com/compute/docs/disks/persistent-disks#choose_an_interface.
                                   type: string
-                                imageRef:
+                                image:
                                   description: |-
                                     URL for a VM image to use as the data source for this disk.
                                      For example, the following are all valid URLs:
@@ -175,40 +175,7 @@ spec:
                                      * `batch-debian`: use Batch Debian images.
                                      * `batch-cos`: use Batch Container-Optimized images.
                                      * `batch-hpc-rocky`: use Batch HPC Rocky Linux images.
-                                  oneOf:
-                                  - not:
-                                      required:
-                                      - external
-                                    required:
-                                    - name
-                                    - kind
-                                  - not:
-                                      anyOf:
-                                      - required:
-                                        - name
-                                      - required:
-                                        - namespace
-                                      - required:
-                                        - kind
-                                    required:
-                                    - external
-                                  properties:
-                                    external:
-                                      description: The external name of the referenced
-                                        resource
-                                      type: string
-                                    kind:
-                                      description: Kind of the referent.
-                                      type: string
-                                    name:
-                                      description: 'Name of the referent. More info:
-                                        https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                                      type: string
-                                    namespace:
-                                      description: 'Namespace of the referent. More
-                                        info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                                      type: string
-                                  type: object
+                                  type: string
                                 sizeGB:
                                   description: |-
                                     Disk size in GB.
@@ -277,7 +244,7 @@ spec:
                                           persistent disks as the interface is chosen
                                           automatically. See https://cloud.google.com/compute/docs/disks/persistent-disks#choose_an_interface.
                                         type: string
-                                      imageRef:
+                                      image:
                                         description: |-
                                           URL for a VM image to use as the data source for this disk.
                                            For example, the following are all valid URLs:
@@ -293,40 +260,7 @@ spec:
                                            * `batch-debian`: use Batch Debian images.
                                            * `batch-cos`: use Batch Container-Optimized images.
                                            * `batch-hpc-rocky`: use Batch HPC Rocky Linux images.
-                                        oneOf:
-                                        - not:
-                                            required:
-                                            - external
-                                          required:
-                                          - name
-                                          - kind
-                                        - not:
-                                            anyOf:
-                                            - required:
-                                              - name
-                                            - required:
-                                              - namespace
-                                            - required:
-                                              - kind
-                                          required:
-                                          - external
-                                        properties:
-                                          external:
-                                            description: The external name of the
-                                              referenced resource
-                                            type: string
-                                          kind:
-                                            description: Kind of the referent.
-                                            type: string
-                                          name:
-                                            description: 'Name of the referent. More
-                                              info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                                            type: string
-                                          namespace:
-                                            description: 'Namespace of the referent.
-                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
-                                            type: string
-                                        type: object
+                                        type: string
                                       sizeGB:
                                         description: |-
                                           Disk size in GB.
@@ -465,7 +399,7 @@ spec:
                                 - external
                               properties:
                                 external:
-                                  description: A reference to an externally managed
+                                  description: A reference to an externally-managed
                                     Compute Network resource. Should be in the format
                                     `projects/{{projectID}}/global/networks/{{network}}`.
                                   type: string
@@ -597,26 +531,7 @@ spec:
                       type: string
                     type: array
                 type: object
-              labels:
-                additionalProperties:
-                  type: string
-                description: |-
-                  Custom labels to apply to the job and any Cloud Logging
-                   [LogEntry](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry)
-                   that it generates.
-
-                   Use labels to group and describe the resources they are applied to. Batch
-                   automatically applies predefined labels and supports multiple `labels`
-                   fields for each job, which each let you apply custom labels to various
-                   resources. Label names that start with "goog-" or "google-" are
-                   reserved for predefined labels. For more information about labels with
-                   Batch, see
-                   [Organize resources using
-                   labels](https://cloud.google.com/batch/docs/organize-resources-using-labels).
-                type: object
               location:
-                description: Immutable. The location where the alloydb cluster should
-                  reside.
                 type: string
               logsPolicy:
                 description: Log preservation policy for the Job.
@@ -700,15 +615,14 @@ spec:
                         - external
                       properties:
                         external:
-                          description: If provided must be in the format `projects/[project_id]/topics/[topic_id]`.
+                          description: A reference to an externally managed PubSubTopic
+                            resource. Should be in the format "projects/{{projectID}}/topics/{{topicID}}".
                           type: string
                         name:
-                          description: The `metadata.name` field of a `PubSubTopic`
-                            resource.
+                          description: The name of a PubSubTopic resource.
                           type: string
                         namespace:
-                          description: The `metadata.namespace` field of a `PubSubTopic`
-                            resource.
+                          description: The namespace of a PubSubTopic resource.
                           type: string
                       type: object
                   type: object
@@ -721,7 +635,7 @@ spec:
                 format: int64
                 type: integer
               projectRef:
-                description: The project that this resource belongs to.
+                description: The Project that this resource belongs to.
                 oneOf:
                 - not:
                     required:

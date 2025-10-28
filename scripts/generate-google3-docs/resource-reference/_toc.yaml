@@ -33,6 +33,14 @@ toc:
     path: /config-connector/docs/reference/resource-docs/alloydb/alloydbinstance.md
   - title: "AlloyDBUser"
     path: /config-connector/docs/reference/resource-docs/alloydb/alloydbuser.md
+- title: "API Gateway"
+  section:
+  - title: "APIGatewayAPI"
+    path: /config-connector/docs/reference/resource-docs/apigateway/apigatewayapi.md
+- title: "App Hub"
+  section:
+  - title: "AppHubApplication"
+    path: /config-connector/docs/reference/resource-docs/apphub/apphubapplication.md
 - title: "Apigee"
   section:
   - title: "ApigeeEndpointAttachment"
@@ -53,6 +61,10 @@ toc:
   section:
   - title: "ArtifactRegistryRepository"
     path: /config-connector/docs/reference/resource-docs/artifactregistry/artifactregistryrepository.md
+- title: "Backup and DR"
+  section:
+  - title: "BackupDRBackupPlanAssociation"
+    path: /config-connector/docs/reference/resource-docs/backupdr/backupdrbackupplanassociation.md
 - title: "BigQueryAnalyticsHub"
   section:
   - title: "BigQueryAnalyticsHubDataExchange"
@@ -107,6 +119,10 @@ toc:
     path: /config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildtrigger.md
   - title: "CloudBuildWorkerPool"
     path: /config-connector/docs/reference/resource-docs/cloudbuild/cloudbuildworkerpool.md
+- title: "Cloud Quotas"
+  section:
+  - title: "APIQuotaAdjusterSettings"
+    path: /config-connector/docs/reference/resource-docs/cloudquota/apiquotaadjustersettings.md
 - title: "Cloud Functions"
   section:
   - title: "CloudFunctionsFunction"
@@ -249,8 +265,18 @@ toc:
   section:
   - title: "SourceRepoRepository"
     path: /config-connector/docs/reference/resource-docs/sourcerepo/sourcereporepository.md
+- title: "Speech-to-Text"
+  section:
+  - title: "SpeechCustomClass"
+    path: /config-connector/docs/reference/resource-docs/speech/speechcustomclass.md
+  - title: "SpeechPhraseSet"
+    path: /config-connector/docs/reference/resource-docs/speech/speechphraseset.md
+  - title: "SpeechRecognizer"
+    path: /config-connector/docs/reference/resource-docs/speech/speechrecognizer.md
 - title: "Cloud Spanner"
   section:
+  - title: "SpannerBackupSchedule"
+    path: /config-connector/docs/reference/resource-docs/spanner/spannerbackupschedule.md
   - title: "SpannerDatabase"
     path: /config-connector/docs/reference/resource-docs/spanner/spannerdatabase.md
   - title: "SpannerInstance"
@@ -269,6 +295,8 @@ toc:
   section:
   - title: "StorageBucket"
     path: /config-connector/docs/reference/resource-docs/storage/storagebucket.md
+  - title: "StorageAnywhereCache"
+    path: /config-connector/docs/reference/resource-docs/storage/storageanywherecache.md
   - title: "StorageBucketAccessControl"
     path: /config-connector/docs/reference/resource-docs/storage/storagebucketaccesscontrol.md
   - title: "StorageDefaultObjectAccessControl"
@@ -502,7 +530,7 @@ toc:
 - title: "Notebooks"
   section:
   - title: "NotebooksInstance"
-    path: "/config-connector/docs/reference/resource-docs/notebooks/notebooksinstance.md"
+    path: "/config-connector/docs/reference/resource-docs/notebooks/notebookinstance.md"
 - title: "Private CA"
   section:
   - title: "PrivateCACAPool"
@@ -591,6 +619,8 @@ toc:
     path: /config-connector/docs/reference/resource-docs/vertexai/vertexaiendpoint.md
   - title: "VertexAIIndex"
     path: /config-connector/docs/reference/resource-docs/vertexai/vertexaiindex.md
+  - title: "VertexAIMetadataStore"
+    path: /config-connector/docs/reference/resource-docs/vertexai/vertexaimetadatastore.md
 - title: "VPC Access"
   section:
   - title: "VPCAccessConnector"

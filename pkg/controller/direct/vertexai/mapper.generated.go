@@ -17,20 +17,21 @@ package vertexai
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
+	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func Featurestore_OnlineServingConfig_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore_OnlineServingConfig) *krm.Featurestore_OnlineServingConfig {
+func Featurestore_OnlineServingConfig_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore_OnlineServingConfig) *krmv1alpha1.Featurestore_OnlineServingConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Featurestore_OnlineServingConfig{}
+	out := &krmv1alpha1.Featurestore_OnlineServingConfig{}
 	out.FixedNodeCount = direct.LazyPtr(in.GetFixedNodeCount())
 	out.Scaling = Featurestore_OnlineServingConfig_Scaling_FromProto(mapCtx, in.GetScaling())
 	return out
 }
-func Featurestore_OnlineServingConfig_ToProto(mapCtx *direct.MapContext, in *krm.Featurestore_OnlineServingConfig) *pb.Featurestore_OnlineServingConfig {
+func Featurestore_OnlineServingConfig_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Featurestore_OnlineServingConfig) *pb.Featurestore_OnlineServingConfig {
 	if in == nil {
 		return nil
 	}
@@ -39,17 +40,17 @@ func Featurestore_OnlineServingConfig_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Scaling = Featurestore_OnlineServingConfig_Scaling_ToProto(mapCtx, in.Scaling)
 	return out
 }
-func Featurestore_OnlineServingConfig_Scaling_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore_OnlineServingConfig_Scaling) *krm.Featurestore_OnlineServingConfig_Scaling {
+func Featurestore_OnlineServingConfig_Scaling_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore_OnlineServingConfig_Scaling) *krmv1alpha1.Featurestore_OnlineServingConfig_Scaling {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Featurestore_OnlineServingConfig_Scaling{}
+	out := &krmv1alpha1.Featurestore_OnlineServingConfig_Scaling{}
 	out.MinNodeCount = direct.LazyPtr(in.GetMinNodeCount())
 	out.MaxNodeCount = direct.LazyPtr(in.GetMaxNodeCount())
 	out.CPUUtilizationTarget = direct.LazyPtr(in.GetCpuUtilizationTarget())
 	return out
 }
-func Featurestore_OnlineServingConfig_Scaling_ToProto(mapCtx *direct.MapContext, in *krm.Featurestore_OnlineServingConfig_Scaling) *pb.Featurestore_OnlineServingConfig_Scaling {
+func Featurestore_OnlineServingConfig_Scaling_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Featurestore_OnlineServingConfig_Scaling) *pb.Featurestore_OnlineServingConfig_Scaling {
 	if in == nil {
 		return nil
 	}
@@ -60,18 +61,18 @@ func Featurestore_OnlineServingConfig_Scaling_ToProto(mapCtx *direct.MapContext,
 	return out
 }
 
-func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
+func EncryptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krmv1beta1.EncryptionSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EncryptionSpec{
+	out := &krmv1beta1.EncryptionSpec{
 		KMSKeyRef: &v1beta1.KMSCryptoKeyRef{
 			External: in.KmsKeyName,
 		},
 	}
 	return out
 }
-func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
+func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.EncryptionSpec) *pb.EncryptionSpec {
 	if in == nil {
 		return nil
 	}
@@ -81,11 +82,33 @@ func EncryptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *
 	}
 	return out
 }
-func MetadataStore_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore) *krm.MetadataStore {
+
+func EncryptionSpecV1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krmv1alpha1.EncryptionSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.MetadataStore{}
+	out := &krmv1alpha1.EncryptionSpec{
+		KMSKeyRef: &v1beta1.KMSCryptoKeyRef{
+			External: in.KmsKeyName,
+		},
+	}
+	return out
+}
+func EncryptionSpecV1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.EncryptionSpec) *pb.EncryptionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionSpec{}
+	if in.KMSKeyRef != nil {
+		out.KmsKeyName = in.KMSKeyRef.External
+	}
+	return out
+}
+func MetadataStore_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore) *krmv1beta1.MetadataStore {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.MetadataStore{}
 	// MISSING: Name
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
@@ -95,7 +118,7 @@ func MetadataStore_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore) *k
 	out.DataplexConfig = MetadataStore_DataplexConfig_FromProto(mapCtx, in.GetDataplexConfig())
 	return out
 }
-func MetadataStore_ToProto(mapCtx *direct.MapContext, in *krm.MetadataStore) *pb.MetadataStore {
+func MetadataStore_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MetadataStore) *pb.MetadataStore {
 	if in == nil {
 		return nil
 	}
@@ -109,15 +132,15 @@ func MetadataStore_ToProto(mapCtx *direct.MapContext, in *krm.MetadataStore) *pb
 	out.DataplexConfig = MetadataStore_DataplexConfig_ToProto(mapCtx, in.DataplexConfig)
 	return out
 }
-func MetadataStore_DataplexConfig_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore_DataplexConfig) *krm.MetadataStore_DataplexConfig {
+func MetadataStore_DataplexConfig_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore_DataplexConfig) *krmv1beta1.MetadataStore_DataplexConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.MetadataStore_DataplexConfig{}
+	out := &krmv1beta1.MetadataStore_DataplexConfig{}
 	out.EnabledPipelinesLineage = direct.LazyPtr(in.GetEnabledPipelinesLineage())
 	return out
 }
-func MetadataStore_DataplexConfig_ToProto(mapCtx *direct.MapContext, in *krm.MetadataStore_DataplexConfig) *pb.MetadataStore_DataplexConfig {
+func MetadataStore_DataplexConfig_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MetadataStore_DataplexConfig) *pb.MetadataStore_DataplexConfig {
 	if in == nil {
 		return nil
 	}
@@ -125,15 +148,15 @@ func MetadataStore_DataplexConfig_ToProto(mapCtx *direct.MapContext, in *krm.Met
 	out.EnabledPipelinesLineage = direct.ValueOf(in.EnabledPipelinesLineage)
 	return out
 }
-func MetadataStore_MetadataStoreState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore_MetadataStoreState) *krm.MetadataStore_MetadataStoreState {
+func MetadataStore_MetadataStoreState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore_MetadataStoreState) *krmv1beta1.MetadataStore_MetadataStoreState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.MetadataStore_MetadataStoreState{}
+	out := &krmv1beta1.MetadataStore_MetadataStoreState{}
 	out.DiskUtilizationBytes = direct.LazyPtr(in.GetDiskUtilizationBytes())
 	return out
 }
-func MetadataStore_MetadataStoreState_ToProto(mapCtx *direct.MapContext, in *krm.MetadataStore_MetadataStoreState) *pb.MetadataStore_MetadataStoreState {
+func MetadataStore_MetadataStoreState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.MetadataStore_MetadataStoreState) *pb.MetadataStore_MetadataStoreState {
 	if in == nil {
 		return nil
 	}
@@ -141,18 +164,18 @@ func MetadataStore_MetadataStoreState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.DiskUtilizationBytes = direct.ValueOf(in.DiskUtilizationBytes)
 	return out
 }
-func VertexAIMetadataStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore) *krm.VertexAIMetadataStoreObservedState {
+func VertexAIMetadataStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore) *krmv1beta1.VertexAIMetadataStoreObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.VertexAIMetadataStoreObservedState{}
+	out := &krmv1beta1.VertexAIMetadataStoreObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.State = MetadataStore_MetadataStoreState_FromProto(mapCtx, in.GetState())
 	return out
 }
-func VertexAIMetadataStoreObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIMetadataStoreObservedState) *pb.MetadataStore {
+func VertexAIMetadataStoreObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.VertexAIMetadataStoreObservedState) *pb.MetadataStore {
 	if in == nil {
 		return nil
 	}
@@ -163,17 +186,17 @@ func VertexAIMetadataStoreObservedState_ToProto(mapCtx *direct.MapContext, in *k
 	out.State = MetadataStore_MetadataStoreState_ToProto(mapCtx, in.State)
 	return out
 }
-func VertexAIMetadataStoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore) *krm.VertexAIMetadataStoreSpec {
+func VertexAIMetadataStoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore) *krmv1beta1.VertexAIMetadataStoreSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.VertexAIMetadataStoreSpec{}
+	out := &krmv1beta1.VertexAIMetadataStoreSpec{}
 	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.DataplexConfig = MetadataStore_DataplexConfig_FromProto(mapCtx, in.GetDataplexConfig())
 	return out
 }
-func VertexAIMetadataStoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIMetadataStoreSpec) *pb.MetadataStore {
+func VertexAIMetadataStoreSpec_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.VertexAIMetadataStoreSpec) *pb.MetadataStore {
 	if in == nil {
 		return nil
 	}

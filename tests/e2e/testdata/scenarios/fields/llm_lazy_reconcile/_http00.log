@@ -68,6 +68,7 @@ X-Xss-Protection: 0
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/lazyreconcile-${uniqueId}",
     "type": "logging.googleapis.com/user/lazyreconcile-${uniqueId}",
+    "unit": "1",
     "valueType": "DISTRIBUTION"
   },
   "name": "lazyreconcile-${uniqueId}",
@@ -105,6 +106,7 @@ X-Xss-Protection: 0
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/lazyreconcile-${uniqueId}",
     "type": "logging.googleapis.com/user/lazyreconcile-${uniqueId}",
+    "unit": "1",
     "valueType": "DISTRIBUTION"
   },
   "name": "lazyreconcile-${uniqueId}",
@@ -163,6 +165,7 @@ X-Xss-Protection: 0
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/lazyreconcile-${uniqueId}",
     "type": "logging.googleapis.com/user/lazyreconcile-${uniqueId}",
+    "unit": "1",
     "valueType": "DISTRIBUTION"
   },
   "name": "lazyreconcile-${uniqueId}",
@@ -200,6 +203,7 @@ X-Xss-Protection: 0
     "metricKind": "DELTA",
     "name": "projects/${projectId}/metricDescriptors/logging.googleapis.com/user/lazyreconcile-${uniqueId}",
     "type": "logging.googleapis.com/user/lazyreconcile-${uniqueId}",
+    "unit": "1",
     "valueType": "DISTRIBUTION"
   },
   "name": "lazyreconcile-${uniqueId}",

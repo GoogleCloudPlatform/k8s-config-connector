@@ -750,7 +750,10 @@ spec:
     external: "projects/${PROJECT_ID?}"
   description: "A sample cloud function with an event trigger from PubSubTopic and a VPCAccessConnector"
   region: "us-west2"
-  runtime: "nodejs10"
+  # This field needs to be updated to a supported 1st gen version per the service team
+  # support schedule: https://cloud.google.com/functions/docs/runtime-support#support_schedule
+  # Deprecated runtime version will cause googleapis error
+  runtime: "nodejs20"
   availableMemoryMb: 128
   serviceAccountRef:
     # Replace ${PROJECT_ID?} with your project ID
@@ -830,7 +833,10 @@ spec:
     external: "projects/${PROJECT_ID?}"
   description: "A sample cloud function with an event trigger from StorageBucket"
   region: "us-west2"
-  runtime: "nodejs10"
+  # This field needs to be updated per the service team
+  # support schedule: https://cloud.google.com/functions/docs/runtime-support#support_schedule
+  # Deprecated runtime version will cause googleapis error
+  runtime: "nodejs20"
   sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
   entryPoint: "helloGET"
   eventTrigger:
@@ -882,7 +888,10 @@ spec:
     # Replace ${PROJECT_ID?} with your project ID
     external: "projects/${PROJECT_ID?}"
   region: "us-west2"
-  runtime: "nodejs10"
+  # This field needs to be updated to a supported 1st gen version per the service team
+  # support schedule: https://cloud.google.com/functions/docs/runtime-support#support_schedule
+  # Deprecated runtime version will cause googleapis error
+  runtime: "nodejs20"
   sourceArchiveUrl: "gs://config-connector-samples/cloudfunctionsfunction/http_trigger.zip"
   entryPoint: "helloGET"
   httpsTrigger:

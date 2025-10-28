@@ -1243,7 +1243,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}A reference to an externally managed Compute Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally-managed Compute Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1533,7 +1533,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The StorageBucket selfLink, when not managed by Config Connector.{% endverbatim %}</p>
+            <p>{% verbatim %}A reference to an externally-managed StorageBucket resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1543,7 +1543,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `name` field of a `StorageBucket` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The name of a StorageBucket resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>
@@ -1553,7 +1553,7 @@ settings:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>{% verbatim %}The `namespace` field of a `StorageBucket` resource.{% endverbatim %}</p>
+            <p>{% verbatim %}The namespace of a StorageBucket resource.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

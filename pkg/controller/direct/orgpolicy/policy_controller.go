@@ -29,6 +29,8 @@ import (
 
 	orgpolicypb "cloud.google.com/go/orgpolicy/apiv2/orgpolicypb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -166,9 +168,28 @@ func (a *PolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 		return mapCtx.Err()
 	}
 
+	if proto.Equal(a.actual.GetSpec(), desiredPb.GetSpec()) && proto.Equal(a.actual.GetDryRunSpec(), desiredPb.GetDryRunSpec()) {
+		log.V(2).Info("Policy is already up to date", "name", a.id)
+		// The resource is already up to date, but we still need to update the status
+		// to reflect the actual state from the backend.
+		status := &krm.OrgPolicyPolicyStatus{}
+		status.ObservedState = OrgPolicyPolicyObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		status.ExternalRef = direct.LazyPtr(a.id.String())
+		return updateOp.UpdateStatus(ctx, status, nil)
+	}
+
 	req := &orgpolicypb.UpdatePolicyRequest{
 		Policy: desiredPb,
 	}
+
+	// Let the backend handle validation
+	req.UpdateMask = &fieldmaskpb.FieldMask{
+		Paths: []string{"policy.spec", "policy.dry_run_spec"},
+	}
+
 	updated, err := a.gcpClient.UpdatePolicy(ctx, req)
 	if err != nil {
 		return fmt.Errorf("updating Policy %s: %w", a.id, err)
@@ -180,6 +201,7 @@ func (a *PolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 

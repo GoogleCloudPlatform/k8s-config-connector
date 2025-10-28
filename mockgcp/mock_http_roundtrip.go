@@ -27,15 +27,11 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/workflows"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockaiplatform"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockalloydb"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapigateway"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/interceptor"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapigee"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapikeys"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapphub"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockartifactregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockasset"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbackupdr"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigquery"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigqueryanalyticshub"
@@ -43,72 +39,48 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigqueryconnection"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigquerydatatransfer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigqueryreservation"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigtable"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbilling"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcertificatemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudbuild"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockclouddeploy"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockclouddms"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudfunctions"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudidentity"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudids"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudquota"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudtasks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcomposer"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcontainer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcontaineranalysis"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdatacatalog"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataflow"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataform"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataplex"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataproc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdatastream"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdiscoveryengine"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdocumentai"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgecontainer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgenetwork"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockessentialcontacts"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockeventarc"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfilestore"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirestore"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkebackup"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkehub"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkemulticloud"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockiam"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockkms"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocklogging"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmanagedkafka"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmetastore"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmodelarmor"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmonitoring"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetapp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkconnectivity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkmanagement"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknotebooks"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockorgpolicy"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivilegedaccessmanager"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockpubsub"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockpubsublite"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockrecaptchaenterprise"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockredis"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockresourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecretmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecuresourcemanager"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockservicedirectory"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockservicenetworking"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockserviceusage"
 	mockspanner "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockspanner/admin"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockspeech"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksql"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockstorage"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocktpu"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvmwareengine"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvpcaccess"
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkflowexecution"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkflows"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkstations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
@@ -147,6 +119,7 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	env.Projects = resourcemanagerService.GetProjectStore()
 
 	var serverOpts []grpc.ServerOption
+	serverOpts = append(serverOpts, grpc.UnaryInterceptor(interceptor.LabelValidationInterceptor))
 	server := grpc.NewServer(serverOpts...)
 
 	var services []mockgcpregistry.MockService
@@ -167,12 +140,10 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockapikeys.New(env, storage))
 	services = append(services, mockmetastore.New(env, storage))
 	services = append(services, mockbigquery.New(env, storage))
-	services = append(services, mockbilling.New(env, storage))
 	services = append(services, mockcloudidentity.New(env, storage))
 	services = append(services, mockcontainer.New(env, storage))
 	services = append(services, mockcertificatemanager.New(env, storage))
 	services = append(services, mockedgecontainer.New(env, storage))
-	services = append(services, mockfirestore.New(env, storage))
 	services = append(services, mockgkemulticloud.New(env, storage))
 	services = append(services, mockmodelarmor.New(env, storage))
 	services = append(services, mocknetworkmanagement.New(env, storage))
@@ -207,7 +178,6 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockapphub.New(env, storage))
 	services = append(services, mockcloudquota.New(env, storage))
 	services = append(services, mockdatastream.New(env, storage))
-	services = append(services, mockessentialcontacts.New(env, storage))
 	services = append(services, mockeventarc.New(env, storage))
 
 	services = append(services, mockcloudtasks.New(env, storage))

@@ -308,7 +308,6 @@ kind: ApigeeEnvgroup
 metadata:
   name: apigeeenvgroup-sample
 spec:
-  description: "A sample envgroup"
   hostnames:
     - sample.mytesthost.net
   organizationRef:

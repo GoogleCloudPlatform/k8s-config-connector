@@ -1,7 +1,7 @@
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/computenetworkedgesecurityservice-minimal-${uniqueId}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/${networkEdgeSecurityServiceID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=us-central1&network_edge_security_service=computenetworkedgesecurityservice-minimal-${uniqueId}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&network_edge_security_service=${networkEdgeSecurityServiceID}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -101,10 +101,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/computenetworkedgesecurityservice-minimal-${uniqueId}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/${networkEdgeSecurityServiceID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=us-central1&network_edge_security_service=computenetworkedgesecurityservice-minimal-${uniqueId}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&network_edge_security_service=${networkEdgeSecurityServiceID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -130,10 +130,10 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/computenetworkedgesecurityservice-minimal-${uniqueId}?updateMask=description%2Csecurity_policy
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/${networkEdgeSecurityServiceID}?updateMask=description%2Csecurity_policy
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=us-central1&network_edge_security_service=computenetworkedgesecurityservice-minimal-${uniqueId}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&network_edge_security_service=${networkEdgeSecurityServiceID}
 
 {
   "description": "Updated description",
@@ -204,10 +204,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/computenetworkedgesecurityservice-minimal-${uniqueId}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/${networkEdgeSecurityServiceID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=us-central1&network_edge_security_service=computenetworkedgesecurityservice-minimal-${uniqueId}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&network_edge_security_service=${networkEdgeSecurityServiceID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -234,10 +234,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/computenetworkedgesecurityservice-minimal-${uniqueId}
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/networkEdgeSecurityServices/${networkEdgeSecurityServiceID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=us-central1&network_edge_security_service=computenetworkedgesecurityservice-minimal-${uniqueId}
+X-Goog-Request-Params: project=${projectId}&region=us-central1&network_edge_security_service=${networkEdgeSecurityServiceID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

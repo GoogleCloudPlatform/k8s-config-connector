@@ -64,14 +64,12 @@ type AlloyDBClusterSpec struct {
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
-	/* NOTYET
 	// Optional. The database engine major version. This is an optional field and
 	//  it is populated at the Cluster creation time. If a database version is not
 	//  supplied at cluster creation time, then a default database version will
 	//  be used.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.database_version
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`
-	*/
 
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.network_config
 	NetworkConfig *Cluster_NetworkConfig `json:"networkConfig,omitempty"`
@@ -420,6 +418,12 @@ type AlloyDBClusterObservedState struct {
 	//  the cluster (i.e. `CreateCluster` vs. `CreateSecondaryCluster`
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.cluster_type
 	ClusterType *string `json:"clusterType,omitempty"`
+
+	// The database engine major version. This is an output-only
+	// field and it's populated at the Cluster creation time. This field
+	// cannot be changed after cluster creation.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Cluster.database_version
+	DatabaseVersion *string `json:"databaseVersion,omitempty"`
 }
 
 /*
@@ -483,10 +487,12 @@ type ClusterObservedState struct {
 // +kubebuilder:resource:categories=gcp,shortName=gcpalloydbcluster;gcpalloydbclusters
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+// +kubebuilder:storageversion
 
 // AlloyDBCluster is the Schema for the AlloyDBCluster API
 // +k8s:openapi-gen=true

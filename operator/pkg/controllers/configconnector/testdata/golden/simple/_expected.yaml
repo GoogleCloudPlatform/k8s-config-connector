@@ -19,12 +19,6 @@ metadata:
   labels: (removed)
   name: accesscontextmanageraccesspolicies.accesscontextmanager.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -103,6 +97,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: apigatewayapis.apigateway.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: apigeeendpointattachments.apigee.cnrm.cloud.google.com
 spec: (removed)
 ---
@@ -159,6 +161,30 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: apiquotaadjustersettings.cloudquota.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: apiquotapreferences.cloudquota.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: apphubapplications.apphub.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com
 spec: (removed)
 status:
@@ -167,6 +193,46 @@ status:
     plural: ""
   conditions: []
   storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: assetfeeds.asset.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: assetsavedqueries.asset.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: backupdrbackupplanassociations.backupdr.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: backupdrbackupplans.backupdr.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: biglaketables.bigquerybiglake.cnrm.cloud.google.com
+spec: (removed)
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -221,6 +287,22 @@ status:
     plural: ""
   conditions: []
   storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: bigqueryreservationassignments.bigqueryreservation.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: bigqueryreservationreservations.bigqueryreservation.cnrm.cloud.google.com
+spec: (removed)
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -407,6 +489,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: clouddeploydeliverypipelines.clouddeploy.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: cloudfunctionsfunctions.cloudfunctions.cnrm.cloud.google.com
 spec: (removed)
 status:
@@ -459,6 +549,14 @@ status:
     plural: ""
   conditions: []
   storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: composerenvironments.composer.cnrm.cloud.google.com
+spec: (removed)
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1297,12 +1395,6 @@ metadata:
   labels: (removed)
   name: datacatalogpolicytags.datacatalog.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1311,12 +1403,6 @@ metadata:
   labels: (removed)
   name: datacatalogtaxonomies.datacatalog.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1507,6 +1593,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: documentaiprocessorversions.documentai.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: edgecontainerclusters.edgecontainer.cnrm.cloud.google.com
 spec: (removed)
 status:
@@ -1577,6 +1671,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: essentialcontactscontacts.essentialcontacts.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: eventarctriggers.eventarc.cnrm.cloud.google.com
 spec: (removed)
 status:
@@ -1629,12 +1731,6 @@ metadata:
   labels: (removed)
   name: firestoreindexes.firestore.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1707,12 +1803,6 @@ metadata:
   labels: (removed)
   name: iamauditconfigs.iam.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1735,12 +1825,6 @@ metadata:
   labels: (removed)
   name: iampartialpolicies.iam.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1749,12 +1833,6 @@ metadata:
   labels: (removed)
   name: iampolicies.iam.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1763,12 +1841,6 @@ metadata:
   labels: (removed)
   name: iampolicymembers.iam.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1973,6 +2045,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: kmsimportjobs.kms.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: kmskeyhandles.kms.cnrm.cloud.google.com
 spec: (removed)
 ---
@@ -2083,6 +2163,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: metastorebackups.metastore.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: monitoringalertpolicies.monitoring.cnrm.cloud.google.com
 spec: (removed)
 status:
@@ -2149,12 +2237,6 @@ metadata:
   labels: (removed)
   name: monitoringnotificationchannels.monitoring.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2365,6 +2447,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: notebookinstances.notebooks.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: osconfigguestpolicies.osconfig.cnrm.cloud.google.com
 spec: (removed)
 status:
@@ -2499,6 +2589,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: pubsubsnapshots.pubsub.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: pubsubsubscriptions.pubsub.cnrm.cloud.google.com
 spec: (removed)
 status:
@@ -2593,12 +2691,6 @@ metadata:
   labels: (removed)
   name: runjobs.run.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2695,12 +2787,6 @@ metadata:
   labels: (removed)
   name: serviceidentities.serviceusage.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2749,6 +2835,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: spannerbackupschedules.spanner.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: spannerdatabases.spanner.cnrm.cloud.google.com
 spec: (removed)
 status:
@@ -2764,6 +2858,30 @@ metadata:
   annotations: (removed)
   labels: (removed)
   name: spannerinstances.spanner.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: speechcustomclasses.speech.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: speechphrasesets.speech.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: speechrecognizers.speech.cnrm.cloud.google.com
 spec: (removed)
 ---
 apiVersion: apiextensions.k8s.io/v1
@@ -2815,6 +2933,14 @@ status:
     plural: ""
   conditions: []
   storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: storageanywherecaches.storage.cnrm.cloud.google.com
+spec: (removed)
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2975,6 +3101,22 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: vertexaimetadatastores.vertexai.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: vmwareengineexternaladdresses.vmwareengine.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: vpcaccessconnectors.vpcaccess.cnrm.cloud.google.com
 spec: (removed)
 status:
@@ -3012,7 +3154,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -3028,7 +3170,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -3039,7 +3181,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -3050,7 +3192,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -3061,7 +3203,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -3072,7 +3214,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/system: "true"
@@ -3334,6 +3476,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - billing.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - billingbudgets.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4514,7 +4668,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -4565,7 +4719,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -4624,7 +4778,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -4650,7 +4804,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -4681,7 +4835,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -4708,12 +4862,18 @@ rules:
   verbs:
   - create
   - patch
+- apiGroups:
+  - core.cnrm.cloud.google.com
+  resources:
+  - configconnectorcontexts
+  verbs:
+  - get
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/system: "true"
@@ -4890,6 +5050,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - billing.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - billingbudgets.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5678,7 +5846,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -5742,7 +5910,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -5766,7 +5934,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -5784,7 +5952,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -5802,7 +5970,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -5820,7 +5988,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -5838,7 +6006,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/component: cnrm-resource-stats-recorder
     cnrm.cloud.google.com/system: "true"
@@ -5857,7 +6025,7 @@ spec:
   template:
     metadata:
       annotations:
-        cnrm.cloud.google.com/version: 1.131.0
+        cnrm.cloud.google.com/version: '{{stable.latest}}'
       labels:
         cnrm.cloud.google.com/component: cnrm-resource-stats-recorder
         cnrm.cloud.google.com/system: "true"
@@ -5870,8 +6038,8 @@ spec:
         - /configconnector/recorder
         env:
         - name: CONFIG_CONNECTOR_VERSION
-          value: 1.131.0
-        image: foobar.local/recorder:1.131.0
+          value: '{{stable.latest}}'
+        image: foobar.local/recorder:{{stable.latest}}
         imagePullPolicy: Always
         name: recorder
         ports:
@@ -5923,7 +6091,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/component: cnrm-webhook-manager
     cnrm.cloud.google.com/system: "true"
@@ -5939,7 +6107,7 @@ spec:
   template:
     metadata:
       annotations:
-        cnrm.cloud.google.com/version: 1.131.0
+        cnrm.cloud.google.com/version: '{{stable.latest}}'
       labels:
         cnrm.cloud.google.com/component: cnrm-webhook-manager
         cnrm.cloud.google.com/system: "true"
@@ -5954,7 +6122,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: foobar.local/webhook:1.131.0
+        image: foobar.local/webhook:{{stable.latest}}
         imagePullPolicy: Always
         name: webhook
         ports:
@@ -5984,7 +6152,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/component: cnrm-deletiondefender
     cnrm.cloud.google.com/system: "true"
@@ -6000,7 +6168,7 @@ spec:
   template:
     metadata:
       annotations:
-        cnrm.cloud.google.com/version: 1.131.0
+        cnrm.cloud.google.com/version: '{{stable.latest}}'
       labels:
         cnrm.cloud.google.com/component: cnrm-deletiondefender
         cnrm.cloud.google.com/system: "true"
@@ -6008,7 +6176,7 @@ spec:
       containers:
       - command:
         - /configconnector/deletiondefender
-        image: foobar.local/deletiondefender:1.131.0
+        image: foobar.local/deletiondefender:{{stable.latest}}
         imagePullPolicy: Always
         name: deletiondefender
         ports:
@@ -6038,7 +6206,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/component: cnrm-unmanaged-detector
     cnrm.cloud.google.com/system: "true"
@@ -6054,7 +6222,7 @@ spec:
   template:
     metadata:
       annotations:
-        cnrm.cloud.google.com/version: 1.131.0
+        cnrm.cloud.google.com/version: '{{stable.latest}}'
       labels:
         cnrm.cloud.google.com/component: cnrm-unmanaged-detector
         cnrm.cloud.google.com/system: "true"
@@ -6062,7 +6230,7 @@ spec:
       containers:
       - command:
         - /configconnector/unmanageddetector
-        image: foobar.local/unmanageddetector:1.131.0
+        image: foobar.local/unmanageddetector:{{stable.latest}}
         imagePullPolicy: Always
         name: unmanageddetector
         ports:
@@ -6092,7 +6260,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -6114,7 +6282,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -6136,7 +6304,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -6155,7 +6323,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -6175,7 +6343,7 @@ kind: HorizontalPodAutoscaler
 metadata:
   annotations:
     autoscaling.alpha.kubernetes.io/metrics: '[{"type":"Resource","resource":{"name":"memory","targetAverageUtilization":70}}]'
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -6194,7 +6362,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -6212,7 +6380,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.131.0
+    cnrm.cloud.google.com/version: '{{stable.latest}}'
     prometheus.io/port: "48797"
     prometheus.io/scrape: "true"
   labels:

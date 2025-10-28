@@ -3431,13 +3431,13 @@ var OrganizationsAppgroupsAppsServer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OrganizationsAppgroupsAppsKeysServerClient interface {
-	// Creates a custom consumer key and secret for a AppGroup app. This is particularly useful if you want to migrate existing consumer keys and secrets to Apigee from another system. Consumer keys and secrets can contain letters, numbers, underscores, and hyphens. No other special characters are allowed. To avoid service disruptions, a consumer key and secret should not exceed 2 KBs each. **Note**: When creating the consumer key and secret, an association to API products will not be made. Therefore, you should not specify the associated API products in your request. Instead, use the ProductizeAppGroupAppKey API to make the association after the consumer key and secret are created. If a consumer key and secret already exist, you can keep them or delete them using the DeleteAppGroupAppKey API.
+	// Creates a custom consumer key and secret for a AppGroup app. This is particularly useful if you want to migrate existing consumer keys and secrets to Apigee from another system. Consumer keys and secrets can contain letters, numbers, underscores, and hyphens. No other special characters are allowed. To avoid service disruptions, a consumer key and secret should not exceed 2 KBs each. **Note**: When creating the consumer key and secret, an association to API products will not be made. Therefore, you should not specify the associated API products in your request. Instead, use the UpdateAppGroupAppKey API to make the association after the consumer key and secret are created. If a consumer key and secret already exist, you can keep them or delete them using the DeleteAppGroupAppKey API.
 	CreateOrganizationsAppgroupsAppsKey(ctx context.Context, in *CreateOrganizationsAppgroupsAppsKeyRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupAppKey, error)
 	// Deletes an app's consumer key and removes all API products associated with the app. After the consumer key is deleted, it cannot be used to access any APIs.
 	DeleteOrganizationsAppgroupsAppsKey(ctx context.Context, in *DeleteOrganizationsAppgroupsAppsKeyRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupAppKey, error)
 	// Gets details for a consumer key for a AppGroup app, including the key and secret value, associated API products, and other information.
 	GetOrganizationsAppgroupsAppsKey(ctx context.Context, in *GetOrganizationsAppgroupsAppsKeyRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupAppKey, error)
-	// Adds an API product to an AppGroupAppKey, enabling the app that holds the key to access the API resources bundled in the API product. In addition, you can add attributes to the AppGroupAppKey. This API replaces the existing attributes with those specified in the request. Include or exclude any existing attributes that you want to retain or delete, respectively. You can use the same key to access all API products associated with the app.
+	// Adds an API product to an AppGroupAppKey, enabling the app that holds the key to access the API resources bundled in the API product. In addition, you can add attributes and scopes to the AppGroupAppKey. This API replaces the existing attributes with those specified in the request. Include or exclude any existing attributes that you want to retain or delete, respectively. You can use the same key to access all API products associated with the app.
 	UpdateAppGroupAppKeyOrganizationsAppgroupsAppsKey(ctx context.Context, in *UpdateAppGroupAppKeyOrganizationsAppgroupsAppsKeyRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1AppGroupAppKey, error)
 }
 
@@ -3489,13 +3489,13 @@ func (c *organizationsAppgroupsAppsKeysServerClient) UpdateAppGroupAppKeyOrganiz
 // All implementations must embed UnimplementedOrganizationsAppgroupsAppsKeysServerServer
 // for forward compatibility
 type OrganizationsAppgroupsAppsKeysServerServer interface {
-	// Creates a custom consumer key and secret for a AppGroup app. This is particularly useful if you want to migrate existing consumer keys and secrets to Apigee from another system. Consumer keys and secrets can contain letters, numbers, underscores, and hyphens. No other special characters are allowed. To avoid service disruptions, a consumer key and secret should not exceed 2 KBs each. **Note**: When creating the consumer key and secret, an association to API products will not be made. Therefore, you should not specify the associated API products in your request. Instead, use the ProductizeAppGroupAppKey API to make the association after the consumer key and secret are created. If a consumer key and secret already exist, you can keep them or delete them using the DeleteAppGroupAppKey API.
+	// Creates a custom consumer key and secret for a AppGroup app. This is particularly useful if you want to migrate existing consumer keys and secrets to Apigee from another system. Consumer keys and secrets can contain letters, numbers, underscores, and hyphens. No other special characters are allowed. To avoid service disruptions, a consumer key and secret should not exceed 2 KBs each. **Note**: When creating the consumer key and secret, an association to API products will not be made. Therefore, you should not specify the associated API products in your request. Instead, use the UpdateAppGroupAppKey API to make the association after the consumer key and secret are created. If a consumer key and secret already exist, you can keep them or delete them using the DeleteAppGroupAppKey API.
 	CreateOrganizationsAppgroupsAppsKey(context.Context, *CreateOrganizationsAppgroupsAppsKeyRequest) (*GoogleCloudApigeeV1AppGroupAppKey, error)
 	// Deletes an app's consumer key and removes all API products associated with the app. After the consumer key is deleted, it cannot be used to access any APIs.
 	DeleteOrganizationsAppgroupsAppsKey(context.Context, *DeleteOrganizationsAppgroupsAppsKeyRequest) (*GoogleCloudApigeeV1AppGroupAppKey, error)
 	// Gets details for a consumer key for a AppGroup app, including the key and secret value, associated API products, and other information.
 	GetOrganizationsAppgroupsAppsKey(context.Context, *GetOrganizationsAppgroupsAppsKeyRequest) (*GoogleCloudApigeeV1AppGroupAppKey, error)
-	// Adds an API product to an AppGroupAppKey, enabling the app that holds the key to access the API resources bundled in the API product. In addition, you can add attributes to the AppGroupAppKey. This API replaces the existing attributes with those specified in the request. Include or exclude any existing attributes that you want to retain or delete, respectively. You can use the same key to access all API products associated with the app.
+	// Adds an API product to an AppGroupAppKey, enabling the app that holds the key to access the API resources bundled in the API product. In addition, you can add attributes and scopes to the AppGroupAppKey. This API replaces the existing attributes with those specified in the request. Include or exclude any existing attributes that you want to retain or delete, respectively. You can use the same key to access all API products associated with the app.
 	UpdateAppGroupAppKeyOrganizationsAppgroupsAppsKey(context.Context, *UpdateAppGroupAppKeyOrganizationsAppgroupsAppsKeyRequest) (*GoogleCloudApigeeV1AppGroupAppKey, error)
 	mustEmbedUnimplementedOrganizationsAppgroupsAppsKeysServerServer()
 }
@@ -5177,7 +5177,7 @@ type OrganizationsDevelopersAppsKeysServerClient interface {
 	GetOrganizationsDevelopersAppsKey(ctx context.Context, in *GetOrganizationsDevelopersAppsKeyRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1DeveloperAppKey, error)
 	// Updates the scope of an app. This API replaces the existing scopes with those specified in the request. Include or exclude any existing scopes that you want to retain or delete, respectively. The specified scopes must already be defined for the API products associated with the app. This API sets the `scopes` element under the `apiProducts` element in the attributes of the app.
 	ReplaceDeveloperAppKeyOrganizationsDevelopersAppsKey(ctx context.Context, in *ReplaceDeveloperAppKeyOrganizationsDevelopersAppsKeyRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1DeveloperAppKey, error)
-	// Adds an API product to a developer app key, enabling the app that holds the key to access the API resources bundled in the API product. In addition, you can add attributes to a developer app key. This API replaces the existing attributes with those specified in the request. Include or exclude any existing attributes that you want to retain or delete, respectively. You can use the same key to access all API products associated with the app.
+	// Adds an API product to a developer app key, enabling the app that holds the key to access the API resources bundled in the API product. In addition, you can add attributes and scopes associated with the API product to the developer app key. The status of the key can be updated via "action" Query Parameter. None of the other fields can be updated via this API. This API replaces the existing attributes with those specified in the request. Include or exclude any existing attributes that you want to retain or delete, respectively. None of the other fields can be updated. You can use the same key to access all API products associated with the app.
 	UpdateDeveloperAppKeyOrganizationsDevelopersAppsKey(ctx context.Context, in *UpdateDeveloperAppKeyOrganizationsDevelopersAppsKeyRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1DeveloperAppKey, error)
 }
 
@@ -5246,7 +5246,7 @@ type OrganizationsDevelopersAppsKeysServerServer interface {
 	GetOrganizationsDevelopersAppsKey(context.Context, *GetOrganizationsDevelopersAppsKeyRequest) (*GoogleCloudApigeeV1DeveloperAppKey, error)
 	// Updates the scope of an app. This API replaces the existing scopes with those specified in the request. Include or exclude any existing scopes that you want to retain or delete, respectively. The specified scopes must already be defined for the API products associated with the app. This API sets the `scopes` element under the `apiProducts` element in the attributes of the app.
 	ReplaceDeveloperAppKeyOrganizationsDevelopersAppsKey(context.Context, *ReplaceDeveloperAppKeyOrganizationsDevelopersAppsKeyRequest) (*GoogleCloudApigeeV1DeveloperAppKey, error)
-	// Adds an API product to a developer app key, enabling the app that holds the key to access the API resources bundled in the API product. In addition, you can add attributes to a developer app key. This API replaces the existing attributes with those specified in the request. Include or exclude any existing attributes that you want to retain or delete, respectively. You can use the same key to access all API products associated with the app.
+	// Adds an API product to a developer app key, enabling the app that holds the key to access the API resources bundled in the API product. In addition, you can add attributes and scopes associated with the API product to the developer app key. The status of the key can be updated via "action" Query Parameter. None of the other fields can be updated via this API. This API replaces the existing attributes with those specified in the request. Include or exclude any existing attributes that you want to retain or delete, respectively. None of the other fields can be updated. You can use the same key to access all API products associated with the app.
 	UpdateDeveloperAppKeyOrganizationsDevelopersAppsKey(context.Context, *UpdateDeveloperAppKeyOrganizationsDevelopersAppsKeyRequest) (*GoogleCloudApigeeV1DeveloperAppKey, error)
 	mustEmbedUnimplementedOrganizationsDevelopersAppsKeysServerServer()
 }
@@ -11184,6 +11184,8 @@ var OrganizationsEnvironmentsResourcefilesServer_ServiceDesc = grpc.ServiceDesc{
 type OrganizationsEnvironmentsSecurityActionsServerClient interface {
 	// CreateSecurityAction creates a SecurityAction.
 	CreateOrganizationsEnvironmentsSecurityAction(ctx context.Context, in *CreateOrganizationsEnvironmentsSecurityActionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityAction, error)
+	// Delete a SecurityAction.
+	DeleteOrganizationsEnvironmentsSecurityAction(ctx context.Context, in *DeleteOrganizationsEnvironmentsSecurityActionRequest, opts ...grpc.CallOption) (*GoogleProtobufEmpty, error)
 	// Disable a SecurityAction. The `state` of the SecurityAction after disabling is `DISABLED`. `DisableSecurityAction` can be called on SecurityActions in the state `ENABLED`; SecurityActions in a different state (including `DISABLED`) return an error.
 	DisableOrganizationsEnvironmentsSecurityAction(ctx context.Context, in *DisableOrganizationsEnvironmentsSecurityActionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityAction, error)
 	// Enable a SecurityAction. The `state` of the SecurityAction after enabling is `ENABLED`. `EnableSecurityAction` can be called on SecurityActions in the state `DISABLED`; SecurityActions in a different state (including `ENABLED) return an error.
@@ -11192,6 +11194,8 @@ type OrganizationsEnvironmentsSecurityActionsServerClient interface {
 	GetOrganizationsEnvironmentsSecurityAction(ctx context.Context, in *GetOrganizationsEnvironmentsSecurityActionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityAction, error)
 	// Returns a list of SecurityActions. This returns both enabled and disabled actions.
 	ListOrganizationsEnvironmentsSecurityActions(ctx context.Context, in *ListOrganizationsEnvironmentsSecurityActionsRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1ListSecurityActionsResponse, error)
+	// Update a SecurityAction.
+	PatchOrganizationsEnvironmentsSecurityAction(ctx context.Context, in *PatchOrganizationsEnvironmentsSecurityActionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityAction, error)
 }
 
 type organizationsEnvironmentsSecurityActionsServerClient struct {
@@ -11205,6 +11209,15 @@ func NewOrganizationsEnvironmentsSecurityActionsServerClient(cc grpc.ClientConnI
 func (c *organizationsEnvironmentsSecurityActionsServerClient) CreateOrganizationsEnvironmentsSecurityAction(ctx context.Context, in *CreateOrganizationsEnvironmentsSecurityActionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityAction, error) {
 	out := new(GoogleCloudApigeeV1SecurityAction)
 	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsEnvironmentsSecurityActionsServer/CreateOrganizationsEnvironmentsSecurityAction", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *organizationsEnvironmentsSecurityActionsServerClient) DeleteOrganizationsEnvironmentsSecurityAction(ctx context.Context, in *DeleteOrganizationsEnvironmentsSecurityActionRequest, opts ...grpc.CallOption) (*GoogleProtobufEmpty, error) {
+	out := new(GoogleProtobufEmpty)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsEnvironmentsSecurityActionsServer/DeleteOrganizationsEnvironmentsSecurityAction", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -11247,12 +11260,23 @@ func (c *organizationsEnvironmentsSecurityActionsServerClient) ListOrganizations
 	return out, nil
 }
 
+func (c *organizationsEnvironmentsSecurityActionsServerClient) PatchOrganizationsEnvironmentsSecurityAction(ctx context.Context, in *PatchOrganizationsEnvironmentsSecurityActionRequest, opts ...grpc.CallOption) (*GoogleCloudApigeeV1SecurityAction, error) {
+	out := new(GoogleCloudApigeeV1SecurityAction)
+	err := c.cc.Invoke(ctx, "/mockgcp.cloud.apigee.v1.OrganizationsEnvironmentsSecurityActionsServer/PatchOrganizationsEnvironmentsSecurityAction", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OrganizationsEnvironmentsSecurityActionsServerServer is the server API for OrganizationsEnvironmentsSecurityActionsServer service.
 // All implementations must embed UnimplementedOrganizationsEnvironmentsSecurityActionsServerServer
 // for forward compatibility
 type OrganizationsEnvironmentsSecurityActionsServerServer interface {
 	// CreateSecurityAction creates a SecurityAction.
 	CreateOrganizationsEnvironmentsSecurityAction(context.Context, *CreateOrganizationsEnvironmentsSecurityActionRequest) (*GoogleCloudApigeeV1SecurityAction, error)
+	// Delete a SecurityAction.
+	DeleteOrganizationsEnvironmentsSecurityAction(context.Context, *DeleteOrganizationsEnvironmentsSecurityActionRequest) (*GoogleProtobufEmpty, error)
 	// Disable a SecurityAction. The `state` of the SecurityAction after disabling is `DISABLED`. `DisableSecurityAction` can be called on SecurityActions in the state `ENABLED`; SecurityActions in a different state (including `DISABLED`) return an error.
 	DisableOrganizationsEnvironmentsSecurityAction(context.Context, *DisableOrganizationsEnvironmentsSecurityActionRequest) (*GoogleCloudApigeeV1SecurityAction, error)
 	// Enable a SecurityAction. The `state` of the SecurityAction after enabling is `ENABLED`. `EnableSecurityAction` can be called on SecurityActions in the state `DISABLED`; SecurityActions in a different state (including `ENABLED) return an error.
@@ -11261,6 +11285,8 @@ type OrganizationsEnvironmentsSecurityActionsServerServer interface {
 	GetOrganizationsEnvironmentsSecurityAction(context.Context, *GetOrganizationsEnvironmentsSecurityActionRequest) (*GoogleCloudApigeeV1SecurityAction, error)
 	// Returns a list of SecurityActions. This returns both enabled and disabled actions.
 	ListOrganizationsEnvironmentsSecurityActions(context.Context, *ListOrganizationsEnvironmentsSecurityActionsRequest) (*GoogleCloudApigeeV1ListSecurityActionsResponse, error)
+	// Update a SecurityAction.
+	PatchOrganizationsEnvironmentsSecurityAction(context.Context, *PatchOrganizationsEnvironmentsSecurityActionRequest) (*GoogleCloudApigeeV1SecurityAction, error)
 	mustEmbedUnimplementedOrganizationsEnvironmentsSecurityActionsServerServer()
 }
 
@@ -11270,6 +11296,9 @@ type UnimplementedOrganizationsEnvironmentsSecurityActionsServerServer struct {
 
 func (UnimplementedOrganizationsEnvironmentsSecurityActionsServerServer) CreateOrganizationsEnvironmentsSecurityAction(context.Context, *CreateOrganizationsEnvironmentsSecurityActionRequest) (*GoogleCloudApigeeV1SecurityAction, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateOrganizationsEnvironmentsSecurityAction not implemented")
+}
+func (UnimplementedOrganizationsEnvironmentsSecurityActionsServerServer) DeleteOrganizationsEnvironmentsSecurityAction(context.Context, *DeleteOrganizationsEnvironmentsSecurityActionRequest) (*GoogleProtobufEmpty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrganizationsEnvironmentsSecurityAction not implemented")
 }
 func (UnimplementedOrganizationsEnvironmentsSecurityActionsServerServer) DisableOrganizationsEnvironmentsSecurityAction(context.Context, *DisableOrganizationsEnvironmentsSecurityActionRequest) (*GoogleCloudApigeeV1SecurityAction, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DisableOrganizationsEnvironmentsSecurityAction not implemented")
@@ -11282,6 +11311,9 @@ func (UnimplementedOrganizationsEnvironmentsSecurityActionsServerServer) GetOrga
 }
 func (UnimplementedOrganizationsEnvironmentsSecurityActionsServerServer) ListOrganizationsEnvironmentsSecurityActions(context.Context, *ListOrganizationsEnvironmentsSecurityActionsRequest) (*GoogleCloudApigeeV1ListSecurityActionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListOrganizationsEnvironmentsSecurityActions not implemented")
+}
+func (UnimplementedOrganizationsEnvironmentsSecurityActionsServerServer) PatchOrganizationsEnvironmentsSecurityAction(context.Context, *PatchOrganizationsEnvironmentsSecurityActionRequest) (*GoogleCloudApigeeV1SecurityAction, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchOrganizationsEnvironmentsSecurityAction not implemented")
 }
 func (UnimplementedOrganizationsEnvironmentsSecurityActionsServerServer) mustEmbedUnimplementedOrganizationsEnvironmentsSecurityActionsServerServer() {
 }
@@ -11311,6 +11343,24 @@ func _OrganizationsEnvironmentsSecurityActionsServer_CreateOrganizationsEnvironm
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OrganizationsEnvironmentsSecurityActionsServerServer).CreateOrganizationsEnvironmentsSecurityAction(ctx, req.(*CreateOrganizationsEnvironmentsSecurityActionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrganizationsEnvironmentsSecurityActionsServer_DeleteOrganizationsEnvironmentsSecurityAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteOrganizationsEnvironmentsSecurityActionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsEnvironmentsSecurityActionsServerServer).DeleteOrganizationsEnvironmentsSecurityAction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsEnvironmentsSecurityActionsServer/DeleteOrganizationsEnvironmentsSecurityAction",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsEnvironmentsSecurityActionsServerServer).DeleteOrganizationsEnvironmentsSecurityAction(ctx, req.(*DeleteOrganizationsEnvironmentsSecurityActionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -11387,6 +11437,24 @@ func _OrganizationsEnvironmentsSecurityActionsServer_ListOrganizationsEnvironmen
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrganizationsEnvironmentsSecurityActionsServer_PatchOrganizationsEnvironmentsSecurityAction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchOrganizationsEnvironmentsSecurityActionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrganizationsEnvironmentsSecurityActionsServerServer).PatchOrganizationsEnvironmentsSecurityAction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mockgcp.cloud.apigee.v1.OrganizationsEnvironmentsSecurityActionsServer/PatchOrganizationsEnvironmentsSecurityAction",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrganizationsEnvironmentsSecurityActionsServerServer).PatchOrganizationsEnvironmentsSecurityAction(ctx, req.(*PatchOrganizationsEnvironmentsSecurityActionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OrganizationsEnvironmentsSecurityActionsServer_ServiceDesc is the grpc.ServiceDesc for OrganizationsEnvironmentsSecurityActionsServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -11397,6 +11465,10 @@ var OrganizationsEnvironmentsSecurityActionsServer_ServiceDesc = grpc.ServiceDes
 		{
 			MethodName: "CreateOrganizationsEnvironmentsSecurityAction",
 			Handler:    _OrganizationsEnvironmentsSecurityActionsServer_CreateOrganizationsEnvironmentsSecurityAction_Handler,
+		},
+		{
+			MethodName: "DeleteOrganizationsEnvironmentsSecurityAction",
+			Handler:    _OrganizationsEnvironmentsSecurityActionsServer_DeleteOrganizationsEnvironmentsSecurityAction_Handler,
 		},
 		{
 			MethodName: "DisableOrganizationsEnvironmentsSecurityAction",
@@ -11413,6 +11485,10 @@ var OrganizationsEnvironmentsSecurityActionsServer_ServiceDesc = grpc.ServiceDes
 		{
 			MethodName: "ListOrganizationsEnvironmentsSecurityActions",
 			Handler:    _OrganizationsEnvironmentsSecurityActionsServer_ListOrganizationsEnvironmentsSecurityActions_Handler,
+		},
+		{
+			MethodName: "PatchOrganizationsEnvironmentsSecurityAction",
+			Handler:    _OrganizationsEnvironmentsSecurityActionsServer_PatchOrganizationsEnvironmentsSecurityAction_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

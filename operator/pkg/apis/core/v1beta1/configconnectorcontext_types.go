@@ -18,6 +18,7 @@ import (
 	"runtime/debug"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
+	k8scontrollertype "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/klog/v2"
 	addonv1alpha1 "sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/apis/v1alpha1"
@@ -69,6 +70,30 @@ type ConfigConnectorContextSpec struct {
 	//+kubebuilder:validation:Enum=Reconciling;Paused
 	//+kubebuilder:validation:Optional
 	Actuation ActuationMode `json:"actuationMode,omitempty"`
+
+	// ManagerNamespace instructs Config Connector to deploy
+	// controller managers and related resources in the namespace
+	// specified as 'ManagerNamespace' instead of standard 'cnrm-system'
+	// The specified manager namespace may exist before the corresponding
+	// ConfigConnectorContext is created.
+	// If the specified namespace does not exist then it will be created
+	// by Config Connector. The field is immutable.
+	//+kubebuilder:validation:Optional
+	//+kubebuilder:validation:XValidation:rule="self == oldSelf",message="ManagerNamespace field is immutable"
+	ManagerNamespace string `json:"managerNamespace,omitempty"`
+
+	Experiments *Experiments `json:"experiments,omitempty"`
+}
+
+// Experiments contains experimental features.
+
+type Experiments struct {
+	// ControllerOverrides allows specifying which controller to use for a given
+	// resource kind within this namespace, overriding the system default.
+	// The format for the entries should follow the format as Kind.group :
+	// e.g. BigQueryDataset.bigquery.cnrm.cloud.google.com: direct
+	// +optional
+	ControllerOverrides map[string]k8scontrollertype.ReconcilerType `json:"controllerOverrides,omitempty"`
 }
 
 type StateIntoSpecValue string

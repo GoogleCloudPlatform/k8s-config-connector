@@ -19,39 +19,49 @@ import (
 	"fmt"
 	"strings"
 
+	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
-	"github.com/go-logr/logr"
 	v1 "k8s.io/api/apps/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
-	"sigs.k8s.io/controller-runtime/pkg/log"
+	crlog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
-var logger = log.Log
+var (
+	ManagerNamespaceIsolation string
+)
 
 type Reconciler struct {
 	lifecyclehandler.LifecycleHandler
-	mgr    manager.Manager
-	crd    *apiextensions.CustomResourceDefinition
-	gvk    schema.GroupVersionKind
-	logger logr.Logger
+	mgr manager.Manager
+	gvk schema.GroupVersionKind
 }
 
-func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error {
+func Add(ctx context.Context, mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error {
+	logger := crlog.FromContext(ctx)
+
 	kind := crd.Spec.Names.Kind
 	apiVersion := k8s.GetAPIVersionFromCRD(crd)
 	controllerName := fmt.Sprintf("%v-unmanaged-detector", strings.ToLower(kind))
-	r, err := NewReconciler(mgr, crd)
+
+	gvk := schema.GroupVersionKind{
+		Group:   crd.Spec.Group,
+		Version: k8s.GetVersionFromCRD(crd),
+		Kind:    crd.Spec.Names.Kind,
+	}
+	r, err := NewReconciler(mgr, gvk)
 	if err != nil {
 		return err
 	}
@@ -74,8 +84,9 @@ func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error
 	return nil
 }
 
-func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) (*Reconciler, error) {
-	controllerName := fmt.Sprintf("%v-unmanaged-detector", strings.ToLower(crd.Spec.Names.Kind))
+// NewReconciler creates a new unmanageddetector reconciler, watching objects of the specified GVK
+func NewReconciler(mgr manager.Manager, gvk schema.GroupVersionKind) (*Reconciler, error) {
+	controllerName := fmt.Sprintf("%v-unmanaged-detector", strings.ToLower(gvk.Kind))
 	return &Reconciler{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandlerWithFieldOwner(
 			mgr.GetClient(),
@@ -83,25 +94,21 @@ func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinit
 			k8s.UnmanagedDetectorFieldManager,
 		),
 		mgr: mgr,
-		crd: crd,
-		gvk: schema.GroupVersionKind{
-			Group:   crd.Spec.Group,
-			Version: k8s.GetVersionFromCRD(crd),
-			Kind:    crd.Spec.Names.Kind,
-		},
-		logger: logger.WithName(controllerName),
+		gvk: gvk,
 	}, nil
 }
 
 func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res reconcile.Result, err error) {
-	r.logger.Info("starting reconcile", "resource", req.NamespacedName)
+	logger := crlog.FromContext(ctx)
+
+	logger.Info("starting reconcile", "resource", req.NamespacedName)
 
 	u := &unstructured.Unstructured{}
 	u.SetGroupVersionKind(r.gvk)
 
 	if err := r.Get(ctx, req.NamespacedName, u); err != nil {
 		if errors.IsNotFound(err) {
-			r.logger.Info("resource not found in API server; finishing reconcile", "resource", req.NamespacedName)
+			logger.Info("resource not found in API server; finishing reconcile", "resource", req.NamespacedName)
 			return reconcile.Result{}, nil
 		}
 		return reconcile.Result{}, err
@@ -114,7 +121,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	if yes {
 		// Don't requeue resource for reconciliation; this controller has
 		// achieved its purpose.
-		r.logger.Info("controller found for resource's namespace; finishing reconcile", "resource", k8s.GetNamespacedName(u))
+		logger.Info("controller found for resource's namespace; finishing reconcile", "resource", k8s.GetNamespacedName(u))
 		return reconcile.Result{}, nil
 	}
 
@@ -125,7 +132,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 
 	// Don't requeue resource for reconciliation (unless there's an error
 	// during the status update); this controller has achieved its purpose.
-	r.logger.Info("controller not found for resource's namespace; finishing reconcile", "resource", k8s.GetNamespacedName(u))
+	logger.Info("controller not found for resource's namespace; finishing reconcile", "resource", k8s.GetNamespacedName(u))
 	return reconcile.Result{}, r.HandleUnmanaged(ctx, resource)
 }
 
@@ -143,6 +150,24 @@ func controllerExistsForNamespace(ctx context.Context, namespace string, c clien
 		Namespace:     k8s.SystemNamespace,
 		LabelSelector: stsLabelSelector,
 		Limit:         1,
+	}
+	if ManagerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
+		u := &unstructured.Unstructured{}
+		u.SetGroupVersionKind(corev1beta1.ConfigConnectorContextGroupVersionKind)
+		err = c.Get(ctx, types.NamespacedName{
+			Namespace: namespace,
+			Name:      corev1beta1.ConfigConnectorContextAllowedName,
+		}, u)
+		if err != nil {
+			if apierrors.IsNotFound(err) {
+				return false, nil
+			}
+			return false, err
+		}
+		managerNamespace, found, err := unstructured.NestedString(u.Object, "spec", "managerNamespace")
+		if err == nil && found && managerNamespace != "" {
+			stsOpts.Namespace = managerNamespace
+		}
 	}
 	if err := c.List(ctx, stsList, stsOpts); err != nil {
 		return false, fmt.Errorf("error listing controller manager StatefulSets: %w", err)

@@ -1885,9 +1885,6 @@ spec:
     template:
       containers:
       - image: "us-docker.pkg.dev/cloudrun/container/hello"
-  lifecycle:
-    ignore_changes:
-    - launch_stage
 ```
 
 ### Job With IAMServiceAccount
@@ -2028,9 +2025,6 @@ spec:
           cloudSqlInstance:
             instanceRefs:
               - name: runjob-dep-sql
-  lifecycle:
-    ignore_changes:
-    - launch_stage
 ---
 apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance

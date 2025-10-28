@@ -65,11 +65,6 @@ spec:
                   deletion. The parent Table and containing Instance cannot be deleted
                   if an AuthorizedView has this bit set.
                 type: boolean
-              etag:
-                description: The etag for this AuthorizedView. If this is provided
-                  on update, it must match the server's etag. The server returns ABORTED
-                  error on a mismatched etag.
-                type: string
               resourceID:
                 description: The BigtableAuthorizedView name. If not given, the metadata.name
                   will be used.
@@ -117,7 +112,6 @@ spec:
                     type: string
                 type: object
             required:
-            - ""
             - tableRef
             type: object
           status:

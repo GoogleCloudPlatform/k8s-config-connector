@@ -18,7 +18,7 @@ import (
 	"context"
 	"fmt"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -129,8 +129,8 @@ type AssignmentAdapter struct {
 var _ directbase.Adapter = &AssignmentAdapter{}
 
 // Find retrieves the GCP resource.
-// Return true means the object is found. This triggers Adapter `Update` call.
-// Return false means the object is not found. This triggers Adapter `Create` call.
+// Return true means the object is found. This triggersAdapter `Update` call.
+// Return false means the object is not found. This triggersAdapter `Create` call.
 // Return a non-nil error requeues the requests.
 func (a *AssignmentAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
@@ -155,14 +155,14 @@ func (a *AssignmentAdapter) Find(ctx context.Context) (bool, error) {
 	return false, nil
 }
 
-// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on theGCP response.
 func (a *AssignmentAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Assignment", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	assignment := BigqueryReservationAssignmentSpec_ToProto(mapCtx, &desired.Spec)
+	assignment := BigQueryReservationAssignmentSpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -180,7 +180,7 @@ func (a *AssignmentAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	log.V(2).Info("successfully created Assignment", "name", a.id.String())
 
 	status := &krm.BigQueryReservationAssignmentStatus{}
-	status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, created)
+	status.ObservedState = BigQueryReservationAssignmentObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -212,7 +212,7 @@ func (a *AssignmentAdapter) moveAssignment(ctx context.Context, updateOp *direct
 	// Rebuild the externalRef
 	status.ExternalRef = direct.LazyPtr(updated.GetName())
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = BigQueryReservationAssignmentObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -226,7 +226,7 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 	log.V(2).Info("updating assignment", "name", a.id.String())
 
 	mapCtx := &direct.MapContext{}
-	desiredPb := BigqueryReservationAssignmentSpec_ToProto(mapCtx, desiredSpec)
+	desiredPb := BigQueryReservationAssignmentSpec_ToProto(mapCtx, desiredSpec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -238,7 +238,7 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		status := &krm.BigQueryReservationAssignmentStatus{}
-		status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, a.actual)
+		status.ObservedState = BigQueryReservationAssignmentObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -260,7 +260,7 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 	log.V(2).Info("successfully updated assignment", "name", a.id.String())
 
 	status := &krm.BigQueryReservationAssignmentStatus{}
-	status.ObservedState = BigqueryReservationAssignmentObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = BigQueryReservationAssignmentObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -268,7 +268,7 @@ func (a *AssignmentAdapter) updateAssignment(ctx context.Context, updateOp *dire
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
-// Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+// Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on theGCP response.
 func (a *AssignmentAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating or moving the assignment", "name", a.id.String())
@@ -298,7 +298,7 @@ func (a *AssignmentAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 
 	obj := &krm.BigQueryReservationAssignment{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(BigqueryReservationAssignmentSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(BigQueryReservationAssignmentSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

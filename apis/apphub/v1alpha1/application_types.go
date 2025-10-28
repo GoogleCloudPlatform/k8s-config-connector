@@ -52,6 +52,22 @@ type AppHubApplicationSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
+// +kcc:proto=google.cloud.apphub.v1.Criticality
+type Criticality struct {
+	// Required. Criticality Type.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
+	// +kcc:proto:field=google.cloud.apphub.v1.Criticality.type
+	Type *string `json:"type,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apphub.v1.Environment
+type Environment struct {
+	// Required. Environment Type.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="the field is immutable"
+	// +kcc:proto:field=google.cloud.apphub.v1.Environment.type
+	Type *string `json:"type,omitempty"`
+}
+
 type Parent struct {
 	// Required. The location of the application.
 	Location string `json:"location,omitempty"`
@@ -69,14 +85,14 @@ type AppHubApplicationStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the AppHubApplication resource in GCP.
+	// A unique specifier for the AppHubApplication resource in Google Cloud.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
-	// ObservedState is the state of the resource as most recently observed in GCP.
+	// ObservedState is the state of the resource as most recently observed in {{gcp_name_short}}.
 	ObservedState *AppHubApplicationObservedState `json:"observedState,omitempty"`
 }
 
-// AppHubApplicationObservedState is the state of the AppHubApplication resource as most recently observed in GCP.
+// AppHubApplicationObservedState is the state of the AppHubApplication resource as most recently observed in Google Cloud.
 // +kcc:observedstate:proto=google.cloud.apphub.v1.Application
 type AppHubApplicationObservedState struct {
 	// Output only. Create time.

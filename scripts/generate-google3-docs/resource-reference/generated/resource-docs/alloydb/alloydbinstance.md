@@ -85,6 +85,7 @@ instanceTypeRef:
   namespace: string
 machineConfig:
   cpuCount: integer
+  machineType: string
 networkConfig:
   authorizedExternalNetworks:
   - cidrRange: string
@@ -279,6 +280,16 @@ Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the 
         <td>
             <p><code class="apitype">integer</code></p>
             <p>{% verbatim %}The number of CPU's in the VM instance.{% endverbatim %}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>machineConfig.machineType</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>{% verbatim %}Machine type of the VM instance. E.g. "n2-highmem-4", "n2-highmem-8", "c4a-highmem-4-lssd". cpu_count must match the number of vCPUs in the machine type.{% endverbatim %}</p>
         </td>
     </tr>
     <tr>

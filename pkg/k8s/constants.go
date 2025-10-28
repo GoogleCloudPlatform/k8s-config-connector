@@ -37,6 +37,8 @@ const (
 	UpToDate                             = "UpToDate"
 	UpToDateMessage                      = "The resource is up to date"
 	Created                              = "Created"
+	Creating                             = "Creating"
+	CreatingMessage                      = "The resource is being created"
 	CreatedMessage                       = "Successfully created"
 	CreateFailed                         = "CreateFailed"
 	CreateFailedMessageTmpl              = "Create call failed: %v"
@@ -92,6 +94,12 @@ const (
 
 	KCCAPIVersionV1Beta1  = "v1beta1"
 	KCCAPIVersionV1Alpha1 = "v1alpha1"
+
+	ManagerNamespaceIsolationFlag      = "manager-namespace-isolation"
+	ManagerNamespaceIsolationShared    = "shared"
+	ManagerNamespaceIsolationDedicated = "dedicated"
+
+	ReconcilerTypeAnnotation = "cnrm.cloud.google.com/reconciler"
 )
 
 var (
@@ -125,6 +133,8 @@ var (
 	SupportsSSAAnnotation = FormatAnnotation("supports-ssa")
 
 	BlueprintAttributionAnnotation = FormatAnnotation("blueprint")
+
+	AlphaReconcilerAnnotation = "alpha.cnrm.cloud.google.com/reconciler"
 
 	// TODO(kcc-eng): Adjust the timeout back down after b/237398742 is fixed.
 	WebhookTimeoutSeconds = int32(10)

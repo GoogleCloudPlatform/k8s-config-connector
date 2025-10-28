@@ -1,0 +1,635 @@
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "us-central1"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "maxTimeTravelHours": "168",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable-${uniqueId}",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "A BigQuery table.",
+  "expirationTime": "2024-09-01T12:34:56.123456Z",
+  "externalDataConfiguration": {
+    "autodetect": true,
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
+    "compression": "NONE",
+    "ignoreUnknownValues": true,
+    "maxBadRecords": 10,
+    "sourceFormat": "AVRO",
+    "sourceUris": [
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
+    ]
+  },
+  "friendlyName": "BigQuery Table",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "tableReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytable-${uniqueId}"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "description": "A BigQuery table.",
+  "etag": "abcdef0123A=",
+  "expirationTime": "2024-09-01T12:34:56.123456Z",
+  "externalDataConfiguration": {
+    "autodetect": true,
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
+    "compression": "NONE",
+    "ignoreUnknownValues": true,
+    "maxBadRecords": 10,
+    "sourceFormat": "AVRO",
+    "sourceUris": [
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
+    ]
+  },
+  "friendlyName": "BigQuery Table",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "requirePartitionFilter": false,
+  "schema": {
+    "fields": [
+      {
+        "description": "The common name of the state.",
+        "mode": "REQUIRED",
+        "name": "name",
+        "type": "STRING"
+      },
+      {
+        "description": "The postal code abbreviation of the state.",
+        "mode": "REQUIRED",
+        "name": "post_abbr",
+        "type": "STRING"
+      }
+    ]
+  },
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
+  "tableReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytable-${uniqueId}"
+  },
+  "type": "EXTERNAL"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "description": "A BigQuery table.",
+  "etag": "abcdef0123A=",
+  "expirationTime": "2024-09-01T12:34:56.123456Z",
+  "externalDataConfiguration": {
+    "autodetect": true,
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
+    "compression": "NONE",
+    "ignoreUnknownValues": true,
+    "maxBadRecords": 10,
+    "sourceFormat": "AVRO",
+    "sourceUris": [
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
+    ]
+  },
+  "friendlyName": "BigQuery Table",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "requirePartitionFilter": false,
+  "schema": {
+    "fields": [
+      {
+        "description": "The common name of the state.",
+        "mode": "REQUIRED",
+        "name": "name",
+        "type": "STRING"
+      },
+      {
+        "description": "The postal code abbreviation of the state.",
+        "mode": "REQUIRED",
+        "name": "post_abbr",
+        "type": "STRING"
+      }
+    ]
+  },
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
+  "tableReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytable-${uniqueId}"
+  },
+  "type": "EXTERNAL"
+}
+
+---
+
+PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "description": "An updated BigQuery table.",
+  "expirationTime": "2024-09-01T12:34:56.123456Z",
+  "externalDataConfiguration": {
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
+    "compression": "NONE",
+    "ignoreUnknownValues": true,
+    "maxBadRecords": 100,
+    "sourceFormat": "CSV",
+    "sourceUris": [
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
+    ]
+  },
+  "friendlyName": "BigQuery Table Updated",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "schema": {
+    "fields": [
+      {
+        "description": "The common name of the state.",
+        "mode": "REQUIRED",
+        "name": "name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "The postal code abbreviation of the state.",
+        "mode": "REQUIRED",
+        "name": "post_abbr",
+        "policyTags": {},
+        "type": "STRING"
+      }
+    ]
+  },
+  "tableReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytable-${uniqueId}"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "description": "An updated BigQuery table.",
+  "etag": "abcdef0123A=",
+  "expirationTime": "2024-09-01T12:34:56.123456Z",
+  "externalDataConfiguration": {
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
+    "compression": "NONE",
+    "ignoreUnknownValues": true,
+    "maxBadRecords": 100,
+    "sourceFormat": "CSV",
+    "sourceUris": [
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
+    ]
+  },
+  "friendlyName": "BigQuery Table Updated",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "requirePartitionFilter": false,
+  "schema": {
+    "fields": [
+      {
+        "description": "The common name of the state.",
+        "mode": "REQUIRED",
+        "name": "name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "The postal code abbreviation of the state.",
+        "mode": "REQUIRED",
+        "name": "post_abbr",
+        "policyTags": {},
+        "type": "STRING"
+      }
+    ]
+  },
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
+  "tableReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytable-${uniqueId}"
+  },
+  "type": "EXTERNAL"
+}
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTime": "123456789",
+  "description": "An updated BigQuery table.",
+  "etag": "abcdef0123A=",
+  "expirationTime": "2024-09-01T12:34:56.123456Z",
+  "externalDataConfiguration": {
+    "avroOptions": {
+      "useAvroLogicalTypes": true
+    },
+    "compression": "NONE",
+    "ignoreUnknownValues": true,
+    "maxBadRecords": 100,
+    "sourceFormat": "CSV",
+    "sourceUris": [
+      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
+    ]
+  },
+  "friendlyName": "BigQuery Table Updated",
+  "id": "000000000000000000000",
+  "kind": "bigquery#table",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "numActiveLogicalBytes": "0",
+  "numBytes": "0",
+  "numLongTermBytes": "0",
+  "numLongTermLogicalBytes": "0",
+  "numRows": "0",
+  "numTotalLogicalBytes": "0",
+  "requirePartitionFilter": false,
+  "schema": {
+    "fields": [
+      {
+        "description": "The common name of the state.",
+        "mode": "REQUIRED",
+        "name": "name",
+        "policyTags": {},
+        "type": "STRING"
+      },
+      {
+        "description": "The postal code abbreviation of the state.",
+        "mode": "REQUIRED",
+        "name": "post_abbr",
+        "policyTags": {},
+        "type": "STRING"
+      }
+    ]
+  },
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
+  "tableReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}",
+    "tableId": "bigquerytable-${uniqueId}"
+  },
+  "type": "EXTERNAL"
+}
+
+---
+
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+
+---
+
+GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "access": [
+    {
+      "role": "OWNER",
+      "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
+      "role": "READER",
+      "specialGroup": "projectReaders"
+    },
+    {
+      "role": "WRITER",
+      "specialGroup": "projectWriters"
+    }
+  ],
+  "creationTime": "123456789",
+  "datasetReference": {
+    "datasetId": "bigquerydataset${uniqueId}",
+    "projectId": "${projectId}"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "kind": "bigquery#dataset",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifiedTime": "123456789",
+  "location": "us-central1",
+  "maxTimeTravelHours": "168",
+  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+  "type": "DEFAULT"
+}
+
+---
+
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0

@@ -1,0 +1,6 @@
+- exec: gcloud firestore databases create --database=test-db-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud firestore indexes fields update fieldA --collection-group=test-cg-${uniqueId} --database=test-db-${uniqueId} --index=order=ASCENDING --project=${projectId}
+- exec: gcloud firestore indexes fields describe fieldA --collection-group=test-cg-${uniqueId} --database=test-db-${uniqueId} --project=${projectId}
+- exec: gcloud firestore indexes fields update fieldA --collection-group=test-cg-${uniqueId} --database=test-db-${uniqueId} --index=order=DESCENDING --project=${projectId}
+- exec: gcloud firestore indexes fields describe fieldA --collection-group=test-cg-${uniqueId} --database=test-db-${uniqueId} --project=${projectId}
+- exec: gcloud firestore databases delete --database=test-db-${uniqueId} --project=${projectId} --quiet

@@ -55,6 +55,9 @@ else
     if [ "$(uname)" == "Darwin" ]; then
       brew install protobuf
     else
+      echo "apt update..."
+      sudo apt update
+      echo "apt install..."
       sudo apt install -y protobuf-compiler
     fi
 fi
@@ -67,6 +70,7 @@ protoc --include_imports --include_source_info \
     ${REPO_ROOT}/mockgcp/apis/google/apps/cloudidentity/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto \
+    ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/servicenetworking/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/api/*.proto \
     ${THIRD_PARTY}/googleapis/google/api/*.proto \
@@ -77,7 +81,8 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/cloud/*/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/cloud/*/*/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/dataflow/*/*.proto \
-    ${THIRD_PARTY}/googleapis/google/firestore/admin/v1/*.proto \
+    ${THIRD_PARTY}/googleapis/google/firestore/*/*.proto \
+    ${THIRD_PARTY}/googleapis/google/firestore/*/*/*.proto \
     ${THIRD_PARTY}/googleapis/google/iam/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/logging/v2/*.proto \
     ${THIRD_PARTY}/googleapis/google/monitoring/v3/*.proto \
@@ -87,4 +92,5 @@ protoc --include_imports --include_source_info \
     ${THIRD_PARTY}/googleapis/google/spanner/admin/database/v1/*.proto \
     ${THIRD_PARTY}/googleapis/google/storage/control/v2/*.proto \
     ${THIRD_PARTY}/googleapis/google/pubsub/v1/*.proto \
+    ${THIRD_PARTY}/googleapis/google/cloud/memorystore/v1beta/*.proto \
     -o ${OUTPUT_PATH} 2> >(grep -v "Import .* is unused" >&2)

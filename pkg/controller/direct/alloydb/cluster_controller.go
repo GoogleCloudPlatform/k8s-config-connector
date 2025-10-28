@@ -545,6 +545,12 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 
 	// 6. Set resource name. This step is not needed for other operations.
 	desiredPb.Name = a.id.String()
+
+	// TODO(b/443107538): Remove the immutability check after API handles it properly
+	// Also add the major version upgrade support
+	if a.desired.Spec.DatabaseVersion != nil && a.actual.DatabaseVersion != alloydbpb.DatabaseVersion_DATABASE_VERSION_UNSPECIFIED && *a.desired.Spec.DatabaseVersion != a.actual.DatabaseVersion.String() {
+		return fmt.Errorf("field 'spec.databaseVersion' is immutable and cannot be updated from %q to %q", a.actual.DatabaseVersion, *a.desired.Spec.DatabaseVersion)
+	}
 	// 7. Handle default values for fields not yet supported in KRM types.
 	a.resolveGCPDefaults(desiredPb, a.actual)
 
@@ -570,7 +576,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 
-		if *a.desired.Status.ExternalRef == "" {
+		if a.desired.Status.ExternalRef == nil {
 			// If it is the first reconciliation after switching to direct controller,
 			// or is an acquisition, then update Status to fill out the ExternalRef
 			// and ObservedState.
@@ -616,7 +622,7 @@ func (a *ClusterAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	if *a.desired.Status.ExternalRef == "" {
+	if a.desired.Status.ExternalRef == nil {
 		// If it is the first reconciliation after switching to direct controller,
 		// or is an acquisition with update, then fill out the ExternalRef.
 		status.ExternalRef = direct.LazyPtr(a.id.String())

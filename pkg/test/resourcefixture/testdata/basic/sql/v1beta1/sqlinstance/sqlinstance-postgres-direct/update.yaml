@@ -20,6 +20,7 @@ metadata:
     alpha.cnrm.cloud.google.com/reconciler: "direct"
 spec:
   databaseVersion: POSTGRES_9_6
+  maintenanceVersion: POSTGRES_9_6_24.R20250302.00_19
   region: us-central1
   settings:
     availabilityType: REGIONAL

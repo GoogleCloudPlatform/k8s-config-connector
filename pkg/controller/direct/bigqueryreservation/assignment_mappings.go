@@ -18,7 +18,7 @@ import (
 	"strings"
 
 	pb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -56,11 +56,10 @@ func BigqueryReservationAssignmentSpec_Assignee_FromProto(mapCtx *direct.MapCont
 	return out
 }
 
-func BigqueryReservationAssignmentSpec_Assignee_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationAssignmentSpec) string {
-	if in == nil {
+func BigQueryReservationAssignmentSpec_Assignee_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationAssignmentSpec) string {
+	if in == nil || in.Assignee == nil {
 		return ""
 	}
-
 	if in.Assignee.ProjectRef != nil {
 		return "projects/" + in.Assignee.ProjectRef.External
 	}
@@ -73,40 +72,22 @@ func BigqueryReservationAssignmentSpec_Assignee_ToProto(mapCtx *direct.MapContex
 	return ""
 }
 
-func BigqueryReservationAssignmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.BigQueryReservationAssignmentSpec {
+func BigQueryReservationAssignmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationAssignmentSpec) *pb.Assignment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Assignment{}
+	out.Assignee = BigQueryReservationAssignmentSpec_Assignee_ToProto(mapCtx, in)
+	out.JobType = direct.Enum_ToProto[pb.Assignment_JobType](mapCtx, in.JobType)
+	return out
+}
+
+func BigQueryReservationAssignmentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.BigQueryReservationAssignmentSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.BigQueryReservationAssignmentSpec{}
 	out.Assignee = BigqueryReservationAssignmentSpec_Assignee_FromProto(mapCtx, in)
 	out.JobType = direct.Enum_FromProto(mapCtx, in.GetJobType())
-	return out
-}
-
-func BigqueryReservationAssignmentSpec_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationAssignmentSpec) *pb.Assignment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Assignment{}
-	out.Assignee = BigqueryReservationAssignmentSpec_Assignee_ToProto(mapCtx, in)
-	out.JobType = direct.Enum_ToProto[pb.Assignment_JobType](mapCtx, in.JobType)
-	return out
-}
-
-func BigqueryReservationAssignmentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.BigQueryReservationAssignmentObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BigQueryReservationAssignmentObservedState{}
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	return out
-}
-
-func BigqueryReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationAssignmentObservedState) *pb.Assignment {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Assignment{}
-	out.State = direct.Enum_ToProto[pb.Assignment_State](mapCtx, in.State)
 	return out
 }

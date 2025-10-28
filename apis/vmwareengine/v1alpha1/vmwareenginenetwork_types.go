@@ -50,12 +50,13 @@ type VMwareEngineNetworkSpec struct {
 	// +required
 	Type *string `json:"type,omitempty"`
 
+	// NOTYET: not supported in Config Connector reconciliation
 	// Checksum that may be sent on update and delete requests to ensure that the
 	//  user-provided value is up to date before the server processes a request.
 	//  The server computes checksums based on the value of other fields in the
 	//  request.
-	// +kcc:proto:field=google.cloud.vmwareengine.v1.VmwareEngineNetwork.etag
-	Etag *string `json:"etag,omitempty"`
+	// +kcc:proto:field=google.cloud.vmwareengine.v1.Network.etag
+	// Etag *string `json:"etag,omitempty"`
 }
 
 // VMwareEngineNetworkStatus defines the config connector machine state of VMwareEngineNetwork
@@ -98,7 +99,7 @@ type VMwareEngineNetworkObservedState struct {
 	//  from a private cloud to customer projects, the internet, and other Google
 	//  Cloud services.
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.VmwareEngineNetwork.vpc_networks
-	VPCNetworks []VmwareEngineNetwork_VpcNetworkObservedState `json:"vpcNetworks,omitempty"`
+	VPCNetworks []VmwareEngineNetwork_VPCNetworkObservedState `json:"vpcNetworks,omitempty"`
 
 	// Output only. State of the VMware Engine network.
 	// +kcc:proto:field=google.cloud.vmwareengine.v1.VmwareEngineNetwork.state

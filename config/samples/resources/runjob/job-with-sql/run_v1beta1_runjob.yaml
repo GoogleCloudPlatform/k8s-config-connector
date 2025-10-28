@@ -33,6 +33,3 @@ spec:
           cloudSqlInstance:
             instanceRefs:
               - name: runjob-dep-sql
-  lifecycle:
-    ignore_changes:
-    - launch_stage

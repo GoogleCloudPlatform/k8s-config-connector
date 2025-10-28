@@ -72,11 +72,8 @@ spec:
                     description: Stores user supplied Hive database parameters.
                     type: object
                 type: object
-              location:
-                description: Required. The location of the application.
-                type: string
-              projectRef:
-                description: Required. The host project of the application.
+              parentCatalogRef:
+                description: Required. Defines the parent path of the resource.
                 oneOf:
                 - not:
                     required:
@@ -93,18 +90,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The `projectID` field of a project, when not managed
-                      by Config Connector.
-                    type: string
-                  kind:
-                    description: The kind of the Project resource; optional but must
-                      be `Project` if provided.
+                    description: A reference to an externally managed BigQueryBigLakeCatalog
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/catalogs/{{catalogID}}".
                     type: string
                   name:
-                    description: The `name` field of a `Project` resource.
+                    description: The name of a BigQueryBigLakeCatalog resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `Project` resource.
+                    description: The namespace of a BigQueryBigLakeCatalog resource.
                     type: string
                 type: object
               resourceID:

@@ -16,6 +16,7 @@ package configconnector
 
 import (
 	"context"
+	goerrors "errors"
 	"fmt"
 	"strings"
 	"time"
@@ -59,8 +60,9 @@ const controllerName = "configconnector-controller"
 
 // ReconcilerOptions holds configuration options for the reconciler
 type ReconcilerOptions struct {
-	RepoPath       string
-	ImageTransform *controllers.ImageTransform
+	RepoPath                  string
+	ImageTransform            *controllers.ImageTransform
+	ManagerNamespaceIsolation string
 }
 
 // Reconciler reconciles a ConfigConnector object.
@@ -71,12 +73,13 @@ type ReconcilerOptions struct {
 // Reconciler also watches "ControllerResource" kind and apply customizations
 // specified in "ControllerResource" CRs to KCC components.
 type Reconciler struct {
-	reconciler           *declarative.Reconciler
-	client               client.Client
-	recorder             record.EventRecorder
-	labelMaker           declarative.LabelMaker
-	log                  logr.Logger
-	customizationWatcher *controllers.CustomizationWatcher
+	reconciler                *declarative.Reconciler
+	client                    client.Client
+	recorder                  record.EventRecorder
+	labelMaker                declarative.LabelMaker
+	log                       logr.Logger
+	customizationWatcher      *controllers.CustomizationWatcher
+	managerNamespaceIsolation string
 }
 
 func Add(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error) {
@@ -110,11 +113,12 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 	})
 
 	r := &Reconciler{
-		reconciler: &declarative.Reconciler{},
-		client:     mgr.GetClient(),
-		recorder:   mgr.GetEventRecorderFor(controllerName),
-		labelMaker: declarative.SourceLabel(mgr.GetScheme()),
-		log:        ctrl.Log.WithName(controllerName),
+		reconciler:                &declarative.Reconciler{},
+		client:                    mgr.GetClient(),
+		recorder:                  mgr.GetEventRecorderFor(controllerName),
+		labelMaker:                declarative.SourceLabel(mgr.GetScheme()),
+		log:                       ctrl.Log.WithName(controllerName),
+		managerNamespaceIsolation: opt.ManagerNamespaceIsolation,
 	}
 
 	r.customizationWatcher = controllers.NewWithDynamicClient(
@@ -140,6 +144,10 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 
 	if opt.ImageTransform != nil {
 		options = append(options, declarative.WithObjectTransform(opt.ImageTransform.RemapImages))
+	}
+
+	if opt.ManagerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
+		options = append(options, declarative.WithObjectTransform(r.transformPerNamespaceComponents()))
 	}
 
 	err := r.reconciler.Init(mgr, &corev1beta1.ConfigConnector{}, options...)
@@ -418,6 +426,11 @@ func (r *Reconciler) verifyPerNamespaceControllerManagerPodsAreDeleted(ctx conte
 		LabelSelector: podLabelSelector,
 		Limit:         100,
 	}
+	if r.managerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
+		// Controller managers may run in separate namespace
+		// so need to list pods across all namespaces.
+		podOpts.Namespace = ""
+	}
 	if err := c.List(ctx, podList, podOpts); err != nil {
 		return fmt.Errorf("error listing controller manager pods: %w", err)
 	}
@@ -461,6 +474,11 @@ func (r *Reconciler) finalizeSystemComponentsDeletion(ctx context.Context, c cli
 	podOpts := &client.ListOptions{
 		Namespace:     k8s.CNRMSystemNamespace,
 		LabelSelector: podLabelSelector,
+	}
+	if r.managerNamespaceIsolation == k8s.ManagerNamespaceIsolationDedicated {
+		// Controller managers may run in separate namespace
+		// so need to list pods across all namespaces.
+		podOpts.Namespace = ""
 	}
 	if err := wait.ExponentialBackoff(b, func() (done bool, err error) {
 		if err := c.List(ctx, podList, podOpts); err != nil {
@@ -592,22 +610,23 @@ func (r *Reconciler) selectCRDsByVersion(m *manifest.Objects, version string) er
 // applyCustomizations fetches and applies all cluster-scoped customization CRDs.
 func (r *Reconciler) applyCustomizations() declarative.ObjectTransform {
 	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
+		var result error = nil
 		if err := r.fetchAndApplyAllControllerResourceCRs(ctx, m); err != nil {
 			r.log.Error(err, "error applying all controller resource customization CRs")
 			// Don't fail entire reconciliation if we cannot apply controller resource customization CRs.
-			// return err
+			result = goerrors.Join(result, err)
 		}
 		if err := r.fetchAndApplyAllWebhookConfigurationCustomizationCRs(ctx); err != nil {
 			r.log.Error(err, "error applying all webhook configuration customization CRs")
 			// Don't fail entire reconciliation if we cannot apply webhook configuration customization CRs.
-			// return err
+			result = goerrors.Join(result, err)
 		}
 		if err := r.fetchAndApplyAllControllerReconcilers(ctx, m); err != nil {
 			r.log.Error(err, "error applying all controller reconciler customization CRs")
 			// Don't fail entire reconciliation if we cannot apply controller reconciler customization CRs.
-			// return err
+			result = goerrors.Join(result, err)
 		}
-		return nil
+		return result
 	}
 }
 
@@ -651,18 +670,20 @@ func (r *Reconciler) applyControllerResourceCR(ctx context.Context, cr *customiz
 }
 
 func (r *Reconciler) handleApplyControllerResourceCRFailed(ctx context.Context, cr *customizev1beta1.ControllerResource, msg string) error {
-	cr.Status.CommonStatus = v1alpha1.CommonStatus{
-		Healthy: false,
-		Errors:  []string{msg},
-	}
+	status := cr.GetCommonStatus()
+	status.Healthy = false
+	status.Errors = []string{msg}
+	status.ObservedGeneration = cr.Generation
+	cr.SetCommonStatus(status)
 	return r.updateControllerResourceStatus(ctx, cr)
 }
 
 func (r *Reconciler) handleApplyControllerResourceCRSucceeded(ctx context.Context, cr *customizev1beta1.ControllerResource) error {
-	cr.SetCommonStatus(v1alpha1.CommonStatus{
-		Healthy: true,
-		Errors:  []string{},
-	})
+	status := cr.GetCommonStatus()
+	status.Healthy = true
+	status.Errors = []string{}
+	status.ObservedGeneration = cr.Generation
+	cr.SetCommonStatus(status)
 	return r.updateControllerResourceStatus(ctx, cr)
 }
 
@@ -948,4 +969,77 @@ func checkForDuplicateWebhooks(webhooks []customizev1beta1.WebhookCustomizationS
 		return fmt.Errorf("the following webhooks are specified multiple times in the Spec: %s", strings.Join(duplicates, ", "))
 	}
 	return nil
+}
+
+func (r *Reconciler) transformPerNamespaceComponents() declarative.ObjectTransform {
+	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
+		transformed := make([]*manifest.Object, 0, len(m.Items))
+		for _, obj := range m.Items {
+			if obj.Kind == "StatefulSet" && obj.GetName() == k8s.KCCUnmanagedDetectorComponent {
+				processed, err := handleUnmanagedDetectorArgs(obj)
+				if err != nil {
+					return errors.Wrap(err, fmt.Sprintf("error updating args for StatefulSet %v/%v", obj.UnstructuredObject().GetNamespace(), obj.UnstructuredObject().GetName()))
+				}
+				transformed = append(transformed, processed)
+			} else {
+				transformed = append(transformed, obj)
+			}
+		}
+		m.Items = transformed
+		return nil
+	}
+}
+
+func findUnmanagerdDetectorContainer(containers []interface{}) (managerContainer map[string]interface{}, index int, err error) {
+	for i, container := range containers {
+		containerAsMap, ok := container.(map[string]interface{})
+		if !ok {
+			return nil, 0, fmt.Errorf("couldn't convert container configuration %v to a map", container)
+		}
+		name, found, err := unstructured.NestedString(containerAsMap, "name")
+		if err != nil || !found {
+			return nil, 0, fmt.Errorf("couldn't resolve name of container configuration %v: %w", container, err)
+		}
+		if name == k8s.KCCUnmanagedDetectorContainerName {
+			return containerAsMap, i, nil
+		}
+	}
+	return nil, 0, fmt.Errorf("no unmanaged detector container found")
+}
+
+func handleUnmanagedDetectorArgs(obj *manifest.Object) (*manifest.Object, error) {
+	u := obj.UnstructuredObject().DeepCopy()
+
+	containersPath := []string{"spec", "template", "spec", "containers"} // Path to container configurations in a StatefulSet
+	containers, found, err := unstructured.NestedSlice(u.Object, containersPath...)
+	if err != nil || !found {
+		return nil, fmt.Errorf("couldn't resolve containers: %w", err)
+	}
+
+	unmanagedDetectorContainer, index, err := findUnmanagerdDetectorContainer(containers)
+	if err != nil {
+		return nil, fmt.Errorf("error finding unmanaged detector container: %w", err)
+	}
+	args, found, err := unstructured.NestedStringSlice(unmanagedDetectorContainer, "args")
+	if err != nil {
+		return nil, fmt.Errorf("couldn't resolve args of unmanaged detector container %v: %w", unmanagedDetectorContainer, err)
+	}
+	if !found {
+		args = make([]string, 0)
+	}
+	for _, arg := range args {
+		if len(arg) > 2 && strings.HasPrefix(arg[2:], k8s.ManagerNamespaceIsolationFlag) {
+			return obj, nil
+		}
+	}
+	args = append(args, fmt.Sprintf("--%v=%v", k8s.ManagerNamespaceIsolationFlag, k8s.ManagerNamespaceIsolationDedicated))
+	if err := unstructured.SetNestedStringSlice(unmanagedDetectorContainer, args, "args"); err != nil {
+		return nil, fmt.Errorf("error setting args in unmanaged detector container: %w", err)
+	}
+
+	containers[index] = unmanagedDetectorContainer
+	if err := unstructured.SetNestedSlice(u.Object, containers, containersPath...); err != nil {
+		return nil, fmt.Errorf("error setting containers: %w", err)
+	}
+	return manifest.NewObject(u)
 }
