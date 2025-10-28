@@ -46,6 +46,9 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	for _, event := range events {
 		id := ""
 		body := event.Response.ParseBody()
+		if body == nil {
+			continue
+		}
 		val, ok := body["name"]
 		if ok {
 			s := val.(string)
@@ -80,6 +83,9 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 
 	for _, event := range events {
 		body := event.Response.ParseBody()
+		if body == nil {
+			continue
+		}
 		if selfLinkWithId, _, _ := unstructured.NestedString(body, "selfLinkWithId"); selfLinkWithId != "" {
 			r.ExtractIDsFromLinks(selfLinkWithId)
 		}
