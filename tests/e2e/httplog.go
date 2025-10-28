@@ -300,6 +300,9 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 	for _, event := range events {
 		id := ""
 		body := event.Response.ParseBody()
+		if body == nil {
+			continue
+		}
 		val, ok := body["name"]
 		if ok {
 			s := val.(string)
@@ -362,6 +365,9 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 			continue
 		}
 		body := event.Response.ParseBody()
+		if body == nil {
+			continue
+		}
 		targetLink, _, _ := unstructured.NestedString(body, "targetLink")
 		targetId, _, _ := unstructured.NestedString(body, "targetId")
 		if targetLink != "" && targetId != "" {
