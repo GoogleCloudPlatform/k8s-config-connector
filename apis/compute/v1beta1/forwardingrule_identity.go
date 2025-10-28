@@ -17,6 +17,9 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
@@ -24,41 +27,43 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var _ identity.Identity = &ForwardingRuleIdentity{}
+
 // ForwardingRuleIdentity defines the resource reference to ComputeForwardingRule, which "External" field
 // holds the GCP identifier for the KRM object.
 type ForwardingRuleIdentity struct {
-	parent *parent.ComputeParent
-	id     string
+	ParentID   *parent.ComputeParent
+	ResourceID string
 }
 
 func (i *ForwardingRuleIdentity) String() string {
-	return i.parent.String() + "/forwardingRules/" + i.id
+	return i.ParentID.String() + "/forwardingRules/" + i.ResourceID
 }
 
-func (i *ForwardingRuleIdentity) Parent() *parent.ComputeParent {
-	return i.parent
+func (i *ForwardingRuleIdentity) FromExternal(ref string) error {
+	tokens := strings.Split(ref, "/")
+	p, err := parent.ParseComputeParent(strings.Join(tokens[:len(tokens)-2], "/"))
+	if err != nil {
+		return err
+	}
+	if tokens[len(tokens)-2] != "forwardingRules" {
+		return fmt.Errorf("format of ComputeForwardingRule external=%q was not known (use %s/forwardingRules/{{forwardingRuleID}}", ref, p)
+	}
+	i.ResourceID = tokens[len(tokens)-1]
+	i.ParentID = p
+	return nil
 }
 
-func (i *ForwardingRuleIdentity) ID() string {
-	return i.id
-}
+var _ identity.Resource = &ComputeForwardingRule{}
 
-// NewForwardingRuleIdentity builds a ForwardingRuleIdentity from the Config Connector ForwardingRule object.
-func NewForwardingRuleIdentity(ctx context.Context, reader client.Reader, obj *ComputeForwardingRule) (*ForwardingRuleIdentity, error) {
-	// Get projectID
-	projectID, err := refsv1beta1.ResolveProjectFromAnnotation(ctx, reader, obj)
+func (obj *ComputeForwardingRule) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	// Get parent ID
+	parentID, err := obj.GetParentIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
-	// Get Location
-	var location string
-	if obj.Spec.Location == nil {
-		location = "global"
-	} else {
-		location = common.ValueOf(obj.Spec.Location)
-	}
 
-	// Get desired ID
+	// Get resource ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
@@ -67,30 +72,39 @@ func NewForwardingRuleIdentity(ctx context.Context, reader client.Reader, obj *C
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	id := &ForwardingRuleIdentity{
+		ParentID:   parentID,
+		ResourceID: resourceID,
+	}
+
+	// Attempt to ensure ID is immutable, by verifying against previously-set `status.externalRef`.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
-		actualIdentity, err := ParseForwardingRuleExternal(externalRef)
-		if err != nil {
+		previousID := &ForwardingRuleIdentity{}
+		if err := previousID.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-		if actualIdentity.parent.ProjectID != projectID.ProjectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.parent.ProjectID, projectID)
-		}
-		if actualIdentity.parent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualIdentity.parent.Location, location)
-		}
-		if actualIdentity.id != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualIdentity.id)
+		if id.String() != previousID.String() {
+			return nil, fmt.Errorf("cannot update ComputeForwardingRule identity (old=%q, new=%q): identity is immutable", previousID.String(), id.String())
 		}
 	}
-	return &ForwardingRuleIdentity{
-		parent: &parent.ComputeParent{
-			ProjectID: projectID.ProjectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
+
+	return id, nil
+}
+
+func (obj *ComputeForwardingRule) GetParentIdentity(ctx context.Context, reader client.Reader) (*parent.ComputeParent, error) {
+	projectID, err := refsv1beta1.ResolveProjectFromAnnotation(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Get Location
+	var location string
+	if obj.Spec.Location == nil {
+		location = "global"
+	} else {
+		location = common.ValueOf(obj.Spec.Location)
+	}
+
+	return &parent.ComputeParent{ProjectID: projectID.ProjectID, Location: location}, nil
 }
