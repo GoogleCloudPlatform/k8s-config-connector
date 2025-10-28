@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -25,16 +25,28 @@ var LoggingLinkGVK = GroupVersion.WithKind("LoggingLink")
 // LoggingLinkSpec defines the desired state of LoggingLink
 // +kcc:spec:proto=google.logging.v2.Link
 type LoggingLinkSpec struct {
+	// Required. The LoggingLogBucket that this Link is associated with.
+	ParentRef *v1beta1.LoggingLogBucketRef `json:"parentLoggingLogBucketRef,omitempty"`
+
 	// Immutable.
 	// The LoggingLink name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Describes this link.
+	//
 	//  The maximum length of the description is 8000 characters.
+	// +kcc:proto:field=google.logging.v2.Link.description
 	Description *string `json:"description,omitempty"`
 
-	// The LoggingLogBucket that this Link is associated with
-	LoggingLogBucketRef *loggingv1beta1.LoggingLogBucketRef `json:"loggingLogBucketRef,omitempty"`
+	// NOTYET:  This field requires further investigation.
+	// KCC should not support creating 2 different KCC/GCP objects from the same controller.
+	//
+	// The information of a BigQuery Dataset. When a link is created, a BigQuery
+	//  dataset is created along with it, in the same project as the LogBucket it's
+	//  linked to. This dataset will also have BigQuery Views corresponding to the
+	//  LogViews in the bucket.
+	// +kcc:proto:field=google.logging.v2.Link.bigquery_dataset
+	// BigqueryDatasetRef *bigqueryv1beta1.DatasetRef `json:"bigqueryDatasetRef,omitempty"`
 }
 
 // LoggingLinkStatus defines the config connector machine state of LoggingLink
@@ -53,26 +65,22 @@ type LoggingLinkStatus struct {
 	ObservedState *LoggingLinkObservedState `json:"observedState,omitempty"`
 }
 
-// LoggingLinkObservedState is the state of the LoggingLink resource as most recently observed in GCP.
+// +kcc:observedstate:proto=google.logging.v2.Link
 type LoggingLinkObservedState struct {
-
-	// +optional
 	// Output only. The creation timestamp of the link.
+	// +kcc:proto:field=google.logging.v2.Link.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// the lifecycle state might be something more complicated
-	// this is an ENUM, should be safe to use a string
-
 	// Output only. The resource lifecycle state.
+	// +kcc:proto:field=google.logging.v2.Link.lifecycle_state
 	LifecycleState *string `json:"lifecycleState,omitempty"`
 
-	// this field is just a string, but its an object(string)
-	// https://github.com/googleapis/googleapis/blob/master/google/logging/v2/logging_config.proto#L1063
-
-	// The information of a BigQuery Dataset. When a link is created, a BigQuery dataset is created
-	// along with it, in the same project as the LogBucket it's linked to. This dataset will also have
-	// BigQuery Views corresponding to the LogViews in the bucket.
-	BigQueryDataset *BigQueryDatasetObservedState `json:"bigQueryDataset,omitempty"`
+	// The information of a BigQuery Dataset. When a link is created, a BigQuery
+	//  dataset is created along with it, in the same project as the LogBucket it's
+	//  linked to. This dataset will also have BigQuery Views corresponding to the
+	//  LogViews in the bucket.
+	// +kcc:proto:field=google.logging.v2.Link.bigquery_dataset
+	// BigqueryDataset *BigQueryDatasetObservedState `json:"bigqueryDataset,omitempty"`
 }
 
 // +genclient

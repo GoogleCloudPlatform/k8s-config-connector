@@ -60,11 +60,14 @@ spec:
             description: LoggingLinkSpec defines the desired state of LoggingLink
             properties:
               description:
-                description: Describes this link. The maximum length of the description
-                  is 8000 characters.
+                description: |-
+                  Describes this link.
+
+                   The maximum length of the description is 8000 characters.
                 type: string
-              loggingLogBucketRef:
-                description: The LoggingLogBucket that this Link is associated with
+              parentLoggingLogBucketRef:
+                description: 'Required. The parent resource where this table will
+                  be created. Format: projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}'
                 oneOf:
                 - not:
                     required:
@@ -95,6 +98,8 @@ spec:
                 description: Immutable. The LoggingLink name. If not given, the metadata.name
                   will be used.
                 type: string
+            required:
+            - parentLoggingLogBucketRef
             type: object
           status:
             description: LoggingLinkStatus defines the config connector machine state
@@ -141,24 +146,6 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
-                  bigQueryDataset:
-                    description: The information of a BigQuery Dataset. When a link
-                      is created, a BigQuery dataset is created along with it, in
-                      the same project as the LogBucket it's linked to. This dataset
-                      will also have BigQuery Views corresponding to the LogViews
-                      in the bucket.
-                    properties:
-                      datasetID:
-                        description: |-
-                          Output only. The full resource name of the BigQuery dataset. The DATASET_ID
-                           will match the ID of the link, so the link must match the naming
-                           restrictions of BigQuery datasets (alphanumeric characters and underscores
-                           only).
-
-                           The dataset will have a resource path of
-                             "bigquery.googleapis.com/projects/[PROJECT_ID]/datasets/[DATASET_ID]"
-                        type: string
-                    type: object
                   createTime:
                     description: Output only. The creation timestamp of the link.
                     type: string

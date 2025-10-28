@@ -58,7 +58,7 @@ func (p *LinkParent) String() string {
 func NewLinkIdentity(ctx context.Context, reader client.Reader, obj *LoggingLink) (*LinkIdentity, error) {
 
 	// Get Parent
-	external, err := obj.Spec.LoggingLogBucketRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
+	external, err := obj.Spec.ParentRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
 	if err != nil {
 		return nil, err
 	}
