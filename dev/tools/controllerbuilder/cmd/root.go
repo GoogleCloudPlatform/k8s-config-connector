@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/generatedirectreconciler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/generatefuzzer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/generatemapper"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/generateresolverefs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/generatetypes"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/updatetypes"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/options"
@@ -44,6 +45,7 @@ func Execute() {
 	rootCmd.AddCommand(generatecontroller.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(generatetypes.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(generatemapper.BuildCommand(&generateOptions))
+	rootCmd.AddCommand(generateresolverefs.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(updatetypes.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(exportcsv.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(exportcsv.BuildPromptCommand(&generateOptions))
