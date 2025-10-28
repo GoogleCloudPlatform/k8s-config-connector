@@ -20,8 +20,8 @@
 package networkservices
 
 import (
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/networkservices/v1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/networkservices/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -163,6 +163,7 @@ func CorsPolicy_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_Cors
 	out.Disabled = direct.ValueOf(in.Disabled)
 	return out
 }
+
 // TODO: EdgeCacheService_FromProto/ToProto commented out - they map to full CRD object not Spec
 // The controller uses NetworkServicesEdgeCacheServiceSpec_FromProto/ToProto instead
 /*
@@ -999,61 +1000,65 @@ func NetworkServicesEdgeCacheServiceSpec_ToProto(mapCtx *direct.MapContext, in *
 	out.EdgeSecurityPolicy = direct.ValueOf(in.EdgeSecurityPolicy)
 	return out
 }
+
 // TODO: ServiceBinding mapper functions commented out temporarily
 // ServiceBinding protos are not in the mockgcp-generated package yet
 // These will need to be re-enabled when ServiceBinding is migrated to direct controller
 
 /*
-func NetworkServicesServiceBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.NetworkServicesServiceBindingObservedState {
-	if in == nil {
-		return nil
+	func NetworkServicesServiceBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.NetworkServicesServiceBindingObservedState {
+		if in == nil {
+			return nil
+		}
+		out := &krm.NetworkServicesServiceBindingObservedState{}
+		// MISSING: Name
+		out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+		out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+		// MISSING: ServiceID
+		return out
 	}
-	out := &krm.NetworkServicesServiceBindingObservedState{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: ServiceID
-	return out
-}
-func NetworkServicesServiceBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesServiceBindingObservedState) *pb.ServiceBinding {
-	if in == nil {
-		return nil
+
+	func NetworkServicesServiceBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesServiceBindingObservedState) *pb.ServiceBinding {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ServiceBinding{}
+		// MISSING: Name
+		out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+		out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+		// MISSING: ServiceID
+		return out
 	}
-	out := &pb.ServiceBinding{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: ServiceID
-	return out
-}
-func NetworkServicesServiceBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.NetworkServicesServiceBindingSpec {
-	if in == nil {
-		return nil
+
+	func NetworkServicesServiceBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.NetworkServicesServiceBindingSpec {
+		if in == nil {
+			return nil
+		}
+		out := &krm.NetworkServicesServiceBindingSpec{}
+		// MISSING: Name
+		out.Description = direct.LazyPtr(in.GetDescription())
+		if in.GetService() != "" {
+			out.ServiceRef = &krmservicedirectoryv1alpha1.ServiceDirectoryServiceRef{External: in.GetService()}
+		}
+		// MISSING: ServiceID
+		out.Labels = in.Labels
+		return out
 	}
-	out := &krm.NetworkServicesServiceBindingSpec{}
-	// MISSING: Name
-	out.Description = direct.LazyPtr(in.GetDescription())
-	if in.GetService() != "" {
-		out.ServiceRef = &krmservicedirectoryv1alpha1.ServiceDirectoryServiceRef{External: in.GetService()}
+
+	func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesServiceBindingSpec) *pb.ServiceBinding {
+		if in == nil {
+			return nil
+		}
+		out := &pb.ServiceBinding{}
+		// MISSING: Name
+		out.Description = direct.ValueOf(in.Description)
+		if in.ServiceRef != nil {
+			out.Service = in.ServiceRef.External
+		}
+		// MISSING: ServiceID
+		out.Labels = in.Labels
+		return out
 	}
-	// MISSING: ServiceID
-	out.Labels = in.Labels
-	return out
-}
-func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesServiceBindingSpec) *pb.ServiceBinding {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ServiceBinding{}
-	// MISSING: Name
-	out.Description = direct.ValueOf(in.Description)
-	if in.ServiceRef != nil {
-		out.Service = in.ServiceRef.External
-	}
-	// MISSING: ServiceID
-	out.Labels = in.Labels
-	return out
-}
 */
 func PathMatcher_FromProto(mapCtx *direct.MapContext, in *pb.PathMatcher) *krm.EdgeCacheService_PathMatcher {
 	if in == nil {

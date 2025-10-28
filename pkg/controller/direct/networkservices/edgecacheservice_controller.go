@@ -109,17 +109,17 @@ func (a *EdgeCacheServiceAdapter) Find(ctx context.Context) (bool, error) {
 	// cloud.google.com/go/networkservices/apiv1 API. This controller currently only
 	// works with MockGCP for testing. Uncomment when the API is available.
 	/*
-	req := &pb.GetEdgeCacheServiceRequest{Name: a.id.String()}
-	edgecacheservicepb, err := a.gcpClient.GetEdgeCacheService(ctx, req)
-	if err != nil {
-		if direct.IsNotFound(err) {
-			return false, nil
+		req := &pb.GetEdgeCacheServiceRequest{Name: a.id.String()}
+		edgecacheservicepb, err := a.gcpClient.GetEdgeCacheService(ctx, req)
+		if err != nil {
+			if direct.IsNotFound(err) {
+				return false, nil
+			}
+			return false, fmt.Errorf("getting EdgeCacheService %q: %w", a.id, err)
 		}
-		return false, fmt.Errorf("getting EdgeCacheService %q: %w", a.id, err)
-	}
 
-	a.actual = edgecacheservicepb
-	return true, nil
+		a.actual = edgecacheservicepb
+		return true, nil
 	*/
 
 	// Temporary: return not found for compilation
@@ -153,28 +153,28 @@ func (a *EdgeCacheServiceAdapter) Create(ctx context.Context, createOp *directba
 	// TODO: EdgeCacheService is an alpha resource not yet available in the official API.
 	// Uncomment when the API is available in cloud.google.com/go/networkservices/apiv1
 	/*
-	req := &pb.CreateEdgeCacheServiceRequest{
-		Parent:               a.id.Parent().String(),
-		EdgeCacheServiceId:   a.id.ID(),
-		EdgeCacheService:     resource,
-	}
-	op, err := a.gcpClient.CreateEdgeCacheService(ctx, req)
-	if err != nil {
-		return fmt.Errorf("creating EdgeCacheService %s: %w", a.id, err)
-	}
-	created, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("EdgeCacheService %s waiting creation: %w", a.id, err)
-	}
-	log.V(2).Info("successfully created EdgeCacheService", "name", a.id)
+		req := &pb.CreateEdgeCacheServiceRequest{
+			Parent:               a.id.Parent().String(),
+			EdgeCacheServiceId:   a.id.ID(),
+			EdgeCacheService:     resource,
+		}
+		op, err := a.gcpClient.CreateEdgeCacheService(ctx, req)
+		if err != nil {
+			return fmt.Errorf("creating EdgeCacheService %s: %w", a.id, err)
+		}
+		created, err := op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("EdgeCacheService %s waiting creation: %w", a.id, err)
+		}
+		log.V(2).Info("successfully created EdgeCacheService", "name", a.id)
 
-	status := &krm.NetworkServicesEdgeCacheServiceStatus{}
-	status.ObservedState = NetworkServicesEdgeCacheServiceObservedState_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return createOp.UpdateStatus(ctx, status, nil)
+		status := &krm.NetworkServicesEdgeCacheServiceStatus{}
+		status.ObservedState = NetworkServicesEdgeCacheServiceObservedState_FromProto(mapCtx, created)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		status.ExternalRef = direct.LazyPtr(a.id.String())
+		return createOp.UpdateStatus(ctx, status, nil)
 	*/
 
 	// Temporary: Use MockGCP for testing
@@ -201,59 +201,59 @@ func (a *EdgeCacheServiceAdapter) Update(ctx context.Context, updateOp *directba
 	// TODO: EdgeCacheService is an alpha resource not yet available in the official API.
 	// Uncomment when the API is available in cloud.google.com/go/networkservices/apiv1
 	/*
-	// Build update mask for fields that changed
-	paths := []string{}
+		// Build update mask for fields that changed
+		paths := []string{}
 
-	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
-		paths = append(paths, "labels")
-	}
-	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
-		paths = append(paths, "description")
-	}
-	if desired.Spec.Routing != nil && !reflect.DeepEqual(resource.Routing, a.actual.Routing) {
-		paths = append(paths, "routing")
-	}
-	if desired.Spec.RequireTls != nil && !reflect.DeepEqual(resource.RequireTls, a.actual.RequireTls) {
-		paths = append(paths, "require_tls")
-	}
-	if desired.Spec.DisableHttp2 != nil && !reflect.DeepEqual(resource.DisableHttp2, a.actual.DisableHttp2) {
-		paths = append(paths, "disable_http2")
-	}
-	if desired.Spec.DisableQuic != nil && !reflect.DeepEqual(resource.DisableQuic, a.actual.DisableQuic) {
-		paths = append(paths, "disable_quic")
-	}
-	if desired.Spec.LogConfig != nil && !reflect.DeepEqual(resource.LogConfig, a.actual.LogConfig) {
-		paths = append(paths, "log_config")
-	}
+		if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+			paths = append(paths, "labels")
+		}
+		if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
+			paths = append(paths, "description")
+		}
+		if desired.Spec.Routing != nil && !reflect.DeepEqual(resource.Routing, a.actual.Routing) {
+			paths = append(paths, "routing")
+		}
+		if desired.Spec.RequireTls != nil && !reflect.DeepEqual(resource.RequireTls, a.actual.RequireTls) {
+			paths = append(paths, "require_tls")
+		}
+		if desired.Spec.DisableHttp2 != nil && !reflect.DeepEqual(resource.DisableHttp2, a.actual.DisableHttp2) {
+			paths = append(paths, "disable_http2")
+		}
+		if desired.Spec.DisableQuic != nil && !reflect.DeepEqual(resource.DisableQuic, a.actual.DisableQuic) {
+			paths = append(paths, "disable_quic")
+		}
+		if desired.Spec.LogConfig != nil && !reflect.DeepEqual(resource.LogConfig, a.actual.LogConfig) {
+			paths = append(paths, "log_config")
+		}
 
-	var updated *pb.EdgeCacheService
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
-		updated = a.actual
-	} else {
-		resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
-		req := &pb.UpdateEdgeCacheServiceRequest{
-			EdgeCacheService: resource,
-			UpdateMask:       &fieldmaskpb.FieldMask{Paths: paths},
+		var updated *pb.EdgeCacheService
+		if len(paths) == 0 {
+			log.V(2).Info("no field needs update", "name", a.id)
+			updated = a.actual
+		} else {
+			resource.Name = a.id.String() // we need to set the name so that GCP API can identify the resource
+			req := &pb.UpdateEdgeCacheServiceRequest{
+				EdgeCacheService: resource,
+				UpdateMask:       &fieldmaskpb.FieldMask{Paths: paths},
+			}
+			op, err := a.gcpClient.UpdateEdgeCacheService(ctx, req)
+			if err != nil {
+				return fmt.Errorf("updating EdgeCacheService %s: %w", a.id, err)
+			}
+			updated, err = op.Wait(ctx)
+			if err != nil {
+				return fmt.Errorf("EdgeCacheService %s waiting update: %w", a.id, err)
+			}
+			log.V(2).Info("successfully updated EdgeCacheService", "name", a.id)
 		}
-		op, err := a.gcpClient.UpdateEdgeCacheService(ctx, req)
-		if err != nil {
-			return fmt.Errorf("updating EdgeCacheService %s: %w", a.id, err)
-		}
-		updated, err = op.Wait(ctx)
-		if err != nil {
-			return fmt.Errorf("EdgeCacheService %s waiting update: %w", a.id, err)
-		}
-		log.V(2).Info("successfully updated EdgeCacheService", "name", a.id)
-	}
 
-	status := &krm.NetworkServicesEdgeCacheServiceStatus{}
-	status.ObservedState = NetworkServicesEdgeCacheServiceObservedState_FromProto(mapCtx, updated)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
-	return updateOp.UpdateStatus(ctx, status, nil)
+		status := &krm.NetworkServicesEdgeCacheServiceStatus{}
+		status.ObservedState = NetworkServicesEdgeCacheServiceObservedState_FromProto(mapCtx, updated)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		status.ExternalRef = direct.LazyPtr(a.id.String())
+		return updateOp.UpdateStatus(ctx, status, nil)
 	*/
 
 	// Temporary: Use MockGCP for testing
@@ -298,23 +298,23 @@ func (a *EdgeCacheServiceAdapter) Delete(ctx context.Context, deleteOp *directba
 	// TODO: EdgeCacheService is an alpha resource not yet available in the official API.
 	// Uncomment when the API is available in cloud.google.com/go/networkservices/apiv1
 	/*
-	req := &pb.DeleteEdgeCacheServiceRequest{Name: a.id.String()}
-	op, err := a.gcpClient.DeleteEdgeCacheService(ctx, req)
-	if err != nil {
-		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent EdgeCacheService, assuming it was already deleted", "name", a.id)
-			return true, nil
+		req := &pb.DeleteEdgeCacheServiceRequest{Name: a.id.String()}
+		op, err := a.gcpClient.DeleteEdgeCacheService(ctx, req)
+		if err != nil {
+			if direct.IsNotFound(err) {
+				// Return success if not found (assume it was already deleted).
+				log.V(2).Info("skipping delete for non-existent EdgeCacheService, assuming it was already deleted", "name", a.id)
+				return true, nil
+			}
+			return false, fmt.Errorf("deleting EdgeCacheService %s: %w", a.id, err)
 		}
-		return false, fmt.Errorf("deleting EdgeCacheService %s: %w", a.id, err)
-	}
-	log.V(2).Info("successfully deleted EdgeCacheService", "name", a.id)
+		log.V(2).Info("successfully deleted EdgeCacheService", "name", a.id)
 
-	err = op.Wait(ctx)
-	if err != nil {
-		return false, fmt.Errorf("waiting delete EdgeCacheService %s: %w", a.id, err)
-	}
-	return true, nil
+		err = op.Wait(ctx)
+		if err != nil {
+			return false, fmt.Errorf("waiting delete EdgeCacheService %s: %w", a.id, err)
+		}
+		return true, nil
 	*/
 
 	// Temporary: Use MockGCP for testing
