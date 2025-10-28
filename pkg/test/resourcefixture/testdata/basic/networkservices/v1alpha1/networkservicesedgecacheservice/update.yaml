@@ -63,3 +63,11 @@ spec:
               excludeQueryString: true
               includedHeaderNames:
               - "X-Custom-Header"
+          compressionMode: "DISABLED"
+        routeMethods:
+          allowedMethods:
+          - "GET"
+          - "HEAD"
+          - "POST"
+          - "PUT"
+          - "DELETE"

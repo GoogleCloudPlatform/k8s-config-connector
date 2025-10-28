@@ -61,3 +61,9 @@ spec:
             cacheKeyPolicy:
               includeProtocol: true
               excludeQueryString: false
+          compressionMode: "AUTOMATIC"
+        routeMethods:
+          allowedMethods:
+          - "GET"
+          - "HEAD"
+          - "POST"

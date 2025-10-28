@@ -20,24 +20,22 @@
 package networkservices
 
 import (
-	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/networkservices/v1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	krmservicedirectoryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AddHeader_FromProto(mapCtx *direct.MapContext, in *pb.AddHeader) *krm.AddHeader {
+func AddHeader_FromProto(mapCtx *direct.MapContext, in *pb.AddHeader) *krm.EdgeCacheService_AddHeader {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AddHeader{}
+	out := &krm.EdgeCacheService_AddHeader{}
 	out.HeaderName = direct.LazyPtr(in.GetHeaderName())
 	out.HeaderValue = direct.LazyPtr(in.GetHeaderValue())
 	out.Replace = direct.LazyPtr(in.GetReplace())
 	return out
 }
-func AddHeader_ToProto(mapCtx *direct.MapContext, in *krm.AddHeader) *pb.AddHeader {
+func AddHeader_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_AddHeader) *pb.AddHeader {
 	if in == nil {
 		return nil
 	}
@@ -47,39 +45,39 @@ func AddHeader_ToProto(mapCtx *direct.MapContext, in *krm.AddHeader) *pb.AddHead
 	out.Replace = direct.ValueOf(in.Replace)
 	return out
 }
-func AddSignatures_FromProto(mapCtx *direct.MapContext, in *pb.AddSignatures) *krm.AddSignatures {
+func AddSignatures_FromProto(mapCtx *direct.MapContext, in *pb.AddSignatures) *krm.EdgeCacheService_AddSignatures {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AddSignatures{}
+	out := &krm.EdgeCacheService_AddSignatures{}
 	out.Actions = direct.EnumSlice_FromProto(mapCtx, in.Actions)
 	out.Keyset = direct.LazyPtr(in.GetKeyset())
-	out.TokenTTL = direct.StringDuration_FromProto(mapCtx, in.GetTokenTtl())
+	out.TokenTtl = direct.StringDuration_FromProto(mapCtx, in.GetTokenTtl())
 	out.TokenQueryParameter = direct.LazyPtr(in.GetTokenQueryParameter())
 	out.CopiedParameters = in.CopiedParameters
 	return out
 }
-func AddSignatures_ToProto(mapCtx *direct.MapContext, in *krm.AddSignatures) *pb.AddSignatures {
+func AddSignatures_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_AddSignatures) *pb.AddSignatures {
 	if in == nil {
 		return nil
 	}
 	out := &pb.AddSignatures{}
 	out.Actions = direct.EnumSlice_ToProto[pb.SignatureAction](mapCtx, in.Actions)
 	out.Keyset = direct.ValueOf(in.Keyset)
-	out.TokenTtl = direct.StringDuration_ToProto(mapCtx, in.TokenTTL)
+	out.TokenTtl = direct.StringDuration_ToProto(mapCtx, in.TokenTtl)
 	out.TokenQueryParameter = direct.ValueOf(in.TokenQueryParameter)
 	out.CopiedParameters = in.CopiedParameters
 	return out
 }
-func CDNPolicy_FromProto(mapCtx *direct.MapContext, in *pb.CdnPolicy) *krm.CDNPolicy {
+func CDNPolicy_FromProto(mapCtx *direct.MapContext, in *pb.CdnPolicy) *krm.EdgeCacheService_CdnPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CDNPolicy{}
+	out := &krm.EdgeCacheService_CdnPolicy{}
 	out.CacheMode = direct.Enum_FromProto(mapCtx, in.GetCacheMode())
-	out.ClientTTL = direct.StringDuration_FromProto(mapCtx, in.GetClientTtl())
-	out.DefaultTTL = direct.StringDuration_FromProto(mapCtx, in.GetDefaultTtl())
-	out.MaxTTL = direct.StringDuration_FromProto(mapCtx, in.GetMaxTtl())
+	out.ClientTtl = direct.StringDuration_FromProto(mapCtx, in.GetClientTtl())
+	out.DefaultTtl = direct.StringDuration_FromProto(mapCtx, in.GetDefaultTtl())
+	out.MaxTtl = direct.StringDuration_FromProto(mapCtx, in.GetMaxTtl())
 	out.NegativeCaching = direct.LazyPtr(in.GetNegativeCaching())
 	// MISSING: NegativeCachingPolicy
 	out.CacheKeyPolicy = CacheKeyPolicy_FromProto(mapCtx, in.GetCacheKeyPolicy())
@@ -87,18 +85,18 @@ func CDNPolicy_FromProto(mapCtx *direct.MapContext, in *pb.CdnPolicy) *krm.CDNPo
 	out.SignedRequestKeyset = direct.LazyPtr(in.GetSignedRequestKeyset())
 	out.SignedTokenOptions = SignedTokenOptions_FromProto(mapCtx, in.GetSignedTokenOptions())
 	out.AddSignatures = AddSignatures_FromProto(mapCtx, in.GetAddSignatures())
-	out.SignedRequestMaximumExpirationTTL = direct.StringDuration_FromProto(mapCtx, in.GetSignedRequestMaximumExpirationTtl())
+	out.SignedRequestMaximumExpirationTtl = direct.StringDuration_FromProto(mapCtx, in.GetSignedRequestMaximumExpirationTtl())
 	return out
 }
-func CDNPolicy_ToProto(mapCtx *direct.MapContext, in *krm.CDNPolicy) *pb.CdnPolicy {
+func CDNPolicy_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_CdnPolicy) *pb.CdnPolicy {
 	if in == nil {
 		return nil
 	}
 	out := &pb.CdnPolicy{}
 	out.CacheMode = direct.Enum_ToProto[pb.CacheMode](mapCtx, in.CacheMode)
-	out.ClientTtl = direct.StringDuration_ToProto(mapCtx, in.ClientTTL)
-	out.DefaultTtl = direct.StringDuration_ToProto(mapCtx, in.DefaultTTL)
-	out.MaxTtl = direct.StringDuration_ToProto(mapCtx, in.MaxTTL)
+	out.ClientTtl = direct.StringDuration_ToProto(mapCtx, in.ClientTtl)
+	out.DefaultTtl = direct.StringDuration_ToProto(mapCtx, in.DefaultTtl)
+	out.MaxTtl = direct.StringDuration_ToProto(mapCtx, in.MaxTtl)
 	out.NegativeCaching = direct.ValueOf(in.NegativeCaching)
 	// MISSING: NegativeCachingPolicy
 	out.CacheKeyPolicy = CacheKeyPolicy_ToProto(mapCtx, in.CacheKeyPolicy)
@@ -106,14 +104,14 @@ func CDNPolicy_ToProto(mapCtx *direct.MapContext, in *krm.CDNPolicy) *pb.CdnPoli
 	out.SignedRequestKeyset = direct.ValueOf(in.SignedRequestKeyset)
 	out.SignedTokenOptions = SignedTokenOptions_ToProto(mapCtx, in.SignedTokenOptions)
 	out.AddSignatures = AddSignatures_ToProto(mapCtx, in.AddSignatures)
-	out.SignedRequestMaximumExpirationTtl = direct.StringDuration_ToProto(mapCtx, in.SignedRequestMaximumExpirationTTL)
+	out.SignedRequestMaximumExpirationTtl = direct.StringDuration_ToProto(mapCtx, in.SignedRequestMaximumExpirationTtl)
 	return out
 }
-func CacheKeyPolicy_FromProto(mapCtx *direct.MapContext, in *pb.CacheKeyPolicy) *krm.CacheKeyPolicy {
+func CacheKeyPolicy_FromProto(mapCtx *direct.MapContext, in *pb.CacheKeyPolicy) *krm.EdgeCacheService_CacheKeyPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CacheKeyPolicy{}
+	out := &krm.EdgeCacheService_CacheKeyPolicy{}
 	out.IncludeProtocol = direct.LazyPtr(in.GetIncludeProtocol())
 	out.ExcludeHost = direct.LazyPtr(in.GetExcludeHost())
 	out.ExcludeQueryString = direct.LazyPtr(in.GetExcludeQueryString())
@@ -123,7 +121,7 @@ func CacheKeyPolicy_FromProto(mapCtx *direct.MapContext, in *pb.CacheKeyPolicy) 
 	out.IncludedCookieNames = in.IncludedCookieNames
 	return out
 }
-func CacheKeyPolicy_ToProto(mapCtx *direct.MapContext, in *krm.CacheKeyPolicy) *pb.CacheKeyPolicy {
+func CacheKeyPolicy_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_CacheKeyPolicy) *pb.CacheKeyPolicy {
 	if in == nil {
 		return nil
 	}
@@ -137,11 +135,11 @@ func CacheKeyPolicy_ToProto(mapCtx *direct.MapContext, in *krm.CacheKeyPolicy) *
 	out.IncludedCookieNames = in.IncludedCookieNames
 	return out
 }
-func CorsPolicy_FromProto(mapCtx *direct.MapContext, in *pb.CorsPolicy) *krm.CorsPolicy {
+func CorsPolicy_FromProto(mapCtx *direct.MapContext, in *pb.CorsPolicy) *krm.EdgeCacheService_CorsPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CorsPolicy{}
+	out := &krm.EdgeCacheService_CorsPolicy{}
 	out.MaxAge = direct.StringDuration_FromProto(mapCtx, in.GetMaxAge())
 	out.AllowOrigins = in.AllowOrigins
 	out.AllowMethods = in.AllowMethods
@@ -151,7 +149,7 @@ func CorsPolicy_FromProto(mapCtx *direct.MapContext, in *pb.CorsPolicy) *krm.Cor
 	out.Disabled = direct.LazyPtr(in.GetDisabled())
 	return out
 }
-func CorsPolicy_ToProto(mapCtx *direct.MapContext, in *krm.CorsPolicy) *pb.CorsPolicy {
+func CorsPolicy_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_CorsPolicy) *pb.CorsPolicy {
 	if in == nil {
 		return nil
 	}
@@ -165,11 +163,14 @@ func CorsPolicy_ToProto(mapCtx *direct.MapContext, in *krm.CorsPolicy) *pb.CorsP
 	out.Disabled = direct.ValueOf(in.Disabled)
 	return out
 }
-func EdgeCacheService_FromProto(mapCtx *direct.MapContext, in *pb.EdgeCacheService) *krm.EdgeCacheService {
+// TODO: EdgeCacheService_FromProto/ToProto commented out - they map to full CRD object not Spec
+// The controller uses NetworkServicesEdgeCacheServiceSpec_FromProto/ToProto instead
+/*
+func EdgeCacheService_FromProto(mapCtx *direct.MapContext, in *pb.EdgeCacheService) *krm.NetworkServicesEdgeCacheService {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EdgeCacheService{}
+	out := &krm.NetworkServicesEdgeCacheService{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
@@ -186,7 +187,7 @@ func EdgeCacheService_FromProto(mapCtx *direct.MapContext, in *pb.EdgeCacheServi
 	out.EdgeSecurityPolicy = direct.LazyPtr(in.GetEdgeSecurityPolicy())
 	return out
 }
-func EdgeCacheService_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService) *pb.EdgeCacheService {
+func EdgeCacheService_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesEdgeCacheService) *pb.EdgeCacheService {
 	if in == nil {
 		return nil
 	}
@@ -207,11 +208,12 @@ func EdgeCacheService_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheServic
 	out.EdgeSecurityPolicy = direct.ValueOf(in.EdgeSecurityPolicy)
 	return out
 }
-func EdgeCacheServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EdgeCacheService) *krm.EdgeCacheServiceObservedState {
+*/
+func EdgeCacheServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EdgeCacheService) *krm.NetworkServicesEdgeCacheServiceObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EdgeCacheServiceObservedState{}
+	out := &krm.NetworkServicesEdgeCacheServiceObservedState{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -220,15 +222,15 @@ func EdgeCacheServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.E
 	// MISSING: Routing
 	// MISSING: EdgeSSLCertificates
 	// MISSING: DisableQuic
-	out.IPV4Addresses = in.Ipv4Addresses
-	out.IPV6Addresses = in.Ipv6Addresses
+	out.Ipv4Addresses = in.Ipv4Addresses
+	out.Ipv6Addresses = in.Ipv6Addresses
 	// MISSING: LogConfig
 	// MISSING: DisableHttp2
 	// MISSING: RequireTLS
 	// MISSING: EdgeSecurityPolicy
 	return out
 }
-func EdgeCacheServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheServiceObservedState) *pb.EdgeCacheService {
+func EdgeCacheServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesEdgeCacheServiceObservedState) *pb.EdgeCacheService {
 	if in == nil {
 		return nil
 	}
@@ -241,8 +243,8 @@ func EdgeCacheServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Ed
 	// MISSING: Routing
 	// MISSING: EdgeSSLCertificates
 	// MISSING: DisableQuic
-	out.Ipv4Addresses = in.IPV4Addresses
-	out.Ipv6Addresses = in.IPV6Addresses
+	out.Ipv4Addresses = in.Ipv4Addresses
+	out.Ipv6Addresses = in.Ipv6Addresses
 	// MISSING: LogConfig
 	// MISSING: DisableHttp2
 	// MISSING: RequireTLS
@@ -275,11 +277,8 @@ func EdgeCacheService_AddSignatures_FromProto(mapCtx *direct.MapContext, in *pb.
 	}
 	out := &krm.EdgeCacheService_AddSignatures{}
 	out.Actions = direct.EnumSlice_FromProto(mapCtx, in.Actions)
-	if in.GetKeyset() != "" {
-		out.KeysetRef = &refsv1beta1.NetworkServicesEdgeCacheKeysetRef{External: in.GetKeyset()}
-	}
-	// MISSING: TokenTTL
-	// (near miss): "TokenTTL" vs "TokenTtl"
+	out.Keyset = direct.LazyPtr(in.GetKeyset())
+	out.TokenTtl = direct.StringDuration_FromProto(mapCtx, in.GetTokenTtl())
 	out.TokenQueryParameter = direct.LazyPtr(in.GetTokenQueryParameter())
 	out.CopiedParameters = in.CopiedParameters
 	return out
@@ -290,11 +289,8 @@ func EdgeCacheService_AddSignatures_ToProto(mapCtx *direct.MapContext, in *krm.E
 	}
 	out := &pb.AddSignatures{}
 	out.Actions = direct.EnumSlice_ToProto[pb.SignatureAction](mapCtx, in.Actions)
-	if in.KeysetRef != nil {
-		out.Keyset = in.KeysetRef.External
-	}
-	// MISSING: TokenTTL
-	// (near miss): "TokenTTL" vs "TokenTtl"
+	out.Keyset = direct.ValueOf(in.Keyset)
+	out.TokenTtl = direct.StringDuration_ToProto(mapCtx, in.TokenTtl)
 	out.TokenQueryParameter = direct.ValueOf(in.TokenQueryParameter)
 	out.CopiedParameters = in.CopiedParameters
 	return out
@@ -343,9 +339,7 @@ func EdgeCacheService_CdnPolicy_FromProto(mapCtx *direct.MapContext, in *pb.CdnP
 	// TODO: map type string message for field NegativeCachingPolicy
 	out.CacheKeyPolicy = EdgeCacheService_CacheKeyPolicy_FromProto(mapCtx, in.GetCacheKeyPolicy())
 	out.SignedRequestMode = direct.Enum_FromProto(mapCtx, in.GetSignedRequestMode())
-	if in.GetSignedRequestKeyset() != "" {
-		out.SignedRequestKeysetRef = &refsv1beta1.NetworkServicesEdgeCacheKeysetRef{External: in.GetSignedRequestKeyset()}
-	}
+	out.SignedRequestKeyset = direct.LazyPtr(in.GetSignedRequestKeyset())
 	out.SignedTokenOptions = EdgeCacheService_SignedTokenOptions_FromProto(mapCtx, in.GetSignedTokenOptions())
 	out.AddSignatures = EdgeCacheService_AddSignatures_FromProto(mapCtx, in.GetAddSignatures())
 	// MISSING: SignedRequestMaximumExpirationTTL
@@ -368,9 +362,7 @@ func EdgeCacheService_CdnPolicy_ToProto(mapCtx *direct.MapContext, in *krm.EdgeC
 	// TODO: map type string message for field NegativeCachingPolicy
 	out.CacheKeyPolicy = EdgeCacheService_CacheKeyPolicy_ToProto(mapCtx, in.CacheKeyPolicy)
 	out.SignedRequestMode = direct.Enum_ToProto[pb.SignedRequestMode](mapCtx, in.SignedRequestMode)
-	if in.SignedRequestKeysetRef != nil {
-		out.SignedRequestKeyset = in.SignedRequestKeysetRef.External
-	}
+	out.SignedRequestKeyset = direct.ValueOf(in.SignedRequestKeyset)
 	out.SignedTokenOptions = EdgeCacheService_SignedTokenOptions_ToProto(mapCtx, in.SignedTokenOptions)
 	out.AddSignatures = EdgeCacheService_AddSignatures_ToProto(mapCtx, in.AddSignatures)
 	// MISSING: SignedRequestMaximumExpirationTTL
@@ -511,7 +503,10 @@ func EdgeCacheService_LogConfig_FromProto(mapCtx *direct.MapContext, in *pb.LogC
 	}
 	out := &krm.EdgeCacheService_LogConfig{}
 	out.Enable = direct.LazyPtr(in.GetEnable())
-	out.SampleRate = direct.LazyPtr(in.GetSampleRate())
+	if in.GetSampleRate() != 0 {
+		rate := float64(in.GetSampleRate())
+		out.SampleRate = &rate
+	}
 	return out
 }
 func EdgeCacheService_LogConfig_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_LogConfig) *pb.LogConfig {
@@ -520,7 +515,10 @@ func EdgeCacheService_LogConfig_ToProto(mapCtx *direct.MapContext, in *krm.EdgeC
 	}
 	out := &pb.LogConfig{}
 	out.Enable = direct.ValueOf(in.Enable)
-	out.SampleRate = direct.ValueOf(in.SampleRate)
+	if in.SampleRate != nil {
+		rate := float32(*in.SampleRate)
+		out.SampleRate = rate
+	}
 	return out
 }
 func EdgeCacheService_MatchRule_FromProto(mapCtx *direct.MapContext, in *pb.MatchRule) *krm.EdgeCacheService_MatchRule {
@@ -675,9 +673,7 @@ func EdgeCacheService_RouteRule_FromProto(mapCtx *direct.MapContext, in *pb.Rout
 	out.RouteAction = EdgeCacheService_RouteAction_FromProto(mapCtx, in.GetRouteAction())
 	// MISSING: URLRedirect
 	// (near miss): "URLRedirect" vs "UrlRedirect"
-	if in.GetOrigin() != "" {
-		out.OriginRef = &refsv1beta1.NetworkServicesEdgeCacheOriginRef{External: in.GetOrigin()}
-	}
+	out.Origin = direct.LazyPtr(in.GetOrigin())
 	out.RouteMethods = EdgeCacheService_RouteMethods_FromProto(mapCtx, in.GetRouteMethods())
 	return out
 }
@@ -693,9 +689,7 @@ func EdgeCacheService_RouteRule_ToProto(mapCtx *direct.MapContext, in *krm.EdgeC
 	out.RouteAction = EdgeCacheService_RouteAction_ToProto(mapCtx, in.RouteAction)
 	// MISSING: URLRedirect
 	// (near miss): "URLRedirect" vs "UrlRedirect"
-	if in.OriginRef != nil {
-		out.Origin = in.OriginRef.External
-	}
+	out.Origin = direct.ValueOf(in.Origin)
 	out.RouteMethods = EdgeCacheService_RouteMethods_ToProto(mapCtx, in.RouteMethods)
 	return out
 }
@@ -783,18 +777,18 @@ func EdgeCacheService_UrlRewrite_ToProto(mapCtx *direct.MapContext, in *krm.Edge
 	out.HostRewrite = direct.ValueOf(in.HostRewrite)
 	return out
 }
-func HeaderAction_FromProto(mapCtx *direct.MapContext, in *pb.HeaderAction) *krm.HeaderAction {
+func HeaderAction_FromProto(mapCtx *direct.MapContext, in *pb.HeaderAction) *krm.EdgeCacheService_HeaderAction {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HeaderAction{}
+	out := &krm.EdgeCacheService_HeaderAction{}
 	out.RequestHeadersToAdd = direct.Slice_FromProto(mapCtx, in.RequestHeadersToAdd, AddHeader_FromProto)
 	out.RequestHeadersToRemove = direct.Slice_FromProto(mapCtx, in.RequestHeadersToRemove, RemoveHeader_FromProto)
 	out.ResponseHeadersToAdd = direct.Slice_FromProto(mapCtx, in.ResponseHeadersToAdd, AddHeader_FromProto)
 	out.ResponseHeadersToRemove = direct.Slice_FromProto(mapCtx, in.ResponseHeadersToRemove, RemoveHeader_FromProto)
 	return out
 }
-func HeaderAction_ToProto(mapCtx *direct.MapContext, in *krm.HeaderAction) *pb.HeaderAction {
+func HeaderAction_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_HeaderAction) *pb.HeaderAction {
 	if in == nil {
 		return nil
 	}
@@ -805,11 +799,11 @@ func HeaderAction_ToProto(mapCtx *direct.MapContext, in *krm.HeaderAction) *pb.H
 	out.ResponseHeadersToRemove = direct.Slice_ToProto(mapCtx, in.ResponseHeadersToRemove, RemoveHeader_ToProto)
 	return out
 }
-func HeaderMatch_FromProto(mapCtx *direct.MapContext, in *pb.HeaderMatch) *krm.HeaderMatch {
+func HeaderMatch_FromProto(mapCtx *direct.MapContext, in *pb.HeaderMatch) *krm.EdgeCacheService_HeaderMatch {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HeaderMatch{}
+	out := &krm.EdgeCacheService_HeaderMatch{}
 	out.HeaderName = direct.LazyPtr(in.GetHeaderName())
 	out.InvertMatch = direct.LazyPtr(in.GetInvertMatch())
 	out.PresentMatch = direct.LazyPtr(in.GetPresentMatch())
@@ -818,7 +812,7 @@ func HeaderMatch_FromProto(mapCtx *direct.MapContext, in *pb.HeaderMatch) *krm.H
 	out.SuffixMatch = direct.LazyPtr(in.GetSuffixMatch())
 	return out
 }
-func HeaderMatch_ToProto(mapCtx *direct.MapContext, in *krm.HeaderMatch) *pb.HeaderMatch {
+func HeaderMatch_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_HeaderMatch) *pb.HeaderMatch {
 	if in == nil {
 		return nil
 	}
@@ -863,17 +857,17 @@ func HeaderMatch_SuffixMatch_ToProto(mapCtx *direct.MapContext, in *string) *pb.
 	}
 	return &pb.HeaderMatch_SuffixMatch{SuffixMatch: *in}
 }
-func HostRule_FromProto(mapCtx *direct.MapContext, in *pb.HostRule) *krm.HostRule {
+func HostRule_FromProto(mapCtx *direct.MapContext, in *pb.HostRule) *krm.EdgeCacheService_HostRule {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HostRule{}
+	out := &krm.EdgeCacheService_HostRule{}
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Hosts = in.Hosts
 	out.PathMatcher = direct.LazyPtr(in.GetPathMatcher())
 	return out
 }
-func HostRule_ToProto(mapCtx *direct.MapContext, in *krm.HostRule) *pb.HostRule {
+func HostRule_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_HostRule) *pb.HostRule {
 	if in == nil {
 		return nil
 	}
@@ -883,29 +877,35 @@ func HostRule_ToProto(mapCtx *direct.MapContext, in *krm.HostRule) *pb.HostRule 
 	out.PathMatcher = direct.ValueOf(in.PathMatcher)
 	return out
 }
-func LogConfig_FromProto(mapCtx *direct.MapContext, in *pb.LogConfig) *krm.LogConfig {
+func LogConfig_FromProto(mapCtx *direct.MapContext, in *pb.LogConfig) *krm.EdgeCacheService_LogConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.LogConfig{}
+	out := &krm.EdgeCacheService_LogConfig{}
 	out.Enable = direct.LazyPtr(in.GetEnable())
-	out.SampleRate = direct.LazyPtr(in.GetSampleRate())
+	if in.GetSampleRate() != 0 {
+		rate := float64(in.GetSampleRate())
+		out.SampleRate = &rate
+	}
 	return out
 }
-func LogConfig_ToProto(mapCtx *direct.MapContext, in *krm.LogConfig) *pb.LogConfig {
+func LogConfig_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_LogConfig) *pb.LogConfig {
 	if in == nil {
 		return nil
 	}
 	out := &pb.LogConfig{}
 	out.Enable = direct.ValueOf(in.Enable)
-	out.SampleRate = direct.ValueOf(in.SampleRate)
+	if in.SampleRate != nil {
+		rate := float32(*in.SampleRate)
+		out.SampleRate = rate
+	}
 	return out
 }
-func MatchRule_FromProto(mapCtx *direct.MapContext, in *pb.MatchRule) *krm.MatchRule {
+func MatchRule_FromProto(mapCtx *direct.MapContext, in *pb.MatchRule) *krm.EdgeCacheService_MatchRule {
 	if in == nil {
 		return nil
 	}
-	out := &krm.MatchRule{}
+	out := &krm.EdgeCacheService_MatchRule{}
 	out.PathTemplateMatch = direct.LazyPtr(in.GetPathTemplateMatch())
 	out.PrefixMatch = direct.LazyPtr(in.GetPrefixMatch())
 	out.FullPathMatch = direct.LazyPtr(in.GetFullPathMatch())
@@ -914,7 +914,7 @@ func MatchRule_FromProto(mapCtx *direct.MapContext, in *pb.MatchRule) *krm.Match
 	out.QueryParameterMatches = direct.Slice_FromProto(mapCtx, in.QueryParameterMatches, QueryParameterMatch_FromProto)
 	return out
 }
-func MatchRule_ToProto(mapCtx *direct.MapContext, in *krm.MatchRule) *pb.MatchRule {
+func MatchRule_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_MatchRule) *pb.MatchRule {
 	if in == nil {
 		return nil
 	}
@@ -999,6 +999,11 @@ func NetworkServicesEdgeCacheServiceSpec_ToProto(mapCtx *direct.MapContext, in *
 	out.EdgeSecurityPolicy = direct.ValueOf(in.EdgeSecurityPolicy)
 	return out
 }
+// TODO: ServiceBinding mapper functions commented out temporarily
+// ServiceBinding protos are not in the mockgcp-generated package yet
+// These will need to be re-enabled when ServiceBinding is migrated to direct controller
+
+/*
 func NetworkServicesServiceBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.NetworkServicesServiceBindingObservedState {
 	if in == nil {
 		return nil
@@ -1049,17 +1054,18 @@ func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Labels = in.Labels
 	return out
 }
-func PathMatcher_FromProto(mapCtx *direct.MapContext, in *pb.PathMatcher) *krm.PathMatcher {
+*/
+func PathMatcher_FromProto(mapCtx *direct.MapContext, in *pb.PathMatcher) *krm.EdgeCacheService_PathMatcher {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PathMatcher{}
+	out := &krm.EdgeCacheService_PathMatcher{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.RouteRules = direct.Slice_FromProto(mapCtx, in.RouteRules, RouteRule_FromProto)
 	return out
 }
-func PathMatcher_ToProto(mapCtx *direct.MapContext, in *krm.PathMatcher) *pb.PathMatcher {
+func PathMatcher_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_PathMatcher) *pb.PathMatcher {
 	if in == nil {
 		return nil
 	}
@@ -1069,17 +1075,17 @@ func PathMatcher_ToProto(mapCtx *direct.MapContext, in *krm.PathMatcher) *pb.Pat
 	out.RouteRules = direct.Slice_ToProto(mapCtx, in.RouteRules, RouteRule_ToProto)
 	return out
 }
-func QueryParameterMatch_FromProto(mapCtx *direct.MapContext, in *pb.QueryParameterMatch) *krm.QueryParameterMatch {
+func QueryParameterMatch_FromProto(mapCtx *direct.MapContext, in *pb.QueryParameterMatch) *krm.EdgeCacheService_QueryParameterMatch {
 	if in == nil {
 		return nil
 	}
-	out := &krm.QueryParameterMatch{}
+	out := &krm.EdgeCacheService_QueryParameterMatch{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.PresentMatch = direct.LazyPtr(in.GetPresentMatch())
 	out.ExactMatch = direct.LazyPtr(in.GetExactMatch())
 	return out
 }
-func QueryParameterMatch_ToProto(mapCtx *direct.MapContext, in *krm.QueryParameterMatch) *pb.QueryParameterMatch {
+func QueryParameterMatch_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_QueryParameterMatch) *pb.QueryParameterMatch {
 	if in == nil {
 		return nil
 	}
@@ -1105,15 +1111,15 @@ func QueryParameterMatch_ExactMatch_ToProto(mapCtx *direct.MapContext, in *strin
 	}
 	return &pb.QueryParameterMatch_ExactMatch{ExactMatch: *in}
 }
-func RemoveHeader_FromProto(mapCtx *direct.MapContext, in *pb.RemoveHeader) *krm.RemoveHeader {
+func RemoveHeader_FromProto(mapCtx *direct.MapContext, in *pb.RemoveHeader) *krm.EdgeCacheService_RemoveHeader {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RemoveHeader{}
+	out := &krm.EdgeCacheService_RemoveHeader{}
 	out.HeaderName = direct.LazyPtr(in.GetHeaderName())
 	return out
 }
-func RemoveHeader_ToProto(mapCtx *direct.MapContext, in *krm.RemoveHeader) *pb.RemoveHeader {
+func RemoveHeader_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_RemoveHeader) *pb.RemoveHeader {
 	if in == nil {
 		return nil
 	}
@@ -1121,37 +1127,37 @@ func RemoveHeader_ToProto(mapCtx *direct.MapContext, in *krm.RemoveHeader) *pb.R
 	out.HeaderName = direct.ValueOf(in.HeaderName)
 	return out
 }
-func RouteAction_FromProto(mapCtx *direct.MapContext, in *pb.RouteAction) *krm.RouteAction {
+func RouteAction_FromProto(mapCtx *direct.MapContext, in *pb.RouteAction) *krm.EdgeCacheService_RouteAction {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RouteAction{}
-	out.CDNPolicy = CDNPolicy_FromProto(mapCtx, in.GetCdnPolicy())
-	out.URLRewrite = URLRewrite_FromProto(mapCtx, in.GetUrlRewrite())
+	out := &krm.EdgeCacheService_RouteAction{}
+	out.CdnPolicy = CDNPolicy_FromProto(mapCtx, in.GetCdnPolicy())
+	out.UrlRewrite = URLRewrite_FromProto(mapCtx, in.GetUrlRewrite())
 	out.CorsPolicy = CorsPolicy_FromProto(mapCtx, in.GetCorsPolicy())
 	out.CompressionMode = direct.Enum_FromProto(mapCtx, in.GetCompressionMode())
 	return out
 }
-func RouteAction_ToProto(mapCtx *direct.MapContext, in *krm.RouteAction) *pb.RouteAction {
+func RouteAction_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_RouteAction) *pb.RouteAction {
 	if in == nil {
 		return nil
 	}
 	out := &pb.RouteAction{}
-	out.CdnPolicy = CDNPolicy_ToProto(mapCtx, in.CDNPolicy)
-	out.UrlRewrite = URLRewrite_ToProto(mapCtx, in.URLRewrite)
+	out.CdnPolicy = CDNPolicy_ToProto(mapCtx, in.CdnPolicy)
+	out.UrlRewrite = URLRewrite_ToProto(mapCtx, in.UrlRewrite)
 	out.CorsPolicy = CorsPolicy_ToProto(mapCtx, in.CorsPolicy)
 	out.CompressionMode = direct.Enum_ToProto[pb.CompressionMode](mapCtx, in.CompressionMode)
 	return out
 }
-func RouteMethods_FromProto(mapCtx *direct.MapContext, in *pb.RouteMethods) *krm.RouteMethods {
+func RouteMethods_FromProto(mapCtx *direct.MapContext, in *pb.RouteMethods) *krm.EdgeCacheService_RouteMethods {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RouteMethods{}
+	out := &krm.EdgeCacheService_RouteMethods{}
 	out.AllowedMethods = in.AllowedMethods
 	return out
 }
-func RouteMethods_ToProto(mapCtx *direct.MapContext, in *krm.RouteMethods) *pb.RouteMethods {
+func RouteMethods_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_RouteMethods) *pb.RouteMethods {
 	if in == nil {
 		return nil
 	}
@@ -1159,22 +1165,22 @@ func RouteMethods_ToProto(mapCtx *direct.MapContext, in *krm.RouteMethods) *pb.R
 	out.AllowedMethods = in.AllowedMethods
 	return out
 }
-func RouteRule_FromProto(mapCtx *direct.MapContext, in *pb.RouteRule) *krm.RouteRule {
+func RouteRule_FromProto(mapCtx *direct.MapContext, in *pb.RouteRule) *krm.EdgeCacheService_RouteRule {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RouteRule{}
+	out := &krm.EdgeCacheService_RouteRule{}
 	out.Priority = direct.LazyPtr(in.GetPriority())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.MatchRules = direct.Slice_FromProto(mapCtx, in.MatchRules, MatchRule_FromProto)
 	out.HeaderAction = HeaderAction_FromProto(mapCtx, in.GetHeaderAction())
 	out.RouteAction = RouteAction_FromProto(mapCtx, in.GetRouteAction())
-	out.URLRedirect = URLRedirect_FromProto(mapCtx, in.GetUrlRedirect())
+	out.UrlRedirect = URLRedirect_FromProto(mapCtx, in.GetUrlRedirect())
 	out.Origin = direct.LazyPtr(in.GetOrigin())
 	out.RouteMethods = RouteMethods_FromProto(mapCtx, in.GetRouteMethods())
 	return out
 }
-func RouteRule_ToProto(mapCtx *direct.MapContext, in *krm.RouteRule) *pb.RouteRule {
+func RouteRule_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_RouteRule) *pb.RouteRule {
 	if in == nil {
 		return nil
 	}
@@ -1184,21 +1190,21 @@ func RouteRule_ToProto(mapCtx *direct.MapContext, in *krm.RouteRule) *pb.RouteRu
 	out.MatchRules = direct.Slice_ToProto(mapCtx, in.MatchRules, MatchRule_ToProto)
 	out.HeaderAction = HeaderAction_ToProto(mapCtx, in.HeaderAction)
 	out.RouteAction = RouteAction_ToProto(mapCtx, in.RouteAction)
-	out.UrlRedirect = URLRedirect_ToProto(mapCtx, in.URLRedirect)
+	out.UrlRedirect = URLRedirect_ToProto(mapCtx, in.UrlRedirect)
 	out.Origin = direct.ValueOf(in.Origin)
 	out.RouteMethods = RouteMethods_ToProto(mapCtx, in.RouteMethods)
 	return out
 }
-func Routing_FromProto(mapCtx *direct.MapContext, in *pb.Routing) *krm.Routing {
+func Routing_FromProto(mapCtx *direct.MapContext, in *pb.Routing) *krm.EdgeCacheService_Routing {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Routing{}
+	out := &krm.EdgeCacheService_Routing{}
 	out.HostRules = direct.Slice_FromProto(mapCtx, in.HostRules, HostRule_FromProto)
 	out.PathMatchers = direct.Slice_FromProto(mapCtx, in.PathMatchers, PathMatcher_FromProto)
 	return out
 }
-func Routing_ToProto(mapCtx *direct.MapContext, in *krm.Routing) *pb.Routing {
+func Routing_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_Routing) *pb.Routing {
 	if in == nil {
 		return nil
 	}
@@ -1207,16 +1213,16 @@ func Routing_ToProto(mapCtx *direct.MapContext, in *krm.Routing) *pb.Routing {
 	out.PathMatchers = direct.Slice_ToProto(mapCtx, in.PathMatchers, PathMatcher_ToProto)
 	return out
 }
-func SignedTokenOptions_FromProto(mapCtx *direct.MapContext, in *pb.SignedTokenOptions) *krm.SignedTokenOptions {
+func SignedTokenOptions_FromProto(mapCtx *direct.MapContext, in *pb.SignedTokenOptions) *krm.EdgeCacheService_SignedTokenOptions {
 	if in == nil {
 		return nil
 	}
-	out := &krm.SignedTokenOptions{}
+	out := &krm.EdgeCacheService_SignedTokenOptions{}
 	out.TokenQueryParameter = direct.LazyPtr(in.GetTokenQueryParameter())
 	out.AllowedSignatureAlgorithms = direct.EnumSlice_FromProto(mapCtx, in.AllowedSignatureAlgorithms)
 	return out
 }
-func SignedTokenOptions_ToProto(mapCtx *direct.MapContext, in *krm.SignedTokenOptions) *pb.SignedTokenOptions {
+func SignedTokenOptions_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_SignedTokenOptions) *pb.SignedTokenOptions {
 	if in == nil {
 		return nil
 	}
@@ -1225,20 +1231,20 @@ func SignedTokenOptions_ToProto(mapCtx *direct.MapContext, in *krm.SignedTokenOp
 	out.AllowedSignatureAlgorithms = direct.EnumSlice_ToProto[pb.SignatureAlgorithm](mapCtx, in.AllowedSignatureAlgorithms)
 	return out
 }
-func URLRedirect_FromProto(mapCtx *direct.MapContext, in *pb.UrlRedirect) *krm.URLRedirect {
+func URLRedirect_FromProto(mapCtx *direct.MapContext, in *pb.UrlRedirect) *krm.EdgeCacheService_UrlRedirect {
 	if in == nil {
 		return nil
 	}
-	out := &krm.URLRedirect{}
+	out := &krm.EdgeCacheService_UrlRedirect{}
 	out.HostRedirect = direct.LazyPtr(in.GetHostRedirect())
 	out.PathRedirect = direct.LazyPtr(in.GetPathRedirect())
 	out.PrefixRedirect = direct.LazyPtr(in.GetPrefixRedirect())
 	out.RedirectResponseCode = direct.Enum_FromProto(mapCtx, in.GetRedirectResponseCode())
-	out.HTTPSRedirect = direct.LazyPtr(in.GetHttpsRedirect())
+	out.HttpsRedirect = direct.LazyPtr(in.GetHttpsRedirect())
 	out.StripQuery = direct.LazyPtr(in.GetStripQuery())
 	return out
 }
-func URLRedirect_ToProto(mapCtx *direct.MapContext, in *krm.URLRedirect) *pb.UrlRedirect {
+func URLRedirect_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_UrlRedirect) *pb.UrlRedirect {
 	if in == nil {
 		return nil
 	}
@@ -1247,21 +1253,21 @@ func URLRedirect_ToProto(mapCtx *direct.MapContext, in *krm.URLRedirect) *pb.Url
 	out.PathRedirect = direct.ValueOf(in.PathRedirect)
 	out.PrefixRedirect = direct.ValueOf(in.PrefixRedirect)
 	out.RedirectResponseCode = direct.Enum_ToProto[pb.RedirectResponseCode](mapCtx, in.RedirectResponseCode)
-	out.HttpsRedirect = direct.ValueOf(in.HTTPSRedirect)
+	out.HttpsRedirect = direct.ValueOf(in.HttpsRedirect)
 	out.StripQuery = direct.ValueOf(in.StripQuery)
 	return out
 }
-func URLRewrite_FromProto(mapCtx *direct.MapContext, in *pb.UrlRewrite) *krm.URLRewrite {
+func URLRewrite_FromProto(mapCtx *direct.MapContext, in *pb.UrlRewrite) *krm.EdgeCacheService_UrlRewrite {
 	if in == nil {
 		return nil
 	}
-	out := &krm.URLRewrite{}
+	out := &krm.EdgeCacheService_UrlRewrite{}
 	out.PathPrefixRewrite = direct.LazyPtr(in.GetPathPrefixRewrite())
 	out.PathTemplateRewrite = direct.LazyPtr(in.GetPathTemplateRewrite())
 	out.HostRewrite = direct.LazyPtr(in.GetHostRewrite())
 	return out
 }
-func URLRewrite_ToProto(mapCtx *direct.MapContext, in *krm.URLRewrite) *pb.UrlRewrite {
+func URLRewrite_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService_UrlRewrite) *pb.UrlRewrite {
 	if in == nil {
 		return nil
 	}
