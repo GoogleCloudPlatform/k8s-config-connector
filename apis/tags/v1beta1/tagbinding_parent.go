@@ -29,7 +29,6 @@ type TagBindingParent interface {
 
 var ParentFullResourceMap = map[FullResourcePrefix]TagBindingParent{
 	ProjectPrefix: &TagBindingProject{},
-	OrgPrefix:     &TagBindingOrganization{},
 }
 
 type FullResourcePrefix string
@@ -60,36 +59,6 @@ func (p *TagBindingProject) FromExternal(ref string) error {
 	}
 	if p.ProjectNumber == "" {
 		return fmt.Errorf("projectID was empty in TagBinding parent external=%q", ref)
-	}
-	return nil
-}
-
-var OrgPrefix FullResourcePrefix = "//cloudresourcemanager.googleapis.com/organizations"
-
-var _ TagBindingParent = &TagBindingOrganization{}
-
-// TagBindingOrganization represents a TagBinding parent of the form:
-// `//cloudresourcemanager.googleapis.com/projects/{{OrgNumber}}`
-type TagBindingOrganization struct {
-	OrgNumber string
-}
-
-func (p *TagBindingOrganization) String() string {
-	return fmt.Sprintf("%s/%s", OrgPrefix, p.OrgNumber)
-}
-
-func (p *TagBindingOrganization) Prefix() string {
-	return fmt.Sprintf("%s", OrgPrefix)
-}
-
-func (p *TagBindingOrganization) FromExternal(ref string) error {
-	var found bool
-	p.OrgNumber, found = strings.CutPrefix(ref, p.Prefix()+"/")
-	if !found {
-		return fmt.Errorf("format of TagBindingOrganization missing prefix %q. got=%q", p.Prefix(), ref)
-	}
-	if p.OrgNumber == "" {
-		return fmt.Errorf("organizationID was empty in TagBinding parent external=%q", ref)
 	}
 	return nil
 }
