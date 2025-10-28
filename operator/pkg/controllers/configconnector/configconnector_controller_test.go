@@ -99,6 +99,9 @@ func TestHandleReconcileFailed(t *testing.T) {
 	} else if errMsg := status.Errors[0]; errMsg != expectedErrMsg {
 		t.Errorf("unexpected error in status.errors: got '%v', want '%v'", errMsg, expectedErrMsg)
 	}
+	if status.ObservedGeneration != tc.cc.Generation {
+		t.Errorf("unexpected observed generation: got %v, want %v", status.ObservedGeneration, tc.cc.Generation)
+	}
 }
 
 func TestHandleReconcileSucceeded(t *testing.T) {
@@ -149,6 +152,9 @@ func TestHandleReconcileSucceeded(t *testing.T) {
 	}
 	if len(status.Errors) != 0 {
 		t.Errorf("unexpected number of errors in status.errors: got %v errors, want 0 errors. Got the errors: %v", len(status.Errors), status.Errors)
+	}
+	if status.ObservedGeneration != tc.cc.Generation {
+		t.Errorf("unexpected observed generation: got %v, want %v", status.ObservedGeneration, tc.cc.Generation)
 	}
 }
 
