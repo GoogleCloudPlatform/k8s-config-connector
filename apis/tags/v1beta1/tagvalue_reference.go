@@ -20,6 +20,9 @@ import (
 	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -82,5 +85,36 @@ func (r *TagsTagValueRef) GetExternalFromCustomFields() []string {
 
 // Normalize resolves the reference to an external resource string.
 func (r *TagsTagValueRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+	if r.GetExternal() == "" {
+		key := r.GetNamespacedName()
+		if key.Namespace == "" {
+			key.Namespace = defaultNamespace
+		}
+		u := &unstructured.Unstructured{}
+		u.SetGroupVersionKind(r.GetGVK())
+		if err := reader.Get(ctx, key, u); err != nil {
+			if apierrors.IsNotFound(err) {
+				return k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
+			}
+			return fmt.Errorf("reading referenced %s %s: %w", r.GetGVK(), key, err)
+		}
+		// Get external from status.externalRef. This is the most trustworthy place.
+		externalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
+		if err != nil {
+			return fmt.Errorf("reading status.externalRef: %w", err)
+		}
+		if externalRef == "" {
+			// Try to get external from legacy fields if status.externalRef is not set.
+			fieldPaths := r.GetExternalFromCustomFields()
+			if fieldPaths == nil {
+				return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+			}
+			if externalRef, _, err = unstructured.NestedString(u.Object, fieldPaths...); err != nil {
+				return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
+			}
+		}
+		r.SetExternal(externalRef)
+	}
+
+	return r.ValidateExternal(r.GetExternal())
 }

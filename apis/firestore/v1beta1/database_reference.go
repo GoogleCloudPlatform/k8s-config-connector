@@ -68,7 +68,3 @@ func (r *FirestoreDatabaseRef) ValidateExternal(ref string) error {
 func (r *FirestoreDatabaseRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
 }
-
-func (r *FirestoreDatabaseRef) GetExternalFromCustomFields() []string {
-	return nil
-}

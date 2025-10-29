@@ -55,12 +55,10 @@ func (i *TagBindingIdentity) TagValue() string {
 }
 
 func (i *TagBindingIdentity) FromExternal(ref string) error {
-	name, found := strings.CutPrefix(ref, "tagBindings/")
-	if !found {
-		return fmt.Errorf("format of TagBinding missing prefix `tagBindings`. got=%q (use %s)", ref, TagBindingIDURL)
-	}
-	tokens := strings.Split(name, "/tagValues/")
-	if len(tokens) != 2 {
+	// Legacy Terraform reconciler trims the `tagBindings` prefix, and the direct controller keeps the real value of tagBinding name from the GCP
+	ref = strings.TrimPrefix(ref, "tagBindings/")
+	tokens := strings.Split(ref, "/")
+	if len(tokens) != 3 || tokens[1] != "tagValues" {
 		return fmt.Errorf("format of TagBinding external=%q was not known (use %s)", ref, TagBindingIDURL)
 	}
 
@@ -73,7 +71,7 @@ func (i *TagBindingIdentity) FromExternal(ref string) error {
 	if i.parent == "" {
 		return fmt.Errorf("parent was empty in external=%q", ref)
 	}
-	i.tagValue = tokens[1]
+	i.tagValue = tokens[2]
 	if i.tagValue == "" {
 		return fmt.Errorf("tagValue was empty in external=%q", ref)
 	}
