@@ -68,7 +68,3 @@ func (r *BigQueryBigLakeDatabaseRef) ValidateExternal(ref string) error {
 func (r *BigQueryBigLakeDatabaseRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
 }
-
-func (r *BigQueryBigLakeDatabaseRef) GetExternalFromCustomFields() []string {
-	return nil
-}
