@@ -1,7 +1,0 @@
-apiVersion: firestore.cnrm.cloud.google.com/v1beta1
-kind: FirestoreDatabase
-metadata:
-  name: firestoredatabase-${uniqueId}-collectiongroups-sample-collection-${uniqueId}-indexes-${indexID}
-spec:
-  projectRef:
-    external: projects/${projectId}
