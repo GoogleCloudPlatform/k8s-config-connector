@@ -89,7 +89,7 @@ func (s *NetworkServicesServer) CreateGateway(ctx context.Context, req *pb.Creat
 
 	now := time.Now()
 
-	obj := proto.Clone(req.Gateway).(*pb.Gateway)
+	obj := ProtoClone(req.Gateway)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -108,7 +108,7 @@ func (s *NetworkServicesServer) CreateGateway(ctx context.Context, req *pb.Creat
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		result := proto.Clone(obj).(*pb.Gateway)
+		result := ProtoClone(obj)
 		result.SelfLink = "" // Not populated here
 		return result, nil
 	})
@@ -127,6 +127,8 @@ func (s *NetworkServicesServer) UpdateGateway(ctx context.Context, req *pb.Updat
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+
+	now := time.Now()
 
 	// Field mask is used to specify the fields to be overwritten in the
 	// Gateway resource by the update.
@@ -158,14 +160,13 @@ func (s *NetworkServicesServer) UpdateGateway(ctx context.Context, req *pb.Updat
 				return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 			}
 		}
-		obj.UpdateTime = timestamppb.New(time.Now())
+		obj.UpdateTime = timestamppb.New(now)
 	}
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	now := time.Now()
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
 		CreateTime: timestamppb.New(now),
@@ -176,7 +177,7 @@ func (s *NetworkServicesServer) UpdateGateway(ctx context.Context, req *pb.Updat
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
 
-		result := proto.Clone(obj).(*pb.Gateway)
+		result := ProtoClone(obj)
 		return result, nil
 	})
 }
@@ -186,15 +187,15 @@ func (s *NetworkServicesServer) DeleteGateway(ctx context.Context, req *pb.Delet
 	if err != nil {
 		return nil, err
 	}
-
 	fqn := name.String()
+
+	now := time.Now()
 
 	deleted := &pb.Gateway{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
 		return nil, err
 	}
 
-	now := time.Now()
 	lroMetadata := &pb.OperationMetadata{
 		CreateTime: timestamppb.New(now),
 		Target:     name.String(),

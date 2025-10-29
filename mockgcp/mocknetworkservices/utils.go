@@ -19,8 +19,14 @@ import (
 	"strings"
 
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/protobuf/proto"
 	"k8s.io/klog/v2"
 )
+
+// ProtoClone is a type-safe wrapper around proto.Clone.
+func ProtoClone[T proto.Message](obj T) T {
+	return proto.Clone(obj).(T)
+}
 
 // getAPIVersion returns the version of the API the caller is using.
 // It defaults to v1beta1

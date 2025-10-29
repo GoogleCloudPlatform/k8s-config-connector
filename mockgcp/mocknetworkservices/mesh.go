@@ -16,13 +16,17 @@ package mocknetworkservices
 
 import (
 	"context"
+	"fmt"
 	"strings"
+	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
 )
@@ -46,6 +50,9 @@ func (s *NetworkServicesServer) GetMesh(ctx context.Context, req *pb.GetMeshRequ
 
 	obj := &pb.Mesh{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -57,17 +64,34 @@ func (s *NetworkServicesServer) CreateMesh(ctx context.Context, req *pb.CreateMe
 	if err != nil {
 		return nil, err
 	}
-
 	fqn := name.String()
 
-	obj := proto.Clone(req.Mesh).(*pb.Mesh)
+	now := time.Now()
+
+	obj := ProtoClone(req.Mesh)
 	obj.Name = fqn
+	obj.CreateTime = timestamppb.New(now)
+	obj.UpdateTime = timestamppb.New(now)
+	obj.SelfLink = buildSelfLink(ctx, fqn)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	lroMetadata := &pb.OperationMetadata{
+		CreateTime: timestamppb.New(now),
+		Target:     name.String(),
+		Verb:       "create",
+		ApiVersion: "v1",
+	}
+
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.New(time.Now())
+		result := ProtoClone(obj)
+		result.SelfLink = "" // Not populated here
+		return result, nil
+	})
 }
 
 func (s *NetworkServicesServer) UpdateMesh(ctx context.Context, req *pb.UpdateMeshRequest) (*longrunning.Operation, error) {
@@ -77,12 +101,14 @@ func (s *NetworkServicesServer) UpdateMesh(ctx context.Context, req *pb.UpdateMe
 	if err != nil {
 		return nil, err
 	}
-
 	fqn := name.String()
+
 	obj := &pb.Mesh{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
+
+	now := time.Now()
 
 	// Field mask is used to specify the fields to be overwritten in the
 	// Mesh resource by the update.
@@ -103,6 +129,7 @@ func (s *NetworkServicesServer) UpdateMesh(ctx context.Context, req *pb.UpdateMe
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
 	}
+	obj.UpdateTime = timestamppb.New(now)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -115,15 +142,28 @@ func (s *NetworkServicesServer) DeleteMesh(ctx context.Context, req *pb.DeleteMe
 	if err != nil {
 		return nil, err
 	}
-
 	fqn := name.String()
+
+	now := time.Now()
 
 	deletedObj := &pb.Mesh{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
 		return nil, err
 	}
 
-	return s.operations.NewLRO(ctx)
+	lroMetadata := &pb.OperationMetadata{
+		CreateTime: timestamppb.New(now),
+		Target:     name.String(),
+		Verb:       "delete",
+		ApiVersion: "v1",
+	}
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.New(time.Now())
+
+		result := &emptypb.Empty{}
+		return result, nil
+	})
 }
 
 type meshName struct {
