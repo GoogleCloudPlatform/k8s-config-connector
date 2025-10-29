@@ -1,0 +1,9 @@
+apiVersion: tags.cnrm.cloud.google.com/v1beta1
+kind: TagsTagBinding
+metadata:
+  name: tagstagbinding-${uniqueId}
+spec:
+  parentRef:
+    external: //cloudresourcemanager.googleapis.com/organizations/${TEST_ORG_ID}
+  tagValueRef:
+    name: tagstagvalue-${uniqueId}
