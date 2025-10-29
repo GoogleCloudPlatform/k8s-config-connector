@@ -31,8 +31,10 @@ var ParentFullResourceMap = map[FullResourcePrefix]TagBindingParent{
 	ProjectPrefix: &TagBindingProject{},
 }
 
+// TagBindingParent represents the full resource name prefix of a TagBinding parent.
 type FullResourcePrefix string
 
+// Predefined TagBinding parent full resource name prefixes for "Project".
 var ProjectPrefix FullResourcePrefix = "//cloudresourcemanager.googleapis.com/projects"
 
 var _ TagBindingParent = &TagBindingProject{}
