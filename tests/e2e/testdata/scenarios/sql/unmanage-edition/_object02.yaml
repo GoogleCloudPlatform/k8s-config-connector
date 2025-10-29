@@ -7,7 +7,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   name: sqlinstance-${uniqueId}
   namespace: ${projectId}
 spec:
@@ -27,7 +27,7 @@ status:
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
-  observedGeneration: 2
+  observedGeneration: 1
   publicIpAddress: 10.1.2.3
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}
   serverCaCert:
