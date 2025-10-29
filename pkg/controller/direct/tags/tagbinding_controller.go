@@ -82,7 +82,6 @@ func (m *modelTagsTagBinding) AdapterForObject(ctx context.Context, reader clien
 	return &TagsTagBindingAdapter{
 		id:        id.(*krm.TagBindingIdentity),
 		gcpClient: gcpClient,
-		desired:   obj,
 	}, nil
 }
 
@@ -93,7 +92,6 @@ func (m *modelTagsTagBinding) AdapterForURL(ctx context.Context, url string) (di
 type TagsTagBindingAdapter struct {
 	id        *krm.TagBindingIdentity
 	gcpClient *resourcemanager.TagBindingsClient
-	desired   *krm.TagsTagBinding
 	actual    *resourcemanagerpb.TagBinding
 }
 
@@ -150,7 +148,7 @@ func (a *TagsTagBindingAdapter) Create(ctx context.Context, createOp *directbase
 	status := &krm.TagsTagBindingStatus{}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 
-	// TF-direct trims the prefix "tagBindings/", which is weird because then it is is invalid to retrieve the object. Shall we keep this behavior?
+	// TF-based trims the prefix "tagBindings/", which is weird because then it is is invalid to retrieve the object. Shall we keep this behavior?
 	// This modified value is also the only accepted value in `spec.resourceID`.
 	status.Name = direct.LazyPtr(created.GetName())
 	return createOp.UpdateStatus(ctx, status, nil)
@@ -158,7 +156,7 @@ func (a *TagsTagBindingAdapter) Create(ctx context.Context, createOp *directbase
 
 func (a *TagsTagBindingAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("TagsTagBinding update no-op", "name", a.id)
+	log.V(2).Info("TagsTagBinding does not have updateable fields; skipping update", "name", a.id)
 	return nil
 }
 
@@ -177,8 +175,7 @@ func (a *TagsTagBindingAdapter) Delete(ctx context.Context, deleteOp *directbase
 		}
 		return false, fmt.Errorf("deleting TagsTagBinding %s: %w", a.id, err)
 	}
-	err = op.Wait(ctx)
-	if err != nil {
+	if err = op.Wait(ctx); err != nil {
 		return false, fmt.Errorf("waiting for deletion of TagsTagBinding %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted TagsTagBinding", "name", a.id)
