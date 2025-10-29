@@ -52,13 +52,13 @@ var (
 	CommonWebhookServiceName           = "cnrm-validating-webhook"
 )
 
-func RegisterCommonWebhooks(mgr manager.Manager, nocacheClient client.Client) error {
+func RegisterCommonWebhooks(ctx context.Context, mgr manager.Manager, nocacheClient client.Client) error {
 	fmt.Println("starting up webhooks")
 	whCfgs, err := GetCommonWebhookConfigs()
 	if err != nil {
-		return fmt.Errorf("error getting common wehbook configs: %w", err)
+		return fmt.Errorf("error getting common webhook configs: %w", err)
 	}
-	return register(
+	return register(ctx,
 		ValidatingWebhookConfigurationName,
 		MutatingWebhookConfigurationName,
 		CommonWebhookServiceName,
@@ -222,7 +222,7 @@ func getResourcesForImmutableValidation(allGVKs []schema.GroupVersionKind) []sch
 	return resourcesToValidate
 }
 
-func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client.Client) error {
+func RegisterAbandonOnUninstallWebhook(ctx context.Context, mgr manager.Manager, nocacheClient client.Client) error {
 	whCfgs := []Config{
 		{
 			Name:        "abandon-on-uninstall.cnrm.cloud.google.com",
@@ -251,7 +251,7 @@ func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client
 			SideEffects: admissionregistration.SideEffectClassNoneOnDryRun,
 		},
 	}
-	return register(
+	return register(ctx,
 		"abandon-on-uninstall.cnrm.cloud.google.com",
 		"",
 		"abandon-on-uninstall",
@@ -262,9 +262,8 @@ func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client
 	)
 }
 
-func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName string,
+func register(ctx context.Context, validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName string,
 	whCfgs []Config, mgr manager.Manager, nocacheClient client.Client) error {
-	ctx := context.TODO()
 
 	validatingWebhookCfg, mutatingWebhookCfg := GenerateWebhookManifests(
 		validatingWebhookConfigurationName,
