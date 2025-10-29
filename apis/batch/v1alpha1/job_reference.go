@@ -79,7 +79,3 @@ func (r *BatchJobRef) String() string {
 func (r *BatchJobRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
 }
-
-func (r *BatchJobRef) GetExternalFromCustomFields() []string {
-	return nil
-}

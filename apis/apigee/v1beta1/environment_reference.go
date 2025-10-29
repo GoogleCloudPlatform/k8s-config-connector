@@ -135,7 +135,3 @@ func (r *ApigeeEnvironmentRef) Normalize(ctx context.Context, reader client.Read
 	}
 	return nil
 }
-
-func (r *ApigeeEnvironmentRef) GetExternalFromCustomFields() []string {
-	return nil
-}
