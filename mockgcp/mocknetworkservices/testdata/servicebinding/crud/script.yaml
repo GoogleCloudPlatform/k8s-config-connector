@@ -1,0 +1,3 @@
+- exec: gcloud network-services service-bindings create test-${uniqueId} --location=global --project=${projectId}
+- exec: gcloud network-services service-bindings describe test-${uniqueId} --location=global --project=${projectId}
+- exec: gcloud network-services service-bindings delete test-${uniqueId} --location=global --project=${projectId} --quiet
