@@ -12,13 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: logging.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.logging.v2
+// resource: LoggingLink:Link
+
 package v1alpha1
 
 // +kcc:proto=google.logging.v2.BigQueryDataset
 type BigQueryDataset struct {
 }
 
-// +kcc:proto=google.logging.v2.BigQueryDataset
+// +kcc:observedstate:proto=google.logging.v2.BigQueryDataset
 type BigQueryDatasetObservedState struct {
 	// Output only. The full resource name of the BigQuery dataset. The DATASET_ID
 	//  will match the ID of the link, so the link must match the naming
