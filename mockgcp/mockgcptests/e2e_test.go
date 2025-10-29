@@ -85,7 +85,31 @@ func TestScripts(t *testing.T) {
 			// scriptEnv holds environment variables set by steps in the script.
 			scriptEnv := map[string]string{}
 
+			// We update the files in place, so we need to restore them afterwards.
+			restoreFiles := map[string][]byte{}
+			defer func() {
+				for path, originalContent := range restoreFiles {
+					if err := os.WriteFile(path, originalContent, 0644); err != nil {
+						t.Fatalf("error restoring file %q: %v", path, err)
+					}
+				}
+			}()
+
 			for _, step := range script.Steps {
+				if step.Template != "" {
+					templatePath := filepath.Join(testDir, step.Template)
+					b := test.MustReadFile(t, templatePath)
+
+					// Restore the original file contents afterwards
+					restoreFiles[templatePath] = b
+
+					b = ReplaceTestVars(t, b, placeholders)
+					t.Logf("writing template to %q", templatePath)
+					if err := os.WriteFile(templatePath, b, 0644); err != nil {
+						t.Fatalf("error writing template file %q: %v", templatePath, err)
+					}
+				}
+
 				stepCmd := ""
 				stepType := ""
 				captureEvents := true
@@ -234,10 +258,11 @@ type Script struct {
 }
 
 type Step struct {
-	Exec   string `json:"exec"`
-	Pre    string `json:"pre"`
-	Post   string `json:"post"`
-	SetEnv string `json:"setEnv"`
+	Exec     string `json:"exec"`
+	Pre      string `json:"pre"`
+	Post     string `json:"post"`
+	SetEnv   string `json:"setEnv"`
+	Template string `json:"template"`
 }
 
 func loadScript(t *testing.T, dir string, placeholders Placeholders) *Script {
