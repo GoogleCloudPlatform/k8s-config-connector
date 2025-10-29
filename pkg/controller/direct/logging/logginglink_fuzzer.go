@@ -37,9 +37,9 @@ func loggingLinkFuzzer() fuzztesting.KRMFuzzer {
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".lifecycle_state")
+	f.StatusFields.Insert(".bigquery_dataset")
 
 	f.UnimplementedFields.Insert(".name")
-	f.Unimplemented_NotYetTriaged(".bigquery_dataset")
 
 	return f
 }

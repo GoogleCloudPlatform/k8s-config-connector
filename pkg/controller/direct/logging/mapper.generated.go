@@ -65,7 +65,7 @@ func LoggingLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Link) 
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.LifecycleState = direct.Enum_FromProto(mapCtx, in.GetLifecycleState())
-	// MISSING: BigqueryDataset
+	out.BigqueryDataset = BigQueryDatasetObservedState_FromProto(mapCtx, in.GetBigqueryDataset())
 	return out
 }
 func LoggingLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkObservedState) *pb.Link {
@@ -76,7 +76,7 @@ func LoggingLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Logging
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.LifecycleState = direct.Enum_ToProto[pb.LifecycleState](mapCtx, in.LifecycleState)
-	// MISSING: BigqueryDataset
+	out.BigqueryDataset = BigQueryDatasetObservedState_ToProto(mapCtx, in.BigqueryDataset)
 	return out
 }
 func LoggingLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.LoggingLinkSpec {
@@ -86,7 +86,6 @@ func LoggingLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.Logg
 	out := &krm.LoggingLinkSpec{}
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: BigqueryDataset
 	return out
 }
 func LoggingLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkSpec) *pb.Link {
@@ -96,6 +95,5 @@ func LoggingLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkSpec)
 	out := &pb.Link{}
 	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
-	// MISSING: BigqueryDataset
 	return out
 }
