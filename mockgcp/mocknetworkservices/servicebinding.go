@@ -42,7 +42,6 @@ func (s *NetworkServicesServer) GetServiceBinding(ctx context.Context, req *pb.G
 	if err != nil {
 		return nil, err
 	}
-
 	fqn := name.String()
 
 	obj := &pb.ServiceBinding{}
@@ -82,15 +81,12 @@ func (s *NetworkServicesServer) CreateServiceBinding(ctx context.Context, req *p
 	if err != nil {
 		return nil, err
 	}
-	uniqueId := strings.Split(name.ServiceBindingName, "-")[2]
-
 	fqn := name.String()
 
 	now := time.Now()
 
 	obj := ProtoClone(req.ServiceBinding)
 	obj.Name = fqn
-	obj.Service = fmt.Sprintf("projects/mock-project/locations/us-central1/namespaces/namespace-%s/services/service-%s", uniqueId, uniqueId)
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 
@@ -101,16 +97,14 @@ func (s *NetworkServicesServer) CreateServiceBinding(ctx context.Context, req *p
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{
 		CreateTime: timestamppb.New(now),
-		EndTime:    timestamppb.New(now),
 		Target:     name.String(),
 		Verb:       "create",
 		ApiVersion: "v1",
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.New(time.Now())
+
 		result := ProtoClone(obj)
-		result.CreateTime = timestamppb.New(now)
-		result.UpdateTime = timestamppb.New(now)
-		result.Name = reqName
 		return result, nil
 	})
 }
@@ -120,7 +114,6 @@ func (s *NetworkServicesServer) DeleteServiceBinding(ctx context.Context, req *p
 	if err != nil {
 		return nil, err
 	}
-
 	fqn := name.String()
 
 	deleted := &pb.ServiceBinding{}
@@ -131,13 +124,16 @@ func (s *NetworkServicesServer) DeleteServiceBinding(ctx context.Context, req *p
 	now := time.Now()
 	lroMetadata := &pb.OperationMetadata{
 		CreateTime: timestamppb.New(now),
-		EndTime:    timestamppb.New(now),
 		Target:     name.String(),
 		Verb:       "delete",
 		ApiVersion: "v1",
 	}
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.DoneLRO(ctx, lroPrefix, lroMetadata, &emptypb.Empty{})
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.New(time.Now())
+
+		return &emptypb.Empty{}, nil
+	})
 }
 
 type serviceBindingName struct {
