@@ -59,6 +59,9 @@ func (i *FirestoreDatabaseIdentity) FromExternal(ref string) error {
 	if i.Database == "" {
 		return fmt.Errorf("database was empty in external=%q", ref)
 	}
+	if strings.Contains(i.Database, "/") {
+		return fmt.Errorf("database %q in external=%q contained invalid '/' character", i.Database, ref)
+	}
 	return nil
 }
 

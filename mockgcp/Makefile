@@ -205,7 +205,6 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/billing/budgets/v1beta1/*.proto \
 		./third_party/googleapis/google/cloud/discoveryengine/v1/data_store_service.proto \
 		./third_party/googleapis/google/cloud/discoveryengine/v1/engine_service.proto \
-		./third_party/googleapis/google/bigtable/admin/v2/*.proto \
 		./third_party/googleapis/google/cloud/dataproc/v1/*.proto \
 		./third_party/googleapis/google/cloud/aiplatform/v1/model_garden_service.proto \
 		./third_party/googleapis/google/storage/control/v2/*.proto \
@@ -219,6 +218,7 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/notebooks/v1/*.proto \
 		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
 		./third_party/googleapis/google/firestore/admin/v1/*.proto \
+		./third_party/googleapis/google/firestore/v1/*.proto \
 		./third_party/googleapis/google/iam/v2/*.proto \
 		./third_party/googleapis/google/logging/v2/*.proto \
 		./third_party/googleapis/google/analytics/admin/v1alpha/*.proto
