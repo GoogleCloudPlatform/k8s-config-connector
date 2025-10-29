@@ -1097,7 +1097,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageAnywhereCache"}:
 			case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageNotification"}:
 
-			case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageManagedFolder"}:
+			case schema.GroupKind{Group: "storagecontrol.cnrm.cloud.google.com", Kind: "StorageManagedFolder"}:
 
 			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagBinding"}:
 			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
