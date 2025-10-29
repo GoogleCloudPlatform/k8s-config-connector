@@ -44,16 +44,6 @@ rm -f kustomize_v${VERSION}_${GOOS}_${GOARCH}.tar.gz
 # Checks to make sure you have all the tools you need
 kubebuilder version
 kustomize version
-etcd --version
-KUBEAPISERVER_VERSION=$(source scripts/shared-vars-public.sh && echo "${KUBEAPISERVER_VERSION}")
-KUBE_BIN_DIR=${HOME}/kube/bin
-
-# Downloads and configures kube-apiserver
-mkdir -p $KUBE_BIN_DIR
-curl -sL --retry 5 https://dl.k8s.io/v$KUBEAPISERVER_VERSION/bin/linux/amd64/kube-apiserver -o "$KUBE_BIN_DIR/kube-apiserver"
-chmod a+rx $KUBE_BIN_DIR/kube-apiserver
-echo "export TEST_ASSET_KUBE_APISERVER=${HOME}/kube/bin/kube-apiserver" >> ~/.profile
-source ~/.profile
 
 GREEN='\033[0;32m'
 NC='\033[0m'

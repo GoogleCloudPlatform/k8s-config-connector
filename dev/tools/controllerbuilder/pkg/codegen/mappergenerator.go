@@ -88,6 +88,14 @@ func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string, gener
 	return g
 }
 
+func (v *MapperGenerator) AddGoImportAlias(goPackage string, alias string) string {
+	v.importedPackages[goPackage] = importedPackage{
+		alias:     alias,
+		goPackage: goPackage,
+	}
+	return alias
+}
+
 type OutputFunc func(msg protoreflect.MessageDescriptor) (goPath string, shouldWrite bool)
 
 func (v *MapperGenerator) VisitGoCode(goPackage string, basePath string) error {
@@ -232,7 +240,9 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 			out.addImport("", "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct")
 		}
 
-		v.importedPackages[pair.ProtoGoPackage] = importedPackage{
+
+    
+    v.importedPackages[pair.ProtoGoPackage] = importedPackage{
 			alias:     "pb",
 			goPackage: pair.ProtoGoPackage,
 		}
@@ -284,6 +294,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 	klog.V(2).InfoS("writeMapFunctionsForPair", "pair.Proto.FullName", pair.Proto.FullName(), "pair.KRMType.Name", pair.KRMType.Name)
 	msg := pair.Proto
 	pbTypeName := protoNameForType(msg)
+	pbTypeGoImport := v.goPackageForProto(msg.ParentFile())
 
 	goType := pair.KRMType
 	goTypeName := goType.Name
@@ -301,7 +312,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 	}
 
 	if v.findFuncDeclaration(goTypeName+versionSpecifier+"_FromProto", srcDir, true) == nil {
-		fmt.Fprintf(out, "func %s_FromProto(mapCtx *direct.MapContext, in *pb.%s) *%s.%s {\n", goTypeName+versionSpecifier, pbTypeName, krmImportName, goTypeName)
+		fmt.Fprintf(out, "func %s_FromProto(mapCtx *direct.MapContext, in *%s.%s) *%s.%s {\n", goTypeName+versionSpecifier, pbTypeGoImport, pbTypeName, krmImportName, goTypeName)
 		fmt.Fprintf(out, "\tif in == nil {\n")
 		fmt.Fprintf(out, "\t\treturn nil\n")
 		fmt.Fprintf(out, "\t}\n")
@@ -588,14 +599,15 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 	}
 
 	if v.findFuncDeclaration(goTypeName+versionSpecifier+"_ToProto", srcDir, true) == nil {
-		fmt.Fprintf(out, "func %s_ToProto(mapCtx *direct.MapContext, in *%s.%s) *pb.%s {\n", goTypeName+versionSpecifier, krmImportName, goTypeName, pbTypeName)
+		fmt.Fprintf(out, "func %s_ToProto(mapCtx *direct.MapContext, in *%s.%s) *%s.%s {\n", goTypeName+versionSpecifier, krmImportName, goTypeName, pbTypeGoImport, pbTypeName)
 		fmt.Fprintf(out, "\tif in == nil {\n")
 		fmt.Fprintf(out, "\t\treturn nil\n")
 		fmt.Fprintf(out, "\t}\n")
-		fmt.Fprintf(out, "\tout := &pb.%s{}\n", pbTypeName)
+		fmt.Fprintf(out, "\tout := &%s.%s{}\n", pbTypeGoImport, pbTypeName)
 		for i := 0; i < msg.Fields().Len(); i++ {
 			protoField := msg.Fields().Get(i)
 			protoFieldName := protoNameForField(protoField)
+			protoFieldPackage := v.goPackageForProto(protoField.ParentFile())
 
 			krmFieldName := goFieldName(protoField)
 			krmField := goFields[krmFieldName]
@@ -695,12 +707,12 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						functionName = krmToProtoFunctionName(protoField, krmField.Name)
 					}
 					toProtoElemFunc = functionName
-					protoSliceElemType = "*pb." + protoNameForType(protoField.Message())
+					protoSliceElemType = "*" + v.goPackageForProto(protoField.Message().ParentFile()) + "." + protoNameForType(protoField.Message())
 
 				case protoreflect.EnumKind:
 					protoTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
 					toProtoElemFunc = fmt.Sprintf("direct.Enum_ToProto[%s]", protoTypeName)
-					protoSliceElemType = "pb." + protoNameForEnum(protoField.Enum())
+					protoSliceElemType = v.goPackageForProto(protoField.Message().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
 
 				default:
 					protoSliceElemType = goTypeForProtoKind(protoField.Kind())
@@ -826,8 +838,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 					oneofTypeName := protoNameForOneOf(protoField)
 
-					fmt.Fprintf(out, "\t\tout.%s = &pb.%s{%s: oneof}\n",
+					fmt.Fprintf(out, "\t\tout.%s = &%s.%s{%s: oneof}\n",
 						oneofFieldName,
+						protoFieldPackage,
 						oneofTypeName,
 						protoFieldName)
 					fmt.Fprintf(out, "\t}\n")
@@ -1015,7 +1028,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		}
 		krmFieldType := krmField.Type
 
-		oneofWrapperTypeName := "pb." + protoNameForOneOf(protoField)
+		oneofWrapperTypeName := v.goPackageForProto(protoField.ParentFile()) + "." + protoNameForOneOf(protoField)
 
 		fmt.Fprintf(out, "func %s(mapCtx *direct.MapContext, in %s) *%s {\n", functionName, krmFieldType, oneofWrapperTypeName)
 		fmt.Fprintf(out, "\tif in == nil {\n")
@@ -1269,27 +1282,28 @@ func (o *MapperGenerator) getGoImportAlias(goPackage string) string {
 	return importAlias
 }
 
-// goPackageForProto returns the go package import alias for a proto message
-func (o *MapperGenerator) goPackageForProto(parentFile protoreflect.FileDescriptor) string {
-	// protoPackage := parentFile.Package()
-
+// GoPackageForProto returns the full go package import path for a proto message
+// For the import alias, see goPackageForProto
+func GoPackageForProto(parentFile protoreflect.FileDescriptor) string {
 	fileOptions := parentFile.Options().(*descriptorpb.FileOptions)
 	protoGoPackage := fileOptions.GetGoPackage()
 	if ix := strings.Index(protoGoPackage, ";"); ix != -1 {
 		protoGoPackage = protoGoPackage[:ix]
 	}
+	return protoGoPackage
+}
 
+// goPackageForProto returns the go package import alias for a proto message
+func (o *MapperGenerator) goPackageForProto(parentFile protoreflect.FileDescriptor) string {
+	protoGoPackage := GoPackageForProto(parentFile)
 	existing, found := o.importedPackages[protoGoPackage]
 	if found {
 		return existing.alias
 	}
 
-	importAlias := lastComponent(protoGoPackage) + "pb"
+	importAlias := strings.TrimSuffix(lastComponent(protoGoPackage), "pb") + "pb"
 
-	o.importedPackages[protoGoPackage] = importedPackage{
-		alias:     importAlias,
-		goPackage: protoGoPackage,
-	}
+	o.AddGoImportAlias(protoGoPackage, importAlias)
 	return importAlias
 }
 

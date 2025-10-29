@@ -302,6 +302,14 @@ func newControllerUnstructuredForNamespace(namespace, managerNamespace string) *
 							k8s.ScopedNamespaceLabel: namespace,
 						},
 					},
+					"spec": map[string]any{
+						"containers": []any{
+							map[string]any{
+								"name":  "manager",
+								"image": "controller-manager:latest",
+							},
+						},
+					},
 				},
 			},
 		},
