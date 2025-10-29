@@ -17,6 +17,8 @@ cloud.google.com/go/analytics v0.30.0 h1:9PvoT9SvNIHRqTZye7+WudvO2vr4PiZ9mLhiOtE
 cloud.google.com/go/analytics v0.30.0/go.mod h1:dneJtsGmmK6EkEPg59vRlncKFWt3xzmKNOc9aKXCTrI=
 cloud.google.com/go/apigateway v1.7.6 h1:do+u3rjDYuTxD2ypRfv4uwTMoy/VHFLclvaYcb5Mv6I=
 cloud.google.com/go/apigateway v1.7.6/go.mod h1:SiBx36VPjShaOCk8Emf63M2t2c1yF+I7mYZaId7OHiA=
+cloud.google.com/go/apihub v0.2.0 h1:TvJHyXlbQ7LURTxCfavihmRTvStuSYZJ9gBwPGQxeEE=
+cloud.google.com/go/apihub v0.2.0/go.mod h1:hs48KDQvnRnE+DQ3ED4AhEamEgI3jeZkHwNgx/K+fgc=
 cloud.google.com/go/apikeys v1.1.12 h1:ZTFWJ1ibGjiIrIhhtdWOm7AGJd+y9R17dVujlgU//6E=
 cloud.google.com/go/apikeys v1.1.12/go.mod h1:3tqZUj8CmCJm0maQyLufgyO5Ghf3AZQ6hcSkIqsSIm4=
 cloud.google.com/go/apphub v0.2.4 h1:lhsd/6+16NUshw8c52T+DfMaAz04SX6ItMr8caGbtgY=
