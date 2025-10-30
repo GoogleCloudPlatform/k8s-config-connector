@@ -83,3 +83,9 @@ func lastComponent(s string) string {
 	i := strings.LastIndex(s, "/")
 	return s[i+1:]
 }
+
+// buildRegionLink constructs a full region link (like https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1)
+func buildRegionLink(ctx context.Context, projectID, region string) string {
+	version := getAPIVersion(ctx)
+	return fmt.Sprintf("https://www.googleapis.com/compute/%s/projects/%s/regions/%s", version, projectID, region)
+}
