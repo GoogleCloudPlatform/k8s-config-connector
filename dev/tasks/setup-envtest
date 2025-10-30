@@ -18,9 +18,9 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd ${REPO_ROOT}/experiments/kubectl-plan/
+cd ${REPO_ROOT}
 
-. ${REPO_ROOT}/dev/tasks/setup-envtest
-
-WRITE_GOLDEN_OUTPUT=1 \
-go test ./... -v
+if [[ -z "${KUBEBUILDER_ASSETS:-}" ]]; then
+  echo "Downloading envtest assets..."
+  export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 use -p path)
+fi
