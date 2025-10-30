@@ -136,10 +136,6 @@ spec:
                 description: A unique specifier for the BigtableMaterializedView resource
                   in GCP.
                 type: string
-              name:
-                description: The unique name of the BigtableMaterializedView. Values
-                  are of the form `projects/{project}/instances/{instance}/materializedViews/{materializedViewID}`.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -148,10 +144,6 @@ spec:
                   the resource.
                 format: int64
                 type: integer
-              observedState:
-                description: ObservedState is the state of the resource as most recently
-                  observed in GCP.
-                type: object
             type: object
         required:
         - spec
