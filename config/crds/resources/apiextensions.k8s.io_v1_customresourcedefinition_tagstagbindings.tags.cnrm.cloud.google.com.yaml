@@ -61,33 +61,83 @@ spec:
           spec:
             description: TagsTagBindingSpec defines the desired state of TagsTagBinding
             properties:
+              location:
+                type: string
               parentRef:
                 description: ParentRef is a reference to a parent resource.
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
                 properties:
                   external:
-                    description: 'Allowed value: string of the format `//cloudresourcemanager.googleapis.com/projects/{{value}}`,
-                      where {{value}} is the `number` field of a `Project` resource.'
+                    description: 'Allowed value: string of the format - `//cloudresourcemanager.googleapis.com/projects/{{ProjectNumber}}`,
+                      - `//cloudresourcemanager.googleapis.com/organzations/{{OrgID}}`,
+                      - `//storage.googleapis.com/projects/_/buckets/{{BucketName}}`,'
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: 'Name of the referent. Can be Project or Organization.
+                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
                     description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
+                  runJobRef:
+                    description: JobRef defines the resource reference to RunJob,
+                      which "External" field holds the GCP identifier for the KRM
+                      object.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed RunJob resource.
+                          Should be in the format "projects/{{projectID}}/locations/{{location}}/jobs/{{jobID}}".
+                        type: string
+                      name:
+                        description: The name of a RunJob resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a RunJob resource.
+                        type: string
+                    type: object
+                  storageBucketRef:
+                    description: StorageBucketRef defines the resource reference to
+                      StorageBucket, which "External" field holds the GCP identifier
+                      for the KRM object.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally-managed StorageBucket
+                          resource.
+                        type: string
+                      name:
+                        description: The name of a StorageBucket resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a StorageBucket resource.
+                        type: string
+                    type: object
                 type: object
               resourceID:
                 description: The service-generated name of the resource. Used for

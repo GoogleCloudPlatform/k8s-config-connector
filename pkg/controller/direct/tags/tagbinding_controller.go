@@ -51,11 +51,14 @@ type modelTagsTagBinding struct {
 	config config.ControllerConfig
 }
 
-func (m *modelTagsTagBinding) client(ctx context.Context) (*resourcemanager.TagBindingsClient, error) {
+func (m *modelTagsTagBinding) client(ctx context.Context, location string) (*resourcemanager.TagBindingsClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
+	}
+	if location != "" {
+		opts = append(opts, option.WithEndpoint(fmt.Sprintf("%s-cloudresourcemanager.googleapis.com:443", location)))
 	}
 	gcpClient, err := resourcemanager.NewTagBindingsRESTClient(ctx, opts...)
 	if err != nil {
@@ -75,7 +78,12 @@ func (m *modelTagsTagBinding) AdapterForObject(ctx context.Context, reader clien
 		return nil, err
 	}
 
-	gcpClient, err := m.client(ctx)
+	var location string
+	if obj.Spec.Location != nil {
+		location = *obj.Spec.Location
+	}
+
+	gcpClient, err := m.client(ctx, location)
 	if err != nil {
 		return nil, fmt.Errorf("error creating gcp client: %w", err)
 	}
@@ -102,7 +110,7 @@ func (a *TagsTagBindingAdapter) Find(ctx context.Context) (bool, error) {
 	log.V(2).Info("getting TagsTagBinding", "name", a.id)
 
 	req := &resourcemanagerpb.ListTagBindingsRequest{
-		Parent: a.id.ParentWithFullURL(),
+		Parent: a.id.Parent().String(),
 		// TODO: PageSize and PageToken
 	}
 	it := a.gcpClient.ListTagBindings(ctx, req)
@@ -130,11 +138,12 @@ func (a *TagsTagBindingAdapter) Create(ctx context.Context, createOp *directbase
 
 	req := &resourcemanagerpb.CreateTagBindingRequest{
 		TagBinding: &resourcemanagerpb.TagBinding{
-			Parent:   a.id.ParentWithFullURL(),
+			Parent:   a.id.Parent().String(),
 			TagValue: a.id.TagValue(),
 		},
 	}
 	op, err := a.gcpClient.CreateTagBinding(ctx, req)
+
 	if err != nil {
 		return fmt.Errorf("creating TagsTagBinding %s: %w", a.id, err)
 	}

@@ -21,8 +21,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"k8s.io/apimachinery/pkg/types"
+
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -30,48 +29,39 @@ var _ identity.Identity = &TagBindingIdentity{}
 
 const TagBindingIDURL = "tagBindings/{{parentWithFullURL}}/tagValues/{{tagValueID}"
 
+// +k8s:deepcopy-gen=false
 type TagBindingIdentity struct {
-	// parent is the full resource name of the resource to which the tag is bound.
-	// e.g. `//cloudresourcemanager.googleapis.com/projects/12345`
-	parent string
+	// The Parent uniform the diverse parent kind, with the full resource name.
+	parent *TagBindingParent
 	// tagValue is the resource name of the TagValue.
 	tagValue string
 }
 
 func (i *TagBindingIdentity) String() string {
-	// The name of the TagBinding. This is a String of the form:
-	// `tagBindings/{full-resource-name}/{tag-value-name}`
-	// (e.g. `tagBindings/%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F123/tagValues/456`).
-	// The parent needs to be URL-encoded.
-	return "tagBindings/" + url.PathEscape(i.parent) + "/tagValues/" + i.tagValue
-}
-
-func (i *TagBindingIdentity) ParentWithFullURL() string {
-	return i.parent
+	return fmt.Sprintf("tagBindings/%s/tagValues/%s", url.PathEscape(i.parent.String()), i.tagValue)
 }
 
 func (i *TagBindingIdentity) TagValue() string {
 	return "tagValues/" + i.tagValue
 }
 
+func (i *TagBindingIdentity) Parent() *TagBindingParent {
+	return i.parent
+}
+
 func (i *TagBindingIdentity) FromExternal(ref string) error {
 	// Legacy Terraform reconciler trims the `tagBindings` prefix, and the direct controller keeps the real value of tagBinding name from the GCP
 	ref = strings.TrimPrefix(ref, "tagBindings/")
+
 	tokens := strings.Split(ref, "/")
 	if len(tokens) != 3 || tokens[1] != "tagValues" {
 		return fmt.Errorf("format of TagBinding external=%q was not known (use %s)", ref, TagBindingIDURL)
 	}
 
-	// TODO: parent can be other resources in addition to Project.
-	parent := &TagBindingProject{}
-	if err := parent.FromExternal(tokens[0]); err != nil {
+	i.parent = &TagBindingParent{}
+	if err := i.parent.FromExternal(tokens[0]); err != nil {
 		return err
 	}
-	i.parent = parent.String()
-	if i.parent == "" {
-		return fmt.Errorf("parent was empty in external=%q", ref)
-	}
-	i.tagValue = tokens[2]
 	if i.tagValue == "" {
 		return fmt.Errorf("tagValue was empty in external=%q", ref)
 	}
@@ -81,37 +71,20 @@ func (i *TagBindingIdentity) FromExternal(ref string) error {
 var _ identity.Resource = &TagsTagBinding{}
 
 func (obj *TagsTagBinding) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	newIdentity := &TagBindingIdentity{}
 
-	if obj.Spec.ResourceID != nil {
-		// This is a legacy special use. The prefix tagBinding is to support backward compatibility with existing resources.
-		externalRef := "tagBindings/" + *obj.Spec.ResourceID
-		identity := &TagBindingIdentity{}
-		err := identity.FromExternal(externalRef)
-		return identity, err
-
+	newIdentity.parent = &TagBindingParent{}
+	if err := obj.Spec.ParentRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, err
 	}
-
-	var parent string
-	if obj.Spec.ParentRef.External != "" {
-		parent = obj.Spec.ParentRef.External
-	} else {
-		projectNN := types.NamespacedName{
-			Name:      obj.Spec.ParentRef.Name,
-			Namespace: obj.Spec.ParentRef.Namespace,
-		}
-		projectNumber, err := refsv1beta1.ResolveProjectNumber(ctx, reader, projectNN)
-		if err != nil {
-			return nil, err
-		}
-		parent = fmt.Sprintf("%s/%s", ProjectPrefix, projectNumber)
+	if err := newIdentity.parent.FromExternal(obj.Spec.ParentRef.External); err != nil {
+		return nil, fmt.Errorf("parsing parentRef.external=%q: %w", obj.Spec.ParentRef.External, err)
 	}
 
 	if err := obj.Spec.TagValueRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, err
 	}
+	newIdentity.tagValue = obj.Spec.TagValueRef.GetExternal()
 
-	return &TagBindingIdentity{
-		parent:   parent,
-		tagValue: obj.Spec.TagValueRef.GetExternal(),
-	}, nil
+	return newIdentity, nil
 }
