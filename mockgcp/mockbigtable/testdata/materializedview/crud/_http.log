@@ -49,8 +49,7 @@ X-Xss-Protection: 0
       },
       "instanceId": "mvdep${uniqueId}",
       "parent": "projects/${projectId}"
-    },
-    "requestTime": "2024-04-01T12:34:56.123456Z"
+    }
   },
   "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/locations/us-central1-a/operations/${operationID}"
 }
@@ -76,7 +75,6 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateInstanceMetadata",
-    "finishTime": "2024-04-01T12:34:56.123456Z",
     "originalRequest": {
       "clusters": {
         "cluster1-${uniqueId}": {
@@ -92,8 +90,7 @@ X-Xss-Protection: 0
       },
       "instanceId": "mvdep${uniqueId}",
       "parent": "projects/${projectId}"
-    },
-    "requestTime": "2024-04-01T12:34:56.123456Z"
+    }
   },
   "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/locations/us-central1-a/operations/${operationID}",
   "response": {
@@ -195,7 +192,6 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateMaterializedViewMetadata",
     "originalRequest": {},
-    "requestTime": "2024-04-01T12:34:56.123456Z",
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/test-materialized-view-${uniqueId}/locations/us-central1-a/operations/${operationID}"
@@ -223,9 +219,7 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateMaterializedViewMetadata",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "finishTime": "2024-04-01T12:34:56.123456Z",
     "originalRequest": {},
-    "requestTime": "2024-04-01T12:34:56.123456Z",
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/test-materialized-view-${uniqueId}/locations/us-central1-a/operations/${operationID}",
@@ -291,7 +285,6 @@ X-Xss-Protection: 0
       "materializedView": {},
       "updateMask": ""
     },
-    "requestTime": "2024-04-01T12:34:56.123456Z",
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/test-materialized-view-${uniqueId}/locations/us-central1-a/operations/${operationID}"
@@ -319,12 +312,10 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateMaterializedViewMetadata",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "finishTime": "2024-04-01T12:34:56.123456Z",
     "originalRequest": {
       "materializedView": {},
       "updateMask": ""
     },
-    "requestTime": "2024-04-01T12:34:56.123456Z",
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
   "name": "operations/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/test-materialized-view-${uniqueId}/locations/us-central1-a/operations/${operationID}",
@@ -379,7 +370,7 @@ X-Xss-Protection: 0
 {
   "materializedViews": [
     {
-      "etag": "W/\"/v1/14814369699654710031\"",
+      "etag": "abcdef0123A=",
       "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/test-materialized-view-${uniqueId}",
       "query": "SELECT _key, COUNT(*) as count from test-table group by _key;"
     }
