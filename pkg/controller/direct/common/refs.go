@@ -114,6 +114,12 @@ type refNormalizer struct {
 }
 
 func (r *refNormalizer) VisitField(path string, v any) error {
+	if ref, ok := v.(refs.ExternalNormalizer); ok {
+		if _, err := ref.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
+			return fmt.Errorf("error normalizing reference at path %q: %w", path, err)
+		}
+	}
+
 	if logsPanel, ok := v.(*krm.LogsPanel); ok {
 		for i := range logsPanel.ResourceNames {
 			if ref, err := normalizeResourceName(r.ctx, r.kube, r.src, &logsPanel.ResourceNames[i]); err != nil {
@@ -138,8 +144,8 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 		alertChart.AlertPolicyRef.External = refined
 	}
 
-	if alertChart, ok := v.(*krm.IncidentList); ok {
-		for i, policyRef := range alertChart.PolicyRefs {
+	if incidentList, ok := v.(*krm.IncidentList); ok {
+		for i, policyRef := range incidentList.PolicyRefs {
 			if r.project == nil {
 				return fmt.Errorf("must specify project for policyRef references")
 			}
@@ -151,7 +157,7 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 			if err != nil {
 				return err
 			}
-			alertChart.PolicyRefs[i].External = refined
+			incidentList.PolicyRefs[i].External = refined
 		}
 	}
 
