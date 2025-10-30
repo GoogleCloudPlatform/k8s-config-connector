@@ -26,10 +26,7 @@ fi
 echo "Using ARTIFACTS=${ARTIFACTS}"
 export ARTIFACTS
 
-if [[ -z "${KUBEBUILDER_ASSETS:-}" ]]; then
-  echo "Downloading envtest assets..."
-  export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
-fi
+. ${REPO_ROOT}/dev/tasks/setup-envtest
 
 go test -v ./cmd/recorder -run TestProfileRecorderFootprint
 
