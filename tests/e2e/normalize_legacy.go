@@ -30,7 +30,8 @@ import (
 // LegacyNormalize is the "legacy" normalization steps,
 // we should avoid adding to this function and instead add to the per-service normalization functions.
 // Deprecated: add functionality to the per-service normalization instead.
-func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject, uniqueID string, events test.LogEntries) (string, []func(string) string) {
+// The organizationID parameter was added to support tests that run against organizations.
+func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject, uniqueID, organizationID string, events test.LogEntries) (string, []func(string) string) {
 
 	r := NewReplacements()
 
@@ -704,7 +705,7 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 
 	events.PrettifyJSON(jsonMutators...)
 
-	NormalizeHTTPLog(t, events, h.RegisteredServices(), project, uniqueID, testgcp.TestFolderID.Get(), testgcp.TestOrgID.Get())
+	NormalizeHTTPLog(t, events, h.RegisteredServices(), project, uniqueID, testgcp.TestFolderID.Get(), organizationID)
 
 	events = RemoveExtraEvents(events)
 

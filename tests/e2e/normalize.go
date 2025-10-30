@@ -38,19 +38,25 @@ import (
 
 const PlaceholderTimestamp = "2024-04-01T12:34:56.123456Z"
 
-func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) {
-	visitor := buildKRMNormalizer(t, u, project, folderID, uniqueID)
+func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID, organizationID string, uniqueID string) {
+	visitor := buildKRMNormalizer(t, u, project, folderID, organizationID, uniqueID)
 	if err := visitor.VisitUnstructured(u); err != nil {
 		t.Fatalf("failed to normalize KRM object: %v", err)
 	}
 }
 
-func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) *objectWalker {
+// buildKRMNormalizer builds a normalizer for KRM objects.
+// It handles replacements for project, folder, and organization IDs,
+// along with other common volatile fields.
+func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID, organizationID string, uniqueID string) *objectWalker {
 	replacements := NewReplacements()
 	findLinksInKRMObject(t, replacements, u)
 
 	if folderID != "" {
 		replacements.PathIDs[folderID] = "${folderID}"
+	}
+	if organizationID != "" {
+		replacements.PathIDs[organizationID] = "${organizationID}"
 	}
 
 	annotations := u.GetAnnotations()
@@ -1073,7 +1079,7 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
 		u := &unstructured.Unstructured{}
 		u.Object = obj
-		normalizeKRMObject(t, u, project, folderID, uniqueID)
+		normalizeKRMObject(t, u, project, folderID, organizationID, uniqueID)
 	})
 
 	// Apply replacements
@@ -1109,6 +1115,8 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.replacePaths[".response.createdAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
 	visitor.replacePaths[".response.lastModifiedAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
 	visitor.replacePaths[".response.expiresAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	// Sort tagBindings to prevent flakes from non-deterministic ordering.
+	visitor.sortSlices.Insert(".response.tagBindings")
 	{
 		visitor.sortSlices.Insert(".response.properties.property")
 		visitor.sortSlices.Insert(".properties.property")
