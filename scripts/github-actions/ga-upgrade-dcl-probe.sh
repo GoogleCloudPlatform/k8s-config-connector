@@ -19,8 +19,7 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-echo "Downloading envtest assets..."
-export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
+. ${REPO_ROOT}/dev/tasks/setup-envtest
 
 echo "Running upgrade-dcl probe..."
 make upgrade-dcl ready-pr
