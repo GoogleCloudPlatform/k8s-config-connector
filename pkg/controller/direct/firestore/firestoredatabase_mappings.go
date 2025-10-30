@@ -49,25 +49,3 @@ func FirestoreDatabaseObservedState_ToProto(mapCtx *direct.MapContext, in *krm.F
 	out.Etag = direct.ValueOf(in.Etag)
 	return out
 }
-
-func FirestoreDatabaseSpec_FromProto(mapCtx *direct.MapContext, in *pb.Database) *krm.FirestoreDatabaseSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FirestoreDatabaseSpec{}
-	out.LocationID = direct.LazyPtr(in.GetLocationId())
-	out.ConcurrencyMode = direct.Enum_FromProto(mapCtx, in.GetConcurrencyMode())
-	out.PointInTimeRecoveryEnablement = direct.Enum_FromProto(mapCtx, in.GetPointInTimeRecoveryEnablement())
-	return out
-}
-
-func FirestoreDatabaseSpec_ToProto(mapCtx *direct.MapContext, in *krm.FirestoreDatabaseSpec) *pb.Database {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Database{}
-	out.LocationId = direct.ValueOf(in.LocationID)
-	out.ConcurrencyMode = direct.Enum_ToProto[pb.Database_ConcurrencyMode](mapCtx, in.ConcurrencyMode)
-	out.PointInTimeRecoveryEnablement = direct.Enum_ToProto[pb.Database_PointInTimeRecoveryEnablement](mapCtx, in.PointInTimeRecoveryEnablement)
-	return out
-}
