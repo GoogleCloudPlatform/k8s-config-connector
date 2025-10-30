@@ -102,7 +102,7 @@ func (a *TagsTagBindingAdapter) Find(ctx context.Context) (bool, error) {
 	log.V(2).Info("getting TagsTagBinding", "name", a.id)
 
 	req := &resourcemanagerpb.ListTagBindingsRequest{
-		Parent: a.id.ParentWithFullURL(),
+		Parent: a.id.Parent().String(),
 		// TODO: PageSize and PageToken
 	}
 	it := a.gcpClient.ListTagBindings(ctx, req)
@@ -130,7 +130,7 @@ func (a *TagsTagBindingAdapter) Create(ctx context.Context, createOp *directbase
 
 	req := &resourcemanagerpb.CreateTagBindingRequest{
 		TagBinding: &resourcemanagerpb.TagBinding{
-			Parent:   a.id.ParentWithFullURL(),
+			Parent:   a.id.Parent().String(),
 			TagValue: a.id.TagValue(),
 		},
 	}
