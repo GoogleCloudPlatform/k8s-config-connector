@@ -16,7 +16,9 @@ package mocknetworkservices
 
 import (
 	"context"
+	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -122,4 +124,37 @@ func (s *NetworkServicesServer) DeleteMesh(ctx context.Context, req *pb.DeleteMe
 	}
 
 	return s.operations.NewLRO(ctx)
+}
+
+type meshName struct {
+	Project  *projects.ProjectData
+	Location string
+	MeshName string
+}
+
+func (n *meshName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/meshes/" + n.MeshName
+}
+
+// parseMeshName parses a string into a meshName.
+// The expected form is `projects/*/locations/global/meshes/*`.
+func (s *MockService) parseMeshName(name string) (*meshName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[3] == "global" && tokens[4] == "meshes" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &meshName{
+			Project:  project,
+			Location: "global",
+			MeshName: tokens[5],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
 }
