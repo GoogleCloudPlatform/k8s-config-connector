@@ -1,0 +1,4 @@
+- exec: gcloud compute health-checks create http test-${uniqueId} --region us-central1 --description="test health check"
+- exec: gcloud compute health-checks describe test-${uniqueId} --region us-central1
+- exec: gcloud compute health-checks update http test-${uniqueId} --region us-central1 --description="updated health check description"
+- exec: gcloud compute health-checks delete test-${uniqueId} --region us-central1
