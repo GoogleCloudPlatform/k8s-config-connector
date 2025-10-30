@@ -144,7 +144,7 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
-                  bigqueryDataset:
+                  bigQueryDataset:
                     description: The information of a BigQuery Dataset. When a link
                       is created, a BigQuery dataset is created along with it, in
                       the same project as the LogBucket it's linked to. This dataset

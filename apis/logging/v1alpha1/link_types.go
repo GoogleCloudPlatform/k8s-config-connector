@@ -80,7 +80,7 @@ type LoggingLinkObservedState struct {
 	//  linked to. This dataset will also have BigQuery Views corresponding to the
 	//  LogViews in the bucket.
 	// +kcc:proto:field=google.logging.v2.Link.bigquery_dataset
-	BigqueryDataset *BigQueryDatasetObservedState `json:"bigqueryDataset,omitempty"`
+	BigqueryDataset *BigQueryDatasetObservedState `json:"bigQueryDataset,omitempty"`
 }
 
 // +genclient
