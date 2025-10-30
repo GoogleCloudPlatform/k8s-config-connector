@@ -88,7 +88,7 @@ func (s *NetworkServicesServer) CreateServiceBinding(ctx context.Context, req *p
 
 	now := time.Now()
 
-	obj := proto.Clone(req.ServiceBinding).(*pb.ServiceBinding)
+	obj := ProtoClone(req.ServiceBinding)
 	obj.Name = fqn
 	obj.Service = fmt.Sprintf("projects/mock-project/locations/us-central1/namespaces/namespace-%s/services/service-%s", uniqueId, uniqueId)
 	obj.CreateTime = timestamppb.New(now)
@@ -107,7 +107,7 @@ func (s *NetworkServicesServer) CreateServiceBinding(ctx context.Context, req *p
 		ApiVersion: "v1",
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-		result := proto.Clone(obj).(*pb.ServiceBinding)
+		result := ProtoClone(obj)
 		result.CreateTime = timestamppb.New(now)
 		result.UpdateTime = timestamppb.New(now)
 		result.Name = reqName
