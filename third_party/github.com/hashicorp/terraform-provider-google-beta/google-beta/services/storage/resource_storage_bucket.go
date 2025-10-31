@@ -458,6 +458,68 @@ func ResourceStorageBucket() *schema.Resource {
 					},
 				},
 			},
+			"ip_filter": {
+				Type:        schema.TypeList,
+				MaxItems:    1,
+				Optional:    true,
+				Computed:    true,
+				Description: `The bucket IP filtering configuration. Specifies the network sources that can access the bucket, as well as its underlying objects.`,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"mode": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Required:    true,
+							Description: `The state of the IP filter configuration. Valid values are Enabled and Disabled. When set to Enabled, IP filtering rules are applied to a bucket and all incoming requests to the bucket are evaluated against these rules. When set to Disabled, IP filtering rules are not applied to a bucket.`,
+						},
+						"public_network_source": {
+							Type:        schema.TypeList,
+							MaxItems:    1,
+							Optional:    true,
+							Computed:    true,
+							Description: `The public network IP address ranges that can access the bucket and its data.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"allowed_ip_cidr_ranges": {
+										Type:        schema.TypeSet,
+										Computed:    true,
+										Required:    true,
+										Description: `The list of public IPv4 and IPv6 CIDR ranges that can access the bucket and its data. In the CIDR IP address block, the specified IP address must be properly truncated, meaning all the host bits must be zero or else the input is considered malformed. For example, 192.0.2.0/24 is accepted but 192.0.2.1/24 is not. Similarly, for IPv6, 2001:db8::/32 is accepted whereas 2001:db8::1/32 is not.`,
+										Elem: &schema.Schema{
+											Type: schema.TypeString,
+										},
+									},
+								},
+							},
+						},
+						"vpc_network_sources": {
+							Type:        schema.TypeList,
+							MaxItems:    64,
+							Optional:    true,
+							Description: `The public network IP address ranges that can access the bucket and its data.`,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"network": {
+										Type:        schema.TypeString,
+										Computed:    true,
+										Required:    true,
+										Description: `Name of the network. Format: projects/PROJECT_ID/global/networks/NETWORK_NAME`,
+									},
+									"allowed_ip_cidr_ranges": {
+										Type:        schema.TypeSet,
+										Computed:    true,
+										Required:    true,
+										Description: `The list of public IPv4 and IPv6 CIDR ranges that can access the bucket and its data. In the CIDR IP address block, the specified IP address must be properly truncated, meaning all the host bits must be zero or else the input is considered malformed. For example, 192.0.2.0/24 is accepted but 192.0.2.1/24 is not. Similarly, for IPv6, 2001:db8::/32 is accepted whereas 2001:db8::1/32 is not.`,
+										Elem: &schema.Schema{
+											Type: schema.TypeString,
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 		UseJSONNumber: true,
 	}
@@ -585,6 +647,10 @@ func resourceStorageBucketCreate(d *schema.ResourceData, meta interface{}) error
 
 	if v, ok := d.GetOk("soft_delete_policy"); ok {
 		sb.SoftDeletePolicy = expandBucketSoftDeletePolicy(v.([]interface{}))
+	}
+
+	if v, ok := d.GetOk("ip_filter"); ok {
+		sb.IpFilter = expandBucketIpFilter(v.([]interface{}))
 	}
 
 	var res *storage.Bucket
@@ -752,6 +818,12 @@ func resourceStorageBucketUpdate(d *schema.ResourceData, meta interface{}) error
 		}
 	}
 
+	if d.HasChange("ip_filter") {
+		if v, ok := d.GetOk("ip_filter"); ok {
+			sb.IpFilter = expandBucketIpFilter(v.([]interface{}))
+		}
+	}
+
 	res, err := config.NewStorageClient(userAgent).Buckets.Patch(d.Get("name").(string), sb).Do()
 	if err != nil {
 		return err
@@ -811,7 +883,8 @@ func resourceStorageBucketRead(d *schema.ResourceData, meta interface{}) error {
 	// Get the bucket and acl
 	bucket := d.Get("name").(string)
 
-	res, err := config.NewStorageClient(userAgent).Buckets.Get(bucket).Do()
+	// projection full is require to get ipFilter properties
+	res, err := config.NewStorageClient(userAgent).Buckets.Get(bucket).Projection("full").Do()
 
 	if err != nil {
 		return transport_tpg.HandleNotFoundError(err, d, fmt.Sprintf("Storage Bucket %q", d.Get("name").(string)))
@@ -1137,6 +1210,77 @@ func flattenBucketSoftDeletePolicy(softDeletePolicy *storage.BucketSoftDeletePol
 	}
 	policies = append(policies, policy)
 	return policies
+}
+
+func expandBucketIpFilter(configured interface{}) *storage.BucketIpFilter {
+	configuredIpFilters := configured.([]interface{})
+	if len(configuredIpFilters) == 0 {
+		return nil
+	}
+	configuredIpFilter := configuredIpFilters[0].(map[string]interface{})
+
+	ipFilter := &storage.BucketIpFilter{
+		Mode: configuredIpFilter["mode"].(string),
+	}
+	ipFilter.ForceSendFields = append(ipFilter.ForceSendFields, "mode")
+
+	if v, ok := configuredIpFilter["public_network_source"]; ok {
+		configuredPublicNetworkSource := v.([]interface{})[0].(map[string]interface{})
+		if v, ok := configuredPublicNetworkSource["allowed_ip_cidr_ranges"]; ok {
+			configuredAllowedIpCidrRanges := tpgresource.ConvertStringArr(v.(*schema.Set).List())
+			ipFilter.PublicNetworkSource = &storage.BucketIpFilterPublicNetworkSource{
+				AllowedIpCidrRanges: configuredAllowedIpCidrRanges,
+			}
+		}
+		ipFilter.ForceSendFields = append(ipFilter.ForceSendFields, "publicNetworkSource")
+	}
+
+	if v, ok := configuredIpFilter["vpc_network_sources"]; ok {
+		configuredVpcNetworkSources := v.([]interface{})
+		vpcNetworkSources := make([]*storage.BucketIpFilterVpcNetworkSources, len(configuredVpcNetworkSources))
+		for i, v := range configuredVpcNetworkSources {
+			configuredVpcNetworkSource := v.(map[string]interface{})
+			vpcNetworkSources[i] = &storage.BucketIpFilterVpcNetworkSources{
+				Network: configuredVpcNetworkSource["network"].(string),
+			}
+			if v, ok := configuredVpcNetworkSource["allowed_ip_cidr_ranges"]; ok {
+				vpcNetworkSources[i].AllowedIpCidrRanges = tpgresource.ConvertStringArr(v.(*schema.Set).List())
+			}
+		}
+		ipFilter.VpcNetworkSources = vpcNetworkSources
+		ipFilter.ForceSendFields = append(ipFilter.ForceSendFields, "vpcNetworkSources")
+	}
+	return ipFilter
+}
+
+func flattenBucketIpFilter(ipFilter *storage.BucketIpFilter) []map[string]interface{} {
+	ipFilters := make([]map[string]interface{}, 0, 1)
+	if ipFilter == nil {
+		return ipFilters
+	}
+	filter := map[string]interface{}{
+		"mode": ipFilter.Mode,
+	}
+	if ipFilter.PublicNetworkSource != nil {
+		filter["public_network_source"] = []map[string][]string{
+			{"allowed_ip_cidr_ranges": ipFilter.PublicNetworkSource.AllowedIpCidrRanges},
+		}
+	}
+
+	if ipFilter.VpcNetworkSources != nil {
+		vpcFilters := make([]map[string]interface{}, len(ipFilter.VpcNetworkSources))
+		for i, vpcNetworkSource := range ipFilter.VpcNetworkSources {
+			vpcFilters[i] = map[string]interface{}{
+				"network":                vpcNetworkSource.Network,
+				"allowed_ip_cidr_ranges": vpcNetworkSource.AllowedIpCidrRanges,
+			}
+		}
+
+		filter["vpc_network_sources"] = vpcFilters
+	}
+
+	ipFilters = append(ipFilters, filter)
+	return ipFilters
 }
 
 func expandBucketVersioning(configured interface{}) *storage.BucketVersioning {
@@ -1665,6 +1809,9 @@ func setStorageBucket(d *schema.ResourceData, config *transport_tpg.Config, res 
 	}
 	if err := d.Set("soft_delete_policy", flattenBucketSoftDeletePolicy(res.SoftDeletePolicy)); err != nil {
 		return fmt.Errorf("Error setting soft_delete_policy: %s", err)
+	}
+	if err := d.Set("ip_filter", flattenBucketIpFilter(res.IpFilter)); err != nil {
+		return fmt.Errorf("Error setting ip_filter: %s", err)
 	}
 
 	if res.IamConfiguration != nil && res.IamConfiguration.UniformBucketLevelAccess != nil {
