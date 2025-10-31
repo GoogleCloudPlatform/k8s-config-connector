@@ -20,7 +20,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	workflowsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1alpha1"
+	workflowsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -269,7 +269,7 @@ func (in *WorkflowExecutionParent) DeepCopyInto(out *WorkflowExecutionParent) {
 	}
 	if in.WorkflowRef != nil {
 		in, out := &in.WorkflowRef, &out.WorkflowRef
-		*out = new(workflowsv1alpha1.WorkflowsWorkflowRef)
+		*out = new(workflowsv1beta1.WorkflowsWorkflowRef)
 		**out = **in
 	}
 }

@@ -442,7 +442,7 @@ vmwareengine.cnrm.cloud.google.com,VMwareEngineNetwork,True,False,False,Direct
 vmwareengine.cnrm.cloud.google.com,VMwareEnginePrivateCloud,True,False,False,Direct
 vpcaccess.cnrm.cloud.google.com,VPCAccessConnector,False,True,False,Terraform
 workflowexecutions.cnrm.cloud.google.com,WorkflowsExecution,True,False,False,Direct
-workflows.cnrm.cloud.google.com,WorkflowsWorkflow,True,False,False,Direct
+workflows.cnrm.cloud.google.com,WorkflowsWorkflow,True,True,False,Direct
 workstations.cnrm.cloud.google.com,WorkstationCluster,True,True,False,Direct
 workstations.cnrm.cloud.google.com,WorkstationConfig,True,True,False,Direct
 workstations.cnrm.cloud.google.com,Workstation,True,True,False,Direct

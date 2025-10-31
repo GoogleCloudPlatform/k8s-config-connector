@@ -17,10 +17,12 @@ package common
 import (
 	"context"
 	"fmt"
+	"reflect"
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -160,6 +162,54 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 			return err
 		} else if ref != nil {
 			*projectRef = *ref
+		}
+	}
+
+	if serviceAccountRef, ok := v.(*refsv1beta1.IAMServiceAccountRef); ok {
+		if serviceAccountRef != nil {
+			if err := serviceAccountRef.Resolve(r.ctx, r.kube, r.src); err != nil {
+				return fmt.Errorf("resolving IAMServiceAccountRef at path %q: %w", path, err)
+			}
+		}
+	}
+
+	if cryptoKeyRef, ok := v.(*refs.KMSCryptoKeyRef); ok {
+		if cryptoKeyRef != nil {
+			resolved, err := refs.ResolveKMSCryptoKeyRef(r.ctx, r.kube, r.src, cryptoKeyRef)
+			if err != nil {
+				return fmt.Errorf("resolving KMSCryptoKeyRef at path %q: %w", path, err)
+			}
+			*cryptoKeyRef = *resolved
+		}
+	}
+
+	if normalizer, ok := v.(refs.ExternalNormalizer); ok {
+		external, err := normalizer.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace())
+		if err != nil {
+			return fmt.Errorf("normalizing external for %T at path %q: %w", v, path, err)
+		}
+
+		// Use reflection to set the 'External' field.
+		// This is brittle and assumes the underlying type is a pointer to a struct with an 'External' field.
+		val := reflect.ValueOf(v)
+		if val.Kind() == reflect.Ptr {
+			val = val.Elem()
+		}
+		if val.Kind() == reflect.Struct {
+			externalField := val.FieldByName("External")
+			if externalField.IsValid() && externalField.CanSet() && externalField.Kind() == reflect.String {
+				externalField.SetString(external)
+
+				// Also clear the Name and Namespace fields if they exist
+				nameField := val.FieldByName("Name")
+				if nameField.IsValid() && nameField.CanSet() && nameField.Kind() == reflect.String {
+					nameField.SetString("")
+				}
+				namespaceField := val.FieldByName("Namespace")
+				if namespaceField.IsValid() && namespaceField.CanSet() && namespaceField.Kind() == reflect.String {
+					namespaceField.SetString("")
+				}
+			}
 		}
 	}
 
