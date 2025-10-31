@@ -44,6 +44,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/rest"
+	"k8s.io/klog/v2"
 	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -1313,4 +1314,32 @@ func (s *filterSink) WithName(name string) logr.LogSink {
 // Error implements logr.LogSink
 func (s *filterSink) Error(err error, msg string, args ...any) {
 	s.sink.Error(err, msg, args...)
+}
+
+func (h *Harness) WaitForObjectPredicate(gvk schema.GroupVersionKind, id types.NamespacedName, predicate teststatus.ObjectStatusPredicate, timeout time.Duration) *unstructured.Unstructured {
+	ctx := h.Ctx
+	log := klog.FromContext(ctx).WithValues("gvk", gvk, "id", id)
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(gvk)
+	err := wait.PollImmediate(1*time.Second, timeout, func() (done bool, err error) {
+		done = true
+		if err := h.GetClient().Get(ctx, id, u); err != nil {
+			log.Error(err, "error getting resource")
+			return false, err
+		}
+
+		objectStatus := teststatus.GetObjectStatus(h.T, u)
+		if predicate(objectStatus) {
+			return true, nil
+		}
+		log.Info("resource does not satisfy predicate", "status", objectStatus)
+		return false, nil
+	})
+	if err == nil {
+		return u
+	}
+
+	h.Fatalf("error while polling %v with name '%v': %v", gvk.Kind, id.Name, err)
+	return nil
 }

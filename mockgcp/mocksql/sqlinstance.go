@@ -729,13 +729,9 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 		if body.MaintenanceVersion != "" {
 			obj.MaintenanceVersion = body.MaintenanceVersion
 		}
-		// todo kcc team: refactor this all so we can pass in specific values for database settings
-		specifiedMaintenanceVersion := body.MaintenanceVersion
+
 		if err := setDatabaseVersionDefaults(obj); err != nil {
 			return nil, err
-		}
-		if specifiedMaintenanceVersion != "" {
-			obj.MaintenanceVersion = specifiedMaintenanceVersion
 		}
 	}
 
