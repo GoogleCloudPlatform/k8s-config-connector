@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -25,29 +26,13 @@ import (
 )
 
 type FirewallPolicyRuleIdentity struct {
-	id     int64
-	parent *FirewallPolicyRuleParent
+	resourceID int32
+	Parent     *FirewallPolicyIdentity
 }
 
 func (i *FirewallPolicyRuleIdentity) String() string {
-	p := strconv.Itoa(int(i.id))
-	return i.parent.String() + "/rules/" + p
-}
-
-func (i *FirewallPolicyRuleIdentity) Parent() *FirewallPolicyRuleParent {
-	return i.parent
-}
-
-func (i *FirewallPolicyRuleIdentity) ID() int64 {
-	return i.id
-}
-
-type FirewallPolicyRuleParent struct {
-	FirewallPolicy string
-}
-
-func (p *FirewallPolicyRuleParent) String() string {
-	return "locations/global/firewallPolicies/" + p.FirewallPolicy
+	p := strconv.Itoa(int(i.resourceID))
+	return i.Parent.String() + "/rules/" + p
 }
 
 func NewFirewallPolicyRuleIdentity(ctx context.Context, reader client.Reader, obj *ComputeFirewallPolicyRule) (*FirewallPolicyRuleIdentity, error) {
@@ -62,7 +47,7 @@ func NewFirewallPolicyRuleIdentity(ctx context.Context, reader client.Reader, ob
 	}
 
 	// Get priority. Priority is a required field
-	priority := obj.Spec.Priority
+	priority := common.ValueOf(obj.Spec.Priority)
 
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
@@ -71,17 +56,29 @@ func NewFirewallPolicyRuleIdentity(ctx context.Context, reader client.Reader, ob
 		if err != nil {
 			return nil, err
 		}
-		if actualIdentity.parent.FirewallPolicy != firewallPolicy {
-			return nil, fmt.Errorf("spec.FirewallPolicyRef changed, expect %s, got %s", actualIdentity.parent.FirewallPolicy, firewallPolicy)
+		if actualIdentity.Parent.ResourceID != firewallPolicy {
+			return nil, fmt.Errorf("spec.FirewallPolicyRef changed, expect %s, got %s", actualIdentity.Parent.String(), firewallPolicy)
 		}
-		if actualIdentity.id != priority {
+		if actualIdentity.resourceID != priority {
 			return nil, fmt.Errorf("cannot reset `spec.priority` to %d, since it has already assigned to %d",
-				priority, actualIdentity.id)
+				priority, actualIdentity.resourceID)
 		}
 	}
 
 	return &FirewallPolicyRuleIdentity{
-		parent: &FirewallPolicyRuleParent{FirewallPolicy: firewallPolicy},
-		id:     priority,
+		Parent:     &FirewallPolicyIdentity{ResourceID: firewallPolicy},
+		resourceID: priority,
 	}, nil
+}
+
+func parseFirewallPolicyRuleExternal(external string) (*FirewallPolicyRuleIdentity, error) {
+	tokens := strings.Split(external, "/")
+	if len(tokens) != 6 || tokens[0] != "locations" || tokens[2] != "firewallPolicies" || tokens[4] != "rules" {
+		return nil, fmt.Errorf("format of ComputeFirewallPolicyRule external=%q was not known (use firewallPolicies/{{firewallPolicy}}/rules/{{priority}})", external)
+	}
+	p, err := strconv.ParseInt(tokens[5], 10, 32)
+	if err != nil {
+		return nil, fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule external=%q to an integer: %w", tokens[5], external, err)
+	}
+	return &FirewallPolicyRuleIdentity{Parent: &FirewallPolicyIdentity{ResourceID: tokens[3]}, resourceID: int32(p)}, nil
 }
