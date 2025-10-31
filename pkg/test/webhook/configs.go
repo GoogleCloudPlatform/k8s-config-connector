@@ -27,10 +27,17 @@ func GetTestCommonWebhookConfigs() ([]webhook.Config, error) {
 	}
 	res := make([]webhook.Config, 0)
 	for _, config := range whCfgs {
-		// deny-immutable-field-updates webhook currently cannot work with envtest
-		// because updates from controller cannot be distinguished by service account
-		// TODO: figure out a way to enable it in envtest
-		if config.Name != "deny-immutable-field-updates.cnrm.cloud.google.com" {
+
+		switch config.Name {
+		case "deny-immutable-field-updates.cnrm.cloud.google.com":
+			// deny-immutable-field-updates webhook currently cannot work with envtest
+			// because updates from controller cannot be distinguished by service account
+			// TODO: figure out a way to enable it in envtest
+
+		case "container-annotation-handler.cnrm.cloud.google.com":
+			// Skip to verify that the defaulter works
+
+		default:
 			res = append(res, config)
 		}
 	}

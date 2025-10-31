@@ -39,6 +39,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook"
 	"golang.org/x/oauth2"
 	"google.golang.org/grpc"
 
@@ -158,6 +159,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	}
 
 	stateIntoSpecDefaulter := stateintospec.NewStateIntoSpecDefaulter(mgr.GetClient())
+	containerDefaulter := webhook.NewContainerAnnotationDefaulter(mgr.GetClient(), smLoader, dclSchemaLoader, serviceMetadataLoader)
 
 	controllerConfig := &config.ControllerConfig{
 		UserProjectOverride:        cfg.UserProjectOverride,
@@ -188,6 +190,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		DCLConverter: dclConverter,
 		Defaulters: []k8s.Defaulter{
 			stateIntoSpecDefaulter,
+			containerDefaulter,
 		},
 	}
 
