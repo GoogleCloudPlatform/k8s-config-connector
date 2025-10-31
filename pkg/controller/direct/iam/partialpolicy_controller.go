@@ -199,7 +199,7 @@ func (a *IAMPartialPolicyAdapter) Create(ctx context.Context, createOp *directba
 	}
 
 	resolver := IAMMemberIdentityResolver{IAMClient: a.iamClient, Ctx: ctx}
-	desiredPartialPolicyWithStatus, err := ComputePartialPolicyWithMergedBindings(a.desired, livePolicyForMerge, resolver)
+	desiredPartialPolicyWithStatus, err := ComputePartialPolicyWithMergedBindings(a.desired, livePolicyForMerge, resolver, "direct")
 	if err != nil {
 		return fmt.Errorf("computing partial policy for create for %v: %w", k8s.GetNamespacedName(a.desired), err)
 	}
@@ -240,7 +240,7 @@ func (a *IAMPartialPolicyAdapter) Update(ctx context.Context, updateOp *directba
 
 	resolver := IAMMemberIdentityResolver{IAMClient: a.iamClient, Ctx: ctx}
 
-	desiredPartialPolicyWithStatus, err := ComputePartialPolicyWithMergedBindings(a.desired, livePolicyForMerge, resolver)
+	desiredPartialPolicyWithStatus, err := ComputePartialPolicyWithMergedBindings(a.desired, livePolicyForMerge, resolver, "direct")
 	if err != nil {
 		return fmt.Errorf("computing partial policy for update for %v: %w", k8s.GetNamespacedName(a.desired), err)
 	}
@@ -289,7 +289,7 @@ func (a *IAMPartialPolicyAdapter) Delete(ctx context.Context, deleteOp *directba
 	livePolicyForPruning := &krm.IAMPolicy{}
 	livePolicyForPruning.Spec = direct.ValueOf(IAMPolicySpec_FromProto(mapCtx, a.actualReferencedResourcePolicy))
 
-	desiredPartialPolicyWithRemainingStatus := ComputePartialPolicyWithRemainingBindings(a.desired, livePolicyForPruning)
+	desiredPartialPolicyWithRemainingStatus := ComputePartialPolicyWithRemainingBindings(a.desired, livePolicyForPruning, "direct")
 	finalPolicyToSet := toDesiredPolicy(desiredPartialPolicyWithRemainingStatus, livePolicyForPruning)
 
 	_, err := a.iamClient.SetPolicy(ctx, finalPolicyToSet)
