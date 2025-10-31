@@ -23,6 +23,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
@@ -101,6 +102,8 @@ type Interface interface {
 }
 
 func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage storage.Storage) (Interface, error) {
+	log := klog.FromContext(ctx)
+
 	mockRoundTripper := &mockRoundTripper{}
 	mockHTTPClient := &http.Client{
 		Transport: mockRoundTripper,
@@ -201,10 +204,12 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 
 	mockRoundTripper.server = server
 
-	listener, err := net.Listen("tcp", "localhost:0")
+	// We listen on a random port on 127.0.0.2, to avoid conflicts with the webhook server which starts on a random port on "default" localhost
+	listener, err := net.Listen("tcp", "127.0.0.2:0")
 	if err != nil {
 		return nil, fmt.Errorf("net.Listen failed: %w", err)
 	}
+	log.Info("serving mock gcp grpc server", "address", listener.Addr().String())
 	mockRoundTripper.grpcListener = listener
 
 	endpoint := listener.Addr().String()
