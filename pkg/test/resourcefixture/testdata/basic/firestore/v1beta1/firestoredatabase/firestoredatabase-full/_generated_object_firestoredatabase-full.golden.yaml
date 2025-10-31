@@ -31,4 +31,4 @@ status:
     etag: abcdef123456
     uid: 0123456789abcdef
     updateTime: "1970-01-01T00:00:00Z"
-    versionRetentionPeriod: 604800s
+    versionRetentionPeriod: 168h
