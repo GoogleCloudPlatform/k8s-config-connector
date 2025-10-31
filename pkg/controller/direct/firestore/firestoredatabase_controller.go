@@ -223,6 +223,13 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 			updateMask.Paths = append(updateMask.Paths, "point_in_time_recovery_enablement")
 		}
 	}
+	if !reflect.DeepEqual(resource.DeleteProtectionState, a.actual.DeleteProtectionState) {
+		// Skip update if delete_protection_state is unspecified
+		if resource.DeleteProtectionState != firestorepb.Database_DELETE_PROTECTION_STATE_UNSPECIFIED {
+			newDb.DeleteProtectionState = resource.DeleteProtectionState
+			updateMask.Paths = append(updateMask.Paths, "delete_protection_state")
+		}
+	}
 
 	if len(updateMask.Paths) == 0 {
 		return nil

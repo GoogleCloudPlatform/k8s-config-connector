@@ -22,3 +22,5 @@ spec:
   locationID: us-west2
   concurrencyMode: OPTIMISTIC
   pointInTimeRecoveryEnablement: POINT_IN_TIME_RECOVERY_ENABLED
+  # Enable delete protection to prevent accidental database deletion
+  deleteProtectionState: DELETE_PROTECTION_ENABLED
