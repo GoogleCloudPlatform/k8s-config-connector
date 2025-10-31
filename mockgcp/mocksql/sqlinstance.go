@@ -297,10 +297,10 @@ func currentMaintenanceVersion(databaseVersion pb.SqlDatabaseVersion) (string, e
 		return "MYSQL_5_7_44.R20231105.01_03", nil
 
 	case pb.SqlDatabaseVersion_MYSQL_8_0:
-		return "MYSQL_8_0_40.R20250304.00_03", nil
+		return "MYSQL_8_0_41.R20251004.01_07", nil
 
 	case pb.SqlDatabaseVersion_MYSQL_8_4:
-		return "MYSQL_8_4_4.R20250304.00_03", nil
+		return "MYSQL_8_4_6.R20251004.01_07", nil
 
 	case pb.SqlDatabaseVersion_SQLSERVER_2017_EXPRESS:
 		return "SQLSERVER_2017_EXPRESS_CU31_GDR.R20231029.00_02", nil
@@ -403,47 +403,34 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 		}
 
 	case pb.SqlDatabaseVersion_MYSQL_8_0:
-		obj.DatabaseInstalledVersion = "MYSQL_8_0_40"
-		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
-			{
-				DisplayName:  asRef("MySQL 8.0.35"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_35"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.0.36"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_36"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.0.37"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_37"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.0.39"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_39"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.0.41"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_41"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.0.42"),
-				MajorVersion: asRef("MYSQL_8_0"),
-				Name:         asRef("MYSQL_8_0_42"),
-			},
-			{
-				DisplayName:  asRef("MySQL 8.4"),
-				MajorVersion: asRef("MYSQL_8_4"),
-				Name:         asRef("MYSQL_8_4"),
-			},
+		obj.DatabaseInstalledVersion = "MYSQL_8_0_41"
+		for _, version := range availableDatabaseVersions {
+			if !strings.HasPrefix(version.Version, "8.0.") {
+				continue
+			}
+			displayName := "MySQL " + version.Version
+			name := "MYSQL_" + strings.ReplaceAll(version.Version, ".", "_")
+			majorVersion := "MYSQL_8_0"
+			availableDatabaseVersion := &pb.AvailableDatabaseVersion{
+				DisplayName:  &displayName,
+				MajorVersion: &majorVersion,
+				Name:         &name,
+			}
+			if name == obj.DatabaseInstalledVersion {
+				continue
+			}
+			obj.UpgradableDatabaseVersions = append(obj.UpgradableDatabaseVersions, availableDatabaseVersion)
 		}
 
+		// We also advertise upgrade to MySQL 8.4
+		obj.UpgradableDatabaseVersions = append(obj.UpgradableDatabaseVersions, &pb.AvailableDatabaseVersion{
+			DisplayName:  asRef("MySQL 8.4"),
+			MajorVersion: asRef("MYSQL_8_4"),
+			Name:         asRef("MYSQL_8_4"),
+		})
+
 	case pb.SqlDatabaseVersion_MYSQL_8_4:
-		obj.DatabaseInstalledVersion = "MYSQL_8_4_4"
+		obj.DatabaseInstalledVersion = "MYSQL_8_4_6"
 		obj.UpgradableDatabaseVersions = nil
 
 	case pb.SqlDatabaseVersion_SQLSERVER_2017_EXPRESS:
@@ -886,4 +873,29 @@ func (s *MockService) buildInstanceName(projectID, instanceName string) (*Instan
 
 func asRef[T any](v T) *T {
 	return &v
+}
+
+type availableDatabaseVersion struct {
+	Version string
+}
+
+var availableDatabaseVersions = []availableDatabaseVersion{
+	{Version: "8.0.18"},
+	{Version: "8.0.26"},
+	{Version: "8.0.27"},
+	{Version: "8.0.28"},
+	{Version: "8.0.29"},
+	{Version: "8.0.30"},
+	{Version: "8.0.31"},
+	{Version: "8.0.32"},
+	{Version: "8.0.33"},
+	{Version: "8.0.34"},
+	{Version: "8.0.35"},
+	{Version: "8.0.36"},
+	{Version: "8.0.37"},
+	{Version: "8.0.39"},
+	{Version: "8.0.40"},
+	{Version: "8.0.41"},
+	{Version: "8.0.42"},
+	{Version: "8.0.43"},
 }
