@@ -20,15 +20,6 @@ cd ${REPO_ROOT}
 GOOS=$(go env GOOS)
 GOARCH=$(go env GOARCH)
 
-# Downloads and configures kubebuilder
-VERSION=$(source scripts/shared-vars-public.sh && echo ${KUBEBUILDER_VERSION})
-curl -L -O https://github.com/kubernetes-sigs/kubebuilder/releases/download/v${VERSION}/kubebuilder_${VERSION}_${GOOS}_${GOARCH}.tar.gz
-tar -zxvf kubebuilder_${VERSION}_${GOOS}_${GOARCH}.tar.gz
-sudo mv kubebuilder_${VERSION}_${GOOS}_${GOARCH} /usr/local/kubebuilder
-[[ ":$PATH:" != *":/usr/local/kubebuilder/bin:"* ]] && echo "PATH=\"/usr/local/kubebuilder/bin:\$PATH\"" >> ~/.profile
-source ~/.profile
-rm -f kubebuilder_${VERSION}_${GOOS}_${GOARCH}.tar.gz
-
 # Downloads and configures kustomize
 VERSION=$(source scripts/shared-vars-public.sh && echo "${KUSTOMIZE_VERSION}")
 INSTALL_DIR=/usr/local/kustomize/bin
@@ -42,7 +33,6 @@ source ~/.profile
 rm -f kustomize_v${VERSION}_${GOOS}_${GOARCH}.tar.gz
 
 # Checks to make sure you have all the tools you need
-kubebuilder version
 kustomize version
 
 GREEN='\033[0;32m'
