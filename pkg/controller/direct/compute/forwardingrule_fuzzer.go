@@ -16,7 +16,7 @@
 // proto.message: google.cloud.compute.v1.ForwardingRule
 // api.group: compute.cnrm.cloud.google.com
 
-package forwardingrule
+package compute
 
 import (
 	pb "cloud.google.com/go/compute/apiv1/computepb"
