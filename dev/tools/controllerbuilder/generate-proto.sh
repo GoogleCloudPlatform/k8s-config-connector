@@ -68,6 +68,7 @@ protoc --include_imports --include_source_info \
     -I ${THIRD_PARTY}/googleapis/ \
     -I ${REPO_ROOT}/mockgcp/apis \
     ${REPO_ROOT}/mockgcp/apis/google/apps/cloudidentity/*/*.proto \
+    ${REPO_ROOT}/mockgcp/apis/google/cloud/networkservices/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto \
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/servicenetworking/*/*.proto \

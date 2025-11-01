@@ -1,0 +1,756 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package google.cloud.networkservices.v1;
+
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Google.Cloud.NetworkServices.V1";
+option go_package = "cloud.google.com/go/networkservices/apiv1/networkservicespb;networkservicespb";
+option java_multiple_files = true;
+option java_outer_classname = "EdgeCacheServiceProto";
+option java_package = "com.google.cloud.networkservices.v1";
+option php_namespace = "Google\\Cloud\\NetworkServices\\V1";
+option ruby_package = "Google::Cloud::NetworkServices::V1";
+
+option (google.api.resource_definition) = {
+  type: "networkservices.googleapis.com/EdgeCacheOrigin"
+  pattern: "projects/{project}/locations/{location}/edgeCacheOrigins/{edge_cache_origin}"
+};
+
+option (google.api.resource_definition) = {
+  type: "networkservices.googleapis.com/EdgeCacheKeyset"
+  pattern: "projects/{project}/locations/{location}/edgeCacheKeysets/{edge_cache_keyset}"
+};
+
+option (google.api.resource_definition) = {
+  type: "compute.googleapis.com/SslCertificate"
+  pattern: "projects/{project}/global/sslCertificates/{ssl_certificate}"
+};
+
+option (google.api.resource_definition) = {
+  type: "edgesecurity.googleapis.com/SecurityPolicy"
+  pattern: "projects/{project}/locations/{location}/securityPolicies/{security_policy}"
+};
+
+// EdgeCacheService defines the IP addresses, protocols, security policies,
+// cache policies and routing configuration for a service that is
+// served using Google's Media CDN.
+message EdgeCacheService {
+  option (google.api.resource) = {
+    type: "networkservices.googleapis.com/EdgeCacheService"
+    pattern: "projects/{project}/locations/{location}/edgeCacheServices/{edge_cache_service}"
+  };
+
+  // Identifier. Name of the EdgeCacheService resource. Format:
+  // projects/{project}/locations/{location}/edgeCacheServices/{edge_cache_service}
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
+
+  // Output only. The timestamp when the resource was created.
+  google.protobuf.Timestamp create_time = 2
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The timestamp when the resource was last updated.
+  google.protobuf.Timestamp update_time = 3
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Optional. Set of label tags associated with the EdgeCacheService resource.
+  map<string, string> labels = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. A human-readable description of the resource.
+  string description = 5 [(google.api.field_behavior) = OPTIONAL];
+
+  // Required. Defines how requests are routed, modified, cached and/or
+  // which origin content is filled from.
+  Routing routing = 6 [(google.api.field_behavior) = REQUIRED];
+
+  // Optional. URLs to sslCertificate resources that are used to authenticate
+  // connections between users and the EdgeCacheService.
+  // Note that only "global" certificates with a "scope" of "EDGE_CACHE"
+  // can be attached to an EdgeCacheService.
+  repeated string edge_ssl_certificates = 7 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference) = {
+      type: "compute.googleapis.com/SslCertificate"
+    }
+  ];
+
+  // Optional. HTTP/3 (IETF QUIC) and Google QUIC are enabled by default.
+  bool disable_quic = 8 [(google.api.field_behavior) = OPTIONAL];
+
+  // Output only. The IPv4 addresses that the service will serve traffic on.
+  // These will be static for the lifetime of the service.
+  repeated string ipv4_addresses = 9
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The IPv6 addresses that the service will serve traffic on.
+  // These will be static for the lifetime of the service.
+  repeated string ipv6_addresses = 10
+      [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Optional. Specifies the logging options for the traffic served by this service.
+  // If logging is enabled, logs will be exported to Cloud Logging.
+  LogConfig log_config = 11 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Disables HTTP/2.
+  // HTTP/2 (h2) is enabled by default and recommended for performance.
+  // HTTP/2 improves connection re-use and reduces connection setup overhead
+  // by sending multiple streams over the same connection.
+  bool disable_http2 = 16 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Require TLS (HTTPS) for all clients connecting to this service.
+  bool require_tls = 17 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Resource URL that points at the Cloud Armor edge security policy
+  // that is applied on each request against the EdgeCacheService.
+  string edge_security_policy = 18 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference) = {
+      type: "edgesecurity.googleapis.com/SecurityPolicy"
+    }
+  ];
+}
+
+// Defines how requests are routed, modified, cached and/or which origin
+// content is filled from.
+message Routing {
+  // Required. The list of hostRules to match against. These rules define
+  // which hostnames the EdgeCacheService will match against, and which
+  // route to use for the request.
+  repeated HostRule host_rules = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Required. The list of pathMatchers referenced via name by hostRules.
+  // PathMatcher is used to match the path portion of the URL when a
+  // HostRule matches the URL's host portion.
+  repeated PathMatcher path_matchers = 2
+      [(google.api.field_behavior) = REQUIRED];
+}
+
+// The host rules that define how traffic to the service is routed.
+message HostRule {
+  // Optional. A human-readable description of the hostRule.
+  string description = 1 [(google.api.field_behavior) = OPTIONAL];
+
+  // Required. The list of host patterns to match.
+  // Host patterns must be valid hostnames. Ports are not allowed.
+  // Wildcard hosts are supported in the form of "*" or "*-foo.example.com".
+  // This field is used to match the ":authority" header for HTTP/2 requests
+  // or the "Host" header for HTTP/1.1 requests.
+  repeated string hosts = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Required. The name of the pathMatcher associated with this hostRule.
+  string path_matcher = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+// The PathMatcher maps paths to various RouteRules or actions.
+message PathMatcher {
+  // Required. The name to which this PathMatcher is referred by the HostRule.
+  string name = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Optional. A human-readable description of the resource.
+  string description = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Required. The routeRules to match against. Each rule must reference
+  // an origin via the route_action or a urlRedirect.
+  repeated RouteRule route_rules = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+// The RouteRule maps a request to specific RouteActions.
+message RouteRule {
+  // Required. The priority of this route rule, where 1 is the highest priority.
+  // You cannot configure two or more routeRules with the same priority.
+  // Priority for each rule must be set to a number between 1 and 999 inclusive.
+  int64 priority = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Optional. A human-readable description of the routeRule.
+  string description = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Required. The list of criteria for matching attributes of a request to this
+  // routeRule. All specified conditions must be satisfied for a match.
+  // Must specify at least one match_rule.
+  repeated MatchRule match_rules = 3 [(google.api.field_behavior) = REQUIRED];
+
+  // Optional. The header actions, including adding and removing headers,
+  // for requests that match this route.
+  HeaderAction header_action = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. The route action that will be taken if this routeRule matches.
+  RouteAction route_action = 5 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. The URL redirect configuration for requests that match this route.
+  UrlRedirect url_redirect = 6 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. The origin that requests are routed to when this rule matches.
+  // Origin must be a valid origin resource name. It should be formatted as:
+  // "projects/{project}/locations/{location}/edgeCacheOrigins/{origin}".
+  string origin = 7 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference) = {
+      type: "networkservices.googleapis.com/EdgeCacheOrigin"
+    }
+  ];
+
+  // Optional. routeMethods defines what HTTP methods may match this route.
+  RouteMethods route_methods = 8 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Defines predefined HTTP methods for matching HTTP requests.
+message RouteMethods {
+  // Required. The list of HTTP methods allowed for this route.
+  // Must be non-empty.
+  repeated string allowed_methods = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+// The HTTP request predicates that must be satisfied for the RouteRule
+// to match a request.
+message MatchRule {
+  // Optional. For satisfying the matchRule condition, the path of the request
+  // must match the wildcard pattern specified in pathTemplateMatch
+  // after removing any query parameters and anchor that may be part of
+  // the original URL.
+  string path_template_match = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. For satisfying the matchRule condition, the request's path must
+  // begin with the specified prefixMatch. prefixMatch must begin with a /.
+  string prefix_match = 1 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. For satisfying the matchRule condition, the path of the request
+  // must exactly match the value specified in fullPathMatch after removing
+  // any query parameters and anchor that may be part of the original URL.
+  string full_path_match = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Specifies that prefixMatch and fullPathMatch matches are case
+  // insensitive. The default value is false.
+  bool ignore_case = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Specifies a list of header match criteria, all of which must match
+  // corresponding headers in the request.
+  repeated HeaderMatch header_matches = 5
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Specifies a list of query parameter match criteria, all of which
+  // must match corresponding query parameters in the request.
+  repeated QueryParameterMatch query_parameter_matches = 6
+      [(google.api.field_behavior) = OPTIONAL];
+}
+
+// The HTTP header match criteria for a request to match this route.
+message HeaderMatch {
+  // Required. The header name to match on.
+  string header_name = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Optional. Specifies that the match is negated, i.e. a match will succeed
+  // if the header does NOT match the criteria in this HeaderMatch.
+  bool invert_match = 5 [(google.api.field_behavior) = OPTIONAL];
+
+  // The value of the header must satisfy one of these match criteria.
+  oneof match_type {
+    // Specifies that the header must exist.
+    bool present_match = 2;
+
+    // The value of the header must exactly match the contents of exactMatch.
+    string exact_match = 3;
+
+    // The value of the header must start with the contents of prefixMatch.
+    string prefix_match = 4;
+
+    // The value of the header must end with the contents of suffixMatch.
+    string suffix_match = 6;
+  }
+}
+
+// The query parameter match criteria for a request to match this route.
+message QueryParameterMatch {
+  // Required. The name of the query parameter to match.
+  string name = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The query parameter value must satisfy one of these match criteria.
+  oneof match_type {
+    // Specifies that the query parameter must exist.
+    bool present_match = 2;
+
+    // The value of the query parameter must exactly match the contents
+    // of exactMatch.
+    string exact_match = 3;
+  }
+}
+
+// The header actions.
+message HeaderAction {
+  // Optional. Describes a header to add.
+  repeated AddHeader request_headers_to_add = 1
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. A list of header names for headers that need to be removed
+  // from the request prior to forwarding the request to the origin.
+  repeated RemoveHeader request_headers_to_remove = 2
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Describes a header to add to the response.
+  repeated AddHeader response_headers_to_add = 3
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. A list of header names for headers that need to be removed
+  // from the response prior to sending the response back to the client.
+  repeated RemoveHeader response_headers_to_remove = 4
+      [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Specification to add header to a request or a response.
+message AddHeader {
+  // Required. The name of the header to add.
+  string header_name = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Required. The value of the header to add.
+  string header_value = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Optional. Whether to replace all existing headers with the same name.
+  bool replace = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Specification to remove a header from a request or a response.
+message RemoveHeader {
+  // Required. The name of the header to remove.
+  string header_name = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Specifies the action to be taken on the request or response.
+message RouteAction {
+  // Optional. The policy that determines the caching behavior for the
+  // route.
+  CdnPolicy cdn_policy = 1 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. If specified, the request and response are transformed
+  // based on these rules.
+  UrlRewrite url_rewrite = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. The policy for managing cross-origin resource sharing.
+  CorsPolicy cors_policy = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Specify how to compress the response to the client.
+  // By default, responses are not compressed.
+  CompressionMode compression_mode = 4
+      [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Specifies the mechanism to use for compression.
+enum CompressionMode {
+  // Compression mode is unspecified.
+  // Defaults to DISABLED.
+  COMPRESSION_MODE_UNSPECIFIED = 0;
+
+  // Compression is disabled. (default)
+  DISABLED = 1;
+
+  // Compression is enabled automatically based on client and server support.
+  AUTOMATIC = 2;
+}
+
+// Defines the policy for caching content.
+message CdnPolicy {
+  // Optional. The CacheMode for matching requests.
+  CacheMode cache_mode = 1 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Specifies a separate client TTL, separate from the TTL used for
+  // Google's cache for the object.
+  google.protobuf.Duration client_ttl = 2
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Specifies the default TTL for cached content served by this origin
+  // for responses that do not have an existing valid TTL (max-age or s-max-age).
+  google.protobuf.Duration default_ttl = 3
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Specifies the maximum allowed TTL for cached content served by
+  // this origin.
+  google.protobuf.Duration max_ttl = 4
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Negative caching allows per-status code cache TTLs to be set,
+  // in order to apply fine-grained caching for common errors or redirects.
+  bool negative_caching = 5 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. The policy for negative caching.
+  map<string, google.protobuf.Duration> negative_caching_policy = 6
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Defines the request parameters that contribute to the cache key.
+  CacheKeyPolicy cache_key_policy = 7 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Whether to enforce signed requests.
+  SignedRequestMode signed_request_mode = 8
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. The EdgeCacheKeyset resource that contains the set of public keys
+  // used to validate signed requests at the edge.
+  string signed_request_keyset = 9 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference) = {
+      type: "networkservices.googleapis.com/EdgeCacheKeyset"
+    }
+  ];
+
+  // Optional. Additional options for signed requests.
+  SignedTokenOptions signed_token_options = 10
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Enable signature generation or propagation on this route.
+  AddSignatures add_signatures = 11 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Defines the maximum allowed TTL for signed requests.
+  google.protobuf.Duration signed_request_maximum_expiration_ttl = 12
+      [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Defines different modes for caching content.
+enum CacheMode {
+  // Cache mode is unspecified.
+  CACHE_MODE_UNSPECIFIED = 0;
+
+  // Automatically cache all content that is marked as cacheable by the origin.
+  CACHE_ALL_STATIC = 1;
+
+  // Use the origin's cache control headers to determine whether content
+  // should be cached.
+  USE_ORIGIN_HEADERS = 2;
+
+  // Force cache all content, ignoring any "private", "no-store" or "no-cache"
+  // directives in the origin's cache control headers.
+  FORCE_CACHE_ALL = 3;
+
+  // Cache nothing, even if the origin provides cache control headers.
+  BYPASS_CACHE = 4;
+}
+
+// Defines different modes for enforcing signed requests.
+enum SignedRequestMode {
+  // Signed request mode is unspecified.
+  SIGNED_REQUEST_MODE_UNSPECIFIED = 0;
+
+  // Signed requests are not enforced.
+  SIGNED_REQUEST_MODE_DISABLED = 1;
+
+  // Only signed requests using signatures generated from the keys in the keyset
+  // will be accepted.
+  REQUIRE_SIGNATURES = 2;
+
+  // Only signed requests using tokens will be accepted.
+  REQUIRE_TOKENS = 3;
+}
+
+// Defines signature algorithms for signed requests.
+enum SignatureAlgorithm {
+  // Signature algorithm is unspecified.
+  SIGNATURE_ALGORITHM_UNSPECIFIED = 0;
+
+  // Use the Ed25519 algorithm.
+  ED25519 = 1;
+
+  // Use the HMAC-SHA-256 algorithm.
+  HMAC_SHA_256 = 2;
+
+  // Use the HMAC-SHA1 algorithm.
+  HMAC_SHA1 = 3;
+}
+
+// Defines the parameters that contribute to the cache key.
+message CacheKeyPolicy {
+  // Optional. If true, http and https requests will be cached separately.
+  bool include_protocol = 1 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. If true, requests to different hosts will be cached separately.
+  bool exclude_host = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. If true, exclude query string parameters from the cache key.
+  bool exclude_query_string = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Names of query string parameters to include in cache keys.
+  repeated string included_query_parameters = 4
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Names of query string parameters to exclude from cache keys.
+  repeated string excluded_query_parameters = 5
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Names of HTTP request headers to include in cache keys.
+  repeated string included_header_names = 6
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Names of Cookies to include in cache keys.
+  repeated string included_cookie_names = 7
+      [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Additional options for signed tokens.
+message SignedTokenOptions {
+  // Optional. The query parameter name where the signed token should be found.
+  string token_query_parameter = 1 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. The allowed signature algorithms.
+  repeated SignatureAlgorithm allowed_signature_algorithms = 2
+      [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Enable signature generation or propagation.
+message AddSignatures {
+  // Required. The actions to take to add signatures to responses.
+  repeated SignatureAction actions = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Optional. The keyset to use for signature generation.
+  string keyset = 2 [
+    (google.api.field_behavior) = OPTIONAL,
+    (google.api.resource_reference) = {
+      type: "networkservices.googleapis.com/EdgeCacheKeyset"
+    }
+  ];
+
+  // Optional. The TTL for the generated token.
+  google.protobuf.Duration token_ttl = 3
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. The query parameter to use for the generated token.
+  string token_query_parameter = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Parameters to copy from the verified token to the generated token.
+  repeated string copied_parameters = 5
+      [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Defines the action to take for adding signatures.
+enum SignatureAction {
+  // Signature action is unspecified.
+  SIGNATURE_ACTION_UNSPECIFIED = 0;
+
+  // Generate a cookie signature.
+  GENERATE_COOKIE = 1;
+
+  // Generate a token for HLS cookieless.
+  GENERATE_TOKEN_HLS_COOKIELESS = 2;
+
+  // Propagate a token for HLS cookieless.
+  PROPAGATE_TOKEN_HLS_COOKIELESS = 3;
+}
+
+// Specifies the redirect configuration.
+message UrlRedirect {
+  // Optional. The host that will be used in the redirect response instead of
+  // the one that was supplied in the request.
+  string host_redirect = 1 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. The path that will be used in the redirect response instead of
+  // the one that was supplied in the request.
+  string path_redirect = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. The prefix that will be used in the redirect response instead of
+  // the one that was supplied in the request.
+  string prefix_redirect = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. The HTTP Status code to use for this RedirectAction.
+  RedirectResponseCode redirect_response_code = 4
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. If set to true, the URL scheme in the redirected request is set
+  // to https.
+  bool https_redirect = 5 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. If set to true, any accompanying query portion of the original
+  // URL is removed prior to redirecting the request.
+  bool strip_query = 6 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Defines HTTP status codes for redirect responses.
+enum RedirectResponseCode {
+  // Default redirect response code.
+  REDIRECT_RESPONSE_CODE_UNSPECIFIED = 0;
+
+  // Corresponds to HTTP 301.
+  MOVED_PERMANENTLY_DEFAULT = 1;
+
+  // Corresponds to HTTP 302.
+  FOUND = 2;
+
+  // Corresponds to HTTP 303.
+  SEE_OTHER = 3;
+
+  // Corresponds to HTTP 307.
+  TEMPORARY_REDIRECT = 4;
+
+  // Corresponds to HTTP 308.
+  PERMANENT_REDIRECT = 5;
+}
+
+// Specifies the URL rewrite configuration.
+message UrlRewrite {
+  // Optional. Prior to forwarding the request to the selected origin, the
+  // matching portion of the request's path is replaced by pathPrefixRewrite.
+  string path_prefix_rewrite = 1 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Prior to forwarding the request to the selected origin, if the
+  // request matched a pathTemplateMatch, the matching portion of the
+  // request's path is replaced by pathTemplateRewrite.
+  string path_template_rewrite = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Prior to forwarding the request to the selected origin, the
+  // request's host header is replaced by hostRewrite.
+  string host_rewrite = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Defines the policy for cross-origin resource sharing.
+message CorsPolicy {
+  // Required. Specifies the content for the Access-Control-Max-Age header.
+  google.protobuf.Duration max_age = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // Optional. Specifies the list of origins that will be allowed to do CORS
+  // requests.
+  repeated string allow_origins = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Specifies the content for the
+  // Access-Control-Allow-Methods header.
+  repeated string allow_methods = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Specifies the content for the
+  // Access-Control-Allow-Headers header.
+  repeated string allow_headers = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Specifies the content for the
+  // Access-Control-Expose-Headers header.
+  repeated string expose_headers = 5 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Specifies whether credentials are allowed in CORS requests.
+  bool allow_credentials = 6 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. If true, CORS policy is disabled. Defaults to false.
+  bool disabled = 7 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Logging configuration for the service.
+message LogConfig {
+  // Optional. Specifies whether to enable logging for traffic served by this
+  // service.
+  bool enable = 1 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Configures the sampling rate of requests. Must be between 0.0
+  // and 1.0 inclusive.
+  float sample_rate = 2 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Request message for NetworkServices.ListEdgeCacheServices.
+message ListEdgeCacheServicesRequest {
+  // Required. The project and location to list resources on, specified in the
+  // following format: `projects/{project}/locations/{location}`.
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      child_type: "networkservices.googleapis.com/EdgeCacheService"
+    }
+  ];
+
+  // Optional. Maximum count of services to be returned. Maximum value is 1000.
+  // If not specified, the default is 1000.
+  int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. The value returned by the last
+  // `ListEdgeCacheServicesResponse` call, indicates that this is a
+  // continuation of a prior list call and that the system should return the
+  // next page of data.
+  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. The filter expression to use for listing.
+  string filter = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. One or more fields to compare and use to sort the output.
+  string order_by = 5 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for NetworkServices.ListEdgeCacheServices.
+message ListEdgeCacheServicesResponse {
+  // The list of EdgeCacheService resources.
+  repeated EdgeCacheService edge_cache_services = 1;
+
+  // If there might be more results than those appearing in this response,
+  // then `next_page_token` is included. To get the next set of results,
+  // call this method again using the value of `next_page_token` as
+  // `page_token`.
+  string next_page_token = 2;
+
+  // Locations that could not be reached.
+  repeated string unreachable = 3;
+}
+
+// Request message for NetworkServices.GetEdgeCacheService.
+message GetEdgeCacheServiceRequest {
+  // Required. The name of the EdgeCacheService to get.
+  // Format:
+  // projects/{project}/locations/{location}/edgeCacheServices/{edge_cache_service}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "networkservices.googleapis.com/EdgeCacheService"
+    }
+  ];
+}
+
+// Request message for NetworkServices.CreateEdgeCacheService.
+message CreateEdgeCacheServiceRequest {
+  // Required. The parent resource of the EdgeCacheService. Must be in the
+  // format `projects/{project}/locations/{location}`.
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      child_type: "networkservices.googleapis.com/EdgeCacheService"
+    }
+  ];
+
+  // Required. Short name of the EdgeCacheService resource to be created.
+  // It matches the pattern: `[a-z]([a-z0-9-]{0,61}[a-z0-9])?`
+  string edge_cache_service_id = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Required. EdgeCacheService resource to be created.
+  EdgeCacheService edge_cache_service = 3
+      [(google.api.field_behavior) = REQUIRED];
+}
+
+// Request message for NetworkServices.UpdateEdgeCacheService.
+message UpdateEdgeCacheServiceRequest {
+  // Optional. Field mask is used to specify the fields to be overwritten in the
+  // EdgeCacheService resource by the update. The fields specified in the
+  // update_mask are relative to the resource, not the full request. A field
+  // will be overwritten if it is in the mask. If the user does not provide
+  // a mask then all fields will be overwritten.
+  google.protobuf.FieldMask update_mask = 1
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Required. The resource being updated.
+  EdgeCacheService edge_cache_service = 2
+      [(google.api.field_behavior) = REQUIRED];
+}
+
+// Request message for NetworkServices.DeleteEdgeCacheService.
+message DeleteEdgeCacheServiceRequest {
+  // Required. The name of the EdgeCacheService to delete.
+  // Format:
+  // projects/{project}/locations/{location}/edgeCacheServices/{edge_cache_service}
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "networkservices.googleapis.com/EdgeCacheService"
+    }
+  ];
+}
