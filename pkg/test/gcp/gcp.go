@@ -72,6 +72,7 @@ var (
 	TestKCCVertexAIIndexDataURI             = EnvVar{Key: "KCC_VERTEX_AI_INDEX_TEST_DATA_URI"}
 	TestGroupEmail                          = EnvVar{Key: "KCC_ENG_GROUP_EMAIL"}
 	TestInterconnectID                      = EnvVar{Key: "TEST_INTERCONNECT"}
+	TestKCCAppProject                       = EnvVar{Key: "KCC_APP_TEST_PROJECT"}
 )
 
 const (

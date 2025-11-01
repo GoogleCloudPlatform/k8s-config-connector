@@ -204,36 +204,27 @@ type AppEngineParent struct {
 }
 
 func (p AppEngineParent) buildIAPSettingsID(ctx context.Context, reader client.Reader, namespace string) (string, error) {
-	project, err := refsv1beta1.ResolveProject(ctx, reader, namespace, p.ProjectRef)
-	if err != nil {
-		return "", err
-	}
-
-	appID, err := refsv1beta1.ResolveAppEngineApplicationID(ctx, reader, namespace, p.ApplicationRef)
+	application, err := refsv1beta1.ResolveAppEngineApplicationExternal(ctx, reader, namespace, p.ApplicationRef)
 	if err != nil {
 		return "", err
 	}
 
 	if p.ServiceRef != nil {
-		serviceID, err := refsv1beta1.ResolveAppEngineServiceID(ctx, reader, namespace, p.ServiceRef)
+		service, err := refsv1beta1.ResolveAppEngineServiceExternal(ctx, reader, namespace, p.ServiceRef)
 		if err != nil {
 			return "", err
 		}
-
-		if p.VersionRef != nil {
-			versionID, err := refsv1beta1.ResolveAppEngineVersionID(ctx, reader, namespace, p.VersionRef)
-			if err != nil {
-				return "", err
-			}
-			return fmt.Sprintf("projects/%s/iap_web/appengine-%s/services/%s/versions/%s",
-				project.ProjectID, appID, serviceID, versionID), nil
-		}
-
-		return fmt.Sprintf("projects/%s/iap_web/appengine-%s/services/%s",
-			project.ProjectID, appID, serviceID), nil
+		return service, nil
 	}
 
-	return fmt.Sprintf("projects/%s/iap_web/appengine-%s", project.ProjectID, appID), nil
+	if p.VersionRef != nil {
+		version, err := refsv1beta1.ResolveAppEngineVersionExternal(ctx, reader, namespace, p.VersionRef)
+		if err != nil {
+			return "", err
+		}
+		return version, nil
+	}
+	return application, nil
 }
 
 // getParentReference extracts the appropriate parent reference from an IAPSettings object

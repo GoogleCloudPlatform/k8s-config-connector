@@ -452,6 +452,7 @@ func newSubstitutionVariables(t *testing.T, project testgcp.GCPProject) map[stri
 	// It needs to be a real group email, so decide to use a placeholder here to
 	// avoid exposing internal information.
 	subs["${GROUP_EMAIL?}"] = testgcp.TestGroupEmail.Get()
+	subs["${KCC_APP_TEST_PROJECT?}"] = testgcp.TestKCCAppProject.Get()
 	return subs
 }
 
