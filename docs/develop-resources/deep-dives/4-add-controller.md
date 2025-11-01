@@ -32,9 +32,23 @@ The controller template has implemented the model interface` find, create, updat
 
 ## 4.2 Resolve resource references
 
-Most Config Connector resources need references like `spec.projectRef`. You should add those references in `AdapterForObject` using functions `Resolve<RefResource>`.
+Many Config Connector resources have dependencies that are specified via references (e.g., spec.networkRef) to other Google Cloud resources.
+For example, a firewall rule must reference a compute network.
 
-If there is no previous reference method, you may need to add a new` Resolve<RefResource>`.
+To ensure these required and optional references are pre-resolved correctly, use the command below to generate a resolve refs function:
+
+```
+cd dev/tools/controllerbuilder
+go run generate-resolverefs --api-version=apigee.cnrm.cloud.google.com/v1beta1
+```
+A file named `<resource>_resolverefs.go` is created, containing the function `Resolve<resource>Refs`, which is generated alongside the controller.
+Review and resolve/normalize all references noted in the TODO messages. Example can be found in pkg/controller/direct/apigee/endpointattachment_resolverefs.go.
+
+Note: The generated code includes both parent and regular references. However, parent references are already resolved during the resource's identity initialization, 
+so you can skip resolving them within this function.
+
+Note: Remember to call the `Resolve<resource>Refs` function inside the controller's Create and Update logic.
+Most resources do not require reference resolution during deletion. If you encounter an edge case or are unsure due to a special API design, please consult the Config Connector team for guidance.
 
 Check the validation guide to make sure your validation is complete.
 
