@@ -38,7 +38,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/unmanageddetector"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/conversion"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
+	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpwatch"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
@@ -49,6 +49,7 @@ import (
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/client-go/metadata"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	crcontroller "sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/event"
@@ -82,8 +83,23 @@ func AddDefaultControllers(ctx context.Context, mgr manager.Manager, rd *control
 // AddDeletionDefender creates the registration controller with the deletion-defender factory,
 // this will dynamically create the deletion-defender controller bound to each CRD.
 func AddDeletionDefender(mgr manager.Manager, rd *controller.Deps) error {
+
+	uncachedMetadataClient, err := metadata.NewForConfigAndClient(mgr.GetConfig(), mgr.GetHTTPClient())
+	if err != nil {
+		return fmt.Errorf("error creating uncached metadata client: %w", err)
+	}
 	opt := RegistrationControllerOptions{
 		ControllerName: "deletion-defender-registration-controller",
+	}
+
+	registerDeletionDefenderController := func(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, _ schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
+		if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
+			return nil, nil
+		}
+		if err := deletiondefender.Add(r.mgr, crd, uncachedMetadataClient); err != nil {
+			return nil, fmt.Errorf("error registering deletion defender controller for '%v': %w", crd.GetName(), err)
+		}
+		return nil, nil
 	}
 
 	if err := add(mgr, &controller.Deps{}, registerDeletionDefenderController, opt); err != nil {
@@ -109,7 +125,7 @@ func AddUnmanagedDetector(mgr manager.Manager, rd *controller.Deps) error {
 // and Start it when the Manager is Started.
 func add(mgr manager.Manager, rd *controller.Deps, regFunc registrationFunc, opts RegistrationControllerOptions) error {
 	if rd.JitterGen == nil {
-		var dclML metadata.ServiceMetadataLoader
+		var dclML dclmetadata.ServiceMetadataLoader
 		if rd.DCLConverter != nil {
 			dclML = rd.DCLConverter.MetadataLoader
 		}
@@ -346,16 +362,6 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 		}
 	}
 	return schemaUpdater, nil
-}
-
-func registerDeletionDefenderController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, _ schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
-	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
-		return nil, nil
-	}
-	if err := deletiondefender.Add(r.mgr, crd); err != nil {
-		return nil, fmt.Errorf("error registering deletion defender controller for '%v': %w", crd.GetName(), err)
-	}
-	return nil, nil
 }
 
 func registerUnmanagedDetectorController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, _ schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
