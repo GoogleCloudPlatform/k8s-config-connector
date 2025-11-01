@@ -114,13 +114,14 @@ var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	fqn := a.id.String()
-	log.V(2).Info("getting FirestoreDatabase", "name", fqn)
 
 	if a.id == nil {
 		return false, nil
 	}
 
+	fqn := a.id.String()
+
+	log.V(2).Info("getting FirestoreDatabase", "name", fqn)
 	req := &firestorepb.GetDatabaseRequest{Name: fqn}
 	firestoredatabasepb, err := a.firestoreAdminClient.GetDatabase(ctx, req)
 	if err != nil {

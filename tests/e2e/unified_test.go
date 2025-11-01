@@ -244,7 +244,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					case "bigtable.cnrm.cloud.google.com",
 						"gkehub.cnrm.cloud.google.com",
 						"kms.cnrm.cloud.google.com",
-						"orgpolicy.cnrm.cloud.google.com":
+						"orgpolicy.cnrm.cloud.google.com",
+						"firestore.cnrm.cloud.google.com":
 						// Use SSA
 
 					default:

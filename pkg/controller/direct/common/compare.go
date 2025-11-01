@@ -143,3 +143,7 @@ func IsFieldBehavior(field protoreflect.FieldDescriptor, fieldBehavior annotatio
 	}
 	return false
 }
+
+func ProtoClone[T proto.Message](obj T) T {
+	return proto.Clone(obj).(T)
+}
