@@ -24,7 +24,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/connections/af260b00-8751-450e-9b53-21d0b4bffb18
+  externalRef: projects/${projectId}/locations/us-central1/connections/71389360-831c-431d-8975-837aee2153be
   observedGeneration: 2
   observedState:
     spark:
