@@ -55,7 +55,9 @@ Note that the first time you write this, it will fail because it is updating the
 
 If the output changes, that means that GCP returns "volatile" results (like timestamps, or random identifiers).  Update `normalize.go` to replace these volatile values with placeholders.
 
-Once the output is stable (the tests pass), then please create a commit that is something like "golden output for mock<service>/testdata/<resource>/crud"
+Once the output is stable (the tests pass), please create two commits.
+First, add the test input files (`script.yaml` and any supporting files) with a commit message like `mockgcp: create test for gcloud <service> <resource>`.
+Then add the golden output file (`_http.log`) with a commit message like `autogen: golden output for mock<service>/testdata/<resource>/crud`.
 
 ## Running the test against mockgcp
 

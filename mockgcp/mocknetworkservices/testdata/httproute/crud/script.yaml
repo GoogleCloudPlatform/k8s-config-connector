@@ -1,0 +1,6 @@
+- exec: gcloud compute backend-services  create my-backend-service-${uniqueId} --global --project=${projectId}
+- template: httproute.yaml
+- exec: gcloud network-services http-routes import test-${uniqueId} --source=httproute.yaml --location=global --project=${projectId}
+- exec: gcloud network-services http-routes describe test-${uniqueId} --location=global --project=${projectId}
+- exec: gcloud network-services http-routes delete test-${uniqueId} --location=global --project=${projectId} --quiet
+- exec: gcloud compute backend-services delete my-backend-service-${uniqueId}  --global --project=${projectId} --quiet

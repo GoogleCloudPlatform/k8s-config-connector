@@ -1,0 +1,9 @@
+name: projects/${projectId}/locations/global/httpRoutes/test-${uniqueId}
+hostnames:
+- "example.com"
+rules:
+- matches:
+  - prefixMatch: /
+  action:
+    destinations:
+    - serviceName: projects/${projectId}/locations/global/backendServices/my-backend-service-${uniqueId}

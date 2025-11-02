@@ -14,7 +14,7 @@
 
 // +tool:mockgcp-support
 // proto.service: google.cloud.networkservices.v1.NetworkServices
-// proto.message: google.cloud.networkservices.v1.ServiceBinding
+// proto.message: google.cloud.networkservices.v1.HttpRoute
 
 package mocknetworkservices
 
@@ -37,18 +37,18 @@ import (
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 )
 
-func (s *NetworkServicesServer) GetServiceBinding(ctx context.Context, req *pb.GetServiceBindingRequest) (*pb.ServiceBinding, error) {
-	name, err := s.parseServiceBindingName(req.Name)
+func (s *NetworkServicesServer) GetHttpRoute(ctx context.Context, req *pb.GetHttpRouteRequest) (*pb.HttpRoute, error) {
+	name, err := s.parseHttpRouteName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 	fqn := name.String()
 
-	obj := &pb.ServiceBinding{}
+	obj := &pb.HttpRoute{}
 	obj.Name = fqn
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "The ServiceBinding does not exist.")
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -59,15 +59,15 @@ func (s *NetworkServicesServer) GetServiceBinding(ctx context.Context, req *pb.G
 	return obj, nil
 }
 
-func (s *NetworkServicesServer) ListServiceBindings(ctx context.Context, req *pb.ListServiceBindingsRequest) (*pb.ListServiceBindingsResponse, error) {
-	response := &pb.ListServiceBindingsResponse{}
+func (s *NetworkServicesServer) ListHttpRoutes(ctx context.Context, req *pb.ListHttpRoutesRequest) (*pb.ListHttpRoutesResponse, error) {
+	response := &pb.ListHttpRoutesResponse{}
 
-	findKind := (&pb.ServiceBinding{}).ProtoReflect().Descriptor()
+	findKind := (&pb.HttpRoute{}).ProtoReflect().Descriptor()
 	if err := s.storage.List(ctx, findKind, storage.ListOptions{
-		Prefix: req.Parent + "/serviceBindings/",
+		Prefix: req.Parent + "/httpRoutes/",
 	}, func(obj proto.Message) error {
-		serviceBinding := obj.(*pb.ServiceBinding)
-		response.ServiceBindings = append(response.ServiceBindings, serviceBinding)
+		httpRoute := obj.(*pb.HttpRoute)
+		response.HttpRoutes = append(response.HttpRoutes, httpRoute)
 		return nil
 	}); err != nil {
 		return nil, err
@@ -75,9 +75,9 @@ func (s *NetworkServicesServer) ListServiceBindings(ctx context.Context, req *pb
 	return response, nil
 }
 
-func (s *NetworkServicesServer) CreateServiceBinding(ctx context.Context, req *pb.CreateServiceBindingRequest) (*longrunningpb.Operation, error) {
-	reqName := req.Parent + "/serviceBindings/" + req.ServiceBindingId
-	name, err := s.parseServiceBindingName(reqName)
+func (s *NetworkServicesServer) CreateHttpRoute(ctx context.Context, req *pb.CreateHttpRouteRequest) (*longrunningpb.Operation, error) {
+	reqName := req.Parent + "/httpRoutes/" + req.HttpRouteId
+	name, err := s.parseHttpRouteName(reqName)
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +85,7 @@ func (s *NetworkServicesServer) CreateServiceBinding(ctx context.Context, req *p
 
 	now := time.Now()
 
-	obj := ProtoClone(req.ServiceBinding)
+	obj := ProtoClone(req.HttpRoute)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -109,14 +109,14 @@ func (s *NetworkServicesServer) CreateServiceBinding(ctx context.Context, req *p
 	})
 }
 
-func (s *NetworkServicesServer) DeleteServiceBinding(ctx context.Context, req *pb.DeleteServiceBindingRequest) (*longrunningpb.Operation, error) {
-	name, err := s.parseServiceBindingName(req.Name)
+func (s *NetworkServicesServer) DeleteHttpRoute(ctx context.Context, req *pb.DeleteHttpRouteRequest) (*longrunningpb.Operation, error) {
+	name, err := s.parseHttpRouteName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 	fqn := name.String()
 
-	deleted := &pb.ServiceBinding{}
+	deleted := &pb.HttpRoute{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
 		return nil, err
 	}
@@ -136,31 +136,31 @@ func (s *NetworkServicesServer) DeleteServiceBinding(ctx context.Context, req *p
 	})
 }
 
-type serviceBindingName struct {
-	Project            *projects.ProjectData
-	Location           string
-	ServiceBindingName string
+type httpRouteName struct {
+	Project       *projects.ProjectData
+	Location      string
+	HttpRouteName string
 }
 
-func (n *serviceBindingName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/serviceBindings/" + n.ServiceBindingName
+func (n *httpRouteName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/httpRoutes/" + n.HttpRouteName
 }
 
-// parseServiceBindingName parses a string into an serviceBindingName.
-// The expected form is `projects/*/locations/global/serviceBindings/*`.
-func (s *NetworkServicesServer) parseServiceBindingName(name string) (*serviceBindingName, error) {
+// parseHttpRouteName parses a string into an httpRouteName.
+// The expected form is `projects/*/locations/global/httpRoutes/*`.
+func (s *NetworkServicesServer) parseHttpRouteName(name string) (*httpRouteName, error) {
 	tokens := strings.Split(name, "/")
 
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "serviceBindings" {
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "httpRoutes" {
 		project, err := s.Projects.GetProjectByID(tokens[1])
 		if err != nil {
 			return nil, err
 		}
 
-		name := &serviceBindingName{
-			Project:            project,
-			Location:           tokens[3],
-			ServiceBindingName: tokens[5],
+		name := &httpRouteName{
+			Project:       project,
+			Location:      tokens[3],
+			HttpRouteName: tokens[5],
 		}
 
 		return name, nil
