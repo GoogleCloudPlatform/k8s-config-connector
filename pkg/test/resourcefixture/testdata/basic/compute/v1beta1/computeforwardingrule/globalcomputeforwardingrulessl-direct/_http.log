@@ -196,7 +196,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -216,11 +216,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "healthCheck \"projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}\" not found",
+        "message": "healthCheck \"projects/${projectId}/global/healthChecks/${healthCheckID}\" not found",
         "reason": "notFound"
       }
     ],
-    "message": "healthCheck \"projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}\" not found"
+    "message": "healthCheck \"projects/${projectId}/global/healthChecks/${healthCheckID}\" not found"
   }
 }
 
@@ -238,7 +238,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "proxyHeader": "NONE",
     "requestPath": "/"
   },
-  "name": "computehealthcheck-${uniqueId}",
+  "name": "${healthCheckID}",
   "timeoutSec": 5,
   "type": "HTTP",
   "unhealthyThreshold": 2
@@ -259,15 +259,50 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "insert",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -292,8 +327,8 @@ X-Xss-Protection: 0
   },
   "id": "000000000000000000000",
   "kind": "compute#healthCheck",
-  "name": "computehealthcheck-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}",
+  "name": "${healthCheckID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
   "timeoutSec": 5,
   "type": "HTTP",
   "unhealthyThreshold": 2
@@ -301,7 +336,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -321,11 +356,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}' was not found",
+        "message": "The resource 'projects/${projectId}/global/backendServices/${backendServiceID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}' was not found"
+    "message": "The resource 'projects/${projectId}/global/backendServices/${backendServiceID}' was not found"
   }
 }
 
@@ -340,7 +375,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "drainingTimeoutSec": 300
   },
   "healthChecks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}"
   ],
   "iap": {
     "enabled": false,
@@ -348,7 +383,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "oauth2ClientSecret": ""
   },
   "loadBalancingScheme": "EXTERNAL",
-  "name": "computebackendservice-${uniqueId}",
+  "name": "${backendServiceID}",
   "protocol": "SSL"
 }
 
@@ -367,15 +402,50 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "insert",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -390,12 +460,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "affinityCookieTtlSec": 0,
   "connectionDraining": {
     "drainingTimeoutSec": 300
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "enableCDN": false,
+  "fingerprint": "abcdef0123A=",
   "healthChecks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}"
   ],
   "iap": {
     "enabled": false,
@@ -405,9 +479,10 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#backendService",
   "loadBalancingScheme": "EXTERNAL",
-  "name": "computebackendservice-${uniqueId}",
+  "name": "${backendServiceID}",
   "protocol": "SSL",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "sessionAffinity": "NONE"
 }
 
 ---
@@ -574,7 +649,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "description": "test description",
   "name": "${targetSslProxyID}",
   "proxyHeader": "NONE",
-  "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
+  "service": "projects/${projectId}/global/backendServices/${backendServiceID}",
   "sslCertificates": [
     "projects/${projectId}/global/sslCertificates/${sslCertificateID}"
   ]
@@ -660,7 +735,7 @@ X-Xss-Protection: 0
   "name": "${targetSslProxyID}",
   "proxyHeader": "NONE",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}",
-  "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
+  "service": "projects/${projectId}/global/backendServices/${backendServiceID}",
   "sslCertificates": [
     "projects/${projectId}/global/sslCertificates/${sslCertificateID}"
   ]
@@ -706,7 +781,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "description": "other test description",
   "name": "${targetSslProxyID}",
   "proxyHeader": "NONE",
-  "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
+  "service": "projects/${projectId}/global/backendServices/${backendServiceID}",
   "sslCertificates": [
     "projects/${projectId}/global/sslCertificates/${sslCertificateID}"
   ]
@@ -792,7 +867,7 @@ X-Xss-Protection: 0
   "name": "${targetSslProxyID}",
   "proxyHeader": "NONE",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}",
-  "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
+  "service": "projects/${projectId}/global/backendServices/${backendServiceID}",
   "sslCertificates": [
     "projects/${projectId}/global/sslCertificates/${sslCertificateID}"
   ]
@@ -1262,7 +1337,7 @@ X-Xss-Protection: 0
   "name": "${targetSslProxyID}",
   "proxyHeader": "NONE",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}",
-  "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
+  "service": "projects/${projectId}/global/backendServices/${backendServiceID}",
   "sslCertificates": [
     "projects/${projectId}/global/sslCertificates/${sslCertificateID}"
   ]
@@ -1354,7 +1429,7 @@ X-Xss-Protection: 0
   "name": "${targetSslProxyID}",
   "proxyHeader": "NONE",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetSslProxies/${targetSslProxyID}",
-  "service": "projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}",
+  "service": "projects/${projectId}/global/backendServices/${backendServiceID}",
   "sslCertificates": [
     "projects/${projectId}/global/sslCertificates/${sslCertificateID}"
   ]
@@ -1512,7 +1587,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1527,12 +1602,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "affinityCookieTtlSec": 0,
   "connectionDraining": {
     "drainingTimeoutSec": 300
   },
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "enableCDN": false,
+  "fingerprint": "abcdef0123A=",
   "healthChecks": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}"
   ],
   "iap": {
     "enabled": false,
@@ -1542,14 +1621,15 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#backendService",
   "loadBalancingScheme": "EXTERNAL",
-  "name": "computebackendservice-${uniqueId}",
+  "name": "${backendServiceID}",
   "protocol": "SSL",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}"
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "sessionAffinity": "NONE"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1568,15 +1648,50 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "delete",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${backendServiceID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1601,8 +1716,8 @@ X-Xss-Protection: 0
   },
   "id": "000000000000000000000",
   "kind": "compute#healthCheck",
-  "name": "computehealthcheck-${uniqueId}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}",
+  "name": "${healthCheckID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
   "timeoutSec": 5,
   "type": "HTTP",
   "unhealthyThreshold": 2
@@ -1610,7 +1725,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/computehealthcheck-${uniqueId}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1629,10 +1744,45 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "compute#operation",
   "name": "${operationID}",
+  "operationType": "delete",
   "progress": 0,
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE"
+  "status": "RUNNING",
+  "targetId": "${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${healthCheckID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/healthChecks/${healthCheckID}",
+  "user": "user@example.com"
 }
 
 ---
