@@ -19,6 +19,8 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+var FirestoreIndexGVK = GroupVersion.WithKind("FirestoreIndex")
+
 // +kcc:proto=google.firestore.admin.v1.Index.IndexField
 type IndexFields struct {
 	/* Immutable. Indicates that this field supports operations on arrayValues. Only one of 'order' and 'arrayConfig' can

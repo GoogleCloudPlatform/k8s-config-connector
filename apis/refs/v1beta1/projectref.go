@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -149,7 +150,11 @@ func ResolveProject(ctx context.Context, reader client.Reader, otherNamespace st
 	}, nil
 }
 
-func ResolveProjectID(ctx context.Context, reader client.Reader, obj *unstructured.Unstructured) (string, error) {
+func ResolveProjectID(ctx context.Context, reader client.Reader, runtimeObject runtime.Object) (string, error) {
+	obj, err := AsUnstructured(runtimeObject)
+	if err != nil {
+		return "", err
+	}
 	projectRefExternal, _, _ := unstructured.NestedString(obj.Object, "spec", "projectRef", "external")
 	if projectRefExternal != "" {
 		projectRef := ProjectRef{
@@ -187,6 +192,20 @@ func ResolveProjectID(ctx context.Context, reader client.Reader, obj *unstructur
 	}
 
 	return "", fmt.Errorf("cannot find project id for %v %v/%v", obj.GetKind(), obj.GetNamespace(), obj.GetName())
+}
+
+// AsUnstructured will convert the given runtime.Object into an Unstructured object.
+func AsUnstructured(obj runtime.Object) (*unstructured.Unstructured, error) {
+	u, ok := obj.(*unstructured.Unstructured)
+	if ok {
+		return u, nil
+	}
+	m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, fmt.Errorf("error converting %T to unstructured: %w", obj, err)
+	}
+	u = &unstructured.Unstructured{Object: m}
+	return u, nil
 }
 
 func (r *ProjectRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {

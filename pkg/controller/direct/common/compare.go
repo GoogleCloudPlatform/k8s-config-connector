@@ -26,7 +26,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 )
 
-type CompareDiff func(fieldName protoreflect.Name, a, b proto.Message) (bool, error)
+type CompareDiffFunc func(fieldName protoreflect.Name, a, b proto.Message) (bool, error)
 
 var BasicDiff = func(fieldName protoreflect.Name, a, b proto.Message) (bool, error) {
 	aField := a.ProtoReflect().Descriptor().Fields().ByName(fieldName)
@@ -80,7 +80,7 @@ var BasicDiff = func(fieldName protoreflect.Name, a, b proto.Message) (bool, err
 	return diff, nil
 }
 
-func CompareProtoMessage(a, b proto.Message, compareDiff CompareDiff) (sets.Set[string], error) {
+func CompareProtoMessage(a, b proto.Message, compareDiff CompareDiffFunc) (sets.Set[string], error) {
 	diffPaths := sets.Set[string]{}
 	aDescriptor := a.ProtoReflect().Descriptor()
 
