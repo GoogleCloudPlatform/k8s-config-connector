@@ -106,7 +106,9 @@ func run(ctx context.Context) error {
 
 	// Expose the registered metrics via HTTP.
 	go func() {
-		http.Handle("/metrics", promhttp.Handler())
+		http.Handle("/metrics", promhttp.HandlerFor(prometheus.DefaultGatherer, promhttp.HandlerOpts{
+			DisableCompression: true, // Disable compression to save memory - flate is surprisingly memory hungry
+		}))
 		logging.Fatal(http.ListenAndServe(prometheusScrapeEndpoint, nil), "error registering the Prometheus HTTP handler")
 	}()
 
