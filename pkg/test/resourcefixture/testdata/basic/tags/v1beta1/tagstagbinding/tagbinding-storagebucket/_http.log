@@ -242,7 +242,6 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
-  "generation": "1762195399257164206",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -291,7 +290,6 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
-  "generation": "1762195399257164206",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -367,6 +365,7 @@ X-Xss-Protection: 0
 
 {
   "done": true,
+  "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagBinding",
     "name": "tagBindings/%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Ftagbinding-sb-${uniqueId}/tagValues/${tagValueID}",
@@ -421,6 +420,7 @@ X-Xss-Protection: 0
 
 {
   "done": true,
+  "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
@@ -440,7 +440,6 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
-  "generation": "1762195399257164206",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -488,7 +487,11 @@ Vary: Origin
 Vary: X-Origin
 
 {
-  "kind": "storage#objects"
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
 }
 
 ---

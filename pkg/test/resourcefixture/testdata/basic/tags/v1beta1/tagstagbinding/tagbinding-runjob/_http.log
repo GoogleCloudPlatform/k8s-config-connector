@@ -197,7 +197,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'tagbinding-runjob-${uniqueId}' of kind 'JOB' in region 'us-central1' in project '${projectId}' does not exist.",
+    "message": "job \"projects/${projectId}/locations/us-central1/jobs/tagbinding-runjob-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -235,14 +235,13 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
-    "lastModifier": "yuwenma@google.com",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/tagbinding-runjob-${uniqueId}",
-    "reconciling": true,
     "template": {
       "taskCount": 1,
       "template": {
@@ -264,7 +263,9 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "state": "CONDITION_PENDING"
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
   },
@@ -292,14 +293,13 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
-    "lastModifier": "yuwenma@google.com",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/tagbinding-runjob-${uniqueId}",
-    "observedGeneration": "1",
     "template": {
       "taskCount": 1,
       "template": {
@@ -331,14 +331,13 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
-    "lastModifier": "yuwenma@google.com",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/tagbinding-runjob-${uniqueId}",
-    "observedGeneration": "1",
     "template": {
       "taskCount": 1,
       "template": {
@@ -390,11 +389,10 @@ X-Xss-Protection: 0
   "creator": "${creatorID}",
   "etag": "abcdef0123A=",
   "generation": "1",
-  "lastModifier": "yuwenma@google.com",
+  "lastModifier": "test@google.com",
   "latestCreatedExecution": {},
   "launchStage": "GA",
   "name": "projects/${projectId}/locations/us-central1/jobs/tagbinding-runjob-${uniqueId}",
-  "observedGeneration": "1",
   "template": {
     "taskCount": 1,
     "template": {
@@ -465,6 +463,7 @@ X-Xss-Protection: 0
 
 {
   "done": true,
+  "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagBinding",
     "name": "tagBindings/%2F%2Frun.googleapis.com%2Fprojects%2F${projectNumber}%2Flocations%2Fus-central1%2Fjobs%2Ftagbinding-runjob-${uniqueId}/tagValues/${tagValueID}",
@@ -519,6 +518,7 @@ X-Xss-Protection: 0
 
 {
   "done": true,
+  "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
@@ -545,11 +545,10 @@ X-Xss-Protection: 0
   "creator": "${creatorID}",
   "etag": "abcdef0123A=",
   "generation": "1",
-  "lastModifier": "yuwenma@google.com",
+  "lastModifier": "test@google.com",
   "latestCreatedExecution": {},
   "launchStage": "GA",
   "name": "projects/${projectId}/locations/us-central1/jobs/tagbinding-runjob-${uniqueId}",
-  "observedGeneration": "1",
   "template": {
     "taskCount": 1,
     "template": {
@@ -599,17 +598,13 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
-    "deleteTime": "2025-11-03T18:24:14.299229Z",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
-    "expireTime": "2025-12-03T18:24:14.299229Z",
-    "generation": "2",
-    "lastModifier": "yuwenma@google.com",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/tagbinding-runjob-${uniqueId}",
-    "observedGeneration": "1",
-    "reconciling": true,
     "template": {
       "taskCount": 1,
       "template": {
@@ -632,7 +627,7 @@ X-Xss-Protection: 0
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
-      "state": "CONDITION_PENDING",
+      "state": "CONDITION_SUCCEEDED",
       "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -661,16 +656,13 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
-    "deleteTime": "2025-11-03T18:24:14.299229Z",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
-    "expireTime": "2025-12-03T18:24:14.299229Z",
-    "generation": "2",
-    "lastModifier": "yuwenma@google.com",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/tagbinding-runjob-${uniqueId}",
-    "observedGeneration": "2",
     "template": {
       "taskCount": 1,
       "template": {
@@ -702,16 +694,13 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "yuwenma@google.com",
-    "deleteTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
-    "expireTime": "2024-04-01T12:34:56.123456Z",
-    "generation": "2",
-    "lastModifier": "yuwenma@google.com",
+    "generation": "1",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/tagbinding-runjob-${uniqueId}",
-    "observedGeneration": "2",
     "template": {
       "taskCount": 1,
       "template": {

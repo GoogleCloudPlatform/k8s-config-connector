@@ -134,6 +134,10 @@ func (m *mockRoundTripper) NewGRPCConnection(ctx context.Context) *grpc.ClientCo
 	return conn
 }
 
+// toHostRegex converts a host pattern into a regex.
+// It supports wildcards like `{region}`.
+// It also supports an optional port in the host, because the go http client
+// sometimes includes this in the `Host` header of the request.
 func toHostRegex(host string) *regexp.Regexp {
 	r := regexp.MustCompile(`{[^}]+}`)
 
@@ -144,7 +148,7 @@ func toHostRegex(host string) *regexp.Regexp {
 		})
 		tokens[i] = token
 	}
-	return regexp.MustCompile("^" + strings.Join(tokens, `\.`) + "$")
+	return regexp.MustCompile("^" + strings.Join(tokens, `\.`) + `(:[0-9]+)?$`)
 }
 
 func (m *mockRoundTripper) prefilterRequest(req *http.Request) error {
