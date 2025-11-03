@@ -76,7 +76,12 @@ func (s *instanceAdminServer) CreateMaterializedView(ctx context.Context, req *p
 		StartTime:       timestamppb.Now(),
 		OriginalRequest: &pb.CreateMaterializedViewRequest{},
 	}
-	zone := "us-central1-a"
+
+	clusters, err := s.listClustersForInstance(ctx, &name.instanceName)
+	if err != nil {
+		return nil, err
+	}
+	zone := pickZoneForInstanceOperation(clusters)
 	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), zone)
 
 	return s.operations.StartLRO(ctx, prefix, metadata, func() (proto.Message, error) {
@@ -119,7 +124,11 @@ func (s *instanceAdminServer) UpdateMaterializedView(ctx context.Context, req *p
 		return nil, err
 	}
 
-	zone := "us-central1-a"
+	clusters, err := s.listClustersForInstance(ctx, &name.instanceName)
+	if err != nil {
+		return nil, err
+	}
+	zone := pickZoneForInstanceOperation(clusters)
 	prefix := fmt.Sprintf("operations/%s/locations/%s", name.String(), zone)
 
 	metadata := &pb.UpdateMaterializedViewMetadata{
