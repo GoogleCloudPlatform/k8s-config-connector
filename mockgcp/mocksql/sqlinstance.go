@@ -678,6 +678,17 @@ func validateDatabaseInstance(obj *pb.DatabaseInstance) error {
 			}
 		}
 	}
+
+	// maintenanceVersion
+	if v := obj.GetMaintenanceVersion(); v != "" {
+		if v == "NOTVALID" {
+			return status.Errorf(codes.InvalidArgument, "Invalid request: Unknown maintenance version format: %s", v)
+		}
+
+		// TODO: If the maintenance version is well formed but not available, the error looks like this:
+		// "message": "Invalid request: The maintenance version [MYSQL_8_0_40.R20250304.00_03] provided is not a valid available maintenance version. Please refer to the availableMaintenanceVersions field on the instance resource to see the list of available maintenance versions.."
+	}
+
 	return nil
 }
 
@@ -777,12 +788,13 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 	}
 
 	obj := proto.Clone(req.GetBody()).(*pb.DatabaseInstance)
+
+	// Immutable fields
 	obj.Name = existing.Name
 	obj.Region = existing.Region
 	obj.Project = existing.Project
 	obj.SelfLink = existing.SelfLink
 	obj.Kind = existing.Kind
-
 	obj.BackendType = existing.BackendType
 	obj.ConnectionName = existing.ConnectionName
 	obj.CreateTime = existing.CreateTime
@@ -796,6 +808,11 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 	obj.SqlNetworkArchitecture = existing.SqlNetworkArchitecture
 	obj.State = existing.State
 	obj.UpgradableDatabaseVersions = existing.UpgradableDatabaseVersions
+
+	// Fields that default if not specified
+	if obj.MaintenanceVersion == "" {
+		obj.MaintenanceVersion = existing.MaintenanceVersion
+	}
 
 	populateDefaults(obj)
 
