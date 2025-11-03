@@ -105,6 +105,7 @@ func (m *dataFlowFlexTemplateJobModel) AdapterForObject(ctx context.Context, kub
 		return nil, fmt.Errorf("cannot resolve region")
 	}
 
+	// resource uses cnrm.cloud.google.com/project-id annotation
 	projectRef, err := refs.ResolveProjectFromAnnotation(ctx, kube, obj)
 	if err != nil {
 		return nil, err

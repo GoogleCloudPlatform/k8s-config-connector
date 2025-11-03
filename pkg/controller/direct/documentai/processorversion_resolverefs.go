@@ -12,26 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package compute
+package documentai
 
 import (
 	"context"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func ResolveComputeForwardingRuleRefs(ctx context.Context, kube client.Reader, obj *krm.ComputeForwardingRule) error {
-	// TODO: resolve BackendServiceRef
-	// TODO: resolve IpAddress.AddressRef
-	// TODO: resolve NetworkRef
-	// TODO: resolve SubnetworkRef
-	// TODO: resolve Target.ServiceAttachmentRef
-	// TODO: resolve Target.TargetGRPCProxyRef
-	// TODO: resolve Target.TargetHTTPProxyRef
-	// TODO: resolve Target.TargetHTTPSProxyRef
-	// TODO: resolve Target.TargetSSLProxyRef
-	// TODO: resolve Target.TargetTCPProxyRef
-	// TODO: resolve Target.TargetVPNGatewayRef
+func ResolveDocumentAIProcessorVersionRefs(ctx context.Context, kube client.Reader, obj *krm.DocumentAIProcessorVersion) error {
+	// TODO: resolve ProcessorRef
+	// TODO: resolve KMSKeyNameRef
+	// TODO: resolve KMSKeyVersionNameRef
 	return nil
 }

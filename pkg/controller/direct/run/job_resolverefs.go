@@ -50,6 +50,8 @@ func ResolveRunJobRefs(ctx context.Context, kube client.Reader, desired *krm.Run
 				return err
 			}
 		}
+		// TODO: resolve Template.Template.VPCAccess.NetworkInterfaces.NetworkRef
+		// TODO: resolve Template.Template.VPCAccess.NetworkInterfaces.SubnetworkRef
 		for _, c := range template.Containers {
 			for _, env := range c.Env {
 				if env.ValueSource != nil && env.ValueSource.SecretKeyRef != nil {
@@ -90,6 +92,8 @@ func ResolveRunJobRefs(ctx context.Context, kube client.Reader, desired *krm.Run
 				}
 				sqlInstance.External = instanceRef.ConnectionName()
 			}
+			// TODO: resolve Template.Template.Volumes.Secret.Items.VersionRef
+			// TODO: resolve Template.Template.Volumes.CloudSQLInstance.InstanceRefs
 		}
 	}
 	return nil
