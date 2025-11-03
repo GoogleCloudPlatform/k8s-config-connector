@@ -40,6 +40,10 @@ func NewResolveRefsGenerator(outputBaseDir string) *ResolveRefsGenerator {
 func (g *ResolveRefsGenerator) VisitGoCode(goPackage string, basePath string) error {
 	packages, err := gocode.LoadPackageTree(goPackage, basePath)
 	if err != nil {
+		if strings.Contains(err.Error(), "no such file or directory") {
+			klog.Infof("no such file or directory: %s", basePath)
+			return nil
+		}
 		return fmt.Errorf("inspecting go code: %w", err)
 	}
 
