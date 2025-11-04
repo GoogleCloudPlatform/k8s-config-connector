@@ -18,18 +18,31 @@ import (
 	"context"
 	"fmt"
 
-	api "cloud.google.com/go/firestore/apiv1/admin"
+	api "cloud.google.com/go/firestore/apiv1"
+	adminapi "cloud.google.com/go/firestore/apiv1/admin"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 )
 
-func newFirestoreAdminClient(ctx context.Context, config *config.ControllerConfig) (*api.FirestoreAdminClient, error) {
+func newFirestoreAdminClient(ctx context.Context, config *config.ControllerConfig) (*adminapi.FirestoreAdminClient, error) {
 	opts, err := config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
-	client, err := api.NewFirestoreAdminRESTClient(ctx, opts...)
+	client, err := adminapi.NewFirestoreAdminRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building firestore admin client: %w", err)
+	}
+	return client, err
+}
+
+func newFirestoreClient(ctx context.Context, config *config.ControllerConfig) (*api.Client, error) {
+	opts, err := config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := api.NewRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building firestore client: %w", err)
 	}
 	return client, err
 }
