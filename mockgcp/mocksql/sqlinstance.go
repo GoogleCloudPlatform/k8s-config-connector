@@ -242,7 +242,7 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 				}
 			}
 		} else if isPostgres(obj) {
-			if _, err := s.users.Insert(ctx, &pb.SqlUsersInsertRequest{
+			if _, _, err := s.users.createUser(ctx, &pb.SqlUsersInsertRequest{
 				Instance: name.InstanceName,
 				Project:  name.Project.ID,
 				Body: &pb.User{
@@ -315,10 +315,11 @@ func currentMaintenanceVersion(databaseVersion pb.SqlDatabaseVersion) (string, e
 		return "POSTGRES_9_6_24.R20250302.00_31", nil
 
 	case pb.SqlDatabaseVersion_POSTGRES_15:
-		return "POSTGRES_15_7.R20240514.00_12", nil
+		return "POSTGRES_15_14.R20251004.01_07", nil
 
 	case pb.SqlDatabaseVersion_POSTGRES_16:
-		return "POSTGRES_16_3.R20240527.01_10", nil
+		return "POSTGRES_16_10.R20251004.01_07", nil
+
 	default:
 		return "", fmt.Errorf("database version %s not yet supported by mock", databaseVersion)
 	}
@@ -500,19 +501,39 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 		obj.DatabaseInstalledVersion = "POSTGRES_9_6"
 
 	case pb.SqlDatabaseVersion_POSTGRES_15:
-		obj.DatabaseInstalledVersion = "POSTGRES_15_7"
+		obj.DatabaseInstalledVersion = "POSTGRES_15_14"
 		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
 			{
 				MajorVersion: asRef("POSTGRES_16"),
 				Name:         asRef("POSTGRES_16"),
 				DisplayName:  asRef("PostgreSQL 16"),
 			},
+			{
+				MajorVersion: asRef("POSTGRES_17"),
+				Name:         asRef("POSTGRES_17"),
+				DisplayName:  asRef("PostgreSQL 17"),
+			},
+			{
+				MajorVersion: asRef("POSTGRES_18"),
+				Name:         asRef("POSTGRES_18"),
+				DisplayName:  asRef("PostgreSQL 18"),
+			},
 		}
 
 	case pb.SqlDatabaseVersion_POSTGRES_16:
-		obj.DatabaseInstalledVersion = "POSTGRES_16_3"
-		obj.UpgradableDatabaseVersions = nil
-
+		obj.DatabaseInstalledVersion = "POSTGRES_16_10"
+		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
+			{
+				MajorVersion: asRef("POSTGRES_17"),
+				Name:         asRef("POSTGRES_17"),
+				DisplayName:  asRef("PostgreSQL 17"),
+			},
+			{
+				MajorVersion: asRef("POSTGRES_18"),
+				Name:         asRef("POSTGRES_18"),
+				DisplayName:  asRef("PostgreSQL 18"),
+			},
+		}
 	default:
 		return fmt.Errorf("database version %s not yet supported by mock", obj.DatabaseVersion)
 	}
@@ -746,6 +767,7 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 	}
 
 	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
+		time.Sleep(10 * time.Second) // Simulate longer operation for patch
 		return obj, nil
 	})
 }
