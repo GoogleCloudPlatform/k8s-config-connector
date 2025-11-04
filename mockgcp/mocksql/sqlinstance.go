@@ -291,9 +291,14 @@ func setDefaultBool(pp **wrapperspb.BoolValue, defaultValue bool) {
 	}
 }
 
-func currentMaintenanceVersion(databaseVersion pb.SqlDatabaseVersion) (string, error) {
-	switch databaseVersion {
+func currentMaintenanceVersion(obj *pb.DatabaseInstance) (string, error) {
+	switch obj.DatabaseVersion {
+	// Based on real GCP logs, the maintenance version for MYSQL_5_7 depends on the tier.
+	// Custom tiers get a newer maintenance version.
 	case pb.SqlDatabaseVersion_MYSQL_5_7:
+		if strings.HasPrefix(obj.Settings.GetTier(), "db-custom-") {
+			return "MYSQL_5_7_44.R20250531.01_15", nil
+		}
 		return "MYSQL_5_7_44.R20231105.01_03", nil
 
 	case pb.SqlDatabaseVersion_MYSQL_8_0:
@@ -309,18 +314,23 @@ func currentMaintenanceVersion(databaseVersion pb.SqlDatabaseVersion) (string, e
 		return "SQLSERVER_2019_EXPRESS_CU26.R20240501.00_05", nil
 
 	case pb.SqlDatabaseVersion_SQLSERVER_2022_EXPRESS:
-		return "SQLSERVER_2022_EXPRESS_CU12_GDR.R20240501.00_05", nil
+		return "SQLSERVER_2022_EXPRESS_CU19.R20250727.00_07", nil
 
 	case pb.SqlDatabaseVersion_POSTGRES_9_6:
-		return "POSTGRES_9_6_24.R20250302.00_31", nil
+		return "POSTGRES_9_6_24.R20250727.00_23", nil
 
+	// Based on real GCP logs, the maintenance version for POSTGRES_15 depends on the edition.
+	// Enterprise editions get a newer maintenance version.
 	case pb.SqlDatabaseVersion_POSTGRES_15:
+		if obj.Settings.GetEdition() == pb.Settings_ENTERPRISE {
+			return "POSTGRES_15_13.R20250727.00_14", nil
+		}
 		return "POSTGRES_15_7.R20240514.00_12", nil
 
 	case pb.SqlDatabaseVersion_POSTGRES_16:
-		return "POSTGRES_16_3.R20240527.01_10", nil
+		return "POSTGRES_16_9.R20250727.00_14", nil
 	default:
-		return "", fmt.Errorf("database version %s not yet supported by mock", databaseVersion)
+		return "", fmt.Errorf("database version %s not yet supported by mock", obj.DatabaseVersion)
 	}
 }
 
@@ -400,6 +410,30 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 				MajorVersion: asRef("MYSQL_8_0"),
 				Name:         asRef("MYSQL_8_0_37"),
 			},
+		}
+		if strings.HasPrefix(obj.Settings.GetTier(), "db-custom-") {
+			obj.UpgradableDatabaseVersions = append(obj.UpgradableDatabaseVersions,
+				&pb.AvailableDatabaseVersion{
+					DisplayName:  asRef("MySQL 8.0.39"),
+					MajorVersion: asRef("MYSQL_8_0"),
+					Name:         asRef("MYSQL_8_0_39"),
+				},
+				&pb.AvailableDatabaseVersion{
+					DisplayName:  asRef("MySQL 8.0.40"),
+					MajorVersion: asRef("MYSQL_8_0"),
+					Name:         asRef("MYSQL_8_0_40"),
+				},
+				&pb.AvailableDatabaseVersion{
+					DisplayName:  asRef("MySQL 8.0.41"),
+					MajorVersion: asRef("MYSQL_8_0"),
+					Name:         asRef("MYSQL_8_0_41"),
+				},
+				&pb.AvailableDatabaseVersion{
+					DisplayName:  asRef("MySQL 8.0.42"),
+					MajorVersion: asRef("MYSQL_8_0"),
+					Name:         asRef("MYSQL_8_0_42"),
+				},
+			)
 		}
 
 	case pb.SqlDatabaseVersion_MYSQL_8_0:
@@ -490,7 +524,7 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 		}
 
 	case pb.SqlDatabaseVersion_SQLSERVER_2022_EXPRESS:
-		obj.DatabaseInstalledVersion = "SQLSERVER_2022_EXPRESS_CU12_GDR"
+		obj.DatabaseInstalledVersion = "SQLSERVER_2022_EXPRESS_CU19"
 		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
 			{
 				MajorVersion: asRef("SQLSERVER_2022_STANDARD"),
@@ -513,25 +547,40 @@ func setDatabaseVersionDefaults(obj *pb.DatabaseInstance) error {
 		obj.DatabaseInstalledVersion = "POSTGRES_9_6"
 
 	case pb.SqlDatabaseVersion_POSTGRES_15:
-		obj.DatabaseInstalledVersion = "POSTGRES_15_7"
+		if obj.Settings.GetEdition() == pb.Settings_ENTERPRISE {
+			obj.DatabaseInstalledVersion = "POSTGRES_15_13"
+		} else {
+			obj.DatabaseInstalledVersion = "POSTGRES_15_7"
+		}
 		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
 			{
 				MajorVersion: asRef("POSTGRES_16"),
 				Name:         asRef("POSTGRES_16"),
 				DisplayName:  asRef("PostgreSQL 16"),
 			},
+			{
+				DisplayName:  asRef("PostgreSQL 17"),
+				MajorVersion: asRef("POSTGRES_17"),
+				Name:         asRef("POSTGRES_17"),
+			},
 		}
 
 	case pb.SqlDatabaseVersion_POSTGRES_16:
-		obj.DatabaseInstalledVersion = "POSTGRES_16_3"
-		obj.UpgradableDatabaseVersions = nil
+		obj.DatabaseInstalledVersion = "POSTGRES_16_9"
+		obj.UpgradableDatabaseVersions = []*pb.AvailableDatabaseVersion{
+			{
+				DisplayName:  asRef("PostgreSQL 17"),
+				MajorVersion: asRef("POSTGRES_17"),
+				Name:         asRef("POSTGRES_17"),
+			},
+		}
 
 	default:
 		return fmt.Errorf("database version %s not yet supported by mock", obj.DatabaseVersion)
 	}
 
 	if obj.MaintenanceVersion == "" {
-		maintenanceVersion, err := currentMaintenanceVersion(obj.DatabaseVersion)
+		maintenanceVersion, err := currentMaintenanceVersion(obj)
 		if err != nil {
 			return err
 		}
@@ -557,7 +606,7 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 			obj.GeminiConfig = &pb.GeminiInstanceConfig{
 				Entitled:                asRef(false),
 				GoogleVacuumMgmtEnabled: asRef(false),
-				OomSessionCancelEnabled: asRef(false),
+				OomSessionCancelEnabled: asRef(true),
 				ActiveQueryEnabled:      asRef(false),
 				IndexAdvisorEnabled:     asRef(false),
 			}
@@ -660,6 +709,9 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 	}
 	if backupConfiguration.TransactionalLogStorageState == nil {
 		backupConfiguration.TransactionalLogStorageState = asRef(pb.BackupConfiguration_TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED)
+	}
+	if backupConfiguration.Location == "" {
+		backupConfiguration.Location = obj.Region
 	}
 
 }
