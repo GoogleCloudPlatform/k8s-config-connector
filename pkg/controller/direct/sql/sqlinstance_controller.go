@@ -17,6 +17,7 @@ package sql
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 	"time"
 
@@ -72,34 +73,23 @@ type FieldMetadata struct {
 	// isUnmanaged tracks if the user has marked this field as unmanaged for a specific resource instance.
 	isUnmanaged bool
 
-	// paths holds the structured path to the field, e.g., ["spec", "settings", "edition"].
-	paths []string
-
 	// preserveActualValue contains the specific logic to copy this field's value
 	// from the live GCP resource (`actual`) to the outgoing API request payload (`out`).
 	preserveActualValue func(out *api.DatabaseInstance, actual *api.DatabaseInstance)
 }
 
-// Path returns the full, dot-separated path for the field.
-func (f *FieldMetadata) Path() string {
-	return strings.Join(f.paths, ".")
-}
-
 var supportedUnmanageableFields = map[string]*FieldMetadata{
 	instanceTypeFieldPath: {
-		paths: []string{"spec", "instanceType"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			out.InstanceType = actual.InstanceType
 		},
 	},
 	maintenanceVersionFieldPath: {
-		paths: []string{"spec", "maintenanceVersion"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			out.MaintenanceVersion = actual.MaintenanceVersion
 		},
 	},
 	editionFieldPath: {
-		paths: []string{"spec", "settings", "edition"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -110,13 +100,11 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	settingsFieldPath: {
-		paths: []string{"spec", "settings"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			out.Settings = actual.Settings
 		},
 	},
 	activationPolicyFieldPath: {
-		paths: []string{"spec", "settings", "activationPolicy"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -127,7 +115,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	backupConfigurationFieldPath: {
-		paths: []string{"spec", "settings", "backupConfiguration"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -138,7 +125,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	connectorEnforcementFieldPath: {
-		paths: []string{"spec", "settings", "connectorEnforcement"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -149,7 +135,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	dataCacheConfigFieldPath: {
-		paths: []string{"spec", "settings", "dataCacheConfig"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -160,7 +145,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	diskAutoresizeFieldPath: {
-		paths: []string{"spec", "settings", "diskAutoresize"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -171,7 +155,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	diskAutoresizeLimitFieldPath: {
-		paths: []string{"spec", "settings", "diskAutoresizeLimit"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -182,7 +165,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	diskSizeFieldPath: {
-		paths: []string{"spec", "settings", "diskSize"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -193,7 +175,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	diskTypeFieldPath: {
-		paths: []string{"spec", "settings", "diskType"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -204,7 +185,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	ipConfigurationFieldPath: {
-		paths: []string{"spec", "settings", "ipConfiguration"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -215,7 +195,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	locationPreferenceFieldPath: {
-		paths: []string{"spec", "settings", "locationPreference"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -226,7 +205,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	pricingPlanFieldPath: {
-		paths: []string{"spec", "settings", "pricingPlan"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -237,7 +215,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	backupRetentionSettingsFieldPath: {
-		paths: []string{"spec", "settings", "backupConfiguration", "backupRetentionSettings"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
 				if out.Settings == nil {
@@ -251,7 +228,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	backupConfigurationEnabledFieldPath: {
-		paths: []string{"spec", "settings", "backupConfiguration", "enabled"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
 				if out.Settings == nil {
@@ -265,7 +241,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	backupConfigurationPointInTimeRecoveryEnabledFieldPath: {
-		paths: []string{"spec", "settings", "backupConfiguration", "pointInTimeRecoveryEnabled"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
 				if out.Settings == nil {
@@ -279,7 +254,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	backupConfigurationStartTimeFieldPath: {
-		paths: []string{"spec", "settings", "backupConfiguration", "startTime"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
 				if out.Settings == nil {
@@ -293,7 +267,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	backupConfigurationTransactionLogRetentionDaysFieldPath: {
-		paths: []string{"spec", "settings", "backupConfiguration", "transactionLogRetentionDays"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
 				if out.Settings == nil {
@@ -307,7 +280,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	backupRetentionSettingsRetainedBackupsFieldPath: {
-		paths: []string{"spec", "settings", "backupConfiguration", "backupRetentionSettings", "retainedBackups"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil && actual.Settings.BackupConfiguration.BackupRetentionSettings != nil {
 				if out.Settings == nil {
@@ -324,7 +296,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	backupRetentionSettingsRetentionUnitFieldPath: {
-		paths: []string{"spec", "settings", "backupConfiguration", "backupRetentionSettings", "retentionUnit"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil && actual.Settings.BackupConfiguration.BackupRetentionSettings != nil {
 				if out.Settings == nil {
@@ -341,7 +312,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	dataCacheConfigDataCacheEnabledFieldPath: {
-		paths: []string{"spec", "settings", "dataCacheConfig", "dataCacheEnabled"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.DataCacheConfig != nil {
 				if out.Settings == nil {
@@ -355,7 +325,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	ipConfigurationIPV4EnabledFieldPath: {
-		paths: []string{"spec", "settings", "ipConfiguration", "ipv4Enabled"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.IpConfiguration != nil {
 				if out.Settings == nil {
@@ -369,7 +338,6 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		},
 	},
 	locationPreferenceZoneFieldPath: {
-		paths: []string{"spec", "settings", "locationPreference", "zone"},
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.LocationPreference != nil {
 				if out.Settings == nil {
@@ -384,7 +352,15 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 	},
 }
 
+var sortedUnmanageableFieldPaths []string
+
 func init() {
+	// Pre-sort the keys for stable error messages.
+	for path := range supportedUnmanageableFields {
+		sortedUnmanageableFieldPaths = append(sortedUnmanageableFieldPaths, path)
+	}
+	sort.Strings(sortedUnmanageableFieldPaths)
+
 	registry.RegisterModel(krm.SQLInstanceGVK, newSQLInstanceModel)
 }
 
@@ -455,12 +431,7 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, kube client.Rea
 		for _, fieldPath := range unmanagedFieldsList {
 			field, supported := supportedUnmanageableFields[fieldPath]
 			if !supported {
-				// Build the list of supported paths for the error message
-				var supportedPaths []string
-				for _, sf := range supportedUnmanageableFields {
-					supportedPaths = append(supportedPaths, sf.Path())
-				}
-				return nil, fmt.Errorf("unmanaging field `%s` is not supported, supported fields are: %v", fieldPath, supportedPaths)
+				return nil, fmt.Errorf("unmanaging field `%s` is not supported, supported fields are: %v", fieldPath, sortedUnmanageableFieldPaths)
 			}
 			// Mark the field as unmanaged for this resource instance
 			field.isUnmanaged = true
