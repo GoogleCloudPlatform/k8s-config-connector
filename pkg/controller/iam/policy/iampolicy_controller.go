@@ -186,8 +186,8 @@ func (r *ReconcileIAMPolicy) Reconcile(ctx context.Context, request reconcile.Re
 	uObj.SetNamespace(policy.GetNamespace())
 	uObj.SetName(policy.GetName())
 	uObj.SetGroupVersionKind(iamv1beta1.IAMPolicyGVK)
-	structuredreporting.ReportReconcileStart(ctx, uObj)
-	defer structuredreporting.ReportReconcileEnd(ctx, uObj, result, err)
+	structuredreporting.ReportReconcileStart(ctx, uObj, k8s.ReconcilerTypeIAMPolicy)
+	defer structuredreporting.ReportReconcileEnd(ctx, uObj, result, err, k8s.ReconcilerTypeIAMPolicy)
 	requeue, err := runCtx.doReconcile(policy)
 	if err != nil {
 		return reconcile.Result{}, err
