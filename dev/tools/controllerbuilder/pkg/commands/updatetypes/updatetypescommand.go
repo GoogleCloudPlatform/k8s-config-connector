@@ -26,6 +26,8 @@ import (
 type baseUpdateTypeOptions struct {
 	*options.GenerateOptions
 
+	ServiceName string
+
 	ignoredFields    string // TODO: could be part of GenerateOptions
 	apiDirectory     string
 	apiGoPackagePath string
@@ -46,6 +48,7 @@ func (o *baseUpdateTypeOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.ignoredFields, "ignored-fields", o.ignoredFields, "Comma-separated list of fields to ignore")
 	cmd.Flags().StringVar(&o.apiDirectory, "api-dir", o.apiDirectory, "Base directory for APIs")
 	cmd.Flags().StringVar(&o.apiGoPackagePath, "api-go-package-path", o.apiGoPackagePath, "API Go package path")
+	cmd.Flags().StringVarP(&o.ServiceName, "service", "s", o.ServiceName, "the GCP service name")
 }
 
 func BuildCommand(baseOptions *options.GenerateOptions) *cobra.Command {

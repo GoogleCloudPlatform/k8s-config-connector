@@ -20,7 +20,6 @@ package backupdr
 
 import (
 	pb "cloud.google.com/go/backupdr/apiv1/backupdrpb"
-	krmbackupdrv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/backupdr/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -35,7 +34,7 @@ func BackupDRBackupPlanSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.BackupRules = direct.Slice_FromProto(mapCtx, in.BackupRules, BackupRule_v1beta1_FromProto)
 	out.ResourceType = direct.LazyPtr(in.GetResourceType())
 	if in.GetBackupVault() != "" {
-		out.BackupVaultRef = &krmbackupdrv1alpha1.BackupVaultRef{
+		out.BackupVaultRef = &krm.BackupVaultRef{
 			External: in.GetBackupVault(),
 		}
 	}

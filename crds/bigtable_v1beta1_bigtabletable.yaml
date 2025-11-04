@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.137.0
+    cnrm.cloud.google.com/version: 1.138.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -30,6 +30,7 @@ spec:
     categories:
     - gcp
     kind: BigtableTable
+    listKind: BigtableTableList
     plural: bigtabletables
     shortNames:
     - gcpbigtabletable
@@ -56,28 +57,32 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: BigtableTable is the Schema for the BigtableTable API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: BigtableTableSpec defines the desired state of BigtableTable
             properties:
               changeStreamRetention:
                 description: Duration to retain change stream data for the table.
-                  Set to 0 to disable. Must be between 1 and 7 days.
+                  Set to 0 to disable. Must be between 1 and 7 days..
                 type: string
               columnFamily:
-                description: A group of columns within a table which share a common
-                  configuration. This can be specified multiple times.
+                description: The names of the column families that should be created
+                  immediately upon table creation, specified by name. The values that
+                  may be set are specified here. At least one column family must be
+                  specified.
                 items:
                   properties:
                     family:
@@ -88,14 +93,19 @@ spec:
                   type: object
                 type: array
               deletionProtection:
-                description: A field to make the table protected against data loss
-                  i.e. when set to PROTECTED, deleting the table, the column families
-                  in the table, and the instance containing the table would be prohibited.
-                  If not provided, currently deletion protection will be set to UNPROTECTED
-                  as it is the API default value.
+                description: |-
+                  NOTE: DeletionProtection proto field is changed from string (1.38) to bool (1.40) in cloud.google.com/go/bigtable/admin/apiv2/adminpb
+                  Set to true to make the table protected against data loss. i.e. deleting
+                  the following resources through Admin APIs are prohibited:
+
+                  * The table.
+                  * The column families in the table.
+                  * The instance containing the table.
+
+                  Note one can still delete the data stored in the table through Data APIs.
                 type: string
               instanceRef:
-                description: The name of the Bigtable instance.
+                description: Immutable. The instance to create the table in.
                 oneOf:
                 - not:
                     required:
@@ -112,22 +122,22 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `BigtableInstance`
-                      resource.'
+                    description: A reference to an externally managed BigtableInstance
+                      resource.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a BigtableInstance resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a BigtableInstance resource.
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The name of the resource. Used for
-                  creation and acquisition. When unset, the value of `metadata.name`
-                  is used as the default.
+                description: The BigtableTable name. If not given, the metadata.name
+                  will be used.
                 type: string
               splitKeys:
+                description: A list of predefined keys to split the table on.
                 items:
                   type: string
                 type: array
@@ -135,10 +145,12 @@ spec:
             - instanceRef
             type: object
           status:
+            description: BigtableTableStatus defines the config connector machine
+              state of BigtableTable
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -162,12 +174,17 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the BigtableTable resource in
+                  GCP.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
             type: object
         required:
@@ -181,5 +198,5 @@ status:
   acceptedNames:
     kind: ""
     plural: ""
-  conditions: []
-  storedVersions: []
+  conditions: null
+  storedVersions: null

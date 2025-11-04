@@ -111,8 +111,8 @@ func TestE2EScript(t *testing.T) {
 					eventsBefore = h.Events.HTTPEvents
 				}
 
-				// tracks the set of all applied objects as keyed by a gvk, namespaced name tuple
-				appliedObjects := map[gvkNN]*unstructured.Unstructured{}
+				// tracks the all applied objects (in order, to avoid deletion dependency-ordering issues)
+				appliedObjects := []*unstructured.Unstructured{}
 
 				for i, obj := range script.Objects {
 					testCommand := ""
@@ -194,27 +194,19 @@ func TestE2EScript(t *testing.T) {
 						shouldGetKubeObject = v.(bool)
 					}
 
-					k := gvkNN{
-						gvk: obj.GroupVersionKind(),
-						nn: types.NamespacedName{
-							Name:      obj.GetName(),
-							Namespace: obj.GetNamespace(),
-						},
-					}
-
 					var targetStepForReadAndCompare int
 					switch testCommand {
 					case "APPLY":
 						applyObject(h, obj)
 						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
-						appliedObjects[k] = obj
+						appliedObjects = append(appliedObjects, obj)
 
 					case "APPLY-10-SEC":
 						applyObject(h, obj)
 						time.Sleep(10 * time.Second)
 
 					case "READ-OBJECT":
-						appliedObjects[k] = obj
+						appliedObjects = append(appliedObjects, obj)
 
 					case "READ-OBJECT-AND-COMPARE-SPEC":
 						v, ok := obj.Object["TARGET_STEP_FOR_READ_AND_COMPARE"]
@@ -225,11 +217,11 @@ func TestE2EScript(t *testing.T) {
 						if targetStepForReadAndCompare <= 0 {
 							t.Fatalf("value of TARGET_STEP_FOR_READ_AND_COMPARE should be an integer > 0")
 						}
-						appliedObjects[k] = obj
+						appliedObjects = append(appliedObjects, obj)
 
 					case "APPLY-NO-WAIT":
 						applyObject(h, obj)
-						appliedObjects[k] = obj
+						appliedObjects = append(appliedObjects, obj)
 						exportResource = nil
 						shouldGetKubeObject = false
 
@@ -253,6 +245,8 @@ func TestE2EScript(t *testing.T) {
 						// Allow some time for reconcile
 						// Maybe we should instead wait for observedState
 						time.Sleep(2 * time.Second)
+						exportResource = nil
+						shouldGetKubeObject = false
 
 					case "DELETE-NO-WAIT":
 						create.DeleteResources(h, create.CreateDeleteTestOptions{Create: []*unstructured.Unstructured{obj}, SkipWaitForDelete: true})
@@ -314,7 +308,7 @@ func TestE2EScript(t *testing.T) {
 						}
 						applyObject(h, obj)
 						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
-						appliedObjects[k] = obj
+						appliedObjects = append(appliedObjects, obj)
 
 					case "ABANDON-AND-REACQUIRE-WITH-GENERATED-ID":
 						existing := readObject(h, obj.GroupVersionKind(), obj.GetNamespace(), obj.GetName())
@@ -349,7 +343,7 @@ func TestE2EScript(t *testing.T) {
 						}
 						applyObject(h, obj)
 						create.WaitForReady(h, create.DefaultWaitForReadyTimeout, obj)
-						appliedObjects[k] = obj
+						appliedObjects = append(appliedObjects, obj)
 
 					default:
 						t.Errorf("unknown TEST command %q", testCommand)
@@ -455,11 +449,20 @@ func TestE2EScript(t *testing.T) {
 					}
 				}
 
-				objSet := []*unstructured.Unstructured{}
-				for k := range appliedObjects {
-					objSet = append(objSet, appliedObjects[k])
+				{
+					// Delete objects in order, de-duplicating objects we might have applied twice
+					var objectsToDelete []*unstructured.Unstructured
+					seen := make(map[string]bool)
+					for _, obj := range appliedObjects {
+						k := obj.GroupVersionKind().Group + "::" + obj.GroupVersionKind().Kind + "::" + obj.GetNamespace() + "::" + obj.GetName()
+						if seen[k] {
+							continue
+						}
+						objectsToDelete = append(objectsToDelete, obj)
+						seen[k] = true
+					}
+					create.DeleteResources(h, create.CreateDeleteTestOptions{Create: objectsToDelete})
 				}
-				create.DeleteResources(h, create.CreateDeleteTestOptions{Create: objSet})
 
 				h.NoExtraGoldenFiles(filepath.Join(script.SourceDir, "_*.yaml"))
 			})

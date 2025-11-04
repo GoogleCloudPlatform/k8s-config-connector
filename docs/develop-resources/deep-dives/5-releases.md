@@ -1,14 +1,10 @@
 # 5. Release
 
-## 5.1 Turn on your Direct controller (TF/DCL Beta Only)
+## 5.1 Make Direct Controller the Default for Beta
 
-### For TF-based Beta resource
+When a resource is promoted to Beta, the `direct` controller should typically become the default. This is achieved by ensuring the `v1beta1` CRD does not contain the `cnrm.cloud.google.com/tf2crd` or `cnrm.cloud.google.com/dcl2crd` labels, and then regenerating the static controller configuration.
 
-* Remove the `cnrm.cloud.google.com/tf2crd: "true"` label from the CRD will turn on SciFi controller. [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/196a4b9a28b59b17936a443d5b36bb65f3c42fd9/apis/apikeys/v1alpha1/apikey_type.go#L44)
-
-### For DCL-based Beta resource
-
-* Remove the `cnrm.cloud.google.com/dcl2crd: "true"` label from the CRD will turn on SciFi controller.
+For detailed instructions, please see [4-add-controller.md](./4-add-controller.md), under "Scenario 3: Promoting an alpha direct resource to beta".
 
 ## 5.2 Bump from v1alpha1 to v1beta1
 

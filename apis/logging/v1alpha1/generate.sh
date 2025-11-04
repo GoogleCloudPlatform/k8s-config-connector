@@ -23,14 +23,12 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 go run . generate-types \
     --service google.logging.v2 \
-    --api-version logging.cnrm.cloud.google.com/v1alpha1 \
+    --api-version "logging.cnrm.cloud.google.com/v1alpha1" \
     --resource LoggingLink:Link
 
 go run . generate-mapper \
-    --multiversion \
     --service google.logging.v2 \
-    --api-version logging.cnrm.cloud.google.com/v1alpha1
-
+    --api-version "logging.cnrm.cloud.google.com/v1alpha1"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

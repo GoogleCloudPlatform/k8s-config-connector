@@ -42,7 +42,7 @@
 | asset.cnrm.cloud.google.com                   | AssetSavedQuery                                 | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupPlanAssociation                   | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupPlan                              | True         | True        | False  | Direct     |
-| backupdr.cnrm.cloud.google.com                | BackupDRBackupVault                             | True         | False       | False  | Direct     |
+| backupdr.cnrm.cloud.google.com                | BackupDRBackupVault                             | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRManagementServer                        | True         | False       | False  | Direct     |
 | batch.cnrm.cloud.google.com                   | BatchJob                                        | True         | False       | False  | Direct     |
 | batch.cnrm.cloud.google.com                   | BatchTask                                       | True         | False       | False  | Direct     |
@@ -260,7 +260,9 @@
 | firebase.cnrm.cloud.google.com                | FirebaseProject                                 | True         | False       | False  | Terraform  |
 | firebasestorage.cnrm.cloud.google.com         | FirebaseStorageBucket                           | True         | False       | False  | Terraform  |
 | firebase.cnrm.cloud.google.com                | FirebaseWebApp                                  | True         | False       | False  | Terraform  |
+| firestore.cnrm.cloud.google.com               | FirestoreBackupSchedule                         | True         | False       | False  | Direct     |
 | firestore.cnrm.cloud.google.com               | FirestoreDatabase                               | True         | True        | False  | Direct     |
+| firestore.cnrm.cloud.google.com               | FirestoreDocument                               | True         | False       | False  | Direct     |
 | firestore.cnrm.cloud.google.com               | FirestoreField                                  | True         | False       | False  | Direct     |
 | firestore.cnrm.cloud.google.com               | FirestoreIndex                                  | False        | True        | False  | Terraform  |
 | resourcemanager.cnrm.cloud.google.com         | Folder                                          | False        | True        | False  | Terraform  |
