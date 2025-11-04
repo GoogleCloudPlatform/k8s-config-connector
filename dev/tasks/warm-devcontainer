@@ -18,7 +18,7 @@ echo "Downloading go modules"
 go mod download
 
 echo "Downloading envtest assets..."
-export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
+export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 use -p path)
 
 echo "Building binaries"
 go build ./cmd/...

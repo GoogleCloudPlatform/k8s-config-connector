@@ -22,7 +22,7 @@ cd ${REPO_ROOT}
 
 if [[ -z "${KUBEBUILDER_ASSETS:-}" ]]; then
   echo "Downloading envtest assets..."
-  export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
+  export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 use -p path)
 fi
 
 if [[ -n "${KCC_USE_DIRECT_RECONCILERS:-}" ]]; then
