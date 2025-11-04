@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	apiv1 "cloud.google.com/go/firestore/apiv1"
 	pb "cloud.google.com/go/firestore/apiv1/firestorepb"
@@ -43,11 +44,11 @@ func NewFirestoreDocumentModel(ctx context.Context, config *config.ControllerCon
 	return &firestoreDocumentModel{config: config}, nil
 }
 
-var _ directbase.Model = &firestoreDocumentModel{}
-
 type firestoreDocumentModel struct {
 	config *config.ControllerConfig
 }
+
+var _ directbase.Model = &firestoreDocumentModel{}
 
 func (m *firestoreDocumentModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	firestoreClient, err := newFirestoreClient(ctx, m.config)
@@ -176,7 +177,10 @@ func (a *firestoreDocumentAdapter) Update(ctx context.Context, updateOp *directb
 	latest := a.actual
 
 	changedFieldPaths := changedFieldPaths(a.actual, a.desired)
-	if len(changedFieldPaths) > 0 {
+	if len(changedFieldPaths.Fields) > 0 {
+		changedFieldPaths.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, changedFieldPaths)
+
 		resource.Name = fqn
 		req := &pb.UpdateDocumentRequest{
 			Document: resource,
@@ -257,22 +261,24 @@ func (a *firestoreDocumentAdapter) Delete(ctx context.Context, deleteOp *directb
 	return true, nil
 }
 
-func changedFieldPaths(a, b *pb.Document) []string {
-	var fieldPaths []string
-	for k, valA := range a.Fields {
-		valB, ok := b.Fields[k]
+func changedFieldPaths(oldDoc, newDoc *pb.Document) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
+	for k, oldVal := range oldDoc.Fields {
+		newVal, ok := newDoc.Fields[k]
 		if !ok {
-			fieldPaths = append(fieldPaths, k)
+			diff.AddField(".fields."+k, oldVal, newVal)
+			continue
 		}
-		if !proto.Equal(valA, valB) {
-			fieldPaths = append(fieldPaths, k)
+		if !proto.Equal(oldVal, newVal) {
+			diff.AddField(".fields."+k, oldVal, newVal)
+			continue
 		}
 	}
-	for k := range a.Fields {
-		_, ok := b.Fields[k]
+	for k, newVal := range newDoc.Fields {
+		oldVal, ok := oldDoc.Fields[k]
 		if !ok {
-			fieldPaths = append(fieldPaths, k)
+			diff.AddField(".fields."+k, oldVal, newVal)
 		}
 	}
-	return fieldPaths
+	return diff
 }
