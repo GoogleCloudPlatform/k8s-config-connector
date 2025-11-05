@@ -102,10 +102,12 @@ func (a *TagsTagBindingAdapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting TagsTagBinding", "name", a.id)
 
+	// Tags API does not support retrieving a single TagBinding, so we list and find the object.
 	req := &resourcemanagerpb.ListTagBindingsRequest{
-		Parent: a.id.ParentWithFullURL(),
-		// TODO: PageSize and PageToken
+		Parent:   a.id.ParentWithFullURL(),
+		PageSize: 300,
 	}
+	// The iterator returned by ListTagBindings handles pagination (PageToken) automatically.
 	it := a.gcpClient.ListTagBindings(ctx, req)
 
 	for {
