@@ -21,6 +21,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links/logginglink${uniqueId}
   observedGeneration: 1
   observedState:
     bigQueryDataset:
