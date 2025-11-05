@@ -30,9 +30,9 @@ func fuzzWorkflowsWorkflow() fuzztesting.KRMFuzzer {
 		WorkflowsWorkflowObservedState_FromProto, WorkflowsWorkflowObservedState_ToProto,
 	)
 	f.UnimplementedFields.Insert(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".service_account")
 	f.SpecFields.Insert(".source_contents")
 	f.SpecFields.Insert(".crypto_key_name")

@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	gcp "cloud.google.com/go/workflows/apiv1"
 
@@ -105,6 +106,7 @@ func (m *modelWorkflowsWorkflow) AdapterForObject(ctx context.Context, reader cl
 		return nil, mapCtx.Err()
 	}
 	desired.Name = id.String()
+	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
 
 	// Get workflows GCP client
 	gcpClient, err := m.client(ctx)
