@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -30,20 +31,10 @@ type WorkflowsWorkflow_StateError struct {
 	Type *string `json:"type,omitempty"`
 }
 
-type Parent struct {
-	// +required
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
-
-	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
-	// Immutable.
-	// +required
-	Location string `json:"location"`
-}
-
 // WorkflowsWorkflowSpec defines the desired state of Workflow
 // +kcc:spec:proto=google.cloud.workflows.v1.Workflow
 type WorkflowsWorkflowSpec struct {
-	Parent `json:",inline"`
+	*parent.ProjectAndLocationRef `json:",inline"`
 
 	// Description of the workflow provided by the user.
 	// Must be at most 1000 unicode characters long.
