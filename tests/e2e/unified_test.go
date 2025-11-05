@@ -228,10 +228,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 						dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
 						for _, dependBytes := range dependencyYamls {
 							depUnstruct := bytesToUnstructured(t, dependBytes, uniqueID, project)
-							opt.Create = append(opt.Create, depUnstruct)
+							opt.Dependencies = append(opt.Dependencies, depUnstruct)
 						}
 					}
-
+					opt.Create = append(opt.Create, opt.Dependencies...)
 					opt.Create = append(opt.Create, primaryResource)
 
 					if fixture.Update != nil {
@@ -462,6 +462,11 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					// Note that this does introduce a dependency that objects are ordered correctly for deletion.
 					opt.DeleteInOrder = true
 				}
+				if os.Getenv("DELETE_DEPENDENCIES_FIRST") != "" {
+					resourcesForDeletion := []*unstructured.Unstructured{primaryResource}
+					resourcesForDeletion = append(resourcesForDeletion, opt.Dependencies...)
+					opt.Create = resourcesForDeletion
+				}
 				create.DeleteResources(h, opt)
 
 				// Verify kube events
@@ -480,7 +485,11 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					if testPause {
 						assertNoRequest(t, got, normalizers...)
 					} else {
-						expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
+						goldenFileName := "_http.log"
+						if os.Getenv("DELETE_DEPENDENCIES_FIRST") != "" {
+							goldenFileName = "_http_delete_dependencies_first.log"
+						}
+						expectedPath := filepath.Join(fixture.SourceDir, goldenFileName)
 
 						h.CompareGoldenFile(expectedPath, got, normalizers...)
 					}
