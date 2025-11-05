@@ -18,11 +18,20 @@ metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
   name: workflow-${uniqueId}
+  labels: 
+    app.kubernetes.io/name: "mock-app"
+    app.kubernetes.io/instance: "mock-instance"
+    app.kubernetes.io/version: "v1.0.0"
+    app.kubernetes.io/component: "mock-component"
+    app.kubernetes.io/part-of: "mock-part-of"
+    app.kubernetes.io/managed-by: "configmanagement.gke.io"
+    applyset.kubernetes.io/id: mock-applyset-id
+    configmanagement.gke.io/sync-name: mock-sync-name
+    configmanagement.gke.io/sync-namespace: mock-sync-namespace
+    custom-label: "bar" # valid label
 spec:
   location: us-central1
   description: "Updated Example workflow"
-  labels:
-    env: "dev"
   sourceContents: "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'\n    - setFromCallResult:\n        assign:\n          - searchTerm: '${text.split(location, \"-\")[0]}'"
   serviceAccountRef:
     name: gsa-${uniqueId}-updated
