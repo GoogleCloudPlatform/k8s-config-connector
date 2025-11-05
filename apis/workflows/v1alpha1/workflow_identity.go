@@ -20,14 +20,21 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+var _ identity.Identity = &WorkflowsWorkflowIdentity{}
+
+const (
+	WorkflowsWorkflowIdentityURL = parent.ProjectAndLocationURL + "/workflows/{{workflowID}}"
 )
 
 // WorkflowsWorkflowIdentity defines the resource reference to WorkflowsWorkflow, which "External" field
 // holds the GCP identifier for the KRM object.
 type WorkflowsWorkflowIdentity struct {
-	parent *WorkflowsWorkflowParent
+	parent *parent.ProjectAndLocationParent
 	id     string
 }
 
@@ -39,79 +46,57 @@ func (i *WorkflowsWorkflowIdentity) ID() string {
 	return i.id
 }
 
-func (i *WorkflowsWorkflowIdentity) Parent() *WorkflowsWorkflowParent {
+func (i *WorkflowsWorkflowIdentity) Parent() *parent.ProjectAndLocationParent {
 	return i.parent
 }
 
-type WorkflowsWorkflowParent struct {
-	ProjectID string
-	Location  string
+func (i *WorkflowsWorkflowIdentity) FromExternal(ref string) error {
+	tokens := strings.Split(ref, "/workflows/")
+	if len(tokens) != 2 {
+		return fmt.Errorf("format of WorkflowsWorkflow external=%q was not known (use projects/{{projectID}}/locations/{{location}}/workflows/{{workflowID}})", ref)
+	}
+	i.parent = &parent.ProjectAndLocationParent{}
+	if err := i.parent.FromExternal(tokens[0]); err != nil {
+		return err
+	}
+	i.id = tokens[1]
+	if i.id == "" {
+		return fmt.Errorf("workflowID was empty in external=%q", ref)
+	}
+	return nil
 }
 
-func (p *WorkflowsWorkflowParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location
-}
+var _ identity.Resource = &WorkflowsWorkflow{}
 
-// New builds a WorkflowsWorkflowIdentity from the Config Connector WorkflowsWorkflow object.
-func NewWorkflowsWorkflowIdentity(ctx context.Context, reader client.Reader, obj *WorkflowsWorkflow) (*WorkflowsWorkflowIdentity, error) {
+func (obj *WorkflowsWorkflow) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	newIdentity := &WorkflowsWorkflowIdentity{
+		parent: &parent.ProjectAndLocationParent{},
+	}
 
-	// Get Parent
-	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-	if err != nil {
+	// Resolve user-configured Parent
+	if err := obj.Spec.ProjectAndLocationRef.Build(ctx, reader, obj.GetNamespace(), newIdentity.parent); err != nil {
 		return nil, err
 	}
-	projectID := projectRef.ProjectID
-	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
-	}
-	location := obj.Spec.Location
 
-	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
+	// Get user-configured ID
+	newIdentity.id = common.ValueOf(obj.Spec.ResourceID)
+	if newIdentity.id == "" {
+		newIdentity.id = obj.GetName()
 	}
-	if resourceID == "" {
+	if newIdentity.id == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	// Validate against the ID stored in status.externalRef, if any
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseWorkflowsWorkflowExternal(externalRef)
-		if err != nil {
-			return nil, err
+		statusIdentity := &WorkflowsWorkflowIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+		if statusIdentity.String() != newIdentity.String() {
+			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, newIdentity.String())
 		}
 	}
-	return &WorkflowsWorkflowIdentity{
-		parent: &WorkflowsWorkflowParent{
-			ProjectID: projectID,
-			Location:  location,
-		},
-		id: resourceID,
-	}, nil
-}
-
-func ParseWorkflowsWorkflowExternal(external string) (parent *WorkflowsWorkflowParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "workflows" {
-		return nil, "", fmt.Errorf("format of WorkflowsWorkflow external=%q was not known (use projects/{{projectID}}/locations/{{location}}/workflows/{{workflowID}})", external)
-	}
-	parent = &WorkflowsWorkflowParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
-	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return newIdentity, nil
 }
