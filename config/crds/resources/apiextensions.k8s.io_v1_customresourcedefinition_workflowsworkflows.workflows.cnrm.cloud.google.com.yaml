@@ -185,12 +185,6 @@ spec:
                 description: Required. Workflow code to be executed. The size limit
                   is 128KB.
                 type: string
-              tags:
-                additionalProperties:
-                  type: string
-                description: Optional. Input only. Immutable. Tags associated with
-                  this workflow.
-                type: object
               userEnvVars:
                 additionalProperties:
                   type: string

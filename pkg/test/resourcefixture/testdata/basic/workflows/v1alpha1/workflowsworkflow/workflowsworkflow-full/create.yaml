@@ -30,6 +30,8 @@ metadata:
     configmanagement.gke.io/sync-namespace: mock-sync-namespace
     custom-label: "foo" # valid label
 spec:
+  projectRef:
+    external: projects/${projectId}
   location: us-central1
   description: "Example workflow"
   sourceContents: "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'"
@@ -40,3 +42,4 @@ spec:
   callLogLevel: "LOG_ERRORS_ONLY"
   userEnvVars:
     username: "person1"
+  executionHistoryLevel: "EXECUTION_HISTORY_BASIC"

@@ -78,7 +78,9 @@ type WorkflowsWorkflowSpec struct {
 
 	// Optional. Input only. Immutable. Tags associated with this workflow.
 	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.tags
-	Tags map[string]string `json:"tags,omitempty"`
+	// This is the ResourceManager TagValue whose key-value pairs will be <tag namespace>/<tag key name>.
+	// The TagKey, TagValue and TagBinding are under migration to the direct approach.
+	// Tags map[string]string `json:"tags,omitempty"`
 
 	// The Workflow name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
