@@ -54,7 +54,11 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 			return
 		}
 		// Generate a "reasonable" timestamp; huge values are out of range of golang time types
-		seconds := (1900 * 365 * 24 * 60 * 60) + randStream.Intn(400*365*24*60*60)
+		baseSeconds := int64(1900) * 365 * 24 * 60 * 60
+		maxRandomDays := 400 * 365 // Max days to add
+		randomDays := randStream.Intn(maxRandomDays)
+		randomSeconds := int64(randomDays) * 24 * 60 * 60
+		seconds := baseSeconds + randomSeconds
 		nanos := randStream.Intn(1000000000)
 		msg.Set(descriptor.Fields().ByName("seconds"), protoreflect.ValueOfInt64(int64(seconds)))
 		msg.Set(descriptor.Fields().ByName("nanos"), protoreflect.ValueOfInt32(int32(nanos)))
