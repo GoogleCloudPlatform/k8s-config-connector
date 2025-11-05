@@ -53,6 +53,19 @@ type BigtableMaterializedViewStatus struct {
 
 	// A unique specifier for the BigtableMaterializedView resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
+
+	// The unique name of the BigtableMaterializedView. Values are of the form
+	//  `projects/{project}/instances/{instance}/materializedViews/{materializedViewID}`.
+	// +kcc:proto:field=google.bigtable.admin.v2.MaterializedView.name
+	Name *string `json:"name,omitempty"`
+
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	ObservedState *BigtableMaterializedViewObservedState `json:"observedState,omitempty"`
+}
+
+// BigtableMaterializedViewObservedState is the state of the BigtableMaterializedView resource as most recently observed in GCP.
+// +kcc:observedstate:proto=google.bigtable.admin.v2.MaterializedView
+type BigtableMaterializedViewObservedState struct {
 }
 
 // +genclient
