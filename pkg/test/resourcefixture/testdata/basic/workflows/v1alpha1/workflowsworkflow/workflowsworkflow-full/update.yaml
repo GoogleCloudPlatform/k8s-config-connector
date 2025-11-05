@@ -40,3 +40,4 @@ spec:
   callLogLevel: "LOG_ALL_CALLS"
   userEnvVars:
     username: "person2"
+  executionHistoryLevel: "EXECUTION_HISTORY_DETAILED"

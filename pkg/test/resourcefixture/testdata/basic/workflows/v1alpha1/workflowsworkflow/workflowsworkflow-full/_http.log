@@ -16,8 +16,9 @@ X-Xss-Protection: 0
   "done": true,
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
-    "email": "service-${projectNumber}@gcp-sa-worksflow.iam.gserviceaccount.com"
+    "@type": "type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity",
+    "email": "service-${projectNumber}@gcp-sa-workflows.iam.gserviceaccount.com",
+    "uniqueId": "12345678"
   }
 }
 
@@ -79,6 +80,36 @@ X-Xss-Protection: 0
   "oauth2ClientId": "888888888888888888888",
   "projectId": "${projectId}",
   "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Service account projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Service account projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -163,6 +194,36 @@ X-Xss-Protection: 0
   "oauth2ClientId": "888888888888888888888",
   "projectId": "${projectId}",
   "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}-updated@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Service account projects/${projectId}/serviceAccounts/gsa-${uniqueId}-updated@${projectId}.iam.gserviceaccount.com does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Service account projects/${projectId}/serviceAccounts/gsa-${uniqueId}-updated@${projectId}.iam.gserviceaccount.com does not exist.",
+    "status": "NOT_FOUND"
+  }
 }
 
 ---
@@ -511,7 +572,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "bindings": [
       {
         "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-worksflow.iam.gserviceaccount.com"
+          "serviceAccount:service-${projectNumber}@gcp-sa-workflows.iam.gserviceaccount.com"
         ],
         "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
       }
@@ -535,7 +596,7 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-worksflow.iam.gserviceaccount.com"
+        "serviceAccount:service-${projectNumber}@gcp-sa-workflows.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
     }
@@ -563,7 +624,7 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-worksflow.iam.gserviceaccount.com"
+        "serviceAccount:service-${projectNumber}@gcp-sa-workflows.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
     }
@@ -602,7 +663,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "bindings": [
       {
         "members": [
-          "serviceAccount:service-${projectNumber}@gcp-sa-worksflow.iam.gserviceaccount.com"
+          "serviceAccount:service-${projectNumber}@gcp-sa-workflows.iam.gserviceaccount.com"
         ],
         "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
       }
@@ -626,7 +687,7 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-worksflow.iam.gserviceaccount.com"
+        "serviceAccount:service-${projectNumber}@gcp-sa-workflows.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
     }
@@ -654,7 +715,7 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-worksflow.iam.gserviceaccount.com"
+        "serviceAccount:service-${projectNumber}@gcp-sa-workflows.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
     }
@@ -699,6 +760,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
   "callLogLevel": 2,
   "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "description": "Example workflow",
+  "executionHistoryLevel": 1,
   "labels": {
     "cnrm-test": "true",
     "custom-label": "foo",
@@ -723,6 +785,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.workflows.v1.OperationMetadata",
     "apiVersion": "v1",
@@ -763,10 +826,18 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.workflows.v1.Workflow",
+    "allKmsKeys": [
+      "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+    ],
+    "allKmsKeysVersions": [
+      "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
+    ],
     "callLogLevel": "LOG_ERRORS_ONLY",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+    "cryptoKeyVersion": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
     "description": "Example workflow",
+    "executionHistoryLevel": "EXECUTION_HISTORY_BASIC",
     "labels": {
       "cnrm-test": "true",
       "custom-label": "foo",
@@ -775,7 +846,7 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
     "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
     "revisionId": "revision-id-placeholder",
-    "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
+    "serviceAccount": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
     "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -803,10 +874,18 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "allKmsKeys": [
+    "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+  ],
+  "allKmsKeysVersions": [
+    "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
+  ],
   "callLogLevel": 2,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "cryptoKeyVersion": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
   "description": "Example workflow",
+  "executionHistoryLevel": 1,
   "labels": {
     "cnrm-test": "true",
     "custom-label": "foo",
@@ -815,7 +894,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
   "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
   "revisionId": "revision-id-placeholder",
-  "serviceAccount": "projects/${projectId}/serviceAccounts/${projectNumber}-compute@developer.gserviceaccount.com",
+  "serviceAccount": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
   "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'",
   "state": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -835,6 +914,7 @@ X-Goog-Request-Params: workflow.name=projects%2F${projectId}%2Flocations%2Fus-ce
   "callLogLevel": 1,
   "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}-updated",
   "description": "Updated Example workflow",
+  "executionHistoryLevel": 2,
   "labels": {
     "cnrm-test": "true",
     "custom-label": "bar",
@@ -859,6 +939,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.workflows.v1.OperationMetadata",
     "apiVersion": "v1",
@@ -899,10 +980,20 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.workflows.v1.Workflow",
+    "allKmsKeys": [
+      "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+      "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}-updated"
+    ],
+    "allKmsKeysVersions": [
+      "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+      "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}-updated/cryptoKeyVersions/1"
+    ],
     "callLogLevel": "LOG_ALL_CALLS",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}-updated",
+    "cryptoKeyVersion": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}-updated/cryptoKeyVersions/1",
     "description": "Updated Example workflow",
+    "executionHistoryLevel": "EXECUTION_HISTORY_BASIC",
     "labels": {
       "cnrm-test": "true",
       "custom-label": "bar",
@@ -911,7 +1002,7 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
     "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
     "revisionId": "revision-id-placeholder",
-    "serviceAccount": "gsa-${uniqueId}-updated@${projectId}.iam.gserviceaccount.com",
+    "serviceAccount": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}-updated@${projectId}.iam.gserviceaccount.com",
     "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'\n    - setFromCallResult:\n        assign:\n          - searchTerm: '${text.split(location, \"-\")[0]}'",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -939,10 +1030,20 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "allKmsKeys": [
+    "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+    "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}-updated"
+  ],
+  "allKmsKeysVersions": [
+    "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}-updated/cryptoKeyVersions/1"
+  ],
   "callLogLevel": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}-updated",
+  "cryptoKeyVersion": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}-updated/cryptoKeyVersions/1",
   "description": "Updated Example workflow",
+  "executionHistoryLevel": 1,
   "labels": {
     "cnrm-test": "true",
     "custom-label": "bar",
@@ -951,7 +1052,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
   "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
   "revisionId": "revision-id-placeholder",
-  "serviceAccount": "gsa-${uniqueId}-updated@${projectId}.iam.gserviceaccount.com",
+  "serviceAccount": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}-updated@${projectId}.iam.gserviceaccount.com",
   "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'\n    - setFromCallResult:\n        assign:\n          - searchTerm: '${text.split(location, \"-\")[0]}'",
   "state": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -978,6 +1079,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.workflows.v1.OperationMetadata",
     "apiVersion": "v1",
@@ -1040,7 +1142,7 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-worksflow.iam.gserviceaccount.com"
+        "serviceAccount:service-${projectNumber}@gcp-sa-workflows.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
     }
@@ -1116,7 +1218,7 @@ X-Xss-Protection: 0
   "bindings": [
     {
       "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-worksflow.iam.gserviceaccount.com"
+        "serviceAccount:service-${projectNumber}@gcp-sa-workflows.iam.gserviceaccount.com"
       ],
       "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
     }

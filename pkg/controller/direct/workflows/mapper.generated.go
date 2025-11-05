@@ -59,6 +59,7 @@ func WorkflowsWorkflowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.AllKMSKeys = in.AllKmsKeys
 	out.AllKMSKeysVersions = in.AllKmsKeysVersions
 	out.CryptoKeyVersion = direct.LazyPtr(in.GetCryptoKeyVersion())
+	// MISSING: Tags
 	return out
 }
 func WorkflowsWorkflowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsWorkflowObservedState) *pb.Workflow {
@@ -76,6 +77,7 @@ func WorkflowsWorkflowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.W
 	out.AllKmsKeys = in.AllKMSKeys
 	out.AllKmsKeysVersions = in.AllKMSKeysVersions
 	out.CryptoKeyVersion = direct.ValueOf(in.CryptoKeyVersion)
+	// MISSING: Tags
 	return out
 }
 func WorkflowsWorkflowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workflow) *krm.WorkflowsWorkflowSpec {
@@ -96,7 +98,7 @@ func WorkflowsWorkflowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workflow)
 	out.CallLogLevel = direct.Enum_FromProto(mapCtx, in.GetCallLogLevel())
 	out.UserEnvVars = in.UserEnvVars
 	out.ExecutionHistoryLevel = direct.Enum_FromProto(mapCtx, in.GetExecutionHistoryLevel())
-	out.Tags = in.Tags
+	// MISSING: Tags
 	return out
 }
 func WorkflowsWorkflowSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsWorkflowSpec) *pb.Workflow {
@@ -119,7 +121,7 @@ func WorkflowsWorkflowSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsW
 	out.CallLogLevel = direct.Enum_ToProto[pb.Workflow_CallLogLevel](mapCtx, in.CallLogLevel)
 	out.UserEnvVars = in.UserEnvVars
 	out.ExecutionHistoryLevel = direct.Enum_ToProto[pb.ExecutionHistoryLevel](mapCtx, in.ExecutionHistoryLevel)
-	out.Tags = in.Tags
+	// MISSING: Tags
 	return out
 }
 func WorkflowsWorkflowSpec_SourceContents_ToProto(mapCtx *direct.MapContext, in *string) *pb.Workflow_SourceContents {
