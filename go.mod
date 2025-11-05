@@ -39,7 +39,7 @@ require (
 	cloud.google.com/go/edgecontainer v1.4.3
 	cloud.google.com/go/essentialcontacts v1.7.6
 	cloud.google.com/go/eventarc v1.15.5
-	cloud.google.com/go/firestore v1.19.0
+	cloud.google.com/go/firestore v1.20.0
 	cloud.google.com/go/gkebackup v1.8.0
 	cloud.google.com/go/gkemulticloud v1.5.3
 	cloud.google.com/go/iam v1.5.2
