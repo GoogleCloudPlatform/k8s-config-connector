@@ -72,12 +72,12 @@ func normalizeReference(ctx context.Context, reader client.Reader, obj *krm.Work
 		}
 	}
 
-	if obj.Spec.KMSCryptoKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, obj, obj.Spec.KMSCryptoKeyRef)
+	if obj.Spec.CryptoKeyNameRef != nil {
+		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, obj, obj.Spec.CryptoKeyNameRef)
 		if err != nil {
 			return err
 		}
-		obj.Spec.KMSCryptoKeyRef = kmsKeyRef
+		obj.Spec.CryptoKeyNameRef = kmsKeyRef
 	}
 	return nil
 }
