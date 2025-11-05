@@ -58,7 +58,9 @@ type TagsTagBindingStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// The generated id for the TagBinding. This is a string of the form: tagBindings/{full-resource-name}/{tag-value-name}.
+	// The generated id for the TagBinding.
+	// This value does not have the `tagBindings/` prefix, which is different from the GCP returned name.
+	// To look for identity, please look at `status.externalRef` instead.
 	Name *string `json:"name,omitempty"`
 
 	// A unique specifier for the TagsTagBinding resource in GCP.

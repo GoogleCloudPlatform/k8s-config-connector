@@ -18,6 +18,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/tags/v1beta1"
 
@@ -150,7 +151,7 @@ func (a *TagsTagBindingAdapter) Create(ctx context.Context, createOp *directbase
 
 	// TF-based trims the prefix "tagBindings/", which is weird because then it is is invalid to retrieve the object. Shall we keep this behavior?
 	// This modified value is also the only accepted value in `spec.resourceID`.
-	status.Name = direct.LazyPtr(created.GetName())
+	status.Name = direct.LazyPtr(strings.TrimPrefix(created.GetName(), "tagBindings/"))
 	return createOp.UpdateStatus(ctx, status, nil)
 }
 
