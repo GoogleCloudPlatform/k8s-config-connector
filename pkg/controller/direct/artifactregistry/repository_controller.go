@@ -37,10 +37,14 @@ const (
 )
 
 func init() {
+	// Debug log to verify this init function is called
+	fmt.Println("DEBUG: Registering ArtifactRegistry Direct Controller")
 	registry.RegisterModel(krm.ArtifactRegistryRepositoryGVK, NewModel)
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	// Debug log to verify this function is called
+	fmt.Println("DEBUG: Creating new ArtifactRegistry Direct Controller model")
 	return &model{config: config}, nil
 }
 
@@ -57,6 +61,9 @@ func (m *model) client(ctx context.Context) (pb.ArtifactRegistryClient, error) {
 }
 
 func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+	// Debug log to verify this method is called
+	fmt.Printf("DEBUG: ArtifactRegistry Direct Controller AdapterForObject called for %s/%s\n", u.GetNamespace(), u.GetName())
+	
 	obj := &krm.ArtifactRegistryRepository{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
