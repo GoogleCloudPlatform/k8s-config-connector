@@ -397,8 +397,8 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, kube client.Rea
 		fieldMeta:           make(map[string]*FieldMetadata),
 	}
 
-	unmanaged, ok := obj.GetAnnotations()[k8s.UnmanagedFieldsList]
-	if ok && unmanaged != "" {
+	unmanaged := obj.GetAnnotations()[k8s.UnmanagedFieldsList]
+	if unmanaged != "" {
 		unmanagedFieldsList := strings.Split(unmanaged, ",")
 		for _, fieldPath := range unmanagedFieldsList {
 			field, supported := supportedUnmanageableFields[fieldPath]
@@ -659,13 +659,13 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		}
 	}
 
-	isMaintenanceVersionUnamanaged := false
+	isMaintenanceVersionUnmanaged := false
 	if mvField, ok := a.fieldMeta["spec.maintenanceVersion"]; ok {
-		isMaintenanceVersionUnamanaged = mvField.isUnmanaged
+		isMaintenanceVersionUnmanaged = mvField.isUnmanaged
 	}
 
 	// we also need to handle maintenanceVersion updates separately ...
-	if maintenanceVersion := direct.ValueOf(a.desired.Spec.MaintenanceVersion); !isMaintenanceVersionUnamanaged && maintenanceVersion != "" && maintenanceVersion != a.actual.MaintenanceVersion {
+	if maintenanceVersion := direct.ValueOf(a.desired.Spec.MaintenanceVersion); !isMaintenanceVersionUnmanaged && maintenanceVersion != "" && maintenanceVersion != a.actual.MaintenanceVersion {
 		newMaintDb := &api.DatabaseInstance{
 			MaintenanceVersion: maintenanceVersion,
 		}
