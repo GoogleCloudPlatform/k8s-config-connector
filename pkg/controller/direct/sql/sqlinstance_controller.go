@@ -493,12 +493,7 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, createOp *directbase.Cr
 			return err
 		}
 
-		isMaintenanceVersionUnamanaged := false
-		if mvField, ok := a.fieldMeta[maintenanceVersionFieldPath]; ok {
-			isMaintenanceVersionUnamanaged = mvField.isUnmanaged
-		}
-
-		if !isMaintenanceVersionUnamanaged && maintenanceVersion != "" {
+		if maintenanceVersion != "" {
 			newMaintDb := &api.DatabaseInstance{
 				MaintenanceVersion: maintenanceVersion,
 			}
