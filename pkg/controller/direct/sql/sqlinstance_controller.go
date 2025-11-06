@@ -405,10 +405,13 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, kube client.Rea
 			if !supported {
 				return nil, fmt.Errorf("unmanaging field `%s` is not supported, supported fields are: %v", fieldPath, sortedUnmanageableFieldPaths)
 			}
-			// Mark the field as unmanaged for this resource instance
-			field.isUnmanaged = true
 
-			adapter.fieldMeta[fieldPath] = field
+			newField := &FieldMetadata{
+				isUnmanaged:         true,
+				preserveActualValue: field.preserveActualValue,
+			}
+
+			adapter.fieldMeta[fieldPath] = newField
 		}
 	}
 	return adapter, nil
