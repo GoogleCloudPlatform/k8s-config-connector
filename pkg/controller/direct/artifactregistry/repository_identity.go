@@ -42,19 +42,16 @@ func (i *ArtifactRegistryRepositoryIdentity) FullyQualifiedName() string {
 }
 
 func NewArtifactRegistryRepositoryIdentity(ctx context.Context, reader client.Reader, obj *krm.ArtifactRegistryRepository) (*ArtifactRegistryRepositoryIdentity, error) {
-	// Get project ID
-	projectRef := obj.Spec.ProjectRef
-	if projectRef == nil {
-		return nil, fmt.Errorf("missing required field spec.projectRef")
+	// Get project ID from annotation (standard Config Connector approach)
+	var projectID string
+	annotations := obj.GetAnnotations()
+	if annotations != nil {
+		if pid, ok := annotations["cnrm.cloud.google.com/project-id"]; ok {
+			projectID = pid
+		}
 	}
-	
-	project, err := refs.ResolveProject(ctx, reader, obj.GetNamespace(), projectRef)
-	if err != nil {
-		return nil, err
-	}
-	projectID := project.ProjectID
 	if projectID == "" {
-		return nil, fmt.Errorf("cannot resolve project")
+		return nil, fmt.Errorf("missing required annotation cnrm.cloud.google.com/project-id")
 	}
 
 	// Get location

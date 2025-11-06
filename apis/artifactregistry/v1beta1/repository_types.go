@@ -243,8 +243,6 @@ type ArtifactRegistryRepositorySpec struct {
 	// +optional
 	VirtualRepositoryConfig *VirtualRepositoryConfig `json:"virtualRepositoryConfig,omitempty"`
 
-	// +required
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
 }
 
 // ArtifactRegistryRepositoryStatus defines the config connector machine state of ArtifactRegistryRepository
