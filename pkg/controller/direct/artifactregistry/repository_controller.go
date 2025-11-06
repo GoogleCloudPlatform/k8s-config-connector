@@ -32,6 +32,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
 const (
@@ -53,9 +54,16 @@ type model struct {
 }
 
 func (m *model) client(ctx context.Context) (*artifactregistry.Client, error) {
+	log := log.FromContext(ctx).WithName(ctrlName)
+	log.Info("creating ArtifactRegistry client", "userAgent", m.config.UserAgent, "endpoint", m.config.GCPEndpoint, "billingProject", m.config.BillingProject)
+
 	var opts []option.ClientOption
 	if m.config.UserAgent != "" {
 		opts = append(opts, option.WithUserAgent(m.config.UserAgent))
+	}
+	if m.config.GCPEndpoint != "" {
+		log.Info("using custom GCP endpoint", "endpoint", m.config.GCPEndpoint)
+		opts = append(opts, option.WithEndpoint(m.config.GCPEndpoint))
 	}
 	if m.config.HTTPClient != nil {
 		opts = append(opts, option.WithHTTPClient(m.config.HTTPClient))
@@ -66,8 +74,11 @@ func (m *model) client(ctx context.Context) (*artifactregistry.Client, error) {
 
 	gcpClient, err := artifactregistry.NewRESTClient(ctx, opts...)
 	if err != nil {
+		log.Error(err, "failed to create ArtifactRegistry client")
 		return nil, fmt.Errorf("building artifact registry client: %w", err)
 	}
+
+	log.Info("successfully created ArtifactRegistry client")
 	return gcpClient, nil
 }
 
@@ -109,31 +120,37 @@ type Adapter struct {
 var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("getting ArtifactRegistry repository", "name", a.id.FullyQualifiedName())
+	log := log.FromContext(ctx).WithName(ctrlName)
+	log.Info("starting Find operation for ArtifactRegistry repository", "name", a.id.FullyQualifiedName(), "project", a.id.Parent.ProjectID, "location", a.id.Parent.Location)
 
 	req := &artifactregistrypb.GetRepositoryRequest{Name: a.id.FullyQualifiedName()}
+	log.Info("calling GCP GetRepository API", "request", req.Name)
+
 	repositoryPB, err := a.gcpClient.GetRepository(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
+			log.Info("ArtifactRegistry repository not found in GCP", "name", a.id.FullyQualifiedName())
 			return false, nil
 		}
+		log.Error(err, "failed to get ArtifactRegistry repository from GCP", "name", a.id.FullyQualifiedName())
 		return false, fmt.Errorf("getting ArtifactRegistry repository %q: %w", a.id.FullyQualifiedName(), err)
 	}
 
+	log.Info("successfully found ArtifactRegistry repository in GCP", "name", a.id.FullyQualifiedName(), "format", repositoryPB.GetFormat())
 	a.actual = repositoryPB
 	return true, nil
 }
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("creating ArtifactRegistry repository", "name", a.id.FullyQualifiedName())
+	log := log.FromContext(ctx).WithName(ctrlName)
+	log.Info("starting Create operation for ArtifactRegistry repository", "name", a.id.FullyQualifiedName(), "project", a.id.Parent.ProjectID, "location", a.id.Parent.Location)
 
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
 	resource := ArtifactRegistryRepositorySpec_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
+		log.Error(mapCtx.Err(), "failed to map desired spec to proto")
 		return mapCtx.Err()
 	}
 
@@ -145,12 +162,15 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		Repository:   resource,
 	}
 
+	log.Info("calling GCP CreateRepository API", "parent", req.Parent, "repositoryId", req.RepositoryId, "format", resource.GetFormat())
+
 	op, err := a.gcpClient.CreateRepository(ctx, req)
 	if err != nil {
+		log.Error(err, "failed to create ArtifactRegistry repository in GCP", "name", a.id.FullyQualifiedName())
 		return fmt.Errorf("creating ArtifactRegistry repository %q: %w", a.id.FullyQualifiedName(), err)
 	}
 
-	log.V(2).Info("successfully created ArtifactRegistry repository", "name", a.id.FullyQualifiedName(), "operation", op.Name())
+	log.Info("successfully called GCP CreateRepository API", "name", a.id.FullyQualifiedName(), "operation", op.Name())
 	return nil
 }
 
