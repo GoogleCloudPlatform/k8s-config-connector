@@ -38,35 +38,7 @@ import (
 	"github.com/googleapis/gax-go/v2"
 )
 
-const (
-	ctrlName = "sqlinstance-controller"
-
-	instanceTypeFieldPath                                   = "spec.instanceType"
-	maintenanceVersionFieldPath                             = "spec.maintenanceVersion"
-	settingsFieldPath                                       = "spec.settings"
-	editionFieldPath                                        = "spec.settings.edition"
-	activationPolicyFieldPath                               = "spec.settings.activationPolicy"
-	backupConfigurationFieldPath                            = "spec.settings.backupConfiguration"
-	backupRetentionSettingsFieldPath                        = "spec.settings.backupConfiguration.backupRetentionSettings"
-	backupRetentionSettingsRetainedBackupsFieldPath         = "spec.settings.backupConfiguration.backupRetentionSettings.retainedBackups"
-	backupRetentionSettingsRetentionUnitFieldPath           = "spec.settings.backupConfiguration.backupRetentionSettings.retentionUnit"
-	backupConfigurationEnabledFieldPath                     = "spec.settings.backupConfiguration.enabled"
-	backupConfigurationPointInTimeRecoveryEnabledFieldPath  = "spec.settings.backupConfiguration.pointInTimeRecoveryEnabled"
-	backupConfigurationStartTimeFieldPath                   = "spec.settings.backupConfiguration.startTime"
-	backupConfigurationTransactionLogRetentionDaysFieldPath = "spec.settings.backupConfiguration.transactionLogRetentionDays"
-	connectorEnforcementFieldPath                           = "spec.settings.connectorEnforcement"
-	dataCacheConfigFieldPath                                = "spec.settings.dataCacheConfig"
-	dataCacheConfigDataCacheEnabledFieldPath                = "spec.settings.dataCacheConfig.dataCacheEnabled"
-	diskAutoresizeFieldPath                                 = "spec.settings.diskAutoresize"
-	diskAutoresizeLimitFieldPath                            = "spec.settings.diskAutoresizeLimit"
-	diskSizeFieldPath                                       = "spec.settings.diskSize"
-	diskTypeFieldPath                                       = "spec.settings.diskType"
-	ipConfigurationFieldPath                                = "spec.settings.ipConfiguration"
-	ipConfigurationIPV4EnabledFieldPath                     = "spec.settings.ipConfiguration.ipv4Enabled"
-	locationPreferenceFieldPath                             = "spec.settings.locationPreference"
-	locationPreferenceZoneFieldPath                         = "spec.settings.locationPreference.zone"
-	pricingPlanFieldPath                                    = "spec.settings.pricingPlan"
-)
+const ctrlName = "sqlinstance-controller"
 
 // FieldMetadata encapsulates the state and logic for a field that can be unmanaged.
 type FieldMetadata struct {
@@ -79,17 +51,17 @@ type FieldMetadata struct {
 }
 
 var supportedUnmanageableFields = map[string]*FieldMetadata{
-	instanceTypeFieldPath: {
+	"spec.instanceType": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			out.InstanceType = actual.InstanceType
 		},
 	},
-	maintenanceVersionFieldPath: {
+	"spec.maintenanceVersion": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			out.MaintenanceVersion = actual.MaintenanceVersion
 		},
 	},
-	editionFieldPath: {
+	"spec.settings.edition": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -99,12 +71,12 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	settingsFieldPath: {
+	"spec.settings": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			out.Settings = actual.Settings
 		},
 	},
-	activationPolicyFieldPath: {
+	"spec.settings.activationPolicy": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -114,7 +86,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	backupConfigurationFieldPath: {
+	"spec.settings.backupConfiguration": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -124,7 +96,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	connectorEnforcementFieldPath: {
+	"spec.settings.connectorEnforcement": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -134,7 +106,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	dataCacheConfigFieldPath: {
+	"spec.settings.dataCacheConfig": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -144,7 +116,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	diskAutoresizeFieldPath: {
+	"spec.settings.diskAutoresize": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -154,7 +126,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	diskAutoresizeLimitFieldPath: {
+	"spec.settings.diskAutoresizeLimit": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -164,7 +136,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	diskSizeFieldPath: {
+	"spec.settings.diskSize": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -174,7 +146,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	diskTypeFieldPath: {
+	"spec.settings.diskType": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -184,7 +156,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	ipConfigurationFieldPath: {
+	"spec.settings.ipConfiguration": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -194,7 +166,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	locationPreferenceFieldPath: {
+	"spec.settings.locationPreference": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -204,7 +176,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	pricingPlanFieldPath: {
+	"spec.settings.pricingPlan": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
@@ -214,7 +186,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	backupRetentionSettingsFieldPath: {
+	"spec.settings.backupConfiguration.backupRetentionSettings": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
 				if out.Settings == nil {
@@ -227,7 +199,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	backupConfigurationEnabledFieldPath: {
+	"spec.settings.backupConfiguration.enabled": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
 				if out.Settings == nil {
@@ -240,7 +212,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	backupConfigurationPointInTimeRecoveryEnabledFieldPath: {
+	"spec.settings.backupConfiguration.pointInTimeRecoveryEnabled": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
 				if out.Settings == nil {
@@ -253,7 +225,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	backupConfigurationStartTimeFieldPath: {
+	"spec.settings.backupConfiguration.startTime": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
 				if out.Settings == nil {
@@ -266,7 +238,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	backupConfigurationTransactionLogRetentionDaysFieldPath: {
+	"spec.settings.backupConfiguration.transactionLogRetentionDays": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
 				if out.Settings == nil {
@@ -279,7 +251,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	backupRetentionSettingsRetainedBackupsFieldPath: {
+	"spec.settings.backupConfiguration.backupRetentionSettings.retainedBackups": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil && actual.Settings.BackupConfiguration.BackupRetentionSettings != nil {
 				if out.Settings == nil {
@@ -295,7 +267,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	backupRetentionSettingsRetentionUnitFieldPath: {
+	"spec.settings.backupConfiguration.backupRetentionSettings.retentionUnit": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil && actual.Settings.BackupConfiguration.BackupRetentionSettings != nil {
 				if out.Settings == nil {
@@ -311,7 +283,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	dataCacheConfigDataCacheEnabledFieldPath: {
+	"spec.settings.dataCacheConfig.dataCacheEnabled": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.DataCacheConfig != nil {
 				if out.Settings == nil {
@@ -324,7 +296,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	ipConfigurationIPV4EnabledFieldPath: {
+	"spec.settings.ipConfiguration.ipv4Enabled": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.IpConfiguration != nil {
 				if out.Settings == nil {
@@ -337,7 +309,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 			}
 		},
 	},
-	locationPreferenceZoneFieldPath: {
+	"spec.settings.locationPreference.zone": {
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.LocationPreference != nil {
 				if out.Settings == nil {
@@ -632,11 +604,11 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	isEditionUnmanaged := false
-	if editionField, ok := a.fieldMeta[editionFieldPath]; ok {
+	if editionField, ok := a.fieldMeta["spec.settings.edition"]; ok {
 		isEditionUnmanaged = editionField.isUnmanaged
 	}
 	isSettingsUnamanged := false
-	if settingsField, ok := a.fieldMeta[settingsFieldPath]; ok {
+	if settingsField, ok := a.fieldMeta["spec.settings"]; ok {
 		isSettingsUnamanged = settingsField.isUnmanaged
 	}
 	isEditionUnmanaged = isEditionUnmanaged || isSettingsUnamanged
@@ -685,7 +657,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	isMaintenanceVersionUnamanaged := false
-	if mvField, ok := a.fieldMeta[maintenanceVersionFieldPath]; ok {
+	if mvField, ok := a.fieldMeta["spec.maintenanceVersion"]; ok {
 		isMaintenanceVersionUnamanaged = mvField.isUnmanaged
 	}
 
