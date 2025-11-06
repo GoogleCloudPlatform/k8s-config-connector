@@ -38,8 +38,9 @@ const (
 
 func init() {
 	// Debug log to verify this init function is called
-	fmt.Println("DEBUG: Registering ArtifactRegistry Direct Controller")
+	fmt.Printf("DEBUG: Registering ArtifactRegistry Direct Controller for GVK: %+v\n", krm.ArtifactRegistryRepositoryGVK)
 	registry.RegisterModel(krm.ArtifactRegistryRepositoryGVK, NewModel)
+	fmt.Println("DEBUG: ArtifactRegistry Direct Controller registration complete")
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
