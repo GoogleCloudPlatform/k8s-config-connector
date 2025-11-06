@@ -75,6 +75,8 @@ type FieldMetadata struct {
 
 	// preserveActualValue contains the specific logic to copy this field's value
 	// from the live GCP resource (`actual`) to the outgoing API request payload (`out`).
+
+	// if a field is nil in `out`, we treat it as a no op
 	preserveActualValue func(out *api.DatabaseInstance, actual *api.DatabaseInstance)
 }
 
@@ -93,7 +95,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				out.Settings.Edition = actual.Settings.Edition
 			}
@@ -108,7 +110,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				out.Settings.ActivationPolicy = actual.Settings.ActivationPolicy
 			}
@@ -118,7 +120,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				out.Settings.BackupConfiguration = actual.Settings.BackupConfiguration
 			}
@@ -128,7 +130,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				out.Settings.ConnectorEnforcement = actual.Settings.ConnectorEnforcement
 			}
@@ -138,7 +140,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				out.Settings.DataCacheConfig = actual.Settings.DataCacheConfig
 			}
@@ -148,7 +150,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				out.Settings.StorageAutoResize = actual.Settings.StorageAutoResize
 			}
@@ -158,7 +160,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				out.Settings.StorageAutoResizeLimit = actual.Settings.StorageAutoResizeLimit
 			}
@@ -168,7 +170,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				out.Settings.DataDiskSizeGb = actual.Settings.DataDiskSizeGb
 			}
@@ -178,7 +180,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				out.Settings.DataDiskType = actual.Settings.DataDiskType
 			}
@@ -188,7 +190,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				out.Settings.IpConfiguration = actual.Settings.IpConfiguration
 			}
@@ -198,7 +200,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				out.Settings.LocationPreference = actual.Settings.LocationPreference
 			}
@@ -208,7 +210,7 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				out.Settings.PricingPlan = actual.Settings.PricingPlan
 			}
@@ -218,10 +220,10 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				if out.Settings.BackupConfiguration == nil {
-					out.Settings.BackupConfiguration = &api.BackupConfiguration{}
+					return
 				}
 				out.Settings.BackupConfiguration.BackupRetentionSettings = actual.Settings.BackupConfiguration.BackupRetentionSettings
 			}
@@ -231,10 +233,10 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				if out.Settings.BackupConfiguration == nil {
-					out.Settings.BackupConfiguration = &api.BackupConfiguration{}
+					return
 				}
 				out.Settings.BackupConfiguration.Enabled = actual.Settings.BackupConfiguration.Enabled
 			}
@@ -244,10 +246,10 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				if out.Settings.BackupConfiguration == nil {
-					out.Settings.BackupConfiguration = &api.BackupConfiguration{}
+					return
 				}
 				out.Settings.BackupConfiguration.PointInTimeRecoveryEnabled = actual.Settings.BackupConfiguration.PointInTimeRecoveryEnabled
 			}
@@ -257,10 +259,10 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				if out.Settings.BackupConfiguration == nil {
-					out.Settings.BackupConfiguration = &api.BackupConfiguration{}
+					return
 				}
 				out.Settings.BackupConfiguration.StartTime = actual.Settings.BackupConfiguration.StartTime
 			}
@@ -270,10 +272,10 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				if out.Settings.BackupConfiguration == nil {
-					out.Settings.BackupConfiguration = &api.BackupConfiguration{}
+					return
 				}
 				out.Settings.BackupConfiguration.TransactionLogRetentionDays = actual.Settings.BackupConfiguration.TransactionLogRetentionDays
 			}
@@ -283,13 +285,13 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil && actual.Settings.BackupConfiguration.BackupRetentionSettings != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				if out.Settings.BackupConfiguration == nil {
-					out.Settings.BackupConfiguration = &api.BackupConfiguration{}
+					return
 				}
 				if out.Settings.BackupConfiguration.BackupRetentionSettings == nil {
-					out.Settings.BackupConfiguration.BackupRetentionSettings = &api.BackupRetentionSettings{}
+					return
 				}
 				out.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups = actual.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups
 			}
@@ -299,13 +301,13 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil && actual.Settings.BackupConfiguration.BackupRetentionSettings != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				if out.Settings.BackupConfiguration == nil {
-					out.Settings.BackupConfiguration = &api.BackupConfiguration{}
+					return
 				}
 				if out.Settings.BackupConfiguration.BackupRetentionSettings == nil {
-					out.Settings.BackupConfiguration.BackupRetentionSettings = &api.BackupRetentionSettings{}
+					return
 				}
 				out.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit = actual.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit
 			}
@@ -315,10 +317,10 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.DataCacheConfig != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				if out.Settings.DataCacheConfig == nil {
-					out.Settings.DataCacheConfig = &api.DataCacheConfig{}
+					return
 				}
 				out.Settings.DataCacheConfig.DataCacheEnabled = actual.Settings.DataCacheConfig.DataCacheEnabled
 			}
@@ -328,10 +330,10 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.IpConfiguration != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				if out.Settings.IpConfiguration == nil {
-					out.Settings.IpConfiguration = &api.IpConfiguration{}
+					return
 				}
 				out.Settings.IpConfiguration.Ipv4Enabled = actual.Settings.IpConfiguration.Ipv4Enabled
 			}
@@ -341,10 +343,10 @@ var supportedUnmanageableFields = map[string]*FieldMetadata{
 		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
 			if actual.Settings != nil && actual.Settings.LocationPreference != nil {
 				if out.Settings == nil {
-					out.Settings = &api.Settings{}
+					return
 				}
 				if out.Settings.LocationPreference == nil {
-					out.Settings.LocationPreference = &api.LocationPreference{}
+					return
 				}
 				out.Settings.LocationPreference.Zone = actual.Settings.LocationPreference.Zone
 			}
