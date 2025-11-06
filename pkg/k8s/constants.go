@@ -124,6 +124,7 @@ var (
 	DCL2CRDLabel         = FormatAnnotation("dcl2crd")
 	TF2CRDLabel          = FormatAnnotation("tf2crd")
 	KCCStabilityLabel    = FormatAnnotation("stability-level")
+	UnmanagedFieldsList  = FormatAnnotation("unmanaged")
 
 	MutableButUnreadableFieldsAnnotation = FormatAnnotation("mutable-but-unreadable-fields")
 	ObservedSecretVersionsAnnotation     = FormatAnnotation("observed-secret-versions")

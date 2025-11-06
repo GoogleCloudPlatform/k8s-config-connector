@@ -11,6 +11,7 @@ metadata:
   namespace: ${projectId}
 spec:
   databaseVersion: POSTGRES_15
+  maintenanceVersion: NOT_VALID_VALUE
   region: us-central1
   resourceID: sqlinstance-${uniqueId}
   settings:

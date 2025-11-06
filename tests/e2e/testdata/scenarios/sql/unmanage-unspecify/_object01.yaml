@@ -3,16 +3,16 @@ kind: SQLInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/unmanaged: spec.instanceType,spec.maintenanceVersion,spec.settings,spec.settings.edition,spec.settings.activationPolicy,spec.settings.backupConfiguration,spec.settings.backupConfiguration.backupRetentionSettings,spec.settings.backupConfiguration.backupRetentionSettings.retainedBackups,spec.settings.backupConfiguration.backupRetentionSettings.retentionUnit,spec.settings.backupConfiguration.enabled,spec.settings.backupConfiguration.pointInTimeRecoveryEnabled,spec.settings.backupConfiguration.startTime,spec.settings.backupConfiguration.transactionLogRetentionDays,spec.settings.connectorEnforcement,spec.settings.dataCacheConfig,spec.settings.dataCacheConfig.dataCacheEnabled,spec.settings.diskAutoresize,spec.settings.diskAutoresizeLimit,spec.settings.diskSize,spec.settings.diskType,spec.settings.ipConfiguration,spec.settings.ipConfiguration.ipv4Enabled,spec.settings.locationPreference,spec.settings.locationPreference.zone,spec.settings.pricingPlan
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   name: sqlinstance-${uniqueId}
   namespace: ${projectId}
 spec:
   databaseVersion: POSTGRES_15
   region: us-central1
-  resourceID: sqlinstance-${uniqueId}
   settings:
     tier: db-g1-small
 status:
@@ -26,7 +26,7 @@ status:
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
-  observedGeneration: 1
+  observedGeneration: 2
   publicIpAddress: 10.1.2.3
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}
   serverCaCert:
