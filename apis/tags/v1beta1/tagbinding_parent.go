@@ -15,8 +15,13 @@
 package v1beta1
 
 import (
+	"context"
 	"fmt"
 	"strings"
+
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/types"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // +k8s:deepcopy-gen=false
@@ -63,4 +68,23 @@ func (p *TagBindingProject) FromExternal(ref string) error {
 		return fmt.Errorf("projectID was empty in TagBinding parent external=%q", ref)
 	}
 	return nil
+}
+
+var _ refsv1beta1.ExternalNormalizer = &ParentRef{}
+
+func (p *ParentRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+	if p.External != "" {
+		return p.External, nil
+	}
+
+	projectNN := types.NamespacedName{
+		Name:      p.Name,
+		Namespace: p.Namespace,
+	}
+	projectNumber, err := refsv1beta1.ResolveProjectNumber(ctx, reader, projectNN)
+	if err != nil {
+		return "", err
+	}
+	p.External = fmt.Sprintf("%s/%s", ProjectPrefix, projectNumber)
+	return p.External, nil
 }

@@ -21,8 +21,7 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"k8s.io/apimachinery/pkg/types"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -93,27 +92,12 @@ func (obj *TagsTagBinding) GetIdentity(ctx context.Context, reader client.Reader
 
 	}
 
-	var parent string
-	if obj.Spec.ParentRef.External != "" {
-		parent = obj.Spec.ParentRef.External
-	} else {
-		projectNN := types.NamespacedName{
-			Name:      obj.Spec.ParentRef.Name,
-			Namespace: obj.Spec.ParentRef.Namespace,
-		}
-		projectNumber, err := refsv1beta1.ResolveProjectNumber(ctx, reader, projectNN)
-		if err != nil {
-			return nil, err
-		}
-		parent = fmt.Sprintf("%s/%s", ProjectPrefix, projectNumber)
-	}
-
-	if err := obj.Spec.TagValueRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
 		return nil, err
 	}
 
 	return &TagBindingIdentity{
-		parent:   parent,
+		parent:   obj.Spec.ParentRef.External,
 		tagValue: obj.Spec.TagValueRef.GetExternal(),
 	}, nil
 }
