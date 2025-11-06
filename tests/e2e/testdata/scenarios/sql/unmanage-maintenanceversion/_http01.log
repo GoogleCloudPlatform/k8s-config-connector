@@ -72,7 +72,7 @@ X-Xss-Protection: 0
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
-    "edition": "ENTERPRISE_PLUS",
+    "edition": "ENTERPRISE",
     "ipConfiguration": {
       "ipv4Enabled": true,
       "requireSsl": false,
