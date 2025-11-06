@@ -23,8 +23,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	
-	"cloud.google.com/go/artifactregistry/apiv1"
+
+	artifactregistry "cloud.google.com/go/artifactregistry/apiv1"
 	"cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"

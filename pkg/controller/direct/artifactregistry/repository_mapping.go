@@ -17,9 +17,9 @@ package artifactregistry
 import (
 	"strings"
 
+	"cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
