@@ -92,15 +92,13 @@ func (r *MonitoringAlertPolicyRef) NormalizedExternal(ctx context.Context, reade
 	if err != nil || name == "" {
 		return "", fmt.Errorf("cannot get name for referenced %s %v (status.name is empty)", u.GetKind(), u.GetNamespace())
 	}
-	return r.External, err
+	r.External = name
+	return r.External, nil
 }
 
 var _ refsv1beta1.RefinerWithProjectID = &MonitoringAlertPolicyRef{}
 
 func (r *MonitoringAlertPolicyRef) RefineWithProjectID(projectID, path string) error {
-
-	//	.Spec.ColumnLayout.Columns[].Widgets[].AlertChart.AlertPolicyRef
-
 	tokens := strings.Split(r.External, "/")
 
 	// AlertChart has a specific format requirement:

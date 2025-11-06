@@ -114,17 +114,22 @@ type refNormalizer struct {
 }
 
 func (r *refNormalizer) VisitField(path string, v any) error {
+	// For those references that implements the refs.ExternalNormalizer.
+	// Good for all types, even if not map to a KCC object, like ProjectAndLocationRef).
 	if ref, ok := v.(refs.ExternalNormalizer); ok {
 		if _, err := ref.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
 			return fmt.Errorf("error normalizing reference at path %q: %w", path, err)
 		}
 	}
+	// For those references that implements the refs.Ref.
+	// Good for type that maps to a KRM CR object.
 	if ref, ok := v.(refs.Ref); ok {
 		if err := ref.Normalize(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
 			return fmt.Errorf("error normalizing reference at path %q: %w", path, err)
 		}
 	}
 
+	// Good for types that needs refinement for a specific API field after generic normalization.
 	if ref, ok := v.(refs.RefinerWithProjectID); ok {
 		if err := ref.RefineWithProjectID(r.project.ProjectID, path); err != nil {
 			return fmt.Errorf("error refine the project ID at path %q: %w", path, err)
@@ -142,6 +147,7 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 		}
 	}
 
+	// For legacy ProjectRef (with Kind)
 	if projectRef, ok := v.(*refs.ProjectRef); ok {
 		if ref, err := normalizeProjectRef(r.ctx, r.kube, r.src, projectRef); err != nil {
 			return err
