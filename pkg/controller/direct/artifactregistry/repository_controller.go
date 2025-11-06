@@ -26,7 +26,6 @@ import (
 
 	artifactregistry "cloud.google.com/go/artifactregistry/apiv1"
 	"cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
-	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -55,21 +54,11 @@ type model struct {
 
 func (m *model) client(ctx context.Context) (*artifactregistry.Client, error) {
 	log := log.FromContext(ctx).WithName(ctrlName)
-	log.Info("creating ArtifactRegistry client", "userAgent", m.config.UserAgent, "endpoint", m.config.GCPEndpoint, "billingProject", m.config.BillingProject)
+	log.Info("creating ArtifactRegistry client", "userAgent", m.config.UserAgent, "billingProject", m.config.BillingProject)
 
-	var opts []option.ClientOption
-	if m.config.UserAgent != "" {
-		opts = append(opts, option.WithUserAgent(m.config.UserAgent))
-	}
-	if m.config.GCPEndpoint != "" {
-		log.Info("using custom GCP endpoint", "endpoint", m.config.GCPEndpoint)
-		opts = append(opts, option.WithEndpoint(m.config.GCPEndpoint))
-	}
-	if m.config.HTTPClient != nil {
-		opts = append(opts, option.WithHTTPClient(m.config.HTTPClient))
-	}
-	if m.config.UserProjectOverride && m.config.BillingProject != "" {
-		opts = append(opts, option.WithQuotaProject(m.config.BillingProject))
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, fmt.Errorf("error getting REST client options: %w", err)
 	}
 
 	gcpClient, err := artifactregistry.NewRESTClient(ctx, opts...)
