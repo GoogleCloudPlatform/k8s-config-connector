@@ -92,3 +92,7 @@ func Normalize(ctx context.Context, reader client.Reader, ref Ref, defaultNamesp
 
 	return ref.ValidateExternal(ref.GetExternal())
 }
+
+type RefinerWithProjectID interface {
+	RefineWithProjectID(projectID, path string) error
+}

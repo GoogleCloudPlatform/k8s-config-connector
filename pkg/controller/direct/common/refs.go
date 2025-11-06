@@ -114,6 +114,24 @@ type refNormalizer struct {
 }
 
 func (r *refNormalizer) VisitField(path string, v any) error {
+	if ref, ok := v.(refs.ExternalNormalizer); ok {
+		if _, err := ref.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
+			return fmt.Errorf("error normalizing reference at path %q: %w", path, err)
+		}
+	}
+	if ref, ok := v.(refs.Ref); ok {
+		if err := ref.Normalize(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
+			return fmt.Errorf("error normalizing reference at path %q: %w", path, err)
+		}
+	}
+
+	if ref, ok := v.(refs.RefinerWithProjectID); ok {
+		if err := ref.RefineWithProjectID(r.project.ProjectID, path); err != nil {
+			return fmt.Errorf("error refine the project ID at path %q: %w", path, err)
+		}
+	}
+
+	// Only for Monitoring service.
 	if logsPanel, ok := v.(*krm.LogsPanel); ok {
 		for i := range logsPanel.ResourceNames {
 			if ref, err := normalizeResourceName(r.ctx, r.kube, r.src, &logsPanel.ResourceNames[i]); err != nil {
@@ -121,37 +139,6 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 			} else {
 				logsPanel.ResourceNames[i] = *ref
 			}
-		}
-	}
-	if alertChart, ok := v.(*krm.AlertChart); ok {
-		if r.project == nil {
-			return fmt.Errorf("must specify project for alertChart references")
-		}
-		external, err := alertChart.AlertPolicyRef.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace())
-		if err != nil {
-			return err
-		}
-		refined, err := r.RefineMonitoringAlertPolicyRefForAlertChart(external)
-		if err != nil {
-			return err
-		}
-		alertChart.AlertPolicyRef.External = refined
-	}
-
-	if alertChart, ok := v.(*krm.IncidentList); ok {
-		for i, policyRef := range alertChart.PolicyRefs {
-			if r.project == nil {
-				return fmt.Errorf("must specify project for policyRef references")
-			}
-			external, err := policyRef.NormalizedExternal(r.ctx, r.kube, r.src.GetNamespace())
-			if err != nil {
-				return err
-			}
-			refined, err := r.RefineMonitoringAlertPolicyRefForIncidentList(external)
-			if err != nil {
-				return err
-			}
-			alertChart.PolicyRefs[i].External = refined
 		}
 	}
 
@@ -164,43 +151,4 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 	}
 
 	return nil
-}
-
-// RefineMonitoringAlertPolicyRefForAlertChart refine the alertPolicy format because MonitoringDashboard's AlertChart has a specific format requirement:
-// "The format is: projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]"
-func (r *refNormalizer) RefineMonitoringAlertPolicyRefForAlertChart(external string) (string, error) {
-	// External formats could be alertPolicies/{{alertPolicyId}} or projects/{{projectId}}/alertPolicies/{{alertPolicyId}}
-	// Verify project and refine `alertPolicies/{{alertPolicyId}}` to the required format `projects/{{projectId}}/alertPolicies/{{alertPolicyId}}`
-	tokens := strings.Split(external, "/")
-	projectID := r.project.ProjectID
-	// alertPolicies/{{alertPolicyId}}
-	if len(tokens) == 2 && tokens[0] == "alertPolicies" {
-		return fmt.Sprintf("projects/%s/%s", projectID, external), nil
-	} else {
-		// projects/{{projectId}}/alertPolicies/{{alertPolicyId}}
-		if tokens[1] != projectID {
-			return "", fmt.Errorf("resolve alertPolicy (%q) in incidentList was not in same project", external)
-		}
-	}
-	return external, nil
-}
-
-// RefineMonitoringAlertPolicyRefForIncidentList refine the alertPolicy format because MonitoringDashboard's IncidentList has a specific format requirement:
-// "Don't include the project ID prefix in the policy name. For example, use `alertPolicies/utilization`."
-func (r *refNormalizer) RefineMonitoringAlertPolicyRefForIncidentList(external string) (string, error) {
-	// External formats could be alertPolicies/{{alertPolicyId}} or projects/{{projectId}}/alertPolicies/{{alertPolicyId}}
-	// Verify project and refine `projects/{{projectId}}/alertPolicies/{{alertPolicyId}}` to the required format `alertPolicies/{{alertPolicyId}}`
-	tokens := strings.Split(external, "/")
-	projectID := r.project.ProjectID
-	// alertPolicies/{{alertPolicyId}}
-	if len(tokens) == 2 && tokens[0] == "alertPolicies" {
-		return external, nil
-	} else {
-		// projects/{{projectId}}/alertPolicies/{{alertPolicyId}}
-		if tokens[1] != projectID {
-			return "", fmt.Errorf("resolve alertPolicy (%q) in incidentList was not in same project", external)
-		}
-	}
-	prefix := fmt.Sprintf("projects/%s/", r.project.ProjectID)
-	return strings.TrimPrefix(external, prefix), nil
 }
