@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )

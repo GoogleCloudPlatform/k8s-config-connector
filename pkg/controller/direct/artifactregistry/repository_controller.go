@@ -18,8 +18,8 @@ import (
 	"context"
 	"fmt"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/devtools/artifactregistry/v1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/devtools/artifactregistry/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 
@@ -64,7 +64,7 @@ func (m *model) client(ctx context.Context) (pb.ArtifactRegistryClient, error) {
 func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	// Debug log to verify this method is called
 	fmt.Printf("DEBUG: ArtifactRegistry Direct Controller AdapterForObject called for %s/%s\n", u.GetNamespace(), u.GetName())
-	
+
 	obj := &krm.ArtifactRegistryRepository{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -173,14 +173,14 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	resource.Name = a.id.FullyQualifiedName()
 
 	updateMask := &fieldmaskpb.FieldMask{}
-	
+
 	// For artifact registry, we can update description, labels, cleanup policies, etc.
 	// But format, mode, location are immutable
 	updateMask.Paths = append(updateMask.Paths, "description")
 	updateMask.Paths = append(updateMask.Paths, "labels")
 	updateMask.Paths = append(updateMask.Paths, "cleanup_policies")
 	updateMask.Paths = append(updateMask.Paths, "cleanup_policy_dry_run")
-	
+
 	// Only add docker/maven config if they exist
 	if resource.GetDockerConfig() != nil {
 		updateMask.Paths = append(updateMask.Paths, "docker_config")
@@ -240,13 +240,13 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log.V(2).Info("deleting ArtifactRegistry repository", "name", a.id.FullyQualifiedName())
 
 	req := &pb.DeleteRepositoryRequest{Name: a.id.FullyQualifiedName()}
-	
+
 	// For testing: Skip actual GCP calls since we don't have a proper client yet
 	if a.gcpClient == nil {
 		log.Info("DIRECT CONTROLLER: Would delete ArtifactRegistry repository (MockGCP client not implemented yet)", "name", a.id.FullyQualifiedName())
 		return true, nil
 	}
-	
+
 	_, err := a.gcpClient.DeleteRepository(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {

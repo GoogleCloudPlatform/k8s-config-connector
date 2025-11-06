@@ -16,10 +16,10 @@ package artifactregistry
 
 import (
 	"strings"
-	
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/devtools/artifactregistry/v1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/devtools/artifactregistry/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -30,28 +30,28 @@ func ArtifactRegistryRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.ArtifactRegistryRepositorySpec{}
-	
+
 	// Convert format
 	out.Format = Repository_Format_FromProto(mapCtx, in.Format)
-	
+
 	// Convert description
 	if in.Description != "" {
 		out.Description = &in.Description
 	}
-	
+
 	// Convert mode
 	out.Mode = Repository_Mode_FromProto(mapCtx, in.Mode)
-	
+
 	// Convert cleanup policy dry run
 	if in.CleanupPolicyDryRun {
 		out.CleanupPolicyDryRun = &in.CleanupPolicyDryRun
 	}
-	
+
 	// Convert KMS key
 	if in.KmsKeyName != "" {
 		out.KmsKeyRef = &refs.KMSCryptoKeyRef{External: in.KmsKeyName}
 	}
-	
+
 	return out
 }
 
@@ -102,7 +102,7 @@ func ArtifactRegistryRepositoryObservedState_FromProto(mapCtx *direct.MapContext
 		return nil
 	}
 	out := &krm.ArtifactRegistryRepositoryObservedState{}
-	
+
 	if in.CreateTime != nil {
 		out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.CreateTime)
 	}
@@ -119,7 +119,7 @@ func ArtifactRegistryRepositoryObservedState_FromProto(mapCtx *direct.MapContext
 			out.Name = &repositoryName
 		}
 	}
-	
+
 	return out
 }
 
@@ -128,16 +128,16 @@ func ArtifactRegistryRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.A
 		return nil
 	}
 	out := &pb.Repository{}
-	
+
 	// Convert format
 	out.Format = Repository_Format_ToProto(mapCtx, in.Format)
-	
+
 	// Convert description
 	out.Description = direct.ValueOf(in.Description)
-	
+
 	// Convert mode
 	out.Mode = Repository_Mode_ToProto(mapCtx, in.Mode)
-	
+
 	// Convert cleanup policies
 	if len(in.CleanupPolicies) > 0 {
 		out.CleanupPolicies = make(map[string]*pb.CleanupPolicy)
@@ -145,43 +145,43 @@ func ArtifactRegistryRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.A
 			out.CleanupPolicies[cleanupPolicy.Id] = CleanupPolicy_ToProto(mapCtx, &cleanupPolicy)
 		}
 	}
-	
+
 	// Convert cleanup policy dry run
 	out.CleanupPolicyDryRun = direct.ValueOf(in.CleanupPolicyDryRun)
-	
+
 	// Convert KMS key reference
 	if in.KmsKeyRef != nil {
 		out.KmsKeyName = in.KmsKeyRef.External
 	}
-	
+
 	// Convert Docker config
 	if in.DockerConfig != nil {
 		out.FormatConfig = &pb.Repository_DockerConfig{
 			DockerConfig: DockerConfig_ToProto(mapCtx, in.DockerConfig),
 		}
 	}
-	
-	// Convert Maven config  
+
+	// Convert Maven config
 	if in.MavenConfig != nil {
 		out.FormatConfig = &pb.Repository_MavenConfig{
 			MavenConfig: MavenConfig_ToProto(mapCtx, in.MavenConfig),
 		}
 	}
-	
+
 	// Convert virtual repository config
 	if in.VirtualRepositoryConfig != nil {
 		out.ModeConfig = &pb.Repository_VirtualRepositoryConfig{
 			VirtualRepositoryConfig: VirtualRepositoryConfig_ToProto(mapCtx, in.VirtualRepositoryConfig),
 		}
 	}
-	
+
 	// Convert remote repository config
 	if in.RemoteRepositoryConfig != nil {
 		out.ModeConfig = &pb.Repository_RemoteRepositoryConfig{
 			RemoteRepositoryConfig: RemoteRepositoryConfig_ToProto(mapCtx, in.RemoteRepositoryConfig),
 		}
 	}
-	
+
 	return out
 }
 
@@ -233,10 +233,10 @@ func CleanupPolicy_ToProto(mapCtx *direct.MapContext, in *krm.CleanupPolicies) *
 		return nil
 	}
 	out := &pb.CleanupPolicy{}
-	
+
 	// Set the ID
 	out.Id = in.Id
-	
+
 	// Convert action
 	if in.Action != nil {
 		switch *in.Action {
@@ -248,21 +248,21 @@ func CleanupPolicy_ToProto(mapCtx *direct.MapContext, in *krm.CleanupPolicies) *
 			mapCtx.Errorf("unknown cleanup policy action: %s", *in.Action)
 		}
 	}
-	
+
 	// Convert condition (oneof)
 	if in.Condition != nil {
 		out.ConditionType = &pb.CleanupPolicy_Condition{
 			Condition: CleanupPolicyCondition_ToProto(mapCtx, in.Condition),
 		}
 	}
-	
+
 	// Convert most recent versions (oneof)
 	if in.MostRecentVersions != nil {
 		out.ConditionType = &pb.CleanupPolicy_MostRecentVersions{
 			MostRecentVersions: CleanupPolicyMostRecentVersions_ToProto(mapCtx, in.MostRecentVersions),
 		}
 	}
-	
+
 	return out
 }
 
@@ -271,7 +271,7 @@ func CleanupPolicyCondition_ToProto(mapCtx *direct.MapContext, in *krm.CleanupPo
 		return nil
 	}
 	out := &pb.CleanupPolicyCondition{}
-	
+
 	// Convert tag state
 	if in.TagState != nil {
 		var tagState pb.CleanupPolicyCondition_TagState
@@ -288,7 +288,7 @@ func CleanupPolicyCondition_ToProto(mapCtx *direct.MapContext, in *krm.CleanupPo
 		}
 		out.TagState = &tagState
 	}
-	
+
 	// Convert durations
 	if in.NewerThan != nil {
 		out.NewerThan = direct.Duration_ToProto(mapCtx, in.NewerThan)
@@ -296,12 +296,12 @@ func CleanupPolicyCondition_ToProto(mapCtx *direct.MapContext, in *krm.CleanupPo
 	if in.OlderThan != nil {
 		out.OlderThan = direct.Duration_ToProto(mapCtx, in.OlderThan)
 	}
-	
+
 	// Convert string slices
 	out.PackageNamePrefixes = in.PackageNamePrefixes
 	out.TagPrefixes = in.TagPrefixes
 	out.VersionNamePrefixes = in.VersionNamePrefixes
-	
+
 	return out
 }
 
@@ -310,13 +310,13 @@ func CleanupPolicyMostRecentVersions_ToProto(mapCtx *direct.MapContext, in *krm.
 		return nil
 	}
 	out := &pb.CleanupPolicyMostRecentVersions{}
-	
+
 	if in.KeepCount != nil {
 		keepCount := int32(*in.KeepCount)
 		out.KeepCount = &keepCount
 	}
 	out.PackageNamePrefixes = in.PackageNamePrefixes
-	
+
 	return out
 }
 
@@ -325,11 +325,11 @@ func DockerConfig_ToProto(mapCtx *direct.MapContext, in *krm.DockerConfig) *pb.R
 		return nil
 	}
 	out := &pb.Repository_DockerRepositoryConfig{}
-	
+
 	if in.ImmutableTags != nil {
 		out.ImmutableTags = *in.ImmutableTags
 	}
-	
+
 	return out
 }
 
@@ -338,11 +338,11 @@ func MavenConfig_ToProto(mapCtx *direct.MapContext, in *krm.MavenConfig) *pb.Rep
 		return nil
 	}
 	out := &pb.Repository_MavenRepositoryConfig{}
-	
+
 	if in.AllowSnapshotOverwrites != nil {
 		out.AllowSnapshotOverwrites = *in.AllowSnapshotOverwrites
 	}
-	
+
 	if in.VersionPolicy != nil {
 		switch *in.VersionPolicy {
 		case "VERSION_POLICY_UNSPECIFIED":
@@ -355,7 +355,7 @@ func MavenConfig_ToProto(mapCtx *direct.MapContext, in *krm.MavenConfig) *pb.Rep
 			mapCtx.Errorf("unknown version policy: %s", *in.VersionPolicy)
 		}
 	}
-	
+
 	return out
 }
 
@@ -364,11 +364,11 @@ func VirtualRepositoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.VirtualR
 		return nil
 	}
 	out := &pb.VirtualRepositoryConfig{}
-	
+
 	for _, upstreamPolicy := range in.UpstreamPolicies {
 		out.UpstreamPolicies = append(out.UpstreamPolicies, UpstreamPolicy_ToProto(mapCtx, &upstreamPolicy))
 	}
-	
+
 	return out
 }
 
@@ -377,7 +377,7 @@ func UpstreamPolicy_ToProto(mapCtx *direct.MapContext, in *krm.UpstreamPolicy) *
 		return nil
 	}
 	out := &pb.UpstreamPolicy{}
-	
+
 	if in.Id != nil {
 		out.Id = *in.Id
 	}
@@ -387,7 +387,7 @@ func UpstreamPolicy_ToProto(mapCtx *direct.MapContext, in *krm.UpstreamPolicy) *
 	if in.RepositoryRef != nil {
 		out.Repository = in.RepositoryRef.External
 	}
-	
+
 	return out
 }
 
@@ -396,11 +396,11 @@ func RemoteRepositoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRep
 		return nil
 	}
 	out := &pb.RemoteRepositoryConfig{}
-	
+
 	if in.Description != nil {
 		out.Description = *in.Description
 	}
-	
+
 	// Convert specific repository configurations
 	if in.DockerRepository != nil {
 		out.RemoteSource = &pb.RemoteRepositoryConfig_DockerRepository_{
@@ -422,7 +422,7 @@ func RemoteRepositoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRep
 			PythonRepository: PythonRepository_ToProto(mapCtx, in.PythonRepository),
 		}
 	}
-	
+
 	return out
 }
 
@@ -431,7 +431,7 @@ func DockerRepository_ToProto(mapCtx *direct.MapContext, in *krm.DockerRepositor
 		return nil
 	}
 	out := &pb.RemoteRepositoryConfig_DockerRepository{}
-	
+
 	if in.PublicRepository != nil {
 		var publicRepo pb.RemoteRepositoryConfig_DockerRepository_PublicRepository
 		switch *in.PublicRepository {
@@ -445,7 +445,7 @@ func DockerRepository_ToProto(mapCtx *direct.MapContext, in *krm.DockerRepositor
 			PublicRepository: publicRepo,
 		}
 	}
-	
+
 	return out
 }
 
@@ -454,7 +454,7 @@ func MavenRepository_ToProto(mapCtx *direct.MapContext, in *krm.MavenRepository)
 		return nil
 	}
 	out := &pb.RemoteRepositoryConfig_MavenRepository{}
-	
+
 	if in.PublicRepository != nil {
 		var publicRepo pb.RemoteRepositoryConfig_MavenRepository_PublicRepository
 		switch *in.PublicRepository {
@@ -468,7 +468,7 @@ func MavenRepository_ToProto(mapCtx *direct.MapContext, in *krm.MavenRepository)
 			PublicRepository: publicRepo,
 		}
 	}
-	
+
 	return out
 }
 
@@ -477,7 +477,7 @@ func NpmRepository_ToProto(mapCtx *direct.MapContext, in *krm.NpmRepository) *pb
 		return nil
 	}
 	out := &pb.RemoteRepositoryConfig_NpmRepository{}
-	
+
 	if in.PublicRepository != nil {
 		var publicRepo pb.RemoteRepositoryConfig_NpmRepository_PublicRepository
 		switch *in.PublicRepository {
@@ -491,7 +491,7 @@ func NpmRepository_ToProto(mapCtx *direct.MapContext, in *krm.NpmRepository) *pb
 			PublicRepository: publicRepo,
 		}
 	}
-	
+
 	return out
 }
 
@@ -500,7 +500,7 @@ func PythonRepository_ToProto(mapCtx *direct.MapContext, in *krm.PythonRepositor
 		return nil
 	}
 	out := &pb.RemoteRepositoryConfig_PythonRepository{}
-	
+
 	if in.PublicRepository != nil {
 		var publicRepo pb.RemoteRepositoryConfig_PythonRepository_PublicRepository
 		switch *in.PublicRepository {
@@ -514,6 +514,6 @@ func PythonRepository_ToProto(mapCtx *direct.MapContext, in *krm.PythonRepositor
 			PublicRepository: publicRepo,
 		}
 	}
-	
+
 	return out
 }
