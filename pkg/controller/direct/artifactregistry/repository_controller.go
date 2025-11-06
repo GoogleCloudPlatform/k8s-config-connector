@@ -19,12 +19,14 @@ import (
 	"fmt"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/devtools/artifactregistry/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	
+	"cloud.google.com/go/artifactregistry/apiv1"
+	"cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
+	"google.golang.org/api/option"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -37,15 +39,10 @@ const (
 )
 
 func init() {
-	// Debug log to verify this init function is called
-	fmt.Printf("DEBUG: Registering ArtifactRegistry Direct Controller for GVK: %+v\n", krm.ArtifactRegistryRepositoryGVK)
 	registry.RegisterModel(krm.ArtifactRegistryRepositoryGVK, NewModel)
-	fmt.Println("DEBUG: ArtifactRegistry Direct Controller registration complete")
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
-	// Debug log to verify this function is called
-	fmt.Println("DEBUG: Creating new ArtifactRegistry Direct Controller model")
 	return &model{config: config}, nil
 }
 
@@ -55,16 +52,26 @@ type model struct {
 	config *config.ControllerConfig
 }
 
-func (m *model) client(ctx context.Context) (pb.ArtifactRegistryClient, error) {
-	// For MockGCP testing, we don't need a real client
-	// Return nil - the controller methods will handle MockGCP differently
-	return nil, nil
+func (m *model) client(ctx context.Context) (*artifactregistry.Client, error) {
+	var opts []option.ClientOption
+	if m.config.UserAgent != "" {
+		opts = append(opts, option.WithUserAgent(m.config.UserAgent))
+	}
+	if m.config.HTTPClient != nil {
+		opts = append(opts, option.WithHTTPClient(m.config.HTTPClient))
+	}
+	if m.config.UserProjectOverride && m.config.BillingProject != "" {
+		opts = append(opts, option.WithQuotaProject(m.config.BillingProject))
+	}
+
+	gcpClient, err := artifactregistry.NewRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building artifact registry client: %w", err)
+	}
+	return gcpClient, nil
 }
 
 func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	// Debug log to verify this method is called
-	fmt.Printf("DEBUG: ArtifactRegistry Direct Controller AdapterForObject called for %s/%s\n", u.GetNamespace(), u.GetName())
-
 	obj := &krm.ArtifactRegistryRepository{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
@@ -94,9 +101,9 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 
 type Adapter struct {
 	id        *ArtifactRegistryRepositoryIdentity
-	gcpClient pb.ArtifactRegistryClient
+	gcpClient *artifactregistry.Client
 	desired   *krm.ArtifactRegistryRepository
-	actual    *pb.Repository
+	actual    *artifactregistrypb.Repository
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -105,7 +112,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("getting ArtifactRegistry repository", "name", a.id.FullyQualifiedName())
 
-	req := &pb.GetRepositoryRequest{Name: a.id.FullyQualifiedName()}
+	req := &artifactregistrypb.GetRepositoryRequest{Name: a.id.FullyQualifiedName()}
 	repositoryPB, err := a.gcpClient.GetRepository(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -132,17 +139,10 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 	resource.Name = a.id.FullyQualifiedName()
 
-	req := &pb.CreateRepositoryRequest{
+	req := &artifactregistrypb.CreateRepositoryRequest{
 		Parent:       a.id.Parent.String(),
 		RepositoryId: a.id.ResourceID,
 		Repository:   resource,
-	}
-
-	// For testing: Skip actual GCP calls since we don't have a proper client yet
-	// This will show in logs that the direct controller is being used
-	if a.gcpClient == nil {
-		log.Info("DIRECT CONTROLLER: Would create ArtifactRegistry repository (MockGCP client not implemented yet)", "name", a.id.FullyQualifiedName(), "request", req)
-		return nil
 	}
 
 	op, err := a.gcpClient.CreateRepository(ctx, req)
@@ -150,11 +150,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return fmt.Errorf("creating ArtifactRegistry repository %q: %w", a.id.FullyQualifiedName(), err)
 	}
 
-	log.V(2).Info("successfully created ArtifactRegistry repository", "name", a.id.FullyQualifiedName())
-
-	// For MockGCP, operations complete immediately, so we can ignore the operation result
-	_ = op
-
+	log.V(2).Info("successfully created ArtifactRegistry repository", "name", a.id.FullyQualifiedName(), "operation", op.Name())
 	return nil
 }
 
@@ -189,15 +185,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		updateMask.Paths = append(updateMask.Paths, "maven_config")
 	}
 
-	req := &pb.UpdateRepositoryRequest{
+	req := &artifactregistrypb.UpdateRepositoryRequest{
 		Repository: resource,
 		UpdateMask: updateMask,
-	}
-
-	// For testing: Skip actual GCP calls since we don't have a proper client yet
-	if a.gcpClient == nil {
-		log.Info("DIRECT CONTROLLER: Would update ArtifactRegistry repository (MockGCP client not implemented yet)", "name", a.id.FullyQualifiedName(), "request", req)
-		return nil
 	}
 
 	repository, err := a.gcpClient.UpdateRepository(ctx, req)
@@ -239,13 +229,7 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.V(2).Info("deleting ArtifactRegistry repository", "name", a.id.FullyQualifiedName())
 
-	req := &pb.DeleteRepositoryRequest{Name: a.id.FullyQualifiedName()}
-
-	// For testing: Skip actual GCP calls since we don't have a proper client yet
-	if a.gcpClient == nil {
-		log.Info("DIRECT CONTROLLER: Would delete ArtifactRegistry repository (MockGCP client not implemented yet)", "name", a.id.FullyQualifiedName())
-		return true, nil
-	}
+	req := &artifactregistrypb.DeleteRepositoryRequest{Name: a.id.FullyQualifiedName()}
 
 	_, err := a.gcpClient.DeleteRepository(ctx, req)
 	if err != nil {
