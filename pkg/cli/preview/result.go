@@ -29,6 +29,24 @@ type PreviewSummary struct {
 	reports  map[GKNN][]string
 }
 
+func (summary *PreviewSummary) exportBadGKNNDetail(detailFile *os.File) {
+	if summary.badGKNN.count > 0 {
+		for ns := range summary.badGKNN.storage {
+			for group := range summary.badGKNN.storage[ns] {
+				for kind := range summary.badGKNN.storage[ns][group] {
+					for _, name := range summary.badGKNN.storage[ns][group][kind] {
+						fmt.Fprintln(detailFile, "-----------------------------------------------------------------")
+						fmt.Fprintf(detailFile, "Group: %s, Kind: %s, Namespace: %s, Name: %s\n", group, kind, ns, name)
+						for _, s := range summary.reports[GKNN{Group: group, Kind: kind, Namespace: ns, Name: name}] {
+							fmt.Fprintln(detailFile, s)
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 type GKNNList struct {
 	count int
 	// namespace -> group -> kind -> []name
@@ -186,41 +204,17 @@ func (r *Recorder) SummaryReport(filename string) error {
 		}
 		w.Flush()
 	}
-	if err = f.Close(); err != nil {
-		return fmt.Errorf("error closing file %q: %w", filename, err)
-	}
 
-	// Reconciled all resources and no issue detected.
-	if r.RemainResourcesCount == 0 && summary.badGKNN.count == 0 {
-		return nil
-	}
-	detailFileName := fmt.Sprintf("%s-detail", filename)
-	detailFile, err := os.Create(detailFileName)
-	if err != nil {
-		return fmt.Errorf("error creating file %q: %w", detailFileName, err)
-	}
 	if r.RemainResourcesCount > 0 {
-		fmt.Fprintln(detailFile, "Resources that has not fully reconciled:")
+		fmt.Fprintln(f, "-----------------------------------------------------------------")
+		fmt.Fprintln(f, "Resources that has not fully reconciled:")
 		for gknn, reconciled := range r.ReconciledResources {
 			if !reconciled {
-				fmt.Fprintf(detailFile, "Group: %s, Kind: %s, Namespace: %s, Name: %s\n", gknn.Group, gknn.Kind, gknn.Namespace, gknn.Name)
+				fmt.Fprintf(f, "Group: %s, Kind: %s, Namespace: %s, Name: %s\n", gknn.Group, gknn.Kind, gknn.Namespace, gknn.Name)
 			}
 		}
 	}
-	if summary.badGKNN.count > 0 {
-		for ns := range summary.badGKNN.storage {
-			for group := range summary.badGKNN.storage[ns] {
-				for kind := range summary.badGKNN.storage[ns][group] {
-					for _, name := range summary.badGKNN.storage[ns][group][kind] {
-						fmt.Fprintln(detailFile, "-----------------------------------------------------------------")
-						fmt.Fprintf(detailFile, "Group: %s, Kind: %s, Namespace: %s, Name: %s\n", group, kind, ns, name)
-						for _, s := range summary.reports[GKNN{Group: group, Kind: kind, Namespace: ns, Name: name}] {
-							fmt.Fprintln(detailFile, s)
-						}
-					}
-				}
-			}
-		}
-	}
-	return detailFile.Close()
+
+	summary.exportBadGKNNDetail(f)
+	return f.Close()
 }
