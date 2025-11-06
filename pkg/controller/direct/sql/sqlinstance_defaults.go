@@ -22,17 +22,9 @@ import (
 	api "google.golang.org/api/sqladmin/v1beta4"
 )
 
-func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance, actual *api.DatabaseInstance, unmanagedFields []string) {
-	isInstanceTypeUnmanaged := false
-	for _, field := range unmanagedFields {
-		if field == "spec.instanceType" {
-			isInstanceTypeUnmanaged = true
-			break
-		}
-	}
-	if isInstanceTypeUnmanaged {
-		out.InstanceType = actual.InstanceType
-	} else if in.Spec.InstanceType == nil {
+func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance, actual *api.DatabaseInstance, fieldMetadata map[string]*FieldMetadata) {
+	// Stage 1: Apply all client-side defaults as if no fields are unmanaged.
+	if in.Spec.InstanceType == nil {
 		// GCP default InstanceType is CLOUD_SQL_INSTANCE.
 		out.InstanceType = "CLOUD_SQL_INSTANCE"
 	}
@@ -70,17 +62,7 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		// GCP default DiskType is PD_SSD.
 		out.Settings.DataDiskType = "PD_SSD"
 	}
-	isEditionUnmanaged := false
-	for _, field := range unmanagedFields {
-		if field == "spec.settings.edition" {
-			isEditionUnmanaged = true
-			break
-		}
-	}
-	if isEditionUnmanaged {
-		// just take the value of actual
-		out.Settings.Edition = actual.Settings.Edition
-	} else if in.Spec.Settings.Edition == nil {
+	if in.Spec.Settings.Edition == nil {
 		// Apply client side GCP default Edition is ENTERPRISE.
 		out.Settings.Edition = "ENTERPRISE"
 	}
@@ -138,5 +120,16 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 	if actual != nil {
 		// GCP API requires we set the current settings version, otherwise update will fail.
 		out.Settings.SettingsVersion = actual.Settings.SettingsVersion
+	}
+
+	// Stage 2: Preserve any fields that are unmanaged by the user.
+	// This generic loop will overwrite any defaults set in Stage 1.
+	if actual == nil {
+		return
+	}
+	for _, field := range fieldMetadata {
+		if field.isUnmanaged {
+			field.preserveActualValue(out, actual)
+		}
 	}
 }

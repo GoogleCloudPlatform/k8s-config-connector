@@ -3,10 +3,11 @@ kind: SQLInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/unmanaged: spec.settings
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   name: sqlinstance-${uniqueId}
   namespace: ${projectId}
 spec:
@@ -14,7 +15,31 @@ spec:
   region: us-central1
   resourceID: sqlinstance-${uniqueId}
   settings:
-    tier: db-g1-small
+    activationPolicy: INVALID_POLICY
+    availabilityType: INVALID_TYPE
+    backupConfiguration:
+      backupRetentionSettings:
+        retainedBackups: -100
+        retentionUnit: INVALID_UNIT
+      enabled: true
+      pointInTimeRecoveryEnabled: true
+      startTime: 99:99
+      transactionLogRetentionDays: -100
+    connectorEnforcement: INVALID_ENFORCEMENT
+    dataCacheConfig:
+      dataCacheEnabled: true
+    diskAutoresize: false
+    diskAutoresizeLimit: -100
+    diskSize: -100
+    diskType: INVALID_TYPE
+    edition: INVALID_EDITION
+    ipConfiguration:
+      ipv4Enabled: false
+      requireSsl: true
+    locationPreference:
+      zone: invalid-zone
+    pricingPlan: INVALID_PLAN
+    tier: INVALID_TIER
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -26,7 +51,7 @@ status:
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
-  observedGeneration: 1
+  observedGeneration: 2
   publicIpAddress: 10.1.2.3
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}
   serverCaCert:

@@ -17,6 +17,7 @@ package sql
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 	"time"
 
@@ -38,12 +39,330 @@ import (
 )
 
 const (
-	ctrlName                            = "sqlinstance-controller"
-	unmanageEditionAnnotationValue      = "spec.settings.edition"
-	unmanageInstanceTypeAnnotationValue = "spec.instanceType"
+	ctrlName = "sqlinstance-controller"
+
+	instanceTypeFieldPath                                   = "spec.instanceType"
+	maintenanceVersionFieldPath                             = "spec.maintenanceVersion"
+	settingsFieldPath                                       = "spec.settings"
+	editionFieldPath                                        = "spec.settings.edition"
+	activationPolicyFieldPath                               = "spec.settings.activationPolicy"
+	backupConfigurationFieldPath                            = "spec.settings.backupConfiguration"
+	backupRetentionSettingsFieldPath                        = "spec.settings.backupConfiguration.backupRetentionSettings"
+	backupRetentionSettingsRetainedBackupsFieldPath         = "spec.settings.backupConfiguration.backupRetentionSettings.retainedBackups"
+	backupRetentionSettingsRetentionUnitFieldPath           = "spec.settings.backupConfiguration.backupRetentionSettings.retentionUnit"
+	backupConfigurationEnabledFieldPath                     = "spec.settings.backupConfiguration.enabled"
+	backupConfigurationPointInTimeRecoveryEnabledFieldPath  = "spec.settings.backupConfiguration.pointInTimeRecoveryEnabled"
+	backupConfigurationStartTimeFieldPath                   = "spec.settings.backupConfiguration.startTime"
+	backupConfigurationTransactionLogRetentionDaysFieldPath = "spec.settings.backupConfiguration.transactionLogRetentionDays"
+	connectorEnforcementFieldPath                           = "spec.settings.connectorEnforcement"
+	dataCacheConfigFieldPath                                = "spec.settings.dataCacheConfig"
+	dataCacheConfigDataCacheEnabledFieldPath                = "spec.settings.dataCacheConfig.dataCacheEnabled"
+	diskAutoresizeFieldPath                                 = "spec.settings.diskAutoresize"
+	diskAutoresizeLimitFieldPath                            = "spec.settings.diskAutoresizeLimit"
+	diskSizeFieldPath                                       = "spec.settings.diskSize"
+	diskTypeFieldPath                                       = "spec.settings.diskType"
+	ipConfigurationFieldPath                                = "spec.settings.ipConfiguration"
+	ipConfigurationIPV4EnabledFieldPath                     = "spec.settings.ipConfiguration.ipv4Enabled"
+	locationPreferenceFieldPath                             = "spec.settings.locationPreference"
+	locationPreferenceZoneFieldPath                         = "spec.settings.locationPreference.zone"
+	pricingPlanFieldPath                                    = "spec.settings.pricingPlan"
 )
 
+// FieldMetadata encapsulates the state and logic for a field that can be unmanaged.
+type FieldMetadata struct {
+	// isUnmanaged tracks if the user has marked this field as unmanaged for a specific resource instance.
+	isUnmanaged bool
+
+	// preserveActualValue contains the specific logic to copy this field's value
+	// from the live GCP resource (`actual`) to the outgoing API request payload (`out`).
+
+	// if a field is nil in `out`, we treat it as a no op
+	preserveActualValue func(out *api.DatabaseInstance, actual *api.DatabaseInstance)
+}
+
+var supportedUnmanageableFields = map[string]*FieldMetadata{
+	instanceTypeFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			out.InstanceType = actual.InstanceType
+		},
+	},
+	maintenanceVersionFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			out.MaintenanceVersion = actual.MaintenanceVersion
+		},
+	},
+	editionFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					return
+				}
+				out.Settings.Edition = actual.Settings.Edition
+			}
+		},
+	},
+	settingsFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			out.Settings = actual.Settings
+		},
+	},
+	activationPolicyFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					return
+				}
+				out.Settings.ActivationPolicy = actual.Settings.ActivationPolicy
+			}
+		},
+	},
+	backupConfigurationFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					return
+				}
+				out.Settings.BackupConfiguration = actual.Settings.BackupConfiguration
+			}
+		},
+	},
+	connectorEnforcementFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					return
+				}
+				out.Settings.ConnectorEnforcement = actual.Settings.ConnectorEnforcement
+			}
+		},
+	},
+	dataCacheConfigFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					return
+				}
+				out.Settings.DataCacheConfig = actual.Settings.DataCacheConfig
+			}
+		},
+	},
+	diskAutoresizeFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					return
+				}
+				out.Settings.StorageAutoResize = actual.Settings.StorageAutoResize
+			}
+		},
+	},
+	diskAutoresizeLimitFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					return
+				}
+				out.Settings.StorageAutoResizeLimit = actual.Settings.StorageAutoResizeLimit
+			}
+		},
+	},
+	diskSizeFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					return
+				}
+				out.Settings.DataDiskSizeGb = actual.Settings.DataDiskSizeGb
+			}
+		},
+	},
+	diskTypeFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					return
+				}
+				out.Settings.DataDiskType = actual.Settings.DataDiskType
+			}
+		},
+	},
+	ipConfigurationFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					return
+				}
+				out.Settings.IpConfiguration = actual.Settings.IpConfiguration
+			}
+		},
+	},
+	locationPreferenceFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					return
+				}
+				out.Settings.LocationPreference = actual.Settings.LocationPreference
+			}
+		},
+	},
+	pricingPlanFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					return
+				}
+				out.Settings.PricingPlan = actual.Settings.PricingPlan
+			}
+		},
+	},
+	backupRetentionSettingsFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
+				if out.Settings == nil {
+					return
+				}
+				if out.Settings.BackupConfiguration == nil {
+					return
+				}
+				out.Settings.BackupConfiguration.BackupRetentionSettings = actual.Settings.BackupConfiguration.BackupRetentionSettings
+			}
+		},
+	},
+	backupConfigurationEnabledFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
+				if out.Settings == nil {
+					return
+				}
+				if out.Settings.BackupConfiguration == nil {
+					return
+				}
+				out.Settings.BackupConfiguration.Enabled = actual.Settings.BackupConfiguration.Enabled
+			}
+		},
+	},
+	backupConfigurationPointInTimeRecoveryEnabledFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
+				if out.Settings == nil {
+					return
+				}
+				if out.Settings.BackupConfiguration == nil {
+					return
+				}
+				out.Settings.BackupConfiguration.PointInTimeRecoveryEnabled = actual.Settings.BackupConfiguration.PointInTimeRecoveryEnabled
+			}
+		},
+	},
+	backupConfigurationStartTimeFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
+				if out.Settings == nil {
+					return
+				}
+				if out.Settings.BackupConfiguration == nil {
+					return
+				}
+				out.Settings.BackupConfiguration.StartTime = actual.Settings.BackupConfiguration.StartTime
+			}
+		},
+	},
+	backupConfigurationTransactionLogRetentionDaysFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
+				if out.Settings == nil {
+					return
+				}
+				if out.Settings.BackupConfiguration == nil {
+					return
+				}
+				out.Settings.BackupConfiguration.TransactionLogRetentionDays = actual.Settings.BackupConfiguration.TransactionLogRetentionDays
+			}
+		},
+	},
+	backupRetentionSettingsRetainedBackupsFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil && actual.Settings.BackupConfiguration.BackupRetentionSettings != nil {
+				if out.Settings == nil {
+					return
+				}
+				if out.Settings.BackupConfiguration == nil {
+					return
+				}
+				if out.Settings.BackupConfiguration.BackupRetentionSettings == nil {
+					return
+				}
+				out.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups = actual.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups
+			}
+		},
+	},
+	backupRetentionSettingsRetentionUnitFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil && actual.Settings.BackupConfiguration.BackupRetentionSettings != nil {
+				if out.Settings == nil {
+					return
+				}
+				if out.Settings.BackupConfiguration == nil {
+					return
+				}
+				if out.Settings.BackupConfiguration.BackupRetentionSettings == nil {
+					return
+				}
+				out.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit = actual.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit
+			}
+		},
+	},
+	dataCacheConfigDataCacheEnabledFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.DataCacheConfig != nil {
+				if out.Settings == nil {
+					return
+				}
+				if out.Settings.DataCacheConfig == nil {
+					return
+				}
+				out.Settings.DataCacheConfig.DataCacheEnabled = actual.Settings.DataCacheConfig.DataCacheEnabled
+			}
+		},
+	},
+	ipConfigurationIPV4EnabledFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.IpConfiguration != nil {
+				if out.Settings == nil {
+					return
+				}
+				if out.Settings.IpConfiguration == nil {
+					return
+				}
+				out.Settings.IpConfiguration.Ipv4Enabled = actual.Settings.IpConfiguration.Ipv4Enabled
+			}
+		},
+	},
+	locationPreferenceZoneFieldPath: {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.LocationPreference != nil {
+				if out.Settings == nil {
+					return
+				}
+				if out.Settings.LocationPreference == nil {
+					return
+				}
+				out.Settings.LocationPreference.Zone = actual.Settings.LocationPreference.Zone
+			}
+		},
+	},
+}
+
+var sortedUnmanageableFieldPaths []string
+
 func init() {
+	// Pre-sort the keys for stable error messages.
+	for path := range supportedUnmanageableFields {
+		sortedUnmanageableFieldPaths = append(sortedUnmanageableFieldPaths, path)
+	}
+	sort.Strings(sortedUnmanageableFieldPaths)
+
 	registry.RegisterModel(krm.SQLInstanceGVK, newSQLInstanceModel)
 }
 
@@ -67,7 +386,7 @@ type sqlInstanceAdapter struct {
 	sqlOperationsClient *api.OperationsService
 	sqlInstancesClient  *api.InstancesService
 	sqlUsersClient      *api.UsersService
-	unmanagedFields     []string
+	fieldMeta           map[string]*FieldMetadata
 }
 
 var _ directbase.Adapter = &sqlInstanceAdapter{}
@@ -105,17 +424,22 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, kube client.Rea
 		sqlOperationsClient: gcpClient.sqlOperationsClient(),
 		sqlInstancesClient:  gcpClient.sqlInstancesClient(),
 		sqlUsersClient:      gcpClient.sqlUsersClient(),
+		fieldMeta:           make(map[string]*FieldMetadata),
 	}
 
-	unmanaged, ok := obj.GetAnnotations()["cnrm.cloud.google.com/unmanaged"]
+	unmanaged, ok := obj.GetAnnotations()[k8s.UnmanagedFieldsList]
 	if ok && unmanaged != "" {
-		unmanagedFields := strings.Split(unmanaged, ",")
-		for _, field := range unmanagedFields {
-			if field != unmanageEditionAnnotationValue && field != unmanageInstanceTypeAnnotationValue {
-				return nil, fmt.Errorf("unmanaging field `%s` is not supported, supported fields are: %s", field, []string{unmanageEditionAnnotationValue, unmanageInstanceTypeAnnotationValue})
+		unmanagedFieldsList := strings.Split(unmanaged, ",")
+		for _, fieldPath := range unmanagedFieldsList {
+			field, supported := supportedUnmanageableFields[fieldPath]
+			if !supported {
+				return nil, fmt.Errorf("unmanaging field `%s` is not supported, supported fields are: %v", fieldPath, sortedUnmanageableFieldPaths)
 			}
+			// Mark the field as unmanaged for this resource instance
+			field.isUnmanaged = true
+
+			adapter.fieldMeta[fieldPath] = field
 		}
-		adapter.unmanagedFields = unmanagedFields
 	}
 	return adapter, nil
 }
@@ -170,7 +494,13 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		if err := a.insertInstance(ctx, u, log); err != nil {
 			return err
 		}
-		if maintenanceVersion != "" {
+
+		isMaintenanceVersionUnamanaged := false
+		if mvField, ok := a.fieldMeta[maintenanceVersionFieldPath]; ok {
+			isMaintenanceVersionUnamanaged = mvField.isUnmanaged
+		}
+
+		if !isMaintenanceVersionUnamanaged && maintenanceVersion != "" {
 			newMaintDb := &api.DatabaseInstance{
 				MaintenanceVersion: direct.ValueOf(a.desired.Spec.MaintenanceVersion),
 			}
@@ -224,7 +554,7 @@ func (a *sqlInstanceAdapter) cloneInstance(ctx context.Context, u *unstructured.
 }
 
 func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured.Unstructured, log klog.Logger) error {
-	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual, a.unmanagedFields)
+	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual, a.fieldMeta)
 	if err != nil {
 		return err
 	}
@@ -278,14 +608,6 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating SQLInstance", "desired", a.desired)
 
-	isEditionUnmanaged := false
-	for _, field := range a.unmanagedFields {
-		if field == unmanageEditionAnnotationValue {
-			isEditionUnmanaged = true
-			break
-		}
-	}
-
 	// First, handle database version updates
 	if a.desired.Spec.DatabaseVersion != nil && *a.desired.Spec.DatabaseVersion != a.actual.DatabaseVersion {
 		newVersionDb := &api.DatabaseInstance{
@@ -315,6 +637,16 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 		a.actual = updated
 	}
+
+	isEditionUnmanaged := false
+	if editionField, ok := a.fieldMeta[editionFieldPath]; ok {
+		isEditionUnmanaged = editionField.isUnmanaged
+	}
+	isSettingsUnamanged := false
+	if settingsField, ok := a.fieldMeta[settingsFieldPath]; ok {
+		isSettingsUnamanged = settingsField.isUnmanaged
+	}
+	isEditionUnmanaged = isEditionUnmanaged || isSettingsUnamanged
 
 	// Next, handle database edition updates
 	if !isEditionUnmanaged {
@@ -359,8 +691,13 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		}
 	}
 
+	isMaintenanceVersionUnamanaged := false
+	if mvField, ok := a.fieldMeta[maintenanceVersionFieldPath]; ok {
+		isMaintenanceVersionUnamanaged = mvField.isUnmanaged
+	}
+
 	// we also need to handle maintenanceVersion updates separately ...
-	if a.desired.Spec.MaintenanceVersion != nil && *a.desired.Spec.MaintenanceVersion != a.actual.MaintenanceVersion {
+	if !isMaintenanceVersionUnamanaged && a.desired.Spec.MaintenanceVersion != nil && *a.desired.Spec.MaintenanceVersion != a.actual.MaintenanceVersion {
 		newMaintDb := &api.DatabaseInstance{
 			MaintenanceVersion: direct.ValueOf(a.desired.Spec.MaintenanceVersion),
 		}
@@ -388,7 +725,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	// Finally, update rest of the fields
-	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual, a.unmanagedFields)
+	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual, a.fieldMeta)
 	if err != nil {
 		return err
 	}
