@@ -17,6 +17,7 @@
 // krm.version: v1beta1
 // proto.service: google.cloud.resourcemanager.v3
 // resource: TagsTagKey:TagKey
+// resource: TagsTagValue:TagValue
 // resource: TagsTagBinding:TagBinding
 
 package v1beta1
