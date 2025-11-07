@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -252,9 +253,19 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Status.ObservedState = ArtifactRegistryRepositoryObservedState_FromProto(mapCtx, a.actual)
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
+	// Set status fields directly (flat structure for backward compatibility)
+	if a.actual.CreateTime != nil {
+		obj.Status.CreateTime = direct.PtrTo(a.actual.CreateTime.AsTime().Format(time.RFC3339))
+	}
+	if a.actual.UpdateTime != nil {
+		obj.Status.UpdateTime = direct.PtrTo(a.actual.UpdateTime.AsTime().Format(time.RFC3339))
+	}
+	// Extract just the repository name from the full path
+	if a.actual.Name != "" {
+		parts := strings.Split(a.actual.Name, "/")
+		if len(parts) > 0 {
+			obj.Status.Name = direct.PtrTo(parts[len(parts)-1])
+		}
 	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {

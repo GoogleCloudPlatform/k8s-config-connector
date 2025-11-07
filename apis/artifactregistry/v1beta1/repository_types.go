@@ -252,30 +252,16 @@ type ArtifactRegistryRepositoryStatus struct {
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
 
+	// The time when the repository was created.
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// The name of the repository, for example: "repo1".
+	Name *string `json:"name,omitempty"`
+
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the ArtifactRegistryRepository resource in GCP.
-	ExternalRef *string `json:"externalRef,omitempty"`
-
-	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *ArtifactRegistryRepositoryObservedState `json:"observedState,omitempty"`
-}
-
-// ArtifactRegistryRepositoryObservedState is the state of the ArtifactRegistryRepository resource as most recently observed in GCP.
-// +kcc:proto=google.devtools.artifactregistry.v1.Repository
-type ArtifactRegistryRepositoryObservedState struct {
-	/* The time when the repository was created. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
-
-	/* The name of the repository, for example:
-	"repo1". */
-	// +optional
-	Name *string `json:"name,omitempty"`
-
-	/* The time when the repository was last updated. */
-	// +optional
+	// The time when the repository was last updated.
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
