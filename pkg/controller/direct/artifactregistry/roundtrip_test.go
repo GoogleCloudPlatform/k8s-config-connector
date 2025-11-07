@@ -268,7 +268,6 @@ func visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 	visitor.VisitMessage(msgPath, msg, setter)
 	msg.Range(func(field protoreflect.FieldDescriptor, fieldVal protoreflect.Value) bool {
 		path := msgPath + "." + string(field.Name())
-		klog.Infof("visit %q", path)
 
 		if field.IsList() {
 			listVal := fieldVal.List()
@@ -300,7 +299,7 @@ func visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 				}
 
 			default:
-				klog.Fatalf("unhandled field kind %v: %v", field.Kind(), field)
+				panic(fmt.Sprintf("unhandled field kind %v: %v", field.Kind(), field))
 			}
 			return true
 		}
@@ -331,7 +330,7 @@ func visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 				})
 
 			default:
-				klog.Fatalf("unhandled map kind %q: %v", mapType, field)
+				panic(fmt.Sprintf("unhandled map kind %q: %v", mapType, field))
 			}
 			return true
 		}
@@ -363,7 +362,7 @@ func visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 			visitor.VisitPrimitive(path, fieldVal, setter)
 
 		default:
-			klog.Fatalf("unhandled field kind %v: %v", field.Kind(), field)
+			panic(fmt.Sprintf("unhandled field kind %v: %v", field.Kind(), field))
 		}
 
 		return true
