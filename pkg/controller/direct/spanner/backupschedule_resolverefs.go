@@ -32,15 +32,13 @@ func resolveBackupScheduleRefs(ctx context.Context, reader client.Reader, obj *k
 	}
 
 	if obj.Spec.EncryptionConfig != nil && obj.Spec.EncryptionConfig.KMSKeyRefs != nil {
-		var keys []*refs.KMSCryptoKeyRef
-		for _, kmsKey := range obj.Spec.EncryptionConfig.KMSKeyRefs {
+		for i, kmsKey := range obj.Spec.EncryptionConfig.KMSKeyRefs {
 			key, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, obj, kmsKey)
 			if err != nil {
 				return err
 			}
-			keys = append(keys, key)
+			obj.Spec.EncryptionConfig.KMSKeyRefs[i] = key
 		}
-		obj.Spec.EncryptionConfig.KMSKeyRefs = keys
 
 	}
 	return nil
