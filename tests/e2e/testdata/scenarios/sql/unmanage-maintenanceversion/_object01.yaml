@@ -3,14 +3,16 @@ kind: SQLInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/unmanaged: spec.maintenanceVersion
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   name: sqlinstance-${uniqueId}
   namespace: ${projectId}
 spec:
   databaseVersion: POSTGRES_15
+  maintenanceVersion: NOT_VALID_VALUE
   region: us-central1
   resourceID: sqlinstance-${uniqueId}
   settings:
@@ -26,7 +28,7 @@ status:
   firstIpAddress: 10.1.2.3
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
-  observedGeneration: 1
+  observedGeneration: 2
   publicIpAddress: 10.1.2.3
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-${uniqueId}
   serverCaCert:

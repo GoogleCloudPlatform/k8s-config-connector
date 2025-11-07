@@ -3,6 +3,7 @@ kind: SQLInstance
 metadata:
   annotations:
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/unmanaged: spec.maintenanceVersion
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -11,6 +12,7 @@ metadata:
   namespace: ${projectId}
 spec:
   databaseVersion: POSTGRES_15
+  maintenanceVersion: POSTGRES_15_7.R20240514.00_12
   region: us-central1
   resourceID: sqlinstance-${uniqueId}
   settings:

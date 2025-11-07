@@ -687,6 +687,12 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 		return nil, err
 	}
 
+	if req.GetBody() == nil || proto.Equal(req.GetBody(), &pb.DatabaseInstance{}) {
+		// real GCP seems to return an invalid precondition error if no body is provided.
+		// In any case, we shouldn't be making pointless calls from KCC
+		return nil, status.Errorf(codes.FailedPrecondition, "Invalid request: body must not be empty for patch requests.")
+	}
+
 	fqn := name.String()
 
 	obj := &pb.DatabaseInstance{}
