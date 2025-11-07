@@ -15,10 +15,14 @@
 package artifactregistry
 
 import (
+	"fmt"
+
 	"cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // FromProto functions for reading from GCP
@@ -356,11 +360,76 @@ func UpstreamPolicy_ToProto(mapCtx *direct.MapContext, in *krm.UpstreamPolicy) *
 	if in.Priority != nil {
 		out.Priority = int32(*in.Priority)
 	}
-	if in.RepositoryRef != nil && in.RepositoryRef.External != nil {
-		out.Repository = *in.RepositoryRef.External
+	if in.RepositoryRef != nil {
+		resolved, err := refs.ResolveArtifactRegistryRepository(mapCtx.Ctx, mapCtx.Reader, mapCtx.Obj, in.RepositoryRef)
+		if err != nil {
+			mapCtx.Errorf("cannot resolve repositoryRef: %v", err)
+			return out
+		}
+		out.Repository = resolved.External
 	}
 
 	return out
+}
+
+// resolveArtifactRegistryRepository resolves a repository reference to its full GCP path
+func resolveArtifactRegistryRepository(mapCtx *direct.MapContext, ref *krm.ArtifactRegistryRepositoryRef) (string, error) {
+	if ref.External != nil {
+		return *ref.External, nil
+	}
+
+	if ref.Name == nil {
+		return "", fmt.Errorf("must specify either name or external in repositoryRef")
+	}
+
+	// Resolve the repository by name in the same namespace (or specified namespace)
+	namespace := mapCtx.Obj.GetNamespace()
+	if ref.Namespace != nil {
+		namespace = *ref.Namespace
+	}
+
+	repository := &unstructured.Unstructured{}
+	repository.SetAPIVersion("artifactregistry.cnrm.cloud.google.com/v1beta1")
+	repository.SetKind("ArtifactRegistryRepository")
+
+	key := client.ObjectKey{
+		Name:      *ref.Name,
+		Namespace: namespace,
+	}
+
+	if err := mapCtx.Reader.Get(mapCtx.Ctx, key, repository); err != nil {
+		return "", fmt.Errorf("cannot find ArtifactRegistryRepository %s/%s: %w", namespace, *ref.Name, err)
+	}
+
+	// Get the project ID
+	projectID, found, err := unstructured.NestedString(repository.Object, "spec", "projectRef", "external")
+	if err != nil {
+		return "", fmt.Errorf("error reading projectRef.external: %w", err)
+	}
+	if !found {
+		// Try to get project from annotations
+		projectID = repository.GetAnnotations()["cnrm.cloud.google.com/project-id"]
+		if projectID == "" {
+			return "", fmt.Errorf("cannot determine project for repository %s/%s", namespace, *ref.Name)
+		}
+	}
+
+	// Get location
+	location, found, err := unstructured.NestedString(repository.Object, "spec", "location")
+	if err != nil || !found {
+		return "", fmt.Errorf("cannot read location from repository %s/%s", namespace, *ref.Name)
+	}
+
+	// Get resource ID (defaults to name if not specified)
+	resourceID, _, err := unstructured.NestedString(repository.Object, "spec", "resourceID")
+	if err != nil {
+		return "", fmt.Errorf("error reading resourceID: %w", err)
+	}
+	if resourceID == "" {
+		resourceID = *ref.Name
+	}
+
+	return fmt.Sprintf("projects/%s/locations/%s/repositories/%s", projectID, location, resourceID), nil
 }
 
 func RemoteRepositoryConfig_ToProto(mapCtx *direct.MapContext, in *krm.RemoteRepositoryConfig) *artifactregistrypb.RemoteRepositoryConfig {
