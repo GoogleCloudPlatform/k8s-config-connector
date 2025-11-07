@@ -15,7 +15,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Bucket `logginglogbucket-${uniqueId}` in location `global` does not exist",
+    "message": "Bucket `logginglogbucket-${uniqueId}` does not exist",
     "status": "NOT_FOUND"
   }
 }
