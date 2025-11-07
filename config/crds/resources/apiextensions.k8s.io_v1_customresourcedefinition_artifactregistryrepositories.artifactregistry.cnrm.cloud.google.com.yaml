@@ -15,7 +15,6 @@ spec:
     categories:
     - gcp
     kind: ArtifactRegistryRepository
-    listKind: ArtifactRegistryRepositoryList
     plural: artifactregistryrepositories
     shortNames:
     - gcpartifactregistryrepository
@@ -149,7 +148,7 @@ spec:
                 type: string
               kmsKeyRef:
                 description: |-
-                  The customer managed encryption key that's used to encrypt the
+                  The customer managed encryption key that’s used to encrypt the
                   contents of the Repository.
                 oneOf:
                 - not:
@@ -332,10 +331,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              externalRef:
-                description: A unique specifier for the ArtifactRegistryRepository
-                  resource in GCP.
-                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
