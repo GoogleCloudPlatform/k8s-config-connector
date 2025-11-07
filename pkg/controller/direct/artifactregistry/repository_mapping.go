@@ -384,8 +384,8 @@ func UpstreamPolicy_ToProto(mapCtx *direct.MapContext, in *krm.UpstreamPolicy) *
 	if in.Priority != nil {
 		out.Priority = int32(*in.Priority)
 	}
-	if in.RepositoryRef != nil {
-		out.Repository = in.RepositoryRef.External
+	if in.RepositoryRef != nil && in.RepositoryRef.External != nil {
+		out.Repository = *in.RepositoryRef.External
 	}
 
 	return out

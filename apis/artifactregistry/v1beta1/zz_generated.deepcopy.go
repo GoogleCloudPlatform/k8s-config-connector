@@ -495,8 +495,8 @@ func (in *UpstreamPolicy) DeepCopyInto(out *UpstreamPolicy) {
 	}
 	if in.RepositoryRef != nil {
 		in, out := &in.RepositoryRef, &out.RepositoryRef
-		*out = new(refsv1beta1.ArtifactRegistryRepositoryRef)
-		**out = **in
+		*out = new(ArtifactRegistryRepositoryRef)
+		(*in).DeepCopyInto(*out)
 	}
 }
 

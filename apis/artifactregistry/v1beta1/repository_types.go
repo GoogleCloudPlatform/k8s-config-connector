@@ -22,6 +22,38 @@ import (
 
 var ArtifactRegistryRepositoryGVK = GroupVersion.WithKind("ArtifactRegistryRepository")
 
+// ArtifactRegistryRepositoryRef represents a reference to an ArtifactRegistryRepository
+type ArtifactRegistryRepositoryRef struct {
+	/* A reference to an externally managed ArtifactRegistryRepository.
+	Should be in the format `projects/[project_id]/locations/[location]/repositories/[repository_id]`. */
+	// +optional
+	External *string `json:"external,omitempty"`
+	
+	/* The `name` of an `ArtifactRegistryRepository` resource. */
+	// +optional  
+	Name *string `json:"name,omitempty"`
+	
+	/* The `namespace` of an `ArtifactRegistryRepository` resource. */
+	// +optional
+	Namespace *string `json:"namespace,omitempty"`
+}
+
+// DeepCopyInto copies all data from in to out
+func (in *ArtifactRegistryRepositoryRef) DeepCopyInto(out *ArtifactRegistryRepositoryRef) {
+	if in.External != nil {
+		out.External = new(string)
+		*out.External = *in.External
+	}
+	if in.Name != nil {
+		out.Name = new(string)
+		*out.Name = *in.Name
+	}
+	if in.Namespace != nil {
+		out.Namespace = new(string)
+		*out.Namespace = *in.Namespace
+	}
+}
+
 // CleanupPolicies defines cleanup policies for package versions
 // +kcc:proto=google.devtools.artifactregistry.v1.CleanupPolicy
 type CleanupPolicies struct {
@@ -172,7 +204,7 @@ type UpstreamPolicy struct {
 	/* A reference to the repository resource, for example:
 	"projects/p1/locations/us-central1/repositories/repo1". */
 	// +optional
-	RepositoryRef *refv1beta1.ArtifactRegistryRepositoryRef `json:"repositoryRef,omitempty"`
+	RepositoryRef *ArtifactRegistryRepositoryRef `json:"repositoryRef,omitempty"`
 }
 
 // VirtualRepositoryConfig defines configuration for virtual repositories
