@@ -20,6 +20,8 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+var ArtifactRegistryRepositoryGVK = GroupVersion.WithKind("ArtifactRegistryRepository")
+
 // CleanupPolicies defines cleanup policies for package versions
 // +kcc:proto=google.devtools.artifactregistry.v1.CleanupPolicy
 type CleanupPolicies struct {
