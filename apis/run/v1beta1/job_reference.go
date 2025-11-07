@@ -19,9 +19,11 @@ import (
 	"fmt"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	runtime "k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -70,12 +72,23 @@ func (r *JobRef) NormalizedExternal(ctx context.Context, reader client.Reader, o
 		}
 		return "", fmt.Errorf("reading referenced %s %s: %w", RunJobGVK, key, err)
 	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
+	obj := &RunJob{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+		return "", fmt.Errorf("error converting to %T: %w", obj, err)
 	}
-	if actualExternalRef == "" {
+	var actualExternalRef string
+	// Get external from status.externalRef. This is the most trustworthy place.
+	if obj.Status.ExternalRef != nil {
+		actualExternalRef = direct.ValueOf(obj.Status.ExternalRef)
+	} else if obj.Spec.ResourceID != nil {
+		projects, err := refsv1beta1.ResolveProject(ctx, reader, otherNamespace, obj.Spec.ProjectRef)
+		if err != nil {
+			return "", fmt.Errorf("resolving project for referenced %s %s: %w", RunJobGVK, key, err)
+		} else if projects.ProjectID == "" {
+			return "", fmt.Errorf("referenced %s %s has empty project ID", RunJobGVK, key)
+		}
+		actualExternalRef = "projects/" + projects.ProjectID + "/locations/" + direct.ValueOf(obj.Spec.Location) + "/jobs/" + direct.ValueOf(obj.Spec.ResourceID)
+	} else {
 		return "", k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
 	}
 	r.External = actualExternalRef

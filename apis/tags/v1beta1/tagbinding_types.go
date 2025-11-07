@@ -15,6 +15,8 @@
 package v1beta1
 
 import (
+	runv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -24,6 +26,7 @@ var TagsTagBindingGVK = GroupVersion.WithKind("TagsTagBinding")
 // TagsTagBindingSpec defines the desired state of TagsTagBinding
 // +kcc:spec:proto=google.cloud.resourcemanager.v3.TagBinding
 type TagsTagBindingSpec struct {
+	Location *string `json:"location,omitempty"`
 	// +kcc:ref=Project
 	ParentRef *ParentRef `json:"parentRef"`
 
@@ -38,15 +41,29 @@ type TagsTagBindingSpec struct {
 // ParentRef is a reference to a parent resource.
 // +kcc:ref=Project
 type ParentRef struct {
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+
+	// Allowed value: string of the format
+	// - `//cloudresourcemanager.googleapis.com/projects/{{ProjectNumber}}`,
+	// - `//cloudresourcemanager.googleapis.com/organzations/{{OrgID}}`,
+	// - `//storage.googleapis.com/projects/_/buckets/{{BucketName}}`,
+	External string `json:"external,omitempty"`
+
+	// The ResourceManager parent. Can be Project or Organization.
+	ResourceManagerRef `json:",inline"`
+
+	// +kcc:ref=StorageBucket
+	StorageBucketRef *storagev1beta1.StorageBucketRef `json:"storageBucketRef,omitempty"`
+
+	// +kcc:ref=RunJob
+	RunJobRef *runv1beta1.JobRef `json:"runJobRef,omitempty"`
+}
+
+type ResourceManagerRef struct {
+	// Name of the referent. Can be Project or Organization. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
 	Name string `json:"name,omitempty"`
 
 	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
 	Namespace string `json:"namespace,omitempty"`
-
-	// Allowed value: string of the format `//cloudresourcemanager.googleapis.com/projects/{{value}}`,
-	// where {{value}} is the `number` field of a `Project` resource.
-	External string `json:"external,omitempty"`
 }
 
 // TagsTagBindingStatus defines the config connector machine state of TagsTagBinding
