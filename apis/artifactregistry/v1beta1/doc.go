@@ -1,12 +1,10 @@
-//go:build ignore
-
 // Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+//    http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,25 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// NOTE: Boilerplate only.  Ignore this file.
-
-// Package v1beta1 contains API Schema definitions for the artifactregistry v1beta1 API group
+// +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register
 // +groupName=artifactregistry.cnrm.cloud.google.com
+
+// +kcc:proto=google.cloud.artifactregistry.v1
+
 package v1beta1
-
-import (
-	"k8s.io/apimachinery/pkg/runtime/schema"
-	"sigs.k8s.io/controller-runtime/pkg/scheme"
-)
-
-var (
-	// GroupVersion is group version used to register these objects
-	GroupVersion = schema.GroupVersion{Group: "artifactregistry.cnrm.cloud.google.com", Version: "v1beta1"}
-
-	// SchemeBuilder is used to add go types to the GroupVersionKind scheme
-	SchemeBuilder = &scheme.Builder{GroupVersion: GroupVersion}
-
-	// AddToScheme adds the types in this group-version to the given scheme.
-	AddToScheme = SchemeBuilder.AddToScheme
-)
