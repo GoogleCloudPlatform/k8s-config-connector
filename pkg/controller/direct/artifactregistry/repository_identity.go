@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -40,7 +41,7 @@ func (i *ArtifactRegistryRepositoryIdentity) FullyQualifiedName() string {
 	return fmt.Sprintf("%s/repositories/%s", i.Parent.String(), i.ResourceID)
 }
 
-func NewArtifactRegistryRepositoryIdentity(ctx context.Context, reader client.Reader, obj *krm.ArtifactRegistryRepository) (*ArtifactRegistryRepositoryIdentity, error) {
+func NewArtifactRegistryRepositoryIdentity(ctx context.Context, reader client.Reader, obj *krm.ArtifactRegistryRepository, u *unstructured.Unstructured) (*ArtifactRegistryRepositoryIdentity, error) {
 	// Get project ID from annotation (standard Config Connector approach)
 	var projectID string
 	annotations := obj.GetAnnotations()

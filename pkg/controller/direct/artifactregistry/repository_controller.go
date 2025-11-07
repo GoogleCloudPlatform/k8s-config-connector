@@ -17,21 +17,24 @@ package artifactregistry
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 
 	artifactregistry "cloud.google.com/go/artifactregistry/apiv1"
 	"cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
 const (
@@ -53,7 +56,7 @@ type model struct {
 }
 
 func (m *model) client(ctx context.Context) (*artifactregistry.Client, error) {
-	log := log.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.Info("creating ArtifactRegistry client", "userAgent", m.config.UserAgent, "billingProject", m.config.BillingProject)
 
 	opts, err := m.config.RESTClientOptions()
@@ -73,11 +76,15 @@ func (m *model) client(ctx context.Context) (*artifactregistry.Client, error) {
 
 func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.ArtifactRegistryRepository{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+	copied := u.DeepCopy()
+	if err := label.ComputeLabels(copied); err != nil {
+		return nil, err
+	}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(copied.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := NewArtifactRegistryRepositoryIdentity(ctx, reader, obj)
+	id, err := NewArtifactRegistryRepositoryIdentity(ctx, reader, obj, copied)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +116,7 @@ type Adapter struct {
 var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
-	log := log.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.Info("starting Find operation for ArtifactRegistry repository", "name", a.id.FullyQualifiedName(), "project", a.id.Parent.ProjectID, "location", a.id.Parent.Location)
 
 	req := &artifactregistrypb.GetRepositoryRequest{Name: a.id.FullyQualifiedName()}
@@ -131,7 +138,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 }
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
-	log := log.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx).WithName(ctrlName)
 	log.Info("starting Create operation for ArtifactRegistry repository", "name", a.id.FullyQualifiedName(), "project", a.id.Parent.ProjectID, "location", a.id.Parent.Location)
 
 	mapCtx := &direct.MapContext{}
@@ -165,7 +172,11 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx).WithName(ctrlName)
-	log.V(2).Info("updating ArtifactRegistry repository", "name", a.id.FullyQualifiedName())
+	log.Info("starting Update operation for ArtifactRegistry repository", "name", a.id.FullyQualifiedName())
+
+	if a.actual == nil {
+		return fmt.Errorf("Update called without a prior call to Find")
+	}
 
 	mapCtx := &direct.MapContext{}
 
@@ -177,22 +188,54 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	resource.Name = a.id.FullyQualifiedName()
 
+	// Validate critical immutable fields explicitly
+	if a.desired.Spec.Format != "" && a.actual.Format.String() != "" && a.desired.Spec.Format != a.actual.Format.String() {
+		return fmt.Errorf("field 'spec.format' is immutable and cannot be updated from %q to %q", a.actual.Format.String(), a.desired.Spec.Format)
+	}
+
+	if a.desired.Spec.Location != "" && a.actual.GetName() != "" {
+		// Extract location from actual name path (projects/.../locations/LOCATION/repositories/...)
+		if !strings.Contains(a.actual.GetName(), "locations/"+a.desired.Spec.Location+"/") {
+			return fmt.Errorf("field 'spec.location' is immutable and cannot be updated")
+		}
+	}
+
+	if a.desired.Spec.Mode != nil && a.actual.Mode.String() != "" && *a.desired.Spec.Mode != a.actual.Mode.String() {
+		return fmt.Errorf("field 'spec.mode' is immutable and cannot be updated from %q to %q", a.actual.Mode.String(), *a.desired.Spec.Mode)
+	}
+
+	// Validate Maven config immutable fields
+	if a.desired.Spec.MavenConfig != nil && a.actual.GetMavenConfig() != nil {
+		if a.desired.Spec.MavenConfig.AllowSnapshotOverwrites != nil && 
+		   a.actual.GetMavenConfig().GetAllowSnapshotOverwrites() != *a.desired.Spec.MavenConfig.AllowSnapshotOverwrites {
+			return fmt.Errorf("field 'spec.mavenConfig.allowSnapshotOverwrites' is immutable and cannot be updated from %v to %v", 
+				a.actual.GetMavenConfig().GetAllowSnapshotOverwrites(), *a.desired.Spec.MavenConfig.AllowSnapshotOverwrites)
+		}
+		if a.desired.Spec.MavenConfig.VersionPolicy != nil && 
+		   a.actual.GetMavenConfig().GetVersionPolicy().String() != *a.desired.Spec.MavenConfig.VersionPolicy {
+			return fmt.Errorf("field 'spec.mavenConfig.versionPolicy' is immutable and cannot be updated from %q to %q", 
+				a.actual.GetMavenConfig().GetVersionPolicy().String(), *a.desired.Spec.MavenConfig.VersionPolicy)
+		}
+	}
+
+	// Validate RemoteRepositoryConfig is immutable (entire block)
+	if (a.desired.Spec.RemoteRepositoryConfig != nil) != (a.actual.GetRemoteRepositoryConfig() != nil) {
+		return fmt.Errorf("field 'spec.remoteRepositoryConfig' is immutable and cannot be changed after creation")
+	}
+
+	// Use common.CompareProtoMessage to automatically detect changes and validate immutable fields
+	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
+	if err != nil {
+		return fmt.Errorf("comparing desired and actual state: %w", err)
+	}
+
+	if len(paths) == 0 {
+		log.V(2).Info("no field needs update", "name", a.id.FullyQualifiedName())
+		return nil
+	}
+
 	updateMask := &fieldmaskpb.FieldMask{}
-
-	// For artifact registry, we can update description, labels, cleanup policies, etc.
-	// But format, mode, location are immutable
-	updateMask.Paths = append(updateMask.Paths, "description")
-	updateMask.Paths = append(updateMask.Paths, "labels")
-	updateMask.Paths = append(updateMask.Paths, "cleanup_policies")
-	updateMask.Paths = append(updateMask.Paths, "cleanup_policy_dry_run")
-
-	// Only add docker/maven config if they exist
-	if resource.GetDockerConfig() != nil {
-		updateMask.Paths = append(updateMask.Paths, "docker_config")
-	}
-	if resource.GetMavenConfig() != nil {
-		updateMask.Paths = append(updateMask.Paths, "maven_config")
-	}
+	updateMask.Paths = sets.List(paths)
 
 	req := &artifactregistrypb.UpdateRepositoryRequest{
 		Repository: resource,
@@ -252,3 +295,5 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log.V(2).Info("successfully deleted ArtifactRegistry repository", "name", a.id.FullyQualifiedName())
 	return true, nil
 }
+
+
