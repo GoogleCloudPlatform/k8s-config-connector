@@ -17,12 +17,14 @@ apiVersion: sql.cnrm.cloud.google.com/v1beta1
 kind: SQLInstance
 metadata:
   name: sqlinstance-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/unmanaged: "spec.maintenanceVersion" # this will not take effect as we don't unmanage the maintenanceVersion on CREATE
 spec:
   databaseVersion: POSTGRES_15
   region: us-central1
   settings:
     tier: db-g1-small
-  maintenanceVersion: "NOT_VALID_VALUE"
+  maintenanceVersion: "POSTGRES_15_7.R20240514.00_12"
   resourceID: sqlinstance-${uniqueId}
 ---
 # 01: Add the unmanaged annotation for maintenanceVersion and attempt to change it.
@@ -38,5 +40,5 @@ spec:
   region: us-central1
   settings:
     tier: db-g1-small
-  maintenanceVersion: "NOT_VALID_VALUE_2"
+  maintenanceVersion: "NOT_VALID_VALUE"
   resourceID: sqlinstance-${uniqueId}
