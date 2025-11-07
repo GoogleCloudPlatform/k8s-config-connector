@@ -43,8 +43,6 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
-        description: ArtifactRegistryRepository is the Schema for the artifactregistry
-          API
         properties:
           apiVersion:
             description: 'apiVersion defines the versioned schema of this representation
@@ -59,8 +57,6 @@ spec:
           metadata:
             type: object
           spec:
-            description: ArtifactRegistryRepositorySpec defines the desired state
-              of ArtifactRegistryRepository
             properties:
               cleanupPolicies:
                 description: |-
@@ -69,8 +65,6 @@ spec:
                   Map keys are policy IDs supplied by users during policy creation. They must
                   unique within a repository and be under 128 characters in length.
                 items:
-                  description: CleanupPolicies defines cleanup policies for package
-                    versions
                   properties:
                     action:
                       description: 'Policy action. Possible values: ["DELETE", "KEEP"].'
@@ -116,7 +110,6 @@ spec:
                       properties:
                         keepCount:
                           description: Minimum number of versions to keep.
-                          format: int64
                           type: integer
                         packageNamePrefixes:
                           description: Match versions by package prefix. Applied on
@@ -174,14 +167,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed KMSCryptoKey.
-                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    description: 'Allowed value: The `selfLink` field of a `KMSCryptoKey`
+                      resource.'
                     type: string
                   name:
-                    description: The `name` of a `KMSCryptoKey` resource.
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               location:
@@ -260,12 +253,10 @@ spec:
                 description: Configuration specific for a Virtual Repository.
                 properties:
                   upstreamPolicies:
-                    description: Policies that configure the upstream artifacts distributed
-                      by the Virtual Repository. Upstream policies cannot be set on
-                      a standard repository.
+                    description: |-
+                      Policies that configure the upstream artifacts distributed by the Virtual
+                      Repository. Upstream policies cannot be set on a standard repository.
                     items:
-                      description: UpstreamPolicy defines upstream policies for virtual
-                        repositories
                       properties:
                         id:
                           description: The user-provided ID of the upstream policy.
@@ -273,11 +264,11 @@ spec:
                         priority:
                           description: Entries with a greater priority value take
                             precedence in the pull order.
-                          format: int64
                           type: integer
                         repositoryRef:
-                          description: 'A reference to the repository resource, for
-                            example: "projects/p1/locations/us-central1/repositories/repo1".'
+                          description: |-
+                            A reference to the repository resource, for example:
+                            "projects/p1/locations/us-central1/repositories/repo1".
                           oneOf:
                           - not:
                               required:
@@ -294,16 +285,16 @@ spec:
                             - external
                           properties:
                             external:
-                              description: A reference to an externally managed ArtifactRegistryRepository.
-                                Should be in the format `projects/[project_id]/locations/[location]/repositories/[repository_id]`.
+                              description: 'Allowed value: string of the format `projects/{{project}}/locations/{{location}}/repositories/{{value}}`,
+                                where {{value}} is the `name` field of an `ArtifactRegistryRepository`
+                                resource.'
                               type: string
                             name:
-                              description: The `name` of an `ArtifactRegistryRepository`
-                                resource.
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                               type: string
                             namespace:
-                              description: The `namespace` of an `ArtifactRegistryRepository`
-                                resource.
+                              description: 'Namespace of the referent. More info:
+                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                               type: string
                           type: object
                       type: object
@@ -314,12 +305,10 @@ spec:
             - location
             type: object
           status:
-            description: ArtifactRegistryRepositoryStatus defines the config connector
-              machine state of ArtifactRegistryRepository
             properties:
               conditions:
-                description: Conditions represent the latest available observations
-                  of the object's current state.
+                description: Conditions represent the latest available observation
+                  of the resource's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -353,7 +342,6 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
-                format: int64
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
