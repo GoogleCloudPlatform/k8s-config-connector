@@ -47,14 +47,14 @@ spec:
           API
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
+            description: 'apiVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
+            description: 'kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -63,11 +63,11 @@ spec:
               of ArtifactRegistryRepository
             properties:
               cleanupPolicies:
-                description: Cleanup policies for this repository. Cleanup policies
-                  indicate when certain package versions can be automatically deleted.
-                  Map keys are policy IDs supplied by users during policy creation.
-                  They must unique within a repository and be under 128 characters
-                  in length.
+                description: |-
+                  Cleanup policies for this repository. Cleanup policies indicate when
+                  certain package versions can be automatically deleted.
+                  Map keys are policy IDs supplied by users during policy creation. They must
+                  unique within a repository and be under 128 characters in length.
                 items:
                   description: CleanupPolicies defines cleanup policies for package
                     versions
@@ -110,8 +110,9 @@ spec:
                     id:
                       type: string
                     mostRecentVersions:
-                      description: Policy condition for retaining a minimum number
-                        of versions. May only be specified with a Keep action.
+                      description: |-
+                        Policy condition for retaining a minimum number of versions. May only be
+                        specified with a Keep action.
                       properties:
                         keepCount:
                           description: Minimum number of versions to keep.
@@ -129,8 +130,9 @@ spec:
                   type: object
                 type: array
               cleanupPolicyDryRun:
-                description: If true, the cleanup pipeline is prevented from deleting
-                  versions in this repository.
+                description: |-
+                  If true, the cleanup pipeline is prevented from deleting versions in this
+                  repository.
                 type: boolean
               description:
                 description: The user-provided description of the repository.
@@ -146,14 +148,16 @@ spec:
                     type: boolean
                 type: object
               format:
-                description: Immutable. The format of packages that are stored in
-                  the repository. Supported formats can be found [here](https://cloud.google.com/artifact-registry/docs/supported-formats).
-                  You can only create alpha formats if you are a member of the [alpha
-                  user group](https://cloud.google.com/artifact-registry/docs/supported-formats#alpha-access).
+                description: |-
+                  Immutable. The format of packages that are stored in the repository. Supported formats
+                  can be found [here](https://cloud.google.com/artifact-registry/docs/supported-formats).
+                  You can only create alpha formats if you are a member of the
+                  [alpha user group](https://cloud.google.com/artifact-registry/docs/supported-formats#alpha-access).
                 type: string
               kmsKeyRef:
-                description: The customer managed encryption key that's used to encrypt
-                  the contents of the Repository.
+                description: |-
+                  The customer managed encryption key that's used to encrypt the
+                  contents of the Repository.
                 oneOf:
                 - not:
                     required:
@@ -185,13 +189,15 @@ spec:
                   located in.
                 type: string
               mavenConfig:
-                description: MavenRepositoryConfig is maven related repository details.
-                  Provides additional configuration details for repositories of the
-                  maven format type.
+                description: |-
+                  MavenRepositoryConfig is maven related repository details.
+                  Provides additional configuration details for repositories of the maven
+                  format type.
                 properties:
                   allowSnapshotOverwrites:
-                    description: Immutable. The repository with this flag will allow
-                      publishing the same snapshot versions.
+                    description: |-
+                      Immutable. The repository with this flag will allow publishing the same
+                      snapshot versions.
                     type: boolean
                   versionPolicy:
                     description: 'Immutable. Version policy defines the versions that
