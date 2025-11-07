@@ -123,7 +123,7 @@ lint:
 	docker run --rm -v $(shell pwd):/app \
 		-v ${GOLANGCI_LINT_CACHE}:/root/.cache/golangci-lint \
 		-w /app golangci/golangci-lint:${GOLANGCI_LINT_VERSION}-alpine \
-		golangci-lint run -v --timeout=10m
+		golangci-lint run -v --timeout=20m
 
 # Run go vet against code
 .PHONY: vet

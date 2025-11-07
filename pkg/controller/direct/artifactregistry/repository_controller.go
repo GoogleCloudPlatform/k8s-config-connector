@@ -80,6 +80,10 @@ func (m *model) AdapterForObject(ctx context.Context, reader client.Reader, u *u
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	if err := ResolveArtifactRegistryRepositoryRefs(ctx, reader, copied); err != nil {
+		return nil, err
+	}
+
 	id, err := NewArtifactRegistryRepositoryIdentity(ctx, reader, obj, copied)
 	if err != nil {
 		return nil, err
