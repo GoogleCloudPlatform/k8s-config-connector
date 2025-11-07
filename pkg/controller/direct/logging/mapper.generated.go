@@ -18,3 +18,82 @@
 // proto.service: google.logging.v2
 
 package logging
+
+import (
+	pb "cloud.google.com/go/logging/apiv2/loggingpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+
+func BigQueryDataset_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDataset) *krm.BigQueryDataset {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryDataset{}
+	// MISSING: DatasetID
+	return out
+}
+func BigQueryDataset_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDataset) *pb.BigQueryDataset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQueryDataset{}
+	// MISSING: DatasetID
+	return out
+}
+func BigQueryDatasetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.BigQueryDataset) *krm.BigQueryDatasetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.BigQueryDatasetObservedState{}
+	out.DatasetID = direct.LazyPtr(in.GetDatasetId())
+	return out
+}
+func BigQueryDatasetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDatasetObservedState) *pb.BigQueryDataset {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BigQueryDataset{}
+	out.DatasetId = direct.ValueOf(in.DatasetID)
+	return out
+}
+func LoggingLinkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.LoggingLinkObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingLinkObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.LifecycleState = direct.Enum_FromProto(mapCtx, in.GetLifecycleState())
+	out.BigqueryDataset = BigQueryDatasetObservedState_FromProto(mapCtx, in.GetBigqueryDataset())
+	return out
+}
+func LoggingLinkObservedState_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkObservedState) *pb.Link {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Link{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.LifecycleState = direct.Enum_ToProto[pb.LifecycleState](mapCtx, in.LifecycleState)
+	out.BigqueryDataset = BigQueryDatasetObservedState_ToProto(mapCtx, in.BigqueryDataset)
+	return out
+}
+func LoggingLinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.Link) *krm.LoggingLinkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.LoggingLinkSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func LoggingLinkSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLinkSpec) *pb.Link {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Link{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
