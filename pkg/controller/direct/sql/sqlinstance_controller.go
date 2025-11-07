@@ -502,7 +502,7 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, createOp *directbase.Cr
 
 		if !isMaintenanceVersionUnamanaged && maintenanceVersion != "" {
 			newMaintDb := &api.DatabaseInstance{
-				MaintenanceVersion: direct.ValueOf(a.desired.Spec.MaintenanceVersion),
+				MaintenanceVersion: maintenanceVersion,
 			}
 
 			op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newMaintDb).Context(ctx).Do()
@@ -697,9 +697,9 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	// we also need to handle maintenanceVersion updates separately ...
-	if !isMaintenanceVersionUnamanaged && a.desired.Spec.MaintenanceVersion != nil && *a.desired.Spec.MaintenanceVersion != a.actual.MaintenanceVersion {
+	if maintenanceVersion := direct.ValueOf(a.desired.Spec.MaintenanceVersion); !isMaintenanceVersionUnamanaged && maintenanceVersion != "" && maintenanceVersion != a.actual.MaintenanceVersion {
 		newMaintDb := &api.DatabaseInstance{
-			MaintenanceVersion: direct.ValueOf(a.desired.Spec.MaintenanceVersion),
+			MaintenanceVersion: maintenanceVersion,
 		}
 
 		{
