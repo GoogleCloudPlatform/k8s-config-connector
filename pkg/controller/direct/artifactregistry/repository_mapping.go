@@ -95,8 +95,6 @@ func Repository_Mode_FromProto(mapCtx *direct.MapContext, mode artifactregistryp
 
 // ToProto functions for writing to GCP
 
-
-
 func ArtifactRegistryRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositorySpec) *artifactregistrypb.Repository {
 	if in == nil {
 		return nil
