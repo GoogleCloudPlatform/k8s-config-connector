@@ -28,11 +28,11 @@ type ArtifactRegistryRepositoryRef struct {
 	Should be in the format `projects/[project_id]/locations/[location]/repositories/[repository_id]`. */
 	// +optional
 	External *string `json:"external,omitempty"`
-	
+
 	/* The `name` of an `ArtifactRegistryRepository` resource. */
-	// +optional  
+	// +optional
 	Name *string `json:"name,omitempty"`
-	
+
 	/* The `namespace` of an `ArtifactRegistryRepository` resource. */
 	// +optional
 	Namespace *string `json:"namespace,omitempty"`

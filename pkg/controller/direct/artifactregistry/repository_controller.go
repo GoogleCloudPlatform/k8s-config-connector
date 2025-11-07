@@ -149,7 +149,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		Repository:   resource,
 	}
 
-	op, err := a.gcpClient.CreateRepository(ctx, req)
+	_, err := a.gcpClient.CreateRepository(ctx, req)
 	if err != nil {
 		return fmt.Errorf("creating ArtifactRegistry repository %q: %w", a.id.FullyQualifiedName(), err)
 	}

@@ -15,8 +15,6 @@
 package artifactregistry
 
 import (
-	"strings"
-
 	"cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -97,31 +95,7 @@ func Repository_Mode_FromProto(mapCtx *direct.MapContext, mode artifactregistryp
 
 // ToProto functions for writing to GCP
 
-func ArtifactRegistryRepositoryObservedState_FromProto(mapCtx *direct.MapContext, in *artifactregistrypb.Repository) *krm.ArtifactRegistryRepositoryObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ArtifactRegistryRepositoryObservedState{}
 
-	if in.CreateTime != nil {
-		out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.CreateTime)
-	}
-	if in.UpdateTime != nil {
-		out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.UpdateTime)
-	}
-	// Extract repository name from the full resource name
-	// Format: projects/[project]/locations/[location]/repositories/[repository_id]
-	if in.Name != "" {
-		// Simple extraction from the resource path
-		parts := strings.Split(in.Name, "/")
-		if len(parts) >= 6 && parts[4] == "repositories" {
-			repositoryName := parts[5]
-			out.Name = &repositoryName
-		}
-	}
-
-	return out
-}
 
 func ArtifactRegistryRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositorySpec) *artifactregistrypb.Repository {
 	if in == nil {
