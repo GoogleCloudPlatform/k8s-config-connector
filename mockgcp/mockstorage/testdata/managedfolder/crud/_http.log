@@ -5,6 +5,11 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": true
+    }
+  },
   "name": "bucket${uniqueId}"
 }
 
@@ -18,12 +23,17 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
+  "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
-      "enabled": false
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
     },
     "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {}
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
   },
   "id": "000000000000000000000",
   "kind": "storage#bucket",
@@ -67,8 +77,11 @@ Vary: X-Origin
 {
   "bucket": "bucket${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "storage#managedFolder",
   "metageneration": "1",
-  "name": "testmanagedfolder",
+  "name": "testmanagedfolder/",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders/testmanagedfolder%2F",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -81,8 +94,7 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
-Pragma: no-cache
+Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
@@ -90,8 +102,11 @@ Vary: X-Origin
 {
   "bucket": "bucket${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "storage#managedFolder",
   "metageneration": "1",
-  "name": "testmanagedfolder",
+  "name": "testmanagedfolder/",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders/testmanagedfolder%2F",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -104,8 +119,7 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
-Pragma: no-cache
+Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
@@ -115,11 +129,15 @@ Vary: X-Origin
     {
       "bucket": "bucket${uniqueId}",
       "createTime": "2024-04-01T12:34:56.123456Z",
+      "id": "bucket${uniqueId}/testmanagedfolder/",
+      "kind": "storage#managedFolder",
       "metageneration": "1",
-      "name": "testmanagedfolder",
+      "name": "testmanagedfolder/",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders/testmanagedfolder%2F",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
-  ]
+  ],
+  "kind": "storage#managedFolders"
 }
 
 ---
@@ -131,7 +149,8 @@ Connection: keep-alive
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Expires: {now+0m}
+Expires: Mon, 01 Jan 1990 00:00:00 GMT
+Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
@@ -142,11 +161,11 @@ Vary: X-Origin
     "errors": [
       {
         "domain": "global",
-        "message": "object not found",
+        "message": "No such object: bucket${uniqueId}/testmanagedfolder",
         "reason": "notFound"
       }
     ],
-    "message": "object not found",
+    "message": "No such object: bucket${uniqueId}/testmanagedfolder",
     "status": "NOT_FOUND"
   }
 }
@@ -182,8 +201,7 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
-Pragma: no-cache
+Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
@@ -191,27 +209,29 @@ Vary: X-Origin
 {
   "bucket": "bucket${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "kind": "storage#managedFolder",
   "metageneration": "1",
-  "name": "testmanagedfolder",
+  "name": "testmanagedfolder/",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders/testmanagedfolder%2F",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders/testmanagedfolder?alt=json
+DELETE https://storage.googleapis.com/storage/v1/b/bucket${uniqueId}/managedFolders/testmanagedfolder%2F?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
 
-200 OK
-Content-Type: application/json; charset=UTF-8
+204 No Content
+Content-Type: application/json
 Expires: Mon, 01 Jan 1990 00:00:00 GMT
 Pragma: no-cache
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
 
-{}
 
 ---
 
