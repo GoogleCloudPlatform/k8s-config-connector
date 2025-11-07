@@ -240,7 +240,7 @@ func registerDefaultControllers(ctx context.Context, config *config.ControllerCo
 	}
 }
 
-func registerDefaultController(ctx context.Context, r *ReconcileRegistration, config *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
+func registerDefaultController(ctx context.Context, r *ReconcileRegistration, c *config.ControllerConfig, crd *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
 	logger := crlog.FromContext(ctx)
 	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
 		return nil, nil
@@ -340,7 +340,7 @@ func registerDefaultController(ctx context.Context, r *ReconcileRegistration, co
 				}
 			}
 			r.reconcilers[gvk] = reconcilers
-			if err := parent.Add(r.mgr, gvk, reconcilers); err != nil {
+			if err := parent.Add(r.mgr, gvk, reconcilers, c.PreviewMode); err != nil {
 				return nil, fmt.Errorf("error adding parent controller for %v to a manager: %w", crd.Spec.Names.Kind, err)
 			}
 		}

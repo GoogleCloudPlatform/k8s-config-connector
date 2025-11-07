@@ -20,6 +20,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -49,7 +50,7 @@ type Recorder struct {
 
 	reconcileTrackerMutex sync.Mutex
 	// Track if a resource has been reconciled.
-	ReconciledResources map[GKNN]bool
+	ReconciledResources map[GKNN]map[k8s.ReconcilerType]bool
 	// Number of resources has not been reconciled.
 	RemainResourcesCount int
 }
@@ -58,7 +59,7 @@ type Recorder struct {
 func NewRecorder() *Recorder {
 	return &Recorder{
 		objects:              make(map[GKNN]*objectInfo),
-		ReconciledResources:  make(map[GKNN]bool),
+		ReconciledResources:  make(map[GKNN]map[k8s.ReconcilerType]bool),
 		RemainResourcesCount: 0,
 	}
 }
@@ -198,6 +199,7 @@ func (r *Recorder) recordReconcileStart(ctx context.Context, u *unstructured.Uns
 
 // recordReconcileEnd captures the reconcile end into our recorder.
 func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error, t k8s.ReconcilerType) {
+	klog.Infof("recordReconcileEnd %v %v", u, t)
 	gknn := gknnFromUnstructured(u)
 
 	if done := r.GKNNDoneReconcile(gknn); done {
@@ -210,15 +212,25 @@ func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstr
 		object:    u.DeepCopy(),
 	})
 	r.reconcileTrackerMutex.Lock()
-	defer r.reconcileTrackerMutex.Unlock()
-	r.ReconciledResources[gknn] = true
-	r.RemainResourcesCount--
+	r.ReconciledResources[gknn][t] = true
+	r.reconcileTrackerMutex.Unlock()
+
+	if r.GKNNDoneReconcile(gknn) {
+		r.reconcileTrackerMutex.Lock()
+		r.RemainResourcesCount--
+		r.reconcileTrackerMutex.Unlock()
+	}
 }
 
 func (r *Recorder) GKNNDoneReconcile(gknn GKNN) bool {
 	r.reconcileTrackerMutex.Lock()
 	defer r.reconcileTrackerMutex.Unlock()
-	return r.ReconciledResources[gknn]
+	for _, done := range r.ReconciledResources[gknn] {
+		if !done {
+			return false
+		}
+	}
+	return true
 }
 
 func gknnFromUnstructured(u *unstructured.Unstructured) GKNN {
@@ -357,6 +369,7 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config) error {
 	if err != nil {
 		return fmt.Errorf("failed to get preferred resources: %w", err)
 	}
+	resourceControllerConfig := resourceconfig.LoadConfig()
 	for _, apiResourceList := range apiResourceLists {
 		if !strings.Contains(apiResourceList.GroupVersion, ".cnrm.cloud.google.com/") {
 			continue
@@ -386,12 +399,21 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config) error {
 				gvr.Version = apiResourceListGroupVersion.Version
 			}
 			// Not tracking CC and CCC objects.
-			if gvr.Group == "core.cnrm.cloud.google.com" {
+			if strings.HasSuffix(gvr.Group, "core.cnrm.cloud.google.com") {
 				continue
 			}
 			resources, err := dynamicClient.Resource(gvr).List(ctx, metav1.ListOptions{})
 			if err != nil {
 				return fmt.Errorf("fetching gvr %s resources: %w", gvr, err)
+			}
+			gvk := schema.GroupVersionKind{
+				Group:   gvr.Group,
+				Version: gvr.Version,
+				Kind:    apiResource.Kind,
+			}
+			config, err := resourceControllerConfig.GetControllersForGVK(gvk)
+			if err != nil {
+				return fmt.Errorf("error getting controller config found for GroupKind %v", gvk.GroupKind())
 			}
 			for _, resource := range resources.Items {
 				r.ReconciledResources[GKNN{
@@ -399,7 +421,15 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config) error {
 					Kind:      resource.GetKind(),
 					Namespace: resource.GetNamespace(),
 					Name:      resource.GetName(),
-				}] = false
+				}] = make(map[k8s.ReconcilerType]bool)
+				for _, controllerType := range config.SupportedControllers {
+					r.ReconciledResources[GKNN{
+						Group:     gvr.Group,
+						Kind:      resource.GetKind(),
+						Namespace: resource.GetNamespace(),
+						Name:      resource.GetName(),
+					}][controllerType] = false
+				}
 			}
 			r.RemainResourcesCount += len(resources.Items)
 		}

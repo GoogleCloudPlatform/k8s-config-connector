@@ -118,8 +118,8 @@ func (r *Recorder) ExportDetailObjectsEvent(filename string) error {
 	fmt.Fprintf(f, "Number of resources that have not been fully reconciled: %d\n", r.RemainResourcesCount)
 	if r.RemainResourcesCount != 0 {
 		fmt.Fprintln(f, "Known Resource that was not reconciled")
-		for gknn, reconciled := range r.ReconciledResources {
-			if !reconciled {
+		for gknn := range r.ReconciledResources {
+			if !r.GKNNDoneReconcile(gknn) {
 				fmt.Fprintln(f, "-----------------------------------------------------------------")
 				fmt.Fprintf(f, "Not reconciled object %+v\n", gknn)
 			}
@@ -190,8 +190,8 @@ func (r *Recorder) SummaryReport(filename string) error {
 	}
 	if r.RemainResourcesCount > 0 {
 		fmt.Fprintln(detailFile, "Resources that has not fully reconciled:")
-		for gknn, reconciled := range r.ReconciledResources {
-			if !reconciled {
+		for gknn := range r.ReconciledResources {
+			if !r.GKNNDoneReconcile(gknn) {
 				fmt.Fprintf(detailFile, "Group: %s, Kind: %s, Namespace: %s, Name: %s\n", gknn.Group, gknn.Kind, gknn.Namespace, gknn.Name)
 			}
 		}
