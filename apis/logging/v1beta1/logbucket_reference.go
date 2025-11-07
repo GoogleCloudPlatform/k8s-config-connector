@@ -19,14 +19,13 @@ import (
 	"fmt"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &LoggingLogBucketRef{}
+var _ refsv1beta1.Ref = &LoggingLogBucketRef{}
+
 var LoggingLogBucketGVK = GroupVersion.WithKind("LoggingLogBucket")
 
 // LoggingLogBucketRef defines the resource reference to LoggingLogBucket, which "External" field
@@ -43,59 +42,34 @@ type LoggingLogBucketRef struct {
 	Namespace string `json:"namespace,omitempty"`
 }
 
-// NormalizedExternal provision the "External" value for other resource that depends on LoggingLogBucket.
-// If the "External" is given in the other resource's spec.LoggingLogBucketRef, the given value will be used.
-// Otherwise, the "Name" and "Namespace" will be used to query the actual LoggingLogBucket object from the cluster.
-func (r *LoggingLogBucketRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
-	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", LoggingLogBucketGVK.Kind)
-	}
-	// From given External
-	if r.External != "" {
-		if _, err := ParseLogBucketExternal(r.External); err != nil {
-			return "", err
-		}
-		return r.External, nil
-	}
-
-	// From the Config Connector object
-	if r.Namespace == "" {
-		r.Namespace = otherNamespace
-	}
-	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
-	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(LoggingLogBucketGVK)
-	if err := reader.Get(ctx, key, u); err != nil {
-		if apierrors.IsNotFound(err) {
-			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
-		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", LoggingLogBucketGVK, key, err)
-	}
-	// Get external from status.externalRef. This is the most trustworthy place.
-	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return "", fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if actualExternalRef != "" {
-		r.External = actualExternalRef
-		return r.External, nil
-	}
-
-	resourceID, err := refsv1beta1.GetResourceID(u)
-	if err != nil {
-		return "", err
-	}
-
-	location, err := refsv1beta1.GetLocation(u)
-	if err != nil {
-		return "", err
-	}
-
-	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, u)
-	if err != nil {
-		return "", err
-	}
-
-	r.External = fmt.Sprintf("projects/%s/locations/%s/buckets/%s", projectID, location, resourceID)
-	return r.External, nil
+func (r *LoggingLogBucketRef) GetGVK() schema.GroupVersionKind {
+	return LoggingLogBucketGVK
 }
+
+func (r *LoggingLogBucketRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *LoggingLogBucketRef) GetExternal() string {
+	return r.External
+}
+
+func (r *LoggingLogBucketRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *LoggingLogBucketRef) ValidateExternal(ref string) error {
+	id := &LogBucketIdentity{}
+	if err := id.FromExternal(r.GetExternal()); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *LoggingLogBucketRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
+}
+

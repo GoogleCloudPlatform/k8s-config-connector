@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 )
 
@@ -27,6 +28,8 @@ type LogBucketIdentity struct {
 	parent *parent.ProjectAndLocationParent
 	id     string
 }
+
+var _ identity.Identity = &LogBucketIdentity{}
 
 func (i *LogBucketIdentity) String() string {
 	return i.parent.String() + "/buckets/" + i.id
@@ -38,10 +41,12 @@ func (i *LogBucketIdentity) ID() string {
 
 func (i *LogBucketIdentity) Parent() *parent.ProjectAndLocationParent { return i.parent }
 
-func ParseLogBucketExternal(external string) (*LogBucketIdentity, error) {
-	tokens := strings.Split(external, "/")
+func (i *LogBucketIdentity) FromExternal(ref string) error {
+	tokens := strings.Split(ref, "/")
 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "buckets" {
-		return nil, fmt.Errorf("format of LoggingLink external=%q was not known (use projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}})", external)
+		return fmt.Errorf("format of LoggingLink external=%q was not known (use projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}})", ref)
 	}
-	return &LogBucketIdentity{parent: &parent.ProjectAndLocationParent{ProjectID: tokens[1], Location: tokens[3]}, id: tokens[5]}, nil
+	i.parent = &parent.ProjectAndLocationParent{ProjectID: tokens[1], Location: tokens[3]}
+	i.id = tokens[5]
+	return nil
 }
