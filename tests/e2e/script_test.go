@@ -353,7 +353,7 @@ func TestE2EScript(t *testing.T) {
 						appliedObjects = append(appliedObjects, obj)
 
 					default:
-						t.Errorf("unknown TEST command %q", testCommand)
+						t.Errorf("FAIL: unknown TEST command %q", testCommand)
 						continue
 					}
 

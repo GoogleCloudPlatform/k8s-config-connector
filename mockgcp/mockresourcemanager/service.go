@@ -31,6 +31,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
+func init() {
+	// Note: we need to publish our projects store, so we build this one specially
+	// mockgcpregistry.Register(New)
+}
+
 // MockService represents a mocked privateca service.
 type MockService struct {
 	*common.MockEnvironment

@@ -40,7 +40,8 @@ func SetExpiresHeader(ctx context.Context, expiresAt time.Time) {
 func GetExpiresHeader(ctx context.Context) (string, bool) {
 	md, ok := runtime.ServerMetadataFromContext(ctx)
 	if !ok {
-		klog.Fatalf("Failed to get server metadata from context")
+		klog.Warningf("Failed to get server metadata from context (in GetExpiresHeader)")
+		return "", false
 	}
 
 	if vals := md.HeaderMD.Get(MetadataKeyExpires); len(vals) > 0 {
@@ -58,7 +59,8 @@ func SetStatusCode(ctx context.Context, code int) {
 func GetStatusCode(ctx context.Context) (int, bool) {
 	md, ok := runtime.ServerMetadataFromContext(ctx)
 	if !ok {
-		klog.Fatalf("Failed to get server metadata from context")
+		klog.Warningf("Failed to get server metadata from context (in GetStatusCode)")
+		return 0, false
 	}
 
 	// set x-http-code header

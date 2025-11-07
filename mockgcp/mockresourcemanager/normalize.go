@@ -21,10 +21,6 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	// Bucket
-	replacements.ReplacePath(".generation", "{generationID}")
-	replacements.ReplacePath(".iamConfiguration.bucketPolicyOnly.lockedTime", "{lockedTime}")
-	replacements.ReplacePath(".uniformBucketLevelAccess.lockedTime", "{lockedTime}")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
