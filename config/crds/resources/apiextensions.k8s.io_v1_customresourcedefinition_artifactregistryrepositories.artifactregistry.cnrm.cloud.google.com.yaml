@@ -6,7 +6,6 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
-    cnrm.cloud.google.com/stability-level: stable
     cnrm.cloud.google.com/system: "true"
   name: artifactregistryrepositories.artifactregistry.cnrm.cloud.google.com
 spec:
@@ -15,6 +14,7 @@ spec:
     categories:
     - gcp
     kind: ArtifactRegistryRepository
+    listKind: ArtifactRegistryRepositoryList
     plural: artifactregistryrepositories
     shortNames:
     - gcpartifactregistryrepository
@@ -42,28 +42,34 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: ArtifactRegistryRepository is the Schema for the artifactregistry
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: ArtifactRegistryRepositorySpec defines the desired state
+              of ArtifactRegistryRepository
             properties:
               cleanupPolicies:
-                description: |-
-                  Cleanup policies for this repository. Cleanup policies indicate when
-                  certain package versions can be automatically deleted.
-                  Map keys are policy IDs supplied by users during policy creation. They must
-                  unique within a repository and be under 128 characters in length.
+                description: Cleanup policies for this repository. Cleanup policies
+                  indicate when certain package versions can be automatically deleted.
+                  Map keys are policy IDs supplied by users during policy creation.
+                  They must unique within a repository and be under 128 characters
+                  in length.
                 items:
+                  description: CleanupPolicies defines cleanup policies for package
+                    versions
                   properties:
                     action:
                       description: 'Policy action. Possible values: ["DELETE", "KEEP"].'
@@ -103,12 +109,12 @@ spec:
                     id:
                       type: string
                     mostRecentVersions:
-                      description: |-
-                        Policy condition for retaining a minimum number of versions. May only be
-                        specified with a Keep action.
+                      description: Policy condition for retaining a minimum number
+                        of versions. May only be specified with a Keep action.
                       properties:
                         keepCount:
                           description: Minimum number of versions to keep.
+                          format: int64
                           type: integer
                         packageNamePrefixes:
                           description: Match versions by package prefix. Applied on
@@ -122,9 +128,8 @@ spec:
                   type: object
                 type: array
               cleanupPolicyDryRun:
-                description: |-
-                  If true, the cleanup pipeline is prevented from deleting versions in this
-                  repository.
+                description: If true, the cleanup pipeline is prevented from deleting
+                  versions in this repository.
                 type: boolean
               description:
                 description: The user-provided description of the repository.
@@ -140,16 +145,14 @@ spec:
                     type: boolean
                 type: object
               format:
-                description: |-
-                  Immutable. The format of packages that are stored in the repository. Supported formats
-                  can be found [here](https://cloud.google.com/artifact-registry/docs/supported-formats).
-                  You can only create alpha formats if you are a member of the
-                  [alpha user group](https://cloud.google.com/artifact-registry/docs/supported-formats#alpha-access).
+                description: Immutable. The format of packages that are stored in
+                  the repository. Supported formats can be found [here](https://cloud.google.com/artifact-registry/docs/supported-formats).
+                  You can only create alpha formats if you are a member of the [alpha
+                  user group](https://cloud.google.com/artifact-registry/docs/supported-formats#alpha-access).
                 type: string
               kmsKeyRef:
-                description: |-
-                  The customer managed encryption key that’s used to encrypt the
-                  contents of the Repository.
+                description: The customer managed encryption key that's used to encrypt
+                  the contents of the Repository.
                 oneOf:
                 - not:
                     required:
@@ -166,14 +169,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `selfLink` field of a `KMSCryptoKey`
-                      resource.'
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` of a `KMSCryptoKey` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` of a `KMSCryptoKey` resource.
                     type: string
                 type: object
               location:
@@ -181,15 +184,13 @@ spec:
                   located in.
                 type: string
               mavenConfig:
-                description: |-
-                  MavenRepositoryConfig is maven related repository details.
-                  Provides additional configuration details for repositories of the maven
-                  format type.
+                description: MavenRepositoryConfig is maven related repository details.
+                  Provides additional configuration details for repositories of the
+                  maven format type.
                 properties:
                   allowSnapshotOverwrites:
-                    description: |-
-                      Immutable. The repository with this flag will allow publishing the same
-                      snapshot versions.
+                    description: Immutable. The repository with this flag will allow
+                      publishing the same snapshot versions.
                     type: boolean
                   versionPolicy:
                     description: 'Immutable. Version policy defines the versions that
@@ -252,10 +253,12 @@ spec:
                 description: Configuration specific for a Virtual Repository.
                 properties:
                   upstreamPolicies:
-                    description: |-
-                      Policies that configure the upstream artifacts distributed by the Virtual
-                      Repository. Upstream policies cannot be set on a standard repository.
+                    description: Policies that configure the upstream artifacts distributed
+                      by the Virtual Repository. Upstream policies cannot be set on
+                      a standard repository.
                     items:
+                      description: UpstreamPolicy defines upstream policies for virtual
+                        repositories
                       properties:
                         id:
                           description: The user-provided ID of the upstream policy.
@@ -263,11 +266,11 @@ spec:
                         priority:
                           description: Entries with a greater priority value take
                             precedence in the pull order.
+                          format: int64
                           type: integer
                         repositoryRef:
-                          description: |-
-                            A reference to the repository resource, for example:
-                            "projects/p1/locations/us-central1/repositories/repo1".
+                          description: 'A reference to the repository resource, for
+                            example: "projects/p1/locations/us-central1/repositories/repo1".'
                           oneOf:
                           - not:
                               required:
@@ -284,16 +287,16 @@ spec:
                             - external
                           properties:
                             external:
-                              description: 'Allowed value: string of the format `projects/{{project}}/locations/{{location}}/repositories/{{value}}`,
-                                where {{value}} is the `name` field of an `ArtifactRegistryRepository`
-                                resource.'
+                              description: A reference to an externally managed ArtifactRegistryRepository.
+                                Should be in the format `projects/[project_id]/locations/[location]/repositories/[repository_id]`.
                               type: string
                             name:
-                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                              description: The `name` of an `ArtifactRegistryRepository`
+                                resource.
                               type: string
                             namespace:
-                              description: 'Namespace of the referent. More info:
-                                https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                              description: The `namespace` of an `ArtifactRegistryRepository`
+                                resource.
                               type: string
                           type: object
                       type: object
@@ -304,10 +307,12 @@ spec:
             - location
             type: object
           status:
+            description: ArtifactRegistryRepositoryStatus defines the config connector
+              machine state of ArtifactRegistryRepository
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -331,13 +336,9 @@ spec:
                       type: string
                   type: object
                 type: array
-              createTime:
-                description: The time when the repository was created.
-                type: string
-              name:
-                description: |-
-                  The name of the repository, for example:
-                  "repo1".
+              externalRef:
+                description: A unique specifier for the ArtifactRegistryRepository
+                  resource in GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -345,21 +346,25 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
-              updateTime:
-                description: The time when the repository was last updated.
-                type: string
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: The time when the repository was created.
+                    type: string
+                  name:
+                    description: 'The name of the repository, for example: "repo1".'
+                    type: string
+                  updateTime:
+                    description: The time when the repository was last updated.
+                    type: string
+                type: object
             type: object
-        required:
-        - spec
         type: object
     served: true
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

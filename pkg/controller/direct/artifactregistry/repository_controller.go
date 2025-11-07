@@ -206,14 +206,14 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	// Validate Maven config immutable fields
 	if a.desired.Spec.MavenConfig != nil && a.actual.GetMavenConfig() != nil {
-		if a.desired.Spec.MavenConfig.AllowSnapshotOverwrites != nil && 
-		   a.actual.GetMavenConfig().GetAllowSnapshotOverwrites() != *a.desired.Spec.MavenConfig.AllowSnapshotOverwrites {
-			return fmt.Errorf("field 'spec.mavenConfig.allowSnapshotOverwrites' is immutable and cannot be updated from %v to %v", 
+		if a.desired.Spec.MavenConfig.AllowSnapshotOverwrites != nil &&
+			a.actual.GetMavenConfig().GetAllowSnapshotOverwrites() != *a.desired.Spec.MavenConfig.AllowSnapshotOverwrites {
+			return fmt.Errorf("field 'spec.mavenConfig.allowSnapshotOverwrites' is immutable and cannot be updated from %v to %v",
 				a.actual.GetMavenConfig().GetAllowSnapshotOverwrites(), *a.desired.Spec.MavenConfig.AllowSnapshotOverwrites)
 		}
-		if a.desired.Spec.MavenConfig.VersionPolicy != nil && 
-		   a.actual.GetMavenConfig().GetVersionPolicy().String() != *a.desired.Spec.MavenConfig.VersionPolicy {
-			return fmt.Errorf("field 'spec.mavenConfig.versionPolicy' is immutable and cannot be updated from %q to %q", 
+		if a.desired.Spec.MavenConfig.VersionPolicy != nil &&
+			a.actual.GetMavenConfig().GetVersionPolicy().String() != *a.desired.Spec.MavenConfig.VersionPolicy {
+			return fmt.Errorf("field 'spec.mavenConfig.versionPolicy' is immutable and cannot be updated from %q to %q",
 				a.actual.GetMavenConfig().GetVersionPolicy().String(), *a.desired.Spec.MavenConfig.VersionPolicy)
 		}
 	}
@@ -295,5 +295,3 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log.V(2).Info("successfully deleted ArtifactRegistry repository", "name", a.id.FullyQualifiedName())
 	return true, nil
 }
-
-
