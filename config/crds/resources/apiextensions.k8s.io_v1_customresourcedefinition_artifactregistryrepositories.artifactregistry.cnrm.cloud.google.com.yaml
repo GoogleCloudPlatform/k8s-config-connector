@@ -354,6 +354,8 @@ spec:
                 description: The time when the repository was last updated.
                 type: string
             type: object
+        required:
+        - spec
         type: object
     served: true
     storage: true

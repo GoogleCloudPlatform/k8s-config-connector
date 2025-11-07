@@ -314,7 +314,7 @@ type ArtifactRegistryRepository struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   ArtifactRegistryRepositorySpec   `json:"spec,omitempty"`
+	Spec   ArtifactRegistryRepositorySpec   `json:"spec"`
 	Status ArtifactRegistryRepositoryStatus `json:"status,omitempty"`
 }
 
