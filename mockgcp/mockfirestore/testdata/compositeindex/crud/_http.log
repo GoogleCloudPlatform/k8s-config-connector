@@ -69,7 +69,8 @@ Content-Type: application/json
     }
   ],
   "multikey": false,
-  "queryScope": "COLLECTION"
+  "queryScope": "COLLECTION",
+  "unique": false
 }
 
 200 OK

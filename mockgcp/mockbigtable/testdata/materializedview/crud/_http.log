@@ -258,6 +258,30 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/test-materialized-view-${uniqueId}?alt=json&view=SCHEMA_VIEW
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "deletionProtection": true,
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/test-materialized-view-${uniqueId}",
+  "query": "SELECT _key, COUNT(*) as count from test-table group by _key;"
+}
+
+---
+
 PATCH https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/test-materialized-view-${uniqueId}?alt=json&updateMask=deletion_protection
 Accept: application/json
 Authorization: (removed)
@@ -352,7 +376,30 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews?alt=json
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/test-materialized-view-${uniqueId}?alt=json&view=SCHEMA_VIEW
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/materializedViews/test-materialized-view-${uniqueId}",
+  "query": "SELECT _key, COUNT(*) as count from test-table group by _key;"
+}
+
+---
+
+GET https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/mvdep${uniqueId}/materializedViews?alt=json&view=SCHEMA_VIEW
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
