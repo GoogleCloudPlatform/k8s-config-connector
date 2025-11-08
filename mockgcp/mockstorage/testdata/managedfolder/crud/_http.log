@@ -5,6 +5,11 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": true
+    }
+  },
   "name": "bucket${uniqueId}"
 }
 
@@ -20,10 +25,14 @@ Vary: X-Origin
   "etag": "abcdef0123A=",
   "iamConfiguration": {
     "bucketPolicyOnly": {
-      "enabled": false
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
     },
     "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {}
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
   },
   "id": "000000000000000000000",
   "kind": "storage#bucket",
