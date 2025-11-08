@@ -160,8 +160,10 @@ spec:
                   GCP.
                 type: string
               name:
-                description: 'The generated id for the TagBinding. This is a string
-                  of the form: tagBindings/{full-resource-name}/{tag-value-name}.'
+                description: The generated id for the TagBinding. This value does
+                  not have the `tagBindings/` prefix, which is different from the
+                  GCP returned name. To look for identity, please look at `status.externalRef`
+                  instead.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource

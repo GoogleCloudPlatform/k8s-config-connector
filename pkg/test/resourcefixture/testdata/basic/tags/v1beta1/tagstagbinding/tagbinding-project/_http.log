@@ -178,7 +178,25 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://cloudresourcemanager.googleapis.com/v3/tagBindings?alt=json
+GET https://cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&pageSize=300&parent=%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -210,7 +228,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagBindings/?alt=json&pageSize=300&parent=%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}
+GET https://cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&pageSize=300&parent=%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -236,9 +254,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://cloudresourcemanager.googleapis.com/v3/tagBindings/%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/tagValues/${tagValueID}?alt=json
+DELETE https://cloudresourcemanager.googleapis.com/v3/tagBindings/%252F%252Fcloudresourcemanager.googleapis.com%252Fprojects%252F${projectNumber}/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=tagBindings%2F%252F%252Fcloudresourcemanager.googleapis.com%252Fprojects%252F${projectNumber}%2FtagValues%2F${tagValueID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
