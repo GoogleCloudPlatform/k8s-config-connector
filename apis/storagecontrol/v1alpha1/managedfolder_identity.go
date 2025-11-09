@@ -105,7 +105,7 @@ func NewManagedFolderIdentity(ctx context.Context, reader client.Reader, obj *St
 
 func ParseManagedFolderExternal(external string) (parent *ManagedFolderParent, resourceID string, err error) {
 	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "buckets" || tokens[4] != "managedfolders" {
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "buckets" || tokens[4] != "managedFolders" {
 		return nil, "", fmt.Errorf("format of StorageManagedFolder external=%q was not known (use projects/{{projectID}}/buckets/{{bucket}}/managedfolders/{{managedfolderID}})", external)
 	}
 	parent = &ManagedFolderParent{
