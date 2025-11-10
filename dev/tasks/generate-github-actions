@@ -82,7 +82,7 @@ EOF
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: 'google-github-actions/setup-gcloud@v2'
         with:
-          version: '531.0.0'
+          version: '546.0.0'
           install_components: 'alpha,beta'
 EOF
     fi

@@ -61,7 +61,7 @@ jobs:
       - name: "Set up Cloud SDK"
         uses: 'google-github-actions/setup-gcloud@v2'
         with:
-          version: '531.0.0'
+          version: '546.0.0'
           install_components: 'alpha,beta'
       - name: "Run unit tests"
         run: |
