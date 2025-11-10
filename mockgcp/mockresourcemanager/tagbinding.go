@@ -71,7 +71,12 @@ func (s *TagBindingsServer) CreateTagBinding(ctx context.Context, req *pb.Create
 		return nil, err
 	}
 
-	return s.operations.DoneLRO(ctx, "", nil, obj)
+	lro, err := s.operations.DoneLRO(ctx, "", nil, obj)
+	if err != nil {
+		return nil, err
+	}
+	lro.Name = "" // Does not return LRO name
+	return lro, nil
 }
 
 func (s *TagBindingsServer) DeleteTagBinding(ctx context.Context, req *pb.DeleteTagBindingRequest) (*lropb.Operation, error) {
@@ -102,7 +107,12 @@ func (s *TagBindingsServer) DeleteTagBinding(ctx context.Context, req *pb.Delete
 		return nil, err
 	}
 
-	return s.operations.DoneLRO(ctx, "", nil, &emptypb.Empty{})
+	lro, err := s.operations.DoneLRO(ctx, "", nil, &emptypb.Empty{})
+	if err != nil {
+		return nil, err
+	}
+	lro.Name = "" // Does not return LRO name
+	return lro, nil
 }
 
 func (s *TagBindingsServer) ListTagBindings(ctx context.Context, req *pb.ListTagBindingsRequest) (*pb.ListTagBindingsResponse, error) {
@@ -121,7 +131,7 @@ func (s *TagBindingsServer) ListTagBindings(ctx context.Context, req *pb.ListTag
 	if err := s.storage.List(ctx, tagBindingKind, storage.ListOptions{}, func(obj proto.Message) error {
 		tagBinding := obj.(*pb.TagBinding)
 		if tagBinding.Parent == findParent {
-			// tagBinding.TagValueNamespacedName = "" // Not returned in list
+			tagBinding.TagValueNamespacedName = "" // Not returned in list
 
 			bindings = append(bindings, tagBinding)
 		}

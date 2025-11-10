@@ -199,7 +199,6 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagBinding",
     "name": "tagBindings/%2F%2Fcloudresourcemanager.googleapis.com%2Fprojects%2F${projectNumber}/tagValues/${tagValueID}",
@@ -252,7 +251,6 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }

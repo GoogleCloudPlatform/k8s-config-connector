@@ -24,23 +24,26 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
+  "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
-      "enabled": false
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
     },
     "publicAccessPrevention": "inherited",
     "uniformBucketLevelAccess": {
-      "enabled": true
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
     }
   },
   "id": "000000000000000000000",
   "kind": "storage#bucket",
-  "location": "US",
-  "locationType": "multi-region",
+  "location": "US-CENTRAL1",
+  "locationType": "region",
   "metageneration": "1",
   "name": "bucket${uniqueId}",
   "projectNumber": "${projectNumber}",
-  "rpo": "DEFAULT",
+  "satisfiesPZI": true,
   "selfLink": "https://www.googleapis.com/storage/v1/b/bucket${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
@@ -287,7 +290,6 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagBinding",
     "name": "tagBindings/%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Fbucket${uniqueId}/tagValues/${tagValueID}",
@@ -319,8 +321,7 @@ X-Xss-Protection: 0
     {
       "name": "tagBindings/%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Fbucket${uniqueId}/tagValues/${tagValueID}",
       "parent": "//storage.googleapis.com/projects/_/buckets/bucket${uniqueId}",
-      "tagValue": "tagValues/${tagValueID}",
-      "tagValueNamespacedName": "${projectId}/test-${uniqueId}/value1"
+      "tagValue": "tagValues/${tagValueID}"
     }
   ]
 }
@@ -371,7 +372,6 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }

@@ -73,7 +73,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockpubsublite"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockrecaptchaenterprise"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockredis"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockresourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecretmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecuresourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockservicenetworking"
@@ -117,16 +116,11 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	}
 	env.Workflows = workflowEngine
 
-	resourcemanagerService := mockresourcemanager.New(env, storage)
-	env.Projects = resourcemanagerService.GetProjectStore()
-
 	var serverOpts []grpc.ServerOption
 	serverOpts = append(serverOpts, grpc.UnaryInterceptor(interceptor.LabelValidationInterceptor))
 	server := grpc.NewServer(serverOpts...)
 
 	var services []mockgcpregistry.MockService
-
-	services = append(services, resourcemanagerService)
 
 	registeredServices, err := mockgcpregistry.BuildAllServices(env, storage)
 	if err != nil {

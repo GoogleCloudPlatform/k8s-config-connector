@@ -206,7 +206,12 @@ func (s *TagKeys) UpdateTagKey(ctx context.Context, req *pb.UpdateTagKeyRequest)
 	}
 
 	// LRO is immediately done
-	return s.operations.DoneLRO(ctx, "", nil, obj)
+	lro, err := s.operations.DoneLRO(ctx, "", nil, obj)
+	if err != nil {
+		return nil, err
+	}
+	lro.Name = "" // Does not return LRO name
+	return lro, nil
 }
 
 func (s *TagKeys) DeleteTagKey(ctx context.Context, req *pb.DeleteTagKeyRequest) (*longrunningpb.Operation, error) {

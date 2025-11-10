@@ -28,8 +28,13 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb_v1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/resourcemanager/v1"
 	pb_v3 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/resourcemanager/v3"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
+
+func init() {
+	mockgcpregistry.Register(New)
+}
 
 // MockService represents a mocked privateca service.
 type MockService struct {
@@ -63,7 +68,7 @@ type TagBindingsServer struct {
 }
 
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,
@@ -75,6 +80,9 @@ func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s.tagKeys = &TagKeys{MockService: s}
 	s.tagValues = &TagValues{MockService: s}
 	s.tagBindings = &TagBindingsServer{MockService: s}
+
+	env.Projects = s.projectsInternal
+
 	return s
 }
 
