@@ -18,8 +18,11 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 )
+
+var _ identity.Identity = &StorageBucketIdentity{}
 
 type StorageBucketIdentity struct {
 	id     string
@@ -32,6 +35,16 @@ func (i *StorageBucketIdentity) String() string {
 
 func (i *StorageBucketIdentity) ID() string {
 	return i.id
+}
+
+func (i *StorageBucketIdentity) FromExternal(external string) error {
+	parsed, err := ParseStorageBucketExternal(external)
+	if err != nil {
+		return err
+	}
+	i.parent = parsed.parent
+	i.id = parsed.id
+	return nil
 }
 
 func ParseStorageBucketExternal(external string) (*StorageBucketIdentity, error) {
