@@ -12,23 +12,77 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package fuzz
+package artifactregistry
 
 import (
 	"fmt"
 	"math/rand"
 	"testing"
-	"time"
 
+	pb "cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/google/go-cmp/cmp"
+	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/testing/protocmp"
 	"k8s.io/apimachinery/pkg/util/sets"
-	"k8s.io/klog/v2"
 )
 
-// IDEA: Load all the samples, and check that we have all the KRM paths covered
+func FuzzArtifactRegistryRepositorySpec(f *testing.F) {
+	f.Fuzz(func(t *testing.T, seed int64) {
+		randStream := rand.New(rand.NewSource(seed))
 
-func FillWithRandom(t *testing.T, randStream *rand.Rand, msg proto.Message) {
+		p1 := &pb.Repository{}
+		fillWithRandom(t, randStream, p1)
+
+		// We don't expect output fields to round-trip
+		outputFields := sets.New(".etag")
+
+		// A few fields are not implemented yet in KRM, don't test them
+		unimplementedFields := sets.New(
+			".name",
+		)
+
+		// Status fields
+		unimplementedFields.Insert(".create_time")
+		unimplementedFields.Insert(".update_time")
+		unimplementedFields.Insert(".size_bytes")
+
+		// Remove any output only or known-unimplemented fields
+		clearFields := &ClearFields{
+			Paths: unimplementedFields.Union(outputFields),
+		}
+		visit("", p1.ProtoReflect(), nil, clearFields)
+
+		r := &ReplaceFields{}
+		r.Func = func(path string, val protoreflect.Value) (protoreflect.Value, bool) {
+			// TODO: Any values that must follow a pattern
+			return protoreflect.Value{}, false
+		}
+		visit("", p1.ProtoReflect(), nil, r)
+
+		ctx := &direct.MapContext{}
+		k := ArtifactRegistryRepositorySpec_FromProto(ctx, p1)
+		if ctx.Err() != nil {
+			t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
+		}
+
+		p2 := ArtifactRegistryRepositorySpec_ToProto(ctx, k)
+		if ctx.Err() != nil {
+			t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
+		}
+
+		if diff := cmp.Diff(p1, p2, protocmp.Transform()); diff != "" {
+			t.Logf("p1 = %v", prototext.Format(p1))
+			t.Logf("p2 = %v", prototext.Format(p2))
+			t.Errorf("roundtrip failed; diff:\n%s", diff)
+		}
+	})
+}
+
+func fillWithRandom(t *testing.T, randStream *rand.Rand, msg proto.Message) {
 	fillWithRandom0(t, randStream, msg.ProtoReflect())
 }
 
@@ -47,24 +101,6 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 		return
 	}
 
-	if string(descriptor.FullName()) == "google.protobuf.Timestamp" {
-		count := randStream.Intn(10)
-		// Bias to zero
-		if count > 4 {
-			return
-		}
-		// Generate a "reasonable" timestamp; huge values are out of range of golang time types
-		baseSeconds := int64(1900) * 365 * 24 * 60 * 60
-		maxRandomDays := 400 * 365 // Max days to add
-		randomDays := randStream.Intn(maxRandomDays)
-		randomSeconds := int64(randomDays) * 24 * 60 * 60
-		seconds := baseSeconds + randomSeconds
-		nanos := randStream.Intn(1000000000)
-		msg.Set(descriptor.Fields().ByName("seconds"), protoreflect.ValueOfInt64(int64(seconds)))
-		msg.Set(descriptor.Fields().ByName("nanos"), protoreflect.ValueOfInt32(int32(nanos)))
-		return
-	}
-
 	fields := descriptor.Fields()
 	n := fields.Len()
 	for i := 0; i < n; i++ {
@@ -76,40 +112,17 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 			if count > 4 {
 				count = 0
 			}
+			listVal := msg.Mutable(field).List()
 			switch field.Kind() {
 			case protoreflect.MessageKind:
-				listVal := msg.Mutable(field).List()
 				for j := 0; j < count; j++ {
 					el := listVal.AppendMutable()
 					fillWithRandom0(t, randStream, el.Message())
 				}
 			case protoreflect.StringKind:
-				listVal := msg.Mutable(field).List()
 				for j := 0; j < count; j++ {
 					s := randomString(randStream)
 					listVal.Append(protoreflect.ValueOf(s))
-				}
-
-			case protoreflect.EnumKind:
-				listVal := msg.Mutable(field).List()
-				for j := 0; j < count; j++ {
-					enumDescriptor := field.Enum()
-					n := enumDescriptor.Values().Len()
-					val := enumDescriptor.Values().Get(randStream.Intn(n))
-					listVal.Append(protoreflect.ValueOf(val.Number()))
-				}
-
-			case protoreflect.Int32Kind:
-				// TODO: handle []int32
-
-			case protoreflect.Uint32Kind:
-				// TODO: handle []uint32
-
-			case protoreflect.BytesKind:
-				listVal := msg.Mutable(field).List()
-				for j := 0; j < count; j++ {
-					b := randomBytes(randStream)
-					listVal.Append(protoreflect.ValueOf(b))
 				}
 
 			default:
@@ -131,49 +144,6 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 				for j := 0; j < count; j++ {
 					k := randomString(randStream)
 					v := randomString(randStream)
-					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOf(v))
-				}
-			case "string->enum":
-				mapVal := msg.Mutable(field).Map()
-				for j := 0; j < count; j++ {
-					k := randomString(randStream)
-					fieldDescriptor := field.MapValue().Enum()
-					n := fieldDescriptor.Values().Len()
-					v := fieldDescriptor.Values().Get(randStream.Intn(n))
-					// msg.Set(field.MapValue(), protoreflect.ValueOf(v.Number()))
-					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOf(v.Number()))
-				}
-			case "string->message":
-				if field.FullName() == "google.protobuf.Struct.fields" && field.MapValue().Message().FullName() == "google.protobuf.Value" {
-					// currently this is converted to "map[string]string" in "BigQueryDataTransferConfig"
-					mapVal := msg.Mutable(field).Map()
-					for j := 0; j < count; j++ {
-						k := randomString(randStream)
-						v := randomString(randStream)
-						el := mapVal.Mutable(protoreflect.ValueOf(k).MapKey()).Message()
-						el.Set(el.Descriptor().Fields().ByName("string_value"), protoreflect.ValueOfString(v))
-					}
-				} else {
-					mapVal := msg.Mutable(field).Map()
-					for j := 0; j < count; j++ {
-						k := randomString(randStream)
-						el := mapVal.Mutable(protoreflect.ValueOf(k).MapKey())
-						fillWithRandom0(t, randStream, el.Message())
-					}
-				}
-			case "int32->message":
-				mapVal := msg.Mutable(field).Map()
-				for j := 0; j < count; j++ {
-					k := randStream.Int31n(10000)
-					el := mapVal.Mutable(protoreflect.ValueOf(k).MapKey())
-					fillWithRandom0(t, randStream, el.Message())
-				}
-			case "string->int64":
-				mapVal := msg.Mutable(field).Map()
-				for j := 0; j < count; j++ {
-					k := randomString(randStream)
-					rand.Seed(time.Now().UnixNano())
-					v := rand.Int63()
 					mapVal.Set(protoreflect.ValueOf(k).MapKey(), protoreflect.ValueOf(v))
 				}
 
@@ -199,22 +169,13 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 
 		case protoreflect.DoubleKind:
 			msg.Set(field, protoreflect.ValueOfFloat64(randStream.NormFloat64()))
-		case protoreflect.FloatKind:
-			msg.Set(field, protoreflect.ValueOfFloat32(randStream.Float32()))
 		case protoreflect.Int32Kind:
 			msg.Set(field, protoreflect.ValueOfInt32(randStream.Int31()))
-		case protoreflect.Uint32Kind:
-			msg.Set(field, protoreflect.ValueOfUint32(randStream.Uint32()))
 		case protoreflect.Int64Kind:
 			msg.Set(field, protoreflect.ValueOfInt64(randStream.Int63()))
-		case protoreflect.Uint64Kind:
-			msg.Set(field, protoreflect.ValueOfUint64(randStream.Uint64()))
 		case protoreflect.StringKind:
 			s := randomString(randStream)
 			msg.Set(field, protoreflect.ValueOfString(s))
-		case protoreflect.BytesKind:
-			b := randomBytes(randStream)
-			msg.Set(field, protoreflect.ValueOfBytes(b))
 		case protoreflect.EnumKind:
 			fieldDescriptor := field.Enum()
 			n := fieldDescriptor.Values().Len()
@@ -229,12 +190,6 @@ func fillWithRandom0(t *testing.T, randStream *rand.Rand, msg protoreflect.Messa
 func randomString(randStream *rand.Rand) string {
 	// TODO: This is not a good random string!
 	return fmt.Sprintf("%x", randStream.Int63())
-}
-
-func randomBytes(randStream *rand.Rand) []byte {
-	// TODO: This is not a good random value!
-	s := randomString(randStream)
-	return []byte(s)
 }
 
 type ProtoVisitor interface {
@@ -308,7 +263,7 @@ func (v *ReplaceFields) VisitPrimitive(path string, val protoreflect.Value, sett
 
 var _ ProtoVisitor = &ClearFields{}
 
-func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.Value), visitor ProtoVisitor) {
+func visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.Value), visitor ProtoVisitor) {
 	visitor.VisitMessage(msgPath, msg, setter)
 	msg.Range(func(field protoreflect.FieldDescriptor, fieldVal protoreflect.Value) bool {
 		path := msgPath + "." + string(field.Name())
@@ -331,7 +286,7 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 					setter := func(v protoreflect.Value) {
 						listVal.Set(j, v)
 					}
-					Visit(path+"[]", el.Message(), setter, visitor)
+					visit(path+"[]", el.Message(), setter, visitor)
 				}
 			case protoreflect.StringKind:
 				for j := 0; j < count; j++ {
@@ -342,26 +297,8 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 					visitor.VisitPrimitive(path+"[]", el, setter)
 				}
 
-			case protoreflect.EnumKind:
-				for j := 0; j < count; j++ {
-					el := listVal.Get(j)
-					setter := func(v protoreflect.Value) {
-						listVal.Set(j, v)
-					}
-					visitor.VisitPrimitive(path+"[]", el, setter)
-				}
-
-			case protoreflect.BytesKind:
-				for j := 0; j < count; j++ {
-					el := listVal.Get(j)
-					setter := func(v protoreflect.Value) {
-						listVal.Set(j, v)
-					}
-					visitor.VisitPrimitive(path+"[]", el, setter)
-				}
-
 			default:
-				klog.Fatalf("unhandled field kind %v: %v", field.Kind(), field)
+				panic(fmt.Sprintf("unhandled field kind %v: %v", field.Kind(), field))
 			}
 			return true
 		}
@@ -390,78 +327,9 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 					visitor.VisitPrimitive(mapPath, val, setter)
 					return true
 				})
-			case "string->message":
-				mapVal := msg.Mutable(field).Map()
-				setter := func(v protoreflect.Value) {
-					if v.IsValid() {
-						msg.Set(field, v)
-					} else {
-						msg.Clear(field)
-					}
-				}
-				visitor.VisitMap(path, mapVal, setter)
-
-				// In case the value changes
-				mapVal = msg.Mutable(field).Map()
-				mapVal.Range(func(k protoreflect.MapKey, val protoreflect.Value) bool {
-					mapPath := path + "[" + k.String() + "]"
-					setter := func(v protoreflect.Value) {
-						mapVal.Set(k, v)
-					}
-
-					v := mapVal.Get(k)
-					Visit(mapPath, v.Message(), setter, visitor)
-
-					return true
-				})
-			case "string->enum":
-				mapVal := msg.Mutable(field).Map()
-				setter := func(v protoreflect.Value) {
-					if v.IsValid() {
-						msg.Set(field, v)
-					} else {
-						msg.Clear(field)
-					}
-				}
-				visitor.VisitMap(path, mapVal, setter)
-
-				// In case the value changes
-				mapVal = msg.Mutable(field).Map()
-				mapVal.Range(func(k protoreflect.MapKey, val protoreflect.Value) bool {
-					mapPath := path + "[" + k.String() + "]"
-					setter := func(v protoreflect.Value) {
-						mapVal.Set(k, v)
-					}
-					visitor.VisitPrimitive(mapPath, val, setter)
-					return true
-				})
-			case "int32->message":
-				mapVal := msg.Mutable(field).Map()
-				setter := func(v protoreflect.Value) {
-					if v.IsValid() {
-						msg.Set(field, v)
-					} else {
-						msg.Clear(field)
-					}
-				}
-				visitor.VisitMap(path, mapVal, setter)
-
-				// In case the value changes
-				mapVal = msg.Mutable(field).Map()
-				mapVal.Range(func(k protoreflect.MapKey, val protoreflect.Value) bool {
-					mapPath := path + "[" + k.String() + "]"
-					setter := func(v protoreflect.Value) {
-						mapVal.Set(k, v)
-					}
-
-					v := mapVal.Get(k)
-					Visit(mapPath, v.Message(), setter, visitor)
-
-					return true
-				})
 
 			default:
-				klog.Fatalf("unhandled map kind in visitor %q: %v", mapType, field)
+				panic(fmt.Sprintf("unhandled map kind %q: %v", mapType, field))
 			}
 			return true
 		}
@@ -475,17 +343,13 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 					msg.Clear(field)
 				}
 			}
-			Visit(path, fieldVal.Message(), setter, visitor)
+			visit(path, fieldVal.Message(), setter, visitor)
 
 		case protoreflect.BoolKind,
 			protoreflect.DoubleKind,
-			protoreflect.FloatKind,
 			protoreflect.Int32Kind,
-			protoreflect.Uint32Kind,
 			protoreflect.Int64Kind,
-			protoreflect.Uint64Kind,
 			protoreflect.StringKind,
-			protoreflect.BytesKind,
 			protoreflect.EnumKind:
 			setter := func(v protoreflect.Value) {
 				if v.IsValid() {
@@ -497,7 +361,7 @@ func Visit(msgPath string, msg protoreflect.Message, setter func(v protoreflect.
 			visitor.VisitPrimitive(path, fieldVal, setter)
 
 		default:
-			klog.Fatalf("unhandled field kind %v: %v", field.Kind(), field)
+			panic(fmt.Sprintf("unhandled field kind %v: %v", field.Kind(), field))
 		}
 
 		return true
