@@ -13,6 +13,7 @@ require (
 	cloud.google.com/go/apigateway v1.7.6
 	cloud.google.com/go/apikeys v1.1.12
 	cloud.google.com/go/apphub v0.2.4
+	cloud.google.com/go/artifactregistry v1.17.2
 	cloud.google.com/go/asset v1.21.1
 	cloud.google.com/go/backupdr v1.3.1
 	cloud.google.com/go/batch v1.12.2
@@ -135,7 +136,6 @@ require (
 require go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 
 require (
-	cloud.google.com/go/artifactregistry v1.17.2 // indirect
 	cloud.google.com/go/osconfig v1.14.6 // indirect
 	github.com/envoyproxy/go-control-plane/envoy v1.32.4 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
@@ -150,6 +150,7 @@ require (
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	github.com/zeebo/errs v1.4.0 // indirect
+	golang.org/x/tools/go/packages/packagestest v0.1.1-deprecated // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.12.0 // indirect
 	sigs.k8s.io/kubebuilder-declarative-pattern/ktest v0.0.0-20250514194322-871029137730 // indirect
 )

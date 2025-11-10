@@ -33,7 +33,7 @@ func ResolveArtifactRegistryRepositoryRefs(ctx context.Context, kube client.Read
 	if err := resolveVirtualRepositoryRefs(ctx, kube, obj); err != nil {
 		return err
 	}
-	
+
 	return nil
 }
 
@@ -44,7 +44,7 @@ func resolveVirtualRepositoryRefs(ctx context.Context, kube client.Reader, obj *
 
 	for i := range obj.Spec.VirtualRepositoryConfig.UpstreamPolicies {
 		upstreamPolicy := &obj.Spec.VirtualRepositoryConfig.UpstreamPolicies[i]
-		
+
 		if upstreamPolicy.RepositoryRef == nil {
 			continue
 		}
