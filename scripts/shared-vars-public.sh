@@ -123,6 +123,7 @@ basicalloydbsecondarycluster|\
 basicalloydbsecondaryinstance|\
 cidrconnector|\
 cloudidsendpoint|\
+composerenvironment-full|\
 configcontrollerinstance|\
 containercluster|\
 containernodepool|\

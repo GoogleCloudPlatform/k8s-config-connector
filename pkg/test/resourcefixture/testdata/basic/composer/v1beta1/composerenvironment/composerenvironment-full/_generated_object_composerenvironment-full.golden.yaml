@@ -1,0 +1,68 @@
+apiVersion: composer.cnrm.cloud.google.com/v1beta1
+kind: ComposerEnvironment
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: composerenvironment-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  config:
+    environmentSize: ENVIRONMENT_SIZE_SMALL
+    nodeConfig:
+      networkRef:
+        name: computenetwork-${uniqueId}
+      serviceAccountRef:
+        name: iamserviceaccount-${uniqueId}
+      subnetworkRef:
+        name: computesubnetwork-${uniqueId}
+    softwareConfig:
+      imageVersion: composer-2-airflow-2
+    workloadsConfig:
+      scheduler:
+        count: 1
+        cpu: "0.5"
+        memoryGB: "1.875"
+        storageGB: "1"
+      webServer:
+        cpu: "0.5"
+        memoryGB: "1.875"
+        storageGB: "1"
+      worker:
+        cpu: "0.5"
+        maxCount: 3
+        memoryGB: "1.875"
+        minCount: 1
+        storageGB: "1"
+  labels:
+    test: "true"
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  storageConfig:
+    bucketRef:
+      name: storagebucket-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    config:
+      airflowBYOIDURI: https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com
+      airflowURI: https://123456qwert-dot-us-central1.composer.googleusercontent.com
+      dagGCSPrefix: gs://us-central1-test-123456-asdfg-bucket/dags
+      gkeCluster: projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke
+      privateEnvironmentConfig:
+        privateClusterConfig: {}
+    createTime: "1970-01-01T00:00:00Z"
+    state: RUNNING
+    updateTime: "1970-01-01T00:00:00Z"
+    uuid: test-uuid
