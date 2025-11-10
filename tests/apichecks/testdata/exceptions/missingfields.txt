@@ -353,7 +353,6 @@
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.databaseConfig.machineType" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.databaseConfig.zone" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.encryptionConfig.kmsKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.environmentSize" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.maintenanceWindow.endTime" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.maintenanceWindow.recurrence" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.maintenanceWindow.startTime" is not set in unstructured objects
@@ -371,10 +370,7 @@
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.ipAllocationPolicy.useIPAliases" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.location" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.machineType" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.oauthScopes[]" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.serviceAccountRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.subnetworkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeConfig.tags[]" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.nodeCount" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.privateEnvironmentConfig.cloudComposerConnectionSubnetworkRef" is not set; neither 'external' nor 'name' are set
@@ -395,7 +391,6 @@
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.airflowConfigOverrides" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.cloudDataLineageIntegration.enabled" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.envVariables" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.imageVersion" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.pypiPackages" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.pythonVersion" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.schedulerCount" is not set in unstructured objects
@@ -407,22 +402,9 @@
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.dagProcessor.cpu" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.dagProcessor.memoryGB" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.dagProcessor.storageGB" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.scheduler.count" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.scheduler.cpu" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.scheduler.memoryGB" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.scheduler.storageGB" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.triggerer.count" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.triggerer.cpu" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.triggerer.memoryGB" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.webServer.cpu" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.webServer.memoryGB" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.webServer.storageGB" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.worker.cpu" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.worker.maxCount" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.worker.memoryGB" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.worker.minCount" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.workloadsConfig.worker.storageGB" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.storageConfig.bucketRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeaddresses.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.address" is not set in unstructured objects
 [missing_field] crd=computeaddresses.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.ipv6EndpointType" is not set in unstructured objects
 [missing_field] crd=computeaddresses.compute.cnrm.cloud.google.com version=v1beta1: field ".spec.networkTier" is not set in unstructured objects

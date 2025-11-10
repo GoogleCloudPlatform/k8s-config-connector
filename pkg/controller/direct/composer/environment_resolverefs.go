@@ -16,10 +16,11 @@ package composer
 
 import (
 	"context"
+	"strings"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"strings"
 )
 
 func ResolveComposerEnvironmentRefs(ctx context.Context, reader client.Reader, obj *krm.ComposerEnvironment) error {
