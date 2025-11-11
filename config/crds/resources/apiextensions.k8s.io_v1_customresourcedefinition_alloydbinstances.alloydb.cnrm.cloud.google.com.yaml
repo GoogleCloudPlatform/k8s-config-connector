@@ -108,12 +108,14 @@ spec:
                 description: Configuration for Managed Connection Pool (MCP).
                 properties:
                   enabled:
-                    description: Optional. Whether to enabled Managed Connection Pool (MCP).
+                    description: Optional. Whether to enable Managed Connection Pool
+                      (MCP).
                     type: boolean
                   flags:
                     additionalProperties:
                       type: string
-                    description: Optional. Connection Pool flags, as a list of "key":" "value" pairs.
+                    description: 'Optional. Connection Pool flags, as a list of "key":
+                      "value" pairs.'
                     type: object
                 type: object
               databaseFlags:
@@ -487,6 +489,20 @@ spec:
                     description: The `metadata.namespace` field of a `AlloyDBCluster`
                       resource.
                     type: string
+                type: object
+              connectionPoolConfig:
+                description: Configuration for Managed Connection Pool (MCP).
+                properties:
+                  enabled:
+                    description: Optional. Whether to enable Managed Connection Pool
+                      (MCP).
+                    type: boolean
+                  flags:
+                    additionalProperties:
+                      type: string
+                    description: 'Optional. Connection Pool flags, as a list of "key":
+                      "value" pairs.'
+                    type: object
                 type: object
               databaseFlags:
                 additionalProperties:

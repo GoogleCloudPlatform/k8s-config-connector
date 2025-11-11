@@ -600,6 +600,11 @@ func (in *AlloyDBInstanceSpec) DeepCopyInto(out *AlloyDBInstanceSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ConnectionPoolConfig != nil {
+		in, out := &in.ConnectionPoolConfig, &out.ConnectionPoolConfig
+		*out = new(Instance_ConnectionPoolConfig)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.DatabaseFlags != nil {
 		in, out := &in.DatabaseFlags, &out.DatabaseFlags
 		*out = make(map[string]string, len(*in))
