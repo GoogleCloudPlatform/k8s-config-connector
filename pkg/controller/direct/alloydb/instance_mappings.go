@@ -29,6 +29,7 @@ func AlloyDBInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *
 	out := &krm.AlloyDBInstanceSpec{}
 	out.Annotations = in.GetAnnotations()
 	out.AvailabilityType = direct.Enum_FromProto(mapCtx, in.GetAvailabilityType())
+	out.ConnectionPoolConfig = Instance_ConnectionPoolConfig_FromProto(mapCtx, in.GetConnectionPoolConfig())
 	out.DatabaseFlags = in.GetDatabaseFlags()
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.GCEZone = direct.LazyPtr(in.GetGceZone())
@@ -49,6 +50,7 @@ func AlloyDBInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBInsta
 	out := &pb.Instance{}
 	out.Annotations = in.Annotations
 	out.AvailabilityType = direct.Enum_ToProto[pb.Instance_AvailabilityType](mapCtx, in.AvailabilityType)
+	out.ConnectionPoolConfig = Instance_ConnectionPoolConfig_ToProto(mapCtx, in.ConnectionPoolConfig)
 	out.DatabaseFlags = in.DatabaseFlags
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.GceZone = direct.ValueOf(in.GCEZone)

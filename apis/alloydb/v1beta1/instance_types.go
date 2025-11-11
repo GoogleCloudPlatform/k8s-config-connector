@@ -45,6 +45,9 @@ type AlloyDBInstanceSpec struct {
 	// Possible values: ["AVAILABILITY_TYPE_UNSPECIFIED", "ZONAL", "REGIONAL"].
 	AvailabilityType *string `json:"availabilityType,omitempty"`
 
+	// Configuration for Managed Connection Pool (MCP).
+	ConnectionPoolConfig *Instance_ConnectionPoolConfig `json:"connectionPoolConfig,omitempty"`
+
 	// Database flags. Set at instance level. * They are copied
 	// from primary instance on read instance creation. * Read instances
 	// can set new or override existing flags that are relevant for reads,

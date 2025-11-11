@@ -104,6 +104,18 @@ spec:
                       resource.
                     type: string
                 type: object
+              connectionPoolConfig:
+                description: Configuration for Managed Connection Pool (MCP).
+                properties:
+                  enabled:
+                    description: Optional. Whether to enabled Managed Connection Pool (MCP).
+                    type: boolean
+                  flags:
+                    additionalProperties:
+                      type: string
+                    description: Optional. Connection Pool flags, as a list of "key":" "value" pairs.
+                    type: object
+                type: object
               databaseFlags:
                 additionalProperties:
                   type: string
