@@ -16,6 +16,7 @@
 // krm.group: tags.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.cloud.resourcemanager.v3
+// resource: TagsTagKey:TagKey
 // resource: TagsTagBinding:TagBinding
 
 package v1beta1
