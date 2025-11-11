@@ -590,22 +590,22 @@ func Instance_ClientConnectionConfig_ToProto(mapCtx *direct.MapContext, in *krmv
 	return out
 }
 func Instance_ConnectionPoolConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionPoolConfig) *krmv1beta1.Instance_ConnectionPoolConfig {
-        if in == nil {
-                return nil
-        }
-        out := &krmv1beta1.Instance_ConnectionPoolConfig{}
-        out.Enabled = direct.LazyPtr(in.GetEnabled())
-        out.Flags = in.Flags
-        return out
+	if in == nil {
+		return nil
+	}
+	out := &krmv1beta1.Instance_ConnectionPoolConfig{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.Flags = in.Flags
+	return out
 }
 func Instance_ConnectionPoolConfig_ToProto(mapCtx *direct.MapContext, in *krmv1beta1.Instance_ConnectionPoolConfig) *pb.Instance_ConnectionPoolConfig {
-        if in == nil {
-                return nil
-        }
-        out := &pb.Instance_ConnectionPoolConfig{}
-        out.Enabled = direct.ValueOf(in.Enabled)
-        out.Flags = in.Flags
-        return out
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_ConnectionPoolConfig{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.Flags = in.Flags
+	return out
 }
 func Instance_InstanceNetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceNetworkConfig) *krmv1beta1.Instance_InstanceNetworkConfig {
 	if in == nil {
