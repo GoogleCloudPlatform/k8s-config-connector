@@ -41,6 +41,7 @@ func instanceFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".read_pool_config")
 	f.SpecField(".annotations")
 	f.SpecField(".network_config")
+	f.SpecField(".connection_pool_config")
 
 	f.StatusField(".uid")
 	f.StatusField(".name")
