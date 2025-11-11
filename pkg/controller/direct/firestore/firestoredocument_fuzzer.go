@@ -56,6 +56,13 @@ func removeUnsupportedFieldValues(v *pb.Value) {
 	if v == nil {
 		return
 	}
+
+	// Normalize nil ValueType to NullValue
+	if v.ValueType == nil {
+		v.ValueType = &pb.Value_NullValue{NullValue: structpb.NullValue_NULL_VALUE}
+		return
+	}
+
 	switch value := v.ValueType.(type) {
 	case *pb.Value_MapValue:
 		for _, fv := range value.MapValue.Fields {
