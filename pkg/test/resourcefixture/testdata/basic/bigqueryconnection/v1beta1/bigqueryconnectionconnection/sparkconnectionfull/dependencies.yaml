@@ -29,3 +29,55 @@ spec:
   location: us-central1
   projectRef:
     external: ${projectId}
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: iampolicymember-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
+spec:
+  member: serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com
+  role: roles/dataproc.worker # required by default service account to access Dataproc data plane operations
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: projects/${projectId}
+---
+apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
+kind: DataprocCluster
+metadata:
+  name: dataproccluster-${uniqueId}
+  labels:
+    label-one: "value-one"
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: "us-central1"
+  config:
+    gceClusterConfig:
+      internalIPOnly: false
+    masterConfig:
+      diskConfig:
+        bootDiskType: pd-standard
+      machineType: "n2-standard-2"
+      numInstances: 1
+---
+apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
+kind: DataprocCluster
+metadata:
+  name: dataproccluster-${uniqueId}-2
+  labels:
+    label-one: "value-two"
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: "us-central1"
+  config:
+    gceClusterConfig:
+      internalIPOnly: false
+    masterConfig:
+      diskConfig:
+        bootDiskType: pd-standard
+      machineType: "n2-standard-2"
+      numInstances: 1

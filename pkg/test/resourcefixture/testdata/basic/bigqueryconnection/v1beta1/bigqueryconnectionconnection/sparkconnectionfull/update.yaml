@@ -25,3 +25,6 @@ spec:
       metastoreServiceRef:
         # It can take over 20 minutes to create a DataprocMetastoreService.
         name: metastoreservice-${uniqueId}-2
+    sparkHistoryServer:
+      dataprocClusterRef:
+        name: dataproccluster-${uniqueId}-2
