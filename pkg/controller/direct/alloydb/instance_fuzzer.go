@@ -43,6 +43,7 @@ func instanceFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".network_config")
 	f.SpecField(".observability_config")
 	f.SpecField(".query_insights_config")
+	f.SpecField(".connection_pool_config")
 
 	f.StatusField(".uid")
 	f.StatusField(".name")
