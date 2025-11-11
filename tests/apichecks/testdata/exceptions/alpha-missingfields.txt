@@ -1557,16 +1557,12 @@
 [missing_field] crd=firestorebackupschedules.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.databaseRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=firestorebackupschedules.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.retention" is not set in unstructured objects
 [missing_field] crd=firestorebackupschedules.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.weeklyRecurrence.day" is not set in unstructured objects
-[missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.collectionGroup" is not set in unstructured objects
 [missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.indexes[].apiScope" is not set in unstructured objects
 [missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.indexes[].density" is not set in unstructured objects
 [missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.indexes[].fields[].arrayConfig" is not set in unstructured objects
-[missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.indexes[].fields[].fieldPath" is not set in unstructured objects
-[missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.indexes[].fields[].order" is not set in unstructured objects
 [missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.indexes[].fields[].vectorConfig.dimension" is not set in unstructured objects
 [missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.indexes[].fields[].vectorConfig.flat" is not set in unstructured objects
 [missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.indexes[].multikey" is not set in unstructured objects
-[missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.indexes[].queryScope" is not set in unstructured objects
 [missing_field] crd=firestorefields.firestore.cnrm.cloud.google.com version=v1alpha1: field ".spec.indexConfig.indexes[].shardCount" is not set in unstructured objects
 [missing_field] crd=gkebackupbackupplans.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupConfig.encryptionKey.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=gkebackupbackupplans.gkebackup.cnrm.cloud.google.com version=v1alpha1: field ".spec.backupConfig.permissiveMode" is not set in unstructured objects
