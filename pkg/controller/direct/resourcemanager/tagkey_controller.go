@@ -33,12 +33,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 )
 
-func init() {
-	registry.RegisterModel(krm.TagsTagKeyGVK, newTagKeyModel)
-}
+// func init() {
+// 	registry.RegisterModel(krm.TagsTagKeyGVK, newTagKeyModel)
+// }
 
 func newTagKeyModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
 	return &tagKeyModel{config: config}, nil
