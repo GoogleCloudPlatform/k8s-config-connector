@@ -272,9 +272,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					return primaryResource, opt
 				}
 
-				// Start gradually, only running for apikeyskey fixtures initially
+				// Start gradually, only running for apikeyskey and tagstagkey fixtures initially
 				forceDirect := false
-				if strings.Contains(fixture.AbsoluteSourceDir, "/apikeyskey/") {
+				if strings.Contains(fixture.TestKey, "/apikeyskey/") {
+					forceDirect = true
+				} else if strings.Contains(fixture.TestKey, "/tagstagkey/") {
 					forceDirect = true
 				}
 
@@ -292,7 +294,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 
 				// Run with the fallback controller if we are forcing direct
 				if forceDirect {
-					t.Logf("also running scenario with fallback to old controller for fixture %q", fixture.AbsoluteSourceDir)
+					t.Logf("also running scenario with fallback to old controller for fixture %q", fixture.TestKey)
 					scenarioOptionsWithFallback := scenarioOptions
 					scenarioOptionsWithFallback.FallbackToOldController = true
 					scenarioOptionsWithFallback.ForceDirectController = false
