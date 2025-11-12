@@ -26,4 +26,6 @@
 
 ## Bug Fixes:
 
-*   TODO
+*   Fixed format validation issue in the DataflowFlexTemplateJob direct controller when the
+    `spec.subnetworkRef.external` field contains full URL. (#5268)
+*   Updated `status.observedGeneration` in ConfigConnector object. (#5507)
