@@ -266,9 +266,11 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					return primaryResource, opt
 				}
 
-				// Start gradually, only running for apikeyskey fixtures initially
+				// Start gradually, only running for apikeyskey and tagstagkey fixtures initially
 				forceDirect := false
 				if strings.Contains(fixture.SourceDir, "/apikeyskey/") {
+					forceDirect = true
+				} else if strings.Contains(fixture.SourceDir, "/tagstagkey/") {
 					forceDirect = true
 				}
 
