@@ -14,7 +14,7 @@
 
 ## New Fields:
 
-*   `OrgPolicyPolicy`: Added `spec.dryRunSpec`.
+*   `OrgPolicyPolicy`: Added `spec.dryRunSpec.rules[].parameters`.
 
 ## Reconciliation Improvements:
 
@@ -22,7 +22,7 @@
 
 ## New features:
 
-*   The export logic was updated to handle `status.name` in export URIs.
+*   Support export for RunJob and FirestoreDatabase.
 
 ## Bug Fixes:
 
