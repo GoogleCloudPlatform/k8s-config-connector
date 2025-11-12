@@ -18,8 +18,11 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 )
+
+var _ identity.Identity = &LogBucketIdentity{}
 
 // LogBucketIdentity defines the resource reference to LoggingLogBucketIdentity, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -38,10 +41,55 @@ func (i *LogBucketIdentity) ID() string {
 
 func (i *LogBucketIdentity) Parent() *parent.ProjectAndLocationParent { return i.parent }
 
-func ParseLogBucketExternal(external string) (*LogBucketIdentity, error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "buckets" {
-		return nil, fmt.Errorf("format of LoggingLink external=%q was not known (use projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}})", external)
+func (i *LogBucketIdentity) FromExternal(ref string) error {
+	tokens := strings.Split(ref, "/buckets/")
+	if len(tokens) != 2 {
+		return fmt.Errorf("format of LoggingLogBucket external=%q was not known (use projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}})", ref)
 	}
-	return &LogBucketIdentity{parent: &parent.ProjectAndLocationParent{ProjectID: tokens[1], Location: tokens[3]}, id: tokens[5]}, nil
+	i.parent = &parent.ProjectAndLocationParent{}
+	if err := i.parent.FromExternal(tokens[0]); err != nil {
+		return err
+	}
+	i.id = tokens[1]
+	if i.id == "" {
+		return fmt.Errorf("bucketID was empty in external=%q", ref)
+	}
+	return nil
 }
+
+// var _ identity.Resource = &LoggingLogBucket{}
+
+// func (obj *LoggingLogBucket) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+// 	bucket := &LogBucketIdentity{}
+// 	bucket.parent = &parent.ProjectAndLocationParent{}
+
+// 	// Resolve user-configured Parent
+// 	project, err := refs.ResolveProject(ctx, reader, obj, obj.Spec.ProjectRef)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	bucket.parent.ProjectID = project.ProjectID
+// 	bucket.parent.Location = obj.Spec.Location
+
+// 	// Get user-configured ID
+// 	bucket.id = common.ValueOf(obj.Spec.ResourceID)
+// 	if bucket.id == "" {
+// 		bucket.id = obj.GetName()
+// 	}
+// 	if bucket.id == "" {
+// 		return nil, fmt.Errorf("cannot resolve resource ID")
+// 	}
+
+// 	// Validate against the ID stored in status.externalRef, if any
+// 	externalRef := common.ValueOf(obj.Status.Name)
+// 	if externalRef != "" {
+// 		statusIdentity := &LogBucketIdentity{}
+// 		if err := statusIdentity.FromExternal(externalRef); err != nil {
+// 			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
+// 		}
+// 		if statusIdentity.String() != bucket.String() {
+// 			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, bucket.String())
+// 		}
+// 	}
+// 	return bucket, nil
+// }

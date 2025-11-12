@@ -77,7 +77,7 @@ func (m *modelLoggingLink) AdapterForObject(ctx context.Context, reader client.R
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	linkIdentity, err := krm.NewLinkIdentity(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -87,17 +87,11 @@ func (m *modelLoggingLink) AdapterForObject(ctx context.Context, reader client.R
 		return nil, err
 	}
 	return &LoggingLinkAdapter{
-		id:        linkIdentity,
+		id:        id.(*krm.LinkIdentity),
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
 }
-
-/*
-func () ResolveExternalRef(externalRef string) {
-
-}
-*/
 
 func (m *modelLoggingLink) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	// TODO: Support URLs
