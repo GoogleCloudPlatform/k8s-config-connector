@@ -22,6 +22,7 @@ package batch
 import (
 	pb "cloud.google.com/go/batch/apiv1/batchpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -84,34 +85,14 @@ func AllocationPolicy_Disk_FromProto(mapCtx *direct.MapContext, in *pb.Allocatio
 		return nil
 	}
 	out := &krm.AllocationPolicy_Disk{}
-	out.Image = direct.LazyPtr(in.GetImage())
+	if in.GetImage() != "" {
+		out.ImageRef = &krmcomputev1beta1.ComputeImageRef{External: in.GetImage()}
+	}
 	out.Snapshot = direct.LazyPtr(in.GetSnapshot())
 	out.Type = direct.LazyPtr(in.GetType())
 	out.SizeGB = direct.LazyPtr(in.GetSizeGb())
 	out.DiskInterface = direct.LazyPtr(in.GetDiskInterface())
 	return out
-}
-func AllocationPolicy_Disk_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_Disk) *pb.AllocationPolicy_Disk {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AllocationPolicy_Disk{}
-	if oneof := AllocationPolicy_Disk_Image_ToProto(mapCtx, in.Image); oneof != nil {
-		out.DataSource = oneof
-	}
-	if oneof := AllocationPolicy_Disk_Snapshot_ToProto(mapCtx, in.Snapshot); oneof != nil {
-		out.DataSource = oneof
-	}
-	out.Type = direct.ValueOf(in.Type)
-	out.SizeGb = direct.ValueOf(in.SizeGB)
-	out.DiskInterface = direct.ValueOf(in.DiskInterface)
-	return out
-}
-func AllocationPolicy_Disk_Image_ToProto(mapCtx *direct.MapContext, in *string) *pb.AllocationPolicy_Disk_Image {
-	if in == nil {
-		return nil
-	}
-	return &pb.AllocationPolicy_Disk_Image{Image: *in}
 }
 func AllocationPolicy_Disk_Snapshot_ToProto(mapCtx *direct.MapContext, in *string) *pb.AllocationPolicy_Disk_Snapshot {
 	if in == nil {
