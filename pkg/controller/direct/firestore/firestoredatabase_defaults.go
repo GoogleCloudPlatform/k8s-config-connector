@@ -18,7 +18,13 @@ import pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
 
 func ApplyFirestoreDatabaseDefaults(in *pb.Database) {
 	// Set default values to make sure firestore database is "declarative-friendly".
-	in.Type = pb.Database_FIRESTORE_NATIVE
-	in.AppEngineIntegrationMode = pb.Database_DISABLED
-	in.DeleteProtectionState = pb.Database_DELETE_PROTECTION_DISABLED
+	if in.Type == pb.Database_DATABASE_TYPE_UNSPECIFIED {
+		in.Type = pb.Database_FIRESTORE_NATIVE
+	}
+	if in.AppEngineIntegrationMode == pb.Database_APP_ENGINE_INTEGRATION_MODE_UNSPECIFIED {
+		in.AppEngineIntegrationMode = pb.Database_DISABLED
+	}
+	if in.DeleteProtectionState == pb.Database_DELETE_PROTECTION_STATE_UNSPECIFIED {
+		in.DeleteProtectionState = pb.Database_DELETE_PROTECTION_DISABLED
+	}
 }
