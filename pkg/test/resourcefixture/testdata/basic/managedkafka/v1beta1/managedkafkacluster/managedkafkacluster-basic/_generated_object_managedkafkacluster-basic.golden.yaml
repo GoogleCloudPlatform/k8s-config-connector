@@ -17,9 +17,9 @@ spec:
     accessConfig:
       networkConfigs:
       - subnetworkRef:
-          name: computesubnetwork-${uniqueId}-1
+          name: ${subnetworkID}
       - subnetworkRef:
-          name: computesubnetwork-${uniqueId}-2
+          name: ${subnetworkID}
   location: us-central1
   projectRef:
     external: ${projectId}

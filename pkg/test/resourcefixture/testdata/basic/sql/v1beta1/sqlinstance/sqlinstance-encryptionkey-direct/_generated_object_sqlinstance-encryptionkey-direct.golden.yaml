@@ -45,7 +45,7 @@ spec:
     ipConfiguration:
       ipv4Enabled: false
       privateNetworkRef:
-        external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+        external: projects/${projectId}/global/networks/${networkID}
       requireSsl: true
     locationPreference:
       zone: us-central1-b

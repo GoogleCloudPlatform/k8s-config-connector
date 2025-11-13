@@ -16,7 +16,7 @@ spec:
   - connections:
     - pscAutoConnection:
         networkRef:
-          external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+          external: projects/${projectId}/global/networks/${networkID}
         projectRef:
           external: ${projectId}
   engineConfigs:

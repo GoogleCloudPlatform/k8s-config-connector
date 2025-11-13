@@ -48,7 +48,7 @@ spec:
       enabled: true
   monitoringService: none
   networkRef:
-    name: computenetwork-${uniqueId}
+    name: ${networkID}
   nodeConfig:
     linuxNodeConfig:
       cgroupMode: CGROUP_MODE_UNSPECIFIED
@@ -61,7 +61,7 @@ spec:
         name: pubsubtopic-${uniqueId}
   resourceID: cluster-sample-${uniqueId}
   subnetworkRef:
-    name: computesubnetwork-${uniqueId}
+    name: ${subnetworkID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
