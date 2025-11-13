@@ -65,21 +65,6 @@ func (m *modelBackupPlan) AdapterForObject(ctx context.Context, reader client.Re
 		return nil, err
 	}
 
-	// resolve required reference fields
-	if obj.Spec.BackupVaultRef != nil {
-		if _, err := obj.Spec.BackupVaultRef.NormalizedExternal(ctx, reader, obj.GetNamespace()); err != nil {
-			return nil, err
-		}
-	}
-
-	mapCtx := &direct.MapContext{}
-	copied := obj.DeepCopy()
-	desired := BackupDRBackupPlanSpec_v1beta1_ToProto(mapCtx, &copied.Spec)
-	if mapCtx.Err() != nil {
-		return nil, mapCtx.Err()
-	}
-	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
-
 	// Get backupdr GCP client
 	gcpClient, err := newGCPClient(ctx, &m.config)
 	if err != nil {
@@ -92,7 +77,7 @@ func (m *modelBackupPlan) AdapterForObject(ctx context.Context, reader client.Re
 	return &BackupPlanAdapter{
 		id:        id,
 		gcpClient: backupDRClient,
-		desired:   desired,
+		desired:   obj,
 		reader:    reader,
 	}, nil
 }
@@ -105,7 +90,7 @@ func (m *modelBackupPlan) AdapterForURL(ctx context.Context, url string) (direct
 type BackupPlanAdapter struct {
 	id        *krm.BackupPlanIdentity
 	gcpClient *gcp.Client
-	desired   *pb.BackupPlan
+	desired   *krm.BackupDRBackupPlan
 	actual    *pb.BackupPlan
 	reader    client.Reader
 }
@@ -133,15 +118,28 @@ func (a *BackupPlanAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
+// Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *BackupPlanAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating BackupPlan", "name", a.id)
 
+	// Resolve references
+	if err := ResolveBackupDRBackupPlanRefs(ctx, a.reader, a.desired); err != nil {
+		return err
+	}
+
+	mapCtx := &direct.MapContext{}
+	copied := a.desired.DeepCopy()
+	resource := BackupDRBackupPlanSpec_v1beta1_ToProto(mapCtx, &copied.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	resource.Labels = label.NewGCPLabelsFromK8sLabels(a.desired.GetLabels())
+
 	req := &pb.CreateBackupPlanRequest{
 		Parent:       a.id.Parent().String(),
 		BackupPlanId: a.id.ID(),
-		BackupPlan:   a.desired,
+		BackupPlan:   resource,
 	}
 	op, err := a.gcpClient.CreateBackupPlan(ctx, req)
 	if err != nil {
@@ -153,7 +151,6 @@ func (a *BackupPlanAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	}
 	log.V(2).Info("successfully created BackupPlan", "name", a.id)
 
-	mapCtx := &direct.MapContext{}
 	status := &krm.BackupDRBackupPlanStatus{}
 	status.ObservedState = BackupDRBackupPlanObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
@@ -168,17 +165,32 @@ func (a *BackupPlanAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating BackupPlan", "name", a.id)
 
+	mapCtx := &direct.MapContext{}
+	// Resolve references
+	if err := ResolveBackupDRBackupPlanRefs(ctx, a.reader, a.desired); err != nil {
+		return err
+	}
+
+	desired := a.desired.DeepCopy()
+	resource := BackupDRBackupPlanSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
 	paths := []string{}
-	if !reflect.DeepEqual(a.desired.Description, a.actual.Description) {
+	if !reflect.DeepEqual(resource.Description, a.actual.Description) {
 		paths = append(paths, "description")
 	}
-	if !reflect.DeepEqual(a.desired.BackupRules, a.actual.BackupRules) {
+	if !reflect.DeepEqual(resource.BackupRules, a.actual.BackupRules) {
 		paths = append(paths, "backup_rules")
 	}
-	if !reflect.DeepEqual(a.desired.ResourceType, a.actual.ResourceType) {
+	if !reflect.DeepEqual(resource.ResourceType, a.actual.ResourceType) {
 		paths = append(paths, "resource_type")
 	}
-	if !reflect.DeepEqual(a.desired.Labels, a.actual.Labels) {
+	if !reflect.DeepEqual(resource.BackupVault, a.actual.BackupVault) {
+		paths = append(paths, "backup_vault")
+	}
+	if !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
 		paths = append(paths, "labels")
 	}
 
@@ -187,7 +199,6 @@ func (a *BackupPlanAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	}
 
 	// still need to update status (in the event of acquiring an existing resource)
-	mapCtx := &direct.MapContext{}
 	status := &krm.BackupDRBackupPlanStatus{}
 	status.ObservedState = BackupDRBackupPlanObservedState_v1beta1_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
@@ -232,11 +243,6 @@ func (a *BackupPlanAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 	req := &pb.DeleteBackupPlanRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteBackupPlan(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
-			// Return success if not found (assume it was already deleted).
-			log.V(2).Info("skipping delete for non-existent BackupPlan, assuming it was already deleted", "name", a.id)
-			return true, nil
-		}
 		return false, fmt.Errorf("deleting BackupPlan %s: %w", a.id, err)
 	}
 	log.V(2).Info("successfully deleted BackupPlan", "name", a.id)
