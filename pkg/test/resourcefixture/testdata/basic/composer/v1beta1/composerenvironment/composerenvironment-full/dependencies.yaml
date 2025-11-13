@@ -45,10 +45,35 @@ spec:
     - role: roles/composer.worker
       members:
         - member: serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com
+    - role: roles/cloudkms.cryptoKeyEncrypterDecrypter
+      members:
+        - member: serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com
+        - member: serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com
+        - member: serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com
+        - member: serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com
+        - member: serviceAccount:service-${projectNumber}@gs-project-accounts.iam.gserviceaccount.com
+        - member: serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com
   resourceRef:
     apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
     kind: Project
     external: ${projectId}
+---
+# KMS Keyring cannot be deleted. Using default keyring to avoid creating a new instance every time.
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyRing
+metadata:
+  name: default
+spec:
+  location: us-central1
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
+metadata:
+  name: kmscryptokey-${uniqueId}
+spec:
+  keyRingRef:
+    name: default
+  purpose: ENCRYPT_DECRYPT
 ---
 apiVersion: storage.cnrm.cloud.google.com/v1beta1
 kind: StorageBucket

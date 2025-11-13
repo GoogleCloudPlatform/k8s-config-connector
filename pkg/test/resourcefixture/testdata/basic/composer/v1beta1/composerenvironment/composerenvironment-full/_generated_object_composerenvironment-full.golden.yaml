@@ -11,6 +11,9 @@ metadata:
   namespace: ${uniqueId}
 spec:
   config:
+    encryptionConfig:
+      kmsKeyRef:
+        name: kmscryptokey-${uniqueId}
     environmentSize: ENVIRONMENT_SIZE_SMALL
     nodeConfig:
       networkRef:

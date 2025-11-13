@@ -47,6 +47,9 @@ spec:
         name: computesubnetwork-${uniqueId}
       serviceAccountRef:
         name: iamserviceaccount-${uniqueId}
+    encryptionConfig:
+      kmsKeyRef:
+        name: kmscryptokey-${uniqueId}
   storageConfig:
     bucketRef:
       name: storagebucket-${uniqueId}
