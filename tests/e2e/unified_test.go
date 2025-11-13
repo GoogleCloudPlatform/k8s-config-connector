@@ -376,7 +376,23 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					for _, obj := range exportResources {
 						// Check the final state of the object in the kube-apiserver (and compare against golden file)
-						var normalizer *objectWalker
+						var objectNormalizer *objectWalker
+
+						// Build a normalizer with the per-service replacements
+						// We should try to get all normalizers into this pattern, over time.
+						serviceReplacements := newObjectWalker()
+						{
+							services := h.RegisteredServices()
+
+							for _, entry := range h.Events.HTTPEvents {
+								services.ConfigureVisitor(entry.Request.URL, serviceReplacements)
+							}
+
+							for _, entry := range h.Events.HTTPEvents {
+								services.Previsit(entry, serviceReplacements)
+							}
+						}
+
 						{
 							u := &unstructured.Unstructured{}
 							u.SetGroupVersionKind(obj.GroupVersionKind())
@@ -385,8 +401,16 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								t.Fatalf("FAIL: failed to get KRM object: %v", err)
 							}
 
-							normalizer = buildKRMNormalizer(t, u, project, folderID, uniqueID)
-							if err := normalizer.VisitUnstructured(u); err != nil {
+							// Build "old" normalizer
+							objectNormalizer = buildKRMNormalizer(t, u, project, folderID, uniqueID)
+
+							// Apply service replacements and normalizer
+							if err := serviceReplacements.VisitUnstructured(u); err != nil {
+								t.Fatalf("FAIL: error from service replacements: %v", err)
+							}
+
+							// Apply "old" normalizer
+							if err := objectNormalizer.VisitUnstructured(u); err != nil {
 								t.Fatalf("FAIL: error from normalizer: %v", err)
 							}
 
@@ -406,8 +430,13 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								t.Fatalf("FAIL: error from yaml.Unmarshal: %v", err)
 							}
 
+							// Apply service replacements and normalizer
+							if err := serviceReplacements.VisitUnstructured(exportedObj); err != nil {
+								t.Fatalf("FAIL: error from service replacements: %v", err)
+							}
+
 							// Note: the normalizer for the object has more information, so we reuse that normalizer
-							if err := normalizer.VisitUnstructured(exportedObj); err != nil {
+							if err := objectNormalizer.VisitUnstructured(exportedObj); err != nil {
 								t.Fatalf("FAIL: error from normalizer: %v", err)
 							}
 
