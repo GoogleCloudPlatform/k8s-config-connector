@@ -24,7 +24,7 @@ spec:
   location: us-west2
   networkConfig:
     networkRef:
-      name: computenetwork-${uniqueId}
+      name: ${networkID}
   projectRef:
     external: ${projectId}
 status:

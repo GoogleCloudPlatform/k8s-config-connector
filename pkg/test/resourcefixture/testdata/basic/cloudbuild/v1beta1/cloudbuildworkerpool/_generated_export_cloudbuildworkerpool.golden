@@ -10,7 +10,7 @@ spec:
       egressOption: PUBLIC_EGRESS
       peeredNetworkIPRange: /29
       peeredNetworkRef:
-        external: projects/${projectNumber}/global/networks/computenetwork-${uniqueId}
+        external: projects/${projectNumber}/global/networks/${networkID}
     workerConfig:
       diskSizeGb: 150
       machineType: e2-highmem-4
