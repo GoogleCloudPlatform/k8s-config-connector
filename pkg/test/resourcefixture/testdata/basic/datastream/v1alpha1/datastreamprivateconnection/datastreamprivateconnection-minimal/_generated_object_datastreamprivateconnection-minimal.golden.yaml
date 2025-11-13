@@ -16,7 +16,7 @@ spec:
     external: ${projectId}
   vpcPeeringConfig:
     networkRef:
-      name: computenetwork-minimal-${uniqueId}
+      name: ${networkID}
     subnet: 10.0.0.0/29
 status:
   conditions:

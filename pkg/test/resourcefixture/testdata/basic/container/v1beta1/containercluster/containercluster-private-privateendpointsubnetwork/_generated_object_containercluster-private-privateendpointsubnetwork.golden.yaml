@@ -21,17 +21,17 @@ spec:
   masterAuthorizedNetworksConfig:
     gcpPublicCidrsAccessEnabled: false
   networkRef:
-    name: computenetwork-${uniqueId}
+    name: ${networkID}
   privateClusterConfig:
     enablePrivateEndpoint: true
     enablePrivateNodes: true
     masterGlobalAccessConfig:
       enabled: true
     privateEndpointSubnetworkRef:
-      name: computesubnetwork-${uniqueId}
+      name: ${subnetworkID}
   resourceID: containercluster-${uniqueId}
   subnetworkRef:
-    name: computesubnetwork-${uniqueId}
+    name: ${subnetworkID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

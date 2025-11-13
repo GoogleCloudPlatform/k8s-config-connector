@@ -15,7 +15,7 @@ metadata:
 spec:
   location: us-west2-a
   networkRef:
-    external: computenetwork-${uniqueId}
+    external: ${networkID}
   projectRef:
     external: ${projectId}
   resourceID: cloudidsendpoint-${uniqueId}
