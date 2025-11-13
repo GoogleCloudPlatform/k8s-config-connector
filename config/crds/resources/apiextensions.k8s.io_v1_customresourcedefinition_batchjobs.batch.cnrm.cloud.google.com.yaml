@@ -152,14 +152,7 @@ spec:
                                 deleted when the VM is deleted. Batch API now only
                                 supports booting from image.
                               properties:
-                                diskInterface:
-                                  description: Local SSDs are available through both
-                                    "SCSI" and "NVMe" interfaces. If not indicated,
-                                    "NVMe" will be the default one for local ssds.
-                                    This field is ignored for persistent disks as
-                                    the interface is chosen automatically. See https://cloud.google.com/compute/docs/disks/persistent-disks#choose_an_interface.
-                                  type: string
-                                image:
+                                dataSourceRef:
                                   description: |-
                                     URL for a VM image to use as the data source for this disk.
                                      For example, the following are all valid URLs:
@@ -168,13 +161,40 @@ spec:
                                      projects/{project}/global/images/family/{image_family}
                                      * Specify the image version:
                                      projects/{project}/global/images/{image_version}
-
-                                     You can also use Batch customized image in short names.
-                                     The following image values are supported for a boot disk:
-
-                                     * `batch-debian`: use Batch Debian images.
-                                     * `batch-cos`: use Batch Container-Optimized images.
-                                     * `batch-hpc-rocky`: use Batch HPC Rocky Linux images.
+                                  oneOf:
+                                  - not:
+                                      required:
+                                      - external
+                                    required:
+                                    - name
+                                  - not:
+                                      anyOf:
+                                      - required:
+                                        - name
+                                      - required:
+                                        - namespace
+                                    required:
+                                    - external
+                                  properties:
+                                    external:
+                                      description: A reference to an externally managed
+                                        ComputeImage resource. Should be in the format
+                                        "projects/{{project}}/global/images/{{name}}".
+                                      type: string
+                                    name:
+                                      description: The name of a ComputeImage resource.
+                                      type: string
+                                    namespace:
+                                      description: The namespace of a ComputeImage
+                                        resource.
+                                      type: string
+                                  type: object
+                                diskInterface:
+                                  description: Local SSDs are available through both
+                                    "SCSI" and "NVMe" interfaces. If not indicated,
+                                    "NVMe" will be the default one for local ssds.
+                                    This field is ignored for persistent disks as
+                                    the interface is chosen automatically. See https://cloud.google.com/compute/docs/disks/persistent-disks#choose_an_interface.
                                   type: string
                                 sizeGB:
                                   description: |-
@@ -236,15 +256,7 @@ spec:
                                     type: string
                                   newDisk:
                                     properties:
-                                      diskInterface:
-                                        description: Local SSDs are available through
-                                          both "SCSI" and "NVMe" interfaces. If not
-                                          indicated, "NVMe" will be the default one
-                                          for local ssds. This field is ignored for
-                                          persistent disks as the interface is chosen
-                                          automatically. See https://cloud.google.com/compute/docs/disks/persistent-disks#choose_an_interface.
-                                        type: string
-                                      image:
+                                      dataSourceRef:
                                         description: |-
                                           URL for a VM image to use as the data source for this disk.
                                            For example, the following are all valid URLs:
@@ -253,13 +265,42 @@ spec:
                                            projects/{project}/global/images/family/{image_family}
                                            * Specify the image version:
                                            projects/{project}/global/images/{image_version}
-
-                                           You can also use Batch customized image in short names.
-                                           The following image values are supported for a boot disk:
-
-                                           * `batch-debian`: use Batch Debian images.
-                                           * `batch-cos`: use Batch Container-Optimized images.
-                                           * `batch-hpc-rocky`: use Batch HPC Rocky Linux images.
+                                        oneOf:
+                                        - not:
+                                            required:
+                                            - external
+                                          required:
+                                          - name
+                                        - not:
+                                            anyOf:
+                                            - required:
+                                              - name
+                                            - required:
+                                              - namespace
+                                          required:
+                                          - external
+                                        properties:
+                                          external:
+                                            description: A reference to an externally
+                                              managed ComputeImage resource. Should
+                                              be in the format "projects/{{project}}/global/images/{{name}}".
+                                            type: string
+                                          name:
+                                            description: The name of a ComputeImage
+                                              resource.
+                                            type: string
+                                          namespace:
+                                            description: The namespace of a ComputeImage
+                                              resource.
+                                            type: string
+                                        type: object
+                                      diskInterface:
+                                        description: Local SSDs are available through
+                                          both "SCSI" and "NVMe" interfaces. If not
+                                          indicated, "NVMe" will be the default one
+                                          for local ssds. This field is ignored for
+                                          persistent disks as the interface is chosen
+                                          automatically. See https://cloud.google.com/compute/docs/disks/persistent-disks#choose_an_interface.
                                         type: string
                                       sizeGB:
                                         description: |-
@@ -482,7 +523,7 @@ spec:
                         format: int64
                         type: integer
                     type: object
-                  serviceAccount:
+                  serviceAccountRef:
                     description: |-
                       Defines the service account for Batch-created VMs. If omitted, the [default
                        Compute Engine service
