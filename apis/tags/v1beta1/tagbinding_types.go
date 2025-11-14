@@ -24,8 +24,9 @@ var TagsTagBindingGVK = GroupVersion.WithKind("TagsTagBinding")
 // TagsTagBindingSpec defines the desired state of TagsTagBinding
 // +kcc:spec:proto=google.cloud.resourcemanager.v3.TagBinding
 type TagsTagBindingSpec struct {
-	// +kcc:ref=Project
-	ParentRef *ParentRef `json:"parentRef"`
+	// The object to bind the tag to.
+	// +required
+	ParentRef *TagBindingParentRef `json:"parentRef"`
 
 	// +kcc:ref=TagsTagValue
 	TagValueRef *TagsTagValueRef `json:"tagValueRef"`
@@ -35,18 +36,24 @@ type TagsTagBindingSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 }
 
-// ParentRef is a reference to a parent resource.
-// +kcc:ref=Project
-type ParentRef struct {
-	// Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+// TagBindingParentRef is a reference to the object to bind the tag to.
+type TagBindingParentRef struct {
+	// Name of the object to bind the tag to. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
 	Name string `json:"name,omitempty"`
 
-	// Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+	// Namespace of the object to bind the tag to. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
 	Namespace string `json:"namespace,omitempty"`
 
-	// Allowed value: string of the format `//cloudresourcemanager.googleapis.com/projects/{{value}}`,
-	// where {{value}} is the `number` field of a `Project` resource.
+	// Reference to a GCP object not necessarily managed by Config Connector.
+	// Allowed values:
+	// * For projects: `//cloudresourcemanager.googleapis.com/projects/{{value}}`
 	External string `json:"external,omitempty"`
+
+	// Kind of the object to bind the tag to. Used only when Name and Namespace are specified.
+	// Allowed values:
+	// * For projects: `Project` (default)
+	// * For storage buckets: `StorageBucket`
+	Kind *string `json:"kind,omitempty"`
 }
 
 // TagsTagBindingStatus defines the config connector machine state of TagsTagBinding
