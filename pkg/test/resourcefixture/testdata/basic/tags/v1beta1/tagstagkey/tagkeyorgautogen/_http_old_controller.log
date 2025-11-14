@@ -1,35 +1,10 @@
-GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectNumber}",
-  "projectId": "${projectId}",
-  "state": 1
-}
-
----
-
-POST https://cloudresourcemanager.googleapis.com/v3/tagKeys?%24alt=json%3Benum-encoding%3Dint
+POST https://cloudresourcemanager.googleapis.com/v3/tagKeys?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "description": "For keyname resources.",
-  "parent": "projects/${projectNumber}",
+  "parent": "organizations/${organizationID}",
   "shortName": "keyname${uniqueId}"
 }
 
@@ -52,10 +27,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
+GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=operations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -79,8 +53,8 @@ X-Xss-Protection: 0
     "description": "For keyname resources.",
     "etag": "abcdef0123A=",
     "name": "tagKeys/${tagKeyID}",
-    "namespacedName": "${projectId}/keyname${uniqueId}",
-    "parent": "projects/${projectNumber}",
+    "namespacedName": "${organizationID}/keyname${uniqueId}",
+    "parent": "organizations/${organizationID}",
     "shortName": "keyname${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -88,10 +62,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?%24alt=json%3Benum-encoding%3Dint
+GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=tagKeys%2F${tagKeyID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -108,18 +81,17 @@ X-Xss-Protection: 0
   "description": "For keyname resources.",
   "etag": "abcdef0123A=",
   "name": "tagKeys/${tagKeyID}",
-  "namespacedName": "${projectId}/keyname${uniqueId}",
-  "parent": "projects/${projectNumber}",
+  "namespacedName": "${organizationID}/keyname${uniqueId}",
+  "parent": "organizations/${organizationID}",
   "shortName": "keyname${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=tagKeys%2F${tagKeyID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -140,10 +112,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
+GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=operations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -167,8 +138,8 @@ X-Xss-Protection: 0
     "description": "For keyname resources.",
     "etag": "abcdef0123A=",
     "name": "tagKeys/${tagKeyID}",
-    "namespacedName": "${projectId}/keyname${uniqueId}",
-    "parent": "projects/${projectNumber}",
+    "namespacedName": "${organizationID}/keyname${uniqueId}",
+    "parent": "organizations/${organizationID}",
     "shortName": "keyname${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }

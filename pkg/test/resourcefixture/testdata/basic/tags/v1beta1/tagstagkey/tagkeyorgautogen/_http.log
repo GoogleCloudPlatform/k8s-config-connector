@@ -1,4 +1,4 @@
-POST https://cloudresourcemanager.googleapis.com/v3/tagKeys?alt=json
+POST https://cloudresourcemanager.googleapis.com/v3/tagKeys?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -27,9 +27,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
+GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=operations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -62,9 +63,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
+GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=tagKeys%2F${tagKeyID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -89,9 +91,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
+DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=tagKeys%2F${tagKeyID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -112,9 +115,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
+GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=operations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
