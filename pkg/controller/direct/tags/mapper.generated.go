@@ -49,7 +49,7 @@ func TagsTagBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagBinding) 
 	}
 	out := &krm.TagsTagBindingSpec{}
 	if in.GetParent() != "" {
-		out.ParentRef = &krm.ParentRef{External: in.GetParent()}
+		out.ParentRef = &krm.TagsTagBindingParentRef{External: in.GetParent()}
 	}
 	if in.GetTagValue() != "" {
 		out.TagValueRef = &krm.TagsTagValueRef{External: in.GetTagValue()}

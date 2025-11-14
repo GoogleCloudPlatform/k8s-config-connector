@@ -28,6 +28,12 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+var ProjectGVK = schema.GroupVersionKind{
+	Group:   "resourcemanager.cnrm.cloud.google.com",
+	Version: "v1beta1",
+	Kind:    "Project",
+}
+
 // The Project that this resource belongs to.
 type ProjectRef struct {
 	/* The `projectID` field of a project, when not managed by Config Connector. */
@@ -104,7 +110,9 @@ func ResolveProject(ctx context.Context, reader client.Reader, otherNamespace st
 			return nil, fmt.Errorf("cannot specify both name and external on project reference")
 		}
 
-		tokens := strings.Split(ref.External, "/")
+		external := ref.External
+		external = strings.TrimPrefix(external, "//cloudresourcemanager.googleapis.com/")
+		tokens := strings.Split(external, "/")
 		if len(tokens) == 1 {
 			return &Project{ProjectID: tokens[0]}, nil
 		}
@@ -199,5 +207,14 @@ func (r *ProjectRef) Normalize(ctx context.Context, reader client.Reader, defaul
 	}
 
 	r.External = "projects/" + project.ProjectID
+	return nil
+}
+
+// ValidateExternal validates that the provided external reference is valid.
+func (r *ProjectRef) ValidateExternal(ref string) error {
+	id := &Project{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
 	return nil
 }
