@@ -1,7 +1,7 @@
-GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -66,7 +66,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
       }
     ]
   },
-  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectId}/dashboards/${dashboardID}"
 }
 
 200 OK
@@ -118,15 +118,15 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/${dashboardID}"
 }
 
 ---
 
-GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -177,15 +177,15 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/${dashboardID}"
 }
 
 ---
 
-PATCH https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+PATCH https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
 
 {
   "displayName": "Example with TopList",
@@ -226,7 +226,7 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2Fmon
       }
     ]
   },
-  "name": "projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectId}/dashboards/${dashboardID}"
 }
 
 200 OK
@@ -278,15 +278,15 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/${dashboardID}"
 }
 
 ---
 
-GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -337,15 +337,15 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "name": "projects/${projectNumber}/dashboards/monitoringdashboard-${uniqueId}"
+  "name": "projects/${projectNumber}/dashboards/${dashboardID}"
 }
 
 ---
 
-DELETE https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/monitoringdashboard-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2Fmonitoringdashboard-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
