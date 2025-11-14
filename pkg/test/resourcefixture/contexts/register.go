@@ -30,6 +30,7 @@ import (
 	"github.com/nasa9084/go-openapi"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -392,6 +393,10 @@ func getAdapter(ctx context.Context, u *unstructured.Unstructured, c client.Clie
 	if err != nil {
 		return nil, err
 	}
+	klog.Infof("getAdapter for GVK: %s", gvk)
+	fmt.Printf("getAdapter for GVK: %s", gvk)
+	k := log.FromContext(ctx)
+	k.Info("getAdapter for", "GVK", gvk)
 	return model.AdapterForObject(ctx, c, u)
 }
 

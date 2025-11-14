@@ -16,6 +16,16 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.DebugInfo",
+        "detail": "not found: resource not found"
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.ResourceInfo",
+        "resourceName": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}"
+      }
+    ],
     "message": "Resource 'projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
@@ -44,6 +54,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.workflows.v1.OperationMetadata",
     "apiVersion": "v1",
@@ -146,6 +157,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.workflows.v1.OperationMetadata",
     "apiVersion": "v1",
@@ -243,6 +255,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.workflows.v1.OperationMetadata",
     "apiVersion": "v1",

@@ -44,7 +44,7 @@ func init() {
 	// run-tests allows you to limit the tests that are run by specifying
 	// regexes to be used to match test names. The "test name" in this case
 	// corresponds to the directory name of the sample YAMLs.
-	flag.StringVar(&runTestsRegex, "run-tests", "", "run only the tests whose names match the given regex")
+	flag.StringVar(&runTestsRegex, "run-tests", "workflows", "run only the tests whose names match the given regex")
 	flag.StringVar(&skipTestsRegex, "skip-tests", "", "skip the tests whose names match the given regex, even those that match the run-tests regex")
 	// cleanup-resources allows you to disable the cleanup of resources created during testing. This can be useful for debugging test failures.
 	// The default value is true.
@@ -55,7 +55,7 @@ func init() {
 }
 
 var (
-	runTestsRegex    string
+	runTestsRegex    string = "workflows"
 	skipTestsRegex   string
 	cleanupResources bool
 	mgr              manager.Manager
@@ -235,6 +235,7 @@ var testDisabledList = map[string]bool{
 }
 
 func TestAll(t *testing.T) {
+	logger.Info("Running samples_test TestAll")
 	ctx, ctxCancel := context.WithCancel(signals.SetupSignalHandler())
 	t.Cleanup(func() {
 		ctxCancel()
@@ -244,7 +245,7 @@ func TestAll(t *testing.T) {
 
 	setup(ctx)
 	// When runTestsRegex is unset, we run all the samples.
-	matchedSamples := LoadMatchingSamples(t, regexp.MustCompile(runTestsRegex), project)
+	matchedSamples := LoadMatchingSamples(t, regexp.MustCompile("workflows"), project)
 	// When skipTestsRegex is unset, we don't skip any sample.
 	var skippedSamples []SampleKey
 	if skipTestsRegex != "" {

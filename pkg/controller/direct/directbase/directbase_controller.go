@@ -77,7 +77,7 @@ func NewReconciler(mgr manager.Manager, immediateReconcileRequests chan event.Ge
 	if deps.JitterGenerator == nil {
 		return nil, fmt.Errorf("jitter generator is not initialized")
 	}
-
+	fmt.Printf("Making reconciler for %v\n", gvk)
 	r := DirectReconciler{
 		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
 			mgr.GetClient(),

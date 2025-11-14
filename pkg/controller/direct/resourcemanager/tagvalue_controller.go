@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	// "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/logging"
 )
 
 func init() {
@@ -50,7 +51,10 @@ type tagValueModel struct {
 var _ directbase.Model = &tagValueModel{}
 
 type tagValueAdapter struct {
-	resourceID string
+	parent string
+	shortName string
+
+	resourceID string // TODO Should we grab this from status instead?
 
 	desired *krm.TagsTagValue
 	actual  *pb.TagValue
@@ -64,6 +68,8 @@ var _ directbase.Adapter = &tagValueAdapter{}
 
 // AdapterForObject implements the Model interface.
 func (m *tagValueModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+	fmt.Printf("TagValue AdapterForObject")
+	// log.Log.Info("TagValue AdapterForObject")
 	gcpClient, err := newGCPClient(ctx, m.config)
 	if err != nil {
 		return nil, err
@@ -80,13 +86,14 @@ func (m *tagValueModel) AdapterForObject(ctx context.Context, reader client.Read
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
-	// resourceID is server-generated, no fallback
-	// TODO: How do we do resource acquisition - maybe by shortname?
-	resourceID = strings.TrimPrefix(resourceID, "tagValues/")
+	// Before server gives resourceID, we can only identify using parent and shortName
+	// TODO is this necessary? We grab from obj.Spec on Create and never reference tagValueAdapter parent and shortname
+	shortName := direct.ValueOf(&obj.Spec.ShortName)
+	parent := direct.ValueOf(&obj.Spec.ParentRef.External)
 
 	return &tagValueAdapter{
-		resourceID:    resourceID,
+		parent:    parent,
+		shortName: shortName,
 		desired:       obj,
 		gcpClient:     gcpClient,
 		tagValuesClient: tagValuesClient,
@@ -152,6 +159,7 @@ func (a *tagValueAdapter) Create(ctx context.Context, createOp *directbase.Creat
 	u := createOp.GetUnstructured()
 
 	log := klog.FromContext(ctx)
+	log.Info("creating object", "u", u)
 	log.V(2).Info("creating object", "u", u)
 
 	// TODO: Is this the way to handle conversion of KCC ParentRef to pb Parent?
@@ -176,9 +184,10 @@ func (a *tagValueAdapter) Create(ctx context.Context, createOp *directbase.Creat
 		return fmt.Errorf("tagValue creation failed: %w", err)
 	}
 
-	log.V(2).Info("created tagkey", "tagkey", created)
+	log.V(2).Info("created tagvalue", "tagvalue", created)
 
 	resourceID := created.Name
+	a.resourceID = resourceID
 	if err := unstructured.SetNestedField(u.Object, resourceID, "spec", "resourceID"); err != nil {
 		return fmt.Errorf("setting spec.resourceID: %w", err)
 	}
@@ -192,6 +201,7 @@ func (a *tagValueAdapter) Create(ctx context.Context, createOp *directbase.Creat
 }
 
 func tagValueStatusToKRM(in *pb.TagValue, out *krm.TagsTagValueStatus) error {
+	out.Name = &in.Name
 	out.NamespacedName = &in.NamespacedName
 	// TODO: Should be metav1.Time (?)
 	out.CreateTime = timeToKRMString(in.GetCreateTime())
@@ -240,5 +250,6 @@ func (a *tagValueAdapter) Export(ctx context.Context) (*unstructured.Unstructure
 }
 
 func (a *tagValueAdapter) fullyQualifiedName() string {
-	return fmt.Sprintf("tagValues/%s", a.resourceID)
+	parentId := strings.Split(a.parent, "/")[1]
+	return fmt.Sprintf("%s/%s", parentId, a.shortName)
 }

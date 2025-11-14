@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 	"time"
+	"os"
 
 	api "cloud.google.com/go/resourcemanager/apiv3"
 	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
@@ -52,7 +53,10 @@ type tagKeyModel struct {
 var _ directbase.Model = &tagKeyModel{}
 
 type tagKeyAdapter struct {
-	resourceID string
+	parent string
+	shortName string
+
+	resourceID string // TODO Should we grab this from status instead?
 
 	desired *krm.TagsTagKey
 	actual  *pb.TagKey
@@ -66,6 +70,14 @@ var _ directbase.Adapter = &tagKeyAdapter{}
 
 // AdapterForObject implements the Model interface.
 func (m *tagKeyModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+	fmt.Printf("TagKey AdapterForObject")
+	t := time.Now()
+	fo, err := os.Create(fmt.Sprintf("tagkey_controller_loaded_%s.iml", t.Format(time.DateTime)))
+	defer func() {
+        if err := fo.Close(); err != nil {
+            panic(err)
+        }
+    }()
 	gcpClient, err := newGCPClient(ctx, m.config)
 	if err != nil {
 		return nil, err
@@ -82,13 +94,13 @@ func (m *tagKeyModel) AdapterForObject(ctx context.Context, reader client.Reader
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	resourceID := direct.ValueOf(obj.Spec.ResourceID)
-	// resourceID is server-generated, no fallback
-	// TODO: How do we do resource acquisition - maybe by shortname?
-	resourceID = strings.TrimPrefix(resourceID, "tagKeys/")
+	// Before server gives resourceId, we can only identify using parent and shortName
+	shortName := direct.ValueOf(&obj.Spec.ShortName)
+	parent := direct.ValueOf(&obj.Spec.Parent)
 
 	return &tagKeyAdapter{
-		resourceID:    resourceID,
+		parent:    parent,
+		shortName: shortName,
 		desired:       obj,
 		gcpClient:     gcpClient,
 		tagKeysClient: tagKeysClient,
@@ -154,6 +166,7 @@ func (a *tagKeyAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 	u := createOp.GetUnstructured()
 
 	log := klog.FromContext(ctx)
+	klog.Infof("creating object %s", u)
 	log.V(2).Info("creating object", "u", u)
 
 	// TODO: Should be ref
@@ -189,6 +202,7 @@ func (a *tagKeyAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 	log.V(2).Info("created tagkey", "tagkey", created)
 
 	resourceID := created.Name
+	a.resourceID = resourceID
 	if err := unstructured.SetNestedField(u.Object, resourceID, "spec", "resourceID"); err != nil {
 		return fmt.Errorf("setting spec.resourceID: %w", err)
 	}
@@ -202,6 +216,7 @@ func (a *tagKeyAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 }
 
 func tagKeyStatusToKRM(in *pb.TagKey, out *krm.TagsTagKeyStatus) error {
+	out.Name = &in.Name
 	out.NamespacedName = &in.NamespacedName
 	// TODO: Should be metav1.Time (?)
 	out.CreateTime = timeToKRMString(in.GetCreateTime())
@@ -258,7 +273,9 @@ func (a *tagKeyAdapter) Export(ctx context.Context) (*unstructured.Unstructured,
 }
 
 func (a *tagKeyAdapter) fullyQualifiedName() string {
-	return fmt.Sprintf("tagKeys/%s", a.resourceID)
+	// Remove the prefixed "organization/" or "project/"
+	parentId := strings.Split(a.parent, "/")[1]
+	return fmt.Sprintf("%s/%s", parentId, a.shortName)
 }
 
 func setStatus(u *unstructured.Unstructured, typedStatus any) error {
