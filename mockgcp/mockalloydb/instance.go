@@ -60,29 +60,89 @@ func setInstanceFields(name *instanceName, obj *pb.Instance) {
 	if obj.GeminiConfig == nil {
 		obj.GeminiConfig = &pb.GeminiInstanceConfig{}
 	}
-	if obj.ObservabilityConfig == nil {
-		obj.ObservabilityConfig = &pb.Instance_ObservabilityInstanceConfig{
-			Enabled:               PtrTo(false),
-			MaxQueryStringLength:  PtrTo(int32(10240)),
-			PreserveComments:      PtrTo(false),
-			QueryPlansPerMinute:   PtrTo(int32(20)),
-			RecordApplicationTags: PtrTo(false),
-			TrackActiveQueries:    PtrTo(false),
-			TrackClientAddress:    PtrTo(false),
-			TrackWaitEventTypes:   PtrTo(true),
-			TrackWaitEvents:       PtrTo(true),
+	obsEnabled := obj.ObservabilityConfig != nil &&
+		obj.ObservabilityConfig.Enabled != nil &&
+		*obj.ObservabilityConfig.Enabled
+	if !obsEnabled {
+		if obj.ObservabilityConfig == nil {
+			obj.ObservabilityConfig = &pb.Instance_ObservabilityInstanceConfig{}
 		}
-	}
-	if obj.QueryInsightsConfig == nil {
-		obj.QueryInsightsConfig = &pb.Instance_QueryInsightsInstanceConfig{
-			QueryPlansPerMinute:   PtrTo(uint32(5)),
-			QueryStringLength:     uint32(1024),
-			RecordApplicationTags: PtrTo(false),
-			RecordClientAddress:   PtrTo(false),
+
+		if obj.ObservabilityConfig.Enabled == nil {
+			obj.ObservabilityConfig.Enabled = PtrTo(false)
 		}
-		if obj.InstanceType == pb.Instance_SECONDARY {
-			obj.QueryInsightsConfig.RecordApplicationTags = PtrTo(true)
-			obj.QueryInsightsConfig.RecordClientAddress = PtrTo(true)
+		if obj.ObservabilityConfig.MaxQueryStringLength == nil {
+			obj.ObservabilityConfig.MaxQueryStringLength = PtrTo(int32(10240))
+		}
+		if obj.ObservabilityConfig.PreserveComments == nil {
+			obj.ObservabilityConfig.PreserveComments = PtrTo(false)
+		}
+		if obj.ObservabilityConfig.QueryPlansPerMinute == nil {
+			obj.ObservabilityConfig.QueryPlansPerMinute = PtrTo(int32(20))
+		}
+		if obj.ObservabilityConfig.RecordApplicationTags == nil {
+			obj.ObservabilityConfig.RecordApplicationTags = PtrTo(false)
+		}
+		if obj.ObservabilityConfig.TrackActiveQueries == nil {
+			obj.ObservabilityConfig.TrackActiveQueries = PtrTo(false)
+		}
+		if obj.ObservabilityConfig.TrackClientAddress == nil {
+			obj.ObservabilityConfig.TrackClientAddress = PtrTo(false)
+		}
+		if obj.ObservabilityConfig.TrackWaitEventTypes == nil {
+			obj.ObservabilityConfig.TrackWaitEventTypes = PtrTo(true)
+		}
+		if obj.ObservabilityConfig.TrackWaitEvents == nil {
+			obj.ObservabilityConfig.TrackWaitEvents = PtrTo(true)
+		}
+		if obj.ObservabilityConfig.AssistiveExperiencesEnabled == nil {
+			obj.ObservabilityConfig.AssistiveExperiencesEnabled = PtrTo(false)
+		}
+
+		if obj.QueryInsightsConfig == nil {
+			obj.QueryInsightsConfig = &pb.Instance_QueryInsightsInstanceConfig{
+				// Assuming 'Enabled' defaults to true or is handled by the backend when struct exists
+				// Enabled:               PtrTo(true),
+				QueryPlansPerMinute:   PtrTo(uint32(5)),
+				QueryStringLength:     uint32(1024),
+				RecordApplicationTags: PtrTo(false),
+				RecordClientAddress:   PtrTo(false),
+			}
+		}
+	} else {
+
+		// Set Observability Defaults (Enabled State)
+		if obj.ObservabilityConfig.MaxQueryStringLength == nil {
+			obj.ObservabilityConfig.MaxQueryStringLength = PtrTo(int32(10240))
+		}
+		if obj.ObservabilityConfig.PreserveComments == nil {
+			obj.ObservabilityConfig.PreserveComments = PtrTo(false)
+		}
+		// Note: QPM defaults to 5 when Obs is enabled!
+		if obj.ObservabilityConfig.QueryPlansPerMinute == nil {
+			obj.ObservabilityConfig.QueryPlansPerMinute = PtrTo(int32(5))
+		}
+		if obj.ObservabilityConfig.RecordApplicationTags == nil {
+			obj.ObservabilityConfig.RecordApplicationTags = PtrTo(false)
+		}
+		if obj.ObservabilityConfig.TrackActiveQueries == nil {
+			obj.ObservabilityConfig.TrackActiveQueries = PtrTo(false)
+		}
+		if obj.ObservabilityConfig.TrackClientAddress == nil {
+			obj.ObservabilityConfig.TrackClientAddress = PtrTo(false)
+		}
+		if obj.ObservabilityConfig.TrackWaitEventTypes == nil {
+			obj.ObservabilityConfig.TrackWaitEventTypes = PtrTo(true)
+		}
+		if obj.ObservabilityConfig.TrackWaitEvents == nil {
+			obj.ObservabilityConfig.TrackWaitEvents = PtrTo(true)
+		}
+		if obj.ObservabilityConfig.AssistiveExperiencesEnabled == nil {
+			obj.ObservabilityConfig.AssistiveExperiencesEnabled = PtrTo(false)
+		}
+
+		if obj.QueryInsightsConfig == nil {
+			obj.QueryInsightsConfig = &pb.Instance_QueryInsightsInstanceConfig{}
 		}
 	}
 	if obj.InstanceType != pb.Instance_READ_POOL &&
@@ -211,10 +271,17 @@ func (s *AlloyDBAdminV1) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 			obj.PscInstanceConfig = req.Instance.GetPscInstanceConfig()
 		case "networkConfig":
 			obj.NetworkConfig = req.Instance.GetNetworkConfig()
+		case "observabilityConfig":
+			obj.ObservabilityConfig = req.Instance.GetObservabilityConfig()
+		case "queryInsightsConfig":
+			obj.QueryInsightsConfig = req.Instance.GetQueryInsightsConfig()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}
 	}
+
+	// Re-apply defaults/output-only fields
+	setInstanceFields(name, obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
