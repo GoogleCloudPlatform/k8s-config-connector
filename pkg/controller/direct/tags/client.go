@@ -33,3 +33,15 @@ func newTagKeysClient(ctx context.Context, config *config.ControllerConfig) (*ap
 	}
 	return client, err
 }
+
+func newTagBindingsClient(ctx context.Context, config *config.ControllerConfig) (*api.TagBindingsClient, error) {
+	opts, err := config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := api.NewTagBindingsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building tags key client: %w", err)
+	}
+	return client, err
+}
