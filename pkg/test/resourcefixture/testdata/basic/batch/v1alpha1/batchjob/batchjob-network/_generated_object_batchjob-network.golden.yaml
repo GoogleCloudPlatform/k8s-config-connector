@@ -35,10 +35,10 @@ spec:
     network:
       networkInterfaces:
       - networkRef:
-          name: batchjob-dep-network-${uniqueId}
+          name: ${networkID}
         noExternalIPAddress: false
         subnetworkRef:
-          name: batchjob-dep-subnetwork-${uniqueId}
+          name: ${subnetworkID}
   location: us-central1
   logsPolicy:
     destination: CLOUD_LOGGING
