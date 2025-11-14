@@ -1,0 +1,76 @@
+apiVersion: batch.cnrm.cloud.google.com/v1alpha1
+kind: BatchJob
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: batchjob-network-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  allocationPolicy:
+    instances:
+    - policy:
+        accelerators:
+        - count: 1
+          installGpuDrivers: true
+          type: nvidia-tesla-k80
+        bootDisk:
+          imageRef:
+            external: projects/debian-cloud/global/images/family/debian-11
+          sizeGB: 100
+          type: pd-standard
+        disks:
+        - deviceName: disk1
+          newDisk:
+            sizeGB: 50
+            type: pd-ssd
+        machineType: e2-standard-2
+        provisioningModel: STANDARD
+    location:
+      allowedLocations:
+      - zones/us-central1-a
+    network:
+      networkInterfaces:
+      - networkRef:
+          name: batchjob-dep-network-${uniqueId}
+        noExternalIPAddress: false
+        subnetworkRef:
+          name: batchjob-dep-subnetwork-${uniqueId}
+  location: us-central1
+  logsPolicy:
+    destination: CLOUD_LOGGING
+  priority: 10
+  projectRef:
+    external: ${projectId}
+  taskGroups:
+  - taskCount: 1
+    taskSpec:
+      runnables:
+      - container:
+          commands:
+          - -c
+          - echo 'Hello, world!'
+          entrypoint: /bin/sh
+          imageURI: gcr.io/google-containers/busybox
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/jobs/batchjob-network-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    name: projects/${projectId}/locations/us-central1/jobs/batchjob-network-${uniqueId}
+    status:
+      runDuration: 0s
+      state: QUEUED
+    taskGroups:
+    - name: projects/${projectId}/locations/us-central1/jobs/batchjob-network-${uniqueId}/taskGroups/group0
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
