@@ -30,8 +30,9 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 
+	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/v3"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"github.com/golang/protobuf/ptypes/empty"
 )
@@ -125,8 +126,13 @@ func (s *NotificationChannelService) UpdateNotificationChannel(ctx context.Conte
 		return nil, err
 	}
 
-	updated := proto.Clone(existing).(*pb.NotificationChannel)
-	for _, path := range req.GetUpdateMask().GetPaths() {
+	updated := ProtoClone(existing)
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		ignoreFields := []string{"name"}
+		paths = fields.ComputeImpliedFieldMask(ctx, req.GetNotificationChannel(), ignoreFields...)
+	}
+	for _, path := range paths {
 		switch path {
 		case "description":
 			updated.DisplayName = req.GetNotificationChannel().GetDescription()
