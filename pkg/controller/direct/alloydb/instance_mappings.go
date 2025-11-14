@@ -36,6 +36,9 @@ func AlloyDBInstanceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *
 	out.MachineConfig = Instance_MachineConfig_FromProto(mapCtx, in.GetMachineConfig())
 	out.NetworkConfig = Instance_InstanceNetworkConfig_FromProto(mapCtx, in.GetNetworkConfig())
 	out.ReadPoolConfig = Instance_ReadPoolConfig_FromProto(mapCtx, in.GetReadPoolConfig())
+	out.QueryInsightsInstanceConfig = Instance_QueryInsightsInstanceConfig_FromProto(mapCtx, in.GetQueryInsightsConfig())
+	out.ObservabilityInstanceConfig = Instance_ObservabilityInstanceConfig_FromProto(mapCtx, in.GetObservabilityConfig())
+
 	return out
 }
 
@@ -53,6 +56,8 @@ func AlloyDBInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDBInsta
 	out.MachineConfig = Instance_MachineConfig_ToProto(mapCtx, in.MachineConfig)
 	out.NetworkConfig = Instance_InstanceNetworkConfig_ToProto(mapCtx, in.NetworkConfig)
 	out.ReadPoolConfig = Instance_ReadPoolConfig_ToProto(mapCtx, in.ReadPoolConfig)
+	out.QueryInsightsConfig = Instance_QueryInsightsInstanceConfig_ToProto(mapCtx, in.QueryInsightsInstanceConfig)
+	out.ObservabilityConfig = Instance_ObservabilityInstanceConfig_ToProto(mapCtx, in.ObservabilityInstanceConfig)
 	return out
 }
 

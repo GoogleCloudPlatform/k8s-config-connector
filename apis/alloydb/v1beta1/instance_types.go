@@ -94,6 +94,10 @@ type AlloyDBInstanceSpec struct {
 	// Read pool specific config. If the instance type is READ_POOL,
 	// this configuration must be provided.
 	ReadPoolConfig *Instance_ReadPoolConfig `json:"readPoolConfig,omitempty"`
+
+	QueryInsightsInstanceConfig *Instance_QueryInsightsInstanceConfig `json:"queryInsightsConfig,omitempty"`
+
+	ObservabilityInstanceConfig *Instance_ObservabilityInstanceConfig `json:"observabilityConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig
@@ -148,6 +152,12 @@ type AlloyDBInstanceStatus struct {
 	// networkConfig.enableOutboundPublicIp is set to true. These IP addresses are used
 	// for outbound connections.
 	OutboundPublicIPAddresses []string `json:"outboundPublicIpAddresses,omitempty"`
+
+	// Output only. Track wait event types during query execution for an
+	// instance. This flag is turned "on" by default but tracking is enabled
+	// only after observability enabled flag is also turned on. This is
+	// read-only flag and only modifiable by internal API.
+	TrackWaitEventTypes *bool `json:"trackWaitEventTypes,omitempty"`
 
 	// The public IP addresses for the Instance. This is available
 	// ONLY when networkConfig.enablePublicIp is set to true. This is the
