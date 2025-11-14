@@ -163,3 +163,91 @@ func TagsTagKeyStatus_ToProto(mapCtx *direct.MapContext, in *krm.TagsTagKeyStatu
 	// MISSING: PurposeData
 	return out
 }
+func TagsTagValueObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TagValue) *krm.TagsTagValueObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TagsTagValueObservedState{}
+	// MISSING: Name
+	// MISSING: NamespacedName
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	return out
+}
+func TagsTagValueObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TagsTagValueObservedState) *pb.TagValue {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TagValue{}
+	// MISSING: Name
+	// MISSING: NamespacedName
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	return out
+}
+func TagsTagValueSpec_FromProto(mapCtx *direct.MapContext, in *pb.TagValue) *krm.TagsTagValueSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TagsTagValueSpec{}
+	// MISSING: Name
+	if in.GetParent() != "" {
+		out.ParentRef = &krm.TagsTagKeyRef{External: in.GetParent()}
+	}
+	out.ShortName = direct.LazyPtr(in.GetShortName())
+	// MISSING: NamespacedName
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	return out
+}
+func TagsTagValueSpec_ToProto(mapCtx *direct.MapContext, in *krm.TagsTagValueSpec) *pb.TagValue {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TagValue{}
+	// MISSING: Name
+	if in.ParentRef != nil {
+		out.Parent = in.ParentRef.External
+	}
+	out.ShortName = direct.ValueOf(in.ShortName)
+	// MISSING: NamespacedName
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Etag
+	return out
+}
+func TagsTagValueStatus_FromProto(mapCtx *direct.MapContext, in *pb.TagValue) *krm.TagsTagValueStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TagsTagValueStatus{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: Parent
+	// MISSING: ShortName
+	out.NamespacedName = direct.LazyPtr(in.GetNamespacedName())
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Etag
+	return out
+}
+func TagsTagValueStatus_ToProto(mapCtx *direct.MapContext, in *krm.TagsTagValueStatus) *pb.TagValue {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TagValue{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: Parent
+	// MISSING: ShortName
+	out.NamespacedName = direct.ValueOf(in.NamespacedName)
+	// MISSING: Description
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Etag
+	return out
+}
