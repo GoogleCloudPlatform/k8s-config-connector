@@ -3355,7 +3355,6 @@
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.failoverTarget" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.masterHeartbeatPeriod" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.password.value" is not set in unstructured objects
-[missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.password.valueFrom.secretKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.sslCipher" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.username" is not set in unstructured objects
 [missing_field] crd=sqlinstances.sql.cnrm.cloud.google.com version=v1beta1: field ".spec.replicaConfiguration.verifyServerCertificate" is not set in unstructured objects
