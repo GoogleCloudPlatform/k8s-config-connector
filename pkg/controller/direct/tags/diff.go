@@ -15,11 +15,15 @@
 package tags
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	"k8s.io/klog/v2"
 )
 
 type FieldChange struct {
@@ -28,33 +32,60 @@ type FieldChange struct {
 	DesiredValue protoreflect.Value
 }
 
-func fieldHasChanged(fieldPath string, desired protoreflect.Message, actual protoreflect.Message) (*FieldChange, error) {
+func buildDiff(ctx context.Context, desired protoreflect.Message, actual protoreflect.Message) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	diff := &structuredreporting.Diff{}
+
+	var paths []string
+	fields := actual.Type().Descriptor().Fields()
+	for i := 0; i < fields.Len(); i++ {
+		path := string(fields.Get(i).Name())
+		fieldDiff := fieldHasChanged(ctx, path, desired, actual)
+		if fieldDiff == nil {
+			continue
+		}
+		diff.AddField(fieldDiff.FieldPath, fieldDiff.ActualValue, fieldDiff.DesiredValue)
+		paths = append(paths, fieldDiff.FieldPath)
+	}
+
+	return diff, &fieldmaskpb.FieldMask{Paths: paths}, nil
+}
+
+// fieldHasChanged compares the field at fieldPath in desired and actual messages.
+// It returns a FieldChange if the field has changed, or nil if it has not changed.
+// If there is an error retrieving the field, it returns the FieldChange with whatever
+// values could be retrieved; the error is logged.
+// If we can't prove that the field is unchanged, we assume it has changed.
+func fieldHasChanged(ctx context.Context, fieldPath string, desired protoreflect.Message, actual protoreflect.Message) *FieldChange {
+	log := klog.FromContext(ctx)
+
 	change := &FieldChange{FieldPath: fieldPath}
 
 	actualValue, foundActual, err := commonGetFieldByPath(actual, fieldPath)
 	if err != nil {
-		return change, err
+		log.Error(err, "error fetching previous field value", "field", fieldPath)
+		return change
 	}
 	change.ActualValue = actualValue
 
 	desiredValue, foundDesired, err := commonGetFieldByPath(desired, fieldPath)
 	if err != nil {
-		return change, err
+		log.Error(err, "error fetching desired field value", "field", fieldPath)
+		return change
 	}
 	change.DesiredValue = desiredValue
 
 	if foundActual != foundDesired {
-		return change, nil
+		return change
 	}
 	if !foundActual && !foundDesired {
 		// Both unset
-		return change, nil
+		return change
 	}
 	if actualValue.Equal(desiredValue) {
 		// Note: returning nil to indicate no change
-		return nil, nil
+		return nil
 	}
-	return change, nil
+	return change
 }
 
 func commonGetFieldByPath(msg protoreflect.Message, fieldPath string) (protoreflect.Value, bool, error) {
