@@ -15,17 +15,44 @@
 package tags
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	"k8s.io/klog/v2"
 )
 
 type FieldChange struct {
 	FieldPath    string
 	ActualValue  protoreflect.Value
 	DesiredValue protoreflect.Value
+}
+
+func buildDiff(ctx context.Context, desired protoreflect.Message, actual protoreflect.Message) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	log := klog.FromContext(ctx)
+
+	diff := &structuredreporting.Diff{}
+
+	var paths []string
+	fields := actual.Type().Descriptor().Fields()
+	for i := 0; i < fields.Len(); i++ {
+		path := string(fields.Get(i).Name())
+		fieldDiff, err := fieldHasChanged(path, desired, actual)
+		if err != nil {
+			log.Error(err, "error determining if field has changed", "field", path)
+			// If we can't determine if the field has changed, include it in the update.
+		} else if fieldDiff == nil {
+			continue
+		}
+		diff.AddField(fieldDiff.FieldPath, fieldDiff.ActualValue, fieldDiff.DesiredValue)
+		paths = append(paths, fieldDiff.FieldPath)
+	}
+
+	return diff, &fieldmaskpb.FieldMask{Paths: paths}, nil
 }
 
 func fieldHasChanged(fieldPath string, desired protoreflect.Message, actual protoreflect.Message) (*FieldChange, error) {

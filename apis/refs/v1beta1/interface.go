@@ -66,6 +66,13 @@ type Ref interface {
 // Normalize is a general-purpose reference resolver that can be used to
 // implement the "Normalize" interface method for most Ref types.
 func Normalize(ctx context.Context, reader client.Reader, ref Ref, defaultNamespace string) error {
+	return NormalizeWithFallback(ctx, reader, ref, defaultNamespace, nil)
+}
+
+// NormalizeWithFallback extends Normalize by allowing a fallback function to be provided
+// for obtaining the external reference if it is not found in status.externalRef,
+// this is useful for terraform/DCL resources that store the external reference in a different field.
+func NormalizeWithFallback(ctx context.Context, reader client.Reader, ref Ref, defaultNamespace string, fallback func(u *unstructured.Unstructured) string) error {
 	if ref.GetExternal() == "" {
 		key := ref.GetNamespacedName()
 		if key.Namespace == "" {
@@ -83,6 +90,9 @@ func Normalize(ctx context.Context, reader client.Reader, ref Ref, defaultNamesp
 		externalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
 		if err != nil {
 			return fmt.Errorf("reading status.externalRef: %w", err)
+		}
+		if externalRef == "" && fallback != nil {
+			externalRef = fallback(u)
 		}
 		if externalRef == "" {
 			return k8s.NewReferenceNotReadyError(u.GroupVersionKind(), key)
