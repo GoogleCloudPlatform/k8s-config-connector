@@ -14,104 +14,94 @@
 
 package v1beta1
 
-// import (
-// 	"context"
-// 	"fmt"
-// 	"strings"
-//
-// 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-// 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-// 	"sigs.k8s.io/controller-runtime/pkg/client"
-// )
-//
-// // NotificationChannelIdentity defines the resource reference to MonitoringNotificationChannel, which "External" field
-// // holds the GCP identifier for the KRM object.
-// type NotificationChannelIdentity struct {
-// 	parent *NotificationChannelParent
-// 	id     string
-// }
-//
-// func (i *NotificationChannelIdentity) String() string {
-// 	return i.parent.String() + "/notificationchannels/" + i.id
-// }
-//
-// func (i *NotificationChannelIdentity) ID() string {
-// 	return i.id
-// }
-//
-// func (i *NotificationChannelIdentity) Parent() *NotificationChannelParent {
-// 	return i.parent
-// }
-//
-// type NotificationChannelParent struct {
-// 	ProjectID string
-// 	Location  string
-// }
-//
-// func (p *NotificationChannelParent) String() string {
-// 	return "projects/" + p.ProjectID + "/locations/" + p.Location
-// }
-//
-// // New builds a NotificationChannelIdentity from the Config Connector NotificationChannel object.
-// func NewNotificationChannelIdentity(ctx context.Context, reader client.Reader, obj *MonitoringNotificationChannel) (*NotificationChannelIdentity, error) {
-//
-// 	// Get Parent
-// 	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	projectID := projectRef.ProjectID
-// 	if projectID == "" {
-// 		return nil, fmt.Errorf("cannot resolve project")
-// 	}
-// 	location := obj.Spec.Location
-//
-// 	// Get desired ID
-// 	resourceID := common.ValueOf(obj.Spec.ResourceID)
-// 	if resourceID == "" {
-// 		resourceID = obj.GetName()
-// 	}
-// 	if resourceID == "" {
-// 		return nil, fmt.Errorf("cannot resolve resource ID")
-// 	}
-//
-// 	// Use approved External
-// 	externalRef := common.ValueOf(obj.Status.ExternalRef)
-// 	if externalRef != "" {
-// 		// Validate desired with actual
-// 		actualParent, actualResourceID, err := ParseNotificationChannelExternal(externalRef)
-// 		if err != nil {
-// 			return nil, err
-// 		}
-// 		if actualParent.ProjectID != projectID {
-// 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualParent.ProjectID, projectID)
-// 		}
-// 		if actualParent.Location != location {
-// 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
-// 		}
-// 		if actualResourceID != resourceID {
-// 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-// 				resourceID, actualResourceID)
-// 		}
-// 	}
-// 	return &NotificationChannelIdentity{
-// 		parent: &NotificationChannelParent{
-// 			ProjectID: projectID,
-// 			Location:  location,
-// 		},
-// 		id: resourceID,
-// 	}, nil
-// }
-//
-// func ParseNotificationChannelExternal(external string) (parent *NotificationChannelParent, resourceID string, err error) {
-// 	tokens := strings.Split(external, "/")
-// 	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "notificationchannels" {
-// 		return nil, "", fmt.Errorf("format of MonitoringNotificationChannel external=%q was not known (use projects/{{projectID}}/locations/{{location}}/notificationchannels/{{notificationchannelID}})", external)
-// 	}
-// 	parent = &NotificationChannelParent{
-// 		ProjectID: tokens[1],
-// 		Location:  tokens[3],
-// 	}
-// 	resourceID = tokens[5]
-// 	return parent, resourceID, nil
-// }
+import (
+	"context"
+	"fmt"
+	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+const (
+	// MonitoringNotificationChannelIdentityURL is the format for the externalRef of a MonitoringNotificationChannel.
+	MonitoringNotificationChannelIdentityURL = "projects/{{project}}/notificationChannels/{{notificationChannel}}"
+
+	ServicePrefix = "//monitoring.googleapis.com/"
+)
+
+var _ identity.Identity = &MonitoringNotificationChannelIdentity{}
+
+// MonitoringNotificationChannelIdentity represents the identity of a MonitoringNotificationChannel.
+// +k8s:deepcopy-gen=false
+type MonitoringNotificationChannelIdentity struct {
+	Parent              *parent.ProjectParent
+	NotificationChannel string
+}
+
+func (i *MonitoringNotificationChannelIdentity) String() string {
+	return "notificationChannels/" + i.NotificationChannel
+}
+
+func (i *MonitoringNotificationChannelIdentity) FromExternal(ref string) error {
+	// Should be able to parse https://docs.cloud.google.com/asset-inventory/docs/asset-names
+	ref = strings.TrimPrefix(ref, ServicePrefix)
+
+	tokens := strings.Split(ref, "/")
+	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "notificationChannels" {
+		i.Parent = &parent.ProjectParent{}
+		if err := i.Parent.FromExternal(strings.Join(tokens[0:2], "/")); err != nil {
+			return fmt.Errorf("cannot parse project from external=%q: %w", ref, err)
+		}
+		i.NotificationChannel = tokens[3]
+		if i.NotificationChannel == "" {
+			return fmt.Errorf("notificationChannel was empty in external=%q", ref)
+		}
+		return nil
+	}
+
+	return fmt.Errorf("format of NotificationChannel external=%q was not known (use %s)", ref, MonitoringNotificationChannelIdentityURL)
+}
+
+var _ identity.Resource = &MonitoringNotificationChannel{}
+
+func (obj *MonitoringNotificationChannel) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	// Get desired resource ID
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+
+	// Server-generated ID; do not fallback to name
+	// if resourceID == "" {
+	// 	resourceID = obj.GetName()
+	// }
+
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	}
+
+	newIdentity := &MonitoringNotificationChannelIdentity{
+		Parent:              &parent.ProjectParent{ProjectID: projectID},
+		NotificationChannel: resourceID,
+	}
+
+	// Validate against the ID stored in status.name
+	externalRef := common.ValueOf(obj.Status.Name)
+	if externalRef != "" {
+		statusIdentity := &MonitoringNotificationChannelIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, fmt.Errorf("cannot parse existing status.name=%q: %w", externalRef, err)
+		}
+		if statusIdentity.String() != newIdentity.String() {
+			return nil, fmt.Errorf("existing status.name=%q does not match the identity resolved from spec: %q", externalRef, newIdentity.String())
+		}
+	}
+
+	return newIdentity, nil
+}
