@@ -372,7 +372,10 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					t.Fatalf("FAIL: failed to get test name")
 				}
 				if os.Getenv("GOLDEN_OBJECT_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+					// Pass both folderID and organizationID to the normalizers to correctly handle
+					// tests that run against either a folder or an organization.
 					folderID := h.FolderID()
+					organizationID := testgcp.TestOrgID.Get()
 
 					for _, obj := range exportResources {
 						// Check the final state of the object in the kube-apiserver (and compare against golden file)
@@ -385,7 +388,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								t.Fatalf("FAIL: failed to get KRM object: %v", err)
 							}
 
-							normalizer = buildKRMNormalizer(t, u, project, folderID, uniqueID)
+							normalizer = buildKRMNormalizer(t, u, project, folderID, organizationID, uniqueID)
 							if err := normalizer.VisitUnstructured(u); err != nil {
 								t.Fatalf("FAIL: error from normalizer: %v", err)
 							}
@@ -476,8 +479,9 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 				// Verify events against golden file or records events
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					events := test.LogEntries(h.Events.HTTPEvents)
+					organizationID := testgcp.TestOrgID.Get()
 
-					got, normalizers := LegacyNormalize(t, h, project, uniqueID, events)
+					got, normalizers := LegacyNormalize(t, h, project, uniqueID, organizationID, events)
 					if testPause {
 						assertNoRequest(t, got, normalizers...)
 					} else {
