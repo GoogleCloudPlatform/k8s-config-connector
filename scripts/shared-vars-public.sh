@@ -145,7 +145,8 @@ securesourcemanagerinstancebasic|\
 securesourcemanagerinstancecmek|\
 securesourcemanagerrepositorybasic|\
 securesourcemanagerrepositoryfull|\
-sqlinstanceencryptionkey|\
+sqlinstance-encryptionkey-direct|\
+sqlinstance-replica-direct|\
 storageanywherecache-base|\
 storageanywherecache-full|\
 subnetconnector|\

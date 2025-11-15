@@ -150,6 +150,7 @@ X-Xss-Protection: 0
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -158,10 +159,11 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "maintenanceVersion": "MYSQL_5_7_44.R20251004.01_07",
   "name": "sqlinstance-master-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-master-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -183,6 +185,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "binaryLogEnabled": true,
       "enabled": true,
       "kind": "sql#backupConfiguration",
@@ -199,6 +202,7 @@ X-Xss-Protection: 0
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -207,6 +211,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -289,6 +294,36 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
+    },
+    {
+      "displayName": "MySQL 8.0.39",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_39"
+    },
+    {
+      "displayName": "MySQL 8.0.40",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_40"
+    },
+    {
+      "displayName": "MySQL 8.0.41",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_41"
+    },
+    {
+      "displayName": "MySQL 8.0.42",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_42"
+    },
+    {
+      "displayName": "MySQL 8.0.43",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_43"
+    },
+    {
+      "displayName": "MySQL 8.0.44",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_44"
     }
   ]
 }
@@ -313,6 +348,7 @@ X-Xss-Protection: 0
     {
       "etag": "abcdef0123A=",
       "host": "",
+      "iamStatus": "IAM_STATUS_UNSPECIFIED",
       "instance": "sqlinstance-master-direct-${uniqueId}",
       "kind": "sql#user",
       "name": "root",
@@ -397,6 +433,13 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "masterInstanceName": "${projectId}:sqlinstance-master-direct-${uniqueId}",
   "name": "sqlinstance-replica-direct-${uniqueId}",
   "region": "us-central1",
+  "replicaConfiguration": {
+    "kind": "sql#replicaConfiguration",
+    "mysqlReplicaConfiguration": {
+      "kind": "sql#mysqlReplicaConfiguration",
+      "password": "1234!@#$asdf"
+    }
+  },
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
@@ -440,8 +483,8 @@ X-Xss-Protection: 0
   "operationType": "CREATE_REPLICA",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "status": "PENDING",
-  "targetId": "${projectId}:sqlinstance-master-direct-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/${projectId}:sqlinstance-master-direct-${uniqueId}",
+  "targetId": "sqlinstance-master-direct-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-master-direct-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -470,8 +513,8 @@ X-Xss-Protection: 0
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetId": "${projectId}:sqlinstance-master-direct-${uniqueId}",
-  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/${projectId}:sqlinstance-master-direct-${uniqueId}",
+  "targetId": "sqlinstance-master-direct-${uniqueId}",
+  "targetLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-master-direct-${uniqueId}",
   "targetProject": "${projectId}",
   "user": "user@example.com"
 }
@@ -505,6 +548,7 @@ X-Xss-Protection: 0
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "READ_REPLICA_INSTANCE",
   "ipAddresses": [
     {
@@ -513,11 +557,16 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "maintenanceVersion": "MYSQL_5_7_44.R20251004.01_07",
   "masterInstanceName": "${projectId}:sqlinstance-master-direct-${uniqueId}",
   "name": "sqlinstance-replica-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "replicaConfiguration": {
+    "failoverTarget": false,
+    "kind": "sql#replicaConfiguration"
+  },
+  "satisfiesPzi": false,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-replica-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -539,6 +588,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -546,14 +596,17 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": true,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
+    "databaseReplicationEnabled": true,
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -562,6 +615,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-b"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -644,6 +698,36 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
+    },
+    {
+      "displayName": "MySQL 8.0.39",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_39"
+    },
+    {
+      "displayName": "MySQL 8.0.40",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_40"
+    },
+    {
+      "displayName": "MySQL 8.0.41",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_41"
+    },
+    {
+      "displayName": "MySQL 8.0.42",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_42"
+    },
+    {
+      "displayName": "MySQL 8.0.43",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_43"
+    },
+    {
+      "displayName": "MySQL 8.0.44",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_44"
     }
   ]
 }
@@ -664,25 +748,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "items": [
-    {
-      "etag": "abcdef0123A=",
-      "host": "",
-      "instance": "sqlinstance-replica-direct-${uniqueId}",
-      "kind": "sql#user",
-      "name": "root",
-      "passwordPolicy": {
-        "status": {}
-      },
-      "project": "${projectId}"
-    }
-  ],
   "kind": "sql#usersList"
 }
 
 ---
 
-DELETE https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-replica-direct-${uniqueId}/users?alt=json&host=%25&name=root&prettyPrint=false
+GET https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -700,7 +771,7 @@ X-Xss-Protection: 0
   "insertTime": "2024-04-01T12:34:56.123456Z",
   "kind": "sql#operation",
   "name": "${operationID}",
-  "operationType": "DELETE_USER",
+  "operationType": "UPDATE",
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
@@ -739,6 +810,7 @@ X-Xss-Protection: 0
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "READ_REPLICA_INSTANCE",
   "ipAddresses": [
     {
@@ -747,11 +819,16 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "maintenanceVersion": "MYSQL_5_7_44.R20251004.01_07",
   "masterInstanceName": "${projectId}:sqlinstance-master-direct-${uniqueId}",
   "name": "sqlinstance-replica-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "replicaConfiguration": {
+    "failoverTarget": false,
+    "kind": "sql#replicaConfiguration"
+  },
+  "satisfiesPzi": false,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-replica-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -773,6 +850,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "enabled": false,
       "kind": "sql#backupConfiguration",
       "startTime": "12:00",
@@ -780,14 +858,17 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": true,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
+    "databaseReplicationEnabled": true,
     "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -796,6 +877,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-b"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -878,6 +960,36 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
+    },
+    {
+      "displayName": "MySQL 8.0.39",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_39"
+    },
+    {
+      "displayName": "MySQL 8.0.40",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_40"
+    },
+    {
+      "displayName": "MySQL 8.0.41",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_41"
+    },
+    {
+      "displayName": "MySQL 8.0.42",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_42"
+    },
+    {
+      "displayName": "MySQL 8.0.43",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_43"
+    },
+    {
+      "displayName": "MySQL 8.0.44",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_44"
     }
   ]
 }
@@ -969,6 +1081,7 @@ X-Xss-Protection: 0
     "flagRecommenderEnabled": false,
     "indexAdvisorEnabled": false
   },
+  "includeReplicasForMajorVersionUpgrade": false,
   "instanceType": "CLOUD_SQL_INSTANCE",
   "ipAddresses": [
     {
@@ -977,10 +1090,11 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "MYSQL_5_7_44.R20231105.01_03",
+  "maintenanceVersion": "MYSQL_5_7_44.R20251004.01_07",
   "name": "sqlinstance-master-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
+  "satisfiesPzi": true,
   "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-master-direct-${uniqueId}",
   "serverCaCert": {
     "cert": "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n",
@@ -1002,6 +1116,7 @@ X-Xss-Protection: 0
         "retainedBackups": 7,
         "retentionUnit": "COUNT"
       },
+      "backupTier": "STANDARD",
       "binaryLogEnabled": true,
       "enabled": true,
       "kind": "sql#backupConfiguration",
@@ -1018,6 +1133,7 @@ X-Xss-Protection: 0
       "authorizedNetworks": [],
       "ipv4Enabled": true,
       "requireSsl": false,
+      "serverCertificateRotationMode": "SERVER_CERTIFICATE_ROTATION_MODE_UNSPECIFIED",
       "sslMode": "ALLOW_UNENCRYPTED_AND_ENCRYPTED"
     },
     "kind": "sql#settings",
@@ -1026,6 +1142,7 @@ X-Xss-Protection: 0
       "zone": "us-central1-a"
     },
     "pricingPlan": "PER_USE",
+    "replicationLagMaxSeconds": 31536000,
     "replicationType": "SYNCHRONOUS",
     "settingsVersion": "123",
     "storageAutoResize": true,
@@ -1108,6 +1225,36 @@ X-Xss-Protection: 0
       "displayName": "MySQL 8.0.37",
       "majorVersion": "MYSQL_8_0",
       "name": "MYSQL_8_0_37"
+    },
+    {
+      "displayName": "MySQL 8.0.39",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_39"
+    },
+    {
+      "displayName": "MySQL 8.0.40",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_40"
+    },
+    {
+      "displayName": "MySQL 8.0.41",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_41"
+    },
+    {
+      "displayName": "MySQL 8.0.42",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_42"
+    },
+    {
+      "displayName": "MySQL 8.0.43",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_43"
+    },
+    {
+      "displayName": "MySQL 8.0.44",
+      "majorVersion": "MYSQL_8_0",
+      "name": "MYSQL_8_0_44"
     }
   ]
 }
