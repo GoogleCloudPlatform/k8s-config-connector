@@ -44,12 +44,17 @@ type FirestoreFieldSpec struct {
 	// +kcc:proto:field=google.firestore.admin.v1.Field.index_config
 	IndexConfig *Field_IndexConfig `json:"indexConfig,omitempty"`
 
-	// NOTYET: This type ends up with no fields?
-	// // The TTL configuration for this `Field`.
-	// //  Setting or unsetting this will enable or disable the TTL for
-	// //  documents that have this `Field`.
-	// // +kcc:proto:field=google.firestore.admin.v1.Field.ttl_config
-	// TTLConfig *Field_TTLConfig `json:"ttlConfig,omitempty"`
+	// The TTL configuration for this `Field`.
+	TTLConfig *Field_TTLConfig_Spec `json:"ttlConfig,omitempty"`
+}
+
+// The Spec version of the TTL configuration for this `Field`.
+// Note that this field is unusual - its presence indicates that TTL should be
+// enabled, and its absence indicates that TTL should be disabled.
+// We handle it specially.
+type Field_TTLConfig_Spec struct {
+	// Whether to enable TTL for documents based on this field.
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 // +kcc:proto=google.firestore.admin.v1.Field.IndexConfig
