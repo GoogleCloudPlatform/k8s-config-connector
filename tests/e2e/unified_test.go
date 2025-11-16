@@ -455,6 +455,39 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					}
 				}
 
+				if ShouldTestMetadataLabels(t, testName, primaryResource) {
+					h.Log("Testing metadata labels re-reconciliation...", "test name", testName, "primary GVK", primaryResource.GroupVersionKind().String())
+					eventsBefore := h.Events.HTTPEvents
+
+					oldGeneration := getGeneration(h, primaryResource)
+					touchMetadataLabels(h, primaryResource)
+					touchObject(h, primaryResource)
+					// Pause to allow re-reconciliation
+					// (labels don't change the generation, so we can't wait for observedGeneration)
+					time.Sleep(2 * time.Second)
+
+					eventsAfter := h.Events.HTTPEvents
+
+					h.Events.HTTPEvents = eventsBefore
+
+					for i := len(eventsBefore); i < len(eventsAfter); i++ {
+						event := eventsAfter[i]
+						isReadOnly := false
+						switch event.Request.Method {
+						case "GET":
+							isReadOnly = true
+						}
+						if !isReadOnly {
+							t.Errorf("FAIL: unexpected event during metadata labels re-reconciliation: %v", event)
+						}
+					}
+
+					newGeneration := getGeneration(h, primaryResource)
+					if oldGeneration != newGeneration {
+						t.Errorf("FAIL: metadata labels re-reconciliation caused generation to change (from %v to %v)", oldGeneration, newGeneration)
+					}
+				}
+
 				if testPause {
 					opt.SkipWaitForDelete = true
 				}
