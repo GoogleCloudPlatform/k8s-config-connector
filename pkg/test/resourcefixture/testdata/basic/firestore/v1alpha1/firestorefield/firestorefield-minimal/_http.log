@@ -406,7 +406,8 @@ X-Goog-Request-Params: field.name=projects%2F${projectId}%2Fdatabases%2Ffirestor
       }
     ]
   },
-  "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/my-collection/fields/field123"
+  "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/my-collection/fields/field123",
+  "ttlConfig": {}
 }
 
 200 OK

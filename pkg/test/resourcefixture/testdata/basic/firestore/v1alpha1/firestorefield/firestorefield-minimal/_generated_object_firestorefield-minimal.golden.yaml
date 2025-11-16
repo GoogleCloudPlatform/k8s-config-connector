@@ -20,6 +20,8 @@ spec:
         order: DESCENDING
       queryScope: COLLECTION
   resourceID: field123
+  ttlConfig:
+    enabled: true
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
