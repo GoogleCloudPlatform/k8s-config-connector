@@ -26,6 +26,10 @@ package v1alpha1
 type DailyRecurrence struct {
 }
 
+// +kcc:proto=google.firestore.admin.v1.Field.TtlConfig
+type Field_TTLConfig struct {
+}
+
 // +kcc:proto=google.firestore.admin.v1.Index.IndexField
 type Index_IndexField struct {
 	// Can be __name__.
