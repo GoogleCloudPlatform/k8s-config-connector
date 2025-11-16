@@ -16,6 +16,8 @@ spec:
   indexConfig:
     indexes: []
   resourceID: field123
+  ttlConfig:
+    enabled: false
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
