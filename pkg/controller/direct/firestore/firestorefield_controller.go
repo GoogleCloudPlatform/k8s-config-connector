@@ -17,6 +17,7 @@ package firestore
 import (
 	"context"
 	"fmt"
+	"slices"
 	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1alpha1"
@@ -185,6 +186,7 @@ func (a *firestoreFieldAdapter) Update(ctx context.Context, updateOp *directbase
 	if err != nil {
 		return fmt.Errorf("getting changed fields for FirestoreField %q: %w", fqn, err)
 	}
+
 	req.UpdateMask = updateMask
 
 	latest := a.desired
@@ -338,6 +340,15 @@ func (a *firestoreFieldAdapter) changedFields(ctx context.Context) (*fieldmaskpb
 		}
 		paths = append(paths, path)
 	}
+
+	// Special case: the presence of ttl_config is used to enable ttl; our normal comparison treats nil and empty as the same.
+	if !slices.Contains(paths, "ttl_config") {
+		ttlConfigField := actualMasked.Descriptor().Fields().ByName("ttl_config")
+		if actualMasked.Has(ttlConfigField) != a.desired.ProtoReflect().Has(ttlConfigField) {
+			paths = append(paths, "ttl_config")
+		}
+	}
+
 	return &fieldmaskpb.FieldMask{Paths: paths}, nil
 }
 
