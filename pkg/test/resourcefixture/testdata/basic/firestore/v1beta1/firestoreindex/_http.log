@@ -361,7 +361,7 @@ X-Xss-Protection: 0
     "deleteTime": "2024-04-01T12:34:56.123456Z",
     "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
-    "freeTier": false,
+    "freeTier": true,
     "locationId": "us-west2",
     "name": "projects/${projectId}/databases/${randomDatabaseID}",
     "pointInTimeRecoveryEnablement": 2,
