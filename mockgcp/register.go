@@ -49,6 +49,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockrun"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockservicedirectory"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockserviceusage"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksourcerepo"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksql"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockstorage"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocktpu"
