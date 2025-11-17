@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// proto.service: google.cloud.tasks.v2
+// proto.service: google.cloud.tasks.v2.CloudTasks
 // proto.message: google.cloud.tasks.v2.Queue
 
 package mockcloudtasks
