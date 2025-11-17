@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,24 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package direct
+package tags
 
 import (
-	"context"
 	"fmt"
 	"strings"
 
 	"google.golang.org/protobuf/encoding/prototext"
-	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"k8s.io/klog/v2"
 )
 
-// ProtoClone is a type-safe wrapper around proto.Clone
-func ProtoClone[T proto.Message](t T) T {
-	return proto.Clone(t).(T)
-}
-
-func FieldHasChanged(ctx context.Context, fieldPath string, desired protoreflect.Message, actual protoreflect.Message) (bool, error) {
+func fieldHasChanged(fieldPath string, desired protoreflect.Message, actual protoreflect.Message) (bool, error) {
 	actualField, foundActual, err := commonGetFieldByPath(actual, fieldPath)
 	if err != nil {
 		return true, err
@@ -39,7 +33,7 @@ func FieldHasChanged(ctx context.Context, fieldPath string, desired protoreflect
 		return true, err
 	}
 	if foundActual != foundDesired {
-		// log.Info("Field changed %q: foundActual=%v foundDesired=%v", fieldPath, foundActual, foundDesired)
+		klog.Infof("Field changed %q: foundActual=%v foundDesired=%v", fieldPath, foundActual, foundDesired)
 		return true, nil
 	}
 	if !foundActual && !foundDesired {
@@ -49,7 +43,7 @@ func FieldHasChanged(ctx context.Context, fieldPath string, desired protoreflect
 	if actualField.Equal(desiredField) {
 		return false, nil
 	}
-	// klog.Infof("Field changed %q: actual=%v desired=%v", fieldPath, format(actualField), format(desiredField))
+	klog.Infof("Field changed %q: actual=%v desired=%v", fieldPath, format(actualField), format(desiredField))
 	return true, nil
 }
 

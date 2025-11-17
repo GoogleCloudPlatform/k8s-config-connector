@@ -25,7 +25,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -329,7 +328,7 @@ func (a *firestoreFieldAdapter) changedFields(ctx context.Context) (*fieldmaskpb
 
 	var paths []string
 	for _, path := range a.allFields().Paths {
-		changed, err := fieldHasChanged(path, a.desired.ProtoReflect(), actualMasked)
+		changed, err := direct.FieldHasChanged(ctx, path, a.desired.ProtoReflect(), actualMasked)
 		if err != nil {
 			log.Error(err, "error determining if field has changed", "field", path)
 			// If we can't determine if the field has changed, include it in the update.
@@ -339,58 +338,4 @@ func (a *firestoreFieldAdapter) changedFields(ctx context.Context) (*fieldmaskpb
 		paths = append(paths, path)
 	}
 	return &fieldmaskpb.FieldMask{Paths: paths}, nil
-}
-
-func fieldHasChanged(fieldPath string, desired protoreflect.Message, actual protoreflect.Message) (bool, error) {
-	actualField, foundActual, err := commonGetFieldByPath(actual, fieldPath)
-	if err != nil {
-		return true, err
-	}
-	desiredField, foundDesired, err := commonGetFieldByPath(desired, fieldPath)
-	if err != nil {
-		return true, err
-	}
-	if foundActual != foundDesired {
-		klog.Infof("Field changed %q: foundActual=%v foundDesired=%v", fieldPath, foundActual, foundDesired)
-		return true, nil
-	}
-	if !foundActual && !foundDesired {
-		// Both unset
-		return false, nil
-	}
-	if actualField.Equal(desiredField) {
-		return false, nil
-	}
-	klog.Infof("Field changed %q: actual=%v desired=%v", fieldPath, format(actualField), format(desiredField))
-	return true, nil
-}
-
-func commonGetFieldByPath(msg protoreflect.Message, fieldPath string) (protoreflect.Value, bool, error) {
-	if msg == nil {
-		return protoreflect.Value{}, false, nil
-	}
-	tokens := strings.SplitN(fieldPath, ".", 2)
-	fieldName := protoreflect.Name(tokens[0])
-	field := msg.Descriptor().Fields().ByName(fieldName)
-	if field == nil {
-		return protoreflect.Value{}, false, fmt.Errorf("field %q not found in %T", fieldName, msg)
-	}
-	v := msg.Get(field)
-	if len(tokens) == 1 {
-		return v, true, nil
-	}
-	switch field.Kind() {
-	case protoreflect.MessageKind:
-		return commonGetFieldByPath(v.Message(), tokens[1])
-	default:
-		return protoreflect.Value{}, false, fmt.Errorf("field %q in %T is not a message", fieldName, msg)
-	}
-}
-
-func format(v protoreflect.Value) string {
-	o := v.Interface()
-	if msg, ok := o.(protoreflect.Message); ok {
-		return prototext.Format(msg.Interface())
-	}
-	return fmt.Sprintf("[%T]:%v", o, o)
 }

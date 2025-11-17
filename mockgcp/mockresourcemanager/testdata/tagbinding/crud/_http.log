@@ -50,11 +50,11 @@ X-Xss-Protection: 0
   },
   "name": "operations/${operationID}",
   "response": {
-    "${tagValueID}Name": "${projectId}/test-${uniqueId}",
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagKey",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "name": "tagKeys/${tagKeyID}",
+    "namespacedName": "${projectId}/test-${uniqueId}",
     "parent": "projects/${projectNumber}",
     "shortName": "test-${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -79,10 +79,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "${tagValueID}Name": "${projectId}/test-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "tagKeys/${tagKeyID}",
+  "namespacedName": "${projectId}/test-${uniqueId}",
   "parent": "projects/${projectNumber}",
   "shortName": "test-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -90,7 +90,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagValueID}?alt=json&name=${projectId}%2Ftest-${uniqueId}
+GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/namespaced?alt=json&name=${projectId}%2Ftest-${uniqueId}
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -106,10 +106,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "${tagValueID}Name": "${projectId}/test-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "tagKeys/${tagKeyID}",
+  "namespacedName": "${projectId}/test-${uniqueId}",
   "parent": "projects/${projectNumber}",
   "shortName": "test-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -169,11 +169,11 @@ X-Xss-Protection: 0
   },
   "name": "operations/${operationID}",
   "response": {
-    "${tagValueID}Name": "${projectId}/test-${uniqueId}/value1",
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagValue",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "name": "tagValues/${tagValueID}",
+    "namespacedName": "${projectId}/test-${uniqueId}/value1",
     "parent": "tagKeys/${tagKeyID}",
     "shortName": "value1",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -198,10 +198,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "${tagValueID}Name": "${projectId}/test-${uniqueId}/value1",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "tagValues/${tagValueID}",
+  "namespacedName": "${projectId}/test-${uniqueId}/value1",
   "parent": "tagKeys/${tagKeyID}",
   "shortName": "value1",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -270,7 +270,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json&name=${projectId}%2Ftest-${uniqueId}%2Fvalue1
+GET https://cloudresourcemanager.googleapis.com/v3/tagValues/namespaced?alt=json&name=${projectId}%2Ftest-${uniqueId}%2Fvalue1
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -286,10 +286,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "${tagValueID}Name": "${projectId}/test-${uniqueId}/value1",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "tagValues/${tagValueID}",
+  "namespacedName": "${projectId}/test-${uniqueId}/value1",
   "parent": "tagKeys/${tagKeyID}",
   "shortName": "value1",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -321,7 +321,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json&name=${projectId}%2Ftest-${uniqueId}%2Fvalue1
+GET https://cloudresourcemanager.googleapis.com/v3/tagValues/namespaced?alt=json&name=${projectId}%2Ftest-${uniqueId}%2Fvalue1
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -337,10 +337,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "${tagValueID}Name": "${projectId}/test-${uniqueId}/value1",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "tagValues/${tagValueID}",
+  "namespacedName": "${projectId}/test-${uniqueId}/value1",
   "parent": "tagKeys/${tagKeyID}",
   "shortName": "value1",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -394,11 +394,11 @@ X-Xss-Protection: 0
   },
   "name": "operations/${operationID}",
   "response": {
-    "${tagValueID}Name": "${projectId}/test-${uniqueId}/value1",
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagValue",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "name": "tagValues/${tagValueID}",
+    "namespacedName": "${projectId}/test-${uniqueId}/value1",
     "parent": "tagKeys/${tagKeyID}",
     "shortName": "value1",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -407,7 +407,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagValueID}?alt=json&name=${projectId}%2Ftest-${uniqueId}
+GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/namespaced?alt=json&name=${projectId}%2Ftest-${uniqueId}
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -423,10 +423,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "${tagValueID}Name": "${projectId}/test-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "tagKeys/${tagKeyID}",
+  "namespacedName": "${projectId}/test-${uniqueId}",
   "parent": "projects/${projectNumber}",
   "shortName": "test-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -480,11 +480,11 @@ X-Xss-Protection: 0
   },
   "name": "operations/${operationID}",
   "response": {
-    "${tagValueID}Name": "${projectId}/test-${uniqueId}",
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagKey",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "name": "tagKeys/${tagKeyID}",
+    "namespacedName": "${projectId}/test-${uniqueId}",
     "parent": "projects/${projectNumber}",
     "shortName": "test-${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
