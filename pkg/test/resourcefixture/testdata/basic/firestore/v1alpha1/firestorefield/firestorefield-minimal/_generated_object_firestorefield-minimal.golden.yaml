@@ -36,3 +36,5 @@ status:
       ancestorField: projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/__default__/fields/*
       indexes:
       - state: READY
+    ttlConfig:
+      state: ACTIVE
