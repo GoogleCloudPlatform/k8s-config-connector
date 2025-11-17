@@ -321,6 +321,17 @@ func setProtoField(protoMessage protoreflect.ProtoMessage, k string, values []st
 				return fmt.Errorf("expected bool value for %q, got %v", k, v)
 			}
 
+		case protoreflect.EnumKind:
+			if len(values) != 1 {
+				return fmt.Errorf("expected one value for %q, got %v", k, values)
+			}
+			v := values[0]
+			enumValueDescriptor := fd.Enum().Values().ByName(protoreflect.Name(v))
+			if enumValueDescriptor == nil {
+				return fmt.Errorf("invalid enum value %q for %q", v, k)
+			}
+			curr.Set(fd, protoreflect.ValueOfEnum(enumValueDescriptor.Number()))
+
 		case protoreflect.MessageKind:
 			messageFQN := fd.Message().FullName()
 			switch messageFQN {

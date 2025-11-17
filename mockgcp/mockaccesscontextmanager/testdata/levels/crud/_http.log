@@ -5,8 +5,8 @@ Connection: keep-alive
 Content-Type: application/json
 
 {
-  "parent": "organizations/811985825579",
-  "title": "test-policy-${uniqueId}"
+  "parent": "organizations/${organizationID}",
+  "title": "test-level-${uniqueId}"
 }
 
 200 OK
@@ -343,11 +343,6 @@ DELETE https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPol
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
-Content-Type: application/json
-
-{
-  "filter": "domain:google.com"
-}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -360,40 +355,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "organizations": [
-    {
-      "creationTime": "2015-09-09T19:34:18.591Z",
-      "displayName": "google.com",
-      "lifecycleState": "ACTIVE",
-      "name": "organizations/433637338589",
-      "owner": {
-        "directoryCustomerId": "C02h8e9nw"
-      }
-    }
-  ]
-}
-
----
-
-GET https://accesscontextmanager.googleapis.com/v1/accessPolicies?alt=json&parent=organizations%2F433637338589
-Accept: application/json
-Authorization: (removed)
-Connection: keep-alive
-
-403 Forbidden
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 403,
-    "message": "The caller does not have permission",
-    "status": "PERMISSION_DENIED"
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/${accessPolicyID}/delete/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }

@@ -1,5 +1,5 @@
-- exec: gcloud access-context-manager policies create --organization=${organizationId} --title="test-policy-${uniqueId}" --format="value(name)"
-  setEnv: POLICY_ID
+- exec: gcloud access-context-manager policies create --organization=${organizationId} --title="test-level-${uniqueId}" --format="value(name)"
+  setEnv: accessPolicies/{{POLICY_ID}}
 
 - exec: gcloud access-context-manager levels create basic_level --policy=${POLICY_ID} --title="test level" --basic-level-spec=basic-level-v1.yaml
 - exec: gcloud access-context-manager levels describe basic_level --policy=${POLICY_ID}

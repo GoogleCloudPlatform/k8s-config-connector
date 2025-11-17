@@ -24,19 +24,19 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
   },
-  "name": "operations/accessPolicies/535111587292/create/1763414054956046",
+  "name": "operations/accessPolicies/${accessPolicyID}/create/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessPolicy",
     "etag": "abcdef0123A=",
-    "name": "accessPolicies/535111587292",
-    "parent": "organizations/811985825579",
+    "name": "accessPolicies/${accessPolicyID}",
+    "parent": "organizations/${organizationID}",
     "title": "test-policy-${uniqueId}"
   }
 }
 
 ---
 
-GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/535111587292?alt=json
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -53,14 +53,14 @@ X-Xss-Protection: 0
 
 {
   "etag": "abcdef0123A=",
-  "name": "accessPolicies/535111587292",
-  "parent": "organizations/811985825579",
+  "name": "accessPolicies/${accessPolicyID}",
+  "parent": "organizations/${organizationID}",
   "title": "test-policy-${uniqueId}"
 }
 
 ---
 
-DELETE https://accesscontextmanager.googleapis.com/v1/accessPolicies/535111587292?alt=json
+DELETE https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}?alt=json
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -80,7 +80,7 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
   },
-  "name": "operations/accessPolicies/535111587292/delete/1763414057379508",
+  "name": "operations/accessPolicies/${accessPolicyID}/delete/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
