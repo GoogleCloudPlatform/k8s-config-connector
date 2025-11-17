@@ -28,7 +28,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -65,8 +67,12 @@ func (m *modelEnvironment) client(ctx context.Context) (*gcp.EnvironmentsClient,
 }
 
 func (m *modelEnvironment) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
+	copiedu := u.DeepCopy()
+	if err := label.ComputeLabels(u.DeepCopy()); err != nil {
+		return nil, err
+	}
 	obj := &krm.ComposerEnvironment{}
-	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(copiedu.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
@@ -86,7 +92,6 @@ func (m *modelEnvironment) AdapterForObject(ctx context.Context, reader client.R
 		return nil, mapCtx.Err()
 	}
 	desired.Name = id.String()
-
 	// Get composer GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -191,8 +196,6 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Environment", "name", a.id)
 
-	populateDefaultsForEnvironment(a.desired, a.actual)
-
 	currentCookie, err := common.NewCookie(a.desired, a.actual)
 	if err != nil {
 		return err
@@ -203,37 +206,61 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return a.updateStatus(ctx, a.actual, updateOp)
 	}
 
-	paths, err := common.CompareProtoMessage(a.desired, a.actual, common.BasicDiff)
+	// The GCP server is non-declarative friendly as it allows many fields to be empty (unset) in creation,
+	// but require them to be passed through in update. What makes it worse, the update field mask require to
+	// only provide different field and only accept one field update per request.
+	// Meanwhile, the Proto does not have field mask to tell whether a field is OUTPUT-ONLY or IMMUTABLE.
+
+	// Here's the failure cases:
+	// - Patch returns 400 if optional fields are empty, if not in update field mask --> Default to GCP is not allowed.
+	// - Patch returns 400 if optional fields are empty, if is in update field mask --> unset in GCP is not allowed.
+	// - Patch returns 400 if optional fields are unchanged, if is in update field mask --> field has to be a different from GCP stored obj.
+	// - Patch only allows one field update per request.
+
+	// To simply the logic, we use what actual proto has (including GCP default and OUTPUT-ONLY), and merge it with the desired.
+	// Only the different INPUT fields from desired will be passed in update field mask.
+	desiredWithGCPDefault := proto.Clone(a.actual).(*composerpb.Environment)
+	proto.Merge(desiredWithGCPDefault, a.desired)
+
+	// Note: Environment proto misses the field behavior about OUTPUT-ONLY and IMMUTABLE,
+	// so a pure comparison between desired and actual will give wrong fields that contain OUTPUT-ONLY and IMMUTABLE (which is optional with default)
+	// But since we have merge the actual OUTPUT-ONLY and IMMUTABLE back to the desiredWithGCPDefault, it will skip those fields.
+	paths, err := common.CompareProtoMessage(desiredWithGCPDefault, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
 
-	if len(paths) == 0 {
+	sortedPaths := sets.List(paths)
+
+	if len(sortedPaths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 		return a.updateStatus(ctx, a.actual, updateOp)
 	}
 
-	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths),
+	// GCP server only allows updating one field per request.
+	for _, f := range sortedPaths {
+		updateMask := &fieldmaskpb.FieldMask{
+			Paths: []string{f},
+		}
+		req := &composerpb.UpdateEnvironmentRequest{
+			Name:        a.id.String(),
+			UpdateMask:  updateMask,
+			Environment: desiredWithGCPDefault,
+		}
+		op, err := a.gcpClient.UpdateEnvironment(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating Environment %s: %w", a.id, err)
+		}
+		updated, err := op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("Environment %s waiting update: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated Environment", "name", a.id)
+		if err := a.updateStatus(ctx, updated, updateOp); err != nil {
+			return err
+		}
 	}
-	// Composer Environments service uses UpdateEnvironment function to fulfill
-	// the PATCH request.
-	req := &composerpb.UpdateEnvironmentRequest{
-		Name:        a.id.String(),
-		UpdateMask:  updateMask,
-		Environment: a.desired,
-	}
-	op, err := a.gcpClient.UpdateEnvironment(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating Environment %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("Environment %s waiting update: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated Environment", "name", a.id)
-
-	return a.updateStatus(ctx, updated, updateOp)
+	return nil
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
@@ -285,127 +312,4 @@ func (a *EnvironmentAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 		return false, fmt.Errorf("waiting delete Environment %s: %w", a.id, err)
 	}
 	return true, nil
-}
-
-func populateDefaultsForEnvironment(desired, actual *composerpb.Environment) {
-	if actual == nil {
-		return
-	}
-
-	// Populate output-only fields.
-	desired.Uuid = actual.Uuid
-	desired.State = actual.State
-	desired.CreateTime = actual.CreateTime
-	desired.UpdateTime = actual.UpdateTime
-
-	// Handle other fields.
-	if desired.StorageConfig == nil && actual.StorageConfig != nil {
-		desired.StorageConfig = actual.StorageConfig
-	}
-	if desired.Config == nil && actual.Config != nil {
-		desired.Config = &composerpb.EnvironmentConfig{}
-	}
-	populateDefaultsForEnvironmentConfig(desired.Config, actual.Config)
-}
-
-func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.EnvironmentConfig) {
-	if actual == nil {
-		return // If actual is nil, nothing to populate from.
-	}
-
-	// Populate output-only fields
-	if desired.AirflowByoidUri == "" && actual.AirflowByoidUri != "" {
-		desired.AirflowByoidUri = actual.AirflowByoidUri
-	}
-	if desired.AirflowUri == "" && actual.AirflowUri != "" {
-		desired.AirflowUri = actual.AirflowUri
-	}
-	if desired.DagGcsPrefix == "" && actual.DagGcsPrefix != "" {
-		desired.DagGcsPrefix = actual.DagGcsPrefix
-	}
-	if desired.GkeCluster == "" && actual.GkeCluster != "" {
-		desired.GkeCluster = actual.GkeCluster
-	}
-
-	// Handle other fields.
-	if actual.DataRetentionConfig != nil {
-		if desired.DataRetentionConfig == nil {
-			desired.DataRetentionConfig = actual.DataRetentionConfig
-		}
-		if actual.DataRetentionConfig.AirflowMetadataRetentionConfig != nil {
-			if desired.DataRetentionConfig.AirflowMetadataRetentionConfig == nil {
-				desired.DataRetentionConfig.AirflowMetadataRetentionConfig = actual.DataRetentionConfig.AirflowMetadataRetentionConfig
-			}
-		}
-		if actual.DataRetentionConfig.TaskLogsRetentionConfig != nil {
-			if desired.DataRetentionConfig.TaskLogsRetentionConfig == nil {
-				desired.DataRetentionConfig.TaskLogsRetentionConfig = actual.DataRetentionConfig.TaskLogsRetentionConfig
-			}
-		}
-	}
-
-	//if actual.DatabaseConfig != nil {
-	//	if desired.DatabaseConfig == nil {
-	//		desired.DatabaseConfig = &pb.DatabaseConfig{}
-	//	}
-	//	if desired.DatabaseConfig.MachineType == "" && actual.DatabaseConfig.MachineType != "" {
-	//		desired.DatabaseConfig.MachineType = actual.DatabaseConfig.MachineType
-	//	}
-	//}
-
-	//if actual.EncryptionConfig != nil {
-	//	if desired.EncryptionConfig == nil {
-	//		desired.EncryptionConfig = &pb.EncryptionConfig{}
-	//	}
-	//}
-
-	if desired.EnvironmentSize == composerpb.EnvironmentConfig_ENVIRONMENT_SIZE_UNSPECIFIED {
-		desired.EnvironmentSize = actual.EnvironmentSize
-	}
-	if desired.MaintenanceWindow == nil {
-		desired.MaintenanceWindow = actual.MaintenanceWindow
-	}
-
-	if desired.NodeConfig == nil {
-		desired.NodeConfig = actual.NodeConfig
-	}
-
-	if actual.PrivateEnvironmentConfig != nil {
-		if desired.PrivateEnvironmentConfig == nil {
-			desired.PrivateEnvironmentConfig = actual.PrivateEnvironmentConfig
-		}
-		if desired.PrivateEnvironmentConfig.CloudComposerNetworkIpv4ReservedRange == "" {
-			desired.PrivateEnvironmentConfig.CloudComposerNetworkIpv4ReservedRange = actual.PrivateEnvironmentConfig.CloudComposerNetworkIpv4ReservedRange
-		}
-		if desired.PrivateEnvironmentConfig.WebServerIpv4ReservedRange == "" {
-			desired.PrivateEnvironmentConfig.WebServerIpv4ReservedRange = actual.PrivateEnvironmentConfig.WebServerIpv4ReservedRange
-		}
-		if actual.PrivateEnvironmentConfig.PrivateClusterConfig != nil {
-			if desired.PrivateEnvironmentConfig.PrivateClusterConfig == nil {
-				desired.PrivateEnvironmentConfig.PrivateClusterConfig = actual.PrivateEnvironmentConfig.PrivateClusterConfig
-			}
-			if desired.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4ReservedRange == "" {
-				desired.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4ReservedRange = actual.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4ReservedRange
-			}
-		}
-	}
-
-	if actual.SoftwareConfig != nil {
-		if desired.SoftwareConfig == nil {
-			desired.SoftwareConfig = actual.SoftwareConfig
-		}
-		if desired.SoftwareConfig.CloudDataLineageIntegration == nil {
-			desired.SoftwareConfig.CloudDataLineageIntegration = &composerpb.CloudDataLineageIntegration{}
-		}
-		if desired.SoftwareConfig.ImageVersion == "" {
-			desired.SoftwareConfig.ImageVersion = actual.SoftwareConfig.ImageVersion
-		}
-	}
-
-	if desired.WebServerNetworkAccessControl == nil {
-		desired.WebServerNetworkAccessControl = actual.WebServerNetworkAccessControl
-	}
-	if desired.WorkloadsConfig == nil {
-		desired.WorkloadsConfig = actual.WorkloadsConfig
-	}
 }
