@@ -89,6 +89,9 @@ func RegisterModel(gvk schema.GroupVersionKind, modelFn ModelFactoryFunc) {
 	if singleton.registrations == nil {
 		singleton.registrations = make(map[schema.GroupKind]*registration)
 	}
+	if singleton.registrations[gvk.GroupKind()] != nil {
+		klog.Fatalf("Model for %s already registered", gvk.GroupKind())
+	}
 	singleton.registrations[gvk.GroupKind()] = &registration{
 		gvk:     gvk,
 		factory: modelFn,
