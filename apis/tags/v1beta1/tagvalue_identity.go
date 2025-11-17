@@ -25,42 +25,41 @@ import (
 )
 
 const (
-	// TagsTagKeyIdentityURL is the format for the externalRef of a TagsTagKey.
-	TagsTagKeyIdentityURL = "tagKeys/{{tagKey}}"
-	ServiceDomain         = "cloudresourcemanager.googleapis.com"
+	// TagsTagValueIdentityURL is the format for the externalRef of a TagsTagValue.
+	TagsTagValueIdentityURL = "tagValues/{{tagValue}}"
 )
 
-var _ identity.Identity = &TagsTagKeyIdentity{}
+var _ identity.Identity = &TagsTagValueIdentity{}
 
-// TagsTagKeyIdentity represents the identity of a TagsTagKey.
+// TagsTagValueIdentity represents the identity of a TagsTagValue.
 // +k8s:deepcopy-gen=false
-type TagsTagKeyIdentity struct {
-	TagKey string
+type TagsTagValueIdentity struct {
+	TagValue string
 }
 
-func (i *TagsTagKeyIdentity) String() string {
-	return "tagKeys/" + i.TagKey
+func (i *TagsTagValueIdentity) String() string {
+	return "tagValues/" + i.TagValue
 }
 
-func (i *TagsTagKeyIdentity) FromExternal(ref string) error {
+func (i *TagsTagValueIdentity) FromExternal(ref string) error {
 	// Should be able to parse https://docs.cloud.google.com/asset-inventory/docs/asset-names
 	ref = strings.TrimPrefix(ref, "//cloudresourcemanager.googleapis.com/")
 
 	tokens := strings.Split(ref, "/")
-	if len(tokens) == 2 && tokens[0] == "tagKeys" {
-		i.TagKey = tokens[1]
-		if i.TagKey == "" {
-			return fmt.Errorf("tagKey was empty in external=%q", ref)
+	if len(tokens) == 2 && tokens[0] == "tagValues" {
+		i.TagValue = tokens[1]
+		if i.TagValue == "" {
+			return fmt.Errorf("tagValue was empty in external=%q", ref)
 		}
 		return nil
 	}
 
-	return fmt.Errorf("format of TagKey external=%q was not known (use %s)", ref, TagsTagKeyIdentityURL)
+	return fmt.Errorf("format of TagValue external=%q was not known (use %s)", ref, TagsTagValueIdentityURL)
 }
 
-var _ identity.Resource = &TagsTagKey{}
+var _ identity.Resource = &TagsTagValue{}
 
-func (obj *TagsTagKey) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+func (obj *TagsTagValue) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
 	// Get desired resource ID
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
@@ -73,14 +72,14 @@ func (obj *TagsTagKey) GetIdentity(ctx context.Context, reader client.Reader) (i
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	newIdentity := &TagsTagKeyIdentity{
-		TagKey: resourceID,
+	newIdentity := &TagsTagValueIdentity{
+		TagValue: resourceID,
 	}
 
 	// Validate against the ID stored in status.externalRef
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		statusIdentity := &TagsTagKeyIdentity{}
+		statusIdentity := &TagsTagValueIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
 		}
