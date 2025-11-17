@@ -11,6 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+// +tool:mockgcp-support
+// proto.service: google.cloud.networksecurity.v1beta1.NetworkSecurity
+// proto.message: google.cloud.networksecurity.v1beta1.AuthorizationPolicy
+
 package mocknetworksecurity
 
 import (
@@ -24,16 +29,10 @@ import (
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
-
-type NetworkSecurityServer struct {
-	*MockService
-	pb.UnimplementedNetworkSecurityServer
-}
 
 func (s *NetworkSecurityServer) CreateAuthorizationPolicy(ctx context.Context, req *pb.CreateAuthorizationPolicyRequest) (*longrunning.Operation, error) {
 	name := req.Parent + "/authorizationPolicies/" + req.AuthorizationPolicyId
