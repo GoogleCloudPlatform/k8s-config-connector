@@ -31,7 +31,7 @@ type Options struct {
 	Model string
 }
 
-const DefaultModel = "gemini-2.5-pro-preview-05-06"
+const DefaultModel = "gemini-2.5-pro"
 
 func (o *Options) InitDefaults() {
 	model := os.Getenv("LLM_MODEL")
