@@ -82,7 +82,17 @@ func (m *grpcMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	log := klog.FromContext(ctx)
 
 	url := r.URL.Path
-	tokens := strings.Split(strings.TrimPrefix(url, "/"), "/")
+	url = strings.TrimPrefix(url, "/")
+
+	suffix := ""
+	colonIndex := strings.Index(url, ":")
+	if colonIndex != -1 {
+		// Strip off any verb suffix, e.g. ":getIamPolicy"
+		suffix = url[colonIndex:]
+		url = url[:colonIndex]
+	}
+
+	tokens := strings.Split(url, "/")
 
 	// Check for any custom handlers first
 	for _, customHandler := range m.customHandlers {
@@ -95,6 +105,10 @@ func (m *grpcMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	for _, service := range m.services {
 		for _, method := range service.methods {
 			if method.httpMethod != r.Method {
+				continue
+			}
+
+			if method.pathMatcher.suffix != suffix {
 				continue
 			}
 
@@ -117,6 +131,10 @@ func (m *grpcMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			for _, method := range service.methods {
 				if method.httpMethod != r.Method {
 					log.Info("skipping method due to http method mismatch", "method", method.Name(), "expected", method.httpMethod, "actual", r.Method)
+					continue
+				}
+				if method.pathMatcher.suffix != suffix {
+					log.Info("skipping method due to http suffix mismatch", "method", method.Name(), "expected", method.pathMatcher.suffix, "actual", suffix, "path", r.URL.Path)
 					continue
 				}
 				matches, ok := method.pathMatcher.Match(tokens)
@@ -211,7 +229,7 @@ func (m *grpcMux) serveHTTPMethod(w http.ResponseWriter, r *http.Request, method
 				}
 
 				if err := unmarshalOptions.Unmarshal(body, dest); err != nil {
-					klog.Errorf("failed to unmarshal body: %v", err)
+					klog.Errorf("failed to unmarshal body into %T: %v", dest, err)
 					call.SendErrorResponse(status.Errorf(codes.InvalidArgument, "invalid body"))
 					return
 				}
