@@ -13,3 +13,79 @@
 // limitations under the License.
 
 package v1beta1
+
+import (
+	"context"
+	"fmt"
+	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+const (
+	// TagsTagBindingIdentityURL is the format for the externalRef of a TagsTagBinding.
+	TagsTagBindingIdentityURL = "tagBindings/{{tagBinding}}"
+)
+
+var _ identity.Identity = &TagsTagBindingIdentity{}
+
+// TagsTagBindingIdentity represents the identity of a Firestore Field.
+// +k8s:deepcopy-gen=false
+type TagsTagBindingIdentity struct {
+	TagBinding string
+}
+
+func (i *TagsTagBindingIdentity) String() string {
+	return "tagBindings/" + i.TagBinding
+}
+
+func (i *TagsTagBindingIdentity) FromExternal(ref string) error {
+	// Should be able to parse https://docs.cloud.google.com/asset-inventory/docs/asset-names
+	ref = strings.TrimPrefix(ref, "//cloudresourcemanager.googleapis.com/")
+
+	tokens := strings.Split(ref, "/")
+	if len(tokens) == 2 && tokens[0] == "tagBindings" {
+		i.TagBinding = tokens[1]
+		if i.TagBinding == "" {
+			return fmt.Errorf("tagBinding was empty in external=%q", ref)
+		}
+		return nil
+	}
+
+	return fmt.Errorf("format of TagBinding external=%q was not known (use %s)", ref, TagsTagBindingIdentityURL)
+}
+
+var _ identity.Resource = &TagsTagBinding{}
+
+func (obj *TagsTagBinding) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	// Get desired resource ID
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+
+	// Server-generated ID, don't support fallback to name
+	// if resourceID == "" {
+	// 	resourceID = obj.GetName()
+	// }
+
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	newIdentity := &TagsTagBindingIdentity{
+		TagBinding: resourceID,
+	}
+
+	// Validate against the ID stored in status.externalRef
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		statusIdentity := &TagsTagBindingIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
+		}
+		if statusIdentity.String() != newIdentity.String() {
+			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, newIdentity.String())
+		}
+	}
+	return newIdentity, nil
+}

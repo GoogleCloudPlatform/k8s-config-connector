@@ -346,6 +346,30 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 				primaryResource, opt := loadFixture(project, uniqueID)
 
+				// Force direct
+				{
+					for _, u := range opt.Create {
+						if u.GetKind() == "TagsTagKey" {
+							annotations := u.GetAnnotations()
+							if annotations == nil {
+								annotations = make(map[string]string)
+							}
+							annotations["cnrm.cloud.google.com/management"] = "direct"
+							u.SetAnnotations(annotations)
+						}
+					}
+					for _, u := range opt.Updates {
+						if u.GetKind() == "TagsTagKey" {
+							annotations := u.GetAnnotations()
+							if annotations == nil {
+								annotations = make(map[string]string)
+							}
+							annotations["cnrm.cloud.google.com/management"] = "direct"
+							u.SetAnnotations(annotations)
+						}
+					}
+				}
+
 				exportResources := []*unstructured.Unstructured{primaryResource}
 
 				create.SetupNamespacesAndApplyDefaults(h, opt.Create, project)
