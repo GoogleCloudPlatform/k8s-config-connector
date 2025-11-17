@@ -11,7 +11,7 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: computeregionnetworkendpointgroup-${uniqueId}
+  name: ${networkEndpointGroupID}
   namespace: ${uniqueId}
 spec:
   networkEndpointType: PRIVATE_SERVICE_CONNECT
@@ -19,7 +19,7 @@ spec:
     name: default
   pscTargetService: us-west3-cloudkms.googleapis.com
   region: us-west3
-  resourceID: computeregionnetworkendpointgroup-${uniqueId}
+  resourceID: ${networkEndpointGroupID}
   subnetworkRef:
     name: default
 status:
@@ -30,4 +30,4 @@ status:
     status: "True"
     type: Ready
   observedGeneration: 2
-  selfLink: https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/networkEndpointGroups/computeregionnetworkendpointgroup-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/v1/projects/example-project-01/regions/us-west3/networkEndpointGroups/${networkEndpointGroupID}
