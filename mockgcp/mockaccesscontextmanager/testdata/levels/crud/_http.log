@@ -1,0 +1,399 @@
+POST https://accesscontextmanager.googleapis.com/v1/accessPolicies?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "parent": "organizations/811985825579",
+  "title": "test-policy-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/${accessPolicyID}/create/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessPolicy",
+    "etag": "abcdef0123A=",
+    "name": "accessPolicies/${accessPolicyID}",
+    "parent": "organizations/${organizationID}",
+    "title": "test-level-${uniqueId}"
+  }
+}
+
+---
+
+POST https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "basic": {
+    "combiningFunction": "AND",
+    "conditions": [
+      {
+        "ipSubnetworks": [
+          "203.0.113.0/25"
+        ]
+      }
+    ]
+  },
+  "name": "accessPolicies/${accessPolicyID}/accessLevels/basic_level",
+  "title": "test level"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/${accessPolicyID}/accessLevels/basic_level/create/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessLevel",
+    "basic": {
+      "conditions": [
+        {
+          "ipSubnetworks": [
+            "203.0.113.0/25"
+          ]
+        }
+      ]
+    },
+    "name": "accessPolicies/${accessPolicyID}/accessLevels/basic_level",
+    "title": "test level"
+  }
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/basic_level?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basic": {
+    "conditions": [
+      {
+        "ipSubnetworks": [
+          "203.0.113.0/25"
+        ]
+      }
+    ]
+  },
+  "name": "accessPolicies/${accessPolicyID}/accessLevels/basic_level",
+  "title": "test level"
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/basic_level?alt=json&accessLevelFormat=AS_DEFINED
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basic": {
+    "conditions": [
+      {
+        "ipSubnetworks": [
+          "203.0.113.0/25"
+        ]
+      }
+    ]
+  },
+  "name": "accessPolicies/${accessPolicyID}/accessLevels/basic_level",
+  "title": "test level"
+}
+
+---
+
+PATCH https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/basic_level?alt=json&updateMask=basic.conditions
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "basic": {
+    "conditions": [
+      {
+        "ipSubnetworks": [
+          "203.0.113.0/25",
+          "2001:db8::/48"
+        ]
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/${accessPolicyID}/accessLevels/basic_level/update/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessLevel",
+    "basic": {
+      "conditions": [
+        {
+          "ipSubnetworks": [
+            "203.0.113.0/25",
+            "2001:db8::/48"
+          ]
+        }
+      ]
+    },
+    "name": "accessPolicies/${accessPolicyID}/accessLevels/basic_level",
+    "title": "test level"
+  }
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/operations/accessPolicies/${accessPolicyID}/accessLevels/basic_level/update/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/${accessPolicyID}/accessLevels/basic_level/update/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessLevel",
+    "basic": {
+      "conditions": [
+        {
+          "ipSubnetworks": [
+            "203.0.113.0/25",
+            "2001:db8::/48"
+          ]
+        }
+      ]
+    },
+    "name": "accessPolicies/${accessPolicyID}/accessLevels/basic_level",
+    "title": "test level"
+  }
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/basic_level?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basic": {
+    "conditions": [
+      {
+        "ipSubnetworks": [
+          "203.0.113.0/25",
+          "2001:db8::/48"
+        ]
+      }
+    ]
+  },
+  "name": "accessPolicies/${accessPolicyID}/accessLevels/basic_level",
+  "title": "test level"
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/basic_level?alt=json&accessLevelFormat=AS_DEFINED
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basic": {
+    "conditions": [
+      {
+        "ipSubnetworks": [
+          "203.0.113.0/25",
+          "2001:db8::/48"
+        ]
+      }
+    ]
+  },
+  "name": "accessPolicies/${accessPolicyID}/accessLevels/basic_level",
+  "title": "test level"
+}
+
+---
+
+DELETE https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}/accessLevels/basic_level?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/${accessPolicyID}/accessLevels/basic_level/delete/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+DELETE https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "filter": "domain:google.com"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "organizations": [
+    {
+      "creationTime": "2015-09-09T19:34:18.591Z",
+      "displayName": "google.com",
+      "lifecycleState": "ACTIVE",
+      "name": "organizations/433637338589",
+      "owner": {
+        "directoryCustomerId": "C02h8e9nw"
+      }
+    }
+  ]
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies?alt=json&parent=organizations%2F433637338589
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "The caller does not have permission",
+    "status": "PERMISSION_DENIED"
+  }
+}

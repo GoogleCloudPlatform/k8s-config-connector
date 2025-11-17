@@ -1,0 +1,87 @@
+POST https://accesscontextmanager.googleapis.com/v1/accessPolicies?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "parent": "organizations/${organizationID}",
+  "title": "test-policy-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/535111587292/create/1763414054956046",
+  "response": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessPolicy",
+    "etag": "abcdef0123A=",
+    "name": "accessPolicies/535111587292",
+    "parent": "organizations/811985825579",
+    "title": "test-policy-${uniqueId}"
+  }
+}
+
+---
+
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/535111587292?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "name": "accessPolicies/535111587292",
+  "parent": "organizations/811985825579",
+  "title": "test-policy-${uniqueId}"
+}
+
+---
+
+DELETE https://accesscontextmanager.googleapis.com/v1/accessPolicies/535111587292?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.identity.accesscontextmanager.v1.AccessContextManagerOperationMetadata"
+  },
+  "name": "operations/accessPolicies/535111587292/delete/1763414057379508",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
