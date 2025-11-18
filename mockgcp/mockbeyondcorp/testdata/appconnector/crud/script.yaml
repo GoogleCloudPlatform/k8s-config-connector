@@ -1,0 +1,7 @@
+- exec: gcloud iam service-accounts create sa-${uniqueId} --project=${projectId}
+- exec: gcloud beta beyondcorp app connectors create test-${uniqueId} --project=${projectId} --location=us-central1 --member=serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com
+- exec: gcloud beta beyondcorp app connectors describe test-${uniqueId} --project=${projectId} --location=us-central1
+- exec: gcloud beta beyondcorp app connectors update test-${uniqueId} --project=${projectId} --location=us-central1 --display-name=displayname2 --update-labels=foo=bar
+- exec: gcloud beta beyondcorp app connectors describe test-${uniqueId} --project=${projectId} --location=us-central1
+- exec: gcloud beta beyondcorp app connectors delete test-${uniqueId} --project=${projectId} --location=us-central1 --quiet
+- exec: gcloud iam service-accounts delete sa-${uniqueId}@${projectId}.iam.gserviceaccount.com --project=${projectId} --quiet
