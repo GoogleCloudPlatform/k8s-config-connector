@@ -357,10 +357,18 @@ func LoadSample(t *testing.T, sampleKey SampleKey, project testgcp.GCPProject) S
 // SampleKey contains the metadata for a sample.
 // This lets us defer variable substitution.
 type SampleKey struct {
-	Name      string
-	SourceDir string
-	APIGroup  string
-	files     []string
+	// Name is the sample name; it is typically only the last directory name
+	// deprecated: prefer TestKey instead
+	Name string
+
+	// TestKey is the relative path to the sample from the "root" samples directory
+	TestKey string
+
+	// AbsoluteSourceDir is the absolute path to the directory containing the sample
+	AbsoluteSourceDir string
+
+	APIGroup string
+	files    []string
 }
 
 func loadSampleOntoUnstructs(t *testing.T, sampleKey SampleKey, project testgcp.GCPProject) Sample {
@@ -395,7 +403,12 @@ func ListMatchingSamples(t *testing.T, regex *regexp.Regexp) []SampleKey {
 				sourceDir := filepath.Dir(path)
 				sampleKey := samples[sourceDir]
 				sampleKey.Name = sampleName
-				sampleKey.SourceDir = sourceDir
+				sampleKey.AbsoluteSourceDir = sourceDir
+				relativeDir, err := filepath.Rel(baseDir, sourceDir)
+				if err != nil {
+					return fmt.Errorf("getting relative path for sample %q: %w", sampleName, err)
+				}
+				sampleKey.TestKey = relativeDir
 				// The sampleKey.APIGroup can be found from the Kind, the Kind is in the path as config/samples/resources/<KIND>,
 				// Then by iterating the files under the sourceDir, you can find the `apiGroup` value if the `kind` matches <KIND>
 				if sampleKey.APIGroup == "" {
