@@ -48,7 +48,11 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		}
 	}
 	if len(tokens) == 2 && tokens[0] == "tagValues" {
-		replacements.ReplaceStringValue(tokens[1], "${tagValueID}")
+		if name == "namespaced" {
+			// This is actually a search operation: https://cloud.google.com/resource-manager/reference/rest/v3/tagValues/getNamespaced
+		} else {
+			replacements.ReplaceStringValue(tokens[1], "${tagValueID}")
+		}
 	}
 	if len(tokens) == 2 && tokens[0] == "tagBindings" {
 		replacements.ReplaceStringValue(tokens[1], "${tagBindingID}")
