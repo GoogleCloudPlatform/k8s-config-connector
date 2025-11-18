@@ -267,6 +267,13 @@
 [missing_field] crd=apphubdiscoveredservices.apphub.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=apphubdiscoveredworkloads.apphub.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=apphubdiscoveredworkloads.apphub.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=assuredworkloadsworkloads.assuredworkloads.cnrm.cloud.google.com version=v1alpha1: field ".spec.billingAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=assuredworkloadsworkloads.assuredworkloads.cnrm.cloud.google.com version=v1alpha1: field ".spec.complianceRegime" is not set in unstructured objects
+[missing_field] crd=assuredworkloadsworkloads.assuredworkloads.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=assuredworkloadsworkloads.assuredworkloads.cnrm.cloud.google.com version=v1alpha1: field ".spec.enableSovereignControls" is not set in unstructured objects
+[missing_field] crd=assuredworkloadsworkloads.assuredworkloads.cnrm.cloud.google.com version=v1alpha1: field ".spec.partner" is not set in unstructured objects
+[missing_field] crd=assuredworkloadsworkloads.assuredworkloads.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceSettings[].displayName" is not set in unstructured objects
+[missing_field] crd=assuredworkloadsworkloads.assuredworkloads.cnrm.cloud.google.com version=v1alpha1: field ".spec.resourceSettings[].resourceType" is not set in unstructured objects
 [missing_field] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=backupdrmanagementservers.backupdr.cnrm.cloud.google.com version=v1alpha1: field ".spec.networks[].peeringMode" is not set in unstructured objects

@@ -40,6 +40,7 @@
 | artifactregistry.cnrm.cloud.google.com        | ArtifactRegistryRepository                      | False        | True        | False  | Terraform  |
 | asset.cnrm.cloud.google.com                   | AssetFeed                                       | True         | True        | False  | Direct     |
 | asset.cnrm.cloud.google.com                   | AssetSavedQuery                                 | True         | True        | False  | Direct     |
+| assuredworkloads.cnrm.cloud.google.com        | AssuredWorkloadsWorkload                        | True         | False       | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupPlanAssociation                   | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupPlan                              | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupVault                             | True         | True        | False  | Direct     |
