@@ -495,23 +495,13 @@ func BigtableMaterializedViewSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, 
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1alpha1.BigtableMaterializedViewSpec{}
-	// MISSING: Name
-	out.Query = direct.LazyPtr(in.GetQuery())
-	// MISSING: Etag
-	out.DeletionProtection = direct.LazyPtr(in.GetDeletionProtection())
-	return out
+	return BigtableMaterializedViewInfo_ToBigtableMaterializedViewSpec(mapCtx, BigtableMaterializedView_ToBigtableMaterializedViewInfo(mapCtx, in))
 }
 func BigtableMaterializedViewSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.BigtableMaterializedViewSpec) *pb.MaterializedView {
 	if in == nil {
 		return nil
 	}
-	out := &pb.MaterializedView{}
-	// MISSING: Name
-	out.Query = direct.ValueOf(in.Query)
-	// MISSING: Etag
-	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
-	return out
+	return BigtableMaterializedViewInfo_ToBigtableMaterializedView(mapCtx, BigtableMaterializedViewSpec_ToMaterializedViewInfo(mapCtx, in))
 }
 func ChangeStreamConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ChangeStreamConfig) *krm.ChangeStreamConfig {
 	if in == nil {
