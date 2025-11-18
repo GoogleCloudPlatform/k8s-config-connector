@@ -20,5 +20,7 @@ spec:
   location: us-central1
   projectRef:
     external: ${projectId}
-  labels:
-    test: "true"
+  config:
+    nodeConfig:
+      serviceAccountRef:
+        external: porch-sync@yuwenma-gke-playground.iam.gserviceaccount.com
