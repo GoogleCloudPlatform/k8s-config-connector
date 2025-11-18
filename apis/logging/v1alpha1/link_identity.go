@@ -19,16 +19,18 @@ import (
 	"fmt"
 	"strings"
 
-	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
-
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var _ identity.Identity = &LinkIdentity{}
 
 // LinkIdentity defines the resource reference to LoggingLink, which "External" field
 // holds the GCP identifier for the KRM object.
 type LinkIdentity struct {
-	parent *LinkParent
+	parent *loggingv1beta1.LogBucketIdentity
 	id     string
 }
 
@@ -40,85 +42,59 @@ func (i *LinkIdentity) ID() string {
 	return i.id
 }
 
-func (i *LinkIdentity) Parent() *LinkParent {
+func (i *LinkIdentity) Parent() *loggingv1beta1.LogBucketIdentity {
 	return i.parent
 }
 
-type LinkParent struct {
-	ProjectID          string
-	Location           string
-	LoggingLogBucketID string
+func (i *LinkIdentity) FromExternal(ref string) error {
+	tokens := strings.Split(ref, "/links/")
+	if len(tokens) != 2 {
+		return fmt.Errorf("format of LoggingLink external=%q was not known (use projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}/links/{{linkID}})", ref)
+	}
+	i.parent = &loggingv1beta1.LogBucketIdentity{}
+	if err := i.parent.FromExternal(tokens[0]); err != nil {
+		return err
+	}
+	i.id = tokens[1]
+	if i.id == "" {
+		return fmt.Errorf("linkID was empty in external=%q", ref)
+	}
+	return nil
 }
 
-func (p *LinkParent) String() string {
-	return "projects/" + p.ProjectID + "/locations/" + p.Location + "/buckets/" + p.LoggingLogBucketID
-}
+var _ identity.Resource = &LoggingLink{}
 
-// New builds a LinkIdentity from the Config Connector Link object.
-func NewLinkIdentity(ctx context.Context, reader client.Reader, obj *LoggingLink) (*LinkIdentity, error) {
+func (obj *LoggingLink) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	newIdentity := &LinkIdentity{}
 
-	// Get Parent
-	external, err := obj.Spec.ParentRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-	if err != nil {
-		return nil, err
+	// Resolve Parent
+	if err := obj.Spec.LoggingLogBucketRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, fmt.Errorf("resolving spec.parentRef: %w", err)
 	}
-
-	bucketIdentity, err := loggingv1beta1.ParseLogBucketExternal(external)
-	if err != nil {
-		return nil, err
+	newIdentity.parent = &loggingv1beta1.LogBucketIdentity{}
+	if err := newIdentity.parent.FromExternal(obj.Spec.LoggingLogBucketRef.GetExternal()); err != nil {
+		return nil, fmt.Errorf("parsing parentRef.external=%q: %w", obj.Spec.LoggingLogBucketRef.GetExternal(), err)
 	}
-	projectID := bucketIdentity.Parent().ProjectID
-	location := bucketIdentity.Parent().Location
-	bucketID := bucketIdentity.ID()
 
 	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
+	newIdentity.id = common.ValueOf(obj.Spec.ResourceID)
+	if newIdentity.id == "" {
+		newIdentity.id = obj.GetName()
 	}
-	if resourceID == "" {
+	if newIdentity.id == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	// Validate against the ID stored in status.externalRef
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseLinkExternal(externalRef)
-		if err != nil {
-			return nil, err
+		statusIdentity := &LinkIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
 		}
-		if actualParent.ProjectID != projectID {
-			return nil, fmt.Errorf("projectID changed, expect %s, got %s", actualParent.ProjectID, projectID)
+		if statusIdentity.String() != newIdentity.String() {
+			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, newIdentity.String())
 		}
-		if actualParent.Location != location {
-			return nil, fmt.Errorf("location changed, expect %s, got %s", actualParent.Location, location)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s", resourceID, actualResourceID)
-		}
-
 	}
-	return &LinkIdentity{
-		parent: &LinkParent{
-			ProjectID:          projectID,
-			Location:           location,
-			LoggingLogBucketID: bucketID,
-		},
-		id: resourceID,
-	}, nil
-}
-
-func ParseLinkExternal(external string) (parent *LinkParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "buckets" || tokens[6] != "links" {
-		return nil, "", fmt.Errorf("format of LoggingLink external=%q was not known (use projects/{{projectID}}/locations/{{location}}/buckets/{{bucketID}}/links/{{linkID}})", external)
-	}
-	parent = &LinkParent{
-		ProjectID:          tokens[1],
-		Location:           tokens[3],
-		LoggingLogBucketID: tokens[5],
-	}
-	resourceID = tokens[7]
-	return parent, resourceID, nil
+	return newIdentity, nil
 }
