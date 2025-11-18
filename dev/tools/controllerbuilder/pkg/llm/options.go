@@ -31,7 +31,7 @@ type Options struct {
 	Model string
 }
 
-const DefaultModel = "gemini-2.5-pro"
+const DefaultModel = "gemini-3-pro-preview"
 
 func (o *Options) InitDefaults() {
 	model := os.Getenv("LLM_MODEL")
@@ -55,9 +55,15 @@ func (o *Options) AddCobraFlags(flags *pflag.FlagSet) {
 
 // NewLLMClient creates a gollm.Client with the provided configuration
 func (o *Options) NewLLMClient(ctx context.Context) (gollm.Client, error) {
-	vertexAIOptions := gollm.VertexAIClientOptions{
-		Project:  o.Project,
-		Location: o.Location,
+	useVertex := false
+	if useVertex {
+		vertexAIOptions := gollm.VertexAIClientOptions{
+			Project:  o.Project,
+			Location: o.Location,
+		}
+		return gollm.NewVertexAIClient(ctx, vertexAIOptions)
 	}
-	return gollm.NewVertexAIClient(ctx, vertexAIOptions)
+
+	geminiOptions := gollm.GeminiAPIClientOptions{}
+	return gollm.NewGeminiAPIClient(ctx, geminiOptions)
 }
