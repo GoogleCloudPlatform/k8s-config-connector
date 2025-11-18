@@ -27,7 +27,7 @@ var CertificateManagerCertificateIssuanceConfigGVK = GroupVersion.WithKind("Cert
 // +kcc:spec:proto=google.cloud.certificatemanager.v1.CertificateIssuanceConfig
 type CertificateManagerCertificateIssuanceConfigSpec struct {
 	// Required. Defines the parent path of the resource.
-	CertificateRef *parent.ProjectAndLocationRef `json:"CertificateRef,omitempty"`
+	ParentRef *parent.ProjectAndLocationRef `json:",inline"`
 
 	// Set of labels associated with a CertificateIssuanceConfig.
 	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateIssuanceConfig.labels

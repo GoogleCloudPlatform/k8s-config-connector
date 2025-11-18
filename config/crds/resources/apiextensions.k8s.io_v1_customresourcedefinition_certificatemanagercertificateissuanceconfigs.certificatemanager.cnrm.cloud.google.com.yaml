@@ -61,47 +61,6 @@ spec:
             description: CertificateManagerCertificateIssuanceConfigSpec defines the
               desired state of CertificateManagerCertificateIssuanceConfig
             properties:
-              CertificateRef:
-                description: Required. Defines the parent path of the resource.
-                properties:
-                  location:
-                    type: string
-                  projectRef:
-                    description: The Project that this resource belongs to.
-                    oneOf:
-                    - not:
-                        required:
-                        - external
-                      required:
-                      - name
-                    - not:
-                        anyOf:
-                        - required:
-                          - name
-                        - required:
-                          - namespace
-                      required:
-                      - external
-                    properties:
-                      external:
-                        description: The `projectID` field of a project, when not
-                          managed by Config Connector.
-                        type: string
-                      kind:
-                        description: The kind of the Project resource; optional but
-                          must be `Project` if provided.
-                        type: string
-                      name:
-                        description: The `name` field of a `Project` resource.
-                        type: string
-                      namespace:
-                        description: The `namespace` field of a `Project` resource.
-                        type: string
-                    type: object
-                required:
-                - location
-                - projectRef
-                type: object
               certificateAuthorityConfigRef:
                 description: Required. The CA that issues the workload certificate.
                   It includes the CA address, type, authentication to CA service,
@@ -152,6 +111,40 @@ spec:
               lifetime:
                 description: Required. Workload certificate lifetime requested.
                 type: string
+              location:
+                type: string
+              projectRef:
+                description: The Project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
               resourceID:
                 description: The CertificateManagerCertificateIssuanceConfig name.
                   If not given, the metadata.name will be used.
@@ -162,6 +155,9 @@ spec:
                   Must be a number between 1-99, inclusive.
                 format: int32
                 type: integer
+            required:
+            - location
+            - projectRef
             type: object
           status:
             description: CertificateManagerCertificateIssuanceConfigStatus defines
