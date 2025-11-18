@@ -136,6 +136,7 @@ require go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 
 require (
 	cloud.google.com/go/analytics v0.30.0 // indirect
+	cloud.google.com/go/assuredworkloads v1.13.0 // indirect
 	cloud.google.com/go/osconfig v1.14.6 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.27.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.53.0 // indirect
