@@ -420,27 +420,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 			name, _, _ = unstructured.NestedString(u.Object, "status", "name")
 		}
 		tokens := strings.Split(name, "/")
-		if len(tokens) == 1 {
-			switch u.GetKind() {
-			case "TagsTagKey", "TagsTagValue":
-				// TODO: The mock TagKey server returns the correct format `tagKeys/{number}`, but the golden object `status.name`
-				// only has {number}. Need to triage the tf/dcl controller.
-				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-					return strings.ReplaceAll(s, name, "${uniqueId}")
-				})
-			}
-		}
 		if len(tokens) >= 2 {
-
-			switch u.GetKind() {
-			case "TagsTagBinding":
-				// TagBinding name is a concatenation of a dynamic parent (full resource name of project, org, storage bucket or another kind)
-				// and a "tagValues" resource name that contains a dynamic tagValueID (encrypted from timestamp)
-				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
-					return strings.ReplaceAll(s, tokens[len(tokens)-1], "${tagValueID}")
-				})
-			}
-
 			typeName := tokens[len(tokens)-2]
 			id := tokens[len(tokens)-1]
 
