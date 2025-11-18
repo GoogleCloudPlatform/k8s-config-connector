@@ -13,7 +13,7 @@ spec:
   config:
     nodeConfig:
       serviceAccountRef:
-        external: porch-sync@${projectId}.iam.gserviceaccount.com
+        name: gsa-${uniqueId}
   location: us-central1
   projectRef:
     external: ${projectId}
@@ -29,10 +29,10 @@ status:
   observedGeneration: 1
   observedState:
     config:
-      airflowBYOIDURI: https://4ac8607afe434bb7bfba2fb3f9355af5-dot-us-central1.composer.byoid.googleusercontent.com
       airflowURI: https://{uuid}-dot-{location}.composer.googleusercontent.com
-      dagGCSPrefix: gs://us-central1-composerenviron-0ba0c4df-bucket/dags
-      privateEnvironmentConfig: {}
+      dagGCSPrefix: gs://{location}-composerenviron-{uniqueId}-bucket/dags
+      privateEnvironmentConfig:
+        privateClusterConfig: {}
     createTime: "1970-01-01T00:00:00Z"
     updateTime: "1970-01-01T00:00:00Z"
-    uuid: 4ac8607a-fe43-4bb7-bfba-2fb3f9355af5
+    uuid: test-uuid

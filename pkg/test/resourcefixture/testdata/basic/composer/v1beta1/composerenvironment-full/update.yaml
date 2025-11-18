@@ -26,7 +26,7 @@ spec:
     environmentSize: "ENVIRONMENT_SIZE_LARGE" # Updated
     nodeConfig:
       serviceAccountRef:
-        external: porch-sync@yuwenma-gke-playground.iam.gserviceaccount.com
+        name: gsa-${uniqueId}
       composerInternalIPv4CIDRBlock: "100.64.128.0/20"
     softwareConfig:
       imageVersion: composer-3-airflow-2.10.5-build.19 # Updated
