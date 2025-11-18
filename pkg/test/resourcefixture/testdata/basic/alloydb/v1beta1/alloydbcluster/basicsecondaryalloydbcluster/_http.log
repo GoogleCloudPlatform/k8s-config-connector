@@ -924,6 +924,10 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Feurope-west8
 
 {
   "clusterType": 2,
+  "initialUser": {
+    "password": "postgres",
+    "user": "postgres"
+  },
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -1149,7 +1153,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west8/clusters/alloydbcluster-2-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy%2CinitialUser
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope-west8%2Fclusters%2Falloydbcluster-2-${uniqueId}
@@ -1189,6 +1193,10 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope
   },
   "databaseVersion": 4,
   "geminiConfig": {},
+  "initialUser": {
+    "password": "postgres",
+    "user": "postgres"
+  },
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"

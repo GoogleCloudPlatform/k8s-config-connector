@@ -19,6 +19,10 @@ spec:
       source: kcc-test
   clusterType: SECONDARY
   deletionPolicy: FORCE
+  initialUser:
+    password:
+      value: postgres
+    user: postgres
   location: europe-west8
   networkConfig:
     networkRef:
