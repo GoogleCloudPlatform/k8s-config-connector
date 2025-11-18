@@ -117,6 +117,10 @@ spec:
                     description: 'Optional. Connection Pool flags, as a list of "key":
                       "value" pairs.'
                     type: object
+                  pooler_count:
+                    description: Output only. The number of running poolers per instance.
+                    format: int32
+                    type: integer
                 type: object
               databaseFlags:
                 additionalProperties:
@@ -503,6 +507,10 @@ spec:
                     description: 'Optional. Connection Pool flags, as a list of "key":
                       "value" pairs.'
                     type: object
+                  pooler_count:
+                    description: Output only. The number of running poolers per instance.
+                    format: int32
+                    type: integer
                 type: object
               databaseFlags:
                 additionalProperties:

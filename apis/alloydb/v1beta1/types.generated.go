@@ -189,6 +189,10 @@ type Instance_ConnectionPoolConfig struct {
 	// Optional. Connection Pool flags, as a list of "key": "value" pairs.
 	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig.flags
 	Flags map[string]string `json:"flags,omitempty"`
+
+	// Output only. The number of running poolers per instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig.pooler_count
+	PoolerCount *int32 `json:"pooler_count,omitempty"`
 }
 
 // +kcc:proto=google.cloud.alloydb.v1beta.Instance.InstanceNetworkConfig.AuthorizedNetwork
