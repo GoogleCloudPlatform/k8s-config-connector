@@ -33,6 +33,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/orchestration/airflow/service/v1"
+	"github.com/google/uuid"
 )
 
 func (s *ComposerV1) GetEnvironment(ctx context.Context, req *pb.GetEnvironmentRequest) (*pb.Environment, error) {
@@ -74,7 +75,7 @@ func (s *ComposerV1) CreateEnvironment(ctx context.Context, req *pb.CreateEnviro
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
-	obj.State = pb.Environment_RUNNING
+	// obj.State = pb.Environment_RUNNING
 	obj.Uuid = "test-uuid" // TODO: real value
 	s.populateDefaultsForEnvironment(obj)
 
@@ -119,16 +120,6 @@ func (s *ComposerV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnviro
 		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be provided")
 	}
 
-	// TODO: Some sort of helper for fieldmask?
-	for _, path := range paths {
-		tokens := strings.Split(path, ".")
-		switch tokens[0] {
-		case "labels":
-			updated.Labels = req.GetEnvironment().GetLabels()
-		default:
-			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
-		}
-	}
 	updated.UpdateTime = timestamppb.New(now)
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
@@ -197,11 +188,21 @@ func (s *ComposerV1) populateDefaultsForEnvironment(obj *pb.Environment) {
 	s.populateDefaultsForEnvironmentConfig(obj.Config)
 }
 
-func (s *ComposerV1) populateDefaultsForEnvironmentConfig(config *pb.EnvironmentConfig) {
-	config.AirflowByoidUri = "https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com"
-	config.AirflowUri = "https://123456qwert-dot-us-central1.composer.googleusercontent.com"
-	config.DagGcsPrefix = "gs://us-central1-test-123456-asdfg-bucket/dags"
-	config.GkeCluster = "projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke"
+func (s *ComposerV1) populateDefaultsForEnvironmentConfig(config *pb.EnvironmentConfig) error {
+	uid, err := uuid.NewUUID()
+	if err != nil {
+		return err
+	}
+	// config.AirflowByoidUri = "https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com"
+	if config.AirflowUri == "" {
+		config.AirflowUri = "https://" + uid.String() + "-dot-{location}.composer.googleusercontent.com"
+	}
+	// config.DagGcsPrefix = "gs://us-central1-test-123456-asdfg-bucket/dags"
+	if config.DagGcsPrefix == "" {
+		config.DagGcsPrefix = "gs://{location}-composerenviron-{uniqueId}-bucket/dags"
+	}
+	// config.GkeCluster = "projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke"
+
 	if config.DataRetentionConfig == nil {
 		config.DataRetentionConfig = &pb.DataRetentionConfig{}
 	}
@@ -358,6 +359,7 @@ func (s *ComposerV1) populateDefaultsForEnvironmentConfig(config *pb.Environment
 	if config.PrivateEnvironmentConfig == nil {
 		config.PrivateEnvironmentConfig = &pb.PrivateEnvironmentConfig{}
 	}
+	return nil
 }
 
 type environmentName struct {
