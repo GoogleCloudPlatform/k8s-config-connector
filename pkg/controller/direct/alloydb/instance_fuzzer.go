@@ -71,6 +71,7 @@ func instanceFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".nodes")
 	f.Unimplemented_NotYetTriaged(".reconciling")
 	f.Unimplemented_NotYetTriaged(".activation_policy")
+	f.Unimplemented_NotYetTriaged(".allocated_ip_range_override")
 
 	return f
 }
