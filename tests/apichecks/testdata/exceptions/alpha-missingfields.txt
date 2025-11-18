@@ -501,6 +501,30 @@
 [missing_field] crd=clouddmsconversionworkspaces.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=clouddmsconversionworkspaces.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.engine" is not set in unstructured objects
 [missing_field] crd=clouddmsconversionworkspaces.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.source.version" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.cmekKeyNameRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.conversionWorkspace.commitID" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.conversionWorkspace.name" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationDatabase.engine" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationDatabase.provider" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.destinationRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.dumpFlags.dumpFlags[].name" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.dumpFlags.dumpFlags[].value" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.dumpPath" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.filter" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.performanceConfig.dumpParallelLevel" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.reverseSSHConnectivity.vm" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.reverseSSHConnectivity.vmIP" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.reverseSSHConnectivity.vmPort" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.reverseSSHConnectivity.vpc" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceDatabase.engine" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceDatabase.provider" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.sourceRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.staticIPConnectivity" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.type" is not set in unstructured objects
+[missing_field] crd=clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.vpcPeeringConnectivity.vpc" is not set in unstructured objects
 [missing_field] crd=clouddmsprivateconnections.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=clouddmsprivateconnections.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=clouddmsprivateconnections.clouddms.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
