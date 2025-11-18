@@ -17,6 +17,22 @@ kind: ComposerEnvironment
 metadata:
   name: composerenvironment-${uniqueId}
 spec:
+  labels:
+    custom-label: "bar" # Updated
   location: us-central1
   projectRef:
     external: ${projectId}
+  config:
+    environmentSize: "ENVIRONMENT_SIZE_LARGE" # Updated
+    nodeConfig:
+      serviceAccountRef:
+        external: porch-sync@yuwenma-gke-playground.iam.gserviceaccount.com
+      composerInternalIPv4CIDRBlock: "100.64.128.0/20"
+    softwareConfig:
+      imageVersion: composer-3-airflow-2.10.5-build.19 # Updated
+      webServerPluginsMode: "PLUGINS_ENABLED"
+      airflowConfigOverrides:
+        webserver-rbac_user_registration_role: Viewer
+    privateEnvironmentConfig:
+      enablePrivateEnvironment: false # Updated
+      enablePrivateBuildsOnly: false # Updated
