@@ -58,7 +58,7 @@ type CertificateManagerDNSAuthorizationStatus struct {
 	to DNS configuration for the authorization to be usable by
 	certificate. */
 	// +optional
-	DnsResourceRecord []DnsAuthorization_DnsResourceRecord `json:"dnsResourceRecord,omitempty"`
+	DnsResourceRecord []DNSAuthorization_DNSResourceRecord `json:"dnsResourceRecord,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
@@ -92,6 +92,8 @@ type CertificateManagerDNSAuthorizationObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable"
+// +kubebuilder:metadata:labels="internal.cloud.google.com/additional-versions=v1alpha1"
+// +kubebuilder:storageversion
 
 // CertificateManagerDNSAuthorization is the Schema for the CertificateManagerDNSAuthorization API
 // +k8s:openapi-gen=true

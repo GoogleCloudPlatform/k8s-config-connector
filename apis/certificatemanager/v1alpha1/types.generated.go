@@ -16,7 +16,6 @@
 // krm.group: certificatemanager.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.certificatemanager.v1
-// resource: CertificateManagerDNSAuthorization:DnsAuthorization
 // resource: CertificateManagerCertificateIssuanceConfig:CertificateIssuanceConfig
 
 package v1alpha1
@@ -26,25 +25,4 @@ type CertificateIssuanceConfig_CertificateAuthorityConfig struct {
 	// Defines a CertificateAuthorityServiceConfig.
 	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateIssuanceConfig.CertificateAuthorityConfig.certificate_authority_service_config
 	CertificateAuthorityServiceConfig *CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig `json:"certificateAuthorityServiceConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.certificatemanager.v1.DnsAuthorization.DnsResourceRecord
-type DNSAuthorization_DNSResourceRecord struct {
-}
-
-// +kcc:observedstate:proto=google.cloud.certificatemanager.v1.DnsAuthorization.DnsResourceRecord
-type DNSAuthorization_DNSResourceRecordObservedState struct {
-	// Output only. Fully qualified name of the DNS Resource Record.
-	//  e.g. `_acme-challenge.example.com`
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.DnsAuthorization.DnsResourceRecord.name
-	Name *string `json:"name,omitempty"`
-
-	// Output only. Type of the DNS Resource Record.
-	//  Currently always set to "CNAME".
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.DnsAuthorization.DnsResourceRecord.type
-	Type *string `json:"type,omitempty"`
-
-	// Output only. Data of the DNS Resource Record.
-	// +kcc:proto:field=google.cloud.certificatemanager.v1.DnsAuthorization.DnsResourceRecord.data
-	Data *string `json:"data,omitempty"`
 }

@@ -22,7 +22,7 @@ import (
 
 func CertificateManagerDNSAuthorizationStatusObservedState_FromProto(mapCtx *direct.MapContext, created *certificatemanagerpb.DnsAuthorization) *krm.CertificateManagerDNSAuthorizationStatus {
 	status := &krm.CertificateManagerDNSAuthorizationStatus{
-		DnsResourceRecord: []krm.DnsAuthorization_DnsResourceRecord{direct.ValueOf(DnsAuthorization_DnsResourceRecord_FromProto(mapCtx, created.GetDnsResourceRecord()))},
+		DnsResourceRecord: []krm.DNSAuthorization_DNSResourceRecord{direct.ValueOf(DNSAuthorization_DNSResourceRecord_FromProto(mapCtx, created.GetDnsResourceRecord()))},
 	}
 	return status
 }
