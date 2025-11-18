@@ -1,0 +1,3 @@
+name: test-server-tls-policy-${uniqueId}
+description: "test server tls policy"
+allowOpen: true
