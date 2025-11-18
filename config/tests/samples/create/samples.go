@@ -94,6 +94,9 @@ type CreateDeleteTestOptions struct { //nolint:revive
 	// Create is the set of objects to create
 	Create []*unstructured.Unstructured
 
+	// Dependencies is the set of dependency objects
+	Dependencies []*unstructured.Unstructured
+
 	// Updates is the set of objects to update (after all objects have been created)
 	Updates []*unstructured.Unstructured
 
