@@ -50,9 +50,18 @@ const (
 )
 
 type ResourceFixture struct {
-	GVK          schema.GroupVersionKind
-	Name         string
-	SourceDir    string
+	GVK schema.GroupVersionKind
+
+	// Name is the name of the test case/fixture
+	// Deprecated: prefer TestKey instead
+	Name string
+
+	// AbsoluteSourceDir is the directory containing the test case/fixture (absolute)
+	AbsoluteSourceDir string
+
+	// TestKey is the relative path to the test case/fixture from the "root" testdata directory
+	TestKey string
+
 	Create       []byte
 	Update       []byte
 	Dependencies []byte
@@ -81,6 +90,11 @@ func LoadWithPathFilter(t *testing.T, pathFilter func(path string) bool, lightFi
 
 		if !d.IsDir() {
 			return nil
+		}
+
+		relativeDir, err := filepath.Rel(baseDir, path)
+		if err != nil {
+			return fmt.Errorf("getting relative path for test dir %q: %w", path, err)
 		}
 
 		// This is a slightly inefficient, but we want to reuse the existing code
@@ -117,7 +131,7 @@ func LoadWithPathFilter(t *testing.T, pathFilter func(path string) bool, lightFi
 			if lightFilterFunc != nil && !lightFilterFunc(name, testType) {
 				return nil
 			}
-			rf := loadResourceFixture(t, name, testType, path, createFile, updateFile, depFile)
+			rf := loadResourceFixture(t, name, testType, path, relativeDir, createFile, updateFile, depFile)
 			if heavyFilterFunc != nil && !heavyFilterFunc(rf) {
 				return nil
 			}
@@ -151,6 +165,11 @@ func LoadWithFilter(t *testing.T, lightFilterFunc LightFilter, heavyFilterFunc H
 			return nil
 		}
 
+		relativeDir, err := filepath.Rel(baseDir, path)
+		if err != nil {
+			return fmt.Errorf("getting relative path for test dir %q: %w", path, err)
+		}
+
 		// This is a slightly inefficient, but we want to reuse the existing code
 		fileInfos, err := os.ReadDir(path)
 		if err != nil {
@@ -181,7 +200,7 @@ func LoadWithFilter(t *testing.T, lightFilterFunc LightFilter, heavyFilterFunc H
 			if lightFilterFunc != nil && !lightFilterFunc(name, testType) {
 				return nil
 			}
-			rf := loadResourceFixture(t, name, testType, path, createFile, updateFile, depFile)
+			rf := loadResourceFixture(t, name, testType, path, relativeDir, createFile, updateFile, depFile)
 			if heavyFilterFunc != nil && !heavyFilterFunc(rf) {
 				return nil
 			}
@@ -196,7 +215,7 @@ func LoadWithFilter(t *testing.T, lightFilterFunc LightFilter, heavyFilterFunc H
 	return allCases
 }
 
-func loadResourceFixture(t *testing.T, testName string, testType TestType, dir, createFile, updateFile, depFile string) ResourceFixture {
+func loadResourceFixture(t *testing.T, testName string, testType TestType, dir, relativeDir, createFile, updateFile, depFile string) ResourceFixture {
 	t.Helper()
 	createConfig := test.MustReadFile(t, path.Join(dir, createFile))
 	gvk, err := readGroupVersionKind(t, createConfig)
@@ -211,11 +230,12 @@ func loadResourceFixture(t *testing.T, testName string, testType TestType, dir, 
 	}
 
 	rf := ResourceFixture{
-		Name:      testName,
-		SourceDir: dir,
-		GVK:       gvk,
-		Create:    createConfig,
-		Type:      testType,
+		Name:              testName,
+		AbsoluteSourceDir: dir,
+		TestKey:           relativeDir,
+		GVK:               gvk,
+		Create:            createConfig,
+		Type:              testType,
 	}
 
 	if updateFile != "" {

@@ -84,13 +84,13 @@ func TestAllInSeries(t *testing.T) {
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
 
 			t.Run(sampleKey.Name, func(t *testing.T) {
-				ctx := addTestTimeout(ctx, t, subtestTimeout, sampleKey.Name)
+				ctx := addTestTimeout(ctx, t, subtestTimeout, sampleKey.TestKey)
 				var harnessOptions []create.HarnessOption
 
 				// Quickly load the sample with a dummy project, just to see if we should skip it
 				{
 					dummySample := create.LoadSample(t, sampleKey, testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789})
-					create.MaybeSkip(t, sampleKey.Name, dummySample.Resources)
+					create.MaybeSkip(t, sampleKey.TestKey, dummySample.Resources)
 
 					group := dummySample.APIGroup
 					skipTestReason := ""
@@ -98,13 +98,13 @@ func TestAllInSeries(t *testing.T) {
 						if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
 							skippedGroups := strings.Split(s, ",")
 							if slice.StringSliceContains(skippedGroups, group) {
-								skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", sampleKey.Name, group, s)
+								skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", sampleKey.TestKey, group, s)
 							}
 						}
 						if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
 							onlyGroups := strings.Split(s, ",")
 							if !slice.StringSliceContains(onlyGroups, group) {
-								skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", sampleKey.Name, group, s)
+								skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", sampleKey.TestKey, group, s)
 							}
 						}
 					} else {
@@ -212,13 +212,13 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 			if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
 				skippedGroups := strings.Split(s, ",")
 				if slice.StringSliceContains(skippedGroups, group) {
-					skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", fixture.Name, group, s)
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", fixture.TestKey, group, s)
 				}
 			}
 			if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
 				groups := strings.Split(s, ",")
 				if !slice.StringSliceContains(groups, group) {
-					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.Name, group, s)
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.TestKey, group, s)
 				}
 			}
 			// TODO(b/259496928): Randomize the resource names for parallel execution when/if needed.
@@ -227,7 +227,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					t.Skip(skipTestReason)
 				}
 
-				ctx := addTestTimeout(ctx, t, subtestTimeout, fixture.Name)
+				ctx := addTestTimeout(ctx, t, subtestTimeout, fixture.TestKey)
 
 				loadFixture := func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
 					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
@@ -274,7 +274,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 
 				// Start gradually, only running for apikeyskey fixtures initially
 				forceDirect := false
-				if strings.Contains(fixture.SourceDir, "/apikeyskey/") {
+				if strings.Contains(fixture.AbsoluteSourceDir, "/apikeyskey/") {
 					forceDirect = true
 				}
 
@@ -292,7 +292,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 
 				// Run with the fallback controller if we are forcing direct
 				if forceDirect {
-					t.Logf("also running scenario with fallback to old controller for fixture %q", fixture.SourceDir)
+					t.Logf("also running scenario with fallback to old controller for fixture %q", fixture.AbsoluteSourceDir)
 					scenarioOptionsWithFallback := scenarioOptions
 					scenarioOptionsWithFallback.FallbackToOldController = true
 					scenarioOptionsWithFallback.ForceDirectController = false
@@ -332,11 +332,11 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 				// Quickly load the fixture with a dummy project, just to see if we should skip it
 				{
 					_, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789}, uniqueID)
-					create.MaybeSkip(t, fixture.Name, opt.Create)
+					create.MaybeSkip(t, fixture.TestKey, opt.Create)
 					if options.TestPause && containsCCOrCCC(opt.Create) {
 						t.Skipf("test case %q contains ConfigConnector or ConfigConnectorContext object(s): "+
 							"pause test should not run against test cases already contain ConfigConnector "+
-							"or ConfigConnectorContext objects", fixture.Name)
+							"or ConfigConnectorContext objects", fixture.TestKey)
 					}
 
 					// If the test contains "${resourceId}", that means it is an acquisition test, which we don't currently support
@@ -373,7 +373,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 				// Create test harness
 				var h *create.Harness
 				if os.Getenv("E2E_GCP_TARGET") == "vcr" {
-					harnessOptions = append(harnessOptions, create.WithVCRPath(fixture.SourceDir))
+					harnessOptions = append(harnessOptions, create.WithVCRPath(fixture.AbsoluteSourceDir))
 					h = create.NewHarness(ctx, t, harnessOptions...)
 					hash := func(s string) uint64 {
 						h := fnv.New64a()
@@ -515,7 +515,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 							if options.FallbackToOldController {
 								fileName = "_final_object_old_controller.golden.yaml"
 							}
-							expectedPath := filepath.Join(fixture.SourceDir, fileName)
+							expectedPath := filepath.Join(fixture.AbsoluteSourceDir, fileName)
 							test.CompareGoldenObject(t, expectedPath, got)
 						}
 
@@ -547,7 +547,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 								fileName = "_exported_old_controller.golden.yaml"
 							}
 
-							expectedPath := filepath.Join(fixture.SourceDir, fileName)
+							expectedPath := filepath.Join(fixture.AbsoluteSourceDir, fileName)
 							h.CompareGoldenFile(expectedPath, string(got), IgnoreComments)
 						}
 					}
@@ -615,7 +615,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 						if options.FallbackToOldController {
 							key = "_http_old_controller.log"
 						}
-						expectedPath := filepath.Join(fixture.SourceDir, key)
+						expectedPath := filepath.Join(fixture.AbsoluteSourceDir, key)
 
 						h.CompareGoldenFile(expectedPath, got, normalizers...)
 					}
@@ -778,7 +778,7 @@ func isOperationDone(s string) bool {
 }
 
 // addTestTimeout will ensure the test fails if not completed before timeout
-func addTestTimeout(ctx context.Context, t *testing.T, timeout time.Duration, name string) context.Context {
+func addTestTimeout(ctx context.Context, t *testing.T, timeout time.Duration, testKey string) context.Context {
 
 	if targetGCP := os.Getenv("E2E_GCP_TARGET"); targetGCP == "real" {
 		// If the target is real, check if SUBTEST_TIMEOUT_E2E is present set
@@ -798,7 +798,7 @@ func addTestTimeout(ctx context.Context, t *testing.T, timeout time.Duration, na
 	t.Cleanup(func() {
 		done = true
 		if timedOut {
-			t.Fatalf("FAIL: subtest %s timeout after %v", name, timeout)
+			t.Fatalf("FAIL: subtest %s timeout after %v", testKey, timeout)
 		}
 		cancel()
 	})
@@ -1007,13 +1007,13 @@ func TestIAM_AllInSeries(t *testing.T) {
 			if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
 				skippedGroups := strings.Split(s, ",")
 				if slice.StringSliceContains(skippedGroups, group) {
-					skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", fixture.Name, group, s)
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", fixture.TestKey, group, s)
 				}
 			}
 			if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
 				groups := strings.Split(s, ",")
 				if !slice.StringSliceContains(groups, group) {
-					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.Name, group, s)
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.TestKey, group, s)
 				}
 			}
 			t.Run(fixture.Name, func(t *testing.T) {
@@ -1021,7 +1021,7 @@ func TestIAM_AllInSeries(t *testing.T) {
 					t.Skip(skipTestReason)
 				}
 
-				ctx := addTestTimeout(ctx, t, subtestTimeout, fixture.Name)
+				ctx := addTestTimeout(ctx, t, subtestTimeout, fixture.TestKey)
 
 				loadFixture := func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
 					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
