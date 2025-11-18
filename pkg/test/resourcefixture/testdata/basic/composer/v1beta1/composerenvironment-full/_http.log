@@ -1,3 +1,91 @@
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "gsa-${uniqueId}",
+  "serviceAccount": {
+    "displayName": "Test GSA for composer environment"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Test GSA for composer environment",
+  "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Test GSA for composer environment",
+  "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
 GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -16,7 +104,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "No such environment found: projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "environment \"projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "environment \"projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -32,8 +127,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
   "config": {
     "environmentSize": 1,
     "nodeConfig": {
-      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
+      "composerInternalIpv4CidrBlock": "100.64.128.0/20"
     },
     "privateEnvironmentConfig": {
       "enablePrivateBuildsOnly": true,
@@ -69,7 +163,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "operationType": 1,
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48",
+    "resourceUuid": "test-uuid",
     "state": 1
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -100,33 +194,47 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "CREATE",
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48",
+    "resourceUuid": "test-uuid",
     "state": "SUCCEEDED"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
     "config": {
-      "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
       "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-      "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
+      "dagGcsPrefix": "gs://us-central1-composerenviron-{uniqueId}-bucket/dags",
       "dataRetentionConfig": {
         "airflowMetadataRetentionConfig": {
-          "retentionDays": 60,
-          "retentionMode": "RETENTION_MODE_ENABLED"
+          "retentionMode": "RETENTION_MODE_DISABLED"
+        },
+        "taskLogsRetentionConfig": {
+          "storageMode": "CLOUD_LOGGING_ONLY"
         }
+      },
+      "databaseConfig": {
+        "machineType": "db-custom-2-7680"
       },
       "encryptionConfig": {},
       "environmentSize": "ENVIRONMENT_SIZE_SMALL",
+      "maintenanceWindow": {
+        "endTime": "1970-01-01T04:00:00Z",
+        "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
+        "startTime": "1970-01-01T00:00:00Z"
+      },
       "nodeConfig": {
         "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-        "ipAllocationPolicy": {},
-        "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
+        "ipAllocationPolicy": {
+          "useIpAliases": true
+        },
+        "network": "projects/${projectId}/global/networks/default",
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
       },
       "privateEnvironmentConfig": {
+        "cloudComposerNetworkIpv4CidrBlock": "172.31.245.0/24",
+        "cloudSqlIpv4CidrBlock": "10.0.0.0/12",
         "enablePrivateBuildsOnly": true,
         "enablePrivateEnvironment": true,
-        "networkingConfig": {}
+        "privateClusterConfig": {}
       },
       "softwareConfig": {
         "airflowConfigOverrides": {
@@ -134,6 +242,7 @@ X-Xss-Protection: 0
         },
         "cloudDataLineageIntegration": {},
         "imageVersion": "composer-3-airflow-2.10.5-build.11",
+        "pythonVersion": "3",
         "webServerPluginsMode": "PLUGINS_ENABLED"
       },
       "webServerNetworkAccessControl": {
@@ -149,26 +258,15 @@ X-Xss-Protection: 0
         ]
       },
       "workloadsConfig": {
-        "dagProcessor": {
-          "count": 1,
-          "cpu": 1,
-          "memoryGb": 4,
-          "storageGb": 1
-        },
         "scheduler": {
           "count": 1,
           "cpu": 0.5,
           "memoryGb": 2,
           "storageGb": 1
         },
-        "triggerer": {
-          "count": 1,
-          "cpu": 0.5,
-          "memoryGb": 1
-        },
         "webServer": {
-          "cpu": 1,
-          "memoryGb": 4,
+          "cpu": 0.5,
+          "memoryGb": 2,
           "storageGb": 1
         },
         "worker": {
@@ -176,7 +274,7 @@ X-Xss-Protection: 0
           "maxCount": 3,
           "memoryGb": 2,
           "minCount": 1,
-          "storageGb": 10
+          "storageGb": 1
         }
       }
     },
@@ -186,10 +284,10 @@ X-Xss-Protection: 0
     },
     "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
     "storageConfig": {
-      "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
+      "bucket": "us-central1-test-123456-asdfg-bucket"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z",
-    "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
+    "uuid": "test-uuid"
   }
 }
 
@@ -212,26 +310,36 @@ X-Xss-Protection: 0
 
 {
   "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
     "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
+    "dagGcsPrefix": "gs://us-central1-composerenviron-{uniqueId}-bucket/dags",
     "dataRetentionConfig": {
       "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
+        "retentionMode": 2
+      },
+      "taskLogsRetentionConfig": {
+        "storageMode": 2
       }
     },
+    "databaseConfig": {},
     "encryptionConfig": {},
     "environmentSize": 1,
+    "maintenanceWindow": {
+      "endTime": "1970-01-01T04:00:00Z",
+      "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
+      "startTime": "1970-01-01T00:00:00Z"
+    },
     "nodeConfig": {
       "composerInternalIpv4CidrBlock": "100.64.128.0/20",
       "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
+      "network": "projects/${projectId}/global/networks/default",
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
     },
     "privateEnvironmentConfig": {
+      "cloudComposerNetworkIpv4CidrBlock": "172.31.245.0/24",
+      "cloudSqlIpv4CidrBlock": "10.0.0.0/12",
       "enablePrivateBuildsOnly": true,
       "enablePrivateEnvironment": true,
-      "networkingConfig": {}
+      "privateClusterConfig": {}
     },
     "softwareConfig": {
       "airflowConfigOverrides": {
@@ -254,26 +362,15 @@ X-Xss-Protection: 0
       ]
     },
     "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
       "scheduler": {
         "count": 1,
         "cpu": 0.5,
         "memoryGb": 2,
         "storageGb": 1
       },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
       "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
+        "cpu": 0.5,
+        "memoryGb": 2,
         "storageGb": 1
       },
       "worker": {
@@ -281,7 +378,7 @@ X-Xss-Protection: 0
         "maxCount": 3,
         "memoryGb": 2,
         "minCount": 1,
-        "storageGb": 10
+        "storageGb": 1
       }
     }
   },
@@ -290,12 +387,11 @@ X-Xss-Protection: 0
     "custom-label": "foo"
   },
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 2,
   "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
+    "bucket": "us-central1-test-123456-asdfg-bucket"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
+  "uuid": "test-uuid"
 }
 
 ---
@@ -307,26 +403,36 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 {
   "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
     "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
+    "dagGcsPrefix": "gs://us-central1-composerenviron-{uniqueId}-bucket/dags",
     "dataRetentionConfig": {
       "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
+        "retentionMode": 2
+      },
+      "taskLogsRetentionConfig": {
+        "storageMode": 2
       }
     },
+    "databaseConfig": {},
     "encryptionConfig": {},
     "environmentSize": 3,
+    "maintenanceWindow": {
+      "endTime": "1970-01-01T04:00:00Z",
+      "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
+      "startTime": "1970-01-01T00:00:00Z"
+    },
     "nodeConfig": {
       "composerInternalIpv4CidrBlock": "100.64.128.0/20",
       "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
+      "network": "projects/${projectId}/global/networks/default",
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
     },
     "privateEnvironmentConfig": {
+      "cloudComposerNetworkIpv4CidrBlock": "172.31.245.0/24",
+      "cloudSqlIpv4CidrBlock": "10.0.0.0/12",
       "enablePrivateBuildsOnly": true,
       "enablePrivateEnvironment": true,
-      "networkingConfig": {}
+      "privateClusterConfig": {}
     },
     "softwareConfig": {
       "airflowConfigOverrides": {
@@ -349,26 +455,15 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
       ]
     },
     "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
       "scheduler": {
         "count": 1,
         "cpu": 0.5,
         "memoryGb": 2,
         "storageGb": 1
       },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
       "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
+        "cpu": 0.5,
+        "memoryGb": 2,
         "storageGb": 1
       },
       "worker": {
@@ -376,7 +471,7 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
         "maxCount": 3,
         "memoryGb": 2,
         "minCount": 1,
-        "storageGb": 10
+        "storageGb": 1
       }
     }
   },
@@ -385,12 +480,11 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
     "custom-label": "bar"
   },
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 2,
   "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
+    "bucket": "us-central1-test-123456-asdfg-bucket"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
+  "uuid": "test-uuid"
 }
 
 200 OK
@@ -409,1755 +503,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "operationType": 3,
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48",
-    "state": 1
-  },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
----
-
-GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
-    "dataRetentionConfig": {
-      "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
-      }
-    },
-    "encryptionConfig": {},
-    "environmentSize": 1,
-    "nodeConfig": {
-      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
-    },
-    "privateEnvironmentConfig": {
-      "enablePrivateBuildsOnly": true,
-      "enablePrivateEnvironment": true,
-      "networkingConfig": {}
-    },
-    "softwareConfig": {
-      "airflowConfigOverrides": {
-        "webserver-rbac_user_registration_role": "Viewer"
-      },
-      "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-3-airflow-2.10.5-build.11",
-      "webServerPluginsMode": 2
-    },
-    "webServerNetworkAccessControl": {
-      "allowedIpRanges": [
-        {
-          "description": "Allows access from all IPv4 addresses (default value)",
-          "value": "0.0.0.0/0"
-        },
-        {
-          "description": "Allows access from all IPv6 addresses (default value)",
-          "value": "::0/0"
-        }
-      ]
-    },
-    "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "scheduler": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 2,
-        "storageGb": 1
-      },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
-      "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "worker": {
-        "cpu": 0.5,
-        "maxCount": 3,
-        "memoryGb": 2,
-        "minCount": 1,
-        "storageGb": 10
-      }
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "custom-label": "foo"
-  },
-  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 3,
-  "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
-}
-
----
-
-PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.environmentSize
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
-
-{
-  "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
-    "dataRetentionConfig": {
-      "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
-      }
-    },
-    "encryptionConfig": {},
-    "environmentSize": 3,
-    "nodeConfig": {
-      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
-    },
-    "privateEnvironmentConfig": {
-      "enablePrivateBuildsOnly": true,
-      "enablePrivateEnvironment": true,
-      "networkingConfig": {}
-    },
-    "softwareConfig": {
-      "airflowConfigOverrides": {
-        "webserver-rbac_user_registration_role": "Viewer"
-      },
-      "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-3-airflow-2.10.5-build.19",
-      "webServerPluginsMode": 2
-    },
-    "webServerNetworkAccessControl": {
-      "allowedIpRanges": [
-        {
-          "description": "Allows access from all IPv4 addresses (default value)",
-          "value": "0.0.0.0/0"
-        },
-        {
-          "description": "Allows access from all IPv6 addresses (default value)",
-          "value": "::0/0"
-        }
-      ]
-    },
-    "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "scheduler": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 2,
-        "storageGb": 1
-      },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
-      "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "worker": {
-        "cpu": 0.5,
-        "maxCount": 3,
-        "memoryGb": 2,
-        "minCount": 1,
-        "storageGb": 10
-      }
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "custom-label": "bar"
-  },
-  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 3,
-  "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
-}
-
-400 Bad Request
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 400,
-    "message": "Cannot update environment in state UPDATING. Environment must be in RUNNING state.",
-    "status": "FAILED_PRECONDITION"
-  }
-}
-
----
-
-GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
-    "dataRetentionConfig": {
-      "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
-      }
-    },
-    "encryptionConfig": {},
-    "environmentSize": 1,
-    "nodeConfig": {
-      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
-    },
-    "privateEnvironmentConfig": {
-      "enablePrivateBuildsOnly": true,
-      "enablePrivateEnvironment": true,
-      "networkingConfig": {}
-    },
-    "softwareConfig": {
-      "airflowConfigOverrides": {
-        "webserver-rbac_user_registration_role": "Viewer"
-      },
-      "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-3-airflow-2.10.5-build.11",
-      "webServerPluginsMode": 2
-    },
-    "webServerNetworkAccessControl": {
-      "allowedIpRanges": [
-        {
-          "description": "Allows access from all IPv4 addresses (default value)",
-          "value": "0.0.0.0/0"
-        },
-        {
-          "description": "Allows access from all IPv6 addresses (default value)",
-          "value": "::0/0"
-        }
-      ]
-    },
-    "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "scheduler": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 2,
-        "storageGb": 1
-      },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
-      "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "worker": {
-        "cpu": 0.5,
-        "maxCount": 3,
-        "memoryGb": 2,
-        "minCount": 1,
-        "storageGb": 10
-      }
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "custom-label": "foo"
-  },
-  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 3,
-  "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
-}
-
----
-
-PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.environmentSize
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
-
-{
-  "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
-    "dataRetentionConfig": {
-      "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
-      }
-    },
-    "encryptionConfig": {},
-    "environmentSize": 3,
-    "nodeConfig": {
-      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
-    },
-    "privateEnvironmentConfig": {
-      "enablePrivateBuildsOnly": true,
-      "enablePrivateEnvironment": true,
-      "networkingConfig": {}
-    },
-    "softwareConfig": {
-      "airflowConfigOverrides": {
-        "webserver-rbac_user_registration_role": "Viewer"
-      },
-      "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-3-airflow-2.10.5-build.19",
-      "webServerPluginsMode": 2
-    },
-    "webServerNetworkAccessControl": {
-      "allowedIpRanges": [
-        {
-          "description": "Allows access from all IPv4 addresses (default value)",
-          "value": "0.0.0.0/0"
-        },
-        {
-          "description": "Allows access from all IPv6 addresses (default value)",
-          "value": "::0/0"
-        }
-      ]
-    },
-    "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "scheduler": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 2,
-        "storageGb": 1
-      },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
-      "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "worker": {
-        "cpu": 0.5,
-        "maxCount": 3,
-        "memoryGb": 2,
-        "minCount": 1,
-        "storageGb": 10
-      }
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "custom-label": "bar"
-  },
-  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 3,
-  "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
-}
-
-400 Bad Request
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 400,
-    "message": "Cannot update environment in state UPDATING. Environment must be in RUNNING state.",
-    "status": "FAILED_PRECONDITION"
-  }
-}
-
----
-
-GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
-    "dataRetentionConfig": {
-      "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
-      }
-    },
-    "encryptionConfig": {},
-    "environmentSize": 1,
-    "nodeConfig": {
-      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
-    },
-    "privateEnvironmentConfig": {
-      "enablePrivateBuildsOnly": true,
-      "enablePrivateEnvironment": true,
-      "networkingConfig": {}
-    },
-    "softwareConfig": {
-      "airflowConfigOverrides": {
-        "webserver-rbac_user_registration_role": "Viewer"
-      },
-      "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-3-airflow-2.10.5-build.11",
-      "webServerPluginsMode": 2
-    },
-    "webServerNetworkAccessControl": {
-      "allowedIpRanges": [
-        {
-          "description": "Allows access from all IPv4 addresses (default value)",
-          "value": "0.0.0.0/0"
-        },
-        {
-          "description": "Allows access from all IPv6 addresses (default value)",
-          "value": "::0/0"
-        }
-      ]
-    },
-    "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "scheduler": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 2,
-        "storageGb": 1
-      },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
-      "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "worker": {
-        "cpu": 0.5,
-        "maxCount": 3,
-        "memoryGb": 2,
-        "minCount": 1,
-        "storageGb": 10
-      }
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "custom-label": "foo"
-  },
-  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 3,
-  "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
-}
-
----
-
-PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.environmentSize
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
-
-{
-  "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
-    "dataRetentionConfig": {
-      "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
-      }
-    },
-    "encryptionConfig": {},
-    "environmentSize": 3,
-    "nodeConfig": {
-      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
-    },
-    "privateEnvironmentConfig": {
-      "enablePrivateBuildsOnly": true,
-      "enablePrivateEnvironment": true,
-      "networkingConfig": {}
-    },
-    "softwareConfig": {
-      "airflowConfigOverrides": {
-        "webserver-rbac_user_registration_role": "Viewer"
-      },
-      "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-3-airflow-2.10.5-build.19",
-      "webServerPluginsMode": 2
-    },
-    "webServerNetworkAccessControl": {
-      "allowedIpRanges": [
-        {
-          "description": "Allows access from all IPv4 addresses (default value)",
-          "value": "0.0.0.0/0"
-        },
-        {
-          "description": "Allows access from all IPv6 addresses (default value)",
-          "value": "::0/0"
-        }
-      ]
-    },
-    "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "scheduler": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 2,
-        "storageGb": 1
-      },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
-      "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "worker": {
-        "cpu": 0.5,
-        "maxCount": 3,
-        "memoryGb": 2,
-        "minCount": 1,
-        "storageGb": 10
-      }
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "custom-label": "bar"
-  },
-  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 3,
-  "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
-}
-
-400 Bad Request
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 400,
-    "message": "Cannot update environment in state UPDATING. Environment must be in RUNNING state.",
-    "status": "FAILED_PRECONDITION"
-  }
-}
-
----
-
-GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
-    "dataRetentionConfig": {
-      "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
-      }
-    },
-    "encryptionConfig": {},
-    "environmentSize": 1,
-    "nodeConfig": {
-      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
-    },
-    "privateEnvironmentConfig": {
-      "enablePrivateBuildsOnly": true,
-      "enablePrivateEnvironment": true,
-      "networkingConfig": {}
-    },
-    "softwareConfig": {
-      "airflowConfigOverrides": {
-        "webserver-rbac_user_registration_role": "Viewer"
-      },
-      "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-3-airflow-2.10.5-build.11",
-      "webServerPluginsMode": 2
-    },
-    "webServerNetworkAccessControl": {
-      "allowedIpRanges": [
-        {
-          "description": "Allows access from all IPv4 addresses (default value)",
-          "value": "0.0.0.0/0"
-        },
-        {
-          "description": "Allows access from all IPv6 addresses (default value)",
-          "value": "::0/0"
-        }
-      ]
-    },
-    "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "scheduler": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 2,
-        "storageGb": 1
-      },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
-      "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "worker": {
-        "cpu": 0.5,
-        "maxCount": 3,
-        "memoryGb": 2,
-        "minCount": 1,
-        "storageGb": 10
-      }
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "custom-label": "foo"
-  },
-  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 3,
-  "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
-}
-
----
-
-PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.environmentSize
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
-
-{
-  "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
-    "dataRetentionConfig": {
-      "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
-      }
-    },
-    "encryptionConfig": {},
-    "environmentSize": 3,
-    "nodeConfig": {
-      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
-    },
-    "privateEnvironmentConfig": {
-      "enablePrivateBuildsOnly": true,
-      "enablePrivateEnvironment": true,
-      "networkingConfig": {}
-    },
-    "softwareConfig": {
-      "airflowConfigOverrides": {
-        "webserver-rbac_user_registration_role": "Viewer"
-      },
-      "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-3-airflow-2.10.5-build.19",
-      "webServerPluginsMode": 2
-    },
-    "webServerNetworkAccessControl": {
-      "allowedIpRanges": [
-        {
-          "description": "Allows access from all IPv4 addresses (default value)",
-          "value": "0.0.0.0/0"
-        },
-        {
-          "description": "Allows access from all IPv6 addresses (default value)",
-          "value": "::0/0"
-        }
-      ]
-    },
-    "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "scheduler": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 2,
-        "storageGb": 1
-      },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
-      "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "worker": {
-        "cpu": 0.5,
-        "maxCount": 3,
-        "memoryGb": 2,
-        "minCount": 1,
-        "storageGb": 10
-      }
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "custom-label": "bar"
-  },
-  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 3,
-  "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
-}
-
-400 Bad Request
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 400,
-    "message": "Cannot update environment in state UPDATING. Environment must be in RUNNING state.",
-    "status": "FAILED_PRECONDITION"
-  }
-}
-
----
-
-GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
-    "dataRetentionConfig": {
-      "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
-      }
-    },
-    "encryptionConfig": {},
-    "environmentSize": 1,
-    "nodeConfig": {
-      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
-    },
-    "privateEnvironmentConfig": {
-      "enablePrivateBuildsOnly": true,
-      "enablePrivateEnvironment": true,
-      "networkingConfig": {}
-    },
-    "softwareConfig": {
-      "airflowConfigOverrides": {
-        "webserver-rbac_user_registration_role": "Viewer"
-      },
-      "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-3-airflow-2.10.5-build.11",
-      "webServerPluginsMode": 2
-    },
-    "webServerNetworkAccessControl": {
-      "allowedIpRanges": [
-        {
-          "description": "Allows access from all IPv4 addresses (default value)",
-          "value": "0.0.0.0/0"
-        },
-        {
-          "description": "Allows access from all IPv6 addresses (default value)",
-          "value": "::0/0"
-        }
-      ]
-    },
-    "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "scheduler": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 2,
-        "storageGb": 1
-      },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
-      "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "worker": {
-        "cpu": 0.5,
-        "maxCount": 3,
-        "memoryGb": 2,
-        "minCount": 1,
-        "storageGb": 10
-      }
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "custom-label": "foo"
-  },
-  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 3,
-  "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
-}
-
----
-
-PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.environmentSize
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
-
-{
-  "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
-    "dataRetentionConfig": {
-      "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
-      }
-    },
-    "encryptionConfig": {},
-    "environmentSize": 3,
-    "nodeConfig": {
-      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
-    },
-    "privateEnvironmentConfig": {
-      "enablePrivateBuildsOnly": true,
-      "enablePrivateEnvironment": true,
-      "networkingConfig": {}
-    },
-    "softwareConfig": {
-      "airflowConfigOverrides": {
-        "webserver-rbac_user_registration_role": "Viewer"
-      },
-      "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-3-airflow-2.10.5-build.19",
-      "webServerPluginsMode": 2
-    },
-    "webServerNetworkAccessControl": {
-      "allowedIpRanges": [
-        {
-          "description": "Allows access from all IPv4 addresses (default value)",
-          "value": "0.0.0.0/0"
-        },
-        {
-          "description": "Allows access from all IPv6 addresses (default value)",
-          "value": "::0/0"
-        }
-      ]
-    },
-    "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "scheduler": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 2,
-        "storageGb": 1
-      },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
-      "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "worker": {
-        "cpu": 0.5,
-        "maxCount": 3,
-        "memoryGb": 2,
-        "minCount": 1,
-        "storageGb": 10
-      }
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "custom-label": "bar"
-  },
-  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 3,
-  "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
-}
-
-400 Bad Request
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 400,
-    "message": "Cannot update environment in state UPDATING. Environment must be in RUNNING state.",
-    "status": "FAILED_PRECONDITION"
-  }
-}
-
----
-
-GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
-    "dataRetentionConfig": {
-      "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
-      }
-    },
-    "encryptionConfig": {},
-    "environmentSize": 1,
-    "nodeConfig": {
-      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
-    },
-    "privateEnvironmentConfig": {
-      "enablePrivateBuildsOnly": true,
-      "enablePrivateEnvironment": true,
-      "networkingConfig": {}
-    },
-    "softwareConfig": {
-      "airflowConfigOverrides": {
-        "webserver-rbac_user_registration_role": "Viewer"
-      },
-      "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-3-airflow-2.10.5-build.11",
-      "webServerPluginsMode": 2
-    },
-    "webServerNetworkAccessControl": {
-      "allowedIpRanges": [
-        {
-          "description": "Allows access from all IPv4 addresses (default value)",
-          "value": "0.0.0.0/0"
-        },
-        {
-          "description": "Allows access from all IPv6 addresses (default value)",
-          "value": "::0/0"
-        }
-      ]
-    },
-    "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "scheduler": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 2,
-        "storageGb": 1
-      },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
-      "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "worker": {
-        "cpu": 0.5,
-        "maxCount": 3,
-        "memoryGb": 2,
-        "minCount": 1,
-        "storageGb": 10
-      }
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "custom-label": "foo"
-  },
-  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 3,
-  "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
-}
-
----
-
-PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.environmentSize
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
-
-{
-  "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
-    "dataRetentionConfig": {
-      "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
-      }
-    },
-    "encryptionConfig": {},
-    "environmentSize": 3,
-    "nodeConfig": {
-      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
-    },
-    "privateEnvironmentConfig": {
-      "enablePrivateBuildsOnly": true,
-      "enablePrivateEnvironment": true,
-      "networkingConfig": {}
-    },
-    "softwareConfig": {
-      "airflowConfigOverrides": {
-        "webserver-rbac_user_registration_role": "Viewer"
-      },
-      "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-3-airflow-2.10.5-build.19",
-      "webServerPluginsMode": 2
-    },
-    "webServerNetworkAccessControl": {
-      "allowedIpRanges": [
-        {
-          "description": "Allows access from all IPv4 addresses (default value)",
-          "value": "0.0.0.0/0"
-        },
-        {
-          "description": "Allows access from all IPv6 addresses (default value)",
-          "value": "::0/0"
-        }
-      ]
-    },
-    "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "scheduler": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 2,
-        "storageGb": 1
-      },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
-      "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "worker": {
-        "cpu": 0.5,
-        "maxCount": 3,
-        "memoryGb": 2,
-        "minCount": 1,
-        "storageGb": 10
-      }
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "custom-label": "bar"
-  },
-  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 3,
-  "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
-}
-
-400 Bad Request
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 400,
-    "message": "Cannot update environment in state UPDATING. Environment must be in RUNNING state.",
-    "status": "FAILED_PRECONDITION"
-  }
-}
-
----
-
-GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
-    "dataRetentionConfig": {
-      "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
-      }
-    },
-    "encryptionConfig": {},
-    "environmentSize": 1,
-    "nodeConfig": {
-      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
-    },
-    "privateEnvironmentConfig": {
-      "enablePrivateBuildsOnly": true,
-      "enablePrivateEnvironment": true,
-      "networkingConfig": {}
-    },
-    "softwareConfig": {
-      "airflowConfigOverrides": {
-        "webserver-rbac_user_registration_role": "Viewer"
-      },
-      "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-3-airflow-2.10.5-build.11",
-      "webServerPluginsMode": 2
-    },
-    "webServerNetworkAccessControl": {
-      "allowedIpRanges": [
-        {
-          "description": "Allows access from all IPv4 addresses (default value)",
-          "value": "0.0.0.0/0"
-        },
-        {
-          "description": "Allows access from all IPv6 addresses (default value)",
-          "value": "::0/0"
-        }
-      ]
-    },
-    "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "scheduler": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 2,
-        "storageGb": 1
-      },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
-      "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "worker": {
-        "cpu": 0.5,
-        "maxCount": 3,
-        "memoryGb": 2,
-        "minCount": 1,
-        "storageGb": 10
-      }
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "custom-label": "foo"
-  },
-  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 3,
-  "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
-}
-
----
-
-PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.environmentSize
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
-
-{
-  "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
-    "dataRetentionConfig": {
-      "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
-      }
-    },
-    "encryptionConfig": {},
-    "environmentSize": 3,
-    "nodeConfig": {
-      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
-    },
-    "privateEnvironmentConfig": {
-      "enablePrivateBuildsOnly": true,
-      "enablePrivateEnvironment": true,
-      "networkingConfig": {}
-    },
-    "softwareConfig": {
-      "airflowConfigOverrides": {
-        "webserver-rbac_user_registration_role": "Viewer"
-      },
-      "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-3-airflow-2.10.5-build.19",
-      "webServerPluginsMode": 2
-    },
-    "webServerNetworkAccessControl": {
-      "allowedIpRanges": [
-        {
-          "description": "Allows access from all IPv4 addresses (default value)",
-          "value": "0.0.0.0/0"
-        },
-        {
-          "description": "Allows access from all IPv6 addresses (default value)",
-          "value": "::0/0"
-        }
-      ]
-    },
-    "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "scheduler": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 2,
-        "storageGb": 1
-      },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
-      "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "worker": {
-        "cpu": 0.5,
-        "maxCount": 3,
-        "memoryGb": 2,
-        "minCount": 1,
-        "storageGb": 10
-      }
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "custom-label": "bar"
-  },
-  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 3,
-  "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
-}
-
-400 Bad Request
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 400,
-    "message": "Cannot update environment in state UPDATING. Environment must be in RUNNING state.",
-    "status": "FAILED_PRECONDITION"
-  }
-}
-
----
-
-GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
-    "dataRetentionConfig": {
-      "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
-      }
-    },
-    "encryptionConfig": {},
-    "environmentSize": 3,
-    "nodeConfig": {
-      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
-    },
-    "privateEnvironmentConfig": {
-      "enablePrivateBuildsOnly": true,
-      "enablePrivateEnvironment": true,
-      "networkingConfig": {}
-    },
-    "softwareConfig": {
-      "airflowConfigOverrides": {
-        "webserver-rbac_user_registration_role": "Viewer"
-      },
-      "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-3-airflow-2.10.5-build.11",
-      "webServerPluginsMode": 2
-    },
-    "webServerNetworkAccessControl": {
-      "allowedIpRanges": [
-        {
-          "description": "Allows access from all IPv4 addresses (default value)",
-          "value": "0.0.0.0/0"
-        },
-        {
-          "description": "Allows access from all IPv6 addresses (default value)",
-          "value": "::0/0"
-        }
-      ]
-    },
-    "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "scheduler": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 2,
-        "storageGb": 1
-      },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
-      "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "worker": {
-        "cpu": 0.5,
-        "maxCount": 3,
-        "memoryGb": 2,
-        "minCount": 1,
-        "storageGb": 10
-      }
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "custom-label": "foo"
-  },
-  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 2,
-  "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
-}
-
----
-
-PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.softwareConfig.imageVersion
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
-
-{
-  "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
-    "dataRetentionConfig": {
-      "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
-      }
-    },
-    "encryptionConfig": {},
-    "environmentSize": 3,
-    "nodeConfig": {
-      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
-    },
-    "privateEnvironmentConfig": {
-      "enablePrivateBuildsOnly": true,
-      "enablePrivateEnvironment": true,
-      "networkingConfig": {}
-    },
-    "softwareConfig": {
-      "airflowConfigOverrides": {
-        "webserver-rbac_user_registration_role": "Viewer"
-      },
-      "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-3-airflow-2.10.5-build.19",
-      "webServerPluginsMode": 2
-    },
-    "webServerNetworkAccessControl": {
-      "allowedIpRanges": [
-        {
-          "description": "Allows access from all IPv4 addresses (default value)",
-          "value": "0.0.0.0/0"
-        },
-        {
-          "description": "Allows access from all IPv6 addresses (default value)",
-          "value": "::0/0"
-        }
-      ]
-    },
-    "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "scheduler": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 2,
-        "storageGb": 1
-      },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
-      "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
-      "worker": {
-        "cpu": 0.5,
-        "maxCount": 3,
-        "memoryGb": 2,
-        "minCount": 1,
-        "storageGb": 10
-      }
-    }
-  },
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "custom-label": "bar"
-  },
-  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 2,
-  "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "operationType": 3,
-    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48",
+    "resourceUuid": "test-uuid",
     "state": 1
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -2188,40 +534,55 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "UPDATE",
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48",
+    "resourceUuid": "test-uuid",
     "state": "SUCCEEDED"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
     "config": {
-      "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
       "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-      "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
+      "dagGcsPrefix": "gs://us-central1-composerenviron-{uniqueId}-bucket/dags",
       "dataRetentionConfig": {
         "airflowMetadataRetentionConfig": {
-          "retentionDays": 60,
-          "retentionMode": "RETENTION_MODE_ENABLED"
+          "retentionMode": "RETENTION_MODE_DISABLED"
+        },
+        "taskLogsRetentionConfig": {
+          "storageMode": "CLOUD_LOGGING_ONLY"
         }
       },
+      "databaseConfig": {
+        "machineType": "db-custom-2-7680"
+      },
       "encryptionConfig": {},
-      "environmentSize": "ENVIRONMENT_SIZE_LARGE",
+      "environmentSize": "ENVIRONMENT_SIZE_SMALL",
+      "maintenanceWindow": {
+        "endTime": "1970-01-01T04:00:00Z",
+        "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
+        "startTime": "1970-01-01T00:00:00Z"
+      },
       "nodeConfig": {
         "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-        "ipAllocationPolicy": {},
-        "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
+        "ipAllocationPolicy": {
+          "useIpAliases": true
+        },
+        "network": "projects/${projectId}/global/networks/default",
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
       },
       "privateEnvironmentConfig": {
+        "cloudComposerNetworkIpv4CidrBlock": "172.31.245.0/24",
+        "cloudSqlIpv4CidrBlock": "10.0.0.0/12",
         "enablePrivateBuildsOnly": true,
         "enablePrivateEnvironment": true,
-        "networkingConfig": {}
+        "privateClusterConfig": {}
       },
       "softwareConfig": {
         "airflowConfigOverrides": {
           "webserver-rbac_user_registration_role": "Viewer"
         },
         "cloudDataLineageIntegration": {},
-        "imageVersion": "composer-3-airflow-2.10.5-build.19",
+        "imageVersion": "composer-3-airflow-2.10.5-build.11",
+        "pythonVersion": "3",
         "webServerPluginsMode": "PLUGINS_ENABLED"
       },
       "webServerNetworkAccessControl": {
@@ -2237,26 +598,15 @@ X-Xss-Protection: 0
         ]
       },
       "workloadsConfig": {
-        "dagProcessor": {
-          "count": 1,
-          "cpu": 1,
-          "memoryGb": 4,
-          "storageGb": 1
-        },
         "scheduler": {
           "count": 1,
           "cpu": 0.5,
           "memoryGb": 2,
           "storageGb": 1
         },
-        "triggerer": {
-          "count": 1,
-          "cpu": 0.5,
-          "memoryGb": 1
-        },
         "webServer": {
-          "cpu": 1,
-          "memoryGb": 4,
+          "cpu": 0.5,
+          "memoryGb": 2,
           "storageGb": 1
         },
         "worker": {
@@ -2264,7 +614,7 @@ X-Xss-Protection: 0
           "maxCount": 3,
           "memoryGb": 2,
           "minCount": 1,
-          "storageGb": 10
+          "storageGb": 1
         }
       }
     },
@@ -2274,42 +624,52 @@ X-Xss-Protection: 0
     },
     "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
     "storageConfig": {
-      "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
+      "bucket": "us-central1-test-123456-asdfg-bucket"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z",
-    "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
+    "uuid": "test-uuid"
   }
 }
 
 ---
 
-PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
+PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.softwareConfig.imageVersion
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
 
 {
   "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
     "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
+    "dagGcsPrefix": "gs://us-central1-composerenviron-{uniqueId}-bucket/dags",
     "dataRetentionConfig": {
       "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
+        "retentionMode": 2
+      },
+      "taskLogsRetentionConfig": {
+        "storageMode": 2
       }
     },
+    "databaseConfig": {},
     "encryptionConfig": {},
     "environmentSize": 3,
+    "maintenanceWindow": {
+      "endTime": "1970-01-01T04:00:00Z",
+      "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
+      "startTime": "1970-01-01T00:00:00Z"
+    },
     "nodeConfig": {
       "composerInternalIpv4CidrBlock": "100.64.128.0/20",
       "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
+      "network": "projects/${projectId}/global/networks/default",
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
     },
     "privateEnvironmentConfig": {
+      "cloudComposerNetworkIpv4CidrBlock": "172.31.245.0/24",
+      "cloudSqlIpv4CidrBlock": "10.0.0.0/12",
       "enablePrivateBuildsOnly": true,
       "enablePrivateEnvironment": true,
-      "networkingConfig": {}
+      "privateClusterConfig": {}
     },
     "softwareConfig": {
       "airflowConfigOverrides": {
@@ -2332,26 +692,15 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
       ]
     },
     "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
       "scheduler": {
         "count": 1,
         "cpu": 0.5,
         "memoryGb": 2,
         "storageGb": 1
       },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
       "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
+        "cpu": 0.5,
+        "memoryGb": 2,
         "storageGb": 1
       },
       "worker": {
@@ -2359,7 +708,7 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
         "maxCount": 3,
         "memoryGb": 2,
         "minCount": 1,
-        "storageGb": 10
+        "storageGb": 1
       }
     }
   },
@@ -2368,12 +717,11 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
     "custom-label": "bar"
   },
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 2,
   "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
+    "bucket": "us-central1-test-123456-asdfg-bucket"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
+  "uuid": "test-uuid"
 }
 
 200 OK
@@ -2392,10 +740,369 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "operationType": 3,
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48",
+    "resourceUuid": "test-uuid",
     "state": 1
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": "UPDATE",
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "test-uuid",
+    "state": "SUCCEEDED"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
+    "config": {
+      "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-composerenviron-{uniqueId}-bucket/dags",
+      "dataRetentionConfig": {
+        "airflowMetadataRetentionConfig": {
+          "retentionMode": "RETENTION_MODE_DISABLED"
+        },
+        "taskLogsRetentionConfig": {
+          "storageMode": "CLOUD_LOGGING_ONLY"
+        }
+      },
+      "databaseConfig": {
+        "machineType": "db-custom-2-7680"
+      },
+      "encryptionConfig": {},
+      "environmentSize": "ENVIRONMENT_SIZE_SMALL",
+      "maintenanceWindow": {
+        "endTime": "1970-01-01T04:00:00Z",
+        "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
+        "startTime": "1970-01-01T00:00:00Z"
+      },
+      "nodeConfig": {
+        "composerInternalIpv4CidrBlock": "100.64.128.0/20",
+        "ipAllocationPolicy": {
+          "useIpAliases": true
+        },
+        "network": "projects/${projectId}/global/networks/default",
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+      },
+      "privateEnvironmentConfig": {
+        "cloudComposerNetworkIpv4CidrBlock": "172.31.245.0/24",
+        "cloudSqlIpv4CidrBlock": "10.0.0.0/12",
+        "enablePrivateBuildsOnly": true,
+        "enablePrivateEnvironment": true,
+        "privateClusterConfig": {}
+      },
+      "softwareConfig": {
+        "airflowConfigOverrides": {
+          "webserver-rbac_user_registration_role": "Viewer"
+        },
+        "cloudDataLineageIntegration": {},
+        "imageVersion": "composer-3-airflow-2.10.5-build.11",
+        "pythonVersion": "3",
+        "webServerPluginsMode": "PLUGINS_ENABLED"
+      },
+      "webServerNetworkAccessControl": {
+        "allowedIpRanges": [
+          {
+            "description": "Allows access from all IPv4 addresses (default value)",
+            "value": "0.0.0.0/0"
+          },
+          {
+            "description": "Allows access from all IPv6 addresses (default value)",
+            "value": "::0/0"
+          }
+        ]
+      },
+      "workloadsConfig": {
+        "scheduler": {
+          "count": 1,
+          "cpu": 0.5,
+          "memoryGb": 2,
+          "storageGb": 1
+        },
+        "webServer": {
+          "cpu": 0.5,
+          "memoryGb": 2,
+          "storageGb": 1
+        },
+        "worker": {
+          "cpu": 0.5,
+          "maxCount": 3,
+          "memoryGb": 2,
+          "minCount": 1,
+          "storageGb": 1
+        }
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "custom-label": "foo"
+    },
+    "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "storageConfig": {
+      "bucket": "us-central1-test-123456-asdfg-bucket"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "uuid": "test-uuid"
+  }
+}
+
+---
+
+PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
+
+{
+  "config": {
+    "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
+    "dagGcsPrefix": "gs://us-central1-composerenviron-{uniqueId}-bucket/dags",
+    "dataRetentionConfig": {
+      "airflowMetadataRetentionConfig": {
+        "retentionMode": 2
+      },
+      "taskLogsRetentionConfig": {
+        "storageMode": 2
+      }
+    },
+    "databaseConfig": {},
+    "encryptionConfig": {},
+    "environmentSize": 3,
+    "maintenanceWindow": {
+      "endTime": "1970-01-01T04:00:00Z",
+      "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
+      "startTime": "1970-01-01T00:00:00Z"
+    },
+    "nodeConfig": {
+      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
+      "ipAllocationPolicy": {},
+      "network": "projects/${projectId}/global/networks/default",
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+    },
+    "privateEnvironmentConfig": {
+      "cloudComposerNetworkIpv4CidrBlock": "172.31.245.0/24",
+      "cloudSqlIpv4CidrBlock": "10.0.0.0/12",
+      "enablePrivateBuildsOnly": true,
+      "enablePrivateEnvironment": true,
+      "privateClusterConfig": {}
+    },
+    "softwareConfig": {
+      "airflowConfigOverrides": {
+        "webserver-rbac_user_registration_role": "Viewer"
+      },
+      "cloudDataLineageIntegration": {},
+      "imageVersion": "composer-3-airflow-2.10.5-build.19",
+      "webServerPluginsMode": 2
+    },
+    "webServerNetworkAccessControl": {
+      "allowedIpRanges": [
+        {
+          "description": "Allows access from all IPv4 addresses (default value)",
+          "value": "0.0.0.0/0"
+        },
+        {
+          "description": "Allows access from all IPv6 addresses (default value)",
+          "value": "::0/0"
+        }
+      ]
+    },
+    "workloadsConfig": {
+      "scheduler": {
+        "count": 1,
+        "cpu": 0.5,
+        "memoryGb": 2,
+        "storageGb": 1
+      },
+      "webServer": {
+        "cpu": 0.5,
+        "memoryGb": 2,
+        "storageGb": 1
+      },
+      "worker": {
+        "cpu": 0.5,
+        "maxCount": 3,
+        "memoryGb": 2,
+        "minCount": 1,
+        "storageGb": 1
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "custom-label": "bar"
+  },
+  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+  "storageConfig": {
+    "bucket": "us-central1-test-123456-asdfg-bucket"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "test-uuid"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": 3,
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "test-uuid",
+    "state": 1
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": "UPDATE",
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "test-uuid",
+    "state": "SUCCEEDED"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
+    "config": {
+      "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-composerenviron-{uniqueId}-bucket/dags",
+      "dataRetentionConfig": {
+        "airflowMetadataRetentionConfig": {
+          "retentionMode": "RETENTION_MODE_DISABLED"
+        },
+        "taskLogsRetentionConfig": {
+          "storageMode": "CLOUD_LOGGING_ONLY"
+        }
+      },
+      "databaseConfig": {
+        "machineType": "db-custom-2-7680"
+      },
+      "encryptionConfig": {},
+      "environmentSize": "ENVIRONMENT_SIZE_SMALL",
+      "maintenanceWindow": {
+        "endTime": "1970-01-01T04:00:00Z",
+        "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
+        "startTime": "1970-01-01T00:00:00Z"
+      },
+      "nodeConfig": {
+        "composerInternalIpv4CidrBlock": "100.64.128.0/20",
+        "ipAllocationPolicy": {
+          "useIpAliases": true
+        },
+        "network": "projects/${projectId}/global/networks/default",
+        "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
+      },
+      "privateEnvironmentConfig": {
+        "cloudComposerNetworkIpv4CidrBlock": "172.31.245.0/24",
+        "cloudSqlIpv4CidrBlock": "10.0.0.0/12",
+        "enablePrivateBuildsOnly": true,
+        "enablePrivateEnvironment": true,
+        "privateClusterConfig": {}
+      },
+      "softwareConfig": {
+        "airflowConfigOverrides": {
+          "webserver-rbac_user_registration_role": "Viewer"
+        },
+        "cloudDataLineageIntegration": {},
+        "imageVersion": "composer-3-airflow-2.10.5-build.11",
+        "pythonVersion": "3",
+        "webServerPluginsMode": "PLUGINS_ENABLED"
+      },
+      "webServerNetworkAccessControl": {
+        "allowedIpRanges": [
+          {
+            "description": "Allows access from all IPv4 addresses (default value)",
+            "value": "0.0.0.0/0"
+          },
+          {
+            "description": "Allows access from all IPv6 addresses (default value)",
+            "value": "::0/0"
+          }
+        ]
+      },
+      "workloadsConfig": {
+        "scheduler": {
+          "count": 1,
+          "cpu": 0.5,
+          "memoryGb": 2,
+          "storageGb": 1
+        },
+        "webServer": {
+          "cpu": 0.5,
+          "memoryGb": 2,
+          "storageGb": 1
+        },
+        "worker": {
+          "cpu": 0.5,
+          "maxCount": 3,
+          "memoryGb": 2,
+          "minCount": 1,
+          "storageGb": 1
+        }
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "custom-label": "foo"
+    },
+    "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "storageConfig": {
+      "bucket": "us-central1-test-123456-asdfg-bucket"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "uuid": "test-uuid"
+  }
 }
 
 ---
@@ -2417,33 +1124,43 @@ X-Xss-Protection: 0
 
 {
   "config": {
-    "airflowByoidUri": "https://8edbd6a2d04f4525bc249c9660e9fd48-dot-us-central1.composer.byoid.googleusercontent.com",
     "airflowUri": "https://{uuid}-dot-{location}.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-9b7dbedf-bucket/dags",
+    "dagGcsPrefix": "gs://us-central1-composerenviron-{uniqueId}-bucket/dags",
     "dataRetentionConfig": {
       "airflowMetadataRetentionConfig": {
-        "retentionDays": 60,
-        "retentionMode": 1
+        "retentionMode": 2
+      },
+      "taskLogsRetentionConfig": {
+        "storageMode": 2
       }
     },
+    "databaseConfig": {},
     "encryptionConfig": {},
-    "environmentSize": 3,
+    "environmentSize": 1,
+    "maintenanceWindow": {
+      "endTime": "1970-01-01T04:00:00Z",
+      "recurrence": "FREQ=WEEKLY;BYDAY=FR,SA,SU",
+      "startTime": "1970-01-01T00:00:00Z"
+    },
     "nodeConfig": {
       "composerInternalIpv4CidrBlock": "100.64.128.0/20",
       "ipAllocationPolicy": {},
-      "serviceAccount": "porch-sync@${projectId}.iam.gserviceaccount.com"
+      "network": "projects/${projectId}/global/networks/default",
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com"
     },
     "privateEnvironmentConfig": {
+      "cloudComposerNetworkIpv4CidrBlock": "172.31.245.0/24",
+      "cloudSqlIpv4CidrBlock": "10.0.0.0/12",
       "enablePrivateBuildsOnly": true,
       "enablePrivateEnvironment": true,
-      "networkingConfig": {}
+      "privateClusterConfig": {}
     },
     "softwareConfig": {
       "airflowConfigOverrides": {
         "webserver-rbac_user_registration_role": "Viewer"
       },
       "cloudDataLineageIntegration": {},
-      "imageVersion": "composer-3-airflow-2.10.5-build.19",
+      "imageVersion": "composer-3-airflow-2.10.5-build.11",
       "webServerPluginsMode": 2
     },
     "webServerNetworkAccessControl": {
@@ -2459,26 +1176,15 @@ X-Xss-Protection: 0
       ]
     },
     "workloadsConfig": {
-      "dagProcessor": {
-        "count": 1,
-        "cpu": 1,
-        "memoryGb": 4,
-        "storageGb": 1
-      },
       "scheduler": {
         "count": 1,
         "cpu": 0.5,
         "memoryGb": 2,
         "storageGb": 1
       },
-      "triggerer": {
-        "count": 1,
-        "cpu": 0.5,
-        "memoryGb": 1
-      },
       "webServer": {
-        "cpu": 1,
-        "memoryGb": 4,
+        "cpu": 0.5,
+        "memoryGb": 2,
         "storageGb": 1
       },
       "worker": {
@@ -2486,21 +1192,20 @@ X-Xss-Protection: 0
         "maxCount": 3,
         "memoryGb": 2,
         "minCount": 1,
-        "storageGb": 10
+        "storageGb": 1
       }
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
-    "custom-label": "bar"
+    "custom-label": "foo"
   },
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-  "state": 2,
   "storageConfig": {
-    "bucket": "us-central1-composerenviron-9b7dbedf-bucket"
+    "bucket": "us-central1-test-123456-asdfg-bucket"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48"
+  "uuid": "test-uuid"
 }
 
 ---
@@ -2526,8 +1231,82 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "operationType": 2,
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "8edbd6a2-d04f-4525-bc24-9c9660e9fd48",
     "state": 1
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": "DELETE",
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "state": "SUCCEEDED"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Test GSA for composer environment",
+  "email": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

@@ -193,16 +193,15 @@ func (s *ComposerV1) populateDefaultsForEnvironmentConfig(config *pb.Environment
 	if err != nil {
 		return err
 	}
-	// config.AirflowByoidUri = "https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com"
+	if config.AirflowByoidUri == "" {
+		config.AirflowUri = "https://" + uid.String() + "-dot-us-central1.composer.googleusercontent.com"
+	}
 	if config.AirflowUri == "" {
-		config.AirflowUri = "https://" + uid.String() + "-dot-{location}.composer.googleusercontent.com"
+		config.AirflowUri = "https://" + uid.String() + "-dot-us-central1.composer.googleusercontent.com"
 	}
-	// config.DagGcsPrefix = "gs://us-central1-test-123456-asdfg-bucket/dags"
 	if config.DagGcsPrefix == "" {
-		config.DagGcsPrefix = "gs://{location}-composerenviron-{uniqueId}-bucket/dags"
+		config.DagGcsPrefix = "gs://us-central1-composerenviron-{uniqueId}-bucket/dags"
 	}
-	// config.GkeCluster = "projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke"
-
 	if config.DataRetentionConfig == nil {
 		config.DataRetentionConfig = &pb.DataRetentionConfig{}
 	}
@@ -244,7 +243,9 @@ func (s *ComposerV1) populateDefaultsForEnvironmentConfig(config *pb.Environment
 	}
 
 	if config.NodeConfig == nil {
-		config.NodeConfig = &pb.NodeConfig{}
+		config.NodeConfig = &pb.NodeConfig{
+			ComposerInternalIpv4CidrBlock: "100.64.128.0/20",
+		}
 	}
 	if config.NodeConfig.IpAllocationPolicy == nil {
 		config.NodeConfig.IpAllocationPolicy = &pb.IPAllocationPolicy{}
@@ -260,7 +261,9 @@ func (s *ComposerV1) populateDefaultsForEnvironmentConfig(config *pb.Environment
 	}
 
 	if config.PrivateEnvironmentConfig == nil {
-		config.PrivateEnvironmentConfig = &pb.PrivateEnvironmentConfig{}
+		config.PrivateEnvironmentConfig = &pb.PrivateEnvironmentConfig{
+			PrivateClusterConfig: &pb.PrivateClusterConfig{},
+		}
 	}
 	if config.PrivateEnvironmentConfig.CloudComposerNetworkIpv4CidrBlock == "" {
 		config.PrivateEnvironmentConfig.CloudComposerNetworkIpv4CidrBlock = "172.31.245.0/24"

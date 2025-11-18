@@ -23,4 +23,4 @@ spec:
   config:
     nodeConfig:
       serviceAccountRef:
-        external: porch-sync@yuwenma-gke-playground.iam.gserviceaccount.com
+        name: gsa-${uniqueId}
