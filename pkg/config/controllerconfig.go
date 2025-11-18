@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"time"
 
 	cloudresourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
@@ -70,7 +71,8 @@ func (c *ControllerConfig) Init(ctx context.Context) error {
 		if err != nil {
 			return fmt.Errorf("building cloudresourcemanager client: %w", err)
 		}
-		c.ProjectMapper = projects.NewProjectMapper(projectsClient)
+		projectCache := projects.NewProjectCache(projectsClient, 4*time.Hour)
+		c.ProjectMapper = projects.NewProjectMapper(projectCache)
 	}
 	return nil
 }
