@@ -14,7 +14,7 @@
 
 // +tool:mockgcp-support
 // proto.service: google.cloud.networksecurity.v1beta1.NetworkSecurity
-// proto.message: google.cloud.networksecurity.v1beta1.AuthorizationPolicy
+// proto.message: google.cloud.networksecurity.v1beta1.ServerTlsPolicy
 
 package mocknetworksecurity
 
@@ -26,6 +26,7 @@ import (
 
 	pb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -34,14 +35,14 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func (s *NetworkSecurityServer) CreateAuthorizationPolicy(ctx context.Context, req *pb.CreateAuthorizationPolicyRequest) (*longrunning.Operation, error) {
-	name := req.Parent + "/authorizationPolicies/" + req.AuthorizationPolicyId
+func (s *NetworkSecurityServer) CreateServerTlsPolicy(ctx context.Context, req *pb.CreateServerTlsPolicyRequest) (*longrunning.Operation, error) {
+	name := req.Parent + "/serverTlsPolicies/" + req.ServerTlsPolicyId
 
 	fqn := name
 
 	now := time.Now()
 
-	obj := ProtoClone(req.AuthorizationPolicy)
+	obj := ProtoClone(req.ServerTlsPolicy)
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
@@ -64,15 +65,15 @@ func (s *NetworkSecurityServer) CreateAuthorizationPolicy(ctx context.Context, r
 	})
 }
 
-func (s *NetworkSecurityServer) GetAuthorizationPolicy(ctx context.Context, req *pb.GetAuthorizationPolicyRequest) (*pb.AuthorizationPolicy, error) {
-	name, err := s.parseAuthorizationPolicyName(req.Name)
+func (s *NetworkSecurityServer) GetServerTlsPolicy(ctx context.Context, req *pb.GetServerTlsPolicyRequest) (*pb.ServerTlsPolicy, error) {
+	name, err := s.parseServerTlsPolicyName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.AuthorizationPolicy{}
+	obj := &pb.ServerTlsPolicy{}
 	obj.Name = fqn
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
@@ -83,30 +84,57 @@ func (s *NetworkSecurityServer) GetAuthorizationPolicy(ctx context.Context, req 
 	return obj, nil
 }
 
-func (s *NetworkSecurityServer) UpdateAuthorizationPolicy(ctx context.Context, req *pb.UpdateAuthorizationPolicyRequest) (*longrunning.Operation, error) {
-	name, err := s.parseAuthorizationPolicyName(req.GetAuthorizationPolicy().GetName())
+func (s *NetworkSecurityServer) ListServerTlsPolicies(ctx context.Context, req *pb.ListServerTlsPoliciesRequest) (*pb.ListServerTlsPoliciesResponse, error) {
+	prefixName, err := s.parseServerTlsPolicyName(req.Parent + "/serverTlsPolicies/dummy")
 	if err != nil {
 		return nil, err
 	}
-	obj := &pb.AuthorizationPolicy{}
+	prefix := strings.TrimSuffix(prefixName.String(), "dummy")
+
+	response := &pb.ListServerTlsPoliciesResponse{}
+
+	filterKind := (&pb.ServerTlsPolicy{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, filterKind, storage.ListOptions{Prefix: prefix}, func(obj protoreflect.ProtoMessage) error {
+		serverTlsPolicy := obj.(*pb.ServerTlsPolicy)
+		response.ServerTlsPolicies = append(response.ServerTlsPolicies, serverTlsPolicy)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
+func (s *NetworkSecurityServer) UpdateServerTlsPolicy(ctx context.Context, req *pb.UpdateServerTlsPolicyRequest) (*longrunning.Operation, error) {
+	name, err := s.parseServerTlsPolicyName(req.GetServerTlsPolicy().GetName())
+	if err != nil {
+		return nil, err
+	}
+	obj := &pb.ServerTlsPolicy{}
 	if err := s.storage.Get(ctx, name.String(), obj); err != nil {
 		return nil, err
 	}
 
+	now := time.Now()
+
 	updated := ProtoClone(obj)
-	updated.CreateTime = obj.CreateTime
-	updated.UpdateTime = timestamppb.New(time.Now())
+	updated.UpdateTime = timestamppb.New(now)
 
 	updatePaths := req.GetUpdateMask().GetPaths()
 	if len(updatePaths) == 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "update mask is required")
+		return nil, status.Errorf(codes.InvalidArgument, "no update paths specified")
 	}
 	for _, path := range updatePaths {
 		switch path {
-		case "rules":
-			updated.Rules = req.GetAuthorizationPolicy().GetRules()
-		case "action":
-			updated.Action = req.GetAuthorizationPolicy().GetAction()
+		case "description":
+			updated.Description = req.GetServerTlsPolicy().GetDescription()
+		case "labels":
+			updated.Labels = req.GetServerTlsPolicy().GetLabels()
+		case "allow_open":
+			updated.AllowOpen = req.GetServerTlsPolicy().GetAllowOpen()
+		case "server_certificate":
+			updated.ServerCertificate = req.GetServerTlsPolicy().GetServerCertificate()
+		case "mtls_policy":
+			updated.MtlsPolicy = req.GetServerTlsPolicy().GetMtlsPolicy()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
 		}
@@ -116,7 +144,6 @@ func (s *NetworkSecurityServer) UpdateAuthorizationPolicy(ctx context.Context, r
 		return nil, err
 	}
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	now := time.Now()
 	lroMetadata := &pb.OperationMetadata{
 		CreateTime:            timestamppb.New(now),
 		RequestedCancellation: false,
@@ -131,13 +158,13 @@ func (s *NetworkSecurityServer) UpdateAuthorizationPolicy(ctx context.Context, r
 	})
 }
 
-func (s *NetworkSecurityServer) DeleteAuthorizationPolicy(ctx context.Context, req *pb.DeleteAuthorizationPolicyRequest) (*longrunning.Operation, error) {
-	name, err := s.parseAuthorizationPolicyName(req.Name)
+func (s *NetworkSecurityServer) DeleteServerTlsPolicy(ctx context.Context, req *pb.DeleteServerTlsPolicyRequest) (*longrunning.Operation, error) {
+	name, err := s.parseServerTlsPolicyName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
-	if err := s.storage.Delete(ctx, name.String(), &pb.AuthorizationPolicy{}); err != nil {
+	if err := s.storage.Delete(ctx, name.String(), &pb.ServerTlsPolicy{}); err != nil {
 		return nil, err
 	}
 	now := time.Now()
@@ -155,27 +182,27 @@ func (s *NetworkSecurityServer) DeleteAuthorizationPolicy(ctx context.Context, r
 	})
 }
 
-type authorizationPolicyName struct {
-	Project               *projects.ProjectData
-	Location              string
-	AuthorizationPolicyID string
+type serverTlsPolicyName struct {
+	Project           *projects.ProjectData
+	Location          string
+	ServerTlsPolicyID string
 }
 
-func (n *authorizationPolicyName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/authorizationPolicies/" + n.AuthorizationPolicyID
+func (n *serverTlsPolicyName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/serverTlsPolicies/" + n.ServerTlsPolicyID
 }
 
-func (s *NetworkSecurityServer) parseAuthorizationPolicyName(name string) (*authorizationPolicyName, error) {
+func (s *NetworkSecurityServer) parseServerTlsPolicyName(name string) (*serverTlsPolicyName, error) {
 	tokens := strings.Split(name, "/")
-	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "authorizationPolicies" {
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "serverTlsPolicies" {
 		project, err := s.Projects.GetProject(&projects.ProjectName{ProjectID: tokens[1]})
 		if err != nil {
 			return nil, err
 		}
-		name := &authorizationPolicyName{
-			Project:               project,
-			Location:              tokens[3],
-			AuthorizationPolicyID: tokens[5],
+		name := &serverTlsPolicyName{
+			Project:           project,
+			Location:          tokens[3],
+			ServerTlsPolicyID: tokens[5],
 		}
 		return name, nil
 	} else {
