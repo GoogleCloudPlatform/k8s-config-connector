@@ -54,6 +54,7 @@ func instanceFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".public_ip_address")
 	f.StatusField(".outbound_public_ip_addresses")
 	f.StatusField(".observability_config.track_wait_event_types")
+	f.StatusField(".connection_pool_config.pooler_count")
 
 	f.Unimplemented_Internal(".satisfies_pzs")
 
