@@ -249,3 +249,21 @@ func (s *MockService) newNetworkName(project string, name string) (*networkName,
 		Name:    name,
 	}, nil
 }
+
+func (s *MockService) normalizeNetworkURL(ctx context.Context, project string, networkURL **string) error {
+	if networkURL == nil || *networkURL == nil {
+		return nil
+	}
+	u := **networkURL
+
+	u = strings.TrimPrefix(u, "https://compute.googleapis.com/compute/v1/")
+
+	if u != "" {
+		networkName, err := s.parseNetworkName(u)
+		if err != nil {
+			return status.Errorf(codes.InvalidArgument, "network %q is not valid", u)
+		}
+		**networkURL = buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name))
+	}
+	return nil
+}

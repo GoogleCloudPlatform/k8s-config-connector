@@ -83,3 +83,8 @@ func lastComponent(s string) string {
 	i := strings.LastIndex(s, "/")
 	return s[i+1:]
 }
+
+// ProtoClone is a type-safe wrapper around proto.Clone.
+func ProtoClone[T proto.Message](m T) T {
+	return proto.Clone(m).(T)
+}
