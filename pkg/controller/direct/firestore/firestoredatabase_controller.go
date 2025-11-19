@@ -145,7 +145,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := FirestoreDatabaseSpec_ToProto(mapCtx, &desired.Spec)
+	resource := FirestoreDatabaseSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -182,7 +182,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 
 	status := &krm.FirestoreDatabaseStatus{}
-	status.ObservedState = FirestoreDatabaseObservedState_FromProto(mapCtx, created)
+	status.ObservedState = FirestoreDatabaseObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -199,7 +199,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := FirestoreDatabaseSpec_ToProto(mapCtx, &desired.Spec)
+	resource := FirestoreDatabaseSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -245,7 +245,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("successfully updated FirestoreDatabase", "name", fqn)
 
 	status := &krm.FirestoreDatabaseStatus{}
-	status.ObservedState = FirestoreDatabaseObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = FirestoreDatabaseObservedState_v1beta1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -259,7 +259,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	}
 
 	mapCtx := &direct.MapContext{}
-	dbSpec := FirestoreDatabaseSpec_FromProto(mapCtx, a.actual)
+	dbSpec := FirestoreDatabaseSpec_v1beta1_FromProto(mapCtx, a.actual)
 
 	db := &krm.FirestoreDatabase{
 		Spec: *dbSpec,
