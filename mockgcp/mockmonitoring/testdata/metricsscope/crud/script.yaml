@@ -1,0 +1,12 @@
+- exec: gcloud projects create monitored-${uniqueId} --folder=650586513145
+- exec: sleep 60 # wait for stuff to propagate
+- exec: gcloud projects describe monitored-${uniqueId}
+
+- exec: gcloud beta monitoring metrics-scopes describe ${projectId}
+- exec: gcloud beta monitoring metrics-scopes create projects/monitored-${uniqueId} --project=${projectId}
+- exec: gcloud beta monitoring metrics-scopes describe ${projectId}
+- exec: gcloud beta monitoring metrics-scopes list projects/monitored-${uniqueId}
+- exec: gcloud beta monitoring metrics-scopes delete projects/monitored-${uniqueId} --project=${projectId}
+- exec: gcloud beta monitoring metrics-scopes describe ${projectId}
+
+- exec: gcloud projects delete monitored-${uniqueId} --quiet
