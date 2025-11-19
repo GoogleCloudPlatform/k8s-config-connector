@@ -22,6 +22,7 @@ package clouddms
 import (
 	pb "cloud.google.com/go/clouddms/apiv1/clouddmspb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddms/v1alpha1"
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -299,8 +300,12 @@ func ReverseSSHConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.ReverseS
 	out := &krm.ReverseSSHConnectivity{}
 	out.VMIP = direct.LazyPtr(in.GetVmIp())
 	out.VMPort = direct.LazyPtr(in.GetVmPort())
-	out.VM = direct.LazyPtr(in.GetVm())
-	out.VPC = direct.LazyPtr(in.GetVpc())
+	if in.GetVm() != "" {
+		out.VMRef = &krmcomputev1beta1.InstanceRef{External: in.GetVm()}
+	}
+	if in.GetVpc() != "" {
+		out.VPCRef = &refsv1beta1.ComputeNetworkRef{External: in.GetVpc()}
+	}
 	return out
 }
 func ReverseSSHConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.ReverseSSHConnectivity) *pb.ReverseSshConnectivity {
@@ -310,8 +315,12 @@ func ReverseSSHConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.ReverseSS
 	out := &pb.ReverseSshConnectivity{}
 	out.VmIp = direct.ValueOf(in.VMIP)
 	out.VmPort = direct.ValueOf(in.VMPort)
-	out.Vm = direct.ValueOf(in.VM)
-	out.Vpc = direct.ValueOf(in.VPC)
+	if in.VMRef != nil {
+		out.Vm = in.VMRef.External
+	}
+	if in.VPCRef != nil {
+		out.Vpc = in.VPCRef.External
+	}
 	return out
 }
 func StaticIPConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.StaticIpConnectivity) *krm.StaticIPConnectivity {
@@ -333,7 +342,9 @@ func VPCPeeringConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.VpcPeeri
 		return nil
 	}
 	out := &krm.VPCPeeringConnectivity{}
-	out.VPC = direct.LazyPtr(in.GetVpc())
+	if in.GetVpc() != "" {
+		out.VPCRef = &refsv1beta1.ComputeNetworkRef{External: in.GetVpc()}
+	}
 	return out
 }
 func VPCPeeringConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.VPCPeeringConnectivity) *pb.VpcPeeringConnectivity {
@@ -341,6 +352,8 @@ func VPCPeeringConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.VPCPeerin
 		return nil
 	}
 	out := &pb.VpcPeeringConnectivity{}
-	out.Vpc = direct.ValueOf(in.VPC)
+	if in.VPCRef != nil {
+		out.Vpc = in.VPCRef.External
+	}
 	return out
 }

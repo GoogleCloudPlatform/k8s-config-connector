@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -172,4 +173,33 @@ type CloudDMSMigrationJobList struct {
 
 func init() {
 	SchemeBuilder.Register(&CloudDMSMigrationJob{}, &CloudDMSMigrationJobList{})
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.VpcPeeringConnectivity
+type VPCPeeringConnectivity struct {
+	// The name of the VPC network to peer with the Cloud SQL private network.
+	// +kcc:proto:field=google.cloud.clouddms.v1.VpcPeeringConnectivity.vpc
+	VPCRef *refsv1beta1.ComputeNetworkRef `json:"vpcRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.ReverseSshConnectivity
+type ReverseSSHConnectivity struct {
+	// Required. The IP of the virtual machine (Compute Engine) used as the
+	//  bastion server for the SSH tunnel.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ReverseSshConnectivity.vm_ip
+	VMIP *string `json:"vmIP,omitempty"`
+
+	// Required. The forwarding port of the virtual machine (Compute Engine) used
+	//  as the bastion server for the SSH tunnel.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ReverseSshConnectivity.vm_port
+	VMPort *int32 `json:"vmPort,omitempty"`
+
+	// The name of the virtual machine (Compute Engine) used as the bastion server
+	//  for the SSH tunnel.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ReverseSshConnectivity.vm
+	VMRef *computev1beta1.InstanceRef `json:"vmRef,omitempty"`
+
+	// The name of the VPC to peer with the Cloud SQL private network.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ReverseSshConnectivity.vpc
+	VPCRef *refsv1beta1.ComputeNetworkRef `json:"vpcRef,omitempty"`
 }

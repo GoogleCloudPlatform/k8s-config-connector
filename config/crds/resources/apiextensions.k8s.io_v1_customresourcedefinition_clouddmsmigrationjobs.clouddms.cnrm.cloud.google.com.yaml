@@ -116,8 +116,8 @@ spec:
                     type: string
                 type: object
               destinationRef:
-                description: Required. The resource name (URI) of the destination
-                  connection profile.
+                description: Required. The Connection Profile of the destination connection
+                  profile.
                 oneOf:
                 - not:
                     required:
@@ -227,10 +227,6 @@ spec:
                 description: The details needed to communicate to the source over
                   Reverse SSH tunnel connectivity.
                 properties:
-                  vm:
-                    description: The name of the virtual machine (Compute Engine)
-                      used as the bastion server for the SSH tunnel.
-                    type: string
                   vmIP:
                     description: Required. The IP of the virtual machine (Compute
                       Engine) used as the bastion server for the SSH tunnel.
@@ -240,10 +236,64 @@ spec:
                       (Compute Engine) used as the bastion server for the SSH tunnel.
                     format: int32
                     type: integer
-                  vpc:
+                  vmRef:
+                    description: The name of the virtual machine (Compute Engine)
+                      used as the bastion server for the SSH tunnel.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally managed ComputeInstance
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/instances/{{instanceID}}".
+                        type: string
+                      name:
+                        description: The name of a ComputeInstance resource.
+                        type: string
+                      namespace:
+                        description: The namespace of a ComputeInstance resource.
+                        type: string
+                    type: object
+                  vpcRef:
                     description: The name of the VPC to peer with the Cloud SQL private
                       network.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally-managed Compute
+                          Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
+                        type: string
+                      name:
+                        description: The `name` field of a `ComputeNetwork` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `ComputeNetwork` resource.
+                        type: string
+                    type: object
                 type: object
               sourceDatabase:
                 description: The database engine type and provider of the source.
@@ -256,8 +306,8 @@ spec:
                     type: string
                 type: object
               sourceRef:
-                description: Required. The resource name (URI) of the source connection
-                  profile.
+                description: Required. The Connection Profile resource of the source
+                  connection profile.
                 oneOf:
                 - not:
                     required:
@@ -295,10 +345,35 @@ spec:
                 description: The details of the VPC network that the source database
                   is located in.
                 properties:
-                  vpc:
+                  vpcRef:
                     description: The name of the VPC network to peer with the Cloud
                       SQL private network.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: A reference to an externally-managed Compute
+                          Network resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
+                        type: string
+                      name:
+                        description: The `name` field of a `ComputeNetwork` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `ComputeNetwork` resource.
+                        type: string
+                    type: object
                 type: object
             required:
             - location

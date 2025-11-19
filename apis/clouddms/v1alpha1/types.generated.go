@@ -80,35 +80,6 @@ type MigrationJob_PerformanceConfig struct {
 	DumpParallelLevel *string `json:"dumpParallelLevel,omitempty"`
 }
 
-// +kcc:proto=google.cloud.clouddms.v1.ReverseSshConnectivity
-type ReverseSSHConnectivity struct {
-	// Required. The IP of the virtual machine (Compute Engine) used as the
-	//  bastion server for the SSH tunnel.
-	// +kcc:proto:field=google.cloud.clouddms.v1.ReverseSshConnectivity.vm_ip
-	VMIP *string `json:"vmIP,omitempty"`
-
-	// Required. The forwarding port of the virtual machine (Compute Engine) used
-	//  as the bastion server for the SSH tunnel.
-	// +kcc:proto:field=google.cloud.clouddms.v1.ReverseSshConnectivity.vm_port
-	VMPort *int32 `json:"vmPort,omitempty"`
-
-	// The name of the virtual machine (Compute Engine) used as the bastion server
-	//  for the SSH tunnel.
-	// +kcc:proto:field=google.cloud.clouddms.v1.ReverseSshConnectivity.vm
-	VM *string `json:"vm,omitempty"`
-
-	// The name of the VPC to peer with the Cloud SQL private network.
-	// +kcc:proto:field=google.cloud.clouddms.v1.ReverseSshConnectivity.vpc
-	VPC *string `json:"vpc,omitempty"`
-}
-
 // +kcc:proto=google.cloud.clouddms.v1.StaticIpConnectivity
 type StaticIPConnectivity struct {
-}
-
-// +kcc:proto=google.cloud.clouddms.v1.VpcPeeringConnectivity
-type VPCPeeringConnectivity struct {
-	// The name of the VPC network to peer with the Cloud SQL private network.
-	// +kcc:proto:field=google.cloud.clouddms.v1.VpcPeeringConnectivity.vpc
-	VPC *string `json:"vpc,omitempty"`
 }
