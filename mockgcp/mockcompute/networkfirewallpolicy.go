@@ -75,8 +75,8 @@ func (s *NetworkFirewallPoliciesV1) Insert(ctx context.Context, req *pb.InsertNe
 	obj.SelfLink = PtrTo(buildComputeSelfLink(ctx, fqn))
 	obj.SelfLinkWithId = PtrTo(fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/firewallPolicies/%d", name.Project.ID, obj.GetId()))
 
-	if obj.Fingerprint == nil {
-		obj.Fingerprint = PtrTo(computeFingerprint(obj))
+	if obj.Description == nil {
+		obj.Description = PtrTo("")
 	}
 
 	// Use default rules
@@ -89,6 +89,10 @@ func (s *NetworkFirewallPoliciesV1) Insert(ctx context.Context, req *pb.InsertNe
 		ruleTupleCount += rule.GetRuleTupleCount()
 	}
 	obj.RuleTupleCount = PtrTo(ruleTupleCount)
+
+	if obj.Fingerprint == nil {
+		obj.Fingerprint = PtrTo(computeFingerprint(obj))
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
