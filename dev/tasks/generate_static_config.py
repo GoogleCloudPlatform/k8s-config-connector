@@ -53,7 +53,6 @@ def main():
     crd_dir = os.path.join(repo_root, 'config', 'crds', 'resources')
     
     direct_controller_kinds = find_direct_controller_kinds(repo_root)
-    
     resources = []
     
     for crd_file in sorted(glob.glob(os.path.join(crd_dir, '*.yaml'))):
@@ -93,7 +92,7 @@ def main():
         # Determine default controller
         if kind in ('IAMPolicy', 'IAMPartialPolicy', 'IAMPolicyMember', 'IAMAuditConfig'):
             default_controller = f'k8s.ReconcilerType{kind}'
-            supported_controllers = {default_controller}
+            supported_controllers.add(default_controller)
         elif not supported_controllers:
             print(f"Skipping resource {group}/{kind} as no controller was found.")
             continue
