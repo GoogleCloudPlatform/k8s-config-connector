@@ -103,7 +103,6 @@ func RunPreview(ctx context.Context, opts *PreviewOptions) error {
 		return fmt.Errorf("error building kubeconfig: %w", err)
 	}
 	recorder := preview.NewRecorder()
-	klog.Info("Preloading the list of resources to reconcile")
 	if err := recorder.PreloadGKNN(ctx, upstreamRESTConfig); err != nil {
 		return fmt.Errorf("error preload the list of resources to reconcile: %w", err)
 	}
