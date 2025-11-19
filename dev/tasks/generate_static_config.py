@@ -139,7 +139,7 @@ def main():
     lines.append('')
     lines.append('// ControllerConfigStatic is the static controller configuration for all resources.')
     lines.append('// It is ordered by GroupKind alphabetically.')
-    lines.append('var ControllerConfigStatic = &ResourcesControllerMap{')
+    lines.append('var ControllerConfigStatic = ResourcesControllerMap{')
 
     # Find longest Group+Kind for alignment
     max_len = 0

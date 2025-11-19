@@ -21,7 +21,7 @@ import "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 // ControllerConfigStatic is the static controller configuration for all resources.
 // It is ordered by GroupKind alphabetically.
-var ControllerConfigStatic = &ResourcesControllerMap{
+var ControllerConfigStatic = ResourcesControllerMap{
 	{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerAccessLevel"}:              {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerAccessLevelCondition"}:     {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "accesscontextmanager.cnrm.cloud.google.com", Kind: "AccessContextManagerAccessPolicy"}:             {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
