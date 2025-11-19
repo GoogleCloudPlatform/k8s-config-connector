@@ -36,6 +36,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/config/tests/samples/create"
 	opcorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	k8scontrollertype "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
@@ -53,6 +54,7 @@ import (
 	"sigs.k8s.io/yaml"
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 )
 
 func TestAllInSeries(t *testing.T) {
@@ -349,6 +351,36 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 				exportResources := []*unstructured.Unstructured{primaryResource}
 
 				create.SetupNamespacesAndApplyDefaults(h, opt.Create, project)
+
+				// Force direct
+				{
+					cc := &opcorev1beta1.ConfigConnector{}
+					cc.Name = "configconnector.core.cnrm.cloud.google.com"
+					cc.Spec.Mode = "namespaced"
+
+					if err := h.GetClient().Create(ctx, cc); err != nil {
+						t.Fatalf("FAIL: error creating CC: %v", err)
+					}
+				}
+				{
+					controllerOverrides := map[string]k8scontrollertype.ReconcilerType{}
+					gvk := primaryResource.GroupVersionKind()
+					if resourceconfig.IsControllerSupported(gvk, k8scontrollertype.ReconcilerTypeDirect) {
+						key := fmt.Sprintf("%s.%s", gvk.Kind, gvk.Group)
+						controllerOverrides[key] = k8scontrollertype.ReconcilerTypeDirect
+					}
+
+					ccc := &opcorev1beta1.ConfigConnectorContext{}
+					ccc.Name = "configconnectorcontext.core.cnrm.cloud.google.com"
+					ccc.Namespace = primaryResource.GetNamespace()
+					ccc.Spec.Experiments = &opcorev1beta1.Experiments{
+						ControllerOverrides: controllerOverrides,
+					}
+
+					if err := h.GetClient().Create(ctx, ccc); err != nil {
+						t.Fatalf("FAIL: error creating CCC: %v", err)
+					}
+				}
 
 				opt.CleanupResources = false // We delete explicitly below
 				if testPause {

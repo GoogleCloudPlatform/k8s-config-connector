@@ -151,22 +151,23 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes?alt=json
+POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2FcollectionGroups%2Fsample-collection-${uniqueId}
 
 {
   "fields": [
     {
       "fieldPath": "field1",
-      "order": "ASCENDING"
+      "order": 1
     },
     {
       "fieldPath": "field2",
-      "order": "DESCENDING"
+      "order": 2
     }
   ],
-  "queryScope": "COLLECTION"
+  "queryScope": 1
 }
 
 200 OK
@@ -184,16 +185,17 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.firestore.admin.v1.IndexOperationMetadata",
     "index": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
     "startTime": "2024-04-01T12:34:56.123456Z",
-    "state": "INITIALIZING"
+    "state": 1
   },
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}"
 }
 
 ---
 
-GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}?alt=json
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -241,9 +243,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?alt=json
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2FcollectionGroups%2Fsample-collection-${uniqueId}%2Findexes%2F${indexID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -256,31 +259,32 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "density": "SPARSE_ALL",
+  "density": 1,
   "fields": [
     {
       "fieldPath": "field1",
-      "order": "ASCENDING"
+      "order": 1
     },
     {
       "fieldPath": "field2",
-      "order": "DESCENDING"
+      "order": 2
     },
     {
       "fieldPath": "__name__",
-      "order": "DESCENDING"
+      "order": 2
     }
   ],
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
-  "queryScope": "COLLECTION",
-  "state": "READY"
+  "queryScope": 1,
+  "state": 2
 }
 
 ---
 
-DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?alt=json
+DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2FcollectionGroups%2Fsample-collection-${uniqueId}%2Findexes%2F${indexID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

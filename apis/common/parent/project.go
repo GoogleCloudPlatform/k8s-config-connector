@@ -112,17 +112,6 @@ func (p *ProjectRef) Build(ctx context.Context, reader client.Reader, othernames
 	return nil
 }
 
-func ParseProjectParent(external string) (*ProjectParent, error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 2 || tokens[0] != "projects" {
-		return nil, fmt.Errorf("format of Project external=%q was not known (use projects/<projectId>)", external)
-	}
-
-	return &ProjectParent{
-		ProjectID: tokens[1],
-	}, nil
-}
-
 func (p *ProjectParent) FromExternal(ref string) error {
 	tokens := strings.Split(ref, "/")
 	if len(tokens) == 2 && tokens[0] == "projects" {
