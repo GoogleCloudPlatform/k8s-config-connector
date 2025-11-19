@@ -29,10 +29,15 @@ var _ identity.Identity = &ComputeImageIdentity{}
 type ComputeImageIdentity struct {
 	ProjectID string
 
-	Name string
+	// Name and Family are mutually exclusive.
+	Name   string
+	Family string
 }
 
 func (i *ComputeImageIdentity) String() string {
+	if i.Family != "" {
+		return fmt.Sprintf("projects/%s/global/images/family/%s", i.ProjectID, i.Family)
+	}
 	return fmt.Sprintf("projects/%s/global/images/%s", i.ProjectID, i.Name)
 }
 
@@ -41,11 +46,19 @@ func (i *ComputeImageIdentity) FromExternal(s string) error {
 		return fmt.Errorf("value cannot be empty")
 	}
 	tokens := strings.Split(s, "/")
-	// image name can contain "/"
-	if tokens[0] != "projects" || tokens[2] != "global" || tokens[3] != "images" {
-		return fmt.Errorf("invalid format: %s, expected projects/{project}/global/images/{name}", s)
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "images" && tokens[4] == "family" {
+		i.ProjectID = tokens[1]
+		i.Family = tokens[5]
+		i.Name = ""
+		return nil
 	}
-	i.ProjectID = tokens[1]
-	i.Name = strings.Join(tokens[4:], "/")
-	return nil
+
+	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "images" {
+		i.ProjectID = tokens[1]
+		i.Family = ""
+		i.Name = tokens[4]
+		return nil
+	}
+	return fmt.Errorf("invalid format: %s, expected projects/{project}/global/images/{name} or projects/{project}/global/images/family/{family}", s)
 }
