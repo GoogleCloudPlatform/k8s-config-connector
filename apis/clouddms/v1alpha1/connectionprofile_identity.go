@@ -17,30 +17,39 @@ package v1alpha1
 import (
 	"fmt"
 	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+)
+
+const (
+	ConnectionProfileIDURL = parent.ProjectAndLocationURL + "/connectionProfiles/{{connectionProfileID}}"
 )
 
 type ConnectionProfileIdentity struct {
-	Project           string
-	Location          string
-	ConnectionProfile string
+	parent *parent.ProjectAndLocationParent
+	id     string
+}
+
+func (i *ConnectionProfileIdentity) String() string {
+	return i.parent.String() + "/connectionProfiles/" + i.id
+}
+
+func (i *ConnectionProfileIdentity) Parent() *parent.ProjectAndLocationParent {
+	return i.parent
 }
 
 func (i *ConnectionProfileIdentity) FromExternal(external string) error {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 {
-		return fmt.Errorf("invalid external format: %q, expected projects/{project}/locations/{location}/connectionProfiles/{connectionProfile}", external)
+	tokens := strings.Split(external, "/connectionProfiles/")
+	if len(tokens) != 2 {
+		return fmt.Errorf("format of ConnectionProfile external=%q was not known (use %s)", external, ConnectionProfileIDURL)
 	}
-	if tokens[0] != "projects" {
-		return fmt.Errorf("invalid external format: %q, expected projects segment", external)
+	i.parent = &parent.ProjectAndLocationParent{}
+	if err := i.parent.FromExternal(tokens[0]); err != nil {
+		return err
 	}
-	if tokens[2] != "locations" {
-		return fmt.Errorf("invalid external format: %q, expected locations segment", external)
+	i.id = tokens[1]
+	if i.id == "" {
+		return fmt.Errorf("catalogID was empty in external=%q", external)
 	}
-	if tokens[4] != "connectionProfiles" {
-		return fmt.Errorf("invalid external format: %q, expected connectionProfiles segment", external)
-	}
-	i.Project = tokens[1]
-	i.Location = tokens[3]
-	i.ConnectionProfile = tokens[5]
 	return nil
 }

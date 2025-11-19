@@ -56,11 +56,11 @@ type CloudDMSMigrationJobSpec struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.dump_flags
 	DumpFlags *MigrationJob_DumpFlags `json:"dumpFlags,omitempty"`
 
-	// Required. The resource name (URI) of the source connection profile.
+	// Required. The Connection Profile resource of the source connection profile.
 	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.source
 	SourceRef *CloudDMSConnectionProfileRef `json:"sourceRef,omitempty"`
 
-	// Required. The resource name (URI) of the destination connection profile.
+	// Required. The Connection Profile of the destination connection profile.
 	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.destination
 	DestinationRef *CloudDMSConnectionProfileRef `json:"destinationRef,omitempty"`
 
