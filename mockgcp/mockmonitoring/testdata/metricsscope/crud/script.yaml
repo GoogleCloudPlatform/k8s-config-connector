@@ -6,6 +6,7 @@
 - exec: gcloud beta monitoring metrics-scopes create projects/monitored-${uniqueId} --project=${projectId}
 - exec: gcloud beta monitoring metrics-scopes describe ${projectId}
 - exec: gcloud beta monitoring metrics-scopes list projects/monitored-${uniqueId}
+
 - exec: gcloud beta monitoring metrics-scopes delete projects/monitored-${uniqueId} --project=${projectId}
 - exec: gcloud beta monitoring metrics-scopes describe ${projectId}
 

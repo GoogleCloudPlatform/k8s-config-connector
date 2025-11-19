@@ -20,6 +20,7 @@ var allServices = []string{
 	"apigee.googleapis.com",
 	"bigquery.googleapis.com",
 	"cloudresourcemanager.googleapis.com",
+	"cloudapis.googleapis.com",
 	"compute.googleapis.com",
 	"pubsub.googleapis.com",
 	"runtimeconfig.googleapis.com",
