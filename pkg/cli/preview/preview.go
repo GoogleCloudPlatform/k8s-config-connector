@@ -119,7 +119,9 @@ func (i *PreviewInstance) Start(ctx context.Context) error {
 		return ret
 	}
 
-	kccConfig := kccmanager.Config{}
+	kccConfig := kccmanager.Config{
+		PreviewMode: true,
+	}
 	// Prevent manager from binding to a port to serve prometheus metrics
 	// since creating multiple managers for tests will fail if more than
 	// one manager tries to bind to the same port.
