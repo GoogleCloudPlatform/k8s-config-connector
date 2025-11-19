@@ -54,8 +54,6 @@ func FirestoreDocumentSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.
 // taking care to preserve integer and float types to avoid type conversion issues,
 // even when nested in an array or map.
 func toJSON(in any) (apiextensionsv1.JSON, error) {
-	var buffer bytes.Buffer
-
 	render := in
 	switch in := in.(type) {
 	case []any:
@@ -101,11 +99,11 @@ func toJSON(in any) (apiextensionsv1.JSON, error) {
 		// Fall-through
 	}
 
-	encoder := json.NewEncoder(&buffer)
-	if err := encoder.Encode(render); err != nil {
+	b, err := json.Marshal(render)
+	if err != nil {
 		return apiextensionsv1.JSON{}, err
 	}
-	return apiextensionsv1.JSON{Raw: buffer.Bytes()}, nil
+	return apiextensionsv1.JSON{Raw: b}, nil
 }
 
 // fromJSON converts an apiextensionsv1.JSON representation to a Go value,
