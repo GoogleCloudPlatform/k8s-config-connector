@@ -90,6 +90,11 @@ func (in *CertificateManagerDNSAuthorizationSpec) DeepCopyInto(out *CertificateM
 		*out = new(string)
 		**out = **in
 	}
+	if in.Domain != nil {
+		in, out := &in.Domain, &out.Domain
+		*out = new(string)
+		**out = **in
+	}
 	out.ProjectRef = in.ProjectRef
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
@@ -118,8 +123,10 @@ func (in *CertificateManagerDNSAuthorizationStatus) DeepCopyInto(out *Certificat
 	}
 	if in.DnsResourceRecord != nil {
 		in, out := &in.DnsResourceRecord, &out.DnsResourceRecord
-		*out = make([]DNSAuthorization_DNSResourceRecord, len(*in))
-		copy(*out, *in)
+		*out = make([]DNSAuthorization_DNSResourceRecordObservedState, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.ObservedGeneration != nil {
 		in, out := &in.ObservedGeneration, &out.ObservedGeneration

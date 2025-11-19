@@ -140,7 +140,7 @@ func CertificateManagerDNSAuthorizationSpec_ToProto(mapCtx *direct.MapContext, i
 	// MISSING: UpdateTime
 	// MISSING: Labels
 	out.Description = direct.ValueOf(in.Description)
-	out.Domain = CertificateManagerDNSAuthorizationSpec_Domain_ToProto(mapCtx, in.Domain)
+	out.Domain = direct.ValueOf(in.Domain)
 	// MISSING: DNSResourceRecord
 	// MISSING: Type
 	return out

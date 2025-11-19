@@ -34,7 +34,7 @@ type CertificateManagerDNSAuthorizationSpec struct {
 	single domain and its wildcard, e.g. authorization for "example.com" can
 	be used to issue certificates for "example.com" and "*.example.com". */
 	// +required
-	Domain string `json:"domain"`
+	Domain *string `json:"domain,omitempty"`
 
 	/* The project that this resource belongs to. */
 	// +required
@@ -58,7 +58,7 @@ type CertificateManagerDNSAuthorizationStatus struct {
 	to DNS configuration for the authorization to be usable by
 	certificate. */
 	// +optional
-	DnsResourceRecord []DNSAuthorization_DNSResourceRecord `json:"dnsResourceRecord,omitempty"`
+	DnsResourceRecord []DNSAuthorization_DNSResourceRecordObservedState `json:"dnsResourceRecord,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional

@@ -155,6 +155,18 @@ spec:
                   needs to be added to DNS configuration for the authorization to
                   be usable by certificate.
                 items:
+                  properties:
+                    data:
+                      description: Output only. Data of the DNS Resource Record.
+                      type: string
+                    name:
+                      description: Output only. Fully qualified name of the DNS Resource
+                        Record. e.g. `_acme-challenge.example.com`
+                      type: string
+                    type:
+                      description: Output only. Type of the DNS Resource Record. Currently
+                        always set to "CNAME".
+                      type: string
                   type: object
                 type: array
               externalRef:
@@ -308,6 +320,18 @@ spec:
                   needs to be added to DNS configuration for the authorization to
                   be usable by certificate.
                 items:
+                  properties:
+                    data:
+                      description: Output only. Data of the DNS Resource Record.
+                      type: string
+                    name:
+                      description: Output only. Fully qualified name of the DNS Resource
+                        Record. e.g. `_acme-challenge.example.com`
+                      type: string
+                    type:
+                      description: Output only. Type of the DNS Resource Record. Currently
+                        always set to "CNAME".
+                      type: string
                   type: object
                 type: array
               externalRef:
