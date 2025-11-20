@@ -43,7 +43,7 @@ import (
 )
 
 const (
-	ctrlName = "secretmanager-controller-2"
+	ctrlName = "secretmanager-controller"
 )
 
 func init() {
