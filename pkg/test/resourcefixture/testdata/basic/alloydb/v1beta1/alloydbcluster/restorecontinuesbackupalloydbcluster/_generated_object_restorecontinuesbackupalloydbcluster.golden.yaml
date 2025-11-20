@@ -17,16 +17,16 @@ spec:
   location: us-east4
   networkConfig:
     networkRef:
-      external: projects/206793940360/global/networks/default
+      external: projects/${projectNumber}/global/networks/default
   projectRef:
-    external: cnrm-alloydb
+    external: ${projectId}
   restoreContinuousBackupSource:
     clusterRef:
-      external: projects/cnrm-alloydb/locations/us-east4/clusters/restore-test
+      external: projects/${projectId}/locations/us-east4/clusters/restore-test
     pointInTime: "2025-11-20T21:24:22Z"
 status:
   backupSource:
-  - backupName: projects/206793940360/locations/us-east4/backups/restore-test
+  - backupName: projects/${projectNumber}/locations/us-east4/backups/restore-test
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
     message: The resource is up to date
@@ -48,8 +48,8 @@ status:
   databaseVersion: POSTGRES_16
   encryptionInfo:
   - encryptionType: GOOGLE_DEFAULT_ENCRYPTION
-  externalRef: projects/cnrm-alloydb/locations/us-east4/clusters/restored-alloydbcluster-${uniqueId}
-  name: projects/cnrm-alloydb/locations/us-east4/clusters/restored-alloydbcluster-${uniqueId}
+  externalRef: projects/${projectId}/locations/us-east4/clusters/restored-alloydbcluster-${uniqueId}
+  name: projects/${projectId}/locations/us-east4/clusters/restored-alloydbcluster-${uniqueId}
   observedGeneration: 1
   observedState:
     clusterType: PRIMARY

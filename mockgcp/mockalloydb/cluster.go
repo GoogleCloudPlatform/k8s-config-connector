@@ -256,7 +256,10 @@ func (s *AlloyDBAdminV1) RestoreCluster(ctx context.Context, req *pb.RestoreClus
 	setClusterFields(name, obj)
 
 	// Replace projectID with projectNumber for project "mock-project".
-	backup := strings.ReplaceAll(req.GetBackupSource().GetBackupName(), "mock-project", "518915279")
+	backup := "projects/518915279/locations/us-east4/backups/restore-test"
+	if req.GetBackupSource().GetBackupName() != "" {
+		backup = strings.ReplaceAll(req.GetBackupSource().GetBackupName(), "mock-project", "518915279")
+	}
 	// obj.Source is output-only
 	obj.Source = &pb.Cluster_BackupSource{BackupSource: &pb.BackupSource{BackupName: backup, BackupUid: string(uuid.NewUUID())}}
 
