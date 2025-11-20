@@ -32,6 +32,10 @@ type SecretManagerSecretSpec struct {
 	// The SecretManagerSecret name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	// Optional. Immutable.
+	// Location where secret will reside. Default is global
+	Location *string `json:"location,omitempty"`
+
 	// Optional. Immutable. The replication policy of the secret data attached to
 	//  the [Secret][google.cloud.secretmanager.v1.Secret].
 	//

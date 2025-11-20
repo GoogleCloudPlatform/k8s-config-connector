@@ -43,10 +43,14 @@ func (r *SecretIdentity) ID() string {
 
 type SecretParent struct {
 	ProjectID string
+	Location  string
 }
 
 func (p *SecretParent) String() string {
-	return "projects/" + p.ProjectID
+	if p.Location == "" || p.Location == "global" {
+		return "projects/" + p.ProjectID
+	}
+	return "projects/" + p.ProjectID + "/locations/" + p.Location
 }
 
 func NewSecretIdentity(ctx context.Context, reader client.Reader, obj *SecretManagerSecret, u *unstructured.Unstructured) (*SecretIdentity, error) {
@@ -64,6 +68,11 @@ func NewSecretIdentity(ctx context.Context, reader client.Reader, obj *SecretMan
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
+	location := common.ValueOf(obj.Spec.Location)
+	if location == "" {
+		location = "global"
+	}
+
 	// Use approved External
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
@@ -74,6 +83,9 @@ func NewSecretIdentity(ctx context.Context, reader client.Reader, obj *SecretMan
 		if actualIdentity.parent.ProjectID != projectID {
 			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.parent.ProjectID, projectID)
 		}
+		if actualIdentity.parent.Location != location {
+			return nil, fmt.Errorf("spec.Location changed, expect %s, got %s", actualIdentity.parent.Location, location)
+		}
 		if actualIdentity.id != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
 				resourceID, actualIdentity.id)
@@ -81,7 +93,7 @@ func NewSecretIdentity(ctx context.Context, reader client.Reader, obj *SecretMan
 	}
 
 	return &SecretIdentity{
-		parent: &SecretParent{ProjectID: projectID},
+		parent: &SecretParent{ProjectID: projectID, Location: location},
 		id:     resourceID,
 	}, nil
 }

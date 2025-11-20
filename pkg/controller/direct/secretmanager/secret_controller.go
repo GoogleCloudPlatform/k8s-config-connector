@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/go-logr/logr"
 
+	apiscommon "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
@@ -42,7 +43,7 @@ import (
 )
 
 const (
-	ctrlName = "secretmanager-controller"
+	ctrlName = "secretmanager-controller-2"
 )
 
 func init() {
@@ -59,12 +60,19 @@ type secretModel struct {
 	config config.ControllerConfig
 }
 
-func (m *secretModel) client(ctx context.Context) (*gcp.Client, error) {
+func (m *secretModel) client(ctx context.Context, location string) (*gcp.Client, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
+
+	// Add regional endpoint if location is specified
+	if location != "" && location != "global" {
+		endpoint := fmt.Sprintf("secretmanager.%s.rep.googleapis.com:443", location)
+		opts = append(opts, option.WithEndpoint(endpoint))
+	}
+
 	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building Secret client: %w", err)
@@ -92,8 +100,12 @@ func (m *secretModel) AdapterForObject(ctx context.Context, reader client.Reader
 		return nil, err
 	}
 
+	location := apiscommon.ValueOf(obj.Spec.Location)
+	if location == "" {
+		location = "global"
+	}
 	// Get secretmanager GCP client
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx, location)
 	if err != nil {
 		return nil, err
 	}
@@ -295,7 +307,7 @@ func (a *Adapter) Update(ctx context.Context, op *directbase.UpdateOperation) er
 	}
 	updated, err := a.gcpClient.UpdateSecret(ctx, req)
 	if err != nil {
-		return fmt.Errorf("Secret %s waiting update: %w", a.id, err)
+		return fmt.Errorf("secret %s waiting update: %w", a.id, err)
 	}
 	log.V(2).Info("successfully updated Secret", "name", a.id)
 
