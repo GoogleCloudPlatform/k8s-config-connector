@@ -30,14 +30,16 @@ func fuzzWorkflowsWorkflow() fuzztesting.KRMFuzzer {
 		WorkflowsWorkflowObservedState_FromProto, WorkflowsWorkflowObservedState_ToProto,
 	)
 	f.UnimplementedFields.Insert(".name")
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	f.SpecFields.Insert(".description")
-	f.SpecFields.Insert(".labels")
 	f.SpecFields.Insert(".service_account")
 	f.SpecFields.Insert(".source_contents")
 	f.SpecFields.Insert(".crypto_key_name")
 	f.SpecFields.Insert(".call_log_level")
 	f.SpecFields.Insert(".user_env_vars")
+	f.SpecFields.Insert(".tags")
+	f.SpecFields.Insert(".execution_history_level")
 
 	f.StatusFields.Insert(".state")
 	f.StatusFields.Insert(".revision_id")
@@ -47,12 +49,6 @@ func fuzzWorkflowsWorkflow() fuzztesting.KRMFuzzer {
 	f.StatusFields.Insert(".state_error")
 	f.StatusFields.Insert(".state_error.details")
 	f.StatusFields.Insert(".state_error.type")
-
-	f.Unimplemented_NotYetTriaged(".tags")
-	f.Unimplemented_NotYetTriaged(".all_kms_keys")
-	f.Unimplemented_NotYetTriaged(".all_kms_keys_versions")
-	f.Unimplemented_NotYetTriaged(".crypto_key_version")
-	f.Unimplemented_NotYetTriaged(".execution_history_level")
 
 	return f
 }
