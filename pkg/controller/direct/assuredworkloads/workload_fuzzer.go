@@ -33,14 +33,14 @@ func assuredWorkloadsWorkloadFuzzer() fuzztesting.KRMFuzzer {
 		AssuredWorkloadsWorkloadObservedState_FromProto, AssuredWorkloadsWorkloadObservedState_ToProto,
 	)
 
-	f.SpecFields.Insert(".billing_account")
-	f.SpecFields.Insert(".resource_settings")
+	f.SpecField(".billing_account")
+	f.SpecField(".resource_settings")
 
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".resources")
-	f.StatusFields.Insert(".kaj_enrollment_state")
-	f.StatusFields.Insert(".saa_enrollment_response")
-	f.StatusFields.Insert(".compliant_but_disallowed_services")
+	f.StatusField(".create_time")
+	f.StatusField(".resources")
+	f.StatusField(".kaj_enrollment_state")
+	f.StatusField(".saa_enrollment_response")
+	f.StatusField(".compliant_but_disallowed_services")
 	f.Unimplemented_NotYetTriaged(".provisioned_resources_parent")
 	f.Unimplemented_NotYetTriaged(".kms_settings")
 

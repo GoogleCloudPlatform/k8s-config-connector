@@ -30,9 +30,11 @@ func Workload_SaaEnrollmentResponse_FromProto(mapCtx *direct.MapContext, in *pb.
 		return nil
 	}
 	out := &krm.Workload_SaaEnrollmentResponse{}
-	out.SetupErrors = []string{}
-	for _, e := range in.SetupErrors {
-		out.SetupErrors = append(out.SetupErrors, e.String())
+	if in.SetupErrors != nil {
+		out.SetupErrors = []string{}
+		for _, e := range in.SetupErrors {
+			out.SetupErrors = append(out.SetupErrors, e.String())
+		}
 	}
 	out.SetupStatus = direct.LazyPtr(in.SetupStatus.String())
 	return out
