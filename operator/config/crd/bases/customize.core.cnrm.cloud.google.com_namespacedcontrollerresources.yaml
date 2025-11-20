@@ -43,9 +43,8 @@ spec:
               a namespaced config connector controller.
             properties:
               containers:
-                description: |-
-                  The list of containers whose resource requirements to be customized.
-                  Required
+                description: The list of containers whose resource requirements to
+                  be customized.
                 items:
                   description: |-
                     ContainerResourceSpec is the specification of the resource customization for a container of
@@ -98,9 +97,17 @@ spec:
                   - resources
                   type: object
                 type: array
-            required:
-            - containers
+              verticalPodAutoscalerEnabled:
+                default: false
+                description: VerticalPodAutoscalerEnabled indicates whether Vertical
+                  Pod Autoscaler is enabled for the controller.
+                type: boolean
             type: object
+            x-kubernetes-validations:
+            - message: VerticalPodAutoscalerEnabled cannot be true when Containers
+                are specified
+              rule: '!self.verticalPodAutoscalerEnabled || !has(self.containers) ||
+                size(self.containers) == 0'
           status:
             description: NamespacedControllerResourceStatus defines the observed state
               of NamespacedControllerResource.
@@ -157,9 +164,8 @@ spec:
               a namespaced config connector controller.
             properties:
               containers:
-                description: |-
-                  The list of containers whose resource requirements to be customized.
-                  Required
+                description: The list of containers whose resource requirements to
+                  be customized.
                 items:
                   description: |-
                     ContainerResourceSpec is the specification of the resource customization for a container of
@@ -212,9 +218,17 @@ spec:
                   - resources
                   type: object
                 type: array
-            required:
-            - containers
+              verticalPodAutoscalerEnabled:
+                default: false
+                description: VerticalPodAutoscalerEnabled indicates whether Vertical
+                  Pod Autoscaler is enabled for the controller.
+                type: boolean
             type: object
+            x-kubernetes-validations:
+            - message: VerticalPodAutoscalerEnabled cannot be true when Containers
+                are specified
+              rule: '!self.verticalPodAutoscalerEnabled || !has(self.containers) ||
+                size(self.containers) == 0'
           status:
             description: NamespacedControllerResourceStatus defines the observed state
               of NamespacedControllerResource.
