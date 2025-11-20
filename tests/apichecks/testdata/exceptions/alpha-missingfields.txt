@@ -816,6 +816,9 @@
 [missing_field] crd=computeregionsslpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.profile" is not set in unstructured objects
 [missing_field] crd=computeregionsslpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeregionsslpolicies.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.region" is not set in unstructured objects
+[missing_field] crd=configdeliveryresourcebundles.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=configdeliveryresourcebundles.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=configdeliveryresourcebundles.configdelivery.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=containeranalysisoccurrences.containeranalysis.cnrm.cloud.google.com version=v1alpha1: field ".spec.attestation.serializedPayload" is not set in unstructured objects
 [missing_field] crd=containeranalysisoccurrences.containeranalysis.cnrm.cloud.google.com version=v1alpha1: field ".spec.attestation.signatures[].publicKeyId" is not set in unstructured objects
 [missing_field] crd=containeranalysisoccurrences.containeranalysis.cnrm.cloud.google.com version=v1alpha1: field ".spec.attestation.signatures[].signature" is not set in unstructured objects
