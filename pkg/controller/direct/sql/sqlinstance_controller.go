@@ -698,6 +698,18 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return err
 	}
 
+	if a.actual != nil && a.actual.Settings != nil && desiredGCP.Settings != nil {
+		if desiredGCP.Settings.DataDiskSizeGb > 0 && desiredGCP.Settings.DataDiskSizeGb < a.actual.Settings.DataDiskSizeGb {
+			isDiskSizeUnmanaged := false
+			if field, ok := a.fieldMeta["spec.settings.diskSize"]; ok {
+				isDiskSizeUnmanaged = field.isUnmanaged
+			}
+			if !isDiskSizeUnmanaged {
+				return fmt.Errorf("disk size cannot be decreased. Current size: %d GB, requested: %d GB", a.actual.Settings.DataDiskSizeGb, desiredGCP.Settings.DataDiskSizeGb)
+			}
+		}
+	}
+
 	instanceForStatus := a.actual
 	instanceDiff := &structuredreporting.Diff{}
 	if !InstancesMatch(desiredGCP, a.actual, instanceDiff) {
