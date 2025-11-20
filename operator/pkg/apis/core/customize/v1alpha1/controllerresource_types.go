@@ -36,6 +36,7 @@ type ControllerResource struct {
 
 // ControllerResourceSpec is the specification of the resource customization for containers of
 // a config connector controller.
+// +kubebuilder:validation:XValidation:rule="!self.verticalPodAutoscalerEnabled || !has(self.containers) || size(self.containers) == 0",message="VerticalPodAutoscalerEnabled cannot be true when Containers are specified"
 type ControllerResourceSpec struct {
 	// The list of containers whose resource requirements to be customized.
 	// +optional
@@ -44,6 +45,10 @@ type ControllerResourceSpec struct {
 	// This field takes effect only if the controller name is "cnrm-webhook-manager".
 	// +optional
 	Replicas *int64 `json:"replicas,omitempty"`
+	// VerticalPodAutoscalerEnabled indicates whether Vertical Pod Autoscaler is enabled for the controller.
+	// +kubebuilder:default=false
+	// +optional
+	VerticalPodAutoscalerEnabled *bool `json:"verticalPodAutoscalerEnabled,omitempty"`
 }
 
 // ContainerResourceSpec is the specification of the resource customization for a container of
