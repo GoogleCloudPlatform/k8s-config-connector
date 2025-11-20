@@ -170,7 +170,6 @@ func (m *ServeMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if k == "$alt" {
 			for _, v := range values {
 				if v == "json;enum-encoding=int" {
-					klog.Infof("found %q=%q, will convert to Accept header", k, v)
 					r.Header.Set("Accept", "application/json;enum-encoding=int")
 				}
 			}

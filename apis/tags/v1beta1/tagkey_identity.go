@@ -43,28 +43,40 @@ func (i *TagsTagKeyIdentity) String() string {
 }
 
 func (i *TagsTagKeyIdentity) FromExternal(ref string) error {
+	// Should be able to parse https://docs.cloud.google.com/asset-inventory/docs/asset-names
 	ref = strings.TrimPrefix(ref, "//cloudresourcemanager.googleapis.com/")
 
 	tokens := strings.Split(ref, "/")
 	if len(tokens) == 2 && tokens[0] == "tagKeys" {
 		i.TagKey = tokens[1]
+		if i.TagKey == "" {
+			return fmt.Errorf("tagKey was empty in external=%q", ref)
+		}
 		return nil
 	}
-	return fmt.Errorf("format of TagsTagKey external=%q was not known (use %s)", ref, TagsTagKeyIdentityURL)
+
+	return fmt.Errorf("format of TagKey external=%q was not known (use %s)", ref, TagsTagKeyIdentityURL)
 }
 
 var _ identity.Resource = &TagsTagKey{}
 
 func (obj *TagsTagKey) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	newIdentity := &TagsTagKeyIdentity{}
+	// Get desired resource ID
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
-	newIdentity.TagKey = common.ValueOf(obj.Spec.ResourceID)
-	if newIdentity.TagKey == "" {
-		newIdentity.TagKey = obj.GetName()
-	}
-	if newIdentity.TagKey == "" {
+	// Server-generated ID; do not fallback to name
+	// if resourceID == "" {
+	// 	resourceID = obj.GetName()
+	// }
+
+	if resourceID == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
+
+	newIdentity := &TagsTagKeyIdentity{
+		TagKey: resourceID,
+	}
+
 	// Validate against the ID stored in status.externalRef
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
