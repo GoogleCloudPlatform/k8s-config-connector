@@ -54,12 +54,26 @@ if [ "$VERSION_AT_COMMIT" != "$VERSION" ]; then
     exit 1
 fi
 
-# 5. Create an annotated tag.
+# 5. Create the release branch.
+# Extract Major.Minor from the version (e.g., 1.139.0 -> 1.139)
+MAJOR_MINOR=$(echo "$VERSION" | cut -d. -f1,2)
+RELEASE_BRANCH="release-${MAJOR_MINOR}"
+
+echo "Checking if release branch ${RELEASE_BRANCH} exists on remote..."
+if git ls-remote --exit-code --heads origin "${RELEASE_BRANCH}"; then
+  echo "Release branch ${RELEASE_BRANCH} already exists on remote. Skipping branch creation."
+else
+  echo "Creating release branch ${RELEASE_BRANCH} from commit ${COMMIT_HASH}"
+  git push origin "${COMMIT_HASH}:refs/heads/${RELEASE_BRANCH}"
+fi
+
+# 6. Create an annotated tag on the release branch (or the commit if branch exists).
+# We tag the commit explicitly, but pushing the branch first ensures the commit is reachable there.
 echo "Creating annotated tag v${VERSION} for commit ${COMMIT_HASH}"
 git tag -a "v${VERSION}" -m "Release ${VERSION}" "${COMMIT_HASH}"
 
-# 6. Push the tag to the OSS remote.
+# 7. Push the tag to the OSS remote.
 echo "Pushing tag v${VERSION} to origin."
 git push origin "v${VERSION}"
 
-echo "--- Successfully created and pushed tag v${VERSION} ---"
+echo "--- Successfully processed release branch ${RELEASE_BRANCH} and tag v${VERSION} ---"
