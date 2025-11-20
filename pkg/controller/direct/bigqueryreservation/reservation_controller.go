@@ -209,6 +209,8 @@ func (a *ReservationAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		status := &krm.BigQueryReservationReservationStatus{}
+		// Update externalRef when acquiring/importing an existing reservation from gcp
+		status.ExternalRef = direct.LazyPtr(a.id.String())
 		status.ObservedState = BigQueryReservationReservationObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
