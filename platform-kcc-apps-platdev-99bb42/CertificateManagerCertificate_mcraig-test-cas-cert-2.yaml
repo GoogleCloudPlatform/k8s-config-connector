@@ -1,0 +1,108 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+Object:
+  apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+  kind: CertificateManagerCertificate
+  metadata:
+    annotations:
+      cnrm.cloud.google.com/management-conflict-prevention-policy: none
+      cnrm.cloud.google.com/observed-secret-versions: '{}'
+      cnrm.cloud.google.com/state-into-spec: absent
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"certificatemanager.cnrm.cloud.google.com/v1beta1","kind":"CertificateManagerCertificate","metadata":{"annotations":{},"name":"mcraig-test-cas-cert-2","namespace":"platform-kcc-apps-platdev-99bb42"},"spec":{"description":"mcraig sample managed certificate for kcc","location":"global","managed":{"domains":["*.cloudnetworks.x.gcpnp.anz","test.clludnetworks.x.gcpnp.anz"],"issuanceConfigRef":{"external":"projects/anz-x-apps-platdev-99bb42/locations/global/certificateIssuanceConfigs/test-rotation"}},"projectRef":{"external":"anz-x-apps-platdev-99bb42"},"resourceID":"mcraig-test-cas-cert-2","scope":"ALL_REGIONS"}}
+    creationTimestamp: "2025-05-26T04:36:08Z"
+    finalizers:
+    - cnrm.cloud.google.com/finalizer
+    - cnrm.cloud.google.com/deletion-defender
+    generation: 1
+    labels:
+      ci_group: platform
+      x.anz.com/asset: platform
+    managedFields:
+    - apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:kubectl.kubernetes.io/last-applied-configuration: {}
+        f:spec:
+          .: {}
+          f:description: {}
+          f:location: {}
+          f:managed:
+            .: {}
+            f:domains: {}
+            f:issuanceConfigRef:
+              .: {}
+              f:external: {}
+          f:projectRef:
+            .: {}
+            f:external: {}
+          f:resourceID: {}
+          f:scope: {}
+      manager: kubectl-client-side-apply
+      operation: Update
+      time: "2025-05-26T04:36:08Z"
+    - apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:cnrm.cloud.google.com/observed-secret-versions: {}
+            f:cnrm.cloud.google.com/state-into-spec: {}
+          f:finalizers:
+            .: {}
+            v:"cnrm.cloud.google.com/deletion-defender": {}
+            v:"cnrm.cloud.google.com/finalizer": {}
+      manager: cnrm-controller-manager
+      operation: Update
+      time: "2025-05-26T04:36:24Z"
+    - apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:status:
+          .: {}
+          f:conditions: {}
+          f:observedGeneration: {}
+      manager: cnrm-controller-manager
+      operation: Update
+      subresource: status
+      time: "2025-05-26T04:36:24Z"
+    name: mcraig-test-cas-cert-2
+    namespace: platform-kcc-apps-platdev-99bb42
+    resourceVersion: "1886523309"
+    uid: 0d84a5a3-01c9-4970-8464-a3a3b93dc261
+  spec:
+    description: mcraig sample managed certificate for kcc
+    location: global
+    managed:
+      domains:
+      - '*.cloudnetworks.x.gcpnp.anz'
+      - test.clludnetworks.x.gcpnp.anz
+      issuanceConfigRef:
+        external: projects/anz-x-apps-platdev-99bb42/locations/global/certificateIssuanceConfigs/test-rotation
+    projectRef:
+      external: anz-x-apps-platdev-99bb42
+    resourceID: mcraig-test-cas-cert-2
+    scope: ALL_REGIONS
+  status:
+    conditions:
+    - lastTransitionTime: "2025-05-26T04:36:24Z"
+      message: The resource is up to date
+      reason: UpToDate
+      status: "True"
+      type: Ready
+    observedGeneration: 1

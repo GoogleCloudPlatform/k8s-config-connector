@@ -1,0 +1,213 @@
+GET https://iap.googleapis.com/v1/projects/${KCC_APP_TEST_PROJECT}/iap_web/appengine-${KCC_APP_TEST_PROJECT}/services/default:iapSettings?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${KCC_APP_TEST_PROJECT}%2Fiap_web%2Fappengine-${KCC_APP_TEST_PROJECT}%2Fservices%2Fdefault
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${KCC_APP_TEST_PROJECT_NUMBER}/iap_web/appengine-${KCC_APP_TEST_PROJECT}/services/default"
+}
+
+---
+
+PATCH https://iap.googleapis.com/v1/projects/${KCC_APP_TEST_PROJECT}/iap_web/appengine-${KCC_APP_TEST_PROJECT}/services/default:iapSettings?%24alt=json%3Benum-encoding%3Dint&updateMask=iapSettings.accessSettings.corsSettings.allowHttpOptions%2CiapSettings.accessSettings.reauthSettings%2CiapSettings.applicationSettings.cookieDomain
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: iap_settings.name=projects%2F${KCC_APP_TEST_PROJECT}%2Fiap_web%2Fappengine-${KCC_APP_TEST_PROJECT}%2Fservices%2Fdefault
+
+{
+  "accessSettings": {
+    "corsSettings": {
+      "allowHttpOptions": true
+    },
+    "reauthSettings": {
+      "maxAge": "300s",
+      "method": 1,
+      "policyType": 2
+    }
+  },
+  "applicationSettings": {
+    "cookieDomain": ".example.com"
+  },
+  "name": "projects/${KCC_APP_TEST_PROJECT}/iap_web/appengine-${KCC_APP_TEST_PROJECT}/services/default"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessSettings": {
+    "corsSettings": {
+      "allowHttpOptions": true
+    },
+    "reauthSettings": {
+      "maxAge": "300s",
+      "method": 1,
+      "policyType": 2
+    }
+  },
+  "applicationSettings": {
+    "cookieDomain": ".example.com"
+  },
+  "name": "projects/${KCC_APP_TEST_PROJECT_NUMBER}/iap_web/appengine-${KCC_APP_TEST_PROJECT}/services/default"
+}
+
+---
+
+GET https://iap.googleapis.com/v1/projects/${KCC_APP_TEST_PROJECT}/iap_web/appengine-${KCC_APP_TEST_PROJECT}/services/default:iapSettings?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${KCC_APP_TEST_PROJECT}%2Fiap_web%2Fappengine-${KCC_APP_TEST_PROJECT}%2Fservices%2Fdefault
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessSettings": {
+    "corsSettings": {
+      "allowHttpOptions": true
+    },
+    "reauthSettings": {
+      "maxAge": "300s",
+      "method": 1,
+      "policyType": 2
+    }
+  },
+  "applicationSettings": {
+    "cookieDomain": ".example.com"
+  },
+  "name": "projects/${KCC_APP_TEST_PROJECT_NUMBER}/iap_web/appengine-${KCC_APP_TEST_PROJECT}/services/default"
+}
+
+---
+
+PATCH https://iap.googleapis.com/v1/projects/${KCC_APP_TEST_PROJECT}/iap_web/appengine-${KCC_APP_TEST_PROJECT}/services/default:iapSettings?%24alt=json%3Benum-encoding%3Dint&updateMask=iapSettings.accessSettings.corsSettings.allowHttpOptions%2CiapSettings.accessSettings.reauthSettings%2CiapSettings.applicationSettings.cookieDomain
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: iap_settings.name=projects%2F${KCC_APP_TEST_PROJECT}%2Fiap_web%2Fappengine-${KCC_APP_TEST_PROJECT}%2Fservices%2Fdefault
+
+{
+  "accessSettings": {
+    "corsSettings": {
+      "allowHttpOptions": false
+    },
+    "reauthSettings": {
+      "maxAge": "600s",
+      "method": 3,
+      "policyType": 1
+    }
+  },
+  "applicationSettings": {
+    "cookieDomain": ".updated-example.com"
+  },
+  "name": "projects/${KCC_APP_TEST_PROJECT}/iap_web/appengine-${KCC_APP_TEST_PROJECT}/services/default"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessSettings": {
+    "corsSettings": {
+      "allowHttpOptions": false
+    },
+    "reauthSettings": {
+      "maxAge": "600s",
+      "method": 3,
+      "policyType": 1
+    }
+  },
+  "applicationSettings": {
+    "cookieDomain": ".updated-example.com"
+  },
+  "name": "projects/${KCC_APP_TEST_PROJECT_NUMBER}/iap_web/appengine-${KCC_APP_TEST_PROJECT}/services/default"
+}
+
+---
+
+GET https://iap.googleapis.com/v1/projects/${KCC_APP_TEST_PROJECT}/iap_web/appengine-${KCC_APP_TEST_PROJECT}/services/default:iapSettings?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${KCC_APP_TEST_PROJECT}%2Fiap_web%2Fappengine-${KCC_APP_TEST_PROJECT}%2Fservices%2Fdefault
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessSettings": {
+    "corsSettings": {
+      "allowHttpOptions": false
+    },
+    "reauthSettings": {
+      "maxAge": "600s",
+      "method": 3,
+      "policyType": 1
+    }
+  },
+  "applicationSettings": {
+    "cookieDomain": ".updated-example.com"
+  },
+  "name": "projects/${KCC_APP_TEST_PROJECT_NUMBER}/iap_web/appengine-${KCC_APP_TEST_PROJECT}/services/default"
+}
+
+---
+
+PATCH https://iap.googleapis.com/v1/projects/${KCC_APP_TEST_PROJECT}/iap_web/appengine-${KCC_APP_TEST_PROJECT}/services/default:iapSettings?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: iap_settings.name=projects%2F${KCC_APP_TEST_PROJECT}%2Fiap_web%2Fappengine-${KCC_APP_TEST_PROJECT}%2Fservices%2Fdefault
+
+{
+  "name": "projects/${KCC_APP_TEST_PROJECT}/iap_web/appengine-${KCC_APP_TEST_PROJECT}/services/default"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${KCC_APP_TEST_PROJECT_NUMBER}/iap_web/appengine-${KCC_APP_TEST_PROJECT}/services/default"
+}

@@ -2208,10 +2208,6 @@
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.oauthSettings.loginHint" is not set in unstructured objects
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.accessSettings.oauthSettings.programmaticClients[]" is not set in unstructured objects
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.appEngineRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.appEngineRef.applicationRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.appEngineRef.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.appEngineRef.serviceRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.appEngineRef.versionRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.applicationSettings.accessDeniedPageSettings.accessDeniedPageURI" is not set in unstructured objects
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.applicationSettings.accessDeniedPageSettings.generateTroubleshootingURI" is not set in unstructured objects
 [missing_field] crd=iapsettings.iap.cnrm.cloud.google.com version=v1beta1: field ".spec.applicationSettings.accessDeniedPageSettings.remediationTokenGenerationEnabled" is not set in unstructured objects

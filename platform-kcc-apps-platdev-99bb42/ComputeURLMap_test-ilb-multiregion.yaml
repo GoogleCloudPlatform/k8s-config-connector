@@ -1,0 +1,181 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+Object:
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeURLMap
+  metadata:
+    annotations:
+      cnrm.cloud.google.com/management-conflict-prevention-policy: none
+      cnrm.cloud.google.com/project-id: anz-x-apps-platdev-99bb42
+      cnrm.cloud.google.com/state-into-spec: absent
+      utils.platform.x.anz/owner: '{"apiVersion":"netoperator.platform.x.anz/v1alpha1","kind":"InternalLoadBalancer","name":"test-ilb-multiregion","namespace":"platform-kcc-apps-platdev-99bb42"}'
+    creationTimestamp: "2025-05-21T05:35:45Z"
+    finalizers:
+    - cnrm.cloud.google.com/finalizer
+    - cnrm.cloud.google.com/deletion-defender
+    generation: 4
+    labels:
+      app.kubernetes.io/managed-by: netoperator
+      ci_group: platform
+      managed-by: netoperator
+      netoperator.platform.x.anz/controller: internalloadbalancer
+      x.anz.com/asset: platform
+    managedFields:
+    - apiVersion: compute.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:cnrm.cloud.google.com/project-id: {}
+            f:utils.platform.x.anz/owner: {}
+          f:labels:
+            .: {}
+            f:app.kubernetes.io/managed-by: {}
+            f:managed-by: {}
+            f:netoperator.platform.x.anz/controller: {}
+          f:ownerReferences:
+            .: {}
+            k:{"uid":"c3720208-d158-4f07-9b15-369b12a20443"}: {}
+        f:spec:
+          .: {}
+          f:defaultService:
+            .: {}
+            f:backendServiceRef:
+              .: {}
+              f:name: {}
+              f:namespace: {}
+          f:location: {}
+          f:resourceID: {}
+      manager: ___2netop_main
+      operation: Update
+      time: "2025-05-21T05:35:45Z"
+    - apiVersion: compute.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:cnrm.cloud.google.com/state-into-spec: {}
+      manager: cnrm-controller-manager
+      operation: Update
+      time: "2025-05-21T05:36:22Z"
+    - apiVersion: compute.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:spec:
+          f:pathMatcher: {}
+      manager: main
+      operation: Update
+      time: "2025-05-23T02:01:28Z"
+    - apiVersion: compute.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:spec:
+          f:hostRule: {}
+      manager: ___5netop_main
+      operation: Update
+      subresource: status
+      time: "2025-05-29T23:37:12Z"
+    - apiVersion: compute.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:status:
+          .: {}
+          f:conditions: {}
+          f:creationTimestamp: {}
+          f:fingerprint: {}
+          f:mapId: {}
+          f:observedGeneration: {}
+          f:selfLink: {}
+      manager: cnrm-controller-manager
+      operation: Update
+      subresource: status
+      time: "2025-05-29T23:37:46Z"
+    name: test-ilb-multiregion
+    namespace: platform-kcc-apps-platdev-99bb42
+    ownerReferences:
+    - apiVersion: netoperator.platform.x.anz/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: InternalLoadBalancer
+      name: test-ilb-multiregion
+      uid: c3720208-d158-4f07-9b15-369b12a20443
+    resourceVersion: "1893599427"
+    uid: d3ac907e-7ed1-48d3-8d8a-eddec7ffacf9
+  spec:
+    defaultService:
+      backendServiceRef:
+        name: test-ilb-multiregion-default
+        namespace: platform-kcc-apps-platdev-99bb42
+    hostRule:
+    - description: Host rule for chaosmonkey.cloudnetworks.x.gcpnp.anz
+      hosts:
+      - chaosmonkey.cloudnetworks.x.gcpnp.anz
+      - chaosmonkey.cloudnetworks.x.gcpnp.anz:*
+      pathMatcher: chaosmonkey-cloudnetworks-x-gcpnp-anz
+    - description: Host rule for chaosmonkeymulti.cloudnetworks.x.gcpnp.anz
+      hosts:
+      - chaosmonkeymulti.cloudnetworks.x.gcpnp.anz
+      - chaosmonkeymulti.cloudnetworks.x.gcpnp.anz:*
+      pathMatcher: chaosmonkeymulti-cloudnetworks-x-gcpnp-anz
+    - hosts:
+      - svc.gcp.anz
+      pathMatcher: test-ilb-multiregion-default
+    location: global
+    pathMatcher:
+    - defaultService:
+        backendServiceRef:
+          external: https://www.googleapis.com/compute/v1/projects/anz-x-apps-platdev-99bb42/global/backendServices/chaosmonkey-ilb-failing-route
+      name: chaosmonkey-cloudnetworks-x-gcpnp-anz
+      routeRules:
+      - matchRules:
+        - prefixMatch: /status/*
+        priority: 1
+        routeAction:
+          weightedBackendServices:
+          - backendServiceRef:
+              external: https://www.googleapis.com/compute/v1/projects/anz-x-apps-platdev-99bb42/global/backendServices/chaosmonkey-ilb-failing-route
+            weight: 500
+    - defaultService:
+        backendServiceRef:
+          external: https://www.googleapis.com/compute/v1/projects/anz-x-apps-platdev-99bb42/global/backendServices/test-ilb-multi
+      name: chaosmonkeymulti-cloudnetworks-x-gcpnp-anz
+      routeRules:
+      - matchRules:
+        - prefixMatch: /helloworld
+        priority: 1
+        routeAction:
+          weightedBackendServices:
+          - backendServiceRef:
+              external: https://www.googleapis.com/compute/v1/projects/anz-x-apps-platdev-99bb42/global/backendServices/test-ilb-multi
+            weight: 500
+    - defaultService:
+        backendServiceRef:
+          name: test-ilb-multiregion-default
+          namespace: platform-kcc-apps-platdev-99bb42
+      name: test-ilb-multiregion-default
+    resourceID: test-ilb-multiregion
+  status:
+    conditions:
+    - lastTransitionTime: "2025-05-29T23:37:46Z"
+      message: The resource is up to date
+      reason: UpToDate
+      status: "True"
+      type: Ready
+    creationTimestamp: "2025-05-20T22:36:10.604-07:00"
+    fingerprint: W430VLH78js=
+    mapId: 1767850216163170600
+    observedGeneration: 4
+    selfLink: https://www.googleapis.com/compute/v1/projects/anz-x-apps-platdev-99bb42/global/urlMaps/test-ilb-multiregion

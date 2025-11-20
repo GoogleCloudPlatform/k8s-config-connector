@@ -1,0 +1,68 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+Object:
+  apiVersion: core.cnrm.cloud.google.com/v1beta1
+  kind: ConfigConnectorContext
+  metadata:
+    creationTimestamp: "2025-04-23T07:58:16Z"
+    finalizers:
+    - configconnector.cnrm.cloud.google.com/finalizer
+    generation: 3
+    labels:
+      ci_group: platform
+      kustomize.toolkit.fluxcd.io/name: tenant-platform
+      kustomize.toolkit.fluxcd.io/namespace: platform-cloud-infra-tenant
+      x.anz.com/asset: platform
+    managedFields:
+    - apiVersion: core.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:labels:
+            f:kustomize.toolkit.fluxcd.io/name: {}
+            f:kustomize.toolkit.fluxcd.io/namespace: {}
+        f:spec:
+          f:googleServiceAccount: {}
+      manager: kustomize-controller
+      operation: Apply
+      time: "2025-04-28T08:13:45Z"
+    - apiVersion: core.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:finalizers:
+            .: {}
+            v:"configconnector.cnrm.cloud.google.com/finalizer": {}
+      manager: manager
+      operation: Update
+      time: "2025-04-23T07:58:16Z"
+    - apiVersion: core.cnrm.cloud.google.com/v1beta1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:status:
+          .: {}
+          f:healthy: {}
+      manager: manager
+      operation: Update
+      subresource: status
+      time: "2025-05-06T20:11:46Z"
+    name: configconnectorcontext.core.cnrm.cloud.google.com
+    namespace: platform-kcc-apps-platdev-99bb42
+    resourceVersion: "1850699801"
+    uid: 18df1a94-e6b3-4ef8-a090-03a3fc2dc4fd
+  spec:
+    googleServiceAccount: kcc-apps-platdev-99bb42@anz-x-gha-prod-0f0d8b.iam.gserviceaccount.com
+  status:
+    healthy: true
