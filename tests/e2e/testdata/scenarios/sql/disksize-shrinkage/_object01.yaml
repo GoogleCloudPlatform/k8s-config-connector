@@ -14,7 +14,6 @@ spec:
   region: us-central1
   resourceID: sqlinstance-${uniqueId}
   settings:
-    diskSize: 10
     tier: db-n1-standard-1
 status:
   conditions:

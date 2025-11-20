@@ -21,7 +21,6 @@ spec:
   databaseVersion: MYSQL_5_7
   settings:
     tier: db-n1-standard-1
-    #diskAutoresize: true
     diskSize: 15
   resourceID: sqlinstance-${uniqueId}
 ---
@@ -35,5 +34,4 @@ spec:
   databaseVersion: MYSQL_5_7
   settings:
     tier: db-n1-standard-1
-    diskSize: 10
   resourceID: sqlinstance-${uniqueId}
