@@ -21,40 +21,6 @@
 
 package v1beta1
 
-// +kcc:proto=google.identity.accesscontextmanager.v1.AccessLevel
-type AccessLevel struct {
-	// Required. Resource name for the Access Level. The `short_name` component
-	//  must begin with a letter and only include alphanumeric and '_'. Format:
-	//  `accessPolicies/{access_policy}/accessLevels/{access_level}`. The maximum
-	//  length of the `access_level` component is 50 characters.
-	// +kcc:proto:field=google.identity.accesscontextmanager.v1.AccessLevel.name
-	Name *string `json:"name,omitempty"`
-
-	// Human readable title. Must be unique within the Policy.
-	// +kcc:proto:field=google.identity.accesscontextmanager.v1.AccessLevel.title
-	Title *string `json:"title,omitempty"`
-
-	// Description of the `AccessLevel` and its use. Does not affect behavior.
-	// +kcc:proto:field=google.identity.accesscontextmanager.v1.AccessLevel.description
-	Description *string `json:"description,omitempty"`
-
-	// A `BasicLevel` composed of `Conditions`.
-	// +kcc:proto:field=google.identity.accesscontextmanager.v1.AccessLevel.basic
-	Basic *BasicLevel `json:"basic,omitempty"`
-
-	// A `CustomLevel` written in the Common Expression Language.
-	// +kcc:proto:field=google.identity.accesscontextmanager.v1.AccessLevel.custom
-	Custom *CustomLevel `json:"custom,omitempty"`
-
-	// Output only. Time the `AccessLevel` was created in UTC.
-	// +kcc:proto:field=google.identity.accesscontextmanager.v1.AccessLevel.create_time
-	CreateTime *string `json:"createTime,omitempty"`
-
-	// Output only. Time the `AccessLevel` was updated in UTC.
-	// +kcc:proto:field=google.identity.accesscontextmanager.v1.AccessLevel.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
-}
-
 // +kcc:proto=google.identity.accesscontextmanager.v1.BasicLevel
 type BasicLevel struct {
 	// Required. A list of requirements for the `AccessLevel` to be granted.

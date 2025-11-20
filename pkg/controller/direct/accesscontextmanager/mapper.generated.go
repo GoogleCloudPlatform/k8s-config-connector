@@ -32,10 +32,6 @@ func AccessContextManagerAccessLevelObservedState_FromProto(mapCtx *direct.MapCo
 	}
 	out := &krm.AccessContextManagerAccessLevelObservedState{}
 	// MISSING: Name
-	// MISSING: Title
-	// MISSING: Description
-	// MISSING: Basic
-	// MISSING: Custom
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	return out
@@ -46,10 +42,6 @@ func AccessContextManagerAccessLevelObservedState_ToProto(mapCtx *direct.MapCont
 	}
 	out := &pb.AccessLevel{}
 	// MISSING: Name
-	// MISSING: Title
-	// MISSING: Description
-	// MISSING: Basic
-	// MISSING: Custom
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	return out
@@ -60,10 +52,10 @@ func AccessContextManagerAccessLevelSpec_FromProto(mapCtx *direct.MapContext, in
 	}
 	out := &krm.AccessContextManagerAccessLevelSpec{}
 	// MISSING: Name
-	// MISSING: Title
-	// MISSING: Description
-	// MISSING: Basic
-	// MISSING: Custom
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Basic = BasicLevel_FromProto(mapCtx, in.GetBasic())
+	out.Custom = CustomLevel_FromProto(mapCtx, in.GetCustom())
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	return out
@@ -74,10 +66,14 @@ func AccessContextManagerAccessLevelSpec_ToProto(mapCtx *direct.MapContext, in *
 	}
 	out := &pb.AccessLevel{}
 	// MISSING: Name
-	// MISSING: Title
-	// MISSING: Description
-	// MISSING: Basic
-	// MISSING: Custom
+	out.Title = direct.ValueOf(in.Title)
+	out.Description = direct.ValueOf(in.Description)
+	if oneof := BasicLevel_ToProto(mapCtx, in.Basic); oneof != nil {
+		out.Level = &pb.AccessLevel_Basic{Basic: oneof}
+	}
+	if oneof := CustomLevel_ToProto(mapCtx, in.Custom); oneof != nil {
+		out.Level = &pb.AccessLevel_Custom{Custom: oneof}
+	}
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	return out
@@ -134,38 +130,6 @@ func AccessContextManagerAccessPolicySpec_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
 	// MISSING: Etag
-	return out
-}
-func AccessLevel_FromProto(mapCtx *direct.MapContext, in *pb.AccessLevel) *krm.AccessLevel {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AccessLevel{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.Title = direct.LazyPtr(in.GetTitle())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Basic = BasicLevel_FromProto(mapCtx, in.GetBasic())
-	out.Custom = CustomLevel_FromProto(mapCtx, in.GetCustom())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	return out
-}
-func AccessLevel_ToProto(mapCtx *direct.MapContext, in *krm.AccessLevel) *pb.AccessLevel {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AccessLevel{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Title = direct.ValueOf(in.Title)
-	out.Description = direct.ValueOf(in.Description)
-	if oneof := BasicLevel_ToProto(mapCtx, in.Basic); oneof != nil {
-		out.Level = &pb.AccessLevel_Basic{Basic: oneof}
-	}
-	if oneof := CustomLevel_ToProto(mapCtx, in.Custom); oneof != nil {
-		out.Level = &pb.AccessLevel_Custom{Custom: oneof}
-	}
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
 func BasicLevel_FromProto(mapCtx *direct.MapContext, in *pb.BasicLevel) *krm.BasicLevel {
