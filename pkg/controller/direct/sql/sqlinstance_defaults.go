@@ -112,16 +112,9 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		// GCP default StorageAutoResize is true.
 		out.Settings.StorageAutoResize = direct.PtrTo(true)
 	}
-	if actual != nil && out.Settings.StorageAutoResize != nil && *out.Settings.StorageAutoResize {
-		// If disk auto-resize is enabled, we should not try to downsize the disk.
-		// If the desired disk size is not provided (or is less than actual), we should use the actual disk size
-		// to prevent an erroneous update.
-		if out.Settings.DataDiskSizeGb < actual.Settings.DataDiskSizeGb {
-			out.Settings.DataDiskSizeGb = actual.Settings.DataDiskSizeGb
-		}
-	} else if in.Spec.Settings.DiskSize == nil && actual != nil {
-		// If disk auto-resize is NOT enabled, and disk size is not specified,
-		// we should still preserve the actual disk size.
+	if in.Spec.Settings.DiskSize == nil && actual != nil && *out.Settings.StorageAutoResize {
+		// If desired DiskSize is not specified and StorageAutoResize is enabled, use the actual disk size.
+		// Note: This must be set AFTER setting the default value for StorageAutoResize.
 		out.Settings.DataDiskSizeGb = actual.Settings.DataDiskSizeGb
 	}
 	if actual != nil {
