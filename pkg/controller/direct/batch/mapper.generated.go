@@ -79,32 +79,6 @@ func AllocationPolicy_AttachedDisk_ExistingDisk_ToProto(mapCtx *direct.MapContex
 	}
 	return &pb.AllocationPolicy_AttachedDisk_ExistingDisk{ExistingDisk: *in}
 }
-func AllocationPolicy_Disk_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_Disk) *krm.AllocationPolicy_Disk {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AllocationPolicy_Disk{}
-	// MISSING: Image
-	out.Snapshot = direct.LazyPtr(in.GetSnapshot())
-	out.Type = direct.LazyPtr(in.GetType())
-	out.SizeGB = direct.LazyPtr(in.GetSizeGb())
-	out.DiskInterface = direct.LazyPtr(in.GetDiskInterface())
-	return out
-}
-func AllocationPolicy_Disk_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_Disk) *pb.AllocationPolicy_Disk {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AllocationPolicy_Disk{}
-	// MISSING: Image
-	if oneof := AllocationPolicy_Disk_Snapshot_ToProto(mapCtx, in.Snapshot); oneof != nil {
-		out.DataSource = oneof
-	}
-	out.Type = direct.ValueOf(in.Type)
-	out.SizeGb = direct.ValueOf(in.SizeGB)
-	out.DiskInterface = direct.ValueOf(in.DiskInterface)
-	return out
-}
 func AllocationPolicy_Disk_Snapshot_ToProto(mapCtx *direct.MapContext, in *string) *pb.AllocationPolicy_Disk_Snapshot {
 	if in == nil {
 		return nil

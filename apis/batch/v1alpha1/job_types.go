@@ -142,7 +142,8 @@ type AllocationPolicy_Disk struct {
 	//  projects/{project}/global/images/family/{image_family}
 	//  * Specify the image version:
 	//  projects/{project}/global/images/{image_version}
-	DataSourceRef *computev1beta1.ComputeImageRef `json:"dataSourceRef,omitempty"`
+	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.Disk.image
+	ImageRef *computev1beta1.ComputeImageRef `json:"imageRef,omitempty"`
 
 	// Name of a snapshot used as the data source.
 	//  Snapshot is not supported as boot disk now.

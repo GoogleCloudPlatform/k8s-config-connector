@@ -152,7 +152,14 @@ spec:
                                 deleted when the VM is deleted. Batch API now only
                                 supports booting from image.
                               properties:
-                                dataSourceRef:
+                                diskInterface:
+                                  description: Local SSDs are available through both
+                                    "SCSI" and "NVMe" interfaces. If not indicated,
+                                    "NVMe" will be the default one for local ssds.
+                                    This field is ignored for persistent disks as
+                                    the interface is chosen automatically. See https://cloud.google.com/compute/docs/disks/persistent-disks#choose_an_interface.
+                                  type: string
+                                imageRef:
                                   description: |-
                                     URL for a VM image to use as the data source for this disk.
                                      For example, the following are all valid URLs:
@@ -189,13 +196,6 @@ spec:
                                         resource.
                                       type: string
                                   type: object
-                                diskInterface:
-                                  description: Local SSDs are available through both
-                                    "SCSI" and "NVMe" interfaces. If not indicated,
-                                    "NVMe" will be the default one for local ssds.
-                                    This field is ignored for persistent disks as
-                                    the interface is chosen automatically. See https://cloud.google.com/compute/docs/disks/persistent-disks#choose_an_interface.
-                                  type: string
                                 sizeGB:
                                   description: |-
                                     Disk size in GB.
@@ -256,7 +256,15 @@ spec:
                                     type: string
                                   newDisk:
                                     properties:
-                                      dataSourceRef:
+                                      diskInterface:
+                                        description: Local SSDs are available through
+                                          both "SCSI" and "NVMe" interfaces. If not
+                                          indicated, "NVMe" will be the default one
+                                          for local ssds. This field is ignored for
+                                          persistent disks as the interface is chosen
+                                          automatically. See https://cloud.google.com/compute/docs/disks/persistent-disks#choose_an_interface.
+                                        type: string
+                                      imageRef:
                                         description: |-
                                           URL for a VM image to use as the data source for this disk.
                                            For example, the following are all valid URLs:
@@ -294,14 +302,6 @@ spec:
                                               resource.
                                             type: string
                                         type: object
-                                      diskInterface:
-                                        description: Local SSDs are available through
-                                          both "SCSI" and "NVMe" interfaces. If not
-                                          indicated, "NVMe" will be the default one
-                                          for local ssds. This field is ignored for
-                                          persistent disks as the interface is chosen
-                                          automatically. See https://cloud.google.com/compute/docs/disks/persistent-disks#choose_an_interface.
-                                        type: string
                                       sizeGB:
                                         description: |-
                                           Disk size in GB.

@@ -92,12 +92,10 @@ func (r *ComputeImageRef) Normalize(ctx context.Context, reader client.Reader, d
 		}
 		return fmt.Errorf("reading referenced %s %s: %w", r.GetGVK(), key, err)
 	}
-	// Get external from status.externalRef. This is the most trustworthy place.
+	// `status.externalRef` is the preferred field to store externalRef. Since ComputeImage is not yet migrated to
+	// direct controller, so this field does not exist. We will use `.status.selfLink` instead.
 	externalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
-	if err != nil {
-		return fmt.Errorf("reading status.externalRef: %w", err)
-	}
-	if externalRef == "" {
+	if err != nil || externalRef == "" {
 		if externalRef, _, err = unstructured.NestedString(u.Object, "status", "selfLink"); err != nil {
 			return err
 		}
