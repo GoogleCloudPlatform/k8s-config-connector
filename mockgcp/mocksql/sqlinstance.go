@@ -763,6 +763,12 @@ func (s *sqlInstancesService) Update(ctx context.Context, req *pb.SqlInstancesUp
 		return nil, err
 	}
 
+	if req.GetBody().GetSettings() != nil && existing.GetSettings() != nil && req.GetBody().GetSettings().GetDataDiskSizeGb() != nil && existing.GetSettings().GetDataDiskSizeGb() != nil {
+		if req.GetBody().GetSettings().GetDataDiskSizeGb().GetValue() < existing.GetSettings().GetDataDiskSizeGb().GetValue() {
+			return nil, status.Errorf(codes.InvalidArgument, "Invalid request: The disk size cannot decrease. Current size: %d GB, requested: %d GB.", existing.GetSettings().GetDataDiskSizeGb().GetValue(), req.GetBody().GetSettings().GetDataDiskSizeGb().GetValue())
+		}
+	}
+
 	if req.GetBody().GetInstanceType() != existing.GetInstanceType() {
 		return nil, status.Errorf(codes.InvalidArgument, "Invalid request: instanceType cannot be updated.")
 	}
