@@ -41,6 +41,17 @@ func (r *SecretIdentity) ID() string {
 	return r.id
 }
 
+func (r *SecretIdentity) Location() string {
+	if r.parent.Location == "" || r.parent.Location == "global" {
+		return "global"
+	}
+	return r.parent.Location
+}
+
+func (r *SecretIdentity) ProjectID() string {
+	return r.parent.ProjectID
+}
+
 type SecretParent struct {
 	ProjectID string
 	Location  string
