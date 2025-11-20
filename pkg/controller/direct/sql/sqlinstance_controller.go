@@ -699,8 +699,8 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	instanceForStatus := a.actual
-	instanceDiff := &structuredreporting.Diff{}
-	if !InstancesMatch(desiredGCP, a.actual, instanceDiff) {
+
+	if instanceDiff := DiffInstances(desiredGCP, a.actual); instanceDiff.HasDiff() {
 		updateOp.RecordUpdatingEvent()
 
 		{
