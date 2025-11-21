@@ -14,7 +14,7 @@ require (
 	cloud.google.com/go/analytics v0.30.0
 	cloud.google.com/go/apigateway v1.7.6
 	cloud.google.com/go/batch v1.12.2
-	cloud.google.com/go/bigtable v1.38.0
+	cloud.google.com/go/bigtable v1.40.1
 	cloud.google.com/go/billing v1.20.4
 	cloud.google.com/go/clouddms v1.8.7
 	cloud.google.com/go/compute v1.38.0
@@ -22,7 +22,7 @@ require (
 	cloud.google.com/go/dataproc/v2 v2.11.2
 	cloud.google.com/go/discoveryengine v1.15.0
 	cloud.google.com/go/edgecontainer v1.4.3
-	cloud.google.com/go/firestore v1.19.0
+	cloud.google.com/go/firestore v1.20.0
 	cloud.google.com/go/iam v1.5.2
 	cloud.google.com/go/logging v1.13.0
 	cloud.google.com/go/longrunning v0.6.7
@@ -160,7 +160,7 @@ require (
 	github.com/vmihailenco/msgpack/v4 v4.3.12 // indirect
 	github.com/vmihailenco/tagparser v0.1.2 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
-	github.com/zclconf/go-cty v1.16.3 // indirect
+	github.com/zclconf/go-cty v1.16.4 // indirect
 	github.com/zeebo/errs v1.4.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
