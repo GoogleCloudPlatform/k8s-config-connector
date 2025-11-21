@@ -312,8 +312,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "firebase.cnrm.cloud.google.com", Kind: "FirebaseProject"}:
 	case schema.GroupKind{Group: "firebasestorage.cnrm.cloud.google.com", Kind: "FirebaseStorageBucket"}:
 	case schema.GroupKind{Group: "firebase.cnrm.cloud.google.com", Kind: "FirebaseWebApp"}:
-	case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreDatabase"}:
-	case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreIndex"}:
 	case schema.GroupKind{Group: "resourcemanager.cnrm.cloud.google.com", Kind: "Folder"}:
 	case schema.GroupKind{Group: "gkebackup.cnrm.cloud.google.com", Kind: "GKEBackupBackupPlan"}:
 	case schema.GroupKind{Group: "gkebackup.cnrm.cloud.google.com", Kind: "GKEBackupBackup"}:
