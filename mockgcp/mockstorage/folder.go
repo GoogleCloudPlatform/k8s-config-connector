@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +tool:mockgcp-support
-// proto.service: google.storage.v1
+// +tool:mockgcp-support-but-no-proto
+// proto.service: google.storage.v1.FoldersServer
 // proto.message: google.storage.v1.Folder
 
 package mockstorage
