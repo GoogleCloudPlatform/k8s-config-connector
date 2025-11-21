@@ -336,12 +336,16 @@ func (x *CSVExporter) InferOutput_WithCompletion(ctx context.Context, llmClient 
 			return fmt.Errorf("unexpected input columns for %v; got %v, want %v", dataPoint.Description, inputColumnKeys, x.StrictInputColumnKeys)
 		}
 
+		log.Info("adding example to prompt", "columns", sets.List(inputColumnKeys))
+
 		s := dataPoint.ToGenAIFormat()
 		s = "<example>\n" + s + "\n</example>\n\n"
 		fmt.Fprintf(&prompt, "\n%s\n\n", s)
 	}
 
 	{
+		log.Info("adding query", "columns", sets.List(input.InputColumnKeys()))
+
 		// Prompt with the input data point.
 		s := input.ToGenAIFormat()
 		// We also include the beginning of the output for Gemini to fill in.

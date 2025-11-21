@@ -18,6 +18,7 @@ package v1alpha1
 // proto.message: google.cloud.pubsublite.v1.Subscription
 // crd.kind: PubSubLiteSubscription
 // crd.version: v1alpha1
+// terraform.src: github.com/hashicorp/terraform-provider-google-beta/google-beta/services/pubsublite/resource_pubsub_lite_subscription.go
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"

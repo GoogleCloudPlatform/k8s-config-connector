@@ -127,7 +127,11 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 	if err != nil {
 		return err
 	}
-	x, err := toolbot.NewCSVExporter(extractor, addProtoDefinition, addGoStruct, addMapperFunctions)
+	addSource, err := toolbot.NewEnhanceWithSource(o.SrcDir)
+	if err != nil {
+		return err
+	}
+	x, err := toolbot.NewCSVExporter(extractor, addProtoDefinition, addGoStruct, addMapperFunctions, addSource)
 	if err != nil {
 		return err
 	}
