@@ -17,6 +17,8 @@ package networkconnectivity
 import (
 	"time"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
@@ -36,7 +38,7 @@ func NetworkConnectivityServiceConnectionPolicySpec_FromProto(mapCtx *direct.Map
 	// MISSING: Labels
 	// MISSING: Name
 	if in.Network != "" {
-		out.Network = &refs.ComputeNetworkRef{External: in.Network}
+		out.Network = &computev1beta1.ComputeNetworkRef{External: in.Network}
 	}
 	out.PscConfig = PscConfig_FromProto(mapCtx, in.GetPscConfig())
 	// MISSING: PscConnections
@@ -44,7 +46,7 @@ func NetworkConnectivityServiceConnectionPolicySpec_FromProto(mapCtx *direct.Map
 	// MISSING: UpdateTime
 	return out
 }
-func NetworkConnectivityServiceConnectionPolicySpec_Network_ToProto(mapCtx *direct.MapContext, in *refs.ComputeNetworkRef) string {
+func NetworkConnectivityServiceConnectionPolicySpec_Network_ToProto(mapCtx *direct.MapContext, in *computev1beta1.ComputeNetworkRef) string {
 	if in == nil {
 		return ""
 	}

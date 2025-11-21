@@ -257,7 +257,7 @@ func (a *ManagementServerAdapter) normalizeReferenceFields(ctx context.Context) 
 	obj := a.desired
 	for i := range obj.Spec.Networks {
 		if obj.Spec.Networks[i].NetworkRef != nil {
-			if err := obj.Spec.Networks[i].NetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+			if err := obj.Spec.Networks[i].NetworkRef.Normalize(ctx, a.reader, obj.GetNamespace()); err != nil {
 				return err
 			}
 		}
