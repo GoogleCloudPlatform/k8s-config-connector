@@ -1,0 +1,106 @@
+--- a/v1alpha1
++++ b/v1beta1
+  &v1.JSONSchemaProps{
+  	... // 26 identical fields
+  	AnyOf: nil,
+  	Not:   nil,
+  	Properties: map[string]v1.JSONSchemaProps{
+  		"apiVersion": {Description: "APIVersion defines the versioned schema of this representation o"..., Type: "string"},
+  		"kind":       {Description: "Kind is a string value representing the REST resource this objec"..., Type: "string"},
+  		"metadata":   {Type: "object"},
+  		"spec": {
+  			... // 26 identical fields
+  			AnyOf: nil,
+  			Not:   nil,
+  			Properties: map[string]v1.JSONSchemaProps{
+  				"allocationPolicy": {
+  					... // 26 identical fields
+  					AnyOf: nil,
+  					Not:   nil,
+  					Properties: map[string]v1.JSONSchemaProps{
+  						"instances": {Description: "Describe instances that can be created by this AllocationPolicy."..., Type: "array", Items: &{Schema: &{Type: "object", Properties: {"blockProjectSSHKeys": {Description: "Optional. Set this field to `true` if you want Batch to block\n p"..., Type: "boolean"}, "installGpuDrivers": {Description: "Set this field true if you want Batch to help fetch drivers from"..., Type: "boolean"}, "installOpsAgent": {Description: "Optional. Set this field true if you want Batch to install Ops A"..., Type: "boolean"}, "instanceTemplate": {Description: "Name of an instance template used to create VMs.\n Named the fiel"..., Type: "string"}, ...}}}},
+  						"labels":    {Description: "Custom labels to apply to the job and all the Compute Engine res"..., Type: "object", AdditionalProperties: &{Allows: true, Schema: &{Type: "string"}}},
+  						"location":  {Description: "Location where compute resources should be allocated for the Job.", Type: "object", Properties: {"allowedLocations": {Description: "A list of allowed location names represented by internal URLs.\n\n"..., Type: "array", Items: &{Schema: &{Type: "string"}}}}},
+  						"network": {
+  							... // 26 identical fields
+  							AnyOf: nil,
+  							Not:   nil,
+  							Properties: map[string]v1.JSONSchemaProps{
+  								"networkInterfaces": {
+  									... // 21 identical fields
+  									MinProperties: nil,
+  									Required:      nil,
+  									Items: &v1.JSONSchemaPropsOrArray{
+  										Schema: &v1.JSONSchemaProps{
+  											... // 26 identical fields
+  											AnyOf: nil,
+  											Not:   nil,
+  											Properties: map[string]v1.JSONSchemaProps{
+  												"networkRef": {
+  													... // 26 identical fields
+  													AnyOf: nil,
+  													Not:   nil,
+  													Properties: map[string]v1.JSONSchemaProps{
+  														"external": {
+  															ID:     "",
+  															Schema: "",
+  															Ref:    nil,
+  															Description: strings.Join({
+  																"A reference to an externally",
+- 																"-",
++ 																" ",
+  																"managed Compute Network resource. Should be in the format `proje",
+  																"cts/{{projectID}}/global/networks/{{network}}`.",
+  															}, ""),
+  															Type:   "string",
+  															Format: "",
+  															... // 38 identical fields
+  														},
+  														"name":      {Description: "The `name` field of a `ComputeNetwork` resource.", Type: "string"},
+  														"namespace": {Description: "The `namespace` field of a `ComputeNetwork` resource.", Type: "string"},
+  													},
+  													AdditionalProperties: nil,
+  													PatternProperties:    nil,
+  													... // 13 identical fields
+  												},
+  												"noExternalIPAddress": {Description: "Default is false (with an external IP address). Required if no e"..., Type: "boolean"},
+  												"subnetworkRef":       {Description: "The URL of an existing subnetwork resource in the network.\n You "..., Type: "object", OneOf: {{Required: {"name"}, Not: &{Required: {"external"}}}, {Required: {"external"}, Not: &{AnyOf: {{Required: {"name"}}, {Required: {"namespace"}}}}}}, Properties: {"external": {Description: `The ComputeSubnetwork selflink of form "projects/{{project}}/reg`..., Type: "string"}, "name": {Description: "The `name` field of a `ComputeSubnetwork` resource.", Type: "string"}, "namespace": {Description: "The `namespace` field of a `ComputeSubnetwork` resource.", Type: "string"}}, ...},
+  											},
+  											AdditionalProperties: nil,
+  											PatternProperties:    nil,
+  											... // 13 identical fields
+  										},
+  										JSONSchemas: nil,
+  									},
+  									AllOf: nil,
+  									OneOf: nil,
+  									... // 18 identical fields
+  								},
+  							},
+  							AdditionalProperties: nil,
+  							PatternProperties:    nil,
+  							... // 13 identical fields
+  						},
+  						"placement":      {Description: "The placement policy.", Type: "object", Properties: {"collocation": {Description: "UNSPECIFIED vs. COLLOCATED (default UNSPECIFIED). Use COLLOCATED"..., Type: "string"}, "maxDistance": {Description: "When specified, causes the job to fail if more than max_distance"..., Type: "integer", Format: "int64"}}},
+  						"serviceAccount": {Description: "Defines the service account for Batch-created VMs. If omitted, t"..., Type: "object", OneOf: {{Required: {"name"}, Not: &{Required: {"external"}}}, {Required: {"external"}, Not: &{AnyOf: {{Required: {"name"}}, {Required: {"namespace"}}}}}}, Properties: {"external": {Description: "The `email` field of an `IAMServiceAccount` resource.", Type: "string"}, "name": {Description: "Name of the referent. More info: https://kubernetes.io/docs/conc"..., Type: "string"}, "namespace": {Description: "Namespace of the referent. More info: https://kubernetes.io/docs"..., Type: "string"}}, ...},
+  						"tags":           {Description: "Optional. Tags applied to the VM instances.\n\n The tags identify "..., Type: "array", Items: &{Schema: &{Type: "string"}}},
+  					},
+  					AdditionalProperties: nil,
+  					PatternProperties:    nil,
+  					... // 13 identical fields
+  				},
+  				"location":   {Type: "string"},
+  				"logsPolicy": {Description: "Log preservation policy for the Job.", Type: "object", Properties: {"cloudLoggingOption": {Description: "Optional. When `destination` is set to `CLOUD_LOGGING`, you can "..., Type: "object", Properties: {"useGenericTaskMonitoredResource": {Description: "Optional. Set this field to `true` to change the [monitored reso"..., Type: "boolean"}}}, "destination": {Description: "If and where logs should be saved.", Type: "string"}, "logsPath": {Description: "When `destination` is set to `PATH`, you must set this field to "..., Type: "string"}}},
+  				... // 5 identical entries
+  			},
+  			AdditionalProperties: nil,
+  			PatternProperties:    nil,
+  			... // 13 identical fields
+  		},
+  		"status": {Description: "BatchJobStatus defines the config connector machine state of Bat"..., Type: "object", Properties: {"conditions": {Description: "Conditions represent the latest available observations of the ob"..., Type: "array", Items: &{Schema: &{Type: "object", Properties: {"lastTransitionTime": {Description: "Last time the condition transitioned from one status to another.", Type: "string"}, "message": {Description: "Human-readable message indicating details about last transition.", Type: "string"}, "reason": {Description: "Unique, one-word, CamelCase reason for the condition's last tran"..., Type: "string"}, "status": {Description: "Status is the status of the condition. Can be True, False, Unknown.", Type: "string"}, ...}}}}, "externalRef": {Description: "A unique specifier for the BatchJob resource in GCP.", Type: "string"}, "observedGeneration": {Description: "ObservedGeneration is the generation of the resource that was mo"..., Type: "integer", Format: "int64"}, "observedState": {Description: "ObservedState is the state of the resource as most recently obse"..., Type: "object", Properties: {"createTime": {Description: "Output only. When the Job was created.", Type: "string"}, "name": {Description: `Output only. Job name. For example: "projects/123456/locations/u`..., Type: "string"}, "status": {Description: "Output only. Job status. It is read only for users.", Type: "object", Properties: {"runDuration": {Description: "The duration of time that the Job spent in status RUNNING.", Type: "string"}, "state": {Description: "Job state", Type: "string"}, "statusEvents": {Description: "Job status events", Type: "array", Items: &{Schema: &{Type: "object", Properties: {"description": {Description: "Description of the event.", Type: "string"}, "eventTime": {Description: "The time this event occurred.", Type: "string"}, "taskExecution": {Description: "Task Execution. This field is only defined for task-level status"..., Type: "object", Properties: {"exitCode": {Description: "The exit code of a finished task.\n\n If the task succeeded, the e"..., Type: "integer", Format: "int32"}}}, "taskState": {Description: "Task State. This field is only defined for task-level status eve"..., Type: "string"}, ...}}}}}}, "taskGroups": {Description: "Required. TaskGroups in the Job. Only one TaskGroup is supported"..., Type: "array", Items: &{Schema: &{Type: "object", Properties: {"name": {Description: "Output only. TaskGroup name. The system generates this field bas"..., Type: "string"}}}}}, ...}}}},
+  	},
+  	AdditionalProperties: nil,
+  	PatternProperties:    nil,
+  	... // 13 identical fields
+  }
+

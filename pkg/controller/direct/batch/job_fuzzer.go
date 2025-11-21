@@ -29,8 +29,8 @@ func init() {
 
 func batchJobFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Job{},
-		BatchJobSpec_FromProto, BatchJobSpec_ToProto,
-		BatchJobObservedState_FromProto, BatchJobObservedState_ToProto,
+		BatchJobSpec_v1beta1_FromProto, BatchJobSpec_v1beta1_ToProto,
+		BatchJobObservedState_v1beta1_FromProto, BatchJobObservedState_v1beta1_ToProto,
 	)
 
 	f.SpecFields.Insert(".priority")
