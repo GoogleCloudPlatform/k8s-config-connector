@@ -25,6 +25,94 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func ComputeFirewallPolicyRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallPolicyRuleSpec{}
+	out.Action = in.Action
+	out.Description = in.Description
+	out.Direction = in.Direction
+	out.Disabled = in.Disabled
+	out.EnableLogging = in.EnableLogging
+	// MISSING: Kind
+	out.Match = FirewallPolicyRuleMatcher_FromProto(mapCtx, in.GetMatch())
+	out.Priority = in.Priority
+	// MISSING: RuleName
+	// MISSING: RuleTupleCount
+	// MISSING: SecurityProfileGroup
+	out.TargetResources = ComputeFirewallPolicyRuleSpec_TargetResources_FromProto(mapCtx, in.TargetResources)
+	// MISSING: TargetSecureTags
+	out.TargetServiceAccounts = ComputeFirewallPolicyRuleSpec_TargetServiceAccounts_FromProto(mapCtx, in.TargetServiceAccounts)
+	// MISSING: TLSInspect
+	return out
+}
+func ComputeFirewallPolicyRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallPolicyRuleSpec) *pb.FirewallPolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicyRule{}
+	out.Action = in.Action
+	out.Description = in.Description
+	out.Direction = in.Direction
+	out.Disabled = in.Disabled
+	out.EnableLogging = in.EnableLogging
+	// MISSING: Kind
+	out.Match = FirewallPolicyRuleMatcher_ToProto(mapCtx, in.Match)
+	out.Priority = in.Priority
+	// MISSING: RuleName
+	// MISSING: RuleTupleCount
+	// MISSING: SecurityProfileGroup
+	out.TargetResources = ComputeFirewallPolicyRuleSpec_TargetResources_ToProto(mapCtx, in.TargetResources)
+	// MISSING: TargetSecureTags
+	out.TargetServiceAccounts = ComputeFirewallPolicyRuleSpec_TargetServiceAccounts_ToProto(mapCtx, in.TargetServiceAccounts)
+	// MISSING: TLSInspect
+	return out
+}
+func ComputeFirewallPolicyRuleStatus_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRule) *krm.ComputeFirewallPolicyRuleStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeFirewallPolicyRuleStatus{}
+	// MISSING: Action
+	// MISSING: Description
+	// MISSING: Direction
+	// MISSING: Disabled
+	// MISSING: EnableLogging
+	out.Kind = in.Kind
+	// MISSING: Match
+	// MISSING: Priority
+	// MISSING: RuleName
+	out.RuleTupleCount = in.RuleTupleCount
+	// MISSING: SecurityProfileGroup
+	// MISSING: TargetResources
+	// MISSING: TargetSecureTags
+	// MISSING: TargetServiceAccounts
+	// MISSING: TLSInspect
+	return out
+}
+func ComputeFirewallPolicyRuleStatus_ToProto(mapCtx *direct.MapContext, in *krm.ComputeFirewallPolicyRuleStatus) *pb.FirewallPolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicyRule{}
+	// MISSING: Action
+	// MISSING: Description
+	// MISSING: Direction
+	// MISSING: Disabled
+	// MISSING: EnableLogging
+	out.Kind = in.Kind
+	// MISSING: Match
+	// MISSING: Priority
+	// MISSING: RuleName
+	out.RuleTupleCount = in.RuleTupleCount
+	// MISSING: SecurityProfileGroup
+	// MISSING: TargetResources
+	// MISSING: TargetSecureTags
+	// MISSING: TargetServiceAccounts
+	// MISSING: TLSInspect
+	return out
+}
 func FirewallPolicyRuleMatcher_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcher) *krm.FirewallPolicyRuleMatcher {
 	if in == nil {
 		return nil
@@ -67,6 +155,24 @@ func FirewallPolicyRuleMatcher_ToProto(mapCtx *direct.MapContext, in *krm.Firewa
 	out.SrcRegionCodes = in.SrcRegionCodes
 	// MISSING: SrcSecureTags
 	out.SrcThreatIntelligences = in.SrcThreatIntelligences
+	return out
+}
+func FirewallPolicyRuleMatcherLayer4Config_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleMatcherLayer4Config) *krm.FirewallPolicyRuleMatcherLayer4Config {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FirewallPolicyRuleMatcherLayer4Config{}
+	out.IPProtocol = in.IpProtocol
+	out.Ports = in.Ports
+	return out
+}
+func FirewallPolicyRuleMatcherLayer4Config_ToProto(mapCtx *direct.MapContext, in *krm.FirewallPolicyRuleMatcherLayer4Config) *pb.FirewallPolicyRuleMatcherLayer4Config {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicyRuleMatcherLayer4Config{}
+	out.IpProtocol = in.IPProtocol
+	out.Ports = in.Ports
 	return out
 }
 func FirewallPolicyRuleSecureTag_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyRuleSecureTag) *krm.FirewallPolicyRuleSecureTag {
