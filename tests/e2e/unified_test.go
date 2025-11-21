@@ -260,8 +260,13 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 						// Use SSA
 
 					default:
-						t.Logf("not yet using SSA for create of resources in group %q", group)
-						opt.DoNotUseServerSideApplyForCreate = true
+						// Share the rereconiliation ratchet, rather than introducing a second long list
+						if ShouldTestRereconiliation(t, fixture.Name, primaryResource) {
+							opt.DoNotUseServerSideApplyForCreate = false
+						} else {
+							t.Logf("not yet using SSA for create of resources in group %q", group)
+							opt.DoNotUseServerSideApplyForCreate = true
+						}
 					}
 
 					return primaryResource, opt
