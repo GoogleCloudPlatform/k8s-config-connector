@@ -19,6 +19,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigateway"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apigee"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/appengine"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apphub"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/asset"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/backupdr"
