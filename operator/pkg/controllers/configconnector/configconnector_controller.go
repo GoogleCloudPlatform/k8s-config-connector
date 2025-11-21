@@ -18,6 +18,7 @@ import (
 	"context"
 	goerrors "errors"
 	"fmt"
+	"os"
 	"strings"
 	"time"
 
@@ -137,6 +138,7 @@ func newReconciler(mgr ctrl.Manager, opt *ReconcilerOptions) (*Reconciler, error
 		declarative.WithObjectTransform(r.handleConfigConnectorLifecycle()),
 		declarative.WithObjectTransform(r.installV1Beta1CRDsOnly()),
 		declarative.WithObjectTransform(r.applyCustomizations()),
+		declarative.WithObjectTransform(r.transformSystemComponents()),
 		declarative.WithStatus(&declarative.StatusBuilder{
 			PreflightImpl: preflight,
 		}),
@@ -959,6 +961,76 @@ func containsVersion(object *manifest.Object, version string) (bool, error) {
 		}
 	}
 	return false, nil
+}
+
+func (r *Reconciler) transformSystemComponents() declarative.ObjectTransform {
+	return func(ctx context.Context, o declarative.DeclarativeObject, m *manifest.Objects) error {
+		for _, item := range m.Items {
+			if item.Kind == "Deployment" && item.GetName() == "cnrm-resource-stats-recorder" {
+				gac := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+				if gac == "" {
+					r.log.Info("GOOGLE_APPLICATION_CREDENTIALS is not defined locally")
+					return nil
+				}
+
+				u := item.UnstructuredObject()
+				containers, found, _ := unstructured.NestedSlice(u.Object, "spec", "template", "spec", "containers")
+				if !found {
+					return fmt.Errorf("could not find containers in recorder deployment")
+				}
+				for i, c := range containers {
+					container, ok := c.(map[string]interface{})
+					if !ok {
+						return fmt.Errorf("container item is not a map[string]interface{}")
+					}
+					name, _, _ := unstructured.NestedString(container, "name")
+					if name == "recorder" {
+						env, found, err := unstructured.NestedSlice(container, "env")
+						if err != nil {
+							return fmt.Errorf("error getting env from recorder container: %w", err)
+						}
+						if !found {
+							env = make([]interface{}, 0)
+						}
+
+						envFound := false
+						for _, envVar := range env {
+							envMap, ok := envVar.(map[string]interface{})
+							if !ok {
+								return fmt.Errorf("env var item is not a map[string]string")
+							}
+							envName, ok := envMap["name"].(string)
+							if !ok {
+								return fmt.Errorf("env var name is not a string")
+							}
+							if envName == "GOOGLE_APPLICATION_CREDENTIALS" {
+								r.log.Info("GOOGLE_APPLICATION_CREDENTIALS already exists in recorder container, skipping append")
+								envFound = true
+								break
+							}
+						}
+
+						if !envFound {
+							r.log.Info("Appending GOOGLE_APPLICATION_CREDENTIALS to recorder container")
+							env = append(env, map[string]interface{}{
+								"name":  "GOOGLE_APPLICATION_CREDENTIALS",
+								"value": gac,
+							})
+							if err := unstructured.SetNestedSlice(container, env, "env"); err != nil {
+								return fmt.Errorf("error setting env for recorder container: %w", err)
+							}
+						}
+						containers[i] = container
+						if err := unstructured.SetNestedSlice(u.Object, containers, "spec", "template", "spec", "containers"); err != nil {
+							return fmt.Errorf("error setting containers for recorder deployment: %w", err)
+						}
+						break // Found the container, no need to loop further
+					}
+				}
+			}
+		}
+		return nil
+	}
 }
 
 func checkForDuplicateWebhooks(webhooks []customizev1beta1.WebhookCustomizationSpec) error {

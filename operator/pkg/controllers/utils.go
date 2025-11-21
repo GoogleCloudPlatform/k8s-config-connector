@@ -24,10 +24,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
 
 	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/scale/scheme/autoscalingv1"
@@ -675,4 +677,66 @@ func applyPprofConfigToContainerArg(container map[string]interface{}, pprofConfi
 		return fmt.Errorf("error setting args in container: %w", err)
 	}
 	return nil
+}
+
+func GetContainer(obj *manifest.Object, containerName string) (corev1.Container, error) {
+	u := obj.UnstructuredObject()
+	containers, found, err := unstructured.NestedSlice(u.Object, "spec", "template", "spec", "containers")
+	if err != nil {
+		return corev1.Container{}, fmt.Errorf("error getting containers: %w", err)
+	}
+	if !found {
+		return corev1.Container{}, fmt.Errorf("no containers found")
+	}
+	for _, c := range containers {
+		container := c.(map[string]interface{})
+		name, found, err := unstructured.NestedString(container, "name")
+		if err != nil {
+			return corev1.Container{}, fmt.Errorf("error getting container name: %w", err)
+		}
+		if !found {
+			return corev1.Container{}, fmt.Errorf("no name found for container")
+		}
+		if name == containerName {
+			var result corev1.Container
+			if err := runtime.DefaultUnstructuredConverter.FromUnstructured(container, &result); err != nil {
+				return corev1.Container{}, fmt.Errorf("error converting container: %w", err)
+			}
+			return result, nil
+		}
+	}
+	return corev1.Container{}, fmt.Errorf("container %s not found", containerName)
+}
+
+func SetContainer(obj *manifest.Object, container corev1.Container) error {
+	u := obj.UnstructuredObject()
+	containers, found, err := unstructured.NestedSlice(u.Object, "spec", "template", "spec", "containers")
+	if err != nil {
+		return fmt.Errorf("error getting containers: %w", err)
+	}
+	if !found {
+		return fmt.Errorf("no containers found")
+	}
+	for i, c := range containers {
+		cMap := c.(map[string]interface{})
+		name, found, err := unstructured.NestedString(cMap, "name")
+		if err != nil {
+			return fmt.Errorf("error getting container name: %w", err)
+		}
+		if !found {
+			return fmt.Errorf("no name found for container")
+		}
+		if name == container.Name {
+			newContainer, err := runtime.DefaultUnstructuredConverter.ToUnstructured(&container)
+			if err != nil {
+				return fmt.Errorf("error converting container: %w", err)
+			}
+			containers[i] = newContainer
+			if err := unstructured.SetNestedSlice(u.Object, containers, "spec", "template", "spec", "containers"); err != nil {
+				return fmt.Errorf("error setting containers: %w", err)
+			}
+			return nil
+		}
+	}
+	return fmt.Errorf("container %s not found", container.Name)
 }
