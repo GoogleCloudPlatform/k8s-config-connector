@@ -255,7 +255,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 						"gkehub.cnrm.cloud.google.com",
 						"kms.cnrm.cloud.google.com",
 						"orgpolicy.cnrm.cloud.google.com",
-						"firestore.cnrm.cloud.google.com":
+						"firestore.cnrm.cloud.google.com",
+						"tags.cnrm.cloud.google.com":
 						// Use SSA
 
 					default:

@@ -463,10 +463,6 @@ func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *u
 	case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageNotification"}:
 	case schema.GroupKind{Group: "storagetransfer.cnrm.cloud.google.com", Kind: "StorageTransferAgentPool"}:
 	case schema.GroupKind{Group: "storagetransfer.cnrm.cloud.google.com", Kind: "StorageTransferJob"}:
-	case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsLocationTagBinding"}:
-	case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagBinding"}:
-	case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
-	case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagValue"}:
 	case schema.GroupKind{Group: "cloudtasks.cnrm.cloud.google.com", Kind: "TasksQueue"}:
 	case schema.GroupKind{Group: "tpu.cnrm.cloud.google.com", Kind: "TPUNode"}:
 	case schema.GroupKind{Group: "tpu.cnrm.cloud.google.com", Kind: "TPUVirtualMachine"}:
