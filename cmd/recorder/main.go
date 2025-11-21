@@ -39,6 +39,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/rest"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
@@ -170,10 +171,10 @@ func (r *MetricsRecorder) Run(ctx context.Context) error {
 		}
 
 		seenCRDs := make(map[CRDInfo]bool)
-		for _, crdInfo := range crdInfos.Snapshot() {
+		crdInfos.Walk(func(_ types.NamespacedName, crdInfo CRDInfo) {
 			// Skip non-KCC resources.
 			if !strings.HasSuffix(crdInfo.GVK.Group, ".cnrm.cloud.google.com") {
-				continue
+				return
 			}
 
 			// Skip ignored CRDs.
@@ -183,7 +184,7 @@ func (r *MetricsRecorder) Run(ctx context.Context) error {
 					fmt.Sprintf("please run `kubectl delete crd %s` to "+
 						"delete the orphaned CRD", crdName),
 					"crd", crdName)
-				continue
+				return
 			}
 
 			// Record all KCC CRDs we see, so we can clean up unused watches.
@@ -198,20 +199,20 @@ func (r *MetricsRecorder) Run(ctx context.Context) error {
 			// Skip reporting for this resource if we aren't synced up.
 			if !statViews[crdInfo].HasSyncedOnce() {
 				logger.Info("CRs have not yet synced, skipping metric reporting", "gvk", crdInfo.GVK)
-				continue
+				return
 			}
 
 			// Aggregate stats for each namespace.
 			nsAggStats := make(map[string]*AggregatedResourceStats)
-			for i, s := range statViews[crdInfo].Snapshot() {
-				ns := i.Namespace
+			statViews[crdInfo].Walk(func(id types.NamespacedName, s ResourceStats) {
+				ns := id.Namespace
 				nsStats, ok := nsAggStats[ns]
 				if !ok {
 					nsStats = NewAggregatedResourceStats()
 					nsAggStats[ns] = nsStats
 				}
 				nsStats.lastConditionCounts[s.lastCondition]++
-			}
+			})
 
 			// Record stats.
 			groupKind := crdInfo.GVK.GroupKind().String()
@@ -223,7 +224,7 @@ func (r *MetricsRecorder) Run(ctx context.Context) error {
 					appliedResources.WithLabelValues(ns, groupKind, condition).Set(float64(count))
 				}
 			}
-		}
+		})
 
 		// Cleanup stale watches.
 		for crdInfo, view := range statViews {
@@ -251,15 +252,15 @@ func (r *MetricsRecorder) GetMetrics(callback func(namespace string, gvk schema.
 	for crdInfo, statView := range statViews {
 		// Aggregate stats for each namespace.
 		nsAggStats := make(map[string]*AggregatedResourceStats)
-		for i, s := range statView.Snapshot() {
-			ns := i.Namespace
+		statView.Walk(func(id types.NamespacedName, value ResourceStats) {
+			ns := id.Namespace
 			nsStats, ok := nsAggStats[ns]
 			if !ok {
 				nsStats = NewAggregatedResourceStats()
 				nsAggStats[ns] = nsStats
 			}
-			nsStats.lastConditionCounts[s.lastCondition]++
-		}
+			nsStats.lastConditionCounts[value.lastCondition]++
+		})
 
 		// Record stats.
 		for ns, stats := range nsAggStats {
