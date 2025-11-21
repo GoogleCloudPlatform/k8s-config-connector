@@ -808,7 +808,7 @@ func (h *Harness) GCPHTTPClient() *http.Client {
 	return h.kccConfig.HTTPClient
 }
 
-func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured) {
+func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructured) {
 	// Note: we don't have the harness yet, we have to look to the env var
 	gcpTarget := os.Getenv("E2E_GCP_TARGET")
 
@@ -826,7 +826,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			if gvk.Group == "" && gvk.Kind == "SystemRun" {
 				continue
 			}
-			if name == "dclbasedresourceserviceaccountref" {
+			if strings.Contains(testKey, "dclbasedresourceserviceaccountref") {
 				t.Skip()
 			}
 
@@ -1140,12 +1140,13 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "speech.cnrm.cloud.google.com", Kind: "SpeechRecognizer"}:
 
 			default:
-				t.Skipf("gk %v not suppported by mock gcp %v; skipping", gvk.GroupKind(), name)
+				t.Skipf("gk %v not suppported by mock gcp %v; skipping", gvk.GroupKind(), testKey)
 			}
 		}
 	}
 	if gcpTarget == "vcr" {
 		// TODO(yuhou): use a cleaner way(resource kind) to manage the allow list for vcr
+		name := filepath.Base(testKey)
 		switch name {
 		// update test data requires regeneration of the vcr log, skip the test for now.
 		// case "fullalloydbcluster":
@@ -1188,7 +1189,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 
 		case "projectinorg":
 		default:
-			t.Skipf("test %v not suppported by vcr; skipping", name)
+			t.Skipf("test %v not suppported by vcr; skipping", testKey)
 		}
 	}
 }
