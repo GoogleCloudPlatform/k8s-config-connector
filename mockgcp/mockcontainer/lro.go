@@ -31,6 +31,8 @@ import (
 )
 
 func (s *ClusterManagerV1) GetOperation(ctx context.Context, req *pb.GetOperationRequest) (*pb.Operation, error) {
+	log := klog.FromContext(ctx)
+
 	name, err := s.parseOperationName(req.Name)
 	if err != nil {
 		return nil, err
@@ -40,6 +42,7 @@ func (s *ClusterManagerV1) GetOperation(ctx context.Context, req *pb.GetOperatio
 
 	obj := &pb.Operation{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		log.Error(err, "error getting operation", "name", fqn)
 		return nil, err
 	}
 
@@ -65,8 +68,8 @@ func (s *ClusterManagerV1) startLRO(ctx context.Context, project *projects.Proje
 	}
 
 	fqn := name.String()
-	version := getAPIVersion(ctx)
-	op.SelfLink = "https://container.googleapis.com/" + version + "/" + AsZonalLink(fqn)
+
+	op.SelfLink = name.SelfLink(ctx)
 
 	op.Status = pb.Operation_RUNNING
 
@@ -110,6 +113,22 @@ type operationName struct {
 
 func (n *operationName) String() string {
 	return fmt.Sprintf("projects/%d/locations/%s/operations/%s", n.Project.Number, n.Location, n.Operation)
+}
+
+func (n *operationName) SelfLink(ctx context.Context) string {
+	s := ""
+
+	version := getAPIVersion(ctx)
+	s += "https://container.googleapis.com/" + version + "/"
+
+	s += fmt.Sprintf("projects/%d/", n.Project.Number)
+	if isZone(n.Location) {
+		s += "zones/" + n.Location + "/"
+	} else {
+		s += "locations/" + n.Location + "/"
+	}
+	s += "operations/" + n.Operation
+	return s
 }
 
 // parseOperationName parses a string into a operationName.
