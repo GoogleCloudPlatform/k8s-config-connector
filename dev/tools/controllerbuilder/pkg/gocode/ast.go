@@ -322,6 +322,21 @@ func toGoType(t ast.Expr) (string, error) {
 		}
 		return "map[" + k + "]" + v, nil
 
+	case *ast.IndexListExpr:
+		s, err := toGoType(t.X)
+		if err != nil {
+			return "", err
+		}
+		var indices []string
+		for _, index := range t.Indices {
+			ixStr, err := toGoType(index)
+			if err != nil {
+				return "", err
+			}
+			indices = append(indices, ixStr)
+		}
+		return s + "[" + strings.Join(indices, ", ") + "]", nil
+
 	default:
 		return "", fmt.Errorf("unhandled field type %T, %+v", t, t)
 	}
