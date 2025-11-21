@@ -999,6 +999,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "eventarc.cnrm.cloud.google.com", Kind: "EventarcChannel"}:
 			case schema.GroupKind{Group: "eventarc.cnrm.cloud.google.com", Kind: "EventarcGoogleChannelConfig"}:
 
+			case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreBackupSchedule"}:
 			case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreDatabase"}:
 			case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreDocument"}:
 			case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreField"}:
