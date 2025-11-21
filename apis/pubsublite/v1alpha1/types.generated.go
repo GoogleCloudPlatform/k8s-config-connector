@@ -17,6 +17,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.pubsublite.v1
 // resource: PubSubLiteSubscription:Subscription
+// resource: PubSubLiteTopic:Topic
 
 package v1alpha1
 
@@ -59,6 +60,31 @@ type Subscription_DeliveryConfig struct {
 	// The DeliveryRequirement for this subscription.
 	// +kcc:proto:field=google.cloud.pubsublite.v1.Subscription.DeliveryConfig.delivery_requirement
 	DeliveryRequirement *string `json:"deliveryRequirement,omitempty"`
+}
+
+// +kcc:proto=google.cloud.pubsublite.v1.Topic.ReservationConfig
+type Topic_ReservationConfig struct {
+	// The Reservation to use for this topic's throughput capacity.
+	//  Structured like:
+	//  projects/{project_number}/locations/{location}/reservations/{reservation_id}
+	// +kcc:proto:field=google.cloud.pubsublite.v1.Topic.ReservationConfig.throughput_reservation
+	ThroughputReservation *string `json:"throughputReservation,omitempty"`
+}
+
+// +kcc:proto=google.cloud.pubsublite.v1.Topic.RetentionConfig
+type Topic_RetentionConfig struct {
+	// The provisioned storage, in bytes, per partition. If the number of bytes
+	//  stored in any of the topic's partitions grows beyond this value, older
+	//  messages will be dropped to make room for newer ones, regardless of the
+	//  value of `period`.
+	// +kcc:proto:field=google.cloud.pubsublite.v1.Topic.RetentionConfig.per_partition_bytes
+	PerPartitionBytes *int64 `json:"perPartitionBytes,omitempty"`
+
+	// How long a published message is retained. If unset, messages will be
+	//  retained as long as the bytes retained for each partition is below
+	//  `per_partition_bytes`.
+	// +kcc:proto:field=google.cloud.pubsublite.v1.Topic.RetentionConfig.period
+	Period *string `json:"period,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.pubsublite.v1.ExportConfig

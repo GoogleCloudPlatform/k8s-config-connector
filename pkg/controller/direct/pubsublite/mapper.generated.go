@@ -127,6 +127,44 @@ func PubSubLiteSubscriptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSu
 	// MISSING: ExportConfig
 	return out
 }
+func PubSubLiteTopicObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krm.PubSubLiteTopicObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PubSubLiteTopicObservedState{}
+	// MISSING: Name
+	return out
+}
+func PubSubLiteTopicObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PubSubLiteTopicObservedState) *pb.Topic {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Topic{}
+	// MISSING: Name
+	return out
+}
+func PubSubLiteTopicSpec_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krm.PubSubLiteTopicSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PubSubLiteTopicSpec{}
+	// MISSING: Name
+	out.PartitionConfig = Topic_PartitionConfig_FromProto(mapCtx, in.GetPartitionConfig())
+	out.RetentionConfig = Topic_RetentionConfig_FromProto(mapCtx, in.GetRetentionConfig())
+	out.ReservationConfig = Topic_ReservationConfig_FromProto(mapCtx, in.GetReservationConfig())
+	return out
+}
+func PubSubLiteTopicSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSubLiteTopicSpec) *pb.Topic {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Topic{}
+	// MISSING: Name
+	out.PartitionConfig = Topic_PartitionConfig_ToProto(mapCtx, in.PartitionConfig)
+	out.RetentionConfig = Topic_RetentionConfig_ToProto(mapCtx, in.RetentionConfig)
+	out.ReservationConfig = Topic_ReservationConfig_ToProto(mapCtx, in.ReservationConfig)
+	return out
+}
 func Subscription_DeliveryConfig_FromProto(mapCtx *direct.MapContext, in *pb.Subscription_DeliveryConfig) *krm.Subscription_DeliveryConfig {
 	if in == nil {
 		return nil
@@ -141,5 +179,79 @@ func Subscription_DeliveryConfig_ToProto(mapCtx *direct.MapContext, in *krm.Subs
 	}
 	out := &pb.Subscription_DeliveryConfig{}
 	out.DeliveryRequirement = direct.Enum_ToProto[pb.Subscription_DeliveryConfig_DeliveryRequirement](mapCtx, in.DeliveryRequirement)
+	return out
+}
+func Topic_PartitionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Topic_PartitionConfig) *krm.Topic_PartitionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Topic_PartitionConfig{}
+	out.Count = direct.LazyPtr(in.GetCount())
+	// MISSING: Scale
+	out.Capacity = Topic_PartitionConfig_Capacity_FromProto(mapCtx, in.GetCapacity())
+	return out
+}
+func Topic_PartitionConfig_ToProto(mapCtx *direct.MapContext, in *krm.Topic_PartitionConfig) *pb.Topic_PartitionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Topic_PartitionConfig{}
+	out.Count = direct.ValueOf(in.Count)
+	// MISSING: Scale
+	if oneof := Topic_PartitionConfig_Capacity_ToProto(mapCtx, in.Capacity); oneof != nil {
+		out.Dimension = &pb.Topic_PartitionConfig_Capacity_{Capacity: oneof}
+	}
+	return out
+}
+func Topic_PartitionConfig_Capacity_FromProto(mapCtx *direct.MapContext, in *pb.Topic_PartitionConfig_Capacity) *krm.Topic_PartitionConfig_Capacity {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Topic_PartitionConfig_Capacity{}
+	out.PublishMIBPerSec = direct.LazyPtr(in.GetPublishMibPerSec())
+	out.SubscribeMIBPerSec = direct.LazyPtr(in.GetSubscribeMibPerSec())
+	return out
+}
+func Topic_PartitionConfig_Capacity_ToProto(mapCtx *direct.MapContext, in *krm.Topic_PartitionConfig_Capacity) *pb.Topic_PartitionConfig_Capacity {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Topic_PartitionConfig_Capacity{}
+	out.PublishMibPerSec = direct.ValueOf(in.PublishMIBPerSec)
+	out.SubscribeMibPerSec = direct.ValueOf(in.SubscribeMIBPerSec)
+	return out
+}
+func Topic_ReservationConfig_FromProto(mapCtx *direct.MapContext, in *pb.Topic_ReservationConfig) *krm.Topic_ReservationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Topic_ReservationConfig{}
+	out.ThroughputReservation = direct.LazyPtr(in.GetThroughputReservation())
+	return out
+}
+func Topic_ReservationConfig_ToProto(mapCtx *direct.MapContext, in *krm.Topic_ReservationConfig) *pb.Topic_ReservationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Topic_ReservationConfig{}
+	out.ThroughputReservation = direct.ValueOf(in.ThroughputReservation)
+	return out
+}
+func Topic_RetentionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Topic_RetentionConfig) *krm.Topic_RetentionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Topic_RetentionConfig{}
+	out.PerPartitionBytes = direct.LazyPtr(in.GetPerPartitionBytes())
+	out.Period = direct.StringDuration_FromProto(mapCtx, in.GetPeriod())
+	return out
+}
+func Topic_RetentionConfig_ToProto(mapCtx *direct.MapContext, in *krm.Topic_RetentionConfig) *pb.Topic_RetentionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Topic_RetentionConfig{}
+	out.PerPartitionBytes = direct.ValueOf(in.PerPartitionBytes)
+	out.Period = direct.StringDuration_ToProto(mapCtx, in.Period)
 	return out
 }
