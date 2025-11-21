@@ -62,8 +62,6 @@
 [missing_field] crd=accesscontextmanagerserviceperimeters.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.status.vpcAccessibleServices.enableRestriction" is not set in unstructured objects
 [missing_field] crd=alloydbbackups.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.description" is not set in unstructured objects
 [missing_field] crd=alloydbbackups.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.encryptionConfig.kmsKeyName" is not set in unstructured objects
-[missing_field] crd=alloydbclusters.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.restoreContinuousBackupSource.clusterRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=alloydbclusters.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.restoreContinuousBackupSource.pointInTime" is not set in unstructured objects
 [missing_field] crd=alloydbinstances.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.annotations" is not set in unstructured objects
 [missing_field] crd=alloydbinstances.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=alloydbinstances.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.gceZone" is not set in unstructured objects
