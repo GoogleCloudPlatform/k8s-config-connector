@@ -20,7 +20,15 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+var _ identity.Identity = &TaskIdentity{}
+
+const (
+	TaskIDURL = LakeIDURL + "/tasks/{{taskID}}"
 )
 
 // TaskIdentity defines the resource reference to DataplexTask, which "External" field
@@ -39,80 +47,63 @@ func (i *TaskIdentity) ID() string {
 	return i.id
 }
 
-func (i *TaskIdentity) Parent() string {
-	return i.parent.String()
+func (i *TaskIdentity) Parent() *LakeIdentity {
+	return i.parent
 }
 
-// NewTaskIdentity builds a TaskIdentity from the Config Connector Task object.
-func NewTaskIdentity(ctx context.Context, reader client.Reader, obj *DataplexTask) (*TaskIdentity, error) {
+func (i *TaskIdentity) FromExternal(ref string) error {
+	tokens := strings.Split(ref, "/tasks/")
+	if len(tokens) != 2 {
+		return fmt.Errorf("format of DataplexTask external=%q was not known (use %s)", ref, TaskIDURL)
+	}
+	i.parent = &LakeIdentity{}
+	if err := i.parent.FromExternal(tokens[0]); err != nil {
+		return err
+	}
+	i.id = tokens[1]
+	if i.id == "" {
+		return fmt.Errorf("taskID was empty in external=%q", ref)
+	}
+	return nil
+}
 
-	// Get Parent
-	lakeExternal, err := obj.Spec.LakeRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-	if err != nil {
-		return nil, err
+var _ identity.Resource = &DataplexTask{}
+
+func (obj *DataplexTask) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	newIdentity := &TaskIdentity{
+		parent: &LakeIdentity{
+			parent: &parent.ProjectAndLocationParent{},
+		},
 	}
 
-	parent, lakeId, err := ParseLakeExternal(lakeExternal)
-	if err != nil {
+	// Resolve Parent
+	if err := obj.Spec.LakeRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, err
+	}
+	if err := newIdentity.parent.FromExternal(obj.Spec.LakeRef.External); err != nil {
 		return nil, err
 	}
 
 	// Get desired Resource ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
+	newIdentity.id = common.ValueOf(obj.Spec.ResourceID)
+	if newIdentity.id == "" {
+		newIdentity.id = obj.GetName()
 	}
-	if resourceID == "" {
+	if newIdentity.id == "" {
 		return nil, fmt.Errorf("cannot determine resource ID (metadata.name or spec.resourceID)")
 	}
 
 	// Validate against existing ExternalRef if present
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseTaskExternal(externalRef)
-		if err != nil {
-			return nil, fmt.Errorf("parsing existing externalRef %q: %w", externalRef, err)
+		statusIdentity := &TaskIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
 		}
-		if actualParent.parent.ProjectID != parent.ProjectID {
-			return nil, fmt.Errorf("parent ProjectID changed, expect %s, got %s", actualParent.parent.ProjectID, parent.ProjectID)
-		}
-		if actualParent.parent.Location != parent.Location {
-			return nil, fmt.Errorf("parent Location changed, expect %s, got %s", actualParent.parent.Location, parent.Location)
-		}
-		if actualParent.id != lakeId {
-			return nil, fmt.Errorf("spec.lakeRef changed, expect %s, got %s", actualParent.id, lakeId)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+		if statusIdentity.String() != newIdentity.String() {
+			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, newIdentity.String())
 		}
 	}
 
-	return &TaskIdentity{
-		parent: &LakeIdentity{
-			parent: parent,
-			id:     lakeId,
-		},
-		id: resourceID,
-	}, nil
-}
-
-// ParseTaskExternal parses the "external" format into its components.
-// Expected format: projects/{{projectID}}/locations/{{location}}/lakes/{{lakeID}}/tasks/{{taskID}}
-func ParseTaskExternal(external string) (parent *LakeIdentity, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	// Expected pattern: projects/P/locations/L/lakes/LA/tasks/T (8 segments)
-	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "lakes" || tokens[6] != "tasks" {
-		return nil, "", fmt.Errorf("format of DataplexTask externalRef %q was not known (expected projects/<project>/locations/<location>/lakes/<lake>/tasks/<task>)", external)
-	}
-	parent = &LakeIdentity{
-		parent: &LakeParent{
-			ProjectID: tokens[1],
-			Location:  tokens[3],
-		},
-		id: tokens[5],
-	}
-	resourceID = tokens[7]
-	return parent, resourceID, nil
+	return newIdentity, nil
 }

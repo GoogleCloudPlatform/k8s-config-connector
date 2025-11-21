@@ -153,11 +153,6 @@ spec:
                 required:
                 - serviceAccountRef
                 type: object
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. User-defined labels for the task.
-                type: object
               lakeRef:
                 description: LakeRef defines the resource reference to DataplexLake,
                   which "External" field holds the GCP identifier for the KRM object.
@@ -439,7 +434,6 @@ spec:
                 type: object
             required:
             - executionSpec
-            - triggerSpec
             type: object
           status:
             description: DataplexTaskStatus defines the config connector machine state

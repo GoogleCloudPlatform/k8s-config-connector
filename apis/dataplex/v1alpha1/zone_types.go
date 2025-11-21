@@ -42,7 +42,7 @@ type DataplexZoneSpec struct {
 
 	// Optional. User defined labels for the zone.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.labels
-	Labels map[string]string `json:"labels,omitempty"`
+	// Labels map[string]string `json:"labels,omitempty"`
 
 	// Optional. Description of the zone.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.description

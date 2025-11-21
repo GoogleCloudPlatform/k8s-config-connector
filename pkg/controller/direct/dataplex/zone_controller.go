@@ -63,13 +63,13 @@ func (m *zoneModel) AdapterForObject(ctx context.Context, reader client.Reader, 
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewZoneIdentity(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 
 	zoneAdapter := &zoneAdapter{
-		id:      id,
+		id:      id.(*krm.ZoneIdentity),
 		desired: obj,
 		reader:  reader,
 	}
@@ -135,7 +135,7 @@ func (a *zoneAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 	}
 
 	req := &pb.CreateZoneRequest{
-		Parent: a.id.Parent(),
+		Parent: a.id.Parent().String(),
 		Zone:   zone,
 		ZoneId: a.id.ID(),
 	}

@@ -38,7 +38,7 @@ func DataplexTaskSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krmv1al
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: State
-	out.Labels = in.Labels
+	// out.Labels = in.Labels
 	out.TriggerSpec = Task_TriggerSpec_FromProto(mapCtx, in.GetTriggerSpec())
 	out.ExecutionSpec = Task_ExecutionSpec_FromProto(mapCtx, in.GetExecutionSpec())
 	// MISSING: ExecutionStatus
@@ -58,7 +58,7 @@ func DataplexTaskSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Dataple
 	out.Description = direct.ValueOf(in.Description)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	// MISSING: State
-	out.Labels = in.Labels
+	// out.Labels = in.Labels
 	out.TriggerSpec = Task_TriggerSpec_ToProto(mapCtx, in.TriggerSpec)
 	out.ExecutionSpec = Task_ExecutionSpec_ToProto(mapCtx, in.ExecutionSpec)
 	// MISSING: ExecutionStatus
