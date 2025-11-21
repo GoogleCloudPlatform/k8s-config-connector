@@ -12,27 +12,128 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:mapper
+// krm.group: dataplex.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.dataplex.v1
+
 package dataplex
 
 import (
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
+	krmdataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func EntryType_FromProto(mapCtx *direct.MapContext, in *pb.EntryType) *krm.EntryType {
+func AssetStatus_FromProto(mapCtx *direct.MapContext, in *pb.AssetStatus) *krm.AssetStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EntryType{}
+	out := &krm.AssetStatus{}
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ActiveAssets = direct.LazyPtr(in.GetActiveAssets())
+	out.SecurityPolicyApplyingAssets = direct.LazyPtr(in.GetSecurityPolicyApplyingAssets())
+	return out
+}
+func AssetStatus_ToProto(mapCtx *direct.MapContext, in *krm.AssetStatus) *pb.AssetStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AssetStatus{}
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ActiveAssets = direct.ValueOf(in.ActiveAssets)
+	out.SecurityPolicyApplyingAssets = direct.ValueOf(in.SecurityPolicyApplyingAssets)
+	return out
+}
+func DataplexEntryGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krm.DataplexEntryGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEntryGroupObservedState{}
 	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: Etag
+	out.TransferStatus = direct.Enum_FromProto(mapCtx, in.GetTransferStatus())
+	return out
+}
+func DataplexEntryGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryGroupObservedState) *pb.EntryGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntryGroup{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: Etag
+	out.TransferStatus = direct.Enum_ToProto[pb.TransferStatus](mapCtx, in.TransferStatus)
+	return out
+}
+func DataplexEntryGroupSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntryGroup) *krm.DataplexEntryGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEntryGroupSpec{}
+	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Labels = in.Labels
+	// MISSING: Labels
+	// MISSING: Etag
+	return out
+}
+func DataplexEntryGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryGroupSpec) *pb.EntryGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntryGroup{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Labels
+	// MISSING: Etag
+	return out
+}
+func DataplexEntryTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryType) *krm.DataplexEntryTypeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEntryTypeObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
 	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func DataplexEntryTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryTypeObservedState) *pb.EntryType {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntryType{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+func DataplexEntryTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntryType) *krm.DataplexEntryTypeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexEntryTypeSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Labels
 	out.TypeAliases = in.TypeAliases
 	out.Platform = direct.LazyPtr(in.GetPlatform())
 	out.System = direct.LazyPtr(in.GetSystem())
@@ -40,19 +141,15 @@ func EntryType_FromProto(mapCtx *direct.MapContext, in *pb.EntryType) *krm.Entry
 	out.Authorization = EntryType_Authorization_FromProto(mapCtx, in.GetAuthorization())
 	return out
 }
-func EntryType_ToProto(mapCtx *direct.MapContext, in *krm.EntryType) *pb.EntryType {
+func DataplexEntryTypeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexEntryTypeSpec) *pb.EntryType {
 	if in == nil {
 		return nil
 	}
 	out := &pb.EntryType{}
 	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	out.Description = direct.ValueOf(in.Description)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Labels = in.Labels
-	out.Etag = direct.ValueOf(in.Etag)
+	// MISSING: Labels
 	out.TypeAliases = in.TypeAliases
 	out.Platform = direct.ValueOf(in.Platform)
 	out.System = direct.ValueOf(in.System)
@@ -60,43 +157,707 @@ func EntryType_ToProto(mapCtx *direct.MapContext, in *krm.EntryType) *pb.EntryTy
 	out.Authorization = EntryType_Authorization_ToProto(mapCtx, in.Authorization)
 	return out
 }
-func EntryTypeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EntryType) *krm.EntryTypeObservedState {
+func DataplexLakeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.DataplexLakeObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EntryTypeObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
+	out := &krm.DataplexLakeObservedState{}
+	// MISSING: Name
 	out.Uid = direct.LazyPtr(in.GetUid())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Description
-	// MISSING: DisplayName
 	// MISSING: Labels
-	// MISSING: Etag
-	// MISSING: TypeAliases
-	// MISSING: Platform
-	// MISSING: System
-	// MISSING: RequiredAspects
-	// MISSING: Authorization
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.AssetStatus = AssetStatus_FromProto(mapCtx, in.GetAssetStatus())
+	out.MetastoreStatus = Lake_MetastoreStatus_FromProto(mapCtx, in.GetMetastoreStatus())
 	return out
 }
-func EntryTypeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EntryTypeObservedState) *pb.EntryType {
+func DataplexLakeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexLakeObservedState) *pb.Lake {
 	if in == nil {
 		return nil
 	}
-	out := &pb.EntryType{}
-	out.Name = direct.ValueOf(in.Name)
+	out := &pb.Lake{}
+	// MISSING: Name
 	out.Uid = direct.ValueOf(in.Uid)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Description
-	// MISSING: DisplayName
 	// MISSING: Labels
-	// MISSING: Etag
-	// MISSING: TypeAliases
-	// MISSING: Platform
-	// MISSING: System
-	// MISSING: RequiredAspects
-	// MISSING: Authorization
+	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.AssetStatus = AssetStatus_ToProto(mapCtx, in.AssetStatus)
+	out.MetastoreStatus = Lake_MetastoreStatus_ToProto(mapCtx, in.MetastoreStatus)
+	return out
+}
+func DataplexLakeSpec_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.DataplexLakeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexLakeSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Metastore = Lake_Metastore_FromProto(mapCtx, in.GetMetastore())
+	return out
+}
+func DataplexLakeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexLakeSpec) *pb.Lake {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Lake{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Labels
+	out.Description = direct.ValueOf(in.Description)
+	out.Metastore = Lake_Metastore_ToProto(mapCtx, in.Metastore)
+	return out
+}
+func DataplexTaskSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.DataplexTaskSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexTaskSpec{}
+	// MISSING: Name
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: State
+	// MISSING: Labels
+	out.TriggerSpec = Task_TriggerSpec_FromProto(mapCtx, in.GetTriggerSpec())
+	out.ExecutionSpec = Task_ExecutionSpec_FromProto(mapCtx, in.GetExecutionSpec())
+	// MISSING: ExecutionStatus
+	out.Spark = Task_SparkTaskConfig_FromProto(mapCtx, in.GetSpark())
+	out.Notebook = Task_NotebookTaskConfig_FromProto(mapCtx, in.GetNotebook())
+	return out
+}
+func DataplexTaskSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexTaskSpec) *pb.Task {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Task{}
+	// MISSING: Name
+	// MISSING: Uid
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	out.Description = direct.ValueOf(in.Description)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: State
+	// MISSING: Labels
+	out.TriggerSpec = Task_TriggerSpec_ToProto(mapCtx, in.TriggerSpec)
+	out.ExecutionSpec = Task_ExecutionSpec_ToProto(mapCtx, in.ExecutionSpec)
+	// MISSING: ExecutionStatus
+	if oneof := Task_SparkTaskConfig_ToProto(mapCtx, in.Spark); oneof != nil {
+		out.Config = &pb.Task_Spark{Spark: oneof}
+	}
+	if oneof := Task_NotebookTaskConfig_ToProto(mapCtx, in.Notebook); oneof != nil {
+		out.Config = &pb.Task_Notebook{Notebook: oneof}
+	}
+	return out
+}
+func DataplexZoneObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Zone) *krm.DataplexZoneObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexZoneObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.AssetStatus = AssetStatus_FromProto(mapCtx, in.GetAssetStatus())
+	return out
+}
+func DataplexZoneObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DataplexZoneObservedState) *pb.Zone {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Zone{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	out.State = direct.Enum_ToProto[pb.State](mapCtx, in.State)
+	out.AssetStatus = AssetStatus_ToProto(mapCtx, in.AssetStatus)
+	return out
+}
+func DataplexZoneSpec_FromProto(mapCtx *direct.MapContext, in *pb.Zone) *krm.DataplexZoneSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataplexZoneSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.DiscoverySpec = Zone_DiscoverySpec_FromProto(mapCtx, in.GetDiscoverySpec())
+	out.ResourceSpec = Zone_ResourceSpec_FromProto(mapCtx, in.GetResourceSpec())
+	return out
+}
+func DataplexZoneSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexZoneSpec) *pb.Zone {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Zone{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Labels
+	out.Description = direct.ValueOf(in.Description)
+	out.Type = direct.Enum_ToProto[pb.Zone_Type](mapCtx, in.Type)
+	out.DiscoverySpec = Zone_DiscoverySpec_ToProto(mapCtx, in.DiscoverySpec)
+	out.ResourceSpec = Zone_ResourceSpec_ToProto(mapCtx, in.ResourceSpec)
+	return out
+}
+func EntryType_AspectInfo_FromProto(mapCtx *direct.MapContext, in *pb.EntryType_AspectInfo) *krm.EntryType_AspectInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EntryType_AspectInfo{}
+	if in.GetType() != "" {
+		out.TypeRef = &krm.AspectTypeRef{External: in.GetType()}
+	}
+	return out
+}
+func EntryType_AspectInfo_ToProto(mapCtx *direct.MapContext, in *krm.EntryType_AspectInfo) *pb.EntryType_AspectInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntryType_AspectInfo{}
+	if in.TypeRef != nil {
+		out.Type = in.TypeRef.External
+	}
+	return out
+}
+func EntryType_Authorization_FromProto(mapCtx *direct.MapContext, in *pb.EntryType_Authorization) *krm.EntryType_Authorization {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EntryType_Authorization{}
+	out.AlternateUsePermission = direct.LazyPtr(in.GetAlternateUsePermission())
+	return out
+}
+func EntryType_Authorization_ToProto(mapCtx *direct.MapContext, in *krm.EntryType_Authorization) *pb.EntryType_Authorization {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EntryType_Authorization{}
+	out.AlternateUsePermission = direct.ValueOf(in.AlternateUsePermission)
+	return out
+}
+func Job_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.Job {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Job{}
+	// MISSING: Name
+	// MISSING: Uid
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: State
+	// MISSING: RetryCount
+	// MISSING: Service
+	// MISSING: ServiceJob
+	// MISSING: Message
+	// MISSING: Labels
+	// MISSING: Trigger
+	// MISSING: ExecutionSpec
+	return out
+}
+func Job_ToProto(mapCtx *direct.MapContext, in *krm.Job) *pb.Job {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Job{}
+	// MISSING: Name
+	// MISSING: Uid
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: State
+	// MISSING: RetryCount
+	// MISSING: Service
+	// MISSING: ServiceJob
+	// MISSING: Message
+	// MISSING: Labels
+	// MISSING: Trigger
+	// MISSING: ExecutionSpec
+	return out
+}
+func JobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.JobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.JobObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.RetryCount = direct.LazyPtr(in.GetRetryCount())
+	out.Service = direct.Enum_FromProto(mapCtx, in.GetService())
+	out.ServiceJob = direct.LazyPtr(in.GetServiceJob())
+	out.Message = direct.LazyPtr(in.GetMessage())
+	out.Labels = in.Labels
+	out.Trigger = direct.Enum_FromProto(mapCtx, in.GetTrigger())
+	out.ExecutionSpec = Task_ExecutionSpec_FromProto(mapCtx, in.GetExecutionSpec())
+	return out
+}
+func JobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobObservedState) *pb.Job {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Job{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
+	out.State = direct.Enum_ToProto[pb.Job_State](mapCtx, in.State)
+	out.RetryCount = direct.ValueOf(in.RetryCount)
+	out.Service = direct.Enum_ToProto[pb.Job_Service](mapCtx, in.Service)
+	out.ServiceJob = direct.ValueOf(in.ServiceJob)
+	out.Message = direct.ValueOf(in.Message)
+	out.Labels = in.Labels
+	out.Trigger = direct.Enum_ToProto[pb.Job_Trigger](mapCtx, in.Trigger)
+	out.ExecutionSpec = Task_ExecutionSpec_ToProto(mapCtx, in.ExecutionSpec)
+	return out
+}
+func Lake_Metastore_FromProto(mapCtx *direct.MapContext, in *pb.Lake_Metastore) *krm.Lake_Metastore {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Lake_Metastore{}
+	if in.GetService() != "" {
+		out.ServiceRef = &krmdataprocv1alpha1.ServiceRef{External: in.GetService()}
+	}
+	return out
+}
+func Lake_Metastore_ToProto(mapCtx *direct.MapContext, in *krm.Lake_Metastore) *pb.Lake_Metastore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Lake_Metastore{}
+	if in.ServiceRef != nil {
+		out.Service = in.ServiceRef.External
+	}
+	return out
+}
+func Lake_MetastoreStatus_FromProto(mapCtx *direct.MapContext, in *pb.Lake_MetastoreStatus) *krm.Lake_MetastoreStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Lake_MetastoreStatus{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Message = direct.LazyPtr(in.GetMessage())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Endpoint = direct.LazyPtr(in.GetEndpoint())
+	return out
+}
+func Lake_MetastoreStatus_ToProto(mapCtx *direct.MapContext, in *krm.Lake_MetastoreStatus) *pb.Lake_MetastoreStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Lake_MetastoreStatus{}
+	out.State = direct.Enum_ToProto[pb.Lake_MetastoreStatus_State](mapCtx, in.State)
+	out.Message = direct.ValueOf(in.Message)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Endpoint = direct.ValueOf(in.Endpoint)
+	return out
+}
+func Task_ExecutionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_ExecutionSpec) *krm.Task_ExecutionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Task_ExecutionSpec{}
+	out.Args = in.Args
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	if in.GetProject() != "" {
+		out.ProjectRef = &refsv1beta1.ProjectRef{External: in.GetProject()}
+	}
+	out.MaxJobExecutionLifetime = direct.StringDuration_FromProto(mapCtx, in.GetMaxJobExecutionLifetime())
+	if in.GetKmsKey() != "" {
+		out.KMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
+	}
+	return out
+}
+func Task_ExecutionSpec_ToProto(mapCtx *direct.MapContext, in *krm.Task_ExecutionSpec) *pb.Task_ExecutionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Task_ExecutionSpec{}
+	out.Args = in.Args
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	if in.ProjectRef != nil {
+		out.Project = in.ProjectRef.External
+	}
+	out.MaxJobExecutionLifetime = direct.StringDuration_ToProto(mapCtx, in.MaxJobExecutionLifetime)
+	if in.KMSKeyRef != nil {
+		out.KmsKey = in.KMSKeyRef.External
+	}
+	return out
+}
+func Task_ExecutionSpecObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Task_ExecutionSpec) *krm.Task_ExecutionSpecObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Task_ExecutionSpecObservedState{}
+	out.Args = in.Args
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.Project = direct.LazyPtr(in.GetProject())
+	out.MaxJobExecutionLifetime = direct.StringDuration_FromProto(mapCtx, in.GetMaxJobExecutionLifetime())
+	out.KMSKey = direct.LazyPtr(in.GetKmsKey())
+	return out
+}
+func Task_ExecutionSpecObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Task_ExecutionSpecObservedState) *pb.Task_ExecutionSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Task_ExecutionSpec{}
+	out.Args = in.Args
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.Project = direct.ValueOf(in.Project)
+	out.MaxJobExecutionLifetime = direct.StringDuration_ToProto(mapCtx, in.MaxJobExecutionLifetime)
+	out.KmsKey = direct.ValueOf(in.KMSKey)
+	return out
+}
+func Task_ExecutionStatusObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Task_ExecutionStatus) *krm.Task_ExecutionStatusObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Task_ExecutionStatusObservedState{}
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.LatestJob = JobObservedState_FromProto(mapCtx, in.GetLatestJob())
+	return out
+}
+func Task_ExecutionStatusObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Task_ExecutionStatusObservedState) *pb.Task_ExecutionStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Task_ExecutionStatus{}
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.LatestJob = JobObservedState_ToProto(mapCtx, in.LatestJob)
+	return out
+}
+func Task_InfrastructureSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_InfrastructureSpec) *krm.Task_InfrastructureSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Task_InfrastructureSpec{}
+	out.Batch = Task_InfrastructureSpec_BatchComputeResources_FromProto(mapCtx, in.GetBatch())
+	out.ContainerImage = Task_InfrastructureSpec_ContainerImageRuntime_FromProto(mapCtx, in.GetContainerImage())
+	out.VPCNetwork = Task_InfrastructureSpec_VPCNetwork_FromProto(mapCtx, in.GetVpcNetwork())
+	return out
+}
+func Task_InfrastructureSpec_ToProto(mapCtx *direct.MapContext, in *krm.Task_InfrastructureSpec) *pb.Task_InfrastructureSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Task_InfrastructureSpec{}
+	if oneof := Task_InfrastructureSpec_BatchComputeResources_ToProto(mapCtx, in.Batch); oneof != nil {
+		out.Resources = &pb.Task_InfrastructureSpec_Batch{Batch: oneof}
+	}
+	if oneof := Task_InfrastructureSpec_ContainerImageRuntime_ToProto(mapCtx, in.ContainerImage); oneof != nil {
+		out.Runtime = &pb.Task_InfrastructureSpec_ContainerImage{ContainerImage: oneof}
+	}
+	if oneof := Task_InfrastructureSpec_VPCNetwork_ToProto(mapCtx, in.VPCNetwork); oneof != nil {
+		out.Network = &pb.Task_InfrastructureSpec_VpcNetwork_{VpcNetwork: oneof}
+	}
+	return out
+}
+func Task_InfrastructureSpec_BatchComputeResources_FromProto(mapCtx *direct.MapContext, in *pb.Task_InfrastructureSpec_BatchComputeResources) *krm.Task_InfrastructureSpec_BatchComputeResources {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Task_InfrastructureSpec_BatchComputeResources{}
+	out.ExecutorsCount = direct.LazyPtr(in.GetExecutorsCount())
+	out.MaxExecutorsCount = direct.LazyPtr(in.GetMaxExecutorsCount())
+	return out
+}
+func Task_InfrastructureSpec_BatchComputeResources_ToProto(mapCtx *direct.MapContext, in *krm.Task_InfrastructureSpec_BatchComputeResources) *pb.Task_InfrastructureSpec_BatchComputeResources {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Task_InfrastructureSpec_BatchComputeResources{}
+	out.ExecutorsCount = direct.ValueOf(in.ExecutorsCount)
+	out.MaxExecutorsCount = direct.ValueOf(in.MaxExecutorsCount)
+	return out
+}
+func Task_InfrastructureSpec_ContainerImageRuntime_FromProto(mapCtx *direct.MapContext, in *pb.Task_InfrastructureSpec_ContainerImageRuntime) *krm.Task_InfrastructureSpec_ContainerImageRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Task_InfrastructureSpec_ContainerImageRuntime{}
+	out.Image = direct.LazyPtr(in.GetImage())
+	out.JavaJars = in.JavaJars
+	out.PythonPackages = in.PythonPackages
+	out.Properties = in.Properties
+	return out
+}
+func Task_InfrastructureSpec_ContainerImageRuntime_ToProto(mapCtx *direct.MapContext, in *krm.Task_InfrastructureSpec_ContainerImageRuntime) *pb.Task_InfrastructureSpec_ContainerImageRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Task_InfrastructureSpec_ContainerImageRuntime{}
+	out.Image = direct.ValueOf(in.Image)
+	out.JavaJars = in.JavaJars
+	out.PythonPackages = in.PythonPackages
+	out.Properties = in.Properties
+	return out
+}
+func Task_InfrastructureSpec_VPCNetwork_FromProto(mapCtx *direct.MapContext, in *pb.Task_InfrastructureSpec_VpcNetwork) *krm.Task_InfrastructureSpec_VPCNetwork {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Task_InfrastructureSpec_VPCNetwork{}
+	out.Network = direct.LazyPtr(in.GetNetwork())
+	out.SubNetwork = direct.LazyPtr(in.GetSubNetwork())
+	out.NetworkTags = in.NetworkTags
+	return out
+}
+func Task_InfrastructureSpec_VPCNetwork_ToProto(mapCtx *direct.MapContext, in *krm.Task_InfrastructureSpec_VPCNetwork) *pb.Task_InfrastructureSpec_VpcNetwork {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Task_InfrastructureSpec_VpcNetwork{}
+	if oneof := Task_InfrastructureSpec_VPCNetwork_Network_ToProto(mapCtx, in.Network); oneof != nil {
+		out.NetworkName = oneof
+	}
+	if oneof := Task_InfrastructureSpec_VPCNetwork_SubNetwork_ToProto(mapCtx, in.SubNetwork); oneof != nil {
+		out.NetworkName = oneof
+	}
+	out.NetworkTags = in.NetworkTags
+	return out
+}
+func Task_InfrastructureSpec_VPCNetwork_Network_ToProto(mapCtx *direct.MapContext, in *string) *pb.Task_InfrastructureSpec_VpcNetwork_Network {
+	if in == nil {
+		return nil
+	}
+	return &pb.Task_InfrastructureSpec_VpcNetwork_Network{Network: *in}
+}
+func Task_InfrastructureSpec_VPCNetwork_SubNetwork_ToProto(mapCtx *direct.MapContext, in *string) *pb.Task_InfrastructureSpec_VpcNetwork_SubNetwork {
+	if in == nil {
+		return nil
+	}
+	return &pb.Task_InfrastructureSpec_VpcNetwork_SubNetwork{SubNetwork: *in}
+}
+func Task_NotebookTaskConfig_FromProto(mapCtx *direct.MapContext, in *pb.Task_NotebookTaskConfig) *krm.Task_NotebookTaskConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Task_NotebookTaskConfig{}
+	out.Notebook = direct.LazyPtr(in.GetNotebook())
+	out.InfrastructureSpec = Task_InfrastructureSpec_FromProto(mapCtx, in.GetInfrastructureSpec())
+	out.FileUris = in.FileUris
+	out.ArchiveUris = in.ArchiveUris
+	return out
+}
+func Task_NotebookTaskConfig_ToProto(mapCtx *direct.MapContext, in *krm.Task_NotebookTaskConfig) *pb.Task_NotebookTaskConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Task_NotebookTaskConfig{}
+	out.Notebook = direct.ValueOf(in.Notebook)
+	out.InfrastructureSpec = Task_InfrastructureSpec_ToProto(mapCtx, in.InfrastructureSpec)
+	out.FileUris = in.FileUris
+	out.ArchiveUris = in.ArchiveUris
+	return out
+}
+func Task_SparkTaskConfig_FromProto(mapCtx *direct.MapContext, in *pb.Task_SparkTaskConfig) *krm.Task_SparkTaskConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Task_SparkTaskConfig{}
+	out.MainJarFileURI = direct.LazyPtr(in.GetMainJarFileUri())
+	out.MainClass = direct.LazyPtr(in.GetMainClass())
+	out.PythonScriptFile = direct.LazyPtr(in.GetPythonScriptFile())
+	out.SQLScriptFile = direct.LazyPtr(in.GetSqlScriptFile())
+	out.SQLScript = direct.LazyPtr(in.GetSqlScript())
+	out.FileUris = in.FileUris
+	out.ArchiveUris = in.ArchiveUris
+	out.InfrastructureSpec = Task_InfrastructureSpec_FromProto(mapCtx, in.GetInfrastructureSpec())
+	return out
+}
+func Task_SparkTaskConfig_ToProto(mapCtx *direct.MapContext, in *krm.Task_SparkTaskConfig) *pb.Task_SparkTaskConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Task_SparkTaskConfig{}
+	if oneof := Task_SparkTaskConfig_MainJarFileUri_ToProto(mapCtx, in.MainJarFileURI); oneof != nil {
+		out.Driver = oneof
+	}
+	if oneof := Task_SparkTaskConfig_MainClass_ToProto(mapCtx, in.MainClass); oneof != nil {
+		out.Driver = oneof
+	}
+	if oneof := Task_SparkTaskConfig_PythonScriptFile_ToProto(mapCtx, in.PythonScriptFile); oneof != nil {
+		out.Driver = oneof
+	}
+	if oneof := Task_SparkTaskConfig_SqlScriptFile_ToProto(mapCtx, in.SQLScriptFile); oneof != nil {
+		out.Driver = oneof
+	}
+	if oneof := Task_SparkTaskConfig_SqlScript_ToProto(mapCtx, in.SQLScript); oneof != nil {
+		out.Driver = oneof
+	}
+	out.FileUris = in.FileUris
+	out.ArchiveUris = in.ArchiveUris
+	out.InfrastructureSpec = Task_InfrastructureSpec_ToProto(mapCtx, in.InfrastructureSpec)
+	return out
+}
+func Task_SparkTaskConfig_MainJarFileUri_ToProto(mapCtx *direct.MapContext, in *string) *pb.Task_SparkTaskConfig_MainJarFileUri {
+	if in == nil {
+		return nil
+	}
+	return &pb.Task_SparkTaskConfig_MainJarFileUri{MainJarFileUri: *in}
+}
+func Task_SparkTaskConfig_MainClass_ToProto(mapCtx *direct.MapContext, in *string) *pb.Task_SparkTaskConfig_MainClass {
+	if in == nil {
+		return nil
+	}
+	return &pb.Task_SparkTaskConfig_MainClass{MainClass: *in}
+}
+func Task_SparkTaskConfig_PythonScriptFile_ToProto(mapCtx *direct.MapContext, in *string) *pb.Task_SparkTaskConfig_PythonScriptFile {
+	if in == nil {
+		return nil
+	}
+	return &pb.Task_SparkTaskConfig_PythonScriptFile{PythonScriptFile: *in}
+}
+func Task_SparkTaskConfig_SqlScriptFile_ToProto(mapCtx *direct.MapContext, in *string) *pb.Task_SparkTaskConfig_SqlScriptFile {
+	if in == nil {
+		return nil
+	}
+	return &pb.Task_SparkTaskConfig_SqlScriptFile{SqlScriptFile: *in}
+}
+func Task_SparkTaskConfig_SqlScript_ToProto(mapCtx *direct.MapContext, in *string) *pb.Task_SparkTaskConfig_SqlScript {
+	if in == nil {
+		return nil
+	}
+	return &pb.Task_SparkTaskConfig_SqlScript{SqlScript: *in}
+}
+func Task_TriggerSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task_TriggerSpec) *krm.Task_TriggerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Task_TriggerSpec{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.StartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetStartTime())
+	out.Disabled = direct.LazyPtr(in.GetDisabled())
+	out.MaxRetries = direct.LazyPtr(in.GetMaxRetries())
+	out.Schedule = direct.LazyPtr(in.GetSchedule())
+	return out
+}
+func Task_TriggerSpec_ToProto(mapCtx *direct.MapContext, in *krm.Task_TriggerSpec) *pb.Task_TriggerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Task_TriggerSpec{}
+	out.Type = direct.Enum_ToProto[pb.Task_TriggerSpec_Type](mapCtx, in.Type)
+	out.StartTime = direct.StringTimestamp_ToProto(mapCtx, in.StartTime)
+	out.Disabled = direct.ValueOf(in.Disabled)
+	out.MaxRetries = direct.ValueOf(in.MaxRetries)
+	if oneof := Task_TriggerSpec_Schedule_ToProto(mapCtx, in.Schedule); oneof != nil {
+		out.Trigger = oneof
+	}
+	return out
+}
+func Task_TriggerSpec_Schedule_ToProto(mapCtx *direct.MapContext, in *string) *pb.Task_TriggerSpec_Schedule {
+	if in == nil {
+		return nil
+	}
+	return &pb.Task_TriggerSpec_Schedule{Schedule: *in}
+}
+func Zone_DiscoverySpec_FromProto(mapCtx *direct.MapContext, in *pb.Zone_DiscoverySpec) *krm.Zone_DiscoverySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Zone_DiscoverySpec{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.IncludePatterns = in.IncludePatterns
+	out.ExcludePatterns = in.ExcludePatterns
+	out.CsvOptions = Zone_DiscoverySpec_CsvOptions_FromProto(mapCtx, in.GetCsvOptions())
+	out.JsonOptions = Zone_DiscoverySpec_JsonOptions_FromProto(mapCtx, in.GetJsonOptions())
+	out.Schedule = direct.LazyPtr(in.GetSchedule())
+	return out
+}
+func Zone_DiscoverySpec_ToProto(mapCtx *direct.MapContext, in *krm.Zone_DiscoverySpec) *pb.Zone_DiscoverySpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Zone_DiscoverySpec{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.IncludePatterns = in.IncludePatterns
+	out.ExcludePatterns = in.ExcludePatterns
+	out.CsvOptions = Zone_DiscoverySpec_CsvOptions_ToProto(mapCtx, in.CsvOptions)
+	out.JsonOptions = Zone_DiscoverySpec_JsonOptions_ToProto(mapCtx, in.JsonOptions)
+	if oneof := Zone_DiscoverySpec_Schedule_ToProto(mapCtx, in.Schedule); oneof != nil {
+		out.Trigger = oneof
+	}
+	return out
+}
+func Zone_DiscoverySpec_Schedule_ToProto(mapCtx *direct.MapContext, in *string) *pb.Zone_DiscoverySpec_Schedule {
+	if in == nil {
+		return nil
+	}
+	return &pb.Zone_DiscoverySpec_Schedule{Schedule: *in}
+}
+func Zone_DiscoverySpec_CsvOptions_FromProto(mapCtx *direct.MapContext, in *pb.Zone_DiscoverySpec_CsvOptions) *krm.Zone_DiscoverySpec_CsvOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Zone_DiscoverySpec_CsvOptions{}
+	out.HeaderRows = direct.LazyPtr(in.GetHeaderRows())
+	out.Delimiter = direct.LazyPtr(in.GetDelimiter())
+	out.Encoding = direct.LazyPtr(in.GetEncoding())
+	out.DisableTypeInference = direct.LazyPtr(in.GetDisableTypeInference())
+	return out
+}
+func Zone_DiscoverySpec_CsvOptions_ToProto(mapCtx *direct.MapContext, in *krm.Zone_DiscoverySpec_CsvOptions) *pb.Zone_DiscoverySpec_CsvOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Zone_DiscoverySpec_CsvOptions{}
+	out.HeaderRows = direct.ValueOf(in.HeaderRows)
+	out.Delimiter = direct.ValueOf(in.Delimiter)
+	out.Encoding = direct.ValueOf(in.Encoding)
+	out.DisableTypeInference = direct.ValueOf(in.DisableTypeInference)
+	return out
+}
+func Zone_DiscoverySpec_JsonOptions_FromProto(mapCtx *direct.MapContext, in *pb.Zone_DiscoverySpec_JsonOptions) *krm.Zone_DiscoverySpec_JsonOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Zone_DiscoverySpec_JsonOptions{}
+	out.Encoding = direct.LazyPtr(in.GetEncoding())
+	out.DisableTypeInference = direct.LazyPtr(in.GetDisableTypeInference())
+	return out
+}
+func Zone_DiscoverySpec_JsonOptions_ToProto(mapCtx *direct.MapContext, in *krm.Zone_DiscoverySpec_JsonOptions) *pb.Zone_DiscoverySpec_JsonOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Zone_DiscoverySpec_JsonOptions{}
+	out.Encoding = direct.ValueOf(in.Encoding)
+	out.DisableTypeInference = direct.ValueOf(in.DisableTypeInference)
+	return out
+}
+func Zone_ResourceSpec_FromProto(mapCtx *direct.MapContext, in *pb.Zone_ResourceSpec) *krm.Zone_ResourceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Zone_ResourceSpec{}
+	out.LocationType = direct.Enum_FromProto(mapCtx, in.GetLocationType())
+	return out
+}
+func Zone_ResourceSpec_ToProto(mapCtx *direct.MapContext, in *krm.Zone_ResourceSpec) *pb.Zone_ResourceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Zone_ResourceSpec{}
+	out.LocationType = direct.Enum_ToProto[pb.Zone_ResourceSpec_LocationType](mapCtx, in.LocationType)
 	return out
 }

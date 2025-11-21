@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -54,10 +55,52 @@ type DataplexTaskSpec struct {
 	// +optional
 	Spark *Task_SparkTaskConfig `json:"spark,omitempty"`
 
+	// +required
 	// Config related to running scheduled Notebooks.
 	// Exactly one of spark or notebook must be set.
 	// +optional
 	Notebook *Task_NotebookTaskConfig `json:"notebook,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Task.ExecutionSpec
+type Task_ExecutionSpec struct {
+	// Optional. The arguments to pass to the task.
+	//  The args can use placeholders of the format ${placeholder} as
+	//  part of key/value string. These will be interpolated before passing the
+	//  args to the driver. Currently supported placeholders:
+	//  - ${task_id}
+	//  - ${job_time}
+	//  To pass positional args, set the key as TASK_ARGS. The value should be a
+	//  comma-separated string of all the positional arguments. To use a
+	//  delimiter other than comma, refer to
+	//  https://cloud.google.com/sdk/gcloud/reference/topic/escaping. In case of
+	//  other keys being present in the args, then TASK_ARGS will be passed as
+	//  the last argument.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionSpec.args
+	Args map[string]string `json:"args,omitempty"`
+
+	// Required. Service account to use to execute a task.
+	//  If not provided, the default Compute service account for the project is
+	//  used.
+	// +required
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionSpec.service_account
+	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
+
+	// Optional. The project in which jobs are run. By default, the project
+	//  containing the Lake is used. If a project is provided, the
+	//  [ExecutionSpec.service_account][google.cloud.dataplex.v1.Task.ExecutionSpec.service_account]
+	//  must belong to this project.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionSpec.project
+	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef,omitempty"`
+
+	// Optional. The maximum duration after which the job execution is expired.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionSpec.max_job_execution_lifetime
+	MaxJobExecutionLifetime *string `json:"maxJobExecutionLifetime,omitempty"`
+
+	// Optional. The Cloud KMS key to use for encryption, of the form:
+	//  `projects/{project_number}/locations/{location_id}/keyRings/{key-ring-name}/cryptoKeys/{key-name}`.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionSpec.kms_key
+	KMSKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // DataplexTaskStatus defines the config connector machine state of DataplexTask
@@ -170,4 +213,91 @@ type DataplexTaskList struct {
 
 func init() {
 	SchemeBuilder.Register(&DataplexTask{}, &DataplexTaskList{})
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Task.NotebookTaskConfig
+type Task_NotebookTaskConfig struct {
+	// +required
+	// Required. Path to input notebook. This can be the Cloud Storage URI of
+	//  the notebook file or the path to a Notebook Content. The execution args
+	//  are accessible as environment variables
+	//  (`TASK_key=value`).
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.NotebookTaskConfig.notebook
+	Notebook *string `json:"notebook,omitempty"`
+
+	// Optional. Infrastructure specification for the execution.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.NotebookTaskConfig.infrastructure_spec
+	InfrastructureSpec *Task_InfrastructureSpec `json:"infrastructureSpec,omitempty"`
+
+	// Optional. Cloud Storage URIs of files to be placed in the working
+	//  directory of each executor.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.NotebookTaskConfig.file_uris
+	FileUris []string `json:"fileURIs,omitempty"`
+
+	// Optional. Cloud Storage URIs of archives to be extracted into the working
+	//  directory of each executor. Supported file types: .jar, .tar, .tar.gz,
+	//  .tgz, and .zip.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.NotebookTaskConfig.archive_uris
+	ArchiveUris []string `json:"archiveURIs,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dataplex.v1.Task.SparkTaskConfig
+type Task_SparkTaskConfig struct {
+	// The Cloud Storage URI of the jar file that contains the main class.
+	//  The execution args are passed in as a sequence of named process
+	//  arguments (`--key=value`).
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.SparkTaskConfig.main_jar_file_uri
+	MainJarFileURI *string `json:"mainJarFileURI,omitempty"`
+
+	// The name of the driver's main class. The jar file that contains the
+	//  class must be in the default CLASSPATH or specified in
+	//  `jar_file_uris`.
+	//  The execution args are passed in as a sequence of named process
+	//  arguments (`--key=value`).
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.SparkTaskConfig.main_class
+	MainClass *string `json:"mainClass,omitempty"`
+
+	// The Gcloud Storage URI of the main Python file to use as the driver.
+	//  Must be a .py file. The execution args are passed in as a sequence of
+	//  named process arguments (`--key=value`).
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.SparkTaskConfig.python_script_file
+	PythonScriptFile *string `json:"pythonScriptFile,omitempty"`
+
+	// A reference to a query file. This should be the Cloud Storage URI of
+	//  the query file. The execution args are used to declare a set of script
+	//  variables (`set key="value";`).
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.SparkTaskConfig.sql_script_file
+	SQLScriptFile *string `json:"sqlScriptFile,omitempty"`
+
+	// The query text.
+	//  The execution args are used to declare a set of script variables
+	//  (`set key="value";`).
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.SparkTaskConfig.sql_script
+	SQLScript *string `json:"sqlScript,omitempty"`
+
+	// Optional. Cloud Storage URIs of files to be placed in the working
+	//  directory of each executor.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.SparkTaskConfig.file_uris
+	FileUris []string `json:"fileURIs,omitempty"`
+
+	// Optional. Cloud Storage URIs of archives to be extracted into the working
+	//  directory of each executor. Supported file types: .jar, .tar, .tar.gz,
+	//  .tgz, and .zip.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.SparkTaskConfig.archive_uris
+	ArchiveUris []string `json:"archiveURIs,omitempty"`
+
+	// Optional. Infrastructure specification for the execution.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.SparkTaskConfig.infrastructure_spec
+	InfrastructureSpec *Task_InfrastructureSpec `json:"infrastructureSpec,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.dataplex.v1.Task.ExecutionStatus
+type Task_ExecutionStatusObservedState struct {
+	// Output only. Last update time of the status.
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionStatus.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. latest job execution
+	// +kcc:proto:field=google.cloud.dataplex.v1.Task.ExecutionStatus.latest_job
+	LatestJob *JobObservedState `json:"latestJob,omitempty"`
 }

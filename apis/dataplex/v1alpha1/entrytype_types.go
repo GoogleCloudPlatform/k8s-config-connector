@@ -137,3 +137,13 @@ type DataplexEntryTypeList struct {
 func init() {
 	SchemeBuilder.Register(&DataplexEntryType{}, &DataplexEntryTypeList{})
 }
+
+// +kcc:proto=google.cloud.dataplex.v1.EntryType.AspectInfo
+type EntryType_AspectInfo struct {
+
+	// +required
+	//  A reference to an externally managed DataplexAspectType resource.
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}}".
+	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.AspectInfo.type
+	TypeRef *AspectTypeRef `json:"typeRef,omitempty"`
+}
