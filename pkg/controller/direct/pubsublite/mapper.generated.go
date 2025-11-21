@@ -14,29 +14,30 @@
 
 // +generated:mapper
 // krm.group: pubsublite.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: google.cloud.pubsublite.v1
 
 package pubsublite
 
 import (
 	pb "cloud.google.com/go/pubsublite/apiv1/pubsublitepb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsublite/v1alpha1"
+	krmpubsublitev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsublite/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsublite/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func ExportConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExportConfig) *krm.ExportConfig {
+func ExportConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExportConfig) *krmpubsublitev1alpha1.ExportConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ExportConfig{}
+	out := &krmpubsublitev1alpha1.ExportConfig{}
 	out.DesiredState = direct.Enum_FromProto(mapCtx, in.GetDesiredState())
 	// MISSING: CurrentState
 	out.DeadLetterTopic = direct.LazyPtr(in.GetDeadLetterTopic())
 	out.PubsubConfig = ExportConfig_PubSubConfig_FromProto(mapCtx, in.GetPubsubConfig())
 	return out
 }
-func ExportConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExportConfig) *pb.ExportConfig {
+func ExportConfig_ToProto(mapCtx *direct.MapContext, in *krmpubsublitev1alpha1.ExportConfig) *pb.ExportConfig {
 	if in == nil {
 		return nil
 	}
@@ -49,18 +50,18 @@ func ExportConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExportConfig) *pb.E
 	}
 	return out
 }
-func ExportConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExportConfig) *krm.ExportConfigObservedState {
+func ExportConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ExportConfig) *krmpubsublitev1alpha1.ExportConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ExportConfigObservedState{}
+	out := &krmpubsublitev1alpha1.ExportConfigObservedState{}
 	// MISSING: DesiredState
 	out.CurrentState = direct.Enum_FromProto(mapCtx, in.GetCurrentState())
 	// MISSING: DeadLetterTopic
 	// MISSING: PubsubConfig
 	return out
 }
-func ExportConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ExportConfigObservedState) *pb.ExportConfig {
+func ExportConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krmpubsublitev1alpha1.ExportConfigObservedState) *pb.ExportConfig {
 	if in == nil {
 		return nil
 	}
@@ -71,15 +72,15 @@ func ExportConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Export
 	// MISSING: PubsubConfig
 	return out
 }
-func ExportConfig_PubSubConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExportConfig_PubSubConfig) *krm.ExportConfig_PubSubConfig {
+func ExportConfig_PubSubConfig_FromProto(mapCtx *direct.MapContext, in *pb.ExportConfig_PubSubConfig) *krmpubsublitev1alpha1.ExportConfig_PubSubConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ExportConfig_PubSubConfig{}
+	out := &krmpubsublitev1alpha1.ExportConfig_PubSubConfig{}
 	out.Topic = direct.LazyPtr(in.GetTopic())
 	return out
 }
-func ExportConfig_PubSubConfig_ToProto(mapCtx *direct.MapContext, in *krm.ExportConfig_PubSubConfig) *pb.ExportConfig_PubSubConfig {
+func ExportConfig_PubSubConfig_ToProto(mapCtx *direct.MapContext, in *krmpubsublitev1alpha1.ExportConfig_PubSubConfig) *pb.ExportConfig_PubSubConfig {
 	if in == nil {
 		return nil
 	}
@@ -87,16 +88,50 @@ func ExportConfig_PubSubConfig_ToProto(mapCtx *direct.MapContext, in *krm.Export
 	out.Topic = direct.ValueOf(in.Topic)
 	return out
 }
-func PubSubLiteSubscriptionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Subscription) *krm.PubSubLiteSubscriptionObservedState {
+func PubSubLiteReservationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.PubSubLiteReservationObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PubSubLiteSubscriptionObservedState{}
+	out := &krm.PubSubLiteReservationObservedState{}
+	// MISSING: Name
+	return out
+}
+func PubSubLiteReservationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PubSubLiteReservationObservedState) *pb.Reservation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Reservation{}
+	// MISSING: Name
+	return out
+}
+func PubSubLiteReservationSpec_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.PubSubLiteReservationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PubSubLiteReservationSpec{}
+	// MISSING: Name
+	out.ThroughputCapacity = direct.LazyPtr(in.GetThroughputCapacity())
+	return out
+}
+func PubSubLiteReservationSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSubLiteReservationSpec) *pb.Reservation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Reservation{}
+	// MISSING: Name
+	out.ThroughputCapacity = direct.ValueOf(in.ThroughputCapacity)
+	return out
+}
+func PubSubLiteSubscriptionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Subscription) *krmpubsublitev1alpha1.PubSubLiteSubscriptionObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmpubsublitev1alpha1.PubSubLiteSubscriptionObservedState{}
 	// MISSING: Name
 	// MISSING: ExportConfig
 	return out
 }
-func PubSubLiteSubscriptionObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PubSubLiteSubscriptionObservedState) *pb.Subscription {
+func PubSubLiteSubscriptionObservedState_ToProto(mapCtx *direct.MapContext, in *krmpubsublitev1alpha1.PubSubLiteSubscriptionObservedState) *pb.Subscription {
 	if in == nil {
 		return nil
 	}
@@ -105,18 +140,18 @@ func PubSubLiteSubscriptionObservedState_ToProto(mapCtx *direct.MapContext, in *
 	// MISSING: ExportConfig
 	return out
 }
-func PubSubLiteSubscriptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Subscription) *krm.PubSubLiteSubscriptionSpec {
+func PubSubLiteSubscriptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Subscription) *krmpubsublitev1alpha1.PubSubLiteSubscriptionSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PubSubLiteSubscriptionSpec{}
+	out := &krmpubsublitev1alpha1.PubSubLiteSubscriptionSpec{}
 	// MISSING: Name
 	out.Topic = direct.LazyPtr(in.GetTopic())
 	out.DeliveryConfig = Subscription_DeliveryConfig_FromProto(mapCtx, in.GetDeliveryConfig())
 	// MISSING: ExportConfig
 	return out
 }
-func PubSubLiteSubscriptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSubLiteSubscriptionSpec) *pb.Subscription {
+func PubSubLiteSubscriptionSpec_ToProto(mapCtx *direct.MapContext, in *krmpubsublitev1alpha1.PubSubLiteSubscriptionSpec) *pb.Subscription {
 	if in == nil {
 		return nil
 	}
@@ -127,15 +162,15 @@ func PubSubLiteSubscriptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSu
 	// MISSING: ExportConfig
 	return out
 }
-func PubSubLiteTopicObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krm.PubSubLiteTopicObservedState {
+func PubSubLiteTopicObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krmpubsublitev1alpha1.PubSubLiteTopicObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PubSubLiteTopicObservedState{}
+	out := &krmpubsublitev1alpha1.PubSubLiteTopicObservedState{}
 	// MISSING: Name
 	return out
 }
-func PubSubLiteTopicObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PubSubLiteTopicObservedState) *pb.Topic {
+func PubSubLiteTopicObservedState_ToProto(mapCtx *direct.MapContext, in *krmpubsublitev1alpha1.PubSubLiteTopicObservedState) *pb.Topic {
 	if in == nil {
 		return nil
 	}
@@ -143,18 +178,18 @@ func PubSubLiteTopicObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Pub
 	// MISSING: Name
 	return out
 }
-func PubSubLiteTopicSpec_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krm.PubSubLiteTopicSpec {
+func PubSubLiteTopicSpec_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krmpubsublitev1alpha1.PubSubLiteTopicSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PubSubLiteTopicSpec{}
+	out := &krmpubsublitev1alpha1.PubSubLiteTopicSpec{}
 	// MISSING: Name
 	out.PartitionConfig = Topic_PartitionConfig_FromProto(mapCtx, in.GetPartitionConfig())
 	out.RetentionConfig = Topic_RetentionConfig_FromProto(mapCtx, in.GetRetentionConfig())
 	out.ReservationConfig = Topic_ReservationConfig_FromProto(mapCtx, in.GetReservationConfig())
 	return out
 }
-func PubSubLiteTopicSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSubLiteTopicSpec) *pb.Topic {
+func PubSubLiteTopicSpec_ToProto(mapCtx *direct.MapContext, in *krmpubsublitev1alpha1.PubSubLiteTopicSpec) *pb.Topic {
 	if in == nil {
 		return nil
 	}
@@ -165,15 +200,15 @@ func PubSubLiteTopicSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSubLiteTo
 	out.ReservationConfig = Topic_ReservationConfig_ToProto(mapCtx, in.ReservationConfig)
 	return out
 }
-func Subscription_DeliveryConfig_FromProto(mapCtx *direct.MapContext, in *pb.Subscription_DeliveryConfig) *krm.Subscription_DeliveryConfig {
+func Subscription_DeliveryConfig_FromProto(mapCtx *direct.MapContext, in *pb.Subscription_DeliveryConfig) *krmpubsublitev1alpha1.Subscription_DeliveryConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Subscription_DeliveryConfig{}
+	out := &krmpubsublitev1alpha1.Subscription_DeliveryConfig{}
 	out.DeliveryRequirement = direct.Enum_FromProto(mapCtx, in.GetDeliveryRequirement())
 	return out
 }
-func Subscription_DeliveryConfig_ToProto(mapCtx *direct.MapContext, in *krm.Subscription_DeliveryConfig) *pb.Subscription_DeliveryConfig {
+func Subscription_DeliveryConfig_ToProto(mapCtx *direct.MapContext, in *krmpubsublitev1alpha1.Subscription_DeliveryConfig) *pb.Subscription_DeliveryConfig {
 	if in == nil {
 		return nil
 	}
@@ -181,17 +216,17 @@ func Subscription_DeliveryConfig_ToProto(mapCtx *direct.MapContext, in *krm.Subs
 	out.DeliveryRequirement = direct.Enum_ToProto[pb.Subscription_DeliveryConfig_DeliveryRequirement](mapCtx, in.DeliveryRequirement)
 	return out
 }
-func Topic_PartitionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Topic_PartitionConfig) *krm.Topic_PartitionConfig {
+func Topic_PartitionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Topic_PartitionConfig) *krmpubsublitev1alpha1.Topic_PartitionConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Topic_PartitionConfig{}
+	out := &krmpubsublitev1alpha1.Topic_PartitionConfig{}
 	out.Count = direct.LazyPtr(in.GetCount())
 	// MISSING: Scale
 	out.Capacity = Topic_PartitionConfig_Capacity_FromProto(mapCtx, in.GetCapacity())
 	return out
 }
-func Topic_PartitionConfig_ToProto(mapCtx *direct.MapContext, in *krm.Topic_PartitionConfig) *pb.Topic_PartitionConfig {
+func Topic_PartitionConfig_ToProto(mapCtx *direct.MapContext, in *krmpubsublitev1alpha1.Topic_PartitionConfig) *pb.Topic_PartitionConfig {
 	if in == nil {
 		return nil
 	}
@@ -203,16 +238,16 @@ func Topic_PartitionConfig_ToProto(mapCtx *direct.MapContext, in *krm.Topic_Part
 	}
 	return out
 }
-func Topic_PartitionConfig_Capacity_FromProto(mapCtx *direct.MapContext, in *pb.Topic_PartitionConfig_Capacity) *krm.Topic_PartitionConfig_Capacity {
+func Topic_PartitionConfig_Capacity_FromProto(mapCtx *direct.MapContext, in *pb.Topic_PartitionConfig_Capacity) *krmpubsublitev1alpha1.Topic_PartitionConfig_Capacity {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Topic_PartitionConfig_Capacity{}
+	out := &krmpubsublitev1alpha1.Topic_PartitionConfig_Capacity{}
 	out.PublishMIBPerSec = direct.LazyPtr(in.GetPublishMibPerSec())
 	out.SubscribeMIBPerSec = direct.LazyPtr(in.GetSubscribeMibPerSec())
 	return out
 }
-func Topic_PartitionConfig_Capacity_ToProto(mapCtx *direct.MapContext, in *krm.Topic_PartitionConfig_Capacity) *pb.Topic_PartitionConfig_Capacity {
+func Topic_PartitionConfig_Capacity_ToProto(mapCtx *direct.MapContext, in *krmpubsublitev1alpha1.Topic_PartitionConfig_Capacity) *pb.Topic_PartitionConfig_Capacity {
 	if in == nil {
 		return nil
 	}
@@ -221,15 +256,15 @@ func Topic_PartitionConfig_Capacity_ToProto(mapCtx *direct.MapContext, in *krm.T
 	out.SubscribeMibPerSec = direct.ValueOf(in.SubscribeMIBPerSec)
 	return out
 }
-func Topic_ReservationConfig_FromProto(mapCtx *direct.MapContext, in *pb.Topic_ReservationConfig) *krm.Topic_ReservationConfig {
+func Topic_ReservationConfig_FromProto(mapCtx *direct.MapContext, in *pb.Topic_ReservationConfig) *krmpubsublitev1alpha1.Topic_ReservationConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Topic_ReservationConfig{}
+	out := &krmpubsublitev1alpha1.Topic_ReservationConfig{}
 	out.ThroughputReservation = direct.LazyPtr(in.GetThroughputReservation())
 	return out
 }
-func Topic_ReservationConfig_ToProto(mapCtx *direct.MapContext, in *krm.Topic_ReservationConfig) *pb.Topic_ReservationConfig {
+func Topic_ReservationConfig_ToProto(mapCtx *direct.MapContext, in *krmpubsublitev1alpha1.Topic_ReservationConfig) *pb.Topic_ReservationConfig {
 	if in == nil {
 		return nil
 	}
@@ -237,16 +272,16 @@ func Topic_ReservationConfig_ToProto(mapCtx *direct.MapContext, in *krm.Topic_Re
 	out.ThroughputReservation = direct.ValueOf(in.ThroughputReservation)
 	return out
 }
-func Topic_RetentionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Topic_RetentionConfig) *krm.Topic_RetentionConfig {
+func Topic_RetentionConfig_FromProto(mapCtx *direct.MapContext, in *pb.Topic_RetentionConfig) *krmpubsublitev1alpha1.Topic_RetentionConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Topic_RetentionConfig{}
+	out := &krmpubsublitev1alpha1.Topic_RetentionConfig{}
 	out.PerPartitionBytes = direct.LazyPtr(in.GetPerPartitionBytes())
 	out.Period = direct.StringDuration_FromProto(mapCtx, in.GetPeriod())
 	return out
 }
-func Topic_RetentionConfig_ToProto(mapCtx *direct.MapContext, in *krm.Topic_RetentionConfig) *pb.Topic_RetentionConfig {
+func Topic_RetentionConfig_ToProto(mapCtx *direct.MapContext, in *krmpubsublitev1alpha1.Topic_RetentionConfig) *pb.Topic_RetentionConfig {
 	if in == nil {
 		return nil
 	}
