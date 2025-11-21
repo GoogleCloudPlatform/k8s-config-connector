@@ -75,11 +75,6 @@ spec:
               displayName:
                 description: Optional. User friendly display name.
                 type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. User-defined labels for the EntryType.
-                type: object
               location:
                 type: string
               platform:

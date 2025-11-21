@@ -36,7 +36,7 @@ func DataplexEntryTypeSpec_FromProto(mapCtx *direct.MapContext, in *pb.EntryType
 	// MISSING: UpdateTime
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Labels = in.Labels
+	// out.Labels = in.Labels
 
 	out.TypeAliases = in.TypeAliases
 	out.Platform = direct.LazyPtr(in.GetPlatform())
@@ -56,7 +56,7 @@ func DataplexEntryTypeSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Da
 	// MISSING: UpdateTime
 	out.Description = direct.ValueOf(in.Description)
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Labels = in.Labels
+	// out.Labels = in.Labels
 	out.TypeAliases = in.TypeAliases
 	out.Platform = direct.ValueOf(in.Platform)
 	out.System = direct.ValueOf(in.System)

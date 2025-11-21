@@ -15,26 +15,21 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+
 	// GCP Resource Reference type.
-	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var DataplexEntryGroupGVK = GroupVersion.WithKind("DataplexEntryGroup")
 
-// The Parent resource that the DataplexEntryGroup resource resides in.
-type DataplexEntryGroupParent struct {
-	// +required
-	ProjectRef *refv1beta1.ProjectRef `json:"projectRef"`
-	// +required
-	Location string `json:"location"`
-}
-
 // DataplexEntryGroupSpec defines the desired state of DataplexEntryGroup
 // +kcc:spec:proto=google.cloud.dataplex.v1.EntryGroup
 type DataplexEntryGroupSpec struct {
-	DataplexEntryGroupParent `json:",inline"`
+	ParentRef *parent.ProjectAndLocationRef `json:",inline"`
+
 	// The DataplexEntryGroup name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
@@ -48,7 +43,7 @@ type DataplexEntryGroupSpec struct {
 
 	// Optional. User-defined labels for the EntryGroup.
 	// +kcc:proto:field=google.cloud.dataplex.v1.EntryGroup.labels
-	Labels map[string]string `json:"labels,omitempty"`
+	// Labels map[string]string `json:"labels,omitempty"`
 
 	// NOTYET: not supported in Config Connector reconciliation
 	// This checksum is computed by the server based on the value of other
