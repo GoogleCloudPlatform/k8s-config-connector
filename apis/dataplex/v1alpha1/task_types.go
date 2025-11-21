@@ -21,17 +21,13 @@ import (
 
 var DataplexTaskGVK = GroupVersion.WithKind("DataplexTask")
 
-type DataplexTaskParent struct {
-	LakeRef *LakeRef `json:"lakeRef,omitempty"`
-}
-
 // DataplexTaskSpec defines the desired state of DataplexTask
 // +kcc:spec:proto=google.cloud.dataplex.v1.Task
 type DataplexTaskSpec struct {
 	// The DataplexTask name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	DataplexTaskParent `json:",inline"`
+	LakeRef *LakeRef `json:"lakeRef,omitempty"`
 
 	// Optional. Description of the task.
 	// +optional
@@ -43,7 +39,7 @@ type DataplexTaskSpec struct {
 
 	// Optional. User-defined labels for the task.
 	// +optional
-	Labels map[string]string `json:"labels,omitempty"`
+	// Labels map[string]string `json:"labels,omitempty"`
 
 	// Required. Spec related to how often and when a task should be triggered.
 	// +required
