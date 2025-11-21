@@ -104,6 +104,24 @@ spec:
                       resource.
                     type: string
                 type: object
+              connectionPoolConfig:
+                description: Configuration for Managed Connection Pool (MCP).
+                properties:
+                  enabled:
+                    description: Optional. Whether to enable Managed Connection Pool
+                      (MCP).
+                    type: boolean
+                  flags:
+                    additionalProperties:
+                      type: string
+                    description: 'Optional. Connection Pool flags, as a list of "key":
+                      "value" pairs.'
+                    type: object
+                  pooler_count:
+                    description: Output only. The number of running poolers per instance.
+                    format: int32
+                    type: integer
+                type: object
               databaseFlags:
                 additionalProperties:
                   type: string
@@ -395,6 +413,24 @@ spec:
                     description: The `metadata.namespace` field of a `AlloyDBCluster`
                       resource.
                     type: string
+                type: object
+              connectionPoolConfig:
+                description: Configuration for Managed Connection Pool (MCP).
+                properties:
+                  enabled:
+                    description: Optional. Whether to enable Managed Connection Pool
+                      (MCP).
+                    type: boolean
+                  flags:
+                    additionalProperties:
+                      type: string
+                    description: 'Optional. Connection Pool flags, as a list of "key":
+                      "value" pairs.'
+                    type: object
+                  pooler_count:
+                    description: Output only. The number of running poolers per instance.
+                    format: int32
+                    type: integer
                 type: object
               databaseFlags:
                 additionalProperties:
