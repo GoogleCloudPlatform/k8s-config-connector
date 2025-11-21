@@ -113,6 +113,9 @@ func (s *instanceAdminServer) UpdateMaterializedView(ctx context.Context, req *p
 
 	for _, path := range paths {
 		switch path {
+		case "query":
+			// The query field is immutable.
+			continue
 		case "deletion_protection":
 			updated.DeletionProtection = req.MaterializedView.DeletionProtection
 		default:
