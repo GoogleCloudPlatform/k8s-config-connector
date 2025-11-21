@@ -16,6 +16,7 @@ package firestore
 
 import (
 	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -37,4 +38,29 @@ func IndexFields_ArrayConfig_ToProto(mapCtx *direct.MapContext, in *string) *pb.
 	v := direct.Enum_ToProto[pb.Index_IndexField_ArrayConfig](mapCtx, in)
 	out := &pb.Index_IndexField_ArrayConfig_{ArrayConfig: v}
 	return out
+}
+
+func Field_TTLConfig_Spec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Field_TTLConfig_Spec) *pb.Field_TtlConfig {
+	if in == nil {
+		return nil
+	}
+
+	enabled := direct.ValueOf(in.Enabled)
+	if enabled {
+		return &pb.Field_TtlConfig{}
+	} else {
+		// This is an unusual API: the absence of the TTLConfig indicates that TTL is disabled.
+		return nil
+	}
+}
+
+func Field_TTLConfig_Spec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Field_TtlConfig) *krm.Field_TTLConfig_Spec {
+	if in == nil {
+		return nil
+	}
+
+	// The presence of the TTLConfig indicates that TTL is enabled.
+	return &krm.Field_TTLConfig_Spec{
+		Enabled: direct.PtrTo(true),
+	}
 }

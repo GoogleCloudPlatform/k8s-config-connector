@@ -48,14 +48,14 @@ func firestoreFieldFuzzer() fuzztesting.KRMFuzzer {
 	f.IdentityField(".name")
 
 	f.SpecField(".index_config")
+	f.SpecField(".ttl_config")
+
 	f.StatusField(".index_config.ancestor_field")
 	f.StatusField(".index_config.reverting")
 	f.StatusField(".index_config.uses_ancestor_config")
 	f.StatusField(".index_config.indexes[].name")
 	f.StatusField(".index_config.indexes[].state")
 	f.StatusField(".ttl_config.state")
-
-	f.Unimplemented_NotYetTriaged(".ttl_config")
 
 	return f
 }
