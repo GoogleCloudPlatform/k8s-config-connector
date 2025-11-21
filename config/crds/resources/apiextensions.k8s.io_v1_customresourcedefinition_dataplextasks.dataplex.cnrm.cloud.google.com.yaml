@@ -186,14 +186,14 @@ spec:
                 description: Config related to running scheduled Notebooks. Exactly
                   one of spark or notebook must be set.
                 properties:
-                  archiveURIs:
+                  archiveUris:
                     description: 'Optional. Cloud Storage URIs of archives to be extracted
                       into the working directory of each executor. Supported file
                       types: .jar, .tar, .tar.gz, .tgz, and .zip.'
                     items:
                       type: string
                     type: array
-                  fileURIs:
+                  fileUris:
                     description: Optional. Cloud Storage URIs of files to be placed
                       in the working directory of each executor.
                     items:
@@ -276,8 +276,6 @@ spec:
                       Content. The execution args are accessible as environment variables
                       (`TASK_key=value`).
                     type: string
-                required:
-                - notebook
                 type: object
               resourceID:
                 description: The DataplexTask name. If not given, the metadata.name
@@ -287,14 +285,14 @@ spec:
                 description: Config related to running custom Spark tasks. Exactly
                   one of spark or notebook must be set.
                 properties:
-                  archiveURIs:
+                  archiveUris:
                     description: 'Optional. Cloud Storage URIs of archives to be extracted
                       into the working directory of each executor. Supported file
                       types: .jar, .tar, .tar.gz, .tgz, and .zip.'
                     items:
                       type: string
                     type: array
-                  fileURIs:
+                  fileUris:
                     description: Optional. Cloud Storage URIs of files to be placed
                       in the working directory of each executor.
                     items:
@@ -429,8 +427,6 @@ spec:
                     description: Required. Immutable. Trigger type of the user-specified
                       Task.
                     type: string
-                required:
-                - type
                 type: object
             required:
             - executionSpec
@@ -488,91 +484,6 @@ spec:
                     properties:
                       latestJob:
                         description: Output only. latest job execution
-                        properties:
-                          endTime:
-                            description: Output only. The time when the job ended.
-                            type: string
-                          executionSpec:
-                            description: Output only. Spec related to how a task is
-                              executed.
-                            properties:
-                              args:
-                                additionalProperties:
-                                  type: string
-                                description: 'The arguments to pass to the task. The
-                                  args can use placeholders of the format ${placeholder}
-                                  as part of key/value string. These will be interpolated
-                                  before passing the args to the driver. Currently
-                                  supported placeholders: - ${task_id} - ${job_time}
-                                  To pass positional args, set the key as TASK_ARGS.
-                                  The value should be a comma-separated string of
-                                  all the positional arguments. To use a delimiter
-                                  other than comma, refer to https://cloud.google.com/sdk/gcloud/reference/topic/escaping.
-                                  In case of other keys being present in the args,
-                                  then TASK_ARGS will be passed as the last argument.'
-                                type: object
-                              kmsKey:
-                                description: 'The Cloud KMS key to use for encryption,
-                                  of the form: `projects/{project_number}/locations/{location_id}/keyRings/{key-ring-name}/cryptoKeys/{key-name}`.'
-                                type: string
-                              maxJobExecutionLifetime:
-                                description: The maximum duration after which the
-                                  job execution is expired.
-                                type: string
-                              project:
-                                description: The project in which jobs are run. By
-                                  default, the project containing the Lake is used.
-                                  If a project is provided, the [ExecutionSpec.service_account][google.cloud.dataplex.v1.Task.ExecutionSpec.service_account]
-                                  must belong to this project.
-                                type: string
-                              serviceAccount:
-                                description: Service account to use to execute a task.
-                                  If not provided, the default Compute service account
-                                  for the project is used.
-                                type: string
-                            required:
-                            - serviceAccount
-                            type: object
-                          labels:
-                            additionalProperties:
-                              type: string
-                            description: Output only. User-defined labels for the
-                              task.
-                            type: object
-                          message:
-                            description: Output only. Additional information about
-                              the current state.
-                            type: string
-                          name:
-                            description: 'Output only. The relative resource name
-                              of the job, of the form: `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}/jobs/{job_id}`.'
-                            type: string
-                          retryCount:
-                            description: Output only. The number of times the job
-                              has been retried (excluding the initial attempt).
-                            format: int32
-                            type: integer
-                          service:
-                            description: Output only. The underlying service running
-                              a job.
-                            type: string
-                          serviceJob:
-                            description: Output only. The full resource name for the
-                              job run under a particular service.
-                            type: string
-                          startTime:
-                            description: Output only. The time when the job was started.
-                            type: string
-                          state:
-                            description: Output only. Execution state for the job.
-                            type: string
-                          trigger:
-                            description: Output only. Job execution trigger.
-                            type: string
-                          uid:
-                            description: Output only. System generated globally unique
-                              ID for the job.
-                            type: string
                         type: object
                       updateTime:
                         description: Output only. Last update time of the status.
