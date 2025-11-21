@@ -28,12 +28,12 @@ type ResourceControllerConfig struct {
 
 type ResourcesControllerMap map[schema.GroupKind]ResourceControllerConfig
 
-func (c *ResourcesControllerMap) GetControllersForGVK(gvk schema.GroupVersionKind) (*ResourceControllerConfig, error) {
+func (c ResourcesControllerMap) GetControllersForGVK(gvk schema.GroupVersionKind) (*ResourceControllerConfig, error) {
 	groupKind := schema.GroupKind{
 		Group: gvk.Group,
 		Kind:  gvk.Kind,
 	}
-	if config, ok := (*c)[groupKind]; ok {
+	if config, ok := c[groupKind]; ok {
 		return &config, nil
 	}
 	return nil, fmt.Errorf("no controller config found for GVK %v", gvk)

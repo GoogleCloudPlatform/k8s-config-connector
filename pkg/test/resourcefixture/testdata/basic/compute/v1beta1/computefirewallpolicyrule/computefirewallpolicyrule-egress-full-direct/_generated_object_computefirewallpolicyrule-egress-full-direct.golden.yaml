@@ -34,7 +34,7 @@ spec:
     - 10.100.0.2/32
   priority: 9000
   targetResources:
-  - name: network-2-${uniqueId}
+  - name: ${networkID}
   targetServiceAccounts:
   - name: sa-2-${uniqueId}
 status:

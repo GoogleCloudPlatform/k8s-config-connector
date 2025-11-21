@@ -18,12 +18,14 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"k8s.io/klog/v2"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -38,7 +40,12 @@ type buckets struct {
 }
 
 func (s *buckets) GetBucket(ctx context.Context, req *pb.GetBucketRequest) (*pb.Bucket, error) {
-	fqn := req.GetName()
+	name, err := s.parseBucketName("buckets/" + req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
 
 	obj := &pb.Bucket{}
 
@@ -93,6 +100,8 @@ func (s *buckets) ListBuckets(ctx context.Context, req *pb.ListBucketsRequest) (
 		return nil, err
 	}
 
+	httpmux.SetExpiresHeader(ctx, time.Now())
+
 	return &pb.Buckets{
 		Items:         buckets,
 		NextPageToken: nil,
@@ -101,7 +110,12 @@ func (s *buckets) ListBuckets(ctx context.Context, req *pb.ListBucketsRequest) (
 }
 
 func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest) (*pb.Bucket, error) {
-	fqn := req.GetBucket().GetName()
+	name, err := s.parseBucketName("buckets/" + req.GetBucket().GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
 
 	if req.GetProject() == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "project is required")
@@ -113,18 +127,32 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 	now := timestamppb.Now()
 
 	obj := proto.Clone(req.GetBucket()).(*pb.Bucket)
-	obj.Id = PtrTo(fqn)
+	obj.Id = PtrTo(name.Bucket)
 	obj.Kind = PtrTo("storage#bucket")
-	obj.Name = PtrTo(fqn)
+	obj.Name = PtrTo(name.Bucket)
 	obj.ProjectNumber = PtrTo(uint64(project.Number))
+
 	obj.Location = PtrTo("US")
 	obj.LocationType = PtrTo("multi-region")
 	obj.Rpo = PtrTo("DEFAULT")
-	obj.SelfLink = PtrTo(fmt.Sprintf("https://www.googleapis.com/storage/v1/b/%s", obj.GetName()))
+	obj.SelfLink = PtrTo(fmt.Sprintf("https://www.googleapis.com/storage/v1/b/%s", name.Bucket))
 	obj.StorageClass = PtrTo("STANDARD")
 	obj.TimeCreated = now
 	obj.Updated = now
 	obj.Metageneration = PtrTo(int64(1))
+
+	obj.Generation = PtrTo(time.Now().UnixNano())
+
+	if location := req.GetBucket().GetLocation(); location != "" {
+		tokens := strings.Split(location, "-")
+		if len(tokens) == 2 {
+			// Looks like a region e.g. us-central1
+			obj.Location = PtrTo(strings.ToUpper(location))
+			obj.Rpo = nil
+			obj.LocationType = PtrTo("region")
+			obj.SatisfiesPZI = PtrTo(true)
+		}
+	}
 
 	obj.Etag = PtrTo(computeEtag(obj))
 	if obj.Lifecycle != nil && proto.Equal(obj.Lifecycle, &pb.BucketLifecycle{}) {
@@ -139,19 +167,23 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 	if iamConfiguration.PublicAccessPrevention == nil {
 		iamConfiguration.PublicAccessPrevention = PtrTo("inherited")
 	}
-	bucketPolicyOnly := iamConfiguration.BucketPolicyOnly
-	if bucketPolicyOnly == nil {
-		bucketPolicyOnly = &pb.BucketPolicyOnly{}
-		iamConfiguration.BucketPolicyOnly = bucketPolicyOnly
+
+	if iamConfiguration.UniformBucketLevelAccess == nil {
+		iamConfiguration.UniformBucketLevelAccess = &pb.UniformBucketLevelAccess{
+			Enabled: PtrTo(false),
+		}
 	}
-	if bucketPolicyOnly.Enabled == nil {
-		bucketPolicyOnly.Enabled = PtrTo(false)
+	if iamConfiguration.UniformBucketLevelAccess.GetEnabled() {
+		iamConfiguration.UniformBucketLevelAccess.LockedTime = now
 	}
-	ubla := iamConfiguration.UniformBucketLevelAccess
-	if ubla == nil {
-		ubla = &pb.UniformBucketLevelAccess{}
-		iamConfiguration.UniformBucketLevelAccess = ubla
+
+	// Copy uniformBucketLevelAccess to bucketPolicyOnly for legacy clients.
+	// iamConfiguration also includes the bucketPolicyOnly field, which uses a legacy name but has the same functionality as the uniformBucketLevelAccess field.
+	if iamConfiguration.BucketPolicyOnly == nil {
+		iamConfiguration.BucketPolicyOnly = &pb.BucketPolicyOnly{}
 	}
+	iamConfiguration.BucketPolicyOnly.Enabled = iamConfiguration.UniformBucketLevelAccess.Enabled
+	iamConfiguration.BucketPolicyOnly.LockedTime = iamConfiguration.UniformBucketLevelAccess.LockedTime
 
 	softDeletePolicy := obj.SoftDeletePolicy
 	if softDeletePolicy == nil {
@@ -162,13 +194,22 @@ func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest)
 		defaultRetention := time.Hour * 7 * 24
 		softDeletePolicy.RetentionDurationSeconds = PtrTo(int64(defaultRetention.Seconds()))
 	}
-	// TODO: Should be now
-	softDeletePolicy.EffectiveTime = timestamppb.New(time.Date(2024, time.April, 1, 0, 0, 0, 0, time.UTC))
+	softDeletePolicy.EffectiveTime = now
+
+	if err := s.populateDefaults(ctx, project, obj); err != nil {
+		return nil, err
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	return obj, nil
+
+	retObj := ProtoClone(obj)
+	retObj.Acl = nil
+	retObj.DefaultObjectAcl = nil
+	retObj.Owner = nil
+
+	return retObj, nil
 }
 
 func (s *buckets) populateDefaults(ctx context.Context, project *projects.ProjectData, obj *pb.Bucket) error {
@@ -224,7 +265,12 @@ func buildObjectACL(ctx context.Context, project *projects.ProjectData, obj *pb.
 }
 
 func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (*pb.Bucket, error) {
-	fqn := req.GetName()
+	name, err := s.parseBucketName("buckets/" + req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
 
 	obj := &pb.Bucket{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
@@ -283,7 +329,12 @@ func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (
 }
 
 func (s *buckets) DeleteBucket(ctx context.Context, req *pb.DeleteBucketRequest) (*empty.Empty, error) {
-	fqn := req.GetName()
+	name, err := s.parseBucketName("buckets/" + req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
 
 	deletedObj := &pb.Bucket{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
@@ -292,4 +343,29 @@ func (s *buckets) DeleteBucket(ctx context.Context, req *pb.DeleteBucketRequest)
 	httpmux.SetStatusCode(ctx, http.StatusNoContent)
 
 	return &empty.Empty{}, nil
+}
+
+type bucketName struct {
+	Bucket string
+}
+
+func (n *bucketName) String() string {
+	return fmt.Sprintf("buckets/%s", n.Bucket)
+}
+
+// parseBucketName parses a string into a bucketName.
+// The expected form is `buckets/*`.
+func (s *MockService) parseBucketName(name string) (*bucketName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 2 && tokens[0] == "buckets" {
+		name := &bucketName{
+			Bucket: tokens[1],
+		}
+
+		return name, nil
+	}
+
+	klog.Infof("Invalid bucket name: %q", name)
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid (expected format: buckets/*)", name)
 }

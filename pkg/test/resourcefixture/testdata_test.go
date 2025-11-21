@@ -96,7 +96,6 @@ func assertServiceAbandoned(t *testing.T, testName string, service *unstructured
 				testName, k8s.DeletionPolicyAnnotation, value)
 		}
 	}
-	return
 }
 
 func assertServiceNotUnderMainTestProject(t *testing.T, testName string, service *unstructured.Unstructured) {

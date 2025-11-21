@@ -12,13 +12,13 @@ metadata:
   labels:
     cnrm-test: "true"
     label-one: value-two
-  name: computeregionalforwardingrule-${uniqueId}
+  name: ${forwardingRuleID}
   namespace: ${uniqueId}
 spec:
   description: A regional forwarding rule
   ipAddress:
     addressRef:
-      name: computeraddress-${uniqueId}
+      name: ${addressID}
   ipProtocol: ESP
   location: us-central1
   target:
@@ -32,7 +32,7 @@ status:
     status: "True"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
-  externalRef: //compute.googleapis.com/projects/${projectId}/regions/us-central1/forwardingrules/computeregionalforwardingrule-${uniqueId}
+  externalRef: //compute.googleapis.com/projects/${projectId}/regions/us-central1/forwardingrules/${forwardingRuleID}
   labelFingerprint: abcdef0123A=
   observedGeneration: 2
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/computeregionalforwardingrule-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}

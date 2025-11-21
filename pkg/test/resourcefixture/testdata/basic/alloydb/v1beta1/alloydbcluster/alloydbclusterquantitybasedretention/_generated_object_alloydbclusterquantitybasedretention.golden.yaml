@@ -30,7 +30,7 @@ spec:
   location: northamerica-northeast1
   networkConfig:
     networkRef:
-      name: computenetwork-${uniqueId}
+      name: ${networkID}
   projectRef:
     external: ${projectId}
 status:

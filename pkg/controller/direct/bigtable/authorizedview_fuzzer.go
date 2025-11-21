@@ -29,7 +29,7 @@ func init() {
 
 func bigtableAuthorizedViewFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.AuthorizedView{},
-		BigtableAuthorizedViewSpec_FromProto, BigtableAuthorizedViewSpec_ToProto,
+		BigtableAuthorizedViewSpec_v1alpha1_FromProto, BigtableAuthorizedViewSpec_v1alpha1_ToProto,
 	)
 
 	f.SpecFields.Insert(".subset_view")

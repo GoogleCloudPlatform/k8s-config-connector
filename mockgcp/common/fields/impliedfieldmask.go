@@ -20,18 +20,25 @@ import (
 
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 // ComputeImpliedFieldMask computes the implied field mask when it is omitted.
 // According to AIP 134: this is "equivalent to all fields that are populated (have a non-empty value)."
 // https://google.aip.dev/134
-func ComputeImpliedFieldMask(ctx context.Context, req proto.Message) []string {
+func ComputeImpliedFieldMask(ctx context.Context, req proto.Message, ignoreFields ...string) []string {
+	ignoreSet := sets.New(ignoreFields...)
+
 	var fieldMask []string
 	req.ProtoReflect().Range(func(fd protoreflect.FieldDescriptor, v protoreflect.Value) bool {
 		fieldName := string(fd.Name())
+		if ignoreSet.Has(fieldName) {
+			return true
+		}
 		fieldMask = append(fieldMask, fieldName)
 		return true
 	})
 	sort.Strings(fieldMask)
+
 	return fieldMask
 }

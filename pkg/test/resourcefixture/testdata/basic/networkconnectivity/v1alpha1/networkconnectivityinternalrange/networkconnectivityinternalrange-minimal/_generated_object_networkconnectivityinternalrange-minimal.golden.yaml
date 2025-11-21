@@ -13,7 +13,7 @@ spec:
   description: Updated description
   location: global
   networkRef:
-    name: computenetwork-${uniqueId}
+    name: ${networkID}
   prefixLength: 28
   projectRef:
     external: ${projectId}

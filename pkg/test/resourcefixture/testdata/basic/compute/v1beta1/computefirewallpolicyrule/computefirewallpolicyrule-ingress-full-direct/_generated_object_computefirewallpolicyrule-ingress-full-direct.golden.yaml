@@ -34,7 +34,7 @@ spec:
     - iplist-tor-exit-nodes
   priority: 9000
   targetResources:
-  - name: network-2-${uniqueId}
+  - name: ${networkID}
   targetServiceAccounts:
   - name: sa-2-${uniqueId}
 status:

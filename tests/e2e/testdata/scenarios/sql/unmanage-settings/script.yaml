@@ -1,0 +1,64 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# 00: Create a SQLInstance with some settings.
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-${uniqueId}
+spec:
+  databaseVersion: POSTGRES_15
+  region: us-central1
+  settings:
+    tier: db-g1-small
+  resourceID: sqlinstance-${uniqueId}
+---
+# 01: Add the unmanaged annotation for settings and attempt to change the tier.
+# No change is expected in GCP as the field is unmanaged.
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/unmanaged: "spec.settings"
+spec:
+  databaseVersion: POSTGRES_15
+  region: us-central1
+  settings:
+    tier: INVALID_TIER
+    activationPolicy: INVALID_POLICY
+    availabilityType: INVALID_TYPE
+    backupConfiguration:
+      enabled: true
+      pointInTimeRecoveryEnabled: true
+      startTime: "99:99"
+      transactionLogRetentionDays: -100
+      backupRetentionSettings:
+        retainedBackups: -100
+        retentionUnit: "INVALID_UNIT"
+    connectorEnforcement: "INVALID_ENFORCEMENT"
+    dataCacheConfig:
+      dataCacheEnabled: true
+    diskAutoresize: false
+    diskAutoresizeLimit: -100
+    diskSize: -100
+    diskType: "INVALID_TYPE"
+    edition: "INVALID_EDITION"
+    ipConfiguration:
+      ipv4Enabled: false
+      requireSsl: true
+    locationPreference:
+      zone: "invalid-zone"
+    pricingPlan: "INVALID_PLAN"
+  resourceID: sqlinstance-${uniqueId}

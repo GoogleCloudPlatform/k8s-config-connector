@@ -23,6 +23,7 @@ import (
 	"regexp"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/contexts"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/registration"
@@ -34,7 +35,6 @@ import (
 	"golang.org/x/sync/semaphore"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
-	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
 
 	// Register direct controllers
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
@@ -235,7 +235,7 @@ var testDisabledList = map[string]bool{
 }
 
 func TestAll(t *testing.T) {
-	ctx, ctxCancel := context.WithCancel(signals.SetupSignalHandler())
+	ctx, ctxCancel := context.WithCancel(contexts.SetupSignalHandler())
 	t.Cleanup(func() {
 		ctxCancel()
 	})

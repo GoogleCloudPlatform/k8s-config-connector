@@ -18,12 +18,15 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
+  "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
     },
     "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {}
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
   },
   "id": "000000000000000000000",
   "kind": "storage#bucket",
@@ -58,13 +61,89 @@ Vary: Origin
 Vary: X-Origin
 
 {
+  "acl": [
+    {
+      "bucket": "test-${uniqueId}",
+      "entity": "project-owners-${projectNumber}",
+      "etag": "abcdef0123A",
+      "id": "test-${uniqueId}/project-owners-${projectNumber}",
+      "kind": "storage#bucketAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "owners"
+      },
+      "role": "OWNER",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/test-${uniqueId}/acl/project-owners-${projectNumber}"
+    },
+    {
+      "bucket": "test-${uniqueId}",
+      "entity": "project-editors-${projectNumber}",
+      "etag": "abcdef0123A",
+      "id": "test-${uniqueId}/project-editors-${projectNumber}",
+      "kind": "storage#bucketAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "editors"
+      },
+      "role": "OWNER",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/test-${uniqueId}/acl/project-editors-${projectNumber}"
+    },
+    {
+      "bucket": "test-${uniqueId}",
+      "entity": "project-viewers-${projectNumber}",
+      "etag": "abcdef0123A",
+      "id": "test-${uniqueId}/project-viewers-${projectNumber}",
+      "kind": "storage#bucketAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "viewers"
+      },
+      "role": "READER",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/test-${uniqueId}/acl/project-viewers-${projectNumber}"
+    }
+  ],
+  "defaultObjectAcl": [
+    {
+      "entity": "project-owners-${projectNumber}",
+      "etag": "abcdef0123A=",
+      "kind": "storage#objectAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "owners"
+      },
+      "role": "OWNER"
+    },
+    {
+      "entity": "project-editors-${projectNumber}",
+      "etag": "abcdef0123A=",
+      "kind": "storage#objectAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "editors"
+      },
+      "role": "OWNER"
+    },
+    {
+      "entity": "project-viewers-${projectNumber}",
+      "etag": "abcdef0123A=",
+      "kind": "storage#objectAccessControl",
+      "projectTeam": {
+        "projectNumber": "${projectNumber}",
+        "team": "viewers"
+      },
+      "role": "READER"
+    }
+  ],
   "etag": "abcdef0123A=",
+  "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
     },
     "publicAccessPrevention": "inherited",
-    "uniformBucketLevelAccess": {}
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
   },
   "id": "000000000000000000000",
   "kind": "storage#bucket",
@@ -72,6 +151,9 @@ Vary: X-Origin
   "locationType": "multi-region",
   "metageneration": "1",
   "name": "test-${uniqueId}",
+  "owner": {
+    "entity": "project-owners-${projectNumber}"
+  },
   "projectNumber": "${projectNumber}",
   "rpo": "DEFAULT",
   "selfLink": "https://www.googleapis.com/storage/v1/b/test-${uniqueId}",
@@ -93,8 +175,7 @@ Connection: keep-alive
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Expires: Mon, 01 Jan 1990 00:00:00 GMT
-Pragma: no-cache
+Expires: {now+0m}
 Server: UploadServer
 Vary: Origin
 Vary: X-Origin
@@ -102,13 +183,89 @@ Vary: X-Origin
 {
   "items": [
     {
+      "acl": [
+        {
+          "bucket": "test-${uniqueId}",
+          "entity": "project-owners-${projectNumber}",
+          "etag": "abcdef0123A",
+          "id": "test-${uniqueId}/project-owners-${projectNumber}",
+          "kind": "storage#bucketAccessControl",
+          "projectTeam": {
+            "projectNumber": "${projectNumber}",
+            "team": "owners"
+          },
+          "role": "OWNER",
+          "selfLink": "https://www.googleapis.com/storage/v1/b/test-${uniqueId}/acl/project-owners-${projectNumber}"
+        },
+        {
+          "bucket": "test-${uniqueId}",
+          "entity": "project-editors-${projectNumber}",
+          "etag": "abcdef0123A",
+          "id": "test-${uniqueId}/project-editors-${projectNumber}",
+          "kind": "storage#bucketAccessControl",
+          "projectTeam": {
+            "projectNumber": "${projectNumber}",
+            "team": "editors"
+          },
+          "role": "OWNER",
+          "selfLink": "https://www.googleapis.com/storage/v1/b/test-${uniqueId}/acl/project-editors-${projectNumber}"
+        },
+        {
+          "bucket": "test-${uniqueId}",
+          "entity": "project-viewers-${projectNumber}",
+          "etag": "abcdef0123A",
+          "id": "test-${uniqueId}/project-viewers-${projectNumber}",
+          "kind": "storage#bucketAccessControl",
+          "projectTeam": {
+            "projectNumber": "${projectNumber}",
+            "team": "viewers"
+          },
+          "role": "READER",
+          "selfLink": "https://www.googleapis.com/storage/v1/b/test-${uniqueId}/acl/project-viewers-${projectNumber}"
+        }
+      ],
+      "defaultObjectAcl": [
+        {
+          "entity": "project-owners-${projectNumber}",
+          "etag": "abcdef0123A=",
+          "kind": "storage#objectAccessControl",
+          "projectTeam": {
+            "projectNumber": "${projectNumber}",
+            "team": "owners"
+          },
+          "role": "OWNER"
+        },
+        {
+          "entity": "project-editors-${projectNumber}",
+          "etag": "abcdef0123A=",
+          "kind": "storage#objectAccessControl",
+          "projectTeam": {
+            "projectNumber": "${projectNumber}",
+            "team": "editors"
+          },
+          "role": "OWNER"
+        },
+        {
+          "entity": "project-viewers-${projectNumber}",
+          "etag": "abcdef0123A=",
+          "kind": "storage#objectAccessControl",
+          "projectTeam": {
+            "projectNumber": "${projectNumber}",
+            "team": "viewers"
+          },
+          "role": "READER"
+        }
+      ],
       "etag": "abcdef0123A=",
+      "generation": "12345678901234",
       "iamConfiguration": {
         "bucketPolicyOnly": {
           "enabled": false
         },
         "publicAccessPrevention": "inherited",
-        "uniformBucketLevelAccess": {}
+        "uniformBucketLevelAccess": {
+          "enabled": false
+        }
       },
       "id": "test-${uniqueId}",
       "kind": "storage#bucket",
@@ -116,11 +273,14 @@ Vary: X-Origin
       "locationType": "multi-region",
       "metageneration": "1",
       "name": "test-${uniqueId}",
+      "owner": {
+        "entity": "project-owners-${projectNumber}"
+      },
       "projectNumber": "${projectNumber}",
       "rpo": "DEFAULT",
       "selfLink": "https://www.googleapis.com/storage/v1/b/test-${uniqueId}",
       "softDeletePolicy": {
-        "effectiveTime": "2024-04-01T00:00:00Z",
+        "effectiveTime": "2024-04-01T12:34:56.123456Z",
         "retentionDurationSeconds": "604800"
       },
       "storageClass": "STANDARD",

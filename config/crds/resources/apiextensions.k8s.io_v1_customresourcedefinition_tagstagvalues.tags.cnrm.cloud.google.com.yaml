@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: TagsTagValue
+    listKind: TagsTagValueList
     plural: tagstagvalues
     shortNames:
     - gcptagstagvalue
@@ -43,26 +44,32 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: TagsTagValue is the Schema for the TagsTagValue API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: TagsTagValueSpec defines the desired state of TagsTagValue
             properties:
               description:
-                description: User-assigned description of the TagValue. Must not exceed
-                  256 characters.
+                description: |-
+                  Optional. User-assigned description of the TagValue.
+                   Must not exceed 256 characters.
+
+                   Read-write.
                 type: string
               parentRef:
+                description: Immutable. The TagValue's parent TagKey.
                 oneOf:
                 - not:
                     required:
@@ -79,14 +86,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: string of the format `tagKeys/{{value}}`,
-                      where {{value}} is the `name` field of a `TagsTagKey` resource.'
+                    description: A reference to an externally managed TagsTagKey resource.
+                      Should be in the format "tagKeys/{{tagKeyID}}".
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The name of a TagsTagKey resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The namespace of a TagsTagKey resource.
                     type: string
                 type: object
               resourceID:
@@ -96,19 +103,24 @@ spec:
                 type: string
               shortName:
                 description: |-
-                  Immutable. Input only. User-assigned short name for TagValue. The short name should be unique for TagValues within the same parent TagKey.
+                  Required. Immutable. User-assigned short name for TagValue. The short name
+                   should be unique for TagValues within the same parent TagKey.
 
-                  The short name must be 63 characters or less, beginning and ending with an alphanumeric character ([a-z0-9A-Z]) with dashes (-), underscores (_), dots (.), and alphanumerics between.
+                   The short name must be 63 characters or less, beginning and ending with
+                   an alphanumeric character ([a-z0-9A-Z]) with dashes (-), underscores (_),
+                   dots (.), and alphanumerics between.
                 type: string
             required:
             - parentRef
             - shortName
             type: object
           status:
+            description: TagsTagValueStatus defines the config connector machine state
+              of TagsTagValue
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -133,17 +145,19 @@ spec:
                   type: object
                 type: array
               createTime:
-                description: |-
-                  Output only. Creation time.
-
-                  A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".
+                description: Output only. Creation time.
+                type: string
+              externalRef:
+                description: A unique specifier for the TagsTagValue resource in GCP.
                 type: string
               name:
-                description: The generated numeric id for the TagValue.
+                description: Immutable. Resource name for TagValue in the format `tagValues/456`.
                 type: string
               namespacedName:
-                description: Output only. Namespaced name of the TagValue. Will be
-                  in the format {parentNamespace}/{tagKeyShortName}/{shortName}.
+                description: Output only. The namespaced name of the TagValue. Can
+                  be in the form `{organization_id}/{tag_key_short_name}/{tag_value_short_name}`
+                  or `{project_id}/{tag_key_short_name}/{tag_value_short_name}` or
+                  `{project_number}/{tag_key_short_name}/{tag_value_short_name}`.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -151,11 +165,10 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
               updateTime:
-                description: |-
-                  Output only. Update time.
-                  A timestamp in RFC3339 UTC "Zulu" format, with nanosecond resolution and up to nine fractional digits. Examples: "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z".
+                description: Output only. Update time.
                 type: string
             type: object
         required:
@@ -165,9 +178,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

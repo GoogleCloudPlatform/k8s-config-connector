@@ -11,13 +11,13 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: computesslpolicy-kompanion-${uniqueId}
+  name: ${sslPolicyID}
   namespace: ${uniqueId}
 spec:
   description: SSL Policy for test-ilb-multiregion
   minTlsVersion: TLS_1_2
   profile: MODERN
-  resourceID: computesslpolicy-kompanion-${uniqueId}
+  resourceID: ${sslPolicyID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -35,4 +35,4 @@ status:
   - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
   fingerprint: abcdef0123A=
   observedGeneration: 2
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/computesslpolicy-kompanion-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslPolicies/${sslPolicyID}

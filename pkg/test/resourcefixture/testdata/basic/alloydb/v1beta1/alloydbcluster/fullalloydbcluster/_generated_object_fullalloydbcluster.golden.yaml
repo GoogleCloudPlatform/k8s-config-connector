@@ -69,7 +69,7 @@ spec:
   networkConfig:
     allocatedIpRange: test-range-1
     networkRef:
-      name: computenetwork-${uniqueId}
+      name: ${networkID}
   projectRef:
     external: ${projectId}
 status:

@@ -14,7 +14,7 @@
   			Not:   nil,
   			Properties: map[string]v1.JSONSchemaProps{
   				"displayName": {Description: "Optional. Display name.", Type: "string"},
-  				"labels":      {Description: "Optional. Resource labels to represent user-provided metadata. R"..., Type: "object", AdditionalProperties: &{Allows: true, Schema: &{Type: "string"}}},
+  				"labels":      {Description: "Optional. Resource labels to represent user-provided metadata. F"..., Type: "object", AdditionalProperties: &{Allows: true, Schema: &{Type: "string"}}},
   				"managedService": {
   					... // 41 identical fields
   					XListType:    nil,

@@ -135,13 +135,13 @@ func (l *structuredReportingListener) OnError(ctx context.Context, err error, ar
 }
 
 // OnReconcileStart is called by the structured reporting subsystem when a reconcile starts.
-func (l *structuredReportingListener) OnReconcileStart(ctx context.Context, u *unstructured.Unstructured) {
-	l.recorder.recordReconcileStart(ctx, u)
+func (l *structuredReportingListener) OnReconcileStart(ctx context.Context, u *unstructured.Unstructured, t k8s.ReconcilerType) {
+	l.recorder.recordReconcileStart(ctx, u, t)
 }
 
 // OnReconcileEnd is called by the structured reporting subsystem when a reconcile ends.
-func (l *structuredReportingListener) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error) {
-	l.recorder.recordReconcileEnd(ctx, u, result, err)
+func (l *structuredReportingListener) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error, t k8s.ReconcilerType) {
+	l.recorder.recordReconcileEnd(ctx, u, result, err, t)
 }
 
 // OnDiff is called by the structured reporting subsystem when a diff occurs.
@@ -183,7 +183,7 @@ func (r *Recorder) recordDiff(ctx context.Context, diff *structuredreporting.Dif
 }
 
 // recordReconcileStart captures the reconcile start into our recorder.
-func (r *Recorder) recordReconcileStart(ctx context.Context, u *unstructured.Unstructured) {
+func (r *Recorder) recordReconcileStart(ctx context.Context, u *unstructured.Unstructured, t k8s.ReconcilerType) {
 	gknn := gknnFromUnstructured(u)
 	if done := r.GKNNDoneReconcile(gknn); done {
 		return
@@ -197,7 +197,7 @@ func (r *Recorder) recordReconcileStart(ctx context.Context, u *unstructured.Uns
 }
 
 // recordReconcileEnd captures the reconcile end into our recorder.
-func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error) {
+func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error, t k8s.ReconcilerType) {
 	gknn := gknnFromUnstructured(u)
 
 	if done := r.GKNNDoneReconcile(gknn); done {

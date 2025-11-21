@@ -20,17 +20,18 @@ package mockfirestore
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
-	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
-	pb_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/firestore/admin/v1"
+	adminpb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
+	pb "cloud.google.com/go/firestore/apiv1/firestorepb"
 )
 
 func init() {
@@ -59,23 +60,26 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterFirestoreAdminServer(grpcServer, &firestoreAdminServer{MockService: s})
+	adminpb.RegisterFirestoreAdminServer(grpcServer, &firestoreAdminServer{MockService: s})
+	pb.RegisterFirestoreServer(grpcServer, &firestoreServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pb_http.RegisterFirestoreAdminHandler,
-		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
-	// Returns slightly non-standard errors
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
-	}
+	grpcMux.AddService(adminpb.NewFirestoreAdminClient(conn))
+	grpcMux.AddService(pb.NewFirestoreClient(conn))
 
-	return mux, nil
+	grpcMux.AddOperationsPath("/v1/{prefix=projects/*/databases/*}/operations/{name=**}", conn)
+
+	return grpcMux, nil
+}
+
+// firestoreServer implements the FirestoreServer interface.
+type firestoreServer struct {
+	*MockService
+	pb.UnimplementedFirestoreServer
 }

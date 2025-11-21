@@ -87,11 +87,11 @@ func PolicySpec_PolicyRule_FromProto(mapCtx *direct.MapContext, in *pb.PolicySpe
 		case *pb.PolicySpec_PolicyRule_Values:
 			out.Values = PolicySpec_PolicyRule_StringValues_FromProto(mapCtx, kind.Values)
 		case *pb.PolicySpec_PolicyRule_AllowAll:
-			out.AllowAll = direct.LazyPtr(kind.AllowAll)
+			out.AllowAll = &kind.AllowAll
 		case *pb.PolicySpec_PolicyRule_DenyAll:
-			out.DenyAll = direct.LazyPtr(kind.DenyAll)
+			out.DenyAll = &kind.DenyAll
 		case *pb.PolicySpec_PolicyRule_Enforce:
-			out.Enforce = direct.LazyPtr(kind.Enforce)
+			out.Enforce = &kind.Enforce
 		default:
 			mapCtx.Errorf("unknown oneof kind %T", kind)
 			return nil

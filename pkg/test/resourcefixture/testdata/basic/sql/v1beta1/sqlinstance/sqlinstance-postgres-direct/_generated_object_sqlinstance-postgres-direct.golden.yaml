@@ -46,7 +46,7 @@ spec:
     ipConfiguration:
       ipv4Enabled: false
       privateNetworkRef:
-        name: computenetwork-${uniqueId}
+        name: ${networkID}
       requireSsl: false
       sslMode: ENCRYPTED_ONLY
     locationPreference:

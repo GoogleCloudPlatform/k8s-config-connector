@@ -26,6 +26,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"strings"
 	"testing"
@@ -49,8 +50,10 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/sets"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
+	k8scontrollertype "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
@@ -147,7 +150,11 @@ func TestAllInSeries(t *testing.T) {
 		}
 	})
 
-	testFixturesInSeries(ctx, t, false, cancel)
+	scenarioOptions := ScenarioOptions{
+		TestPause: false,
+	}
+
+	testFixturesInSeries(ctx, t, scenarioOptions, cancel)
 }
 
 // TestPauseInSeries is a basic smoke test to prove that if CC pauses actuation of resources
@@ -160,10 +167,13 @@ func TestPauseInSeries(t *testing.T) {
 		cancel()
 	})
 
-	testFixturesInSeries(ctx, t, true, cancel)
+	scenarioOptions := ScenarioOptions{
+		TestPause: true,
+	}
+	testFixturesInSeries(ctx, t, scenarioOptions, cancel)
 }
 
-func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, cancel context.CancelFunc) {
+func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions ScenarioOptions, cancel context.CancelFunc) {
 	t.Helper()
 
 	subtestTimeout := time.Hour
@@ -175,7 +185,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 	if os.Getenv("RUN_E2E") == "" {
 		t.Skip("RUN_E2E not set; skipping")
 	}
-	if testPause && os.Getenv("GOLDEN_REQUEST_CHECKS") == "" {
+	if scenarioOptions.TestPause && os.Getenv("GOLDEN_REQUEST_CHECKS") == "" {
 		t.Skip("GOLDEN_REQUEST_CHECKS not set; skipping as this test relies on the golden files.")
 	}
 
@@ -244,7 +254,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					case "bigtable.cnrm.cloud.google.com",
 						"gkehub.cnrm.cloud.google.com",
 						"kms.cnrm.cloud.google.com",
-						"orgpolicy.cnrm.cloud.google.com":
+						"orgpolicy.cnrm.cloud.google.com",
+						"firestore.cnrm.cloud.google.com":
 						// Use SSA
 
 					default:
@@ -255,7 +266,32 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 					return primaryResource, opt
 				}
 
-				runScenario(ctx, t, testPause, fixture, loadFixture)
+				// Start gradually, only running for apikeyskey fixtures initially
+				forceDirect := false
+				if strings.Contains(fixture.SourceDir, "/apikeyskey/") {
+					forceDirect = true
+				}
+
+				if os.Getenv("E2E_GCP_TARGET") == "vcr" {
+					forceDirect = false // VCR tests don't like variable requests
+				}
+
+				{
+					scenarioOptionsWithForce := scenarioOptions
+					if forceDirect {
+						scenarioOptionsWithForce.ForceDirectController = true
+					}
+					runScenario(ctx, t, scenarioOptionsWithForce, fixture, loadFixture)
+				}
+
+				// Run with the fallback controller if we are forcing direct
+				if forceDirect {
+					t.Logf("also running scenario with fallback to old controller for fixture %q", fixture.SourceDir)
+					scenarioOptionsWithFallback := scenarioOptions
+					scenarioOptionsWithFallback.FallbackToOldController = true
+					scenarioOptionsWithFallback.ForceDirectController = false
+					runScenario(ctx, t, scenarioOptionsWithFallback, fixture, loadFixture)
+				}
 			})
 		}
 	})
@@ -265,7 +301,20 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, testPause bool, can
 	cancel()
 }
 
-func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture resourcefixture.ResourceFixture, loadFixture func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions)) {
+type ScenarioOptions struct {
+	TestPause bool
+
+	// FallbackToOldController indicates whether to fallback to the old (terraform or DCL) controller during the test.
+	// We will t.Skip if there is no old controller.
+	FallbackToOldController bool
+
+	// ForceDirectController indicates whether to force the direct controller during the test.
+	// If there is no direct controller for the resource, we will simply run with the controller we have.
+	// TODO: Ideally we would always set this.
+	ForceDirectController bool
+}
+
+func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fixture resourcefixture.ResourceFixture, loadFixture func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions)) {
 	var harnessOptions []create.HarnessOption
 
 	// Extra indentation to avoid merge conflicts
@@ -278,7 +327,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 				{
 					_, opt := loadFixture(testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789}, uniqueID)
 					create.MaybeSkip(t, fixture.Name, opt.Create)
-					if testPause && containsCCOrCCC(opt.Create) {
+					if options.TestPause && containsCCOrCCC(opt.Create) {
 						t.Skipf("test case %q contains ConfigConnector or ConfigConnectorContext object(s): "+
 							"pause test should not run against test cases already contain ConfigConnector "+
 							"or ConfigConnectorContext objects", fixture.Name)
@@ -292,6 +341,15 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							t.Logf("error reading spec.resourceID, can't check for acquisition test: %v.  object is %v", err, string(j))
 						} else if strings.Contains(resourceID, "${resourceId}") {
 							t.Skipf("test has ${resourceId} placeholder in spec.resource, indicating an acquisition test.  Not currently supported here; skipping")
+						}
+					}
+
+					// If this test wants us to fallback to the old controller, make sure that there is an old controller
+					if options.FallbackToOldController {
+						primaryGK := opt.Create[0].GroupVersionKind().GroupKind()
+						config := resourceconfig.LoadConfig()[primaryGK]
+						if len(config.SupportedControllers) <= 1 {
+							t.Skipf("test is falling back to old controller, but there is no old controller for %v", primaryGK)
 						}
 					}
 
@@ -338,19 +396,49 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 				}
 				project := h.Project
 
-				if testPause {
-					// we need to modify CC/ CCC state
-					createPausedCC(ctx, t, h.GetClient())
-				}
-
 				primaryResource, opt := loadFixture(project, uniqueID)
+
+				// Create CC (with pause if needed)
+				if !containsCCOrCCC(opt.Create) {
+					cc := &opcorev1beta1.ConfigConnector{}
+					cc.Name = "configconnector.core.cnrm.cloud.google.com"
+					cc.Spec.Mode = "namespaced"
+
+					if options.TestPause {
+						cc.Spec.Actuation = opcorev1beta1.Paused
+					}
+
+					if err := h.GetClient().Create(ctx, cc); err != nil {
+						t.Fatalf("FAIL: error creating CC: %v", err)
+					}
+				}
 
 				exportResources := []*unstructured.Unstructured{primaryResource}
 
 				create.SetupNamespacesAndApplyDefaults(h, opt.Create, project)
 
+				// Create CCC
+				if !containsCCOrCCC(opt.Create) {
+					ccc := &opcorev1beta1.ConfigConnectorContext{}
+					ccc.Name = "configconnectorcontext.core.cnrm.cloud.google.com"
+					ccc.Namespace = primaryResource.GetNamespace()
+
+					// Build controller overrides if needed to force onto the new/old controller
+					controllerOverrides := buildControllerOverrides(t, opt, options)
+
+					ccc.Spec.Experiments = &opcorev1beta1.Experiments{
+						ControllerOverrides: controllerOverrides,
+					}
+
+					t.Logf("running with controller overrides: %+v", controllerOverrides)
+
+					if err := h.GetClient().Create(ctx, ccc); err != nil {
+						t.Fatalf("FAIL: error creating CCC: %v", err)
+					}
+				}
+
 				opt.CleanupResources = false // We delete explicitly below
-				if testPause {
+				if options.TestPause {
 					opt.SkipWaitForReady = true // Paused resources don't send out an event yet.
 				}
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
@@ -375,7 +463,23 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 
 					for _, obj := range exportResources {
 						// Check the final state of the object in the kube-apiserver (and compare against golden file)
-						var normalizer *objectWalker
+						var objectNormalizer *objectWalker
+
+						// Build a normalizer with the per-service replacements
+						// We should try to get all normalizers into this pattern, over time.
+						serviceReplacements := newObjectWalker()
+						{
+							services := h.RegisteredServices()
+
+							for _, entry := range h.Events.HTTPEvents {
+								services.ConfigureVisitor(entry.Request.URL, serviceReplacements)
+							}
+
+							for _, entry := range h.Events.HTTPEvents {
+								services.Previsit(entry, serviceReplacements)
+							}
+						}
+
 						{
 							u := &unstructured.Unstructured{}
 							u.SetGroupVersionKind(obj.GroupVersionKind())
@@ -384,8 +488,16 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								t.Fatalf("FAIL: failed to get KRM object: %v", err)
 							}
 
-							normalizer = buildKRMNormalizer(t, u, project, folderID, uniqueID)
-							if err := normalizer.VisitUnstructured(u); err != nil {
+							// Build "old" normalizer
+							objectNormalizer = buildKRMNormalizer(t, u, project, folderID, uniqueID)
+
+							// Apply service replacements and normalizer
+							if err := serviceReplacements.VisitUnstructured(u); err != nil {
+								t.Fatalf("FAIL: error from service replacements: %v", err)
+							}
+
+							// Apply "old" normalizer
+							if err := objectNormalizer.VisitUnstructured(u); err != nil {
 								t.Fatalf("FAIL: error from normalizer: %v", err)
 							}
 
@@ -393,7 +505,11 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 							if err != nil {
 								t.Fatalf("FAIL: failed to convert KRM object to yaml: %v", err)
 							}
-							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_object_%v.golden.yaml", testName))
+							fileName := fmt.Sprintf("_generated_object_%v.golden.yaml", testName) // TODO: Including the test name creates busywork
+							if options.FallbackToOldController {
+								fileName = "_final_object_old_controller.golden.yaml"
+							}
+							expectedPath := filepath.Join(fixture.SourceDir, fileName)
 							test.CompareGoldenObject(t, expectedPath, got)
 						}
 
@@ -405,8 +521,13 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								t.Fatalf("FAIL: error from yaml.Unmarshal: %v", err)
 							}
 
+							// Apply service replacements and normalizer
+							if err := serviceReplacements.VisitUnstructured(exportedObj); err != nil {
+								t.Fatalf("FAIL: error from service replacements: %v", err)
+							}
+
 							// Note: the normalizer for the object has more information, so we reuse that normalizer
-							if err := normalizer.VisitUnstructured(exportedObj); err != nil {
+							if err := objectNormalizer.VisitUnstructured(exportedObj); err != nil {
 								t.Fatalf("FAIL: error from normalizer: %v", err)
 							}
 
@@ -415,10 +536,14 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 								t.Fatalf("FAIL: failed to convert KRM object to yaml: %v", err)
 							}
 
-							expectedPath := filepath.Join(fixture.SourceDir, fmt.Sprintf("_generated_export_%v.golden", testName))
+							fileName := fmt.Sprintf("_generated_export_%v.golden", testName) // TODO: Including the test name creates busywork
+							if options.FallbackToOldController {
+								fileName = "_exported_old_controller.golden.yaml"
+							}
+
+							expectedPath := filepath.Join(fixture.SourceDir, fileName)
 							h.CompareGoldenFile(expectedPath, string(got), IgnoreComments)
 						}
-
 					}
 				}
 
@@ -454,7 +579,7 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					}
 				}
 
-				if testPause {
+				if options.TestPause {
 					opt.SkipWaitForDelete = true
 				}
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" {
@@ -477,10 +602,14 @@ func runScenario(ctx context.Context, t *testing.T, testPause bool, fixture reso
 					events := test.LogEntries(h.Events.HTTPEvents)
 
 					got, normalizers := LegacyNormalize(t, h, project, uniqueID, events)
-					if testPause {
+					if options.TestPause {
 						assertNoRequest(t, got, normalizers...)
 					} else {
-						expectedPath := filepath.Join(fixture.SourceDir, "_http.log")
+						key := "_http.log"
+						if options.FallbackToOldController {
+							key = "_http_old_controller.log"
+						}
+						expectedPath := filepath.Join(fixture.SourceDir, key)
 
 						h.CompareGoldenFile(expectedPath, got, normalizers...)
 					}
@@ -512,19 +641,6 @@ func bytesToUnstructured(t *testing.T, bytes []byte, testID string, project test
 	t.Helper()
 	updatedBytes := testcontroller.ReplaceTestVars(t, bytes, testID, project)
 	return test.ToUnstructWithNamespace(t, updatedBytes, testID)
-}
-
-func createPausedCC(ctx context.Context, t *testing.T, c client.Client) {
-	t.Helper()
-
-	cc := &opcorev1beta1.ConfigConnector{}
-	cc.Spec.Mode = "cluster"
-	cc.Spec.Actuation = opcorev1beta1.Paused
-	cc.Name = "configconnector.core.cnrm.cloud.google.com"
-
-	if err := c.Create(ctx, cc); err != nil {
-		t.Fatalf("FAIL: error creating CC: %v", err)
-	}
 }
 
 // verifyUserAgent verifies that the user agent is set to the expected KCC user agent for all requests
@@ -924,11 +1040,54 @@ func TestIAM_AllInSeries(t *testing.T) {
 					return primaryResource, opt
 				}
 
-				runScenario(ctx, t, false, fixture, loadFixture)
+				options := ScenarioOptions{
+					TestPause: false,
+				}
+				runScenario(ctx, t, options, fixture, loadFixture)
 			})
 		}
 	})
 
 	t.Logf("shutting down manager")
 	cancel()
+}
+
+func buildControllerOverrides(t *testing.T, scenario create.CreateDeleteTestOptions, options ScenarioOptions) map[string]k8scontrollertype.ReconcilerType {
+	controllerOverrides := make(map[string]k8scontrollertype.ReconcilerType)
+
+	primaryResource := scenario.Create[0]
+	primaryGK := primaryResource.GroupVersionKind().GroupKind()
+
+	if options.FallbackToOldController {
+		config, err := resourceconfig.LoadConfig().GetControllersForGVK(primaryResource.GroupVersionKind())
+		if err != nil {
+			t.Fatalf("error getting controller config for GVK %v: %v", primaryResource.GroupVersionKind(), err)
+		}
+		var oldController k8scontrollertype.ReconcilerType
+		for _, c := range config.SupportedControllers {
+			if c != k8scontrollertype.ReconcilerTypeDirect {
+				if oldController != "" {
+					t.Fatalf("multiple old controllers found for GVK %v: %v and %v", primaryResource.GroupVersionKind(), oldController, c)
+				}
+				oldController = c
+				break
+			}
+		}
+		if oldController == "" {
+			t.Fatalf("no old controller found for GVK %v", primaryResource.GroupVersionKind())
+		}
+		controllerOverrides[fmt.Sprintf("%s.%s", primaryGK.Kind, primaryGK.Group)] = oldController
+	} else if options.ForceDirectController {
+		// Use the direct controller if it is available
+		config, err := resourceconfig.LoadConfig().GetControllersForGVK(primaryResource.GroupVersionKind())
+		if err != nil {
+			t.Fatalf("error getting controller config for GVK %v: %v", primaryResource.GroupVersionKind(), err)
+		}
+		if config.DefaultController != k8scontrollertype.ReconcilerTypeDirect {
+			if slices.Contains(config.SupportedControllers, k8scontrollertype.ReconcilerTypeDirect) {
+				controllerOverrides[fmt.Sprintf("%s.%s", primaryGK.Kind, primaryGK.Group)] = k8scontrollertype.ReconcilerTypeDirect
+			}
+		}
+	}
+	return controllerOverrides
 }

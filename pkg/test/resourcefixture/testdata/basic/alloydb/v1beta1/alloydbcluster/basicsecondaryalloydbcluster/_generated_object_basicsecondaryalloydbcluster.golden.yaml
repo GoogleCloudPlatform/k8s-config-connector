@@ -22,7 +22,7 @@ spec:
   location: europe-west8
   networkConfig:
     networkRef:
-      name: computenetwork-${uniqueId}
+      name: ${networkID}
   projectRef:
     external: ${projectId}
   secondaryConfig:

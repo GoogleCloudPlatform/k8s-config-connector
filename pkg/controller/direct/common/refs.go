@@ -163,6 +163,12 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 		}
 	}
 
+	if ref, ok := v.(refs.Ref); ok {
+		if err := ref.Normalize(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 

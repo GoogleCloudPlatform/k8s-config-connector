@@ -29,7 +29,11 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
-  "backupMinimumEnforcedRetentionDuration": "100000s"
+  "backupMinimumEnforcedRetentionDuration": "100000s",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
 }
 
 200 OK
@@ -88,6 +92,10 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deletable": true,
     "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "name": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}",
     "serviceAccount": "vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
     "state": "ACTIVE",
@@ -367,6 +375,10 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "deletable": true,
   "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}",
   "serviceAccount": "vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
   "state": 2,

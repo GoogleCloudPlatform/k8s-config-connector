@@ -21,7 +21,7 @@ spec:
   instanceOwners:
   - ${projectNumber}-compute@developer.gserviceaccount.com
   kmsKeyRef:
-    external: projects/${projectId}/locations/us-central1/keyRings/notebookinstance-dep/cryptoKeys/notebookinstance-dep
+    external: projects/${projectId}/locations/us-central1/keyRings/${networkID}/cryptoKeys/${networkID}
   labels:
     environment: development
     team: config-connector-team
@@ -29,7 +29,7 @@ spec:
   metadata:
     enable-os-config: "true"
   networkRef:
-    name: notebookinstance-dep
+    name: ${networkID}
   nicType: UNSPECIFIED_NIC_TYPE
   noProxyAccess: true
   noPublicIP: true
@@ -40,7 +40,7 @@ spec:
   reservationAffinity:
     consumeReservationType: NO_RESERVATION
   serviceAccountRef:
-    name: notebookinstance-dep
+    name: ${networkID}
   serviceAccountScopes:
   - https://www.googleapis.com/auth/devstorage.read_only
   - https://www.googleapis.com/auth/logging.write
@@ -53,7 +53,7 @@ spec:
     enableSecureBoot: true
     enableVTPM: true
   subnetRef:
-    name: notebookinstance-dep1
+    name: ${subnetworkID}
   tags:
   - tag1
   - tag2

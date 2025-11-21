@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/version: 1.137.0
+    cnrm.cloud.google.com/version: 1.139.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
@@ -30,6 +30,7 @@ spec:
     categories:
     - gcp
     kind: TagsTagBinding
+    listKind: TagsTagBindingList
     plural: tagstagbindings
     shortNames:
     - gcptagstagbinding
@@ -56,22 +57,25 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: TagsTagBinding is the Schema for the TagsTagBinding API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: TagsTagBindingSpec defines the desired state of TagsTagBinding
             properties:
               parentRef:
+                description: ParentRef is a reference to a parent resource.
                 oneOf:
                 - not:
                     required:
@@ -99,11 +103,11 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: Immutable. Optional. The service-generated name of the
-                  resource. Used for acquisition only. Leave unset to create a new
-                  resource.
+                description: The service-generated name of the resource. Used for
+                  acquisition only. Leave unset to create a new resource.
                 type: string
               tagValueRef:
+                description: TagsTagValueRef is a reference to a TagsTagValue resource.
                 oneOf:
                 - not:
                     required:
@@ -135,10 +139,12 @@ spec:
             - tagValueRef
             type: object
           status:
+            description: TagsTagBindingStatus defines the config connector machine
+              state of TagsTagBinding
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -162,9 +168,13 @@ spec:
                       type: string
                   type: object
                 type: array
+              externalRef:
+                description: A unique specifier for the TagsTagBinding resource in
+                  GCP.
+                type: string
               name:
                 description: 'The generated id for the TagBinding. This is a string
-                  of the form: ''tagBindings/{full-resource-name}/{tag-value-name}''.'
+                  of the form: tagBindings/{full-resource-name}/{tag-value-name}.'
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -172,6 +182,7 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
             type: object
         required:
@@ -185,5 +196,5 @@ status:
   acceptedNames:
     kind: ""
     plural: ""
-  conditions: []
-  storedVersions: []
+  conditions: null
+  storedVersions: null

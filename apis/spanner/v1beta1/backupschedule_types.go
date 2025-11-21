@@ -52,7 +52,7 @@ type SpannerBackupScheduleSpec struct {
 	// +kcc:proto:field=google.spanner.admin.database.v1.BackupSchedule.incremental_backup_spec
 	IncrementalBackupSpec *IncrementalBackupSpec `json:"incrementalBackupSpec,omitempty"`
 
-	// Required. The spanner database that this backup applies to.
+	// Required. The Spanner Database that this backup applies to.
 	DatabaseRef *SpannerDatabaseRef `json:"spannerDatabaseRef,omitempty"`
 
 	// The SpannerBackupSchedule name. If not given, the metadata.name will be used.

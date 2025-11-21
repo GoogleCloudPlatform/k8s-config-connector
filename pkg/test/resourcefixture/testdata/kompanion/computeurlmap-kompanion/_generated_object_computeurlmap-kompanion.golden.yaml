@@ -16,7 +16,7 @@ metadata:
 spec:
   defaultService:
     backendServiceRef:
-      name: computeurlmap-kompanion-default-${uniqueId}
+      name: ${backendServiceID}
   hostRule:
   - description: Host rule for chaosmonkey.cloudnetworks.x.gcpnp.anz
     hosts:
@@ -35,7 +35,7 @@ spec:
   pathMatcher:
   - defaultService:
       backendServiceRef:
-        name: computeurlmap-kompanion-chaosmonkey-${uniqueId}
+        name: ${backendServiceID}
     name: chaosmonkey-cloudnetworks-x-gcpnp-anz
     routeRules:
     - matchRules:
@@ -44,11 +44,11 @@ spec:
       routeAction:
         weightedBackendServices:
         - backendServiceRef:
-            name: computeurlmap-kompanion-chaosmonkey-${uniqueId}
+            name: ${backendServiceID}
           weight: 500
   - defaultService:
       backendServiceRef:
-        name: computeurlmap-kompanion-chaosmonkeymulti-${uniqueId}
+        name: ${backendServiceID}
     name: chaosmonkeymulti-cloudnetworks-x-gcpnp-anz
     routeRules:
     - matchRules:
@@ -57,11 +57,11 @@ spec:
       routeAction:
         weightedBackendServices:
         - backendServiceRef:
-            name: computeurlmap-kompanion-chaosmonkeymulti-${uniqueId}
+            name: ${backendServiceID}
           weight: 500
   - defaultService:
       backendServiceRef:
-        name: computeurlmap-kompanion-default-${uniqueId}
+        name: ${backendServiceID}
     name: computeurlmap-kompanion-default
   resourceID: computeurlmap-kompanion-${uniqueId}
 status:

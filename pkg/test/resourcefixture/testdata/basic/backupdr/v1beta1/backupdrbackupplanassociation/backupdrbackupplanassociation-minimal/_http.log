@@ -342,7 +342,11 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
   "backupMinimumEnforcedRetentionDuration": "100000s",
-  "description": "test dependency backup vault"
+  "description": "test dependency backup vault",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
 }
 
 200 OK
@@ -402,6 +406,10 @@ X-Xss-Protection: 0
     "deletable": true,
     "description": "test dependency backup vault",
     "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "name": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}",
     "serviceAccount": "vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
     "state": "ACTIVE",
@@ -893,6 +901,10 @@ X-Xss-Protection: 0
   "deletable": true,
   "description": "test dependency backup vault",
   "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-minimal-${uniqueId}",
   "serviceAccount": "vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
   "state": 2,

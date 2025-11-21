@@ -61,7 +61,7 @@ type Cluster_EncryptionConfig struct {
 	//  Values are of the form
 	//  `projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{key}`
 	// +kcc:proto:field=google.bigtable.admin.v2.Cluster.EncryptionConfig.kms_key_name
-	KMSKeyRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KMSKeyNameRef *refs.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 // BigtableClusterSpec defines the desired state of BigtableCluster

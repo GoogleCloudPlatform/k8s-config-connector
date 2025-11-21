@@ -12,19 +12,19 @@ metadata:
   labels:
     cnrm-test: "true"
     label-one: value-two
-  name: computeglobalforwardingrule-${uniqueId}
+  name: ${forwardingRuleID}
   namespace: ${uniqueId}
 spec:
   description: A global forwarding rule
   ipAddress:
     addressRef:
-      name: computeaddress-${uniqueId}
+      name: ${addressID}
   loadBalancingScheme: EXTERNAL
   location: global
   portRange: "443"
   target:
     targetSSLProxyRef:
-      name: computetargetsslproxy2-${uniqueId}
+      name: ${targetSslProxyID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -33,7 +33,7 @@ status:
     status: "True"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
-  externalRef: //compute.googleapis.com/projects/${projectId}/global/forwardingrules/computeglobalforwardingrule-${uniqueId}
+  externalRef: //compute.googleapis.com/projects/${projectId}/global/forwardingrules/${forwardingRuleID}
   labelFingerprint: abcdef0123A=
   observedGeneration: 2
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/computeglobalforwardingrule-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}

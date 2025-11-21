@@ -17,6 +17,7 @@ package structuredreporting
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
@@ -44,7 +45,7 @@ func (l *LogListener) OnDiff(ctx context.Context, diffs *Diff) {
 }
 
 // OnReconcileStart is called when a controller calls ReportReconcileStart
-func (l *LogListener) OnReconcileStart(ctx context.Context, u *unstructured.Unstructured) {
+func (l *LogListener) OnReconcileStart(ctx context.Context, u *unstructured.Unstructured, t k8s.ReconcilerType) {
 	log := log.FromContext(ctx)
 	log.Info("structuredreporting OnReconcileStart",
 		"object.kind", u.GroupVersionKind().Kind,
@@ -52,7 +53,7 @@ func (l *LogListener) OnReconcileStart(ctx context.Context, u *unstructured.Unst
 }
 
 // OnReconcileEnd is called when a controller calls ReportReconcileEnd
-func (l *LogListener) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error) {
+func (l *LogListener) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error, t k8s.ReconcilerType) {
 	log := log.FromContext(ctx)
 	log.Info("structuredreporting OnReconcileEnd",
 		"object.kind", u.GroupVersionKind().Kind,

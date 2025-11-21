@@ -35,10 +35,10 @@ spec:
   networkInterface:
   - accessConfig:
     - natIpRef:
-        name: computeaddress-2-${uniqueId}
+        name: ${addressID}
     networkIpRef:
       kind: ComputeAddress
-      name: computeaddress-${uniqueId}
+      name: ${addressID}
     networkRef:
       name: default
   resourceID: computeinstance-${uniqueId}

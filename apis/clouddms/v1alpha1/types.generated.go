@@ -17,8 +17,21 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.clouddms.v1
 // resource: CloudDMSConversionWorkspace:ConversionWorkspace
+// resource: CloudDMSPrivateConnection:PrivateConnection
+// resource: CloudDMSMigrationJob:MigrationJob
 
 package v1alpha1
+
+// +kcc:proto=google.cloud.clouddms.v1.ConversionWorkspaceInfo
+type ConversionWorkspaceInfo struct {
+	// The resource name (URI) of the conversion workspace.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspaceInfo.name
+	Name *string `json:"name,omitempty"`
+
+	// The commit ID of the conversion workspace.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConversionWorkspaceInfo.commit_id
+	CommitID *string `json:"commitID,omitempty"`
+}
 
 // +kcc:proto=google.cloud.clouddms.v1.DatabaseEngineInfo
 type DatabaseEngineInfo struct {
@@ -29,4 +42,44 @@ type DatabaseEngineInfo struct {
 	// Required. Engine named version, for example 12.c.1.
 	// +kcc:proto:field=google.cloud.clouddms.v1.DatabaseEngineInfo.version
 	Version *string `json:"version,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.DatabaseType
+type DatabaseType struct {
+	// The database provider.
+	// +kcc:proto:field=google.cloud.clouddms.v1.DatabaseType.provider
+	Provider *string `json:"provider,omitempty"`
+
+	// The database engine.
+	// +kcc:proto:field=google.cloud.clouddms.v1.DatabaseType.engine
+	Engine *string `json:"engine,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.MigrationJob.DumpFlag
+type MigrationJob_DumpFlag struct {
+	// The name of the flag
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.DumpFlag.name
+	Name *string `json:"name,omitempty"`
+
+	// The value of the flag.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.DumpFlag.value
+	Value *string `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.MigrationJob.DumpFlags
+type MigrationJob_DumpFlags struct {
+	// The flags for the initial dump.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.DumpFlags.dump_flags
+	DumpFlags []MigrationJob_DumpFlag `json:"dumpFlags,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.MigrationJob.PerformanceConfig
+type MigrationJob_PerformanceConfig struct {
+	// Initial dump parallelism level.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.PerformanceConfig.dump_parallel_level
+	DumpParallelLevel *string `json:"dumpParallelLevel,omitempty"`
+}
+
+// +kcc:proto=google.cloud.clouddms.v1.StaticIpConnectivity
+type StaticIPConnectivity struct {
 }

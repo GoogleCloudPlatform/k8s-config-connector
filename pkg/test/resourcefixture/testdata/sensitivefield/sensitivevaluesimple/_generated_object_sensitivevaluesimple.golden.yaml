@@ -12,7 +12,7 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: computesslcertificate-${uniqueId}
+  name: ${sslCertificateID}
   namespace: ${uniqueId}
 spec:
   certificate:
@@ -66,7 +66,7 @@ spec:
       hCy1ksfFzsp5glYqwZd/Bahk64u3mII+rKoYwYLrH2l2aFDmMbdTfQUycpQZyi3+
       VtGS1PFoKx9fSFDNHhR5ZhfasQcuKHYfeFfO2/DoOxQkNCI1y4I2huo=
       -----END RSA PRIVATE KEY-----
-  resourceID: computesslcertificate-${uniqueId}
+  resourceID: ${sslCertificateID}
 status:
   certificateId: 1111111111111111
   conditions:
@@ -77,4 +77,4 @@ status:
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
   observedGeneration: 2
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/computesslcertificate-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/sslCertificates/${sslCertificateID}

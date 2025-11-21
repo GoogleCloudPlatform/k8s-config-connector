@@ -22,87 +22,85 @@ import (
 	"strings"
 	"testing"
 
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"sigs.k8s.io/yaml"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/repo"
 )
 
 func TestValidBasicTestPath(t *testing.T) {
-	testLowercaseGVK := schema.GroupVersionKind{
+	testGVK := schema.GroupVersionKind{
 		Group:   "dummygroup.cnrm.cloud.google.com",
 		Version: "v1alpha1",
-		Kind:    "dummykind",
+		Kind:    "DummyKind",
 	}
-	testGVKs := make(map[schema.GroupVersionKind]bool)
-	testGVKs[testLowercaseGVK] = true
 	tests := []struct {
 		name        string
 		path        string
-		validGVKs   map[schema.GroupVersionKind]bool
+		gvk         schema.GroupVersionKind
 		isValidPath bool
 		hasError    bool
 	}{
 		{
 			name:        "valid path",
 			path:        "/pkg/test/resourcefixture/testdata/basic/dummygroup/v1alpha1/dummykind/",
-			validGVKs:   testGVKs,
+			gvk:         testGVK,
 			isValidPath: true,
 		},
 		{
 			name:        "valid path with test case name",
 			path:        "/pkg/test/resourcefixture/testdata/basic/dummygroup/v1alpha1/dummykind/basictestcase",
-			validGVKs:   testGVKs,
+			gvk:         testGVK,
 			isValidPath: true,
 		},
 		{
-			name:      "invalid path with unsupported kind",
-			path:      "/pkg/test/resourcefixture/testdata/basic/dummygroup/v1alpha1/realkind/basictestcase",
-			validGVKs: testGVKs,
-			hasError:  true,
+			name:     "invalid path with unsupported kind",
+			path:     "/pkg/test/resourcefixture/testdata/basic/dummygroup/v1alpha1/realkind/basictestcase",
+			gvk:      testGVK,
+			hasError: true,
 		},
 		{
-			name:      "invalid path with unsupported version",
-			path:      "/pkg/test/resourcefixture/testdata/basic/dummygroup/v1beta1/dummykind/basictestcase",
-			validGVKs: testGVKs,
-			hasError:  true,
+			name:     "invalid path with unsupported version",
+			path:     "/pkg/test/resourcefixture/testdata/basic/dummygroup/v1beta1/dummykind/basictestcase",
+			gvk:      testGVK,
+			hasError: true,
 		},
 		{
-			name:      "invalid path with unsupported group",
-			path:      "/pkg/test/resourcefixture/testdata/basic/realgroup/v1alpha1/dummykind/basictestcase",
-			validGVKs: testGVKs,
-			hasError:  true,
+			name:     "invalid path with unsupported group",
+			path:     "/pkg/test/resourcefixture/testdata/basic/realgroup/v1alpha1/dummykind/basictestcase",
+			gvk:      testGVK,
+			hasError: true,
 		},
 		{
-			name:      "invalid path with incorrect structure",
-			path:      "/pkg/test/resourcefixture/testdata/basic/dummygroup/dummykind",
-			validGVKs: testGVKs,
-			hasError:  true,
+			name:        "valid path with no version",
+			path:        "/pkg/test/resourcefixture/testdata/basic/dummygroup/dummykind",
+			gvk:         testGVK,
+			isValidPath: true,
 		},
 		{
-			name:      "invalid path with incorrect prefix",
-			path:      "/pkg/test/resourcefixture/testdata/advanced/dummygroup/v1beta1/dummykind/basictestcase",
-			validGVKs: testGVKs,
-			hasError:  true,
+			name:     "invalid path with incorrect prefix",
+			path:     "/pkg/test/resourcefixture/testdata/advanced/dummygroup/v1beta1/dummykind/basictestcase",
+			gvk:      testGVK,
+			hasError: true,
 		},
 	}
 
-	lowercaseGVKs := loadGVKWithLowercaseKind(t)
-	testPaths, err := loadTestPaths()
+	fixtureTests, err := loadFixtureTests()
 	if err != nil {
-		t.Fatalf("error loading test paths: %v", err)
+		t.Fatalf("error loading fixture tests: %v", err)
 	}
-	for _, testPath := range testPaths {
+	for _, fixtureTest := range fixtureTests {
 		tests = append(tests, struct {
 			name        string
 			path        string
-			validGVKs   map[schema.GroupVersionKind]bool
+			gvk         schema.GroupVersionKind
 			isValidPath bool
 			hasError    bool
 		}{
-			name:        testPath,
-			path:        testPath,
-			validGVKs:   lowercaseGVKs,
+			name:        fixtureTest.RelativePath,
+			path:        fixtureTest.RelativePath,
+			gvk:         fixtureTest.GVK,
 			isValidPath: true,
 		})
 	}
@@ -110,7 +108,7 @@ func TestValidBasicTestPath(t *testing.T) {
 	for _, tc := range tests {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			actualResult, err := isValidBasicTestPath(tc.path, tc.validGVKs)
+			actualResult, err := isValidBasicTestPath(tc.path, tc.gvk)
 			if tc.hasError {
 				if err == nil {
 					t.Errorf("expected to have an error but got no error")
@@ -127,39 +125,43 @@ func TestValidBasicTestPath(t *testing.T) {
 	}
 }
 
-func isValidBasicTestPath(path string, validLowercaseGVKs map[schema.GroupVersionKind]bool) (bool, error) {
-	if !strings.HasPrefix(path, "/pkg/test/resourcefixture/testdata/basic/") {
-		return false, fmt.Errorf("incorrect prefix for basic test path %q; should be pkg/test/resourcefixture/testdata/basic/", path)
+func isValidBasicTestPath(path string, gvk schema.GroupVersionKind) (bool, error) {
+	// Remove any leading slash, ensure one trailing slash for consistent processing.
+	path = strings.Trim(path, "/")
+	path += "/"
+
+	prefix := "pkg/test/resourcefixture/testdata/basic/"
+
+	group := gvk.Group[:strings.Index(gvk.Group, ".")]
+	version := gvk.Version
+	kind := strings.ToLower(gvk.Kind)
+
+	expectedPaths := []string{
+		prefix + group + "/" + version + "/" + kind + "/", // Legacy format include version
+		prefix + group + "/" + kind + "/",                 // Format that does not require moves to switch versions
 	}
-	dirs := strings.Split(path, "/")
-	testCaseName := dirs[len(dirs)-1]
-	testKind := dirs[len(dirs)-2]
-	testVersion := dirs[len(dirs)-3]
-	testGroup := dirs[len(dirs)-4]
-	if testKind == "v1beta1" || testKind == "v1alpha1" {
-		// When there is only one test case for a kind, it's possible
-		// that the test case name is the test kind.
-		testKind = testCaseName
-		testVersion = dirs[len(dirs)-2]
-		testGroup = dirs[len(dirs)-3]
+
+	for _, expectedPath := range expectedPaths {
+		if strings.HasPrefix(path, expectedPath) {
+			return true, nil
+		}
 	}
-	lowercaseGVK := schema.GroupVersionKind{
-		Group:   fmt.Sprintf("%s.cnrm.cloud.google.com", testGroup),
-		Version: testVersion,
-		Kind:    testKind,
-	}
-	if _, ok := validLowercaseGVKs[lowercaseGVK]; !ok {
-		return false, fmt.Errorf("test case %q has parsed group/version %q, "+
-			"kind (lowercase) %q, and this is not supported; the path to test case "+
-			"should be in the format of 'pkg/test/resourcefixture/testdata/basic/[group]/[version]/[kind]/' or "+
-			"'pkg/test/resourcefixture/testdata/basic/[group]/[version]/[kind]/[testcasename]'",
-			path, lowercaseGVK.GroupVersion(), lowercaseGVK.Kind)
-	}
-	return true, nil
+
+	return false, fmt.Errorf("path %q does not match expected formats: %v", path, expectedPaths)
 }
 
-func loadTestPaths() ([]string, error) {
-	result := make([]string, 0)
+// FixtureTest describes a fixture test case with its relative path and GVK.
+type FixtureTest struct {
+	// RelativePath is the path relative to the root of the repo.
+	RelativePath string
+
+	// GVK is the GroupVersionKind of the primary resource in the test.
+	GVK schema.GroupVersionKind
+}
+
+// loadFixtureTests loads all fixture tests under the basic test data path.
+func loadFixtureTests() ([]FixtureTest, error) {
+	result := make([]FixtureTest, 0)
 	rootPath := repo.GetRootOrLogFatal()
 	basicTestDataPath := repo.GetBasicIntegrationTestDataPath()
 	err := filepath.WalkDir(basicTestDataPath, func(path string, d fs.DirEntry, err error) error {
@@ -171,20 +173,48 @@ func loadTestPaths() ([]string, error) {
 			if strings.HasPrefix(d.Name(), "_") {
 				return nil
 			}
+
 			files, err := os.ReadDir(path)
 			if err != nil {
 				return err
 			}
 			if len(files) == 0 {
-				return fmt.Errorf("no file under %q: test directories are expected to have subdirectories and files", path)
+				return fmt.Errorf("no file under %q: test directories are expected to have subdirectories or files", path)
 			}
+
+			hasYAML := false
 			for _, file := range files {
-				if !file.IsDir() && strings.HasSuffix(file.Name(), ".yaml") {
-					// Directories with any yaml file are considered a test path to verify.
-					testPath := strings.TrimPrefix(path, rootPath)
-					result = append(result, testPath)
+				if strings.HasSuffix(file.Name(), ".yaml") {
+					hasYAML = true
 					break
 				}
+			}
+
+			if hasYAML {
+				// Read and parse create.yaml, all tests should have this and this defines the primary GVK for the test.
+				createFilePath := filepath.Join(path, "create.yaml")
+				createFileBytes, err := os.ReadFile(createFilePath)
+				if err != nil {
+					return fmt.Errorf("error reading create.yaml under %q: %w", path, err)
+				}
+
+				var u *unstructured.Unstructured
+				if err := yaml.Unmarshal(createFileBytes, &u); err != nil {
+					return fmt.Errorf("error unmarshaling create.yaml under %q: %w", path, err)
+				}
+				gvk := u.GroupVersionKind()
+
+				if gvk.Kind == "IAMPolicyMember" {
+					// Ignore path validation, the primary resource is not the test in create.yaml
+					return nil
+				}
+				// Get the relative path from the root of the repo.
+				relativePath := strings.TrimPrefix(path, rootPath)
+
+				result = append(result, FixtureTest{
+					RelativePath: relativePath,
+					GVK:          gvk,
+				})
 			}
 		}
 		return nil
@@ -193,24 +223,4 @@ func loadTestPaths() ([]string, error) {
 		return nil, err
 	}
 	return result, nil
-}
-
-func loadGVKWithLowercaseKind(t *testing.T) map[schema.GroupVersionKind]bool {
-	result := make(map[schema.GroupVersionKind]bool)
-	crds, err := crdloader.LoadCRDs()
-	if err != nil {
-		t.Fatalf("error loading CRDs: %v", err)
-	}
-	// Load all supported GVKs and convert the Kind to lowercase.
-	for _, crd := range crds {
-		for _, version := range crd.Spec.Versions {
-			lowercaseGVK := schema.GroupVersionKind{
-				Group:   crd.Spec.Group,
-				Version: version.Name,
-				Kind:    strings.ToLower(crd.Spec.Names.Kind),
-			}
-			result[lowercaseGVK] = true
-		}
-	}
-	return result
 }

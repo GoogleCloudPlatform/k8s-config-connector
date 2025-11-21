@@ -18,11 +18,59 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"unicode"
 
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/klog/v2"
 )
+
+// UpdateMask wraps a FieldMask and provides utility functions.
+type UpdateMask struct {
+	mask *fieldmaskpb.FieldMask
+}
+
+// NewUpdateMask creates a new UpdateMask from the given FieldMask.
+func NewUpdateMask(mask *fieldmaskpb.FieldMask) *UpdateMask {
+	mask = proto.Clone(mask).(*fieldmaskpb.FieldMask)
+
+	// Ensure the paths are in JSON format
+	for i := range mask.Paths {
+		mask.Paths[i] = protoToJSONName(mask.Paths[i])
+	}
+
+	return &UpdateMask{mask: mask}
+}
+
+// protoToJSONName converts a FieldMask from proto field names to JSON field names.
+func protoToJSONName(s string) string {
+	var r []rune
+	shouldUpper := false
+	for _, c := range s {
+		if c == '_' {
+			shouldUpper = true
+			continue
+		}
+		if shouldUpper {
+			c = unicode.ToUpper(c)
+			shouldUpper = false
+		}
+		r = append(r, c)
+	}
+
+	return string(r)
+}
+
+// HasJSONPath returns true if the given JSON field path is in the UpdateMask.
+func (u *UpdateMask) HasJSONPath(path string) bool {
+	for _, p := range u.mask.Paths {
+		if p == path {
+			return true
+		}
+	}
+	return false
+}
 
 // UpdateByFieldMask updates the `original` Message with the `update` Message value in the given `updatePaths` fields
 func UpdateByFieldMask(original, update proto.Message, updatePaths []string) error {

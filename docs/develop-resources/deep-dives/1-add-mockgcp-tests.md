@@ -113,7 +113,7 @@ For Config Connector **Beta** resources, your MockGCP should meet the following 
 ### MockGCP Server
 
 * Implement the mocked methods for CREATE, UPDATE, GET, and DELETE.
-* If the Cloud API client returns long running operation (LRO), use `startRLO ` [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/8a350a029803a322e2889fd693cabf9780828c47/mockgcp/mockcloudbuild/workerpool.go#L56)
+* If the Cloud API client returns long running operation (LRO), use `startLRO ` [example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/8a350a029803a322e2889fd693cabf9780828c47/mockgcp/mockcloudbuild/workerpool.go#L56)
 * CREATE method shall assign the “output-only” fields. [Example 1](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/5e08dbffb5fa3922dd43c451f35fdec45882205a/mockgcp/mockresourcemanager/tagkeys.go#L99C23-L99C37) [Example 2](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/611abaff651af81bed4517f62f915318f1b239bd/mockgcp/mocksql/sqlinstance.go#L68-L180)
 * UPDATE method shall be able to update all mutable fields and support field masks if the real server does. [Example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/8a350a029803a322e2889fd693cabf9780828c47/mockgcp/mockcloudbuild/workerpool.go#L100)
 * Make sure the log gives a stable outcome. You can override the value in<code> normalize.go </code>[example](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/ba513862c2fb6ec3e54a05f6483c76b0337d6cbd/tests/e2e/normalize.go#L100)

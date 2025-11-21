@@ -17,19 +17,20 @@ package structuredreporting
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
-func ReportReconcileStart(ctx context.Context, u *unstructured.Unstructured) {
+func ReportReconcileStart(ctx context.Context, u *unstructured.Unstructured, t k8s.ReconcilerType) {
 	if listener, ok := GetListenerFromContext(ctx); ok {
-		listener.OnReconcileStart(ctx, u)
+		listener.OnReconcileStart(ctx, u, t)
 	}
 }
 
-func ReportReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error) {
+func ReportReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error, t k8s.ReconcilerType) {
 	if listener, ok := GetListenerFromContext(ctx); ok {
-		listener.OnReconcileEnd(ctx, u, result, err)
+		listener.OnReconcileEnd(ctx, u, result, err, t)
 	}
 }
 

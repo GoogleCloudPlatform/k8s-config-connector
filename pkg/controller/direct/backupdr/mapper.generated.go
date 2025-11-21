@@ -116,14 +116,14 @@ func BackupDRBackupPlanSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.B
 	// MISSING: RevisionName
 	return out
 }
-func BackupDRBackupVaultSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krmbackupdrv1alpha1.BackupDRBackupVaultSpec {
+func BackupDRBackupVaultSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupVault) *krm.BackupDRBackupVaultSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krmbackupdrv1alpha1.BackupDRBackupVaultSpec{}
+	out := &krm.BackupDRBackupVaultSpec{}
 	// MISSING: Name
 	out.Description = in.Description
-	out.Labels = in.Labels
+	// MISSING: Labels
 	out.BackupMinimumEnforcedRetentionDuration = direct.StringDuration_FromProto(mapCtx, in.GetBackupMinimumEnforcedRetentionDuration())
 	out.EffectiveTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEffectiveTime())
 	// MISSING: Uid

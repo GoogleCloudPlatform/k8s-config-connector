@@ -66,7 +66,7 @@ type BackupDRBackupPlanSpec struct {
 	//  location for backups.
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlan.backup_vault
 	// +required
-	BackupVaultRef *v1alpha1.BackupVaultRef `json:"backupVaultRef,omitempty"`
+	BackupVaultRef *BackupVaultRef `json:"backupVaultRef,omitempty"`
 }
 
 // BackupDRBackupPlanStatus defines the config connector machine state of BackupDRBackupPlan
