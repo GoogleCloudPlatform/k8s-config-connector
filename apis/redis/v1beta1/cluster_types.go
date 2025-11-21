@@ -71,6 +71,16 @@ type RedisClusterSpec struct {
 
 	// Optional. The delete operation will fail when the value is set to true.
 	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
+
+	// Optional. The maintenance policy for the Redis cluster. If not provided,
+	// maintenance events can occur at any time.
+	// +optional
+	MaintenancePolicy *MaintenancePolicy `json:"maintenancePolicy,omitempty"`
+
+	// Optional. The automated backup configuration for the Redis cluster.
+	// If not provided, automated backups are disabled.
+	// +optional
+	AutomatedBackupConfig *AutomatedBackupConfig `json:"automatedBackupConfig,omitempty"`
 }
 
 type PscConfigSpec struct {
@@ -79,6 +89,67 @@ type PscConfigSpec struct {
 	//  projects/{network_project}/global/networks/{network_id}.
 	// +required
 	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
+}
+
+type MaintenancePolicy struct {
+	// Optional. Weekly maintenance window. Required if `maintenance_policy` is specified.
+	WeeklyMaintenanceWindow []WeeklyMaintenanceWindow `json:"weeklyMaintenanceWindow,omitempty"`
+}
+
+type WeeklyMaintenanceWindow struct {
+	// Required. The day of week that maintenance updates occur.
+	//
+	//   - MONDAY: Monday
+	//   - TUESDAY: Tuesday
+	//   - WEDNESDAY: Wednesday
+	//   - THURSDAY: Thursday
+	//   - FRIDAY: Friday
+	//   - SATURDAY: Saturday
+	//   - SUNDAY: Sunday Possible values: ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]
+	Day string `json:"day"`
+
+	// Required. Start time of the window in UTC time.
+	StartTime StartTime `json:"startTime"`
+}
+
+type StartTime struct {
+	// Optional. Hours of day in 24 hour format. Should be from 0 to 23.
+	// An API may choose to allow the value "24:00:00" for scenarios like business closing time.
+	Hours *int32 `json:"hours,omitempty"`
+
+	// Optional. Minutes of hour of day. Must be from 0 to 59.
+	Minutes *int32 `json:"minutes,omitempty"`
+
+	// Optional. Seconds of minute of day. Must be from 0 to 59.
+	// An API may choose to allow the value 60 if it allows leap-seconds.
+	Seconds *int32 `json:"seconds,omitempty"`
+
+	// Optional. Fractions of a second in nanoseconds. Must be from 0 to 999,999,999.
+	Nanos *int32 `json:"nanos,omitempty"`
+}
+
+type AutomatedBackupConfig struct {
+	// Optional. The automated backup mode. If the mode is disabled, the other
+	// fields will be ignored.
+	// +optional
+	AutomatedBackupMode *string `json:"automatedBackupMode,omitempty"`
+
+	// Optional. How long to keep automated backups before the backups are
+	// deleted. The value should be between 1 day and 365 days. If not specified,
+	// the default value is 35 days.
+	// +optional
+	Retention *string `json:"retention,omitempty"`
+
+	// Optional. Trigger automated backups at a fixed frequency.
+	// +optional
+	FixedFrequencySchedule *FixedFrequencySchedule `json:"fixedFrequencySchedule,omitempty"`
+}
+
+type FixedFrequencySchedule struct {
+	// Required. The start time of every automated backup in UTC. It must be set
+	// to the start of an hour. This field is required.
+	// +optional
+	StartTime *StartTime `json:"startTime,omitempty"`
 }
 
 // RedisClusterStatus defines the config connector machine state of RedisCluster
