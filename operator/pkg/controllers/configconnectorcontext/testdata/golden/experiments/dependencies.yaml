@@ -1,0 +1,41 @@
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnector
+metadata:
+  name: configconnector.core.cnrm.cloud.google.com
+spec:
+  mode: namespaced
+
+---
+
+# The namespace we are going to create the CCC in
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: testns1
+
+---
+
+# Namespace created by CC controller
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: configconnector-operator-system
+
+---
+
+# Namespace created by CC controller
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cnrm-system
+
+---
+
+# ConfigMap that assigns IDs to CCC instances
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: namespace-id
+  namespace: configconnector-operator-system
+data:
+  testns1: abcd123456789
