@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
 apiVersion: firestore.cnrm.cloud.google.com/v1beta1
 kind: FirestoreDatabase
 metadata:
-  name: firestoredatabase-full-${uniqueId}
+  name: firestoredatabase-sample-with-deletion-protection
 spec:
   projectRef:
-    external: ${projectId}
-  resourceID: firestoredatabase-${uniqueId}
-  locationID: us-west2
+    external: "projects/${PROJECT_ID?}"
+  resourceID: sample-db-protected
+  locationID: us-central1
   concurrencyMode: OPTIMISTIC
   pointInTimeRecoveryEnablement: POINT_IN_TIME_RECOVERY_ENABLED
   deleteProtectionState: DELETE_PROTECTION_ENABLED
