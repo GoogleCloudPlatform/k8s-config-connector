@@ -25,7 +25,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.appengine.v1 \
     --api-version appengine.cnrm.cloud.google.com/v1alpha1 \
-    --resource AppEngineDomainMapping:DomainMapping
+    --resource AppEngineDomainMapping:DomainMapping \
+    --resource AppEngineFirewallRule:FirewallRule
 
 # TF resources:
 # appengine.cnrm.cloud.google.com,AppEngineDomainMapping,True,False,False,Terraform
