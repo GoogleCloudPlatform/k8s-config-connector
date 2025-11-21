@@ -27,12 +27,15 @@ import (
 
 	gcp "cloud.google.com/go/dataplex/apiv1"
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -60,9 +63,25 @@ func (m *entryGroupModel) AdapterForObject(ctx context.Context, reader client.Re
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewEntryGroupIdentity(ctx, reader, obj)
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
+	copied := obj.DeepCopy()
+	mapCtx := &direct.MapContext{}
+	desired := DataplexEntryGroupSpec_ToProto(mapCtx, &copied.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
+
+	idI, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
+	}
+	id, ok := idI.(*krm.EntryGroupIdentity)
+	if !ok {
+		return nil, fmt.Errorf("unexpected identity type %T", idI)
 	}
 
 	// Get GCP client
@@ -78,7 +97,7 @@ func (m *entryGroupModel) AdapterForObject(ctx context.Context, reader client.Re
 	return &entryGroupAdapter{
 		gcpClient: catalogClient,
 		id:        id,
-		desired:   obj,
+		desired:   desired,
 		reader:    reader,
 	}, nil
 }
@@ -91,7 +110,7 @@ func (m *entryGroupModel) AdapterForURL(ctx context.Context, url string) (direct
 type entryGroupAdapter struct {
 	gcpClient *gcp.CatalogClient
 	id        *krm.EntryGroupIdentity
-	desired   *krm.DataplexEntryGroup
+	desired   *pb.EntryGroup
 	actual    *pb.EntryGroup
 	reader    client.Reader
 }
@@ -119,17 +138,10 @@ func (a *entryGroupAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating dataplex entry group", "name", a.id)
 
-	mapCtx := &direct.MapContext{}
-	desired := a.desired.DeepCopy()
-	resource := DataplexEntryGroupSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
 	req := &pb.CreateEntryGroupRequest{
 		Parent:       a.id.Parent().String(),
 		EntryGroupId: a.id.ID(),
-		EntryGroup:   resource,
+		EntryGroup:   a.desired,
 	}
 	op, err := a.gcpClient.CreateEntryGroup(ctx, req)
 	if err != nil {
@@ -142,7 +154,7 @@ func (a *entryGroupAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	}
 
 	log.V(2).Info("successfully created dataplex entry group in gcp", "name", a.id)
-
+	mapCtx := &direct.MapContext{}
 	status := &krm.DataplexEntryGroupStatus{}
 	status.ObservedState = DataplexEntryGroupObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
@@ -156,22 +168,16 @@ func (a *entryGroupAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating dataplex entry group", "name", a.id)
 
-	mapCtx := &direct.MapContext{}
-	desired := a.desired.DeepCopy()
-	resource := DataplexEntryGroupSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	resource.Name = a.id.String() // Add name for update request
+	a.desired.Name = a.id.String() // Add name for update request
 
 	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
+	if !reflect.DeepEqual(a.desired.DisplayName, a.actual.DisplayName) {
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
-	if !reflect.DeepEqual(resource.Description, a.actual.Description) {
+	if !reflect.DeepEqual(a.desired.Description, a.actual.Description) {
 		updateMask.Paths = append(updateMask.Paths, "description")
 	}
-	if !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+	if !reflect.DeepEqual(a.desired.Labels, a.actual.Labels) {
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
 
@@ -183,7 +189,7 @@ func (a *entryGroupAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	} else {
 		req := &pb.UpdateEntryGroupRequest{
 			UpdateMask: updateMask,
-			EntryGroup: resource,
+			EntryGroup: a.desired,
 		}
 		op, err := a.gcpClient.UpdateEntryGroup(ctx, req)
 		if err != nil {
@@ -196,6 +202,7 @@ func (a *entryGroupAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 		log.V(2).Info("successfully updated dataplex entry group", "name", a.id)
 	}
 
+	mapCtx := &direct.MapContext{}
 	status := &krm.DataplexEntryGroupStatus{}
 	status.ObservedState = DataplexEntryGroupObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
@@ -216,8 +223,10 @@ func (a *entryGroupAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.ParentRef = &parent.ProjectAndLocationRef{
+		ProjectRef: &refs.ProjectRef{External: a.id.Parent().ProjectID},
+		Location:   a.id.Parent().Location,
+	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

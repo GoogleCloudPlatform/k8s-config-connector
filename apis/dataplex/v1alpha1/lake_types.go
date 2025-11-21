@@ -15,19 +15,13 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	dataprocv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var DataplexLakeGVK = GroupVersion.WithKind("DataplexLake")
-
-type Parent struct {
-	ProjectRef *refs.ProjectRef `json:"projectRef"`
-
-	Location string `json:"location"`
-}
 
 // DataplexLakeSpec defines the desired state of DataplexLake
 // +kcc:spec:proto=google.cloud.dataplex.v1.Lake
@@ -35,7 +29,7 @@ type DataplexLakeSpec struct {
 	// The DataplexLake name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	Parent `json:",inline"`
+	ParentRef *parent.ProjectAndLocationRef `json:",inline"`
 
 	// Optional. User friendly display name.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.display_name
@@ -43,7 +37,7 @@ type DataplexLakeSpec struct {
 
 	// Optional. User-defined labels for the lake.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.labels
-	Labels map[string]string `json:"labels,omitempty"`
+	// Labels map[string]string `json:"labels,omitempty"`
 
 	// Optional. Description of the lake.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Lake.description
