@@ -1,0 +1,158 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// +generated:mapper
+// krm.group: assuredworkloads.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.assuredworkloads.v1
+
+package assuredworkloads
+
+import (
+	pb "cloud.google.com/go/assuredworkloads/apiv1/assuredworkloadspb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/assuredworkloads/v1alpha1"
+	krmbillingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+
+func AssuredWorkloadsWorkloadObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.AssuredWorkloadsWorkloadObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssuredWorkloadsWorkloadObservedState{}
+	// MISSING: Name
+	out.Resources = direct.Slice_FromProto(mapCtx, in.Resources, Workload_ResourceInfo_FromProto)
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: ProvisionedResourcesParent
+	// MISSING: KMSSettings
+	out.KajEnrollmentState = direct.Enum_FromProto(mapCtx, in.GetKajEnrollmentState())
+	out.SaaEnrollmentResponse = Workload_SaaEnrollmentResponse_FromProto(mapCtx, in.GetSaaEnrollmentResponse())
+	out.CompliantButDisallowedServices = in.CompliantButDisallowedServices
+	return out
+}
+func AssuredWorkloadsWorkloadObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AssuredWorkloadsWorkloadObservedState) *pb.Workload {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Workload{}
+	// MISSING: Name
+	out.Resources = direct.Slice_ToProto(mapCtx, in.Resources, Workload_ResourceInfo_ToProto)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: ProvisionedResourcesParent
+	// MISSING: KMSSettings
+	out.KajEnrollmentState = direct.Enum_ToProto[pb.Workload_KajEnrollmentState](mapCtx, in.KajEnrollmentState)
+	out.SaaEnrollmentResponse = Workload_SaaEnrollmentResponse_ToProto(mapCtx, in.SaaEnrollmentResponse)
+	out.CompliantButDisallowedServices = in.CompliantButDisallowedServices
+	return out
+}
+func AssuredWorkloadsWorkloadSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.AssuredWorkloadsWorkloadSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssuredWorkloadsWorkloadSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.ComplianceRegime = direct.Enum_FromProto(mapCtx, in.GetComplianceRegime())
+	if in.GetBillingAccount() != "" {
+		out.BillingAccountRef = &krmbillingv1alpha1.BillingAccountRef{External: in.GetBillingAccount()}
+	}
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: ProvisionedResourcesParent
+	// MISSING: KMSSettings
+	out.ResourceSettings = direct.Slice_FromProto(mapCtx, in.ResourceSettings, Workload_ResourceSettings_FromProto)
+	out.EnableSovereignControls = direct.LazyPtr(in.GetEnableSovereignControls())
+	out.Partner = direct.Enum_FromProto(mapCtx, in.GetPartner())
+	return out
+}
+func AssuredWorkloadsWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krm.AssuredWorkloadsWorkloadSpec) *pb.Workload {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Workload{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.ComplianceRegime = direct.Enum_ToProto[pb.Workload_ComplianceRegime](mapCtx, in.ComplianceRegime)
+	if in.BillingAccountRef != nil {
+		out.BillingAccount = in.BillingAccountRef.External
+	}
+	// MISSING: Etag
+	// MISSING: Labels
+	// MISSING: ProvisionedResourcesParent
+	// MISSING: KMSSettings
+	out.ResourceSettings = direct.Slice_ToProto(mapCtx, in.ResourceSettings, Workload_ResourceSettings_ToProto)
+	out.EnableSovereignControls = direct.ValueOf(in.EnableSovereignControls)
+	out.Partner = direct.Enum_ToProto[pb.Workload_Partner](mapCtx, in.Partner)
+	return out
+}
+func Workload_KMSSettings_FromProto(mapCtx *direct.MapContext, in *pb.Workload_KMSSettings) *krm.Workload_KMSSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Workload_KMSSettings{}
+	out.NextRotationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetNextRotationTime())
+	out.RotationPeriod = direct.StringDuration_FromProto(mapCtx, in.GetRotationPeriod())
+	return out
+}
+func Workload_KMSSettings_ToProto(mapCtx *direct.MapContext, in *krm.Workload_KMSSettings) *pb.Workload_KMSSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Workload_KMSSettings{}
+	out.NextRotationTime = direct.StringTimestamp_ToProto(mapCtx, in.NextRotationTime)
+	out.RotationPeriod = direct.StringDuration_ToProto(mapCtx, in.RotationPeriod)
+	return out
+}
+func Workload_ResourceInfo_FromProto(mapCtx *direct.MapContext, in *pb.Workload_ResourceInfo) *krm.Workload_ResourceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Workload_ResourceInfo{}
+	out.ResourceID = direct.LazyPtr(in.GetResourceId())
+	out.ResourceType = direct.Enum_FromProto(mapCtx, in.GetResourceType())
+	return out
+}
+func Workload_ResourceInfo_ToProto(mapCtx *direct.MapContext, in *krm.Workload_ResourceInfo) *pb.Workload_ResourceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Workload_ResourceInfo{}
+	out.ResourceId = direct.ValueOf(in.ResourceID)
+	out.ResourceType = direct.Enum_ToProto[pb.Workload_ResourceInfo_ResourceType](mapCtx, in.ResourceType)
+	return out
+}
+func Workload_ResourceSettings_FromProto(mapCtx *direct.MapContext, in *pb.Workload_ResourceSettings) *krm.Workload_ResourceSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Workload_ResourceSettings{}
+	out.ResourceID = direct.LazyPtr(in.GetResourceId())
+	out.ResourceType = direct.Enum_FromProto(mapCtx, in.GetResourceType())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	return out
+}
+func Workload_ResourceSettings_ToProto(mapCtx *direct.MapContext, in *krm.Workload_ResourceSettings) *pb.Workload_ResourceSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Workload_ResourceSettings{}
+	out.ResourceId = direct.ValueOf(in.ResourceID)
+	out.ResourceType = direct.Enum_ToProto[pb.Workload_ResourceInfo_ResourceType](mapCtx, in.ResourceType)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	return out
+}
