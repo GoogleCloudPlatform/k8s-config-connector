@@ -8,6 +8,12 @@
 [refs] crd=apigatewayapiconfigs.apigateway.cnrm.cloud.google.com version=v1alpha1: field ".spec.gatewayConfig.backendConfig.googleServiceAccount" should be a reference
 [refs] crd=apigatewaygateways.apigateway.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiConfig" should be a reference
 [refs] crd=apigeenataddresses.apigee.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceId" should be a reference
+[refs] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.apiStyle" should be a reference
+[refs] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.businessUnit" should be a reference
+[refs] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.maturityLevel" should be a reference
+[refs] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.selectedVersion" should be a reference
+[refs] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.targetUser" should be a reference
+[refs] crd=apihubapis.apihub.cnrm.cloud.google.com version=v1alpha1: field ".spec.team" should be a reference
 [refs] crd=appengineflexibleappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccount" should be a reference
 [refs] crd=appenginestandardappversions.appengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccount" should be a reference
 [refs] crd=beyondcorpappconnections.beyondcorp.cnrm.cloud.google.com version=v1alpha1: field ".spec.gateway.appGateway" should be a reference
