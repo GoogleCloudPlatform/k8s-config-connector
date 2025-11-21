@@ -17,5 +17,6 @@
 // krm.version: v1alpha1
 // proto.service: google.appengine.v1
 // resource: AppEngineDomainMapping:DomainMapping
+// resource: AppEngineFirewallRule:FirewallRule
 
 package v1alpha1

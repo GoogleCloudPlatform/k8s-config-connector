@@ -67,6 +67,44 @@ func AppEngineDomainMappingSpec_ToProto(mapCtx *direct.MapContext, in *krm.AppEn
 	// MISSING: ResourceRecords
 	return out
 }
+func AppEngineFirewallRuleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FirewallRule) *krm.AppEngineFirewallRuleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AppEngineFirewallRuleObservedState{}
+	// MISSING: Priority
+	return out
+}
+func AppEngineFirewallRuleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AppEngineFirewallRuleObservedState) *pb.FirewallRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallRule{}
+	// MISSING: Priority
+	return out
+}
+func AppEngineFirewallRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.FirewallRule) *krm.AppEngineFirewallRuleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AppEngineFirewallRuleSpec{}
+	// MISSING: Priority
+	out.Action = direct.Enum_FromProto(mapCtx, in.GetAction())
+	out.SourceRange = direct.LazyPtr(in.GetSourceRange())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func AppEngineFirewallRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.AppEngineFirewallRuleSpec) *pb.FirewallRule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallRule{}
+	// MISSING: Priority
+	out.Action = direct.Enum_ToProto[pb.FirewallRule_Action](mapCtx, in.Action)
+	out.SourceRange = direct.ValueOf(in.SourceRange)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
 func DomainMapping_ResourceRecord_FromProto(mapCtx *direct.MapContext, in *pb.ResourceRecord) *krm.DomainMapping_ResourceRecord {
 	if in == nil {
 		return nil
