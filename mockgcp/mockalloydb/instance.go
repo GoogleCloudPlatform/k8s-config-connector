@@ -107,7 +107,7 @@ func setInstanceFields(name *instanceName, obj *pb.Instance) {
 		obj.AvailabilityType == pb.Instance_AVAILABILITY_TYPE_UNSPECIFIED {
 		obj.AvailabilityType = pb.Instance_REGIONAL
 	}
-	if obj.ConnectionPoolConfig != nil {
+	if obj.ConnectionPoolConfig != nil && obj.ConnectionPoolConfig.Enabled {
 		obj.ConnectionPoolConfig.PoolerCount = 1
 	}
 
