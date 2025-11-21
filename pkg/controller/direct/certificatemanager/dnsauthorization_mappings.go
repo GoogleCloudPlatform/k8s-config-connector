@@ -20,9 +20,14 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func CertificateManagerDNSAuthorizationStatusObservedState_FromProto(mapCtx *direct.MapContext, created *certificatemanagerpb.DnsAuthorization) *krm.CertificateManagerDNSAuthorizationStatus {
-	status := &krm.CertificateManagerDNSAuthorizationStatus{
-		DnsResourceRecord: []krm.DnsAuthorization_DnsResourceRecord{direct.ValueOf(DnsAuthorization_DnsResourceRecord_FromProto(mapCtx, created.GetDnsResourceRecord()))},
+func CertificateManagerDNSAuthorizationStatusObservedState_FromProto(mapCtx *direct.MapContext, in *certificatemanagerpb.DnsAuthorization) *krm.CertificateManagerDNSAuthorizationStatus {
+	if in == nil {
+		return nil
 	}
-	return status
+	out := &krm.CertificateManagerDNSAuthorizationStatus{}
+	// the CRD does not have `.status.observedState`. The fields that should be assigned to `.status.observedState` are added to `.status` directly
+	if in.GetDnsResourceRecord() != nil {
+		out.DnsResourceRecord = []krm.DNSAuthorization_DNSResourceRecordObservedState{direct.ValueOf(DNSAuthorization_DNSResourceRecordObservedState_FromProto(mapCtx, in.GetDnsResourceRecord()))}
+	}
+	return out
 }

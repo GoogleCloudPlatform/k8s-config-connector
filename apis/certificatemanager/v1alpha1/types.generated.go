@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,18 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +generated:types
+// krm.group: certificatemanager.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.certificatemanager.v1
+// resource: CertificateManagerCertificateIssuanceConfig:CertificateIssuanceConfig
+
 package v1alpha1
 
-// +kcc:proto=google.cloud.certificatemanager.v1.DnsAuthorization.DnsResourceRecord
-type DnsAuthorization_DnsResourceRecord struct {
-	// Output only. Fully qualified name of the DNS Resource Record.
-	//  e.g. `_acme-challenge.example.com`
-	Name *string `json:"name,omitempty"`
-
-	// Output only. Type of the DNS Resource Record.
-	//  Currently always set to "CNAME".
-	Type *string `json:"type,omitempty"`
-
-	// Output only. Data of the DNS Resource Record.
-	Data *string `json:"data,omitempty"`
+// +kcc:proto=google.cloud.certificatemanager.v1.CertificateIssuanceConfig.CertificateAuthorityConfig
+type CertificateIssuanceConfig_CertificateAuthorityConfig struct {
+	// Defines a CertificateAuthorityServiceConfig.
+	// +kcc:proto:field=google.cloud.certificatemanager.v1.CertificateIssuanceConfig.CertificateAuthorityConfig.certificate_authority_service_config
+	CertificateAuthorityServiceConfig *CertificateIssuanceConfig_CertificateAuthorityConfig_CertificateAuthorityServiceConfig `json:"certificateAuthorityServiceConfig,omitempty"`
 }
