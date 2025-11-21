@@ -1009,7 +1009,7 @@ func (in *VpcPeeringConfig) DeepCopyInto(out *VpcPeeringConfig) {
 	*out = *in
 	if in.VpcNameRef != nil {
 		in, out := &in.VpcNameRef, &out.VpcNameRef
-		*out = new(v1beta1.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.Subnet != nil {

@@ -25,9 +25,10 @@ import (
 	"fmt"
 	"strings"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -35,12 +36,12 @@ var _ identity.Identity = &PeeredDNSDomainIdentity{}
 
 // +k8s:deepcopy-gen=false
 type PeeredDNSDomainIdentity struct {
-	Network *refs.ComputeNetworkID
+	Network *computev1beta1.NetworkIdentity
 	Name    string
 }
 
 func (i *PeeredDNSDomainIdentity) String() string {
-	return fmt.Sprintf("services/servicenetworking.googleapis.com/projects/%s/global/networks/%s/peeredDnsDomains/%s", i.Network.Project, i.Network.Network, i.Name)
+	return fmt.Sprintf("services/servicenetworking.googleapis.com/projects/%s/global/networks/%s/peeredDnsDomains/%s", i.Network.Parent().ProjectID, i.Network.ID(), i.Name)
 }
 
 func (i *PeeredDNSDomainIdentity) FromExternal(ref string) error {
@@ -53,8 +54,8 @@ func (i *PeeredDNSDomainIdentity) FromExternal(ref string) error {
 		tokens[5] == "networks" &&
 		tokens[7] == "peeredDnsDomains" {
 
-		network := &refs.ComputeNetworkID{}
-		if err := network.FromExternal("projects/" + tokens[3] + "/global/networks/" + tokens[6]); err != nil {
+		network := &computev1beta1.NetworkIdentity{}
+		if _, err := computev1beta1.ParseComputeNetworkExternal("projects/" + tokens[3] + "/global/networks/" + tokens[6]); err != nil {
 			return fmt.Errorf("format of PeeredDNSDomain ref=%q was not known (use %q)", ref, "services/servicenetworking.googleapis.com/projects/<project>/global/networks/<networkID>/peeredDnsDomains/<name>")
 		}
 
@@ -88,7 +89,7 @@ func (obj *ServiceNetworkingPeeredDNSDomain) GetIdentity(ctx context.Context, re
 	}
 
 	id := &PeeredDNSDomainIdentity{
-		Network: networkID.(*refs.ComputeNetworkID),
+		Network: networkID.(*computev1beta1.NetworkIdentity),
 		Name:    resourceID,
 	}
 
@@ -110,11 +111,11 @@ func (obj *ServiceNetworkingPeeredDNSDomain) GetIdentity(ctx context.Context, re
 func (obj *ServiceNetworkingPeeredDNSDomain) GetParentIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
 	// Normalize parent reference
 	networkRef := *obj.Spec.NetworkRef
-	if err := networkRef.Normalize(ctx, reader, obj); err != nil {
+	if err := networkRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 		return nil, err
 	}
 	// Get parent identity
-	networkID := &refs.ComputeNetworkID{}
+	networkID := &computev1beta1.NetworkIdentity{}
 	if err := networkID.FromExternal(networkRef.External); err != nil {
 		return nil, err
 	}

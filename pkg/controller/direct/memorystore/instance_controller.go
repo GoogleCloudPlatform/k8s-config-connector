@@ -98,7 +98,7 @@ func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.Memor
 			if connection.PscAutoConnection != nil {
 				autoConnection := connection.PscAutoConnection
 				if autoConnection.NetworkRef != nil {
-					if err := autoConnection.NetworkRef.Normalize(ctx, reader, obj); err != nil {
+					if err := autoConnection.NetworkRef.Normalize(ctx, reader, obj.Namespace); err != nil {
 						return err
 					}
 				}
@@ -111,7 +111,7 @@ func resolveReferences(ctx context.Context, reader client.Reader, obj *krm.Memor
 			if connection.PscConnection != nil {
 				userConnection := connection.PscConnection
 				if userConnection.NetworkRef != nil {
-					if err := userConnection.NetworkRef.Normalize(ctx, reader, obj); err != nil {
+					if err := userConnection.NetworkRef.Normalize(ctx, reader, obj.Namespace); err != nil {
 						return err
 					}
 				}

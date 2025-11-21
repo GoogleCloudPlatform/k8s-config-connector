@@ -285,7 +285,7 @@ func (a *networkPeeringAdapter) normalizeReferenceFields(ctx context.Context) er
 	// normalize reference fields
 	if obj.Spec.PeerNetwork != nil {
 		if obj.Spec.PeerNetwork.ComputeNetworkRef != nil {
-			if err := obj.Spec.PeerNetwork.ComputeNetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+			if err := obj.Spec.PeerNetwork.ComputeNetworkRef.Normalize(ctx, a.reader, obj.GetNamespace()); err != nil {
 				return err
 			}
 		}
