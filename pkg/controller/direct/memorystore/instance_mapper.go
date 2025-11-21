@@ -21,6 +21,7 @@ package memorystore
 
 import (
 	pb "cloud.google.com/go/memorystore/apiv1beta/memorystorepb"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/memorystore/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -324,7 +325,7 @@ func PscAutoConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscAutoConnec
 	}
 	out := &krmv1alpha1.PscAutoConnection{}
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &refs.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetProjectId() != "" {
 		out.ProjectRef = &refs.ProjectRef{External: in.GetProjectId()}
@@ -397,7 +398,7 @@ func PscConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *k
 		out.IpAddress = direct.LazyPtr(in.GetIpAddress())
 	}
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &refs.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetServiceAttachment() != "" {
 		out.ServiceAttachmentRef = &refs.ComputeServiceAttachmentRef{External: in.GetServiceAttachment()}

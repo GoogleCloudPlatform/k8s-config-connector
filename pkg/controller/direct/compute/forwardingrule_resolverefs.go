@@ -431,7 +431,7 @@ func ResolveComputeTargetVPNGateway(ctx context.Context, reader client.Reader, s
 func resolveForwardingRuleRefs(ctx context.Context, reader client.Reader, obj *krm.ComputeForwardingRule) error {
 	// Get network
 	if obj.Spec.NetworkRef != nil {
-		err := obj.Spec.NetworkRef.Normalize(ctx, reader, obj)
+		err := obj.Spec.NetworkRef.Normalize(ctx, reader, obj.Namespace)
 		if err != nil {
 			return err
 		}

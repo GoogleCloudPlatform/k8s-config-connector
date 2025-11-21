@@ -347,7 +347,7 @@ func (a *Adapter) resolveDependencies(ctx context.Context, reader client.Reader,
 	// Resolve computeNetwork
 	networkSpec := obj.Spec.PrivatePoolConfig.NetworkConfig
 	if networkSpec != nil {
-		if err := networkSpec.PeeredNetworkRef.Normalize(ctx, reader, obj); err != nil {
+		if err := networkSpec.PeeredNetworkRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 			return err
 		}
 

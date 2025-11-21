@@ -16,7 +16,7 @@ package networkmanagement
 
 import (
 	pb "cloud.google.com/go/networkmanagement/apiv1/networkmanagementpb"
-	compute "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	container "github.com/GoogleCloudPlatform/k8s-config-connector/apis/container/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkmanagement/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -173,7 +173,7 @@ func Endpoint_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.Endpoin
 	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
 	out.Port = direct.LazyPtr(in.GetPort())
 	if in.GetInstance() != "" {
-		out.ComputeInstanceRef = &compute.InstanceRef{External: in.GetInstance()}
+		out.ComputeInstanceRef = &computev1beta1.InstanceRef{External: in.GetInstance()}
 	}
 	out.ComputeForwardingRuleRef = direct.LazyPtr(in.GetForwardingRule())
 	// MISSING: ForwardingRuleTarget
@@ -192,7 +192,7 @@ func Endpoint_FromProto(mapCtx *direct.MapContext, in *pb.Endpoint) *krm.Endpoin
 	out.AppEngineVersion = Endpoint_AppEngineVersionEndpoint_FromProto(mapCtx, in.GetAppEngineVersion())
 	out.CloudRunRevision = Endpoint_CloudRunRevisionEndpoint_FromProto(mapCtx, in.GetCloudRunRevision())
 	if in.GetNetwork() != "" {
-		out.ComputeNetworkRef = &refs.ComputeNetworkRef{External: in.GetNetwork()}
+		out.ComputeNetworkRef = &computev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	out.NetworkType = direct.Enum_FromProto(mapCtx, in.GetNetworkType())
 	if in.GetProjectId() != "" {

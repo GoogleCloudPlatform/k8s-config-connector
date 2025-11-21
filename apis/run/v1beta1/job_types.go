@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vpcaccess/v1beta1"
@@ -629,7 +630,7 @@ type VPCAccess_NetworkInterface struct {
 	//  must belong to the given VPC network. If network is not specified, it
 	//  will be looked up from the subnetwork.
 	// +kcc:proto:field=google.cloud.run.v2.VpcAccess.NetworkInterface.network
-	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Optional. The VPC subnetwork that the Cloud Run resource will get IPs
 	//  from. At least one of network or subnetwork must be specified. If both
