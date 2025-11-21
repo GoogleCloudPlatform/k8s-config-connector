@@ -24,6 +24,9 @@ import (
 // ShouldTestRereconiliation determines if we "touch" the primary object after we have run the test.
 // This should not cause write operations to GCP (read operations are OK)
 // We would like eventually to turn this on for all objects, but we have to turn on the testing gradually.
+//
+// Note that we also use this "ratchet" list to determine whether to use SSA for creates in unified_test.go,
+// so new resources must pass the re-reconciliation test from the start.
 func ShouldTestRereconiliation(t *testing.T, testName string, primaryResource *unstructured.Unstructured) bool {
 	gvk := primaryResource.GroupVersionKind()
 
