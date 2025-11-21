@@ -24,6 +24,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+const (
+	BillingAccountURLTemplate = "billingAccounts/{{billingAccount}}"
+)
+
 var _ identity.Identity = &BillingAccountIdentity{}
 
 type BillingAccountIdentity struct {
