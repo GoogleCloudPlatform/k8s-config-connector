@@ -25,7 +25,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.cloud.pubsublite.v1 \
     --api-version pubsublite.cnrm.cloud.google.com/v1alpha1 \
-    --resource PubSubLiteSubscription:Subscription
+    --resource PubSubLiteSubscription:Subscription \
+    --resource PubSubLiteTopic:Topic
 
 go run . generate-mapper \
     --service google.cloud.pubsublite.v1 \
