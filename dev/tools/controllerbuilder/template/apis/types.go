@@ -33,7 +33,6 @@ package {{ .Version }}
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -41,7 +40,7 @@ var {{ .Kind }}GVK = GroupVersion.WithKind("{{ .Kind }}")
 
 // {{ .Kind }}Spec defines the desired state of {{ .Kind }}
 {{- if .KindProtoTag }}
-// +kcc:spec:proto={{ .KindProtoTag }}
+// TODO: Move kcc:spec:proto={{ .KindProtoTag }} content to Spec, and modify the reference field.  Once done, add +kcc:spec:proto={{ .KindProtoTag }} and rerun generate.sh
 {{- end }}
 type {{ .Kind }}Spec struct {
 	// Required. Defines the parent path of the resource.
@@ -69,7 +68,7 @@ type {{ .Kind }}Status struct {
 
 // {{ .Kind }}ObservedState is the state of the {{ .Kind }} resource as most recently observed in GCP.
 {{- if .KindProtoTag }}
-// +kcc:observedstate:proto={{ .KindProtoTag }}
+// TODO: Move kcc:observedstate:proto={{ .KindProtoTag }} content to ObservedState. Once done, add +kcc:observedstate:proto={{ .KindProtoTag }} and rerun generate.sh
 {{- end }}
 type {{ .Kind }}ObservedState struct {
 }
