@@ -97,6 +97,8 @@ func (d *dashboardDefaulter) visitDashboard(obj *pb.Dashboard) {
 		d.visitColumnLayout(layout.ColumnLayout)
 	case *pb.Dashboard_MosaicLayout:
 		d.visitMosaicLayout(layout.MosaicLayout)
+	case *pb.Dashboard_RowLayout:
+		d.visitRowLayout(layout.RowLayout)
 	}
 }
 
@@ -111,6 +113,14 @@ func (d *dashboardDefaulter) visitColumnLayout(obj *pb.ColumnLayout) {
 func (d *dashboardDefaulter) visitMosaicLayout(obj *pb.MosaicLayout) {
 	for _, tile := range obj.Tiles {
 		d.visitWidget(tile.Widget)
+	}
+}
+
+func (d *dashboardDefaulter) visitRowLayout(obj *pb.RowLayout) {
+	for _, row := range obj.Rows {
+		for _, widget := range row.Widgets {
+			d.visitWidget(widget)
+		}
 	}
 }
 

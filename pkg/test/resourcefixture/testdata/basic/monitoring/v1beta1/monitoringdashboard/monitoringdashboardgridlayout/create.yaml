@@ -15,59 +15,16 @@
 apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
 kind: MonitoringDashboard
 metadata:
-  name: monitoringdashboardmosaiclayout-${uniqueId}
+  name: monitoringdashboardgridlayout-${uniqueId}
 spec:
-  displayName: "monitoringdashboard-mosaiclayout"
-  mosaicLayout:
-    columns: 12
-    tiles:
-    - xPos: 0
-      yPos: 0
-      width: 12
-      height: 1
-      widget:
-        title: "SingleViewGroup Widget"
-        id: singleViewGroupWidget1
-        singleViewGroup: {}
-    - xPos: 0
-      yPos: 1
-      width: 12
-      height: 1
-      widget:
-        title: "SectionHeader Widget"
-        sectionHeader:
-          dividerBelow: true
-          subtitle: "Example SectionHeader"
-    - xPos: 0
-      yPos: 2
-      width: 12
-      height: 1
-      widget:
-        title: "CollapsibleGroup Widget"
-        collapsibleGroup:
-          collapsed: true
-    - xPos: 0
-      yPos: 2
-      width: 12
-      height: 1
-      widget:
-        text:
-          content: "CollapsibleGroup content"
-    - xPos: 0
-      yPos: 3
-      width: 12
-      height: 1
-      widget:
-        title: "AlertChart Widget"
+  displayName: "monitoringdashboard-gridlayout"
+  gridLayout:
+    widgets:
+      - title: "AlertChart Widget"
         alertChart:
           alertPolicyRef:
             name: monitoringalertpolicy-${uniqueId}
-    - xPos: 0
-      yPos: 4
-      width: 12
-      height: 1
-      widget:
-        title: "ErrorReporting Widget"
+      - title: "ErrorReporting Widget"
         errorReportingPanel:
           projectRefs:
             - external: projects/project1
@@ -77,12 +34,8 @@ spec:
             - bar
           versions:
             - v1
-    - xPos: 0
-      yPos: 5
-      width: 12
-      height: 1
-      widget:
-        title: "IncidentList Widget"
+            - v2
+      - title: "IncidentList Widget"
         incidentList:
           monitoredResources:
             - type: "gce_instance"
