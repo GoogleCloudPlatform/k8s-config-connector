@@ -1,0 +1,62 @@
+apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+kind: Project
+metadata:
+  annotations:
+    cnrm.cloud.google.com/auto-create-network: "false"
+  name: metrics-smoke-test-project
+spec:
+  name: Metrics Smoke Test Project
+  organizationRef:
+    external: ${TEST_ORG_ID}
+---
+# Create a simple logging metric to trigger API calls (Terraform-based)
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogMetric
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: metrics-smoke-test-project
+  name: metrics-test-log-metric
+spec:
+  description: "Simple log metric for metrics smoke testing"
+  filter: "resource.type=gce_instance"
+  metricDescriptor:
+    displayName: "Metrics Test Log Metric"
+    metricKind: DELTA
+    valueType: INT64
+---
+# Create a simple compute network (Terraform-based resource)
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: metrics-smoke-test-project
+  name: metrics-test-network
+spec:
+  description: "Simple network for metrics smoke testing"
+  autoCreateSubnetworks: false
+---
+# Create a simple monitoring alert policy (DCL-based resource)
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringAlertPolicy
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: metrics-smoke-test-project
+  name: metrics-test-alert-policy
+spec:
+  displayName: "Metrics Test Alert Policy"
+  conditions:
+  - displayName: "Test Condition"
+    conditionThreshold:
+      filter: "metric.type=\"compute.googleapis.com/instance/cpu/utilization\""
+      comparison: COMPARISON_GREATER_THAN
+      thresholdValue: 0.8
+      duration: "60s"
+---
+# Wait for the system to run and collect HTTP logs
+# This will allow us to see the API calls and verify metrics are being recorded
+# The transport layer will emit Prometheus metrics for these API calls
+kind: SystemRun
+duration: 30
+---
+# Check that transport metrics are being emitted correctly
+kind: CheckMetrics 
