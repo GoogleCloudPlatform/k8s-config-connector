@@ -265,7 +265,6 @@ func FirestoreDatabaseObservedState_v1beta1_FromProto(mapCtx *direct.MapContext,
 	// MISSING: Type
 	out.VersionRetentionPeriod = direct.StringDuration_FromProto(mapCtx, in.GetVersionRetentionPeriod())
 	out.EarliestVersionTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEarliestVersionTime())
-	// MISSING: AppEngineIntegrationMode
 	out.KeyPrefix = direct.LazyPtr(in.GetKeyPrefix())
 	// MISSING: DeleteProtectionState
 	// MISSING: CmekConfig
@@ -290,7 +289,6 @@ func FirestoreDatabaseObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, i
 	// MISSING: Type
 	out.VersionRetentionPeriod = direct.StringDuration_ToProto(mapCtx, in.VersionRetentionPeriod)
 	out.EarliestVersionTime = direct.StringTimestamp_ToProto(mapCtx, in.EarliestVersionTime)
-	// MISSING: AppEngineIntegrationMode
 	out.KeyPrefix = direct.ValueOf(in.KeyPrefix)
 	// MISSING: DeleteProtectionState
 	// MISSING: CmekConfig
@@ -313,7 +311,7 @@ func FirestoreDatabaseSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.D
 	// MISSING: Type
 	out.ConcurrencyMode = direct.Enum_FromProto(mapCtx, in.GetConcurrencyMode())
 	out.PointInTimeRecoveryEnablement = direct.Enum_FromProto(mapCtx, in.GetPointInTimeRecoveryEnablement())
-	// MISSING: AppEngineIntegrationMode
+	out.AppEngineIntegrationMode = direct.Enum_FromProto(mapCtx, in.GetAppEngineIntegrationMode())
 	// MISSING: DeleteProtectionState
 	// MISSING: CmekConfig
 	// MISSING: PreviousID
@@ -334,7 +332,7 @@ func FirestoreDatabaseSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Fi
 	// MISSING: Type
 	out.ConcurrencyMode = direct.Enum_ToProto[pb.Database_ConcurrencyMode](mapCtx, in.ConcurrencyMode)
 	out.PointInTimeRecoveryEnablement = direct.Enum_ToProto[pb.Database_PointInTimeRecoveryEnablement](mapCtx, in.PointInTimeRecoveryEnablement)
-	// MISSING: AppEngineIntegrationMode
+	out.AppEngineIntegrationMode = direct.Enum_ToProto[pb.Database_AppEngineIntegrationMode](mapCtx, in.AppEngineIntegrationMode)
 	// MISSING: DeleteProtectionState
 	// MISSING: CmekConfig
 	// MISSING: PreviousID

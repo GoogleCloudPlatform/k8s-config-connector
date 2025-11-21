@@ -3,6 +3,7 @@ kind: FirestoreDatabase
 metadata:
   name: firestoredatabase-${uniqueId}
 spec:
+  appEngineIntegrationMode: DISABLED
   concurrencyMode: PESSIMISTIC
   locationID: us-west2
   pointInTimeRecoveryEnablement: POINT_IN_TIME_RECOVERY_DISABLED
