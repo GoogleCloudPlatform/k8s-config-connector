@@ -1,0 +1,5 @@
+- exec: gcloud sql instances create postgres-${uniqueId} --database-version=POSTGRES_15 --cpu=2 --memory=4GB --region=us-central1 --root-password=password123
+- exec: gcloud sql instances patch postgres-${uniqueId} --database-version=POSTGRES_16 --async
+- exec: gcloud sql operations wait $(gcloud sql operations list --instance=postgres-${uniqueId} --filter="operationType:UPDATE" --format="value(name)") --timeout=1200
+- exec: gcloud sql instances describe postgres-${uniqueId}
+- exec: gcloud sql instances delete postgres-${uniqueId} --quiet
