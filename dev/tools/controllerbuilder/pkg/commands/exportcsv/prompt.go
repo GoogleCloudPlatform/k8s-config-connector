@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -46,6 +47,9 @@ type PromptOptions struct {
 	// This helps detect typos in the examples.
 	StrictInputColumnKeys []string
 
+	// NoGemini indicates to use the old mechanism instead of the gemini CLI.
+	NoGemini bool
+
 	llm.Options
 }
 
@@ -69,6 +73,7 @@ func (o *PromptOptions) BindFlags(cmd *cobra.Command) {
 	cmd.Flags().StringVar(&o.Output, "output", o.Output, "the directory to store the prompt outcome")
 	cmd.Flags().StringVar(&o.InputFile, "input-file", o.InputFile, "the input file to get input from")
 	cmd.Flags().StringSliceVar(&o.StrictInputColumnKeys, "strict-input-columns", o.StrictInputColumnKeys, "return an error if we see an irregular datapoint for this tool")
+	cmd.Flags().BoolVar(&o.NoGemini, "no-gemini", false, "disable gemini CLI for inference, use the old mechanism")
 	o.Options.AddCobraFlags(cmd.Flags())
 }
 
@@ -104,89 +109,138 @@ func BuildPromptCommand(baseOptions *options.GenerateOptions) *cobra.Command {
 func RunPrompt(ctx context.Context, o *PromptOptions) error {
 	log := klog.FromContext(ctx)
 
-	if err := rewriteFilePath(&o.ProtoDir); err != nil {
-		return err
-	}
-
-	if o.ProtoDir == "" {
-		return fmt.Errorf("--proto-dir is required")
-	}
-
-	extractor := &toolbot.ExtractToolMarkers{}
-	addProtoDefinition, err := toolbot.NewEnhanceWithProtoDefinition(o.ProtoDir)
-	if err != nil {
-		return err
-	}
-	apiDir := o.SrcDir + "/apis/"
-	addGoStruct, err := toolbot.NewEnhanceWithGoStruct(apiDir)
-	if err != nil {
-		return err
-	}
-	mapperDir := o.SrcDir + "/pkg/controller/direct/" // direct controller directory contains all mapper functions
-	addMapperFunctions, err := toolbot.NewEnhanceWithMappers(mapperDir)
-	if err != nil {
-		return err
-	}
-	x, err := toolbot.NewCSVExporter(extractor, addProtoDefinition, addGoStruct, addMapperFunctions)
-	if err != nil {
-		return err
-	}
-
-	if len(o.StrictInputColumnKeys) != 0 {
-		x.StrictInputColumnKeys = sets.New(o.StrictInputColumnKeys...)
-	}
-
-	var b []byte
-	if o.InputFile == "" {
-		if b, err = io.ReadAll(os.Stdin); err != nil {
-			return fmt.Errorf("reading from stdin: %w", err)
-		}
-	} else {
-		if b, err = os.ReadFile(o.InputFile); err != nil {
-			return fmt.Errorf("reading from %s: %w", o.InputFile, err)
-		}
-	}
-
-	dataPoints, err := x.BuildDataPoints(ctx, "<prompt>", b)
-	if err != nil {
-		return err
-	}
-
-	if len(dataPoints) != 1 {
-		return fmt.Errorf("expected exactly one data point, got %d", len(dataPoints))
-	}
-
-	dataPoint := dataPoints[0]
-	dataPoint.Output = ""
-
-	log.Info("built data point", "dataPoint", dataPoint)
-
-	if o.SrcDir != "" {
-		filterByType := func(p *toolbot.DataPoint) bool {
-			return p.Type == dataPoint.Type
-		}
-		if err := x.VisitCodeDir(ctx, o.SrcDir, filterByType); err != nil {
+	if o.NoGemini {
+		if err := rewriteFilePath(&o.ProtoDir); err != nil {
 			return err
 		}
+
+		if o.ProtoDir == "" {
+			return fmt.Errorf("--proto-dir is required")
+		}
+
+		extractor := &toolbot.ExtractToolMarkers{}
+		addProtoDefinition, err := toolbot.NewEnhanceWithProtoDefinition(o.ProtoDir)
+		if err != nil {
+			return err
+		}
+		apiDir := o.SrcDir + "/apis/"
+		addGoStruct, err := toolbot.NewEnhanceWithGoStruct(apiDir)
+		if err != nil {
+			return err
+		}
+		mapperDir := o.SrcDir + "/pkg/controller/direct/" // direct controller directory contains all mapper functions
+		addMapperFunctions, err := toolbot.NewEnhanceWithMappers(mapperDir)
+		if err != nil {
+			return err
+		}
+		x, err := toolbot.NewCSVExporter(extractor, addProtoDefinition, addGoStruct, addMapperFunctions)
+		if err != nil {
+			return err
+		}
+
+		if len(o.StrictInputColumnKeys) != 0 {
+			x.StrictInputColumnKeys = sets.New(o.StrictInputColumnKeys...)
+		}
+
+		var b []byte
+		if o.InputFile == "" {
+			if b, err = io.ReadAll(os.Stdin); err != nil {
+				return fmt.Errorf("reading from stdin: %w", err)
+			}
+		} else {
+			if b, err = os.ReadFile(o.InputFile); err != nil {
+				return fmt.Errorf("reading from %s: %w", o.InputFile, err)
+			}
+		}
+
+		dataPoints, err := x.BuildDataPoints(ctx, "<prompt>", b)
+		if err != nil {
+			return err
+		}
+
+		if len(dataPoints) != 1 {
+			return fmt.Errorf("expected exactly one data point, got %d", len(dataPoints))
+		}
+
+		dataPoint := dataPoints[0]
+		dataPoint.Output = ""
+
+		log.Info("built data point", "dataPoint", dataPoint)
+
+		if o.SrcDir != "" {
+			filterByType := func(p *toolbot.DataPoint) bool {
+				return p.Type == dataPoint.Type
+			}
+			if err := x.VisitCodeDir(ctx, o.SrcDir, filterByType); err != nil {
+				return err
+			}
+		}
+
+		llmClient, err := o.NewLLMClient(ctx)
+		if err != nil {
+			return fmt.Errorf("building LLM client: %w", err)
+		}
+		defer llmClient.Close()
+
+		out := &bytes.Buffer{}
+		if err := x.InferOutput_WithCompletion(ctx, llmClient, o.Model, dataPoint, out); err != nil {
+			return fmt.Errorf("running LLM inference: %w", err)
+		}
+
+		if o.Output == "" {
+			fmt.Println(out)
+			return nil
+		}
+
+		if tmpF, err := kccio.WriteToCache(ctx, o.Output, out.String(), fileNamePattern(dataPoint)); err != nil {
+			return err
+		} else {
+			fmt.Println(tmpF)
+		}
+		return nil
 	}
 
-	llmClient, err := o.NewLLMClient(ctx)
-	if err != nil {
-		return fmt.Errorf("building LLM client: %w", err)
+	var userPrompt string
+	if o.InputFile == "" {
+		b, err := io.ReadAll(os.Stdin)
+		if err != nil {
+			return fmt.Errorf("reading from stdin: %w", err)
+		}
+		userPrompt = string(b)
+	} else {
+		userPrompt = "@" + o.InputFile
 	}
-	defer llmClient.Close()
 
-	out := &bytes.Buffer{}
-	if err := x.InferOutput_WithCompletion(ctx, llmClient, o.Model, dataPoint, out); err != nil {
-		return fmt.Errorf("running LLM inference: %w", err)
+	// Prepending context is a more effective strategy for LLMs.
+	// It sets the stage and primes the model with the environment before it sees the specific instruction.
+	var promptBuilder strings.Builder
+	promptBuilder.WriteString(fmt.Sprintf("src-dir: @%s\n", o.SrcDir))
+	promptBuilder.WriteString(fmt.Sprintf("proto-dir: @%s\n\n", o.ProtoDir))
+	promptBuilder.WriteString(userPrompt)
+	prompt := promptBuilder.String()
+
+	if o.Model != "" {
+		log.Info("warning: --model flag is ignored in gemini CLI mode (the default)")
 	}
+	cmd := exec.CommandContext(ctx, "gemini", "--prompt=/dev/stdin")
+	cmd.Stdin = strings.NewReader(prompt)
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("running gemini command: %w\nstderr:\n%s", err, stderr.String())
+	}
+
+	out := &stdout
 
 	if o.Output == "" {
 		fmt.Println(out)
 		return nil
 	}
 
-	if tmpF, err := kccio.WriteToCache(ctx, o.Output, out.String(), fileNamePattern(dataPoint)); err != nil {
+	fileName := "gemini-output.txt"
+	if tmpF, err := kccio.WriteToCache(ctx, o.Output, out.String(), fileName); err != nil {
 		return err
 	} else {
 		fmt.Println(tmpF)
