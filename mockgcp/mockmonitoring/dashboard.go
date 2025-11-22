@@ -24,10 +24,12 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/durationpb"
+	"k8s.io/klog/v2"
 
+	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/monitoring/dashboard/v1"
 	"github.com/golang/protobuf/ptypes/empty"
+	"github.com/google/uuid"
 )
 
 type DashboardsService struct {
@@ -55,7 +57,11 @@ func (s *DashboardsService) GetDashboard(ctx context.Context, req *pb.GetDashboa
 }
 
 func (s *DashboardsService) CreateDashboard(ctx context.Context, req *pb.CreateDashboardRequest) (*pb.Dashboard, error) {
-	reqName := req.GetDashboard().GetName() // req.GetParent() + "/dashboards/" + req.GetDashboard().GetName()
+	reqName := req.GetDashboard().GetName()
+	if reqName == "" {
+		reqName = req.GetParent() + "/dashboards/" + uuid.New().String()
+	}
+
 	name, err := s.parseDashboardName(reqName)
 	if err != nil {
 		return nil, err
@@ -95,8 +101,14 @@ func (d *dashboardDefaulter) visitDashboard(obj *pb.Dashboard) {
 	switch layout := obj.Layout.(type) {
 	case *pb.Dashboard_ColumnLayout:
 		d.visitColumnLayout(layout.ColumnLayout)
+	case *pb.Dashboard_RowLayout:
+		d.visitRowLayout(layout.RowLayout)
 	case *pb.Dashboard_MosaicLayout:
 		d.visitMosaicLayout(layout.MosaicLayout)
+	case *pb.Dashboard_GridLayout:
+		d.visitGridLayout(layout.GridLayout)
+	default:
+		klog.Fatalf("unknown layout type %T in mockgcp dashboards", layout)
 	}
 }
 
@@ -108,19 +120,51 @@ func (d *dashboardDefaulter) visitColumnLayout(obj *pb.ColumnLayout) {
 	}
 }
 
+func (d *dashboardDefaulter) visitRowLayout(obj *pb.RowLayout) {
+	for _, widget := range obj.Rows {
+		for _, widget := range widget.Widgets {
+			d.visitWidget(widget)
+		}
+	}
+}
+
 func (d *dashboardDefaulter) visitMosaicLayout(obj *pb.MosaicLayout) {
 	for _, tile := range obj.Tiles {
 		d.visitWidget(tile.Widget)
 	}
 }
 
+func (d *dashboardDefaulter) visitGridLayout(obj *pb.GridLayout) {
+	for _, widget := range obj.Widgets {
+		d.visitWidget(widget)
+	}
+}
+
 func (d *dashboardDefaulter) visitWidget(obj *pb.Widget) {
 	switch content := obj.Content.(type) {
+	case *pb.Widget_AlertChart:
+		d.visitAlertChart(content.AlertChart)
+
+	case *pb.Widget_CollapsibleGroup:
+		d.visitCollapsibleGroup(content.CollapsibleGroup)
+
+	case *pb.Widget_ErrorReportingPanel:
+		d.visitErrorReportingPanel(content.ErrorReportingPanel)
+
+	case *pb.Widget_IncidentList:
+		d.visitIncidentList(content.IncidentList)
+
 	case *pb.Widget_XyChart:
 		d.visitXYChartWidget(content)
 
 	case *pb.Widget_Scorecard:
 		d.visitScorecardWidget(content)
+
+	case *pb.Widget_SectionHeader:
+		d.visitSectionHeader(content.SectionHeader)
+
+	case *pb.Widget_SingleViewGroup:
+		d.visitSingleViewGroup(content.SingleViewGroup)
 
 	case *pb.Widget_Text:
 		d.visitTextWidget(content)
@@ -130,7 +174,25 @@ func (d *dashboardDefaulter) visitWidget(obj *pb.Widget) {
 
 	case *pb.Widget_TimeSeriesTable:
 		d.visitTimeSeriesTable(content.TimeSeriesTable)
+
+	case *pb.Widget_LogsPanel:
+		d.visitLogsPanel(content.LogsPanel)
+
+	default:
+		klog.Fatalf("unknown widget type %T in mockgcp dashboards", content)
 	}
+}
+
+func (d *dashboardDefaulter) visitAlertChart(obj *pb.AlertChart) {
+}
+
+func (d *dashboardDefaulter) visitCollapsibleGroup(obj *pb.CollapsibleGroup) {
+}
+
+func (d *dashboardDefaulter) visitErrorReportingPanel(obj *pb.ErrorReportingPanel) {
+}
+
+func (d *dashboardDefaulter) visitIncidentList(obj *pb.IncidentList) {
 }
 
 func (d *dashboardDefaulter) visitXYChartWidget(obj *pb.Widget_XyChart) {
@@ -151,6 +213,12 @@ func (d *dashboardDefaulter) visitXYChartWidget(obj *pb.Widget_XyChart) {
 func (d *dashboardDefaulter) visitScorecardWidget(obj *pb.Widget_Scorecard) {
 }
 
+func (d *dashboardDefaulter) visitSectionHeader(obj *pb.SectionHeader) {
+}
+
+func (d *dashboardDefaulter) visitSingleViewGroup(obj *pb.SingleViewGroup) {
+}
+
 func (d *dashboardDefaulter) visitTextWidget(obj *pb.Widget_Text) {
 	if obj.Text.Style == nil {
 		obj.Text.Style = &pb.Text_TextStyle{}
@@ -158,6 +226,9 @@ func (d *dashboardDefaulter) visitTextWidget(obj *pb.Widget_Text) {
 	if obj.Text.Format == pb.Text_FORMAT_UNSPECIFIED {
 		obj.Text.Format = pb.Text_MARKDOWN
 	}
+}
+
+func (d *dashboardDefaulter) visitLogsPanel(obj *pb.LogsPanel) {
 }
 
 func (d *dashboardDefaulter) visitPieChart(obj *pb.PieChart) {
@@ -350,7 +421,7 @@ func (s *MockService) parseDashboardName(name string) (*dashboardName, error) {
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "dashboards" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}
