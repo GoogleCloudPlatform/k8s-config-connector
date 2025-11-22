@@ -1,0 +1,4 @@
+- exec: gcloud beta network-security client-tls-policies import test-${uniqueId} --source=resource.yaml --location=global --project=${projectId}
+- exec: gcloud beta network-security client-tls-policies list --location=global --project=${projectId}
+- exec: gcloud beta network-security client-tls-policies export test-${uniqueId} --location=global --project=${projectId}
+- exec: gcloud beta network-security client-tls-policies delete test-${uniqueId} --location=global --project=${projectId} --quiet
