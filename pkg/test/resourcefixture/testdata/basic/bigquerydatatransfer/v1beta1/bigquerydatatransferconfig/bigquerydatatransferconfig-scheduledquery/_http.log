@@ -128,7 +128,11 @@ X-Xss-Protection: 0
     "write_disposition": "WRITE_APPEND"
   },
   "schedule": "first sunday of quarter 00:00",
-  "state": 2,
+  "scheduleOptionsV2": {
+    "timeBasedSchedule": {
+      "schedule": "first sunday of quarter 00:00"
+    }
+  },
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "userId": "0000000000000000000"
 }
@@ -153,6 +157,7 @@ X-Xss-Protection: 0
 {
   "dataSourceId": "scheduled_query",
   "datasetRegion": "us-central1",
+  "destinationDatasetId": "",
   "displayName": "example of scheduled query",
   "emailPreferences": {},
   "name": "projects/${projectNumber}/locations/us-central1/transferConfigs/${transferConfigID}",
@@ -166,7 +171,12 @@ X-Xss-Protection: 0
     "write_disposition": "WRITE_APPEND"
   },
   "schedule": "first sunday of quarter 00:00",
-  "state": 2,
+  "scheduleOptions": {},
+  "scheduleOptionsV2": {
+    "timeBasedSchedule": {
+      "schedule": "first sunday of quarter 00:00"
+    }
+  },
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "userId": "0000000000000000000"
 }
@@ -181,6 +191,7 @@ X-Goog-Request-Params: transfer_config.name=projects%2F${projectId}%2Flocations%
 {
   "dataSourceId": "scheduled_query",
   "datasetRegion": "us-central1",
+  "destinationDatasetId": "",
   "displayName": "an updated example of scheduled query",
   "emailPreferences": {},
   "name": "projects/${projectId}/locations/us-central1/transferConfigs/${transferConfigID}",
@@ -194,7 +205,12 @@ X-Goog-Request-Params: transfer_config.name=projects%2F${projectId}%2Flocations%
     "write_disposition": "WRITE_TRUNCATE"
   },
   "schedule": "every 24 hours",
-  "state": 2,
+  "scheduleOptions": {},
+  "scheduleOptionsV2": {
+    "timeBasedSchedule": {
+      "schedule": "first sunday of quarter 00:00"
+    }
+  },
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "userId": "0000000000000000000"
 }
@@ -212,6 +228,7 @@ X-Xss-Protection: 0
 {
   "dataSourceId": "scheduled_query",
   "datasetRegion": "us-central1",
+  "destinationDatasetId": "",
   "displayName": "an updated example of scheduled query",
   "emailPreferences": {},
   "name": "projects/${projectNumber}/locations/us-central1/transferConfigs/${transferConfigID}",
@@ -225,7 +242,12 @@ X-Xss-Protection: 0
     "write_disposition": "WRITE_TRUNCATE"
   },
   "schedule": "every 24 hours",
-  "state": 2,
+  "scheduleOptions": {},
+  "scheduleOptionsV2": {
+    "timeBasedSchedule": {
+      "schedule": "every 24 hours"
+    }
+  },
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "userId": "0000000000000000000"
 }
@@ -250,6 +272,7 @@ X-Xss-Protection: 0
 {
   "dataSourceId": "scheduled_query",
   "datasetRegion": "us-central1",
+  "destinationDatasetId": "",
   "displayName": "an updated example of scheduled query",
   "emailPreferences": {},
   "name": "projects/${projectNumber}/locations/us-central1/transferConfigs/${transferConfigID}",
@@ -264,7 +287,11 @@ X-Xss-Protection: 0
   },
   "schedule": "every 24 hours",
   "scheduleOptions": {},
-  "state": 2,
+  "scheduleOptionsV2": {
+    "timeBasedSchedule": {
+      "schedule": "every 24 hours"
+    }
+  },
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "userId": "0000000000000000000"
 }
