@@ -1103,6 +1103,12 @@ spec:
                 description: A unique specifier for the ComposerEnvironment resource
                   in GCP.
                 type: string
+              lastModifiedCookie:
+                description: LastModifiedCookie contains hashes of the last applied
+                  spec and the last observed GCP state. The format is "<spec-hash>/<gcp-hash>".
+                  This is used by the controller to detect if the user's desired state
+                  has changed or if the GCP resource has drifted.
+                type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
                   that was most recently observed by the Config Connector controller.
@@ -2280,6 +2286,12 @@ spec:
               externalRef:
                 description: A unique specifier for the ComposerEnvironment resource
                   in GCP.
+                type: string
+              lastModifiedCookie:
+                description: LastModifiedCookie contains hashes of the last applied
+                  spec and the last observed GCP state. The format is "<spec-hash>/<gcp-hash>".
+                  This is used by the controller to detect if the user's desired state
+                  has changed or if the GCP resource has drifted.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource

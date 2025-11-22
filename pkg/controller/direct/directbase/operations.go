@@ -129,6 +129,9 @@ func (o *operationBase) UpdateStatus(ctx context.Context, typedStatus any, ready
 		if status["externalRef"] == nil {
 			status["externalRef"] = old["externalRef"]
 		}
+		if status["lastModifiedCookie"] == nil {
+			status["lastModifiedCookie"] = old["lastModifiedCookie"]
+		}
 	}
 
 	status["observedGeneration"] = o.object.GetGeneration()
