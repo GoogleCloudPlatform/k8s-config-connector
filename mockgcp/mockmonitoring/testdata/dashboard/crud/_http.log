@@ -1,0 +1,181 @@
+POST https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards?alt=json&validateOnly=False
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "displayName": "test-dashboard1",
+  "gridLayout": {
+    "widgets": [
+      {
+        "text": {
+          "content": "Hello World"
+        }
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "test-dashboard1",
+  "etag": "abcdef0123A=",
+  "gridLayout": {
+    "widgets": [
+      {
+        "text": {
+          "content": "Hello World",
+          "format": "MARKDOWN",
+          "style": {}
+        }
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/dashboards/${dashboardID}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/projects/${projectNumber}/dashboards/${dashboardID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "test-dashboard1",
+  "etag": "abcdef0123A=",
+  "gridLayout": {
+    "widgets": [
+      {
+        "text": {
+          "content": "Hello World",
+          "format": "MARKDOWN",
+          "style": {}
+        }
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/dashboards/${dashboardID}"
+}
+
+---
+
+PATCH https://monitoring.googleapis.com/v1/projects/${projectNumber}/dashboards/${dashboardID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "displayName": "test-dashboard2",
+  "etag": "abcdef0123A=",
+  "gridLayout": {
+    "widgets": [
+      {
+        "text": {
+          "content": "Hello World (updated!)"
+        }
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "test-dashboard2",
+  "etag": "abcdef0123A=",
+  "gridLayout": {
+    "widgets": [
+      {
+        "text": {
+          "content": "Hello World (updated!)",
+          "format": "MARKDOWN",
+          "style": {}
+        }
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/dashboards/${dashboardID}"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v1/projects/${projectNumber}/dashboards/${dashboardID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "test-dashboard2",
+  "etag": "abcdef0123A=",
+  "gridLayout": {
+    "widgets": [
+      {
+        "text": {
+          "content": "Hello World (updated!)",
+          "format": "MARKDOWN",
+          "style": {}
+        }
+      }
+    ]
+  },
+  "name": "projects/${projectNumber}/dashboards/${dashboardID}"
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v1/projects/${projectNumber}/dashboards/${dashboardID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
