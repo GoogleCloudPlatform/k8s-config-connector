@@ -1,0 +1,3 @@
+description: "Test Client TLS Policy"
+sni: "example.com"
+name: "not-obvious-why-this-is-needed-because-it-is-replaced"

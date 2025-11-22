@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// proto.service: google.cloud.dataproc.v1
+// proto.service: google.cloud.dataproc.v1.BatchController
 // proto.message: google.cloud.dataproc.v1.Batch
 
 package mockdataproc

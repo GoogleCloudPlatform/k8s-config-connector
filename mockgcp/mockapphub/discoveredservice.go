@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// proto.service: google.cloud.apphub.v1
+// proto.service: google.cloud.apphub.v1.AppHub
 // proto.message: google.cloud.apphub.v1.DiscoveredService
 
 package mockapphub

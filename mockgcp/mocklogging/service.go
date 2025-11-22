@@ -14,8 +14,8 @@
 
 // +tool:mockgcp-service
 // http.host: logging.googleapis.com
-// proto.service: mockgcp.logging.v2.ConfigServiceV2
-// proto.service: mockgcp.logging.v2.MetricsServiceV2
+// proto.service: google.logging.v2.ConfigServiceV2
+// proto.service: google.logging.v2.MetricsServiceV2
 
 package mocklogging
 
