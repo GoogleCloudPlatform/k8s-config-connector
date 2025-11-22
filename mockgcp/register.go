@@ -21,6 +21,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapigateway"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockartifactregistry"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbackupdr"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbeyondcorp"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigtable"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbilling"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbillingbudgets"

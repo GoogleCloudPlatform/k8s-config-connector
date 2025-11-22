@@ -18,6 +18,7 @@ package mockserviceusage
 // services not on the list give an error.
 var allServices = []string{
 	"apigee.googleapis.com",
+	"beyondcorp.googleapis.com",
 	"bigquery.googleapis.com",
 	"cloudresourcemanager.googleapis.com",
 	"compute.googleapis.com",
