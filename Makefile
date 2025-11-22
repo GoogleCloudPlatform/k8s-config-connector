@@ -328,16 +328,16 @@ all-manifests: crd-manifests rbac-manifests build-operator-manifests
 # Build kcc manifests for standard GKE clusters
 .PHONY: config-connector-manifests-standard
 config-connector-manifests-standard: build-operator-manifests
-	kustomize build config/installbundle/release-manifests/standard
+	kustomize build config/installbundle/release-manifests/standard -o config/installbundle/release-manifests/standard/manifests.yaml
 
 # Build kcc manifests for autopilot clusters
 .PHONY: config-connector-manifests-autopilot
 config-connector-manifests-autopilot: build-operator-manifests
-	kustomize build config/installbundle/release-manifests/autopilot
+	kustomize build config/installbundle/release-manifests/autopilot -o config/installbundle/release-manifests/autopilot/manifests.yaml
 
 .PHONY: build-operator-manifests
 build-operator-manifests:
-	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.14.0 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases	
+	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases	
 	make -C operator docker-build
 
 .PHONY: push-operator-manifest
