@@ -199,7 +199,7 @@ func DevicePolicy_FromProto(mapCtx *direct.MapContext, in *pb.DevicePolicy) *krm
 	out := &krm.DevicePolicy{}
 	out.RequireScreenlock = direct.LazyPtr(in.GetRequireScreenlock())
 	out.AllowedEncryptionStatuses = direct.EnumSlice_FromProto(mapCtx, in.AllowedEncryptionStatuses)
-	out.OSConstraints = direct.Slice_FromProto(mapCtx, in.OSConstraints, OSConstraint_FromProto)
+	out.OSConstraints = direct.Slice_FromProto(mapCtx, in.OsConstraints, OSConstraint_FromProto)
 	out.AllowedDeviceManagementLevels = direct.EnumSlice_FromProto(mapCtx, in.AllowedDeviceManagementLevels)
 	out.RequireAdminApproval = direct.LazyPtr(in.GetRequireAdminApproval())
 	out.RequireCorpOwned = direct.LazyPtr(in.GetRequireCorpOwned())
