@@ -211,6 +211,10 @@ func (s *AlloyDBAdminV1) UpdateInstance(ctx context.Context, req *pb.UpdateInsta
 			obj.PscInstanceConfig = req.Instance.GetPscInstanceConfig()
 		case "networkConfig":
 			obj.NetworkConfig = req.Instance.GetNetworkConfig()
+		case "observabilityConfig":
+			obj.ObservabilityConfig = req.Instance.GetObservabilityConfig()
+		case "queryInsightsConfig":
+			obj.QueryInsightsConfig = req.Instance.GetQueryInsightsConfig()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
 		}
