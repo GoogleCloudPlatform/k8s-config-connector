@@ -21,6 +21,10 @@ spec:
   continuousBackupConfig:
     enabled: true
     recoveryWindowDays: 14
+  initialUser:
+    password:
+      value: postgres
+    user: postgres
   location: us-west2
   networkConfig:
     networkRef:

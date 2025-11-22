@@ -30,3 +30,7 @@ spec:
       name: computenetwork-${uniqueId}
   projectRef:
     external: ${projectId}
+  initialUser:
+    user: postgres
+    password:
+      value: postgres

@@ -26,6 +26,10 @@ spec:
       name: computenetwork-${uniqueId}
   projectRef:
     external: ${projectId}
+  initialUser:
+    user: postgres
+    password:
+      value: postgres
   automatedBackupPolicy:
     enabled: true
     location: northamerica-northeast1

@@ -389,6 +389,12 @@ func (a *ClusterAdapter) Create(ctx context.Context, createOp *directbase.Create
 		return a.updateStatus(ctx, mapCtx, createOp, created)
 	}
 
+	// Initial user to setup during cluster creation. Required.
+	// If used in `RestoreCluster` this is ignored.
+	if resource.InitialUser == nil || resource.InitialUser.Password == "" {
+		return fmt.Errorf("initialUser is required during cluster creation")
+	}
+
 	if resource.ClusterType == alloydbpb.Cluster_SECONDARY {
 		if resource.SecondaryConfig == nil {
 			return fmt.Errorf("cannot create secondary cluster %s without secondaryConfig", a.id)

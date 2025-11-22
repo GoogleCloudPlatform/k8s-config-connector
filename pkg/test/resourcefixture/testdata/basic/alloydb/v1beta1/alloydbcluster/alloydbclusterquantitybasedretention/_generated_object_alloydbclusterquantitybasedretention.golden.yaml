@@ -27,6 +27,10 @@ spec:
         minutes: 0
         nanos: 0
         seconds: 0
+  initialUser:
+    password:
+      value: postgres
+    user: postgres
   location: northamerica-northeast1
   networkConfig:
     networkRef:

@@ -26,9 +26,12 @@ metadata:
 spec:
   location: europe-west4
   networkRef:
-    external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+    name: computenetwork-${uniqueId}
   projectRef:
     external: ${projectId}
+  initialUser:
+    password:
+      value: alloydb-pg
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeAddress

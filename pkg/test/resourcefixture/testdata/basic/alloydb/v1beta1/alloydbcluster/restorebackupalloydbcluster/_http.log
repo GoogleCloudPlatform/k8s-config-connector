@@ -157,6 +157,9 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 {
   "clusterType": "PRIMARY",
+  "initialUser": {
+    "password": "alloydb-pg"
+  },
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -266,9 +269,7 @@ X-Xss-Protection: 0
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
-    "geminiConfig": {
-      "entitled": true
-    },
+    "geminiConfig": {},
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -279,7 +280,7 @@ X-Xss-Protection: 0
       "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
-    "serviceAccountEmail": "c-${projectNumber}-694676a3@gcp-sa-alloydb.iam.gserviceaccount.com",
+    "serviceAccountEmail": "c-${projectNumber}-ab8ffdb8@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -353,9 +354,7 @@ X-Xss-Protection: 0
   "encryptionInfo": {
     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
-  "geminiConfig": {
-    "entitled": true
-  },
+  "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -366,7 +365,7 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
-  "serviceAccountEmail": "c-${projectNumber}-694676a3@gcp-sa-alloydb.iam.gserviceaccount.com",
+  "serviceAccountEmail": "c-${projectNumber}-ab8ffdb8@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": "READY",
   "subscriptionType": "STANDARD",
   "uid": "111111111111111111111",
@@ -604,11 +603,15 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "generative-language": "enabled",
+    "managed-by-cnrm": "true"
+  },
   "lifecycleState": "ACTIVE",
   "name": "${projectId}",
   "parent": {
-    "id": "${folderID}",
-    "type": "organization"
+    "id": "185572751725",
+    "type": "folder"
   },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
@@ -648,11 +651,15 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "generative-language": "enabled",
+    "managed-by-cnrm": "true"
+  },
   "lifecycleState": "ACTIVE",
   "name": "${projectId}",
   "parent": {
-    "id": "${folderID}",
-    "type": "organization"
+    "id": "185572751725",
+    "type": "folder"
   },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
@@ -682,7 +689,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "name": "operations/pssn.p24-${projectNumber}-6f2009cb-1c24-435a-a1ed-33c5d2858edd"
+  "name": "operations/pssn.p24-${projectNumber}-39a30821-e02a-4e1b-8f14-3d463a8add43"
 }
 
 ---
@@ -702,7 +709,7 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "operations/pssn.p24-${projectNumber}-6f2009cb-1c24-435a-a1ed-33c5d2858edd",
+  "name": "operations/pssn.p24-${projectNumber}-39a30821-e02a-4e1b-8f14-3d463a8add43",
   "response": {
     "@type": "type.googleapis.com/google.cloud.servicenetworking.v1.Connection",
     "network": "projects/${projectNumber}/global/networks/${networkID}",
@@ -730,11 +737,15 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "generative-language": "enabled",
+    "managed-by-cnrm": "true"
+  },
   "lifecycleState": "ACTIVE",
   "name": "${projectId}",
   "parent": {
-    "id": "${folderID}",
-    "type": "organization"
+    "id": "185572751725",
+    "type": "folder"
   },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
@@ -836,6 +847,43 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${addressID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "networkTier": "PREMIUM",
+  "prefixLength": 16,
+  "purpose": "VPC_PEERING",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
+  "status": "RESERVED"
+}
+
+---
+
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -876,10 +924,10 @@ X-Xss-Protection: 0
       "importCustomRoutes": false,
       "importSubnetRoutesWithPublicIp": false,
       "name": "servicenetworking-googleapis-com",
-      "network": "https://www.googleapis.com/compute/beta/projects/zf6836615480e5edfp-tp/global/networks/servicenetworking",
+      "network": "https://www.googleapis.com/compute/beta/projects/u47aca250465b6c90p-tp/global/networks/servicenetworking",
       "stackType": "IPV4_ONLY",
       "state": "ACTIVE",
-      "stateDetails": "[2025-09-04T15:59:09.314-07:00]: Connected.",
+      "stateDetails": "[2025-11-17T21:54:40.866-08:00]: Connected.",
       "updateStrategy": "INDEPENDENT"
     }
   ],
@@ -957,9 +1005,7 @@ X-Xss-Protection: 0
   "encryptionInfo": {
     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
-  "geminiConfig": {
-    "entitled": true
-  },
+  "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -970,48 +1016,11 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
-  "serviceAccountEmail": "c-${projectNumber}-694676a3@gcp-sa-alloydb.iam.gserviceaccount.com",
+  "serviceAccountEmail": "c-${projectNumber}-ab8ffdb8@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": "READY",
   "subscriptionType": "STANDARD",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "address": "8.8.8.8",
-  "addressType": "INTERNAL",
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "description": "",
-  "id": "000000000000000000000",
-  "kind": "compute#address",
-  "labelFingerprint": "abcdef0123A=",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "${addressID}",
-  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "networkTier": "PREMIUM",
-  "prefixLength": 16,
-  "purpose": "VPC_PEERING",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
-  "status": "RESERVED"
 }
 
 ---
@@ -1054,9 +1063,7 @@ X-Xss-Protection: 0
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "gcaConfig": {},
-    "geminiConfig": {
-      "entitled": true
-    },
+    "geminiConfig": {},
     "instanceType": "PRIMARY",
     "ipAddress": "10.1.2.3",
     "labels": {
@@ -1066,10 +1073,11 @@ X-Xss-Protection: 0
     "machineConfig": {
       "cpuCount": 2
     },
+    "maintenanceVersionName": "POSTGRES_16.20250910.01_18",
     "name": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
     "nodes": [
       {
-        "zoneId": "europe-west4-b"
+        "zoneId": "europe-west4-c"
       }
     ],
     "observabilityConfig": {
@@ -1193,21 +1201,21 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.alloydb.v1beta.Backup",
     "clusterName": "projects/${projectNumber}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}",
-    "clusterUid": "694676a3-8656-4c29-a76b-a3e1a69e4c29",
-    "createCompletionTime": "2025-09-04T23:06:20.922543666Z",
+    "clusterUid": "ab8ffdb8-a5f1-4a62-ad89-66cb07cbb579",
+    "createCompletionTime": "2025-11-18T06:01:54.880515494Z",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "databaseVersion": "POSTGRES_16",
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
-    "expiryTime": "2026-09-04T23:05:56.456271Z",
+    "expiryTime": "2026-11-18T06:01:31.088780Z",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/locations/europe-west4/backups/alloydbbackup-${uniqueId}",
     "reconciling": false,
-    "sizeBytes": "43532686",
+    "sizeBytes": "45927275",
     "state": "READY",
     "type": "ON_DEMAND",
     "uid": "111111111111111111111",
@@ -1233,21 +1241,21 @@ X-Xss-Protection: 0
 
 {
   "clusterName": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}",
-  "clusterUid": "694676a3-8656-4c29-a76b-a3e1a69e4c29",
-  "createCompletionTime": "2025-09-04T23:06:20.922543666Z",
+  "clusterUid": "ab8ffdb8-a5f1-4a62-ad89-66cb07cbb579",
+  "createCompletionTime": "2025-11-18T06:01:54.880515494Z",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseVersion": "POSTGRES_16",
   "encryptionInfo": {
     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
-  "expiryTime": "2026-09-04T23:05:56.456271Z",
+  "expiryTime": "2026-11-18T06:01:31.088780Z",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/europe-west4/backups/alloydbbackup-${uniqueId}",
   "reconciling": false,
-  "sizeBytes": "43532686",
+  "sizeBytes": "45927275",
   "state": "READY",
   "type": "ON_DEMAND",
   "uid": "111111111111111111111",
@@ -1329,61 +1337,6 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "lifecycleState": "ACTIVE",
-  "name": "${projectId}",
-  "parent": {
-    "id": "${folderID}",
-    "type": "organization"
-  },
-  "projectId": "${projectId}",
-  "projectNumber": "${projectNumber}"
-}
-
----
-
-GET https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json&network=projects%2F${projectNumber}%2Fglobal%2Fnetworks%2F${networkID}&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "connections": [
-    {
-      "network": "projects/${projectNumber}/global/networks/${networkID}",
-      "peering": "servicenetworking-googleapis-com",
-      "reservedPeeringRanges": [
-        "${addressID}"
-      ],
-      "service": "services/servicenetworking.googleapis.com"
-    }
-  ]
-}
-
----
-
 GET https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/europe-west4/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -1439,7 +1392,7 @@ X-Xss-Protection: 0
     },
     "backupSource": {
       "backupName": "projects/${projectNumber}/locations/europe-west4/backups/alloydbbackup-${uniqueId}",
-      "backupUid": "3a7bdcbf-6ad9-4ce1-8196-aace08a2e743"
+      "backupUid": "612dfeb1-a01d-401e-a018-4affbb1395ab"
     },
     "clusterType": "PRIMARY",
     "continuousBackupConfig": {
@@ -1466,9 +1419,7 @@ X-Xss-Protection: 0
     "encryptionInfo": {
       "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
     },
-    "geminiConfig": {
-      "entitled": true
-    },
+    "geminiConfig": {},
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -1479,7 +1430,7 @@ X-Xss-Protection: 0
       "network": "projects/${projectNumber}/global/networks/${networkID}"
     },
     "reconciling": false,
-    "serviceAccountEmail": "c-${projectNumber}-03d774b5@gcp-sa-alloydb.iam.gserviceaccount.com",
+    "serviceAccountEmail": "c-${projectNumber}-d0a84b1c@gcp-sa-alloydb.iam.gserviceaccount.com",
     "state": "READY",
     "subscriptionType": "STANDARD",
     "uid": "111111111111111111111",
@@ -1531,7 +1482,7 @@ X-Xss-Protection: 0
   },
   "backupSource": {
     "backupName": "projects/${projectNumber}/locations/europe-west4/backups/alloydbbackup-${uniqueId}",
-    "backupUid": "3a7bdcbf-6ad9-4ce1-8196-aace08a2e743"
+    "backupUid": "612dfeb1-a01d-401e-a018-4affbb1395ab"
   },
   "clusterType": 1,
   "continuousBackupConfig": {
@@ -1558,9 +1509,7 @@ X-Xss-Protection: 0
   "encryptionInfo": {
     "encryptionType": 1
   },
-  "geminiConfig": {
-    "entitled": true
-  },
+  "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -1571,7 +1520,7 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
-  "serviceAccountEmail": "c-${projectNumber}-03d774b5@gcp-sa-alloydb.iam.gserviceaccount.com",
+  "serviceAccountEmail": "c-${projectNumber}-d0a84b1c@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": 1,
   "subscriptionType": 1,
   "uid": "111111111111111111111",
@@ -1660,21 +1609,21 @@ X-Xss-Protection: 0
 
 {
   "clusterName": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}",
-  "clusterUid": "694676a3-8656-4c29-a76b-a3e1a69e4c29",
-  "createCompletionTime": "2025-09-04T23:06:20.922543666Z",
+  "clusterUid": "ab8ffdb8-a5f1-4a62-ad89-66cb07cbb579",
+  "createCompletionTime": "2025-11-18T06:01:54.880515494Z",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseVersion": "POSTGRES_16",
   "encryptionInfo": {
     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
-  "expiryTime": "2026-09-04T23:05:56.456271Z",
+  "expiryTime": "2026-11-18T06:01:31.088780Z",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/europe-west4/backups/alloydbbackup-${uniqueId}",
   "reconciling": false,
-  "sizeBytes": "43532686",
+  "sizeBytes": "45927275",
   "state": "READY",
   "type": "ON_DEMAND",
   "uid": "111111111111111111111",
@@ -1770,9 +1719,7 @@ X-Xss-Protection: 0
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "gcaConfig": {},
-  "geminiConfig": {
-    "entitled": true
-  },
+  "geminiConfig": {},
   "instanceType": 1,
   "ipAddress": "10.1.2.3",
   "labels": {
@@ -1782,10 +1729,11 @@ X-Xss-Protection: 0
   "machineConfig": {
     "cpuCount": 2
   },
+  "maintenanceVersionName": "POSTGRES_16.20250910.01_18",
   "name": "projects/${projectId}/locations/europe-west4/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
   "nodes": [
     {
-      "zoneId": "europe-west4-b"
+      "zoneId": "europe-west4-c"
     }
   ],
   "observabilityConfig": {
@@ -1847,6 +1795,65 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "generative-language": "enabled",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycleState": "ACTIVE",
+  "name": "${projectId}",
+  "parent": {
+    "id": "185572751725",
+    "type": "folder"
+  },
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://servicenetworking.googleapis.com/v1/services/servicenetworking.googleapis.com/connections?alt=json&network=projects%2F${projectNumber}%2Fglobal%2Fnetworks%2F${networkID}&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "connections": [
+    {
+      "network": "projects/${projectNumber}/global/networks/${networkID}",
+      "peering": "servicenetworking-googleapis-com",
+      "reservedPeeringRanges": [
+        "${addressID}"
+      ],
+      "service": "services/servicenetworking.googleapis.com"
+    }
+  ]
+}
+
+---
+
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -1887,10 +1894,10 @@ X-Xss-Protection: 0
       "importCustomRoutes": false,
       "importSubnetRoutesWithPublicIp": false,
       "name": "servicenetworking-googleapis-com",
-      "network": "https://www.googleapis.com/compute/beta/projects/zf6836615480e5edfp-tp/global/networks/servicenetworking",
+      "network": "https://www.googleapis.com/compute/beta/projects/u47aca250465b6c90p-tp/global/networks/servicenetworking",
       "stackType": "IPV4_ONLY",
       "state": "ACTIVE",
-      "stateDetails": "[2025-09-04T15:59:09.314-07:00]: Connected.",
+      "stateDetails": "[2025-11-17T21:54:40.866-08:00]: Connected.",
       "updateStrategy": "INDEPENDENT"
     }
   ],
@@ -1968,9 +1975,7 @@ X-Xss-Protection: 0
   "encryptionInfo": {
     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
-  "geminiConfig": {
-    "entitled": true
-  },
+  "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -1981,11 +1986,48 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
-  "serviceAccountEmail": "c-${projectNumber}-694676a3@gcp-sa-alloydb.iam.gserviceaccount.com",
+  "serviceAccountEmail": "c-${projectNumber}-ab8ffdb8@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": "READY",
   "subscriptionType": "STANDARD",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "address": "8.8.8.8",
+  "addressType": "INTERNAL",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "",
+  "id": "000000000000000000000",
+  "kind": "compute#address",
+  "labelFingerprint": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "${addressID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "networkTier": "PREMIUM",
+  "prefixLength": 16,
+  "purpose": "VPC_PEERING",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/addresses/${addressID}",
+  "status": "RESERVED"
 }
 
 ---
@@ -2039,11 +2081,15 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "generative-language": "enabled",
+    "managed-by-cnrm": "true"
+  },
   "lifecycleState": "ACTIVE",
   "name": "${projectId}",
   "parent": {
-    "id": "${folderID}",
-    "type": "organization"
+    "id": "185572751725",
+    "type": "folder"
   },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
@@ -2094,11 +2140,15 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "generative-language": "enabled",
+    "managed-by-cnrm": "true"
+  },
   "lifecycleState": "ACTIVE",
   "name": "${projectId}",
   "parent": {
-    "id": "${folderID}",
-    "type": "organization"
+    "id": "185572751725",
+    "type": "folder"
   },
   "projectId": "${projectId}",
   "projectNumber": "${projectNumber}"
@@ -2335,9 +2385,7 @@ X-Xss-Protection: 0
   "encryptionInfo": {
     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
   },
-  "geminiConfig": {
-    "entitled": true
-  },
+  "geminiConfig": {},
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -2348,7 +2396,7 @@ X-Xss-Protection: 0
     "network": "projects/${projectNumber}/global/networks/${networkID}"
   },
   "reconciling": false,
-  "serviceAccountEmail": "c-${projectNumber}-694676a3@gcp-sa-alloydb.iam.gserviceaccount.com",
+  "serviceAccountEmail": "c-${projectNumber}-ab8ffdb8@gcp-sa-alloydb.iam.gserviceaccount.com",
   "state": "READY",
   "subscriptionType": "STANDARD",
   "uid": "111111111111111111111",

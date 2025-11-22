@@ -164,6 +164,10 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2
     "enabled": true,
     "recoveryWindowDays": 14
   },
+  "initialUser": {
+    "password": "postgres",
+    "user": "postgres"
+  },
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -386,7 +390,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy
+PATCH https://alloydb.googleapis.com/v1beta/projects/${projectId}/locations/us-west2/clusters/alloydbcluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupPolicy%2CinitialUser
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-west2%2Fclusters%2Falloydbcluster-${uniqueId}
@@ -426,6 +430,10 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-wes
   },
   "databaseVersion": 4,
   "geminiConfig": {},
+  "initialUser": {
+    "password": "postgres",
+    "user": "postgres"
+  },
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
