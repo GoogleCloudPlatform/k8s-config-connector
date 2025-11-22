@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -45,7 +46,7 @@ type AccessContextManagerAccessLevelSpec struct {
 
 	// A `CustomLevel` written in the Common Expression Language.
 	// +kcc:proto:field=google.identity.accesscontextmanager.v1.AccessLevel.custom
-	Custom *CustomLevel `json:"custom,omitempty"`
+	Custom *AccessLevelCustom `json:"custom,omitempty"`
 }
 
 // AccessContextManagerAccessLevelStatus defines the config connector machine state of AccessContextManagerAccessLevel
@@ -61,15 +62,18 @@ type AccessContextManagerAccessLevelStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
+	// +optional
 	ObservedState *AccessContextManagerAccessLevelObservedState `json:"observedState,omitempty"`
 
 	// Output only. Time the `AccessLevel` was created in UTC.
 	// +kcc:proto:field=google.identity.accesscontextmanager.v1.AccessLevel.create_time
-	CreateTime *string `json:"createTime,omitempty"`
+	// +optional
+	// CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. Time the `AccessLevel` was updated in UTC.
 	// +kcc:proto:field=google.identity.accesscontextmanager.v1.AccessLevel.update_time
-	UpdateTime *string `json:"updateTime,omitempty"`
+	// +optional
+	// UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // AccessContextManagerAccessLevelObservedState is the state of the AccessContextManagerAccessLevel resource as most recently observed in GCP.
@@ -81,7 +85,7 @@ type AccessContextManagerAccessLevelObservedState struct {
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // +kubebuilder:resource:categories=gcp,shortName=gcpaccesscontextmanageraccesslevel;gcpaccesscontextmanageraccesslevels
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true";"cnrm.cloud.google.com/managed-by-kcc=true";"cnrm.cloud.google.com/stability-level=stable";"cnrm.cloud.google.com/system=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
@@ -104,6 +108,152 @@ type AccessContextManagerAccessLevelList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []AccessContextManagerAccessLevel `json:"items"`
+}
+
+// +kcc:proto=google.identity.accesscontextmanager.v1.BasicLevel
+type BasicLevel struct {
+	/* How the conditions list should be combined to determine if a request
+	is granted this AccessLevel. If AND is used, each Condition in
+	conditions must be satisfied for the AccessLevel to be applied. If
+	OR is used, at least one Condition in conditions must be satisfied
+	for the AccessLevel to be applied. Default value: "AND" Possible values: ["AND", "OR"]. */
+	// +optional
+	CombiningFunction *string `json:"combiningFunction,omitempty"`
+
+	/* A set of requirements for the AccessLevel to be granted. */
+	Conditions []Condition `json:"conditions"`
+}
+
+// +kcc:proto=google.identity.accesscontextmanager.v1.Condition
+type Condition struct {
+	/* Device specific restrictions, all restrictions must hold for
+	the Condition to be true. If not specified, all devices are
+	allowed. */
+	// +optional
+	DevicePolicy *DevicePolicy `json:"devicePolicy,omitempty"`
+
+	/* A list of CIDR block IP subnetwork specification. May be IPv4
+	or IPv6.
+	Note that for a CIDR IP address block, the specified IP address
+	portion must be properly truncated (i.e. all the host bits must
+	be zero) or the input is considered malformed. For example,
+	"192.0.2.0/24" is accepted but "192.0.2.1/24" is not. Similarly,
+	for IPv6, "2001:db8::/32" is accepted whereas "2001:db8::1/32"
+	is not. The originating IP of a request must be in one of the
+	listed subnets in order for this Condition to be true.
+	If empty, all IP addresses are allowed. */
+	// +optional
+	IpSubnetworks []string `json:"ipSubnetworks,omitempty"`
+
+	/* The request must be made by one of the provided user or service
+	   accounts. Groups are not supported. Syntax: `user:{emailid}` `serviceAccount:{emailid}`
+	   If not specified, a request may come from any user. */
+	// +optional
+	Members []Member `json:"members,omitempty"`
+
+	/* Whether to negate the Condition. If true, the Condition becomes
+	a NAND over its non-empty fields, each field must be false for
+	the Condition overall to be satisfied. Defaults to false. */
+	// +optional
+	Negate *bool `json:"negate,omitempty"`
+
+	/* The request must originate from one of the provided
+	countries/regions.
+	Format: A valid ISO 3166-1 alpha-2 code. */
+	// +optional
+	Regions []string `json:"regions,omitempty"`
+
+	/* A list of other access levels defined in the same `Policy`,
+	   referenced by resource name. Referencing an `AccessLevel` which does not
+	   exist is an error. All access levels listed must be granted for the Condition
+	   to be true. Example: "`accessPolicies/MY_POLICY/accessLevels/LEVEL_NAME"` */
+	// +optional
+	RequiredAccessLevels []AccessLevelRef `json:"requiredAccessLevels,omitempty"`
+}
+
+// +kcc:proto=google.identity.accesscontextmanager.v1.DevicePolicy
+type DevicePolicy struct {
+	/* A list of allowed device management levels.
+	An empty list allows all management levels. Possible values: ["MANAGEMENT_UNSPECIFIED", "NONE", "BASIC", "COMPLETE"]. */
+	// +optional
+	AllowedDeviceManagementLevels []string `json:"allowedDeviceManagementLevels,omitempty"`
+
+	/* A list of allowed encryptions statuses.
+	An empty list allows all statuses. Possible values: ["ENCRYPTION_UNSPECIFIED", "ENCRYPTION_UNSUPPORTED", "UNENCRYPTED", "ENCRYPTED"]. */
+	// +optional
+	AllowedEncryptionStatuses []string `json:"allowedEncryptionStatuses,omitempty"`
+
+	/* A list of allowed OS versions.
+	An empty list allows all types and all versions. */
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.DevicePolicy.OsConstraints
+	// +optional
+	OsConstraints []OsConstraints `json:"osConstraints,omitempty"`
+
+	/* Whether the device needs to be approved by the customer admin. */
+	// +optional
+	RequireAdminApproval *bool `json:"requireAdminApproval,omitempty"`
+
+	/* Whether the device needs to be corp owned. */
+	// +optional
+	RequireCorpOwned *bool `json:"requireCorpOwned,omitempty"`
+
+	/* Whether or not screenlock is required for the DevicePolicy
+	to be true. Defaults to false. */
+	// +kcc:proto:field=google.identity.accesscontextmanager.v1.DevicePolicy.requireScreenLock
+	// +optional
+	RequireScreenLock *bool `json:"requireScreenLock,omitempty"`
+}
+
+// +kcc:proto=google.identity.accesscontextmanager.v1.Member
+type Member struct {
+	// +optional
+	ServiceAccountRef *refs.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
+
+	// +optional
+	User *string `json:"user,omitempty"`
+}
+
+// +kcc:proto=google.identity.accesscontextmanager.v1.OsConstraint
+type OsConstraints struct {
+	/* The minimum allowed OS version. If not set, any version
+	of this OS satisfies the constraint.
+	Format: "major.minor.patch" such as "10.5.301", "9.2.1". */
+	// +optional
+	MinimumVersion *string `json:"minimumVersion,omitempty"`
+
+	/* The operating system type of the device. Possible values: ["OS_UNSPECIFIED", "DESKTOP_MAC", "DESKTOP_WINDOWS", "DESKTOP_LINUX", "DESKTOP_CHROME_OS", "ANDROID", "IOS"]. */
+	OsType string `json:"osType"`
+
+	/* If you specify DESKTOP_CHROME_OS for osType, you can optionally include requireVerifiedChromeOs to require Chrome Verified Access. */
+	// +optional
+	RequireVerifiedChromeOs *bool `json:"requireVerifiedChromeOs,omitempty"`
+}
+
+// +kcc:proto=google.identity.accesscontextmanager.v1.CustomLevel
+type AccessLevelCustom struct {
+	/* Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language.
+	This page details the objects and attributes that are used to the build the CEL expressions for
+	custom access levels - https://cloud.google.com/access-context-manager/docs/custom-access-level-spec. */
+	Expr AccessLevelExpr `json:"expr"`
+}
+
+// +kcc:proto=google.type.Expr
+type AccessLevelExpr struct {
+	/* Description of the expression. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* Textual representation of an expression in Common Expression Language syntax. */
+	// +required
+	Expression *string `json:"expression"`
+
+	/* String indicating the location of the expression for error reporting, e.g. a file name and a position in the file. */
+	// +optional
+	Location *string `json:"location,omitempty"`
+
+	/* Title for the expression, i.e. a short string describing its purpose. */
+	// +optional
+	Title *string `json:"title,omitempty"`
 }
 
 func init() {

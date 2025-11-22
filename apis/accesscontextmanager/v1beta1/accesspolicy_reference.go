@@ -32,7 +32,8 @@ var _ refsv1beta1.ExternalNormalizer = &AccessPolicyRef{}
 // holds the GCP identifier for the KRM object.
 type AccessPolicyRef struct {
 	// A reference to an externally managed AccessContextManagerAccessPolicy resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/accesspolicys/{{accesspolicyID}}".
+	// As per https://docs.cloud.google.com/asset-inventory/docs/asset-names
+	// Should be in the format "accessPolicies/{{accesspolicyID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a AccessContextManagerAccessPolicy resource.
