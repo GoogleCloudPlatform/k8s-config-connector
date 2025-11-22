@@ -11,21 +11,26 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+// +tool:mockgcp-service
+// http.host: networksecurity.googleapis.com
+// proto.service: google.cloud.networksecurity.v1beta1.NetworkSecurity
+
 package mocknetworksecurity
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
 	pb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
-	pbhttp "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/networksecurity/v1beta1"
 )
 
 func init() {
@@ -37,8 +42,6 @@ type MockService struct {
 	*common.MockEnvironment
 	storage    storage.Storage
 	operations *operations.Operations
-
-	v1 *NetworkSecurityServer
 }
 
 // New creates a MockService.
@@ -60,18 +63,25 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
-		pbhttp.RegisterNetworkSecurityHandler,
-		s.operations.RegisterOperationsPath("/v1beta1/{prefix=**}/operations/{name}"),
-	)
+	grpcMux, err := httptogrpc.NewGRPCMux(conn)
 	if err != nil {
-		return nil, err
-	}
-	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
-		if error.Code == 404 {
-			error.Errors = nil
-		}
+		return nil, fmt.Errorf("error building grpc service: %w", err)
 	}
 
-	return mux, nil
+	grpcMux.AddService(pb.NewNetworkSecurityClient(conn))
+
+	grpcMux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
+
+	// mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+	// 	if error.Code == 404 {
+	// 		error.Errors = nil
+	// 	}
+	// }
+
+	return grpcMux, nil
+}
+
+type NetworkSecurityServer struct {
+	*MockService
+	pb.UnimplementedNetworkSecurityServer
 }
