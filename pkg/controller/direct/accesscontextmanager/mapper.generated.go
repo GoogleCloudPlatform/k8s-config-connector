@@ -25,6 +25,38 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AccessContextManagerAccessLevelSpec_FromProto(mapCtx *direct.MapContext, in *pb.AccessLevel) *krm.AccessContextManagerAccessLevelSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessContextManagerAccessLevelSpec{}
+	// MISSING: Name
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Basic = AccessLevelBasic_FromProto(mapCtx, in.GetBasic())
+	out.Custom = AccessLevelCustom_FromProto(mapCtx, in.GetCustom())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
+func AccessContextManagerAccessLevelSpec_ToProto(mapCtx *direct.MapContext, in *krm.AccessContextManagerAccessLevelSpec) *pb.AccessLevel {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AccessLevel{}
+	// MISSING: Name
+	out.Title = AccessContextManagerAccessLevelSpec_Title_ToProto(mapCtx, in.Title)
+	out.Description = direct.ValueOf(in.Description)
+	if oneof := AccessLevelBasic_ToProto(mapCtx, in.Basic); oneof != nil {
+		out.Level = &pb.AccessLevel_Basic{Basic: oneof}
+	}
+	if oneof := AccessLevelCustom_ToProto(mapCtx, in.Custom); oneof != nil {
+		out.Level = &pb.AccessLevel_Custom{Custom: oneof}
+	}
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	return out
+}
 func AccessContextManagerAccessPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AccessPolicy) *krm.AccessContextManagerAccessPolicyObservedState {
 	if in == nil {
 		return nil
