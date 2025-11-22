@@ -58,6 +58,8 @@ type ControllerConfig struct {
 
 	// ProjectMapper maps between project ids and numbers
 	ProjectMapper *projects.ProjectMapper
+
+	PreviewMode bool
 }
 
 func (c *ControllerConfig) Init(ctx context.Context) error {
