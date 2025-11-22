@@ -1,0 +1,69 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// +generated:mapper
+// krm.group: configdelivery.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.configdelivery.v1
+
+package configdelivery
+
+import (
+	pb "cloud.google.com/go/configdelivery/apiv1/configdeliverypb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/configdelivery/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+
+func ConfigDeliveryResourceBundleObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ResourceBundle) *krm.ConfigDeliveryResourceBundleObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConfigDeliveryResourceBundleObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	return out
+}
+func ConfigDeliveryResourceBundleObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ConfigDeliveryResourceBundleObservedState) *pb.ResourceBundle {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourceBundle{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	return out
+}
+func ConfigDeliveryResourceBundleSpec_FromProto(mapCtx *direct.MapContext, in *pb.ResourceBundle) *krm.ConfigDeliveryResourceBundleSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ConfigDeliveryResourceBundleSpec{}
+	// MISSING: Name
+	// MISSING: Labels
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func ConfigDeliveryResourceBundleSpec_ToProto(mapCtx *direct.MapContext, in *krm.ConfigDeliveryResourceBundleSpec) *pb.ResourceBundle {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ResourceBundle{}
+	// MISSING: Name
+	// MISSING: Labels
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}

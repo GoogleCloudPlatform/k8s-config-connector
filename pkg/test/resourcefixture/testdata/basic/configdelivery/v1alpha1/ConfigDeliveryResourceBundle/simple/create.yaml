@@ -1,0 +1,8 @@
+apiVersion: configdelivery.cnrm.cloud.google.com/v1alpha1
+kind: ConfigDeliveryResourceBundle
+metadata:
+  name: configdeliveryresourcebundle-simple
+  labels:
+    label-one: "value-one"
+spec:
+  description: "a simple resource bundle"
