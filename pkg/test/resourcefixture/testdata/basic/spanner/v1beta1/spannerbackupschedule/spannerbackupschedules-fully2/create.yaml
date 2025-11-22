@@ -19,13 +19,14 @@ metadata:
 spec:
   spannerDatabaseRef:
     name: spannerdb-${uniqueId}
-  incrementalBackupSpec: {}
+  fullBackupSpec: {}
   spec:
     cronSpec: 
-      text: 0 3 * * *
-  retentionDuration: "1000000s"
+      text: 0 2 * * *
+  retentionDuration: "1209600s"
   encryptionConfig:
     encryptionType: "CUSTOMER_MANAGED_ENCRYPTION"
-    kmsKeyRef:
-      name: kmscryptokey-${uniqueId}
+    kmsKeyRefs:
+      - name: kmscryptokey-${uniqueId}
+      - name: kmscryptokey-${uniqueId}-2
 
