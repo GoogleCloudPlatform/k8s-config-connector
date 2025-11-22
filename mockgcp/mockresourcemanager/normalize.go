@@ -28,42 +28,46 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
-	if !isCloudResourceManagerAPI(event) {
+	if !isCloudResourceManagerAPI(event.URL()) {
 		return
-
 	}
 	name := ""
 	event.VisitResponseStringValues(func(path string, value string) {
 		if path == ".name" {
 			name = value
 		}
+		if path == ".projectNumber" {
+			replacements.ReplaceStringValue(value, "${projectNumber}")
+		}
 	})
 
-	tokens := strings.Split(name, "/")
-	if len(tokens) == 2 && tokens[0] == "tagKeys" {
-		if name == "namespaced" {
-			// This is actually a search operation: https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys/getNamespaced
-		} else {
-			replacements.ReplaceStringValue(tokens[1], "${tagKeyID}")
+	if name != "" {
+		tokens := strings.Split(name, "/")
+		if len(tokens) == 2 && tokens[0] == "tagKeys" {
+			if name == "namespaced" {
+				// This is actually a search operation: https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys/getNamespaced
+			} else {
+				replacements.ReplaceStringValue(tokens[1], "${tagKeyID}")
+			}
 		}
-	}
-	if len(tokens) == 2 && tokens[0] == "tagValues" {
-		if name == "namespaced" {
-			// This is actually a search operation: https://cloud.google.com/resource-manager/reference/rest/v3/tagValues/getNamespaced
-		} else {
-			replacements.ReplaceStringValue(tokens[1], "${tagValueID}")
+		if len(tokens) == 2 && tokens[0] == "tagValues" {
+			if name == "namespaced" {
+				// This is actually a search operation: https://cloud.google.com/resource-manager/reference/rest/v3/tagValues/getNamespaced
+			} else {
+				replacements.ReplaceStringValue(tokens[1], "${tagValueID}")
+			}
 		}
-	}
-	if len(tokens) == 2 && tokens[0] == "tagBindings" {
-		replacements.ReplaceStringValue(tokens[1], "${tagBindingID}")
+		if len(tokens) == 2 && tokens[0] == "tagBindings" {
+			replacements.ReplaceStringValue(tokens[1], "${tagBindingID}")
+		}
 	}
 }
 
 // isCloudResourceManagerAPI returns true if this is a cloud resource manager URL
-func isCloudResourceManagerAPI(event mockgcpregistry.Event) bool {
-	u, err := url.Parse(event.URL())
+func isCloudResourceManagerAPI(requestURL string) bool {
+	u, err := url.Parse(requestURL)
 	if err != nil {
-		klog.Fatalf("cannot parse URL %q", event.URL())
+		klog.Fatalf("cannot parse URL %q", requestURL)
 	}
 	switch u.Host {
 	case "cloudresourcemanager.googleapis.com":
