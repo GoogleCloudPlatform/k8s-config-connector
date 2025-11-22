@@ -1,0 +1,4 @@
+- exec: gcloud source repos create test-${uniqueId} --project=${projectId}
+- exec: gcloud source repos describe test-${uniqueId} --project=${projectId}
+- exec: gcloud source repos list --project=${projectId}
+- exec: gcloud source repos delete test-${uniqueId} --project=${projectId} --quiet

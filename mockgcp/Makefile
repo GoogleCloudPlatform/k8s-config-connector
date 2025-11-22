@@ -182,7 +182,8 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/modelarmor/v1/service.proto \
 		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
-		./third_party/googleapis/mockgcp/cloud/speech/v2/*.proto
+		./third_party/googleapis/mockgcp/cloud/speech/v2/*.proto \
+		./third_party/googleapis/mockgcp/devtools/sourcerepo/v1/*.proto
 
 
 .PHONY: generate-grpc-for-google-protos
