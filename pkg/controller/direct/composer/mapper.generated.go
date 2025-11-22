@@ -152,22 +152,6 @@ func DatabaseConfig_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseConfig) *
 	out.Zone = direct.ValueOf(in.Zone)
 	return out
 }
-func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krm.EncryptionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EncryptionConfig{}
-	// MISSING: KMSKeyName
-	return out
-}
-func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfig) *pb.EncryptionConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EncryptionConfig{}
-	// MISSING: KMSKeyName
-	return out
-}
 func EnvironmentConfig_FromProto(mapCtx *direct.MapContext, in *pb.EnvironmentConfig) *krm.EnvironmentConfig {
 	if in == nil {
 		return nil
