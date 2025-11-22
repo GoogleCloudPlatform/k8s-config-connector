@@ -47,6 +47,7 @@ gen-proto-no-fixup:
 		--experimental_allow_proto3_optional \
 		./apis/google/apps/cloudidentity/v1beta1/*.proto \
 		./apis/google/cloud/dns/v1/*.proto \
+		./apis/google/cloud/networkservices/v1/*.proto \
 		./apis/mockgcp/cloud/apigee/v1/*.proto \
 		./apis/mockgcp/cloud/bigquery/v2/*.proto \
 		./apis/mockgcp/cloud/ids/v1/*.proto \
@@ -214,6 +215,7 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/apigateway/v1/apigateway_service.proto \
 		./third_party/googleapis/google/cloud/networksecurity/v1beta1/*.proto \
 		./third_party/googleapis/google/cloud/networkservices/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/networkservices/v1/*.proto \
 		./third_party/googleapis/google/cloud/dataplex/v1/*.proto \
 		./third_party/googleapis/google/cloud/clouddms/v1/*.proto \
 		./third_party/googleapis/google/cloud/notebooks/v1/*.proto \

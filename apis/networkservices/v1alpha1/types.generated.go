@@ -15,7 +15,7 @@
 // +generated:types
 // krm.group: networkservices.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.service: google.cloud.networkservices.v1
-// resource: NetworkServicesServiceBinding:ServiceBinding
+// proto.service:
+// resource: NetworkServicesEdgeCacheService:google.cloud.networkservices.v1.EdgeCacheService
 
 package v1alpha1
