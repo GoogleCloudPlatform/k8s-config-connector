@@ -143,6 +143,7 @@ X-Xss-Protection: 0
   },
   "mode": "STANDARD_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-${uniqueId}",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/artifactregistryrepository-${uniqueId}",
   "satisfiesPzi": true,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "vulnerabilityScanningConfig": {
@@ -319,6 +320,7 @@ X-Xss-Protection: 0
   },
   "mode": "STANDARD_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-${uniqueId}",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/artifactregistryrepository-${uniqueId}",
   "satisfiesPzi": true,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "vulnerabilityScanningConfig": {
