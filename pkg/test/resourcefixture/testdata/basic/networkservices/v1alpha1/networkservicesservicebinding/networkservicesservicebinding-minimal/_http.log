@@ -174,13 +174,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The ServiceBinding does not exist.",
-        "reason": "notFound"
-      }
-    ],
     "message": "The ServiceBinding does not exist.",
     "status": "NOT_FOUND"
   }

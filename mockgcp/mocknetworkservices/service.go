@@ -66,9 +66,14 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pbhttp.RegisterNetworkServicesHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
-
 	if err != nil {
 		return nil, err
+	}
+
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Errors = nil
+		}
 	}
 
 	return mux, nil
