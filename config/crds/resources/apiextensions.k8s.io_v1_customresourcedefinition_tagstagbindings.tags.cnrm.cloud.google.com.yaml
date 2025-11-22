@@ -62,31 +62,41 @@ spec:
             description: TagsTagBindingSpec defines the desired state of TagsTagBinding
             properties:
               parentRef:
-                description: ParentRef is a reference to a parent resource.
+                description: The object to bind the tag to.
                 oneOf:
                 - not:
                     required:
                     - external
                   required:
                   - name
+                  - kind
                 - not:
                     anyOf:
                     - required:
                       - name
                     - required:
                       - namespace
+                    - required:
+                      - kind
                   required:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: string of the format `//cloudresourcemanager.googleapis.com/projects/{{value}}`,
-                      where {{value}} is the `number` field of a `Project` resource.'
+                    description: 'Reference to a GCP object not necessarily managed
+                      by Config Connector. Allowed values: * For projects: `//cloudresourcemanager.googleapis.com/projects/{{value}}`'
+                    type: string
+                  kind:
+                    description: 'Kind of the object to bind the tag to. Used only
+                      when Name and Namespace are specified. Allowed values: * For
+                      projects: `Project` (default) * For storage buckets: `StorageBucket`'
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: 'Name of the object to bind the tag to. More info:
+                      https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: 'Namespace of the object to bind the tag to. More
+                      info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
                     type: string
                 type: object
               resourceID:
