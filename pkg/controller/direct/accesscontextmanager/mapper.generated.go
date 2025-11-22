@@ -155,11 +155,12 @@ func Condition_FromProto(mapCtx *direct.MapContext, in *pb.Condition) *krm.Condi
 		return nil
 	}
 	out := &krm.Condition{}
-	out.IPSubnetworks = in.IpSubnetworks
+	// MISSING: IPSubnetworks
+	// (near miss): "IPSubnetworks" vs "IpSubnetworks"
 	out.DevicePolicy = DevicePolicy_FromProto(mapCtx, in.GetDevicePolicy())
-	out.RequiredAccessLevels = in.RequiredAccessLevels
+	out.RequiredAccessLevels = Condition_RequiredAccessLevels_FromProto(mapCtx, in.RequiredAccessLevels)
 	out.Negate = direct.LazyPtr(in.GetNegate())
-	out.Members = in.Members
+	out.Members = Condition_Members_FromProto(mapCtx, in.Members)
 	out.Regions = in.Regions
 	return out
 }
@@ -168,11 +169,12 @@ func Condition_ToProto(mapCtx *direct.MapContext, in *krm.Condition) *pb.Conditi
 		return nil
 	}
 	out := &pb.Condition{}
-	out.IpSubnetworks = in.IPSubnetworks
+	// MISSING: IPSubnetworks
+	// (near miss): "IPSubnetworks" vs "IpSubnetworks"
 	out.DevicePolicy = DevicePolicy_ToProto(mapCtx, in.DevicePolicy)
-	out.RequiredAccessLevels = in.RequiredAccessLevels
+	out.RequiredAccessLevels = Condition_RequiredAccessLevels_ToProto(mapCtx, in.RequiredAccessLevels)
 	out.Negate = direct.ValueOf(in.Negate)
-	out.Members = in.Members
+	out.Members = Condition_Members_ToProto(mapCtx, in.Members)
 	out.Regions = in.Regions
 	return out
 }
@@ -197,9 +199,11 @@ func DevicePolicy_FromProto(mapCtx *direct.MapContext, in *pb.DevicePolicy) *krm
 		return nil
 	}
 	out := &krm.DevicePolicy{}
-	out.RequireScreenlock = direct.LazyPtr(in.GetRequireScreenlock())
+	// MISSING: RequireScreenlock
+	// (near miss): "RequireScreenlock" vs "RequireScreenLock"
 	out.AllowedEncryptionStatuses = direct.EnumSlice_FromProto(mapCtx, in.AllowedEncryptionStatuses)
-	out.OSConstraints = direct.Slice_FromProto(mapCtx, in.OSConstraints, OSConstraint_FromProto)
+	// MISSING: OSConstraints
+	// (near miss): "OSConstraints" vs "OsConstraints"
 	out.AllowedDeviceManagementLevels = direct.EnumSlice_FromProto(mapCtx, in.AllowedDeviceManagementLevels)
 	out.RequireAdminApproval = direct.LazyPtr(in.GetRequireAdminApproval())
 	out.RequireCorpOwned = direct.LazyPtr(in.GetRequireCorpOwned())
@@ -210,31 +214,37 @@ func DevicePolicy_ToProto(mapCtx *direct.MapContext, in *krm.DevicePolicy) *pb.D
 		return nil
 	}
 	out := &pb.DevicePolicy{}
-	out.RequireScreenlock = direct.ValueOf(in.RequireScreenlock)
+	// MISSING: RequireScreenlock
+	// (near miss): "RequireScreenlock" vs "RequireScreenLock"
 	out.AllowedEncryptionStatuses = direct.EnumSlice_ToProto[typepb.DeviceEncryptionStatus](mapCtx, in.AllowedEncryptionStatuses)
-	out.OsConstraints = direct.Slice_ToProto(mapCtx, in.OSConstraints, OSConstraint_ToProto)
+	// MISSING: OSConstraints
+	// (near miss): "OSConstraints" vs "OsConstraints"
 	out.AllowedDeviceManagementLevels = direct.EnumSlice_ToProto[typepb.DeviceManagementLevel](mapCtx, in.AllowedDeviceManagementLevels)
 	out.RequireAdminApproval = direct.ValueOf(in.RequireAdminApproval)
 	out.RequireCorpOwned = direct.ValueOf(in.RequireCorpOwned)
 	return out
 }
-func OSConstraint_FromProto(mapCtx *direct.MapContext, in *pb.OsConstraint) *krm.OSConstraint {
+func OsConstraints_FromProto(mapCtx *direct.MapContext, in *pb.OsConstraint) *krm.OsConstraints {
 	if in == nil {
 		return nil
 	}
-	out := &krm.OSConstraint{}
-	out.OSType = direct.Enum_FromProto(mapCtx, in.GetOsType())
+	out := &krm.OsConstraints{}
+	// MISSING: OSType
+	// (near miss): "OSType" vs "OsType"
 	out.MinimumVersion = direct.LazyPtr(in.GetMinimumVersion())
-	out.RequireVerifiedChromeOS = direct.LazyPtr(in.GetRequireVerifiedChromeOs())
+	// MISSING: RequireVerifiedChromeOS
+	// (near miss): "RequireVerifiedChromeOS" vs "RequireVerifiedChromeOs"
 	return out
 }
-func OSConstraint_ToProto(mapCtx *direct.MapContext, in *krm.OSConstraint) *pb.OsConstraint {
+func OsConstraints_ToProto(mapCtx *direct.MapContext, in *krm.OsConstraints) *pb.OsConstraint {
 	if in == nil {
 		return nil
 	}
 	out := &pb.OsConstraint{}
-	out.OsType = direct.Enum_ToProto[typepb.OsType](mapCtx, in.OSType)
+	// MISSING: OSType
+	// (near miss): "OSType" vs "OsType"
 	out.MinimumVersion = direct.ValueOf(in.MinimumVersion)
-	out.RequireVerifiedChromeOs = direct.ValueOf(in.RequireVerifiedChromeOS)
+	// MISSING: RequireVerifiedChromeOS
+	// (near miss): "RequireVerifiedChromeOS" vs "RequireVerifiedChromeOs"
 	return out
 }
