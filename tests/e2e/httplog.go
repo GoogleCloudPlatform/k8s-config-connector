@@ -256,11 +256,6 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 		}
 	})
 
-	// Add Essential Contacts specific normalizations
-	addReplacement("validateTime", "2024-04-01T12:34:56.123456Z")
-	addReplacement("response.validateTime", "2024-04-01T12:34:56.123456Z")
-	addSetStringReplacement(".contacts[].validateTime", "2024-04-01T12:34:56.123456Z")
-
 	events.PrettifyJSON(jsonMutators...)
 
 	// Remove headers that just aren't very relevant to testing
@@ -305,6 +300,9 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 	for _, event := range events {
 		id := ""
 		body := event.Response.ParseBody()
+		if body == nil {
+			continue
+		}
 		val, ok := body["name"]
 		if ok {
 			s := val.(string)
@@ -367,6 +365,9 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 			continue
 		}
 		body := event.Response.ParseBody()
+		if body == nil {
+			continue
+		}
 		targetLink, _, _ := unstructured.NestedString(body, "targetLink")
 		targetId, _, _ := unstructured.NestedString(body, "targetId")
 		if targetLink != "" && targetId != "" {

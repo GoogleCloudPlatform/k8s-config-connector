@@ -68,6 +68,12 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:
 		exportURI = "//discoveryengine.googleapis.com/projects/{projectID}/locations/{.spec.location}/collections/{.spec.collection}/dataStores/{resourceID}"
 
+	case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreDatabase"}:
+		exportURI = "//firestore.googleapis.com/projects/{projectID}/databases/{resourceID}"
+
+	case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreDocument"}:
+		exportURI = "//firestore.googleapis.com/projects/{projectID}/databases/{.spec.databaseRef}/documents/{.spec.collection}/{resourceID}"
+
 	case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogMetric"}:
 		exportURI = "//logging.googleapis.com/projects/" + projectID + "/metrics/" + resourceID
 
@@ -83,6 +89,9 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 	case schema.GroupKind{Group: "servicenetworking.cnrm.cloud.google.com", Kind: "ServiceNetworkingPeeredDnsDomain"}:
 		network := resolveNetwork(h, obj)
 		exportURI = fmt.Sprintf("//servicenetworking.googleapis.com/services/servicenetworking.googleapis.com/projects/%s/global/networks/%s/peeredDnsDomains/{resourceID}", network.Project, network.Network)
+
+	case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
+		exportURI = "//run.googleapis.com/v2/projects/{projectID}/locations/{.spec.location}/jobs/{resourceID}"
 	}
 
 	if exportURI == "" {
@@ -118,6 +127,21 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 		}
 		exportURI = strings.ReplaceAll(exportURI, "{.spec.collection}", collection)
 	}
+
+	if strings.Contains(exportURI, "{.status.name}") {
+		v, _, _ := unstructured.NestedString(obj.Object, "status", "name")
+		if v == "" {
+			h.Errorf("unable to determine status.name")
+		}
+		exportURI = strings.ReplaceAll(exportURI, "{.status.name}", v)
+	}
+
+	if strings.Contains(exportURI, "{.spec.databaseRef}") {
+		external := resolveReference(h, obj, ".spec.databaseRef", schema.GroupVersionKind{Group: "firestore.cnrm.cloud.google.com", Version: "v1beta1", Kind: "FirestoreDatabase"})
+		tokens := strings.Split(external, "/")
+		exportURI = strings.ReplaceAll(exportURI, "{.spec.databaseRef}", tokens[len(tokens)-1])
+	}
+
 	exportParams := h.ExportParams()
 	exportParams.IAMFormat = "partialpolicy"
 	exportParams.ResourceFormat = "krm"
@@ -132,14 +156,16 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 		// https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/3530c83a5e0d331640ec2160675d80336fad9c53/config/servicemappings/secretmanager.yaml#L79
 		break
 	default:
+		h.Logf("exporting resource %q", exportURI)
 		if err := export.Execute(h.Ctx, &exportParams); err != nil {
 			h.Errorf("error from export.Execute of %q: %v", exportURI, err)
 			return ""
 		}
 	}
 
-	output := h.MustReadFile(outputPath)
-	return string(output)
+	outputBytes := h.MustReadFile(outputPath)
+	output := string(outputBytes)
+	return output
 }
 
 func exportResourceAsUnstructured(h *create.Harness, obj *unstructured.Unstructured) *unstructured.Unstructured {
@@ -217,4 +243,39 @@ func resolveNetwork(h *create.Harness, obj *unstructured.Unstructured) v1beta1.C
 		h.Fatalf("error from id.FromExternal: %v", err)
 	}
 	return id
+}
+
+func resolveReference(h *create.Harness, obj *unstructured.Unstructured, refFieldPath string, gvk schema.GroupVersionKind) string {
+	refFieldPath = strings.TrimPrefix(refFieldPath, ".")
+
+	external, _, _ := unstructured.NestedString(obj.Object, strings.Split(refFieldPath+".external", ".")...)
+	if external != "" {
+		return external
+	}
+	name, _, _ := unstructured.NestedString(obj.Object, strings.Split(refFieldPath+".name", ".")...)
+	namespace, _, _ := unstructured.NestedString(obj.Object, strings.Split(refFieldPath+".namespace", ".")...)
+
+	if name == "" {
+		h.Fatalf("referenced %v object name not set in spec", gvk.Kind)
+	}
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(gvk)
+
+	key := types.NamespacedName{
+		Name:      name,
+		Namespace: namespace,
+	}
+	if key.Namespace == "" {
+		key.Namespace = obj.GetNamespace()
+	}
+	if err := h.GetClient().Get(h.Ctx, key, u); err != nil {
+		h.Fatalf("resolving %v object (%v): %v", gvk.Kind, key, err)
+	}
+
+	external, _, _ = unstructured.NestedString(u.Object, "status", "externalRef")
+	if external == "" {
+		h.Fatalf("referenced %v object %v does not have status.externalRef set", gvk.Kind, key)
+	}
+	return external
 }

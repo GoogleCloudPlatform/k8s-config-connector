@@ -89,6 +89,9 @@ func RegisterModel(gvk schema.GroupVersionKind, modelFn ModelFactoryFunc) {
 	if singleton.registrations == nil {
 		singleton.registrations = make(map[schema.GroupKind]*registration)
 	}
+	if singleton.registrations[gvk.GroupKind()] != nil {
+		klog.Fatalf("Model for %s already registered", gvk.GroupKind())
+	}
 	singleton.registrations[gvk.GroupKind()] = &registration{
 		gvk:     gvk,
 		factory: modelFn,
@@ -147,7 +150,11 @@ func SupportsIAM(groupKind schema.GroupKind) (bool, error) {
 		return false, nil
 	case schema.GroupKind{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:
 		return false, nil
+		// case schema.GroupKind{Group: "run.cnrm.cloud.google.com", Kind: "RunJob"}:
+		// 	// https://cloud.google.com/run/docs/reference/iam/roles
+		// 	return true, nil
 	}
+
 	klog.Warningf("groupKind %v is not recognized as a direct kind for SupportsIAM check", groupKind)
 	return false, nil
 }

@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 
+	// TODO: This gcp should not be used, it takes a different proto definition than the one defined in kcc apis.
 	gcp "cloud.google.com/go/bigtable"
 	bigtablepb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	"google.golang.org/api/option"
@@ -54,6 +55,9 @@ type modelLogicalView struct {
 func (m *modelLogicalView) client(ctx context.Context, parentProject string) (*gcp.InstanceAdminClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.GRPCClientOptions()
+	if err != nil {
+		return nil, fmt.Errorf("building BigtableLogicalView client options: %w", err)
+	}
 	gcpClient, err := gcp.NewInstanceAdminClient(ctx, parentProject, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building BigtableLogicalView client: %w", err)
@@ -66,7 +70,7 @@ func (m *modelLogicalView) client(ctx context.Context, parentProject string) (*g
 func (m *modelLogicalView) getProjectId(fullyQualifiedProject string) (string, error) {
 	tokens := strings.Split(fullyQualifiedProject, "/")
 	if len(tokens) != 2 || tokens[0] != "projects" {
-		return "", fmt.Errorf("Unexpected format for LogicalView Parent Project ID=%q was not known (expected projects/{projectID})", fullyQualifiedProject)
+		return "", fmt.Errorf("unexpected format for LogicalView Parent Project ID=%q was not known (expected projects/{projectID})", fullyQualifiedProject)
 	}
 	return tokens[1], nil
 }
@@ -129,12 +133,32 @@ func (a *LogicalViewAdapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting BigtableLogicalView %q: %w", a.id, err)
 	}
 
+	deletionProtection := false
+	if logicalViewInfo.DeletionProtection != 0 {
+		deletionProtection = true
+	}
+
 	a.actual = &bigtablepb.LogicalView{
-		Name:  a.id.String(),
-		Query: logicalViewInfo.Query,
-		// TODO: Add DeletionProtection once that proto is published.
+		Name:               a.id.String(),
+		Query:              logicalViewInfo.Query,
+		DeletionProtection: deletionProtection,
 	}
 	return true, nil
+}
+
+func convertLogicalViewToLogicalViewInfo(in *bigtablepb.LogicalView) *gcp.LogicalViewInfo {
+	if in == nil {
+		return nil
+	}
+	out := &gcp.LogicalViewInfo{}
+	if in.DeletionProtection {
+		out.DeletionProtection = gcp.Protected
+	} else {
+		out.DeletionProtection = gcp.Unprotected
+	}
+	out.Query = in.Query
+	out.LogicalViewID = in.Name
+	return out
 }
 
 // Create creates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
@@ -143,19 +167,13 @@ func (a *LogicalViewAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	log.V(2).Info("creating LogicalView", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	resource := BigtableLogicalViewSpec_ToProto(mapCtx, &desired.Spec)
+	lv := BigtableLogicalViewSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-
-	logicalViewInfo := &gcp.LogicalViewInfo{
-		LogicalViewID: a.id.ID(),
-		Query:         resource.Query,
-		// TODO: Add this once the feature is enabled.
-		// DeletionProtection: resource.DeletionProtection,
-	}
-	err := a.gcpClient.CreateLogicalView(ctx, a.id.ParentInstanceIdString(), logicalViewInfo)
+	lv.Name = a.id.ID()
+	lvi := convertLogicalViewToLogicalViewInfo(lv)
+	err := a.gcpClient.CreateLogicalView(ctx, a.id.ParentInstanceIdString(), lvi)
 	if err != nil {
 		return fmt.Errorf("creating LogicalView %s: %w", a.id, err)
 	}
@@ -184,29 +202,36 @@ func (a *LogicalViewAdapter) Create(ctx context.Context, createOp *directbase.Cr
 func (a *LogicalViewAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating LogicalView", "name", a.id)
-	mapCtx := &direct.MapContext{}
 
-	desiredPb := BigtableLogicalViewSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
+	spec := a.desired.Spec
 
 	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(a.desired.Spec.Query, a.actual.Query) {
+	// Only set query in update mask if it's set.
+	if (spec.Query != nil) && (*spec.Query != a.actual.Query) {
 		updateMask.Paths = append(updateMask.Paths, "query")
 	}
-	// TODO: Add deletion protection field.
+	// Deletion protection can either be unset (which is in itself a possible resource state), false, or true.
+	if !reflect.DeepEqual(spec.DeletionProtection, a.actual.DeletionProtection) {
+		updateMask.Paths = append(updateMask.Paths, "deletion_protection")
+	}
 
 	if len(updateMask.Paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
 	} else {
 		log.V(2).Info("fields need update", "name", a.id, "paths", updateMask.Paths)
 
-		desiredlogicalview := gcp.LogicalViewInfo{
-			LogicalViewID: a.id.ID(),
-			Query:         desiredPb.Query,
+		mapCtx := &direct.MapContext{}
+
+		lv := BigtableLogicalViewSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
 		}
-		err := a.gcpClient.UpdateLogicalView(ctx, a.id.ParentInstanceIdString(), desiredlogicalview)
+		lv.Name = a.id.ID()
+		lvi := convertLogicalViewToLogicalViewInfo(lv)
+
+		log.V(2).Info("Updating logical view with desired logical view", lvi)
+
+		err := a.gcpClient.UpdateLogicalView(ctx, a.id.ParentInstanceIdString(), *lvi)
 		if err != nil {
 			return fmt.Errorf("updating LogicalView %s: %w", a.id, err)
 		}
@@ -241,7 +266,7 @@ func (a *LogicalViewAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 	obj := &krm.BigtableLogicalView{}
 	mapCtx := &direct.MapContext{}
-	spec := BigtableLogicalViewSpec_FromProto(mapCtx, a.actual)
+	spec := BigtableLogicalViewSpec_v1alpha1_FromProto(mapCtx, a.actual)
 	obj.Spec = direct.ValueOf(spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()

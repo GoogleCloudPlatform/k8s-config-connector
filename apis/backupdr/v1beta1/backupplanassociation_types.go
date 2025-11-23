@@ -57,7 +57,7 @@ type BackupDRBackupPlanAssociationSpec struct {
 	//  workload.
 	// +kcc:proto:field=google.cloud.backupdr.v1.BackupPlanAssociation.backup_plan
 	// +required
-	BackupPlanRef *backupdrv1alpha1.BackupPlanRef `json:"backupPlanRef,omitempty"`
+	BackupPlanRef *BackupPlanRef `json:"backupPlanRef,omitempty"`
 }
 
 // BackupDRBackupPlanAssociationStatus defines the config connector machine state of BackupDRBackupPlanAssociation

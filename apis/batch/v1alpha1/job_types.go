@@ -15,10 +15,11 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
-
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -27,6 +28,7 @@ var BatchJobGVK = GroupVersion.WithKind("BatchJob")
 // BatchJobSpec defines the desired state of BatchJob
 // +kcc:spec:proto=google.cloud.batch.v1.Job
 type BatchJobSpec struct {
+	ParentRef *parent.ProjectAndLocationRef `json:",inline"`
 
 	// Priority of the Job.
 	//  The valid value range is [0, 100). Default value is 0.
@@ -56,8 +58,8 @@ type BatchJobSpec struct {
 	//  Batch, see
 	//  [Organize resources using
 	//  labels](https://cloud.google.com/batch/docs/organize-resources-using-labels).
-	// +kcc:proto:field=google.cloud.batch.v1.Job.labels
-	Labels map[string]string `json:"labels,omitempty"`
+	// +k_cc:proto:field=google.cloud.batch.v1.Job.labels
+	// Labels map[string]string `json:"labels,omitempty"`
 
 	// Log preservation policy for the Job.
 	// +kcc:proto:field=google.cloud.batch.v1.Job.logs_policy
@@ -67,21 +69,8 @@ type BatchJobSpec struct {
 	// +kcc:proto:field=google.cloud.batch.v1.Job.notifications
 	Notifications []JobNotification `json:"notifications,omitempty"`
 
-	// Required. The parent resource name where the Job will be created. Pattern: "projects/{project}/locations/{location}"
-	*Parent `json:",inline"`
-
 	// The BatchJob name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
-}
-
-type Parent struct {
-	// Immutable. The location where the alloydb cluster should reside.
-	// +required
-	Location *string `json:"location,omitempty"`
-
-	// The project that this resource belongs to.
-	// +required
-	ProjectRef *v1beta1.ProjectRef `json:"projectRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.batch.v1.AllocationPolicy
@@ -107,7 +96,7 @@ type AllocationPolicy struct {
 	//   * scopes: Additional OAuth scopes to grant the service account, beyond the
 	//   default cloud-platform scope. (list of strings)
 	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.service_account
-	ServiceAccountRef *v1beta1.IAMServiceAccountRef `json:"serviceAccount,omitempty"`
+	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 
 	// Custom labels to apply to the job and all the Compute Engine resources
 	//  that both are created by this allocation policy and support labels.
@@ -153,15 +142,8 @@ type AllocationPolicy_Disk struct {
 	//  projects/{project}/global/images/family/{image_family}
 	//  * Specify the image version:
 	//  projects/{project}/global/images/{image_version}
-	//
-	//  You can also use Batch customized image in short names.
-	//  The following image values are supported for a boot disk:
-	//
-	//  * `batch-debian`: use Batch Debian images.
-	//  * `batch-cos`: use Batch Container-Optimized images.
-	//  * `batch-hpc-rocky`: use Batch HPC Rocky Linux images.
 	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.Disk.image
-	ImageRef *v1alpha1.ResourceRef `json:"imageRef,omitempty"`
+	ImageRef *computev1beta1.ComputeImageRef `json:"imageRef,omitempty"`
 
 	// Name of a snapshot used as the data source.
 	//  Snapshot is not supported as boot disk now.
@@ -219,7 +201,7 @@ type AllocationPolicy_NetworkInterface struct {
 	//  * projects/{project}/global/networks/{network}
 	//  * global/networks/{network}
 	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.NetworkInterface.network
-	NetworkRef *v1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *refsv1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// The URL of an existing subnetwork resource in the network.
 	//  You can specify the subnetwork as a full or partial URL.
@@ -230,7 +212,7 @@ type AllocationPolicy_NetworkInterface struct {
 	//  * projects/{project}/regions/{region}/subnetworks/{subnetwork}
 	//  * regions/{region}/subnetworks/{subnetwork}
 	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.NetworkInterface.subnetwork
-	SubnetworkRef *v1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *refsv1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	// Default is false (with an external IP address). Required if
 	//  no external public IP address is attached to the VM. If no external
@@ -401,7 +383,7 @@ type Runnable_Container struct {
 type Environment_KMSEnvMap struct {
 	// The name of the KMS key that will be used to decrypt the cipher text.
 	// +kcc:proto:field=google.cloud.batch.v1.Environment.KMSEnvMap.key_name
-	KMSKeyRef *v1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KMSKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 
 	// The value of the cipherText response from the `encrypt` method.
 	// +kcc:proto:field=google.cloud.batch.v1.Environment.KMSEnvMap.cipher_text

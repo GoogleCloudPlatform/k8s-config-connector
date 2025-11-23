@@ -21,6 +21,7 @@ import (
 	"net/http"
 	_ "net/http/pprof" // Needed to allow pprof server to accept requests
 	"os"
+	goruntime "runtime"
 	"strings"
 	"time"
 
@@ -38,14 +39,10 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"k8s.io/client-go/rest"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	crlog "sigs.k8s.io/controller-runtime/pkg/log"
-
-	// Ensure built-in types are registered.
-	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
 var (
@@ -124,12 +121,26 @@ func run(ctx context.Context) error {
 		return fmt.Errorf("error getting kubernetes configuration: %w", err)
 	}
 
-	restHTTPClient, err := rest.HTTPClientFor(restConfig)
+	r := &MetricsRecorder{
+		MetricInterval: time.Duration(metricInterval) * time.Second,
+		RESTConfig:     restConfig,
+	}
+	return r.Run(ctx)
+}
+
+type MetricsRecorder struct {
+	MetricInterval time.Duration
+	RESTConfig     *rest.Config
+	statViews      map[CRDInfo]*kube.KubeView[ResourceStats]
+}
+
+func (r *MetricsRecorder) Run(ctx context.Context) error {
+	restHTTPClient, err := rest.HTTPClientFor(r.RESTConfig)
 	if err != nil {
 		return fmt.Errorf("building kubernetes http client: %w", err)
 	}
 
-	kubeTarget, err := kube.NewTarget(restConfig, restHTTPClient)
+	kubeTarget, err := kube.NewTarget(r.RESTConfig, restHTTPClient)
 	if err != nil {
 		return fmt.Errorf("building kubernetes target: %w", err)
 	}
@@ -137,10 +148,17 @@ func run(ctx context.Context) error {
 	crdGVR := schema.GroupVersionResource{Group: "apiextensions.k8s.io", Version: "v1", Resource: "customresourcedefinitions"}
 	crdInfos := kube.WatchKube(ctx, kubeTarget, crdGVR, buildCRDInfo)
 
-	statViews := make(map[CRDInfo]*kube.KubeView[ResourceStats])
+	r.statViews = make(map[CRDInfo]*kube.KubeView[ResourceStats])
+	statViews := r.statViews
 
 	for {
-		time.Sleep(time.Duration(metricInterval) * time.Second)
+		if ctx.Err() != nil {
+			break
+		}
+
+		goruntime.GC() // Reduce memory by cleaning up unused objects before sleeping
+
+		time.Sleep(r.MetricInterval)
 
 		// Reset all metrics before updating.
 		appliedResources.Reset()
@@ -196,10 +214,13 @@ func run(ctx context.Context) error {
 			}
 
 			// Record stats.
+			groupKind := crdInfo.GVK.GroupKind().String()
 			for ns, stats := range nsAggStats {
 				for condition, count := range stats.lastConditionCounts {
-					logger.V(2).Info("posting metrics", "namespace", ns, "gvk", crdInfo.GVK.String(), "status", condition, "count", count)
-					appliedResources.WithLabelValues(ns, crdInfo.GVK.GroupKind().String(), condition).Set(float64(count))
+					if logger.V(2).Enabled() {
+						logger.V(2).Info("posting metrics", "namespace", ns, "gvk", crdInfo.GVK.String(), "status", condition, "count", count)
+					}
+					appliedResources.WithLabelValues(ns, groupKind, condition).Set(float64(count))
 				}
 			}
 		}
@@ -213,6 +234,60 @@ func run(ctx context.Context) error {
 			}
 		}
 	}
+
+	// Cleanup all watches before exiting
+	for _, view := range statViews {
+		view.Close()
+	}
+
+	return ctx.Err()
+}
+
+// GetMetrics invokes the callback for each recorded metric.
+// This is currently used for testing, but we will ideally reconcile these.
+func (r *MetricsRecorder) GetMetrics(callback func(namespace string, gvk schema.GroupVersionKind, condition string, count int64)) {
+	statViews := r.statViews
+
+	for crdInfo, statView := range statViews {
+		// Aggregate stats for each namespace.
+		nsAggStats := make(map[string]*AggregatedResourceStats)
+		for i, s := range statView.Snapshot() {
+			ns := i.Namespace
+			nsStats, ok := nsAggStats[ns]
+			if !ok {
+				nsStats = NewAggregatedResourceStats()
+				nsAggStats[ns] = nsStats
+			}
+			nsStats.lastConditionCounts[s.lastCondition]++
+		}
+
+		// Record stats.
+		for ns, stats := range nsAggStats {
+			for condition, count := range stats.lastConditionCounts {
+				logger.V(2).Info("posting metrics", "namespace", ns, "gvk", crdInfo.GVK.String(), "status", condition, "count", count)
+				callback(ns, crdInfo.GVK, condition, count)
+			}
+		}
+	}
+}
+
+// IsReady returns true if the the watch has started and synced for the given GVK.
+func (r *MetricsRecorder) IsReady(gvk schema.GroupVersionKind) bool {
+	statViews := r.statViews
+
+	for crdInfo, statView := range statViews {
+		if crdInfo.GVK == gvk {
+			if statView.HasSyncedOnce() {
+				// Ready
+				return true
+			}
+			// Not ready
+			return false
+		}
+	}
+
+	// Not found
+	return false
 }
 
 func gvkToCRDName(gvk schema.GroupVersionKind) string {

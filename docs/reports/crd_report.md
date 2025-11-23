@@ -40,9 +40,10 @@
 | artifactregistry.cnrm.cloud.google.com        | ArtifactRegistryRepository                      | False        | True        | False  | Terraform  |
 | asset.cnrm.cloud.google.com                   | AssetFeed                                       | True         | True        | False  | Direct     |
 | asset.cnrm.cloud.google.com                   | AssetSavedQuery                                 | True         | True        | False  | Direct     |
+| assuredworkloads.cnrm.cloud.google.com        | AssuredWorkloadsWorkload                        | True         | False       | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupPlanAssociation                   | True         | True        | False  | Direct     |
-| backupdr.cnrm.cloud.google.com                | BackupDRBackupPlan                              | True         | False       | False  | Direct     |
-| backupdr.cnrm.cloud.google.com                | BackupDRBackupVault                             | True         | False       | False  | Direct     |
+| backupdr.cnrm.cloud.google.com                | BackupDRBackupPlan                              | True         | True        | False  | Direct     |
+| backupdr.cnrm.cloud.google.com                | BackupDRBackupVault                             | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRManagementServer                        | True         | False       | False  | Direct     |
 | batch.cnrm.cloud.google.com                   | BatchJob                                        | True         | False       | False  | Direct     |
 | batch.cnrm.cloud.google.com                   | BatchTask                                       | True         | False       | False  | Direct     |
@@ -51,7 +52,7 @@
 | beyondcorp.cnrm.cloud.google.com              | BeyondCorpAppGateway                            | True         | False       | False  | Terraform  |
 | bigquerybiglake.cnrm.cloud.google.com         | BigLakeCatalog                                  | True         | False       | False  | Direct     |
 | bigquerybiglake.cnrm.cloud.google.com         | BigLakeDatabase                                 | True         | False       | False  | Direct     |
-| bigquerybiglake.cnrm.cloud.google.com         | BigLakeTable                                    | True         | False       | False  | Direct     |
+| bigquerybiglake.cnrm.cloud.google.com         | BigLakeTable                                    | True         | True        | False  | Direct     |
 | bigqueryanalyticshub.cnrm.cloud.google.com    | BigQueryAnalyticsHubDataExchange                | True         | True        | False  | Direct     |
 | bigqueryanalyticshub.cnrm.cloud.google.com    | BigQueryAnalyticsHubListing                     | True         | True        | False  | Direct     |
 | bigqueryconnection.cnrm.cloud.google.com      | BigQueryConnectionConnection                    | True         | True        | False  | Direct     |
@@ -73,6 +74,7 @@
 | bigtable.cnrm.cloud.google.com                | BigtableGCPolicy                                | False        | True        | False  | Terraform  |
 | bigtable.cnrm.cloud.google.com                | BigtableInstance                                | False        | True        | False  | Terraform  |
 | bigtable.cnrm.cloud.google.com                | BigtableLogicalView                             | True         | False       | False  | Direct     |
+| bigtable.cnrm.cloud.google.com                | BigtableMaterializedView                        | True         | False       | False  | Direct     |
 | bigtable.cnrm.cloud.google.com                | BigtableTable                                   | False        | True        | False  | Terraform  |
 | billing.cnrm.cloud.google.com                 | BillingAccount                                  | True         | False       | False  | Direct     |
 | billingbudgets.cnrm.cloud.google.com          | BillingBudgetsBudget                            | False        | True        | False  | DCL        |
@@ -90,6 +92,7 @@
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployDeliveryPipeline                     | True         | True        | False  | Direct     |
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployDeployPolicy                         | True         | False       | False  | Direct     |
 | clouddms.cnrm.cloud.google.com                | CloudDMSConversionWorkspace                     | True         | False       | False  | Direct     |
+| clouddms.cnrm.cloud.google.com                | CloudDMSMigrationJob                            | True         | False       | False  | Direct     |
 | clouddms.cnrm.cloud.google.com                | CloudDMSPrivateConnection                       | True         | False       | False  | Direct     |
 | cloudfunctions2.cnrm.cloud.google.com         | CloudFunctions2Function                         | True         | False       | False  | Terraform  |
 | cloudfunctions.cnrm.cloud.google.com          | CloudFunctionsFunction                          | False        | True        | False  | DCL        |
@@ -238,14 +241,14 @@
 | dns.cnrm.cloud.google.com                     | DNSResponsePolicyRule                           | True         | False       | False  | Terraform  |
 | documentai.cnrm.cloud.google.com              | DocumentAIProcessorDefaultVersion               | True         | False       | False  | Terraform  |
 | documentai.cnrm.cloud.google.com              | DocumentAIProcessor                             | True         | False       | False  | Direct     |
-| documentai.cnrm.cloud.google.com              | DocumentAIProcessorVersion                      | True         | False       | False  | Direct     |
+| documentai.cnrm.cloud.google.com              | DocumentAIProcessorVersion                      | True         | True        | False  | Direct     |
 | edgecontainer.cnrm.cloud.google.com           | EdgeContainerCluster                            | False        | True        | False  | Terraform  |
 | edgecontainer.cnrm.cloud.google.com           | EdgeContainerMachine                            | True         | False       | False  | Direct     |
 | edgecontainer.cnrm.cloud.google.com           | EdgeContainerNodePool                           | False        | True        | False  | Terraform  |
 | edgecontainer.cnrm.cloud.google.com           | EdgeContainerVpnConnection                      | False        | True        | False  | Terraform  |
 | edgenetwork.cnrm.cloud.google.com             | EdgeNetworkNetwork                              | False        | True        | False  | Terraform  |
 | edgenetwork.cnrm.cloud.google.com             | EdgeNetworkSubnet                               | False        | True        | False  | Terraform  |
-| essentialcontacts.cnrm.cloud.google.com       | EssentialContactsContact                        | True         | False       | False  | Direct     |
+| essentialcontacts.cnrm.cloud.google.com       | EssentialContactsContact                        | True         | True        | False  | Direct     |
 | eventarc.cnrm.cloud.google.com                | EventarcChannel                                 | True         | False       | False  | Direct     |
 | eventarc.cnrm.cloud.google.com                | EventarcGoogleChannelConfig                     | True         | False       | False  | Direct     |
 | eventarc.cnrm.cloud.google.com                | EventarcTrigger                                 | False        | True        | False  | DCL        |
@@ -259,7 +262,10 @@
 | firebase.cnrm.cloud.google.com                | FirebaseProject                                 | True         | False       | False  | Terraform  |
 | firebasestorage.cnrm.cloud.google.com         | FirebaseStorageBucket                           | True         | False       | False  | Terraform  |
 | firebase.cnrm.cloud.google.com                | FirebaseWebApp                                  | True         | False       | False  | Terraform  |
+| firestore.cnrm.cloud.google.com               | FirestoreBackupSchedule                         | True         | False       | False  | Direct     |
 | firestore.cnrm.cloud.google.com               | FirestoreDatabase                               | True         | True        | False  | Direct     |
+| firestore.cnrm.cloud.google.com               | FirestoreDocument                               | True         | False       | False  | Direct     |
+| firestore.cnrm.cloud.google.com               | FirestoreField                                  | True         | False       | False  | Direct     |
 | firestore.cnrm.cloud.google.com               | FirestoreIndex                                  | False        | True        | False  | Terraform  |
 | resourcemanager.cnrm.cloud.google.com         | Folder                                          | False        | True        | False  | Terraform  |
 | gkebackup.cnrm.cloud.google.com               | GKEBackupBackupPlan                             | True         | False       | False  | Direct     |
@@ -354,7 +360,7 @@
 | networkservices.cnrm.cloud.google.com         | NetworkServicesTLSRoute                         | False        | True        | False  | DCL        |
 | notebooks.cnrm.cloud.google.com               | NotebookInstance                                | True         | True        | False  | Direct     |
 | notebooks.cnrm.cloud.google.com               | NotebooksEnvironment                            | True         | False       | False  | Direct     |
-| orgpolicy.cnrm.cloud.google.com               | OrgPolicyCustomConstraint                       | True         | False       | False  | Direct     |
+| orgpolicy.cnrm.cloud.google.com               | OrgPolicyCustomConstraint                       | True         | True        | False  | Direct     |
 | orgpolicy.cnrm.cloud.google.com               | OrgPolicyPolicy                                 | True         | False       | False  | Direct     |
 | osconfig.cnrm.cloud.google.com                | OSConfigGuestPolicy                             | False        | True        | False  | DCL        |
 | osconfig.cnrm.cloud.google.com                | OSConfigOSPolicyAssignment                      | False        | True        | False  | DCL        |

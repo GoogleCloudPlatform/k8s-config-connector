@@ -485,9 +485,10 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		testgcp.TestDependentNoNetworkProjectID.Set("mock-project")
 		testgcp.TestDependentOrgProjectID.Set("example-project-01")
 		testgcp.TestDependentFolderProjectID.Set("example-project-02")
-		testgcp.FirestoreTestProject.Set("cnrm-test-firestore")
 		testgcp.IdentityPlatformTestProject.Set("kcc-identity-platform")
 		testgcp.RecaptchaEnterpriseTestProject.Set("kcc-recaptcha-enterprise")
+		testgcp.TestKCCAlloyDBProject.Set("mock-project")
+		testgcp.TestKCCAlloyDBProjectNumber.Set("518915279")
 
 		crm := h.getCloudResourceManagerClient(kccConfig.HTTPClient)
 		req := &cloudresourcemanagerv1.Project{
@@ -534,7 +535,6 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 		}
 		testgcp.TestDependentOrgProjectID.Set("example-project-01")
 		testgcp.TestDependentFolderProjectID.Set("example-project-02")
-		testgcp.FirestoreTestProject.Set("cnrm-test-firestore")
 		testgcp.IdentityPlatformTestProject.Set("kcc-identity-platform")
 		testgcp.RecaptchaEnterpriseTestProject.Set("kcc-recaptcha-enterprise")
 		testgcp.TestOrgID.Set("123450001")
@@ -808,7 +808,7 @@ func (h *Harness) GCPHTTPClient() *http.Client {
 	return h.kccConfig.HTTPClient
 }
 
-func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured) {
+func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructured) {
 	// Note: we don't have the harness yet, we have to look to the env var
 	gcpTarget := os.Getenv("E2E_GCP_TARGET")
 
@@ -826,7 +826,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			if gvk.Group == "" && gvk.Kind == "SystemRun" {
 				continue
 			}
-			if name == "dclbasedresourceserviceaccountref" {
+			if strings.Contains(testKey, "dclbasedresourceserviceaccountref") {
 				t.Skip()
 			}
 
@@ -931,8 +931,10 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNodeGroup"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeNodeTemplate"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeManagedSSLCertificate"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeRegionNetworkEndpointGroup"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeServiceAttachment"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeSSLCertificate"}:
+			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeSSLPolicy"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeSubnetwork"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeTargetGRPCProxy"}:
 			case schema.GroupKind{Group: "compute.cnrm.cloud.google.com", Kind: "ComputeTargetHTTPProxy"}:
@@ -997,7 +999,11 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "eventarc.cnrm.cloud.google.com", Kind: "EventarcChannel"}:
 			case schema.GroupKind{Group: "eventarc.cnrm.cloud.google.com", Kind: "EventarcGoogleChannelConfig"}:
 
+			case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreBackupSchedule"}:
 			case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreDatabase"}:
+			case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreDocument"}:
+			case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreField"}:
+			case schema.GroupKind{Group: "firestore.cnrm.cloud.google.com", Kind: "FirestoreIndex"}:
 
 			case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSKeyRing"}:
 			case schema.GroupKind{Group: "kms.cnrm.cloud.google.com", Kind: "KMSCryptoKey"}:
@@ -1009,7 +1015,9 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogBucket"}:
 			case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogSink"}:
 			case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogView"}:
-			//case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLink"}:
+			case schema.GroupKind{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLink"}:
+
+			case schema.GroupKind{Group: "memorystore.cnrm.cloud.google.com", Kind: "MemorystoreInstance"}:
 
 			case schema.GroupKind{Group: "metastore.cnrm.cloud.google.com", Kind: "MetastoreFederation"}:
 			case schema.GroupKind{Group: "metastore.cnrm.cloud.google.com", Kind: "MetastoreBackup"}:
@@ -1096,6 +1104,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 
 			case schema.GroupKind{Group: "storage.cnrm.cloud.google.com", Kind: "StorageManagedFolder"}:
 
+			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagBinding"}:
 			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagKey"}:
 			case schema.GroupKind{Group: "tags.cnrm.cloud.google.com", Kind: "TagsTagValue"}:
 
@@ -1131,12 +1140,13 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 			case schema.GroupKind{Group: "speech.cnrm.cloud.google.com", Kind: "SpeechRecognizer"}:
 
 			default:
-				t.Skipf("gk %v not suppported by mock gcp %v; skipping", gvk.GroupKind(), name)
+				t.Skipf("gk %v not suppported by mock gcp %v; skipping", gvk.GroupKind(), testKey)
 			}
 		}
 	}
 	if gcpTarget == "vcr" {
 		// TODO(yuhou): use a cleaner way(resource kind) to manage the allow list for vcr
+		name := filepath.Base(testKey)
 		switch name {
 		// update test data requires regeneration of the vcr log, skip the test for now.
 		// case "fullalloydbcluster":
@@ -1155,7 +1165,6 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 		case "cloudstoragepathstoredinfotype":
 		case "dnsrecordset":
 		case "eventarctrigger":
-		case "firestoreindex":
 		case "identityplatformoauthidpconfig":
 		case "kmscryptokey":
 		case "logginglogview":
@@ -1180,7 +1189,7 @@ func MaybeSkip(t *testing.T, name string, resources []*unstructured.Unstructured
 
 		case "projectinorg":
 		default:
-			t.Skipf("test %v not suppported by vcr; skipping", name)
+			t.Skipf("test %v not suppported by vcr; skipping", testKey)
 		}
 	}
 }

@@ -17,6 +17,7 @@ package sql
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 	"time"
 
@@ -39,7 +40,299 @@ import (
 
 const ctrlName = "sqlinstance-controller"
 
+// FieldMetadata encapsulates the state and logic for a field that can be unmanaged.
+type FieldMetadata struct {
+	// isUnmanaged tracks if the user has marked this field as unmanaged for a specific resource instance.
+	isUnmanaged bool
+
+	// preserveActualValue contains the specific logic to copy this field's value
+	// from the live GCP resource (`actual`) to the outgoing API request payload (`out`).
+	preserveActualValue func(out *api.DatabaseInstance, actual *api.DatabaseInstance)
+}
+
+var supportedUnmanageableFields = map[string]*FieldMetadata{
+	"spec.instanceType": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			out.InstanceType = actual.InstanceType
+		},
+	},
+	"spec.maintenanceVersion": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			out.MaintenanceVersion = actual.MaintenanceVersion
+		},
+	},
+	"spec.settings.edition": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				out.Settings.Edition = actual.Settings.Edition
+			}
+		},
+	},
+	"spec.settings": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			out.Settings = actual.Settings
+		},
+	},
+	"spec.settings.activationPolicy": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				out.Settings.ActivationPolicy = actual.Settings.ActivationPolicy
+			}
+		},
+	},
+	"spec.settings.backupConfiguration": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				out.Settings.BackupConfiguration = actual.Settings.BackupConfiguration
+			}
+		},
+	},
+	"spec.settings.connectorEnforcement": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				out.Settings.ConnectorEnforcement = actual.Settings.ConnectorEnforcement
+			}
+		},
+	},
+	"spec.settings.dataCacheConfig": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				out.Settings.DataCacheConfig = actual.Settings.DataCacheConfig
+			}
+		},
+	},
+	"spec.settings.diskAutoresize": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				out.Settings.StorageAutoResize = actual.Settings.StorageAutoResize
+			}
+		},
+	},
+	"spec.settings.diskAutoresizeLimit": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				out.Settings.StorageAutoResizeLimit = actual.Settings.StorageAutoResizeLimit
+			}
+		},
+	},
+	"spec.settings.diskSize": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				out.Settings.DataDiskSizeGb = actual.Settings.DataDiskSizeGb
+			}
+		},
+	},
+	"spec.settings.diskType": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				out.Settings.DataDiskType = actual.Settings.DataDiskType
+			}
+		},
+	},
+	"spec.settings.ipConfiguration": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				out.Settings.IpConfiguration = actual.Settings.IpConfiguration
+			}
+		},
+	},
+	"spec.settings.locationPreference": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				out.Settings.LocationPreference = actual.Settings.LocationPreference
+			}
+		},
+	},
+	"spec.settings.pricingPlan": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				out.Settings.PricingPlan = actual.Settings.PricingPlan
+			}
+		},
+	},
+	"spec.settings.backupConfiguration.backupRetentionSettings": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				if out.Settings.BackupConfiguration == nil {
+					out.Settings.BackupConfiguration = &api.BackupConfiguration{}
+				}
+				out.Settings.BackupConfiguration.BackupRetentionSettings = actual.Settings.BackupConfiguration.BackupRetentionSettings
+			}
+		},
+	},
+	"spec.settings.backupConfiguration.enabled": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				if out.Settings.BackupConfiguration == nil {
+					out.Settings.BackupConfiguration = &api.BackupConfiguration{}
+				}
+				out.Settings.BackupConfiguration.Enabled = actual.Settings.BackupConfiguration.Enabled
+			}
+		},
+	},
+	"spec.settings.backupConfiguration.pointInTimeRecoveryEnabled": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				if out.Settings.BackupConfiguration == nil {
+					out.Settings.BackupConfiguration = &api.BackupConfiguration{}
+				}
+				out.Settings.BackupConfiguration.PointInTimeRecoveryEnabled = actual.Settings.BackupConfiguration.PointInTimeRecoveryEnabled
+			}
+		},
+	},
+	"spec.settings.backupConfiguration.startTime": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				if out.Settings.BackupConfiguration == nil {
+					out.Settings.BackupConfiguration = &api.BackupConfiguration{}
+				}
+				out.Settings.BackupConfiguration.StartTime = actual.Settings.BackupConfiguration.StartTime
+			}
+		},
+	},
+	"spec.settings.backupConfiguration.transactionLogRetentionDays": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				if out.Settings.BackupConfiguration == nil {
+					out.Settings.BackupConfiguration = &api.BackupConfiguration{}
+				}
+				out.Settings.BackupConfiguration.TransactionLogRetentionDays = actual.Settings.BackupConfiguration.TransactionLogRetentionDays
+			}
+		},
+	},
+	"spec.settings.backupConfiguration.backupRetentionSettings.retainedBackups": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil && actual.Settings.BackupConfiguration.BackupRetentionSettings != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				if out.Settings.BackupConfiguration == nil {
+					out.Settings.BackupConfiguration = &api.BackupConfiguration{}
+				}
+				if out.Settings.BackupConfiguration.BackupRetentionSettings == nil {
+					out.Settings.BackupConfiguration.BackupRetentionSettings = &api.BackupRetentionSettings{}
+				}
+				out.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups = actual.Settings.BackupConfiguration.BackupRetentionSettings.RetainedBackups
+			}
+		},
+	},
+	"spec.settings.backupConfiguration.backupRetentionSettings.retentionUnit": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.BackupConfiguration != nil && actual.Settings.BackupConfiguration.BackupRetentionSettings != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				if out.Settings.BackupConfiguration == nil {
+					out.Settings.BackupConfiguration = &api.BackupConfiguration{}
+				}
+				if out.Settings.BackupConfiguration.BackupRetentionSettings == nil {
+					out.Settings.BackupConfiguration.BackupRetentionSettings = &api.BackupRetentionSettings{}
+				}
+				out.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit = actual.Settings.BackupConfiguration.BackupRetentionSettings.RetentionUnit
+			}
+		},
+	},
+	"spec.settings.dataCacheConfig.dataCacheEnabled": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.DataCacheConfig != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				if out.Settings.DataCacheConfig == nil {
+					out.Settings.DataCacheConfig = &api.DataCacheConfig{}
+				}
+				out.Settings.DataCacheConfig.DataCacheEnabled = actual.Settings.DataCacheConfig.DataCacheEnabled
+			}
+		},
+	},
+	"spec.settings.ipConfiguration.ipv4Enabled": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.IpConfiguration != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				if out.Settings.IpConfiguration == nil {
+					out.Settings.IpConfiguration = &api.IpConfiguration{}
+				}
+				out.Settings.IpConfiguration.Ipv4Enabled = actual.Settings.IpConfiguration.Ipv4Enabled
+			}
+		},
+	},
+	"spec.settings.locationPreference.zone": {
+		preserveActualValue: func(out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+			if actual.Settings != nil && actual.Settings.LocationPreference != nil {
+				if out.Settings == nil {
+					out.Settings = &api.Settings{}
+				}
+				if out.Settings.LocationPreference == nil {
+					out.Settings.LocationPreference = &api.LocationPreference{}
+				}
+				out.Settings.LocationPreference.Zone = actual.Settings.LocationPreference.Zone
+			}
+		},
+	},
+}
+
+var sortedUnmanageableFieldPaths []string
+
 func init() {
+	// Pre-sort the keys for stable error messages.
+	for path := range supportedUnmanageableFields {
+		sortedUnmanageableFieldPaths = append(sortedUnmanageableFieldPaths, path)
+	}
+	sort.Strings(sortedUnmanageableFieldPaths)
+
 	registry.RegisterModel(krm.SQLInstanceGVK, newSQLInstanceModel)
 }
 
@@ -63,6 +356,7 @@ type sqlInstanceAdapter struct {
 	sqlOperationsClient *api.OperationsService
 	sqlInstancesClient  *api.InstancesService
 	sqlUsersClient      *api.UsersService
+	fieldMeta           map[string]*FieldMetadata
 }
 
 var _ directbase.Adapter = &sqlInstanceAdapter{}
@@ -93,14 +387,34 @@ func (m *sqlInstanceModel) AdapterForObject(ctx context.Context, kube client.Rea
 		return nil, err
 	}
 
-	return &sqlInstanceAdapter{
+	adapter := &sqlInstanceAdapter{
 		projectID:           projectID,
 		resourceID:          resourceID,
 		desired:             obj.DeepCopy(),
 		sqlOperationsClient: gcpClient.sqlOperationsClient(),
 		sqlInstancesClient:  gcpClient.sqlInstancesClient(),
 		sqlUsersClient:      gcpClient.sqlUsersClient(),
-	}, nil
+		fieldMeta:           make(map[string]*FieldMetadata),
+	}
+
+	unmanaged := obj.GetAnnotations()[k8s.UnmanagedFieldsList]
+	if unmanaged != "" {
+		unmanagedFieldsList := strings.Split(unmanaged, ",")
+		for _, fieldPath := range unmanagedFieldsList {
+			field, supported := supportedUnmanageableFields[fieldPath]
+			if !supported {
+				return nil, fmt.Errorf("unmanaging field `%s` is not supported, supported fields are: %v", fieldPath, sortedUnmanageableFieldPaths)
+			}
+
+			newField := &FieldMetadata{
+				isUnmanaged:         true,
+				preserveActualValue: field.preserveActualValue,
+			}
+
+			adapter.fieldMeta[fieldPath] = newField
+		}
+	}
+	return adapter, nil
 }
 
 func (m *sqlInstanceModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
@@ -153,9 +467,10 @@ func (a *sqlInstanceAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		if err := a.insertInstance(ctx, u, log); err != nil {
 			return err
 		}
+
 		if maintenanceVersion != "" {
 			newMaintDb := &api.DatabaseInstance{
-				MaintenanceVersion: direct.ValueOf(a.desired.Spec.MaintenanceVersion),
+				MaintenanceVersion: maintenanceVersion,
 			}
 
 			op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newMaintDb).Context(ctx).Do()
@@ -207,7 +522,7 @@ func (a *sqlInstanceAdapter) cloneInstance(ctx context.Context, u *unstructured.
 }
 
 func (a *sqlInstanceAdapter) insertInstance(ctx context.Context, u *unstructured.Unstructured, log klog.Logger) error {
-	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual)
+	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual, a.fieldMeta)
 	if err != nil {
 		return err
 	}
@@ -291,46 +606,68 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		a.actual = updated
 	}
 
+	isEditionUnmanaged := false
+	if editionField, ok := a.fieldMeta["spec.settings.edition"]; ok {
+		isEditionUnmanaged = editionField.isUnmanaged
+	}
+	isSettingsUnamanged := false
+	if settingsField, ok := a.fieldMeta["spec.settings"]; ok {
+		isSettingsUnamanged = settingsField.isUnmanaged
+	}
+	isEditionUnmanaged = isEditionUnmanaged || isSettingsUnamanged
+
 	// Next, handle database edition updates
-	if a.desired.Spec.Settings.Edition != nil && *a.desired.Spec.Settings.Edition != a.actual.Settings.Edition {
-		newEditionDb := &api.DatabaseInstance{
-			Settings: &api.Settings{
-				Edition: direct.ValueOf(a.desired.Spec.Settings.Edition),
-				// ENTERPRISE_PLUS edition has limitations on the allowable set of tiers that can be used. Therefore, when
-				// modifying the edition, we should also allow modifications to the tier at the same time, so that the
-				// user can update from an invalid tier to a valid tier (when going from ENTERPRISE -> ENTERPRISE_PLUS).
-				Tier: a.desired.Spec.Settings.Tier,
-			},
+	if !isEditionUnmanaged {
+		desiredEdition := "ENTERPRISE" // Default value
+		if a.desired.Spec.Settings.Edition != nil {
+			desiredEdition = *a.desired.Spec.Settings.Edition
 		}
 
-		{
-			report := &structuredreporting.Diff{}
-			report.AddField(".settings.edition", a.actual.Settings.Edition, a.desired.Spec.Settings)
-			structuredreporting.ReportDiff(ctx, report)
-		}
+		if desiredEdition != a.actual.Settings.Edition {
+			newEditionDb := &api.DatabaseInstance{
+				Settings: &api.Settings{
+					Edition: direct.ValueOf(&desiredEdition),
+					// ENTERPRISE_PLUS edition has limitations on the allowable set of tiers that can be used. Therefore, when
+					// modifying the edition, we should also allow modifications to the tier at the same time, so that the
+					// user can update from an invalid tier to a valid tier (when going from ENTERPRISE -> ENTERPRISE_PLUS).
+					Tier: a.desired.Spec.Settings.Tier,
+				},
+			}
 
-		op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newEditionDb).Context(ctx).Do()
-		if err != nil {
-			return fmt.Errorf("patching SQLInstance %s edition failed: %w", a.resourceID, err)
-		}
-		if err := a.pollForLROCompletion(ctx, op, "edition patch"); err != nil {
-			return err
-		}
+			{
+				report := &structuredreporting.Diff{}
+				report.AddField(".settings.edition", a.actual.Settings.Edition, desiredEdition)
+				structuredreporting.ReportDiff(ctx, report)
+			}
 
-		updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
-		if err != nil {
-			return fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
+			op, err := a.sqlInstancesClient.Patch(a.projectID, a.resourceID, newEditionDb).Context(ctx).Do()
+			if err != nil {
+				return fmt.Errorf("patching SQLInstance %s edition failed: %w", a.resourceID, err)
+			}
+			if err := a.pollForLROCompletion(ctx, op, "edition patch"); err != nil {
+				return err
+			}
+
+			updated, err := a.sqlInstancesClient.Get(a.projectID, a.resourceID).Context(ctx).Do()
+			if err != nil {
+				return fmt.Errorf("getting SQLInstance %s failed: %w", a.resourceID, err)
+			}
+
+			log.V(2).Info("instance edition updated", "op", op, "instance", updated)
+
+			a.actual = updated
 		}
+	}
 
-		log.V(2).Info("instance edition updated", "op", op, "instance", updated)
-
-		a.actual = updated
+	isMaintenanceVersionUnmanaged := false
+	if mvField, ok := a.fieldMeta["spec.maintenanceVersion"]; ok {
+		isMaintenanceVersionUnmanaged = mvField.isUnmanaged
 	}
 
 	// we also need to handle maintenanceVersion updates separately ...
-	if a.desired.Spec.MaintenanceVersion != nil && *a.desired.Spec.MaintenanceVersion != a.actual.MaintenanceVersion {
+	if maintenanceVersion := direct.ValueOf(a.desired.Spec.MaintenanceVersion); !isMaintenanceVersionUnmanaged && maintenanceVersion != "" && maintenanceVersion != a.actual.MaintenanceVersion {
 		newMaintDb := &api.DatabaseInstance{
-			MaintenanceVersion: direct.ValueOf(a.desired.Spec.MaintenanceVersion),
+			MaintenanceVersion: maintenanceVersion,
 		}
 
 		{
@@ -356,7 +693,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	// Finally, update rest of the fields
-	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual)
+	desiredGCP, err := SQLInstanceKRMToGCP(a.desired, a.actual, a.fieldMeta)
 	if err != nil {
 		return err
 	}

@@ -44,11 +44,9 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-
 cd ${REPO_ROOT}/
 
-echo "Downloading envtest assets..."
-export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@latest use -p path)
+. ${REPO_ROOT}/dev/tasks/setup-envtest
 
 echo "Running fixtures in tests/e2e for storage..."
 
@@ -166,7 +164,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
         with:
           go-version-file: 'go.mod'
       - name: "Run ${f}"

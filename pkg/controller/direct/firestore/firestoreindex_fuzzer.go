@@ -29,8 +29,8 @@ func init() {
 
 func firestoreIndexFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Index{},
-		FirestoreIndexSpec_FromProto, FirestoreIndexSpec_ToProto,
-		FirestoreIndexStatus_FromProto, FirestoreIndexStatus_ToProto,
+		FirestoreIndexSpec_v1beta1_FromProto, FirestoreIndexSpec_v1beta1_ToProto,
+		FirestoreIndexStatus_v1beta1_FromProto, FirestoreIndexStatus_v1beta1_ToProto,
 	)
 
 	f.SpecField(".query_scope")
@@ -48,6 +48,10 @@ func firestoreIndexFuzzer() fuzztesting.KRMFuzzer {
 
 	// We do map array_config, but we can't handle the unspecified value correctly
 	f.Unimplemented_NotYetTriaged(".fields[].array_config")
+
+	f.Unimplemented_NotYetTriaged(".density")
+	f.Unimplemented_NotYetTriaged(".multikey")
+	f.Unimplemented_NotYetTriaged(".shard_count")
 
 	return f
 }

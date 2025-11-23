@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 
@@ -109,6 +110,10 @@ spec:
        cnrm.cloud.google.com/component: cnrm-controller-manager
        cnrm.cloud.google.com/scoped-namespace: foo-ns
        cnrm.cloud.google.com/system: "true"
+   spec:
+     containers:
+     - name: manager
+       image: controller:latest
 `},
 		},
 		{
@@ -173,6 +178,10 @@ spec:
        cnrm.cloud.google.com/component: cnrm-controller-manager
        cnrm.cloud.google.com/scoped-namespace: t1234-tenant0-provider
        cnrm.cloud.google.com/system: "true"
+   spec:
+     containers:
+     - name: manager
+       image: controller:latest
 `},
 		},
 	}
@@ -1127,7 +1136,8 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 			expectedManifests:         testcontroller.NamespacedComponentsWithCustomizedControllerManager,
 			expectedCustomizationCRStatus: customizev1beta1.NamespacedControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: true,
+					Healthy:            true,
+					ObservedGeneration: 1,
 				},
 			},
 		},
@@ -1138,8 +1148,9 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 			expectedManifests:         testcontroller.NamespacedComponents, // same as the input manifests
 			expectedCustomizationCRStatus: customizev1beta1.NamespacedControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: false,
-					Errors:  []string{testcontroller.ErrNonExistingController},
+					Healthy:            false,
+					Errors:             []string{testcontroller.ErrNonExistingController},
+					ObservedGeneration: 1,
 				},
 			},
 		},
@@ -1150,8 +1161,9 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 			expectedManifests:         testcontroller.NamespacedComponents, // same as the input manifests
 			expectedCustomizationCRStatus: customizev1beta1.NamespacedControllerResourceStatus{
 				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: false,
-					Errors:  []string{testcontroller.ErrNonExistingContainer},
+					Healthy:            false,
+					Errors:             []string{testcontroller.ErrNonExistingContainer},
+					ObservedGeneration: 1,
 				},
 			},
 		},
@@ -1168,7 +1180,25 @@ func TestApplyNamespacedCustomizations(t *testing.T) {
 			namespacedCustomizationCR: testcontroller.NamespacedControllerResourceCRWrongNamespace,
 			expectedManifests:         testcontroller.NamespacedComponents, // same as the input manifests
 			expectedCustomizationCRStatus: customizev1beta1.NamespacedControllerResourceStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{}, // no update to status because it is not in the same namespace as the CCC reconciler.
+				CommonStatus: addonv1alpha1.CommonStatus{
+					ObservedGeneration: 0,
+				}, // no update to status because it is not in the same namespace as the CCC reconciler.
+			},
+		},
+		{
+			name:      "observedGeneration is correctly set in status",
+			manifests: testcontroller.NamespacedComponents,
+			namespacedCustomizationCR: func() *customizev1beta1.NamespacedControllerResource {
+				cr := testcontroller.NamespacedControllerResourceCRForControllerManagerResources.DeepCopy()
+				cr.Generation = 1
+				return cr
+			}(),
+			expectedManifests: testcontroller.NamespacedComponentsWithCustomizedControllerManager,
+			expectedCustomizationCRStatus: customizev1beta1.NamespacedControllerResourceStatus{
+				CommonStatus: addonv1alpha1.CommonStatus{
+					Healthy:            true,
+					ObservedGeneration: 1,
+				},
 			},
 		},
 	}
@@ -1249,6 +1279,7 @@ func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 		controllerReconcilerCR *customizev1beta1.NamespacedControllerReconciler
 		expectedManifests      []string
 		expectedCRStatus       customizev1beta1.NamespacedControllerReconcilerStatus
+		expectCELFailure       string
 	}{
 		{
 			name:                   "customize the rate limit for cnrm-controller-manager",
@@ -1266,12 +1297,7 @@ func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 			manifests:              testcontroller.NamespacedComponents,
 			controllerReconcilerCR: testcontroller.NamespacedControllerReconcilerCRForUnsupportedController,
 			expectedManifests:      testcontroller.NamespacedComponents, // same as the input manifests
-			expectedCRStatus: customizev1beta1.NamespacedControllerReconcilerStatus{
-				CommonStatus: addonv1alpha1.CommonStatus{
-					Healthy: false,
-					Errors:  []string{testcontroller.ErrUnsupportedController},
-				},
-			},
+			expectCELFailure:       "failed rule: self.metadata.name == 'cnrm-controller-manager'",
 		},
 		{
 			name:                   "customization from a different namespace has no effect",
@@ -1296,6 +1322,13 @@ func TestApplyNamespacedRateLimitCustomizations(t *testing.T) {
 				cr := tc.controllerReconcilerCR
 				testcontroller.EnsureNamespaceExists(c, cr.Namespace)
 				if err := c.Create(ctx, cr); err != nil {
+					if tc.expectCELFailure != "" {
+						s := fmt.Sprintf("%T %v", err, err)
+						if !strings.Contains(s, tc.expectCELFailure) {
+							t.Fatalf("expected CEL failure to contain %q, but got %q", tc.expectCELFailure, s)
+						}
+						return
+					}
 					t.Fatalf("error creating %v %v/%v: %v", cr.Kind, cr.Namespace, cr.Name, err)
 				}
 			}
@@ -1391,17 +1424,17 @@ func TestControllerOverridesField(t *testing.T) {
 		Spec: corev1beta1.ConfigConnectorContextSpec{
 			Experiments: &corev1beta1.Experiments{
 				ControllerOverrides: map[string]k8sreconciler.ReconcilerType{
-					"BigQueryDataset.bigquery.cnrm.cloud.google.com":              "direct",    // default is terraform
-					"AlloyDBClusters.alloydb.cnrm.cloud.google.com":               "direct",    // default is terraform
-					"CloudIdentityGroups.cloudidentity.cnrm.cloud.google.com":     "terraform", // default is direct
-					"SQLInstances.sql.cnrm.cloud.google.com":                      "terraform", // default is direct
-					"CloudIdentityMembership.cloudidentity.cnrm.cloud.google.com": "dcl",       // default is direct
-					"UnknownResource.example.cnrm.cloud.google.com":               "direct",    // invalid resource
-					"AlloyDBInstance.alloydb.cnrm.cloud.google.com":               "unknown",   // invalid controller type
-					"example.cnrm.cloud.google.com":                               "unknown",   // invalid resource and invalid controller
-					"SpannerInstance.spanner.cnrm.cloud.google.com":               "terraform", // default is terraform
-					"GKEHubFeature.gkehub.cnrm.cloud.google.com":                  "dcl",       // default is dcl
-					"ComputeInstance.compute.cnrm.cloud.google.com":               "direct",    // direct is not supported for this resource
+					"BigQueryDataset.bigquery.cnrm.cloud.google.com":              "direct",  // default is terraform
+					"AlloyDBClusters.alloydb.cnrm.cloud.google.com":               "tf",      // default is terraform
+					"CloudIdentityGroups.cloudidentity.cnrm.cloud.google.com":     "tf",      // default is direct
+					"SQLInstances.sql.cnrm.cloud.google.com":                      "tf",      // default is direct
+					"CloudIdentityMembership.cloudidentity.cnrm.cloud.google.com": "dcl",     // default is direct
+					"UnknownResource.example.cnrm.cloud.google.com":               "direct",  // invalid resource
+					"AlloyDBInstance.alloydb.cnrm.cloud.google.com":               "unknown", // invalid controller type
+					"example.cnrm.cloud.google.com":                               "unknown", // invalid resource and invalid controller
+					"SpannerInstance.spanner.cnrm.cloud.google.com":               "tf",      // default is terraform
+					"GKEHubFeature.gkehub.cnrm.cloud.google.com":                  "dcl",     // default is dcl
+					"ComputeInstance.compute.cnrm.cloud.google.com":               "direct",  // direct is not supported for this resource
 				},
 			},
 		},

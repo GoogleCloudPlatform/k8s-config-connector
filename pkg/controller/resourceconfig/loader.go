@@ -14,6 +14,28 @@
 
 package resourceconfig
 
-func LoadConfig() *ResourcesControllerMap {
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+)
+
+func LoadConfig() ResourcesControllerMap {
 	return ControllerConfigStatic
+}
+
+func IsControllerSupported(gvk schema.GroupVersionKind, controllerType k8s.ReconcilerType) bool {
+	config := LoadConfig()
+	if config == nil {
+		return false
+	}
+	controllerConfig, exists := config[gvk.GroupKind()]
+	if !exists {
+		return false
+	}
+	for _, supportedController := range controllerConfig.SupportedControllers {
+		if supportedController == controllerType {
+			return true
+		}
+	}
+	return false
 }

@@ -199,6 +199,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: assetfeeds.asset.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: assetsavedqueries.asset.cnrm.cloud.google.com
 spec: (removed)
 ---
@@ -208,6 +216,30 @@ metadata:
   annotations: (removed)
   labels: (removed)
   name: backupdrbackupplanassociations.backupdr.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: backupdrbackupplans.backupdr.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: backupdrbackupvaults.backupdr.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: biglaketables.bigquerybiglake.cnrm.cloud.google.com
 spec: (removed)
 ---
 apiVersion: apiextensions.k8s.io/v1
@@ -263,6 +295,14 @@ status:
     plural: ""
   conditions: []
   storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: bigqueryreservationassignments.bigqueryreservation.cnrm.cloud.google.com
+spec: (removed)
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -331,12 +371,6 @@ metadata:
   labels: (removed)
   name: bigtabletables.bigtable.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -457,6 +491,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: clouddeploydeliverypipelines.clouddeploy.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: cloudfunctionsfunctions.cloudfunctions.cnrm.cloud.google.com
 spec: (removed)
 status:
@@ -509,6 +551,14 @@ status:
     plural: ""
   conditions: []
   storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: composerenvironments.composer.cnrm.cloud.google.com
+spec: (removed)
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1545,6 +1595,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: documentaiprocessorversions.documentai.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: edgecontainerclusters.edgecontainer.cnrm.cloud.google.com
 spec: (removed)
 status:
@@ -1609,6 +1667,14 @@ status:
     plural: ""
   conditions: []
   storedVersions: []
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
+  name: essentialcontactscontacts.essentialcontacts.cnrm.cloud.google.com
+spec: (removed)
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2391,6 +2457,14 @@ kind: CustomResourceDefinition
 metadata:
   annotations: (removed)
   labels: (removed)
+  name: orgpolicycustomconstraints.orgpolicy.cnrm.cloud.google.com
+spec: (removed)
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations: (removed)
+  labels: (removed)
   name: osconfigguestpolicies.osconfig.cnrm.cloud.google.com
 spec: (removed)
 status:
@@ -2627,12 +2701,6 @@ metadata:
   labels: (removed)
   name: runjobs.run.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2961,12 +3029,6 @@ metadata:
   labels: (removed)
   name: tagstagbindings.tags.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2975,12 +3037,6 @@ metadata:
   labels: (removed)
   name: tagstagkeys.tags.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2989,12 +3045,6 @@ metadata:
   labels: (removed)
   name: tagstagvalues.tags.cnrm.cloud.google.com
 spec: (removed)
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition

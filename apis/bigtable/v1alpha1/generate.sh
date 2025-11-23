@@ -27,7 +27,8 @@ go run . generate-types \
   --resource BigtableAuthorizedView:AuthorizedView \
   --resource BigtableBackup:Backup \
   --resource BigtableCluster:Cluster \
-  --resource BigtableLogicalView:LogicalView
+  --resource BigtableLogicalView:LogicalView \
+  --resource BigtableMaterializedView:MaterializedView
 
 go run . generate-mapper \
   --service google.bigtable.admin.v2 \

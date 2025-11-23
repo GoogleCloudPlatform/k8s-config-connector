@@ -127,7 +127,7 @@ func (a *ProcessorAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := DocumentAIProcessorSpec_ToProto(mapCtx, &desired.Spec)
+	resource := DocumentAIProcessorSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -143,7 +143,7 @@ func (a *ProcessorAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	log.V(2).Info("successfully created Processor", "name", a.id)
 
 	status := &krm.DocumentAIProcessorStatus{}
-	status.ObservedState = DocumentAIProcessorObservedState_FromProto(mapCtx, created)
+	status.ObservedState = DocumentAIProcessorObservedState_v1alpha1_FromProto(mapCtx, created)
 	// TODO: is the default version also an output field?
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -158,7 +158,7 @@ func (a *ProcessorAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	log.V(2).Info("updating Processor", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := DocumentAIProcessorSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	desiredPb := DocumentAIProcessorSpec_v1alpha1_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -179,7 +179,7 @@ func (a *ProcessorAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	if desiredPb.DefaultProcessorVersion == a.actual.DefaultProcessorVersion {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		status := &krm.DocumentAIProcessorStatus{}
-		status.ObservedState = DocumentAIProcessorObservedState_FromProto(mapCtx, a.actual)
+		status.ObservedState = DocumentAIProcessorObservedState_v1alpha1_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
@@ -207,7 +207,7 @@ func (a *ProcessorAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	}
 
 	status := &krm.DocumentAIProcessorStatus{}
-	status.ObservedState = DocumentAIProcessorObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = DocumentAIProcessorObservedState_v1alpha1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -223,7 +223,7 @@ func (a *ProcessorAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 
 	obj := &krm.DocumentAIProcessor{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(DocumentAIProcessorSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(DocumentAIProcessorSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

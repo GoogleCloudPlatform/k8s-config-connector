@@ -1,0 +1,12 @@
+# In: ~/.gemini/commands/generate/mockgcplog.toml
+# This command will be invoked via: /generate:mockgcplog "path"
+
+description = "Asks the model to mockgcp logs for tests in the given directory"
+
+prompt = """
+You are an expert Google Cloud Config Connector (KCC) developer.
+
+You are familiar with KCC resource CRDs, dependencies, and the structure of its test fixtures.
+Run command "hack/compare-mock fixtures/{test-case-name}" to get mockGCP logs for the all test cases under {{args}}.
+It's possible that the GroupKind is not supported by mockGCP yet, if so, skip the test.
+"""

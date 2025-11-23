@@ -22,7 +22,8 @@ import (
 	api "google.golang.org/api/sqladmin/v1beta4"
 )
 
-func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance, actual *api.DatabaseInstance) {
+func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance, actual *api.DatabaseInstance, fieldMetadata map[string]*FieldMetadata) {
+	// Stage 1: Apply all client-side defaults as if no fields are unmanaged.
 	if in.Spec.InstanceType == nil {
 		// GCP default InstanceType is CLOUD_SQL_INSTANCE.
 		out.InstanceType = "CLOUD_SQL_INSTANCE"
@@ -62,9 +63,10 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 		out.Settings.DataDiskType = "PD_SSD"
 	}
 	if in.Spec.Settings.Edition == nil {
-		// GCP default Edition is ENTERPRISE.
+		// Apply client side GCP default Edition is ENTERPRISE.
 		out.Settings.Edition = "ENTERPRISE"
 	}
+
 	if in.Spec.Settings.IpConfiguration == nil {
 		// GCP default IpConfiguration.
 		out.Settings.IpConfiguration = &api.IpConfiguration{
@@ -118,5 +120,16 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 	if actual != nil {
 		// GCP API requires we set the current settings version, otherwise update will fail.
 		out.Settings.SettingsVersion = actual.Settings.SettingsVersion
+	}
+
+	// Stage 2: Preserve any fields that are unmanaged by the user.
+	// This generic loop will overwrite any defaults set in Stage 1.
+	if actual == nil {
+		return
+	}
+	for _, field := range fieldMetadata {
+		if field.isUnmanaged {
+			field.preserveActualValue(out, actual)
+		}
 	}
 }

@@ -186,8 +186,8 @@ func (r *ReconcileIAMPolicy) Reconcile(ctx context.Context, request reconcile.Re
 	uObj.SetNamespace(policy.GetNamespace())
 	uObj.SetName(policy.GetName())
 	uObj.SetGroupVersionKind(iamv1beta1.IAMPolicyGVK)
-	structuredreporting.ReportReconcileStart(ctx, uObj)
-	defer structuredreporting.ReportReconcileEnd(ctx, uObj, result, err)
+	structuredreporting.ReportReconcileStart(ctx, uObj, k8s.ReconcilerTypeIAMPolicy)
+	defer structuredreporting.ReportReconcileEnd(ctx, uObj, result, err, k8s.ReconcilerTypeIAMPolicy)
 	requeue, err := runCtx.doReconcile(policy)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -275,7 +275,8 @@ func (r *reconcileContext) doReconcile(policy *iamv1beta1.IAMPolicy) (requeue bo
 		}
 		return false, r.handleDeleted(policy)
 	}
-	if _, err := r.Reconciler.iamClient.GetPolicy(r.Ctx, policy); err != nil {
+	oldIAMPolicy, err := r.Reconciler.iamClient.GetPolicy(r.Ctx, policy)
+	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policy))
 			return r.handleUnresolvableDeps(policy, unwrappedErr)
@@ -285,6 +286,12 @@ func (r *reconcileContext) doReconcile(policy *iamv1beta1.IAMPolicy) (requeue bo
 	k8s.EnsureFinalizers(policy, k8s.ControllerFinalizerName, k8s.DeletionDefenderFinalizerName)
 	// set the etag to an empty string, since IAMPolicy is the authoritative intent, KCC wants to overwrite the underlying policy regardless
 	policy.Spec.Etag = ""
+
+	diff := iamv1beta1.IAMPolicySpecDiffers(&oldIAMPolicy.Spec, &policy.Spec)
+	if diff.HasDiff() {
+		structuredreporting.ReportDiff(r.Ctx, diff)
+	}
+
 	if _, err = r.Reconciler.iamClient.SetPolicy(r.Ctx, policy); err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(policy))

@@ -29,8 +29,8 @@ func init() {
 
 func bigLakeDatabaseFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Database{},
-		BigLakeDatabaseSpec_FromProto, BigLakeDatabaseSpec_ToProto,
-		BigLakeDatabaseObservedState_FromProto, BigLakeDatabaseObservedState_ToProto,
+		BigLakeDatabaseSpec_v1alpha1_FromProto, BigLakeDatabaseSpec_v1alpha1_ToProto,
+		BigLakeDatabaseObservedState_v1alpha1_FromProto, BigLakeDatabaseObservedState_v1alpha1_ToProto,
 	)
 
 	f.SpecFields.Insert(".hive_options")

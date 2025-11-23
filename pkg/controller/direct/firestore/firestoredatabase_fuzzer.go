@@ -29,11 +29,12 @@ func init() {
 
 func firestoreDatabaseFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Database{},
-		FirestoreDatabaseSpec_FromProto, FirestoreDatabaseSpec_ToProto,
+		FirestoreDatabaseSpec_v1beta1_FromProto, FirestoreDatabaseSpec_v1beta1_ToProto,
 		FirestoreDatabaseObservedState_FromProto, FirestoreDatabaseObservedState_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name")
+	f.Unimplemented_Identity(".name")
+
 	f.UnimplementedFields.Insert(".delete_time")
 	f.UnimplementedFields.Insert(".key_prefix")
 	f.UnimplementedFields.Insert(".cmek_config")
@@ -43,18 +44,22 @@ func firestoreDatabaseFuzzer() fuzztesting.KRMFuzzer {
 	// Default value fields set by controller
 	f.UnimplementedFields.Insert(".type")
 	f.UnimplementedFields.Insert(".app_engine_integration_mode")
-	f.UnimplementedFields.Insert(".delete_protection_state")
 
-	f.SpecFields.Insert(".location_id")
-	f.SpecFields.Insert(".concurrency_mode")
-	f.SpecFields.Insert(".point_in_time_recovery_enablement")
+	f.SpecField(".location_id")
+	f.SpecField(".concurrency_mode")
+	f.SpecField(".point_in_time_recovery_enablement")
+	f.SpecField(".delete_protection_state")
 
-	f.StatusFields.Insert(".uid")
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".version_retention_period")
-	f.StatusFields.Insert(".earliest_version_time")
-	f.StatusFields.Insert(".etag")
+	f.StatusField(".uid")
+	f.StatusField(".create_time")
+	f.StatusField(".update_time")
+	f.StatusField(".version_retention_period")
+	f.StatusField(".earliest_version_time")
+	f.StatusField(".etag")
+
+	f.Unimplemented_NotYetTriaged(".free_tier")
+	f.Unimplemented_NotYetTriaged(".tags")
+	f.Unimplemented_NotYetTriaged(".database_edition")
 
 	return f
 }

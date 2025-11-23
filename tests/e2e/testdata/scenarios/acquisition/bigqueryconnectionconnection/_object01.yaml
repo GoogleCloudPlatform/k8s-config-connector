@@ -3,6 +3,7 @@ kind: BigQueryConnectionConnection
 metadata:
   annotations:
     cnrm.cloud.google.com/deletion-policy: abandon
+    cnrm.cloud.google.com/project-id: ${projectId}
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender

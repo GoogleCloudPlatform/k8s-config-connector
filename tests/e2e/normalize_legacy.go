@@ -46,6 +46,9 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	for _, event := range events {
 		id := ""
 		body := event.Response.ParseBody()
+		if body == nil {
+			continue
+		}
 		val, ok := body["name"]
 		if ok {
 			s := val.(string)
@@ -80,6 +83,9 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 
 	for _, event := range events {
 		body := event.Response.ParseBody()
+		if body == nil {
+			continue
+		}
 		if selfLinkWithId, _, _ := unstructured.NestedString(body, "selfLinkWithId"); selfLinkWithId != "" {
 			r.ExtractIDsFromLinks(selfLinkWithId)
 		}
@@ -379,23 +385,6 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	})
 	// Specific to BigQuery
 	addSetStringReplacement(".access[].userByEmail", "user@google.com")
-
-	// Specific to Firestore
-	jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
-		if _, found, _ := unstructured.NestedMap(obj, "response"); found {
-			// Only run this mutator for firestore database objects.
-			if val, found, err := unstructured.NestedString(obj, "response", "@type"); err == nil && found && val == "type.googleapis.com/google.firestore.admin.v1.Database" {
-				// Only run this mutator for firestore database objects that have a name set in the response.
-				if val, found, err := unstructured.NestedString(obj, "response", "name"); err == nil && found && val != "" {
-					// Set name field to use human-readable ID, instead of UID
-					// Note: This only works if firestore databases in all resource fixture test cases use the name "firestoredatabase-${uniqueId}"
-					if err := unstructured.SetNestedField(obj, "projects/${projectId}/databases/firestoredatabase-${uniqueId}", "response", "name"); err != nil {
-						t.Fatalf("FAIL: stting nested field: %v", err)
-					}
-				}
-			}
-		}
-	})
 
 	// Specific to PAM
 	// Boolean fields in LRO are omitted when false so we need

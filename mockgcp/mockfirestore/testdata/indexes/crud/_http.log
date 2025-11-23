@@ -1,0 +1,455 @@
+POST https://firestore.googleapis.com/v1/projects/${projectId}/databases?alt=json&databaseId=test-db-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "cmekConfig": {},
+  "databaseEdition": "STANDARD",
+  "deleteProtectionState": "DELETE_PROTECTION_DISABLED",
+  "locationId": "us-central1",
+  "pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_ENABLEMENT_UNSPECIFIED",
+  "type": "FIRESTORE_NATIVE"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.CreateDatabaseMetadata"
+  },
+  "name": "projects/${projectId}/databases/test-db-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.Database",
+    "appEngineIntegrationMode": "DISABLED",
+    "concurrencyMode": "PESSIMISTIC",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseEdition": "STANDARD",
+    "deleteProtectionState": "DELETE_PROTECTION_DISABLED",
+    "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "freeTier": true,
+    "locationId": "us-central1",
+    "name": "projects/${projectId}/databases/test-db-${uniqueId}",
+    "pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_DISABLED",
+    "type": "FIRESTORE_NATIVE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "versionRetentionPeriod": "3600s"
+  }
+}
+
+---
+
+PATCH https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/test-cg-${uniqueId}/fields/fieldA?alt=json&updateMask=indexConfig
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "indexConfig": {
+    "indexes": [
+      {
+        "fields": [
+          {
+            "order": "ASCENDING"
+          }
+        ],
+        "queryScope": "COLLECTION"
+      }
+    ]
+  },
+  "name": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/test-cg-${uniqueId}/fields/fieldA"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.FieldOperationMetadata",
+    "field": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/test-cg-${uniqueId}/fields/fieldA",
+    "indexConfigDeltas": [
+      {
+        "changeType": "REMOVE",
+        "index": {
+          "fields": [
+            {
+              "fieldPath": "fieldA",
+              "order": "DESCENDING"
+            }
+          ],
+          "queryScope": "COLLECTION"
+        }
+      },
+      {
+        "changeType": "REMOVE",
+        "index": {
+          "fields": [
+            {
+              "arrayConfig": "CONTAINS",
+              "fieldPath": "fieldA"
+            }
+          ],
+          "queryScope": "COLLECTION"
+        }
+      }
+    ],
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "state": "INITIALIZING"
+  },
+  "name": "projects/${projectId}/databases/test-db-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-${uniqueId}/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.FieldOperationMetadata",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "field": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/test-cg-${uniqueId}/fields/fieldA",
+    "indexConfigDeltas": [
+      {
+        "changeType": "REMOVE",
+        "index": {
+          "fields": [
+            {
+              "fieldPath": "fieldA",
+              "order": "DESCENDING"
+            }
+          ],
+          "queryScope": "COLLECTION"
+        }
+      },
+      {
+        "changeType": "REMOVE",
+        "index": {
+          "fields": [
+            {
+              "arrayConfig": "CONTAINS",
+              "fieldPath": "fieldA"
+            }
+          ],
+          "queryScope": "COLLECTION"
+        }
+      }
+    ],
+    "progressDocuments": {},
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "state": "SUCCESSFUL"
+  },
+  "name": "projects/${projectId}/databases/test-db-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.Field",
+    "indexConfig": {
+      "ancestorField": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/__default__/fields/*",
+      "indexes": [
+        {
+          "fields": [
+            {
+              "fieldPath": "fieldA",
+              "order": "ASCENDING"
+            }
+          ],
+          "queryScope": "COLLECTION",
+          "state": "READY"
+        }
+      ]
+    },
+    "name": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/test-cg-${uniqueId}/fields/fieldA"
+  }
+}
+
+---
+
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/test-cg-${uniqueId}/fields/fieldA?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "indexConfig": {
+    "ancestorField": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/__default__/fields/*",
+    "indexes": [
+      {
+        "fields": [
+          {
+            "fieldPath": "fieldA",
+            "order": "ASCENDING"
+          }
+        ],
+        "queryScope": "COLLECTION",
+        "state": "READY"
+      }
+    ]
+  },
+  "name": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/test-cg-${uniqueId}/fields/fieldA"
+}
+
+---
+
+PATCH https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/test-cg-${uniqueId}/fields/fieldA?alt=json&updateMask=indexConfig
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "indexConfig": {
+    "indexes": [
+      {
+        "fields": [
+          {
+            "order": "DESCENDING"
+          }
+        ],
+        "queryScope": "COLLECTION"
+      }
+    ]
+  },
+  "name": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/test-cg-${uniqueId}/fields/fieldA"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.FieldOperationMetadata",
+    "field": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/test-cg-${uniqueId}/fields/fieldA",
+    "indexConfigDeltas": [
+      {
+        "changeType": "REMOVE",
+        "index": {
+          "fields": [
+            {
+              "fieldPath": "fieldA",
+              "order": "ASCENDING"
+            }
+          ],
+          "queryScope": "COLLECTION"
+        }
+      },
+      {
+        "changeType": "ADD",
+        "index": {
+          "fields": [
+            {
+              "fieldPath": "fieldA",
+              "order": "DESCENDING"
+            }
+          ],
+          "queryScope": "COLLECTION"
+        }
+      }
+    ],
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "state": "INITIALIZING"
+  },
+  "name": "projects/${projectId}/databases/test-db-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-${uniqueId}/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.FieldOperationMetadata",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "field": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/test-cg-${uniqueId}/fields/fieldA",
+    "indexConfigDeltas": [
+      {
+        "changeType": "REMOVE",
+        "index": {
+          "fields": [
+            {
+              "fieldPath": "fieldA",
+              "order": "ASCENDING"
+            }
+          ],
+          "queryScope": "COLLECTION"
+        }
+      },
+      {
+        "changeType": "ADD",
+        "index": {
+          "fields": [
+            {
+              "fieldPath": "fieldA",
+              "order": "DESCENDING"
+            }
+          ],
+          "queryScope": "COLLECTION"
+        }
+      }
+    ],
+    "progressDocuments": {},
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "state": "SUCCESSFUL"
+  },
+  "name": "projects/${projectId}/databases/test-db-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.Field",
+    "indexConfig": {
+      "ancestorField": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/__default__/fields/*",
+      "indexes": [
+        {
+          "fields": [
+            {
+              "fieldPath": "fieldA",
+              "order": "DESCENDING"
+            }
+          ],
+          "queryScope": "COLLECTION",
+          "state": "READY"
+        }
+      ]
+    },
+    "name": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/test-cg-${uniqueId}/fields/fieldA"
+  }
+}
+
+---
+
+GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/test-cg-${uniqueId}/fields/fieldA?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "indexConfig": {
+    "ancestorField": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/__default__/fields/*",
+    "indexes": [
+      {
+        "fields": [
+          {
+            "fieldPath": "fieldA",
+            "order": "DESCENDING"
+          }
+        ],
+        "queryScope": "COLLECTION",
+        "state": "READY"
+      }
+    ]
+  },
+  "name": "projects/${projectId}/databases/test-db-${uniqueId}/collectionGroups/test-cg-${uniqueId}/fields/fieldA"
+}
+
+---
+
+DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/test-db-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.DeleteDatabaseMetadata"
+  },
+  "name": "projects/${projectId}/databases/test-db-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.firestore.admin.v1.Database",
+    "appEngineIntegrationMode": "DISABLED",
+    "concurrencyMode": "PESSIMISTIC",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "databaseEdition": "STANDARD",
+    "deleteProtectionState": "DELETE_PROTECTION_DISABLED",
+    "deleteTime": "2024-04-01T12:34:56.123456Z",
+    "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "freeTier": true,
+    "locationId": "us-central1",
+    "name": "projects/${projectId}/databases/${randomDatabaseID}",
+    "pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_DISABLED",
+    "previousId": "test-db-${uniqueId}",
+    "type": "FIRESTORE_NATIVE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "versionRetentionPeriod": "3600s"
+  }
+}

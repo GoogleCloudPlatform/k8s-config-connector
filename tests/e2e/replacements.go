@@ -104,14 +104,6 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 		return "${creatorID}"
 	case "tensorboards":
 		return "${tensorboardID}"
-	case "tagKeys":
-		if name == "namespaced" {
-			// This is actually a search operation: https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys/getNamespaced
-			return ""
-		}
-		return "${tagKeyID}"
-	case "tagValues":
-		return "${tagValueID}"
 	case "datasets":
 		return "${datasetID}"
 	case "networks":

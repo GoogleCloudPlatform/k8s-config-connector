@@ -16,6 +16,7 @@ Vary: X-Origin
     ]
   },
   "etag": "abcdef0123A=",
+  "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -159,6 +160,7 @@ Vary: X-Origin
     }
   ],
   "etag": "abcdef0123A=",
+  "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false
@@ -228,6 +230,7 @@ Vary: X-Origin
     ]
   },
   "etag": "abcdef0123A=",
+  "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
       "enabled": false

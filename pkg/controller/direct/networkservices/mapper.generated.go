@@ -22,6 +22,7 @@ package networkservices
 import (
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
+	krmservicedirectoryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -33,6 +34,7 @@ func NetworkServicesServiceBindingObservedState_FromProto(mapCtx *direct.MapCont
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: ServiceID
 	return out
 }
 func NetworkServicesServiceBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesServiceBindingObservedState) *pb.ServiceBinding {
@@ -43,5 +45,34 @@ func NetworkServicesServiceBindingObservedState_ToProto(mapCtx *direct.MapContex
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: ServiceID
+	return out
+}
+func NetworkServicesServiceBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krm.NetworkServicesServiceBindingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkServicesServiceBindingSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	if in.GetService() != "" {
+		out.ServiceRef = &krmservicedirectoryv1alpha1.ServiceDirectoryServiceRef{External: in.GetService()}
+	}
+	// MISSING: ServiceID
+	out.Labels = in.Labels
+	return out
+}
+func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesServiceBindingSpec) *pb.ServiceBinding {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ServiceBinding{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	if in.ServiceRef != nil {
+		out.Service = in.ServiceRef.External
+	}
+	// MISSING: ServiceID
+	out.Labels = in.Labels
 	return out
 }

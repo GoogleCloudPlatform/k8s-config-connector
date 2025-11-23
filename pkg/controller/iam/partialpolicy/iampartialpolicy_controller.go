@@ -205,8 +205,8 @@ func (r *ReconcileIAMPartialPolicy) Reconcile(ctx context.Context, request recon
 	uObj.SetNamespace(policy.GetNamespace())
 	uObj.SetName(policy.GetName())
 	uObj.SetGroupVersionKind(iamv1beta1.IAMPartialPolicyGVK)
-	structuredreporting.ReportReconcileStart(ctx, uObj)
-	defer structuredreporting.ReportReconcileEnd(ctx, uObj, result, err)
+	structuredreporting.ReportReconcileStart(ctx, uObj, k8s.ReconcilerTypeIAMPartialPolicy)
+	defer structuredreporting.ReportReconcileEnd(ctx, uObj, result, err, k8s.ReconcilerTypeIAMPartialPolicy)
 	requeue, err := runCtx.doReconcile(policy)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -307,6 +307,12 @@ func (r *reconcileContext) doReconcile(pp *iamv1beta1.IAMPartialPolicy) (requeue
 		return false, r.handleUpdateFailed(pp, fmt.Errorf("error computing partial policy: %w", err))
 	}
 	desiredPolicy := toDesiredPolicy(desiredPartialPolicy, iamPolicy)
+
+	diff := iamv1beta1.IAMPolicySpecDiffers(&desiredPolicy.Spec, &iamPolicy.Spec)
+	if diff.HasDiff() {
+		structuredreporting.ReportDiff(r.Ctx, diff)
+	}
+
 	if _, err = r.Reconciler.iamClient.SetPolicy(r.Ctx, desiredPolicy); err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(pp))

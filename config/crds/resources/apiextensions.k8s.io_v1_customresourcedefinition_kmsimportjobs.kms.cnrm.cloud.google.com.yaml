@@ -64,6 +64,8 @@ spec:
                   incoming key material.
                 type: string
               kmsKeyRingRef:
+                description: KMSKeyRingRef defines the resource reference to KMSKeyRing,
+                  which "External" field holds the GCP identifier for the KRM object.
                 oneOf:
                 - not:
                     required:
@@ -80,14 +82,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: ' If provided must be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]`.'
+                    description: A reference to an externally managed KMSKeyRing.
+                      Should be in the format `projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}}`.
                     type: string
                   name:
-                    description: The `name` field of a `KMSKeyRing` resource.
+                    description: The `name` of a `KMSKeyRing` resource.
                     type: string
                   namespace:
-                    description: The `metadata.namespace` field of a `KMSKeyRing`
-                      resource.
+                    description: The `namespace` of a `KMSKeyRing` resource.
                     type: string
                 type: object
               protectionLevel:
@@ -275,6 +277,8 @@ spec:
                   incoming key material.
                 type: string
               kmsKeyRingRef:
+                description: KMSKeyRingRef defines the resource reference to KMSKeyRing,
+                  which "External" field holds the GCP identifier for the KRM object.
                 oneOf:
                 - not:
                     required:
@@ -291,14 +295,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: ' If provided must be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]`.'
+                    description: A reference to an externally managed KMSKeyRing.
+                      Should be in the format `projects/{{projectId}}/locations/{{location}}/keyRings/{{keyRingId}}`.
                     type: string
                   name:
-                    description: The `name` field of a `KMSKeyRing` resource.
+                    description: The `name` of a `KMSKeyRing` resource.
                     type: string
                   namespace:
-                    description: The `metadata.namespace` field of a `KMSKeyRing`
-                      resource.
+                    description: The `namespace` of a `KMSKeyRing` resource.
                     type: string
                 type: object
               protectionLevel:

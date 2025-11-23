@@ -1,0 +1,598 @@
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupVaults%2Fbackupdrbackupvault-full-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults?%24alt=json%3Benum-encoding%3Dint&backupVaultId=backupdrbackupvault-full-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "backupMinimumEnforcedRetentionDuration": "86400s",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.BackupVault",
+    "accessRestriction": "WITHIN_ORGANIZATION",
+    "backupMinimumEnforcedRetentionDuration": "86400s",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deletable": true,
+    "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
+    "serviceAccount": "vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
+    "state": "ACTIVE",
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupPlans%2Fbackupdrbackupplan-full-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupPlans?%24alt=json%3Benum-encoding%3Dint&backupPlanId=backupdrbackupplan-full-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "backupRules": [
+    {
+      "backupRetentionDays": 10,
+      "ruleId": "daily-rule",
+      "standardSchedule": {
+        "backupWindow": {
+          "endHourOfDay": 10,
+          "startHourOfDay": 6
+        },
+        "recurrenceType": 2,
+        "timeZone": "America/New_York"
+      }
+    },
+    {
+      "backupRetentionDays": 30,
+      "ruleId": "weekly-rule",
+      "standardSchedule": {
+        "backupWindow": {
+          "endHourOfDay": 12,
+          "startHourOfDay": 8
+        },
+        "daysOfWeek": [
+          1
+        ],
+        "recurrenceType": 3,
+        "timeZone": "America/New_York"
+      }
+    },
+    {
+      "backupRetentionDays": 90,
+      "ruleId": "monthly-rule",
+      "standardSchedule": {
+        "backupWindow": {
+          "endHourOfDay": 14,
+          "startHourOfDay": 10
+        },
+        "recurrenceType": 4,
+        "timeZone": "America/New_York",
+        "weekDayOfMonth": {
+          "dayOfWeek": 7,
+          "weekOfMonth": 1
+        }
+      }
+    },
+    {
+      "backupRetentionDays": 365,
+      "ruleId": "yearly-rule",
+      "standardSchedule": {
+        "backupWindow": {
+          "endHourOfDay": 16,
+          "startHourOfDay": 12
+        },
+        "daysOfMonth": [
+          1
+        ],
+        "months": [
+          1,
+          7
+        ],
+        "recurrenceType": 5,
+        "timeZone": "America/New_York"
+      }
+    }
+  ],
+  "backupVault": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
+  "description": "A full backup plan for testing.",
+  "labels": {
+    "cnrm-test": "true",
+    "key1": "value1",
+    "managed-by-cnrm": "true"
+  },
+  "resourceType": "compute.googleapis.com/Instance"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.BackupPlan",
+    "backupRules": [
+      {
+        "backupRetentionDays": 10,
+        "ruleId": "daily-rule",
+        "standardSchedule": {
+          "backupWindow": {
+            "endHourOfDay": 10,
+            "startHourOfDay": 6
+          },
+          "recurrenceType": "DAILY",
+          "timeZone": "America/New_York"
+        }
+      },
+      {
+        "backupRetentionDays": 30,
+        "ruleId": "weekly-rule",
+        "standardSchedule": {
+          "backupWindow": {
+            "endHourOfDay": 12,
+            "startHourOfDay": 8
+          },
+          "daysOfWeek": [
+            "MONDAY"
+          ],
+          "recurrenceType": "WEEKLY",
+          "timeZone": "America/New_York"
+        }
+      },
+      {
+        "backupRetentionDays": 90,
+        "ruleId": "monthly-rule",
+        "standardSchedule": {
+          "backupWindow": {
+            "endHourOfDay": 14,
+            "startHourOfDay": 10
+          },
+          "recurrenceType": "MONTHLY",
+          "timeZone": "America/New_York",
+          "weekDayOfMonth": {
+            "dayOfWeek": "SUNDAY",
+            "weekOfMonth": "FIRST"
+          }
+        }
+      },
+      {
+        "backupRetentionDays": 365,
+        "ruleId": "yearly-rule",
+        "standardSchedule": {
+          "backupWindow": {
+            "endHourOfDay": 16,
+            "startHourOfDay": 12
+          },
+          "daysOfMonth": [
+            1
+          ],
+          "months": [
+            "JANUARY",
+            "JULY"
+          ],
+          "recurrenceType": "YEARLY",
+          "timeZone": "America/New_York"
+        }
+      }
+    ],
+    "backupVault": "projects/${projectNumber}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
+    "backupVaultServiceAccount": "vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "A full backup plan for testing.",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "cnrm-test": "true",
+      "key1": "value1",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}",
+    "resourceType": "compute.googleapis.com/Instance",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupPlans%2Fbackupdrbackupplan-full-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "backupRules": [
+    {
+      "backupRetentionDays": 10,
+      "ruleId": "daily-rule",
+      "standardSchedule": {
+        "backupWindow": {
+          "endHourOfDay": 10,
+          "startHourOfDay": 6
+        },
+        "recurrenceType": 2,
+        "timeZone": "America/New_York"
+      }
+    },
+    {
+      "backupRetentionDays": 30,
+      "ruleId": "weekly-rule",
+      "standardSchedule": {
+        "backupWindow": {
+          "endHourOfDay": 12,
+          "startHourOfDay": 8
+        },
+        "daysOfWeek": [
+          1
+        ],
+        "recurrenceType": 3,
+        "timeZone": "America/New_York"
+      }
+    },
+    {
+      "backupRetentionDays": 90,
+      "ruleId": "monthly-rule",
+      "standardSchedule": {
+        "backupWindow": {
+          "endHourOfDay": 14,
+          "startHourOfDay": 10
+        },
+        "recurrenceType": 4,
+        "timeZone": "America/New_York",
+        "weekDayOfMonth": {
+          "dayOfWeek": 7,
+          "weekOfMonth": 1
+        }
+      }
+    },
+    {
+      "backupRetentionDays": 365,
+      "ruleId": "yearly-rule",
+      "standardSchedule": {
+        "backupWindow": {
+          "endHourOfDay": 16,
+          "startHourOfDay": 12
+        },
+        "daysOfMonth": [
+          1
+        ],
+        "months": [
+          1,
+          7
+        ],
+        "recurrenceType": 5,
+        "timeZone": "America/New_York"
+      }
+    }
+  ],
+  "backupVault": "projects/${projectNumber}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
+  "backupVaultServiceAccount": "vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A full backup plan for testing.",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "key1": "value1",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}",
+  "resourceType": "compute.googleapis.com/Instance",
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupPlans%2Fbackupdrbackupplan-full-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-full-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupVaults%2Fbackupdrbackupvault-full-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessRestriction": 2,
+  "backupMinimumEnforcedRetentionDuration": "86400s",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deletable": true,
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
+  "serviceAccount": "vault-${projectNumber}-12345@gcp-sa-backupdr-pr.iam.gserviceaccount.com",
+  "state": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FbackupVaults%2Fbackupdrbackupvault-full-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://backupdr.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.backupdr.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-full-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

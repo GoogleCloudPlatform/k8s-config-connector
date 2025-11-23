@@ -1,0 +1,31 @@
+# In: ~/.gemini/commands/release/release-notes.toml
+# Invoked via: /release:release-notes
+# Gemini custom command docs can be found at https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/commands.md#toml-file-format-v1
+
+description = "Generates release notes for a given release tag."
+usage = "release-notes <previous_version> <current_version>"
+
+prompt = """
+
+You are an expert of Config Connector.
+
+Your task is to generate release notes based on the changes between `{{index args 0}}` and `{{index args 1}}`.
+
+You must follow the template provided at @docs/releasenotes/template.m.
+
+The release notes should include the following sections if applicable:
+
+- Special shout-outs to contributors.
+- Announcement
+- New Beta Resources (Direct Reconciler)
+- New Alpha Resources (Direct Reconciler)
+- New Fields
+- Reconciliation Improvements
+- New features
+- Bug Fixes
+
+To get the list of contributors, you can use a command like this, replacing the versions accordingly:
+`git log {{index args 0}}...{{index args 1}} | grep Merge | grep from | awk '{print $6}' | cut -d '/' -f 1 | sort | uniq`
+
+When you are done, save the release notes to `docs/releasenotes/release-{{index args 1 | split "." | slice 0 2 | join "."}}.md`.
+"""

@@ -1,0 +1,295 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: firestorefields.firestore.cnrm.cloud.google.com
+spec:
+  group: firestore.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: FirestoreField
+    listKind: FirestoreFieldList
+    plural: firestorefields
+    shortNames:
+    - gcpfirestorefield
+    - gcpfirestorefields
+    singular: firestorefield
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: FirestoreField is the Schema for the FirestoreField API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: FirestoreFieldSpec defines the desired state of FirestoreField
+            properties:
+              collectionGroup:
+                description: The collectionGroup of which this field is a part.
+                type: string
+              databaseRef:
+                description: The FirestoreDatabase containing the collection group
+                  for this field.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed Firestore database
+                      resource. Should be in the format "projects/{{projectID}}/databases/{{databaseID}}".
+                    type: string
+                  name:
+                    description: The name of a FirestoreDatabase resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a FirestoreDatabase resource.
+                    type: string
+                type: object
+              indexConfig:
+                description: The index configuration for this field. If unset, field
+                  indexing will revert to the configuration defined by the `ancestor_field`.
+                  To explicitly remove all indexes for this field, specify an index
+                  config with an empty list of indexes.
+                properties:
+                  indexes:
+                    description: The indexes supported for this field.
+                    items:
+                      properties:
+                        apiScope:
+                          description: The API scope supported by this index.
+                          type: string
+                        density:
+                          description: Immutable. The density configuration of the
+                            index.
+                          type: string
+                        fields:
+                          description: |-
+                            The fields supported by this index.
+
+                             For composite indexes, this requires a minimum of 2 and a maximum of 100
+                             fields. The last field entry is always for the field path `__name__`. If,
+                             on creation, `__name__` was not specified as the last field, it will be
+                             added automatically with the same direction as that of the last field
+                             defined. If the final field in a composite index is not directional, the
+                             `__name__` will be ordered ASCENDING (unless explicitly specified).
+
+                             For single field indexes, this will always be exactly one entry with a
+                             field path equal to the field path of the associated field.
+                          items:
+                            properties:
+                              arrayConfig:
+                                description: Indicates that this field supports operations
+                                  on `array_value`s.
+                                type: string
+                              fieldPath:
+                                description: Can be __name__. For single field indexes,
+                                  this must match the name of the field or may be
+                                  omitted.
+                                type: string
+                              order:
+                                description: Indicates that this field supports ordering
+                                  by the specified order or comparing using =, !=,
+                                  <, <=, >, >=.
+                                type: string
+                              vectorConfig:
+                                description: Indicates that this field supports nearest
+                                  neighbor and distance operations on vector.
+                                properties:
+                                  dimension:
+                                    description: |-
+                                      Required. The vector dimension this configuration applies to.
+
+                                       The resulting index will only include vectors of this dimension, and
+                                       can be used for vector search with the same dimension.
+                                    format: int32
+                                    type: integer
+                                  flat:
+                                    description: Indicates the vector index is a flat
+                                      index.
+                                    type: object
+                                type: object
+                            type: object
+                          type: array
+                        multikey:
+                          description: |-
+                            Optional. Whether the index is multikey. By default, the index is not
+                             multikey. For non-multikey indexes, none of the paths in the index
+                             definition reach or traverse an array, except via an explicit array index.
+                             For multikey indexes, at most one of the paths in the index definition
+                             reach or traverse an array, except via an explicit array index. Violations
+                             will result in errors.
+
+                             Note this field only applies to index with MONGODB_COMPATIBLE_API ApiScope.
+                          type: boolean
+                        queryScope:
+                          description: |-
+                            Indexes with a collection query scope specified allow queries
+                             against a collection that is the child of a specific document, specified at
+                             query time, and that has the same collection ID.
+
+                             Indexes with a collection group query scope specified allow queries against
+                             all collections descended from a specific document, specified at query
+                             time, and that have the same collection ID as this index.
+                          type: string
+                        shardCount:
+                          description: Optional. The number of shards for the index.
+                          format: int32
+                          type: integer
+                      type: object
+                    type: array
+                type: object
+              resourceID:
+                description: The FirestoreField name. If not given, the metadata.name
+                  will be used.
+                type: string
+            required:
+            - collectionGroup
+            - databaseRef
+            type: object
+          status:
+            description: FirestoreFieldStatus defines the config connector machine
+              state of FirestoreField
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the FirestoreField resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  indexConfig:
+                    description: The index state for this field.
+                    properties:
+                      ancestorField:
+                        description: Output only. Specifies the resource name of the
+                          `Field` from which this field's index configuration is set
+                          (when `uses_ancestor_config` is true), or from which it
+                          *would* be set if this field had no index configuration
+                          (when `uses_ancestor_config` is false).
+                        type: string
+                      indexes:
+                        description: The indexes supported for this field.
+                        items:
+                          properties:
+                            name:
+                              description: 'Output only. A server defined name for
+                                this index. The form of this name for composite indexes
+                                will be: `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/indexes/{composite_index_id}`
+                                For single field indexes, this field will be empty.'
+                              type: string
+                            state:
+                              description: Output only. The serving state of the index.
+                              type: string
+                          type: object
+                        type: array
+                      reverting:
+                        description: Output only When true, the `Field`'s index configuration
+                          is in the process of being reverted. Once complete, the
+                          index config will transition to the same state as the field
+                          specified by `ancestor_field`, at which point `uses_ancestor_config`
+                          will be `true` and `reverting` will be `false`.
+                        type: boolean
+                      usesAncestorConfig:
+                        description: Output only. When true, the `Field`'s index configuration
+                          is set from the configuration specified by the `ancestor_field`.
+                          When false, the `Field`'s index configuration is defined
+                          explicitly.
+                        type: boolean
+                    type: object
+                  ttlConfig:
+                    description: The TTL state for this `Field`.
+                    properties:
+                      state:
+                        description: Output only. The state of the TTL configuration.
+                        type: string
+                    type: object
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

@@ -23,6 +23,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
@@ -56,9 +57,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdocumentai"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgecontainer"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgenetwork"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockessentialcontacts"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockeventarc"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirestore"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkebackup"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkehub"
@@ -69,13 +68,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetapp"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkconnectivity"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkmanagement"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknotebooks"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivilegedaccessmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockpubsublite"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockrecaptchaenterprise"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockredis"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockresourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecretmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecuresourcemanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockservicenetworking"
@@ -103,6 +100,8 @@ type Interface interface {
 }
 
 func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage storage.Storage) (Interface, error) {
+	log := klog.FromContext(ctx)
+
 	mockRoundTripper := &mockRoundTripper{}
 	mockHTTPClient := &http.Client{
 		Transport: mockRoundTripper,
@@ -117,16 +116,11 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	}
 	env.Workflows = workflowEngine
 
-	resourcemanagerService := mockresourcemanager.New(env, storage)
-	env.Projects = resourcemanagerService.GetProjectStore()
-
 	var serverOpts []grpc.ServerOption
 	serverOpts = append(serverOpts, grpc.UnaryInterceptor(interceptor.LabelValidationInterceptor))
 	server := grpc.NewServer(serverOpts...)
 
 	var services []mockgcpregistry.MockService
-
-	services = append(services, resourcemanagerService)
 
 	registeredServices, err := mockgcpregistry.BuildAllServices(env, storage)
 	if err != nil {
@@ -146,7 +140,6 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockcontainer.New(env, storage))
 	services = append(services, mockcertificatemanager.New(env, storage))
 	services = append(services, mockedgecontainer.New(env, storage))
-	services = append(services, mockfirestore.New(env, storage))
 	services = append(services, mockgkemulticloud.New(env, storage))
 	services = append(services, mockmodelarmor.New(env, storage))
 	services = append(services, mocknetworkmanagement.New(env, storage))
@@ -181,7 +174,6 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockapphub.New(env, storage))
 	services = append(services, mockcloudquota.New(env, storage))
 	services = append(services, mockdatastream.New(env, storage))
-	services = append(services, mockessentialcontacts.New(env, storage))
 	services = append(services, mockeventarc.New(env, storage))
 
 	services = append(services, mockcloudtasks.New(env, storage))
@@ -196,7 +188,6 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 	services = append(services, mockkms.New(env, storage))
 	services = append(services, mockgkebackup.New(env, storage))
 	services = append(services, mockrecaptchaenterprise.New(env, storage))
-	services = append(services, mocknetworkservices.New(env, storage))
 	services = append(services, mockspeech.New(env, storage))
 
 	for _, service := range services {
@@ -205,10 +196,12 @@ func NewMockRoundTripper(ctx context.Context, k8sClient client.Client, storage s
 
 	mockRoundTripper.server = server
 
-	listener, err := net.Listen("tcp", "localhost:0")
+	// We listen on a random port on 127.0.0.2, to avoid conflicts with the webhook server which starts on a random port on "default" localhost
+	listener, err := net.Listen("tcp", "127.0.0.2:0")
 	if err != nil {
 		return nil, fmt.Errorf("net.Listen failed: %w", err)
 	}
+	log.Info("serving mock gcp grpc server", "address", listener.Addr().String())
 	mockRoundTripper.grpcListener = listener
 
 	endpoint := listener.Addr().String()

@@ -11,7 +11,7 @@ metadata:
   generation: 3
   labels:
     cnrm-test: "true"
-  name: computetargethttpsproxy-${uniqueId}
+  name: ${targetHttpsProxyID}
   namespace: ${uniqueId}
 spec:
   certificateMapRef:
@@ -19,7 +19,7 @@ spec:
   description: test description
   location: global
   quicOverride: ENABLE
-  resourceID: computetargethttpsproxy-${uniqueId}
+  resourceID: ${targetHttpsProxyID}
   urlMapRef:
     name: computeurlmap-2-${uniqueId}
 status:
@@ -32,4 +32,4 @@ status:
   creationTimestamp: "1970-01-01T00:00:00Z"
   observedGeneration: 3
   proxyId: 1111111111111111
-  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/computetargethttpsproxy-${uniqueId}
+  selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}

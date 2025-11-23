@@ -33,6 +33,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/tf"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
+	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -53,6 +56,12 @@ type Reconcilers struct {
 	TF     *tf.Reconciler
 	DCL    *dclcontroller.Reconciler
 	Direct *directbase.DirectReconciler
+	Custom *CustomReconciler
+}
+
+type CustomReconciler struct {
+	Type       k8s.ReconcilerType
+	Reconciler reconcile.Reconciler
 }
 
 // ParentReconciler is a top-level controller that decides which underlying
@@ -64,7 +73,7 @@ type ParentReconciler struct {
 	reconcilers Reconcilers
 }
 
-func Add(mgr manager.Manager, gvk schema.GroupVersionKind, tf *tf.Reconciler, dcl *dclcontroller.Reconciler, direct *directbase.DirectReconciler) error {
+func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcilers) error {
 	controllerName := fmt.Sprintf("%v-parent-controller", strings.ToLower(gvk.Kind))
 	obj := &unstructured.Unstructured{}
 	obj.SetGroupVersionKind(gvk)
@@ -76,9 +85,10 @@ func Add(mgr manager.Manager, gvk schema.GroupVersionKind, tf *tf.Reconciler, dc
 		mgr:    mgr,
 		gvk:    gvk,
 		reconcilers: Reconcilers{
-			TF:     tf,
-			DCL:    dcl,
-			Direct: direct,
+			TF:     reconcilers.TF,
+			DCL:    reconcilers.DCL,
+			Direct: reconcilers.Direct,
+			Custom: reconcilers.Custom,
 		},
 	}
 
@@ -110,20 +120,68 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 	if err != nil {
 		return reconcile.Result{}, err
 	}
+	resourceControllerConfig := resourceconfig.LoadConfig()
+	if !resourceconfig.IsControllerSupported(r.gvk, controllerType) {
+		logger.Info("controller type not supported for this resource", "resource", req.NamespacedName, "type", controllerType)
+		config, err := resourceControllerConfig.GetControllersForGVK(r.gvk)
+		if err != nil {
+			return reconcile.Result{}, fmt.Errorf("error getting controller config found for GroupKind %v", r.gvk.GroupKind())
+		}
+		logger.Info("supported controller types", "resource", req.NamespacedName, "supportedControllers", config.SupportedControllers)
+
+		// Try to write a status on the CCC
+		ccc := &corekccv1alpha1.ConfigConnectorContext{}
+		cccNamespacedName := types.NamespacedName{
+			Namespace: req.Namespace,
+			Name:      "configconnectorcontext",
+		}
+		if err := r.Get(ctx, cccNamespacedName, ccc); err != nil {
+			if !apierrors.IsNotFound(err) {
+				logger.Error(err, "error getting ConfigConnectorContext, cannot write status", "resource", req.NamespacedName)
+			}
+		} else {
+			msg := fmt.Sprintf("controller type %q is not supported for resource %q. Supported types are: %v. Falling back to default %q.",
+				controllerType, r.gvk.GroupKind().String(), config.SupportedControllers, config.DefaultController)
+
+			cccToUpdate := ccc.DeepCopy()
+			cccToUpdate.Status.Healthy = false
+			cccToUpdate.Status.Errors = append(cccToUpdate.Status.Errors, msg)
+
+			if err := r.Status().Update(ctx, cccToUpdate); err != nil {
+				logger.Error(err, "error updating ConfigConnectorContext status", "resource", req.NamespacedName)
+			}
+		}
+
+		controllerType = config.DefaultController
+		logger.Info("falling back to default controller type", "resource", req.NamespacedName, "type", controllerType)
+	}
 
 	logger.Info("routing to controller", "type", controllerType)
 
 	switch controllerType {
 	case k8s.ReconcilerTypeTerraform:
 		logger.Info("routing to TF reconciler")
+		if r.reconcilers.TF == nil {
+			return reconcile.Result{}, fmt.Errorf("TF reconciler is not initialized for resource %v", r.gvk)
+		}
 		return r.reconcilers.TF.Reconcile(ctx, req)
 	case k8s.ReconcilerTypeDCL:
 		logger.Info("routing to DCL reconciler")
+		if r.reconcilers.DCL == nil {
+			return reconcile.Result{}, fmt.Errorf("DCL reconciler is not initialized for resource %v", r.gvk)
+		}
 		return r.reconcilers.DCL.Reconcile(ctx, req)
 	case k8s.ReconcilerTypeDirect:
 		logger.Info("routing to Direct reconciler")
+		if r.reconcilers.Direct == nil {
+			return reconcile.Result{}, fmt.Errorf("direct reconciler is not initialized for resource %v", r.gvk)
+		}
 		return r.reconcilers.Direct.Reconcile(ctx, req)
 	default:
+		if r.reconcilers.Custom != nil && r.reconcilers.Custom.Type == controllerType {
+			logger.Info("routing to custom reconciler", "type", controllerType)
+			return r.reconcilers.Custom.Reconciler.Reconcile(ctx, req)
+		}
 		return reconcile.Result{}, fmt.Errorf("unknown controller type: %v", controllerType)
 	}
 }

@@ -6,7 +6,8 @@ GRPC /google.storage.control.v2.StorageControl/CreateAnywhereCache
     "ttl": "86400s",
     "zone": "us-central1-a"
   },
-  "parent": "projects/_/buckets/storagebucket-sample-${uniqueId}"
+  "parent": "projects/_/buckets/storagebucket-sample-${uniqueId}",
+  "requestId": "1234"
 }
 
 OK

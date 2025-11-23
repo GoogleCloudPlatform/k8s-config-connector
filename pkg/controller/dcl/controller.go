@@ -47,6 +47,7 @@ import (
 	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
 	mmdcl "github.com/GoogleCloudPlatform/declarative-resource-client-library/dcl"
@@ -198,6 +199,8 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 		}
 		return reconcile.Result{}, err
 	}
+	structuredreporting.ReportReconcileStart(ctx, u, k8s.ReconcilerTypeDCL)
+	defer structuredreporting.ReportReconcileEnd(ctx, u, res, err, k8s.ReconcilerTypeDCL)
 	skip, err := resourceactuation.ShouldSkip(u)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -469,7 +472,7 @@ func (r *Reconciler) handleDefaults(ctx context.Context, u *unstructured.Unstruc
 	for _, defaulter := range r.defaulters {
 		changed, err := defaulter.ApplyDefaults(ctx, k8s.ReconcilerTypeDCL, u)
 		if err != nil {
-			return fmt.Errorf("applying defaults: %w", err)
+			return fmt.Errorf("applying defaults in the dcl controller: %w", err)
 		}
 		if changed {
 			changeCount++

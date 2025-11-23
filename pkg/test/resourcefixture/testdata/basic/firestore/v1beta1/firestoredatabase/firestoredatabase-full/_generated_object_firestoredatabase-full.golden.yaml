@@ -11,6 +11,7 @@ metadata:
   namespace: ${uniqueId}
 spec:
   concurrencyMode: OPTIMISTIC
+  deleteProtectionState: DELETE_PROTECTION_DISABLED
   locationID: us-west2
   pointInTimeRecoveryEnablement: POINT_IN_TIME_RECOVERY_ENABLED
   projectRef:
@@ -23,7 +24,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: //firestore.googleapis.com/projects/${projectId}/databases/firestoredatabase-${uniqueId}
+  externalRef: projects/${projectId}/databases/firestoredatabase-${uniqueId}
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
