@@ -39,19 +39,37 @@ X-Goog-Request-Params: location=us-central1
         {
           "image": "us-docker.pkg.dev/cloudrun/container/hello",
           "name": "hello",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "256Mi"
+            }
+          },
           "startupProbe": {
+            "failureThreshold": 3,
             "httpGet": {
               "path": "/"
-            }
+            },
+            "periodSeconds": 10,
+            "timeoutSeconds": 1
           }
         },
         {
           "image": "us-docker.pkg.dev/cloudrun/container/hello",
           "name": "goodbye",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "256Mi"
+            }
+          },
           "startupProbe": {
+            "failureThreshold": 3,
             "httpGet": {
               "path": "/"
-            }
+            },
+            "periodSeconds": 10,
+            "timeoutSeconds": 1
           }
         },
         {
@@ -60,10 +78,19 @@ X-Goog-Request-Params: location=us-central1
           ],
           "image": "us-docker.pkg.dev/cloudrun/container/hello",
           "name": "farewell",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "256Mi"
+            }
+          },
           "startupProbe": {
+            "failureThreshold": 3,
             "httpGet": {
               "path": "/"
-            }
+            },
+            "periodSeconds": 10,
+            "timeoutSeconds": 1
           }
         }
       ]
@@ -515,19 +542,37 @@ X-Goog-Request-Params: location=us-central1
         {
           "image": "us-docker.pkg.dev/cloudrun/container/hello",
           "name": "hello",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "256Mi"
+            }
+          },
           "startupProbe": {
+            "failureThreshold": 3,
             "httpGet": {
               "path": "/"
-            }
+            },
+            "periodSeconds": 10,
+            "timeoutSeconds": 1
           }
         },
         {
           "image": "us-docker.pkg.dev/cloudrun/container/hello",
           "name": "goodbye",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "256Mi"
+            }
+          },
           "startupProbe": {
+            "failureThreshold": 3,
             "httpGet": {
               "path": "/"
-            }
+            },
+            "periodSeconds": 10,
+            "timeoutSeconds": 1
           }
         },
         {
@@ -537,10 +582,19 @@ X-Goog-Request-Params: location=us-central1
           ],
           "image": "us-docker.pkg.dev/cloudrun/container/hello",
           "name": "farewell",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "256Mi"
+            }
+          },
           "startupProbe": {
+            "failureThreshold": 3,
             "httpGet": {
               "path": "/"
-            }
+            },
+            "periodSeconds": 10,
+            "timeoutSeconds": 1
           }
         }
       ]
@@ -1002,9 +1056,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "katriel@google.com",
-    "deleteTime": "2025-11-23T13:47:02.274022Z",
+    "deleteTime": "2025-11-23T14:21:56.362084Z",
     "etag": "abcdef0123A=",
-    "expireTime": "2025-12-23T13:47:02.274022Z",
+    "expireTime": "2025-12-23T14:21:56.362084Z",
     "generation": "3",
     "labels": {
       "cnrm-test": "true",
@@ -1121,9 +1175,9 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "katriel@google.com",
-    "deleteTime": "2025-11-23T13:47:02.274022Z",
+    "deleteTime": "2025-11-23T14:21:56.362084Z",
     "etag": "abcdef0123A=",
-    "expireTime": "2025-12-23T13:47:02.274022Z",
+    "expireTime": "2025-12-23T14:21:56.362084Z",
     "generation": "3",
     "labels": {
       "cnrm-test": "true",

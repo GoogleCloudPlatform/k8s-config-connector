@@ -11,19 +11,40 @@ spec:
       containers:
         - name: "hello"
           image: "us-docker.pkg.dev/cloudrun/container/hello"
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 256Mi
           startupProbe:
+            failureThreshold: 3
             httpGet:
-              path: "/"
+              path: /
+            periodSeconds: 10
+            timeoutSeconds: 1
         - name: "goodbye"
           image: "us-docker.pkg.dev/cloudrun/container/hello"
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 256Mi
           startupProbe:
+            failureThreshold: 3
             httpGet:
-              path: "/"
+              path: /
+            periodSeconds: 10
+            timeoutSeconds: 1
         - name: "farewell"
           image: "us-docker.pkg.dev/cloudrun/container/hello"
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 256Mi
           startupProbe:
+            failureThreshold: 3
             httpGet:
-              path: "/"
+              path: /
+            periodSeconds: 10
+            timeoutSeconds: 1
           dependsOn:
             - "hello"
             - "goodbye"

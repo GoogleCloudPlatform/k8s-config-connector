@@ -21,22 +21,43 @@ spec:
       containers:
       - image: us-docker.pkg.dev/cloudrun/container/hello
         name: hello
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 256Mi
         startupProbe:
+          failureThreshold: 3
           httpGet:
             path: /
+          periodSeconds: 10
+          timeoutSeconds: 1
       - image: us-docker.pkg.dev/cloudrun/container/hello
         name: goodbye
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 256Mi
         startupProbe:
+          failureThreshold: 3
           httpGet:
             path: /
+          periodSeconds: 10
+          timeoutSeconds: 1
       - dependsOn:
         - hello
         - goodbye
         image: us-docker.pkg.dev/cloudrun/container/hello
         name: farewell
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 256Mi
         startupProbe:
+          failureThreshold: 3
           httpGet:
             path: /
+          periodSeconds: 10
+          timeoutSeconds: 1
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
