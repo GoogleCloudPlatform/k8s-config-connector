@@ -66,13 +66,14 @@ var (
 	TestAttachedClusterName                 = EnvVar{Key: "TEST_ATTACHED_CLUSTER_NAME"}
 	TestKCCAttachedClusterProject           = EnvVar{Key: "KCC_ATTACHED_CLUSTER_TEST_PROJECT"}
 	TestKCCAttachedClusterPlatformVersion   = EnvVar{Key: "ATTACHED_CLUSTER_PLATFORM_VERSION"}
-	FirestoreTestProject                    = EnvVar{Key: "FIRESTORE_TEST_PROJECT"}
 	IdentityPlatformTestProject             = EnvVar{Key: "IDENTITY_PLATFORM_TEST_PROJECT"}
 	RecaptchaEnterpriseTestProject          = EnvVar{Key: "RECAPTCHA_ENTERPRISE_TEST_PROJECT"}
 	TestKCCVertexAIIndexBucket              = EnvVar{Key: "KCC_VERTEX_AI_INDEX_TEST_BUCKET"}
 	TestKCCVertexAIIndexDataURI             = EnvVar{Key: "KCC_VERTEX_AI_INDEX_TEST_DATA_URI"}
 	TestGroupEmail                          = EnvVar{Key: "KCC_ENG_GROUP_EMAIL"}
 	TestInterconnectID                      = EnvVar{Key: "TEST_INTERCONNECT"}
+	TestKCCAlloyDBProject                   = EnvVar{Key: "KCC_ALLOYDB_TEST_PROJECT"}
+	TestKCCAlloyDBProjectNumber             = EnvVar{Key: "KCC_ALLOYDB_TEST_PROJECT_NUMBER"}
 )
 
 const (

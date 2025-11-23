@@ -20,6 +20,7 @@ import (
 	"time"
 
 	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc/codes"
@@ -104,11 +105,12 @@ func (s *firestoreAdminServer) UpdateBackupSchedule(ctx context.Context, req *pb
 		return nil, err
 	}
 
-	if len(req.GetUpdateMask().GetPaths()) == 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "Update mask must be provided (by mockgcp)")
+	updatePaths := req.GetUpdateMask().GetPaths()
+	if len(updatePaths) == 0 {
+		updatePaths = fields.ComputeImpliedFieldMask(ctx, req.GetBackupSchedule(), "name")
 	}
 
-	for _, path := range req.GetUpdateMask().GetPaths() {
+	for _, path := range updatePaths {
 		switch path {
 		case "retention":
 			obj.Retention = req.BackupSchedule.Retention

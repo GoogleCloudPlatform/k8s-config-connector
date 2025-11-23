@@ -31,7 +31,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
 {
   "appEngineIntegrationMode": 2,
   "concurrencyMode": 2,
-  "deleteProtectionState": 1,
+  "deleteProtectionState": 2,
   "locationId": "us-west2",
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
   "pointInTimeRecoveryEnablement": 2,
@@ -59,7 +59,7 @@ X-Xss-Protection: 0
     "concurrencyMode": 2,
     "createTime": "2024-04-01T12:34:56.123456Z",
     "databaseEdition": 1,
-    "deleteProtectionState": 1,
+    "deleteProtectionState": 2,
     "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "freeTier": true,
@@ -102,7 +102,7 @@ X-Xss-Protection: 0
     "concurrencyMode": "PESSIMISTIC",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "databaseEdition": "STANDARD",
-    "deleteProtectionState": "DELETE_PROTECTION_DISABLED",
+    "deleteProtectionState": "DELETE_PROTECTION_ENABLED",
     "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "freeTier": true,
@@ -138,7 +138,7 @@ X-Xss-Protection: 0
   "concurrencyMode": 2,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "databaseEdition": 1,
-  "deleteProtectionState": 1,
+  "deleteProtectionState": 2,
   "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "freeTier": true,
@@ -153,7 +153,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=concurrencyMode%2CpointInTimeRecoveryEnablement
+PATCH https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=concurrencyMode%2CpointInTimeRecoveryEnablement%2CdeleteProtectionState
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: database.name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}
@@ -161,19 +161,11 @@ X-Goog-Request-Params: database.name=projects%2F${projectId}%2Fdatabases%2Ffires
 {
   "appEngineIntegrationMode": 2,
   "concurrencyMode": 1,
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseEdition": 1,
   "deleteProtectionState": 1,
-  "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "freeTier": true,
   "locationId": "us-west2",
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
   "pointInTimeRecoveryEnablement": 1,
-  "type": 1,
-  "uid": "111111111111111111111",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "versionRetentionPeriod": "3600s"
+  "type": 1
 }
 
 200 OK
@@ -279,7 +271,7 @@ X-Xss-Protection: 0
     "deleteTime": "2024-04-01T12:34:56.123456Z",
     "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
-    "freeTier": false,
+    "freeTier": true,
     "locationId": "us-west2",
     "name": "projects/${projectId}/databases/${randomDatabaseID}",
     "pointInTimeRecoveryEnablement": 1,

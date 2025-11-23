@@ -1,0 +1,81 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// +generated:types
+// krm.group: assuredworkloads.cnrm.cloud.google.com
+// krm.version: v1alpha1
+// proto.service: google.cloud.assuredworkloads.v1
+// resource: AssuredWorkloadsWorkload:Workload
+
+package v1alpha1
+
+// +kcc:proto=google.cloud.assuredworkloads.v1.Workload.KMSSettings
+type Workload_KMSSettings struct {
+	// Required. Input only. Immutable. The time at which the Key Management Service will automatically create a
+	//  new version of the crypto key and mark it as the primary.
+	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.KMSSettings.next_rotation_time
+	NextRotationTime *string `json:"nextRotationTime,omitempty"`
+
+	// Required. Input only. Immutable. [next_rotation_time] will be advanced by this period when the Key
+	//  Management Service automatically rotates a key. Must be at least 24 hours
+	//  and at most 876,000 hours.
+	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.KMSSettings.rotation_period
+	RotationPeriod *string `json:"rotationPeriod,omitempty"`
+}
+
+// +kcc:proto=google.cloud.assuredworkloads.v1.Workload.ResourceInfo
+type Workload_ResourceInfo struct {
+	// Resource identifier.
+	//  For a project this represents project_number.
+	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.ResourceInfo.resource_id
+	ResourceID *int64 `json:"resourceID,omitempty"`
+
+	// Indicates the type of resource.
+	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.ResourceInfo.resource_type
+	ResourceType *string `json:"resourceType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.assuredworkloads.v1.Workload.ResourceSettings
+type Workload_ResourceSettings struct {
+	// Resource identifier.
+	//  For a project this represents project_id. If the project is already
+	//  taken, the workload creation will fail.
+	//  For KeyRing, this represents the keyring_id.
+	//  For a folder, don't set this value as folder_id is assigned by Google.
+	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.ResourceSettings.resource_id
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Indicates the type of resource. This field should be specified to
+	//  correspond the id to the right resource type (CONSUMER_FOLDER or
+	//  ENCRYPTION_KEYS_PROJECT)
+	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.ResourceSettings.resource_type
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// User-assigned resource display name.
+	//  If not empty it will be used to create a resource with the specified
+	//  name.
+	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.ResourceSettings.display_name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.assuredworkloads.v1.Workload.SaaEnrollmentResponse
+type Workload_SaaEnrollmentResponse struct {
+	// Indicates SAA enrollment status of a given workload.
+	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.SaaEnrollmentResponse.setup_status
+	SetupStatus *string `json:"setupStatus,omitempty"`
+
+	// Indicates SAA enrollment setup error if any.
+	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.SaaEnrollmentResponse.setup_errors
+	SetupErrors []string `json:"setupErrors,omitempty"`
+}

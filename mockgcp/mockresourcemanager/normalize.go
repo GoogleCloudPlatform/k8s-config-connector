@@ -15,17 +15,59 @@
 package mockresourcemanager
 
 import (
+	"net/url"
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
+	"k8s.io/klog/v2"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	// Bucket
-	replacements.ReplacePath(".generation", "{generationID}")
-	replacements.ReplacePath(".iamConfiguration.bucketPolicyOnly.lockedTime", "{lockedTime}")
-	replacements.ReplacePath(".uniformBucketLevelAccess.lockedTime", "{lockedTime}")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	if !isCloudResourceManagerAPI(event) {
+		return
+
+	}
+	name := ""
+	event.VisitResponseStringValues(func(path string, value string) {
+		if path == ".name" {
+			name = value
+		}
+	})
+
+	tokens := strings.Split(name, "/")
+	if len(tokens) == 2 && tokens[0] == "tagKeys" {
+		if name == "namespaced" {
+			// This is actually a search operation: https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys/getNamespaced
+		} else {
+			replacements.ReplaceStringValue(tokens[1], "${tagKeyID}")
+		}
+	}
+	if len(tokens) == 2 && tokens[0] == "tagValues" {
+		if name == "namespaced" {
+			// This is actually a search operation: https://cloud.google.com/resource-manager/reference/rest/v3/tagValues/getNamespaced
+		} else {
+			replacements.ReplaceStringValue(tokens[1], "${tagValueID}")
+		}
+	}
+	if len(tokens) == 2 && tokens[0] == "tagBindings" {
+		replacements.ReplaceStringValue(tokens[1], "${tagBindingID}")
+	}
+}
+
+// isCloudResourceManagerAPI returns true if this is a cloud resource manager URL
+func isCloudResourceManagerAPI(event mockgcpregistry.Event) bool {
+	u, err := url.Parse(event.URL())
+	if err != nil {
+		klog.Fatalf("cannot parse URL %q", event.URL())
+	}
+	switch u.Host {
+	case "cloudresourcemanager.googleapis.com":
+		return true
+	}
+	return false
 }

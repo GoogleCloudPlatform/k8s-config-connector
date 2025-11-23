@@ -24,6 +24,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
   --service google.cloud.resourcemanager.v3 \
   --api-version tags.cnrm.cloud.google.com/v1beta1  \
+  --resource TagsTagKey:TagKey \
+  --resource TagsTagValue:TagValue \
   --resource TagsTagBinding:TagBinding
 
 go run . generate-mapper --service google.cloud.resourcemanager.v3 --api-version tags.cnrm.cloud.google.com/v1beta1

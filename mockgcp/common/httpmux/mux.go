@@ -32,6 +32,9 @@ type Options struct {
 	// Some older APIs do this (e.g. cloudbilling)
 	// While it likely doesn't matter, it makes golden testing easier to match.
 	EmitUnpopulated bool
+
+	// UnescapingMode controls how URL path parameters are unescaped.
+	UnescapingMode runtime.UnescapingMode
 }
 
 type ServeMux struct {
@@ -93,6 +96,7 @@ func NewServeMux(ctx context.Context, conn *grpc.ClientConn, opt Options, handle
 	m := &ServeMux{}
 
 	mux := runtime.NewServeMux(
+		runtime.WithUnescapingMode(opt.UnescapingMode),
 		runtime.WithErrorHandler(m.customErrorHandler),
 		runtime.WithMarshalerOption("application/json;enum-encoding=int", marshalerWithEnumNumbers),
 		runtime.WithMarshalerOption(runtime.MIMEWildcard, marshaler),

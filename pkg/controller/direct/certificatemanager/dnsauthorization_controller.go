@@ -202,8 +202,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	log.V(2).Info("successfully created DnsAuthorization", "name", a.id.FullyQualifiedName())
 
-	status := &krm.CertificateManagerDNSAuthorizationStatus{}
-	status = CertificateManagerDNSAuthorizationStatusObservedState_FromProto(mapCtx, created)
+	status := CertificateManagerDNSAuthorizationStatus_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -256,7 +255,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	log.V(2).Info("successfully updated DnsAuthorization", "name", a.id.FullyQualifiedName())
 
-	status := CertificateManagerDNSAuthorizationStatusObservedState_FromProto(mapCtx, updated)
+	status := CertificateManagerDNSAuthorizationStatus_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

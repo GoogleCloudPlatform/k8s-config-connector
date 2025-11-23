@@ -11,6 +11,7 @@ metadata:
   namespace: ${uniqueId}
 spec:
   concurrencyMode: OPTIMISTIC
+  deleteProtectionState: DELETE_PROTECTION_DISABLED
   locationID: us-west2
   pointInTimeRecoveryEnablement: POINT_IN_TIME_RECOVERY_ENABLED
   projectRef:

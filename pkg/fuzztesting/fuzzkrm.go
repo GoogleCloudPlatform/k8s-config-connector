@@ -60,6 +60,9 @@ type KRMTypedFuzzer[ProtoT proto.Message, SpecType any, StatusType any] struct {
 	UnimplementedFields sets.Set[string]
 	SpecFields          sets.Set[string]
 	StatusFields        sets.Set[string]
+
+	FilterSpec   func(in ProtoT)
+	FilterStatus func(in ProtoT)
 }
 
 // SpecField marks the specified fieldPath as round-tripping to/from the Spec
@@ -133,6 +136,7 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzSpec(t *testing.T, se
 	fuzzer := NewFuzzTest(f.ProtoType, f.SpecFromProto, f.SpecToProto)
 	fuzzer.IgnoreFields = f.StatusFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
+	fuzzer.Filter = f.FilterSpec
 	fuzzer.Fuzz(t, seed)
 }
 
@@ -140,6 +144,7 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzStatus(t *testing.T, 
 	fuzzer := NewFuzzTest(f.ProtoType, f.StatusFromProto, f.StatusToProto)
 	fuzzer.IgnoreFields = f.SpecFields
 	fuzzer.UnimplementedFields = f.UnimplementedFields
+	fuzzer.Filter = f.FilterStatus
 	fuzzer.Fuzz(t, seed)
 }
 
@@ -172,6 +177,8 @@ type FuzzTest[ProtoT proto.Message, KRMType any] struct {
 
 	UnimplementedFields sets.Set[string]
 	IgnoreFields        sets.Set[string]
+
+	Filter func(in ProtoT)
 }
 
 func NewFuzzTest[ProtoT proto.Message, KRMType any](protoType ProtoT, fromProto func(ctx *direct.MapContext, in ProtoT) *KRMType, toProto func(ctx *direct.MapContext, in *KRMType) ProtoT) *FuzzTest[ProtoT, KRMType] {
@@ -199,6 +206,10 @@ func (f *FuzzTest[ProtoT, KRMType]) Fuzz(t *testing.T, seed int64) {
 		Paths: ignoreFields,
 	}
 	fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
+
+	if f.Filter != nil {
+		f.Filter(p1)
+	}
 
 	ctx := &direct.MapContext{}
 	krm := f.FromProto(ctx, p1)

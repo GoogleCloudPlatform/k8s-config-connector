@@ -19,7 +19,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-func LoadConfig() *ResourcesControllerMap {
+func LoadConfig() ResourcesControllerMap {
 	return ControllerConfigStatic
 }
 
@@ -28,7 +28,7 @@ func IsControllerSupported(gvk schema.GroupVersionKind, controllerType k8s.Recon
 	if config == nil {
 		return false
 	}
-	controllerConfig, exists := (*config)[gvk.GroupKind()]
+	controllerConfig, exists := config[gvk.GroupKind()]
 	if !exists {
 		return false
 	}

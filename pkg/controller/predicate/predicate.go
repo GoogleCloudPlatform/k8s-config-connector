@@ -15,12 +15,15 @@
 package predicate
 
 import (
+	"context"
 	"reflect"
+	"strconv"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util/slice"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/event"
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 )
@@ -34,6 +37,9 @@ type UnderlyingResourceOutOfSyncPredicate struct {
 // Update implements default UpdateEvent filter for validating changes that require
 // updates to the underlying API.
 func (UnderlyingResourceOutOfSyncPredicate) Update(e event.UpdateEvent) bool {
+	ctx := context.Background()
+	log := klog.FromContext(ctx)
+
 	// Kubernetes deletions manifest as API updates with the deletion
 	// timestamp set when it previously was not.
 	if e.ObjectOld.GetDeletionTimestamp().IsZero() &&
@@ -63,6 +69,20 @@ func (UnderlyingResourceOutOfSyncPredicate) Update(e event.UpdateEvent) bool {
 	// Recognize an internal annotation which can be used to force reconciles
 	if e.ObjectOld.GetAnnotations()[k8s.InternalForceReconcileAnnotation] != e.ObjectNew.GetAnnotations()[k8s.InternalForceReconcileAnnotation] {
 		return true
+	}
+
+	// Changes to the reconcile interval annotation should trigger a reconcile
+	if oldValue, newValue := e.ObjectOld.GetAnnotations()[k8s.ReconcileIntervalInSecondsAnnotation], e.ObjectNew.GetAnnotations()[k8s.ReconcileIntervalInSecondsAnnotation]; oldValue != newValue {
+		newValueInt, err := strconv.ParseInt(newValue, 10, 32)
+		if err == nil && newValueInt == 0 {
+			// A special case: if the new value is 0, we do not want to trigger a reconcile.
+			// This is because setting the annotation to 0 disables drift correction,
+			// and we do not want to immediately reconcile after the user sets this annotation:
+			// they presumably want to stop reconciliations.
+			log.V(2).Info("Reconcile interval annotation changed to 0, will not trigger reconcile")
+		} else {
+			return true
+		}
 	}
 
 	// The object's generation will increment when the spec is updated, so a different

@@ -69,7 +69,8 @@ Content-Type: application/json
     }
   ],
   "multikey": false,
-  "queryScope": "COLLECTION"
+  "queryScope": "COLLECTION",
+  "unique": false
 }
 
 200 OK
@@ -316,7 +317,7 @@ X-Xss-Protection: 0
     "deleteTime": "2024-04-01T12:34:56.123456Z",
     "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
-    "freeTier": false,
+    "freeTier": true,
     "locationId": "us-central1",
     "name": "projects/${projectId}/databases/${randomDatabaseID}",
     "pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_DISABLED",

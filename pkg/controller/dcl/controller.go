@@ -199,8 +199,8 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 		}
 		return reconcile.Result{}, err
 	}
-	structuredreporting.ReportReconcileStart(ctx, u)
-	defer structuredreporting.ReportReconcileEnd(ctx, u, res, err)
+	structuredreporting.ReportReconcileStart(ctx, u, k8s.ReconcilerTypeDCL)
+	defer structuredreporting.ReportReconcileEnd(ctx, u, res, err, k8s.ReconcilerTypeDCL)
 	skip, err := resourceactuation.ShouldSkip(u)
 	if err != nil {
 		return reconcile.Result{}, err
