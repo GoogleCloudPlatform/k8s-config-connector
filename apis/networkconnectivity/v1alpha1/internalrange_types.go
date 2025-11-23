@@ -73,7 +73,6 @@ type NetworkConnectivityInternalRangeSpec struct {
 
 	// Optional. Can be set to narrow down or pick a different address space while searching for a free range. If not set, defaults to the "10.0.0.0/8" address space. This can be used to search in other rfc-1918 address spaces like "172.16.0.0/12" and "192.168.0.0/16" or non-rfc-1918 address spaces used in the VPC.
 	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.target_cidr_range
-	// +immutable
 	TargetCIDRRange []string `json:"targetCIDRRange,omitempty"`
 
 	// The type of usage set for this InternalRange.
