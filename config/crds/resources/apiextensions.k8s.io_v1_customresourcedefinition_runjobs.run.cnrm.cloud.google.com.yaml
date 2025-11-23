@@ -190,6 +190,12 @@ spec:
                               items:
                                 type: string
                               type: array
+                            dependsOn:
+                              description: Names of the containers that must start
+                                before this container.
+                              items:
+                                type: string
+                              type: array
                             env:
                               description: List of environment variables to set in
                                 the container.

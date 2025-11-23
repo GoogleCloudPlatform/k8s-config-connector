@@ -275,6 +275,10 @@ type Container struct {
 
 	// Names of the containers that must start before this container.
 	// +kcc:proto:field=google.cloud.run.v2.Container.depends_on
+	DependsOn []string `json:"dependsOn,omitempty"`
+
+	// Names of the containers that must start before this container.
+	// +kcc:proto:field=google.cloud.run.v2.Container.depends_on
 	// DependsOn []string `json:"dependsOn,omitempty"`
 
 	// Base image for this container. Only supported for services. If set, it

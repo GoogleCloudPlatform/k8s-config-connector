@@ -191,7 +191,7 @@ func Container_FromProto(mapCtx *direct.MapContext, in *pb.Container) *krm.Conta
 	out.WorkingDir = direct.LazyPtr(in.GetWorkingDir())
 	out.LivenessProbe = Probe_FromProto(mapCtx, in.GetLivenessProbe())
 	out.StartupProbe = Probe_FromProto(mapCtx, in.GetStartupProbe())
-	// MISSING: DependsOn
+	out.DependsOn = in.DependsOn
 	// MISSING: BaseImageURI
 	// MISSING: BuildInfo
 	return out
@@ -212,7 +212,7 @@ func Container_ToProto(mapCtx *direct.MapContext, in *krm.Container) *pb.Contain
 	out.WorkingDir = direct.ValueOf(in.WorkingDir)
 	out.LivenessProbe = Probe_ToProto(mapCtx, in.LivenessProbe)
 	out.StartupProbe = Probe_ToProto(mapCtx, in.StartupProbe)
-	// MISSING: DependsOn
+	out.DependsOn = in.DependsOn
 	// MISSING: BaseImageURI
 	// MISSING: BuildInfo
 	return out
