@@ -1,0 +1,61 @@
+apiVersion: run.cnrm.cloud.google.com/v1beta1
+kind: RunJob
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: runjob-dependson-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  template:
+    template:
+      containers:
+      - image: us-docker.pkg.dev/cloudrun/container/hello
+        name: hello
+        startupProbe:
+          httpGet:
+            path: /
+      - image: us-docker.pkg.dev/cloudrun/container/hello
+        name: goodbye
+        startupProbe:
+          httpGet:
+            path: /
+      - dependsOn:
+        - hello
+        - goodbye
+        image: us-docker.pkg.dev/cloudrun/container/hello
+        name: farewell
+        startupProbe:
+          httpGet:
+            path: /
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  createTime: "1970-01-01T00:00:00Z"
+  creator: katriel@google.com
+  etag: abcdef123456
+  externalRef: projects/${projectId}/locations/us-central1/jobs/runjob-dependson-${uniqueId}
+  lastModifiedCookie: normalized-cookie
+  lastModifier: katriel@google.com
+  latestCreatedExecution:
+  - {}
+  observedGeneration: 2
+  terminalCondition:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    state: CONDITION_SUCCEEDED
+    type: Ready
+  uid: "12345678"
+  updateTime: "1970-01-01T00:00:00Z"
