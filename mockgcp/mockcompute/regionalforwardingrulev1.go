@@ -99,12 +99,8 @@ func (s *RegionalForwardingRulesV1) Insert(ctx context.Context, req *pb.InsertFo
 		}
 	}
 
-	if obj.Network != nil {
-		networkName, err := s.parseNetworkName(obj.GetNetwork())
-		if err != nil {
-			return nil, status.Errorf(codes.InvalidArgument, "network %q is not valid", obj.GetNetwork())
-		}
-		obj.Network = PtrTo(buildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name)))
+	if err := s.normalizeNetworkURL(ctx, req.GetProject(), &obj.Network); err != nil {
+		return nil, err
 	}
 
 	if obj.Subnetwork != nil {
