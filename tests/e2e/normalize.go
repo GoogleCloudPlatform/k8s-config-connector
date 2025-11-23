@@ -380,6 +380,8 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 
 	// Specific to RunJob
 	visitor.replacePaths[".status.terminalCondition[].lastTransitionTime"] = "1970-01-01T00:00:00Z"
+	visitor.replacePaths[".status.creator"] = "test@google.com"
+	visitor.replacePaths[".status.lastModifier"] = "test@google.com"
 
 	// Specific to Workflows
 	visitor.replacePaths[".status.observedState.validateTime"] = "1970-01-01T00:00:00Z"
