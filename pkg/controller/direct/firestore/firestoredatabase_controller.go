@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	apiv1 "cloud.google.com/go/firestore/apiv1/admin"
 	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
@@ -144,8 +145,10 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	resource.Name = fqn
 
-	// Apply default values.
-	ApplyFirestoreDatabaseDefaults(resource)
+	// Type is required, and we default it to FIRESTORE_NATIVE if unspecified.
+	if resource.Type == pb.Database_DATABASE_TYPE_UNSPECIFIED {
+		resource.Type = pb.Database_FIRESTORE_NATIVE
+	}
 
 	req := &pb.CreateDatabaseRequest{
 		Parent:     a.id.Parent.String(),
@@ -190,24 +193,39 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	desired.Name = fqn
 
-	// Apply default values.
-	ApplyFirestoreDatabaseDefaults(desired)
+	// Type is required, and we default it to FIRESTORE_NATIVE if unspecified.
+	if desired.Type == pb.Database_DATABASE_TYPE_UNSPECIFIED {
+		desired.Type = pb.Database_FIRESTORE_NATIVE
+	}
 
-	actual := direct.ProtoClone(a.actual)
+	// Simulate server-side defaulting, so we don't issue updates for fields that
+	// are different only because of defaulting.
+	expected := direct.ProtoClone(desired)
+	ApplyServerSideDefaults(expected)
+
+	actual := a.actual
+
+	diff := &structuredreporting.Diff{}
 
 	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(actual.ConcurrencyMode, desired.ConcurrencyMode) {
+	if !reflect.DeepEqual(actual.ConcurrencyMode, expected.ConcurrencyMode) {
+		diff.AddField("concurrency_mode", actual.ConcurrencyMode, desired.ConcurrencyMode)
 		updateMask.Paths = append(updateMask.Paths, "concurrency_mode")
 	}
-	if !reflect.DeepEqual(actual.PointInTimeRecoveryEnablement, desired.PointInTimeRecoveryEnablement) {
+	if !reflect.DeepEqual(actual.PointInTimeRecoveryEnablement, expected.PointInTimeRecoveryEnablement) {
+		diff.AddField("point_in_time_recovery_enablement", actual.PointInTimeRecoveryEnablement, desired.PointInTimeRecoveryEnablement)
 		updateMask.Paths = append(updateMask.Paths, "point_in_time_recovery_enablement")
 	}
-	if !reflect.DeepEqual(actual.AppEngineIntegrationMode, desired.AppEngineIntegrationMode) {
+	if !reflect.DeepEqual(actual.AppEngineIntegrationMode, expected.AppEngineIntegrationMode) {
+		diff.AddField("app_engine_integration_mode", actual.AppEngineIntegrationMode, desired.AppEngineIntegrationMode)
 		updateMask.Paths = append(updateMask.Paths, "app_engine_integration_mode")
 	}
-	if !reflect.DeepEqual(actual.DeleteProtectionState, desired.DeleteProtectionState) {
+	if !reflect.DeepEqual(actual.DeleteProtectionState, expected.DeleteProtectionState) {
+		diff.AddField("delete_protection_state", actual.DeleteProtectionState, desired.DeleteProtectionState)
 		updateMask.Paths = append(updateMask.Paths, "delete_protection_state")
 	}
+
+	structuredreporting.ReportDiff(ctx, diff)
 
 	latest := direct.ProtoClone(actual)
 	if len(updateMask.Paths) != 0 {

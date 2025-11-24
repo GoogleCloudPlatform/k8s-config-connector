@@ -223,6 +223,10 @@ func populateDefaultsForDatabase(obj *pb.Database) {
 		obj.DatabaseEdition = pb.Database_STANDARD
 	}
 
+	if obj.DeleteProtectionState == pb.Database_DELETE_PROTECTION_STATE_UNSPECIFIED {
+		obj.DeleteProtectionState = pb.Database_DELETE_PROTECTION_DISABLED
+	}
+
 	if obj.FreeTier == nil {
 		// The first database in each project is free-tier
 		obj.FreeTier = PtrTo(true)

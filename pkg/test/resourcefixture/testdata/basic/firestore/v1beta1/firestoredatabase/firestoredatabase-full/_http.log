@@ -29,7 +29,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
-  "appEngineIntegrationMode": 2,
   "concurrencyMode": 2,
   "deleteProtectionState": 2,
   "locationId": "us-west2",
@@ -159,7 +158,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: database.name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}
 
 {
-  "appEngineIntegrationMode": 2,
   "concurrencyMode": 1,
   "deleteProtectionState": 1,
   "locationId": "us-west2",
