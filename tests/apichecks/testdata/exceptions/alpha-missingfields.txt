@@ -429,6 +429,14 @@
 [missing_field] crd=billingaccounts.billing.cnrm.cloud.google.com version=v1alpha1: field ".spec.currencyCode" is not set in unstructured objects
 [missing_field] crd=billingaccounts.billing.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=billingaccounts.billing.cnrm.cloud.google.com version=v1alpha1: field ".spec.parentRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=certificatemanagercertificateissuanceconfigs.certificatemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.certificateAuthorityConfigRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=certificatemanagercertificateissuanceconfigs.certificatemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.certificateAuthorityConfigRef.certificateAuthorityServiceConfig.caPoolRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=certificatemanagercertificateissuanceconfigs.certificatemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=certificatemanagercertificateissuanceconfigs.certificatemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.keyAlgorithm" is not set in unstructured objects
+[missing_field] crd=certificatemanagercertificateissuanceconfigs.certificatemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.lifetime" is not set in unstructured objects
+[missing_field] crd=certificatemanagercertificateissuanceconfigs.certificatemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=certificatemanagercertificateissuanceconfigs.certificatemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=certificatemanagercertificateissuanceconfigs.certificatemanager.cnrm.cloud.google.com version=v1alpha1: field ".spec.rotationWindowPercentage" is not set in unstructured objects
 [missing_field] crd=cloudassetfolderfeeds.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.assetNames[]" is not set in unstructured objects
 [missing_field] crd=cloudassetfolderfeeds.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.assetTypes[]" is not set in unstructured objects
 [missing_field] crd=cloudassetfolderfeeds.cloudasset.cnrm.cloud.google.com version=v1alpha1: field ".spec.billingProject" is not set in unstructured objects
