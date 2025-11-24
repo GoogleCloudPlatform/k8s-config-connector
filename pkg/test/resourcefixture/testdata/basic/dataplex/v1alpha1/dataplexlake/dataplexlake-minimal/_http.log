@@ -14,7 +14,11 @@ GRPC /google.cloud.dataplex.v1.DataplexService/CreateLake
 
 {
   "lake": {
-    "description": "Initial description"
+    "description": "Initial description",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
   },
   "lakeId": "dataplexlake-minimal-${uniqueId}",
   "parent": "projects/${projectId}/locations/us-central1"
@@ -57,6 +61,10 @@ OK
     "assetStatus": {},
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Initial description",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "metastore": {},
     "metastoreStatus": {
       "state": "NONE",
@@ -86,6 +94,10 @@ OK
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Initial description",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "metastore": {},
   "metastoreStatus": {
     "state": "NONE",
@@ -105,6 +117,10 @@ GRPC /google.cloud.dataplex.v1.DataplexService/UpdateLake
 {
   "lake": {
     "description": "Updated description",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "name": "projects/${projectId}/locations/us-central1/lakes/dataplexlake-minimal-${uniqueId}"
   },
   "updateMask": "description"
@@ -149,6 +165,10 @@ OK
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Updated description",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
     "metastore": {},
     "metastoreStatus": {
       "state": "NONE",
@@ -178,6 +198,10 @@ OK
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated description",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "metastore": {},
   "metastoreStatus": {
     "state": "NONE",
@@ -206,6 +230,10 @@ OK
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated description",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "metastore": {},
   "metastoreStatus": {
     "state": "NONE",
