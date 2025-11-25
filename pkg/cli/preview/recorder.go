@@ -51,7 +51,7 @@ type Recorder struct {
 	reconcileTrackerMutex sync.Mutex
 	// Track if a resource has been reconciled.
 	ReconciledResources map[GKNN]map[k8s.ReconcilerType]bool
-	gknCount map[GKN]int
+	gknCount            map[GKN]int
 	// Number of resources has not been reconciled.
 	RemainResourcesCount int
 }
@@ -193,8 +193,8 @@ func (r *Recorder) recordReconcileStart(ctx context.Context, u *unstructured.Uns
 
 	info := r.getObjectInfo(gknn)
 	info.events = append(info.events, event{
-		eventType: EventTypeReconcileStart,
-		object:    u.DeepCopy(),
+		eventType:      EventTypeReconcileStart,
+		object:         u.DeepCopy(),
 		reconcilerType: t,
 	})
 }
@@ -209,8 +209,8 @@ func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstr
 
 	info := r.getObjectInfo(gknn)
 	info.events = append(info.events, event{
-		eventType: EventTypeReconcileEnd,
-		object:    u.DeepCopy(),
+		eventType:      EventTypeReconcileEnd,
+		object:         u.DeepCopy(),
 		reconcilerType: t,
 	})
 	r.reconcileTrackerMutex.Lock()

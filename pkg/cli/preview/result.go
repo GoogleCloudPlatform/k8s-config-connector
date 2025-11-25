@@ -40,7 +40,7 @@ type GKNSummary struct {
 func (s GKNSummary) PrettyString(total int) string {
 	tf := "NA"
 	tfBad := "NA"
-	if s.tfCount != nil {	
+	if s.tfCount != nil {
 		tf = fmt.Sprintf("%d", *s.tfCount)
 		tfBad = fmt.Sprintf("%d", total-*s.tfCount)
 	}
@@ -64,6 +64,7 @@ func (s GKNSummary) PrettyString(total int) string {
 	}
 	return fmt.Sprintf("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", tf, tfBad, direct, directBad, dcl, dclBad, custom, customBad)
 }
+
 type GKN struct {
 	Group     string
 	Kind      string
@@ -73,10 +74,10 @@ type GKN struct {
 type PreviewSummary struct {
 	// namespace -> group -> kind -> GKNSummary
 	// Count the number of resources successfully reconciled by each reconciler type
-	summary  map[string]map[string]map[string]*GKNSummary
+	summary map[string]map[string]map[string]*GKNSummary
 	// GKNN -> controller type -> []string
 	// reports store the GKNN and controller type that has issues
-	reports  map[GKNN]map[k8s.ReconcilerType][]string
+	reports map[GKNN]map[k8s.ReconcilerType][]string
 	// namespace -> group -> kind -> count
 	// Count the total number of resources in each namespace, group, kind
 	gknCount map[string]map[string]map[string]int
@@ -140,8 +141,8 @@ type ReconcileResult struct {
 func (r *Recorder) newPreviewSummary() *PreviewSummary {
 	summary := &PreviewSummary{
 		// ns -> group -> kind -> GKNSummary
-		summary:  make(map[string]map[string]map[string]*GKNSummary),
-		reports:  make(map[GKNN]map[k8s.ReconcilerType][]string),
+		summary: make(map[string]map[string]map[string]*GKNSummary),
+		reports: make(map[GKNN]map[k8s.ReconcilerType][]string),
 		// ns -> group -> kind -> count
 		gknCount: make(map[string]map[string]map[string]int),
 	}
@@ -282,8 +283,8 @@ func (r *Recorder) SummaryReport(filename string) error {
 				total := summary.gknCount[ns][group][kind]
 				s := summary.summary[ns][group][kind]
 				gvk := schema.GroupVersionKind{
-					Group:   group,
-					Kind:    kind,
+					Group: group,
+					Kind:  kind,
 				}
 				controllerConfig, err := controllerType.GetControllersForGVK(gvk)
 				if err != nil {

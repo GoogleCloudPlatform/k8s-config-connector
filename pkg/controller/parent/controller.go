@@ -271,6 +271,8 @@ func (r *ParentReconciler) determineControllerType(ctx context.Context, u *unstr
 	return config.DefaultController, nil
 }
 
+// ReconcilePreviewMode reconciles the resource in preview mode
+// Each resource is reconciled with each supported controller type
 func (r *ParentReconciler) reconcilePreviewMode(ctx context.Context, req reconcile.Request) (reconcile.Result, error) {
 	logger := log.FromContext(ctx)
 
@@ -296,25 +298,38 @@ func (r *ParentReconciler) reconcilePreviewMode(ctx context.Context, req reconci
 			if r.reconcilers.TF == nil {
 				logger.Info("TF reconciler is not initialized for resource %v", r.gvk)
 			}
-			r.reconcilers.TF.Reconcile(ctx, req)
+			_, err := r.reconcilers.TF.Reconcile(ctx, req)
+			if err != nil {
+				logger.Info("reconcile failed with TF reconciler", "error", err)
+			}
 		case k8s.ReconcilerTypeDCL:
 			logger.Info("running preview with DCL reconciler")
 			if r.reconcilers.DCL == nil {
 				logger.Info("DCL reconciler is not initialized for resource %v", r.gvk)
 			}
-			r.reconcilers.DCL.Reconcile(ctx, req)
+			_, err := r.reconcilers.DCL.Reconcile(ctx, req)
+			if err != nil {
+				logger.Info("reconcile failed with DCL reconciler", "error", err)
+			}
 		case k8s.ReconcilerTypeDirect:
 			logger.Info("running preview with Direct reconciler")
 			if r.reconcilers.Direct == nil {
 				logger.Info("direct reconciler is not initialized for resource %v", r.gvk)
 			}
-			r.reconcilers.Direct.Reconcile(ctx, req)
+			_, err := r.reconcilers.Direct.Reconcile(ctx, req)
+			if err != nil {
+				logger.Info("reconcile failed with Direct reconciler", "error", err)
+			}
 		default:
 			if r.reconcilers.Custom != nil && r.reconcilers.Custom.Type == controllerType {
 				logger.Info("running preview with custom reconciler", "type", controllerType)
-				r.reconcilers.Custom.Reconciler.Reconcile(ctx, req)
+				_, err := r.reconcilers.Custom.Reconciler.Reconcile(ctx, req)
+				if err != nil {
+					logger.Info("reconcile failed with custom reconciler", "error", err)
+				}
 			}
 		}
 	}
+	// Return empty result and nil error to avoid requeue
 	return reconcile.Result{}, nil
 }
