@@ -423,7 +423,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creator": "${creatorID}",
   "etag": "abcdef0123A=",
-  "generation": "1",
+  "generation": "12345678901234",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -913,7 +913,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "creator": "${creatorID}",
   "etag": "abcdef0123A=",
-  "generation": "1",
+  "generation": "12345678901234",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
