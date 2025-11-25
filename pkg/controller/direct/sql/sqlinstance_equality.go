@@ -27,9 +27,6 @@ func DiffInstances(desired *api.DatabaseInstance, actual *api.DatabaseInstance) 
 	if desired == nil && actual == nil {
 		return diff
 	}
-	if !PointersMatch(desired, actual) {
-		return diff
-	}
 
 	if desired.DatabaseVersion != actual.DatabaseVersion {
 		diff.AddField(".databaseVersion", actual.DatabaseVersion, desired.DatabaseVersion)
