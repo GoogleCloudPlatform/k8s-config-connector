@@ -21,18 +21,48 @@ import (
 	"strings"
 	"text/tabwriter"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 type GKNSummary struct {
 	// number of resouces successfully reconciled by TF reconciler
-	tfCount int
+	tfCount *int
 	// number of resouces successfully reconciled by direct reconciler
-	directCount int
+	directCount *int
 	// number of resouces successfully reconciled by DCL reconciler
-	dclCount int
+	dclCount *int
 	// number of resouces successfully reconciled by custom reconciler
-	customCount int
+	customCount *int
+}
+
+func (s GKNSummary) PrettyString(total int) string {
+	tf := "NA"
+	tfBad := "NA"
+	if s.tfCount != nil {	
+		tf = fmt.Sprintf("%d", *s.tfCount)
+		tfBad = fmt.Sprintf("%d", total-*s.tfCount)
+	}
+	direct := "NA"
+	directBad := "NA"
+	if s.directCount != nil {
+		direct = fmt.Sprintf("%d", *s.directCount)
+		directBad = fmt.Sprintf("%d", total-*s.directCount)
+	}
+	dcl := "NA"
+	dclBad := "NA"
+	if s.dclCount != nil {
+		dcl = fmt.Sprintf("%d", *s.dclCount)
+		dclBad = fmt.Sprintf("%d", total-*s.dclCount)
+	}
+	custom := "NA"
+	customBad := "NA"
+	if s.customCount != nil {
+		custom = fmt.Sprintf("%d", *s.customCount)
+		customBad = fmt.Sprintf("%d", total-*s.customCount)
+	}
+	return fmt.Sprintf("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", tf, tfBad, direct, directBad, dcl, dclBad, custom, customBad)
 }
 type GKN struct {
 	Group     string
@@ -42,37 +72,63 @@ type GKN struct {
 
 type PreviewSummary struct {
 	// namespace -> group -> kind -> GKNSummary
+	// Count the number of resources successfully reconciled by each reconciler type
 	summary  map[string]map[string]map[string]*GKNSummary
+	// GKNN -> controller type -> []string
+	// reports store the GKNN and controller type that has issues
 	reports  map[GKNN]map[k8s.ReconcilerType][]string
-	gknCount map[GKN]int
+	// namespace -> group -> kind -> count
+	// Count the total number of resources in each namespace, group, kind
+	gknCount map[string]map[string]map[string]int
 }
 
+// add result to the summary
 func (p *PreviewSummary) addResult(gknn GKNN, r ReconcileResult) {
-	if _, ok := p.summary[gknn.Namespace]; !ok {
+	if p.summary[gknn.Namespace] == nil {
 		p.summary[gknn.Namespace] = make(map[string]map[string]*GKNSummary)
 	}
-	if _, ok := p.summary[gknn.Namespace][gknn.Group]; !ok {
+	if p.summary[gknn.Namespace][gknn.Group] == nil {
 		p.summary[gknn.Namespace][gknn.Group] = make(map[string]*GKNSummary)
 	}
-	var summary *GKNSummary
-	if _, ok := p.summary[gknn.Namespace][gknn.Group][gknn.Kind]; !ok {
+	summary := p.summary[gknn.Namespace][gknn.Group][gknn.Kind]
+	if summary == nil {
 		summary = &GKNSummary{}
-	} else {
-		summary = p.summary[gknn.Namespace][gknn.Group][gknn.Kind]
+		p.summary[gknn.Namespace][gknn.Group][gknn.Kind] = summary
 	}
+
+	var countPtr **int
+	switch r.controllerType {
+	case k8s.ReconcilerTypeTerraform:
+		countPtr = &summary.tfCount
+	case k8s.ReconcilerTypeDCL:
+		countPtr = &summary.dclCount
+	case k8s.ReconcilerTypeDirect:
+		countPtr = &summary.directCount
+	default:
+		countPtr = &summary.customCount
+	}
+
 	if r.good {
-		switch r.controllerType {
-		case k8s.ReconcilerTypeTerraform:
-			summary.tfCount++
-		case k8s.ReconcilerTypeDCL:
-			summary.dclCount++
-		case k8s.ReconcilerTypeDirect:
-			summary.directCount++
-		default:
-			summary.customCount++
+		inc(countPtr)
+	} else {
+		if p.reports[gknn] == nil {
+			p.reports[gknn] = make(map[k8s.ReconcilerType][]string)
 		}
+		// Ensure the counter is initialized even if we don't increment it (so it shows up as 0 instead of NA)
+		if *countPtr == nil {
+			*countPtr = new(int)
+		}
+		p.reports[gknn][r.controllerType] = append(p.reports[gknn][r.controllerType], r.detail...)
 	}
-	p.summary[gknn.Namespace][gknn.Group][gknn.Kind] = summary
+}
+
+// increment the counter if it is not nil
+// if it is nil, initialize it to 1
+func inc(ptr **int) {
+	if *ptr == nil {
+		*ptr = new(int)
+	}
+	**ptr++
 }
 
 type ReconcileResult struct {
@@ -83,18 +139,24 @@ type ReconcileResult struct {
 
 func (r *Recorder) newPreviewSummary() *PreviewSummary {
 	summary := &PreviewSummary{
+		// ns -> group -> kind -> GKNSummary
 		summary:  make(map[string]map[string]map[string]*GKNSummary),
 		reports:  make(map[GKNN]map[k8s.ReconcilerType][]string),
-		gknCount: make(map[GKN]int),
+		// ns -> group -> kind -> count
+		gknCount: make(map[string]map[string]map[string]int),
+	}
+
+	for gkn, count := range r.gknCount {
+		if summary.gknCount[gkn.Namespace] == nil {
+			summary.gknCount[gkn.Namespace] = make(map[string]map[string]int)
+		}
+		if summary.gknCount[gkn.Namespace][gkn.Group] == nil {
+			summary.gknCount[gkn.Namespace][gkn.Group] = make(map[string]int)
+		}
+		summary.gknCount[gkn.Namespace][gkn.Group][gkn.Kind] = count
 	}
 
 	for gknn, info := range r.objects {
-		summary.gknCount[GKN{
-			Group:     gknn.Group,
-			Kind:      gknn.Kind,
-			Namespace: gknn.Namespace,
-		}]++
-
 		results := ParseEventInfo(info)
 		for _, result := range results {
 			summary.addResult(gknn, result)
@@ -127,12 +189,12 @@ func ParseEventInfo(info *objectInfo) []ReconcileResult {
 			detail = []string{}
 			t = event.reconcilerType
 		case EventTypeReconcileEnd:
+			t = event.reconcilerType
 			result = append(result, ReconcileResult{
 				good:           good,
 				detail:         detail,
 				controllerType: t,
 			})
-
 		case EventTypeKubeAction:
 			// Ignore kubeaction for now. Mostly status update.
 
@@ -186,10 +248,10 @@ func (r *Recorder) ExportDetailObjectsEvent(filename string) error {
 				fmt.Fprintf(f, "  diff %+v\n", event.diff)
 
 			case EventTypeReconcileStart:
-				fmt.Fprintf(f, "  reconcileStart %+v\n", event.object)
+				fmt.Fprintf(f, "  Reconcile Start, reconcilerType: %s\n", event.reconcilerType)
 
 			case EventTypeReconcileEnd:
-				fmt.Fprintf(f, "  reconcileEnd %+v\n", event.object)
+				fmt.Fprintf(f, "  Reconcile End, reconcilerType: %s\n", event.reconcilerType)
 
 			case EventTypeKubeAction:
 				fmt.Fprintf(f, "  kubeAction %+v\n", event.kubeAction)
@@ -212,12 +274,22 @@ func (r *Recorder) SummaryReport(filename string) error {
 	}
 	summary := r.newPreviewSummary()
 	w := tabwriter.NewWriter(f, 0, 0, 3, ' ', 0)
-	fmt.Fprintln(w, "Namespace\tGroup\tKind\tTF\tDirect\tDCL\tCustom\tTotal")
-	for ns := range summary.summary {
-		for group := range summary.summary[ns] {
-			for kind := range summary.summary[ns][group] {
-				gs := summary.summary[ns][group][kind]
-				fmt.Fprintf(w, "%s\t%s\t%s\t%d\t%d\t%d\t%d\t%d\n", ns, group, kind, gs.tfCount, gs.directCount, gs.dclCount, gs.customCount, summary.gknCount[GKN{Group: group, Kind: kind, Namespace: ns}])
+	controllerType := resourceconfig.LoadConfig()
+	fmt.Fprintln(w, "Namespace\tGroup\tKind\tTotal\tDefault Controller Type\tTF-Good\tTF-Bad\tDirect-Good\tDirect-Bad\tDCL-Good\tDCL-Bad\tCustom-Good\tCustom-Bad")
+	for ns := range summary.gknCount {
+		for group := range summary.gknCount[ns] {
+			for kind := range summary.gknCount[ns][group] {
+				total := summary.gknCount[ns][group][kind]
+				s := summary.summary[ns][group][kind]
+				gvk := schema.GroupVersionKind{
+					Group:   group,
+					Kind:    kind,
+				}
+				controllerConfig, err := controllerType.GetControllersForGVK(gvk)
+				if err != nil {
+					return fmt.Errorf("error getting controllers for GVK %v: %w", gvk, err)
+				}
+				fmt.Fprintf(w, "%s\t%s\t%s\t%d\t%s\t%s\n", ns, group, kind, total, controllerConfig.DefaultController, s.PrettyString(total))
 			}
 		}
 	}
@@ -225,39 +297,37 @@ func (r *Recorder) SummaryReport(filename string) error {
 	if err = f.Close(); err != nil {
 		return fmt.Errorf("error closing file %q: %w", filename, err)
 	}
-	return nil
-
-	// Reconciled all resources and no issue detected.
-	// if r.RemainResourcesCount == 0 && summary.totalBad == 0 {
-	// 	return nil
-	// }
-	// detailFileName := fmt.Sprintf("%s-detail", filename)
-	// detailFile, err := os.Create(detailFileName)
-	// if err != nil {
-	// 	return fmt.Errorf("error creating file %q: %w", detailFileName, err)
-	// }
-	// if r.RemainResourcesCount > 0 {
-	// 	fmt.Fprintln(detailFile, "Resources that has not fully reconciled:")
-	// 	for gknn := range r.ReconciledResources {
-	// 		if !r.GKNNDoneReconcile(gknn) {
-	// 			fmt.Fprintf(detailFile, "Group: %s, Kind: %s, Namespace: %s, Name: %s\n", gknn.Group, gknn.Kind, gknn.Namespace, gknn.Name)
-	// 		}
-	// 	}
-	// }
-	// if summary.totalBad > 0 {
-	// 	for ns := range summary.badGKNN {
-	// 		for group := range summary.badGKNN[ns] {
-	// 			for kind := range summary.badGKNN[ns][group] {
-	// 				for _, name := range summary.badGKNN[ns][group][kind] {
-	// 					fmt.Fprintln(detailFile, "-----------------------------------------------------------------")
-	// 					fmt.Fprintf(detailFile, "Group: %s, Kind: %s, Namespace: %s, Name: %s\n", group, kind, ns, name)
-	// 					for _, s := range summary.reports[GKNN{Group: group, Kind: kind, Namespace: ns, Name: name}] {
-	// 						fmt.Fprintln(detailFile, s)
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
-	// return detailFile.Close()
+	if len(summary.reports) == 0 && r.RemainResourcesCount == 0 {
+		return nil
+	}
+	detailFileName := fmt.Sprintf("%s-detail", filename)
+	detailFile, err := os.Create(detailFileName)
+	if err != nil {
+		return fmt.Errorf("error creating file %q: %w", detailFileName, err)
+	}
+	if r.RemainResourcesCount > 0 {
+		fmt.Fprintln(detailFile, "Resources that has not fully reconciled:")
+		for gknn := range r.ReconciledResources {
+			for controllerType, done := range r.ReconciledResources[gknn] {
+				if done {
+					continue
+				}
+				fmt.Fprintln(detailFile, "-----------------------------------------------------------------")
+				fmt.Fprintf(detailFile, "Group: %s, Kind: %s, Namespace: %s, Name: %s, Controller Type: %s\n", gknn.Group, gknn.Kind, gknn.Namespace, gknn.Name, controllerType)
+			}
+		}
+	}
+	if len(summary.reports) > 0 {
+		fmt.Fprintln(detailFile, "Resources that has issues:")
+		for gknn := range summary.reports {
+			for controllerType := range summary.reports[gknn] {
+				fmt.Fprintln(detailFile, "-----------------------------------------------------------------")
+				fmt.Fprintf(detailFile, "Group: %s, Kind: %s, Namespace: %s, Name: %s, Controller Type: %s\n", gknn.Group, gknn.Kind, gknn.Namespace, gknn.Name, controllerType)
+				for _, s := range summary.reports[gknn][controllerType] {
+					fmt.Fprintln(detailFile, s)
+				}
+			}
+		}
+	}
+	return detailFile.Close()
 }

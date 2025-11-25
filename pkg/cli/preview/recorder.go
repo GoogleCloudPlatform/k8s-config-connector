@@ -51,6 +51,7 @@ type Recorder struct {
 	reconcileTrackerMutex sync.Mutex
 	// Track if a resource has been reconciled.
 	ReconciledResources map[GKNN]map[k8s.ReconcilerType]bool
+	gknCount map[GKN]int
 	// Number of resources has not been reconciled.
 	RemainResourcesCount int
 }
@@ -60,6 +61,7 @@ func NewRecorder() *Recorder {
 	return &Recorder{
 		objects:              make(map[GKNN]*objectInfo),
 		ReconciledResources:  make(map[GKNN]map[k8s.ReconcilerType]bool),
+		gknCount:             make(map[GKN]int),
 		RemainResourcesCount: 0,
 	}
 }
@@ -164,7 +166,6 @@ func (r *Recorder) RecordIgnoredKubeMethod(ctx context.Context, method string, a
 
 // recordDiff captures the diff into our recorder.
 func (r *Recorder) recordDiff(ctx context.Context, diff *structuredreporting.Diff) {
-	log := klog.FromContext(ctx)
 
 	gknn := GKNN{}
 
@@ -175,8 +176,6 @@ func (r *Recorder) recordDiff(ctx context.Context, diff *structuredreporting.Dif
 	if done := r.GKNNDoneReconcile(gknn); done {
 		return
 	}
-
-	log.Info("recordDiffs", "gknn", gknn)
 
 	info := r.getObjectInfo(gknn)
 	info.events = append(info.events, event{
@@ -202,7 +201,6 @@ func (r *Recorder) recordReconcileStart(ctx context.Context, u *unstructured.Uns
 
 // recordReconcileEnd captures the reconcile end into our recorder.
 func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error, t k8s.ReconcilerType) {
-	klog.Infof("recordReconcileEnd %v %v", u, t)
 	gknn := gknnFromUnstructured(u)
 
 	if done := r.GKNNDoneReconcile(gknn); done {
@@ -248,7 +246,6 @@ func gknnFromUnstructured(u *unstructured.Unstructured) GKNN {
 
 // recordKubeAction captures the kube action into our recorder.
 func (r *Recorder) recordKubeAction(ctx context.Context, method string, args []any, action Action) {
-	klog.Infof("recordKubeAction %v %v %v", method, args, action)
 	var gknn GKNN
 
 	kubeAction := &kubeAction{
@@ -426,6 +423,12 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config) error {
 					Namespace: resource.GetNamespace(),
 					Name:      resource.GetName(),
 				}] = make(map[k8s.ReconcilerType]bool)
+				gkn := GKN{
+					Group:     gvr.Group,
+					Kind:      resource.GetKind(),
+					Namespace: resource.GetNamespace(),
+				}
+				r.gknCount[gkn] += 1
 				for _, controllerType := range config.SupportedControllers {
 					r.ReconciledResources[GKNN{
 						Group:     gvr.Group,
