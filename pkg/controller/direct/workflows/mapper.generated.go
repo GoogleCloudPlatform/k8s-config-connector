@@ -55,11 +55,11 @@ func WorkflowsWorkflowObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.RevisionCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetRevisionCreateTime())
+	// MISSING: Labels
 	out.StateError = Workflow_StateError_FromProto(mapCtx, in.GetStateError())
 	out.AllKMSKeys = in.AllKmsKeys
 	out.AllKMSKeysVersions = in.AllKmsKeysVersions
 	out.CryptoKeyVersion = direct.LazyPtr(in.GetCryptoKeyVersion())
-	// MISSING: Tags
 	return out
 }
 func WorkflowsWorkflowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsWorkflowObservedState) *pb.Workflow {
@@ -73,11 +73,11 @@ func WorkflowsWorkflowObservedState_ToProto(mapCtx *direct.MapContext, in *krm.W
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.RevisionCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.RevisionCreateTime)
+	// MISSING: Labels
 	out.StateError = Workflow_StateError_ToProto(mapCtx, in.StateError)
 	out.AllKmsKeys = in.AllKMSKeys
 	out.AllKmsKeysVersions = in.AllKMSKeysVersions
 	out.CryptoKeyVersion = direct.ValueOf(in.CryptoKeyVersion)
-	// MISSING: Tags
 	return out
 }
 func WorkflowsWorkflowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workflow) *krm.WorkflowsWorkflowSpec {
@@ -87,7 +87,7 @@ func WorkflowsWorkflowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workflow)
 	out := &krm.WorkflowsWorkflowSpec{}
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
+	// MISSING: Labels
 	if in.GetServiceAccount() != "" {
 		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
 	}
@@ -98,7 +98,7 @@ func WorkflowsWorkflowSpec_FromProto(mapCtx *direct.MapContext, in *pb.Workflow)
 	out.CallLogLevel = direct.Enum_FromProto(mapCtx, in.GetCallLogLevel())
 	out.UserEnvVars = in.UserEnvVars
 	out.ExecutionHistoryLevel = direct.Enum_FromProto(mapCtx, in.GetExecutionHistoryLevel())
-	// MISSING: Tags
+	out.Tags = in.Tags
 	return out
 }
 func WorkflowsWorkflowSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsWorkflowSpec) *pb.Workflow {
@@ -108,7 +108,7 @@ func WorkflowsWorkflowSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsW
 	out := &pb.Workflow{}
 	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
+	// MISSING: Labels
 	if in.ServiceAccountRef != nil {
 		out.ServiceAccount = in.ServiceAccountRef.External
 	}
@@ -121,7 +121,7 @@ func WorkflowsWorkflowSpec_ToProto(mapCtx *direct.MapContext, in *krm.WorkflowsW
 	out.CallLogLevel = direct.Enum_ToProto[pb.Workflow_CallLogLevel](mapCtx, in.CallLogLevel)
 	out.UserEnvVars = in.UserEnvVars
 	out.ExecutionHistoryLevel = direct.Enum_ToProto[pb.ExecutionHistoryLevel](mapCtx, in.ExecutionHistoryLevel)
-	// MISSING: Tags
+	out.Tags = in.Tags
 	return out
 }
 func WorkflowsWorkflowSpec_SourceContents_ToProto(mapCtx *direct.MapContext, in *string) *pb.Workflow_SourceContents {

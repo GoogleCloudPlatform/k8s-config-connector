@@ -697,7 +697,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
   "callLogLevel": 2,
-  "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "description": "Example workflow",
   "executionHistoryLevel": 1,
   "labels": {
@@ -706,7 +705,6 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
-  "serviceAccount": "gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
   "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'",
   "userEnvVars": {
     "username": "person1"
@@ -765,14 +763,13 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.workflows.v1.Workflow",
     "allKmsKeys": [
-      "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+      ""
     ],
     "allKmsKeysVersions": [
-      "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}cryptoKeyVersions/1"
+      "cryptoKeyVersions/1"
     ],
     "callLogLevel": "LOG_ERRORS_ONLY",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
     "description": "Example workflow",
     "executionHistoryLevel": "EXECUTION_HISTORY_BASIC",
     "labels": {
@@ -812,14 +809,13 @@ X-Xss-Protection: 0
 
 {
   "allKmsKeys": [
-    "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+    ""
   ],
   "allKmsKeysVersions": [
-    "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}cryptoKeyVersions/1"
+    "cryptoKeyVersions/1"
   ],
   "callLogLevel": 2,
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "description": "Example workflow",
   "executionHistoryLevel": 1,
   "labels": {
@@ -841,14 +837,13 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels%2CserviceAccount%2CsourceContents%2CcryptoKeyName%2CcallLogLevel%2CuserEnvVars
+PATCH https://workflows.googleapis.com/v1/projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels%2CserviceAccount%2CsourceContents%2CcallLogLevel%2CuserEnvVars
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: workflow.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fworkflows%2Fworkflow-${uniqueId}
 
 {
   "callLogLevel": 1,
-  "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}-updated",
   "description": "Updated Example workflow",
   "executionHistoryLevel": 2,
   "labels": {
@@ -857,7 +852,6 @@ X-Goog-Request-Params: workflow.name=projects%2F${projectId}%2Flocations%2Fus-ce
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
-  "serviceAccount": "gsa-${uniqueId}-updated@${projectId}.iam.gserviceaccount.com",
   "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'\n    - setFromCallResult:\n        assign:\n          - searchTerm: '${text.split(location, \"-\")[0]}'",
   "userEnvVars": {
     "username": "person2"
@@ -916,14 +910,13 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.workflows.v1.Workflow",
     "allKmsKeys": [
-      "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+      ""
     ],
     "allKmsKeysVersions": [
-      "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}cryptoKeyVersions/1"
+      "cryptoKeyVersions/1"
     ],
     "callLogLevel": "LOG_ALL_CALLS",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}-updated",
     "description": "Updated Example workflow",
     "executionHistoryLevel": "EXECUTION_HISTORY_BASIC",
     "labels": {
@@ -934,7 +927,6 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
     "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
     "revisionId": "revision-id-placeholder",
-    "serviceAccount": "gsa-${uniqueId}-updated@${projectId}.iam.gserviceaccount.com",
     "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'\n    - setFromCallResult:\n        assign:\n          - searchTerm: '${text.split(location, \"-\")[0]}'",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z",
@@ -963,14 +955,13 @@ X-Xss-Protection: 0
 
 {
   "allKmsKeys": [
-    "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+    ""
   ],
   "allKmsKeysVersions": [
-    "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}cryptoKeyVersions/1"
+    "cryptoKeyVersions/1"
   ],
   "callLogLevel": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "cryptoKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}-updated",
   "description": "Updated Example workflow",
   "executionHistoryLevel": 1,
   "labels": {
@@ -981,7 +972,6 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/workflows/workflow-${uniqueId}",
   "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
   "revisionId": "revision-id-placeholder",
-  "serviceAccount": "gsa-${uniqueId}-updated@${projectId}.iam.gserviceaccount.com",
   "sourceContents": "main:\n  params: [input]\n  steps:\n    - getLocation:\n        call: sys.get_env\n        args:\n          name: GOOGLE_CLOUD_LOCATION\n        result: location\n    - returnOutput:\n        return: '${location}'\n    - setFromCallResult:\n        assign:\n          - searchTerm: '${text.split(location, \"-\")[0]}'",
   "state": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z",

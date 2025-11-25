@@ -89,6 +89,12 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.workflows.v1.Workflow",
+    "allKmsKeys": [
+      ""
+    ],
+    "allKmsKeysVersions": [
+      "cryptoKeyVersions/1"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Example workflow",
     "labels": {
@@ -123,6 +129,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "allKmsKeys": [
+    ""
+  ],
+  "allKmsKeysVersions": [
+    "cryptoKeyVersions/1"
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Example workflow",
   "labels": {
@@ -206,6 +218,12 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.workflows.v1.Workflow",
+    "allKmsKeys": [
+      ""
+    ],
+    "allKmsKeysVersions": [
+      "cryptoKeyVersions/1"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "Updated Example workflow",
     "labels": {
@@ -239,6 +257,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "allKmsKeys": [
+    ""
+  ],
+  "allKmsKeysVersions": [
+    "cryptoKeyVersions/1"
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated Example workflow",
   "labels": {

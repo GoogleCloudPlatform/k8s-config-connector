@@ -23,6 +23,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/workflows/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
@@ -66,23 +67,6 @@ func (m *modelWorkflowsWorkflow) client(ctx context.Context) (*gcp.Client, error
 	return gcpClient, err
 }
 
-func normalizeReference(ctx context.Context, reader client.Reader, obj *krm.WorkflowsWorkflow) error {
-	if obj.Spec.ServiceAccountRef != nil {
-		if err := obj.Spec.ServiceAccountRef.Resolve(ctx, reader, obj); err != nil {
-			return err
-		}
-	}
-
-	if obj.Spec.CryptoKeyNameRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, reader, obj, obj.Spec.CryptoKeyNameRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.CryptoKeyNameRef = kmsKeyRef
-	}
-	return nil
-}
-
 func (m *modelWorkflowsWorkflow) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
 	obj := &krm.WorkflowsWorkflow{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
@@ -94,7 +78,7 @@ func (m *modelWorkflowsWorkflow) AdapterForObject(ctx context.Context, reader cl
 		return nil, err
 	}
 
-	if err = normalizeReference(ctx, reader, obj); err != nil {
+	if err = common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
 		return nil, err
 	}
 	mapCtx := &direct.MapContext{}

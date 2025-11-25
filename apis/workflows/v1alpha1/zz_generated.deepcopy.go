@@ -217,13 +217,6 @@ func (in *WorkflowsWorkflowSpec) DeepCopyInto(out *WorkflowsWorkflowSpec) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.Labels != nil {
-		in, out := &in.Labels, &out.Labels
-		*out = make(map[string]string, len(*in))
-		for key, val := range *in {
-			(*out)[key] = val
-		}
-	}
 	if in.ServiceAccountRef != nil {
 		in, out := &in.ServiceAccountRef, &out.ServiceAccountRef
 		*out = new(v1beta1.IAMServiceAccountRef)
@@ -255,6 +248,13 @@ func (in *WorkflowsWorkflowSpec) DeepCopyInto(out *WorkflowsWorkflowSpec) {
 		in, out := &in.ExecutionHistoryLevel, &out.ExecutionHistoryLevel
 		*out = new(string)
 		**out = **in
+	}
+	if in.Tags != nil {
+		in, out := &in.Tags, &out.Tags
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
 	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID

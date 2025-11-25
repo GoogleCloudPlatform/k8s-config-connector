@@ -103,15 +103,6 @@ spec:
                     description: The `namespace` of a `KMSCryptoKey` resource.
                     type: string
                 type: object
-              labels:
-                additionalProperties:
-                  type: string
-                description: Labels associated with this workflow. Labels can contain
-                  at most 64 entries. Keys and values can be no longer than 63 characters
-                  and can only contain lowercase letters, numeric characters, underscores,
-                  and dashes. Label keys must start with a letter. International characters
-                  are allowed.
-                type: object
               location:
                 type: string
               projectRef:
@@ -185,6 +176,14 @@ spec:
                 description: Required. Workflow code to be executed. The size limit
                   is 128KB.
                 type: string
+              tags:
+                additionalProperties:
+                  type: string
+                description: Optional. Input only. Immutable. Tags associated with
+                  this workflow. This is the ResourceManager TagValue whose key-value
+                  pairs will be <tag namespace>/<tag key name>. The TagKey, TagValue
+                  and TagBinding are under migration to the direct approach.
+                type: object
               userEnvVars:
                 additionalProperties:
                   type: string

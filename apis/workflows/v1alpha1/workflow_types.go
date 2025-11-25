@@ -37,7 +37,7 @@ type WorkflowsWorkflowSpec struct {
 	// than 63 characters and can only contain lowercase letters, numeric
 	// characters, underscores, and dashes. Label keys must start with a letter.
 	// International characters are allowed.
-	Labels map[string]string `json:"labels,omitempty"`
+	// Labels map[string]string `json:"labels,omitempty"`
 
 	// The service account associated with the latest workflow version.
 	// This service account represents the identity of the workflow and determines
@@ -80,7 +80,7 @@ type WorkflowsWorkflowSpec struct {
 	// +kcc:proto:field=google.cloud.workflows.v1.Workflow.tags
 	// This is the ResourceManager TagValue whose key-value pairs will be <tag namespace>/<tag key name>.
 	// The TagKey, TagValue and TagBinding are under migration to the direct approach.
-	// Tags map[string]string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 
 	// The Workflow name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
