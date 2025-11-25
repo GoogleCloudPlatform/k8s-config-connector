@@ -1,0 +1,36 @@
+apiVersion: firestore.cnrm.cloud.google.com/v1alpha1
+kind: FirestoreField
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: firestorefield-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  collectionGroup: my-collection
+  databaseRef:
+    name: firestoredatabase-dep
+  indexConfig:
+    indexes:
+    - fields:
+      - fieldPath: field123
+        order: DESCENDING
+      queryScope: COLLECTION
+  resourceID: field123
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/my-collection/fields/field123
+  observedGeneration: 2
+  observedState:
+    indexConfig:
+      ancestorField: projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/__default__/fields/*
+      indexes:
+      - state: READY

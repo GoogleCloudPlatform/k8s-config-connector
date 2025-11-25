@@ -226,7 +226,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in Google Cloud .
+                  observed in {{gcp_name_short}}.
                 properties:
                   createTime:
                     description: Output only. Create time.
@@ -453,7 +453,7 @@ spec:
                 type: integer
               observedState:
                 description: ObservedState is the state of the resource as most recently
-                  observed in Google Cloud .
+                  observed in {{gcp_name_short}}.
                 properties:
                   createTime:
                     description: Output only. Create time.

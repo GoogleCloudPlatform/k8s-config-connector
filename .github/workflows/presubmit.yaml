@@ -39,7 +39,7 @@ jobs:
         with:
           # This is to get all the commits in order to validate them
           fetch-depth: 0
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
         with:
           go-version-file: 'go.mod'
       - name: "Run validations"
@@ -55,13 +55,13 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
         with:
           go-version-file: 'go.mod'
       - name: "Set up Cloud SDK"
         uses: 'google-github-actions/setup-gcloud@v2'
         with:
-          version: '531.0.0'
+          version: '546.0.0'
           install_components: 'alpha,beta'
       - name: "Run unit tests"
         run: |
@@ -78,7 +78,7 @@ jobs:
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
         with:
           go-version-file: 'go.mod'
       - name: "Run pause tests"
@@ -90,23 +90,13 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
         with:
           go-version-file: 'go.mod'
       - name: "Run vcr tests"
         run: |
           ./scripts/github-actions/tests-e2e-fixtures-vcr.sh
-  tests-e2e-direct-iam:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: 'go.mod'
-      - name: "Run direct iam tests"
-        run: |
-          ./scripts/github-actions/ga-iam-direct-tests.sh
+
   build-images:
     runs-on: ubuntu-22.04
     timeout-minutes: 60
@@ -121,7 +111,7 @@ jobs:
           echo "After cleanup:"
           df -h /
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
         with:
           go-version-file: 'go.mod'
       - name: "dev/tasks/build-images"

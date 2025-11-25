@@ -25,6 +25,7 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/contexts"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/kccmanager/nocache"
@@ -183,7 +184,7 @@ func (i *PreviewInstance) Start(ctx context.Context) error {
 
 	if err := mgr.Start(ctx); err != nil {
 		// We expect an error when the context is canceled
-		if ctx.Err() == context.Canceled {
+		if contexts.IsContextCanceledErr(err) {
 			return nil
 		}
 		return fmt.Errorf("starting controllers: %w", err)

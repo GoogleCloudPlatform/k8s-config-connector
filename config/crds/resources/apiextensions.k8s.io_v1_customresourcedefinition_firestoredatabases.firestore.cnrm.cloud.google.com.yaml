@@ -64,6 +64,9 @@ spec:
                   See https://cloud.google.com/firestore/docs/reference/rest/v1/projects.databases#concurrencymode
                   for more info.
                 type: string
+              deleteProtectionState:
+                description: State of delete protection for the database.
+                type: string
               locationID:
                 description: The location of the database. Available locations are
                   listed at https://cloud.google.com/firestore/docs/locations.
@@ -258,6 +261,9 @@ spec:
                 description: The concurrency control mode to use for this database.
                   See https://cloud.google.com/firestore/docs/reference/rest/v1/projects.databases#concurrencymode
                   for more info.
+                type: string
+              deleteProtectionState:
+                description: State of delete protection for the database.
                 type: string
               locationID:
                 description: The location of the database. Available locations are

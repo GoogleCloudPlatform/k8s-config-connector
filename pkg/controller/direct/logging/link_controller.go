@@ -31,8 +31,8 @@ import (
 	//"net/http"
 
 	gcp "cloud.google.com/go/logging/apiv2"
-	//"google.golang.org/api/option"
 	loggingpb "cloud.google.com/go/logging/apiv2/loggingpb"
+	"google.golang.org/api/option"
 
 	//"google.golang.org/api/option"
 	//"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -58,8 +58,13 @@ type modelLoggingLink struct {
 }
 
 func (m *modelLoggingLink) client(ctx context.Context) (*gcp.ConfigClient, error) {
+	// Use the VCR-aware HTTP client
+	httpClient, err := m.config.NewAuthenticatedHTTPClient(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("building authenticated HTTP client: %w", err)
+	}
 
-	gcpClient, err := gcp.NewConfigRESTClient(ctx)
+	gcpClient, err := gcp.NewConfigRESTClient(ctx, option.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("building Logging Config client: %w", err)
 	}
@@ -72,7 +77,7 @@ func (m *modelLoggingLink) AdapterForObject(ctx context.Context, reader client.R
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	linkIdentity, err := krm.NewLinkIdentity(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -82,17 +87,11 @@ func (m *modelLoggingLink) AdapterForObject(ctx context.Context, reader client.R
 		return nil, err
 	}
 	return &LoggingLinkAdapter{
-		id:        linkIdentity,
+		id:        id.(*krm.LinkIdentity),
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
 }
-
-/*
-func () ResolveExternalRef(externalRef string) {
-
-}
-*/
 
 func (m *modelLoggingLink) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
 	// TODO: Support URLs
@@ -185,6 +184,7 @@ func (a *LoggingLinkAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	desiredPb.Name = a.id.String()
 
 	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
@@ -192,16 +192,15 @@ func (a *LoggingLinkAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		status := &krm.LoggingLinkStatus{}
-		status.ObservedState = LoggingLinkObservedState_FromProto(mapCtx, a.actual)
-		if mapCtx.Err() != nil {
-			return mapCtx.Err()
-		}
-		return updateOp.UpdateStatus(ctx, status, nil)
 	} else {
-		return fmt.Errorf("update operation not supported for resource %v %v",
-			a.desired.GroupVersionKind(), k8s.GetNamespacedName(a.desired))
+		log.V(2).Info("update operation not supported for resource", "groupVersionKind", a.desired.GroupVersionKind(), "namespacedName", k8s.GetNamespacedName(a.desired))
 	}
+	status := &krm.LoggingLinkStatus{}
+	status.ObservedState = LoggingLinkObservedState_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 func (a *LoggingLinkAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -254,11 +253,13 @@ func (a *LoggingLinkAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 		}
 		return false, fmt.Errorf("deleting Link %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted Link", "name", a.id)
+	log.V(2).Info("successfully initiated deletion of Link", "name", a.id)
 
 	err = op.Wait(ctx)
 	if err != nil {
 		return false, fmt.Errorf("waiting delete Link %s: %w", a.id, err)
 	}
+	log.V(2).Info("successfully waited for link deletion LRO", "name", a.id)
+
 	return true, nil
 }

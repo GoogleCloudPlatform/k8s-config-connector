@@ -17,7 +17,7 @@ spec:
     accessConfig:
       networkConfigs:
       - subnetworkRef:
-          name: computesubnetwork-${uniqueId}
+          name: ${subnetworkID}
     kmsKeyRef:
       name: kmscryptokey-${uniqueId}
   location: us-central1

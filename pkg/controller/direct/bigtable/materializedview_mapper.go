@@ -20,31 +20,42 @@
 package bigtable
 
 import (
+	gcp "cloud.google.com/go/bigtable"
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
-	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BigtableMaterializedViewSpec_FromProto(mapCtx *direct.MapContext, in *pb.MaterializedView) *krmv1alpha1.BigtableMaterializedViewSpec {
+func BigtableMaterializedViewInfo_ToBigtableMaterializedView(in *gcp.MaterializedViewInfo) *pb.MaterializedView {
 	if in == nil {
 		return nil
 	}
-	out := &krmv1alpha1.BigtableMaterializedViewSpec{}
-	_, resourceID, _ := krmv1alpha1.ParseMaterializedViewExternal(in.Name)
-	out.ResourceID = &resourceID
-	out.Query = &in.Query
 
-	out.DeletionProtection = &in.DeletionProtection
-	return out
+	deletionProtection := false
+	if in.DeletionProtection == gcp.Protected {
+		deletionProtection = true
+	}
+
+	return &pb.MaterializedView{
+		Query:              in.Query,
+		DeletionProtection: deletionProtection,
+		Name:               in.MaterializedViewID,
+	}
 }
 
-func BigtableMaterializedViewSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigtableMaterializedViewSpec) *pb.MaterializedView {
+func BigtableMaterializedView_ToBigtableMaterializedViewInfo(in *pb.MaterializedView) *gcp.MaterializedViewInfo {
 	if in == nil {
 		return nil
 	}
-	out := &pb.MaterializedView{
-		Query:              *in.Query,
-		DeletionProtection: *in.DeletionProtection,
+
+	deletionProtection := gcp.None
+	if in.DeletionProtection {
+		deletionProtection = gcp.Protected
+	} else {
+		deletionProtection = gcp.Unprotected
 	}
-	return out
+
+	return &gcp.MaterializedViewInfo{
+		Query:              in.Query,
+		DeletionProtection: deletionProtection,
+		MaterializedViewID: in.Name,
+	}
 }

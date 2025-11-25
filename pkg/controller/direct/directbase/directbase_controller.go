@@ -243,8 +243,8 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 		gvk:            r.gvk,
 		NamespacedName: request.NamespacedName,
 	}
-	structuredreporting.ReportReconcileStart(ctx, obj)
-	defer structuredreporting.ReportReconcileEnd(ctx, obj, result, err)
+	structuredreporting.ReportReconcileStart(ctx, obj, k8s.ReconcilerTypeDirect)
+	defer structuredreporting.ReportReconcileEnd(ctx, obj, result, err, k8s.ReconcilerTypeDirect)
 
 	skip, err := resourceactuation.ShouldSkip(obj)
 	if err != nil {

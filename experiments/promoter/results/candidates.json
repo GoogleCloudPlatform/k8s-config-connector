@@ -1,37 +1,5 @@
 [
   {
-    "kind": "APIQuotaPreference",
-    "service": "cloudquota",
-    "apiPath": "apis/cloudquota/v1alpha1/quotapreference_types.go",
-    "controllerPath": "pkg/controller/direct/cloudquota/quotapreference_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/cloudquota/v1alpha1/apiquotapreference",
-    "apiCoverage": false
-  },
-  {
-    "kind": "AssetFeed",
-    "service": "asset",
-    "apiPath": "apis/asset/v1alpha1/feed_types.go",
-    "controllerPath": "pkg/controller/direct/asset/feed_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/asset/v1alpha1/assetfeed",
-    "apiCoverage": true
-  },
-  {
-    "kind": "AssetSavedQuery",
-    "service": "asset",
-    "apiPath": "apis/asset/v1alpha1/savedquery_types.go",
-    "controllerPath": "pkg/controller/direct/asset/savedquery_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/asset/v1alpha1/assetsavedquery",
-    "apiCoverage": true
-  },
-  {
-    "kind": "BackupDRBackupPlan",
-    "service": "backupdr",
-    "apiPath": "apis/backupdr/v1alpha1/backupplan_types.go",
-    "controllerPath": "pkg/controller/direct/backupdr/backupplan_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/backupdr/v1alpha1/backupdrbackupplan",
-    "apiCoverage": false
-  },
-  {
     "kind": "BackupDRBackupVault",
     "service": "backupdr",
     "apiPath": "apis/backupdr/v1alpha1/backupvault_types.go",
@@ -56,35 +24,11 @@
     "apiCoverage": false
   },
   {
-    "kind": "BigLakeTable",
-    "service": "bigquerybiglake",
-    "apiPath": "apis/bigquerybiglake/v1alpha1/table_types.go",
-    "controllerPath": "pkg/controller/direct/bigquerybiglake/table_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/bigquerybiglake/v1alpha1/biglaketable",
-    "apiCoverage": false
-  },
-  {
-    "kind": "BigQueryReservationAssignment",
-    "service": "bigqueryreservation",
-    "apiPath": "apis/bigqueryreservation/v1alpha1/assignment_types.go",
-    "controllerPath": "pkg/controller/direct/bigqueryreservation/assignment_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/bigqueryreservation/v1alpha1/bigqueryreservationassignment",
-    "apiCoverage": false
-  },
-  {
     "kind": "BigtableLogicalView",
     "service": "bigtable",
     "apiPath": "apis/bigtable/v1alpha1/logicalview_types.go",
     "controllerPath": "pkg/controller/direct/bigtable/logicalview_controller.go",
     "testFixturePath": "pkg/test/resourcefixture/testdata/basic/bigtable/v1alpha1/bigtablelogicalview",
-    "apiCoverage": false
-  },
-  {
-    "kind": "CloudDeployDeliveryPipeline",
-    "service": "clouddeploy",
-    "apiPath": "apis/clouddeploy/v1alpha1/deliverypipeline_types.go",
-    "controllerPath": "pkg/controller/direct/clouddeploy/deliverypipeline_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/clouddeploy/v1alpha1/clouddeploydeliverypipeline",
     "apiCoverage": false
   },
   {
@@ -125,38 +69,6 @@
     "apiPath": "apis/compute/v1alpha1/networkedgesecurityservice_types.go",
     "controllerPath": "pkg/controller/direct/compute/networkedgesecurityservice_controller.go",
     "testFixturePath": "pkg/test/resourcefixture/testdata/basic/compute/v1alpha1/computenetworkedgesecurityservice",
-    "apiCoverage": false
-  },
-  {
-    "kind": "DataCatalogEntry",
-    "service": "datacatalog",
-    "apiPath": "apis/datacatalog/v1alpha1/entry_types.go",
-    "controllerPath": "pkg/controller/direct/datacatalog/entry_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/datacatalog/v1alpha1/datacatalogentry",
-    "apiCoverage": false
-  },
-  {
-    "kind": "DataCatalogEntryGroup",
-    "service": "datacatalog",
-    "apiPath": "apis/datacatalog/v1alpha1/entrygroup_types.go",
-    "controllerPath": "pkg/controller/direct/datacatalog/entrygroup_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/datacatalog/v1alpha1/datacatalogentrygroup",
-    "apiCoverage": false
-  },
-  {
-    "kind": "DataCatalogTag",
-    "service": "datacatalog",
-    "apiPath": "apis/datacatalog/v1alpha1/tag_types.go",
-    "controllerPath": "pkg/controller/direct/datacatalog/tag_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/datacatalog/v1alpha1/datacatalogtag",
-    "apiCoverage": false
-  },
-  {
-    "kind": "DataCatalogTagTemplate",
-    "service": "datacatalog",
-    "apiPath": "apis/datacatalog/v1alpha1/tagtemplate_types.go",
-    "controllerPath": "pkg/controller/direct/datacatalog/tagtemplate_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/datacatalog/v1alpha1/datacatalogtagtemplate",
     "apiCoverage": false
   },
   {
@@ -253,22 +165,6 @@
     "apiPath": "apis/documentai/v1alpha1/processor_types.go",
     "controllerPath": "pkg/controller/direct/documentai/processor_controller.go",
     "testFixturePath": "pkg/test/resourcefixture/testdata/basic/documentai/v1alpha1/documentaiprocessor",
-    "apiCoverage": false
-  },
-  {
-    "kind": "DocumentAIProcessorVersion",
-    "service": "documentai",
-    "apiPath": "apis/documentai/v1alpha1/processorversion_types.go",
-    "controllerPath": "pkg/controller/direct/documentai/processorversion_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/documentai/v1alpha1/documentaiprocessorversion",
-    "apiCoverage": false
-  },
-  {
-    "kind": "EssentialContactsContact",
-    "service": "essentialcontacts",
-    "apiPath": "apis/essentialcontacts/v1alpha1/contact_types.go",
-    "controllerPath": "pkg/controller/direct/essentialcontacts/contact_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/essentialcontacts/v1alpha1/essentialcontactscontact",
     "apiCoverage": false
   },
   {
@@ -390,14 +286,6 @@
     "controllerPath": "pkg/controller/direct/orgpolicy/policy_controller.go",
     "testFixturePath": "pkg/test/resourcefixture/testdata/basic/orgpolicy/v1alpha1/orgpolicypolicy",
     "apiCoverage": false
-  },
-  {
-    "kind": "PubSubSnapshot",
-    "service": "pubsub",
-    "apiPath": "apis/pubsub/v1alpha1/snapshot_types.go",
-    "controllerPath": "pkg/controller/direct/pubsub/pubsubsnapshot_controller.go",
-    "testFixturePath": "pkg/test/resourcefixture/testdata/basic/pubsub/v1alpha1/pubsubsnapshot",
-    "apiCoverage": true
   },
   {
     "kind": "ReCAPTCHAEnterpriseFirewallPolicy",

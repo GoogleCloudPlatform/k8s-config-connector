@@ -76,6 +76,16 @@ func (m *modelTable) AdapterForObject(ctx context.Context, reader client.Reader,
 		return nil, err
 	}
 
+	mapCtx := &direct.MapContext{}
+
+	copied := obj.DeepCopy()
+	desired := BigLakeTableSpec_v1beta1_ToProto(mapCtx, &copied.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	// if the proto `desired` has field "labels". we should do `desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
+
 	// Get bigquerybiglake GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -84,7 +94,7 @@ func (m *modelTable) AdapterForObject(ctx context.Context, reader client.Reader,
 	return &TableAdapter{
 		id:        id.(*krmv1beta1.TableIdentity),
 		gcpClient: gcpClient,
-		desired:   obj,
+		desired:   desired,
 	}, nil
 }
 
@@ -96,7 +106,7 @@ func (m *modelTable) AdapterForURL(ctx context.Context, url string) (directbase.
 type TableAdapter struct {
 	id        *krmv1beta1.TableIdentity
 	gcpClient *gcp.MetastoreClient
-	desired   *krmv1beta1.BigLakeTable
+	desired   *bigquerybiglakepb.Table
 	actual    *bigquerybiglakepb.Table
 }
 
@@ -127,17 +137,9 @@ func (a *TableAdapter) Find(ctx context.Context) (bool, error) {
 func (a *TableAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating Table", "name", a.id)
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := BigLakeTableSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
 	req := &bigquerybiglakepb.CreateTableRequest{
 		Parent:  a.id.Parent().String(),
-		Table:   resource,
+		Table:   a.desired,
 		TableId: a.id.ID(),
 	}
 	created, err := a.gcpClient.CreateTable(ctx, req)
@@ -146,6 +148,7 @@ func (a *TableAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 	}
 	log.V(2).Info("successfully created Table", "name", a.id)
 
+	mapCtx := &direct.MapContext{}
 	status := &krmv1beta1.BigLakeTableStatus{}
 	status.ObservedState = BigLakeTableObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
@@ -159,16 +162,10 @@ func (a *TableAdapter) Create(ctx context.Context, createOp *directbase.CreateOp
 func (a *TableAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Table", "name", a.id)
-	mapCtx := &direct.MapContext{}
-
-	desiredPb := BigLakeTableSpec_v1beta1_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
 
 	paths := make(sets.Set[string])
 	var err error
-	paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
+	paths, err = common.CompareProtoMessage(a.desired, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
@@ -180,11 +177,11 @@ func (a *TableAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	updateMask := &fieldmaskpb.FieldMask{
 		Paths: sets.List(paths),
 	}
-	desiredPb.Name = a.id.String()
+	a.desired.Name = a.id.String()
 
 	req := &bigquerybiglakepb.UpdateTableRequest{
 		UpdateMask: updateMask,
-		Table:      desiredPb,
+		Table:      a.desired,
 	}
 	updated, err := a.gcpClient.UpdateTable(ctx, req)
 	if err != nil {
@@ -192,6 +189,8 @@ func (a *TableAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOp
 	}
 
 	log.V(2).Info("successfully updated Table", "name", a.id)
+
+	mapCtx := &direct.MapContext{}
 
 	status := &krmv1beta1.BigLakeTableStatus{}
 	status.ObservedState = BigLakeTableObservedState_v1beta1_FromProto(mapCtx, updated)

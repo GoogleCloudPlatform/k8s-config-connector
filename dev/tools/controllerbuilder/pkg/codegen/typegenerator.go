@@ -278,8 +278,8 @@ func GoTypeForField(field protoreflect.FieldDescriptor, isTransitiveOutput bool)
 		goType = "[]byte"
 	}
 	// Special case for proto "google.protobuf.Struct" type
-	if goType == "*map[string]string" {
-		goType = "map[string]string"
+	if goType == "*apiextensionsv1.JSON" {
+		goType = "apiextensionsv1.JSON"
 	}
 
 	return goType, nil

@@ -13,6 +13,8 @@ cloud.google.com/go/aiplatform v1.99.0 h1:SB4gurI6YSuZJCfAzjuIxxgbtJtczJFOTmCM7f
 cloud.google.com/go/aiplatform v1.99.0/go.mod h1:bOuku89ZrJVGkCUbEV3JHWRtOlneAXXMGMvaPhWVqfo=
 cloud.google.com/go/alloydb v1.16.1 h1:pW4D0O2jAfAjoOEI1bgChPwMHWE8X8BjwSO0tfWkWvk=
 cloud.google.com/go/alloydb v1.16.1/go.mod h1:zeZuGJ5mEaQE70FMXEvZIp5hQLR9yrGnHo1YUOncWRY=
+cloud.google.com/go/analytics v0.30.0 h1:9PvoT9SvNIHRqTZye7+WudvO2vr4PiZ9mLhiOtEE7Eo=
+cloud.google.com/go/analytics v0.30.0/go.mod h1:dneJtsGmmK6EkEPg59vRlncKFWt3xzmKNOc9aKXCTrI=
 cloud.google.com/go/apigateway v1.7.6 h1:do+u3rjDYuTxD2ypRfv4uwTMoy/VHFLclvaYcb5Mv6I=
 cloud.google.com/go/apigateway v1.7.6/go.mod h1:SiBx36VPjShaOCk8Emf63M2t2c1yF+I7mYZaId7OHiA=
 cloud.google.com/go/apikeys v1.1.12 h1:ZTFWJ1ibGjiIrIhhtdWOm7AGJd+y9R17dVujlgU//6E=
@@ -21,6 +23,8 @@ cloud.google.com/go/apphub v0.2.4 h1:lhsd/6+16NUshw8c52T+DfMaAz04SX6ItMr8caGbtgY
 cloud.google.com/go/apphub v0.2.4/go.mod h1:QJw0OWQIQv/NvBz2/RJGAD6iJTLamf3vqOEsvFMixHw=
 cloud.google.com/go/asset v1.21.1 h1:i55wWC/EwVdHMyJgRfbLp/L6ez4nQuOpZwSxkuqN9ek=
 cloud.google.com/go/asset v1.21.1/go.mod h1:7AzY1GCC+s1O73yzLM1IpHFLHz3ws2OigmCpOQHwebk=
+cloud.google.com/go/assuredworkloads v1.13.0 h1:NQXyyGLksPmiapE1Oc64a3cMwYIBAoDBg6cWR+B3eaY=
+cloud.google.com/go/assuredworkloads v1.13.0/go.mod h1:o/oHEOnUlribR+uJWTKQo8A5RhSl9K9FNeMOew4TJ3M=
 cloud.google.com/go/auth v0.16.4 h1:fXOAIQmkApVvcIn7Pc2+5J8QTMVbUGLscnSVNl11su8=
 cloud.google.com/go/auth v0.16.4/go.mod h1:j10ncYwjX/g3cdX7GpEzsdM+d+ZNsXAbb6qXA7p1Y5M=
 cloud.google.com/go/auth/oauth2adapt v0.2.8 h1:keo8NaayQZ6wimpNSmW5OPc283g65QNIiLpZnkHRbnc=
@@ -31,8 +35,8 @@ cloud.google.com/go/batch v1.12.2 h1:gWQdvdPplptpvrkqF6ibtxZkOsYKLTFbxYawHa/TvCg
 cloud.google.com/go/batch v1.12.2/go.mod h1:tbnuTN/Iw59/n1yjAYKV2aZUjvMM2VJqAgvUgft6UEU=
 cloud.google.com/go/bigquery v1.69.0 h1:rZvHnjSUs5sHK3F9awiuFk2PeOaB8suqNuim21GbaTc=
 cloud.google.com/go/bigquery v1.69.0/go.mod h1:TdGLquA3h/mGg+McX+GsqG9afAzTAcldMjqhdjHTLew=
-cloud.google.com/go/bigtable v1.38.0 h1:L/PnUXRtAzFfa7qMULJHt4cXa/O2dqPJEkzYNGA4hfo=
-cloud.google.com/go/bigtable v1.38.0/go.mod h1:o/lntJarF3Y5C0XYLMJLjLYwxaRbcrtM0BiV57ymXbI=
+cloud.google.com/go/bigtable v1.40.1 h1:k8HfpUOvn7sQwc6oNKqjvD/yjkwynf4qBuyKwh5cU08=
+cloud.google.com/go/bigtable v1.40.1/go.mod h1:LtPzCcrAFaGRZ82Hs8xMueUeYW9Jw12AmNdUTMfDnh4=
 cloud.google.com/go/billing v1.20.4 h1:pqM5/c9UGydB9H90IPCxSvfCNLUPazAOSMsZkz5q5P4=
 cloud.google.com/go/billing v1.20.4/go.mod h1:hBm7iUmGKGCnBm6Wp439YgEdt+OnefEq/Ib9SlJYxIU=
 cloud.google.com/go/certificatemanager v1.9.5 h1:+ZPglfDurCcsv4azizDFpBucD1IkRjWjbnU7zceyjfY=
@@ -139,6 +143,8 @@ cloud.google.com/go/speech v1.27.1 h1:+OktATNlQc+4WH78OrQadIP4CzXb9mBucdDGCO1Nrl
 cloud.google.com/go/speech v1.27.1/go.mod h1:efCfklHFL4Flxcdt9gpEMEJh9MupaBzw3QiSOVeJ6ck=
 cloud.google.com/go/storage v1.56.0 h1:iixmq2Fse2tqxMbWhLWC9HfBj1qdxqAmiK8/eqtsLxI=
 cloud.google.com/go/storage v1.56.0/go.mod h1:Tpuj6t4NweCLzlNbw9Z9iwxEkrSem20AetIeH/shgVU=
+cloud.google.com/go/trace v1.11.6 h1:2O2zjPzqPYAHrn3OKl029qlqG6W8ZdYaOWRyr8NgMT4=
+cloud.google.com/go/trace v1.11.6/go.mod h1:GA855OeDEBiBMzcckLPE2kDunIpC72N+Pq8WFieFjnI=
 cloud.google.com/go/vmwareengine v1.3.5 h1:OsGd1SB91y9fDuzdzFngMv4UcT4cqmRxjsCsS4Xmcu8=
 cloud.google.com/go/vmwareengine v1.3.5/go.mod h1:QuVu2/b/eo8zcIkxBYY5QSwiyEcAy6dInI7N+keI+Jg=
 cloud.google.com/go/workflows v1.14.2 h1:phBz5TOAES0YGogxZ6Q7ISSudaf618lRhE3euzBpE9U=
@@ -161,12 +167,14 @@ github.com/Azure/go-autorest/logger v0.1.0/go.mod h1:oExouG+K6PryycPJfVSxi/koC6L
 github.com/Azure/go-autorest/tracing v0.5.0/go.mod h1:r/s2XiOKccPW3HrqB+W0TQzfbtp2fGCgRFtBroKn4Dk=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
-github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder v0.0.0-20250915202832-88fd3f7499ff h1:zVk6epd2Cz/qsCa8ssEoxRMnt2IMzxikazGLvea5NmE=
-github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder v0.0.0-20250915202832-88fd3f7499ff/go.mod h1:xN3+QHn3qyX68e984xWDzs0Zo+5WAiv8a/hRlHCxSv4=
+github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder v0.0.0-20251009233413-70eb972ff698 h1:5Hy2NJwHr1vfT1ub9O04o+7+1E+u16WcSHWVuQMYp9w=
+github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder v0.0.0-20251009233413-70eb972ff698/go.mod h1:xN3+QHn3qyX68e984xWDzs0Zo+5WAiv8a/hRlHCxSv4=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.27.0 h1:ErKg/3iS1AKcTkf3yixlZ54f9U1rljCkQyEXWUnIUxc=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.27.0/go.mod h1:yAZHSGnqScoU556rBOVkwLze6WP5N+U11RHuWaGVxwY=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.53.0 h1:owcC2UnmsZycprQ5RfRgjydWhuoxg71LUfyiQdijZuM=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.53.0/go.mod h1:ZPpqegjbE99EPKsu3iUWV22A04wzGPcAY/ziSIQEEgs=
+github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/cloudmock v0.53.0 h1:4LP6hvB4I5ouTbGgWtixJhgED6xdf67twf9PoY96Tbg=
+github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/cloudmock v0.53.0/go.mod h1:jUZ5LYlw40WMd07qxcQJD5M40aUxrfwqQX1g7zxYnrQ=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.53.0 h1:Ron4zCA/yk6U7WOBXhTJcDpsUBG9npumK6xw2auFltQ=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.53.0/go.mod h1:cSgYe11MCNYunTnRXrKiR/tHc0eoKjICUuWpNZoVCOo=
 github.com/MakeNowJust/heredoc v1.0.0 h1:cXCdzVdstXyiTqTvfqk9SDHpKNjxuom+DOlyEeQ4pzQ=
@@ -768,8 +776,8 @@ github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o
 github.com/stretchr/testify v1.10.0 h1:Xv5erBjTwe/5IxqUQTdXv5kgmIvbHo3QQyRwhJsOfJA=
 github.com/stretchr/testify v1.10.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
 github.com/tmc/grpc-websocket-proxy v0.0.0-20170815181823-89b8d40f7ca8/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=
-github.com/tmccombs/hcl2json v0.6.7 h1:RYKTs4kd/gzRsEiv7J3M2WQ7TYRYZVc+0H0pZdERkxA=
-github.com/tmccombs/hcl2json v0.6.7/go.mod h1:lJgBOOGDpbhjvdG2dLaWsqB4KBzul2HytfDTS3H465o=
+github.com/tmccombs/hcl2json v0.6.8 h1:9bd7c3jZTj9FsN+lDIzrvLmXqxvCgydb84Uc4DBxOHA=
+github.com/tmccombs/hcl2json v0.6.8/go.mod h1:qjEaQ4hBNPeDWOENB9yg6+BzqvtMA1MMN1+goFFh8Vc=
 github.com/ugorji/go/codec v0.0.0-20181204163529-d75b2dcb6bc8/go.mod h1:VFNgLljTbGfSG7qAOspJ7OScBnGdDN/yBr0sguwnwf0=
 github.com/vmihailenco/msgpack v3.3.3+incompatible/go.mod h1:fy3FlTQTDXWkZ7Bh6AcGMlsjHatGryHQYUTf1ShIgkk=
 github.com/vmihailenco/msgpack v4.0.4+incompatible h1:dSLoQfGFAo3F6OoNhwUmLwVgaUXK79GlxNBwueZn0xI=
@@ -794,8 +802,8 @@ github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5t
 github.com/zclconf/go-cty v1.1.0/go.mod h1:xnAOWiHeOqg2nWS62VtQ7pbOu17FtxJNW8RLEih+O3s=
 github.com/zclconf/go-cty v1.2.0/go.mod h1:hOPWgoHbaTUnI5k4D2ld+GRpFJSCe6bCM7m1q/N4PQ8=
 github.com/zclconf/go-cty v1.10.0/go.mod h1:vVKLxnk3puL4qRAv72AO+W99LUD4da90g3uUAzyuvAk=
-github.com/zclconf/go-cty v1.16.3 h1:osr++gw2T61A8KVYHoQiFbFd1Lh3JOCXc/jFLJXKTxk=
-github.com/zclconf/go-cty v1.16.3/go.mod h1:VvMs5i0vgZdhYawQNq5kePSpLAoz8u1xvZgrPIxfnZE=
+github.com/zclconf/go-cty v1.16.4 h1:QGXaag7/7dCzb+odlGrgr+YmYZFaOCMW6DEpS+UD1eE=
+github.com/zclconf/go-cty v1.16.4/go.mod h1:VvMs5i0vgZdhYawQNq5kePSpLAoz8u1xvZgrPIxfnZE=
 github.com/zclconf/go-cty-debug v0.0.0-20191215020915-b22d67c1ba0b/go.mod h1:ZRKQfBXbGkpdV6QMzT3rU1kSTAnfu1dO8dPKjYprgj8=
 github.com/zclconf/go-cty-debug v0.0.0-20240509010212-0d6042c53940 h1:4r45xpDWB6ZMSMNJFMOjqrGHynW3DIBuR2H9j0ug+Mo=
 github.com/zclconf/go-cty-debug v0.0.0-20240509010212-0d6042c53940/go.mod h1:CmBdvvj3nqzfzJ6nTCIwDTPZ56aVGvDrmztiO5g3qrM=

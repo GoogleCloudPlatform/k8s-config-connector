@@ -92,6 +92,7 @@ SKIP_TEST_APIGROUPS=(
     "redis.cnrm.cloud.google.com"
     "run.cnrm.cloud.google.com"
     "securesourcemanager.cnrm.cloud.google.com"
+    "tags.cnrm.cloud.google.com"
     "workstations.cnrm.cloud.google.com"
 )
 

@@ -21,6 +21,7 @@ package v1alpha1
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	v1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -376,6 +377,11 @@ func (in *PolicySpec_PolicyRule) DeepCopyInto(out *PolicySpec_PolicyRule) {
 	if in.Condition != nil {
 		in, out := &in.Condition, &out.Condition
 		*out = new(Expr)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.Parameters != nil {
+		in, out := &in.Parameters, &out.Parameters
+		*out = new(v1.JSON)
 		(*in).DeepCopyInto(*out)
 	}
 }

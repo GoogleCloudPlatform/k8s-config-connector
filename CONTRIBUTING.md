@@ -380,7 +380,7 @@ can run it locally on your dev machine with the steps below.
 
 #### Test your changes
 
-If you are adding a new resource, you need to follow the steps in [NewResourceFromTerraform.md](README.ChangingTerraform.md)
+If you are adding a new resource, you need to follow the steps in [new-resource.md](docs/develop-resources/scenarios/new-resource.md)
 to make code changes, add test data, and run the tests for your resource.
 
 If you are working on a existing resource, test yaml should exist under

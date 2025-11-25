@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"sort"
 	"strings"
 	"testing"
@@ -158,16 +159,7 @@ func TestNoRefsInStatus(t *testing.T) {
 					return
 				}
 
-				// Check if this is named like a ref
-				isRef := false
-				if strings.HasSuffix(fieldPath, "Ref") {
-					isRef = true
-				}
-				if strings.HasSuffix(fieldPath, "Refs[]") || strings.HasSuffix(fieldPath, "Refs") {
-					isRef = true
-				}
-
-				if isRef {
+				if isRefFieldPath(fieldPath) {
 					errs = append(errs, fmt.Sprintf("[no_refs_in_status] crd=%s version=%v: reference field %q should not be in status", crd.Name, version.Name, fieldPath))
 				}
 			})
@@ -202,6 +194,79 @@ func TestCRDsDoNotHaveFooUrlRef(t *testing.T) {
 			})
 		}
 	}
+}
+
+func isRefFieldPath(fieldPath string) bool {
+	// Check if this is named like a ref
+	isRef := false
+	if strings.HasSuffix(fieldPath, "Ref") {
+		isRef = true
+	}
+	if strings.HasSuffix(fieldPath, "Refs[]") || strings.HasSuffix(fieldPath, "Refs") {
+		isRef = true
+	}
+	return isRef
+}
+
+// CRDs should not have parentFooRef fields; use fooRef even for parent references.
+func TestCRDsHaveParentRefs(t *testing.T) {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		// Only visit the latest version of the CRD.
+		latest := findLatestVersion(t, crd)
+
+		for _, version := range crd.Spec.Versions {
+			if version.Name != latest {
+				continue
+			}
+
+			var allRefs []string
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+
+				// Well-known exception
+				if fieldPath == ".status.externalRef" {
+					return
+				}
+
+				// Check if this is named like a ref
+				if isRefFieldPath(fieldPath) {
+					lastDot := strings.LastIndex(fieldPath, ".")
+					lastField := fieldPath[lastDot+1:]
+					id := strings.TrimSuffix(lastField, "Ref")
+					id = strings.TrimSuffix(id, "Refs")
+					id = strings.TrimSuffix(id, "Refs[]")
+					if strings.Contains(id, "Ref") {
+						t.Fatalf("could not trim Ref from fieldPath %q", fieldPath)
+					}
+					allRefs = append(allRefs, id)
+				}
+			})
+
+			slices.Sort(allRefs)
+
+			parents := 0
+			for _, ref := range allRefs {
+				if strings.HasPrefix(ref, "parent") {
+					parents++
+				}
+			}
+			if parents != 0 {
+				errs = append(errs, fmt.Sprintf("[crds_should_not_have_parent_refs] crd=%s version=%v: found a parent ref (found %v)", crd.Name, version.Name, allRefs))
+			}
+		}
+	}
+
+	sort.Strings(errs)
+
+	want := strings.Join(errs, "\n") + "\n"
+
+	test.CompareGoldenFile(t, "testdata/exceptions/crds_have_parent_refs.txt", want)
 }
 
 // Enforces acronym capitalization on CRDs
@@ -523,20 +588,7 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 	var errs []string
 	for _, crd := range crds {
 		// Only visit the latest version of the CRD.
-		versions := make(map[string]bool)
-		for _, version := range crd.Spec.Versions {
-			versions[version.Name] = true
-		}
-		latest := ""
-		for _, version := range []string{"v1", "v1beta1", "v1alpha1"} {
-			if versions[version] {
-				latest = version
-				break
-			}
-		}
-		if latest == "" {
-			t.Fatalf("no latest version found for crd %s", crd.Name)
-		}
+		latest := findLatestVersion(t, crd)
 
 		for _, version := range crd.Spec.Versions {
 			if version.Name != latest {
@@ -637,6 +689,24 @@ func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiexten
 
 	sort.Strings(errs)
 	return errs
+}
+
+func findLatestVersion(t *testing.T, crd apiextensions.CustomResourceDefinition) string {
+	versions := make(map[string]bool)
+	for _, version := range crd.Spec.Versions {
+		versions[version.Name] = true
+	}
+	latest := ""
+	for _, version := range []string{"v1", "v1beta1", "v1alpha1"} {
+		if versions[version] {
+			latest = version
+			break
+		}
+	}
+	if latest == "" {
+		t.Fatalf("no latest version found for crd %s", crd.Name)
+	}
+	return latest
 }
 
 func loadOutputOnlySpecFields() (map[string]bool, error) {
