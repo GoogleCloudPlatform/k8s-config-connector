@@ -17,6 +17,8 @@ package preview
 import (
 	"context"
 	"fmt"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/preview"
@@ -50,6 +52,8 @@ type PreviewOptions struct {
 	timeout          int
 	reportNamePrefix string
 	fullReport       bool
+	qps              float64
+	burst            int
 }
 
 func BuildPreviewCmd() *cobra.Command {
@@ -68,6 +72,8 @@ func BuildPreviewCmd() *cobra.Command {
 	cmd.Flags().IntVarP(&opts.timeout, timeoutFlag, "", 15, "timeout in minutes. Default to 15 minutes.")
 	cmd.Flags().StringVarP(&opts.reportNamePrefix, reportNamePrefixFlag, "", "preview-report", "Prefix for the report name. The tool appends a timestamp to this in the format \"YYYYMMDD-HHMMSS.milliseconds\".")
 	cmd.Flags().BoolVarP(&opts.fullReport, "full-report", "f", false, "Enable verbose logging.")
+	cmd.Flags().Float64Var(&opts.qps, "qps", 5.0, "QPS to use while talking with the GCP servers per API. Default to 5.0.")
+	cmd.Flags().IntVar(&opts.burst, "burst", 5, "Burst to use while talking with the GCP servers per API. Default to 5.")
 
 	return cmd
 }
@@ -115,27 +121,25 @@ func RunPreview(ctx context.Context, opts *PreviewOptions) error {
 		UpstreamRESTConfig:       upstreamRESTConfig,
 		UpstreamGCPAuthorization: authorization,
 		UpstreamGCPHTTPClient:    nil,
+		QPS:                      opts.qps,
+		Burst:                    opts.burst,
 	})
 	if err != nil {
 		return fmt.Errorf("building preview instance: %v", err)
 	}
-	ctx, cancel := context.WithTimeout(ctx, time.Duration(opts.timeout)*time.Minute)
-	defer printCapturedObjects(recorder, opts.reportNamePrefix, opts.fullReport)
+	defer func() {
+		if err := printCapturedObjects(recorder, opts.reportNamePrefix, opts.fullReport); err != nil {
+			klog.Errorf("error printing captured objects: %v", err)
+		}
+	}()
+	signalCtx, stop := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	runCtx, cancel := context.WithTimeout(signalCtx, time.Duration(opts.timeout)*time.Minute)
 	defer cancel()
 
-	errChan := make(chan error, 1)
-	go func() {
-		klog.Info("Starting preview")
-		errChan <- preview.Start(ctx)
-	}()
-
-	select {
-	case err := <-errChan:
-		if err != nil {
-			return fmt.Errorf("error starting preview: %w", err)
-		}
-	case <-ctx.Done():
-		return fmt.Errorf("timeout reached: %w", ctx.Err())
+	if err := preview.Start(runCtx); err != nil {
+		return fmt.Errorf("error running preview: %w", err)
 	}
 	klog.Info("Preview finished successfully")
 	return nil
@@ -150,11 +154,10 @@ func printCapturedObjects(recorder *preview.Recorder, prefix string, full bool) 
 	}
 
 	if full {
-		outputFile := fmt.Sprintf("%s-full-%s", prefix, timestamp)
+		outputFile := fmt.Sprintf("%s-%s-full", prefix, timestamp)
 		if err := recorder.ExportDetailObjectsEvent(outputFile); err != nil {
 			return fmt.Errorf("error writing events: %w", err)
 		}
-
 	}
 	return nil
 }
