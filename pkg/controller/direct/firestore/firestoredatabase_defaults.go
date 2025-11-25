@@ -16,7 +16,7 @@ package firestore
 
 import pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
 
-func ApplyFirestoreDatabaseDefaults(in *pb.Database) {
+func ApplyServerSideDefaults(in *pb.Database) {
 	// Set default values to make sure firestore database is "declarative-friendly".
 	if in.Type == pb.Database_DATABASE_TYPE_UNSPECIFIED {
 		in.Type = pb.Database_FIRESTORE_NATIVE
@@ -26,5 +26,11 @@ func ApplyFirestoreDatabaseDefaults(in *pb.Database) {
 	}
 	if in.DeleteProtectionState == pb.Database_DELETE_PROTECTION_STATE_UNSPECIFIED {
 		in.DeleteProtectionState = pb.Database_DELETE_PROTECTION_DISABLED
+	}
+	if in.ConcurrencyMode == pb.Database_CONCURRENCY_MODE_UNSPECIFIED {
+		in.ConcurrencyMode = pb.Database_PESSIMISTIC
+	}
+	if in.PointInTimeRecoveryEnablement == pb.Database_POINT_IN_TIME_RECOVERY_ENABLEMENT_UNSPECIFIED {
+		in.PointInTimeRecoveryEnablement = pb.Database_POINT_IN_TIME_RECOVERY_DISABLED
 	}
 }
