@@ -23,13 +23,14 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 go run . generate-types \
     --service google.cloud.batch.v1 \
-    --api-version "batch.cnrm.cloud.google.com/v1alpha1" \
-    --resource BatchTask:Task
+    --api-version "batch.cnrm.cloud.google.com/v1beta1" \
+    --resource BatchJob:Job
     
 
 go run . generate-mapper \
+    --multiversion \
     --service google.cloud.batch.v1 \
-    --api-version "batch.cnrm.cloud.google.com/v1alpha1"
+    --api-version "batch.cnrm.cloud.google.com/v1beta1"
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

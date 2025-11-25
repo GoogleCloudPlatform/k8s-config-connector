@@ -14,20 +14,22 @@
 
 // +generated:mapper
 // krm.group: batch.cnrm.cloud.google.com
-// krm.version: v1alpha1
+// krm.version: v1beta1
 // proto.service: google.cloud.batch.v1
 
 package batch
 
 import (
 	pb "cloud.google.com/go/batch/apiv1/batchpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
+	krmbatchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1beta1"
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmpubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AllocationPolicy_Accelerator_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_Accelerator) *krm.AllocationPolicy_Accelerator {
+func AllocationPolicy_Accelerator_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_Accelerator) *krm.AllocationPolicy_Accelerator {
 	if in == nil {
 		return nil
 	}
@@ -38,7 +40,7 @@ func AllocationPolicy_Accelerator_FromProto(mapCtx *direct.MapContext, in *pb.Al
 	out.DriverVersion = direct.LazyPtr(in.GetDriverVersion())
 	return out
 }
-func AllocationPolicy_Accelerator_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_Accelerator) *pb.AllocationPolicy_Accelerator {
+func AllocationPolicy_Accelerator_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_Accelerator) *pb.AllocationPolicy_Accelerator {
 	if in == nil {
 		return nil
 	}
@@ -49,22 +51,22 @@ func AllocationPolicy_Accelerator_ToProto(mapCtx *direct.MapContext, in *krm.All
 	out.DriverVersion = direct.ValueOf(in.DriverVersion)
 	return out
 }
-func AllocationPolicy_AttachedDisk_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_AttachedDisk) *krm.AllocationPolicy_AttachedDisk {
+func AllocationPolicy_AttachedDisk_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_AttachedDisk) *krm.AllocationPolicy_AttachedDisk {
 	if in == nil {
 		return nil
 	}
 	out := &krm.AllocationPolicy_AttachedDisk{}
-	out.NewDisk = AllocationPolicy_Disk_FromProto(mapCtx, in.GetNewDisk())
+	out.NewDisk = AllocationPolicy_Disk_v1beta1_FromProto(mapCtx, in.GetNewDisk())
 	out.ExistingDisk = direct.LazyPtr(in.GetExistingDisk())
 	out.DeviceName = direct.LazyPtr(in.GetDeviceName())
 	return out
 }
-func AllocationPolicy_AttachedDisk_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_AttachedDisk) *pb.AllocationPolicy_AttachedDisk {
+func AllocationPolicy_AttachedDisk_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_AttachedDisk) *pb.AllocationPolicy_AttachedDisk {
 	if in == nil {
 		return nil
 	}
 	out := &pb.AllocationPolicy_AttachedDisk{}
-	if oneof := AllocationPolicy_Disk_ToProto(mapCtx, in.NewDisk); oneof != nil {
+	if oneof := AllocationPolicy_Disk_v1beta1_ToProto(mapCtx, in.NewDisk); oneof != nil {
 		out.Attached = &pb.AllocationPolicy_AttachedDisk_NewDisk{NewDisk: oneof}
 	}
 	if oneof := AllocationPolicy_AttachedDisk_ExistingDisk_ToProto(mapCtx, in.ExistingDisk); oneof != nil {
@@ -79,13 +81,43 @@ func AllocationPolicy_AttachedDisk_ExistingDisk_ToProto(mapCtx *direct.MapContex
 	}
 	return &pb.AllocationPolicy_AttachedDisk_ExistingDisk{ExistingDisk: *in}
 }
+func AllocationPolicy_Disk_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_Disk) *krm.AllocationPolicy_Disk {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AllocationPolicy_Disk{}
+	if in.GetImage() != "" {
+		out.ImageRef = &krmcomputev1beta1.ComputeImageRef{External: in.GetImage()}
+	}
+	out.Snapshot = direct.LazyPtr(in.GetSnapshot())
+	out.Type = direct.LazyPtr(in.GetType())
+	out.SizeGB = direct.LazyPtr(in.GetSizeGb())
+	out.DiskInterface = direct.LazyPtr(in.GetDiskInterface())
+	return out
+}
+func AllocationPolicy_Disk_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_Disk) *pb.AllocationPolicy_Disk {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AllocationPolicy_Disk{}
+	if in.ImageRef != nil {
+		out.Image = in.ImageRef.External
+	}
+	if oneof := AllocationPolicy_Disk_Snapshot_ToProto(mapCtx, in.Snapshot); oneof != nil {
+		out.DataSource = oneof
+	}
+	out.Type = direct.ValueOf(in.Type)
+	out.SizeGb = direct.ValueOf(in.SizeGB)
+	out.DiskInterface = direct.ValueOf(in.DiskInterface)
+	return out
+}
 func AllocationPolicy_Disk_Snapshot_ToProto(mapCtx *direct.MapContext, in *string) *pb.AllocationPolicy_Disk_Snapshot {
 	if in == nil {
 		return nil
 	}
 	return &pb.AllocationPolicy_Disk_Snapshot{Snapshot: *in}
 }
-func AllocationPolicy_InstancePolicy_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_InstancePolicy) *krm.AllocationPolicy_InstancePolicy {
+func AllocationPolicy_InstancePolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_InstancePolicy) *krm.AllocationPolicy_InstancePolicy {
 	if in == nil {
 		return nil
 	}
@@ -93,13 +125,13 @@ func AllocationPolicy_InstancePolicy_FromProto(mapCtx *direct.MapContext, in *pb
 	out.MachineType = direct.LazyPtr(in.GetMachineType())
 	out.MinCPUPlatform = direct.LazyPtr(in.GetMinCpuPlatform())
 	out.ProvisioningModel = direct.Enum_FromProto(mapCtx, in.GetProvisioningModel())
-	out.Accelerators = direct.Slice_FromProto(mapCtx, in.Accelerators, AllocationPolicy_Accelerator_FromProto)
-	out.BootDisk = AllocationPolicy_Disk_FromProto(mapCtx, in.GetBootDisk())
-	out.Disks = direct.Slice_FromProto(mapCtx, in.Disks, AllocationPolicy_AttachedDisk_FromProto)
+	out.Accelerators = direct.Slice_FromProto(mapCtx, in.Accelerators, AllocationPolicy_Accelerator_v1beta1_FromProto)
+	out.BootDisk = AllocationPolicy_Disk_v1beta1_FromProto(mapCtx, in.GetBootDisk())
+	out.Disks = direct.Slice_FromProto(mapCtx, in.Disks, AllocationPolicy_AttachedDisk_v1beta1_FromProto)
 	out.Reservation = direct.LazyPtr(in.GetReservation())
 	return out
 }
-func AllocationPolicy_InstancePolicy_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_InstancePolicy) *pb.AllocationPolicy_InstancePolicy {
+func AllocationPolicy_InstancePolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_InstancePolicy) *pb.AllocationPolicy_InstancePolicy {
 	if in == nil {
 		return nil
 	}
@@ -107,30 +139,30 @@ func AllocationPolicy_InstancePolicy_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.MachineType = direct.ValueOf(in.MachineType)
 	out.MinCpuPlatform = direct.ValueOf(in.MinCPUPlatform)
 	out.ProvisioningModel = direct.Enum_ToProto[pb.AllocationPolicy_ProvisioningModel](mapCtx, in.ProvisioningModel)
-	out.Accelerators = direct.Slice_ToProto(mapCtx, in.Accelerators, AllocationPolicy_Accelerator_ToProto)
-	out.BootDisk = AllocationPolicy_Disk_ToProto(mapCtx, in.BootDisk)
-	out.Disks = direct.Slice_ToProto(mapCtx, in.Disks, AllocationPolicy_AttachedDisk_ToProto)
+	out.Accelerators = direct.Slice_ToProto(mapCtx, in.Accelerators, AllocationPolicy_Accelerator_v1beta1_ToProto)
+	out.BootDisk = AllocationPolicy_Disk_v1beta1_ToProto(mapCtx, in.BootDisk)
+	out.Disks = direct.Slice_ToProto(mapCtx, in.Disks, AllocationPolicy_AttachedDisk_v1beta1_ToProto)
 	out.Reservation = direct.ValueOf(in.Reservation)
 	return out
 }
-func AllocationPolicy_InstancePolicyOrTemplate_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_InstancePolicyOrTemplate) *krm.AllocationPolicy_InstancePolicyOrTemplate {
+func AllocationPolicy_InstancePolicyOrTemplate_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_InstancePolicyOrTemplate) *krm.AllocationPolicy_InstancePolicyOrTemplate {
 	if in == nil {
 		return nil
 	}
 	out := &krm.AllocationPolicy_InstancePolicyOrTemplate{}
-	out.Policy = AllocationPolicy_InstancePolicy_FromProto(mapCtx, in.GetPolicy())
+	out.Policy = AllocationPolicy_InstancePolicy_v1beta1_FromProto(mapCtx, in.GetPolicy())
 	out.InstanceTemplate = direct.LazyPtr(in.GetInstanceTemplate())
 	out.InstallGpuDrivers = direct.LazyPtr(in.GetInstallGpuDrivers())
 	out.InstallOpsAgent = direct.LazyPtr(in.GetInstallOpsAgent())
 	out.BlockProjectSSHKeys = direct.LazyPtr(in.GetBlockProjectSshKeys())
 	return out
 }
-func AllocationPolicy_InstancePolicyOrTemplate_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_InstancePolicyOrTemplate) *pb.AllocationPolicy_InstancePolicyOrTemplate {
+func AllocationPolicy_InstancePolicyOrTemplate_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_InstancePolicyOrTemplate) *pb.AllocationPolicy_InstancePolicyOrTemplate {
 	if in == nil {
 		return nil
 	}
 	out := &pb.AllocationPolicy_InstancePolicyOrTemplate{}
-	if oneof := AllocationPolicy_InstancePolicy_ToProto(mapCtx, in.Policy); oneof != nil {
+	if oneof := AllocationPolicy_InstancePolicy_v1beta1_ToProto(mapCtx, in.Policy); oneof != nil {
 		out.PolicyTemplate = &pb.AllocationPolicy_InstancePolicyOrTemplate_Policy{Policy: oneof}
 	}
 	if oneof := AllocationPolicy_InstancePolicyOrTemplate_InstanceTemplate_ToProto(mapCtx, in.InstanceTemplate); oneof != nil {
@@ -147,7 +179,7 @@ func AllocationPolicy_InstancePolicyOrTemplate_InstanceTemplate_ToProto(mapCtx *
 	}
 	return &pb.AllocationPolicy_InstancePolicyOrTemplate_InstanceTemplate{InstanceTemplate: *in}
 }
-func AllocationPolicy_LocationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_LocationPolicy) *krm.AllocationPolicy_LocationPolicy {
+func AllocationPolicy_LocationPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_LocationPolicy) *krm.AllocationPolicy_LocationPolicy {
 	if in == nil {
 		return nil
 	}
@@ -155,7 +187,7 @@ func AllocationPolicy_LocationPolicy_FromProto(mapCtx *direct.MapContext, in *pb
 	out.AllowedLocations = in.AllowedLocations
 	return out
 }
-func AllocationPolicy_LocationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_LocationPolicy) *pb.AllocationPolicy_LocationPolicy {
+func AllocationPolicy_LocationPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_LocationPolicy) *pb.AllocationPolicy_LocationPolicy {
 	if in == nil {
 		return nil
 	}
@@ -163,7 +195,7 @@ func AllocationPolicy_LocationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.AllowedLocations = in.AllowedLocations
 	return out
 }
-func AllocationPolicy_NetworkInterface_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_NetworkInterface) *krm.AllocationPolicy_NetworkInterface {
+func AllocationPolicy_NetworkInterface_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_NetworkInterface) *krm.AllocationPolicy_NetworkInterface {
 	if in == nil {
 		return nil
 	}
@@ -177,7 +209,7 @@ func AllocationPolicy_NetworkInterface_FromProto(mapCtx *direct.MapContext, in *
 	out.NoExternalIPAddress = direct.LazyPtr(in.GetNoExternalIpAddress())
 	return out
 }
-func AllocationPolicy_NetworkInterface_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_NetworkInterface) *pb.AllocationPolicy_NetworkInterface {
+func AllocationPolicy_NetworkInterface_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_NetworkInterface) *pb.AllocationPolicy_NetworkInterface {
 	if in == nil {
 		return nil
 	}
@@ -191,23 +223,23 @@ func AllocationPolicy_NetworkInterface_ToProto(mapCtx *direct.MapContext, in *kr
 	out.NoExternalIpAddress = direct.ValueOf(in.NoExternalIPAddress)
 	return out
 }
-func AllocationPolicy_NetworkPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_NetworkPolicy) *krm.AllocationPolicy_NetworkPolicy {
+func AllocationPolicy_NetworkPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_NetworkPolicy) *krm.AllocationPolicy_NetworkPolicy {
 	if in == nil {
 		return nil
 	}
 	out := &krm.AllocationPolicy_NetworkPolicy{}
-	out.NetworkInterfaces = direct.Slice_FromProto(mapCtx, in.NetworkInterfaces, AllocationPolicy_NetworkInterface_FromProto)
+	out.NetworkInterfaces = direct.Slice_FromProto(mapCtx, in.NetworkInterfaces, AllocationPolicy_NetworkInterface_v1beta1_FromProto)
 	return out
 }
-func AllocationPolicy_NetworkPolicy_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_NetworkPolicy) *pb.AllocationPolicy_NetworkPolicy {
+func AllocationPolicy_NetworkPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_NetworkPolicy) *pb.AllocationPolicy_NetworkPolicy {
 	if in == nil {
 		return nil
 	}
 	out := &pb.AllocationPolicy_NetworkPolicy{}
-	out.NetworkInterfaces = direct.Slice_ToProto(mapCtx, in.NetworkInterfaces, AllocationPolicy_NetworkInterface_ToProto)
+	out.NetworkInterfaces = direct.Slice_ToProto(mapCtx, in.NetworkInterfaces, AllocationPolicy_NetworkInterface_v1beta1_ToProto)
 	return out
 }
-func AllocationPolicy_PlacementPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_PlacementPolicy) *krm.AllocationPolicy_PlacementPolicy {
+func AllocationPolicy_PlacementPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy_PlacementPolicy) *krm.AllocationPolicy_PlacementPolicy {
 	if in == nil {
 		return nil
 	}
@@ -216,7 +248,7 @@ func AllocationPolicy_PlacementPolicy_FromProto(mapCtx *direct.MapContext, in *p
 	out.MaxDistance = direct.LazyPtr(in.GetMaxDistance())
 	return out
 }
-func AllocationPolicy_PlacementPolicy_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_PlacementPolicy) *pb.AllocationPolicy_PlacementPolicy {
+func AllocationPolicy_PlacementPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy_PlacementPolicy) *pb.AllocationPolicy_PlacementPolicy {
 	if in == nil {
 		return nil
 	}
@@ -225,95 +257,95 @@ func AllocationPolicy_PlacementPolicy_ToProto(mapCtx *direct.MapContext, in *krm
 	out.MaxDistance = direct.ValueOf(in.MaxDistance)
 	return out
 }
-func BatchJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.BatchJobObservedState {
+func BatchJobObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.BatchJobObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.BatchJobObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Uid = direct.LazyPtr(in.GetUid())
-	out.TaskGroups = direct.Slice_FromProto(mapCtx, in.TaskGroups, TaskGroupObservedState_FromProto)
+	out.TaskGroups = direct.Slice_FromProto(mapCtx, in.TaskGroups, TaskGroupObservedState_v1beta1_FromProto)
 	// MISSING: Labels
-	out.Status = JobStatus_FromProto(mapCtx, in.GetStatus())
+	out.Status = JobStatus_v1beta1_FromProto(mapCtx, in.GetStatus())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
-func BatchJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BatchJobObservedState) *pb.Job {
+func BatchJobObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BatchJobObservedState) *pb.Job {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Job{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Uid = direct.ValueOf(in.Uid)
-	out.TaskGroups = direct.Slice_ToProto(mapCtx, in.TaskGroups, TaskGroupObservedState_ToProto)
+	out.TaskGroups = direct.Slice_ToProto(mapCtx, in.TaskGroups, TaskGroupObservedState_v1beta1_ToProto)
 	// MISSING: Labels
-	out.Status = JobStatus_ToProto(mapCtx, in.Status)
+	out.Status = JobStatus_v1beta1_ToProto(mapCtx, in.Status)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
-func BatchJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.BatchJobSpec {
+func BatchJobSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.BatchJobSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.BatchJobSpec{}
 	out.Priority = direct.LazyPtr(in.GetPriority())
-	out.TaskGroups = direct.Slice_FromProto(mapCtx, in.TaskGroups, TaskGroup_FromProto)
-	out.AllocationPolicy = AllocationPolicy_FromProto(mapCtx, in.GetAllocationPolicy())
+	out.TaskGroups = direct.Slice_FromProto(mapCtx, in.TaskGroups, TaskGroup_v1beta1_FromProto)
+	out.AllocationPolicy = AllocationPolicy_v1beta1_FromProto(mapCtx, in.GetAllocationPolicy())
 	// MISSING: Labels
-	out.LogsPolicy = LogsPolicy_FromProto(mapCtx, in.GetLogsPolicy())
-	out.Notifications = direct.Slice_FromProto(mapCtx, in.Notifications, JobNotification_FromProto)
+	out.LogsPolicy = LogsPolicy_v1beta1_FromProto(mapCtx, in.GetLogsPolicy())
+	out.Notifications = direct.Slice_FromProto(mapCtx, in.Notifications, JobNotification_v1beta1_FromProto)
 	return out
 }
-func BatchJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.BatchJobSpec) *pb.Job {
+func BatchJobSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BatchJobSpec) *pb.Job {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Job{}
 	out.Priority = direct.ValueOf(in.Priority)
-	out.TaskGroups = direct.Slice_ToProto(mapCtx, in.TaskGroups, TaskGroup_ToProto)
-	out.AllocationPolicy = AllocationPolicy_ToProto(mapCtx, in.AllocationPolicy)
+	out.TaskGroups = direct.Slice_ToProto(mapCtx, in.TaskGroups, TaskGroup_v1beta1_ToProto)
+	out.AllocationPolicy = AllocationPolicy_v1beta1_ToProto(mapCtx, in.AllocationPolicy)
 	// MISSING: Labels
-	out.LogsPolicy = LogsPolicy_ToProto(mapCtx, in.LogsPolicy)
-	out.Notifications = direct.Slice_ToProto(mapCtx, in.Notifications, JobNotification_ToProto)
+	out.LogsPolicy = LogsPolicy_v1beta1_ToProto(mapCtx, in.LogsPolicy)
+	out.Notifications = direct.Slice_ToProto(mapCtx, in.Notifications, JobNotification_v1beta1_ToProto)
 	return out
 }
-func BatchTaskObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.BatchTaskObservedState {
+func BatchTaskObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krmbatchv1alpha1.BatchTaskObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BatchTaskObservedState{}
+	out := &krmbatchv1alpha1.BatchTaskObservedState{}
 	// MISSING: Name
-	out.Status = TaskStatus_FromProto(mapCtx, in.GetStatus())
+	out.Status = TaskStatus_v1alpha1_FromProto(mapCtx, in.GetStatus())
 	return out
 }
-func BatchTaskObservedState_ToProto(mapCtx *direct.MapContext, in *krm.BatchTaskObservedState) *pb.Task {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Task{}
-	// MISSING: Name
-	out.Status = TaskStatus_ToProto(mapCtx, in.Status)
-	return out
-}
-func BatchTaskSpec_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krm.BatchTaskSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.BatchTaskSpec{}
-	// MISSING: Name
-	return out
-}
-func BatchTaskSpec_ToProto(mapCtx *direct.MapContext, in *krm.BatchTaskSpec) *pb.Task {
+func BatchTaskObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbatchv1alpha1.BatchTaskObservedState) *pb.Task {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Task{}
 	// MISSING: Name
+	out.Status = TaskStatus_v1alpha1_ToProto(mapCtx, in.Status)
 	return out
 }
-func ComputeResource_FromProto(mapCtx *direct.MapContext, in *pb.ComputeResource) *krm.ComputeResource {
+func BatchTaskSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Task) *krmbatchv1alpha1.BatchTaskSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmbatchv1alpha1.BatchTaskSpec{}
+	// MISSING: Name
+	return out
+}
+func BatchTaskSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbatchv1alpha1.BatchTaskSpec) *pb.Task {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Task{}
+	// MISSING: Name
+	return out
+}
+func ComputeResource_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ComputeResource) *krm.ComputeResource {
 	if in == nil {
 		return nil
 	}
@@ -325,7 +357,7 @@ func ComputeResource_FromProto(mapCtx *direct.MapContext, in *pb.ComputeResource
 	// (near miss): "BootDiskMIB" vs "BootDiskMiB"
 	return out
 }
-func ComputeResource_ToProto(mapCtx *direct.MapContext, in *krm.ComputeResource) *pb.ComputeResource {
+func ComputeResource_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeResource) *pb.ComputeResource {
 	if in == nil {
 		return nil
 	}
@@ -337,27 +369,27 @@ func ComputeResource_ToProto(mapCtx *direct.MapContext, in *krm.ComputeResource)
 	// (near miss): "BootDiskMIB" vs "BootDiskMiB"
 	return out
 }
-func Environment_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
+func Environment_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Environment) *krm.Environment {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Environment{}
 	out.Variables = in.Variables
 	out.SecretVariables = in.SecretVariables
-	out.EncryptedVariables = Environment_KMSEnvMap_FromProto(mapCtx, in.GetEncryptedVariables())
+	out.EncryptedVariables = Environment_KMSEnvMap_v1beta1_FromProto(mapCtx, in.GetEncryptedVariables())
 	return out
 }
-func Environment_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Environment {
+func Environment_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Environment) *pb.Environment {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Environment{}
 	out.Variables = in.Variables
 	out.SecretVariables = in.SecretVariables
-	out.EncryptedVariables = Environment_KMSEnvMap_ToProto(mapCtx, in.EncryptedVariables)
+	out.EncryptedVariables = Environment_KMSEnvMap_v1beta1_ToProto(mapCtx, in.EncryptedVariables)
 	return out
 }
-func Environment_KMSEnvMap_FromProto(mapCtx *direct.MapContext, in *pb.Environment_KMSEnvMap) *krm.Environment_KMSEnvMap {
+func Environment_KMSEnvMap_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Environment_KMSEnvMap) *krm.Environment_KMSEnvMap {
 	if in == nil {
 		return nil
 	}
@@ -366,7 +398,7 @@ func Environment_KMSEnvMap_FromProto(mapCtx *direct.MapContext, in *pb.Environme
 	out.CipherText = direct.LazyPtr(in.GetCipherText())
 	return out
 }
-func Environment_KMSEnvMap_ToProto(mapCtx *direct.MapContext, in *krm.Environment_KMSEnvMap) *pb.Environment_KMSEnvMap {
+func Environment_KMSEnvMap_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Environment_KMSEnvMap) *pb.Environment_KMSEnvMap {
 	if in == nil {
 		return nil
 	}
@@ -375,7 +407,7 @@ func Environment_KMSEnvMap_ToProto(mapCtx *direct.MapContext, in *krm.Environmen
 	out.CipherText = direct.ValueOf(in.CipherText)
 	return out
 }
-func GCS_FromProto(mapCtx *direct.MapContext, in *pb.GCS) *krm.GCS {
+func GCS_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GCS) *krm.GCS {
 	if in == nil {
 		return nil
 	}
@@ -383,7 +415,7 @@ func GCS_FromProto(mapCtx *direct.MapContext, in *pb.GCS) *krm.GCS {
 	out.RemotePath = direct.LazyPtr(in.GetRemotePath())
 	return out
 }
-func GCS_ToProto(mapCtx *direct.MapContext, in *krm.GCS) *pb.GCS {
+func GCS_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.GCS) *pb.GCS {
 	if in == nil {
 		return nil
 	}
@@ -391,7 +423,7 @@ func GCS_ToProto(mapCtx *direct.MapContext, in *krm.GCS) *pb.GCS {
 	out.RemotePath = direct.ValueOf(in.RemotePath)
 	return out
 }
-func JobNotification_FromProto(mapCtx *direct.MapContext, in *pb.JobNotification) *krm.JobNotification {
+func JobNotification_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.JobNotification) *krm.JobNotification {
 	if in == nil {
 		return nil
 	}
@@ -399,10 +431,10 @@ func JobNotification_FromProto(mapCtx *direct.MapContext, in *pb.JobNotification
 	if in.GetPubsubTopic() != "" {
 		out.PubsubTopicRef = &krmpubsubv1beta1.PubSubTopicRef{External: in.GetPubsubTopic()}
 	}
-	out.Message = JobNotification_Message_FromProto(mapCtx, in.GetMessage())
+	out.Message = JobNotification_Message_v1beta1_FromProto(mapCtx, in.GetMessage())
 	return out
 }
-func JobNotification_ToProto(mapCtx *direct.MapContext, in *krm.JobNotification) *pb.JobNotification {
+func JobNotification_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.JobNotification) *pb.JobNotification {
 	if in == nil {
 		return nil
 	}
@@ -410,10 +442,10 @@ func JobNotification_ToProto(mapCtx *direct.MapContext, in *krm.JobNotification)
 	if in.PubsubTopicRef != nil {
 		out.PubsubTopic = in.PubsubTopicRef.External
 	}
-	out.Message = JobNotification_Message_ToProto(mapCtx, in.Message)
+	out.Message = JobNotification_Message_v1beta1_ToProto(mapCtx, in.Message)
 	return out
 }
-func JobNotification_Message_FromProto(mapCtx *direct.MapContext, in *pb.JobNotification_Message) *krm.JobNotification_Message {
+func JobNotification_Message_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.JobNotification_Message) *krm.JobNotification_Message {
 	if in == nil {
 		return nil
 	}
@@ -423,7 +455,7 @@ func JobNotification_Message_FromProto(mapCtx *direct.MapContext, in *pb.JobNoti
 	out.NewTaskState = direct.Enum_FromProto(mapCtx, in.GetNewTaskState())
 	return out
 }
-func JobNotification_Message_ToProto(mapCtx *direct.MapContext, in *krm.JobNotification_Message) *pb.JobNotification_Message {
+func JobNotification_Message_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.JobNotification_Message) *pb.JobNotification_Message {
 	if in == nil {
 		return nil
 	}
@@ -433,29 +465,29 @@ func JobNotification_Message_ToProto(mapCtx *direct.MapContext, in *krm.JobNotif
 	out.NewTaskState = direct.Enum_ToProto[pb.TaskStatus_State](mapCtx, in.NewTaskState)
 	return out
 }
-func JobStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krm.JobStatus {
+func JobStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus) *krm.JobStatus {
 	if in == nil {
 		return nil
 	}
 	out := &krm.JobStatus{}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.StatusEvents = direct.Slice_FromProto(mapCtx, in.StatusEvents, StatusEvent_FromProto)
+	out.StatusEvents = direct.Slice_FromProto(mapCtx, in.StatusEvents, StatusEvent_v1beta1_FromProto)
 	// MISSING: TaskGroups
 	out.RunDuration = direct.StringDuration_FromProto(mapCtx, in.GetRunDuration())
 	return out
 }
-func JobStatus_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus) *pb.JobStatus {
+func JobStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus) *pb.JobStatus {
 	if in == nil {
 		return nil
 	}
 	out := &pb.JobStatus{}
 	out.State = direct.Enum_ToProto[pb.JobStatus_State](mapCtx, in.State)
-	out.StatusEvents = direct.Slice_ToProto(mapCtx, in.StatusEvents, StatusEvent_ToProto)
+	out.StatusEvents = direct.Slice_ToProto(mapCtx, in.StatusEvents, StatusEvent_v1beta1_ToProto)
 	// MISSING: TaskGroups
 	out.RunDuration = direct.StringDuration_ToProto(mapCtx, in.RunDuration)
 	return out
 }
-func JobStatus_InstanceStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus_InstanceStatus) *krm.JobStatus_InstanceStatus {
+func JobStatus_InstanceStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus_InstanceStatus) *krm.JobStatus_InstanceStatus {
 	if in == nil {
 		return nil
 	}
@@ -463,10 +495,10 @@ func JobStatus_InstanceStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobSta
 	out.MachineType = direct.LazyPtr(in.GetMachineType())
 	out.ProvisioningModel = direct.Enum_FromProto(mapCtx, in.GetProvisioningModel())
 	out.TaskPack = direct.LazyPtr(in.GetTaskPack())
-	out.BootDisk = AllocationPolicy_Disk_FromProto(mapCtx, in.GetBootDisk())
+	out.BootDisk = AllocationPolicy_Disk_v1beta1_FromProto(mapCtx, in.GetBootDisk())
 	return out
 }
-func JobStatus_InstanceStatus_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus_InstanceStatus) *pb.JobStatus_InstanceStatus {
+func JobStatus_InstanceStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus_InstanceStatus) *pb.JobStatus_InstanceStatus {
 	if in == nil {
 		return nil
 	}
@@ -474,46 +506,46 @@ func JobStatus_InstanceStatus_ToProto(mapCtx *direct.MapContext, in *krm.JobStat
 	out.MachineType = direct.ValueOf(in.MachineType)
 	out.ProvisioningModel = direct.Enum_ToProto[pb.AllocationPolicy_ProvisioningModel](mapCtx, in.ProvisioningModel)
 	out.TaskPack = direct.ValueOf(in.TaskPack)
-	out.BootDisk = AllocationPolicy_Disk_ToProto(mapCtx, in.BootDisk)
+	out.BootDisk = AllocationPolicy_Disk_v1beta1_ToProto(mapCtx, in.BootDisk)
 	return out
 }
-func JobStatus_TaskGroupStatus_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus_TaskGroupStatus) *krm.JobStatus_TaskGroupStatus {
+func JobStatus_TaskGroupStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.JobStatus_TaskGroupStatus) *krm.JobStatus_TaskGroupStatus {
 	if in == nil {
 		return nil
 	}
 	out := &krm.JobStatus_TaskGroupStatus{}
 	out.Counts = in.Counts
-	out.Instances = direct.Slice_FromProto(mapCtx, in.Instances, JobStatus_InstanceStatus_FromProto)
+	out.Instances = direct.Slice_FromProto(mapCtx, in.Instances, JobStatus_InstanceStatus_v1beta1_FromProto)
 	return out
 }
-func JobStatus_TaskGroupStatus_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus_TaskGroupStatus) *pb.JobStatus_TaskGroupStatus {
+func JobStatus_TaskGroupStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.JobStatus_TaskGroupStatus) *pb.JobStatus_TaskGroupStatus {
 	if in == nil {
 		return nil
 	}
 	out := &pb.JobStatus_TaskGroupStatus{}
 	out.Counts = in.Counts
-	out.Instances = direct.Slice_ToProto(mapCtx, in.Instances, JobStatus_InstanceStatus_ToProto)
+	out.Instances = direct.Slice_ToProto(mapCtx, in.Instances, JobStatus_InstanceStatus_v1beta1_ToProto)
 	return out
 }
-func LifecyclePolicy_FromProto(mapCtx *direct.MapContext, in *pb.LifecyclePolicy) *krm.LifecyclePolicy {
+func LifecyclePolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.LifecyclePolicy) *krm.LifecyclePolicy {
 	if in == nil {
 		return nil
 	}
 	out := &krm.LifecyclePolicy{}
 	out.Action = direct.Enum_FromProto(mapCtx, in.GetAction())
-	out.ActionCondition = LifecyclePolicy_ActionCondition_FromProto(mapCtx, in.GetActionCondition())
+	out.ActionCondition = LifecyclePolicy_ActionCondition_v1beta1_FromProto(mapCtx, in.GetActionCondition())
 	return out
 }
-func LifecyclePolicy_ToProto(mapCtx *direct.MapContext, in *krm.LifecyclePolicy) *pb.LifecyclePolicy {
+func LifecyclePolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.LifecyclePolicy) *pb.LifecyclePolicy {
 	if in == nil {
 		return nil
 	}
 	out := &pb.LifecyclePolicy{}
 	out.Action = direct.Enum_ToProto[pb.LifecyclePolicy_Action](mapCtx, in.Action)
-	out.ActionCondition = LifecyclePolicy_ActionCondition_ToProto(mapCtx, in.ActionCondition)
+	out.ActionCondition = LifecyclePolicy_ActionCondition_v1beta1_ToProto(mapCtx, in.ActionCondition)
 	return out
 }
-func LifecyclePolicy_ActionCondition_FromProto(mapCtx *direct.MapContext, in *pb.LifecyclePolicy_ActionCondition) *krm.LifecyclePolicy_ActionCondition {
+func LifecyclePolicy_ActionCondition_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.LifecyclePolicy_ActionCondition) *krm.LifecyclePolicy_ActionCondition {
 	if in == nil {
 		return nil
 	}
@@ -521,7 +553,7 @@ func LifecyclePolicy_ActionCondition_FromProto(mapCtx *direct.MapContext, in *pb
 	out.ExitCodes = in.ExitCodes
 	return out
 }
-func LifecyclePolicy_ActionCondition_ToProto(mapCtx *direct.MapContext, in *krm.LifecyclePolicy_ActionCondition) *pb.LifecyclePolicy_ActionCondition {
+func LifecyclePolicy_ActionCondition_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.LifecyclePolicy_ActionCondition) *pb.LifecyclePolicy_ActionCondition {
 	if in == nil {
 		return nil
 	}
@@ -529,27 +561,27 @@ func LifecyclePolicy_ActionCondition_ToProto(mapCtx *direct.MapContext, in *krm.
 	out.ExitCodes = in.ExitCodes
 	return out
 }
-func LogsPolicy_FromProto(mapCtx *direct.MapContext, in *pb.LogsPolicy) *krm.LogsPolicy {
+func LogsPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.LogsPolicy) *krm.LogsPolicy {
 	if in == nil {
 		return nil
 	}
 	out := &krm.LogsPolicy{}
 	out.Destination = direct.Enum_FromProto(mapCtx, in.GetDestination())
 	out.LogsPath = direct.LazyPtr(in.GetLogsPath())
-	out.CloudLoggingOption = LogsPolicy_CloudLoggingOption_FromProto(mapCtx, in.GetCloudLoggingOption())
+	out.CloudLoggingOption = LogsPolicy_CloudLoggingOption_v1beta1_FromProto(mapCtx, in.GetCloudLoggingOption())
 	return out
 }
-func LogsPolicy_ToProto(mapCtx *direct.MapContext, in *krm.LogsPolicy) *pb.LogsPolicy {
+func LogsPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.LogsPolicy) *pb.LogsPolicy {
 	if in == nil {
 		return nil
 	}
 	out := &pb.LogsPolicy{}
 	out.Destination = direct.Enum_ToProto[pb.LogsPolicy_Destination](mapCtx, in.Destination)
 	out.LogsPath = direct.ValueOf(in.LogsPath)
-	out.CloudLoggingOption = LogsPolicy_CloudLoggingOption_ToProto(mapCtx, in.CloudLoggingOption)
+	out.CloudLoggingOption = LogsPolicy_CloudLoggingOption_v1beta1_ToProto(mapCtx, in.CloudLoggingOption)
 	return out
 }
-func LogsPolicy_CloudLoggingOption_FromProto(mapCtx *direct.MapContext, in *pb.LogsPolicy_CloudLoggingOption) *krm.LogsPolicy_CloudLoggingOption {
+func LogsPolicy_CloudLoggingOption_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.LogsPolicy_CloudLoggingOption) *krm.LogsPolicy_CloudLoggingOption {
 	if in == nil {
 		return nil
 	}
@@ -557,7 +589,7 @@ func LogsPolicy_CloudLoggingOption_FromProto(mapCtx *direct.MapContext, in *pb.L
 	out.UseGenericTaskMonitoredResource = direct.LazyPtr(in.GetUseGenericTaskMonitoredResource())
 	return out
 }
-func LogsPolicy_CloudLoggingOption_ToProto(mapCtx *direct.MapContext, in *krm.LogsPolicy_CloudLoggingOption) *pb.LogsPolicy_CloudLoggingOption {
+func LogsPolicy_CloudLoggingOption_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.LogsPolicy_CloudLoggingOption) *pb.LogsPolicy_CloudLoggingOption {
 	if in == nil {
 		return nil
 	}
@@ -565,7 +597,7 @@ func LogsPolicy_CloudLoggingOption_ToProto(mapCtx *direct.MapContext, in *krm.Lo
 	out.UseGenericTaskMonitoredResource = direct.ValueOf(in.UseGenericTaskMonitoredResource)
 	return out
 }
-func Nfs_FromProto(mapCtx *direct.MapContext, in *pb.NFS) *krm.Nfs {
+func Nfs_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NFS) *krm.Nfs {
 	if in == nil {
 		return nil
 	}
@@ -574,7 +606,7 @@ func Nfs_FromProto(mapCtx *direct.MapContext, in *pb.NFS) *krm.Nfs {
 	out.RemotePath = direct.LazyPtr(in.GetRemotePath())
 	return out
 }
-func Nfs_ToProto(mapCtx *direct.MapContext, in *krm.Nfs) *pb.NFS {
+func Nfs_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Nfs) *pb.NFS {
 	if in == nil {
 		return nil
 	}
@@ -583,47 +615,47 @@ func Nfs_ToProto(mapCtx *direct.MapContext, in *krm.Nfs) *pb.NFS {
 	out.RemotePath = direct.ValueOf(in.RemotePath)
 	return out
 }
-func Runnable_FromProto(mapCtx *direct.MapContext, in *pb.Runnable) *krm.Runnable {
+func Runnable_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Runnable) *krm.Runnable {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Runnable{}
-	out.Container = Runnable_Container_FromProto(mapCtx, in.GetContainer())
-	out.Script = Runnable_Script_FromProto(mapCtx, in.GetScript())
-	out.Barrier = Runnable_Barrier_FromProto(mapCtx, in.GetBarrier())
+	out.Container = Runnable_Container_v1beta1_FromProto(mapCtx, in.GetContainer())
+	out.Script = Runnable_Script_v1beta1_FromProto(mapCtx, in.GetScript())
+	out.Barrier = Runnable_Barrier_v1beta1_FromProto(mapCtx, in.GetBarrier())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.IgnoreExitStatus = direct.LazyPtr(in.GetIgnoreExitStatus())
 	out.Background = direct.LazyPtr(in.GetBackground())
 	out.AlwaysRun = direct.LazyPtr(in.GetAlwaysRun())
-	out.Environment = Environment_FromProto(mapCtx, in.GetEnvironment())
+	out.Environment = Environment_v1beta1_FromProto(mapCtx, in.GetEnvironment())
 	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
 	out.Labels = in.Labels
 	return out
 }
-func Runnable_ToProto(mapCtx *direct.MapContext, in *krm.Runnable) *pb.Runnable {
+func Runnable_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Runnable) *pb.Runnable {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Runnable{}
-	if oneof := Runnable_Container_ToProto(mapCtx, in.Container); oneof != nil {
+	if oneof := Runnable_Container_v1beta1_ToProto(mapCtx, in.Container); oneof != nil {
 		out.Executable = &pb.Runnable_Container_{Container: oneof}
 	}
-	if oneof := Runnable_Script_ToProto(mapCtx, in.Script); oneof != nil {
+	if oneof := Runnable_Script_v1beta1_ToProto(mapCtx, in.Script); oneof != nil {
 		out.Executable = &pb.Runnable_Script_{Script: oneof}
 	}
-	if oneof := Runnable_Barrier_ToProto(mapCtx, in.Barrier); oneof != nil {
+	if oneof := Runnable_Barrier_v1beta1_ToProto(mapCtx, in.Barrier); oneof != nil {
 		out.Executable = &pb.Runnable_Barrier_{Barrier: oneof}
 	}
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.IgnoreExitStatus = direct.ValueOf(in.IgnoreExitStatus)
 	out.Background = direct.ValueOf(in.Background)
 	out.AlwaysRun = direct.ValueOf(in.AlwaysRun)
-	out.Environment = Environment_ToProto(mapCtx, in.Environment)
+	out.Environment = Environment_v1beta1_ToProto(mapCtx, in.Environment)
 	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
 	out.Labels = in.Labels
 	return out
 }
-func Runnable_Barrier_FromProto(mapCtx *direct.MapContext, in *pb.Runnable_Barrier) *krm.Runnable_Barrier {
+func Runnable_Barrier_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Runnable_Barrier) *krm.Runnable_Barrier {
 	if in == nil {
 		return nil
 	}
@@ -631,7 +663,7 @@ func Runnable_Barrier_FromProto(mapCtx *direct.MapContext, in *pb.Runnable_Barri
 	out.Name = direct.LazyPtr(in.GetName())
 	return out
 }
-func Runnable_Barrier_ToProto(mapCtx *direct.MapContext, in *krm.Runnable_Barrier) *pb.Runnable_Barrier {
+func Runnable_Barrier_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Runnable_Barrier) *pb.Runnable_Barrier {
 	if in == nil {
 		return nil
 	}
@@ -639,7 +671,7 @@ func Runnable_Barrier_ToProto(mapCtx *direct.MapContext, in *krm.Runnable_Barrie
 	out.Name = direct.ValueOf(in.Name)
 	return out
 }
-func Runnable_Container_FromProto(mapCtx *direct.MapContext, in *pb.Runnable_Container) *krm.Runnable_Container {
+func Runnable_Container_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Runnable_Container) *krm.Runnable_Container {
 	if in == nil {
 		return nil
 	}
@@ -655,7 +687,7 @@ func Runnable_Container_FromProto(mapCtx *direct.MapContext, in *pb.Runnable_Con
 	out.EnableImageStreaming = direct.LazyPtr(in.GetEnableImageStreaming())
 	return out
 }
-func Runnable_Container_ToProto(mapCtx *direct.MapContext, in *krm.Runnable_Container) *pb.Runnable_Container {
+func Runnable_Container_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Runnable_Container) *pb.Runnable_Container {
 	if in == nil {
 		return nil
 	}
@@ -671,7 +703,7 @@ func Runnable_Container_ToProto(mapCtx *direct.MapContext, in *krm.Runnable_Cont
 	out.EnableImageStreaming = direct.ValueOf(in.EnableImageStreaming)
 	return out
 }
-func Runnable_Script_FromProto(mapCtx *direct.MapContext, in *pb.Runnable_Script) *krm.Runnable_Script {
+func Runnable_Script_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Runnable_Script) *krm.Runnable_Script {
 	if in == nil {
 		return nil
 	}
@@ -680,7 +712,7 @@ func Runnable_Script_FromProto(mapCtx *direct.MapContext, in *pb.Runnable_Script
 	out.Text = direct.LazyPtr(in.GetText())
 	return out
 }
-func Runnable_Script_ToProto(mapCtx *direct.MapContext, in *krm.Runnable_Script) *pb.Runnable_Script {
+func Runnable_Script_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Runnable_Script) *pb.Runnable_Script {
 	if in == nil {
 		return nil
 	}
@@ -705,7 +737,7 @@ func Runnable_Script_Text_ToProto(mapCtx *direct.MapContext, in *string) *pb.Run
 	}
 	return &pb.Runnable_Script_Text{Text: *in}
 }
-func ServiceAccount_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccount) *krm.ServiceAccount {
+func ServiceAccount_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccount) *krm.ServiceAccount {
 	if in == nil {
 		return nil
 	}
@@ -714,7 +746,7 @@ func ServiceAccount_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccount) 
 	out.Scopes = in.Scopes
 	return out
 }
-func ServiceAccount_ToProto(mapCtx *direct.MapContext, in *krm.ServiceAccount) *pb.ServiceAccount {
+func ServiceAccount_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ServiceAccount) *pb.ServiceAccount {
 	if in == nil {
 		return nil
 	}
@@ -723,19 +755,19 @@ func ServiceAccount_ToProto(mapCtx *direct.MapContext, in *krm.ServiceAccount) *
 	out.Scopes = in.Scopes
 	return out
 }
-func StatusEvent_FromProto(mapCtx *direct.MapContext, in *pb.StatusEvent) *krm.StatusEvent {
+func StatusEvent_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.StatusEvent) *krmbatchv1alpha1.StatusEvent {
 	if in == nil {
 		return nil
 	}
-	out := &krm.StatusEvent{}
+	out := &krmbatchv1alpha1.StatusEvent{}
 	out.Type = direct.LazyPtr(in.GetType())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.EventTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEventTime())
-	out.TaskExecution = TaskExecution_FromProto(mapCtx, in.GetTaskExecution())
+	out.TaskExecution = TaskExecution_v1alpha1_FromProto(mapCtx, in.GetTaskExecution())
 	out.TaskState = direct.Enum_FromProto(mapCtx, in.GetTaskState())
 	return out
 }
-func StatusEvent_ToProto(mapCtx *direct.MapContext, in *krm.StatusEvent) *pb.StatusEvent {
+func StatusEvent_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbatchv1alpha1.StatusEvent) *pb.StatusEvent {
 	if in == nil {
 		return nil
 	}
@@ -743,19 +775,43 @@ func StatusEvent_ToProto(mapCtx *direct.MapContext, in *krm.StatusEvent) *pb.Sta
 	out.Type = direct.ValueOf(in.Type)
 	out.Description = direct.ValueOf(in.Description)
 	out.EventTime = direct.StringTimestamp_ToProto(mapCtx, in.EventTime)
-	out.TaskExecution = TaskExecution_ToProto(mapCtx, in.TaskExecution)
+	out.TaskExecution = TaskExecution_v1alpha1_ToProto(mapCtx, in.TaskExecution)
 	out.TaskState = direct.Enum_ToProto[pb.TaskStatus_State](mapCtx, in.TaskState)
 	return out
 }
-func TaskExecution_FromProto(mapCtx *direct.MapContext, in *pb.TaskExecution) *krm.TaskExecution {
+func StatusEvent_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.StatusEvent) *krm.StatusEvent {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TaskExecution{}
+	out := &krm.StatusEvent{}
+	out.Type = direct.LazyPtr(in.GetType())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.EventTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEventTime())
+	out.TaskExecution = TaskExecution_v1beta1_FromProto(mapCtx, in.GetTaskExecution())
+	out.TaskState = direct.Enum_FromProto(mapCtx, in.GetTaskState())
+	return out
+}
+func StatusEvent_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.StatusEvent) *pb.StatusEvent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.StatusEvent{}
+	out.Type = direct.ValueOf(in.Type)
+	out.Description = direct.ValueOf(in.Description)
+	out.EventTime = direct.StringTimestamp_ToProto(mapCtx, in.EventTime)
+	out.TaskExecution = TaskExecution_v1beta1_ToProto(mapCtx, in.TaskExecution)
+	out.TaskState = direct.Enum_ToProto[pb.TaskStatus_State](mapCtx, in.TaskState)
+	return out
+}
+func TaskExecution_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TaskExecution) *krmbatchv1alpha1.TaskExecution {
+	if in == nil {
+		return nil
+	}
+	out := &krmbatchv1alpha1.TaskExecution{}
 	out.ExitCode = direct.LazyPtr(in.GetExitCode())
 	return out
 }
-func TaskExecution_ToProto(mapCtx *direct.MapContext, in *krm.TaskExecution) *pb.TaskExecution {
+func TaskExecution_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbatchv1alpha1.TaskExecution) *pb.TaskExecution {
 	if in == nil {
 		return nil
 	}
@@ -763,41 +819,57 @@ func TaskExecution_ToProto(mapCtx *direct.MapContext, in *krm.TaskExecution) *pb
 	out.ExitCode = direct.ValueOf(in.ExitCode)
 	return out
 }
-func TaskGroup_FromProto(mapCtx *direct.MapContext, in *pb.TaskGroup) *krm.TaskGroup {
+func TaskExecution_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TaskExecution) *krm.TaskExecution {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TaskExecution{}
+	out.ExitCode = direct.LazyPtr(in.GetExitCode())
+	return out
+}
+func TaskExecution_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TaskExecution) *pb.TaskExecution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TaskExecution{}
+	out.ExitCode = direct.ValueOf(in.ExitCode)
+	return out
+}
+func TaskGroup_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TaskGroup) *krm.TaskGroup {
 	if in == nil {
 		return nil
 	}
 	out := &krm.TaskGroup{}
 	// MISSING: Name
-	out.TaskSpec = TaskSpec_FromProto(mapCtx, in.GetTaskSpec())
+	out.TaskSpec = TaskSpec_v1beta1_FromProto(mapCtx, in.GetTaskSpec())
 	out.TaskCount = direct.LazyPtr(in.GetTaskCount())
 	out.Parallelism = direct.LazyPtr(in.GetParallelism())
 	out.SchedulingPolicy = direct.Enum_FromProto(mapCtx, in.GetSchedulingPolicy())
-	out.TaskEnvironments = direct.Slice_FromProto(mapCtx, in.TaskEnvironments, Environment_FromProto)
+	out.TaskEnvironments = direct.Slice_FromProto(mapCtx, in.TaskEnvironments, Environment_v1beta1_FromProto)
 	out.TaskCountPerNode = direct.LazyPtr(in.GetTaskCountPerNode())
 	out.RequireHostsFile = direct.LazyPtr(in.GetRequireHostsFile())
 	out.PermissiveSSH = direct.LazyPtr(in.GetPermissiveSsh())
 	out.RunAsNonRoot = direct.LazyPtr(in.GetRunAsNonRoot())
 	return out
 }
-func TaskGroup_ToProto(mapCtx *direct.MapContext, in *krm.TaskGroup) *pb.TaskGroup {
+func TaskGroup_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TaskGroup) *pb.TaskGroup {
 	if in == nil {
 		return nil
 	}
 	out := &pb.TaskGroup{}
 	// MISSING: Name
-	out.TaskSpec = TaskSpec_ToProto(mapCtx, in.TaskSpec)
+	out.TaskSpec = TaskSpec_v1beta1_ToProto(mapCtx, in.TaskSpec)
 	out.TaskCount = direct.ValueOf(in.TaskCount)
 	out.Parallelism = direct.ValueOf(in.Parallelism)
 	out.SchedulingPolicy = direct.Enum_ToProto[pb.TaskGroup_SchedulingPolicy](mapCtx, in.SchedulingPolicy)
-	out.TaskEnvironments = direct.Slice_ToProto(mapCtx, in.TaskEnvironments, Environment_ToProto)
+	out.TaskEnvironments = direct.Slice_ToProto(mapCtx, in.TaskEnvironments, Environment_v1beta1_ToProto)
 	out.TaskCountPerNode = direct.ValueOf(in.TaskCountPerNode)
 	out.RequireHostsFile = direct.ValueOf(in.RequireHostsFile)
 	out.PermissiveSsh = direct.ValueOf(in.PermissiveSSH)
 	out.RunAsNonRoot = direct.ValueOf(in.RunAsNonRoot)
 	return out
 }
-func TaskGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TaskGroup) *krm.TaskGroupObservedState {
+func TaskGroupObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TaskGroup) *krm.TaskGroupObservedState {
 	if in == nil {
 		return nil
 	}
@@ -814,7 +886,7 @@ func TaskGroupObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TaskGrou
 	// MISSING: RunAsNonRoot
 	return out
 }
-func TaskGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TaskGroupObservedState) *pb.TaskGroup {
+func TaskGroupObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TaskGroupObservedState) *pb.TaskGroup {
 	if in == nil {
 		return nil
 	}
@@ -831,75 +903,75 @@ func TaskGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.TaskGroup
 	// MISSING: RunAsNonRoot
 	return out
 }
-func TaskSpec_FromProto(mapCtx *direct.MapContext, in *pb.TaskSpec) *krm.TaskSpec {
+func TaskSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TaskSpec) *krm.TaskSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.TaskSpec{}
-	out.Runnables = direct.Slice_FromProto(mapCtx, in.Runnables, Runnable_FromProto)
-	out.ComputeResource = ComputeResource_FromProto(mapCtx, in.GetComputeResource())
+	out.Runnables = direct.Slice_FromProto(mapCtx, in.Runnables, Runnable_v1beta1_FromProto)
+	out.ComputeResource = ComputeResource_v1beta1_FromProto(mapCtx, in.GetComputeResource())
 	out.MaxRunDuration = direct.StringDuration_FromProto(mapCtx, in.GetMaxRunDuration())
 	out.MaxRetryCount = direct.LazyPtr(in.GetMaxRetryCount())
-	out.LifecyclePolicies = direct.Slice_FromProto(mapCtx, in.LifecyclePolicies, LifecyclePolicy_FromProto)
+	out.LifecyclePolicies = direct.Slice_FromProto(mapCtx, in.LifecyclePolicies, LifecyclePolicy_v1beta1_FromProto)
 	out.Environments = in.Environments
-	out.Volumes = direct.Slice_FromProto(mapCtx, in.Volumes, Volume_FromProto)
-	out.Environment = Environment_FromProto(mapCtx, in.GetEnvironment())
+	out.Volumes = direct.Slice_FromProto(mapCtx, in.Volumes, Volume_v1beta1_FromProto)
+	out.Environment = Environment_v1beta1_FromProto(mapCtx, in.GetEnvironment())
 	return out
 }
-func TaskSpec_ToProto(mapCtx *direct.MapContext, in *krm.TaskSpec) *pb.TaskSpec {
+func TaskSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TaskSpec) *pb.TaskSpec {
 	if in == nil {
 		return nil
 	}
 	out := &pb.TaskSpec{}
-	out.Runnables = direct.Slice_ToProto(mapCtx, in.Runnables, Runnable_ToProto)
-	out.ComputeResource = ComputeResource_ToProto(mapCtx, in.ComputeResource)
+	out.Runnables = direct.Slice_ToProto(mapCtx, in.Runnables, Runnable_v1beta1_ToProto)
+	out.ComputeResource = ComputeResource_v1beta1_ToProto(mapCtx, in.ComputeResource)
 	out.MaxRunDuration = direct.StringDuration_ToProto(mapCtx, in.MaxRunDuration)
 	out.MaxRetryCount = direct.ValueOf(in.MaxRetryCount)
-	out.LifecyclePolicies = direct.Slice_ToProto(mapCtx, in.LifecyclePolicies, LifecyclePolicy_ToProto)
+	out.LifecyclePolicies = direct.Slice_ToProto(mapCtx, in.LifecyclePolicies, LifecyclePolicy_v1beta1_ToProto)
 	out.Environments = in.Environments
-	out.Volumes = direct.Slice_ToProto(mapCtx, in.Volumes, Volume_ToProto)
-	out.Environment = Environment_ToProto(mapCtx, in.Environment)
+	out.Volumes = direct.Slice_ToProto(mapCtx, in.Volumes, Volume_v1beta1_ToProto)
+	out.Environment = Environment_v1beta1_ToProto(mapCtx, in.Environment)
 	return out
 }
-func TaskStatus_FromProto(mapCtx *direct.MapContext, in *pb.TaskStatus) *krm.TaskStatus {
+func TaskStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TaskStatus) *krmbatchv1alpha1.TaskStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TaskStatus{}
+	out := &krmbatchv1alpha1.TaskStatus{}
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.StatusEvents = direct.Slice_FromProto(mapCtx, in.StatusEvents, StatusEvent_FromProto)
+	out.StatusEvents = direct.Slice_FromProto(mapCtx, in.StatusEvents, StatusEvent_v1alpha1_FromProto)
 	return out
 }
-func TaskStatus_ToProto(mapCtx *direct.MapContext, in *krm.TaskStatus) *pb.TaskStatus {
+func TaskStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbatchv1alpha1.TaskStatus) *pb.TaskStatus {
 	if in == nil {
 		return nil
 	}
 	out := &pb.TaskStatus{}
 	out.State = direct.Enum_ToProto[pb.TaskStatus_State](mapCtx, in.State)
-	out.StatusEvents = direct.Slice_ToProto(mapCtx, in.StatusEvents, StatusEvent_ToProto)
+	out.StatusEvents = direct.Slice_ToProto(mapCtx, in.StatusEvents, StatusEvent_v1alpha1_ToProto)
 	return out
 }
-func Volume_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.Volume {
+func Volume_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Volume) *krm.Volume {
 	if in == nil {
 		return nil
 	}
 	out := &krm.Volume{}
-	out.Nfs = Nfs_FromProto(mapCtx, in.GetNfs())
-	out.GCS = GCS_FromProto(mapCtx, in.GetGcs())
+	out.Nfs = Nfs_v1beta1_FromProto(mapCtx, in.GetNfs())
+	out.GCS = GCS_v1beta1_FromProto(mapCtx, in.GetGcs())
 	out.DeviceName = direct.LazyPtr(in.GetDeviceName())
 	out.MountPath = direct.LazyPtr(in.GetMountPath())
 	out.MountOptions = in.MountOptions
 	return out
 }
-func Volume_ToProto(mapCtx *direct.MapContext, in *krm.Volume) *pb.Volume {
+func Volume_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Volume) *pb.Volume {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Volume{}
-	if oneof := Nfs_ToProto(mapCtx, in.Nfs); oneof != nil {
+	if oneof := Nfs_v1beta1_ToProto(mapCtx, in.Nfs); oneof != nil {
 		out.Source = &pb.Volume_Nfs{Nfs: oneof}
 	}
-	if oneof := GCS_ToProto(mapCtx, in.GCS); oneof != nil {
+	if oneof := GCS_v1beta1_ToProto(mapCtx, in.GCS); oneof != nil {
 		out.Source = &pb.Volume_Gcs{Gcs: oneof}
 	}
 	if oneof := Volume_DeviceName_ToProto(mapCtx, in.DeviceName); oneof != nil {

@@ -1,4 +1,4 @@
-apiVersion: batch.cnrm.cloud.google.com/v1alpha1
+apiVersion: batch.cnrm.cloud.google.com/v1beta1
 kind: BatchJob
 metadata:
   name: batchjob-labels
