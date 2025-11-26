@@ -569,6 +569,31 @@ func (r *Reconciler) applyNamespacedControllerResource(ctx context.Context, cr *
 		if err := controllers.EnsureVPAForStatefulSet(ctx, r.client, sts, *cr.Spec.VerticalPodAutoscalerMode); err != nil {
 			return r.handleApplyNamespacedControllerResourceFailed(ctx, cr.Namespace, cr.Name, fmt.Sprintf("failed to ensure VPA for StatefulSet %s: %v", cr.Name, err))
 		}
+
+		// If VPA is enabled, we try to get the recommendations and use them as the container resource customization.
+		recommendations, err := controllers.GetVPARecommendations(ctx, r.client, cr.Namespace, cr.Name)
+		if err != nil {
+			r.log.Error(err, "failed to get VPA recommendations", "Name", cr.Name, "Namespace", cr.Namespace)
+			// We don't fail the reconciliation here, just log the error and proceed with existing containers (which should be empty if VPA is enabled, but just in case).
+		} else if len(recommendations) > 0 {
+			// Construct ContainerResourceSpec from recommendations
+			var vpaContainers []customizev1beta1.ContainerResourceSpec
+			for containerName, resources := range recommendations {
+				vpaContainers = append(vpaContainers, customizev1beta1.ContainerResourceSpec{
+					Name: containerName,
+					Resources: customizev1beta1.ResourceRequirements{
+						Limits:   resources.Limits,
+						Requests: resources.Requests,
+					},
+				})
+			}
+			// Use VPA recommendations as the source of truth for customization
+			if err := controllers.ApplyContainerResourceCustomization(true, m, cr.Name, controllerGVK, vpaContainers, nil); err != nil {
+				r.log.Error(err, "failed to apply VPA customization", "Name", cr.Name, "Namespace", cr.Namespace)
+				return r.handleApplyNamespacedControllerResourceFailed(ctx, cr.Namespace, cr.Name, fmt.Sprintf("failed to apply VPA customization %s: %v", cr.Name, err))
+			}
+			return r.handleApplyNamespacedControllerResourceSucceeded(ctx, cr.Namespace, cr.Name)
+		}
 	}
 	if err := controllers.ApplyContainerResourceCustomization(true, m, cr.Name, controllerGVK, cr.Spec.Containers, nil); err != nil {
 		r.log.Error(err, "failed to apply customization", "Namespace", cr.Namespace, "Name", cr.Name)
