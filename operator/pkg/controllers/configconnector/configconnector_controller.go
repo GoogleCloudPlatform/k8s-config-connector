@@ -660,20 +660,20 @@ func (r *Reconciler) applyControllerResourceCR(ctx context.Context, cr *customiz
 		r.log.Info(msg)
 		return r.handleApplyControllerResourceCRFailed(ctx, cr, msg)
 	}
-	if cr.Spec.VerticalPodAutoscalerEnabled != nil && *cr.Spec.VerticalPodAutoscalerEnabled {
+	if cr.Spec.VerticalPodAutoscalerMode != nil && *cr.Spec.VerticalPodAutoscalerMode == customizev1beta1.VPAModeEnabled {
 		switch cr.Name {
 		case "cnrm-controller-manager", "cnrm-deletiondefender", "cnrm-unmanaged-detector":
 			sts := &appsv1.StatefulSet{}
 			sts.Namespace = k8s.CNRMSystemNamespace
 			sts.Name = cr.Name
-			if err := controllers.EnsureVPAForStatefulSet(ctx, r.client, sts); err != nil {
+			if err := controllers.EnsureVPAForStatefulSet(ctx, r.client, sts, *cr.Spec.VerticalPodAutoscalerMode); err != nil {
 				return r.handleApplyControllerResourceCRFailed(ctx, cr, fmt.Sprintf("failed to ensure VPA for StatefulSet %s: %v", cr.Name, err))
 			}
 		case "cnrm-webhook-manager", "cnrm-resource-stats-recorder":
 			deployment := &appsv1.Deployment{}
 			deployment.Namespace = k8s.CNRMSystemNamespace
 			deployment.Name = cr.Name
-			if err := controllers.EnsureVPAForDeployment(ctx, r.client, deployment); err != nil {
+			if err := controllers.EnsureVPAForDeployment(ctx, r.client, deployment, *cr.Spec.VerticalPodAutoscalerMode); err != nil {
 				return r.handleApplyControllerResourceCRFailed(ctx, cr, fmt.Sprintf("failed to ensure VPA for Deployment %s: %v", cr.Name, err))
 			}
 		}

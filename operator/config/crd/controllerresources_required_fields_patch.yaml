@@ -20,13 +20,13 @@
     - required:
       - replicas
     - required:
-      - verticalPodAutoscalerEnabled
+      - verticalPodAutoscalerMode
 - op: add
   path: /spec/versions/1/schema/openAPIV3Schema/properties/spec/anyOf
   value:
     - required:
-        - containers
+      - containers
     - required:
-        - replicas
+      - replicas
     - required:
-        - verticalPodAutoscalerEnabled
+      - verticalPodAutoscalerMode

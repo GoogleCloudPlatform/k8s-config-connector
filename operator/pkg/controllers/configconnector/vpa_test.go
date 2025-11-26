@@ -19,6 +19,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	customizev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
@@ -32,6 +33,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/util/wait"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -116,13 +118,13 @@ func TestVPAIntegration(t *testing.T) {
 	}
 
 	// Create ControllerResource with VPA enabled
-	vpaEnabled := true
+	vpaEnabled := v1beta1.VPAModeEnabled
 	cr := &customizev1beta1.ControllerResource{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "cnrm-controller-manager",
 		},
 		Spec: customizev1beta1.ControllerResourceSpec{
-			VerticalPodAutoscalerEnabled: &vpaEnabled,
+			VerticalPodAutoscalerMode: &vpaEnabled,
 		},
 	}
 	if err := c.Create(ctx, cr); err != nil {
@@ -156,19 +158,18 @@ func TestVPAIntegration(t *testing.T) {
 	}
 
 	// Retry getting VPA in case CRD is not yet established or reconciliation is still in progress
-	for i := 0; i < 10; i++ {
+	// Retry getting VPA in case CRD is not yet established or reconciliation is still in progress
+	if err := wait.PollUntilContextTimeout(ctx, 100*time.Millisecond, 10*time.Second, true, func(ctx context.Context) (bool, error) {
 		err := c.Get(ctx, vpaKey, vpa)
 		if err == nil {
-			break
+			return true, nil
 		}
 		if apierrors.IsNotFound(err) {
-			t.Logf("VPA not found yet, retrying... (%d/%d)", i+1, 10)
-			time.Sleep(100 * time.Millisecond)
-			continue
+			t.Logf("VPA not found yet, retrying...")
+			return false, nil
 		}
-		t.Fatalf("error getting VPA: %v", err)
-	}
-	if err := c.Get(ctx, vpaKey, vpa); err != nil {
+		return false, err
+	}); err != nil {
 		t.Fatalf("expected VPA to be created, but got error after retries: %v", err)
 	}
 
