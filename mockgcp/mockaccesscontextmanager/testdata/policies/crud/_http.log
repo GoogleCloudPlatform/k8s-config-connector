@@ -36,6 +36,34 @@ X-Xss-Protection: 0
 
 ---
 
+GET https://accesscontextmanager.googleapis.com/v1/accessPolicies?alt=json&parent=organizations%2F${organizationID}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "accessPolicies": [
+    {
+      "etag": "abcdef0123A=",
+      "name": "accessPolicies/${accessPolicyID}",
+      "parent": "organizations/${organizationID}",
+      "title": "test-policy-${uniqueId}"
+    }
+  ]
+}
+
+---
+
 GET https://accesscontextmanager.googleapis.com/v1/accessPolicies/${accessPolicyID}?alt=json
 Accept: application/json
 Authorization: (removed)

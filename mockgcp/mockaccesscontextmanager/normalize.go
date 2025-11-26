@@ -22,6 +22,8 @@ import (
 
 const TimePlaceholder = "2024-04-01T12:34:56.123456Z"
 
+const EtagPlaceholder = "abcdef0123A="
+
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
@@ -30,6 +32,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".createTime", TimePlaceholder)
 	replacements.ReplacePath(".response.updateTime", TimePlaceholder)
 	replacements.ReplacePath(".updateTime", TimePlaceholder)
+
+	replacements.ReplacePath(".etag", EtagPlaceholder)
+	replacements.ReplacePath(".accessPolicies[].etag", EtagPlaceholder)
+
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
