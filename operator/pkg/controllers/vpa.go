@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -35,11 +36,17 @@ var (
 	}
 )
 
-func EnsureVPAForStatefulSet(ctx context.Context, c client.Client, sts *appsv1.StatefulSet) error {
+func EnsureVPAForStatefulSet(ctx context.Context, c client.Client, sts *appsv1.StatefulSet, mode v1beta1.VPAMode) error {
+	if mode != v1beta1.VPAModeEnabled {
+		return nil
+	}
 	return ensureVPA(ctx, c, sts.Namespace, sts.Name, "StatefulSet")
 }
 
-func EnsureVPAForDeployment(ctx context.Context, c client.Client, deployment *appsv1.Deployment) error {
+func EnsureVPAForDeployment(ctx context.Context, c client.Client, deployment *appsv1.Deployment, mode v1beta1.VPAMode) error {
+	if mode != v1beta1.VPAModeEnabled {
+		return nil
+	}
 	return ensureVPA(ctx, c, deployment.Namespace, deployment.Name, "Deployment")
 }
 

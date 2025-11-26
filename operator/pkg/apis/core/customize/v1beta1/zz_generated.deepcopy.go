@@ -199,9 +199,9 @@ func (in *ControllerResourceSpec) DeepCopyInto(out *ControllerResourceSpec) {
 		*out = new(int64)
 		**out = **in
 	}
-	if in.VerticalPodAutoscalerEnabled != nil {
-		in, out := &in.VerticalPodAutoscalerEnabled, &out.VerticalPodAutoscalerEnabled
-		*out = new(bool)
+	if in.VerticalPodAutoscalerMode != nil {
+		in, out := &in.VerticalPodAutoscalerMode, &out.VerticalPodAutoscalerMode
+		*out = new(VPAMode)
 		**out = **in
 	}
 }
@@ -460,9 +460,9 @@ func (in *NamespacedControllerResourceSpec) DeepCopyInto(out *NamespacedControll
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.VerticalPodAutoscalerEnabled != nil {
-		in, out := &in.VerticalPodAutoscalerEnabled, &out.VerticalPodAutoscalerEnabled
-		*out = new(bool)
+	if in.VerticalPodAutoscalerMode != nil {
+		in, out := &in.VerticalPodAutoscalerMode, &out.VerticalPodAutoscalerMode
+		*out = new(VPAMode)
 		**out = **in
 	}
 }

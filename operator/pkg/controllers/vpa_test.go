@@ -18,6 +18,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
 	"github.com/google/go-cmp/cmp"
 	appsv1 "k8s.io/api/apps/v1"
@@ -38,8 +39,9 @@ func TestEnsureVPAForStatefulSet(t *testing.T) {
 
 	c := fake.NewClientBuilder().Build()
 
-	if err := controllers.EnsureVPAForStatefulSet(context.TODO(), c, sts); err != nil {
-		t.Fatalf("EnsureVPAForStatefulSet() error = %v", err)
+	ctx := context.TODO()
+	if err := controllers.EnsureVPAForStatefulSet(ctx, c, sts, v1beta1.VPAModeEnabled); err != nil {
+		t.Fatalf("EnsureVPAForStatefulSet failed: %v", err)
 	}
 
 	vpa := &unstructured.Unstructured{}
@@ -81,8 +83,9 @@ func TestEnsureVPAForDeployment(t *testing.T) {
 
 	c := fake.NewClientBuilder().Build()
 
-	if err := controllers.EnsureVPAForDeployment(context.TODO(), c, deployment); err != nil {
-		t.Fatalf("EnsureVPAForDeployment() error = %v", err)
+	ctx := context.TODO()
+	if err := controllers.EnsureVPAForDeployment(ctx, c, deployment, v1beta1.VPAModeEnabled); err != nil {
+		t.Fatalf("EnsureVPAForDeployment failed: %v", err)
 	}
 
 	vpa := &unstructured.Unstructured{}

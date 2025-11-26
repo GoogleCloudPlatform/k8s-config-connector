@@ -562,11 +562,11 @@ func (r *Reconciler) applyNamespacedControllerResource(ctx context.Context, cr *
 		Version: appsv1.SchemeGroupVersion.Version,
 		Kind:    "StatefulSet",
 	}
-	if cr.Spec.VerticalPodAutoscalerEnabled != nil && *cr.Spec.VerticalPodAutoscalerEnabled {
+	if cr.Spec.VerticalPodAutoscalerMode != nil && *cr.Spec.VerticalPodAutoscalerMode == customizev1beta1.VPAModeEnabled {
 		sts := &appsv1.StatefulSet{}
 		sts.Namespace = cr.Namespace
 		sts.Name = cr.Name
-		if err := controllers.EnsureVPAForStatefulSet(ctx, r.client, sts); err != nil {
+		if err := controllers.EnsureVPAForStatefulSet(ctx, r.client, sts, *cr.Spec.VerticalPodAutoscalerMode); err != nil {
 			return r.handleApplyNamespacedControllerResourceFailed(ctx, cr.Namespace, cr.Name, fmt.Sprintf("failed to ensure VPA for StatefulSet %s: %v", cr.Name, err))
 		}
 	}
