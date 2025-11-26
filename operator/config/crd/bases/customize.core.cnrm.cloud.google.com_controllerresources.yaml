@@ -103,17 +103,21 @@ spec:
                   This field takes effect only if the controller name is "cnrm-webhook-manager".
                 format: int64
                 type: integer
-              verticalPodAutoscalerEnabled:
-                default: false
-                description: VerticalPodAutoscalerEnabled indicates whether Vertical
-                  Pod Autoscaler is enabled for the controller.
-                type: boolean
+              verticalPodAutoscalerMode:
+                default: Disabled
+                description: VerticalPodAutoscalerMode indicates the mode of Vertical
+                  Pod Autoscaler for the controller.
+                enum:
+                - Enabled
+                - Disabled
+                type: string
             type: object
             x-kubernetes-validations:
-            - message: VerticalPodAutoscalerEnabled cannot be true when Containers
+            - message: VerticalPodAutoscalerMode cannot be Enabled when Containers
                 are specified
-              rule: '!self.verticalPodAutoscalerEnabled || !has(self.containers) ||
-                size(self.containers) == 0'
+              rule: '!has(self.verticalPodAutoscalerMode) || self.verticalPodAutoscalerMode
+                == ''Disabled'' || !has(self.containers) || size(self.containers)
+                == 0'
           status:
             description: ControllerResourceStatus defines the observed state of ControllerResource.
             properties:
