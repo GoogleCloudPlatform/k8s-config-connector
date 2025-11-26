@@ -5,6 +5,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	"k8s.io/api/core/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -199,9 +200,9 @@ func (in *ControllerResourceSpec) DeepCopyInto(out *ControllerResourceSpec) {
 		*out = new(int64)
 		**out = **in
 	}
-	if in.VerticalPodAutoscalerEnabled != nil {
-		in, out := &in.VerticalPodAutoscalerEnabled, &out.VerticalPodAutoscalerEnabled
-		*out = new(bool)
+	if in.VerticalPodAutoscalerMode != nil {
+		in, out := &in.VerticalPodAutoscalerMode, &out.VerticalPodAutoscalerMode
+		*out = new(v1beta1.VPAMode)
 		**out = **in
 	}
 }
@@ -460,9 +461,9 @@ func (in *NamespacedControllerResourceSpec) DeepCopyInto(out *NamespacedControll
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.VerticalPodAutoscalerEnabled != nil {
-		in, out := &in.VerticalPodAutoscalerEnabled, &out.VerticalPodAutoscalerEnabled
-		*out = new(bool)
+	if in.VerticalPodAutoscalerMode != nil {
+		in, out := &in.VerticalPodAutoscalerMode, &out.VerticalPodAutoscalerMode
+		*out = new(v1beta1.VPAMode)
 		**out = **in
 	}
 }

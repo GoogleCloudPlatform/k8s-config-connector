@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	addonv1alpha1 "sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/apis/v1alpha1"
 )
@@ -35,15 +36,15 @@ type NamespacedControllerResource struct {
 
 // NamespacedControllerResourceSpec is the specification of the resource customization for containers of
 // a namespaced config connector controller.
-// +kubebuilder:validation:XValidation:rule="!self.verticalPodAutoscalerEnabled || !has(self.containers) || size(self.containers) == 0",message="VerticalPodAutoscalerEnabled cannot be true when Containers are specified"
+// +kubebuilder:validation:XValidation:rule="!has(self.verticalPodAutoscalerMode) || self.verticalPodAutoscalerMode == 'Disabled' || !has(self.containers) || size(self.containers) == 0",message="VerticalPodAutoscalerMode cannot be Enabled when Containers are specified"
 type NamespacedControllerResourceSpec struct {
 	// The list of containers whose resource requirements to be customized.
 	// +optional
 	Containers []ContainerResourceSpec `json:"containers,omitempty"`
-	// VerticalPodAutoscalerEnabled indicates whether Vertical Pod Autoscaler is enabled for the controller.
+	// VerticalPodAutoscalerMode indicates the mode of Vertical Pod Autoscaler for the controller.
 	// +optional
-	// +kubebuilder:default=false
-	VerticalPodAutoscalerEnabled *bool `json:"verticalPodAutoscalerEnabled,omitempty"`
+	// +kubebuilder:default=Disabled
+	VerticalPodAutoscalerMode *v1beta1.VPAMode `json:"verticalPodAutoscalerMode,omitempty"`
 }
 
 // NamespacedControllerResourceStatus defines the observed state of NamespacedControllerResource.
