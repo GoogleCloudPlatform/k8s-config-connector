@@ -414,7 +414,8 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config) error {
 			}
 			config, err := resourceControllerConfig.GetControllersForGVK(gvk)
 			if err != nil {
-				return fmt.Errorf("error getting controller config found for GroupKind %v", gvk.GroupKind())
+				klog.Warningf("error getting controller config found for GroupKind %v", gvk.GroupKind())
+				continue
 			}
 			for _, resource := range resources.Items {
 				r.ReconciledResources[GKNN{
