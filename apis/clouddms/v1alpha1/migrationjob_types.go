@@ -137,9 +137,39 @@ type CloudDMSMigrationJobStatus struct {
 	ObservedState *CloudDMSMigrationJobObservedState `json:"observedState,omitempty"`
 }
 
-// CloudDMSMigrationJobObservedState is the state of the CloudDMSMigrationJob resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.clouddms.v1.MigrationJob
 type CloudDMSMigrationJobObservedState struct {
+
+	// Output only. The timestamp when the migration job resource was created.
+	//  A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds.
+	//  Example: "2014-10-02T15:01:23.045123456Z".
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The timestamp when the migration job resource was last
+	//  updated. A timestamp in RFC3339 UTC "Zulu" format, accurate to nanoseconds.
+	//  Example: "2014-10-02T15:01:23.045123456Z".
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The current migration job phase.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.phase
+	Phase *string `json:"phase,omitempty"`
+
+	// Output only. The duration of the migration job (in seconds). A duration in
+	//  seconds with up to nine fractional digits, terminated by 's'. Example:
+	//  "3.5s".
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.duration
+	Duration *string `json:"duration,omitempty"`
+
+	// Output only. The error details in case of state FAILED.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.error
+	Error *Status `json:"error,omitempty"`
+
+	// Output only. If the migration job is completed, the time when it was
+	//  completed.
+	// +kcc:proto:field=google.cloud.clouddms.v1.MigrationJob.end_time
+	EndTime *string `json:"endTime,omitempty"`
 }
 
 // +genclient

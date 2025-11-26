@@ -424,6 +424,44 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  createTime:
+                    description: 'Output only. The timestamp when the migration job
+                      resource was created. A timestamp in RFC3339 UTC "Zulu" format,
+                      accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z".'
+                    type: string
+                  duration:
+                    description: 'Output only. The duration of the migration job (in
+                      seconds). A duration in seconds with up to nine fractional digits,
+                      terminated by ''s''. Example: "3.5s".'
+                    type: string
+                  endTime:
+                    description: Output only. If the migration job is completed, the
+                      time when it was completed.
+                    type: string
+                  error:
+                    description: Output only. The error details in case of state FAILED.
+                    properties:
+                      code:
+                        description: The status code, which should be an enum value
+                          of [google.rpc.Code][google.rpc.Code].
+                        format: int32
+                        type: integer
+                      message:
+                        description: A developer-facing error message, which should
+                          be in English. Any user-facing error message should be localized
+                          and sent in the [google.rpc.Status.details][google.rpc.Status.details]
+                          field, or localized by the client.
+                        type: string
+                    type: object
+                  phase:
+                    description: Output only. The current migration job phase.
+                    type: string
+                  updateTime:
+                    description: 'Output only. The timestamp when the migration job
+                      resource was last updated. A timestamp in RFC3339 UTC "Zulu"
+                      format, accurate to nanoseconds. Example: "2014-10-02T15:01:23.045123456Z".'
+                    type: string
                 type: object
             type: object
         required:
