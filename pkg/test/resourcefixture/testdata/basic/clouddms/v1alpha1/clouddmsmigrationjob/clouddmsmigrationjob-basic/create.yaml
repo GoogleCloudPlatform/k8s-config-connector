@@ -1,0 +1,20 @@
+apiVersion: clouddms.cnrm.cloud.google.com/v1alpha1
+kind: CloudDMSMigrationJob
+metadata:
+  name: migrationjob-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Migration Job Sample"
+  type: ONE_TIME
+  sourceRef:
+    external: "projects/${projectId}/locations/us-central1/connectionProfiles/source-profile-${uniqueId}"
+  destinationRef:
+    external: "projects/${projectId}/locations/us-central1/connectionProfiles/destination-profile-${uniqueId}"
+  sourceDatabase:
+    engine: MYSQL
+    provider: CLOUDSQL
+  destinationDatabase:
+    engine: MYSQL
+    provider: CLOUDSQL
