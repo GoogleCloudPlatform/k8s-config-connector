@@ -582,3 +582,40 @@ func ParseObjects(ctx context.Context, t *testing.T, objects []string) *manifest
 	}
 	return m
 }
+
+func GetManifestWithRecorder() []string {
+	return []string{`
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cnrm-resource-stats-recorder
+  namespace: cnrm-system
+spec:
+  template:
+    spec:
+      containers:
+      - name: recorder
+        image: gcr.io/gke-release/cnrm/recorder:4217512
+`,
+	}
+}
+
+func GetManifestWithRecorderWithEnvVar() []string {
+	return []string{`
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cnrm-resource-stats-recorder
+  namespace: cnrm-system
+spec:
+  template:
+    spec:
+      containers:
+      - name: recorder
+        image: gcr.io/gke-release/cnrm/recorder:4217512
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /foo/bar.json
+`,
+	}
+}
