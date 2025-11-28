@@ -17,12 +17,16 @@ package uri
 import (
 	"fmt"
 	"regexp"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 )
 
 func GetServiceMappingAndResourceConfig(smLoader *servicemappingloader.ServiceMappingLoader, urlHost, urlPath string) (*v1alpha1.ServiceMapping, *v1alpha1.ResourceConfig, error) {
+	if urlHost == "secretmanager.us-central1.rep.googleapis.com:443" {
+		urlHost = "secretmanager.googleapis.com"
+	}
 	sm, err := smLoader.GetServiceMappingForServiceHostName(urlHost)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error getting service mapping: %w", err)
@@ -59,7 +63,13 @@ func matchResourceNameToRCGeneral(uriPath string, sm *v1alpha1.ServiceMapping) (
 		if rc.SkipImport {
 			continue
 		}
-		regexIDTemplate := idTemplateToRegex(rc.IDTemplate)
+		// Special case for SecretManagerSecret to handle global and regional secrets
+		regexIDTemplate := rc.IDTemplate
+		if rc.Kind == "SecretManagerSecret" && strings.Contains(uriPath, "/locations/") {
+			regexIDTemplate = idTemplateToRegex("projects/{{projects}}/locations/{{locations}}/secrets/{{secrets}}")
+		} else {
+			regexIDTemplate = idTemplateToRegex(rc.IDTemplate)
+		}
 		regex, err := regexp.Compile(regexIDTemplate)
 		if err != nil {
 			return nil, fmt.Errorf("error compiling '%v' to regex: %w", regexIDTemplate, err)
