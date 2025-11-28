@@ -58,7 +58,7 @@ func DataplexZoneSpec_FromProto(mapCtx *direct.MapContext, in *pb.Zone) *krmv1al
 	out := &krmv1alpha1.DataplexZoneSpec{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Labels = in.Labels
+	// out.Labels = in.Labels
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.DiscoverySpec = Zone_DiscoverySpec_FromProto(mapCtx, in.GetDiscoverySpec())
@@ -72,7 +72,7 @@ func DataplexZoneSpec_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Dataple
 	out := &pb.Zone{}
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Labels = in.Labels
+	// out.Labels = in.Labels
 	out.Description = direct.ValueOf(in.Description)
 	out.Type = direct.Enum_ToProto[pb.Zone_Type](mapCtx, in.Type)
 	out.DiscoverySpec = Zone_DiscoverySpec_ToProto(mapCtx, in.DiscoverySpec)
