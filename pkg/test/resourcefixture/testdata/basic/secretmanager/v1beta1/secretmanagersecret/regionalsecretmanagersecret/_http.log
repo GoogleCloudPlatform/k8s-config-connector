@@ -5,9 +5,10 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -40,9 +41,10 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -70,9 +72,10 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -114,9 +117,10 @@ X-Goog-Request-Params: secret.name=projects%2F${projectId}%2Flocations%2Fus-cent
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -144,9 +148,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -175,9 +180,10 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
@@ -206,9 +212,10 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: envoy
-Vary: Origin,X-Origin,Referer
-Via: 1.1 google
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
