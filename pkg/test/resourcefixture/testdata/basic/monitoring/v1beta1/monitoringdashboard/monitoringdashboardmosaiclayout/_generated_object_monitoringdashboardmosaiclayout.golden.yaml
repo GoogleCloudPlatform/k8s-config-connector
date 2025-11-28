@@ -7,7 +7,7 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: monitoringdashboardmosaiclayout-${uniqueId}
+  name: ${dashboardID}
   namespace: ${uniqueId}
 spec:
   displayName: monitoringdashboard-mosaiclayout
@@ -48,7 +48,7 @@ spec:
       yPos: 2
   projectRef:
     external: ${projectId}
-  resourceID: monitoringdashboardmosaiclayout-${uniqueId}
+  resourceID: ${dashboardID}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
