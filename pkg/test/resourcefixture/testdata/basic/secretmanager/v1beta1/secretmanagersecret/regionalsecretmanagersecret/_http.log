@@ -1,0 +1,216 @@
+GET https://secretmanager.us-central1.rep.googleapis.com:443/v1/projects/${projectId}/locations/us-central1/secrets/regionalsecretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsecrets%2Fregionalsecretmanagersecret-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: envoy
+Vary: Origin,X-Origin,Referer
+Via: 1.1 google
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Secret [projects/${projectNumber}/locations/us-central1/secrets/regionalsecretmanagersecret-${uniqueId}] not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://secretmanager.us-central1.rep.googleapis.com:443/v1/projects/${projectId}/locations/us-central1/secrets?%24alt=json%3Benum-encoding%3Dint&secretId=regionalsecretmanagersecret-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "annotations": {
+    "foo": "regionalsecretmanagersecret"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: envoy
+Vary: Origin,X-Origin,Referer
+Via: 1.1 google
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "foo": "regionalsecretmanagersecret"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/secrets/regionalsecretmanagersecret-${uniqueId}"
+}
+
+---
+
+GET https://secretmanager.us-central1.rep.googleapis.com:443/v1/projects/${projectId}/locations/us-central1/secrets/regionalsecretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsecrets%2Fregionalsecretmanagersecret-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: envoy
+Vary: Origin,X-Origin,Referer
+Via: 1.1 google
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "foo": "regionalsecretmanagersecret"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/secrets/regionalsecretmanagersecret-${uniqueId}"
+}
+
+---
+
+PATCH https://secretmanager.us-central1.rep.googleapis.com:443/v1/projects/${projectId}/locations/us-central1/secrets/regionalsecretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=annotations
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: secret.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsecrets%2Fregionalsecretmanagersecret-${uniqueId}
+
+{
+  "annotations": {
+    "bar": "regionalsecretmanagersecret-bar",
+    "foo": "regionalsecretmanagersecret"
+  },
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/secrets/regionalsecretmanagersecret-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: envoy
+Vary: Origin,X-Origin,Referer
+Via: 1.1 google
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "bar": "regionalsecretmanagersecret-bar",
+    "foo": "regionalsecretmanagersecret"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/secrets/regionalsecretmanagersecret-${uniqueId}"
+}
+
+---
+
+GET https://secretmanager.us-central1.rep.googleapis.com:443/v1/projects/${projectId}/locations/us-central1/secrets/regionalsecretmanagersecret-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: envoy
+Vary: Origin,X-Origin,Referer
+Via: 1.1 google
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "bar": "regionalsecretmanagersecret-bar",
+    "foo": "regionalsecretmanagersecret"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/secrets/regionalsecretmanagersecret-${uniqueId}"
+}
+
+---
+
+GET https://secretmanager.us-central1.rep.googleapis.com:443/v1/projects/${projectId}/locations/us-central1/secrets/regionalsecretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsecrets%2Fregionalsecretmanagersecret-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: envoy
+Vary: Origin,X-Origin,Referer
+Via: 1.1 google
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "bar": "regionalsecretmanagersecret-bar",
+    "foo": "regionalsecretmanagersecret"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "value-one",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/secrets/regionalsecretmanagersecret-${uniqueId}"
+}
+
+---
+
+DELETE https://secretmanager.us-central1.rep.googleapis.com:443/v1/projects/${projectId}/locations/us-central1/secrets/regionalsecretmanagersecret-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fsecrets%2Fregionalsecretmanagersecret-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: envoy
+Vary: Origin,X-Origin,Referer
+Via: 1.1 google
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
