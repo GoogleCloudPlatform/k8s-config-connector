@@ -20,10 +20,10 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"k8s.io/client-go/metadata"
 
 	"github.com/go-logr/logr"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	"k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	"k8s.io/apimachinery/pkg/api/errors"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -40,61 +40,56 @@ var logger = log.Log
 
 type Reconciler struct {
 	client.Client
-	// a core k8s client set, this is used for CRD GET requests. This client is used because it will not have caches with
-	// any configuration.
-	clientSet *clientset.Clientset
-	mgr       manager.Manager
-	crd       *apiextensions.CustomResourceDefinition
-	gvk       schema.GroupVersionKind
-	logger    logr.Logger
+
+	// uncachedMetadataClient is a metadata-only client that does not use any caches.
+	uncachedMetadataClient metadata.Interface
+
+	mgr manager.Manager
+	gvk schema.GroupVersionKind
+
+	// crdName is the name of the CRD for the resource this reconciler is responsible for.
+	crdName string
+
+	logger logr.Logger
 }
 
-func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) error {
-	kind := crd.Spec.Names.Kind
-	apiVersion := k8s.GetAPIVersionFromCRD(crd)
-	controllerName := fmt.Sprintf("%v-deletion-defender-controller", strings.ToLower(kind))
-	r, err := NewReconciler(mgr, crd)
-	if err != nil {
-		return err
+func Add(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition, uncachedMetadataClient metadata.Interface) error {
+	gvk := schema.GroupVersionKind{
+		Group:   crd.Spec.Group,
+		Version: k8s.GetVersionFromCRD(crd),
+		Kind:    crd.Spec.Names.Kind,
+	}
+
+	crdName := crd.Name
+
+	apiVersion := gvk.GroupVersion().String()
+	controllerName := fmt.Sprintf("%v-deletion-defender-controller", strings.ToLower(gvk.Kind))
+	r := &Reconciler{
+		Client:                 mgr.GetClient(),
+		uncachedMetadataClient: uncachedMetadataClient,
+		mgr:                    mgr,
+		gvk:                    gvk,
+		crdName:                crdName,
+		logger:                 logger.WithName(controllerName),
 	}
 	obj := &unstructured.Unstructured{
 		Object: map[string]interface{}{
-			"kind":       kind,
+			"kind":       gvk.Kind,
 			"apiVersion": apiVersion,
 		},
 	}
-	_, err = builder.
+	if _, err := builder.
 		ControllerManagedBy(mgr).
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: k8s.ControllerMaxConcurrentReconciles}).
 		For(obj, builder.OnlyMetadata).
-		Build(r)
-	if err != nil {
-		return fmt.Errorf("error creating new controller: %w", err)
+		Build(r); err != nil {
+		return fmt.Errorf("error building controller: %w", err)
 	}
-	log := mgr.GetLogger()
-	log.Info("Registered deletion-defender controller", "kind", kind, "apiVersion", apiVersion)
-	return nil
-}
 
-func NewReconciler(mgr manager.Manager, crd *apiextensions.CustomResourceDefinition) (*Reconciler, error) {
-	controllerName := fmt.Sprintf("%v-deletion-defender-controller", strings.ToLower(crd.Spec.Names.Kind))
-	clientSet, err := clientset.NewForConfig(mgr.GetConfig())
-	if err != nil {
-		return nil, fmt.Errorf("error creating new clientset: %w", err)
-	}
-	return &Reconciler{
-		Client:    mgr.GetClient(),
-		clientSet: clientSet,
-		mgr:       mgr,
-		crd:       crd,
-		gvk: schema.GroupVersionKind{
-			Group:   crd.Spec.Group,
-			Version: k8s.GetVersionFromCRD(crd),
-			Kind:    crd.Spec.Names.Kind,
-		},
-		logger: logger.WithName(controllerName),
-	}, nil
+	log := mgr.GetLogger()
+	log.Info("Registered deletion-defender controller", "kind", gvk.Kind, "apiVersion", apiVersion)
+	return nil
 }
 
 func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res reconcile.Result, err error) {
@@ -143,12 +138,18 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 
 func (r *Reconciler) isUninstalling(ctx context.Context) (bool, error) {
 	// Check if the associated CRD has its deletion timestamp set.
-	// it is important to use the clientset.Clientset here rather than the controller-runtime client.Client, because
-	// controller-runtime's client can have caches enabled, disabling them is tricky, and it would be easy for a bug to
-	// be introduced that re-enables the cache. We want the latest state of the CRD here so use the basic clientset.
-	crd, err := r.clientSet.ApiextensionsV1().CustomResourceDefinitions().Get(ctx, r.crd.GetName(), v1.GetOptions{})
+	// it is important to use an uncached client here rather than the controller-runtime client.Client, because
+	// controller-runtime's client can have caches enabled, and we need to ensure we are reading the latest state from the API server.
+	// We use a metadata-only client for efficiency.
+
+	gvr := schema.GroupVersionResource{
+		Group:    "apiextensions.k8s.io",
+		Version:  "v1",
+		Resource: "customresourcedefinitions",
+	}
+	crd, err := r.uncachedMetadataClient.Resource(gvr).Get(ctx, r.crdName, v1.GetOptions{})
 	if err != nil {
-		return false, fmt.Errorf("error getting CRD '%v': %w", r.crd.GetName(), err)
+		return false, fmt.Errorf("error getting CRD '%v': %w", r.crdName, err)
 	}
 	return !crd.GetDeletionTimestamp().IsZero(), nil
 }
