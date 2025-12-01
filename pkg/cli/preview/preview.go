@@ -57,6 +57,10 @@ type PreviewInstanceOptions struct {
 	// UpstreamGCPHTTPClient is the http client to use when talking to upstream (real) GCP
 	// (Upstream GCP may be mocked in tests)
 	UpstreamGCPHTTPClient *http.Client
+
+	// QPS and Burst are used to rate limit the requests to GCP.
+	QPS   float64
+	Burst int
 }
 
 // NewPreviewInstance creates a new PreviewInstance.
@@ -73,7 +77,7 @@ func NewPreviewInstance(recorder *Recorder, options PreviewInstanceOptions) (*Pr
 		return nil, err
 	}
 
-	hookGCP := newInterceptingGCPClient(upstreamGCPHTTPClient, authorization)
+	hookGCP := newInterceptingGCPClient(upstreamGCPHTTPClient, authorization, options.QPS, options.Burst)
 
 	i := &PreviewInstance{}
 	i.hookGCP = hookGCP
@@ -119,7 +123,9 @@ func (i *PreviewInstance) Start(ctx context.Context) error {
 		return ret
 	}
 
-	kccConfig := kccmanager.Config{}
+	kccConfig := kccmanager.Config{
+		PreviewMode: true,
+	}
 	// Prevent manager from binding to a port to serve prometheus metrics
 	// since creating multiple managers for tests will fail if more than
 	// one manager tries to bind to the same port.

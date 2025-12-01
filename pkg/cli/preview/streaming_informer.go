@@ -288,7 +288,9 @@ func (i *streamingInformer) Get(ctx context.Context, key client.ObjectKey, obj c
 	if len(opts) != 0 {
 		return fmt.Errorf("options not implemented: %v", opts)
 	}
-
+	if !i.WaitForCacheSync(ctx) {
+		return fmt.Errorf("streamingInformer WaitForCacheSync failed")
+	}
 	i.objects.mutex.Lock()
 	defer i.objects.mutex.Unlock()
 

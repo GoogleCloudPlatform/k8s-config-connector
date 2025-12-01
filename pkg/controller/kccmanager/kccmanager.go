@@ -91,6 +91,10 @@ type Config struct {
 
 	// EnableMetricsTransport enables automatic wrapping of HTTP clients with metrics transport
 	EnableMetricsTransport bool
+
+	// PreviewMode is true if the manager is in preview mode.
+	// Default is false.
+	PreviewMode bool
 }
 
 // Creates a new controller-runtime manager.Manager and starts all of the KCC controllers pointed at the
@@ -166,6 +170,7 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		GRPCUnaryClientInterceptor: cfg.GRPCUnaryClientInterceptor,
 		UserAgent:                  gcp.KCCUserAgent(),
 		EnableMetricsTransport:     cfg.EnableMetricsTransport,
+		PreviewMode:                cfg.PreviewMode,
 	}
 
 	if cfg.GCPAccessToken != "" {

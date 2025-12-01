@@ -20,6 +20,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -49,7 +50,8 @@ type Recorder struct {
 
 	reconcileTrackerMutex sync.Mutex
 	// Track if a resource has been reconciled.
-	ReconciledResources map[GKNN]bool
+	ReconciledResources map[GKNN]map[k8s.ReconcilerType]bool
+	gknCount            map[GKN]int
 	// Number of resources has not been reconciled.
 	RemainResourcesCount int
 }
@@ -58,7 +60,8 @@ type Recorder struct {
 func NewRecorder() *Recorder {
 	return &Recorder{
 		objects:              make(map[GKNN]*objectInfo),
-		ReconciledResources:  make(map[GKNN]bool),
+		ReconciledResources:  make(map[GKNN]map[k8s.ReconcilerType]bool),
+		gknCount:             make(map[GKN]int),
 		RemainResourcesCount: 0,
 	}
 }
@@ -79,6 +82,8 @@ type event struct {
 	gcpAction *gcpAction
 	// object is the object that was reconciled
 	object *unstructured.Unstructured
+	// reconcilerType is the type of reconciler that start/ends
+	reconcilerType k8s.ReconcilerType
 }
 
 type EventType string
@@ -161,7 +166,6 @@ func (r *Recorder) RecordIgnoredKubeMethod(ctx context.Context, method string, a
 
 // recordDiff captures the diff into our recorder.
 func (r *Recorder) recordDiff(ctx context.Context, diff *structuredreporting.Diff) {
-	log := klog.FromContext(ctx)
 
 	gknn := GKNN{}
 
@@ -172,8 +176,6 @@ func (r *Recorder) recordDiff(ctx context.Context, diff *structuredreporting.Dif
 	if done := r.GKNNDoneReconcile(gknn); done {
 		return
 	}
-
-	log.Info("recordDiffs", "gknn", gknn)
 
 	info := r.getObjectInfo(gknn)
 	info.events = append(info.events, event{
@@ -191,8 +193,9 @@ func (r *Recorder) recordReconcileStart(ctx context.Context, u *unstructured.Uns
 
 	info := r.getObjectInfo(gknn)
 	info.events = append(info.events, event{
-		eventType: EventTypeReconcileStart,
-		object:    u.DeepCopy(),
+		eventType:      EventTypeReconcileStart,
+		object:         u.DeepCopy(),
+		reconcilerType: t,
 	})
 }
 
@@ -206,19 +209,30 @@ func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstr
 
 	info := r.getObjectInfo(gknn)
 	info.events = append(info.events, event{
-		eventType: EventTypeReconcileEnd,
-		object:    u.DeepCopy(),
+		eventType:      EventTypeReconcileEnd,
+		object:         u.DeepCopy(),
+		reconcilerType: t,
 	})
 	r.reconcileTrackerMutex.Lock()
-	defer r.reconcileTrackerMutex.Unlock()
-	r.ReconciledResources[gknn] = true
-	r.RemainResourcesCount--
+	r.ReconciledResources[gknn][t] = true
+	r.reconcileTrackerMutex.Unlock()
+
+	if r.GKNNDoneReconcile(gknn) {
+		r.reconcileTrackerMutex.Lock()
+		r.RemainResourcesCount--
+		r.reconcileTrackerMutex.Unlock()
+	}
 }
 
 func (r *Recorder) GKNNDoneReconcile(gknn GKNN) bool {
 	r.reconcileTrackerMutex.Lock()
 	defer r.reconcileTrackerMutex.Unlock()
-	return r.ReconciledResources[gknn]
+	for _, done := range r.ReconciledResources[gknn] {
+		if !done {
+			return false
+		}
+	}
+	return true
 }
 
 func gknnFromUnstructured(u *unstructured.Unstructured) GKNN {
@@ -232,7 +246,6 @@ func gknnFromUnstructured(u *unstructured.Unstructured) GKNN {
 
 // recordKubeAction captures the kube action into our recorder.
 func (r *Recorder) recordKubeAction(ctx context.Context, method string, args []any, action Action) {
-	klog.Infof("recordKubeAction %v %v %v", method, args, action)
 	var gknn GKNN
 
 	kubeAction := &kubeAction{
@@ -357,6 +370,7 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config) error {
 	if err != nil {
 		return fmt.Errorf("failed to get preferred resources: %w", err)
 	}
+	resourceControllerConfig := resourceconfig.LoadConfig()
 	for _, apiResourceList := range apiResourceLists {
 		if !strings.Contains(apiResourceList.GroupVersion, ".cnrm.cloud.google.com/") {
 			continue
@@ -386,12 +400,22 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config) error {
 				gvr.Version = apiResourceListGroupVersion.Version
 			}
 			// Not tracking CC and CCC objects.
-			if gvr.Group == "core.cnrm.cloud.google.com" {
+			if strings.HasSuffix(gvr.Group, "core.cnrm.cloud.google.com") {
 				continue
 			}
 			resources, err := dynamicClient.Resource(gvr).List(ctx, metav1.ListOptions{})
 			if err != nil {
 				return fmt.Errorf("fetching gvr %s resources: %w", gvr, err)
+			}
+			gvk := schema.GroupVersionKind{
+				Group:   gvr.Group,
+				Version: gvr.Version,
+				Kind:    apiResource.Kind,
+			}
+			config, err := resourceControllerConfig.GetControllersForGVK(gvk)
+			if err != nil {
+				klog.Warningf("error getting controller config found for GroupKind %v", gvk.GroupKind())
+				continue
 			}
 			for _, resource := range resources.Items {
 				r.ReconciledResources[GKNN{
@@ -399,7 +423,21 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config) error {
 					Kind:      resource.GetKind(),
 					Namespace: resource.GetNamespace(),
 					Name:      resource.GetName(),
-				}] = false
+				}] = make(map[k8s.ReconcilerType]bool)
+				gkn := GKN{
+					Group:     gvr.Group,
+					Kind:      resource.GetKind(),
+					Namespace: resource.GetNamespace(),
+				}
+				r.gknCount[gkn] += 1
+				for _, controllerType := range config.SupportedControllers {
+					r.ReconciledResources[GKNN{
+						Group:     gvr.Group,
+						Kind:      resource.GetKind(),
+						Namespace: resource.GetNamespace(),
+						Name:      resource.GetName(),
+					}][controllerType] = false
+				}
 			}
 			r.RemainResourcesCount += len(resources.Items)
 		}

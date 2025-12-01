@@ -71,9 +71,10 @@ type ParentReconciler struct {
 	mgr         manager.Manager
 	gvk         schema.GroupVersionKind
 	reconcilers Reconcilers
+	previewMode bool
 }
 
-func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcilers) error {
+func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcilers, previewMode bool) error {
 	controllerName := fmt.Sprintf("%v-parent-controller", strings.ToLower(gvk.Kind))
 	obj := &unstructured.Unstructured{}
 	obj.SetGroupVersionKind(gvk)
@@ -90,6 +91,7 @@ func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcil
 			Direct: reconcilers.Direct,
 			Custom: reconcilers.Custom,
 		},
+		previewMode: previewMode,
 	}
 
 	_, err := builder.
@@ -106,6 +108,9 @@ func Add(mgr manager.Manager, gvk schema.GroupVersionKind, reconcilers *Reconcil
 }
 
 func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request) (reconcile.Result, error) {
+	if r.previewMode {
+		return r.reconcilePreviewMode(ctx, req)
+	}
 	logger := log.FromContext(ctx)
 
 	logger.Info("parent reconciler starting", "resource", req.NamespacedName)
@@ -264,4 +269,67 @@ func (r *ParentReconciler) determineControllerType(ctx context.Context, u *unstr
 		return "", fmt.Errorf("error getting controller config found for GroupKind %v", gk)
 	}
 	return config.DefaultController, nil
+}
+
+// ReconcilePreviewMode reconciles the resource in preview mode
+// Each resource is reconciled with each supported controller type
+func (r *ParentReconciler) reconcilePreviewMode(ctx context.Context, req reconcile.Request) (reconcile.Result, error) {
+	logger := log.FromContext(ctx)
+
+	logger.Info("parent reconciler starting in preview mode", "resource", req.NamespacedName)
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(r.gvk)
+	if err := r.Get(ctx, req.NamespacedName, u); err != nil {
+		return reconcile.Result{}, client.IgnoreNotFound(err)
+	}
+	resourceControllerConfig := resourceconfig.LoadConfig()
+
+	config, err := resourceControllerConfig.GetControllersForGVK(r.gvk)
+	if err != nil {
+		return reconcile.Result{}, fmt.Errorf("error getting controller config found for GroupKind %v", r.gvk.GroupKind())
+	}
+	logger.Info("supported controller types", "resource", req.NamespacedName, "supportedControllers", config.SupportedControllers)
+
+	for _, controllerType := range config.SupportedControllers {
+		switch controllerType {
+		case k8s.ReconcilerTypeTerraform:
+			logger.Info("running preview with TF reconciler")
+			if r.reconcilers.TF == nil {
+				logger.Info("TF reconciler is not initialized for resource %v", r.gvk)
+			}
+			_, err := r.reconcilers.TF.Reconcile(ctx, req)
+			if err != nil {
+				logger.Info("reconcile failed with TF reconciler", "error", err)
+			}
+		case k8s.ReconcilerTypeDCL:
+			logger.Info("running preview with DCL reconciler")
+			if r.reconcilers.DCL == nil {
+				logger.Info("DCL reconciler is not initialized for resource %v", r.gvk)
+			}
+			_, err := r.reconcilers.DCL.Reconcile(ctx, req)
+			if err != nil {
+				logger.Info("reconcile failed with DCL reconciler", "error", err)
+			}
+		case k8s.ReconcilerTypeDirect:
+			logger.Info("running preview with Direct reconciler")
+			if r.reconcilers.Direct == nil {
+				logger.Info("direct reconciler is not initialized for resource %v", r.gvk)
+			}
+			_, err := r.reconcilers.Direct.Reconcile(ctx, req)
+			if err != nil {
+				logger.Info("reconcile failed with Direct reconciler", "error", err)
+			}
+		default:
+			if r.reconcilers.Custom != nil && r.reconcilers.Custom.Type == controllerType {
+				logger.Info("running preview with custom reconciler", "type", controllerType)
+				_, err := r.reconcilers.Custom.Reconciler.Reconcile(ctx, req)
+				if err != nil {
+					logger.Info("reconcile failed with custom reconciler", "error", err)
+				}
+			}
+		}
+	}
+	// Return empty result and nil error to avoid requeue
+	return reconcile.Result{}, nil
 }
