@@ -3249,15 +3249,10 @@
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].livenessProbe.timeoutSeconds" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].ports[].containerPort" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].ports[].name" is not set in unstructured objects
-[missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].resources.limits" is not set in unstructured objects
-[missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].startupProbe.failureThreshold" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].startupProbe.httpGet.httpHeaders[].name" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].startupProbe.httpGet.httpHeaders[].value" is not set in unstructured objects
-[missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].startupProbe.httpGet.path" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].startupProbe.initialDelaySeconds" is not set in unstructured objects
-[missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].startupProbe.periodSeconds" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].startupProbe.tcpSocket.port" is not set in unstructured objects
-[missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].startupProbe.timeoutSeconds" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].workingDir" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.executionEnvironment" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.maxRetries" is not set in unstructured objects
