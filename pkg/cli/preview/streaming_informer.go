@@ -289,6 +289,13 @@ func (i *streamingInformer) Get(ctx context.Context, key client.ObjectKey, obj c
 		return fmt.Errorf("options not implemented: %v", opts)
 	}
 
+	// During preview, each resource is only reconciled once.
+	// If CC or CCC objects are not synced, the reconciler can give out false positives
+	// (successfully reconcile without actually invoking the actual reconciler).
+	if !i.WaitForCacheSync(ctx) {
+		return fmt.Errorf("streamingInformer WaitForCacheSync failed")
+	}
+
 	i.objects.mutex.Lock()
 	defer i.objects.mutex.Unlock()
 
