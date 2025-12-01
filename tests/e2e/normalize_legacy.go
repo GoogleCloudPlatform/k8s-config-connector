@@ -75,6 +75,8 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 			switch id {
 			case "projects":
 			// Bigtable uses an unusual operation path: "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+			case "accessPolicies":
+				// Access Context Manager uses an unusual operation path: "operations/accessPolicies/${accessPolicyId}/delete/${operationID}"
 			default:
 				r.OperationIDs[id] = true
 			}
