@@ -393,7 +393,7 @@ func HTTPGetAction_FromProto(mapCtx *direct.MapContext, in *pb.HTTPGetAction) *k
 	out.Path = direct.LazyPtr(in.GetPath())
 	// MISSING: HTTPHeaders
 	// (near miss): "HTTPHeaders" vs "HttpHeaders"
-	// MISSING: Port
+	out.Port = direct.LazyPtr(in.GetPort())
 	return out
 }
 func HTTPGetAction_ToProto(mapCtx *direct.MapContext, in *krm.HTTPGetAction) *pb.HTTPGetAction {
@@ -404,7 +404,7 @@ func HTTPGetAction_ToProto(mapCtx *direct.MapContext, in *krm.HTTPGetAction) *pb
 	out.Path = direct.ValueOf(in.Path)
 	// MISSING: HTTPHeaders
 	// (near miss): "HTTPHeaders" vs "HttpHeaders"
-	// MISSING: Port
+	out.Port = direct.ValueOf(in.Port)
 	return out
 }
 func HTTPHeader_FromProto(mapCtx *direct.MapContext, in *pb.HTTPHeader) *krm.HTTPHeader {
