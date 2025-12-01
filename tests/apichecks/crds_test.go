@@ -56,7 +56,7 @@ func TestMissingRefs(t *testing.T) {
 				fieldPath := field.FieldPath
 
 				// Only consider spec
-				if strings.HasPrefix(fieldPath, ".status.") {
+				if strings.HasPrefix(fieldPath, ".status.") || fieldPath == "" {
 					return
 				}
 
@@ -73,12 +73,21 @@ func TestMissingRefs(t *testing.T) {
 				if strings.HasSuffix(fieldPath, "Refs[].external") {
 					return
 				}
+				if strings.HasSuffix(fieldPath, "Ref.apiVersion") {
+					return
+				}
+				if strings.HasSuffix(fieldPath, "Ref.kind") {
+					return
+				}
 				if strings.HasSuffix(fieldPath, "Ref.name") {
+					return
+				}
+				if strings.HasSuffix(fieldPath, "Ref.namespace") {
 					return
 				}
 
 				isRef := false
-				desc := field.props.Description
+				desc := strings.ToLower(field.props.Description)
 				// Heuristic: look for descriptions like "should be of the form projects/{projectID}/locations/{location}/bars/{name}"
 				if strings.Contains(desc, " projects/") {
 					isRef = true
@@ -102,15 +111,24 @@ func TestMissingRefs(t *testing.T) {
 					isRef = true
 				}
 
+				// Heuristic: look for fields that mention "reference"
+				if strings.Contains(desc, "reference to") {
+					isRef = true
+				}
+
+				// Heuristic: look for well-known field names
 				if strings.HasSuffix(fieldPath, "erviceAccount") {
 					isRef = true
 				}
+
 				// TODO: how to detect KMS Key
 
 				if isRef {
 					// We don't require refs for zones or regions, nor for instanceTypes
 					switch {
 					case strings.HasSuffix(fieldPath, ".zone"):
+						// ok
+					case strings.HasSuffix(fieldPath, ".region"):
 						// ok
 					case strings.HasSuffix(fieldPath, ".location"):
 						// ok
