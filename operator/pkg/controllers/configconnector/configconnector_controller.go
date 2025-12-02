@@ -676,6 +676,8 @@ func (r *Reconciler) applyControllerResourceCR(ctx context.Context, cr *customiz
 			if err := controllers.EnsureVPAForDeployment(ctx, r.client, deployment, *cr.Spec.VerticalPodAutoscalerMode); err != nil {
 				return r.handleApplyControllerResourceCRFailed(ctx, cr, fmt.Sprintf("failed to ensure VPA for Deployment %s: %v", cr.Name, err))
 			}
+		default:
+			r.log.Info("unrecognized controller resource name for VPA configuration", "name", cr.Name)
 		}
 
 		// If VPA is enabled, we try to get the recommendations and use them as the container resource customization.
