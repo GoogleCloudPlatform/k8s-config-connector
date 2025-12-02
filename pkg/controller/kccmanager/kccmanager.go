@@ -47,6 +47,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/leaderelection"
 	"k8s.io/klog/v2"
 	crclient "sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
@@ -99,11 +100,11 @@ type Config struct {
 	MultiClusterLease bool
 }
 
-func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, opts manager.Options) (manager.Options, error) {
+func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, scheme *runtime.Scheme) (*leaderelection.LeaderElectionConfig, error) {
 	// Create a temporary client to read the ConfigConnector object for leader election config.
-	c, err := crclient.New(restConfig, crclient.Options{Scheme: opts.Scheme})
+	c, err := crclient.New(restConfig, crclient.Options{Scheme: scheme})
 	if err != nil {
-		return manager.Options{}, fmt.Errorf("error creating temporary client: %w", err)
+		return nil, fmt.Errorf("error creating temporary client: %w", err)
 	}
 
 	// Get the ConfigConnector object.
@@ -125,15 +126,39 @@ func setUpMultiClusterLease(ctx context.Context, restConfig *rest.Config, opts m
 				leaseSpec.GlobalLockName,
 				15*time.Second,
 			)
-			opts.LeaderElectionResourceLock = leaseSpec.GlobalLockName
-			opts.LeaderElection = true
-			opts.LeaderElectionNamespace = leaseSpec.Namespace
-			opts.LeaderElectionID = leaseSpec.LeaseName
-			opts.LeaderElectionResourceLockInterface = lock
+			return &leaderelection.LeaderElectionConfig{
+				Lock:          lock,
+				LeaseDuration: 15 * time.Second,
+				RenewDeadline: 10 * time.Second,
+				RetryPeriod:   2 * time.Second,
+				Name:          leaseSpec.LeaseName,
+				Callbacks: leaderelection.LeaderCallbacks{
+					OnStoppedLeading: func() {
+						klog.ErrorS(nil, "leaderelection lost")
+						klog.FlushAndExit(klog.ExitFlushTimeout, 1)
+					},
+				},
+			}, nil
 		}
 	}
 
-	return opts, nil
+	return nil, nil
+}
+
+type leaderElectionManager struct {
+	manager.Manager
+	leConfig *leaderelection.LeaderElectionConfig
+}
+
+func (m *leaderElectionManager) Start(ctx context.Context) error {
+	m.leConfig.Callbacks.OnStartedLeading = func(ctx context.Context) {
+		klog.Infof("started leading")
+		if err := m.Manager.Start(ctx); err != nil {
+			klog.Fatalf("error running manager: %v", err)
+		}
+	}
+	leaderelection.RunOrDie(ctx, *m.leConfig)
+	return nil
 }
 
 // Creates a new controller-runtime manager.Manager and starts all of the KCC controllers pointed at the
@@ -158,11 +183,15 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 		return nil, fmt.Errorf("error adding schemes: %w", err)
 	}
 
+	var leConfig *leaderelection.LeaderElectionConfig
 	if cfg.MultiClusterLease {
-		opts, err = setUpMultiClusterLease(ctx, restConfig, opts)
+		leConfig, err = setUpMultiClusterLease(ctx, restConfig, opts.Scheme)
 		if err != nil {
 			return nil, fmt.Errorf("error setting up multi-cluster leader election: %w", err)
 		}
+	}
+	if leConfig != nil && opts.LeaderElection {
+		return nil, fmt.Errorf("error validating leader election config")
 	}
 
 	// only cache CC and CCC resources
@@ -269,6 +298,10 @@ func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Mana
 	// all our resources.
 	if err := registration.AddDefaultControllers(ctx, mgr, &rd, controllerConfig); err != nil {
 		return nil, fmt.Errorf("error adding registration controller: %w", err)
+	}
+
+	if leConfig != nil {
+		return &leaderElectionManager{Manager: mgr, leConfig: leConfig}, nil
 	}
 	return mgr, nil
 }
