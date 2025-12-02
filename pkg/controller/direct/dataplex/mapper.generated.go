@@ -349,44 +349,6 @@ func EntryType_Authorization_ToProto(mapCtx *direct.MapContext, in *krm.EntryTyp
 	out.AlternateUsePermission = direct.ValueOf(in.AlternateUsePermission)
 	return out
 }
-func Job_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.Job {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Job{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: StartTime
-	// MISSING: EndTime
-	// MISSING: State
-	// MISSING: RetryCount
-	// MISSING: Service
-	// MISSING: ServiceJob
-	// MISSING: Message
-	// MISSING: Labels
-	// MISSING: Trigger
-	// MISSING: ExecutionSpec
-	return out
-}
-func Job_ToProto(mapCtx *direct.MapContext, in *krm.Job) *pb.Job {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Job{}
-	// MISSING: Name
-	// MISSING: Uid
-	// MISSING: StartTime
-	// MISSING: EndTime
-	// MISSING: State
-	// MISSING: RetryCount
-	// MISSING: Service
-	// MISSING: ServiceJob
-	// MISSING: Message
-	// MISSING: Labels
-	// MISSING: Trigger
-	// MISSING: ExecutionSpec
-	return out
-}
 func JobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.JobObservedState {
 	if in == nil {
 		return nil
@@ -403,7 +365,7 @@ func JobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Job) *krm.JobO
 	out.Message = direct.LazyPtr(in.GetMessage())
 	out.Labels = in.Labels
 	out.Trigger = direct.Enum_FromProto(mapCtx, in.GetTrigger())
-	out.ExecutionSpec = Task_ExecutionSpec_FromProto(mapCtx, in.GetExecutionSpec())
+	out.ExecutionSpec = Task_ExecutionSpecObservedState_FromProto(mapCtx, in.GetExecutionSpec())
 	return out
 }
 func JobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobObservedState) *pb.Job {
@@ -422,7 +384,7 @@ func JobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.JobObservedStat
 	out.Message = direct.ValueOf(in.Message)
 	out.Labels = in.Labels
 	out.Trigger = direct.Enum_ToProto[pb.Job_Trigger](mapCtx, in.Trigger)
-	out.ExecutionSpec = Task_ExecutionSpec_ToProto(mapCtx, in.ExecutionSpec)
+	out.ExecutionSpec = Task_ExecutionSpecObservedState_ToProto(mapCtx, in.ExecutionSpec)
 	return out
 }
 func Lake_Metastore_FromProto(mapCtx *direct.MapContext, in *pb.Lake_Metastore) *krm.Lake_Metastore {

@@ -49,10 +49,6 @@ type EntryType_Authorization struct {
 	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
 }
 
-// +kcc:proto=google.cloud.dataplex.v1.Job
-type Job struct {
-}
-
 // +kcc:proto=google.cloud.dataplex.v1.Lake.MetastoreStatus
 type Lake_MetastoreStatus struct {
 	// Current state of association.
@@ -262,58 +258,4 @@ type Zone_ResourceSpec struct {
 	//  to be attached to the assets within this zone.
 	// +kcc:proto:field=google.cloud.dataplex.v1.Zone.ResourceSpec.location_type
 	LocationType *string `json:"locationType,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.dataplex.v1.Job
-type JobObservedState struct {
-	// Output only. The relative resource name of the job, of the form:
-	//  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}/jobs/{job_id}`.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Job.name
-	Name *string `json:"name,omitempty"`
-
-	// Output only. System generated globally unique ID for the job.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Job.uid
-	Uid *string `json:"uid,omitempty"`
-
-	// Output only. The time when the job was started.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Job.start_time
-	StartTime *string `json:"startTime,omitempty"`
-
-	// Output only. The time when the job ended.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Job.end_time
-	EndTime *string `json:"endTime,omitempty"`
-
-	// Output only. Execution state for the job.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Job.state
-	State *string `json:"state,omitempty"`
-
-	// Output only. The number of times the job has been retried (excluding the
-	//  initial attempt).
-	// +kcc:proto:field=google.cloud.dataplex.v1.Job.retry_count
-	RetryCount *uint32 `json:"retryCount,omitempty"`
-
-	// Output only. The underlying service running a job.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Job.service
-	Service *string `json:"service,omitempty"`
-
-	// Output only. The full resource name for the job run under a particular
-	//  service.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Job.service_job
-	ServiceJob *string `json:"serviceJob,omitempty"`
-
-	// Output only. Additional information about the current state.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Job.message
-	Message *string `json:"message,omitempty"`
-
-	// Output only. User-defined labels for the task.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Job.labels
-	Labels map[string]string `json:"labels,omitempty"`
-
-	// Output only. Job execution trigger.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Job.trigger
-	Trigger *string `json:"trigger,omitempty"`
-
-	// Output only. Spec related to how a task is executed.
-	// +kcc:proto:field=google.cloud.dataplex.v1.Job.execution_spec
-	ExecutionSpec *Task_ExecutionSpec `json:"executionSpec,omitempty"`
 }
