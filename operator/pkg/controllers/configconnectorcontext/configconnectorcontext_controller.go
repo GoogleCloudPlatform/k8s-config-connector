@@ -563,11 +563,16 @@ func (r *Reconciler) applyNamespacedControllerResource(ctx context.Context, cr *
 		Kind:    "StatefulSet",
 	}
 	if cr.Spec.VerticalPodAutoscalerMode != nil && *cr.Spec.VerticalPodAutoscalerMode == customizev1beta1.VPAModeEnabled {
-		sts := &appsv1.StatefulSet{}
-		sts.Namespace = cr.Namespace
-		sts.Name = cr.Name
-		if err := controllers.EnsureVPAForStatefulSet(ctx, r.client, sts, *cr.Spec.VerticalPodAutoscalerMode); err != nil {
-			return r.handleApplyNamespacedControllerResourceFailed(ctx, cr.Namespace, cr.Name, fmt.Sprintf("failed to ensure VPA for StatefulSet %s: %v", cr.Name, err))
+		switch cr.Name {
+		case "cnrm-controller-manager":
+			sts := &appsv1.StatefulSet{}
+			sts.Namespace = cr.Namespace
+			sts.Name = cr.Name
+			if err := controllers.EnsureVPAForStatefulSet(ctx, r.client, sts, *cr.Spec.VerticalPodAutoscalerMode); err != nil {
+				return r.handleApplyNamespacedControllerResourceFailed(ctx, cr.Namespace, cr.Name, fmt.Sprintf("failed to ensure VPA for StatefulSet %s: %v", cr.Name, err))
+			}
+		default:
+			r.log.Info("unrecognized controller resource name for VPA configuration", "name", cr.Name)
 		}
 
 		// If VPA is enabled, we try to get the recommendations and use them as the container resource customization.
