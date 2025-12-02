@@ -134,7 +134,9 @@ spec:
                     properties:
                       external:
                         description: The value of an externally managed ComputeNetwork
-                          resource.
+                          resource. Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}"
+                          or "projects/{{projectId}}/global/networks/{{networkId}}"
+                          or
                         type: string
                       name:
                         description: The name of a ComputeNetwork resource.

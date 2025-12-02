@@ -40,6 +40,7 @@ var ComputeNetworkGVK = GroupVersion.WithKind("ComputeNetwork")
 
 type ComputeNetworkRef struct {
 	// The value of an externally managed ComputeNetwork resource.
+	// Should be in the format "https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}}" or "projects/{{projectId}}/global/networks/{{networkId}}" or
 	External string `json:"external,omitempty"`
 
 	// The name of a ComputeNetwork resource.

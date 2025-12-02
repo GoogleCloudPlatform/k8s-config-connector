@@ -49,9 +49,23 @@ func TestComputeNetworkRefNormalize(t *testing.T) {
 			wantErr: `format of computenetwork external="invalid-format" was not known (use https://www.googleapis.com/compute/{{version}}/projects/{{projectId}}/global/networks/{{networkId}} or projects/{{projectId}}/global/networks/{{networkId}})`,
 		},
 		{
-			name: "external is full url",
+			name: "external is full url(v1)",
 			ref: &ComputeNetworkRef{
 				External: "https://www.googleapis.com/compute/v1/projects/test-project/global/networks/test-network",
+			},
+			wantExternal: "projects/test-project/global/networks/test-network",
+		},
+		{
+			name: "external is full url(v1beta1)",
+			ref: &ComputeNetworkRef{
+				External: "https://www.googleapis.com/compute/v1beta1/projects/test-project/global/networks/test-network",
+			},
+			wantExternal: "projects/test-project/global/networks/test-network",
+		},
+		{
+			name: "external is full url(beta)",
+			ref: &ComputeNetworkRef{
+				External: "https://www.googleapis.com/compute/beta/projects/test-project/global/networks/test-network",
 			},
 			wantExternal: "projects/test-project/global/networks/test-network",
 		},
