@@ -71,7 +71,7 @@ func (m *modelAccount) AdapterForObject(ctx context.Context, reader client.Reade
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewAccountIdentity(ctx, reader, obj)
+	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +82,7 @@ func (m *modelAccount) AdapterForObject(ctx context.Context, reader client.Reade
 		return nil, err
 	}
 	return &AccountAdapter{
-		id:        id,
+		id:        id.(*krm.AccountIdentity),
 		gcpClient: gcpClient,
 		desired:   obj,
 	}, nil
@@ -144,11 +144,10 @@ func (a *AccountAdapter) Find(ctx context.Context) (bool, error) {
 			prevName = currName
 			if accountpb.DisplayName == *a.desired.Spec.DisplayName && accountpb.RegionCode == *a.desired.Spec.RegionCode {
 				a.actual = accountpb
-				resourceID, err := krm.ParseAccountExternal(accountpb.Name)
+				err := a.id.FromExternal(accountpb.Name)
 				if err != nil {
 					return false, fmt.Errorf("parsing Account %q: %w", accountpb.Name, err)
 				}
-				a.id.SetID(resourceID)
 				return true, nil
 			}
 			continue
@@ -224,8 +223,6 @@ func (a *AccountAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	desiredPb.Name = a.id.String()
 
 	paths := make(sets.Set[string])
-	// Option 1: This option is good for proto that has `field_mask` for output-only, immutable, required/optional.
-	// TODO(contributor): If choosing this option, remove the "Option 2" code.
 	{
 		var err error
 		paths, err = common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
@@ -233,14 +230,6 @@ func (a *AccountAdapter) Update(ctx context.Context, updateOp *directbase.Update
 			return err
 		}
 	}
-
-	//// Option 2: manually add all mutable fields.
-	//// TODO(contributor): If choosing this option, remove the "Option 1" code.
-	//{
-	//	if !reflect.DeepEqual(a.desired.Spec.DisplayName, a.actual.DisplayName) {
-	//		paths = paths.Insert("display_name")
-	//	}
-	//}
 
 	updated := a.actual
 	if len(paths) == 0 {
@@ -287,11 +276,11 @@ func (a *AccountAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 		return nil, mapCtx.Err()
 	}
 	if a.actual != nil {
-		resourceID, err := krm.ParseAccountExternal(a.actual.Name)
+		err := a.id.FromExternal(a.actual.Name)
 		if err != nil {
 			return nil, fmt.Errorf("parsing Account %q: %w", a.actual.Name, err)
 		}
-		obj.Spec.ResourceID = direct.LazyPtr(resourceID)
+		obj.Spec.ResourceID = direct.LazyPtr(a.id.ID())
 	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
