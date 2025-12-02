@@ -24,6 +24,8 @@ import (
 )
 
 func GetServiceMappingAndResourceConfig(smLoader *servicemappingloader.ServiceMappingLoader, urlHost, urlPath string) (*v1alpha1.ServiceMapping, *v1alpha1.ResourceConfig, error) {
+	// For SecretManager, update the urlHost to use the global service mapping even for regional secrets.
+	// This is because the service host is compared from config/servicemappings
 	if urlHost == "secretmanager.us-central1.rep.googleapis.com:443" {
 		urlHost = "secretmanager.googleapis.com"
 	}

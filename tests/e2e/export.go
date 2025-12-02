@@ -84,6 +84,7 @@ func exportResource(h *create.Harness, obj *unstructured.Unstructured, expectati
 		exportURI = "//cloudbuild.googleapis.com/projects/" + projectID + "/locations/" + location + "/workerPools/" + resourceID
 
 	case schema.GroupKind{Group: "secretmanager.cnrm.cloud.google.com", Kind: "SecretManagerSecret"}:
+		// Secret manager uses different endpoints for regional and global secrets
 		if found {
 			exportURI = fmt.Sprintf("//secretmanager.%s.rep.googleapis.com:443/projects/%s/locations/%s/secrets/%s", location, projectID, location, resourceID)
 		} else {

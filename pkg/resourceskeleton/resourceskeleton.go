@@ -64,6 +64,9 @@ func NewFromURI(uri string, smLoader *servicemappingloader.ServiceMappingLoader,
 		return nil, fmt.Errorf("error parsing '%v' as url: %w", uri, err)
 	}
 	canonicalHost := parsedURL.Host
+
+	// For secretmanager regional host would be secretmanager.us-central1.rep.googleapis.com:443. 
+	// Hence skipping region prefix trim for secretmanager.
 	if !strings.Contains(parsedURL.Host, "secretmanager") {
 		canonicalHost = trimRegionPrefix(parsedURL.Host) // e.g. "us-central1-aiplatform.googleapis.com" -> "aiplatform.googleapis.com"
 	}
