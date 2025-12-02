@@ -44,6 +44,7 @@ type MapperGenerator struct {
 	multiversion bool
 
 	importedPackages map[string]importedPackage
+	visiting         map[protoreflect.FullName]bool
 }
 
 type importedPackage struct {
@@ -58,6 +59,7 @@ func NewMapperGenerator(goPathForMessage OutputFunc, outputBaseDir string, gener
 		generatedFileAnnotation: generatedFileAnnotation,
 		multiversion:            multiversion,
 		importedPackages:        make(map[string]importedPackage),
+		visiting:                make(map[protoreflect.FullName]bool),
 	}
 	g.generatorBase.init(outputBaseDir)
 	return g
@@ -131,41 +133,48 @@ func (v *MapperGenerator) findKRMStructsForProto(msg protoreflect.MessageDescrip
 }
 
 func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
-	if _, visit := v.goPathForMessage(msg); !visit {
+	if v.visiting[msg.FullName()] {
 		return
 	}
-	goTypes := v.findKRMStructsForProto(msg)
-	if len(goTypes) == 0 {
-		klog.Infof("no go types found for proto %v", msg.FullName())
-		return
-	}
-	parentFile := msg.ParentFile()
-	fileOptions := parentFile.Options().(*descriptorpb.FileOptions)
-	protoGoPackage := fileOptions.GetGoPackage()
-	if ix := strings.Index(protoGoPackage, ";"); ix != -1 {
-		protoGoPackage = protoGoPackage[:ix]
+	v.visiting[msg.FullName()] = true
+	defer delete(v.visiting, msg.FullName())
+
+	// Process the current message if it's a candidate, but recurse regardless.
+	if _, visit := v.goPathForMessage(msg); visit {
+		goTypes := v.findKRMStructsForProto(msg)
+		if len(goTypes) == 0 {
+			klog.Infof("no go types found for proto %v, but will still check nested messages", msg.FullName())
+		} else {
+			parentFile := msg.ParentFile()
+			fileOptions := parentFile.Options().(*descriptorpb.FileOptions)
+			protoGoPackage := fileOptions.GetGoPackage()
+			if ix := strings.Index(protoGoPackage, ";"); ix != -1 {
+				protoGoPackage = protoGoPackage[:ix]
+			}
+
+			// Some exceptions in our proto mapping
+			// TODO: Move to flag?  How many of these are there?
+			switch protoGoPackage {
+			case "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb":
+				protoGoPackage = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
+			case "cloud.google.com/go/bigquery/apiv2/bigquerypb":
+				protoGoPackage = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/v2"
+			}
+
+			for _, goType := range goTypes {
+				v.typePairs = append(v.typePairs, typePair{
+					ProtoPackage:   msg.ParentFile().Package(),
+					ProtoGoPackage: protoGoPackage,
+					KRMType:        goType,
+					Proto:          msg,
+				})
+			}
+		}
 	}
 
-	// Some exceptions in our proto mapping
-	// TODO: Move to flag?  How many of these are there?
-	switch protoGoPackage {
-	case "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb":
-		protoGoPackage = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
-	case "cloud.google.com/go/bigquery/apiv2/bigquerypb":
-		protoGoPackage = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/bigquery/v2"
-	}
-
-	for _, goType := range goTypes {
-		v.typePairs = append(v.typePairs, typePair{
-			ProtoPackage:   msg.ParentFile().Package(),
-			ProtoGoPackage: protoGoPackage,
-			KRMType:        goType,
-			Proto:          msg,
-		})
-	}
-
-	for _, msg := range sortIntoMessageSlice(msg.Messages()) {
-		v.visitMessage(msg)
+	// Always recurse to nested messages
+	for _, nestedMsg := range sortIntoMessageSlice(msg.Messages()) {
+		v.visitMessage(nestedMsg)
 	}
 }
 

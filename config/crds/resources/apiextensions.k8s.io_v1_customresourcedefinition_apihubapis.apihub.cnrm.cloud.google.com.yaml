@@ -1,0 +1,560 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: apihubapis.apihub.cnrm.cloud.google.com
+spec:
+  group: apihub.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: APIHubAPI
+    listKind: APIHubAPIList
+    plural: apihubapis
+    shortNames:
+    - gcpapihubapi
+    - gcpapihubapis
+    singular: apihubapi
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: APIHubAPI is the Schema for the APIHubAPI API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: APIHubAPISpec defines the desired state of APIHubAPI
+            properties:
+              apiStyle:
+                description: 'Optional. The style of the API. This maps to the following
+                  system defined attribute: `projects/{project}/locations/{location}/attributes/system-api-style`
+                  attribute. The number of values for this attribute will be based
+                  on the cardinality of the attribute. The same can be retrieved via
+                  GetAttribute API. All values should be from the list of allowed
+                  values defined for the attribute.'
+                properties:
+                  enumValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is enum.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is enum.
+                        items:
+                          properties:
+                            description:
+                              description: Optional. The detailed description of the
+                                allowed value.
+                              type: string
+                            displayName:
+                              description: Required. The display name of the allowed
+                                value.
+                              type: string
+                            id:
+                              description: |-
+                                Required. The ID of the allowed value.
+                                 * If provided, the same will be used. The service will throw an error if
+                                 the specified id is already used by another allowed value in the same
+                                 attribute resource.
+                                 * If not provided, a system generated id derived from the display name
+                                 will be used. In this case, the service will handle conflict resolution
+                                 by adding a system generated suffix in case of duplicates.
+
+                                 This value should be 4-63 characters, and valid characters
+                                 are /[a-z][0-9]-/.
+                              type: string
+                            immutable:
+                              description: Optional. When set to true, the allowed
+                                value cannot be updated or deleted by the user. It
+                                can only be true for System defined attributes.
+                              type: boolean
+                          type: object
+                        type: array
+                    type: object
+                  jsonValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is JSON.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is string or JSON.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  stringValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is string.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is string or JSON.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                type: object
+              businessUnit:
+                description: 'Optional. The business unit owning the API. This maps
+                  to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-business-unit`
+                  attribute. The number of values for this attribute will be based
+                  on the cardinality of the attribute. The same can be retrieved via
+                  GetAttribute API. All values should be from the list of allowed
+                  values defined for the attribute.'
+                properties:
+                  enumValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is enum.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is enum.
+                        items:
+                          properties:
+                            description:
+                              description: Optional. The detailed description of the
+                                allowed value.
+                              type: string
+                            displayName:
+                              description: Required. The display name of the allowed
+                                value.
+                              type: string
+                            id:
+                              description: |-
+                                Required. The ID of the allowed value.
+                                 * If provided, the same will be used. The service will throw an error if
+                                 the specified id is already used by another allowed value in the same
+                                 attribute resource.
+                                 * If not provided, a system generated id derived from the display name
+                                 will be used. In this case, the service will handle conflict resolution
+                                 by adding a system generated suffix in case of duplicates.
+
+                                 This value should be 4-63 characters, and valid characters
+                                 are /[a-z][0-9]-/.
+                              type: string
+                            immutable:
+                              description: Optional. When set to true, the allowed
+                                value cannot be updated or deleted by the user. It
+                                can only be true for System defined attributes.
+                              type: boolean
+                          type: object
+                        type: array
+                    type: object
+                  jsonValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is JSON.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is string or JSON.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  stringValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is string.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is string or JSON.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                type: object
+              description:
+                description: Optional. The description of the API resource.
+                type: string
+              displayName:
+                description: Required. The display name of the API resource.
+                type: string
+              documentation:
+                description: Optional. The documentation for the API resource.
+                properties:
+                  externalURI:
+                    description: Optional. The uri of the externally hosted documentation.
+                    type: string
+                type: object
+              location:
+                description: Required. The location of the API.
+                type: string
+              maturityLevel:
+                description: 'Optional. The maturity level of the API. This maps to
+                  the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-maturity-level`
+                  attribute. The number of values for this attribute will be based
+                  on the cardinality of the attribute. The same can be retrieved via
+                  GetAttribute API. All values should be from the list of allowed
+                  values defined for the attribute.'
+                properties:
+                  enumValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is enum.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is enum.
+                        items:
+                          properties:
+                            description:
+                              description: Optional. The detailed description of the
+                                allowed value.
+                              type: string
+                            displayName:
+                              description: Required. The display name of the allowed
+                                value.
+                              type: string
+                            id:
+                              description: |-
+                                Required. The ID of the allowed value.
+                                 * If provided, the same will be used. The service will throw an error if
+                                 the specified id is already used by another allowed value in the same
+                                 attribute resource.
+                                 * If not provided, a system generated id derived from the display name
+                                 will be used. In this case, the service will handle conflict resolution
+                                 by adding a system generated suffix in case of duplicates.
+
+                                 This value should be 4-63 characters, and valid characters
+                                 are /[a-z][0-9]-/.
+                              type: string
+                            immutable:
+                              description: Optional. When set to true, the allowed
+                                value cannot be updated or deleted by the user. It
+                                can only be true for System defined attributes.
+                              type: boolean
+                          type: object
+                        type: array
+                    type: object
+                  jsonValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is JSON.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is string or JSON.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  stringValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is string.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is string or JSON.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                type: object
+              owner:
+                description: Optional. Owner details for the API resource.
+                properties:
+                  displayName:
+                    description: Optional. The name of the owner.
+                    type: string
+                  email:
+                    description: Required. The email of the owner.
+                    type: string
+                type: object
+              projectRef:
+                description: Required. The host project of the API.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The APIHubAPI name. If not given, the metadata.name will
+                  be used.
+                type: string
+              selectedVersion:
+                description: Optional. The selected version for an API resource. This
+                  can be used when special handling is needed on client side for particular
+                  version of the API. Format is `projects/{project}/locations/{location}/apis/{api}/versions/{version}`
+                type: string
+              targetUser:
+                description: 'Optional. The target users for the API. This maps to
+                  the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-target-user`
+                  attribute. The number of values for this attribute will be based
+                  on the cardinality of the attribute. The same can be retrieved via
+                  GetAttribute API. All values should be from the list of allowed
+                  values defined for the attribute.'
+                properties:
+                  enumValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is enum.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is enum.
+                        items:
+                          properties:
+                            description:
+                              description: Optional. The detailed description of the
+                                allowed value.
+                              type: string
+                            displayName:
+                              description: Required. The display name of the allowed
+                                value.
+                              type: string
+                            id:
+                              description: |-
+                                Required. The ID of the allowed value.
+                                 * If provided, the same will be used. The service will throw an error if
+                                 the specified id is already used by another allowed value in the same
+                                 attribute resource.
+                                 * If not provided, a system generated id derived from the display name
+                                 will be used. In this case, the service will handle conflict resolution
+                                 by adding a system generated suffix in case of duplicates.
+
+                                 This value should be 4-63 characters, and valid characters
+                                 are /[a-z][0-9]-/.
+                              type: string
+                            immutable:
+                              description: Optional. When set to true, the allowed
+                                value cannot be updated or deleted by the user. It
+                                can only be true for System defined attributes.
+                              type: boolean
+                          type: object
+                        type: array
+                    type: object
+                  jsonValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is JSON.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is string or JSON.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  stringValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is string.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is string or JSON.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                type: object
+              team:
+                description: 'Optional. The team owning the API. This maps to the
+                  following system defined attribute: `projects/{project}/locations/{location}/attributes/system-team`
+                  attribute. The number of values for this attribute will be based
+                  on the cardinality of the attribute. The same can be retrieved via
+                  GetAttribute API. All values should be from the list of allowed
+                  values defined for the attribute.'
+                properties:
+                  enumValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is enum.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is enum.
+                        items:
+                          properties:
+                            description:
+                              description: Optional. The detailed description of the
+                                allowed value.
+                              type: string
+                            displayName:
+                              description: Required. The display name of the allowed
+                                value.
+                              type: string
+                            id:
+                              description: |-
+                                Required. The ID of the allowed value.
+                                 * If provided, the same will be used. The service will throw an error if
+                                 the specified id is already used by another allowed value in the same
+                                 attribute resource.
+                                 * If not provided, a system generated id derived from the display name
+                                 will be used. In this case, the service will handle conflict resolution
+                                 by adding a system generated suffix in case of duplicates.
+
+                                 This value should be 4-63 characters, and valid characters
+                                 are /[a-z][0-9]-/.
+                              type: string
+                            immutable:
+                              description: Optional. When set to true, the allowed
+                                value cannot be updated or deleted by the user. It
+                                can only be true for System defined attributes.
+                              type: boolean
+                          type: object
+                        type: array
+                    type: object
+                  jsonValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is JSON.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is string or JSON.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  stringValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is string.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is string or JSON.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                type: object
+            required:
+            - displayName
+            - location
+            - projectRef
+            type: object
+          status:
+            description: APIHubAPIStatus defines the config connector machine state
+              of APIHubAPI
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the APIHubAPI resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. The time at which the API resource was
+                      created.
+                    type: string
+                  targetUser:
+                    description: 'Optional. The target users for the API. This maps
+                      to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-target-user`
+                      attribute. The number of values for this attribute will be based
+                      on the cardinality of the attribute. The same can be retrieved
+                      via GetAttribute API. All values should be from the list of
+                      allowed values defined for the attribute.'
+                    properties:
+                      attribute:
+                        description: 'Output only. The name of the attribute. Format:
+                          projects/{project}/locations/{location}/attributes/{attribute}'
+                        type: string
+                    type: object
+                  updateTime:
+                    description: Output only. The time at which the API resource was
+                      last updated.
+                    type: string
+                  versions:
+                    description: 'Output only. The list of versions present in an
+                      API resource. Note: An API resource can be associated with more
+                      than 1 version. Format is `projects/{project}/locations/{location}/apis/{api}/versions/{version}`'
+                    items:
+                      type: string
+                    type: array
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
