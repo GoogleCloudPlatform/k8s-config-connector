@@ -74,14 +74,32 @@ func (r *LocalRepository) LoadManifest(_ context.Context, componentName string, 
 	}
 	mode := cc.GetMode()
 
-	p := filepath.Join(r.basedir, "packages", componentName, version, crdFileName)
-	b, err := ioutil.ReadFile(p)
-	if err != nil {
-		return nil, fmt.Errorf("error reading file %s: %w", p, err)
+	// We concatenate multiple files into one string, separated by "---\n"
+	var buffer strings.Builder
+
+	// Load the CRDs first
+	{
+		p := filepath.Join(r.basedir, "packages", componentName, version, "crds.yaml")
+		b, err := os.ReadFile(p)
+		if err != nil {
+			return nil, fmt.Errorf("error reading file %s: %w", p, err)
+		}
+		buffer.Write(b)
+		buffer.WriteString("---\n")
 	}
-	var sb strings.Builder
-	sb.Write(b)
-	sb.WriteString("---\n")
+
+	// Load the webhooks next
+	{
+		p := filepath.Join(r.basedir, "packages", componentName, version, "webhooks.yaml")
+		b, err := os.ReadFile(p)
+		if err != nil {
+			return nil, fmt.Errorf("error reading file %s: %w", p, err)
+		}
+		buffer.Write(b)
+		buffer.WriteString("---\n")
+	}
+
+	// Load for cluster mode
 	if mode == k8s.ClusterMode {
 		var authIdentity string
 		if cc.Spec.GoogleServiceAccount != "" {
@@ -91,30 +109,32 @@ func (r *LocalRepository) LoadManifest(_ context.Context, componentName string, 
 		}
 		rlog.Info("loading manifest", "component", componentName, "version", version, "mode", mode, "identity", authIdentity)
 		p := filepath.Join(r.basedir, "packages", componentName, version, mode, authIdentity, cnrmSystemFileName)
-		b, err := ioutil.ReadFile(p)
+		b, err := os.ReadFile(p)
 		if err != nil {
 			return nil, fmt.Errorf("error reading file %s: %w", p, err)
 		}
-		sb.Write(b)
+		buffer.Write(b)
 		path := strings.Join([]string{r.basedir, "packages", componentName, version, mode, authIdentity}, "/")
-		return map[string]string{path: sb.String()}, nil
+		return map[string]string{path: buffer.String()}, nil
 	}
 
 	// otherwise we are in namesapce mode
-	rlog.Info("loading manifest", "component", componentName, "version", version, "mode", mode)
-	p = filepath.Join(r.basedir, "packages", componentName, version, "namespaced", cnrmSystemFileName)
-	b, err = os.ReadFile(p)
-	if err != nil {
-		return nil, fmt.Errorf("error reading file %s: %w", p, err)
+	{
+		rlog.Info("loading manifest", "component", componentName, "version", version, "mode", mode)
+		p := filepath.Join(r.basedir, "packages", componentName, version, "namespaced", cnrmSystemFileName)
+		b, err := os.ReadFile(p)
+		if err != nil {
+			return nil, fmt.Errorf("error reading file %s: %w", p, err)
+		}
+		buffer.Write(b)
+		path := strings.Join([]string{r.basedir, "packages", componentName, version, mode}, "/")
+		return map[string]string{path: buffer.String()}, nil
 	}
-	sb.Write(b)
-	path := strings.Join([]string{r.basedir, "packages", componentName, version, mode}, "/")
-	return map[string]string{path: sb.String()}, nil
 }
 
 func (r *LocalRepository) LoadNamespacedComponents(_ context.Context, componentName string, version string) (map[string]string, error) {
 	p := filepath.Join(r.basedir, "packages", componentName, version, "namespaced", perNamespaceComponentsFileName)
-	b, err := ioutil.ReadFile(p)
+	b, err := os.ReadFile(p)
 	if err != nil {
 		return nil, fmt.Errorf("error reading file %s: %w", p, err)
 	}

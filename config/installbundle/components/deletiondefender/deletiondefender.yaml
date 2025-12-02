@@ -43,6 +43,8 @@ spec:
     metadata:
       labels:
         cnrm.cloud.google.com/component: cnrm-deletiondefender
+      annotations:
+        cnrm.cloud.google.com/certificate-revision: "replaced-by-operator" # This will be replaced by the operator, to force a rolling-update of the pods during CA rotation
     spec:
       serviceAccountName: deletiondefender
       containers:

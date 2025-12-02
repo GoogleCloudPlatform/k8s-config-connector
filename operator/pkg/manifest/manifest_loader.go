@@ -31,7 +31,6 @@ var (
 )
 
 const (
-	crdFileName                    = "crds.yaml"
 	cnrmSystemFileName             = "0-cnrm-system.yaml"
 	perNamespaceComponentsFileName = "per-namespace-components.yaml"
 )
