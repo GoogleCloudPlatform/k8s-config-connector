@@ -33,7 +33,7 @@ package {{ .Version }}
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 

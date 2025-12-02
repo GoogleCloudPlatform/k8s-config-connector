@@ -29,8 +29,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
-  "appEngineIntegrationMode": 2,
-  "deleteProtectionState": 1,
   "locationId": "us-west2",
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
   "type": 1
@@ -190,25 +188,25 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Fdatabases%2Ffirestoredat
             "booleanValue": false
           },
           {
-            "doubleValue": 1
+            "integerValue": "1"
           },
           {
-            "doubleValue": 2
+            "integerValue": "2"
           },
           {
             "stringValue": "three"
           },
           {
-            "doubleValue": 4
+            "integerValue": "4"
           },
           {
-            "doubleValue": 5
+            "integerValue": "5"
           },
           {
             "stringValue": "six"
           },
           {
-            "doubleValue": 7
+            "integerValue": "7"
           }
         ]
       }
@@ -220,7 +218,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Fdatabases%2Ffirestoredat
       "doubleValue": 3.14
     },
     "intField": {
-      "doubleValue": 123
+      "integerValue": "123"
     },
     "objectField": {
       "mapValue": {
@@ -260,25 +258,25 @@ X-Xss-Protection: 0
             "booleanValue": false
           },
           {
-            "doubleValue": 1
+            "integerValue": "1"
           },
           {
-            "doubleValue": 2
+            "integerValue": "2"
           },
           {
             "stringValue": "three"
           },
           {
-            "doubleValue": 4
+            "integerValue": "4"
           },
           {
-            "doubleValue": 5
+            "integerValue": "5"
           },
           {
             "stringValue": "six"
           },
           {
-            "doubleValue": 7
+            "integerValue": "7"
           }
         ]
       }
@@ -290,7 +288,7 @@ X-Xss-Protection: 0
       "doubleValue": 3.14
     },
     "intField": {
-      "doubleValue": 123
+      "integerValue": "123"
     },
     "objectField": {
       "mapValue": {
@@ -339,25 +337,25 @@ X-Xss-Protection: 0
             "booleanValue": false
           },
           {
-            "doubleValue": 1
+            "integerValue": "1"
           },
           {
-            "doubleValue": 2
+            "integerValue": "2"
           },
           {
             "stringValue": "three"
           },
           {
-            "doubleValue": 4
+            "integerValue": "4"
           },
           {
-            "doubleValue": 5
+            "integerValue": "5"
           },
           {
             "stringValue": "six"
           },
           {
-            "doubleValue": 7
+            "integerValue": "7"
           }
         ]
       }
@@ -369,7 +367,7 @@ X-Xss-Protection: 0
       "doubleValue": 3.14
     },
     "intField": {
-      "doubleValue": 123
+      "integerValue": "123"
     },
     "objectField": {
       "mapValue": {
@@ -407,25 +405,25 @@ X-Goog-Request-Params: document.name=projects%2F${projectId}%2Fdatabases%2Ffires
             "booleanValue": false
           },
           {
-            "doubleValue": 1
+            "integerValue": "1"
           },
           {
-            "doubleValue": 2
+            "integerValue": "2"
           },
           {
             "stringValue": "three (3)"
           },
           {
-            "doubleValue": 4
+            "integerValue": "4"
           },
           {
-            "doubleValue": 5
+            "integerValue": "5"
           },
           {
             "stringValue": "six (6)"
           },
           {
-            "doubleValue": 7
+            "integerValue": "7"
           }
         ]
       }
@@ -437,7 +435,7 @@ X-Goog-Request-Params: document.name=projects%2F${projectId}%2Fdatabases%2Ffires
       "doubleValue": 3.1415
     },
     "intField": {
-      "doubleValue": 123
+      "integerValue": "123"
     },
     "objectField": {
       "mapValue": {
@@ -478,25 +476,25 @@ X-Xss-Protection: 0
             "booleanValue": false
           },
           {
-            "doubleValue": 1
+            "integerValue": "1"
           },
           {
-            "doubleValue": 2
+            "integerValue": "2"
           },
           {
             "stringValue": "three (3)"
           },
           {
-            "doubleValue": 4
+            "integerValue": "4"
           },
           {
-            "doubleValue": 5
+            "integerValue": "5"
           },
           {
             "stringValue": "six (6)"
           },
           {
-            "doubleValue": 7
+            "integerValue": "7"
           }
         ]
       }
@@ -508,7 +506,7 @@ X-Xss-Protection: 0
       "doubleValue": 3.1415
     },
     "intField": {
-      "doubleValue": 123
+      "integerValue": "123"
     },
     "objectField": {
       "mapValue": {
@@ -557,25 +555,25 @@ X-Xss-Protection: 0
             "booleanValue": false
           },
           {
-            "doubleValue": 1
+            "integerValue": "1"
           },
           {
-            "doubleValue": 2
+            "integerValue": "2"
           },
           {
             "stringValue": "three (3)"
           },
           {
-            "doubleValue": 4
+            "integerValue": "4"
           },
           {
-            "doubleValue": 5
+            "integerValue": "5"
           },
           {
             "stringValue": "six (6)"
           },
           {
-            "doubleValue": 7
+            "integerValue": "7"
           }
         ]
       }
@@ -587,7 +585,7 @@ X-Xss-Protection: 0
       "doubleValue": 3.1415
     },
     "intField": {
-      "doubleValue": 123
+      "integerValue": "123"
     },
     "objectField": {
       "mapValue": {
@@ -695,7 +693,7 @@ X-Xss-Protection: 0
     "deleteTime": "2024-04-01T12:34:56.123456Z",
     "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
-    "freeTier": false,
+    "freeTier": true,
     "locationId": "us-west2",
     "name": "projects/${projectId}/databases/${randomDatabaseID}",
     "pointInTimeRecoveryEnablement": 2,

@@ -51,7 +51,7 @@ func DataplexLakeSpec_FromProto(mapCtx *direct.MapContext, in *pb.Lake) *krm.Dat
 	// MISSING: Uid
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	out.Labels = in.Labels
+	// out.Labels = in.Labels
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: State
 	// MISSING: ServiceAccount
@@ -70,7 +70,7 @@ func DataplexLakeSpec_ToProto(mapCtx *direct.MapContext, in *krm.DataplexLakeSpe
 	// MISSING: Uid
 	// MISSING: CreateTime
 	// MISSING: UpdateTime
-	out.Labels = in.Labels
+	// out.Labels = in.Labels
 	out.Description = direct.ValueOf(in.Description)
 	// MISSING: State
 	// MISSING: ServiceAccount

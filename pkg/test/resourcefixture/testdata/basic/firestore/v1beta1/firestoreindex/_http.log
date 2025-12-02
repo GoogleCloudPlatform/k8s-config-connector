@@ -29,8 +29,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
-  "appEngineIntegrationMode": 2,
-  "deleteProtectionState": 1,
   "locationId": "us-west2",
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
   "type": 1
@@ -361,7 +359,7 @@ X-Xss-Protection: 0
     "deleteTime": "2024-04-01T12:34:56.123456Z",
     "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
-    "freeTier": false,
+    "freeTier": true,
     "locationId": "us-west2",
     "name": "projects/${projectId}/databases/${randomDatabaseID}",
     "pointInTimeRecoveryEnablement": 2,

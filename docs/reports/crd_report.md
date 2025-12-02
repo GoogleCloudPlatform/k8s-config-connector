@@ -13,6 +13,7 @@
 | alloydb.cnrm.cloud.google.com                 | AlloyDBCluster                                  | True         | True        | False  | Terraform  |
 | alloydb.cnrm.cloud.google.com                 | AlloyDBInstance                                 | True         | True        | False  | Direct     |
 | alloydb.cnrm.cloud.google.com                 | AlloyDBUser                                     | False        | True        | False  | Terraform  |
+| analytics.cnrm.cloud.google.com               | AnalyticsAccount                                | True         | False       | False  | Direct     |
 | apigateway.cnrm.cloud.google.com              | APIGatewayAPIConfig                             | True         | False       | False  | Terraform  |
 | apigateway.cnrm.cloud.google.com              | APIGatewayAPI                                   | True         | True        | False  | Direct     |
 | apigateway.cnrm.cloud.google.com              | APIGatewayGateway                               | True         | False       | False  | Terraform  |
@@ -40,6 +41,7 @@
 | artifactregistry.cnrm.cloud.google.com        | ArtifactRegistryRepository                      | False        | True        | False  | Terraform  |
 | asset.cnrm.cloud.google.com                   | AssetFeed                                       | True         | True        | False  | Direct     |
 | asset.cnrm.cloud.google.com                   | AssetSavedQuery                                 | True         | True        | False  | Direct     |
+| assuredworkloads.cnrm.cloud.google.com        | AssuredWorkloadsWorkload                        | True         | False       | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupPlanAssociation                   | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupPlan                              | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupVault                             | True         | True        | False  | Direct     |
@@ -79,6 +81,7 @@
 | billingbudgets.cnrm.cloud.google.com          | BillingBudgetsBudget                            | False        | True        | False  | DCL        |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationAttestor                     | False        | True        | False  | DCL        |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationPolicy                       | False        | True        | False  | DCL        |
+| certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificateIssuanceConfig     | True         | False       | False  | Direct     |
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificateMapEntry           | True         | True        | False  | Terraform  |
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificateMap                | True         | True        | False  | Terraform  |
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificate                   | True         | True        | False  | Terraform  |
@@ -91,6 +94,7 @@
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployDeliveryPipeline                     | True         | True        | False  | Direct     |
 | clouddeploy.cnrm.cloud.google.com             | CloudDeployDeployPolicy                         | True         | False       | False  | Direct     |
 | clouddms.cnrm.cloud.google.com                | CloudDMSConversionWorkspace                     | True         | False       | False  | Direct     |
+| clouddms.cnrm.cloud.google.com                | CloudDMSMigrationJob                            | True         | False       | False  | Direct     |
 | clouddms.cnrm.cloud.google.com                | CloudDMSPrivateConnection                       | True         | False       | False  | Direct     |
 | cloudfunctions2.cnrm.cloud.google.com         | CloudFunctions2Function                         | True         | False       | False  | Terraform  |
 | cloudfunctions.cnrm.cloud.google.com          | CloudFunctionsFunction                          | False        | True        | False  | DCL        |

@@ -15,7 +15,11 @@
 package firestore
 
 import (
+	"bytes"
 	"encoding/json"
+	"errors"
+	"fmt"
+	"strings"
 
 	pb "cloud.google.com/go/firestore/apiv1/firestorepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/firestore/v1alpha1"
@@ -35,14 +39,124 @@ func FirestoreDocumentSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.
 	for k, v := range in.Fields {
 		outV := Field_FromProto(mapCtx, v)
 
-		j, err := json.Marshal(outV)
+		j, err := toJSON(outV)
 		if err != nil {
-			return nil
+			mapCtx.Errorf("failed to marshal field %q=%q in FirestoreDocument: %v", k, outV, err)
+			continue
 		}
-		out.Fields[k] = apiextensionsv1.JSON{Raw: j}
+		out.Fields[k] = j
 	}
 
 	return out
+}
+
+// toJSON converts a Go value to an apiextensionsv1.JSON representation,
+// taking care to preserve integer and float types to avoid type conversion issues,
+// even when nested in an array or map.
+func toJSON(in any) (apiextensionsv1.JSON, error) {
+	render := in
+	switch in := in.(type) {
+	case []any:
+		arr := make([]apiextensionsv1.JSON, 0, len(in))
+		for _, elem := range in {
+			v, err := toJSON(elem)
+			if err != nil {
+				return apiextensionsv1.JSON{}, err
+			}
+			arr = append(arr, v)
+		}
+		render = arr
+		// Fall-through
+
+	case map[string]any:
+		m := make(map[string]apiextensionsv1.JSON)
+		for k, elem := range in {
+			v, err := toJSON(elem)
+			if err != nil {
+				return apiextensionsv1.JSON{}, err
+			}
+			m[k] = v
+		}
+		render = m
+		// Fall-through
+
+	case int, int32, int64:
+		// As a special case, we want to avoid encoding int64 as a float in JSON,
+		// because this causes type conversions.
+		// So we manually format it as a string.
+		s := fmt.Sprintf("%d", in)
+		return apiextensionsv1.JSON{Raw: []byte(s)}, nil
+	case float32, float64:
+		// Force float to be formatted with scientific notation (%e),
+		// so we don't convert back to int accidentally.
+		s := fmt.Sprintf("%v", in)
+		if !strings.ContainsAny(s, "eE.") {
+			s += ".0"
+		}
+		return apiextensionsv1.JSON{Raw: []byte(s)}, nil
+
+	default:
+		// Fall-through
+	}
+
+	b, err := json.Marshal(render)
+	if err != nil {
+		return apiextensionsv1.JSON{}, err
+	}
+	return apiextensionsv1.JSON{Raw: b}, nil
+}
+
+// fromJSON converts an apiextensionsv1.JSON representation to a Go value,
+// taking care to preserve integer and float types to avoid type conversion issues,
+// even when nested in an array or map.
+func fromJSON(in []byte) (any, error) {
+	var wrappedValue any
+	decoder := json.NewDecoder(bytes.NewReader(in))
+	decoder.UseNumber()
+	if err := decoder.Decode(&wrappedValue); err != nil {
+		return nil, err
+	}
+
+	// Recursively unwrap json.Number to int64 or float64 as appropriate.
+	var errs []error
+	var unwrapJSONValue func(any) any
+	unwrapJSONValue = func(v any) any {
+		switch v := v.(type) {
+		case json.Number:
+			if strings.ContainsAny(v.String(), "Ee.") {
+				// Parse as float64
+				if f, err := v.Float64(); err == nil {
+					return f
+				} else {
+					errs = append(errs, fmt.Errorf("failed to parse json.Number %q as float64: %w", v.String(), err))
+				}
+			} else {
+				// Parse as int64
+				if f, err := v.Int64(); err == nil {
+					return f
+				} else {
+					errs = append(errs, fmt.Errorf("failed to parse json.Number %q as int64: %w", v.String(), err))
+				}
+			}
+			return nil
+		case []any:
+			arr := make([]any, len(v))
+			for i, elem := range v {
+				arr[i] = unwrapJSONValue(elem)
+			}
+			return arr
+		case map[string]any:
+			m := make(map[string]any, len(v))
+			for k, elem := range v {
+				m[k] = unwrapJSONValue(elem)
+			}
+			return m
+		default:
+			return v
+		}
+	}
+
+	return unwrapJSONValue(wrappedValue), errors.Join(errs...)
 }
 
 func Field_FromProto(mapCtx *direct.MapContext, in *pb.Value) any {
@@ -104,8 +218,8 @@ func FirestoreDocumentSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.F
 			continue
 		}
 
-		var wrappedValue any
-		if err := json.Unmarshal(v.Raw, &wrappedValue); err != nil {
+		wrappedValue, err := fromJSON(v.Raw)
+		if err != nil {
 			mapCtx.Errorf("failed to unmarshal JSON field in FirestoreDocument: %v", err)
 			out.Fields[k] = &pb.Value{ValueType: &pb.Value_NullValue{}}
 			continue

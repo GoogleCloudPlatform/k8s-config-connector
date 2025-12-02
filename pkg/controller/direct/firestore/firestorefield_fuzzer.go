@@ -19,8 +19,8 @@
 package firestore
 
 import (
+	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
-	pb "google.golang.org/genproto/googleapis/firestore/admin/v1"
 )
 
 func init() {
@@ -32,20 +32,30 @@ func firestoreFieldFuzzer() fuzztesting.KRMFuzzer {
 		FirestoreFieldSpec_v1alpha1_FromProto, FirestoreFieldSpec_v1alpha1_ToProto,
 		FirestoreFieldObservedState_v1alpha1_FromProto, FirestoreFieldObservedState_v1alpha1_ToProto,
 	)
+	f.FilterSpec = func(in *pb.Field) {
+		for _, index := range in.GetIndexConfig().GetIndexes() {
+			for _, field := range index.GetFields() {
+				if x, ok := field.GetValueMode().(*pb.Index_IndexField_ArrayConfig_); ok {
+					// If we specify an ArrayConfig, it should not be the unspecified value.
+					if x.ArrayConfig == pb.Index_IndexField_ARRAY_CONFIG_UNSPECIFIED {
+						x.ArrayConfig = pb.Index_IndexField_CONTAINS
+					}
+				}
+			}
+		}
+	}
 
 	f.IdentityField(".name")
 
 	f.SpecField(".index_config")
+	f.SpecField(".ttl_config")
+
 	f.StatusField(".index_config.ancestor_field")
 	f.StatusField(".index_config.reverting")
 	f.StatusField(".index_config.uses_ancestor_config")
 	f.StatusField(".index_config.indexes[].name")
 	f.StatusField(".index_config.indexes[].state")
 	f.StatusField(".ttl_config.state")
-
-	f.Unimplemented_NotYetTriaged(".index_config.indexes[].fields[].array_config")
-	f.Unimplemented_NotYetTriaged(".index_config.indexes[].fields[].order")
-	f.Unimplemented_NotYetTriaged(".ttl_config")
 
 	return f
 }

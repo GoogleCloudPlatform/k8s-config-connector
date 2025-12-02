@@ -99,6 +99,18 @@ func AddUnmanagedDetector(mgr manager.Manager, rd *controller.Deps) error {
 		ControllerName: "unmanaged-detector-registration-controller",
 	}
 
+	registerUnmanagedDetectorController := func(r *ReconcileRegistration, _ *apiextensions.CustomResourceDefinition, gvk schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
+		ctx := context.TODO()
+
+		if _, ok := k8s.IgnoredKindList[gvk.Kind]; ok {
+			return nil, nil
+		}
+		if err := unmanageddetector.Add(ctx, r.mgr, gvk); err != nil {
+			return nil, fmt.Errorf("error registering unmanaged detector controller for '%v': %w", gvk.Kind, err)
+		}
+		return nil, nil
+	}
+
 	if err := add(mgr, &controller.Deps{}, registerUnmanagedDetectorController, opt); err != nil {
 		return fmt.Errorf("error adding unmanaged-detector registration controller: %w", err)
 	}
@@ -354,18 +366,6 @@ func registerDeletionDefenderController(r *ReconcileRegistration, crd *apiextens
 	}
 	if err := deletiondefender.Add(r.mgr, crd); err != nil {
 		return nil, fmt.Errorf("error registering deletion defender controller for '%v': %w", crd.GetName(), err)
-	}
-	return nil, nil
-}
-
-func registerUnmanagedDetectorController(r *ReconcileRegistration, crd *apiextensions.CustomResourceDefinition, _ schema.GroupVersionKind) (k8s.SchemaReferenceUpdater, error) {
-	ctx := context.TODO()
-
-	if _, ok := k8s.IgnoredKindList[crd.Spec.Names.Kind]; ok {
-		return nil, nil
-	}
-	if err := unmanageddetector.Add(ctx, r.mgr, crd); err != nil {
-		return nil, fmt.Errorf("error registering unmanaged detector controller for '%v': %w", crd.GetName(), err)
 	}
 	return nil, nil
 }

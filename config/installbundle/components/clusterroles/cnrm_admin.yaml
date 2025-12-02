@@ -44,6 +44,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - analytics.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - apigateway.cnrm.cloud.google.com
   resources:
   - '*'
@@ -117,6 +129,18 @@ rules:
   - delete
 - apiGroups:
   - asset.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - assuredworkloads.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

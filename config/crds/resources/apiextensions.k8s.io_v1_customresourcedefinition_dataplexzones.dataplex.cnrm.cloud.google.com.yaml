@@ -137,11 +137,6 @@ spec:
               displayName:
                 description: Optional. User friendly display name.
                 type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. User defined labels for the zone.
-                type: object
               lakeRef:
                 description: Reference to the parent DataplexLake that owns this Zone.
                 oneOf:

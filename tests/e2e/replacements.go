@@ -104,14 +104,6 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 		return "${creatorID}"
 	case "tensorboards":
 		return "${tensorboardID}"
-	case "tagKeys":
-		if name == "namespaced" {
-			// This is actually a search operation: https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys/getNamespaced
-			return ""
-		}
-		return "${tagKeyID}"
-	case "tagValues":
-		return "${tagValueID}"
 	case "datasets":
 		return "${datasetID}"
 	case "networks":
@@ -189,7 +181,9 @@ func (r *Replacements) ExtractIDsFromLinks(link string) {
 				// Avoid marking some well-known values that are not operation ids
 				switch item.Name {
 				case "projects":
-				// Bigtable uses an unusual operation path: "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+					// Bigtable uses an unusual operation path: "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+				case "accessPolicies":
+				// Access Context Manager uses an unusual operation path: "operations/accessPolicies/${accessPolicyId}/delete/${operationID}"
 				default:
 					r.OperationIDs[item.Name] = true
 				}

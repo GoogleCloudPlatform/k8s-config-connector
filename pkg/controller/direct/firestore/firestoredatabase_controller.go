@@ -26,20 +26,16 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	apiv1 "cloud.google.com/go/firestore/apiv1/admin"
-	firestorepb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
-	"google.golang.org/protobuf/proto"
+	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-)
-
-const (
-	ctrlName = "firestoredatabase-controller"
 )
 
 func init() {
@@ -107,13 +103,13 @@ type Adapter struct {
 	id                   *krm.FirestoreDatabaseIdentity
 	firestoreAdminClient *apiv1.FirestoreAdminClient
 	desired              *krm.FirestoreDatabase
-	actual               *firestorepb.Database
+	actual               *pb.Database
 }
 
 var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 
 	if a.id == nil {
 		return false, nil
@@ -122,8 +118,8 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	fqn := a.id.String()
 
 	log.V(2).Info("getting FirestoreDatabase", "name", fqn)
-	req := &firestorepb.GetDatabaseRequest{Name: fqn}
-	firestoredatabasepb, err := a.firestoreAdminClient.GetDatabase(ctx, req)
+	req := &pb.GetDatabaseRequest{Name: fqn}
+	actual, err := a.firestoreAdminClient.GetDatabase(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
 			return false, nil
@@ -131,30 +127,30 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting FirestoreDatabase %q: %w", fqn, err)
 	}
 
-	a.actual = firestoredatabasepb
+	a.actual = actual
 	return true, nil
 }
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	fqn := a.id.String()
 
-	u := createOp.GetUnstructured()
-
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("creating FirestoreDatabase", "name", fqn)
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := FirestoreDatabaseSpec_ToProto(mapCtx, &desired.Spec)
+	resource := FirestoreDatabaseSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 	resource.Name = fqn
 
-	// Apply default values.
-	ApplyFirestoreDatabaseDefaults(resource)
+	// Type is required, and we default it to FIRESTORE_NATIVE if unspecified.
+	if resource.Type == pb.Database_DATABASE_TYPE_UNSPECIFIED {
+		resource.Type = pb.Database_FIRESTORE_NATIVE
+	}
 
-	req := &firestorepb.CreateDatabaseRequest{
+	req := &pb.CreateDatabaseRequest{
 		Parent:     a.id.Parent.String(),
 		Database:   resource,
 		DatabaseId: a.id.Database,
@@ -173,7 +169,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	// HACK: We wait for the negative-cache in the API server(s) to expire.
 	time.Sleep(15 * time.Second)
 	for {
-		_, err := a.firestoreAdminClient.GetDatabase(ctx, &firestorepb.GetDatabaseRequest{Name: fqn})
+		_, err := a.firestoreAdminClient.GetDatabase(ctx, &pb.GetDatabaseRequest{Name: fqn})
 		if err == nil {
 			break
 		}
@@ -181,75 +177,76 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		time.Sleep(15 * time.Second)
 	}
 
-	status := &krm.FirestoreDatabaseStatus{}
-	status.ObservedState = FirestoreDatabaseObservedState_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	status.ExternalRef = direct.PtrTo(a.id.String())
-	return setStatus(u, status)
+	return a.setStatus(ctx, createOp, created)
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	fqn := a.id.String()
-	u := updateOp.GetUnstructured()
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("updating FirestoreDatabase", "name", fqn)
 	mapCtx := &direct.MapContext{}
 
-	desired := a.desired.DeepCopy()
-	resource := FirestoreDatabaseSpec_ToProto(mapCtx, &desired.Spec)
+	desired := FirestoreDatabaseSpec_v1beta1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	desired.Name = fqn
 
-	// Apply default values.
-	ApplyFirestoreDatabaseDefaults(resource)
+	// Type is required, and we default it to FIRESTORE_NATIVE if unspecified.
+	if desired.Type == pb.Database_DATABASE_TYPE_UNSPECIFIED {
+		desired.Type = pb.Database_FIRESTORE_NATIVE
+	}
 
-	newDb := proto.Clone(a.actual).(*firestorepb.Database)
+	// Simulate server-side defaulting, so we don't issue updates for fields that
+	// are different only because of defaulting.
+	expected := direct.ProtoClone(desired)
+	ApplyServerSideDefaults(expected)
+
+	actual := a.actual
+
+	diff := &structuredreporting.Diff{}
 
 	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(resource.ConcurrencyMode, a.actual.ConcurrencyMode) {
-		// Skip update if concurrency_mode is unspecified
-		if resource.ConcurrencyMode != firestorepb.Database_CONCURRENCY_MODE_UNSPECIFIED {
-			newDb.ConcurrencyMode = resource.ConcurrencyMode
-			updateMask.Paths = append(updateMask.Paths, "concurrency_mode")
+	if !reflect.DeepEqual(actual.ConcurrencyMode, expected.ConcurrencyMode) {
+		diff.AddField("concurrency_mode", actual.ConcurrencyMode, desired.ConcurrencyMode)
+		updateMask.Paths = append(updateMask.Paths, "concurrency_mode")
+	}
+	if !reflect.DeepEqual(actual.PointInTimeRecoveryEnablement, expected.PointInTimeRecoveryEnablement) {
+		diff.AddField("point_in_time_recovery_enablement", actual.PointInTimeRecoveryEnablement, desired.PointInTimeRecoveryEnablement)
+		updateMask.Paths = append(updateMask.Paths, "point_in_time_recovery_enablement")
+	}
+	if !reflect.DeepEqual(actual.AppEngineIntegrationMode, expected.AppEngineIntegrationMode) {
+		diff.AddField("app_engine_integration_mode", actual.AppEngineIntegrationMode, desired.AppEngineIntegrationMode)
+		updateMask.Paths = append(updateMask.Paths, "app_engine_integration_mode")
+	}
+	if !reflect.DeepEqual(actual.DeleteProtectionState, expected.DeleteProtectionState) {
+		diff.AddField("delete_protection_state", actual.DeleteProtectionState, desired.DeleteProtectionState)
+		updateMask.Paths = append(updateMask.Paths, "delete_protection_state")
+	}
+
+	structuredreporting.ReportDiff(ctx, diff)
+
+	latest := direct.ProtoClone(actual)
+	if len(updateMask.Paths) != 0 {
+		req := &pb.UpdateDatabaseRequest{
+			Database:   desired,
+			UpdateMask: updateMask,
 		}
-	}
-	if !reflect.DeepEqual(resource.PointInTimeRecoveryEnablement, a.actual.PointInTimeRecoveryEnablement) {
-		// Skip update if point_in_time_recovery_enablement is unspecified
-		if resource.PointInTimeRecoveryEnablement != firestorepb.Database_POINT_IN_TIME_RECOVERY_ENABLEMENT_UNSPECIFIED {
-			newDb.PointInTimeRecoveryEnablement = resource.PointInTimeRecoveryEnablement
-			updateMask.Paths = append(updateMask.Paths, "point_in_time_recovery_enablement")
+		op, err := a.firestoreAdminClient.UpdateDatabase(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating FirestoreDatabase %q: %w", fqn, err)
 		}
+
+		updated, err := op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("FirestoreDatabase %s waiting update: %w", fqn, err)
+		}
+		log.V(2).Info("successfully updated FirestoreDatabase", "name", fqn)
+		latest = updated
 	}
 
-	if len(updateMask.Paths) == 0 {
-		return nil
-	}
-
-	req := &firestorepb.UpdateDatabaseRequest{
-		Database:   newDb,
-		UpdateMask: updateMask,
-	}
-	op, err := a.firestoreAdminClient.UpdateDatabase(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating FirestoreDatabase %q: %w", fqn, err)
-	}
-
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("FirestoreDatabase %s waiting update: %w", fqn, err)
-	}
-	log.V(2).Info("successfully updated FirestoreDatabase", "name", fqn)
-
-	status := &krm.FirestoreDatabaseStatus{}
-	status.ObservedState = FirestoreDatabaseObservedState_FromProto(mapCtx, updated)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	return setStatus(u, status)
+	return a.setStatus(ctx, updateOp, latest)
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -259,7 +256,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	}
 
 	mapCtx := &direct.MapContext{}
-	dbSpec := FirestoreDatabaseSpec_FromProto(mapCtx, a.actual)
+	dbSpec := FirestoreDatabaseSpec_v1beta1_FromProto(mapCtx, a.actual)
 
 	db := &krm.FirestoreDatabase{
 		Spec: *dbSpec,
@@ -285,10 +282,10 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	fqn := a.id.String()
 
-	log := klog.FromContext(ctx).WithName(ctrlName)
+	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting FirestoreDatabase", "name", fqn)
 
-	req := &firestorepb.DeleteDatabaseRequest{
+	req := &pb.DeleteDatabaseRequest{
 		Name: fqn,
 		Etag: a.actual.Etag,
 	}
@@ -310,20 +307,15 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	return true, nil
 }
 
-func setStatus(u *unstructured.Unstructured, typedStatus any) error {
-	status, err := runtime.DefaultUnstructuredConverter.ToUnstructured(typedStatus)
-	if err != nil {
-		return fmt.Errorf("error converting status to unstructured: %w", err)
+func (a *Adapter) setStatus(ctx context.Context, op directbase.Operation, latest *pb.Database) error {
+	status := &krm.FirestoreDatabaseStatus{}
+	status.ExternalRef = direct.PtrTo(a.id.String())
+
+	mapCtx := &direct.MapContext{}
+	status.ObservedState = FirestoreDatabaseObservedState_FromProto(mapCtx, latest)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
 	}
 
-	old, _, _ := unstructured.NestedMap(u.Object, "status")
-	if old != nil {
-		status["conditions"] = old["conditions"]
-		status["observedGeneration"] = old["observedGeneration"]
-		status["externalRef"] = old["externalRef"]
-	}
-
-	u.Object["status"] = status
-
-	return nil
+	return op.UpdateStatus(ctx, status, nil)
 }

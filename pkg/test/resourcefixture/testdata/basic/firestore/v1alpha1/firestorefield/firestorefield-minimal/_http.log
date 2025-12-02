@@ -29,8 +29,6 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
-  "appEngineIntegrationMode": 2,
-  "deleteProtectionState": 1,
   "locationId": "us-west2",
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
   "type": 1
@@ -389,7 +387,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/my-collection/fields/field123?%24alt=json%3Benum-encoding%3Dint&updateMask=indexConfig
+PATCH https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/my-collection/fields/field123?%24alt=json%3Benum-encoding%3Dint&updateMask=indexConfig%2CttlConfig
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: field.name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2FcollectionGroups%2Fmy-collection%2Ffields%2Ffield123
@@ -408,7 +406,8 @@ X-Goog-Request-Params: field.name=projects%2F${projectId}%2Fdatabases%2Ffirestor
       }
     ]
   },
-  "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/my-collection/fields/field123"
+  "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/my-collection/fields/field123",
+  "ttlConfig": {}
 }
 
 200 OK
@@ -452,7 +451,10 @@ X-Xss-Protection: 0
       }
     ],
     "startTime": "2024-04-01T12:34:56.123456Z",
-    "state": 1
+    "state": 1,
+    "ttlConfigDelta": {
+      "changeType": 1
+    }
   },
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}"
 }
@@ -508,7 +510,10 @@ X-Xss-Protection: 0
     ],
     "progressDocuments": {},
     "startTime": "2024-04-01T12:34:56.123456Z",
-    "state": "SUCCESSFUL"
+    "state": "SUCCESSFUL",
+    "ttlConfigDelta": {
+      "changeType": "ADD"
+    }
   },
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}",
   "response": {
@@ -528,7 +533,10 @@ X-Xss-Protection: 0
         }
       ]
     },
-    "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/my-collection/fields/field123"
+    "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/my-collection/fields/field123",
+    "ttlConfig": {
+      "state": "ACTIVE"
+    }
   }
 }
 
@@ -565,7 +573,10 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/my-collection/fields/field123"
+  "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/my-collection/fields/field123",
+  "ttlConfig": {
+    "state": 2
+  }
 }
 
 ---
@@ -620,7 +631,10 @@ X-Xss-Protection: 0
       }
     ],
     "startTime": "2024-04-01T12:34:56.123456Z",
-    "state": 1
+    "state": 1,
+    "ttlConfigDelta": {
+      "changeType": 2
+    }
   },
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}"
 }
@@ -676,7 +690,10 @@ X-Xss-Protection: 0
     ],
     "progressDocuments": {},
     "startTime": "2024-04-01T12:34:56.123456Z",
-    "state": "SUCCESSFUL"
+    "state": "SUCCESSFUL",
+    "ttlConfigDelta": {
+      "changeType": "REMOVE"
+    }
   },
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}",
   "response": {
@@ -844,7 +861,7 @@ X-Xss-Protection: 0
     "deleteTime": "2024-04-01T12:34:56.123456Z",
     "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
-    "freeTier": false,
+    "freeTier": true,
     "locationId": "us-west2",
     "name": "projects/${projectId}/databases/${randomDatabaseID}",
     "pointInTimeRecoveryEnablement": 2,

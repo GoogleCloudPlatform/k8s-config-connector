@@ -35,7 +35,6 @@ func dataplexEntryGroupFuzzer() fuzztesting.KRMFuzzer {
 
 	f.SpecFields.Insert(".description")
 	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".labels")
 
 	f.StatusFields.Insert(".uid")
 	f.StatusFields.Insert(".create_time")
@@ -44,6 +43,7 @@ func dataplexEntryGroupFuzzer() fuzztesting.KRMFuzzer {
 
 	f.UnimplementedFields.Insert(".name") // special field
 	f.Unimplemented_Etag()
+	f.Unimplemented_LabelsAnnotations(".labels")
 
 	return f
 }

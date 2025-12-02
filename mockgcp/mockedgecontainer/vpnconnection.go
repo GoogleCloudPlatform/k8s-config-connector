@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // +tool:mockgcp-support
-// proto.service: google.cloud.edgecontainer.v1.Service
+// proto.service: google.cloud.edgecontainer.v1.EdgeContainer
 // proto.message: google.cloud.edgecontainer.v1.VpnConnection
 
 package mockedgecontainer

@@ -26,7 +26,7 @@ var LoggingLinkGVK = GroupVersion.WithKind("LoggingLink")
 // +kcc:spec:proto=google.logging.v2.Link
 type LoggingLinkSpec struct {
 	// Required. The LoggingLogBucket that this Link is associated with.
-	ParentRef *v1beta1.LoggingLogBucketRef `json:"loggingLogBucketRef,omitempty"`
+	LoggingLogBucketRef *v1beta1.LoggingLogBucketRef `json:"loggingLogBucketRef,omitempty"`
 
 	// Immutable.
 	// The LoggingLink name. If not given, the metadata.name will be used.

@@ -27,12 +27,15 @@ import (
 
 	gcp "cloud.google.com/go/dataplex/apiv1"
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -60,14 +63,30 @@ func (m *lakeModel) AdapterForObject(ctx context.Context, reader client.Reader, 
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewLakeIdentity(ctx, reader, obj)
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
+	copied := obj.DeepCopy()
+	mapCtx := &direct.MapContext{}
+	desired := DataplexLakeSpec_ToProto(mapCtx, &copied.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
+
+	idI, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
+	}
+	id, ok := idI.(*krm.LakeIdentity)
+	if !ok {
+		return nil, fmt.Errorf("unexpected identity type %T", idI)
 	}
 
 	lakeAdapter := &lakeAdapter{
 		id:      id,
-		desired: obj,
+		desired: desired,
 		reader:  reader,
 	}
 
@@ -93,7 +112,7 @@ func (m *lakeModel) AdapterForURL(ctx context.Context, url string) (directbase.A
 type lakeAdapter struct {
 	gcpClient *gcp.Client
 	id        *krm.LakeIdentity
-	desired   *krm.DataplexLake
+	desired   *pb.Lake
 	actual    *pb.Lake
 	reader    client.Reader
 }
@@ -121,18 +140,9 @@ func (a *lakeAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating dataplex lake", "name", a.id)
 
-	mapCtx := &direct.MapContext{}
-	desired := a.desired.DeepCopy()
-	desired.Name = a.id.String()
-
-	lake := DataplexLakeSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
 	req := &pb.CreateLakeRequest{
 		Parent: a.id.Parent().String(),
-		Lake:   lake,
+		Lake:   a.desired,
 		LakeId: a.id.ID(),
 	}
 	op, err := a.gcpClient.CreateLake(ctx, req)
@@ -147,6 +157,7 @@ func (a *lakeAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 
 	log.V(2).Info("successfully created dataplex lake in gcp", "name", a.id)
 
+	mapCtx := &direct.MapContext{}
 	status := &krm.DataplexLakeStatus{}
 	status.ObservedState = DataplexLakeObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
@@ -160,30 +171,23 @@ func (a *lakeAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating dataplex lake", "name", a.id)
 
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	lake := DataplexLakeSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	lake.Name = a.id.String()
+	a.desired.Name = a.id.String()
 
 	updateMask := &fieldmaskpb.FieldMask{}
-	if !reflect.DeepEqual(lake.DisplayName, a.actual.DisplayName) {
+	if !reflect.DeepEqual(a.desired.DisplayName, a.actual.DisplayName) {
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
-	if !reflect.DeepEqual(lake.Description, a.actual.Description) {
+	if !reflect.DeepEqual(a.desired.Description, a.actual.Description) {
 		updateMask.Paths = append(updateMask.Paths, "description")
 	}
-	if !reflect.DeepEqual(lake.Labels, a.actual.Labels) {
+	if !reflect.DeepEqual(a.desired.Labels, a.actual.Labels) {
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
 
 	// a.actual.Metastore != nil
 	// default value: metastore: {} (i.e. metastore.service: "")
-	if lake.Metastore != nil {
-		if !reflect.DeepEqual(lake.Metastore, a.actual.Metastore) {
+	if a.desired.Metastore != nil {
+		if !reflect.DeepEqual(a.desired.Metastore, a.actual.Metastore) {
 			updateMask.Paths = append(updateMask.Paths, "metastore")
 		}
 	} else if a.actual.Metastore.Service != "" {
@@ -199,7 +203,7 @@ func (a *lakeAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	} else {
 		req := &pb.UpdateLakeRequest{
 			UpdateMask: updateMask,
-			Lake:       lake,
+			Lake:       a.desired,
 		}
 		op, err := a.gcpClient.UpdateLake(ctx, req)
 		if err != nil {
@@ -212,6 +216,7 @@ func (a *lakeAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 		log.V(2).Info("successfully updated dataplex lake", "name", a.id)
 	}
 
+	mapCtx := &direct.MapContext{}
 	status := &krm.DataplexLakeStatus{}
 	status.ObservedState = DataplexLakeObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
@@ -233,8 +238,10 @@ func (a *lakeAdapter) Export(ctx context.Context) (*unstructured.Unstructured, e
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.ParentRef = &parent.ProjectAndLocationRef{
+		ProjectRef: &refs.ProjectRef{External: a.id.Parent().ProjectID},
+		Location:   a.id.Parent().Location,
+	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
