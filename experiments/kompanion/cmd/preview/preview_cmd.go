@@ -50,6 +50,8 @@ type PreviewOptions struct {
 	timeout          int
 	reportNamePrefix string
 	fullReport       bool
+	qps              float64
+	burst            int
 	namespace        string
 }
 
@@ -69,6 +71,8 @@ func BuildPreviewCmd() *cobra.Command {
 	cmd.Flags().IntVarP(&opts.timeout, timeoutFlag, "", 15, "timeout in minutes. Default to 15 minutes.")
 	cmd.Flags().StringVarP(&opts.reportNamePrefix, reportNamePrefixFlag, "", "preview-report", "Prefix for the report name. The tool appends a timestamp to this in the format \"YYYYMMDD-HHMMSS.milliseconds\".")
 	cmd.Flags().BoolVarP(&opts.fullReport, "full-report", "f", false, "Enable verbose logging.")
+	cmd.Flags().Float64Var(&opts.qps, "qps", 5.0, "QPS to use while talking with the GCP servers per API. Default to 5.0. Set both qps and burst to 0 to disable rate limiting.")
+	cmd.Flags().IntVar(&opts.burst, "burst", 5, "Burst to use while talking with the GCP servers per API. Default to 5. Set both qps and burst to 0 to disable rate limiting.")
 	cmd.Flags().StringVarP(&opts.namespace, "namespace", "n", "", "Namespace to preview. If not specified, all namespaces will be previewed.")
 	return cmd
 }
@@ -117,6 +121,8 @@ func RunPreview(ctx context.Context, opts *PreviewOptions) error {
 		UpstreamRESTConfig:       upstreamRESTConfig,
 		UpstreamGCPAuthorization: authorization,
 		UpstreamGCPHTTPClient:    nil,
+		UpstreamGCPQPS:           opts.qps,
+		UpstreamGCPBurst:         opts.burst,
 		Namespace:                opts.namespace,
 	})
 	if err != nil {
