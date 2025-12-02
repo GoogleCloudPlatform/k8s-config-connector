@@ -74,8 +74,11 @@ func computeForwardingRuleFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".name")
 	f.UnimplementedFields.Insert(".region")
 	f.UnimplementedFields.Insert(".fingerprint")
-	f.UnimplementedFields.Insert(".service_directory_registrations")
-	f.UnimplementedFields.Insert(".target") // Add to UnimplementedFields
+	f.UnimplementedFields.Insert(".service_directory_registrations") // Add to UnimplementedFields
+	f.Unimplemented_NotYetTriaged(".external_managed_backend_bucket_migration_testing_percentage")
+	f.Unimplemented_NotYetTriaged(".self_link_with_id")
 
+	f.Unimplemented_NotYetTriaged(".target")
+	f.Unimplemented_NotYetTriaged(".external_managed_backend_bucket_migration_state")
 	return f
 }
