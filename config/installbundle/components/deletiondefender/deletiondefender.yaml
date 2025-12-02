@@ -43,6 +43,9 @@ spec:
     metadata:
       labels:
         cnrm.cloud.google.com/component: cnrm-deletiondefender
+      annotations:
+        cnrm.cloud.google.com/inject-ca:  abandon-on-uninstall.cnrm-system
+        cnrm.cloud.google.com/certificate-revision: "replaced-by-operator" # This will be replaced by the operator, to force a rolling-update of the pods during CA rotation
     spec:
       serviceAccountName: deletiondefender
       containers:
@@ -51,6 +54,9 @@ spec:
         image: deletiondefender:latest
         imagePullPolicy: Always
         name: deletiondefender
+        env:
+        - name: WEBHOOK_CERT_DIR
+          value: /tls
         ports:
         # Port used for readiness probe
         - containerPort: 23232
@@ -75,5 +81,13 @@ spec:
             port: 23232
           initialDelaySeconds: 7
           periodSeconds: 3
+        volumeMounts:
+        - mountPath: /tls
+          name: tls
+          readOnly: true
+      volumes:
+      - name: tls
+        secret:
+          secretName: webhook-cert-abandon-on-uninstall
       enableServiceLinks: false
       terminationGracePeriodSeconds: 10

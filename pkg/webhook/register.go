@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"sort"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdgeneration"
@@ -33,11 +34,14 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook/cert/certclient"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook/cert/generator"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/webhook/cert/writer"
+	"sigs.k8s.io/yaml"
 
 	admissionregistration "k8s.io/api/admissionregistration/v1"
 	corev1 "k8s.io/api/core/v1"
 	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -66,6 +70,20 @@ func RegisterCommonWebhooks(mgr manager.Manager, nocacheClient client.Client) er
 		whCfgs,
 		mgr,
 		nocacheClient,
+	)
+}
+
+func BuildCommonWebhooks() (*WebhookManifest, error) {
+	whCfgs, err := GetCommonWebhookConfigs()
+	if err != nil {
+		return nil, fmt.Errorf("error getting common webhook configs: %w", err)
+	}
+	return BuildWebhookManifest(
+		ValidatingWebhookConfigurationName,
+		MutatingWebhookConfigurationName,
+		CommonWebhookServiceName,
+		"cnrm-webhook-manager",
+		whCfgs,
 	)
 }
 
@@ -222,7 +240,7 @@ func getResourcesForImmutableValidation(allGVKs []schema.GroupVersionKind) []sch
 	return resourcesToValidate
 }
 
-func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client.Client) error {
+func buildAbandonOnUninstallWebhookConfigs() []Config {
 	whCfgs := []Config{
 		{
 			Name:        "abandon-on-uninstall.cnrm.cloud.google.com",
@@ -251,26 +269,164 @@ func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client
 			SideEffects: admissionregistration.SideEffectClassNoneOnDryRun,
 		},
 	}
+	return whCfgs
+}
+
+func RegisterAbandonOnUninstallWebhook(mgr manager.Manager, nocacheClient client.Client) error {
+	webhookConfigs := buildAbandonOnUninstallWebhookConfigs()
+
 	return register(
 		"abandon-on-uninstall.cnrm.cloud.google.com",
 		"",
 		"abandon-on-uninstall",
 		"cnrm-deletiondefender",
-		whCfgs,
+		webhookConfigs,
 		mgr,
 		nocacheClient,
 	)
 }
 
-func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName string,
-	whCfgs []Config, mgr manager.Manager, nocacheClient client.Client) error {
-	ctx := context.TODO()
+func BuildAbandonOnUninstallWebhookManifest() (*WebhookManifest, error) {
+	webhookConfigs := buildAbandonOnUninstallWebhookConfigs()
 
+	return BuildWebhookManifest(
+		"abandon-on-uninstall.cnrm.cloud.google.com",
+		"",
+		"abandon-on-uninstall",
+		"cnrm-deletiondefender",
+		webhookConfigs,
+	)
+}
+
+type WebhookManifest struct {
+	Service      *corev1.Service
+	OtherObjects []client.Object
+}
+
+func (m *WebhookManifest) Normalize() {
+	for _, obj := range m.OtherObjects {
+		switch obj := obj.(type) {
+		case *admissionregistration.MutatingWebhookConfiguration:
+			obj.Webhooks = normalizeMutatingWebhooks(obj.Webhooks)
+		case *admissionregistration.ValidatingWebhookConfiguration:
+			obj.Webhooks = normalizeValidatingWebhooks(obj.Webhooks)
+		default:
+			// only MutatingWebhookConfiguration and ValidatingWebhookConfiguration need normalization
+			continue
+		}
+	}
+}
+
+func normalizeMutatingWebhooks(webhooks []admissionregistration.MutatingWebhook) []admissionregistration.MutatingWebhook {
+	sort.Slice(webhooks, func(i, j int) bool {
+		return webhooks[i].Name < webhooks[j].Name
+	})
+
+	for _, webhook := range webhooks {
+		normalizeWebhookRules(webhook.Rules)
+	}
+
+	return webhooks
+
+}
+
+func normalizeValidatingWebhooks(webhooks []admissionregistration.ValidatingWebhook) []admissionregistration.ValidatingWebhook {
+	sort.Slice(webhooks, func(i, j int) bool {
+		return webhooks[i].Name < webhooks[j].Name
+	})
+
+	for _, webhook := range webhooks {
+		normalizeWebhookRules(webhook.Rules)
+	}
+
+	return webhooks
+
+}
+
+func normalizeWebhookRules(rules []admissionregistration.RuleWithOperations) {
+	for _, rule := range rules {
+		rule.APIGroups = sort.StringSlice(rule.APIGroups)
+		rule.APIVersions = sort.StringSlice(rule.APIVersions)
+		rule.Resources = sort.StringSlice(rule.Resources)
+	}
+
+	sortKey := func(r admissionregistration.RuleWithOperations) string {
+		return strings.Join(r.APIGroups, ",") + "|" + strings.Join(r.APIVersions, ",") + "|" + strings.Join(r.Resources, ",")
+	}
+	sort.Slice(rules, func(i, j int) bool {
+		return sortKey(rules[i]) < sortKey(rules[j])
+	})
+}
+
+func (m *WebhookManifest) ToYAML() (string, error) {
+	allObjects, err := m.ToUnstructured()
+	if err != nil {
+		return "", err
+	}
+
+	var buffer strings.Builder
+
+	for i, obj := range allObjects {
+		if i != 0 {
+			buffer.WriteString("\n---\n")
+		}
+		v, err := yaml.Marshal(obj)
+		if err != nil {
+			return "", fmt.Errorf("error converting object to yaml: %w", err)
+		}
+		buffer.WriteString(string(v))
+	}
+
+	return buffer.String(), nil
+}
+
+func (m *WebhookManifest) ToUnstructured() ([]*unstructured.Unstructured, error) {
+	var allObjs []client.Object
+	allObjs = append(allObjs, m.Service)
+	allObjs = append(allObjs, m.OtherObjects...)
+
+	var out []*unstructured.Unstructured
+
+	for _, obj := range allObjs {
+		u, ok := obj.(*unstructured.Unstructured)
+		if !ok {
+			m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+			if err != nil {
+				return nil, fmt.Errorf("error converting object to unstructured: %w", err)
+			}
+			u = &unstructured.Unstructured{Object: m}
+		}
+
+		// Ensure the GVK is set on the unstructured object.
+		if u.GroupVersionKind().Empty() {
+			switch obj.(type) {
+			case *corev1.Service:
+				u.SetGroupVersionKind(corev1.SchemeGroupVersion.WithKind("Service"))
+			// case *admissionregistration.ValidatingWebhookConfiguration:
+			// 	u.SetGroupVersionKind(admissionregistration.SchemeGroupVersion.WithKind("ValidatingWebhookConfiguration"))
+			// case *admissionregistration.MutatingWebhookConfiguration:
+			// 	u.SetGroupVersionKind(admissionregistration.SchemeGroupVersion.WithKind("MutatingWebhookConfiguration"))
+			default:
+				return nil, fmt.Errorf("object has no GroupVersionKind set: %+v", obj)
+			}
+		}
+
+		// Remove some fields that should not be set in the manifest.
+		unstructured.RemoveNestedField(u.Object, "metadata", "creationTimestamp")
+		unstructured.RemoveNestedField(u.Object, "status")
+
+		out = append(out, u)
+	}
+
+	return out, nil
+}
+
+func BuildWebhookManifest(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName string, webhookConfigs []Config) (*WebhookManifest, error) {
 	validatingWebhookCfg, mutatingWebhookCfg := GenerateWebhookManifests(
 		validatingWebhookConfigurationName,
 		mutatingWebhookConfigurationName,
 		serviceName,
-		whCfgs,
+		webhookConfigs,
 	)
 	manifests := make([]client.Object, 0)
 	if validatingWebhookCfg != nil {
@@ -285,45 +441,70 @@ func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationNa
 			k8s.KCCComponentLabel: componentName,
 			k8s.KCCSystemLabel:    "true",
 		})
-	writerOpts := writer.SecretCertWriterOptions{
-		Client: nocacheClient,
-		Secret: &types.NamespacedName{
-			Name:      formatSecretName(serviceName),
-			Namespace: k8s.SystemNamespace,
-		},
+
+	m := &WebhookManifest{
+		Service:      svc,
+		OtherObjects: manifests,
 	}
-	certWriter, err := writer.NewSecretCertWriter(writerOpts)
-	if err != nil {
-		return fmt.Errorf("error creating secret cert writer: %w", err)
-	}
-	certClient, err := certclient.New(certclient.Options{
-		WebhookManifests: manifests,
-		Service:          svc,
-		KubeClient:       nocacheClient,
-		CertWriter:       certWriter,
-	})
-	if err != nil {
-		return fmt.Errorf("error creating cert client: %w", err)
-	}
-	// Do an initial call so we can guarantee the webhook configuration resources are
-	// registered in the API server before marking this container as ready.
-	if err := certClient.RefreshCertsAndInstall(ctx); err != nil {
-		return fmt.Errorf("error refreshing certs and installing manifests: %w", err)
-	}
-	if err := mgr.Add(certClient); err != nil {
-		return fmt.Errorf("error registering cert client with manager: %w", err)
-	}
-	if err := persistCertificatesToDisk(certWriter, svc); err != nil {
-		return err
-	}
-	// Set up the HTTP server
-	s := webhook.NewServer(webhook.Options{
-		CertDir:  certDir,
+	m.Normalize()
+	return m, nil
+}
+
+func register(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName string,
+	webhookConfigs []Config, mgr manager.Manager, nocacheClient client.Client) error {
+	ctx := context.TODO()
+
+	webhookOptions := webhook.Options{
+		CertDir:  defaultCertDir,
 		CertName: writer.ServerCertName,
 		KeyName:  writer.ServerKeyName,
 		Port:     ServicePort,
-	})
-	for _, whCfg := range whCfgs {
+	}
+
+	if os.Getenv("WEBHOOK_CERT_DIR") != "" {
+		webhookOptions.CertDir = os.Getenv("WEBHOOK_CERT_DIR")
+	} else {
+		manifest, err := BuildWebhookManifest(validatingWebhookConfigurationName, mutatingWebhookConfigurationName, serviceName, componentName, webhookConfigs)
+		if err != nil {
+			return fmt.Errorf("error building webhook manifests: %w", err)
+		}
+
+		writerOpts := writer.SecretCertWriterOptions{
+			Client: nocacheClient,
+			Secret: &types.NamespacedName{
+				Name:      formatSecretName(serviceName),
+				Namespace: k8s.SystemNamespace,
+			},
+		}
+		certWriter, err := writer.NewSecretCertWriter(writerOpts)
+		if err != nil {
+			return fmt.Errorf("error creating secret cert writer: %w", err)
+		}
+		certClient, err := certclient.New(certclient.Options{
+			WebhookManifests: manifest.OtherObjects,
+			Service:          manifest.Service,
+			KubeClient:       nocacheClient,
+			CertWriter:       certWriter,
+		})
+		if err != nil {
+			return fmt.Errorf("error creating cert client: %w", err)
+		}
+		// Do an initial call so we can guarantee the webhook configuration resources are
+		// registered in the API server before marking this container as ready.
+		if err := certClient.RefreshCertsAndInstall(ctx); err != nil {
+			return fmt.Errorf("error refreshing certs and installing manifests: %w", err)
+		}
+		if err := mgr.Add(certClient); err != nil {
+			return fmt.Errorf("error registering cert client with manager: %w", err)
+		}
+		if err := persistCertificatesToDisk(certWriter, manifest.Service); err != nil {
+			return err
+		}
+	}
+
+	// Set up the HTTP server
+	s := webhook.NewServer(webhookOptions)
+	for _, whCfg := range webhookConfigs {
 		handler := whCfg.HandlerFunc(mgr)
 		s.Register(whCfg.Path, &admission.Webhook{Handler: handler})
 	}
@@ -348,7 +529,7 @@ func persistCertificatesToDisk(certWriter writer.CertWriter, svc *corev1.Service
 		return fmt.Errorf("error ensuring certificate: %w", err)
 	}
 
-	return writeCertificates(artifacts, certDir, writer.ServerCertName, writer.ServerKeyName)
+	return writeCertificates(artifacts, defaultCertDir, writer.ServerCertName, writer.ServerKeyName)
 }
 
 func writeCertificates(artifacts *generator.Artifacts, dir, certName, keyName string) error {
