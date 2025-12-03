@@ -87,3 +87,59 @@ func FirewallPolicyRuleSecureTag_ToProto(mapCtx *direct.MapContext, in *krm.Fire
 	out.State = in.State
 	return out
 }
+func ForwardingruleServiceDirectoryRegistrations_FromProto(mapCtx *direct.MapContext, in *pb.ForwardingRuleServiceDirectoryRegistration) *krm.ForwardingruleServiceDirectoryRegistrations {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ForwardingruleServiceDirectoryRegistrations{}
+	out.Namespace = in.Namespace
+	out.Service = in.Service
+	// MISSING: ServiceDirectoryRegion
+	return out
+}
+func ForwardingruleServiceDirectoryRegistrations_ToProto(mapCtx *direct.MapContext, in *krm.ForwardingruleServiceDirectoryRegistrations) *pb.ForwardingRuleServiceDirectoryRegistration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ForwardingRuleServiceDirectoryRegistration{}
+	out.Namespace = in.Namespace
+	out.Service = in.Service
+	// MISSING: ServiceDirectoryRegion
+	return out
+}
+func MetadataFilter_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFilter) *krm.MetadataFilter {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataFilter{}
+	out.FilterLabels = direct.Slice_FromProto(mapCtx, in.FilterLabels, MetadataFilterLabelMatch_FromProto)
+	out.FilterMatchCriteria = in.FilterMatchCriteria
+	return out
+}
+func MetadataFilter_ToProto(mapCtx *direct.MapContext, in *krm.MetadataFilter) *pb.MetadataFilter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataFilter{}
+	out.FilterLabels = direct.Slice_ToProto(mapCtx, in.FilterLabels, MetadataFilterLabelMatch_ToProto)
+	out.FilterMatchCriteria = in.FilterMatchCriteria
+	return out
+}
+func MetadataFilterLabelMatch_FromProto(mapCtx *direct.MapContext, in *pb.MetadataFilterLabelMatch) *krm.MetadataFilterLabelMatch {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MetadataFilterLabelMatch{}
+	out.Name = in.Name
+	out.Value = in.Value
+	return out
+}
+func MetadataFilterLabelMatch_ToProto(mapCtx *direct.MapContext, in *krm.MetadataFilterLabelMatch) *pb.MetadataFilterLabelMatch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MetadataFilterLabelMatch{}
+	out.Name = in.Name
+	out.Value = in.Value
+	return out
+}

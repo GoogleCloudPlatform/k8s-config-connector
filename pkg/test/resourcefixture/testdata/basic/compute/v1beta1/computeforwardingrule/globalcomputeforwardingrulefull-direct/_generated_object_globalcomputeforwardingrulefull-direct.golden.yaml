@@ -42,7 +42,7 @@ status:
     status: "True"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
-  externalRef: //compute.googleapis.com/projects/${projectId}/global/forwardingrules/${forwardingRuleID}
+  externalRef: projects/${projectId}/global/forwardingRules/${forwardingRuleID}
   labelFingerprint: abcdef0123A=
   observedGeneration: 2
   selfLink: https://www.googleapis.com/compute/v1/projects/${projectId}/global/forwardingRules/${forwardingRuleID}
