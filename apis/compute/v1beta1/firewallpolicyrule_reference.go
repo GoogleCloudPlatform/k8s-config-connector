@@ -17,8 +17,6 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strconv"
-	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
@@ -82,16 +80,4 @@ func (r *FirewallPolicyRuleRef) NormalizedExternal(ctx context.Context, reader c
 	}
 	r.External = actualExternalRef
 	return r.External, nil
-}
-
-func parseFirewallPolicyRuleExternal(external string) (*FirewallPolicyRuleIdentity, error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "locations" || tokens[2] != "firewallPolicies" || tokens[4] != "rules" {
-		return nil, fmt.Errorf("format of ComputeFirewallPolicyRule external=%q was not known (use firewallPolicies/{{firewallPolicy}}/rules/{{priority}})", external)
-	}
-	p, err := strconv.ParseInt(tokens[5], 10, 32)
-	if err != nil {
-		return nil, fmt.Errorf("error convert priority %s of ComputeFirewallPolicyRule external=%q to an integer: %w", tokens[5], external, err)
-	}
-	return &FirewallPolicyRuleIdentity{parent: &FirewallPolicyRuleParent{FirewallPolicy: tokens[3]}, id: p}, nil
 }
