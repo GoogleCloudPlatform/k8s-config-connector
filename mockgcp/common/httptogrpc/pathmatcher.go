@@ -29,11 +29,22 @@ type pathMatcher struct {
 
 	// components are the component matchers for this path expression
 	components []componentMatcher
+
+	// suffix is any verb suffix, e.g. ":getIamPolicy"
+	suffix string
 }
 
 // newPathMatcher creates a new pathMatcher for the given HTTP path pattern.
 func newPathMatcher(httpPath string) (*pathMatcher, error) {
 	matcher := &pathMatcher{httpPath: httpPath}
+
+	suffix := ""
+	colonIndex := strings.Index(httpPath, ":")
+	if colonIndex != -1 {
+		// Strip off any verb suffix, e.g. ":getIamPolicy"
+		suffix = httpPath[colonIndex:]
+		httpPath = httpPath[:colonIndex]
+	}
 
 	var components []componentMatcher
 	httpPath = strings.TrimPrefix(httpPath, "/")
@@ -69,6 +80,7 @@ func newPathMatcher(httpPath string) (*pathMatcher, error) {
 	}
 
 	matcher.components = components
+	matcher.suffix = suffix
 
 	return matcher, nil
 }
