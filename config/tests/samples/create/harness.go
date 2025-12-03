@@ -378,7 +378,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 
 	// Log structuredreporting messages
 	{
-		ctx = structuredreporting.ContextWithListener(ctx, &structuredreporting.LogListener{})
+		ctx = structuredreporting.ContextWithListener(ctx, &structuredreporting.DebugLogListener{})
 		h.Ctx = ctx
 	}
 

@@ -16,6 +16,7 @@ package structuredreporting
 
 import (
 	"context"
+	"sort"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
@@ -66,4 +67,14 @@ func (d *Diff) AddDiff(other *Diff) *Diff {
 	}
 
 	return d
+}
+
+// FieldIDs returns the sorted list of field IDs that differ in this Diff
+func (d *Diff) FieldIDs() []string {
+	ids := make([]string, 0, len(d.Fields))
+	for _, f := range d.Fields {
+		ids = append(ids, f.ID)
+	}
+	sort.Strings(ids)
+	return ids
 }

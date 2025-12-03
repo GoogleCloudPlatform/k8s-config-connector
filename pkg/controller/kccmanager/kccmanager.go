@@ -38,6 +38,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	tfprovider "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/tf/provider"
 	mcleclient "github.com/gke-labs/multicluster-leader-election/pkg/client"
 	"golang.org/x/oauth2"
@@ -164,20 +165,25 @@ func (m *leaderElectionManager) Start(ctx context.Context) error {
 // Creates a new controller-runtime manager.Manager and starts all of the KCC controllers pointed at the
 // API server associated with the rest.Config argument. The controllers are:
 // { tf, gsakeysecretgenerator, iampolicy, iampolicymember, registration-controller }
-//
-// This serves as the entry point for the in-cluster main and the Borg service main. Any changes made should be done
-// with care.
 func New(ctx context.Context, restConfig *rest.Config, cfg Config) (manager.Manager, error) {
 	opts := cfg.ManagerOptions
+
+	if opts.BaseContext != nil {
+		return nil, fmt.Errorf("error validating manager options: BaseContext is unexpectedly set")
+	}
+	opts.BaseContext = func() context.Context {
+		// Log the fields that cause object updates
+		ctx = structuredreporting.ContextWithListener(ctx, &structuredreporting.LogFieldUpdates{})
+
+		return ctx
+	}
 
 	if opts.Scheme == nil {
 		// By default, controller-runtime uses the Kubernetes client-go scheme, this can create concurrency bugs as the
 		// the calls to AddToScheme(..) will modify the internal maps
 		opts.Scheme = runtime.NewScheme()
 	}
-	opts.BaseContext = func() context.Context {
-		return ctx
-	}
+
 	err := addSchemes(opts.Scheme)
 	if err != nil {
 		return nil, fmt.Errorf("error adding schemes: %w", err)
