@@ -16,7 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'runjob-with-port-${uniqueId}' of kind 'JOB' in region 'us-central1' in project '${projectId}' does not exist.",
+    "message": "job \"projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -65,18 +65,17 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "katriel@google.com",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "katriel@google.com",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": 4,
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
-    "reconciling": true,
     "template": {
       "taskCount": 1,
       "template": {
@@ -108,7 +107,9 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "state": 1
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": 4,
+      "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
   },
@@ -137,18 +138,17 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "katriel@google.com",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "katriel@google.com",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
-    "observedGeneration": "1",
     "template": {
       "taskCount": 1,
       "template": {
@@ -190,18 +190,17 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "katriel@google.com",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "katriel@google.com",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
-    "observedGeneration": "1",
     "template": {
       "taskCount": 1,
       "template": {
@@ -268,11 +267,10 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "lastModifier": "katriel@google.com",
+  "lastModifier": "test@google.com",
   "latestCreatedExecution": {},
   "launchStage": 4,
   "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
-  "observedGeneration": "1",
   "template": {
     "taskCount": 1,
     "template": {
@@ -357,19 +355,17 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "katriel@google.com",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
-    "generation": "2",
+    "generation": "1",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "katriel@google.com",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": 4,
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
-    "observedGeneration": "1",
-    "reconciling": true,
     "template": {
       "taskCount": 1,
       "template": {
@@ -402,7 +398,7 @@ X-Xss-Protection: 0
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
-      "state": 1,
+      "state": 4,
       "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -432,18 +428,17 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "katriel@google.com",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
-    "generation": "2",
+    "generation": "1",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "katriel@google.com",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
-    "observedGeneration": "2",
     "template": {
       "taskCount": 1,
       "template": {
@@ -485,18 +480,17 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "katriel@google.com",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
-    "generation": "2",
+    "generation": "1",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "katriel@google.com",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
-    "observedGeneration": "2",
     "template": {
       "taskCount": 1,
       "template": {
@@ -563,11 +557,10 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "lastModifier": "katriel@google.com",
+  "lastModifier": "test@google.com",
   "latestCreatedExecution": {},
   "launchStage": 4,
   "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
-  "observedGeneration": "2",
   "template": {
     "taskCount": 1,
     "template": {
@@ -628,21 +621,17 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "katriel@google.com",
-    "deleteTime": "2025-12-03T00:54:57.402783Z",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
-    "expireTime": "2026-01-02T00:54:57.402783Z",
-    "generation": "3",
+    "generation": "1",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "katriel@google.com",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": 4,
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
-    "observedGeneration": "2",
-    "reconciling": true,
     "template": {
       "taskCount": 1,
       "template": {
@@ -675,7 +664,7 @@ X-Xss-Protection: 0
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
-      "state": 1,
+      "state": 4,
       "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -705,20 +694,17 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "katriel@google.com",
-    "deleteTime": "2025-12-03T00:54:57.402783Z",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
-    "expireTime": "2026-01-02T00:54:57.402783Z",
-    "generation": "3",
+    "generation": "1",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "katriel@google.com",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
-    "observedGeneration": "3",
     "template": {
       "taskCount": 1,
       "template": {
@@ -760,20 +746,17 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "katriel@google.com",
-    "deleteTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
     "etag": "abcdef0123A=",
-    "expireTime": "2024-04-01T12:34:56.123456Z",
-    "generation": "3",
+    "generation": "1",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "katriel@google.com",
+    "lastModifier": "test@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
-    "observedGeneration": "3",
     "template": {
       "taskCount": 1,
       "template": {
