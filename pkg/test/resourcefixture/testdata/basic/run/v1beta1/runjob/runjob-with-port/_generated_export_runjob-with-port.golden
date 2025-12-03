@@ -18,9 +18,12 @@ spec:
             cpu: 1000m
             memory: 512Mi
         startupProbe:
+          failureThreshold: 3
           httpGet:
             path: /
-            port: 8080
+            port: 8081
+          periodSeconds: 10
+          timeoutSeconds: 1
       executionEnvironment: EXECUTION_ENVIRONMENT_GEN2
       maxRetries: 3
       serviceAccountRef:

@@ -16,7 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "job \"projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}\" not found",
+    "message": "Resource 'runjob-with-port-${uniqueId}' of kind 'JOB' in region 'us-central1' in project '${projectId}' does not exist.",
     "status": "NOT_FOUND"
   }
 }
@@ -65,17 +65,18 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test@google.com",
+    "creator": "katriel@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "test@google.com",
+    "lastModifier": "katriel@google.com",
     "latestCreatedExecution": {},
     "launchStage": 4,
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
+    "reconciling": true,
     "template": {
       "taskCount": 1,
       "template": {
@@ -90,10 +91,13 @@ X-Xss-Protection: 0
               }
             },
             "startupProbe": {
+              "failureThreshold": 3,
               "httpGet": {
                 "path": "/",
                 "port": 8080
-              }
+              },
+              "periodSeconds": 10,
+              "timeoutSeconds": 1
             }
           }
         ],
@@ -104,9 +108,7 @@ X-Xss-Protection: 0
       }
     },
     "terminalCondition": {
-      "lastTransitionTime": "2025-01-01T00:00:00Z",
-      "state": 4,
-      "type": "Ready"
+      "state": 1
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
   },
@@ -135,17 +137,18 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test@google.com",
+    "creator": "katriel@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "test@google.com",
+    "lastModifier": "katriel@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
+    "observedGeneration": "1",
     "template": {
       "taskCount": 1,
       "template": {
@@ -160,10 +163,13 @@ X-Xss-Protection: 0
               }
             },
             "startupProbe": {
+              "failureThreshold": 3,
               "httpGet": {
                 "path": "/",
                 "port": 8080
-              }
+              },
+              "periodSeconds": 10,
+              "timeoutSeconds": 1
             }
           }
         ],
@@ -184,17 +190,18 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test@google.com",
+    "creator": "katriel@google.com",
     "etag": "abcdef0123A=",
     "generation": "1",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "test@google.com",
+    "lastModifier": "katriel@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
+    "observedGeneration": "1",
     "template": {
       "taskCount": 1,
       "template": {
@@ -209,10 +216,13 @@ X-Xss-Protection: 0
               }
             },
             "startupProbe": {
+              "failureThreshold": 3,
               "httpGet": {
                 "path": "/",
                 "port": 8080
-              }
+              },
+              "periodSeconds": 10,
+              "timeoutSeconds": 1
             }
           }
         ],
@@ -258,10 +268,11 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "lastModifier": "test@google.com",
+  "lastModifier": "katriel@google.com",
   "latestCreatedExecution": {},
   "launchStage": 4,
   "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
+  "observedGeneration": "1",
   "template": {
     "taskCount": 1,
     "template": {
@@ -276,10 +287,13 @@ X-Xss-Protection: 0
             }
           },
           "startupProbe": {
+            "failureThreshold": 3,
             "httpGet": {
               "path": "/",
               "port": 8080
-            }
+            },
+            "periodSeconds": 10,
+            "timeoutSeconds": 1
           }
         }
       ],
@@ -343,17 +357,19 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test@google.com",
+    "creator": "katriel@google.com",
     "etag": "abcdef0123A=",
-    "generation": "1",
+    "generation": "2",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "test@google.com",
+    "lastModifier": "katriel@google.com",
     "latestCreatedExecution": {},
     "launchStage": 4,
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
+    "observedGeneration": "1",
+    "reconciling": true,
     "template": {
       "taskCount": 1,
       "template": {
@@ -368,10 +384,13 @@ X-Xss-Protection: 0
               }
             },
             "startupProbe": {
+              "failureThreshold": 3,
               "httpGet": {
                 "path": "/",
-                "port": 8080
-              }
+                "port": 8081
+              },
+              "periodSeconds": 10,
+              "timeoutSeconds": 1
             }
           }
         ],
@@ -383,7 +402,7 @@ X-Xss-Protection: 0
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
-      "state": 4,
+      "state": 1,
       "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -413,17 +432,18 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test@google.com",
+    "creator": "katriel@google.com",
     "etag": "abcdef0123A=",
-    "generation": "1",
+    "generation": "2",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "test@google.com",
+    "lastModifier": "katriel@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
+    "observedGeneration": "2",
     "template": {
       "taskCount": 1,
       "template": {
@@ -438,10 +458,13 @@ X-Xss-Protection: 0
               }
             },
             "startupProbe": {
+              "failureThreshold": 3,
               "httpGet": {
                 "path": "/",
-                "port": 8080
-              }
+                "port": 8081
+              },
+              "periodSeconds": 10,
+              "timeoutSeconds": 1
             }
           }
         ],
@@ -462,17 +485,18 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test@google.com",
+    "creator": "katriel@google.com",
     "etag": "abcdef0123A=",
-    "generation": "1",
+    "generation": "2",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "test@google.com",
+    "lastModifier": "katriel@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
+    "observedGeneration": "2",
     "template": {
       "taskCount": 1,
       "template": {
@@ -487,10 +511,13 @@ X-Xss-Protection: 0
               }
             },
             "startupProbe": {
+              "failureThreshold": 3,
               "httpGet": {
                 "path": "/",
-                "port": 8080
-              }
+                "port": 8081
+              },
+              "periodSeconds": 10,
+              "timeoutSeconds": 1
             }
           }
         ],
@@ -536,10 +563,11 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "lastModifier": "test@google.com",
+  "lastModifier": "katriel@google.com",
   "latestCreatedExecution": {},
   "launchStage": 4,
   "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
+  "observedGeneration": "2",
   "template": {
     "taskCount": 1,
     "template": {
@@ -554,10 +582,13 @@ X-Xss-Protection: 0
             }
           },
           "startupProbe": {
+            "failureThreshold": 3,
             "httpGet": {
               "path": "/",
-              "port": 8080
-            }
+              "port": 8081
+            },
+            "periodSeconds": 10,
+            "timeoutSeconds": 1
           }
         }
       ],
@@ -597,17 +628,21 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test@google.com",
+    "creator": "katriel@google.com",
+    "deleteTime": "2025-12-03T00:54:57.402783Z",
     "etag": "abcdef0123A=",
-    "generation": "1",
+    "expireTime": "2026-01-02T00:54:57.402783Z",
+    "generation": "3",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "test@google.com",
+    "lastModifier": "katriel@google.com",
     "latestCreatedExecution": {},
     "launchStage": 4,
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
+    "observedGeneration": "2",
+    "reconciling": true,
     "template": {
       "taskCount": 1,
       "template": {
@@ -622,10 +657,13 @@ X-Xss-Protection: 0
               }
             },
             "startupProbe": {
+              "failureThreshold": 3,
               "httpGet": {
                 "path": "/",
-                "port": 8080
-              }
+                "port": 8081
+              },
+              "periodSeconds": 10,
+              "timeoutSeconds": 1
             }
           }
         ],
@@ -637,7 +675,7 @@ X-Xss-Protection: 0
     },
     "terminalCondition": {
       "lastTransitionTime": "2025-01-01T00:00:00Z",
-      "state": 4,
+      "state": 1,
       "type": "Ready"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -667,17 +705,20 @@ X-Xss-Protection: 0
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test@google.com",
+    "creator": "katriel@google.com",
+    "deleteTime": "2025-12-03T00:54:57.402783Z",
     "etag": "abcdef0123A=",
-    "generation": "1",
+    "expireTime": "2026-01-02T00:54:57.402783Z",
+    "generation": "3",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "test@google.com",
+    "lastModifier": "katriel@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
+    "observedGeneration": "3",
     "template": {
       "taskCount": 1,
       "template": {
@@ -692,10 +733,13 @@ X-Xss-Protection: 0
               }
             },
             "startupProbe": {
+              "failureThreshold": 3,
               "httpGet": {
                 "path": "/",
-                "port": 8080
-              }
+                "port": 8081
+              },
+              "periodSeconds": 10,
+              "timeoutSeconds": 1
             }
           }
         ],
@@ -716,17 +760,20 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.run.v2.Job",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "test@google.com",
+    "creator": "katriel@google.com",
+    "deleteTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
-    "generation": "1",
+    "expireTime": "2024-04-01T12:34:56.123456Z",
+    "generation": "3",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
-    "lastModifier": "test@google.com",
+    "lastModifier": "katriel@google.com",
     "latestCreatedExecution": {},
     "launchStage": "GA",
     "name": "projects/${projectId}/locations/us-central1/jobs/runjob-with-port-${uniqueId}",
+    "observedGeneration": "3",
     "template": {
       "taskCount": 1,
       "template": {
@@ -741,10 +788,13 @@ X-Xss-Protection: 0
               }
             },
             "startupProbe": {
+              "failureThreshold": 3,
               "httpGet": {
                 "path": "/",
-                "port": 8080
-              }
+                "port": 8081
+              },
+              "periodSeconds": 10,
+              "timeoutSeconds": 1
             }
           }
         ],
