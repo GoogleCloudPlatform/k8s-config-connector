@@ -17,7 +17,7 @@ spec:
             cpu: 1000m
             memory: 512Mi
       encryptionKeyRef:
-        external: projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-1-${uniqueId}
+        external: projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-2-${uniqueId}
       executionEnvironment: EXECUTION_ENVIRONMENT_GEN2
       maxRetries: 3
       serviceAccountRef:
