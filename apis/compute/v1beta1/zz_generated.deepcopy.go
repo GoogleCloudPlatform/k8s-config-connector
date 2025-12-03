@@ -164,11 +164,11 @@ func (in *ComputeFirewallPolicyRuleSpec) DeepCopyInto(out *ComputeFirewallPolicy
 	}
 	if in.TargetResources != nil {
 		in, out := &in.TargetResources, &out.TargetResources
-		*out = make([]*refsv1beta1.ComputeNetworkRef, len(*in))
+		*out = make([]*ComputeNetworkRef, len(*in))
 		for i := range *in {
 			if (*in)[i] != nil {
 				in, out := &(*in)[i], &(*out)[i]
-				*out = new(refsv1beta1.ComputeNetworkRef)
+				*out = new(ComputeNetworkRef)
 				**out = **in
 			}
 		}

@@ -929,7 +929,7 @@ func (in *ReverseSSHConnectivity) DeepCopyInto(out *ReverseSSHConnectivity) {
 	}
 	if in.VPCRef != nil {
 		in, out := &in.VPCRef, &out.VPCRef
-		*out = new(v1beta1.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 }
@@ -989,7 +989,7 @@ func (in *VPCPeeringConnectivity) DeepCopyInto(out *VPCPeeringConnectivity) {
 	*out = *in
 	if in.VPCRef != nil {
 		in, out := &in.VPCRef, &out.VPCRef
-		*out = new(v1beta1.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 }
