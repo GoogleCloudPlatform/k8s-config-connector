@@ -343,3 +343,24 @@ func WorkloadsConfig_WorkerResource_ToProto(mapCtx *direct.MapContext, in *krm.W
 	out.MaxCount = direct.ValueOf(in.MaxCount)
 	return out
 }
+
+func EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionConfig) *krm.EncryptionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EncryptionConfig{}
+	if in.GetKmsKeyName() != "" {
+		out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+	}
+	return out
+}
+func EncryptionConfig_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionConfig) *pb.EncryptionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionConfig{}
+	if in.KMSKeyRef != nil {
+		out.KmsKeyName = in.KMSKeyRef.External
+	}
+	return out
+}
