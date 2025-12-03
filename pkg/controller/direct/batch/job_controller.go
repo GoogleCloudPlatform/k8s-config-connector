@@ -16,7 +16,7 @@
 // proto.service: google.cloud.batch.v1.BatchService
 // proto.message: google.cloud.batch.v1.Job
 // crd.type: BatchJob
-// crd.version: v1alpha1
+// crd.version: v1beta1
 
 package batch
 
@@ -33,8 +33,7 @@ import (
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
-	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1alpha1"
+	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/batch/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -47,7 +46,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.BatchJobGVK, NewJobModel)
+	registry.RegisterModel(krmv1beta1.BatchJobGVK, NewJobModel)
 }
 
 func NewJobModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -86,7 +85,7 @@ func (m *jobModel) Client(ctx context.Context, projectID string) (*batch.Client,
 }
 
 func (m *jobModel) AdapterForObject(ctx context.Context, reader client.Reader, u *unstructured.Unstructured) (directbase.Adapter, error) {
-	obj := &krm.BatchJob{}
+	obj := &krmv1beta1.BatchJob{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
@@ -101,21 +100,21 @@ func (m *jobModel) AdapterForObject(ctx context.Context, reader client.Reader, u
 		return nil, err
 	}
 	mapCtx := &direct.MapContext{}
-	desired := BatchJobSpec_ToProto(mapCtx, &obj.Spec)
+	desired := BatchJobSpec_v1beta1_ToProto(mapCtx, &obj.Spec)
 	if err := mapCtx.Err(); err != nil {
 		return nil, err
 	}
 
 	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
 
-	gcpClient, err := m.Client(ctx, id.(*v1alpha1.JobIdentity).Parent().ProjectID)
+	gcpClient, err := m.Client(ctx, id.(*krmv1beta1.JobIdentity).Parent().ProjectID)
 	if err != nil {
 		return nil, err
 	}
 
 	return &jobAdapter{
 		gcpClient: gcpClient,
-		id:        id.(*v1alpha1.JobIdentity),
+		id:        id.(*krmv1beta1.JobIdentity),
 		desired:   desired,
 	}, nil
 }
@@ -127,7 +126,7 @@ func (m *jobModel) AdapterForURL(ctx context.Context, url string) (directbase.Ad
 
 type jobAdapter struct {
 	gcpClient *batch.Client
-	id        *v1alpha1.JobIdentity
+	id        *krmv1beta1.JobIdentity
 	desired   *batchpb.Job
 	actual    *batchpb.Job
 }
@@ -166,9 +165,9 @@ func (a *jobAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 	}
 	log.Info("successfully created batch job in gcp", "name", a.id)
 
-	status := &krm.BatchJobStatus{}
+	status := &krmv1beta1.BatchJobStatus{}
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = BatchJobObservedState_FromProto(mapCtx, created)
+	status.ObservedState = BatchJobObservedState_v1beta1_FromProto(mapCtx, created)
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return createOp.UpdateStatus(ctx, status, nil)
 }
@@ -188,7 +187,7 @@ func (a *jobAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 		return nil
 	}
 
-	status := &krm.BatchJobStatus{}
+	status := &krmv1beta1.BatchJobStatus{}
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
@@ -220,9 +219,9 @@ func (a *jobAdapter) Export(ctx context.Context) (*unstructured.Unstructured, er
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.BatchJob{}
+	obj := &krmv1beta1.BatchJob{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(BatchJobSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(BatchJobSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -236,7 +235,7 @@ func (a *jobAdapter) Export(ctx context.Context) (*unstructured.Unstructured, er
 	}
 
 	u.SetName(a.id.ID())
-	u.SetGroupVersionKind(krm.BatchJobGVK)
+	u.SetGroupVersionKind(krmv1beta1.BatchJobGVK)
 
 	u.Object = uObj
 	return u, nil

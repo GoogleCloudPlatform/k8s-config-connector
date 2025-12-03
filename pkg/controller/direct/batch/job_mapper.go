@@ -27,38 +27,38 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AllocationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy) *krm.AllocationPolicy {
+func AllocationPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AllocationPolicy) *krm.AllocationPolicy {
 	if in == nil {
 		return nil
 	}
 	out := &krm.AllocationPolicy{}
-	out.Location = AllocationPolicy_LocationPolicy_FromProto(mapCtx, in.GetLocation())
-	out.Instances = direct.Slice_FromProto(mapCtx, in.Instances, AllocationPolicy_InstancePolicyOrTemplate_FromProto)
+	out.Location = AllocationPolicy_LocationPolicy_v1beta1_FromProto(mapCtx, in.GetLocation())
+	out.Instances = direct.Slice_FromProto(mapCtx, in.Instances, AllocationPolicy_InstancePolicyOrTemplate_v1beta1_FromProto)
 
 	if in.GetServiceAccount() != nil {
 		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount().Email}
 	}
 	out.Labels = in.Labels
-	out.Network = AllocationPolicy_NetworkPolicy_FromProto(mapCtx, in.GetNetwork())
-	out.Placement = AllocationPolicy_PlacementPolicy_FromProto(mapCtx, in.GetPlacement())
+	out.Network = AllocationPolicy_NetworkPolicy_v1beta1_FromProto(mapCtx, in.GetNetwork())
+	out.Placement = AllocationPolicy_PlacementPolicy_v1beta1_FromProto(mapCtx, in.GetPlacement())
 	out.Tags = in.Tags
 	return out
 }
-func AllocationPolicy_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy) *pb.AllocationPolicy {
+func AllocationPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AllocationPolicy) *pb.AllocationPolicy {
 	if in == nil {
 		return nil
 	}
 	out := &pb.AllocationPolicy{}
-	out.Location = AllocationPolicy_LocationPolicy_ToProto(mapCtx, in.Location)
-	out.Instances = direct.Slice_ToProto(mapCtx, in.Instances, AllocationPolicy_InstancePolicyOrTemplate_ToProto)
+	out.Location = AllocationPolicy_LocationPolicy_v1beta1_ToProto(mapCtx, in.Location)
+	out.Instances = direct.Slice_ToProto(mapCtx, in.Instances, AllocationPolicy_InstancePolicyOrTemplate_v1beta1_ToProto)
 	if in.ServiceAccountRef != nil {
 		out.ServiceAccount = &pb.ServiceAccount{
 			Email: in.ServiceAccountRef.External,
 		}
 	}
 	out.Labels = in.Labels
-	out.Network = AllocationPolicy_NetworkPolicy_ToProto(mapCtx, in.Network)
-	out.Placement = AllocationPolicy_PlacementPolicy_ToProto(mapCtx, in.Placement)
+	out.Network = AllocationPolicy_NetworkPolicy_v1beta1_ToProto(mapCtx, in.Network)
+	out.Placement = AllocationPolicy_PlacementPolicy_v1beta1_ToProto(mapCtx, in.Placement)
 	out.Tags = in.Tags
 	return out
 }

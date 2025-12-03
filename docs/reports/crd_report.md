@@ -46,7 +46,7 @@
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupPlan                              | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRBackupVault                             | True         | True        | False  | Direct     |
 | backupdr.cnrm.cloud.google.com                | BackupDRManagementServer                        | True         | False       | False  | Direct     |
-| batch.cnrm.cloud.google.com                   | BatchJob                                        | True         | False       | False  | Direct     |
+| batch.cnrm.cloud.google.com                   | BatchJob                                        | True         | True        | False  | Direct     |
 | batch.cnrm.cloud.google.com                   | BatchTask                                       | True         | False       | False  | Direct     |
 | beyondcorp.cnrm.cloud.google.com              | BeyondCorpAppConnection                         | True         | False       | False  | Terraform  |
 | beyondcorp.cnrm.cloud.google.com              | BeyondCorpAppConnector                          | True         | False       | False  | Terraform  |
