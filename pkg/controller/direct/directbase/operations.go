@@ -99,6 +99,12 @@ func (o *CreateOperation) RecordUpdatingEvent() {
 	r.Event(o.object, corev1.EventTypeNormal, k8s.Updating, k8s.UpdatingMessage)
 }
 
+// SetSpecResourceID sets the spec.resourceID field of the resource after creation.
+// This was the previous behaviour for resources where the resource ID is server-generated.
+// However, we are now moving to reserving spec.resourceID for user-initiated adoption of existing resources,
+// and status.externalRef for system-generated resource IDs.
+// Deprecated: prefer using status.externalRef for server-generated resource IDs.
+// More info in docs/ai/server-generated-id.md
 func (o *CreateOperation) SetSpecResourceID(ctx context.Context, resourceID string) error {
 	log := klog.FromContext(ctx)
 

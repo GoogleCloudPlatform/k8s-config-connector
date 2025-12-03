@@ -87,7 +87,7 @@ func (m *TagsTagKeyModel) AdapterForObject(ctx context.Context, reader client.Re
 	}
 
 	var id *krm.TagsTagKeyIdentity
-	if obj.Spec.ResourceID != nil {
+	if obj.Spec.ResourceID != nil || obj.Status.ExternalRef != nil {
 		idFromObject, err := obj.GetIdentity(ctx, reader)
 		if err != nil {
 			return nil, err
@@ -186,11 +186,11 @@ func (a *TagsTagKeyAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	}
 	log.V(0).Info("created TagsTagKey", "name", created.GetName())
 
-	// Set resourceID
-	resourceID := strings.TrimPrefix(created.GetName(), "tagKeys/")
-	if err := createOp.SetSpecResourceID(ctx, resourceID); err != nil {
-		return err
-	}
+	// We no longer set spec.resourceID after creation.
+	// resourceID := strings.TrimPrefix(created.GetName(), "tagKeys/")
+	// if err := createOp.SetSpecResourceID(ctx, resourceID); err != nil {
+	// 	return err
+	// }
 
 	return a.updateStatus(ctx, createOp, created)
 }

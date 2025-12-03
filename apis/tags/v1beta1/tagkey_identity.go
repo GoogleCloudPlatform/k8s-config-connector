@@ -69,24 +69,33 @@ func (obj *TagsTagKey) GetIdentity(ctx context.Context, reader client.Reader) (i
 	// 	resourceID = obj.GetName()
 	// }
 
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
-
-	newIdentity := &TagsTagKeyIdentity{
-		TagKey: resourceID,
+	var specIdentity *TagsTagKeyIdentity
+	if resourceID != "" {
+		specIdentity = &TagsTagKeyIdentity{
+			TagKey: resourceID,
+		}
 	}
 
 	// Validate against the ID stored in status.externalRef
+	var statusIdentity *TagsTagKeyIdentity
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		statusIdentity := &TagsTagKeyIdentity{}
+		statusIdentity = &TagsTagKeyIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
 		}
-		if statusIdentity.String() != newIdentity.String() {
-			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, newIdentity.String())
-		}
 	}
-	return newIdentity, nil
+
+	if specIdentity != nil {
+		if statusIdentity != nil && statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, specIdentity.String())
+		}
+		return specIdentity, nil
+	}
+
+	if statusIdentity != nil {
+		return statusIdentity, nil
+	}
+
+	return nil, fmt.Errorf("cannot determine identity: spec.resourceID and status.externalRef are both unset")
 }
