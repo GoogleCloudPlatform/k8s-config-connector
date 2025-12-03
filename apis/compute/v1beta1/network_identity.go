@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 )

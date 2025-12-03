@@ -20,10 +20,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/reference"
 
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	resourcemanagerpb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
