@@ -23,20 +23,21 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
-type LogListener struct {
+// DebugLogListener is a Listener that logs structured reporting events
+type DebugLogListener struct {
 }
 
-var _ Listener = &LogListener{}
+var _ Listener = &DebugLogListener{}
 
 // OnError is called when a controller calls ReportError
-func (l *LogListener) OnError(ctx context.Context, err error, args ...any) {
+func (l *DebugLogListener) OnError(ctx context.Context, err error, args ...any) {
 	log := log.FromContext(ctx)
 	log.Info("structuredreporting OnError",
 		"error", err)
 }
 
 // OnDiff is called when a controller calls ReportDiffs
-func (l *LogListener) OnDiff(ctx context.Context, diffs *Diff) {
+func (l *DebugLogListener) OnDiff(ctx context.Context, diffs *Diff) {
 	log := log.FromContext(ctx)
 	log.Info("structuredreporting OnDiff",
 		"diff.fields", diffs.Fields,
@@ -45,7 +46,7 @@ func (l *LogListener) OnDiff(ctx context.Context, diffs *Diff) {
 }
 
 // OnReconcileStart is called when a controller calls ReportReconcileStart
-func (l *LogListener) OnReconcileStart(ctx context.Context, u *unstructured.Unstructured, t k8s.ReconcilerType) {
+func (l *DebugLogListener) OnReconcileStart(ctx context.Context, u *unstructured.Unstructured, t k8s.ReconcilerType) {
 	log := log.FromContext(ctx)
 	log.Info("structuredreporting OnReconcileStart",
 		"object.kind", u.GroupVersionKind().Kind,
@@ -53,11 +54,40 @@ func (l *LogListener) OnReconcileStart(ctx context.Context, u *unstructured.Unst
 }
 
 // OnReconcileEnd is called when a controller calls ReportReconcileEnd
-func (l *LogListener) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error, t k8s.ReconcilerType) {
+func (l *DebugLogListener) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error, t k8s.ReconcilerType) {
 	log := log.FromContext(ctx)
 	log.Info("structuredreporting OnReconcileEnd",
 		"object.kind", u.GroupVersionKind().Kind,
 		"object.name", u.GetName(),
 		"result", result,
 		"error", err)
+}
+
+// LogFieldUpdates is a Listener that logs updated fields during reconciliation,
+// only when objects are being updated.
+type LogFieldUpdates struct {
+}
+
+var _ Listener = &LogFieldUpdates{}
+
+// OnError is called when a controller calls ReportError
+func (l *LogFieldUpdates) OnError(ctx context.Context, err error, args ...any) {
+}
+
+// OnDiff is called when a controller calls ReportDiffs
+func (l *LogFieldUpdates) OnDiff(ctx context.Context, diffs *Diff) {
+	log := log.FromContext(ctx)
+	if !diffs.IsNewObject {
+		log.Info("detected changes to fields; triggering update",
+			"changedFields", diffs.FieldIDs(),
+		)
+	}
+}
+
+// OnReconcileStart is called when a controller calls ReportReconcileStart
+func (l *LogFieldUpdates) OnReconcileStart(ctx context.Context, u *unstructured.Unstructured, t k8s.ReconcilerType) {
+}
+
+// OnReconcileEnd is called when a controller calls ReportReconcileEnd
+func (l *LogFieldUpdates) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error, t k8s.ReconcilerType) {
 }
