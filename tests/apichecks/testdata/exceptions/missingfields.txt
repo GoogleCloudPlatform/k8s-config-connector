@@ -3245,6 +3245,7 @@
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].livenessProbe.httpGet.httpHeaders[].name" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].livenessProbe.httpGet.httpHeaders[].value" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].livenessProbe.httpGet.path" is not set in unstructured objects
+[missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].livenessProbe.httpGet.port" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].livenessProbe.initialDelaySeconds" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].livenessProbe.periodSeconds" is not set in unstructured objects
 [missing_field] crd=runjobs.run.cnrm.cloud.google.com version=v1beta1: field ".spec.template.template.containers[].livenessProbe.tcpSocket.port" is not set in unstructured objects

@@ -102,6 +102,17 @@ func (s *RunV2) CreateJob(ctx context.Context, req *pb.CreateJobRequest) (*longr
 				},
 			}
 		}
+		if container.StartupProbe != nil {
+			if container.StartupProbe.FailureThreshold == 0 {
+				container.StartupProbe.FailureThreshold = 3
+			}
+			if container.StartupProbe.PeriodSeconds == 0 {
+				container.StartupProbe.PeriodSeconds = 10
+			}
+			if container.StartupProbe.TimeoutSeconds == 0 {
+				container.StartupProbe.TimeoutSeconds = 1
+			}
+		}
 	}
 	if obj.Template.Template.Retries == nil {
 		obj.Template.Template.Retries = &pb.TaskTemplate_MaxRetries{MaxRetries: 3}
@@ -142,7 +153,56 @@ func (s *RunV2) UpdateJob(ctx context.Context, req *pb.UpdateJobRequest) (*longr
 		return nil, err
 	}
 
+	// Update logic from request
+	updatedJob := req.GetJob()
+	obj.Template = updatedJob.GetTemplate()
+
+	// Defaulting logic from CreateJob
+	if obj.Template == nil {
+		obj.Template = &pb.ExecutionTemplate{}
+	}
+	if obj.Template.TaskCount == 0 {
+		obj.Template.TaskCount = 1
+	}
+	if obj.Template.Template == nil {
+		obj.Template.Template = &pb.TaskTemplate{}
+	}
+	if obj.Template.Template.Timeout == nil {
+		obj.Template.Template.Timeout = &duration.Duration{Seconds: 600}
+	}
+	if obj.Template.Template.ServiceAccount == "" {
+		obj.Template.Template.ServiceAccount = fmt.Sprintf("%d-compute@developer.gserviceaccount.com", name.Project.Number)
+	}
+	if obj.Template.Template.ExecutionEnvironment == 0 {
+		obj.Template.Template.ExecutionEnvironment = pb.ExecutionEnvironment_EXECUTION_ENVIRONMENT_GEN2
+	}
+	for _, container := range obj.Template.Template.Containers {
+		if container.Resources == nil {
+			container.Resources = &pb.ResourceRequirements{
+				Limits: map[string]string{
+					"cpu":    "1000m",
+					"memory": "512Mi",
+				},
+			}
+		}
+		if container.StartupProbe != nil {
+			if container.StartupProbe.FailureThreshold == 0 {
+				container.StartupProbe.FailureThreshold = 3
+			}
+			if container.StartupProbe.PeriodSeconds == 0 {
+				container.StartupProbe.PeriodSeconds = 10
+			}
+			if container.StartupProbe.TimeoutSeconds == 0 {
+				container.StartupProbe.TimeoutSeconds = 1
+			}
+		}
+	}
+	if obj.Template.Template.Retries == nil {
+		obj.Template.Template.Retries = &pb.TaskTemplate_MaxRetries{MaxRetries: 3}
+	}
+
 	obj.UpdateTime = timestamppb.Now()
+
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}

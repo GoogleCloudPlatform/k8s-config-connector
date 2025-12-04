@@ -23,5 +23,5 @@ spec:
       timeout: 10m0s
       vpcAccess:
         connectorRef:
-          external: projects/${projectId}/locations/us-central1/connectors/c1-${uniqueId}
-        egress: ALL_TRAFFIC
+          external: projects/${projectId}/locations/us-central1/connectors/c2-${uniqueId}
+        egress: PRIVATE_RANGES_ONLY

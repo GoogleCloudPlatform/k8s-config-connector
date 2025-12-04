@@ -321,6 +321,7 @@ X-Xss-Protection: 0
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -384,6 +385,7 @@ X-Xss-Protection: 0
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -426,6 +428,7 @@ X-Xss-Protection: 0
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -486,6 +489,7 @@ X-Xss-Protection: 0
       "containers": [
         {
           "image": "us-docker.pkg.dev/cloudrun/container/hello",
+          "name": "container-name",
           "resources": {
             "limits": {
               "cpu": "1000m",
@@ -547,6 +551,7 @@ X-Xss-Protection: 0
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -610,6 +615,7 @@ X-Xss-Protection: 0
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",
@@ -652,6 +658,7 @@ X-Xss-Protection: 0
         "containers": [
           {
             "image": "us-docker.pkg.dev/cloudrun/container/hello",
+            "name": "container-name",
             "resources": {
               "limits": {
                 "cpu": "1000m",

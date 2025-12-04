@@ -37,6 +37,7 @@ spec:
           timeoutSeconds: 1
       - dependsOn:
         - hello
+        - goodbye
         image: us-docker.pkg.dev/cloudrun/container/hello
         name: farewell
         resources:
