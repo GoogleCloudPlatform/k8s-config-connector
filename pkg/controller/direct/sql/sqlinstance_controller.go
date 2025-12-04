@@ -610,11 +610,11 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if editionField, ok := a.fieldMeta["spec.settings.edition"]; ok {
 		isEditionUnmanaged = editionField.isUnmanaged
 	}
-	isSettingsUnamanged := false
+	isSettingsUnmanaged := false
 	if settingsField, ok := a.fieldMeta["spec.settings"]; ok {
-		isSettingsUnamanged = settingsField.isUnmanaged
+		isSettingsUnmanaged = settingsField.isUnmanaged
 	}
-	isEditionUnmanaged = isEditionUnmanaged || isSettingsUnamanged
+	isEditionUnmanaged = isEditionUnmanaged || isSettingsUnmanaged
 
 	// Next, handle database edition updates
 	if !isEditionUnmanaged {
@@ -623,7 +623,12 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 			desiredEdition = *a.desired.Spec.Settings.Edition
 		}
 
-		if desiredEdition != a.actual.Settings.Edition {
+		actualEdition := "ENTERPRISE" // Default value
+		if a.actual.Settings.Edition != "" {
+			actualEdition = a.actual.Settings.Edition
+		}
+
+		if desiredEdition != actualEdition {
 			newEditionDb := &api.DatabaseInstance{
 				Settings: &api.Settings{
 					Edition: direct.ValueOf(&desiredEdition),
@@ -636,7 +641,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 
 			{
 				report := &structuredreporting.Diff{}
-				report.AddField(".settings.edition", a.actual.Settings.Edition, desiredEdition)
+				report.AddField(".settings.edition", actualEdition, desiredEdition)
 				structuredreporting.ReportDiff(ctx, report)
 			}
 
