@@ -21,6 +21,7 @@ package run
 
 import (
 	pb "cloud.google.com/go/run/apiv2/runpb"
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
 	krmsecretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
@@ -763,7 +764,7 @@ func VPCAccess_NetworkInterface_FromProto(mapCtx *direct.MapContext, in *pb.VpcA
 	}
 	out := &krm.VPCAccess_NetworkInterface{}
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetSubnetwork() != "" {
 		out.SubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}

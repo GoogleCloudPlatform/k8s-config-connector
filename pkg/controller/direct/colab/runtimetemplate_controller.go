@@ -152,7 +152,7 @@ func (a *runtimeTemplateAdapter) normalizeReferences(ctx context.Context) error 
 	obj := a.desired
 	if obj.Spec.NetworkSpec != nil {
 		if obj.Spec.NetworkSpec.NetworkRef != nil {
-			if err := obj.Spec.NetworkSpec.NetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+			if err := obj.Spec.NetworkSpec.NetworkRef.Normalize(ctx, a.reader, obj.GetNamespace()); err != nil {
 				return err
 			}
 		}

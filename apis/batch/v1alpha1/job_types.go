@@ -201,7 +201,7 @@ type AllocationPolicy_NetworkInterface struct {
 	//  * projects/{project}/global/networks/{network}
 	//  * global/networks/{network}
 	// +kcc:proto:field=google.cloud.batch.v1.AllocationPolicy.NetworkInterface.network
-	NetworkRef *refsv1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// The URL of an existing subnetwork resource in the network.
 	//  You can specify the subnetwork as a full or partial URL.

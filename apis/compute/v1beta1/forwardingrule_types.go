@@ -243,7 +243,7 @@ type ComputeForwardingRuleSpec struct {
 	load balancing, this field identifies the network that the load
 	balanced IP should belong to for this forwarding rule. If this
 	field is not specified, the default network will be used. */
-	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	/* Immutable. This signifies the networking tier used for configuring
 	this load balancer and can only take the following values:

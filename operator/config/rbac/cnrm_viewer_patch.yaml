@@ -45,6 +45,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - analytics.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - apigateway.cnrm.cloud.google.com
   resources:
   - '*'
@@ -94,6 +102,14 @@ rules:
   - watch
 - apiGroups:
   - asset.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - assuredworkloads.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -342,6 +358,14 @@ rules:
   - watch
 - apiGroups:
   - configcontroller.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - configdelivery.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

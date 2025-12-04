@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -150,7 +151,7 @@ type NotebookInstanceSpec struct {
 
 	// The name of the VPC that this instance is in.
 	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.network
-	NetworkRef *v1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// The name of the subnet that this instance is in.
 	// +kcc:proto:field=google.cloud.notebooks.v1.Instance.subnet

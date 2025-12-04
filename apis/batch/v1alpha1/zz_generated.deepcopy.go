@@ -305,7 +305,7 @@ func (in *AllocationPolicy_NetworkInterface) DeepCopyInto(out *AllocationPolicy_
 	*out = *in
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(v1beta1.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.SubnetworkRef != nil {

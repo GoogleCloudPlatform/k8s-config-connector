@@ -283,7 +283,7 @@ func (a *connectivityTestAdapter) normalizeReferenceFields(ctx context.Context) 
 			}
 		}
 		if obj.Spec.Source.ComputeNetworkRef != nil {
-			if err := obj.Spec.Source.ComputeNetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+			if err := obj.Spec.Source.ComputeNetworkRef.Normalize(ctx, a.reader, obj.GetNamespace()); err != nil {
 				return err
 			}
 		}
@@ -320,7 +320,7 @@ func (a *connectivityTestAdapter) normalizeReferenceFields(ctx context.Context) 
 			}
 		}
 		if obj.Spec.Destination.ComputeNetworkRef != nil {
-			if err := obj.Spec.Destination.ComputeNetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+			if err := obj.Spec.Destination.ComputeNetworkRef.Normalize(ctx, a.reader, obj.GetNamespace()); err != nil {
 				return err
 			}
 		}

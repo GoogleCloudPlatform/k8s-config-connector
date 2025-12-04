@@ -19,8 +19,9 @@ import (
 	"fmt"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -29,7 +30,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client.Object, ref *refs.ComputeNetworkRef) (*refs.ComputeNetworkRef, error) {
+func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client.Object, ref *computev1beta1.ComputeNetworkRef) (*computev1beta1.ComputeNetworkRef, error) {
 	if ref == nil {
 		return nil, nil
 	}
@@ -73,7 +74,7 @@ func ResolveComputeNetwork(ctx context.Context, reader client.Reader, src client
 		return nil, err
 	}
 
-	return &refs.ComputeNetworkRef{
+	return &computev1beta1.ComputeNetworkRef{
 		External: fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/%s", projectID, resourceID)}, nil
 }
 
@@ -140,7 +141,7 @@ func resolveResourceName(ctx context.Context, reader client.Reader, key client.O
 
 func resolveFirewallPolicyRuleRefs(ctx context.Context, reader client.Reader, obj *krm.ComputeFirewallPolicyRule) error {
 	// Get target resources(compute network)
-	var targetResources []*refs.ComputeNetworkRef
+	var targetResources []*computev1beta1.ComputeNetworkRef
 	if obj.Spec.TargetResources != nil {
 		for _, targetResource := range obj.Spec.TargetResources {
 			networkRef, err := ResolveComputeNetwork(ctx, reader, obj, targetResource)

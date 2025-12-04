@@ -183,16 +183,16 @@ func ComputeForwardingRuleSpec_BackendSeriviceRef_ToProto(mapCtx *direct.MapCont
 	return direct.LazyPtr(in.External)
 }
 
-func ComputeForwardingRuleSpec_NetworkRef_FromProto(mapCtx *direct.MapContext, in string) *refs.ComputeNetworkRef {
+func ComputeForwardingRuleSpec_NetworkRef_FromProto(mapCtx *direct.MapContext, in string) *krm.ComputeNetworkRef {
 	if in == "" {
 		return nil
 	}
-	return &refs.ComputeNetworkRef{
+	return &krm.ComputeNetworkRef{
 		External: in,
 	}
 }
 
-func ComputeForwardingRuleSpec_NetworkRef_ToProto(mapCtx *direct.MapContext, in *refs.ComputeNetworkRef) *string {
+func ComputeForwardingRuleSpec_NetworkRef_ToProto(mapCtx *direct.MapContext, in *krm.ComputeNetworkRef) *string {
 	if in == nil {
 		return nil
 	}

@@ -26,6 +26,8 @@ import (
 	"strings"
 	"time"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+
 	"google.golang.org/api/option"
 	api "google.golang.org/api/servicenetworking/v1"
 	gcp "google.golang.org/api/servicenetworking/v1"
@@ -35,7 +37,6 @@ import (
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicenetworking/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -79,9 +80,7 @@ func (m *peeredDnsDomainModel) AdapterForObject(ctx context.Context, kube client
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// TODO: Use common.NormalizeReferences to normalize the NetworkRef
-
-	if err := obj.Spec.NetworkRef.Normalize(ctx, kube, u); err != nil {
+	if err := obj.Spec.NetworkRef.Normalize(ctx, kube, u.GetNamespace()); err != nil {
 		return nil, err
 	}
 
@@ -253,7 +252,7 @@ func (a *peeredDNSDomainAdapter) Export(ctx context.Context) (*unstructured.Unst
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.NetworkRef = &refs.ComputeNetworkRef{External: a.id.Network.String()}
+	obj.Spec.NetworkRef = &computev1beta1.ComputeNetworkRef{External: a.id.Network.String()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

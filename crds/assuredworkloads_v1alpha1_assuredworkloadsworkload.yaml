@@ -1,0 +1,268 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 1.140.0
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: assuredworkloadsworkloads.assuredworkloads.cnrm.cloud.google.com
+spec:
+  group: assuredworkloads.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: AssuredWorkloadsWorkload
+    listKind: AssuredWorkloadsWorkloadList
+    plural: assuredworkloadsworkloads
+    shortNames:
+    - gcpassuredworkloadsworkload
+    - gcpassuredworkloadsworkloads
+    singular: assuredworkloadsworkload
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: AssuredWorkloadsWorkload is the Schema for the AssuredWorkloadsWorkload
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: AssuredWorkloadsWorkloadSpec defines the desired state of
+              AssuredWorkloadsWorkload
+            properties:
+              billingAccountRef:
+                description: Optional. The billing account used for the resources
+                  which are direct children of workload. This billing account is initially
+                  associated with the resources created as part of Workload creation.
+                  After the initial creation of these resources, the customer can
+                  change the assigned billing account. The resource name has the form
+                  `billingAccounts/{billing_account_id}`. For example, `billingAccounts/012345-567890-ABCDEF`.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed BillingAccount
+                      resource. Should be in the format "billingAccounts/{billingAccountID}".
+                    type: string
+                  name:
+                    description: The name of a BillingAccount resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a BillingAccount resource.
+                    type: string
+                type: object
+              complianceRegime:
+                description: Required. Immutable. Compliance Regime associated with
+                  this workload.
+                type: string
+              displayName:
+                description: |-
+                  Required. The user-assigned display name of the Workload.
+                   When present it must be between 4 to 30 characters.
+                   Allowed characters are: lowercase and uppercase letters, numbers,
+                   hyphen, and spaces.
+
+                   Example: My Workload
+                type: string
+              enableSovereignControls:
+                description: Optional. Indicates the sovereignty status of the given
+                  workload. Currently meant to be used by Europe/Canada customers.
+                type: boolean
+              partner:
+                description: Optional. Compliance Regime associated with this workload.
+                type: string
+              resourceID:
+                description: The AssuredWorkloadsWorkload name. If not given, the
+                  metadata.name will be used.
+                type: string
+              resourceSettings:
+                description: Input only. Resource properties that are used to customize
+                  workload resources. These properties (such as custom project id)
+                  will be used to create workload resources if possible. This field
+                  is optional.
+                items:
+                  properties:
+                    displayName:
+                      description: User-assigned resource display name. If not empty
+                        it will be used to create a resource with the specified name.
+                      type: string
+                    resourceID:
+                      description: Resource identifier. For a project this represents
+                        project_id. If the project is already taken, the workload
+                        creation will fail. For KeyRing, this represents the keyring_id.
+                        For a folder, don't set this value as folder_id is assigned
+                        by Google.
+                      type: string
+                    resourceType:
+                      description: Indicates the type of resource. This field should
+                        be specified to correspond the id to the right resource type
+                        (CONSUMER_FOLDER or ENCRYPTION_KEYS_PROJECT)
+                      type: string
+                  type: object
+                type: array
+            type: object
+          status:
+            description: AssuredWorkloadsWorkloadStatus defines the config connector
+              machine state of AssuredWorkloadsWorkload
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the AssuredWorkloadsWorkload resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  compliantButDisallowedServices:
+                    description: Output only. Urls for services which are compliant
+                      for this Assured Workload, but which are currently disallowed
+                      by the ResourceUsageRestriction org policy. Invoke RestrictAllowedResources
+                      endpoint to allow your project developers to use these services
+                      in their environment."
+                    items:
+                      type: string
+                    type: array
+                  createTime:
+                    description: Output only. Immutable. The Workload creation timestamp.
+                    type: string
+                  kajEnrollmentState:
+                    description: Output only. Represents the KAJ enrollment state
+                      of the given workload.
+                    type: string
+                  resources:
+                    description: Output only. The resources associated with this workload.
+                      These resources will be created when creating the workload.
+                      If any of the projects already exist, the workload creation
+                      will fail. Always read only.
+                    items:
+                      properties:
+                        resourceID:
+                          description: Resource identifier. For a project this represents
+                            project_number.
+                          format: int64
+                          type: integer
+                        resourceType:
+                          description: Indicates the type of resource.
+                          type: string
+                      type: object
+                    type: array
+                  saaEnrollmentResponse:
+                    description: Output only. Represents the SAA enrollment response
+                      of the given workload. SAA enrollment response is queried during
+                      GetWorkload call. In failure cases, user friendly error message
+                      is shown in SAA details page.
+                    properties:
+                      setupErrors:
+                        description: Indicates SAA enrollment setup error if any.
+                        items:
+                          type: string
+                        type: array
+                      setupStatus:
+                        description: Indicates SAA enrollment status of a given workload.
+                        type: string
+                    type: object
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: null
+  storedVersions: null

@@ -116,7 +116,7 @@ type ComputeFirewallPolicyRuleSpec struct {
 	Priority int64 `json:"priority"`
 
 	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.target_resources
-	TargetResources []*refs.ComputeNetworkRef `json:"targetResources,omitempty"`
+	TargetResources []*ComputeNetworkRef `json:"targetResources,omitempty"`
 
 	// +kcc:proto:field=google.cloud.compute.v1.FirewallPolicyRule.target_service_accounts
 	TargetServiceAccounts []*refs.IAMServiceAccountRef `json:"targetServiceAccounts,omitempty"`

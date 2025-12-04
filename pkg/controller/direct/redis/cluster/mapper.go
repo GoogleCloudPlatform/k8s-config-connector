@@ -17,9 +17,10 @@ package cluster
 import (
 	"time"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -64,7 +65,7 @@ func PscConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.P
 	}
 	out := &krm.PscConfigSpec{}
 	if in.Network != "" {
-		out.NetworkRef = &refs.ComputeNetworkRef{External: in.Network}
+		out.NetworkRef = &computev1beta1.ComputeNetworkRef{External: in.Network}
 	}
 	return out
 }
