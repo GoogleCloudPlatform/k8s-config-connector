@@ -186,11 +186,12 @@ func (a *TagsTagKeyAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	}
 	log.V(0).Info("created TagsTagKey", "name", created.GetName())
 
-	// We no longer set spec.resourceID after creation.
-	// resourceID := strings.TrimPrefix(created.GetName(), "tagKeys/")
-	// if err := createOp.SetSpecResourceID(ctx, resourceID); err != nil {
-	// 	return err
-	// }
+	// For compatibility, we set spec.resourceID after creation because this is a server-generated-id resource that we are migrating from terraform/DCL.
+	// More info in docs/ai/server-generated-id.md
+	resourceID := strings.TrimPrefix(created.GetName(), "tagKeys/")
+	if err := createOp.SetSpecResourceID(ctx, resourceID); err != nil {
+		return err
+	}
 
 	return a.updateStatus(ctx, createOp, created)
 }

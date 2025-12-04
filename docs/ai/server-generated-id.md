@@ -1,19 +1,30 @@
-When a resource has a server-generated ID, we need to store the generated ID into the object.
+When a resource has a server-generated ID, we need to store the generated ID into the kubernetes object,
+so that we can associate the GCP object with the kubernetes object on subsequent reconciliations.
 
-Legacy controllers would write back to spec.resourceID, which is the same field that users can specify if they want to adopt
-an existing resource.  However, this makes the field ownership of the spec.resourceID field unclear: did the user specify it, or did KCC write it back?
+Legacy controllers would write this ID to spec.resourceID,
+which is the same field that users can specify if they want to adopt an existing resource.
+However, this makes the field ownership of the spec.resourceID field unclear: did the user specify it, or did KCC write it back?
 
-Instead, we now write to status.externalRef.  The downside is that this is technically a breaking change between terraform and direct controllers,
-so if we create an object with the direct controller we can't go back to using the terraform controller (it will create a second object).
-We might also break user workflows if they are expecting to see the ID in the existing spec.resourceID field.
+For greenfield controllers, we are introducing status.externalRef.
+This field will consistently give the GCP resource ID, as well as indicating whether a resource is under KCC control.
 
-We could instead write to both spec.resourceID _and_ status.externalRef.  If we did this then we could move between terraform and direct freely,
-and we would not break existing workflows.  The downside is that we do carry forward the field ownership ambiguity.
-Perhaps we could address this as part of moving from v1beta1 to v1.
+The question is whether we should also write to spec.resourceID.
+To avoid a behavioural change, when moving from terraform to direct, we will write to both status.externalRef _and_ spec.resourceID.
+We want to avoid two problems:
 
-When we move a server-generated-id controller from terraform/DCL to direct, and stop writing to spec.resourceID,
-we should document in the release notes the two gotchas:
+* It should be possible to create a GCP resource with the direct controller and then revert back to the terraform controller (without creating a new GCP resource)
 
-* Can't switch freely between legacy and direct controllers
+* Tooling or other controllers should continue to see the resourceID in the existing spec.resourceID field.
 
-* Look to the status.externalRef field for the server-generated ID.
+Even if we could address the first problem (for example by teaching terraform to read status.externalRef),
+the only way we have to solve the user expectations problem is with time (a "deprecation" period).
+
+Instead, we accept that although we would prefer never to write to spec, we will continue
+to write spec.resourceID for server-generated-id resources that we are migrating from DCL or Terraform to Direct.
+We will not (currently) write to spec for non-server-generated-id resources, nor for greenfield Direct controllers.
+Nor are we intending to "open the door" for writing fields _other_ than spec.resourceID from direct controllers.
+
+We may be able to stop writing spec.resourceID as part of "v1";
+we should start communicating now that status.externalRef is the canonical location for the GCP identity
+(and that eventually spec.resourceID will no longer be populated).
+We should add this to the documentation for the resources.
