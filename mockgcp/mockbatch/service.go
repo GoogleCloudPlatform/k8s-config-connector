@@ -16,7 +16,7 @@ package mockbatch
 
 // +tool:mockgcp-service
 // http.host: batch.googleapis.com
-// proto.service: google.cloud.batch.v1.BatchService
+// proto.service: google.cloud.batch.v1
 
 import (
 	"context"
