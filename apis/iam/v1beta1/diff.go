@@ -53,23 +53,20 @@ func IAMPolicySpecDiffers(desired, actual *IAMPolicySpec) *structuredreporting.D
 // It treats the slices as maps keyed by Role, and members are treated as unordered sets.
 func compareBindings(desired, actual []IAMPolicyBinding) *structuredreporting.Diff {
 	diff := &structuredreporting.Diff{}
-	desiredMap := make(map[string]IAMPolicyBinding)
-	for _, b := range desired {
-		sort.Slice(b.Members, func(i, j int) bool {
-			return b.Members[i] < b.Members[j]
-		})
-		// Canonicalize members for stable comparison.
-		desiredMap[b.Role] = b
-	}
 
-	actualMap := make(map[string]IAMPolicyBinding)
-	for _, b := range actual {
-		sort.Slice(b.Members, func(i, j int) bool {
-			return b.Members[i] < b.Members[j]
-		})
-		// Canonicalize members for stable comparison.
-		actualMap[b.Role] = b
+	deepCopySortBindings := func(bindings []IAMPolicyBinding) map[string]IAMPolicyBinding {
+		m := make(map[string]IAMPolicyBinding)
+		for _, b := range bindings {
+			bindingCopy := *b.DeepCopy()
+			sort.Slice(bindingCopy.Members, func(i, j int) bool {
+				return bindingCopy.Members[i] < bindingCopy.Members[j]
+			})
+			m[bindingCopy.Role] = bindingCopy
+		}
+		return m
 	}
+	desiredMap := deepCopySortBindings(desired)
+	actualMap := deepCopySortBindings(actual)
 
 	// Check for added or modified bindings.
 	for role, desiredBinding := range desiredMap {
@@ -102,10 +99,8 @@ func compareAuditConfigs(desired, actual []IAMPolicyAuditConfig) *structuredrepo
 	canonicalize := func(configs []IAMPolicyAuditConfig) []IAMPolicyAuditConfig {
 		// Create a deep copy to avoid modifying the original struct.
 		copiedConfigs := make([]IAMPolicyAuditConfig, len(configs))
-		copy(copiedConfigs, configs)
-
-		for _, ac := range configs {
-			copiedConfigs = append(copiedConfigs, *ac.DeepCopy())
+		for i, ac := range configs {
+			copiedConfigs[i] = *ac.DeepCopy()
 		}
 
 		for i := range copiedConfigs {
