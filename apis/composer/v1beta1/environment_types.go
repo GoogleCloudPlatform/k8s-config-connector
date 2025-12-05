@@ -78,6 +78,12 @@ type ComposerEnvironmentStatus struct {
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	ObservedState *ComposerEnvironmentObservedState `json:"observedState,omitempty"`
+
+	// LastModifiedCookie contains hashes of the last applied spec and the last observed GCP state.
+	// The format is "<spec-hash>/<gcp-hash>".
+	// This is used by the controller to detect if the user's desired state has changed or if the GCP resource has drifted.
+	// +optional
+	LastModifiedCookie *string `json:"lastModifiedCookie,omitempty"`
 }
 
 // ComposerEnvironmentObservedState is the state of the ComposerEnvironment resource as most recently observed in GCP.

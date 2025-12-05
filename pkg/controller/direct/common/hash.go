@@ -16,24 +16,27 @@
 package common
 
 import (
+	"crypto/md5"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/genproto/googleapis/api/annotations"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	"k8s.io/klog/v2"
 )
 
-// HashProto calculates a hash of a proto message.
+// hashProto calculates a hash of a proto message.
 // We use this to detect changes to the GCP resource.
-func HashProto(obj proto.Message) (string, error) {
+func hashProto(obj proto.Message) (string, error) {
 	// We normalize the proto by clearing output-only fields etc
 	// We do this on a copy
 	obj = proto.Clone(obj)
-	NormalizeProto(obj)
+	normalizeProto(obj)
 
 	// We use a deterministic proto marshaler.
 	j, err := (proto.MarshalOptions{Deterministic: true}).Marshal(obj)
@@ -47,7 +50,7 @@ func HashProto(obj proto.Message) (string, error) {
 
 // NormalizeProto clears fields that are not significant for comparison.
 // It modifies the passed-in proto.
-func NormalizeProto(pb proto.Message) {
+func normalizeProto(pb proto.Message) {
 	// TODO: Should we also clear fields like `uid` and `name`?
 	// The problem is that they are not consistently marked as output-only.
 
@@ -106,6 +109,18 @@ func clearFields(m protoreflect.Message, paths []string) {
 	}
 }
 
+func NewCookie(spec, gcp proto.Message) (*Cookie, error) {
+	specHash, err := hashProto(spec)
+	if err != nil {
+		return nil, fmt.Errorf("calculating spec hash: %w", err)
+	}
+	gcpHash, err := hashProto(gcp)
+	if err != nil {
+		return nil, fmt.Errorf("calculating gcp hash: %w", err)
+	}
+	return &Cookie{SpecHash: specHash, GCPHash: gcpHash}, nil
+}
+
 // Cookie is used for stateful reconciliation.
 // It is stored in the status of the KCC resource.
 type Cookie struct {
@@ -114,23 +129,22 @@ type Cookie struct {
 }
 
 // ComposeCookie creates a cookie string from the spec and gcp hashes.
-func ComposeCookie(specHash, gcpHash string) (string, error) {
-	cookie := &Cookie{
-		SpecHash: specHash,
-		GCPHash:  gcpHash,
-	}
-	b, err := json.Marshal(cookie)
+func (c *Cookie) String() string {
+	b, err := json.Marshal(c)
 	if err != nil {
-		return "", fmt.Errorf("error marshalling cookie: %w", err)
+		klog.Errorf("error marshalling cookie: %v", err)
+		return ""
 	}
-	return string(b), nil
+	return fmt.Sprintf("%x", md5.Sum(b))
 }
 
-// ParseCookie parses a cookie string.
-func ParseCookie(s string) (*Cookie, error) {
-	cookie := &Cookie{}
-	if err := json.Unmarshal([]byte(s), cookie); err != nil {
-		return nil, fmt.Errorf("error unmarshalling cookie: %w", err)
+func (c *Cookie) Equal(lastModifiedCookie *string) bool {
+	if lastModifiedCookie == nil {
+		return false
 	}
-	return cookie, nil
+	other := direct.ValueOf(lastModifiedCookie)
+	if other == "" {
+		return false
+	}
+	return c.String() == other
 }

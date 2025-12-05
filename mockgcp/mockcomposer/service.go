@@ -28,17 +28,29 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/orchestration/airflow/service/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
-// MockService represents a mocked composer service.
+func init() {
+	mockgcpregistry.Register(New)
+}
+
+// MockService represents a mocked pubsub service.
 type MockService struct {
 	*common.MockEnvironment
-	storage storage.Storage
-
+	storage    storage.Storage
 	operations *operations.Operations
+}
 
-	v1 *ComposerV1
+// New creates a MockService.
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
+	s := &MockService{
+		MockEnvironment: env,
+		storage:         storage,
+		operations:      operations.NewOperationsService(storage),
+	}
+	return s
 }
 
 type ComposerV1 struct {
@@ -46,23 +58,12 @@ type ComposerV1 struct {
 	pb.UnimplementedEnvironmentsServer
 }
 
-// New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
-	s := &MockService{
-		MockEnvironment: env,
-		storage:         storage,
-		operations:      operations.NewOperationsService(storage),
-	}
-	s.v1 = &ComposerV1{MockService: s}
-	return s
-}
-
 func (s *MockService) ExpectedHosts() []string {
 	return []string{"composer.googleapis.com"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterEnvironmentsServer(grpcServer, s.v1)
+	pb.RegisterEnvironmentsServer(grpcServer, &ComposerV1{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {

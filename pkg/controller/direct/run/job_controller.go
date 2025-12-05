@@ -30,6 +30,7 @@ import (
 
 	gcp "cloud.google.com/go/run/apiv2"
 
+	pb "cloud.google.com/go/run/apiv2/runpb"
 	runpb "cloud.google.com/go/run/apiv2/runpb"
 	"google.golang.org/api/option"
 
@@ -185,22 +186,28 @@ func (a *JobAdapter) Create(ctx context.Context, createOp *directbase.CreateOper
 		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
-
-	specHash, err := common.HashProto(a.desired)
-	if err != nil {
-		return fmt.Errorf("calculating spec hash: %w", err)
-	}
-	gcpHash, err := common.HashProto(created)
-	if err != nil {
-		return fmt.Errorf("calculating gcp hash: %w", err)
-	}
-	cookie, err := common.ComposeCookie(specHash, gcpHash)
+	newCookie, err := common.NewCookie(a.desired, created)
 	if err != nil {
 		return fmt.Errorf("composing cookie: %w", err)
 	}
-	status.LastModifiedCookie = direct.LazyPtr(cookie)
-
+	status.LastModifiedCookie = direct.LazyPtr(newCookie.String())
 	return createOp.UpdateStatus(ctx, status, nil)
+}
+
+func (a *JobAdapter) updateStatus(ctx context.Context, updated *pb.Job, updateOp *directbase.UpdateOperation) error {
+	status := &krm.RunJobStatus{}
+	mapCtx := &direct.MapContext{}
+	status.ObservedState = RunJobObservedState_FromProto(mapCtx, updated)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	updatedCookie, err := common.NewCookie(a.desired, updated)
+	if err != nil {
+		return err
+	}
+	status.LastModifiedCookie = direct.LazyPtr(updatedCookie.String())
+	status.ExternalRef = direct.LazyPtr(a.id.String())
+	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
@@ -208,34 +215,12 @@ func (a *JobAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Job", "name", a.id)
 
-	specHash, err := common.HashProto(a.desired)
+	currentCookie, err := common.NewCookie(a.desired, a.actual)
 	if err != nil {
-		return fmt.Errorf("calculating spec hash: %w", err)
+		return err
 	}
-	gcpHash, err := common.HashProto(a.actual)
-	if err != nil {
-		return fmt.Errorf("calculating gcp hash: %w", err)
-	}
-
-	if a.lastModifiedCookie != nil {
-		cookie, err := common.ParseCookie(direct.ValueOf(a.lastModifiedCookie))
-		if err != nil {
-			log.V(2).Info("could not parse cookie, forcing update", "cookie", direct.ValueOf(a.lastModifiedCookie), "err", err)
-		} else {
-			if cookie.SpecHash == specHash && cookie.GCPHash == gcpHash {
-				log.V(2).Info("resource is up to date", "name", a.id)
-				// Fast path: Update status with observed state and return.
-				// The status update is important to update conditions and observedGeneration.
-				status := &krm.RunJobStatus{}
-				mapCtx := &direct.MapContext{}
-				status.ObservedState = RunJobObservedState_FromProto(mapCtx, a.actual)
-				if mapCtx.Err() != nil {
-					return mapCtx.Err()
-				}
-				status.LastModifiedCookie = a.lastModifiedCookie // Preserve cookie
-				return updateOp.UpdateStatus(ctx, status, nil)
-			}
-		}
+	if currentCookie.Equal(a.lastModifiedCookie) {
+		return a.updateStatus(ctx, a.actual, updateOp)
 	}
 
 	a.desired.Name = a.actual.Name
@@ -251,25 +236,7 @@ func (a *JobAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOper
 		return fmt.Errorf("Job %s waiting update: %w", a.id, err)
 	}
 	log.V(2).Info("successfully updated Job", "name", a.id)
-
-	mapCtx := &direct.MapContext{}
-	status := &krm.RunJobStatus{}
-	status.ObservedState = RunJobObservedState_FromProto(mapCtx, updated)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	newGCPHash, err := common.HashProto(updated)
-	if err != nil {
-		return fmt.Errorf("calculating new gcp hash: %w", err)
-	}
-	cookie, err := common.ComposeCookie(specHash, newGCPHash)
-	if err != nil {
-		return fmt.Errorf("composing cookie: %w", err)
-	}
-	status.LastModifiedCookie = direct.LazyPtr(cookie)
-
-	return updateOp.UpdateStatus(ctx, status, nil)
+	return a.updateStatus(ctx, updated, updateOp)
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
