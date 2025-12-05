@@ -43,38 +43,59 @@ func (i *TagsTagKeyIdentity) String() string {
 }
 
 func (i *TagsTagKeyIdentity) FromExternal(ref string) error {
+	// Should be able to parse https://docs.cloud.google.com/asset-inventory/docs/asset-names
 	ref = strings.TrimPrefix(ref, "//cloudresourcemanager.googleapis.com/")
 
 	tokens := strings.Split(ref, "/")
 	if len(tokens) == 2 && tokens[0] == "tagKeys" {
 		i.TagKey = tokens[1]
+		if i.TagKey == "" {
+			return fmt.Errorf("tagKey was empty in external=%q", ref)
+		}
 		return nil
 	}
-	return fmt.Errorf("format of TagsTagKey external=%q was not known (use %s)", ref, TagsTagKeyIdentityURL)
+
+	return fmt.Errorf("format of TagKey external=%q was not known (use %s)", ref, TagsTagKeyIdentityURL)
 }
 
 var _ identity.Resource = &TagsTagKey{}
 
 func (obj *TagsTagKey) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	newIdentity := &TagsTagKeyIdentity{}
+	// Get desired resource ID
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
-	newIdentity.TagKey = common.ValueOf(obj.Spec.ResourceID)
-	if newIdentity.TagKey == "" {
-		newIdentity.TagKey = obj.GetName()
+	// Server-generated ID; do not fallback to name
+	// if resourceID == "" {
+	// 	resourceID = obj.GetName()
+	// }
+
+	var specIdentity *TagsTagKeyIdentity
+	if resourceID != "" {
+		specIdentity = &TagsTagKeyIdentity{
+			TagKey: resourceID,
+		}
 	}
-	if newIdentity.TagKey == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
+
 	// Validate against the ID stored in status.externalRef
+	var statusIdentity *TagsTagKeyIdentity
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		statusIdentity := &TagsTagKeyIdentity{}
+		statusIdentity = &TagsTagKeyIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
 		}
-		if statusIdentity.String() != newIdentity.String() {
-			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, newIdentity.String())
-		}
 	}
-	return newIdentity, nil
+
+	if specIdentity != nil {
+		if statusIdentity != nil && statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, specIdentity.String())
+		}
+		return specIdentity, nil
+	}
+
+	if statusIdentity != nil {
+		return statusIdentity, nil
+	}
+
+	return nil, fmt.Errorf("cannot determine identity: spec.resourceID and status.externalRef are both unset")
 }

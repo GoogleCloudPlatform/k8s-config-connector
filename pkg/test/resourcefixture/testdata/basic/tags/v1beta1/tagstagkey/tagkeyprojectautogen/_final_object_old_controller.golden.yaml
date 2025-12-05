@@ -3,6 +3,7 @@ kind: TagsTagKey
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -13,7 +14,7 @@ metadata:
   namespace: ${uniqueId}
 spec:
   description: For keyname resources.
-  parent: organizations/${organizationID}
+  parent: projects/${projectId}
   resourceID: ${tagKeyID}
   shortName: keyname${uniqueId}
 status:
@@ -24,8 +25,7 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
-  externalRef: tagKeys/${tagKeyID}
   name: ${tagKeyID}
-  namespacedName: ${organizationID}/keyname${uniqueId}
+  namespacedName: ${projectId}/keyname${uniqueId}
   observedGeneration: 2
   updateTime: "1970-01-01T00:00:00Z"

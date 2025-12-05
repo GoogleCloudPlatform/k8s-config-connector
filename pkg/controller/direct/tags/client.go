@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package resourcemanager
+package tags
 
 import (
 	"context"
@@ -22,25 +22,14 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 )
 
-type gcpClient struct {
-	config config.ControllerConfig
-}
-
-func newGCPClient(ctx context.Context, config *config.ControllerConfig) (*gcpClient, error) {
-	gcpClient := &gcpClient{
-		config: *config,
-	}
-	return gcpClient, nil
-}
-
-func (m *gcpClient) newTagKeysClient(ctx context.Context) (*api.TagKeysClient, error) {
-	opts, err := m.config.RESTClientOptions()
+func newTagKeysClient(ctx context.Context, config *config.ControllerConfig) (*api.TagKeysClient, error) {
+	opts, err := config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
 	client, err := api.NewTagKeysRESTClient(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building tag keys client: %w", err)
+		return nil, fmt.Errorf("building tags key client: %w", err)
 	}
 	return client, err
 }
