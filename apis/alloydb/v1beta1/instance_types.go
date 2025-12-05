@@ -123,6 +123,17 @@ type Instance_InstanceNetworkConfig struct {
 	EnableOutboundPublicIP *bool `json:"enableOutboundPublicIp,omitempty"`
 }
 
+// +kcc:proto=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig
+type Instance_ConnectionPoolConfig struct {
+	// Optional. Whether to enable Managed Connection Pool (MCP).
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Optional. Connection Pool flags, as a list of "key": "value" pairs.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig.flags
+	Flags map[string]string `json:"flags,omitempty"`
+}
+
 // AlloyDBInstanceStatus defines the config connector machine state of AlloyDBInstance
 // +kcc:status:proto=google.cloud.alloydb.v1beta.Instance
 type AlloyDBInstanceStatus struct {
@@ -182,6 +193,17 @@ type AlloyDBInstanceObservedState struct {
 	// Observability feature status for an instance.
 	// +kcc:observedstate:proto=google.cloud.alloydb.beta.Instance.ObservabilityInstanceConfig
 	ObservabilityInstanceConfig *Instance_ObservabilityInstanceConfigObservedState `json:"observabilityConfig,omitempty"`
+	
+	// Output for Managed Connection Pool (MCP).
+	ConnectionPoolConfig *Instance_ConnectionPoolConfigObservedState `json:"connectionPoolConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig
+type Instance_ConnectionPoolConfigObservedState struct {
+
+	// Output only. The number of running poolers per instance.
+	// +kcc:proto:field=google.cloud.alloydb.v1beta.Instance.ConnectionPoolConfig.pooler_count
+	PoolerCount *int32 `json:"pooler_count,omitempty"`
 }
 
 // +genclient

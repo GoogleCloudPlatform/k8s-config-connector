@@ -334,7 +334,11 @@ func AlloyDBInstanceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.In
 	// MISSING: GeminiConfig
 	// MISSING: OutboundPublicIPAddresses
 	// MISSING: ActivationPolicy
+<<<<<<< HEAD
 	// MISSING: ConnectionPoolConfig
+=======
+	out.ConnectionPoolConfig = Instance_ConnectionPoolConfigObservedState_FromProto(mapCtx, in.GetConnectionPoolConfig())
+>>>>>>> a568af681 (use correct method for referencing output only fields for connectionPoolConfig)
 	// MISSING: GcaConfig
 	return out
 }
@@ -365,7 +369,7 @@ func AlloyDBInstanceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.All
 	// MISSING: GeminiConfig
 	// MISSING: OutboundPublicIPAddresses
 	// MISSING: ActivationPolicy
-	// MISSING: ConnectionPoolConfig
+	out.ConnectionPoolConfig = Instance_ConnectionPoolConfigObservedState_ToProto(mapCtx, in.ConnectionPoolConfig)
 	// MISSING: GcaConfig
 	return out
 }
@@ -847,6 +851,24 @@ func Instance_ConnectionPoolConfig_ToProto(mapCtx *direct.MapContext, in *krm.In
 	out := &pb.Instance_ConnectionPoolConfig{}
 	out.Enabled = direct.ValueOf(in.Enabled)
 	out.Flags = in.Flags
+	return out
+}
+func Instance_ConnectionPoolConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Instance_ConnectionPoolConfig) *krm.Instance_ConnectionPoolConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Instance_ConnectionPoolConfigObservedState{}
+	// MISSING: Enabled
+	// MISSING: Flags
+	return out
+}
+func Instance_ConnectionPoolConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Instance_ConnectionPoolConfigObservedState) *pb.Instance_ConnectionPoolConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance_ConnectionPoolConfig{}
+	// MISSING: Enabled
+	// MISSING: Flags
 	return out
 }
 func Instance_InstanceNetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.Instance_InstanceNetworkConfig) *krm.Instance_InstanceNetworkConfig {
