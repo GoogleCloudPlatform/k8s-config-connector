@@ -32,6 +32,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdiscoveryengine"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdns"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdocumentai"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgecacheservice"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockessentialcontacts"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfilestore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirestore"
