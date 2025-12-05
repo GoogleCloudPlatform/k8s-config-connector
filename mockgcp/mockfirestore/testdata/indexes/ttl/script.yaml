@@ -1,0 +1,8 @@
+- exec: gcloud firestore databases create --database=test-db-${uniqueId} --location=us-central1
+- exec: gcloud firestore indexes fields update fieldA --collection-group=test-cg-${uniqueId} --database=test-db-${uniqueId} --index=order=ASCENDING
+- exec: gcloud firestore indexes fields describe fieldA --collection-group=test-cg-${uniqueId} --database=test-db-${uniqueId}
+- exec: gcloud firestore fields ttls update fieldA --collection-group=test-cg-${uniqueId} --database=test-db-${uniqueId} --enable-ttl
+- exec: gcloud firestore indexes fields describe fieldA --collection-group=test-cg-${uniqueId} --database=test-db-${uniqueId}
+- exec: gcloud firestore fields ttls update fieldA --collection-group=test-cg-${uniqueId} --database=test-db-${uniqueId} --disable-ttl
+- exec: gcloud firestore indexes fields describe fieldA --collection-group=test-cg-${uniqueId} --database=test-db-${uniqueId}
+- exec: gcloud firestore databases delete --database=test-db-${uniqueId} --quiet

@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vpcaccess/v1beta1"
@@ -275,6 +276,10 @@ type Container struct {
 
 	// Names of the containers that must start before this container.
 	// +kcc:proto:field=google.cloud.run.v2.Container.depends_on
+	DependsOn []string `json:"dependsOn,omitempty"`
+
+	// Names of the containers that must start before this container.
+	// +kcc:proto:field=google.cloud.run.v2.Container.depends_on
 	// DependsOn []string `json:"dependsOn,omitempty"`
 
 	// Base image for this container. Only supported for services. If set, it
@@ -357,7 +362,7 @@ type HTTPGetAction struct {
 	//  65535. If not specified, defaults to the exposed port of the container,
 	//  which is the value of container.ports[0].containerPort.
 	// +kcc:proto:field=google.cloud.run.v2.HTTPGetAction.port
-	// Port *int32 `json:"port,omitempty"`
+	Port *int32 `json:"port,omitempty"`
 }
 
 // +kcc:proto=google.cloud.run.v2.Probe
@@ -625,7 +630,7 @@ type VPCAccess_NetworkInterface struct {
 	//  must belong to the given VPC network. If network is not specified, it
 	//  will be looked up from the subnetwork.
 	// +kcc:proto:field=google.cloud.run.v2.VpcAccess.NetworkInterface.network
-	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Optional. The VPC subnetwork that the Cloud Run resource will get IPs
 	//  from. At least one of network or subnetwork must be specified. If both

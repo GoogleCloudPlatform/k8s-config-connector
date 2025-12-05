@@ -536,7 +536,7 @@ X-Xss-Protection: 0
         ],
         "executionEnvironment": 2,
         "maxRetries": 3,
-        "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount": "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
         "timeout": "600s"
       }
     },
@@ -595,7 +595,7 @@ X-Xss-Protection: 0
         ],
         "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
         "maxRetries": 3,
-        "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount": "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
         "timeout": "600s"
       }
     },
@@ -633,7 +633,7 @@ X-Xss-Protection: 0
         ],
         "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
         "maxRetries": 3,
-        "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount": "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
         "timeout": "600s"
       }
     },
@@ -689,7 +689,7 @@ X-Xss-Protection: 0
       ],
       "executionEnvironment": 2,
       "maxRetries": 3,
-      "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+      "serviceAccount": "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
       "timeout": "600s"
     }
   },
@@ -746,7 +746,7 @@ X-Xss-Protection: 0
         ],
         "executionEnvironment": 2,
         "maxRetries": 3,
-        "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount": "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
         "timeout": "600s"
       }
     },
@@ -805,7 +805,7 @@ X-Xss-Protection: 0
         ],
         "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
         "maxRetries": 3,
-        "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount": "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
         "timeout": "600s"
       }
     },
@@ -843,7 +843,7 @@ X-Xss-Protection: 0
         ],
         "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
         "maxRetries": 3,
-        "serviceAccount": "gsa-1-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount": "gsa-2-${uniqueId}@${projectId}.iam.gserviceaccount.com",
         "timeout": "600s"
       }
     },

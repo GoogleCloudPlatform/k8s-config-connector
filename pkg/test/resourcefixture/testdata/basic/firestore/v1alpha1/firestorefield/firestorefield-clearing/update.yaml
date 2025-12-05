@@ -23,3 +23,5 @@ spec:
   resourceID: field123
   indexConfig:
     indexes: []
+  ttlConfig:
+    enabled: false

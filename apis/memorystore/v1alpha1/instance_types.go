@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -224,7 +225,7 @@ type PscAutoConnection struct {
 	//  projects/{project_id}/global/networks/{network_id}.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscAutoConnection.network
 	// +required
-	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.memorystore.v1beta.PscConnection
@@ -252,7 +253,7 @@ type PscConnection struct {
 	//  projects/{project_id}/global/networks/{network_id}.
 	// +kcc:proto:field=google.cloud.memorystore.v1beta.PscConnection.network
 	// +required
-	NetworkRef *refs.ComputeNetworkRef `json:"networkRef,omitempty"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef,omitempty"`
 
 	// Required. The service attachment which is the target of the PSC connection,
 	//  in the form of

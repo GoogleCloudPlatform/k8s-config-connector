@@ -15,13 +15,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "mesh \"projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "mesh \"projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }
@@ -187,13 +180,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "mesh \"projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "mesh \"projects/${projectId}/locations/global/meshes/networkservicesmesh-${uniqueId}\" not found",
     "status": "NOT_FOUND"
   }

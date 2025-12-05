@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/customize/v1beta1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	addonv1alpha1 "sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/addon/pkg/apis/v1alpha1"
@@ -36,6 +37,7 @@ type ControllerResource struct {
 
 // ControllerResourceSpec is the specification of the resource customization for containers of
 // a config connector controller.
+// +kubebuilder:validation:XValidation:rule="!has(self.verticalPodAutoscalerMode) || self.verticalPodAutoscalerMode == 'Disabled' || !has(self.containers) || size(self.containers) == 0",message="VerticalPodAutoscalerMode cannot be Enabled when Containers are specified"
 type ControllerResourceSpec struct {
 	// The list of containers whose resource requirements to be customized.
 	// +optional
@@ -44,6 +46,10 @@ type ControllerResourceSpec struct {
 	// This field takes effect only if the controller name is "cnrm-webhook-manager".
 	// +optional
 	Replicas *int64 `json:"replicas,omitempty"`
+	// VerticalPodAutoscalerMode indicates the mode of Vertical Pod Autoscaler for the controller.
+	// +optional
+	// +kubebuilder:default=Disabled
+	VerticalPodAutoscalerMode *v1beta1.VPAMode `json:"verticalPodAutoscalerMode,omitempty"`
 }
 
 // ContainerResourceSpec is the specification of the resource customization for a container of

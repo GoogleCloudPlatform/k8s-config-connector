@@ -18,9 +18,9 @@ package cloudbuild
 
 import (
 	pb "cloud.google.com/go/cloudbuild/apiv1/v2/cloudbuildpb"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudbuild/v1beta1"
-	refv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -100,7 +100,7 @@ func PrivatePoolV1Config_NetworkConfig_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.PrivatePoolV1Config_NetworkConfigSpec{}
-	out.PeeredNetworkRef = refv1beta1.ComputeNetworkRef{
+	out.PeeredNetworkRef = computev1beta1.ComputeNetworkRef{
 		External: in.GetPeeredNetwork(),
 	}
 	out.EgressOption = direct.Enum_FromProto(mapCtx, in.EgressOption)

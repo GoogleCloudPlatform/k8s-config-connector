@@ -19,6 +19,7 @@
 package v1alpha1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/vmwareengine/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -430,7 +431,7 @@ func (in *PeerNetwork) DeepCopyInto(out *PeerNetwork) {
 	}
 	if in.ComputeNetworkRef != nil {
 		in, out := &in.ComputeNetworkRef, &out.ComputeNetworkRef
-		*out = new(refsv1beta1.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 }

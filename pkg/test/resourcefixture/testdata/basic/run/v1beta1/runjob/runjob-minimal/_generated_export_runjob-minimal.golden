@@ -12,6 +12,7 @@ spec:
     template:
       containers:
       - image: us-docker.pkg.dev/cloudrun/container/hello
+        name: container-name
         resources:
           limits:
             cpu: 1000m

@@ -27,12 +27,15 @@ import (
 
 	gcp "cloud.google.com/go/dataplex/apiv1"
 	pb "cloud.google.com/go/dataplex/apiv1/dataplexpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -60,14 +63,30 @@ func (m *entryTypeModel) AdapterForObject(ctx context.Context, reader client.Rea
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewEntryTypeIdentity(ctx, reader, obj)
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
+	copied := obj.DeepCopy()
+	mapCtx := &direct.MapContext{}
+	desired := DataplexEntryTypeSpec_ToProto(mapCtx, &copied.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
+
+	idI, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
+	}
+	id, ok := idI.(*krm.EntryTypeIdentity)
+	if !ok {
+		return nil, fmt.Errorf("unexpected identity type %T", idI)
 	}
 
 	adapter := &entryTypeAdapter{
 		id:      id,
-		desired: obj,
+		desired: desired,
 		reader:  reader,
 	}
 
@@ -93,7 +112,7 @@ func (m *entryTypeModel) AdapterForURL(ctx context.Context, url string) (directb
 type entryTypeAdapter struct {
 	gcpClient *gcp.CatalogClient
 	id        *krm.EntryTypeIdentity
-	desired   *krm.DataplexEntryType
+	desired   *pb.EntryType
 	actual    *pb.EntryType
 	reader    client.Reader
 }
@@ -117,39 +136,14 @@ func (a *entryTypeAdapter) Find(ctx context.Context) (bool, error) {
 	return true, nil
 }
 
-func (a *entryTypeAdapter) normalizeReferences(ctx context.Context) error {
-	if a.desired.Spec.RequiredAspects != nil {
-		for i := range a.desired.Spec.RequiredAspects {
-			if a.desired.Spec.RequiredAspects[i].TypeRef != nil {
-				_, err := a.desired.Spec.RequiredAspects[i].TypeRef.NormalizedExternal(ctx, a.reader, a.desired.GetNamespace())
-				if err != nil {
-					return err
-				}
-			}
-		}
-	}
-	return nil
-}
-
 func (a *entryTypeAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating dataplex entrytype", "name", a.id)
-	mapCtx := &direct.MapContext{}
-
-	if err := a.normalizeReferences(ctx); err != nil {
-		return fmt.Errorf("normalizing references: %w", err)
-	}
-
-	desired := a.desired.DeepCopy()
-	resource := DataplexEntryTypeSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
 
 	req := &pb.CreateEntryTypeRequest{
 		Parent:      a.id.Parent().String(),
 		EntryTypeId: a.id.ID(),
-		EntryType:   resource,
+		EntryType:   a.desired,
 	}
 	op, err := a.gcpClient.CreateEntryType(ctx, req)
 	if err != nil {
@@ -163,6 +157,7 @@ func (a *entryTypeAdapter) Create(ctx context.Context, createOp *directbase.Crea
 
 	log.V(2).Info("successfully created dataplex entrytype in gcp", "name", a.id)
 
+	mapCtx := &direct.MapContext{}
 	status := &krm.DataplexEntryTypeStatus{}
 	status.ObservedState = DataplexEntryTypeObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
@@ -176,39 +171,28 @@ func (a *entryTypeAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating dataplex entrytype", "name", a.id)
 
-	mapCtx := &direct.MapContext{}
-
-	if err := a.normalizeReferences(ctx); err != nil {
-		return fmt.Errorf("normalizing references: %w", err)
-	}
-
-	desired := a.desired.DeepCopy()
-	resource := DataplexEntryTypeSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	resource.Name = a.id.String()
+	a.desired.Name = a.id.String()
 
 	updateMask := &fieldmaskpb.FieldMask{}
-	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
+	if a.desired.Description != a.actual.Description {
 		updateMask.Paths = append(updateMask.Paths, "description")
 	}
-	if desired.Spec.DisplayName != nil && !reflect.DeepEqual(resource.DisplayName, a.actual.DisplayName) {
+	if a.desired.DisplayName != "" && a.desired.DisplayName != a.actual.DisplayName {
 		updateMask.Paths = append(updateMask.Paths, "display_name")
 	}
-	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
+	if a.desired.Labels != nil && !reflect.DeepEqual(a.desired.Labels, a.actual.Labels) {
 		updateMask.Paths = append(updateMask.Paths, "labels")
 	}
-	if desired.Spec.TypeAliases != nil && !reflect.DeepEqual(resource.TypeAliases, a.actual.TypeAliases) {
+	if a.desired.TypeAliases != nil && !reflect.DeepEqual(a.desired.TypeAliases, a.actual.TypeAliases) {
 		updateMask.Paths = append(updateMask.Paths, "type_aliases")
 	}
-	if desired.Spec.Platform != nil && !reflect.DeepEqual(resource.Platform, a.actual.Platform) {
+	if a.desired.Platform != "" && !reflect.DeepEqual(a.desired.Platform, a.actual.Platform) {
 		updateMask.Paths = append(updateMask.Paths, "platform")
 	}
-	if desired.Spec.System != nil && !reflect.DeepEqual(resource.System, a.actual.System) {
+	if a.desired.System != "" && !reflect.DeepEqual(a.desired.System, a.actual.System) {
 		updateMask.Paths = append(updateMask.Paths, "system")
 	}
-	if desired.Spec.RequiredAspects != nil && !reflect.DeepEqual(resource.RequiredAspects, a.actual.RequiredAspects) {
+	if a.desired.RequiredAspects != nil && !reflect.DeepEqual(a.desired.RequiredAspects, a.actual.RequiredAspects) {
 		updateMask.Paths = append(updateMask.Paths, "required_aspects")
 	}
 	// Authorization is immutable
@@ -221,7 +205,7 @@ func (a *entryTypeAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	} else {
 		req := &pb.UpdateEntryTypeRequest{
 			UpdateMask: updateMask,
-			EntryType:  resource,
+			EntryType:  a.desired,
 		}
 		op, err := a.gcpClient.UpdateEntryType(ctx, req)
 		if err != nil {
@@ -233,7 +217,7 @@ func (a *entryTypeAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 		}
 		log.V(2).Info("successfully updated dataplex entrytype", "name", a.id)
 	}
-
+	mapCtx := &direct.MapContext{}
 	status := &krm.DataplexEntryTypeStatus{}
 	status.ObservedState = DataplexEntryTypeObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
@@ -255,8 +239,10 @@ func (a *entryTypeAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.ProjectRef = &refs.ProjectRef{External: a.id.Parent().ProjectID}
-	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.ParentRef = &parent.ProjectAndLocationRef{
+		ProjectRef: &refs.ProjectRef{External: a.id.Parent().ProjectID},
+		Location:   a.id.Parent().Location,
+	}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

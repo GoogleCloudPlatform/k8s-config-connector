@@ -203,8 +203,9 @@ func (t *Harness) Init() {
 			t.Fatalf("error reading created project: %v", err)
 		}
 		project := GCPProject{
-			ProjectID:     found.ProjectId,
-			ProjectNumber: found.ProjectNumber,
+			ProjectID:      found.ProjectId,
+			ProjectNumber:  found.ProjectNumber,
+			OrganizationID: testgcp.TestOrgID.Get(),
 		}
 		testgcp.TestKCCAttachedClusterProject.Set("mock-project")
 		testgcp.TestKCCAttachedClusterPlatformVersion.Set("1.30.0-gke.1")

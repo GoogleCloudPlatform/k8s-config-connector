@@ -13,6 +13,7 @@
 | alloydb.cnrm.cloud.google.com                 | AlloyDBCluster                                  | True         | True        | False  | Terraform  |
 | alloydb.cnrm.cloud.google.com                 | AlloyDBInstance                                 | True         | True        | False  | Direct     |
 | alloydb.cnrm.cloud.google.com                 | AlloyDBUser                                     | False        | True        | False  | Terraform  |
+| analytics.cnrm.cloud.google.com               | AnalyticsAccount                                | True         | False       | False  | Direct     |
 | apigateway.cnrm.cloud.google.com              | APIGatewayAPIConfig                             | True         | False       | False  | Terraform  |
 | apigateway.cnrm.cloud.google.com              | APIGatewayAPI                                   | True         | True        | False  | Direct     |
 | apigateway.cnrm.cloud.google.com              | APIGatewayGateway                               | True         | False       | False  | Terraform  |
@@ -80,6 +81,7 @@
 | billingbudgets.cnrm.cloud.google.com          | BillingBudgetsBudget                            | False        | True        | False  | DCL        |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationAttestor                     | False        | True        | False  | DCL        |
 | binaryauthorization.cnrm.cloud.google.com     | BinaryAuthorizationPolicy                       | False        | True        | False  | DCL        |
+| certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificateIssuanceConfig     | True         | False       | False  | Direct     |
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificateMapEntry           | True         | True        | False  | Terraform  |
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificateMap                | True         | True        | False  | Terraform  |
 | certificatemanager.cnrm.cloud.google.com      | CertificateManagerCertificate                   | True         | True        | False  | Terraform  |
@@ -184,6 +186,7 @@
 | compute.cnrm.cloud.google.com                 | ComputeVPNGateway                               | False        | True        | False  | Terraform  |
 | compute.cnrm.cloud.google.com                 | ComputeVPNTunnel                                | False        | True        | False  | Terraform  |
 | configcontroller.cnrm.cloud.google.com        | ConfigControllerInstance                        | False        | True        | False  | DCL        |
+| configdelivery.cnrm.cloud.google.com          | ConfigDeliveryResourceBundle                    | True         | False       | False  | Direct     |
 | containeranalysis.cnrm.cloud.google.com       | ContainerAnalysisNote                           | False        | True        | False  | DCL        |
 | containeranalysis.cnrm.cloud.google.com       | ContainerAnalysisOccurrence                     | True         | False       | False  | Terraform  |
 | containerattached.cnrm.cloud.google.com       | ContainerAttachedCluster                        | False        | True        | False  | Terraform  |

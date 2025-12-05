@@ -188,6 +188,14 @@ spec:
                 description: The FirestoreField name. If not given, the metadata.name
                   will be used.
                 type: string
+              ttlConfig:
+                description: The TTL configuration for this `Field`.
+                properties:
+                  enabled:
+                    description: Whether to enable TTL for documents based on this
+                      field.
+                    type: boolean
+                type: object
             required:
             - collectionGroup
             - databaseRef

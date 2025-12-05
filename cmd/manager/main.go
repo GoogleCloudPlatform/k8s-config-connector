@@ -35,6 +35,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/stateintospec"
 
 	flag "github.com/spf13/pflag"
+	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
@@ -59,6 +60,7 @@ func main() {
 		pprofPort                int
 		rateLimitQps             float32
 		rateLimitBurst           int
+		leaderElectionMode       string
 	)
 	flag.StringVar(&prometheusScrapeEndpoint, "prometheus-scrape-endpoint", ":8888", "configure the Prometheus scrape endpoint; :8888 as default")
 	flag.BoolVar(&controllermetrics.ResourceNameLabel, "resource-name-label", false, "option to enable the resource name label on some Prometheus metrics; false by default")
@@ -69,9 +71,20 @@ func main() {
 	flag.IntVar(&pprofPort, "pprof-port", 6060, "The port that the pprof server binds to if enabled.")
 	flag.Float32Var(&rateLimitQps, "qps", 20.0, "The client-side token bucket rate limit qps.")
 	flag.IntVar(&rateLimitBurst, "burst", 30, "The client-side token bucket rate limit burst.")
+	flag.StringVar(&leaderElectionMode, "leader-election-type", "disabled", "Leader election mode. One of: default, multicluster.")
 	profiler.AddFlag(flag.CommandLine)
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
 	flag.Parse()
+
+	var multiClusterElection bool
+	switch leaderElectionMode {
+	case "disabled":
+		multiClusterElection = false
+	case "multicluster":
+		multiClusterElection = true
+	default:
+		logging.Fatal(fmt.Errorf("invalid leader-election-mode: %v", leaderElectionMode), "error parsing flags")
+	}
 
 	// Discard everything logged onto the Go standard logger. We do this since
 	// there are cases of Terraform logging sensitive data onto the Go standard
@@ -103,7 +116,7 @@ func main() {
 	// Set client site rate limiter to optimize the configconnector re-reconciliation performance.
 	ratelimiter.SetMasterRateLimiter(restCfg, rateLimitQps, rateLimitBurst)
 	logger.Info("Creating the manager")
-	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject)
+	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject, multiClusterElection)
 	if err != nil {
 		logging.Fatal(err, "error creating the manager")
 	}
@@ -138,11 +151,28 @@ func main() {
 
 	logger.Info("Starting the Cmd.")
 
+	// defense in depth for leader election transition
+	// we exit if we lose the leadership status to prevent a split brain situation.
+	if err = mgr.Add(manager.RunnableFunc(func(ctx context.Context) error {
+		<-ctx.Done()
+
+		logging.ExitInfo("leader election lost or shutdown initiated; exiting ...")
+		return nil
+
+	})); err != nil {
+		logging.Fatal(err, "error adding safety watchdog")
+	}
+
 	// Start the Cmd
-	logging.Fatal(mgr.Start(ctx), "error during manager execution.")
+	mgrErr := mgr.Start(ctx)
+	if mgrErr != nil {
+		logging.Fatal(mgrErr, "error during manager execution.")
+	}
+
+	logging.ExitInfo("main.go finished execution; exiting ...")
 }
 
-func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string) (manager.Manager, error) {
+func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string, multiclusterlease bool) (manager.Manager, error) {
 	krmtotf.SetUserAgentForTerraformProvider()
 	controllersCfg := kccmanager.Config{
 		ManagerOptions: manager.Options{
@@ -152,6 +182,7 @@ func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace strin
 				},
 			},
 		},
+		MultiClusterLease: multiclusterlease,
 	}
 
 	controllersCfg.UserProjectOverride = userProjectOverride

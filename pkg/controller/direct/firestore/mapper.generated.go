@@ -389,6 +389,7 @@ func FirestoreFieldSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Fie
 	out := &krmfirestorev1alpha1.FirestoreFieldSpec{}
 	// MISSING: Name
 	out.IndexConfig = Field_IndexConfig_v1alpha1_FromProto(mapCtx, in.GetIndexConfig())
+	out.TTLConfig = Field_TTLConfig_Spec_v1alpha1_FromProto(mapCtx, in.GetTtlConfig())
 	return out
 }
 func FirestoreFieldSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfirestorev1alpha1.FirestoreFieldSpec) *pb.Field {
@@ -398,6 +399,7 @@ func FirestoreFieldSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmfires
 	out := &pb.Field{}
 	// MISSING: Name
 	out.IndexConfig = Field_IndexConfig_v1alpha1_ToProto(mapCtx, in.IndexConfig)
+	out.TtlConfig = Field_TTLConfig_Spec_v1alpha1_ToProto(mapCtx, in.TTLConfig)
 	return out
 }
 func FirestoreIndexSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Index) *krm.FirestoreIndexSpec {

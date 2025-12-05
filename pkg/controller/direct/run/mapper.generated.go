@@ -21,6 +21,7 @@ package run
 
 import (
 	pb "cloud.google.com/go/run/apiv2/runpb"
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/run/v1beta1"
 	krmsecretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
@@ -191,7 +192,7 @@ func Container_FromProto(mapCtx *direct.MapContext, in *pb.Container) *krm.Conta
 	out.WorkingDir = direct.LazyPtr(in.GetWorkingDir())
 	out.LivenessProbe = Probe_FromProto(mapCtx, in.GetLivenessProbe())
 	out.StartupProbe = Probe_FromProto(mapCtx, in.GetStartupProbe())
-	// MISSING: DependsOn
+	out.DependsOn = in.DependsOn
 	// MISSING: BaseImageURI
 	// MISSING: BuildInfo
 	return out
@@ -212,7 +213,7 @@ func Container_ToProto(mapCtx *direct.MapContext, in *krm.Container) *pb.Contain
 	out.WorkingDir = direct.ValueOf(in.WorkingDir)
 	out.LivenessProbe = Probe_ToProto(mapCtx, in.LivenessProbe)
 	out.StartupProbe = Probe_ToProto(mapCtx, in.StartupProbe)
-	// MISSING: DependsOn
+	out.DependsOn = in.DependsOn
 	// MISSING: BaseImageURI
 	// MISSING: BuildInfo
 	return out
@@ -393,7 +394,7 @@ func HTTPGetAction_FromProto(mapCtx *direct.MapContext, in *pb.HTTPGetAction) *k
 	out.Path = direct.LazyPtr(in.GetPath())
 	// MISSING: HTTPHeaders
 	// (near miss): "HTTPHeaders" vs "HttpHeaders"
-	// MISSING: Port
+	out.Port = direct.LazyPtr(in.GetPort())
 	return out
 }
 func HTTPGetAction_ToProto(mapCtx *direct.MapContext, in *krm.HTTPGetAction) *pb.HTTPGetAction {
@@ -404,7 +405,7 @@ func HTTPGetAction_ToProto(mapCtx *direct.MapContext, in *krm.HTTPGetAction) *pb
 	out.Path = direct.ValueOf(in.Path)
 	// MISSING: HTTPHeaders
 	// (near miss): "HTTPHeaders" vs "HttpHeaders"
-	// MISSING: Port
+	out.Port = direct.ValueOf(in.Port)
 	return out
 }
 func HTTPHeader_FromProto(mapCtx *direct.MapContext, in *pb.HTTPHeader) *krm.HTTPHeader {
@@ -763,7 +764,7 @@ func VPCAccess_NetworkInterface_FromProto(mapCtx *direct.MapContext, in *pb.VpcA
 	}
 	out := &krm.VPCAccess_NetworkInterface{}
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &refsv1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetSubnetwork() != "" {
 		out.SubnetworkRef = &refsv1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}

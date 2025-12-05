@@ -1,7 +1,7 @@
 apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
 kind: MonitoringDashboard
 metadata:
-  name: monitoringdashboard-${uniqueId}
+  name: ${dashboardID}
 spec:
   displayName: Example with TopList
   mosaicLayout:

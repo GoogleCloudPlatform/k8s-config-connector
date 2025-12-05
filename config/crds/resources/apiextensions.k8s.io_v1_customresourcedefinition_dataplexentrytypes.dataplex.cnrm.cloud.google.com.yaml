@@ -75,11 +75,6 @@ spec:
               displayName:
                 description: Optional. User friendly display name.
                 type: string
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. User-defined labels for the EntryType.
-                type: object
               location:
                 type: string
               platform:
@@ -123,7 +118,8 @@ spec:
                 items:
                   properties:
                     typeRef:
-                      description: Required aspect type for the entry type.
+                      description: A reference to an externally managed DataplexAspectType
+                        resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}}".
                       properties:
                         external:
                           description: A reference to an externally managed DataplexAspectType

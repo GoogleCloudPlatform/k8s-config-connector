@@ -33,7 +33,7 @@ Gemini will handle all the file copying, updating, and configuration changes req
 7.  **Make Direct the Default:** It will ensure the direct controller is the default controller for the new `v1beta1` version.
 8.  **Handle Release Tasks:** Gemini will also handle other release-related tasks, such as adding samples and generating reference documentation templates.
 
-This entire process is covered in detail in [Deep Dive: Releases](../deep-dives/5-releases.md).
+This entire process is covered in detail in [Deep Dive: Releases](../../deep-dives/5-releases.md).
 
 ---
 
