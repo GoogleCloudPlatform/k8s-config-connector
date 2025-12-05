@@ -1,5 +1,8 @@
 module github.com/hashicorp/terraform-provider-google-beta
-go 1.19
+
+go 1.24.0
+
+toolchain go1.24.6
 
 require (
 	cloud.google.com/go/bigtable v1.19.0
@@ -23,7 +26,7 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mitchellh/hashstructure v1.1.0
 	github.com/sirupsen/logrus v1.8.1
-	golang.org/x/net v0.14.0
+	golang.org/x/net v0.47.0
 	golang.org/x/oauth2 v0.11.0
 	google.golang.org/api v0.139.0
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230822172742-b8732ec3820d
@@ -84,10 +87,10 @@ require (
 	github.com/vmihailenco/tagparser v0.1.2 // indirect
 	github.com/zclconf/go-cty v1.11.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/crypto v0.12.0 // indirect
-	golang.org/x/sync v0.3.0 // indirect
-	golang.org/x/sys v0.11.0 // indirect
-	golang.org/x/text v0.12.0 // indirect
+	golang.org/x/crypto v0.45.0 // indirect
+	golang.org/x/sync v0.18.0 // indirect
+	golang.org/x/sys v0.38.0 // indirect
+	golang.org/x/text v0.31.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20230803162519-f966b187b2e5 // indirect
