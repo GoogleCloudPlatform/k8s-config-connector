@@ -56,7 +56,7 @@ func (r *Reconciler) applyExperiments(ctx context.Context, cc *corev1beta1.Confi
 }
 
 func IsControllerManagerStatefulSet(item *manifest.Object) bool {
-	return item.Kind != "StatefulSet" && strings.HasPrefix(item.GetName(), "cnrm-controller-manager")
+	return item.Kind == "StatefulSet" && strings.HasPrefix(item.GetName(), "cnrm-controller-manager")
 }
 
 func (r *Reconciler) applyMultiClusterLeaderElection(ctx context.Context, obj *manifest.Objects) error {
@@ -73,9 +73,9 @@ func (r *Reconciler) applyMultiClusterLeaderElection(ctx context.Context, obj *m
 				return nil
 			}
 
-			// Add --multi-cluster-election=true flag
+			// Add --leader-election-type=multicluster flag
 			args, _, _ := unstructured.NestedStringSlice(container, "args")
-			args = append(args, "--multi-cluster-election=true")
+			args = append(args, "--leader-election-type=multicluster")
 			if err := unstructured.SetNestedStringSlice(container, args, "args"); err != nil {
 				return fmt.Errorf("failed to set args: %w", err)
 			}
