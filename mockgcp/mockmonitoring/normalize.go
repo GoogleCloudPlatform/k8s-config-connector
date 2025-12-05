@@ -55,15 +55,10 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		if n > 2 && tokens[n-2] == "conditions" {
 			replacements.ReplaceStringValue(tokens[n-1], "${conditionID}")
 		}
-		if n > 2 && tokens[n-2] == "dashboards" {
-			replacements.ReplaceStringValue(tokens[n-1], "${dashboardID}")
-		}
 	}
 
 	event.VisitResponseStringValues(func(path string, value string) {
 		switch path {
-		case ".name":
-			visitLink(value)
 		case ".conditions[].name":
 			// In alertPolicy
 			//  e.g. "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/5683099026496458999"

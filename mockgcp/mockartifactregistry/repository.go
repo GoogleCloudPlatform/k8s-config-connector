@@ -62,15 +62,12 @@ func (s *ArtifactRegistryV1) CreateRepository(ctx context.Context, req *pb.Creat
 
 	fqn := name.String()
 
-	obj := ProtoClone(req.Repository)
+	obj := proto.Clone(req.Repository).(*pb.Repository)
 	obj.Name = fqn
 
 	now := timestamppb.Now()
 	obj.CreateTime = now
 	obj.UpdateTime = now
-
-	obj.RegistryUri = fmt.Sprintf("%s-docker.pkg.dev/%s/%s", name.Location, name.Project.ID, name.Repository)
-
 	if err := s.populateDefaults(ctx, obj); err != nil {
 		return nil, err
 	}
@@ -81,10 +78,9 @@ func (s *ArtifactRegistryV1) CreateRepository(ctx context.Context, req *pb.Creat
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	lroMetadata := &pb.OperationMetadata{}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
-		retObj := ProtoClone(obj)
+		retObj := proto.Clone(obj).(*pb.Repository)
 		retObj.CreateTime = nil
 		retObj.UpdateTime = nil
-		retObj.RegistryUri = ""
 		return retObj, nil
 	})
 }
@@ -142,9 +138,7 @@ func (s *ArtifactRegistryV1) UpdateRepository(ctx context.Context, req *pb.Updat
 		return nil, err
 	}
 
-	retObj := ProtoClone(obj)
-	retObj.RegistryUri = ""
-	return retObj, nil
+	return obj, nil
 }
 
 func (s *ArtifactRegistryV1) DeleteRepository(ctx context.Context, req *pb.DeleteRepositoryRequest) (*longrunning.Operation, error) {

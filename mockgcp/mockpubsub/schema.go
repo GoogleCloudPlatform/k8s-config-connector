@@ -12,10 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +tool:mockgcp-support
-// proto.service: google.pubsub.v1.SchemaService
-// proto.message: google.pubsub.v1.Schema
-
 package mockpubsub
 
 import (

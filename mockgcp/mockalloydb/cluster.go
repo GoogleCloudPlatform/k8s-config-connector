@@ -18,8 +18,6 @@ import (
 	"context"
 	"strings"
 
-	"k8s.io/apimachinery/pkg/util/uuid"
-
 	"github.com/golang/protobuf/ptypes/duration"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/genproto/googleapis/type/dayofweek"
@@ -242,40 +240,8 @@ func (s *AlloyDBAdminV1) CreateSecondaryCluster(ctx context.Context, req *pb.Cre
 }
 
 func (s *AlloyDBAdminV1) RestoreCluster(ctx context.Context, req *pb.RestoreClusterRequest) (*longrunning.Operation, error) {
-	reqName := req.Parent + "/clusters/" + req.ClusterId
-	name, err := s.parseClusterName(reqName)
-	if err != nil {
-		return nil, err
-	}
-
-	fqn := name.String()
-
-	obj := proto.Clone(req.Cluster).(*pb.Cluster)
-	obj.Name = fqn
-	obj.ClusterType = pb.Cluster_PRIMARY
-	setClusterFields(name, obj)
-
-	// Replace projectID with projectNumber for project "mock-project".
-	backup := "projects/518915279/locations/us-east4/backups/restore-test"
-	if req.GetBackupSource().GetBackupName() != "" {
-		backup = strings.ReplaceAll(req.GetBackupSource().GetBackupName(), "mock-project", "518915279")
-	}
-	// obj.Source is output-only
-	obj.Source = &pb.Cluster_BackupSource{BackupSource: &pb.BackupSource{BackupName: backup, BackupUid: string(uuid.NewUUID())}}
-
-	if err := s.storage.Create(ctx, fqn, obj); err != nil {
-		return nil, err
-	}
-
-	metadata := constructOperationMetadata(fqn, "create")
-	return s.operations.StartLRO(ctx, req.Parent, metadata, func() (proto.Message, error) {
-		metadata.EndTime = timestamppb.Now()
-
-		result := proto.Clone(obj).(*pb.Cluster)
-		updateNetworkInResponse(result)
-		return result, nil
-	})
-
+	// TODO: Implement it once req contains cluster ID.
+	return nil, status.Errorf(codes.Unimplemented, "RestoreCluster not implemented yet")
 }
 
 func (s *AlloyDBAdminV1) UpdateCluster(ctx context.Context, req *pb.UpdateClusterRequest) (*longrunning.Operation, error) {

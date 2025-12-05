@@ -12,10 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +tool:mockgcp-support
-// proto.service: google.firestore.admin.v1.FirestoreAdmin
-// proto.message: google.firestore.admin.v1.Index
-
 package mockfirestore
 
 import (

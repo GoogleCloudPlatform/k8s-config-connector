@@ -12,10 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +tool:mockgcp-support
-// proto.service: google.firestore.admin.v1.FirestoreAdmin
-// proto.message: google.firestore.admin.v1.Database
-
 package mockfirestore
 
 import (
@@ -225,10 +221,6 @@ func populateDefaultsForDatabase(obj *pb.Database) {
 
 	if obj.DatabaseEdition == pb.Database_DATABASE_EDITION_UNSPECIFIED {
 		obj.DatabaseEdition = pb.Database_STANDARD
-	}
-
-	if obj.DeleteProtectionState == pb.Database_DELETE_PROTECTION_STATE_UNSPECIFIED {
-		obj.DeleteProtectionState = pb.Database_DELETE_PROTECTION_DISABLED
 	}
 
 	if obj.FreeTier == nil {
