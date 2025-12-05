@@ -24,7 +24,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.identity.accesscontextmanager.v1 \
     --api-version accesscontextmanager.cnrm.cloud.google.com/v1beta1  \
-    --resource AccessContextManagerAccessPolicy:AccessPolicy
+    --resource AccessContextManagerAccessPolicy:AccessPolicy \
+    --resource AccessContextManagerAccessLevel:AccessLevel
 
 go run . generate-mapper \
     --service google.identity.accesscontextmanager.v1 \

@@ -12,6 +12,7 @@
 [missing_field] crd=accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.basic.conditions[].negate" is not set in unstructured objects
 [missing_field] crd=accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.basic.conditions[].regions[]" is not set in unstructured objects
 [missing_field] crd=accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.basic.conditions[].requiredAccessLevels[].external" is not set in unstructured objects
+[missing_field] crd=accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.basic.conditions[].requiredAccessLevels[].kind" is not set in unstructured objects
 [missing_field] crd=accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.basic.conditions[].requiredAccessLevels[].name" is not set in unstructured objects
 [missing_field] crd=accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.basic.conditions[].requiredAccessLevels[].namespace" is not set in unstructured objects
 [missing_field] crd=accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.custom.expr.description" is not set in unstructured objects
