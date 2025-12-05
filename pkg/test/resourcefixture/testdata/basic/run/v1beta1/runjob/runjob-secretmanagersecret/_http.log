@@ -1174,14 +1174,14 @@ X-Xss-Protection: 0
           {
             "env": [
               {
-                "name": "FOO",
-                "value": "bar"
+                "name": "Foo",
+                "value": "buzz"
               },
               {
                 "name": "SECRET_ENV_VAR",
                 "valueSource": {
                   "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
+                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
                     "version": "1"
                   }
                 }
@@ -1252,14 +1252,14 @@ X-Xss-Protection: 0
           {
             "env": [
               {
-                "name": "FOO",
-                "value": "bar"
+                "name": "Foo",
+                "value": "buzz"
               },
               {
                 "name": "SECRET_ENV_VAR",
                 "valueSource": {
                   "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
+                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
                     "version": "1"
                   }
                 }
@@ -1309,14 +1309,14 @@ X-Xss-Protection: 0
           {
             "env": [
               {
-                "name": "FOO",
-                "value": "bar"
+                "name": "Foo",
+                "value": "buzz"
               },
               {
                 "name": "SECRET_ENV_VAR",
                 "valueSource": {
                   "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
+                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
                     "version": "1"
                   }
                 }
@@ -1384,14 +1384,14 @@ X-Xss-Protection: 0
         {
           "env": [
             {
-              "name": "FOO",
-              "value": "bar"
+              "name": "Foo",
+              "value": "buzz"
             },
             {
               "name": "SECRET_ENV_VAR",
               "valueSource": {
                 "secretKeyRef": {
-                  "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
+                  "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
                   "version": "1"
                 }
               }
@@ -1460,14 +1460,14 @@ X-Xss-Protection: 0
           {
             "env": [
               {
-                "name": "FOO",
-                "value": "bar"
+                "name": "Foo",
+                "value": "buzz"
               },
               {
                 "name": "SECRET_ENV_VAR",
                 "valueSource": {
                   "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
+                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
                     "version": "1"
                   }
                 }
@@ -1538,14 +1538,14 @@ X-Xss-Protection: 0
           {
             "env": [
               {
-                "name": "FOO",
-                "value": "bar"
+                "name": "Foo",
+                "value": "buzz"
               },
               {
                 "name": "SECRET_ENV_VAR",
                 "valueSource": {
                   "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
+                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
                     "version": "1"
                   }
                 }
@@ -1595,14 +1595,14 @@ X-Xss-Protection: 0
           {
             "env": [
               {
-                "name": "FOO",
-                "value": "bar"
+                "name": "Foo",
+                "value": "buzz"
               },
               {
                 "name": "SECRET_ENV_VAR",
                 "valueSource": {
                   "secretKeyRef": {
-                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-1-${uniqueId}",
+                    "secret": "projects/${projectNumber}/secrets/secretmanagersecret-2-${uniqueId}",
                     "version": "1"
                   }
                 }

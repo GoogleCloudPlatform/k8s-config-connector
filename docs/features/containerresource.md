@@ -98,12 +98,14 @@ spec:
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `containers` | A list of containers whose resource requirements to be customized.                                                                     |
 | `replicas`   | The number of desired replicas of the config connector controller. This field takes effect only if the controller name is "cnrm-webhook-manager". |
+| `verticalPodAutoscalerEnabled` | Enable Vertical Pod Autoscaler for the controller. Mutually exclusive with `containers`. |
 
 ### NamespacedControllerResourceSpec
 
 | Field      | Description                                                                                                                            |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `containers` | A list of containers whose resource requirements to be customized.                                                                     |
+| `verticalPodAutoscalerEnabled` | Enable Vertical Pod Autoscaler for the controller. Mutually exclusive with `containers`. |
 
 ### ContainerResourceSpec
 
@@ -118,3 +120,30 @@ spec:
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `limits`   | Describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/                                                     |
 | `requests` | Describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. |
+
+## Enabling Vertical Pod Autoscaler
+
+You can enable the Vertical Pod Autoscaler (VPA) for Config Connector pods by setting the `verticalPodAutoscalerEnabled` field to `true`. When VPA is enabled, you cannot specify container resources directly. These two fields are mutually exclusive.
+
+### Example: Enabling VPA for `cnrm-controller-manager` in Cluster Mode
+
+```yaml
+apiVersion: customize.core.cnrm.cloud.google.com/v1beta1
+kind: ControllerResource
+metadata:
+  name: cnrm-controller-manager
+spec:
+  verticalPodAutoscalerEnabled: true
+```
+
+### Example: Enabling VPA for `cnrm-controller-manager` in Namespaced Mode
+
+```yaml
+apiVersion: customize.core.cnrm.cloud.google.com/v1beta1
+kind: NamespacedControllerResource
+metadata:
+  name: cnrm-controller-manager # name should not contain the namespace ID suffix
+  namespace: config-control
+spec:
+  verticalPodAutoscalerEnabled: true
+```

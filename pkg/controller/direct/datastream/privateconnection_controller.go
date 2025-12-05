@@ -254,7 +254,7 @@ func (a *PrivateConnectionAdapter) normalizeReferenceFields(ctx context.Context)
 	obj := a.desired
 
 	if obj.Spec.VPCPeeringConfig != nil && obj.Spec.VPCPeeringConfig.NetworkRef != nil {
-		if err := obj.Spec.VPCPeeringConfig.NetworkRef.Normalize(ctx, a.reader, obj); err != nil {
+		if err := obj.Spec.VPCPeeringConfig.NetworkRef.Normalize(ctx, a.reader, obj.GetNamespace()); err != nil {
 			return err
 		}
 	}

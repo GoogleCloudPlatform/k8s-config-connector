@@ -304,7 +304,7 @@ func ReverseSSHConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.ReverseS
 		out.VMRef = &krmcomputev1beta1.InstanceRef{External: in.GetVm()}
 	}
 	if in.GetVpc() != "" {
-		out.VPCRef = &refsv1beta1.ComputeNetworkRef{External: in.GetVpc()}
+		out.VPCRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetVpc()}
 	}
 	return out
 }
@@ -343,7 +343,7 @@ func VPCPeeringConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.VpcPeeri
 	}
 	out := &krm.VPCPeeringConnectivity{}
 	if in.GetVpc() != "" {
-		out.VPCRef = &refsv1beta1.ComputeNetworkRef{External: in.GetVpc()}
+		out.VPCRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetVpc()}
 	}
 	return out
 }

@@ -28,5 +28,5 @@ spec:
           - fieldPath: field123
             order: DESCENDING
             #unique: false
-  # ttlConfig:
-  #   state: TTL_ENABLED
+  ttlConfig:
+    enabled: true

@@ -115,12 +115,41 @@ spec:
                     description: Optional. The maximum duration after which the job
                       execution is expired.
                     type: string
-                  project:
+                  projectRef:
                     description: Optional. The project in which jobs are run. By default,
                       the project containing the Lake is used. If a project is provided,
                       the [ExecutionSpec.service_account][google.cloud.dataplex.v1.Task.ExecutionSpec.service_account]
                       must belong to this project.
-                    type: string
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The `projectID` field of a project, when not
+                          managed by Config Connector.
+                        type: string
+                      kind:
+                        description: The kind of the Project resource; optional but
+                          must be `Project` if provided.
+                        type: string
+                      name:
+                        description: The `name` field of a `Project` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `Project` resource.
+                        type: string
+                    type: object
                   serviceAccountRef:
                     description: Required. Service account to use to execute a task.
                       If not provided, the default Compute service account for the
@@ -152,11 +181,6 @@ spec:
                     type: object
                 required:
                 - serviceAccountRef
-                type: object
-              labels:
-                additionalProperties:
-                  type: string
-                description: Optional. User-defined labels for the task.
                 type: object
               lakeRef:
                 description: LakeRef defines the resource reference to DataplexLake,
@@ -434,12 +458,9 @@ spec:
                     description: Required. Immutable. Trigger type of the user-specified
                       Task.
                     type: string
-                required:
-                - type
                 type: object
             required:
             - executionSpec
-            - triggerSpec
             type: object
           status:
             description: DataplexTaskStatus defines the config connector machine state

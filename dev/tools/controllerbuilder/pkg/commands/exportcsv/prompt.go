@@ -22,6 +22,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	kccio "github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/io"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/llm"
@@ -176,17 +177,24 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 	}
 	defer llmClient.Close()
 
-	out := &bytes.Buffer{}
-	if err := x.InferOutput_WithCompletion(ctx, llmClient, o.Model, dataPoint, out); err != nil {
-		return fmt.Errorf("running LLM inference: %w", err)
+	results := ""
+	{
+		out := &bytes.Buffer{}
+		if err := x.InferOutput_WithCompletion(ctx, llmClient, o.Model, dataPoint, out); err != nil {
+			return fmt.Errorf("running LLM inference: %w", err)
+		}
+
+		results = out.String()
 	}
 
+	results = fixupCopyrights(results, time.Now().Year())
+
 	if o.Output == "" {
-		fmt.Println(out)
+		fmt.Println(results)
 		return nil
 	}
 
-	if tmpF, err := kccio.WriteToCache(ctx, o.Output, out.String(), fileNamePattern(dataPoint)); err != nil {
+	if tmpF, err := kccio.WriteToCache(ctx, o.Output, results, fileNamePattern(dataPoint)); err != nil {
 		return err
 	} else {
 		fmt.Println(tmpF)
@@ -194,9 +202,24 @@ func RunPrompt(ctx context.Context, o *PromptOptions) error {
 	return nil
 }
 
+// fixupCopyrights fixes up copyright years in the output.
+// This is a simple heuristic to avoid injecting the wrong copyright year,
+// even though our examples have code with various copyright years.
+func fixupCopyrights(results string, currentYear int) string {
+	lines := strings.Split(results, "\n")
+	for i, line := range lines {
+		if strings.HasPrefix(line, "// Copyright ") {
+			tokens := strings.Split(line, " ")
+			tokens[2] = fmt.Sprintf("%d", currentYear)
+			lines[i] = strings.Join(tokens, " ")
+		}
+	}
+	return strings.Join(lines, "\n")
+}
+
 func fileNamePattern(dataPoint *toolbot.DataPoint) string {
-	for k, _ := range dataPoint.Input {
-		return strings.Replace(k, " ", "-", -1)
+	for k := range dataPoint.Input {
+		return strings.ReplaceAll(k, " ", "-")
 	}
 	return ""
 }

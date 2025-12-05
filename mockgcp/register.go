@@ -15,6 +15,7 @@
 package mockgcp
 
 import (
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockaccesscontextmanager"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockaiplatform"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockalloydb"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockanalytics"
@@ -24,6 +25,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigtable"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbilling"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbillingbudgets"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockclouddms"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudids"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdatacatalog"
@@ -50,6 +52,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockrun"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockservicedirectory"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockserviceusage"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksourcerepo"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksql"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockstorage"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocktpu"

@@ -247,7 +247,7 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
   "view": "SCHEMA_VIEW"
 }
 
-error: rpc error: code = NotFound desc = Table not found: projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}
+error: rpc error: code = NotFound desc = Not found: projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}
 
 {}
 

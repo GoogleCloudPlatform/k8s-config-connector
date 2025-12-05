@@ -20,7 +20,15 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+var _ identity.Identity = &ZoneIdentity{}
+
+const (
+	ZoneIDURL = LakeIDURL + "/zones/{{zoneID}}"
 )
 
 // ZoneIdentity defines the resource reference to DataplexZone, which "External" field
@@ -38,76 +46,62 @@ func (i *ZoneIdentity) ID() string {
 	return i.id
 }
 
-func (i *ZoneIdentity) Parent() string {
-	return i.parent.String()
+func (i *ZoneIdentity) Parent() *LakeIdentity {
+	return i.parent
 }
 
-// New builds a ZoneIdentity from the Config Connector Content object.
-func NewZoneIdentity(ctx context.Context, reader client.Reader, obj *DataplexZone) (*ZoneIdentity, error) {
+func (i *ZoneIdentity) FromExternal(ref string) error {
+	tokens := strings.Split(ref, "/zones/")
+	if len(tokens) != 2 {
+		return fmt.Errorf("format of DataplexZone external=%q was not known (use %s)", ref, ZoneIDURL)
+	}
+	i.parent = &LakeIdentity{}
+	if err := i.parent.FromExternal(tokens[0]); err != nil {
+		return err
+	}
+	i.id = tokens[1]
+	if i.id == "" {
+		return fmt.Errorf("zoneID was empty in external=%q", ref)
+	}
+	return nil
+}
 
-	// Get Parent
-	lakeExternal, err := obj.Spec.LakeRef.NormalizedExternal(ctx, reader, obj.GetNamespace())
-	if err != nil {
-		return nil, err
+var _ identity.Resource = &DataplexZone{}
+
+func (obj *DataplexZone) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	newIdentity := &ZoneIdentity{
+		parent: &LakeIdentity{
+			parent: &parent.ProjectAndLocationParent{},
+		},
 	}
 
-	parent, lakeId, err := ParseLakeExternal(lakeExternal)
-	if err != nil {
+	// Resolve Parent
+	if err := obj.Spec.LakeRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
+		return nil, err
+	}
+	if err := newIdentity.parent.FromExternal(obj.Spec.LakeRef.External); err != nil {
 		return nil, err
 	}
 
 	// Get desired ID
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
+	newIdentity.id = common.ValueOf(obj.Spec.ResourceID)
+	if newIdentity.id == "" {
+		newIdentity.id = obj.GetName()
 	}
-	if resourceID == "" {
+	if newIdentity.id == "" {
 		return nil, fmt.Errorf("cannot resolve resource ID")
 	}
 
-	// Use approved External
+	// Validate against the ID stored in status.externalRef
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseZoneExternal(externalRef)
-		if err != nil {
-			return nil, err
+		statusIdentity := &ZoneIdentity{}
+		if err := statusIdentity.FromExternal(externalRef); err != nil {
+			return nil, fmt.Errorf("cannot parse existing externalRef=%q: %w", externalRef, err)
 		}
-		if actualParent.parent.ProjectID != parent.ProjectID {
-			return nil, fmt.Errorf("parent projectID changed, expect %s, got %s", actualParent.parent.ProjectID, parent.ProjectID)
-		}
-		if actualParent.parent.Location != parent.Location {
-			return nil, fmt.Errorf("parent location changed, expect %s, got %s", actualParent.parent.Location, parent.Location)
-		}
-		if actualParent.id != lakeId {
-			return nil, fmt.Errorf("spec.lakeRef changed, expect %s, got %s", actualParent.id, lakeId)
-		}
-		if actualResourceID != resourceID {
-			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
-				resourceID, actualResourceID)
+		if statusIdentity.String() != newIdentity.String() {
+			return nil, fmt.Errorf("existing externalRef=%q does not match the identity resolved from spec: %q", externalRef, newIdentity.String())
 		}
 	}
-	return &ZoneIdentity{
-		parent: &LakeIdentity{
-			parent: parent,
-			id:     lakeId,
-		},
-		id: resourceID,
-	}, nil
-}
-
-func ParseZoneExternal(external string) (parent *LakeIdentity, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 8 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "lakes" || tokens[6] != "zones" {
-		return nil, "", fmt.Errorf("format of DataplexContent external=%q was not known (use projects/{{projectID}}/locations/{{location}}/lakes/{{lakeID}}/zones/{{zoneID}})", external)
-	}
-	parent = &LakeIdentity{
-		parent: &LakeParent{
-			ProjectID: tokens[1],
-			Location:  tokens[3],
-		},
-		id: tokens[5],
-	}
-	resourceID = tokens[7]
-	return parent, resourceID, nil
+	return newIdentity, nil
 }

@@ -33,8 +33,10 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataplex/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -62,14 +64,30 @@ func (m *taskModel) AdapterForObject(ctx context.Context, reader client.Reader, 
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := krm.NewTaskIdentity(ctx, reader, obj)
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
+	copied := obj.DeepCopy()
+	mapCtx := &direct.MapContext{}
+	desired := DataplexTaskSpec_ToProto(mapCtx, &copied.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	desired.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
+
+	idI, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
+	}
+	id, ok := idI.(*krm.TaskIdentity)
+	if !ok {
+		return nil, fmt.Errorf("unexpected identity type %T", idI)
 	}
 
 	taskAdapter := &taskAdapter{
 		id:      id,
-		desired: obj,
+		desired: desired,
 		reader:  reader,
 	}
 
@@ -95,7 +113,7 @@ func (m *taskModel) AdapterForURL(ctx context.Context, url string) (directbase.A
 type taskAdapter struct {
 	gcpClient *gcp.Client
 	id        *krm.TaskIdentity
-	desired   *krm.DataplexTask
+	desired   *pb.Task
 	actual    *pb.Task
 	reader    client.Reader
 }
@@ -123,18 +141,9 @@ func (a *taskAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating dataplex task", "name", a.id)
 
-	mapCtx := &direct.MapContext{}
-	desired := a.desired.DeepCopy()
-	desired.Name = a.id.String()
-
-	task := DataplexTaskSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
 	req := &pb.CreateTaskRequest{
-		Parent: a.id.Parent(),
-		Task:   task,
+		Parent: a.id.Parent().String(),
+		Task:   a.desired,
 		TaskId: a.id.ID(),
 	}
 	op, err := a.gcpClient.CreateTask(ctx, req)
@@ -149,6 +158,7 @@ func (a *taskAdapter) Create(ctx context.Context, createOp *directbase.CreateOpe
 
 	log.V(2).Info("successfully created dataplex task in gcp", "name", a.id)
 
+	mapCtx := &direct.MapContext{}
 	status := &krm.DataplexTaskStatus{}
 	status.ObservedState = DataplexTaskObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
@@ -162,13 +172,7 @@ func (a *taskAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating dataplex task", "name", a.id)
 
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	task := DataplexTaskSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
+	task := a.desired
 	task.Name = a.id.String()
 
 	// Set the required trigger type explicitly if unset, default to ON_DEMAND.
@@ -246,6 +250,7 @@ func (a *taskAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOpe
 		log.V(2).Info("successfully updated dataplex task", "name", a.id)
 	}
 
+	mapCtx := &direct.MapContext{}
 	status := &krm.DataplexTaskStatus{}
 	status.ObservedState = DataplexTaskObservedState_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
@@ -269,15 +274,14 @@ func (a *taskAdapter) Export(ctx context.Context) (*unstructured.Unstructured, e
 	}
 
 	// Set parent references
-	obj.Spec.LakeRef = &krm.LakeRef{External: a.id.Parent()}
+	obj.Spec.LakeRef = &krm.LakeRef{External: a.id.Parent().String()}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
 	u := &unstructured.Unstructured{Object: uObj}
-	u.SetName(a.id.ID())                // Use the task_id as the KRM resource name
-	u.SetNamespace(a.desired.Namespace) // Preserve namespace
+	u.SetName(a.id.ID()) // Use the task_id as the KRM resource name
 	u.SetGroupVersionKind(krm.DataplexTaskGVK)
 
 	log.Info("exported object", "obj", u, "gvk", u.GroupVersionKind())

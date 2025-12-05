@@ -66,6 +66,38 @@ spec:
                   It's recommended to use `googleServiceAccount` when running ConfigConnector in Google Kubernetes Engine (GKE) clusters with Workload Identity enabled.
                   This field cannot be specified together with `googleServiceAccount`.
                 type: string
+              experiments:
+                description: ConfigConnector specific experiments
+                properties:
+                  leaderElection:
+                    description: LeaderElection defines the configuration for multi
+                      cluster leader election.
+                    properties:
+                      multiClusterLease:
+                        description: MultiClusterLease defines configuration specific
+                          to multi-cluster leader election.
+                        properties:
+                          globalLockName:
+                            default: kcc-multicluster-leader-lock
+                            description: |-
+                              The unique name of the global lock, which must be shared by all KCC replicas
+                              and workloads across all clusters that are part of the same election.
+                            type: string
+                          leaseName:
+                            description: The name of the MultiClusterLease object
+                              that KCC will create.
+                            type: string
+                          namespace:
+                            description: The namespace where the MultiClusterLease
+                              object will be created.
+                            type: string
+                        required:
+                        - globalLockName
+                        - leaseName
+                        - namespace
+                        type: object
+                    type: object
+                type: object
               googleServiceAccount:
                 description: |-
                   The Google Service Account to be used by Config Connector to authenticate with Google Cloud APIs. This field is used only when running in cluster mode with Workload Identity enabled.

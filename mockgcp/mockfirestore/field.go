@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// +tool:mockgcp-support
+// proto.service: google.firestore.admin.v1.FirestoreAdmin
+// proto.message: google.firestore.admin.v1.Field
+
 package mockfirestore
 
 import (
@@ -175,27 +179,44 @@ func (s *firestoreAdminServer) UpdateField(ctx context.Context, req *pb.UpdateFi
 	}
 
 	indexConfigDeltas := []*pb.FieldOperationMetadata_IndexConfigDelta{}
-
 	reqIndexes := req.GetField().GetIndexConfig().GetIndexes()
 
 	updateMask := fields.NewUpdateMask(req.GetUpdateMask())
 
-	if updateMask.HasJSONPath("indexConfig") && req.GetField().GetIndexConfig() == nil {
-		// We are are explicitly clearing indexes - revert to default
-		defaultField, err := s.getDefaultField(ctx, name)
-		if err != nil {
-			return nil, err
+	var ttlConfigDelta *pb.FieldOperationMetadata_TtlConfigDelta
+	if updateMask.HasJSONPath("ttlConfig") {
+		if req.GetField().GetTtlConfig() != nil && obj.TtlConfig == nil {
+			obj.TtlConfig = &pb.Field_TtlConfig{}
+			obj.TtlConfig.State = pb.Field_TtlConfig_ACTIVE
+			ttlConfigDelta = &pb.FieldOperationMetadata_TtlConfigDelta{
+				ChangeType: pb.FieldOperationMetadata_TtlConfigDelta_ADD,
+			}
 		}
-		reqIndexes = defaultField.GetIndexConfig().GetIndexes()
 
-		obj.IndexConfig.UsesAncestorConfig = true
-	} else {
-		// We are explicitly managing indexes on this field now
-		obj.IndexConfig.UsesAncestorConfig = false
+		if req.GetField().GetTtlConfig() == nil && obj.TtlConfig != nil {
+			obj.TtlConfig = nil
+			ttlConfigDelta = &pb.FieldOperationMetadata_TtlConfigDelta{
+				ChangeType: pb.FieldOperationMetadata_TtlConfigDelta_REMOVE,
+			}
+		}
 	}
 
 	var newIndexes []*pb.Index
 	if updateMask.HasJSONPath("indexConfig") {
+		if req.GetField().GetIndexConfig() == nil {
+			// We are are explicitly clearing indexes - revert to default
+			defaultField, err := s.getDefaultField(ctx, name)
+			if err != nil {
+				return nil, err
+			}
+			reqIndexes = defaultField.GetIndexConfig().GetIndexes()
+
+			obj.IndexConfig.UsesAncestorConfig = true
+		} else {
+			// We are explicitly managing indexes on this field now
+			obj.IndexConfig.UsesAncestorConfig = false
+		}
+
 		// First go through and remove any indexes we are not keeping
 		for _, oldIndex := range oldObj.GetIndexConfig().GetIndexes() {
 			keepingIndex := false
@@ -241,6 +262,8 @@ func (s *firestoreAdminServer) UpdateField(ctx context.Context, req *pb.UpdateFi
 
 			newIndexes = append(newIndexes, index)
 		}
+	} else {
+		newIndexes = obj.GetIndexConfig().GetIndexes()
 	}
 
 	if obj.IndexConfig.AncestorField == "" {
@@ -267,6 +290,7 @@ func (s *firestoreAdminServer) UpdateField(ctx context.Context, req *pb.UpdateFi
 	lroMetadata := &pb.FieldOperationMetadata{
 		Field:             name.String(),
 		IndexConfigDeltas: indexConfigDeltas,
+		TtlConfigDelta:    ttlConfigDelta,
 		StartTime:         timestamppb.Now(),
 		State:             pb.OperationState_INITIALIZING,
 	}
@@ -279,6 +303,10 @@ func (s *firestoreAdminServer) UpdateField(ctx context.Context, req *pb.UpdateFi
 		// Does not return usesAncestorConfig in LRO
 		if retObj.IndexConfig != nil {
 			retObj.IndexConfig.UsesAncestorConfig = false
+		}
+		// Does not return index config when we are changing ttl only
+		if !updateMask.HasJSONPath("indexConfig") {
+			retObj.IndexConfig = nil
 		}
 		return retObj, nil
 	})

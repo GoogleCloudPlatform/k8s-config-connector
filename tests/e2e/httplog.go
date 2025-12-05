@@ -327,7 +327,9 @@ func (x *Normalizer) Preprocess(events []*test.LogEntry) {
 			// Avoid marking some well-known values that are never operationIDs
 			switch id {
 			case "projects":
-			// Bigtable uses an unusual operation path: "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+				// Bigtable uses an unusual operation path: "operations/projects/${projectId}/instances/test-instance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+			case "accessPolicies":
+				// Access Context Manager uses an unusual operation path: "operations/accessPolicies/${accessPolicyId}/delete/${operationID}"
 			default:
 				x.OperationIDs[id] = true
 			}

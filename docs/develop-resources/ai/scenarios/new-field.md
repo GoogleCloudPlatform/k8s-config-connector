@@ -29,7 +29,7 @@ Gemini will handle the necessary code generation and test updates to integrate t
 3.  **Update Test Suites:** It will add the new field to the `create.yaml` and `update.yaml` files in the relevant MockGCP test suites to ensure it is covered.
 4.  **Update MockGCP Server:** If necessary, it will update the MockGCP server logic to handle the new field in its simulated API responses.
 5.  **Re-record Golden Logs:** Gemini will re-run the `record-gcp` and `compare-mock` steps to update the `_http.log` and `_generated_object.golden.yaml` files with the new field's behavior.
-6.  **Resolve Resource References:** If the new field is a reference to another resource, Gemini will also add the necessary logic to the controller to resolve this reference, as detailed in [Deep Dive: Add Controller](../deep-dives/4-add-controller.md#42-resolve-resource-references).
+6.  **Resolve Resource References:** If the new field is a reference to another resource, Gemini will also add the necessary logic to the controller to resolve this reference, as detailed in [Deep Dive: Add Controller](../../deep-dives/4-add-controller.md#42-resolve-resource-references).
 
 ---
 

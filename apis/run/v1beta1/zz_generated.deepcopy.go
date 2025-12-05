@@ -19,6 +19,7 @@
 package v1beta1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	vpcaccessv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vpcaccess/v1beta1"
@@ -235,6 +236,11 @@ func (in *Container) DeepCopyInto(out *Container) {
 		in, out := &in.StartupProbe, &out.StartupProbe
 		*out = new(Probe)
 		(*in).DeepCopyInto(*out)
+	}
+	if in.DependsOn != nil {
+		in, out := &in.DependsOn, &out.DependsOn
+		*out = make([]string, len(*in))
+		copy(*out, *in)
 	}
 }
 
@@ -494,6 +500,11 @@ func (in *HTTPGetAction) DeepCopyInto(out *HTTPGetAction) {
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
+	}
+	if in.Port != nil {
+		in, out := &in.Port, &out.Port
+		*out = new(int32)
+		**out = **in
 	}
 }
 
@@ -1120,7 +1131,7 @@ func (in *VPCAccess_NetworkInterface) DeepCopyInto(out *VPCAccess_NetworkInterfa
 	*out = *in
 	if in.NetworkRef != nil {
 		in, out := &in.NetworkRef, &out.NetworkRef
-		*out = new(refsv1beta1.ComputeNetworkRef)
+		*out = new(computev1beta1.ComputeNetworkRef)
 		**out = **in
 	}
 	if in.SubnetworkRef != nil {
