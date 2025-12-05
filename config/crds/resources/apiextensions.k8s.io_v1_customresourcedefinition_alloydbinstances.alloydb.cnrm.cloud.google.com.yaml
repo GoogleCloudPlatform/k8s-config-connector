@@ -117,10 +117,6 @@ spec:
                     description: 'Optional. Connection Pool flags, as a list of "key":
                       "value" pairs.'
                     type: object
-                  pooler_count:
-                    description: Output only. The number of running poolers per instance.
-                    format: int32
-                    type: integer
                 type: object
               databaseFlags:
                 additionalProperties:
@@ -299,6 +295,20 @@ spec:
                   the resource.
                 format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  connectionPoolConfig:
+                    description: Output for Managed Connection Pool (MCP).
+                    properties:
+                      pooler_count:
+                        description: Output only. The number of running poolers per
+                          instance.
+                        format: int32
+                        type: integer
+                    type: object
+                type: object
               outboundPublicIpAddresses:
                 description: The outbound public IP addresses for the instance. This
                   is available ONLY when networkConfig.enableOutboundPublicIp is set
@@ -427,10 +437,6 @@ spec:
                     description: 'Optional. Connection Pool flags, as a list of "key":
                       "value" pairs.'
                     type: object
-                  pooler_count:
-                    description: Output only. The number of running poolers per instance.
-                    format: int32
-                    type: integer
                 type: object
               databaseFlags:
                 additionalProperties:
@@ -609,6 +615,20 @@ spec:
                   the resource.
                 format: int64
                 type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  connectionPoolConfig:
+                    description: Output for Managed Connection Pool (MCP).
+                    properties:
+                      pooler_count:
+                        description: Output only. The number of running poolers per
+                          instance.
+                        format: int32
+                        type: integer
+                    type: object
+                type: object
               outboundPublicIpAddresses:
                 description: The outbound public IP addresses for the instance. This
                   is available ONLY when networkConfig.enableOutboundPublicIp is set
