@@ -16,13 +16,16 @@ package mocksql
 
 import (
 	"context"
+	"sort"
 	"strings"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/sql/v1beta4"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
 type sqlOperationsService struct {
@@ -44,6 +47,36 @@ func (s *sqlOperationsService) Get(ctx context.Context, req *pb.SqlOperationsGet
 	}
 
 	return obj, nil
+}
+
+func (s *sqlOperationsService) List(ctx context.Context, req *pb.SqlOperationsListRequest) (*pb.OperationsListResponse, error) {
+	project, err := s.projects.GetProjectByID(req.GetProject())
+	if err != nil {
+		return nil, err
+	}
+
+	prefix := "projects/" + project.ID + "/operations/"
+
+	response := &pb.OperationsListResponse{
+		Kind: "sql#operationsList",
+	}
+
+	operationKind := (&pb.Operation{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, operationKind, storage.ListOptions{
+		Prefix: prefix,
+	}, func(obj proto.Message) error {
+		response.Items = append(response.Items, obj.(*pb.Operation))
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	// Sort into reverse order
+	sort.Slice(response.Items, func(i, j int) bool {
+		return response.Items[i].GetStartTime().AsTime().UnixNano() < response.Items[j].GetStartTime().AsTime().UnixNano()
+	})
+
+	return response, nil
 }
 
 type OperationName struct {

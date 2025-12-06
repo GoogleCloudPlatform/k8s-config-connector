@@ -136,6 +136,9 @@ func TestScripts(t *testing.T) {
 						t.Errorf("error running step type: %s  cmd: %q: %v", stepType, stepCmd, err)
 					}
 
+					t.Logf("stdout: %v", stdout.String())
+					t.Logf("stderr: %v", stderr.String())
+
 					if step.SetEnv != "" {
 						if !strings.Contains(step.SetEnv, "{{") {
 							envVarName := step.SetEnv

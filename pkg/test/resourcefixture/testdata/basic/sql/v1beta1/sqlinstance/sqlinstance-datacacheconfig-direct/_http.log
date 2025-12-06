@@ -138,7 +138,7 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-datacacheconfig-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_15_7",
+  "databaseInstalledVersion": "POSTGRES_15_14",
   "databaseVersion": "POSTGRES_15",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
@@ -161,7 +161,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
+  "maintenanceVersion": "POSTGRES_15_14.R20251004.01_07",
   "name": "sqlinstance-datacacheconfig-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -227,6 +227,16 @@ X-Xss-Protection: 0
       "displayName": "PostgreSQL 16",
       "majorVersion": "POSTGRES_16",
       "name": "POSTGRES_16"
+    },
+    {
+      "displayName": "PostgreSQL 17",
+      "majorVersion": "POSTGRES_17",
+      "name": "POSTGRES_17"
+    },
+    {
+      "displayName": "PostgreSQL 18",
+      "majorVersion": "POSTGRES_18",
+      "name": "POSTGRES_18"
     }
   ]
 }
@@ -282,7 +292,7 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-datacacheconfig-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_15_7",
+  "databaseInstalledVersion": "POSTGRES_15_14",
   "databaseVersion": "POSTGRES_15",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
@@ -305,7 +315,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
+  "maintenanceVersion": "POSTGRES_15_14.R20251004.01_07",
   "name": "sqlinstance-datacacheconfig-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -371,6 +381,16 @@ X-Xss-Protection: 0
       "displayName": "PostgreSQL 16",
       "majorVersion": "POSTGRES_16",
       "name": "POSTGRES_16"
+    },
+    {
+      "displayName": "PostgreSQL 17",
+      "majorVersion": "POSTGRES_17",
+      "name": "POSTGRES_17"
+    },
+    {
+      "displayName": "PostgreSQL 18",
+      "majorVersion": "POSTGRES_18",
+      "name": "POSTGRES_18"
     }
   ]
 }
@@ -460,7 +480,7 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-datacacheconfig-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_15_7",
+  "databaseInstalledVersion": "POSTGRES_15_14",
   "databaseVersion": "POSTGRES_15",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
@@ -483,7 +503,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
+  "maintenanceVersion": "POSTGRES_15_14.R20251004.01_07",
   "name": "sqlinstance-datacacheconfig-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -549,6 +569,16 @@ X-Xss-Protection: 0
       "displayName": "PostgreSQL 16",
       "majorVersion": "POSTGRES_16",
       "name": "POSTGRES_16"
+    },
+    {
+      "displayName": "PostgreSQL 17",
+      "majorVersion": "POSTGRES_17",
+      "name": "POSTGRES_17"
+    },
+    {
+      "displayName": "PostgreSQL 18",
+      "majorVersion": "POSTGRES_18",
+      "name": "POSTGRES_18"
     }
   ]
 }
@@ -563,7 +593,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "databaseVersion": "POSTGRES_15",
   "instanceType": "CLOUD_SQL_INSTANCE",
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
+  "maintenanceVersion": "POSTGRES_15_14.R20251004.01_07",
   "name": "sqlinstance-datacacheconfig-direct-${uniqueId}",
   "region": "us-central1",
   "settings": {
@@ -679,7 +709,7 @@ X-Xss-Protection: 0
   "backendType": "SECOND_GEN",
   "connectionName": "${projectId}:us-central1:sqlinstance-datacacheconfig-direct-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "databaseInstalledVersion": "POSTGRES_15_7",
+  "databaseInstalledVersion": "POSTGRES_15_14",
   "databaseVersion": "POSTGRES_15",
   "etag": "abcdef0123A=",
   "gceZone": "us-central1-a",
@@ -702,7 +732,7 @@ X-Xss-Protection: 0
     }
   ],
   "kind": "sql#instance",
-  "maintenanceVersion": "POSTGRES_15_7.R20240514.00_12",
+  "maintenanceVersion": "POSTGRES_15_14.R20251004.01_07",
   "name": "sqlinstance-datacacheconfig-direct-${uniqueId}",
   "project": "${projectId}",
   "region": "us-central1",
@@ -771,6 +801,16 @@ X-Xss-Protection: 0
       "displayName": "PostgreSQL 16",
       "majorVersion": "POSTGRES_16",
       "name": "POSTGRES_16"
+    },
+    {
+      "displayName": "PostgreSQL 17",
+      "majorVersion": "POSTGRES_17",
+      "name": "POSTGRES_17"
+    },
+    {
+      "displayName": "PostgreSQL 18",
+      "majorVersion": "POSTGRES_18",
+      "name": "POSTGRES_18"
     }
   ]
 }
