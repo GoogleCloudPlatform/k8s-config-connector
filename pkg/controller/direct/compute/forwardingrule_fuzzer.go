@@ -29,8 +29,8 @@ func init() {
 
 func computeForwardingRuleFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.ForwardingRule{},
-		ComputeForwardingRuleSpec_FromProto, ComputeForwardingRuleSpec_ToProto,
-		ComputeForwardingRuleStatus_FromProto, ComputeForwardingRuleStatus_ToProto,
+		ComputeForwardingRuleSpec_v1beta1_FromProto, ComputeForwardingRuleSpec_v1beta1_ToProto,
+		ComputeForwardingRuleStatus_v1beta1_FromProto, ComputeForwardingRuleStatus_v1beta1_ToProto,
 	)
 
 	// Spec fields

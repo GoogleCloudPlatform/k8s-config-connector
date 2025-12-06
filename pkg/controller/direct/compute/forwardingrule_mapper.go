@@ -24,7 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func ComputeForwardingRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.ForwardingRule) *krm.ComputeForwardingRuleSpec {
+func ComputeForwardingRuleSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ForwardingRule) *krm.ComputeForwardingRuleSpec {
 	if in == nil {
 		return nil
 	}
@@ -47,7 +47,7 @@ func ComputeForwardingRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.Forwa
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
 	out.LoadBalancingScheme = in.LoadBalancingScheme
-	out.MetadataFilters = direct.Slice_FromProto(mapCtx, in.MetadataFilters, MetadataFilter_FromProto)
+	out.MetadataFilters = direct.Slice_FromProto(mapCtx, in.MetadataFilters, MetadataFilter_v1beta1_FromProto)
 	// MISSING: Name
 	out.NetworkRef = ComputeForwardingRuleSpec_NetworkRef_FromProto(mapCtx, in.GetNetwork())
 	out.NetworkTier = in.NetworkTier
@@ -58,7 +58,7 @@ func ComputeForwardingRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.Forwa
 	// MISSING: PscConnectionStatus
 	// MISSING: Region
 	// MISSING: SelfLink
-	out.ServiceDirectoryRegistrations = direct.Slice_FromProto(mapCtx, in.ServiceDirectoryRegistrations, ForwardingruleServiceDirectoryRegistrations_FromProto)
+	out.ServiceDirectoryRegistrations = direct.Slice_FromProto(mapCtx, in.ServiceDirectoryRegistrations, ForwardingruleServiceDirectoryRegistrations_v1beta1_FromProto)
 	out.ServiceLabel = in.ServiceLabel
 	// MISSING: ServiceName
 	out.SourceIpRanges = in.SourceIpRanges
@@ -66,7 +66,7 @@ func ComputeForwardingRuleSpec_FromProto(mapCtx *direct.MapContext, in *pb.Forwa
 	out.Target = ComputeForwardingRuleSpec_Target_FromProto(mapCtx, in.GetTarget())
 	return out
 }
-func ComputeForwardingRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleSpec) *pb.ForwardingRule {
+func ComputeForwardingRuleSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleSpec) *pb.ForwardingRule {
 	if in == nil {
 		return nil
 	}
@@ -89,7 +89,7 @@ func ComputeForwardingRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	// MISSING: LabelFingerprint
 	// MISSING: Labels
 	out.LoadBalancingScheme = in.LoadBalancingScheme
-	out.MetadataFilters = direct.Slice_ToProto(mapCtx, in.MetadataFilters, MetadataFilter_ToProto)
+	out.MetadataFilters = direct.Slice_ToProto(mapCtx, in.MetadataFilters, MetadataFilter_v1beta1_ToProto)
 	// MISSING: Name
 	out.Network = ComputeForwardingRuleSpec_NetworkRef_ToProto(mapCtx, in.NetworkRef)
 	out.NetworkTier = in.NetworkTier
@@ -100,7 +100,7 @@ func ComputeForwardingRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	// MISSING: PscConnectionStatus
 	// MISSING: Region
 	// MISSING: SelfLink
-	out.ServiceDirectoryRegistrations = direct.Slice_ToProto(mapCtx, in.ServiceDirectoryRegistrations, ForwardingruleServiceDirectoryRegistrations_ToProto)
+	out.ServiceDirectoryRegistrations = direct.Slice_ToProto(mapCtx, in.ServiceDirectoryRegistrations, ForwardingruleServiceDirectoryRegistrations_v1beta1_ToProto)
 	out.ServiceLabel = in.ServiceLabel
 	// MISSING: ServiceName
 	out.SourceIpRanges = in.SourceIpRanges
@@ -108,7 +108,7 @@ func ComputeForwardingRuleSpec_ToProto(mapCtx *direct.MapContext, in *krm.Comput
 	out.Target = ComputeForwardingRuleSpec_Target_ToProto(mapCtx, in.Target)
 	return out
 }
-func ComputeForwardingRuleStatus_FromProto(mapCtx *direct.MapContext, in *pb.ForwardingRule) *krm.ComputeForwardingRuleStatus {
+func ComputeForwardingRuleStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ForwardingRule) *krm.ComputeForwardingRuleStatus {
 	if in == nil {
 		return nil
 	}
@@ -122,7 +122,7 @@ func ComputeForwardingRuleStatus_FromProto(mapCtx *direct.MapContext, in *pb.For
 	out.ServiceName = in.ServiceName
 	return out
 }
-func ComputeForwardingRuleStatus_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleStatus) *pb.ForwardingRule {
+func ComputeForwardingRuleStatus_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeForwardingRuleStatus) *pb.ForwardingRule {
 	if in == nil {
 		return nil
 	}
