@@ -20,8 +20,12 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+var _ identity.Identity = &AccountIdentity{}
 
 // AccountIdentity defines the resource reference to AnalyticsAccount, which "External" field
 // holds the GCP identifier for the KRM object.
@@ -42,38 +46,39 @@ func (i *AccountIdentity) SetID(id string) {
 	return
 }
 
-// New builds a AccountIdentity from the Config Connector Account object.
-func NewAccountIdentity(ctx context.Context, reader client.Reader, obj *AnalyticsAccount) (*AccountIdentity, error) {
+func (i *AccountIdentity) FromExternal(ref string) error {
+	tokens := strings.Split(ref, "/")
+	if len(tokens) != 2 || tokens[0] != "accounts" {
+		return fmt.Errorf("format of AnalyticsAccount external=%q was not known (use accounts/{{accountID}})", ref)
+	}
+	i.id = tokens[1]
+	if i.id == "" {
+		return fmt.Errorf("accountID was empty in external=%q", ref)
+	}
+	return nil
+}
+
+var _ identity.Resource = &AnalyticsAccount{}
+
+func (obj *AnalyticsAccount) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	newIdentity := &AccountIdentity{}
+
 	// Attempt to get the service-generated resource ID.
-	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" && obj.Status.ExternalRef != nil { // Reconciliation after creation is completed.
-		savedResourceID, err := ParseAccountExternal(common.ValueOf(obj.Status.ExternalRef))
+	newIdentity.id = common.ValueOf(obj.Spec.ResourceID)
+	if newIdentity.id == "" && obj.Status.ExternalRef != nil { // Reconciliation after creation is completed.
+		err := newIdentity.FromExternal(common.ValueOf(obj.Status.ExternalRef))
 		if err != nil {
 			return nil, err
 		}
-		resourceID = savedResourceID
-	}
-
-	id := &AccountIdentity{
-		id: resourceID,
 	}
 
 	// Attempt to ensure ID is immutable, by verifying against previously-set `status.externalRef`.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		if id.String() != externalRef {
-			return nil, fmt.Errorf("cannot update AnalyticsAccount identity (old=%q, new=%q): identity is immutable", externalRef, id.String())
+		if newIdentity.String() != externalRef {
+			return nil, fmt.Errorf("cannot update AnalyticsAccount identity (old=%q, new=%q): identity is immutable", externalRef, newIdentity.String())
 		}
 	}
 
-	return id, nil
-}
-
-func ParseAccountExternal(external string) (resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 2 || tokens[0] != "accounts" {
-		return "", fmt.Errorf("format of AnalyticsAccount external=%q was not known (use accounts/{{accountID}})", external)
-	}
-	resourceID = tokens[1]
-	return resourceID, nil
+	return newIdentity, nil
 }
