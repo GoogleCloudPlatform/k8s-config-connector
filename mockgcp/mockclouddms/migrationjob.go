@@ -32,6 +32,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "cloud.google.com/go/clouddms/apiv1/clouddmspb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
@@ -87,6 +88,45 @@ func (s *DataMigrationServiceV1) CreateMigrationJob(ctx context.Context, req *pb
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
 		return obj, nil
+	})
+}
+
+func (s *DataMigrationServiceV1) UpdateMigrationJob(ctx context.Context, req *pb.UpdateMigrationJobRequest) (*longrunningpb.Operation, error) {
+	name, err := s.parseMigrationJobName(req.MigrationJob.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	now := time.Now()
+
+	existing := &pb.MigrationJob{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		return nil, err
+	}
+
+	updated := proto.Clone(existing).(*pb.MigrationJob)
+	updated.UpdateTime = timestamppb.New(now)
+
+	if err := fields.UpdateByFieldMask(updated, req.MigrationJob, req.UpdateMask.Paths); err != nil {
+		return nil, err
+	}
+
+	if err := s.storage.Update(ctx, fqn, updated); err != nil {
+		return nil, err
+	}
+
+	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	lroMetadata := &pb.OperationMetadata{
+		CreateTime:            timestamppb.New(now),
+		RequestedCancellation: false,
+		Target:                name.String(),
+		Verb:                  "update",
+		ApiVersion:            "v1",
+	}
+	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.Now()
+		return updated, nil
 	})
 }
 
