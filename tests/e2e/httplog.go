@@ -62,6 +62,11 @@ func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 					return true
 				}
 			}
+			// Remove repeated getIamPolicy requests, the request looks like
+			// POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+			if r.Method == "POST" {
+				return strings.Contains(r.URL, "getIamPolicy")
+			}
 			return false
 		}
 		keep := true
