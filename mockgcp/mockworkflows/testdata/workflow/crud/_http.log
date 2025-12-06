@@ -84,6 +84,12 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.workflows.v1.Workflow",
+    "allKmsKeys": [
+      ""
+    ],
+    "allKmsKeysVersions": [
+      "cryptoKeyVersions/1"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "name": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}",
     "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
@@ -113,6 +119,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "allKmsKeys": [
+    ""
+  ],
+  "allKmsKeysVersions": [
+    "cryptoKeyVersions/1"
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}",
   "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
@@ -186,6 +198,12 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.workflows.v1.Workflow",
+    "allKmsKeys": [
+      ""
+    ],
+    "allKmsKeysVersions": [
+      "cryptoKeyVersions/1"
+    ],
     "createTime": "2024-04-01T12:34:56.123456Z",
     "name": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}",
     "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
@@ -215,6 +233,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "allKmsKeys": [
+    ""
+  ],
+  "allKmsKeysVersions": [
+    "cryptoKeyVersions/1"
+  ],
   "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectId}/locations/us-central1/workflows/test-${uniqueId}",
   "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
