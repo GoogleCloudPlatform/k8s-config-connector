@@ -97,6 +97,9 @@ type CreateDeleteTestOptions struct { //nolint:revive
 	// Updates is the set of objects to update (after all objects have been created)
 	Updates []*unstructured.Unstructured
 
+	// PrimaryResource is the primary resource for the test
+	PrimaryResource *unstructured.Unstructured
+
 	// CleanupResources is true if we should delete resources when we are done
 	CleanupResources bool
 
