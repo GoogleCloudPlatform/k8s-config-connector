@@ -83,13 +83,16 @@ func ExtractBlockedGCPError(err error) (*BlockedGCPError, bool) {
 type interceptingGCPClient struct {
 	upstreamGCPClient *http.Client
 	authorization     oauth2.TokenSource
+	getURLCount       map[string]int
+	maxGcpGETCall     int
 }
 
 // newInterceptingGCPClient creates a new interceptingGCPClient.
-func newInterceptingGCPClient(upstreamGCPClient *http.Client, authorization oauth2.TokenSource) *interceptingGCPClient {
+func newInterceptingGCPClient(upstreamGCPClient *http.Client, authorization oauth2.TokenSource, maxGcpGETCall int) *interceptingGCPClient {
 	return &interceptingGCPClient{
 		upstreamGCPClient: upstreamGCPClient,
 		authorization:     authorization,
+		getURLCount:       map[string]int{},
 	}
 }
 
@@ -142,6 +145,10 @@ func (c *interceptingGCPClient) RoundTrip(req *http.Request) (*http.Response, er
 	requestIsAllowed := false
 	if req.Method == "GET" {
 		requestIsAllowed = true
+		c.getURLCount[req.URL.String()]++
+		if c.maxGcpGETCall > 0 && c.getURLCount[req.URL.String()] > c.maxGcpGETCall {
+			requestIsAllowed = false
+		}
 	}
 
 	if requestIsAllowed {
