@@ -1,0 +1,57 @@
+1c1,26
+< POST https://cloudresourcemanager.googleapis.com/v3/tagKeys?alt=json
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+> User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+> X-Goog-Request-Params: name=projects%2F${projectId}
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "etag": "abcdef0123A=",
+>   "name": "projects/${projectNumber}",
+>   "projectId": "${projectId}",
+>   "state": 1
+> }
+> 
+> ---
+> 
+> POST https://cloudresourcemanager.googleapis.com/v3/tagKeys?%24alt=json%3Benum-encoding%3Dint
+7c32
+<   "parent": "projects/${projectId}",
+---
+>   "parent": "projects/${projectNumber}",
+30c55
+< GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
+32a58
+> X-Goog-Request-Params: name=operations%2F${operationID}
+65c91
+< GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?%24alt=json%3Benum-encoding%3Dint
+67a94
+> X-Goog-Request-Params: name=tagKeys%2F${tagKeyID}
+92c119
+< DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?alt=json
+---
+> DELETE https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?%24alt=json%3Benum-encoding%3Dint
+94a122
+> X-Goog-Request-Params: name=tagKeys%2F${tagKeyID}
+115c143
+< GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
+117a146
+> X-Goog-Request-Params: name=operations%2F${operationID}
