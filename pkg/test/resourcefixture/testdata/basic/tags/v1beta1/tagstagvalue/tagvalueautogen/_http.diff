@@ -1,0 +1,28 @@
+92c92
+< POST https://cloudresourcemanager.googleapis.com/v3/tagValues?alt=json
+---
+> POST https://cloudresourcemanager.googleapis.com/v3/tagValues?%24alt=json%3Benum-encoding%3Dint
+121c121
+< GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
+123a124
+> X-Goog-Request-Params: name=operations%2F${operationID}
+155c156
+< GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
+157a159
+> X-Goog-Request-Params: name=tagValues%2F${tagValueID}
+181c183
+< DELETE https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
+---
+> DELETE https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
+183a186
+> X-Goog-Request-Params: name=tagValues%2F${tagValueID}
+204c207
+< GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
+206a210
+> X-Goog-Request-Params: name=operations%2F${operationID}
