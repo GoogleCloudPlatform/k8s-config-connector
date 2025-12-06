@@ -294,12 +294,12 @@ func TestIAMPolicySpecDiffers(t *testing.T) {
 			},
 		},
 		{
-			name: "binding members order differs - no diff",
+			name: "binding members order differs - no diff - ascen",
 			desired: &IAMPolicySpec{
 				Bindings: []IAMPolicyBinding{
 					{
 						Role:    "roles/viewer",
-						Members: []Member{"user:viewer@example.com", "user:other@example.com"},
+						Members: []Member{"user:a@example.com", "user:b@example.com"},
 					},
 				},
 			},
@@ -307,11 +307,65 @@ func TestIAMPolicySpecDiffers(t *testing.T) {
 				Bindings: []IAMPolicyBinding{
 					{
 						Role:    "roles/viewer",
-						Members: []Member{"user:other@example.com", "user:viewer@example.com"},
+						Members: []Member{"user:b@example.com", "user:a@example.com"},
 					},
 				},
 			},
 			want: &structuredreporting.Diff{},
+		},
+		{
+			name: "binding members order differs - no diff - descen",
+			desired: &IAMPolicySpec{
+				Bindings: []IAMPolicyBinding{
+					{
+						Role:    "roles/viewer",
+						Members: []Member{"user:b@example.com", "user:a@example.com"},
+					},
+				},
+			},
+			actual: &IAMPolicySpec{
+				Bindings: []IAMPolicyBinding{
+					{
+						Role:    "roles/viewer",
+						Members: []Member{"user:a@example.com", "user:b@example.com"},
+					},
+				},
+			},
+			want: &structuredreporting.Diff{},
+		},
+		{
+			name: "binding members order differs - no diff - boundary",
+			desired: &IAMPolicySpec{
+				Bindings: []IAMPolicyBinding{
+					{
+						Role:    "roles/viewer",
+						Members: []Member{"user:a@example.com", "user:b@example.com", "user:c@example.com", "user:e@example.com"},
+					},
+				},
+			},
+			actual: &IAMPolicySpec{
+				Bindings: []IAMPolicyBinding{
+					{
+						Role:    "roles/viewer",
+						Members: []Member{"user:d@example.com", "user:e@example.com", "user:b@example.com", "user:f@example.com"},
+					},
+				},
+			},
+			want: &structuredreporting.Diff{
+				Fields: []structuredreporting.DiffField{
+					{
+						ID: "spec.bindings[role=roles/viewer]",
+						Old: IAMPolicyBinding{
+							Role:    "roles/viewer",
+							Members: []Member{"user:a@example.com", "user:b@example.com", "user:c@example.com", "user:e@example.com"},
+						},
+						New: IAMPolicyBinding{
+							Role:    "roles/viewer",
+							Members: []Member{"user:b@example.com", "user:d@example.com", "user:e@example.com", "user:f@example.com"},
+						},
+					},
+				},
+			},
 		},
 		{
 			name: "binding condition differs",
@@ -600,7 +654,7 @@ func TestIAMPolicySpecDiffers(t *testing.T) {
 			},
 		},
 		{
-			name: "audit config exempted members order differs - no diff",
+			name: "audit config exempted members order differs - no diff - ascending",
 			desired: &IAMPolicySpec{
 				AuditConfigs: []IAMPolicyAuditConfig{
 					{
@@ -628,6 +682,86 @@ func TestIAMPolicySpecDiffers(t *testing.T) {
 				},
 			},
 			want: &structuredreporting.Diff{},
+		},
+		{
+			name: "audit config exempted members order differs - no diff - descending",
+			desired: &IAMPolicySpec{
+				AuditConfigs: []IAMPolicyAuditConfig{
+					{
+						Service: "allServices",
+						AuditLogConfigs: []AuditLogConfig{
+							{
+								LogType:         "DATA_READ",
+								ExemptedMembers: []Member{"user:exempt2@example.com", "user:exempt1@example.com"},
+							},
+						},
+					},
+				},
+			},
+			actual: &IAMPolicySpec{
+				AuditConfigs: []IAMPolicyAuditConfig{
+					{
+						Service: "allServices",
+						AuditLogConfigs: []AuditLogConfig{
+							{
+								LogType:         "DATA_READ",
+								ExemptedMembers: []Member{"user:exempt1@example.com", "user:exempt2@example.com"},
+							},
+						},
+					},
+				},
+			},
+			want: &structuredreporting.Diff{},
+		},
+		{
+			name: "audit config exempted members order differs - boundary testing",
+			desired: &IAMPolicySpec{
+				AuditConfigs: []IAMPolicyAuditConfig{
+					{
+						Service: "allServices",
+						AuditLogConfigs: []AuditLogConfig{
+							{
+								LogType:         "DATA_READ",
+								ExemptedMembers: []Member{"user:a@example.com", "user:b@example.com", "user:c@example.com", "user:e@example.com"},
+							},
+						},
+					},
+				},
+			},
+			actual: &IAMPolicySpec{
+				AuditConfigs: []IAMPolicyAuditConfig{
+					{
+						Service: "allServices",
+						AuditLogConfigs: []AuditLogConfig{
+							{
+								LogType:         "DATA_READ",
+								ExemptedMembers: []Member{"user:b@example.com", "user:d@example.com", "user:e@example.com", "user:f@example.com"},
+							},
+						},
+					},
+				},
+			},
+			want: &structuredreporting.Diff{
+				Fields: []structuredreporting.DiffField{
+					{
+						ID: "spec.auditConfigs[service=allServices]",
+						Old: IAMPolicyAuditConfig{
+							Service: "allServices",
+							AuditLogConfigs: []AuditLogConfig{{LogType: "DATA_READ",
+								ExemptedMembers: []Member{"user:a@example.com", "user:b@example.com", "user:c@example.com",
+									"user:e@example.com"}}},
+						},
+						New: IAMPolicyAuditConfig{
+							Service: "allServices",
+							AuditLogConfigs: []AuditLogConfig{{LogType: "DATA_READ",
+								ExemptedMembers: []Member{
+									"user:b@example.com", "user:d@example.com", "user:e@example.com",
+									"user:f@example.com",
+								}}},
+						},
+					},
+				},
+			},
 		},
 		{
 			name: "audit config log configs order differs - no diff",
