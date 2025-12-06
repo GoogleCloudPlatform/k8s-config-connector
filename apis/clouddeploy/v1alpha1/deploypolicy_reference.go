@@ -32,7 +32,7 @@ var _ refsv1beta1.ExternalNormalizer = &DeployPolicyRef{}
 // holds the GCP identifier for the KRM object.
 type DeployPolicyRef struct {
 	// A reference to an externally managed DeployDeployPolicy resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/deploypolicys/{{deploypolicyID}}".
+	// Should be in the format "projects/{{projectID}}/locations/{{location}}/deployPolicies/{{deploypolicyID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a DeployDeployPolicy resource.
@@ -47,7 +47,7 @@ type DeployPolicyRef struct {
 // Otherwise, the "Name" and "Namespace" will be used to query the actual DeployDeployPolicy object from the cluster.
 func (r *DeployPolicyRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
 	if r.External != "" && r.Name != "" {
-		return "", fmt.Errorf("cannot specify both name and external on %s reference", DeployDeployPolicyGVK.Kind)
+		return "", fmt.Errorf("cannot specify both name and external on %s reference", CloudDeployDeployPolicyGVK.Kind)
 	}
 	// From given External
 	if r.External != "" {
@@ -63,12 +63,12 @@ func (r *DeployPolicyRef) NormalizedExternal(ctx context.Context, reader client.
 	}
 	key := types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(DeployDeployPolicyGVK)
+	u.SetGroupVersionKind(CloudDeployDeployPolicyGVK)
 	if err := reader.Get(ctx, key, u); err != nil {
 		if apierrors.IsNotFound(err) {
 			return "", k8s.NewReferenceNotFoundError(u.GroupVersionKind(), key)
 		}
-		return "", fmt.Errorf("reading referenced %s %s: %w", DeployDeployPolicyGVK, key, err)
+		return "", fmt.Errorf("reading referenced %s %s: %w", CloudDeployDeployPolicyGVK, key, err)
 	}
 	// Get external from status.externalRef. This is the most trustworthy place.
 	actualExternalRef, _, err := unstructured.NestedString(u.Object, "status", "externalRef")
