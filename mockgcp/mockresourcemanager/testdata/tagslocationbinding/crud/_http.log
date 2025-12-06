@@ -24,26 +24,23 @@ Vary: X-Origin
 
 {
   "etag": "abcdef0123A=",
-  "generation": "12345678901234",
   "iamConfiguration": {
     "bucketPolicyOnly": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
+      "enabled": false
     },
     "publicAccessPrevention": "inherited",
     "uniformBucketLevelAccess": {
-      "enabled": true,
-      "lockedTime": "2024-04-01T12:34:56.123456Z"
+      "enabled": true
     }
   },
   "id": "000000000000000000000",
   "kind": "storage#bucket",
-  "location": "US-CENTRAL1",
-  "locationType": "region",
+  "location": "US",
+  "locationType": "multi-region",
   "metageneration": "1",
   "name": "bucket${uniqueId}",
   "projectNumber": "${projectNumber}",
-  "satisfiesPZI": true,
+  "rpo": "DEFAULT",
   "selfLink": "https://www.googleapis.com/storage/v1/b/bucket${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
@@ -108,11 +105,11 @@ X-Xss-Protection: 0
   },
   "name": "operations/${operationID}",
   "response": {
+    "${tagValueID}Name": "${projectId}/test-${uniqueId}",
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagKey",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "name": "tagKeys/${tagKeyID}",
-    "namespacedName": "${projectId}/test-${uniqueId}",
     "parent": "projects/${projectNumber}",
     "shortName": "test-${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -137,10 +134,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "${tagValueID}Name": "${projectId}/test-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "tagKeys/${tagKeyID}",
-  "namespacedName": "${projectId}/test-${uniqueId}",
   "parent": "projects/${projectNumber}",
   "shortName": "test-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -148,7 +145,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/namespaced?alt=json&name=${projectId}%2Ftest-${uniqueId}
+GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagValueID}?alt=json&name=${projectId}%2Ftest-${uniqueId}
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -164,10 +161,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "${tagValueID}Name": "${projectId}/test-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "tagKeys/${tagKeyID}",
-  "namespacedName": "${projectId}/test-${uniqueId}",
   "parent": "projects/${projectNumber}",
   "shortName": "test-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -227,11 +224,11 @@ X-Xss-Protection: 0
   },
   "name": "operations/${operationID}",
   "response": {
+    "${tagValueID}Name": "${projectId}/test-${uniqueId}/value1",
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagValue",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "name": "tagValues/${tagValueID}",
-    "namespacedName": "${projectId}/test-${uniqueId}/value1",
     "parent": "tagKeys/${tagKeyID}",
     "shortName": "value1",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -256,10 +253,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "${tagValueID}Name": "${projectId}/test-${uniqueId}/value1",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "tagValues/${tagValueID}",
-  "namespacedName": "${projectId}/test-${uniqueId}/value1",
   "parent": "tagKeys/${tagKeyID}",
   "shortName": "value1",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -290,6 +287,7 @@ X-Xss-Protection: 0
 
 {
   "done": true,
+  "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagBinding",
     "name": "tagBindings/%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Fbucket${uniqueId}/tagValues/${tagValueID}",
@@ -321,14 +319,15 @@ X-Xss-Protection: 0
     {
       "name": "tagBindings/%2F%2Fstorage.googleapis.com%2Fprojects%2F_%2Fbuckets%2Fbucket${uniqueId}/tagValues/${tagValueID}",
       "parent": "//storage.googleapis.com/projects/_/buckets/bucket${uniqueId}",
-      "tagValue": "tagValues/${tagValueID}"
+      "tagValue": "tagValues/${tagValueID}",
+      "tagValueNamespacedName": "${projectId}/test-${uniqueId}/value1"
     }
   ]
 }
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagValues/namespaced?alt=json&name=${projectId}%2Ftest-${uniqueId}%2Fvalue1
+GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json&name=${projectId}%2Ftest-${uniqueId}%2Fvalue1
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -344,10 +343,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "${tagValueID}Name": "${projectId}/test-${uniqueId}/value1",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "tagValues/${tagValueID}",
-  "namespacedName": "${projectId}/test-${uniqueId}/value1",
   "parent": "tagKeys/${tagKeyID}",
   "shortName": "value1",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -372,6 +371,7 @@ X-Xss-Protection: 0
 
 {
   "done": true,
+  "name": "operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
@@ -379,7 +379,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagValues/namespaced?alt=json&name=${projectId}%2Ftest-${uniqueId}%2Fvalue1
+GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json&name=${projectId}%2Ftest-${uniqueId}%2Fvalue1
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -395,10 +395,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "${tagValueID}Name": "${projectId}/test-${uniqueId}/value1",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "tagValues/${tagValueID}",
-  "namespacedName": "${projectId}/test-${uniqueId}/value1",
   "parent": "tagKeys/${tagKeyID}",
   "shortName": "value1",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -452,11 +452,11 @@ X-Xss-Protection: 0
   },
   "name": "operations/${operationID}",
   "response": {
+    "${tagValueID}Name": "${projectId}/test-${uniqueId}/value1",
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagValue",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "name": "tagValues/${tagValueID}",
-    "namespacedName": "${projectId}/test-${uniqueId}/value1",
     "parent": "tagKeys/${tagKeyID}",
     "shortName": "value1",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -465,7 +465,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/namespaced?alt=json&name=${projectId}%2Ftest-${uniqueId}
+GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagValueID}?alt=json&name=${projectId}%2Ftest-${uniqueId}
 Accept: application/json
 Authorization: (removed)
 Connection: keep-alive
@@ -481,10 +481,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "${tagValueID}Name": "${projectId}/test-${uniqueId}",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "tagKeys/${tagKeyID}",
-  "namespacedName": "${projectId}/test-${uniqueId}",
   "parent": "projects/${projectNumber}",
   "shortName": "test-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -538,11 +538,11 @@ X-Xss-Protection: 0
   },
   "name": "operations/${operationID}",
   "response": {
+    "${tagValueID}Name": "${projectId}/test-${uniqueId}",
     "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.TagKey",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "name": "tagKeys/${tagKeyID}",
-    "namespacedName": "${projectId}/test-${uniqueId}",
     "parent": "projects/${projectNumber}",
     "shortName": "test-${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"

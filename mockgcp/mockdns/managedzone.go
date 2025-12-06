@@ -292,7 +292,7 @@ func (n *managedZoneName) String() string {
 func (s *MockService) parseManagedZoneName(name string) (*managedZoneName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "managedZones" {
-		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		project, err := s.projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}
