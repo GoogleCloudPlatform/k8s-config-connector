@@ -57,6 +57,14 @@ type PreviewInstanceOptions struct {
 	// UpstreamGCPHTTPClient is the http client to use when talking to upstream (real) GCP
 	// (Upstream GCP may be mocked in tests)
 	UpstreamGCPHTTPClient *http.Client
+
+	// UpstreamGCPQPS is the QPS to use when talking to upstream (real) GCP
+	// This limit is per API.
+	UpstreamGCPQPS float64
+
+	// UpstreamGCPBurst is the burst to use when talking to upstream (real) GCP
+	// This limit is per API.
+	UpstreamGCPBurst int
 }
 
 // NewPreviewInstance creates a new PreviewInstance.
@@ -73,7 +81,7 @@ func NewPreviewInstance(recorder *Recorder, options PreviewInstanceOptions) (*Pr
 		return nil, err
 	}
 
-	hookGCP := newInterceptingGCPClient(upstreamGCPHTTPClient, authorization)
+	hookGCP := newInterceptingGCPClient(upstreamGCPHTTPClient, authorization, options.UpstreamGCPQPS, options.UpstreamGCPBurst)
 
 	i := &PreviewInstance{}
 	i.hookGCP = hookGCP
