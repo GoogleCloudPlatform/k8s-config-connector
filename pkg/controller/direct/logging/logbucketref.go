@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/logging/v1beta1"
@@ -84,7 +86,7 @@ func LogBucketRef_ConvertToExternal(ctx context.Context, reader client.Reader, s
 	})
 	if err := reader.Get(ctx, key, loggingLogBucket); err != nil {
 		if apierrors.IsNotFound(err) {
-			return fmt.Errorf("referenced LoggingLogBucket %v not found", key)
+			return k8s.NewReferenceNotFoundError(loggingLogBucket.GroupVersionKind(), key)
 		}
 		return fmt.Errorf("error reading referenced LoggingLogBucket %v: %w", key, err)
 	}
