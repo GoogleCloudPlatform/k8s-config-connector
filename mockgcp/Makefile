@@ -53,6 +53,7 @@ gen-proto-no-fixup:
 		./apis/mockgcp/cloud/networkconnectivity/v1/*.proto \
 		./apis/mockgcp/cloud/servicenetworking/v1/*.proto \
 		./apis/mockgcp/cloud/resourcemanager/v1/*.proto \
+		./apis/mockgcp/cloud/edgecacheservice/v1/*.proto \
 		./apis/mockgcp/storage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/apikeys/v2/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1/*.proto \
@@ -182,8 +183,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/modelarmor/v1/service.proto \
 		./third_party/googleapis/mockgcp/cloud/gkebackup/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/run/v2/*.proto \
-		./third_party/googleapis/mockgcp/cloud/speech/v2/*.proto \
-		./third_party/googleapis/mockgcp/devtools/sourcerepo/v1/*.proto
+		./third_party/googleapis/mockgcp/cloud/speech/v2/*.proto
 
 
 .PHONY: generate-grpc-for-google-protos
@@ -219,6 +219,7 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/clouddms/v1/*.proto \
 		./third_party/googleapis/google/cloud/notebooks/v1/*.proto \
 		./third_party/googleapis/google/cloud/recaptchaenterprise/v1/*.proto \
+		./third_party/googleapis/google/firestore/admin/v1/*.proto \
 		./third_party/googleapis/google/iam/v2/*.proto \
 		./third_party/googleapis/google/logging/v2/*.proto \
 		./third_party/googleapis/google/analytics/admin/v1alpha/*.proto
