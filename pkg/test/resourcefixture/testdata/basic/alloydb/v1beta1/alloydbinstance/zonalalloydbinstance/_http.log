@@ -859,6 +859,7 @@ X-Xss-Protection: 0
     },
     "name": "projects/${projectId}/locations/europe-central2/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
     "observabilityConfig": {
+      "assistiveExperiencesEnabled": false,
       "enabled": false,
       "maxQueryStringLength": 10240,
       "preserveComments": false,
@@ -922,6 +923,7 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/europe-central2/clusters/alloydbcluster-${uniqueId}/instances/alloydbinstance-${uniqueId}",
   "observabilityConfig": {
+    "assistiveExperiencesEnabled": false,
     "enabled": false,
     "maxQueryStringLength": 10240,
     "preserveComments": false,
