@@ -83,14 +83,14 @@ func CloudDMSMigrationJobObservedState_FromProto(mapCtx *direct.MapContext, in *
 	}
 	out := &krm.CloudDMSMigrationJobObservedState{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: Labels
 	// MISSING: State
-	// MISSING: Phase
-	// MISSING: Duration
-	// MISSING: Error
-	// MISSING: EndTime
+	out.Phase = direct.Enum_FromProto(mapCtx, in.GetPhase())
+	out.Duration = direct.StringDuration_FromProto(mapCtx, in.GetDuration())
+	out.Error = Status_FromProto(mapCtx, in.GetError())
+	out.EndTime = direct.StringTimestamp_FromProto(mapCtx, in.GetEndTime())
 	return out
 }
 func CloudDMSMigrationJobObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudDMSMigrationJobObservedState) *pb.MigrationJob {
@@ -99,14 +99,14 @@ func CloudDMSMigrationJobObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	}
 	out := &pb.MigrationJob{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Labels
 	// MISSING: State
-	// MISSING: Phase
-	// MISSING: Duration
-	// MISSING: Error
-	// MISSING: EndTime
+	out.Phase = direct.Enum_ToProto[pb.MigrationJob_Phase](mapCtx, in.Phase)
+	out.Duration = direct.StringDuration_ToProto(mapCtx, in.Duration)
+	out.Error = Status_ToProto(mapCtx, in.Error)
+	out.EndTime = direct.StringTimestamp_ToProto(mapCtx, in.EndTime)
 	return out
 }
 func CloudDMSMigrationJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.MigrationJob) *krm.CloudDMSMigrationJobSpec {
@@ -115,12 +115,9 @@ func CloudDMSMigrationJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Migrat
 	}
 	out := &krm.CloudDMSMigrationJobSpec{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	// MISSING: Labels
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: State
-	// MISSING: Phase
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.DumpPath = direct.LazyPtr(in.GetDumpPath())
 	out.DumpFlags = MigrationJob_DumpFlags_FromProto(mapCtx, in.GetDumpFlags())
@@ -133,11 +130,8 @@ func CloudDMSMigrationJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Migrat
 	out.ReverseSSHConnectivity = ReverseSSHConnectivity_FromProto(mapCtx, in.GetReverseSshConnectivity())
 	out.VPCPeeringConnectivity = VPCPeeringConnectivity_FromProto(mapCtx, in.GetVpcPeeringConnectivity())
 	out.StaticIPConnectivity = StaticIPConnectivity_FromProto(mapCtx, in.GetStaticIpConnectivity())
-	// MISSING: Duration
-	// MISSING: Error
 	out.SourceDatabase = DatabaseType_FromProto(mapCtx, in.GetSourceDatabase())
 	out.DestinationDatabase = DatabaseType_FromProto(mapCtx, in.GetDestinationDatabase())
-	// MISSING: EndTime
 	out.ConversionWorkspace = ConversionWorkspaceInfo_FromProto(mapCtx, in.GetConversionWorkspace())
 	out.Filter = direct.LazyPtr(in.GetFilter())
 	if in.GetCmekKeyName() != "" {
@@ -152,12 +146,9 @@ func CloudDMSMigrationJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudDM
 	}
 	out := &pb.MigrationJob{}
 	// MISSING: Name
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
 	// MISSING: Labels
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	// MISSING: State
-	// MISSING: Phase
 	out.Type = direct.Enum_ToProto[pb.MigrationJob_Type](mapCtx, in.Type)
 	out.DumpPath = direct.ValueOf(in.DumpPath)
 	out.DumpFlags = MigrationJob_DumpFlags_ToProto(mapCtx, in.DumpFlags)
@@ -176,11 +167,8 @@ func CloudDMSMigrationJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudDM
 	if oneof := StaticIPConnectivity_ToProto(mapCtx, in.StaticIPConnectivity); oneof != nil {
 		out.Connectivity = &pb.MigrationJob_StaticIpConnectivity{StaticIpConnectivity: oneof}
 	}
-	// MISSING: Duration
-	// MISSING: Error
 	out.SourceDatabase = DatabaseType_ToProto(mapCtx, in.SourceDatabase)
 	out.DestinationDatabase = DatabaseType_ToProto(mapCtx, in.DestinationDatabase)
-	// MISSING: EndTime
 	out.ConversionWorkspace = ConversionWorkspaceInfo_ToProto(mapCtx, in.ConversionWorkspace)
 	out.Filter = direct.ValueOf(in.Filter)
 	if in.CmekKeyNameRef != nil {

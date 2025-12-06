@@ -33,19 +33,24 @@ func dmsMigrationJobFuzzer() fuzztesting.KRMFuzzer {
 		CloudDMSMigrationJobObservedState_FromProto, CloudDMSMigrationJobObservedState_ToProto,
 	)
 
-	f.SpecFields.Insert(".type")
-	f.SpecFields.Insert(".source")
-	f.SpecFields.Insert(".destination")
-	f.SpecFields.Insert(".conversion_workspace")
+	f.SpecField(".conversion_workspace")
+	f.SpecField(".destination")
+	f.SpecField(".display_name")
+	f.SpecField(".source")
+	f.SpecField(".staticIPConnectivity")
+	f.SpecField(".type")
 
-	f.StatusFields.Insert(".phase")
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".update_time")
-	f.StatusFields.Insert(".duration")
-	f.StatusFields.Insert(".error")
+	f.StatusField(".create_time")
+	f.StatusField(".duration")
+	f.StatusField(".error")
+	f.StatusField(".phase")
+	f.StatusField(".update_time")
 
 	f.Unimplemented_Identity(".name")
 	f.Unimplemented_Etag()
+	f.Unimplemented_LabelsAnnotations(".labels")
+	// The 'state' is not considered as observedState because it does not have the OUTPUT-ONLY field mask.
+	f.Unimplemented_Internal(".state")
 
 	return f
 }
