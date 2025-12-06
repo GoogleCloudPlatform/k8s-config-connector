@@ -1,0 +1,1 @@
+[mismatch_ref] GoStruct=EnvVarSource, Version=v1beta1: KRM field "SecretKeyRef" has no matching proto field. The KRM field should be the PascalCase of the proto field name with a "Ref" suffix.
