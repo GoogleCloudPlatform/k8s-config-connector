@@ -25,6 +25,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"slices"
 	"strconv"
@@ -301,6 +302,8 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					scenarioOptionsWithFallback.ForceDirectController = false
 					runScenario(ctx, t, scenarioOptionsWithFallback, fixture, loadFixture)
 				}
+
+				createDiffs(t, ctx, fixture)
 			})
 		}
 	})
@@ -308,6 +311,64 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 	// Do a cleanup while we can still handle the error.
 	t.Logf("shutting down manager")
 	cancel()
+}
+
+func createDiffs(t *testing.T, ctx context.Context, fixture resourcefixture.ResourceFixture) {
+	dir := fixture.AbsoluteSourceDir
+
+	fileExists := func(p string) bool {
+		if _, err := os.Stat(p); err != nil {
+			if !os.IsNotExist(err) {
+				t.Errorf("error checking if file exists %q: %v", p, err)
+			}
+			return false
+		}
+		return true
+	}
+
+	computeDiff := func(oldP, newP, diffP string) {
+		out, err := os.Create(diffP)
+		if err != nil {
+			t.Errorf("error creating diff file %q: %v", diffP, err)
+			return
+		}
+		defer out.Close()
+
+		cmd := exec.CommandContext(ctx, "diff", oldP, newP)
+		cmd.Stdout = out
+		cmd.Stderr = os.Stderr
+
+		if err := cmd.Run(); err != nil {
+			// Ignore exit code 1 (which means files differ)
+			if exitError, ok := err.(*exec.ExitError); ok && exitError.ExitCode() == 1 {
+				// This is expected when files differ, so do not treat as an error
+			} else {
+				t.Errorf("error running diff command: %v", err)
+			}
+		}
+	}
+
+	// _http.log
+	{
+		oldPath := filepath.Join(dir, "_http_old_controller.log")
+		newPath := filepath.Join(dir, "_http.log")
+
+		if fileExists(oldPath) && fileExists(newPath) {
+			computeDiff(oldPath, newPath, filepath.Join(dir, "_http.diff"))
+		}
+	}
+
+	// _final_object.yaml
+	{
+		oldPath := filepath.Join(dir, "_final_object_old_controller.golden.yaml")
+		// newPath := filepath.Join(dir, "_final_object.yaml")
+		newPath := filepath.Join(dir, "_generated_object_"+fixture.Name+".golden.yaml")
+
+		if fileExists(oldPath) && fileExists(newPath) {
+			computeDiff(oldPath, newPath, filepath.Join(dir, "_final_object.diff"))
+		}
+	}
+
 }
 
 type ScenarioOptions struct {
