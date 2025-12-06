@@ -144,7 +144,7 @@ func (a *tagTemplateAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	log.V(2).Info("creating datacatalog tagtemplate", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := DataCatalogTagTemplateSpec_ToProto(mapCtx, &a.desired.Spec)
+	desired := DataCatalogTagTemplateSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -161,7 +161,7 @@ func (a *tagTemplateAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	log.V(2).Info("successfully created datacatalog tagtemplate in gcp", "name", a.id)
 
 	status := &krm.DataCatalogTagTemplateStatus{}
-	status.ObservedState = DataCatalogTagTemplateObservedState_FromProto(mapCtx, created)
+	status.ObservedState = DataCatalogTagTemplateObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -174,7 +174,7 @@ func (a *tagTemplateAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log.V(2).Info("updating datacatalog tagtemplate", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := DataCatalogTagTemplateSpec_ToProto(mapCtx, &a.desired.Spec)
+	desired := DataCatalogTagTemplateSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -216,7 +216,7 @@ func (a *tagTemplateAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	status := &krm.DataCatalogTagTemplateStatus{}
-	status.ObservedState = DataCatalogTagTemplateObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = DataCatalogTagTemplateObservedState_v1alpha1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -232,7 +232,7 @@ func (a *tagTemplateAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 	obj := &krm.DataCatalogTagTemplate{}
 	mapCtx := &direct.MapContext{}
 	// Export the observed state, including fields.
-	obj.Spec = direct.ValueOf(DataCatalogTagTemplateSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(DataCatalogTagTemplateSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
