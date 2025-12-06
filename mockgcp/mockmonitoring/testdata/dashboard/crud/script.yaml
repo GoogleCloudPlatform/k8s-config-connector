@@ -2,6 +2,6 @@
   setEnv: DASHBOARD_ID
 - exec: gcloud monitoring dashboards describe ${DASHBOARD_ID} --project=${projectId} '--format=value(etag)'
   setEnv: DASHBOARD_ETAG
-- exec: cat dashboard2.yaml | sed -e "s/DASHBOARD_ETAG/${DASHBOARD_ETAG}/g" | gcloud monitoring dashboards update ${DASHBOARD_ID} --project=${projectId} --config-from-file=-
+- exec: cat dashboard2.yaml | sed -e "s@DASHBOARD_ETAG@${DASHBOARD_ETAG}@g" | gcloud monitoring dashboards update ${DASHBOARD_ID} --project=${projectId} --config-from-file=-
 - exec: gcloud monitoring dashboards describe ${DASHBOARD_ID} --project=${projectId}
 - exec: gcloud monitoring dashboards delete ${DASHBOARD_ID} --project=${projectId} --quiet
