@@ -44,7 +44,7 @@ jobs:
           go-version-file: 'go.mod'
           cache: false # because of https://github.com/golangci/golangci-lint-action/issues/135
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6.1.0
+        uses: golangci/golangci-lint-action@v9
         with:
-          version: v1.64.8 # should match the version in Makefile
+          version: v2.7.1 # should match the version in Makefile
           args: --timeout=10m
