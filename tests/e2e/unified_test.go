@@ -245,6 +245,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					}
 
 					opt.Create = append(opt.Create, primaryResource)
+					opt.PrimaryResource = primaryResource
 
 					if fixture.Update != nil {
 						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
@@ -417,7 +418,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 
 					// If this test wants us to fallback to the old controller, make sure that there is an old controller
 					if options.FallbackToOldController {
-						primaryGK := opt.Create[0].GroupVersionKind().GroupKind()
+						primaryGK := opt.PrimaryResource.GroupVersionKind().GroupKind()
 						config := resourceconfig.LoadConfig()[primaryGK]
 						if len(config.SupportedControllers) <= 1 {
 							t.Skipf("test is falling back to old controller, but there is no old controller for %v", primaryGK)
@@ -1102,6 +1103,7 @@ func TestIAM_AllInSeries(t *testing.T) {
 					}
 
 					opt.Create = append(opt.Create, primaryResource)
+					opt.PrimaryResource = primaryResource
 
 					if fixture.Update != nil {
 						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
@@ -1126,7 +1128,7 @@ func TestIAM_AllInSeries(t *testing.T) {
 func buildControllerOverrides(t *testing.T, scenario create.CreateDeleteTestOptions, options ScenarioOptions) map[string]k8scontrollertype.ReconcilerType {
 	controllerOverrides := make(map[string]k8scontrollertype.ReconcilerType)
 
-	primaryResource := scenario.Create[0]
+	primaryResource := scenario.PrimaryResource
 	primaryGK := primaryResource.GroupVersionKind().GroupKind()
 
 	if options.FallbackToOldController {
