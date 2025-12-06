@@ -32,6 +32,7 @@ import (
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/teststatus"
 	kccyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/yaml"
 
 	"github.com/google/go-cmp/cmp"
@@ -126,6 +127,8 @@ func TestE2EScript(t *testing.T) {
 						testCommand = "APPLY"
 					}
 
+					id := types.NamespacedName{Namespace: obj.GetNamespace(), Name: obj.GetName()}
+
 					t.Logf("***/Step %d: %s %s %s/%s", i, testCommand, obj.GroupVersionKind().Kind, obj.GetNamespace(), obj.GetName())
 
 					if obj.GroupVersionKind().Kind == "RunCLI" {
@@ -206,6 +209,18 @@ func TestE2EScript(t *testing.T) {
 					case "APPLY-10-SEC":
 						applyObject(h, obj)
 						time.Sleep(10 * time.Second)
+
+					case "APPLY_IGNORE_ERROR":
+						applyObject(h, obj)
+						objectGenerationMatches := func(status teststatus.ObjectStatus) bool {
+							if status.ObservedGeneration == nil {
+								return false
+							}
+							return status.Generation == *status.ObservedGeneration
+						}
+
+						h.WaitForObjectPredicate(obj.GroupVersionKind(), id, objectGenerationMatches, time.Minute)
+						appliedObjects = append(appliedObjects, obj)
 
 					case "READ-OBJECT":
 						appliedObjects = append(appliedObjects, obj)

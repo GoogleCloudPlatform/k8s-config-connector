@@ -162,7 +162,7 @@ func (a *FolderAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *FolderAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating SQLInstance", "desired", a.desired)
+	log.V(2).Info("updating folder", "desired", a.desired)
 
 	status := &krm.StorageFolderStatus{}
 	return updateOp.UpdateStatus(ctx, status, nil)

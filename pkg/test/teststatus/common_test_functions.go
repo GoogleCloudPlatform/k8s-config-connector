@@ -30,6 +30,10 @@ type ObjectStatus struct {
 	Conditions         []condition.Condition
 }
 
+// ObjectStatusPredicate is a function that takes in an ObjectStatus and returns a bool indicating
+// whether the ObjectStatus meets certain criteria.
+type ObjectStatusPredicate func(ObjectStatus) bool
+
 // GetObjectStatus extracts the required fields for computing if an object should be considered ready (fully reconciled).
 func GetObjectStatus(t *testing.T, object runtime.Object) ObjectStatus {
 	// Simple types with the fields we care about, so that we can use the libraries
