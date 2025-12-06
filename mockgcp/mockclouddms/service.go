@@ -28,15 +28,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
 	grpcpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/clouddms/v1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 
 	pb "cloud.google.com/go/clouddms/apiv1/clouddmspb"
 )
-
-func init() {
-	mockgcpregistry.Register(New)
-}
 
 // MockService represents a mocked datamigration service.
 type MockService struct {
@@ -52,7 +47,7 @@ type DataMigrationServiceV1 struct {
 }
 
 // New creates a MockService.
-func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
+func New(env *common.MockEnvironment, storage storage.Storage) *MockService {
 	s := &MockService{
 		MockEnvironment: env,
 		storage:         storage,

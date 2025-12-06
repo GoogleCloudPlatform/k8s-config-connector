@@ -49,31 +49,14 @@ func (s *Operations) RegisterGRPCServices(grpcServer *grpc.Server) {
 	pb.RegisterOperationsServer(grpcServer, s)
 }
 
-func buildOperationName(prefix string) string {
+func (s *Operations) NewLRO(ctx context.Context) (*pb.Operation, error) {
 	now := time.Now()
 	millis := now.UnixMilli()
 	id := string(uuid.NewUUID())
 
-	format := "operations/{{operationID}}"
-	if prefix != "" {
-		if strings.Contains(prefix, "{{operationID}}") {
-			format = prefix
-		} else {
-			format = prefix + "/" + format
-		}
-	}
-
-	operationID := fmt.Sprintf("operation-%d-%s", millis, id)
-	name := strings.ReplaceAll(format, "{{operationID}}", operationID)
-
-	return name
-}
-
-func (s *Operations) NewLRO(ctx context.Context) (*pb.Operation, error) {
-
 	op := &pb.Operation{}
 
-	op.Name = buildOperationName("")
+	op.Name = fmt.Sprintf("operations/operation-%d-%s", millis, id)
 	op.Done = true
 
 	fqn := op.Name
@@ -89,9 +72,16 @@ func (s *Operations) StartLRO(ctx context.Context, prefix string, metadata proto
 }
 
 func (s *Operations) StartLROWithOptions(ctx context.Context, prefix string, metadata proto.Message, callback func() (proto.Message, error), keepMetadata bool) (*pb.Operation, error) {
+	now := time.Now()
+	millis := now.UnixMilli()
+	id := uuid.NewUUID()
+
 	op := &pb.Operation{}
 
-	op.Name = buildOperationName(prefix)
+	op.Name = fmt.Sprintf("operations/operation-%d-%s", millis, id)
+	if prefix != "" {
+		op.Name = prefix + "/" + op.Name
+	}
 	op.Done = false
 
 	if metadata != nil {
@@ -168,9 +158,16 @@ func markDone(op *pb.Operation, result proto.Message, err error, keepMetadataOnD
 }
 
 func (s *Operations) DoneLRO(ctx context.Context, prefix string, metadata proto.Message, result proto.Message) (*pb.Operation, error) {
+	now := time.Now()
+	millis := now.UnixMilli()
+	id := uuid.NewUUID()
+
 	op := &pb.Operation{}
 
-	op.Name = buildOperationName(prefix)
+	op.Name = fmt.Sprintf("operations/operation-%d-%s", millis, id)
+	if prefix != "" {
+		op.Name = prefix + "/" + op.Name
+	}
 	op.Done = false
 
 	if err := markDone(op, result, nil, false); err != nil {

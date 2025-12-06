@@ -1,0 +1,227 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package mockgcp.cloud.edgecacheservice.v1;
+
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/longrunning/operations.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/edgecacheservice/v1;edgecacheservice";
+
+service EdgeCacheServices {
+  rpc GetEdgeCacheService(GetEdgeCacheServiceRequest) returns (EdgeCacheService);
+  rpc ListEdgeCacheServices(ListEdgeCacheServicesRequest) returns (ListEdgeCacheServicesResponse);
+  rpc CreateEdgeCacheService(CreateEdgeCacheServiceRequest) returns (google.longrunning.Operation);
+  rpc UpdateEdgeCacheService(UpdateEdgeCacheServiceRequest) returns (google.longrunning.Operation);
+  rpc DeleteEdgeCacheService(DeleteEdgeCacheServiceRequest) returns (google.longrunning.Operation);
+}
+
+message EdgeCacheService {
+  option (google.api.resource) = {
+    type: "edgecache.googleapis.com/EdgeCacheService"
+    pattern: "projects/{project}/locations/{location}/edgeCacheServices/{edge_cache_service}"
+  };
+
+  string name = 1;
+  google.protobuf.Timestamp create_time = 2 [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp update_time = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+  map<string, string> labels = 4;
+  string description = 5;
+  Routing routing = 6;
+  bool require_tls = 7;
+  repeated string edge_ssl_certificates = 8;
+  string edge_security_policy = 9;
+  LogConfig log_config = 10;
+  bool disable_quic = 11;
+  bool disable_http2 = 12;
+  repeated string ipv4_addresses = 13 [(google.api.field_behavior) = OUTPUT_ONLY];
+  repeated string ipv6_addresses = 14 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+
+message Routing {
+  repeated HostRule host_rules = 1;
+  repeated PathMatcher path_matchers = 2;
+}
+
+message HostRule {
+  string description = 1;
+  repeated string hosts = 2;
+  string path_matcher = 3;
+}
+
+message PathMatcher {
+  string name = 1;
+  string description = 2;
+  repeated RouteRule route_rules = 3;
+}
+
+message RouteRule {
+  string description = 1;
+  uint32 priority = 2;
+  repeated MatchRule match_rules = 3;
+  HeaderAction header_action = 4;
+  RouteAction route_action = 5;
+  string origin = 6;
+  UrlRedirect url_redirect = 7;
+  repeated string route_methods = 8;
+}
+
+message MatchRule {
+  string prefix_match = 1;
+  string full_path_match = 2;
+  string regex_match = 3;
+  bool ignore_case = 4;
+  repeated HeaderMatch header_matches = 5;
+  repeated QueryParamMatch query_param_matches = 6;
+}
+
+message HeaderMatch {
+  string header_name = 1;
+  bool present_match = 2;
+  string exact_match = 3;
+  string prefix_match = 4;
+  string suffix_match = 5;
+  string regex_match = 6;
+  bool invert_match = 7;
+}
+
+message QueryParamMatch {
+  string query_param = 1;
+  bool present_match = 2;
+  string exact_match = 3;
+  string regex_match = 4;
+}
+
+message HeaderAction {
+  repeated HeaderToRemove headers_to_remove = 1;
+  repeated HeaderToAdd headers_to_add = 2;
+}
+
+message HeaderToRemove {
+  string header_name = 1;
+}
+
+message HeaderToAdd {
+  string header_name = 1;
+  string header_value = 2;
+  bool replace = 3;
+}
+
+message RouteAction {
+  CdnPolicy cdn_policy = 1;
+  UrlRewrite url_rewrite = 2;
+  CorsPolicy cors_policy = 3;
+  string compression_mode = 4;
+}
+
+message CdnPolicy {
+  string cache_mode = 1;
+  map<string, string> client_ttl = 2;
+  google.protobuf.Duration default_ttl = 3;
+  google.protobuf.Duration max_ttl = 4;
+  bool cache_negative_callbacks = 5;
+  map<string, string> signed_request_keyset = 6;
+  string signed_request_mode = 7;
+}
+
+message UrlRewrite {
+  string path_prefix_rewrite = 1;
+  string host_rewrite = 2;
+}
+
+message CorsPolicy {
+  google.protobuf.Duration max_age = 1;
+  repeated string allow_origins = 2;
+  repeated string allow_methods = 3;
+  repeated string allow_headers = 4;
+  repeated string expose_headers = 5;
+  bool allow_credentials = 6;
+  bool disabled = 7;
+}
+
+message UrlRedirect {
+  string host_redirect = 1;
+  string path_redirect = 2;
+  string prefix_redirect = 3;
+  string redirect_response_code = 4;
+  bool https_redirect = 5;
+  bool strip_query = 6;
+}
+
+message LogConfig {
+  bool enable = 1;
+  double sample_rate = 2;
+}
+
+message ListEdgeCacheServicesRequest {
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      child_type: "locations.googleapis.com/Location"
+    }
+  ];
+  int32 page_size = 2;
+  string page_token = 3;
+  string filter = 4;
+  string order_by = 5;
+}
+
+message ListEdgeCacheServicesResponse {
+  repeated EdgeCacheService edge_cache_services = 1;
+  string next_page_token = 2;
+  repeated string unreachable = 3;
+}
+
+message GetEdgeCacheServiceRequest {
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "edgecache.googleapis.com/EdgeCacheService"
+    }
+  ];
+}
+
+message CreateEdgeCacheServiceRequest {
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      child_type: "locations.googleapis.com/Location"
+    }
+  ];
+  string edge_cache_service_id = 2 [(google.api.field_behavior) = REQUIRED];
+  EdgeCacheService edge_cache_service = 3 [(google.api.field_behavior) = REQUIRED];
+  string request_id = 4;
+}
+
+message UpdateEdgeCacheServiceRequest {
+  google.protobuf.FieldMask update_mask = 1 [(google.api.field_behavior) = REQUIRED];
+  EdgeCacheService edge_cache_service = 2 [(google.api.field_behavior) = REQUIRED];
+  string request_id = 3;
+}
+
+message DeleteEdgeCacheServiceRequest {
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "edgecache.googleapis.com/EdgeCacheService"
+    }
+  ];
+  string request_id = 2;
+}
