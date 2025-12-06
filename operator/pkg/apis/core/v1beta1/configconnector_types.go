@@ -69,6 +69,14 @@ type ConfigConnectorSpec struct {
 
 	// ConfigConnector specific experiments
 	Experiments *CCExperiments `json:"experiments,omitempty"`
+
+	// MetadataHost specifies the hostname to use for GCP metadata server requests.
+	// This is useful for IPv6-only GKE clusters where the default metadata IP (169.254.169.254)
+	// is not reachable. Set this to "metadata.google.internal" for IPv6 environments.
+	// When set, this value is injected as the GCE_METADATA_HOST environment variable
+	// into the controller manager and related containers.
+	//+kubebuilder:validation:Optional
+	MetadataHost string `json:"metadataHost,omitempty"`
 }
 
 type CCExperiments struct {
