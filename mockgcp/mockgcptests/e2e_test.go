@@ -36,7 +36,6 @@ import (
 type Placeholders struct {
 	ProjectID        string
 	ProjectNumber    int64
-	OrganizationID   string
 	UniqueID         string
 	BillingAccountID string
 }
@@ -74,7 +73,6 @@ func TestScripts(t *testing.T) {
 			placeholders := Placeholders{
 				ProjectID:        project.ProjectID,
 				ProjectNumber:    project.ProjectNumber,
-				OrganizationID:   project.OrganizationID,
 				UniqueID:         uniqueID,
 				BillingAccountID: testgcp.TestBillingAccountID.Get(),
 			}
@@ -192,7 +190,7 @@ func TestScripts(t *testing.T) {
 				}
 
 				folderID := ""
-				organizationID := h.Project.OrganizationID
+				organizationID := ""
 
 				e2e.NormalizeHTTPLog(t, httpEvents, h.RegisteredServices(), testgcp.GCPProject{ProjectID: h.Project.ProjectID, ProjectNumber: h.Project.ProjectNumber}, uniqueID, folderID, organizationID)
 
@@ -267,7 +265,6 @@ func ReplaceTestVars(t *testing.T, b []byte, placeholders Placeholders) []byte {
 	s = strings.Replace(s, "${uniqueId}", placeholders.UniqueID, -1)
 	s = strings.Replace(s, "${projectId}", placeholders.ProjectID, -1)
 	s = strings.Replace(s, "${projectNumber}", strconv.FormatInt(placeholders.ProjectNumber, 10), -1)
-	s = strings.Replace(s, "${organizationId}", placeholders.OrganizationID, -1)
 	s = strings.Replace(s, "${BILLING_ACCOUNT_ID}", placeholders.BillingAccountID, -1)
 	return []byte(s)
 }

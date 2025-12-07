@@ -16,7 +16,7 @@ package mockapphub
 
 // +tool:mockgcp-service
 // http.host: apphub.googleapis.com
-// proto.service: google.cloud.apphub.v1.AppHub
+// proto.service: google.cloud.apphub.v1
 
 import (
 	"context"

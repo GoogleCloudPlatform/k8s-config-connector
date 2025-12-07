@@ -12,10 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +tool:mockgcp-support
-// proto.service: google.firestore.admin.v1.FirestoreAdmin
-// proto.message: google.firestore.admin.v1.Field
-
 package mockfirestore
 
 import (
@@ -24,7 +20,6 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -34,110 +29,6 @@ import (
 	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
 	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 )
-
-func (s *firestoreAdminServer) GetField(ctx context.Context, req *pb.GetFieldRequest) (*pb.Field, error) {
-	name, err := s.parseFieldName(req.GetName())
-	if err != nil {
-		return nil, err
-	}
-
-	field, _, err := s.getOrCreateField(ctx, name)
-	if err != nil {
-		return nil, err
-	}
-	return field, nil
-}
-
-func (s *firestoreAdminServer) getDefaultField(ctx context.Context, name *fieldName) (*pb.Field, error) {
-	defaultName := &fieldName{
-		ProjectID:    name.ProjectID,
-		DatabaseID:   name.DatabaseID,
-		CollectionID: "__default__",
-		FieldID:      "*",
-	}
-	fqn := defaultName.String()
-
-	obj := &pb.Field{}
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if status.Code(err) == codes.NotFound {
-			// We auto-create the field here (but don't write it)
-			obj.Name = fqn
-
-			obj.IndexConfig = &pb.Field_IndexConfig{}
-
-			obj.IndexConfig.Indexes = []*pb.Index{
-				{
-					QueryScope: pb.Index_COLLECTION,
-					Fields: []*pb.Index_IndexField{
-						{
-							FieldPath: name.FieldID,
-							ValueMode: &pb.Index_IndexField_Order_{Order: pb.Index_IndexField_ASCENDING},
-						},
-					},
-					State: pb.Index_READY,
-				},
-				{
-					QueryScope: pb.Index_COLLECTION,
-					Fields: []*pb.Index_IndexField{
-						{
-							FieldPath: name.FieldID,
-							ValueMode: &pb.Index_IndexField_Order_{Order: pb.Index_IndexField_DESCENDING},
-						},
-					},
-					State: pb.Index_READY,
-				},
-				{
-					QueryScope: pb.Index_COLLECTION,
-					Fields: []*pb.Index_IndexField{
-						{
-							FieldPath: name.FieldID,
-							ValueMode: &pb.Index_IndexField_ArrayConfig_{ArrayConfig: pb.Index_IndexField_CONTAINS},
-						},
-					},
-					State: pb.Index_READY,
-				},
-			}
-		} else {
-			return nil, err
-		}
-	}
-
-	return obj, nil
-}
-
-func (s *firestoreAdminServer) getOrCreateField(ctx context.Context, name *fieldName) (*pb.Field, bool, error) {
-	fqn := name.String()
-
-	obj := &pb.Field{}
-	found := true
-	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if status.Code(err) == codes.NotFound {
-			// We auto-create the field here (but don't write it)
-			found = false
-
-			defaultField, err := s.getDefaultField(ctx, name)
-			if err != nil {
-				return nil, false, err
-			}
-
-			obj.Name = fqn
-
-			obj.IndexConfig = &pb.Field_IndexConfig{
-				AncestorField:      defaultField.Name,
-				UsesAncestorConfig: true,
-			}
-
-			for _, index := range defaultField.GetIndexConfig().GetIndexes() {
-				index = ProtoClone(index)
-				obj.IndexConfig.Indexes = append(obj.IndexConfig.Indexes, index)
-			}
-		} else {
-			return nil, false, err
-		}
-	}
-
-	return obj, found, nil
-}
 
 func (s *firestoreAdminServer) UpdateField(ctx context.Context, req *pb.UpdateFieldRequest) (*longrunningpb.Operation, error) {
 	log := klog.FromContext(ctx)
@@ -150,6 +41,10 @@ func (s *firestoreAdminServer) UpdateField(ctx context.Context, req *pb.UpdateFi
 
 	fqn := name.String()
 
+	if req.GetField().GetIndexConfig() == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "Field.IndexConfig must be specified")
+	}
+
 	for _, index := range req.GetField().GetIndexConfig().GetIndexes() {
 		if index.GetQueryScope() == pb.Index_QUERY_SCOPE_UNSPECIFIED {
 			return nil, status.Errorf(codes.InvalidArgument, "Index.QueryScope must be specified")
@@ -160,112 +55,111 @@ func (s *firestoreAdminServer) UpdateField(ctx context.Context, req *pb.UpdateFi
 		for _, indexField := range index.GetFields() {
 			if indexField.GetFieldPath() == "" {
 				indexField.FieldPath = name.FieldID
+				// return nil, status.Errorf(codes.InvalidArgument, "Index.IndexField.FieldPath must be specified")
 			}
 			if indexField.GetValueMode() == nil {
 				return nil, status.Errorf(codes.InvalidArgument, "Index.IndexField.ValueMode must be specified")
 			}
 		}
 	}
+	obj := &pb.Field{}
 
-	obj, found, err := s.getOrCreateField(ctx, name)
-	if err != nil {
-		return nil, err
+	create := false
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			// We auto-create the field here
+			create = true
+
+			// Default indexes (?)
+			obj.IndexConfig = &pb.Field_IndexConfig{}
+			obj.IndexConfig.Indexes = []*pb.Index{
+				{
+					QueryScope: pb.Index_COLLECTION,
+					Fields: []*pb.Index_IndexField{
+						{
+							FieldPath: name.FieldID,
+							ValueMode: &pb.Index_IndexField_Order_{Order: pb.Index_IndexField_ASCENDING},
+						},
+					},
+				},
+				{
+					QueryScope: pb.Index_COLLECTION,
+					Fields: []*pb.Index_IndexField{
+						{
+							FieldPath: name.FieldID,
+							ValueMode: &pb.Index_IndexField_Order_{Order: pb.Index_IndexField_DESCENDING},
+						},
+					},
+				},
+				{
+					QueryScope: pb.Index_COLLECTION,
+					Fields: []*pb.Index_IndexField{
+						{
+							FieldPath: name.FieldID,
+							ValueMode: &pb.Index_IndexField_ArrayConfig_{ArrayConfig: pb.Index_IndexField_CONTAINS},
+						},
+					},
+				},
+			}
+		} else {
+			return nil, err
+		}
 	}
 
 	oldObj := ProtoClone(obj)
 
+	// TODO: Merge more fields?
+
+	indexConfigDeltas := []*pb.FieldOperationMetadata_IndexConfigDelta{}
+
+	var newIndexes []*pb.Index
+	// First go through and remove any indexes we are not keeping
+	for _, oldIndex := range oldObj.GetIndexConfig().GetIndexes() {
+		keepingIndex := false
+
+		for _, newIndex := range req.GetField().GetIndexConfig().GetIndexes() {
+			if indexEquals(oldIndex, newIndex) {
+				keepingIndex = true
+				break
+			}
+		}
+
+		if keepingIndex {
+			continue
+		}
+		// Removing an existing index
+		indexConfigDelta := &pb.FieldOperationMetadata_IndexConfigDelta{
+			ChangeType: pb.FieldOperationMetadata_IndexConfigDelta_REMOVE,
+			Index:      ProtoClone(oldIndex),
+		}
+		indexConfigDelta.Index.State = pb.Index_STATE_UNSPECIFIED // Does not return state
+		indexConfigDeltas = append(indexConfigDeltas, indexConfigDelta)
+	}
+
+	// Now go through and add any new indexes
+	for _, index := range req.GetField().GetIndexConfig().GetIndexes() {
+		foundMatch := false
+
+		for _, oldIndex := range oldObj.GetIndexConfig().GetIndexes() {
+			if indexEquals(oldIndex, index) {
+				foundMatch = true
+				break
+			}
+		}
+
+		if !foundMatch {
+			indexConfigDeltas = append(indexConfigDeltas, &pb.FieldOperationMetadata_IndexConfigDelta{
+				ChangeType: pb.FieldOperationMetadata_IndexConfigDelta_ADD,
+				Index:      ProtoClone(index),
+			})
+		}
+
+		newIndexes = append(newIndexes, index)
+	}
+
 	if obj.IndexConfig == nil {
 		obj.IndexConfig = &pb.Field_IndexConfig{}
 	}
-
-	indexConfigDeltas := []*pb.FieldOperationMetadata_IndexConfigDelta{}
-	reqIndexes := req.GetField().GetIndexConfig().GetIndexes()
-
-	updateMask := fields.NewUpdateMask(req.GetUpdateMask())
-
-	var ttlConfigDelta *pb.FieldOperationMetadata_TtlConfigDelta
-	if updateMask.HasJSONPath("ttlConfig") {
-		if req.GetField().GetTtlConfig() != nil && obj.TtlConfig == nil {
-			obj.TtlConfig = &pb.Field_TtlConfig{}
-			obj.TtlConfig.State = pb.Field_TtlConfig_ACTIVE
-			ttlConfigDelta = &pb.FieldOperationMetadata_TtlConfigDelta{
-				ChangeType: pb.FieldOperationMetadata_TtlConfigDelta_ADD,
-			}
-		}
-
-		if req.GetField().GetTtlConfig() == nil && obj.TtlConfig != nil {
-			obj.TtlConfig = nil
-			ttlConfigDelta = &pb.FieldOperationMetadata_TtlConfigDelta{
-				ChangeType: pb.FieldOperationMetadata_TtlConfigDelta_REMOVE,
-			}
-		}
-	}
-
-	var newIndexes []*pb.Index
-	if updateMask.HasJSONPath("indexConfig") {
-		if req.GetField().GetIndexConfig() == nil {
-			// We are are explicitly clearing indexes - revert to default
-			defaultField, err := s.getDefaultField(ctx, name)
-			if err != nil {
-				return nil, err
-			}
-			reqIndexes = defaultField.GetIndexConfig().GetIndexes()
-
-			obj.IndexConfig.UsesAncestorConfig = true
-		} else {
-			// We are explicitly managing indexes on this field now
-			obj.IndexConfig.UsesAncestorConfig = false
-		}
-
-		// First go through and remove any indexes we are not keeping
-		for _, oldIndex := range oldObj.GetIndexConfig().GetIndexes() {
-			keepingIndex := false
-
-			for _, newIndex := range reqIndexes {
-				if indexEquals(oldIndex, newIndex) {
-					keepingIndex = true
-					break
-				}
-			}
-
-			if keepingIndex {
-				continue
-			}
-			// Removing an existing index
-			indexConfigDelta := &pb.FieldOperationMetadata_IndexConfigDelta{
-				ChangeType: pb.FieldOperationMetadata_IndexConfigDelta_REMOVE,
-				Index:      ProtoClone(oldIndex),
-			}
-			indexConfigDelta.Index.State = pb.Index_STATE_UNSPECIFIED // Does not return state
-			indexConfigDeltas = append(indexConfigDeltas, indexConfigDelta)
-		}
-
-		// Now go through and add any new indexes
-		for _, index := range reqIndexes {
-			foundMatch := false
-
-			for _, oldIndex := range oldObj.GetIndexConfig().GetIndexes() {
-				if indexEquals(oldIndex, index) {
-					foundMatch = true
-					break
-				}
-			}
-
-			if !foundMatch {
-				indexConfigDelta := &pb.FieldOperationMetadata_IndexConfigDelta{
-					ChangeType: pb.FieldOperationMetadata_IndexConfigDelta_ADD,
-					Index:      ProtoClone(index),
-				}
-				indexConfigDelta.Index.State = pb.Index_STATE_UNSPECIFIED // Does not return state
-				indexConfigDeltas = append(indexConfigDeltas, indexConfigDelta)
-			}
-
-			newIndexes = append(newIndexes, index)
-		}
-	} else {
-		newIndexes = obj.GetIndexConfig().GetIndexes()
-	}
-
 	if obj.IndexConfig.AncestorField == "" {
 		obj.IndexConfig.AncestorField = fmt.Sprintf("projects/%s/databases/%s/collectionGroups/__default__/fields/*", name.ProjectID, name.DatabaseID)
 	}
@@ -275,7 +169,7 @@ func (s *firestoreAdminServer) UpdateField(ctx context.Context, req *pb.UpdateFi
 		index.State = pb.Index_READY
 	}
 
-	if !found {
+	if create {
 		obj.Name = fqn
 		if err := s.storage.Create(ctx, fqn, obj); err != nil {
 			return nil, err
@@ -290,7 +184,6 @@ func (s *firestoreAdminServer) UpdateField(ctx context.Context, req *pb.UpdateFi
 	lroMetadata := &pb.FieldOperationMetadata{
 		Field:             name.String(),
 		IndexConfigDeltas: indexConfigDeltas,
-		TtlConfigDelta:    ttlConfigDelta,
 		StartTime:         timestamppb.Now(),
 		State:             pb.OperationState_INITIALIZING,
 	}
@@ -298,17 +191,7 @@ func (s *firestoreAdminServer) UpdateField(ctx context.Context, req *pb.UpdateFi
 		lroMetadata.State = pb.OperationState_SUCCESSFUL
 		lroMetadata.EndTime = timestamppb.Now()
 		lroMetadata.ProgressDocuments = &pb.Progress{}
-
-		retObj := ProtoClone(obj)
-		// Does not return usesAncestorConfig in LRO
-		if retObj.IndexConfig != nil {
-			retObj.IndexConfig.UsesAncestorConfig = false
-		}
-		// Does not return index config when we are changing ttl only
-		if !updateMask.HasJSONPath("indexConfig") {
-			retObj.IndexConfig = nil
-		}
-		return retObj, nil
+		return obj, nil
 	})
 }
 
@@ -344,6 +227,22 @@ func indexEquals(a, b *pb.Index) bool {
 		}
 	}
 	return true
+}
+
+func (s *firestoreAdminServer) GetField(ctx context.Context, req *pb.GetFieldRequest) (*pb.Field, error) {
+	name, err := s.parseFieldName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.Field{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
 }
 
 // fieldName is the resource name of a firestore field.

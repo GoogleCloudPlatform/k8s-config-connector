@@ -102,10 +102,7 @@ func (s *dataTransferService) CreateTransferConfig(ctx context.Context, req *pb.
 	obj := proto.Clone(req.TransferConfig).(*pb.TransferConfig)
 	obj.DatasetRegion = name.Location
 	obj.Name = name.String()
-	// Event driven schedule does not output next run time
-	if obj.ScheduleOptionsV2 == nil {
-		obj.NextRunTime = timestamppb.New(now)
-	}
+	obj.NextRunTime = timestamppb.New(now)
 	email := "user@google.com"
 	obj.OwnerInfo = &pb.UserInfo{
 		Email: &email,
