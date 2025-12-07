@@ -134,7 +134,6 @@ var (
 		"network_management/google_network_management_connectivity_test",
 		"network_services/google_network_services_edge_cache_keyset",
 		"network_services/google_network_services_edge_cache_origin",
-		"network_services/google_network_services_edge_cache_service",
 		"notebooks/google_notebooks_environment",
 		"org_policy/google_org_policy_custom_constraint",
 		"os_config/google_os_config_patch_deployment",
