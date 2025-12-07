@@ -75,4 +75,37 @@ The `controllerbuilder` is powerful but has limits, especially with:
 *   [**New Isolated Mock Resource**](./scenarios/new-isolated-resource.md): **Start here** if the resource is NOT in the Go SDK yet (e.g., Alpha resources).
 *   [**New Field**](./scenarios/new-field.md): Adding a field to an existing resource.
 *   [**Promote Alpha to Beta**](./scenarios/alpha-to-beta.md): Promoting a resource version.
-The most critical part leading to the success of this Gemini-driven workflow is your ability to triage and discover issues when Gemini gets stuck. This requires some in-depth Kubernetes and Config Connector knowledge.
+
+## Quick Start Prompts
+
+Use these prompts to get started immediately. For full details, see the [Scenarios Index](#scenarios-index).
+
+### New Isolated Mock Resource
+**Goal**: Implement a resource not yet in the Go SDK (Alpha/Private).
+**Prompt**:
+> "I need to implement the `<Kind>` resource for the `<Service>` CIG.
+>
+> **Constraints:**
+> 1.  **Isolated Mock Strategy:** The GCP Go SDK does not support this resource yet. We must use `mockgcp` as the source of truth.
+> 2.  **Stacked PRs:** I want to implement this in 3 stacked PRs.
+>
+> **Goal:** Let's start with **PR 1 (MockGCP)**.
+> Please check if the proto exists in `mockgcp/apis`. If not, download it from googleapis/master, add it to the Makefile, and generate the mock types."
+
+### Fixing Build & Linter Issues
+**Goal**: Resolve common CI failures (missing DeepCopy, license headers, stale protos).
+**Prompt**:
+> "I need to fix build and linter issues in the current PRs.
+> 1. Check for missing `DeepCopy` methods (run `make generate` to fix).
+> 2. Check for missing proto files in `mockgcp` (fetch from `googleapis` or generate).
+> 3. Ensure `mockgcp` service registration is complete (uncomment `NewHTTPMux`).
+> 4. Run `make fmt` to fix license headers and formatting.
+> 5. Verify everything compiles with `go build ./mockgcp/...`."
+
+## Essential Manual Steps (The "Gotchas")
+While Gemini handles most tasks, some steps might require manual intervention or specific instructions:
+
+1.  **Missing Protos**: If `googleapis` repo is pinned to an older version, you might need to `wget` the `.proto` file from `googleapis/master` manually.
+2.  **Missing HTTP Annotations**: If the proto lacks `google.api.http` options, the gRPC Gateway (REST) code won't generate. You must patch the `.proto` file to add them.
+    *   *Prompt*: "The proto keys `google.api.http` annotations. Please patch it to add standard CRUD mappings."
+3.  **Stale Generated Files**: If `go build` fails with conflicting types, try deleting the `generated` directory or running `make clean` (if available) before regenerating.
