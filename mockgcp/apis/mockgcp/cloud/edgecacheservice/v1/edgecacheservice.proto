@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package mockgcp.cloud.edgecacheservice.v1;
 
+import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/longrunning/operations.proto";
@@ -26,11 +27,33 @@ import "google/protobuf/timestamp.proto";
 option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/edgecacheservice/v1;edgecacheservice";
 
 service EdgeCacheServices {
-  rpc GetEdgeCacheService(GetEdgeCacheServiceRequest) returns (EdgeCacheService);
-  rpc ListEdgeCacheServices(ListEdgeCacheServicesRequest) returns (ListEdgeCacheServicesResponse);
-  rpc CreateEdgeCacheService(CreateEdgeCacheServiceRequest) returns (google.longrunning.Operation);
-  rpc UpdateEdgeCacheService(UpdateEdgeCacheServiceRequest) returns (google.longrunning.Operation);
-  rpc DeleteEdgeCacheService(DeleteEdgeCacheServiceRequest) returns (google.longrunning.Operation);
+  rpc GetEdgeCacheService(GetEdgeCacheServiceRequest) returns (EdgeCacheService) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/edgeCacheServices/*}"
+    };
+  }
+  rpc ListEdgeCacheServices(ListEdgeCacheServicesRequest) returns (ListEdgeCacheServicesResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=projects/*/locations/*}/edgeCacheServices"
+    };
+  }
+  rpc CreateEdgeCacheService(CreateEdgeCacheServiceRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*}/edgeCacheServices"
+      body: "edge_cache_service"
+    };
+  }
+  rpc UpdateEdgeCacheService(UpdateEdgeCacheServiceRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{edge_cache_service.name=projects/*/locations/*/edgeCacheServices/*}"
+      body: "edge_cache_service"
+    };
+  }
+  rpc DeleteEdgeCacheService(DeleteEdgeCacheServiceRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/edgeCacheServices/*}"
+    };
+  }
 }
 
 message EdgeCacheService {
