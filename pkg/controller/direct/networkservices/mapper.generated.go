@@ -87,8 +87,8 @@ func EdgeCacheService_FromProto(mapCtx *direct.MapContext, in *pb.EdgeCacheServi
 	}
 	out := &krm.EdgeCacheService{}
 	out.Name = direct.LazyPtr(in.GetName())
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.Labels = in.Labels
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Routing = Routing_FromProto(mapCtx, in.GetRouting())
@@ -99,7 +99,9 @@ func EdgeCacheService_FromProto(mapCtx *direct.MapContext, in *pb.EdgeCacheServi
 	out.DisableQuic = direct.LazyPtr(in.GetDisableQuic())
 	out.DisableHttp2 = direct.LazyPtr(in.GetDisableHttp2())
 	// MISSING: IPV4Addresses
+	// (near miss): "IPV4Addresses" vs "IPv4Addresses"
 	// MISSING: IPV6Addresses
+	// (near miss): "IPV6Addresses" vs "IPv6Addresses"
 	return out
 }
 func EdgeCacheService_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheService) *pb.EdgeCacheService {
@@ -108,8 +110,8 @@ func EdgeCacheService_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheServic
 	}
 	out := &pb.EdgeCacheService{}
 	out.Name = direct.ValueOf(in.Name)
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.Labels = in.Labels
 	out.Description = direct.ValueOf(in.Description)
 	out.Routing = Routing_ToProto(mapCtx, in.Routing)
@@ -120,49 +122,9 @@ func EdgeCacheService_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheServic
 	out.DisableQuic = direct.ValueOf(in.DisableQuic)
 	out.DisableHttp2 = direct.ValueOf(in.DisableHttp2)
 	// MISSING: IPV4Addresses
+	// (near miss): "IPV4Addresses" vs "IPv4Addresses"
 	// MISSING: IPV6Addresses
-	return out
-}
-func EdgeCacheServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EdgeCacheService) *krm.EdgeCacheServiceObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EdgeCacheServiceObservedState{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Labels
-	// MISSING: Description
-	// MISSING: Routing
-	// MISSING: RequireTLS
-	// MISSING: EdgeSSLCertificates
-	// MISSING: EdgeSecurityPolicy
-	// MISSING: LogConfig
-	// MISSING: DisableQuic
-	// MISSING: DisableHttp2
-	out.IPV4Addresses = in.Ipv4Addresses
-	out.IPV6Addresses = in.Ipv6Addresses
-	return out
-}
-func EdgeCacheServiceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.EdgeCacheServiceObservedState) *pb.EdgeCacheService {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EdgeCacheService{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Labels
-	// MISSING: Description
-	// MISSING: Routing
-	// MISSING: RequireTLS
-	// MISSING: EdgeSSLCertificates
-	// MISSING: EdgeSecurityPolicy
-	// MISSING: LogConfig
-	// MISSING: DisableQuic
-	// MISSING: DisableHttp2
-	out.Ipv4Addresses = in.IPV4Addresses
-	out.Ipv6Addresses = in.IPV6Addresses
+	// (near miss): "IPV6Addresses" vs "IPv6Addresses"
 	return out
 }
 func HeaderAction_FromProto(mapCtx *direct.MapContext, in *pb.HeaderAction) *krm.HeaderAction {

@@ -172,3 +172,10 @@ func EdgeCacheServiceSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServ
 	out.Routing = Routing_ToProto(mapCtx, in.Routing)
 	return out
 }
+
+func EdgeCacheServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.EdgeCacheService) *krm.EdgeCacheServiceObservedState {
+	if in == nil {
+		return nil
+	}
+	return (*krm.EdgeCacheServiceObservedState)(EdgeCacheService_FromProto(mapCtx, in))
+}
