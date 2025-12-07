@@ -31,8 +31,32 @@ type NetworkServicesEdgeCacheServiceSpec struct {
 	// The NetworkServicesEdgeCacheService name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
-	// Embed the generated proto fields
-	EdgeCacheService `json:",inline"`
+	// +kcc:proto:field=mockgcp.cloud.edgecacheservice.v1.EdgeCacheService.labels
+	Labels map[string]string `json:"labels,omitempty"`
+
+	// +kcc:proto:field=mockgcp.cloud.edgecacheservice.v1.EdgeCacheService.description
+	Description *string `json:"description,omitempty"`
+
+	// +kcc:proto:field=mockgcp.cloud.edgecacheservice.v1.EdgeCacheService.routing
+	Routing *Routing `json:"routing,omitempty"`
+
+	// +kcc:proto:field=mockgcp.cloud.edgecacheservice.v1.EdgeCacheService.require_tls
+	RequireTLS *bool `json:"requireTLS,omitempty"`
+
+	// +kcc:proto:field=mockgcp.cloud.edgecacheservice.v1.EdgeCacheService.edge_ssl_certificates
+	EdgeSSLCertificates []string `json:"edgeSSLCertificates,omitempty"`
+
+	// +kcc:proto:field=mockgcp.cloud.edgecacheservice.v1.EdgeCacheService.edge_security_policy
+	EdgeSecurityPolicy *string `json:"edgeSecurityPolicy,omitempty"`
+
+	// +kcc:proto:field=mockgcp.cloud.edgecacheservice.v1.EdgeCacheService.log_config
+	LogConfig *LogConfig `json:"logConfig,omitempty"`
+
+	// +kcc:proto:field=mockgcp.cloud.edgecacheservice.v1.EdgeCacheService.disable_quic
+	DisableQuic *bool `json:"disableQuic,omitempty"`
+
+	// +kcc:proto:field=mockgcp.cloud.edgecacheservice.v1.EdgeCacheService.disable_http2
+	DisableHttp2 *bool `json:"disableHttp2,omitempty"`
 }
 
 // NetworkServicesEdgeCacheServiceStatus defines the config connector machine state of NetworkServicesEdgeCacheService
@@ -49,6 +73,24 @@ type NetworkServicesEdgeCacheServiceStatus struct {
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	ObservedState *EdgeCacheServiceObservedState `json:"observedState,omitempty"`
+}
+
+// +kcc:observedstate:proto=mockgcp.cloud.edgecacheservice.v1.EdgeCacheService
+type EdgeCacheServiceObservedState struct {
+	// +kcc:proto:field=mockgcp.cloud.edgecacheservice.v1.EdgeCacheService.name
+	Name *string `json:"name,omitempty"`
+
+	// +kcc:proto:field=mockgcp.cloud.edgecacheservice.v1.EdgeCacheService.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// +kcc:proto:field=mockgcp.cloud.edgecacheservice.v1.EdgeCacheService.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// +kcc:proto:field=mockgcp.cloud.edgecacheservice.v1.EdgeCacheService.ipv4_addresses
+	IPv4Addresses []string `json:"ipv4Addresses,omitempty"`
+
+	// +kcc:proto:field=mockgcp.cloud.edgecacheservice.v1.EdgeCacheService.ipv6_addresses
+	IPv6Addresses []string `json:"ipv6Addresses,omitempty"`
 }
 
 // +genclient

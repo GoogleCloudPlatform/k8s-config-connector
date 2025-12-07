@@ -177,5 +177,11 @@ func EdgeCacheServiceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.E
 	if in == nil {
 		return nil
 	}
-	return (*krm.EdgeCacheServiceObservedState)(EdgeCacheService_FromProto(mapCtx, in))
+	out := &krm.EdgeCacheServiceObservedState{}
+	out.Name = direct.LazyPtr(in.Name)
+	out.CreateTime = direct.LazyPtr(in.CreateTime.String())
+	out.UpdateTime = direct.LazyPtr(in.UpdateTime.String())
+	out.IPv4Addresses = in.Ipv4Addresses
+	out.IPv6Addresses = in.Ipv6Addresses
+	return out
 }
