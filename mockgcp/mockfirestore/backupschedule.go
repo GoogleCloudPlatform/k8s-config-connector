@@ -145,7 +145,7 @@ func (s *firestoreAdminServer) DeleteBackupSchedule(ctx context.Context, req *pb
 	return &emptypb.Empty{}, nil
 }
 
-func (s *firestoreAdminServer) populateBackupScheduleDefaults(obj *pb.BackupSchedule) error {
+func (s *firestoreAdminServer) populateBackupScheduleDefaults(_ *pb.BackupSchedule) error {
 	return nil
 }
 

@@ -20,7 +20,7 @@ import (
 )
 
 func LoadConfig() ResourcesControllerMap {
-	return ControllerConfigStatic
+	return *ControllerConfigStatic
 }
 
 func IsControllerSupported(gvk schema.GroupVersionKind, controllerType k8s.ReconcilerType) bool {

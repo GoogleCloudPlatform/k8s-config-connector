@@ -29,7 +29,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	"google.golang.org/grpc"
 
-	pb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
+	adminpb "cloud.google.com/go/firestore/apiv1/admin/adminpb"
+	pb "cloud.google.com/go/firestore/apiv1/firestorepb"
 	pb_http "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/firestore/admin/v1"
 )
 
@@ -59,7 +60,8 @@ func (s *MockService) ExpectedHosts() []string {
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
-	pb.RegisterFirestoreAdminServer(grpcServer, &firestoreAdminServer{MockService: s})
+	adminpb.RegisterFirestoreAdminServer(grpcServer, &firestoreAdminServer{MockService: s})
+	pb.RegisterFirestoreServer(grpcServer, &firestoreServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
