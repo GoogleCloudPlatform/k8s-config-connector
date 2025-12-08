@@ -39,7 +39,7 @@ type NetworkConfig_Consumer struct {
 	//  hosts in a subnet in the same region and same network. There must
 	//  be at least one IP address available in the subnet's primary range.
 	// +kcc:proto:field=google.cloud.metastore.v1.NetworkConfig.Consumer.subnetwork
-	SubnetworkRef *refsv1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.metastore.v1.NetworkConfig.Consumer

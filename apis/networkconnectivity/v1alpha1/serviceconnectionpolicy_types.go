@@ -76,7 +76,7 @@ type PscConfig struct {
 	ProducerInstanceLocation *string `json:"producerInstanceLocation,omitempty"`
 
 	// The resource paths of subnetworks to use for IP address management. Example: projects/{projectNumOrId}/regions/{region}/subnetworks/{resourceId}.
-	Subnetworks []refs.ComputeSubnetworkRef `json:"subnetworkRefs,omitempty"`
+	Subnetworks []computev1beta1.ComputeSubnetworkRef `json:"subnetworkRefs,omitempty"`
 }
 
 // NetworkConnectivityServiceConnectionPolicyStatus defines the config connector machine state of NetworkConnectivityServiceConnectionPolicy

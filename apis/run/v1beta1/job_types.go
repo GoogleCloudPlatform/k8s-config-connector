@@ -638,7 +638,7 @@ type VPCAccess_NetworkInterface struct {
 	//  belong to the given VPC network. If subnetwork is not specified, the
 	//  subnetwork with the same name with the network will be used.
 	// +kcc:proto:field=google.cloud.run.v2.VpcAccess.NetworkInterface.subnetwork
-	SubnetworkRef *refs.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	// Optional. Network tags applied to this Cloud Run resource.
 	// +kcc:proto:field=google.cloud.run.v2.VpcAccess.NetworkInterface.tags
