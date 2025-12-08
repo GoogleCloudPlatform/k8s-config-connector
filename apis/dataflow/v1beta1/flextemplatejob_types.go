@@ -91,7 +91,7 @@ type DataflowFlexTemplateJobSpec struct {
 	//  "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK"
 	//  or "regions/REGION/subnetworks/SUBNETWORK". If the subnetwork is located in
 	//  a Shared VPC network, you must use the complete URL.
-	SubnetworkRef *refs.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef,omitempty"`
 
 	/* NOTYET
 	// Additional user labels to be specified for the job.

@@ -15,6 +15,7 @@
 package v1beta1
 
 import (
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	commonv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/common/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -62,7 +63,7 @@ type NetworkConfig struct {
 	//  private networks, as specified in RFC 1918.
 	// +kcc:proto:field=google.cloud.managedkafka.v1.NetworkConfig.subnet
 	// +required
-	SubnetworkRef *refs.ComputeSubnetworkRef `json:"subnetworkRef"`
+	SubnetworkRef *computev1beta1.ComputeSubnetworkRef `json:"subnetworkRef"`
 }
 
 // +kcc:proto=google.cloud.managedkafka.v1.GcpConfig

@@ -60,22 +60,19 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 		}
 	}
 
-	if subnetworkRef, ok := v.(*refs.ComputeSubnetworkRef); ok {
-		resolved, err := refs.ResolveComputeSubnetwork(r.ctx, r.kube, r.src, subnetworkRef)
-		if err != nil {
+	if subnetworkRef, ok := v.(*computev1beta1.ComputeSubnetworkRef); ok {
+		if err := subnetworkRef.Normalize(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
 			return err
 		}
-		*subnetworkRef = *resolved
 	}
 
-	if subnetworkRefs, ok := v.([]refs.ComputeSubnetworkRef); ok {
+	if subnetworkRefs, ok := v.([]computev1beta1.ComputeSubnetworkRef); ok {
 		for i := range subnetworkRefs {
 			subnetworkRef := &subnetworkRefs[i]
-			resolved, err := refs.ResolveComputeSubnetwork(r.ctx, r.kube, r.src, subnetworkRef)
-			if err != nil {
+			if err := subnetworkRef.Normalize(r.ctx, r.kube, r.src.GetNamespace()); err != nil {
 				return err
 			}
-			subnetworkRefs[i] = *resolved
+			subnetworkRefs[i] = *subnetworkRef
 		}
 	}
 

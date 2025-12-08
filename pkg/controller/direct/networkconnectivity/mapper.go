@@ -20,7 +20,6 @@ import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -52,17 +51,17 @@ func NetworkConnectivityServiceConnectionPolicySpec_Network_ToProto(mapCtx *dire
 	}
 	return in.External
 }
-func PscConfig_Subnetworks_FromProto(mapCtx *direct.MapContext, in []string) []refs.ComputeSubnetworkRef {
+func PscConfig_Subnetworks_FromProto(mapCtx *direct.MapContext, in []string) []computev1beta1.ComputeSubnetworkRef {
 	if in == nil {
 		return nil
 	}
-	var out []refs.ComputeSubnetworkRef
+	var out []computev1beta1.ComputeSubnetworkRef
 	for _, s := range in {
-		out = append(out, refs.ComputeSubnetworkRef{External: s})
+		out = append(out, computev1beta1.ComputeSubnetworkRef{External: s})
 	}
 	return out
 }
-func PscConfig_Subnetworks_ToProto(mapCtx *direct.MapContext, in []refs.ComputeSubnetworkRef) []string {
+func PscConfig_Subnetworks_ToProto(mapCtx *direct.MapContext, in []computev1beta1.ComputeSubnetworkRef) []string {
 	if in == nil {
 		return nil
 	}

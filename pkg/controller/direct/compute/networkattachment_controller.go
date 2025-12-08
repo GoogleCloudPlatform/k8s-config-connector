@@ -26,6 +26,7 @@ import (
 
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -304,14 +305,13 @@ func (a *NetworkAttachmentAdapter) get(ctx context.Context) (*computepb.NetworkA
 func (a *NetworkAttachmentAdapter) resolveDependencies(ctx context.Context, reader client.Reader, obj *krm.ComputeNetworkAttachment) error {
 	// resolve subnetwork
 	if obj.Spec.SubnetworkRefs != nil {
-		var subnetworks []*refsv1beta1.ComputeSubnetworkRef
-		for _, i := range obj.Spec.SubnetworkRefs {
-			subnetwork, err := refsv1beta1.ResolveComputeSubnetwork(ctx, reader, obj, i)
+		var subnetworks []*computev1beta1.ComputeSubnetworkRef
+		for _, subnetwork := range obj.Spec.SubnetworkRefs {
+			err := subnetwork.Normalize(ctx, reader, obj.Namespace)
 			if err != nil {
 				return err
 			}
-			i.External = subnetwork.External
-			subnetworks = append(subnetworks, i)
+			subnetworks = append(subnetworks, subnetwork)
 		}
 		obj.Spec.SubnetworkRefs = subnetworks
 	}

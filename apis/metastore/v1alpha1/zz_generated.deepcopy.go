@@ -844,7 +844,7 @@ func (in *NetworkConfig_Consumer) DeepCopyInto(out *NetworkConfig_Consumer) {
 	*out = *in
 	if in.SubnetworkRef != nil {
 		in, out := &in.SubnetworkRef, &out.SubnetworkRef
-		*out = new(v1beta1.ComputeSubnetworkRef)
+		*out = new(computev1beta1.ComputeSubnetworkRef)
 		**out = **in
 	}
 }
