@@ -558,6 +558,12 @@ func schemaNodeConfig() *schema.Schema {
 								ForceNew:    true,
 								Description: `The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed.`,
 							},
+							"enable_nested_virtualization": {
+								Type:        schema.TypeBool,
+								Optional:    true,
+								ForceNew:    true,
+								Description: `Whether to enable nested virtualization or not.`,
+							},
 						},
 					},
 				},
@@ -927,6 +933,10 @@ func expandNodeConfig(v interface{}) *container.NodeConfig {
 		nc.AdvancedMachineFeatures = &container.AdvancedMachineFeatures{
 			ThreadsPerCore: int64(advanced_machine_features["threads_per_core"].(int)),
 		}
+		if v, ok := advanced_machine_features["enable_nested_virtualization"]; ok {
+			nc.AdvancedMachineFeatures.EnableNestedVirtualization = v.(bool)
+			nc.AdvancedMachineFeatures.ForceSendFields = append(nc.AdvancedMachineFeatures.ForceSendFields, "EnableNestedVirtualization")
+		}
 	}
 
 	if v, ok := nodeConfig["sole_tenant_config"]; ok && len(v.([]interface{})) > 0 {
@@ -1176,7 +1186,8 @@ func flattenAdvancedMachineFeaturesConfig(c *container.AdvancedMachineFeatures) 
 	result := []map[string]interface{}{}
 	if c != nil {
 		result = append(result, map[string]interface{}{
-			"threads_per_core": c.ThreadsPerCore,
+			"threads_per_core":             c.ThreadsPerCore,
+			"enable_nested_virtualization": c.EnableNestedVirtualization,
 		})
 	}
 	return result
