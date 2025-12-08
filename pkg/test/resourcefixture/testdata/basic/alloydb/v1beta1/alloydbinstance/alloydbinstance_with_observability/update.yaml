@@ -23,14 +23,14 @@ spec:
   instanceTypeRef:
     name: alloydbcluster-${uniqueId}
   observabilityConfig:
-    enabled: false
-    preserveComments: false
-    maxQueryStringLength: 1024
-    recordApplicationTags: false
-    queryPlansPerMinute: 10
-    trackActiveQueries: false
-    assistiveExperiencesEnabled: false
-    trackWaitEvents: false
-    trackClientAddress: false
+    enabled: true
+    preserveComments: true
+    maxQueryStringLength: 1025
+    recordApplicationTags: true
+    queryPlansPerMinute: 11
+    trackActiveQueries: true
+    assistiveExperiencesEnabled: true
+    trackWaitEvents: true
+    trackClientAddress: true
   machineConfig:
     cpuCount: 2

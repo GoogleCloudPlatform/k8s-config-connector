@@ -60,49 +60,13 @@ func setInstanceFields(name *instanceName, obj *pb.Instance) {
 	if obj.GeminiConfig == nil {
 		obj.GeminiConfig = &pb.GeminiInstanceConfig{}
 	}
+
 	obsEnabled := obj.ObservabilityConfig != nil &&
 		obj.ObservabilityConfig.Enabled != nil &&
 		*obj.ObservabilityConfig.Enabled
 	if !obsEnabled {
-		if obj.ObservabilityConfig == nil {
-			obj.ObservabilityConfig = &pb.Instance_ObservabilityInstanceConfig{}
-		}
-
-		if obj.ObservabilityConfig.Enabled == nil {
-			obj.ObservabilityConfig.Enabled = PtrTo(false)
-		}
-		if obj.ObservabilityConfig.MaxQueryStringLength == nil {
-			obj.ObservabilityConfig.MaxQueryStringLength = PtrTo(int32(10240))
-		}
-		if obj.ObservabilityConfig.PreserveComments == nil {
-			obj.ObservabilityConfig.PreserveComments = PtrTo(false)
-		}
-		if obj.ObservabilityConfig.QueryPlansPerMinute == nil {
-			obj.ObservabilityConfig.QueryPlansPerMinute = PtrTo(int32(20))
-		}
-		if obj.ObservabilityConfig.RecordApplicationTags == nil {
-			obj.ObservabilityConfig.RecordApplicationTags = PtrTo(false)
-		}
-		if obj.ObservabilityConfig.TrackActiveQueries == nil {
-			obj.ObservabilityConfig.TrackActiveQueries = PtrTo(false)
-		}
-		if obj.ObservabilityConfig.TrackClientAddress == nil {
-			obj.ObservabilityConfig.TrackClientAddress = PtrTo(false)
-		}
-		if obj.ObservabilityConfig.TrackWaitEventTypes == nil {
-			obj.ObservabilityConfig.TrackWaitEventTypes = PtrTo(true)
-		}
-		if obj.ObservabilityConfig.TrackWaitEvents == nil {
-			obj.ObservabilityConfig.TrackWaitEvents = PtrTo(true)
-		}
-		if obj.ObservabilityConfig.AssistiveExperiencesEnabled == nil {
-			obj.ObservabilityConfig.AssistiveExperiencesEnabled = PtrTo(false)
-		}
-
 		if obj.QueryInsightsConfig == nil {
 			obj.QueryInsightsConfig = &pb.Instance_QueryInsightsInstanceConfig{
-				// Assuming 'Enabled' defaults to true or is handled by the backend when struct exists
-				// Enabled:               PtrTo(true),
 				QueryPlansPerMinute:   PtrTo(uint32(5)),
 				QueryStringLength:     uint32(1024),
 				RecordApplicationTags: PtrTo(false),
@@ -110,40 +74,37 @@ func setInstanceFields(name *instanceName, obj *pb.Instance) {
 			}
 		}
 	} else {
+		obj.QueryInsightsConfig = &pb.Instance_QueryInsightsInstanceConfig{}
+	}
 
-		// Set Observability Defaults (Enabled State)
-		if obj.ObservabilityConfig.MaxQueryStringLength == nil {
-			obj.ObservabilityConfig.MaxQueryStringLength = PtrTo(int32(10240))
-		}
-		if obj.ObservabilityConfig.PreserveComments == nil {
-			obj.ObservabilityConfig.PreserveComments = PtrTo(false)
-		}
-		// Note: QPM defaults to 5 when Obs is enabled!
-		if obj.ObservabilityConfig.QueryPlansPerMinute == nil {
-			obj.ObservabilityConfig.QueryPlansPerMinute = PtrTo(int32(5))
-		}
-		if obj.ObservabilityConfig.RecordApplicationTags == nil {
-			obj.ObservabilityConfig.RecordApplicationTags = PtrTo(false)
-		}
-		if obj.ObservabilityConfig.TrackActiveQueries == nil {
-			obj.ObservabilityConfig.TrackActiveQueries = PtrTo(false)
-		}
-		if obj.ObservabilityConfig.TrackClientAddress == nil {
-			obj.ObservabilityConfig.TrackClientAddress = PtrTo(false)
-		}
-		if obj.ObservabilityConfig.TrackWaitEventTypes == nil {
-			obj.ObservabilityConfig.TrackWaitEventTypes = PtrTo(true)
-		}
-		if obj.ObservabilityConfig.TrackWaitEvents == nil {
-			obj.ObservabilityConfig.TrackWaitEvents = PtrTo(true)
-		}
-		if obj.ObservabilityConfig.AssistiveExperiencesEnabled == nil {
-			obj.ObservabilityConfig.AssistiveExperiencesEnabled = PtrTo(false)
-		}
-
-		if obj.QueryInsightsConfig == nil {
-			obj.QueryInsightsConfig = &pb.Instance_QueryInsightsInstanceConfig{}
-		}
+	// Set Observability Defaults (Enabled State)
+	if obj.ObservabilityConfig.MaxQueryStringLength == nil {
+		obj.ObservabilityConfig.MaxQueryStringLength = PtrTo(int32(10240))
+	}
+	if obj.ObservabilityConfig.PreserveComments == nil {
+		obj.ObservabilityConfig.PreserveComments = PtrTo(false)
+	}
+	// Note: QPM defaults to 5 when Obs is enabled!
+	if obj.ObservabilityConfig.QueryPlansPerMinute == nil {
+		obj.ObservabilityConfig.QueryPlansPerMinute = PtrTo(int32(5))
+	}
+	if obj.ObservabilityConfig.RecordApplicationTags == nil {
+		obj.ObservabilityConfig.RecordApplicationTags = PtrTo(false)
+	}
+	if obj.ObservabilityConfig.TrackActiveQueries == nil {
+		obj.ObservabilityConfig.TrackActiveQueries = PtrTo(false)
+	}
+	if obj.ObservabilityConfig.TrackClientAddress == nil {
+		obj.ObservabilityConfig.TrackClientAddress = PtrTo(false)
+	}
+	if obj.ObservabilityConfig.TrackWaitEventTypes == nil {
+		obj.ObservabilityConfig.TrackWaitEventTypes = PtrTo(true)
+	}
+	if obj.ObservabilityConfig.TrackWaitEvents == nil {
+		obj.ObservabilityConfig.TrackWaitEvents = PtrTo(true)
+	}
+	if obj.ObservabilityConfig.AssistiveExperiencesEnabled == nil {
+		obj.ObservabilityConfig.AssistiveExperiencesEnabled = PtrTo(false)
 	}
 	if obj.InstanceType != pb.Instance_READ_POOL &&
 		obj.AvailabilityType == pb.Instance_AVAILABILITY_TYPE_UNSPECIFIED {
